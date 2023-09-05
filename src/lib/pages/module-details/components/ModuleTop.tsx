@@ -1,3 +1,4 @@
+import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
@@ -9,6 +10,13 @@ import { Tooltip } from "lib/components/Tooltip";
 interface ModuleTopProps {
   isVerified?: boolean;
 }
+
+const baseTextStyle: TextProps = {
+  color: "text.dark",
+  variant: "body2",
+  fontWeight: 500,
+  whiteSpace: "nowrap",
+};
 
 export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
   const isMobile = useMobile();
@@ -71,32 +79,15 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
           >
-            <Text
-              color="text.dark"
-              variant="body2"
-              fontWeight={500}
-              whiteSpace="nowrap"
-            >
+            <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
             {/* TODO module path */}
             <Flex>
-              <Text
-                color="text.main"
-                variant="body2"
-                fontWeight={500}
-                whiteSpace="nowrap"
-              >
+              <Text {...baseTextStyle}>
                 cltn13a2sywe6g4a9w84g98w4g1dasdrfafdstlju97::
               </Text>
-              <Text
-                color="text.main"
-                variant="body2"
-                fontWeight={500}
-                whiteSpace="nowrap"
-              >
-                beeb
-              </Text>
+              <Text {...baseTextStyle}>beeb</Text>
             </Flex>
           </Flex>
           <Flex
@@ -104,12 +95,7 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
           >
-            <Text
-              color="text.dark"
-              variant="body2"
-              fontWeight={500}
-              whiteSpace="nowrap"
-            >
+            <Text {...baseTextStyle} color="text.main">
               Creator:
             </Text>
             {/* TODO Creator */}
@@ -124,40 +110,14 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
           >
-            <Text
-              color="text.dark"
-              variant="body2"
-              fontWeight={500}
-              whiteSpace="nowrap"
-            >
+            <Text {...baseTextStyle} color="text.main">
               Friends:
             </Text>
             {/* TODO Friends */}
             <Flex gap={1}>
-              <Text
-                color="text.dark"
-                variant="body2"
-                fontWeight={500}
-                whiteSpace="nowrap"
-              >
-                0x1::any,
-              </Text>
-              <Text
-                color="text.dark"
-                variant="body2"
-                fontWeight={500}
-                whiteSpace="nowrap"
-              >
-                0x1::copyable_any
-              </Text>
-              <Text
-                color="text.dark"
-                variant="body2"
-                fontWeight={500}
-                whiteSpace="nowrap"
-              >
-                0x1::copyable_any::function_name
-              </Text>
+              <Text {...baseTextStyle}>0x1::any,</Text>
+              <Text {...baseTextStyle}>0x1::copyable_any</Text>
+              <Text {...baseTextStyle}>0x1::copyable_any::function_name</Text>
             </Flex>
           </Flex>
         </Flex>

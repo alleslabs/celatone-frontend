@@ -1,3 +1,3 @@
-import { Modules } from "lib/pages/modules";
+import { ModuleDetails } from "lib/pages/module-details";
 
-export default Modules;
+export default ModuleDetails;

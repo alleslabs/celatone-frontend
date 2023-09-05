@@ -27,10 +27,6 @@ import { ModuleInfo } from "./components/ModuleInfo";
 import { ModuleTop } from "./components/ModuleTop";
 import { QuickAccess } from "./components/QuickAccess";
 
-interface ModuleDetailsProps {
-  modulePath: string;
-}
-
 const tableHeaderId = "moduleDetailsTab";
 export enum TabIndex {
   Overview = "overview",
@@ -38,13 +34,14 @@ export enum TabIndex {
   Txs = "txs",
   Structs = "structs",
 }
-export const ModuleDetails = ({
-  modulePath = "moduletest",
-}: ModuleDetailsProps) => {
+// TODO get module path
+const txTableHeaderId = "ModuleTxsTableHeader";
+
+export const ModuleDetails = () => {
   const navigate = useInternalNavigate();
   const router = useRouter();
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-
+  const modulePath = getFirstQueryParam(router.query.modulePath);
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
@@ -80,7 +77,7 @@ export const ModuleDetails = ({
   }, [router.isReady, tab, modulePath, navigate]);
   const contractAddress = "" as ContractAddr;
   const { data: contractAccountId } = useAccountId(contractAddress);
-  const txTableHeaderId = "ModuleTxsTableHeader";
+
   const {
     tableCounts,
     refetchMigration,

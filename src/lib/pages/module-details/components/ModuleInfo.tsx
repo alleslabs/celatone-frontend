@@ -28,12 +28,15 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
         )}
       </Flex>
       {/* TODO data */}
-      <Flex p={4} borderRadius={8} border="1px solid" borderColor="gray.700">
-        <LabelText flex="1" label="Upgrade Policy">
-          ARBITRARY
-        </LabelText>
+      <Flex
+        p={4}
+        borderRadius={8}
+        border="1px solid"
+        borderColor="gray.700"
+        sx={{ "& > div": { flex: 1 } }}
+      >
+        <LabelText label="Upgrade Policy">ARBITRARY</LabelText>
         <LabelText
-          flex="1"
           label="Initial Published Block Height"
           helperText1="formatUTC(createdTime)"
           helperText2="dateFromNow(createdTime)"
@@ -45,11 +48,7 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
             fixedHeight
           />
         </LabelText>
-        <LabelText
-          flex="1"
-          label="Initial Published by"
-          helperText1="(Account Address)"
-        >
+        <LabelText label="Initial Published by" helperText1="(Account Address)">
           <ExplorerLink
             type="user_address"
             value="cltn1...7tlju97"
@@ -57,7 +56,7 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
             fixedHeight
           />
         </LabelText>
-        <LabelText flex="1" label="Initial Published Transaction">
+        <LabelText label="Initial Published Transaction">
           <ExplorerLink
             type="tx_hash"
             value="7F8FD8...3A804"
@@ -66,7 +65,6 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
           />
         </LabelText>
         <LabelText
-          flex="1"
           label="Initial Published Proposal ID"
           helperText1="TODO Published DAO Module"
         >

@@ -37,7 +37,7 @@ export const QuickAccess = () => {
         // TODO Navigate to tab
         <Flex
           p={4}
-          bg="gray.600"
+          bg="gray.800"
           borderRadius={8}
           w="full"
           alignItems="center"
