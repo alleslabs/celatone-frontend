@@ -72,7 +72,8 @@ export const ResourceSection = () => {
               9
             </Badge>
           </Flex>
-          <Flex>
+          <Flex gap={3} flexDirection="column">
+            <ResourceDetailCard name="test" />
             <ResourceDetailCard name="test" />
           </Flex>
         </Flex>

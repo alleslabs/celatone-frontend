@@ -55,14 +55,16 @@ export const ResourceLists = ({
       <ResourceTitle onViewMore={onViewMore} totalAsset={totalAsset} />
       {!isMobile && (
         // TODO: data
-        <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
-          <ResourceCard name="resource ja" amount={3} />
-          <ResourceCard name="resource ja" amount={3} />
-          <ResourceCard name="resource ja" amount={3} />
-          <ResourceCard name="resource ja" amount={3} />
-        </SimpleGrid>
+        <>
+          <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
+            <ResourceCard name="resource ja" amount={3} />
+            <ResourceCard name="resource ja" amount={3} />
+            <ResourceCard name="resource ja" amount={3} />
+            <ResourceCard name="resource ja" amount={3} />
+          </SimpleGrid>
+          {onViewMore && <ViewMore onClick={onViewMore} />}
+        </>
       )}
-      {!isMobile && onViewMore && <ViewMore onClick={onViewMore} />}
     </Flex>
   );
 };

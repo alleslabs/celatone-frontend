@@ -15,7 +15,7 @@ export const ResourceCard = ({
   return (
     <Flex
       w="full"
-      border={hasBorder ? "1px solid" : "0px"}
+      border={hasBorder ? "1px solid" : "none"}
       _hover={{ background: "gray.800" }}
       transition="all .25s ease-in-out"
       cursor="pointer"

@@ -52,7 +52,7 @@ enum TabIndex {
   Overview = "overview",
   Assets = "assets",
   Delegations = "delegations",
-  NFTs = "ntfs",
+  NFTs = "nfts",
   Txs = "txs",
   Codes = "codes",
   Contracts = "contracts",
