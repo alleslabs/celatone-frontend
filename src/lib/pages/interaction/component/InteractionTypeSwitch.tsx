@@ -1,7 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
-import { useRef } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
@@ -25,7 +24,6 @@ export const InteractionTypeSwitch = ({
   onTabChange,
   ...flexProps
 }: InteractionTypeSwitchProps) => {
-  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
   return (
@@ -39,13 +37,10 @@ export const InteractionTypeSwitch = ({
       sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
       {...flexProps}
     >
-      {tabs.map((tab, idx) => (
+      {tabs.map((tab) => (
         <MotionBox
           key={tab}
           w="full"
-          ref={(el) => {
-            tabRefs.current[idx] = el;
-          }}
           cursor="pointer"
           p="2px 10px"
           variants={{
@@ -66,12 +61,12 @@ export const InteractionTypeSwitch = ({
         </MotionBox>
       ))}
       <MotionBox
-        h={tabRefs.current[activeIndex]?.clientHeight}
-        w={tabRefs.current[activeIndex]?.clientWidth}
+        h="calc(100% - 8px)"
+        w="calc(50% - 4px)"
         position="absolute"
         borderRadius="2px"
         backgroundColor="primary.dark"
-        animate={{ left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px` }}
+        animate={{ left: activeIndex === 0 ? "4px" : "50%" }}
         transition={{
           type: "spring",
           stiffness: "250",

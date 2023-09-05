@@ -1,15 +1,21 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useDisclosure, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
 import { CountBadge } from "lib/components/module/CountBadge";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction } from "lib/types";
+import { parseJsonABI } from "lib/utils/abi";
 
-import { ModuleSelectDrawerTrigger } from "./component/drawer";
+import {
+  ModuleSelectDrawerTrigger,
+  ModuleSelectDrawer,
+} from "./component/drawer";
 import {
   InteractionTypeSwitch,
   InteractionTabs,
@@ -26,12 +32,14 @@ const containerBaseStyle: FlexProps = {
 
 export const Interaction = () => {
   const { query, isReady } = useRouter();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const [tab, setTab] = useState<InteractionTabs>();
-  // TODO: Remove when wiring up this page
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [module, setModule] = useState<IndexedModule>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedFn, setSelectedFn] = useState<ExposedFunction>();
+
+  const abi = module ? parseJsonABI(module.abi) : undefined;
 
   const handleModuleSelect = useCallback(
     (selectedModule: IndexedModule, fn?: ExposedFunction) => {
@@ -64,8 +72,60 @@ export const Interaction = () => {
         borderRadius={4}
         my={8}
       >
-        <p>Select module to interact with ...</p>
-        <ModuleSelectDrawerTrigger handleModuleSelect={handleModuleSelect} />
+        {module ? (
+          <>
+            <Flex direction="column" gap={4}>
+              <LabelText label="Module Path" labelWeight={600}>
+                <Flex align="center" gap={1}>
+                  <Text variant="body1">{module.address}</Text>
+                  <CustomIcon
+                    name="chevron-right"
+                    color="gray.600"
+                    boxSize={3}
+                  />
+                  <Text variant="body1" fontWeight={700}>
+                    {module.moduleName}
+                  </Text>
+                </Flex>
+              </LabelText>
+              <LabelText label="Friends" labelWeight={600}>
+                <Text variant="body2" color="gray.400">
+                  {abi?.friends.join(" , ")}
+                </Text>
+              </LabelText>
+            </Flex>
+            <Flex direction="column" gap={2}>
+              <ModuleSelectDrawerTrigger
+                triggerVariant="change-module"
+                buttonText="Change Module"
+                onOpen={onOpen}
+              />
+              <Button
+                variant="ghost-gray"
+                rightIcon={
+                  <CustomIcon name="launch" boxSize={3} color="text.dark" />
+                }
+                // TODO: Link to module section in account page
+                onClick={() => {}}
+              >
+                View Module
+              </Button>
+            </Flex>
+          </>
+        ) : (
+          <>
+            <p>Select module to interact with ...</p>
+            <ModuleSelectDrawerTrigger
+              triggerVariant="select-module"
+              onOpen={onOpen}
+            />
+          </>
+        )}
+        <ModuleSelectDrawer
+          isOpen={isOpen}
+          onClose={onClose}
+          handleModuleSelect={handleModuleSelect}
+        />
       </Flex>
       <Flex borderTop="1px solid" borderColor="gray.700" py={8} gap={8}>
         {/* Left side */}

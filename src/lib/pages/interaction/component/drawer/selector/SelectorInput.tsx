@@ -78,9 +78,19 @@ export const ModuleSelectorInput = ({
   });
 
   const handleSubmit = useCallback(() => {
+    if (keyword === selectedAddress.address || keyword === selectedAddress.hex)
+      return setMode("display");
+
     const err = validateModuleInput(keyword);
     return err ? setError(err) : refetch();
-  }, [keyword, refetch, validateModuleInput]);
+  }, [
+    selectedAddress.address,
+    selectedAddress.hex,
+    keyword,
+    refetch,
+    validateModuleInput,
+    setMode,
+  ]);
 
   const handleKeydown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
