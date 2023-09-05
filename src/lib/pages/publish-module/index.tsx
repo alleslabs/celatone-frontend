@@ -98,7 +98,7 @@ export const PublishModule = () => {
         <Box position="relative" display="flex" mt={12}>
           <Box w="10%" />
           <Box w="50%">
-            <Heading as="h6" variant="h6" fontWeight={800}>
+            <Heading as="h6" variant="h6" fontWeight={600}>
               Upload .mv files(s)
             </Heading>
             <Flex gap={6} flexDirection="column" my={6}>
@@ -164,7 +164,7 @@ export const PublishModule = () => {
         <Box position="relative" display="flex" mt={12}>
           <Box w="10%" />
           <Box w="50%">
-            <Heading as="h6" variant="h6" fontWeight={800}>
+            <Heading as="h6" variant="h6" fontWeight={600}>
               Upgrade Policy
             </Heading>
             <Text color="text.dark" variant="body2" mt={2}>

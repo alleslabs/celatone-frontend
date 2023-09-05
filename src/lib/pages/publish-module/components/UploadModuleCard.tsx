@@ -23,7 +23,7 @@ export const UploadModuleCard = ({
       flexDirection="column"
     >
       <Flex justifyContent="space-between" w="full" alignItems="center">
-        <Heading as="h6" variant="h6" color="text.dark" fontWeight={800}>
+        <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
           Module {index + 1}
         </Heading>
         <IconButton
