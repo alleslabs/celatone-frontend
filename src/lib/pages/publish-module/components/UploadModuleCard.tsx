@@ -1,11 +1,17 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 
 interface UploadModuleCardProps {
   index: number;
+  remove: () => void;
+  fieldAmount: number;
 }
-export const UploadModuleCard = ({ index }: UploadModuleCardProps) => {
+export const UploadModuleCard = ({
+  index,
+  remove,
+  fieldAmount,
+}: UploadModuleCardProps) => {
   return (
     <Flex
       bg="gray.900"
@@ -16,11 +22,19 @@ export const UploadModuleCard = ({ index }: UploadModuleCardProps) => {
       gap={4}
       flexDirection="column"
     >
-      <Flex justifyContent="space-between" w="full">
+      <Flex justifyContent="space-between" w="full" alignItems="center">
         <Heading as="h6" variant="h6" color="text.dark" fontWeight={800}>
-          Module {index}
+          Module {index + 1}
         </Heading>
-        <CustomIcon name="close" color="gray.600" />
+        <IconButton
+          onClick={remove}
+          aria-label="remove"
+          variant="ghost"
+          size="sm"
+          disabled={fieldAmount <= 1}
+        >
+          <CustomIcon name="close" color="gray.600" />
+        </IconButton>
       </Flex>
       {/* UPLOAD CARD */}
       add upload card here

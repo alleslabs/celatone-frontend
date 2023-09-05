@@ -346,7 +346,7 @@ const StoreCodeProposal = () => {
       <PageContainer>
         <Grid
           templateAreas={`"prespace main sidebar postspace"`}
-          templateColumns="1fr 6fr 4fr 1fr"
+          templateColumns="1fr 5fr 3fr 1fr"
         >
           <GridItem area="main">
             <Heading as="h5" variant="h5">
