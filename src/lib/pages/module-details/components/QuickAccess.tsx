@@ -37,7 +37,7 @@ export const QuickAccess = () => {
         // TODO Navigate to tab
         <Flex
           p={4}
-          bg="gray.800"
+          bg="gray.600"
           borderRadius={8}
           w="full"
           alignItems="center"
@@ -49,7 +49,7 @@ export const QuickAccess = () => {
               <Text variant="body1" color="text.dark" fontWeight={600}>
                 {item.name}
               </Text>
-              <Heading as="h6" variant="h6" fontWeight={800}>
+              <Heading as="h6" variant="h6" fontWeight={600}>
                 {item.count}
               </Heading>
             </Flex>

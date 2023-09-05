@@ -14,7 +14,7 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
   return (
     <Flex flexDirection="column" gap={4}>
       <Flex justifyContent="space-between" alignItems="center" w="full">
-        <Heading as="h6" variant="h6" fontWeight={800}>
+        <Heading as="h6" variant="h6" fontWeight={600}>
           Module Information
         </Heading>
         {isVerified && (

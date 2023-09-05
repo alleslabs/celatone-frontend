@@ -126,7 +126,7 @@ export const ModuleDetails = ({
                   as="h6"
                   variant="h6"
                   mb={6}
-                  fontWeight={800}
+                  fontWeight={600}
                   id={tableHeaderId}
                 >
                   History
@@ -188,7 +188,7 @@ export const ModuleDetails = ({
                 as="h6"
                 variant="h6"
                 mb={6}
-                fontWeight={800}
+                fontWeight={600}
                 id={tableHeaderId}
               >
                 History
