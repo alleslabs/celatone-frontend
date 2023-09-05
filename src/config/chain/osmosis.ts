@@ -34,6 +34,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -81,6 +84,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -126,6 +132,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {

@@ -32,6 +32,9 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {

@@ -33,6 +33,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -76,6 +79,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       gov: {
+        enabled: true,
+      },
+      nft: {
         enabled: true,
       },
     },
