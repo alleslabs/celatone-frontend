@@ -4,7 +4,7 @@ export const parseJsonABI = (jsonString: string): ResponseABI => {
   try {
     return JSON.parse(jsonString);
   } catch {
-    throw new Error("Fail to parse ABI json string");
+    throw new Error(`Failed to parse ABI from JSON string: ${jsonString}`);
   }
 };
 
@@ -14,13 +14,24 @@ const sortByIsEntry = (a: ExposedFunction, b: ExposedFunction) => {
 };
 
 export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
-  const functionMap: { [key in "view" | "execute"]: ExposedFunction[] } = {
-    view: [],
-    execute: [],
-  };
-  functions.forEach((fn) =>
-    fn.is_view ? functionMap.view.push(fn) : functionMap.execute.push(fn)
+  const functionMap = functions.reduce<{
+    view: ExposedFunction[];
+    execute: ExposedFunction[];
+  }>(
+    (acc, fn) => {
+      if (fn.is_view) {
+        acc.view.push(fn);
+      } else {
+        acc.execute.push(fn);
+      }
+      return acc;
+    },
+    {
+      view: [],
+      execute: [],
+    }
   );
+
   functionMap.view.sort(sortByIsEntry);
   functionMap.execute.sort(sortByIsEntry);
 

@@ -17,11 +17,21 @@ export const getAccountModules = async (
   baseEndpoint: string,
   address: AccountAddr
 ): Promise<InternalModule[]> => {
-  const { data } = await axios.get<ResponseModules>(
-    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules`
-  );
-  // Implement LCD pagination
-  return snakeToCamel(data.modules);
+  const result: ResponseModule[] = [];
+
+  const fetchFn = async (paginationKey: string | null) => {
+    const { data } = await axios.get<ResponseModules>(
+      `${baseEndpoint}/initia/move/v1/accounts/${address}/modules${
+        paginationKey ? `?pagination.key=${paginationKey}` : ""
+      }`
+    );
+    result.push(...data.modules);
+    if (data.pagination.next_key) await fetchFn(data.pagination.next_key);
+  };
+
+  await fetchFn(null);
+
+  return snakeToCamel(result);
 };
 
 export const getAccountModule = async (

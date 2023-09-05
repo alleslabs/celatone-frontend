@@ -26,7 +26,7 @@ interface ABIFunction {
 
 /* response */
 export interface ResponseModule {
-  address: string;
+  address: HexAddr;
   module_name: string;
   abi: string;
   raw_bytes: string;

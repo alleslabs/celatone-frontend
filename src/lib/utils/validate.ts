@@ -20,11 +20,16 @@ export const isBlock = (input: string): boolean => {
 };
 
 export const isHexAddress = (address: string): boolean => {
-  const strip = address.replace("0x", "");
+  if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
+    return false;
+  }
+
+  const strip = address.slice(2);
+
   try {
     fromHex(strip);
   } catch {
     return false;
   }
-  return strip.length <= 40;
+  return true;
 };

@@ -12,7 +12,7 @@ import type {
   InternalModule,
   ResponseABI,
 } from "lib/types";
-import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils/abi";
+import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils";
 
 import {
   getAccountModule,
@@ -59,12 +59,7 @@ export const useAddressModules = ({
         );
 
   return useQuery(
-    [
-      CELATONE_QUERY_KEYS.ACCOUNT_MODULES,
-      baseEndpoint,
-      address as string,
-      moduleName,
-    ],
+    [CELATONE_QUERY_KEYS.ACCOUNT_MODULES, baseEndpoint, address, moduleName],
     queryFn,
     options
   );

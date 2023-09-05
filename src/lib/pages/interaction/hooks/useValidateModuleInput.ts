@@ -5,7 +5,7 @@ import {
   useExampleAddresses,
   useValidateAddress,
 } from "lib/app-provider";
-import { isHexAddress, truncate } from "lib/utils";
+import { isHexAddress, splitModule, truncate } from "lib/utils";
 
 export const useValidateModuleInput = () => {
   const { validateUserAddress } = useValidateAddress();
@@ -19,7 +19,7 @@ export const useValidateModuleInput = () => {
 
   return useCallback(
     (input: string): string | null => {
-      const inputArr = input.split("::");
+      const inputArr = splitModule(input);
       // Allow only module path for now
       if (inputArr.length > 2) return errText;
       const [address, module] = inputArr;
