@@ -66,8 +66,8 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       },
       wasm: {
         enabled: true,
-        storeCodeMaxFileSize: 800000,
-        clearAdminGas: 50000,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
       },
       move: {
         enabled: false,
@@ -82,7 +82,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       nft: {
-        enabled: false,
+        enabled: true,
       },
     },
     gas: {
