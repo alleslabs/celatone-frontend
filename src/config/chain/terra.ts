@@ -34,6 +34,9 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         disableOpenProposal: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -79,6 +82,9 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
         disableOpenProposal: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {

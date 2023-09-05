@@ -1,7 +1,6 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 
 import { useAccountTotalValue } from "../data";
-import { Loading } from "lib/components/Loading";
 import type { HumanAddr } from "lib/types";
 import { formatPrice } from "lib/utils";
 
@@ -14,17 +13,24 @@ export const TotalAccountValue = ({
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
   return (
     <Flex
-      pt={{ base: 6, md: 8 }}
-      pb={{ base: 2, md: 8 }}
+      p={4}
       direction="column"
-      borderBottom={{ base: "0px", md: "1px solid" }}
-      borderBottomColor={{ base: "transparent", md: "gray.700" }}
+      border="2px solid"
+      borderColor="gray.700"
+      borderRadius={4}
     >
       <Text variant="body2" fontWeight={500} color="text.dark">
         Total Account Value
       </Text>
       {isLoading ? (
-        <Loading />
+        <Skeleton
+          mt={1}
+          h={8}
+          w="full"
+          borderRadius={2}
+          startColor="gray.500"
+          endColor="gray.700"
+        />
       ) : (
         <Heading
           as="h5"
