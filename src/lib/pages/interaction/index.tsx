@@ -1,25 +1,37 @@
-import { Badge, Button, Flex, Heading, Text, Box } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { CountBadge } from "lib/components/module/CountBadge";
 import PageContainer from "lib/components/PageContainer";
-import { StateImage } from "lib/components/state";
+import { EmptyState } from "lib/components/state";
 
 import {
   InteractionTypeSwitch,
-  MessageTabs,
+  InteractionTabs,
 } from "./component/InteractionTypeSwitch";
+import { ModuleSelectDrawerButton } from "./component/ModuleSelectDrawerButton";
+
+const containerBaseStyle: FlexProps = {
+  direction: "column",
+  bgColor: "gray.900",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 8,
+  gap: 4,
+};
 
 export const Interaction = () => {
   const { query, isReady } = useRouter();
-  const [tab, setTab] = useState<MessageTabs>();
+  const [tab, setTab] = useState<InteractionTabs>();
 
   useEffect(() => {
     if (isReady) {
       setTab(
         query.type === "execute"
-          ? MessageTabs.EXECUTE_MODULE
-          : MessageTabs.VIEW_MODULE
+          ? InteractionTabs.EXECUTE_MODULE
+          : InteractionTabs.VIEW_MODULE
       );
     }
   }, [isReady, query.type]);
@@ -37,55 +49,36 @@ export const Interaction = () => {
         borderRadius={4}
         my={8}
       >
-        <Text>Select module to interact with ...</Text>
-        <Button variant="primary">Select Module</Button>
+        <p>Select module to interact with ...</p>
+        <ModuleSelectDrawerButton />
       </Flex>
       <Flex borderTop="1px solid" borderColor="gray.700" py={8} gap={8}>
-        <Flex flexDirection="column" flex={1}>
+        {/* Left side */}
+        <Flex direction="column" flex={0.2}>
           <Flex alignItems="center" gap={2}>
             <Text variant="body2" fontWeight={600}>
               Available functions
             </Text>
-            <Badge variant="gray" color="text.main" textColor="text.main">
-              <s>0</s>
-            </Badge>
+            <CountBadge variant="common" count={0} />
           </Flex>
-          <Box my={3}>
-            <InteractionTypeSwitch currentTab={tab} onTabChange={setTab} />
-          </Box>
-          <Flex
-            flexDirection="column"
-            bgColor="gray.900"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius={8}
-            p={4}
-            gap={4}
-            height="full"
-          >
-            <StateImage imageVariant="empty" width="80px" />
-            <Text variant="body2" color="text.dark" textAlign="center">
-              Available functions for selected modules will display here
-            </Text>
+          <InteractionTypeSwitch currentTab={tab} onTabChange={setTab} my={3} />
+          <Flex {...containerBaseStyle} p={4} height="full">
+            <EmptyState
+              imageWidth="80px"
+              imageVariant="empty"
+              message="Available functions for selected modules will display here"
+              textVariant="body2"
+            />
           </Flex>
         </Flex>
-        <Flex
-          flex={4}
-          flexDirection="column"
-          bgColor="gray.900"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius={8}
-          py={24}
-          gap={4}
-        >
-          <StateImage imageVariant="empty" width="80px" />
-          <Text variant="body2" color="text.dark">
-            Initiate your Module interactions by choosing a module and its
-            associated function.
-            <br /> This section will showcase the input or response type
-            required for the functions.
-          </Text>
+        {/* Right side */}
+        <Flex {...containerBaseStyle} flex={0.8} py={24}>
+          <EmptyState
+            imageWidth="80px"
+            imageVariant="empty"
+            message={`Initiate your Module interactions by choosing a module and its associated function. ${"\n"} This section will showcase the input or response type required for the functions.`}
+            textVariant="body2"
+          />
           <Button variant="primary">Select Module</Button>
         </Flex>
       </Flex>

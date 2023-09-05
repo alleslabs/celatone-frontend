@@ -28,6 +28,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     gov: {
       enabled: false,
     },
+    nft: {
+      enabled: false,
+    },
   },
   gas: {
     gasPrice: {
