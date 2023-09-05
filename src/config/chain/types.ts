@@ -38,6 +38,8 @@ type GovConfig =
       enabled: false;
     };
 
+type NftConfig = { enabled: boolean };
+
 export interface ExplorerConfig {
   validator: string;
   proposal: string;
@@ -59,6 +61,7 @@ export interface ChainConfig {
     pool: PoolConfig;
     publicProject: PublicProjectConfig;
     gov: GovConfig;
+    nft: NftConfig;
   };
   gas: {
     gasPrice: {

@@ -1,5 +1,6 @@
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
+import { useMoveConfig } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
@@ -22,7 +23,7 @@ export const AccountHeader = ({
   accountAddress,
 }: AccounHeaderProps) => {
   const displayName = icnsName?.primary_name || "Account Details";
-
+  const move = useMoveConfig({ shouldRedirect: false });
   return (
     <Flex
       justifyContent="space-between"
@@ -64,21 +65,23 @@ export const AccountHeader = ({
               type="user_address"
             />
           </Flex>
-          <Flex
-            gap={{ base: 0, md: 2 }}
-            mt={{ base: 1, md: 0 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text fontWeight={500} color="text.dark" variant="body2">
-              HEX:
-            </Text>
-            {/* TODO: HEX */}
-            <CopyLink
-              value={accountAddress}
-              amptrackSection="account_top"
-              type="user_address"
-            />
-          </Flex>
+          {move.enabled && (
+            <Flex
+              gap={{ base: 0, md: 2 }}
+              mt={{ base: 1, md: 0 }}
+              direction={{ base: "column", md: "row" }}
+            >
+              <Text fontWeight={500} color="text.dark" variant="body2">
+                HEX:
+              </Text>
+              {/* TODO: HEX */}
+              <CopyLink
+                value={accountAddress}
+                amptrackSection="account_top"
+                type="user_address"
+              />
+            </Flex>
+          )}
         </Flex>
         {icnsName?.primary_name && (
           <Flex gap={2} align="center">

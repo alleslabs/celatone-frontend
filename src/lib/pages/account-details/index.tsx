@@ -12,6 +12,7 @@ import { useCallback, useEffect } from "react";
 import {
   useInternalNavigate,
   useMoveConfig,
+  useNftConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -71,6 +72,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
+  const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
   // TODO: remove assertion later
@@ -198,7 +200,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
             onClick={handleTabChange(TabIndex.NFTs)}
-            hidden={!move.enabled}
+            hidden={!nft.enabled}
           >
             NFTs
           </CustomTab>

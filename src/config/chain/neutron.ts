@@ -33,6 +33,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -63,8 +66,8 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       },
       wasm: {
         enabled: true,
-        storeCodeMaxFileSize: 800_000,
-        clearAdminGas: 50_000,
+        storeCodeMaxFileSize: 800000,
+        clearAdminGas: 50000,
       },
       move: {
         enabled: false,
@@ -77,6 +80,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {
