@@ -11,6 +11,8 @@ import { useCallback, useEffect } from "react";
 
 import {
   useInternalNavigate,
+  useMoveConfig,
+  useNftConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -34,6 +36,9 @@ import { getFirstQueryParam, truncate } from "lib/utils";
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
+import { ModuleLists } from "./components/modules/ModuleLists";
+import { ResourceLists } from "./components/resources/ResourceLists";
+import { ResourceSection } from "./components/resources/ResourceSection";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -41,7 +46,6 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
-import { TotalAccountValue } from "./components/TotalAccountValue";
 
 const tableHeaderId = "accountDetailsTab";
 
@@ -49,10 +53,13 @@ enum TabIndex {
   Overview = "overview",
   Assets = "assets",
   Delegations = "delegations",
+  NFTs = "nfts",
   Txs = "txs",
   Codes = "codes",
   Contracts = "contracts",
   Admins = "admins",
+  Resources = "resouces",
+  Modules = "modules",
   Proposals = "proposals",
 }
 
@@ -64,6 +71,8 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
   // TODO: remove assertion later
@@ -190,6 +199,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            onClick={handleTabChange(TabIndex.NFTs)}
+            hidden={!nft.enabled}
+          >
+            NFTs
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.txsCount}
+            isDisabled={txCountLoading || tableCounts.txsCount === 0}
             onClick={handleTabChange(TabIndex.Txs)}
           >
             Transactions
@@ -219,6 +236,22 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
+            count={tableCounts.txsCount}
+            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            onClick={handleTabChange(TabIndex.Resources)}
+            hidden={!move.enabled}
+          >
+            Resources
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.txsCount}
+            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            onClick={handleTabChange(TabIndex.Modules)}
+            hidden={!move.enabled}
+          >
+            Modules
+          </CustomTab>
+          <CustomTab
             count={tableCounts.proposalsCount}
             isDisabled={!tableCounts.proposalsCount}
             onClick={handleTabChange(TabIndex.Proposals)}
@@ -228,7 +261,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <TotalAccountValue accountAddress={accountAddress} />
             <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
@@ -274,6 +306,18 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 />
               </>
             )}
+            {move.enabled && (
+              <>
+                <ResourceLists
+                  totalAsset={0}
+                  onViewMore={handleTabChange(TabIndex.Resources)}
+                />
+                <ModuleLists
+                  totalAsset={0}
+                  onViewMore={handleTabChange(TabIndex.Modules)}
+                />
+              </>
+            )}
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -288,6 +332,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
+          <TabPanel p={0}>nft</TabPanel>
           <TabPanel p={0}>
             <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>
@@ -314,6 +359,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               totalData={tableCounts.contractsAdminCount}
               refetchCount={refetchContractsAdminCount}
             />
+          </TabPanel>
+          <TabPanel p={0}>
+            <ResourceSection />
+          </TabPanel>
+          <TabPanel p={0}>
+            <ModuleLists totalAsset={0} />
           </TabPanel>
           <TabPanel p={0}>
             <OpenedProposalsTable

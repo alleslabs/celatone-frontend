@@ -33,6 +33,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -77,6 +80,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {

@@ -18,7 +18,7 @@ export const INITIA_THEME: ThemeConfig = {
   },
   fonts: {
     heading: {
-      url: "/public/PilatWide-Bold.woff2",
+      url: "/font/pilatwide.css",
       name: "Pilat Wide, serif",
     },
     body: {

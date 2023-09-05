@@ -39,6 +39,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: false,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -84,6 +87,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       gov: {
+        enabled: false,
+      },
+      nft: {
         enabled: false,
       },
     },

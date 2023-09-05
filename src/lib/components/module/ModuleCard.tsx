@@ -9,7 +9,7 @@ export const ModuleCard = () => {
     <Flex
       borderRadius={8}
       bgColor="gray.800"
-      p={2}
+      p={3}
       alignItems="center"
       justifyContent="space-between"
     >
