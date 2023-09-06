@@ -157,7 +157,6 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
 
     // validate when initialFormData has changed
     const { errors } = v8Validator.validateFormData(initialFormData, schema);
-    console.log(errors);
     propsOnChange?.(initialFormData, errors);
   }, [JSON.stringify(initialFormData)]);
 
