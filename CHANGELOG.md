@@ -94,6 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#518](https://github.com/alleslabs/celatone-frontend/pull/518) Fix contract migration remark data
 - [#511](https://github.com/alleslabs/celatone-frontend/pull/511) Fix tx relation selector incorrect option
 - [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix responsive for icns and add cl pool icon
 - [#506](https://github.com/alleslabs/celatone-frontend/pull/506) Fix simulation bugs

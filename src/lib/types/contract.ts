@@ -7,7 +7,7 @@ export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS",
 }
 
-type RemarkType = "governance" | "transaction";
+type RemarkType = "governance" | "transaction" | "genesis";
 
 export interface ContractHistoryRemark {
   operation: RemarkOperation;
