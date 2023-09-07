@@ -62,34 +62,6 @@ export const ButtonSection = ({
   switch (actionVariant) {
     case "sending":
       return null;
-    case "upload":
-      return (
-        <>
-          <Button
-            variant="ghost-secondary"
-            onClick={() => {
-              navigate({ pathname: "/stored-codes" });
-              onClose?.();
-            }}
-          >
-            See my stored codes
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              const codeId = receipts.find((r) => r.title === "Code ID")?.value;
-              navigate({
-                pathname: "/instantiate",
-                query: { "code-id": codeId },
-              });
-              onClose?.();
-            }}
-          >
-            Proceed to instantiate
-            <CustomIcon name="instantiate" boxSize={3} />
-          </Button>
-        </>
-      );
     case "upload-migrate":
       return (
         <Button

@@ -53,7 +53,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
   const { currentChainId } = useCelatoneApp();
   const lcdEndpoint = useBaseApiRoute("rest");
 
-  const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
+  const { data: codeInfo, isLoading } = useCodeDataByCodeId({ codeId });
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug

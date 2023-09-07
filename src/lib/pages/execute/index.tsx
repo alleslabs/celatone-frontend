@@ -7,10 +7,9 @@ import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
-import { useExecuteCmds } from "lib/hooks";
 import { AmpTrackToExecute } from "lib/services/amplitude";
+import type { ContractDetail } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
@@ -22,17 +21,26 @@ import {
 import { ExecuteArea } from "./components/ExecuteArea";
 
 const Execute = () => {
+  // ------------------------------------------//
+  // --------------DEPENDENCIES----------------//
+  // ------------------------------------------//
   useWasmConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const navigate = useInternalNavigate();
+
+  // ------------------------------------------//
+  // ------------------STATES------------------//
+  // ------------------------------------------//
   const [initialMsg, setInitialMsg] = useState("");
-  const [contractAddress, setContractAddress] = useState("");
+  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
+  const [codeHash, setCodeHash] = useState("");
+  const [codeId, setCodeId] = useState("");
 
-  const { isFetching, execCmds } = useExecuteCmds(
-    contractAddress as ContractAddr
-  );
-
+  // ------------------------------------------//
+  // ----------------CALLBACKS-----------------//
+  // ------------------------------------------//
   const goToQuery = () => {
     navigate({
       pathname: "/query",
@@ -53,6 +61,9 @@ const Execute = () => {
     [navigate]
   );
 
+  // ------------------------------------------//
+  // ---------------SIDE EFFECTS---------------//
+  // ------------------------------------------//
   useEffect(() => {
     const msgParam = getFirstQueryParam(router.query.msg);
     if (router.isReady) {
@@ -84,7 +95,6 @@ const Execute = () => {
 
   return (
     <PageContainer>
-      {isFetching && <LoadingOverlay />}
       <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5">
           Execute Contract
@@ -106,17 +116,23 @@ const Execute = () => {
         subtitle="You need to connect your wallet to perform this action"
         mb={8}
       />
+
       <ContractSelectSection
         mode="all-lists"
-        contractAddress={contractAddress as ContractAddr}
+        contractAddress={contractAddress}
         onContractSelect={onContractSelect}
+        successCallback={(data: ContractDetail) => {
+          setCodeHash(data.codeHash);
+          setCodeId(String(data.codeId));
+        }}
       />
 
       <ExecuteArea
-        contractAddress={contractAddress as ContractAddr}
+        contractAddress={contractAddress}
         initialMsg={initialMsg}
         initialFunds={initialFunds}
-        cmds={execCmds}
+        codeId={codeId}
+        codeHash={codeHash}
       />
     </PageContainer>
   );

@@ -5,6 +5,7 @@ import {
   COSMWASM_ICON,
   STABLESWAP_ICON,
   SUPERFLUID_ICON,
+  CLP_ICON,
 } from "../constant";
 import type { PoolDetail } from "lib/types/pool";
 import { PoolType } from "lib/types/pool";
@@ -38,7 +39,7 @@ const poolTypeRender = (type: PoolDetail["type"]) => {
     case PoolType.CL:
       return {
         text: "Concentrated Liquidity Pool",
-        icon: BALANCER_ICON,
+        icon: CLP_ICON,
       };
     default:
       return {};
@@ -128,7 +129,7 @@ export const PoolHeader = ({
                 />
                 <Flex alignItems="center" gap={1}>
                   <Image boxSize={4} src={SUPERFLUID_ICON} />
-                  <Text variant="body2" color="text.dark">
+                  <Text variant="body2" color="#ee64e8">
                     Superfluid
                   </Text>
                 </Flex>

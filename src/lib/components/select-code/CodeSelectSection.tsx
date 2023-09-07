@@ -5,6 +5,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { ControllerInput } from "lib/components/forms";
 import type { FormStatus } from "lib/components/forms";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { LCDCodeInfoSuccessCallback } from "lib/services/codeService";
 import type { Option } from "lib/types";
 
 import { CodeSelect } from "./CodeSelect";
@@ -15,6 +16,7 @@ interface CodeSelectSectionProps<T extends FieldValues> {
   control: Control<T>;
   error: Option<string>;
   onCodeSelect: (codeId: string) => void;
+  setCodeHash?: LCDCodeInfoSuccessCallback;
   status: FormStatus;
 }
 
@@ -24,6 +26,7 @@ export const CodeSelectSection = <T extends FieldValues>({
   control,
   error,
   onCodeSelect,
+  setCodeHash,
   status,
 }: CodeSelectSectionProps<T>) => {
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
@@ -45,12 +48,8 @@ export const CodeSelectSection = <T extends FieldValues>({
         w="100%"
       >
         <Flex justify="space-around">
-          <Radio value="select-existing" size="lg">
-            Select from your code
-          </Radio>
-          <Radio value="fill-manually" size="lg">
-            Fill Code ID manually
-          </Radio>
+          <Radio value="select-existing">Select from your code</Radio>
+          <Radio value="fill-manually">Fill Code ID manually</Radio>
         </Flex>
       </RadioGroup>
       <form style={{ width: "100%" }}>
@@ -59,6 +58,7 @@ export const CodeSelectSection = <T extends FieldValues>({
             mt={4}
             mb={8}
             onCodeSelect={onCodeSelect}
+            setCodeHash={setCodeHash}
             codeId={codeId}
             status={status}
           />

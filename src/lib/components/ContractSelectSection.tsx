@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
+import type { ContractDetail } from "lib/services/contractService";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
+import { LoadingOverlay } from "./LoadingOverlay";
 import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,
@@ -35,6 +37,7 @@ interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
+  successCallback?: (data: ContractDetail) => void;
 }
 
 const modeStyle = (mode: string) => {
@@ -131,7 +134,12 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
-  ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
+  ({
+    mode,
+    contractAddress,
+    onContractSelect,
+    successCallback,
+  }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
 
@@ -149,9 +157,10 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const { refetch } = useContractDetailByContractAddress(
+    const { refetch, isFetching } = useContractDetailByContractAddress(
       contractAddress,
       (data) => {
+        successCallback?.(data);
         reset({
           isValid: true,
           instantiator: data.instantiator,
@@ -180,78 +189,80 @@ export const ContractSelectSection = observer(
     const style = modeStyle(mode);
 
     return (
-      <Flex
-        mb={style.container}
-        borderWidth="thin"
-        borderColor="gray.800"
-        p={4}
-        borderRadius="8px"
-        fontSize="12px"
-        justify="space-between"
-        align="center"
-        width="full"
-      >
-        <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
-          <Flex
-            direction="column"
-            width={{ base: "auto", md: style.contractAddrContainer }}
-          >
-            Contract Address
-            {!notSelected ? (
-              <ExplorerLink
-                value={contractAddress}
-                type="contract_address"
-                showCopyOnHover
-                // TODO - Revisit not necessary if disable UI for mobile is implemented
-                textFormat={
-                  isMobile || mode === "only-admin" ? "truncate" : "normal"
-                }
-                maxWidth="none"
-                minWidth={style.contractAddrW}
-                wordBreak="break-all"
-                fixedHeight={false}
-              />
-            ) : (
-              <Text color="text.disabled" variant="body2">
-                Not Selected
-              </Text>
-            )}
-          </Flex>
-          <Flex
-            direction="column"
-            width={{ base: "auto", md: style.contractNameContainer }}
-          >
-            Contract Name
-            <DisplayName
-              notSelected={notSelected}
-              isValid={contractState.isValid}
-              name={contractLocalInfo?.name}
-              label={contractState.label}
-            />
-          </Flex>
-          <Flex gap={2} alignItems="center">
-            {mode === "all-lists" && contractState.isValid && (
-              <ContractDetailsButton
-                contractAddress={contractAddress}
-                contractLocalInfo={contractLocalInfo}
-                instantiator={contractState.instantiator as Addr}
+      <>
+        {isFetching && <LoadingOverlay />}
+        <Flex
+          mb={style.container}
+          borderWidth="thin"
+          borderColor="gray.800"
+          p={4}
+          borderRadius="8px"
+          fontSize="12px"
+          justify="space-between"
+          align="center"
+          width="full"
+        >
+          <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
+            <Flex
+              direction="column"
+              width={{ base: "auto", md: style.contractAddrContainer }}
+            >
+              Contract Address
+              {!notSelected ? (
+                <ExplorerLink
+                  value={contractAddress}
+                  type="contract_address"
+                  showCopyOnHover
+                  // TODO - Revisit not necessary if disable UI for mobile is implemented
+                  textFormat={
+                    isMobile || mode === "only-admin" ? "truncate" : "normal"
+                  }
+                  maxWidth="none"
+                  minWidth={style.contractAddrW}
+                  wordBreak="break-all"
+                />
+              ) : (
+                <Text color="text.disabled" variant="body2">
+                  Not Selected
+                </Text>
+              )}
+            </Flex>
+            <Flex
+              direction="column"
+              width={{ base: "auto", md: style.contractNameContainer }}
+            >
+              Contract Name
+              <DisplayName
+                notSelected={notSelected}
+                isValid={contractState.isValid}
+                name={contractLocalInfo?.name}
                 label={contractState.label}
               />
-            )}
-            {mode === "all-lists" ? (
-              <SelectContractInstantiator
-                notSelected={notSelected}
-                onContractSelect={onContractSelect}
-              />
-            ) : (
-              <SelectContractAdmin
-                notSelected={notSelected}
-                onContractSelect={onContractSelect}
-              />
-            )}
+            </Flex>
+            <Flex gap={2} alignItems="center">
+              {mode === "all-lists" && contractState.isValid && (
+                <ContractDetailsButton
+                  contractAddress={contractAddress}
+                  contractLocalInfo={contractLocalInfo}
+                  instantiator={contractState.instantiator as Addr}
+                  label={contractState.label}
+                />
+              )}
+              {mode === "all-lists" ? (
+                <SelectContractInstantiator
+                  notSelected={notSelected}
+                  onContractSelect={onContractSelect}
+                />
+              ) : (
+                <SelectContractAdmin
+                  notSelected={notSelected}
+                  onContractSelect={onContractSelect}
+                />
+              )}
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      </>
     );
   }
 );

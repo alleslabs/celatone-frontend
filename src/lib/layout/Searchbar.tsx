@@ -96,6 +96,9 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
+  const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
+    ? value
+    : `${value}.${metadata.icns.bech32Prefix}`;
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
@@ -126,7 +129,8 @@ const ResultItem = ({
                 </Text>
               </Flex>
               {value !== metadata.icns.address &&
-                value !== metadata.icns.icnsNames?.primary_name && (
+                normalizedIcnsValue !==
+                  metadata.icns.icnsNames?.primary_name && (
                   <Text
                     variant="body3"
                     color="text.dark"
@@ -137,7 +141,7 @@ const ResultItem = ({
                       mr: 1,
                     }}
                   >
-                    {value}
+                    {normalizedIcnsValue}
                   </Text>
                 )}
             </Flex>
