@@ -30,9 +30,29 @@ interface PublishModuleState {
   modules: { module: Module }[];
 }
 
+const policies = [
+  {
+    value: "arbitrary",
+    description: "You can publish these modules again without any restrictions",
+    condition: false,
+  },
+  {
+    value: "compatible",
+    description:
+      "This address can publish these modules again but need to maintain several properties.",
+    condition: true,
+  },
+  {
+    value: "immutable",
+    description: "You cannot publish these modules again with this address",
+    condition: false,
+  },
+];
+
 const defaultValues: PublishModuleState = {
   modules: [{ module: { file: "", path: "" } }],
 };
+
 export const PublishModule = () => {
   const {
     chainConfig: { prettyName: chainPrettyName },
@@ -45,26 +65,6 @@ export const PublishModule = () => {
     transaction.`,
     connectWallet: "You need to connect wallet to proceed this action",
   };
-
-  const policies = [
-    {
-      value: "arbitrary",
-      description:
-        "You can publish these modules again without any restrictions",
-      condition: false,
-    },
-    {
-      value: "compatible",
-      description:
-        "This address can publish these modules again but need to maintain several properties.",
-      condition: true,
-    },
-    {
-      value: "immutable",
-      description: "You cannot publish these modules again with this address",
-      condition: false,
-    },
-  ];
 
   const { control } = useForm<PublishModuleState>({
     defaultValues,
@@ -114,9 +114,7 @@ export const PublishModule = () => {
               onClick={() => append({ module: { file: "", path: "" } })}
               leftIcon={<CustomIcon name="add-new" />}
               variant="ghost-primary"
-              p={0}
-              pl={1}
-              pr={1}
+              p="0 4px"
             >
               Publish More Modules
             </Button>

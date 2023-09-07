@@ -30,21 +30,14 @@ export const PolicyCard = ({
             >
               {value}
             </Heading>
-            <Flex mt={1}>
-              <Text variant="body2" textColor="text.dark">
-                {description}
-                {hasCondition && (
-                  <Text
-                    ml={1}
-                    as="span"
-                    variant="body2"
-                    textColor="primary.main"
-                  >
-                    View conditions
-                  </Text>
-                )}
-              </Text>
-            </Flex>
+            <Text variant="body2" textColor="text.dark" mt={1}>
+              {description}
+              {hasCondition && (
+                <Text ml={1} as="span" variant="body2" textColor="primary.main">
+                  View conditions
+                </Text>
+              )}
+            </Text>
           </Flex>
         )}
       </Flex>
