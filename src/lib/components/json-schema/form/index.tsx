@@ -152,10 +152,13 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
     [fixOneOfKeysCallback, formData, propsOnChange]
   );
 
-  useEffect(
-    () => setFormData(initialFormData),
-    [JSON.stringify(initialFormData)]
-  );
+  useEffect(() => {
+    setFormData(initialFormData);
+
+    // validate when initialFormData has changed
+    const { errors } = v8Validator.validateFormData(initialFormData, schema);
+    propsOnChange?.(initialFormData, errors);
+  }, [JSON.stringify(initialFormData)]);
 
   return (
     <Form

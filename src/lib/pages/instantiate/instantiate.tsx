@@ -103,7 +103,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
   const [isValidJsonInput, setIsValidJsonInput] = useState(false);
-  const [hasInitMsg, setHasInitMsg] = useState(false);
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -159,7 +158,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       case MessageTabs.JSON_INPUT:
         return generalChecks && jsonValidate(currentInput) === null;
       case MessageTabs.YOUR_SCHEMA:
-        return generalChecks && (hasInitMsg || isValidJsonInput);
+        return generalChecks && isValidJsonInput;
       default:
         return false;
     }
@@ -170,7 +169,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     status.state,
     tab,
     currentInput,
-    hasInitMsg,
     isValidJsonInput,
   ]);
 
@@ -231,9 +229,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     (data: unknown, errors: RJSFValidationError[]) => {
       setIsValidJsonInput(errors.length === 0);
       setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
-
-      // whenever user change the input, we set hasInitMsg to false
-      setHasInitMsg(false);
     },
     [setValue]
   );
@@ -309,8 +304,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           );
           setAssets("attachFundsOption", AttachFundsType.ATTACH_FUNDS_JSON);
         }
-
-        setHasInitMsg(true);
       } catch {
         // comment just to avoid eslint no-empty
       }

@@ -99,7 +99,6 @@ export const ExecuteBox = ({
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(JSON.stringify(getDefaultMsg(msgSchema)));
   const [isValidForm, setIsValidForm] = useState(false);
-  const [hasInitMsg, setHasInitMsg] = useState(false);
   const [simulateFeeError, setSimulateFeeError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
@@ -130,9 +129,7 @@ export const ExecuteBox = ({
         address &&
         contractAddress &&
         opened &&
-        // In cases where there is an initial message, `isValidForm` isn't updated upon the component's first render.
-        // because `isValidForm` can be updated via form's onchange event only.
-        (hasInitMsg || isValidForm)
+        isValidForm
     );
     switch (attachFundsOption) {
       case AttachFundsType.ATTACH_FUNDS_SELECT:
@@ -147,7 +144,6 @@ export const ExecuteBox = ({
     address,
     opened,
     isValidForm,
-    hasInitMsg,
     contractAddress,
     attachFundsOption,
     isValidAssetsSelect,
@@ -182,9 +178,6 @@ export const ExecuteBox = ({
       // reset fee and error when user change the input
       setSimulateFeeError(undefined);
       setFee(undefined);
-
-      // reset hasInitalMsg after user change the input
-      setHasInitMsg(false);
     },
     []
   );
@@ -249,11 +242,7 @@ export const ExecuteBox = ({
    * Handle when there is an initialMsg
    */
   useEffect(() => {
-    if (isNonEmptyJsonData(initialMsg)) {
-      setMsg(JSON.stringify(initialMsg));
-      setHasInitMsg(true);
-    }
-
+    if (isNonEmptyJsonData(initialMsg)) setMsg(JSON.stringify(initialMsg));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(initialMsg)]);
 
