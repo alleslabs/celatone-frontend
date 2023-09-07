@@ -110,9 +110,9 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then<InstantiateDetail>(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdHeight: contracts_by_pk?.contract_histories?.at(0)?.block.height,
         createdTime: parseDateOpt(
-          contracts_by_pk?.transaction?.block.timestamp
+          contracts_by_pk?.contract_histories?.at(0)?.block.timestamp
         ),
         initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),

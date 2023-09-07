@@ -62,6 +62,8 @@ export const getNavigationUrl = (
       url = "/codes";
       break;
     case "block_height":
+      // no block info for Genesis height (0)
+      if (value === "0") return "";
       url = "/blocks";
       break;
     case "proposal_id":

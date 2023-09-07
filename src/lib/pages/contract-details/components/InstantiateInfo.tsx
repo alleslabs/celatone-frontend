@@ -193,7 +193,7 @@ export const InstantiateInfo = ({
       </Flex>
 
       <Divider border="1px solid" borderColor="gray.700" />
-      {createdHeight ? (
+      {createdHeight !== undefined ? (
         <LabelText
           flex="1"
           label="Instantiated Block Height"

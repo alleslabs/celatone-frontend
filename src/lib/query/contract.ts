@@ -22,10 +22,6 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       init_msg
       transaction {
         hash
-        block_height
-        block {
-          timestamp
-        }
       }
       contract_proposals(
         where: {
@@ -45,6 +41,12 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
         proposal {
           id
           title
+        }
+      }
+      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {
+        block {
+          height
+          timestamp
         }
       }
     }
