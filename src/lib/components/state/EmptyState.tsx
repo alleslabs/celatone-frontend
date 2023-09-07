@@ -1,4 +1,4 @@
-import type { ImageProps, TextProps } from "@chakra-ui/react";
+import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { ReactElement } from "react";
 
@@ -11,7 +11,8 @@ export interface EmptyStateProps {
   message: string | ReactElement;
   heading?: string;
   withBorder?: boolean;
-  my?: number;
+  my?: FlexProps["my"];
+  py?: FlexProps["py"];
   textVariant?: TextProps["variant"];
 }
 
@@ -22,10 +23,11 @@ export const EmptyState = ({
   heading,
   withBorder = false,
   my = 12,
+  py = 8,
   textVariant = "body1",
 }: EmptyStateProps) => (
   <Flex
-    py={8}
+    py={py}
     my={my}
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}

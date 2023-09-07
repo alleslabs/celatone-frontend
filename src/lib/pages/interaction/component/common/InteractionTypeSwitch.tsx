@@ -13,6 +13,7 @@ export enum InteractionTabs {
 interface InteractionTypeSwitchProps extends FlexProps {
   currentTab: Option<InteractionTabs>;
   disabled?: boolean;
+  counts: [Option<number>, Option<number>];
   onTabChange: Dispatch<SetStateAction<Option<InteractionTabs>>>;
 }
 
@@ -21,6 +22,7 @@ const tabs = Object.values(InteractionTabs);
 export const InteractionTypeSwitch = ({
   currentTab,
   disabled = false,
+  counts,
   onTabChange,
   ...flexProps
 }: InteractionTypeSwitchProps) => {
@@ -31,13 +33,14 @@ export const InteractionTypeSwitch = ({
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="4px"
       p={1}
+      h="32px"
       direction="row"
       align="center"
       position="relative"
       sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
       {...flexProps}
     >
-      {tabs.map((tab) => (
+      {tabs.map((tab, idx) => (
         <MotionBox
           key={tab}
           w="full"
@@ -56,7 +59,7 @@ export const InteractionTypeSwitch = ({
           textAlign="center"
         >
           <Heading as="h6" variant="h6" fontSize="14px">
-            {tab}
+            {tab} {counts[idx] && `(${counts[idx]})`}
           </Heading>
         </MotionBox>
       ))}

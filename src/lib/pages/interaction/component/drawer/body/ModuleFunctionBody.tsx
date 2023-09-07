@@ -2,14 +2,13 @@ import type { FlexProps, GridItemProps } from "@chakra-ui/react";
 import { GridItem, Heading, Flex, Text } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 
+import { ModuleEmptyState, NoImageEmptyState } from "../../common";
 import type { ModuleSelectFunction } from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { FunctionCard } from "lib/components/module/FunctionCard";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction, Option } from "lib/types";
-
-import { ModuleEmptyState } from "./ModuleEmptyState";
 
 const functionGridBaseStyle: FlexProps = {
   border: "1px solid",
@@ -18,14 +17,6 @@ const functionGridBaseStyle: FlexProps = {
   p: 4,
   direction: "column",
 };
-
-const EmptyFunctionState = ({
-  desc = "No exposed_functions available.",
-}: {
-  desc?: string;
-}) => (
-  <ModuleEmptyState h="fit-content" p={4} hasImage={false} description={desc} />
-);
 
 interface RenderFunctionsProps {
   exposedFnsLength: number;
@@ -37,7 +28,8 @@ const RenderFunctions = ({
   filtered,
   onFunctionSelect,
 }: RenderFunctionsProps) => {
-  if (!exposedFnsLength) return <EmptyFunctionState />;
+  if (!exposedFnsLength)
+    return <NoImageEmptyState desc="No exposed_functions available" />;
   return filtered?.length ? (
     <>
       {filtered.map((fn) => (
@@ -49,7 +41,7 @@ const RenderFunctions = ({
       ))}
     </>
   ) : (
-    <EmptyFunctionState desc="No matching function found." />
+    <NoImageEmptyState desc="No matching function found." />
   );
 };
 

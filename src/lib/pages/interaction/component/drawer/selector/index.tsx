@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-import type { DisplayMode, SelectedAddress } from "../types";
+import type { DisplayMode } from "../types";
 
 import { ModuleSelectorDisplay } from "./SelectorDisplay";
 import type { ModuleSelectorInputProps } from "./SelectorInput";
@@ -8,7 +8,6 @@ import { ModuleSelectorInput } from "./SelectorInput";
 
 interface ModuleSelectorProps extends ModuleSelectorInputProps {
   mode: DisplayMode;
-  selectedAddress: SelectedAddress;
 }
 
 export const ModuleSelector = ({

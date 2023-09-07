@@ -4,42 +4,42 @@ import { Flex, Text } from "@chakra-ui/react";
 import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "lib/components/Tooltip";
-import type { ExposedFunction, Visibility } from "lib/types";
+import type { ExposedFunction } from "lib/types";
+import { getVisibilityIcon } from "lib/utils";
+
+type CardVariant = "common" | "disabled" | "selected";
 
 interface FunctionCardProps {
+  variant?: CardVariant;
+  isSelected?: boolean;
   exposedFn: ExposedFunction;
   onFunctionSelect: (fn: ExposedFunction) => void;
 }
 
-const getIcon = (visibility: Visibility) => {
-  switch (visibility) {
-    case "friend":
-      return <CustomIcon name="friends" color="gray.600" boxSize={3} />;
-    case "script":
-      return <CustomIcon name="code" color="gray.600" boxSize={3} />;
-    case "public":
-    default:
-      return <CustomIcon name="website" color="gray.600" boxSize={3} />;
-  }
-};
-
-const disabledStyle: { [key in `${boolean}`]: FlexProps } = {
-  true: {
+const cardStyles: { [key in CardVariant]: FlexProps } = {
+  common: {
+    bgColor: "gray.800",
+    _hover: { bg: "gray.700" },
+    cursor: "pointer",
+    borderColor: "transparent",
+  },
+  disabled: {
     bgColor: "gray.900",
     _hover: { bg: "gray.900" },
     cursor: "not-allowed",
     pointerEvents: "none",
     borderColor: "gray.700",
   },
-  false: {
-    bgColor: "gray.800",
+  selected: {
+    bgColor: "gray.700",
     _hover: { bg: "gray.700" },
     cursor: "pointer",
-    borderColor: "transparent",
+    borderColor: "gray.600",
   },
 };
 
 export const FunctionCard = ({
+  variant = "common",
   exposedFn,
   onFunctionSelect,
 }: FunctionCardProps) => {
@@ -56,7 +56,7 @@ export const FunctionCard = ({
       gap={1}
       border="1px solid"
       onClick={() => onFunctionSelect(exposedFn)}
-      {...disabledStyle[String(disabled) as `${boolean}`]}
+      {...cardStyles[disabled ? "disabled" : variant]}
     >
       <Flex gap={1} justifyContent="space-between" w="full">
         <Flex gap={1} alignItems="center">
@@ -70,21 +70,25 @@ export const FunctionCard = ({
           </Text>
         </Flex>
         <Flex alignItems="center" gap={2}>
-          {!disabled && (
-            <>
-              <Tooltip
-                bg="primary.dark"
-                label="Only functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
-              >
-                <Flex>
-                  <CustomIcon name="check" color="success.main" boxSize={3} />
-                </Flex>
-              </Tooltip>
-              <DotSeparator bg="gray.600" />
-            </>
-          )}
+          <Tooltip
+            bg="primary.dark"
+            label="Only functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+          >
+            <Flex pointerEvents="auto">
+              {disabled ? (
+                <CustomIcon name="close" color="gray.600" boxSize={3} />
+              ) : (
+                <CustomIcon name="check" color="success.main" boxSize={3} />
+              )}
+            </Flex>
+          </Tooltip>
+          <DotSeparator bg="gray.600" />
           <Flex alignItems="center" gap={1}>
-            {getIcon(visibility)}
+            <CustomIcon
+              name={getVisibilityIcon(visibility)}
+              color="gray.600"
+              boxSize={3}
+            />
             <Text variant="body3" color="text.dark" textTransform="capitalize">
               {visibility}
             </Text>

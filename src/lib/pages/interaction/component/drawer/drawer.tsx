@@ -10,11 +10,12 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { ModuleEmptyState } from "../common";
 import { CustomIcon } from "lib/components/icon";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { HexAddr, HumanAddr } from "lib/types";
 
-import { ModuleEmptyState, ModuleSelectMainBody } from "./body";
+import { ModuleSelectMainBody } from "./body";
 import { ModuleSelector } from "./selector";
 import type {
   DisplayMode,

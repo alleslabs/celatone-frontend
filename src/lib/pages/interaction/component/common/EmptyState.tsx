@@ -11,6 +11,7 @@ interface ModuleEmptyStateProps {
   h?: FlexProps["h"];
   p?: FlexProps["p"];
 }
+
 export const ModuleEmptyState = ({
   description = "Available functions for selected modules will display here",
   imageWidth = "160px",
@@ -41,3 +42,7 @@ export const ModuleEmptyState = ({
     </Flex>
   );
 };
+
+export const NoImageEmptyState = ({ desc }: { desc: string }) => (
+  <ModuleEmptyState h="fit-content" p={4} hasImage={false} description={desc} />
+);
