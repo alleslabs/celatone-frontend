@@ -16,6 +16,7 @@ interface InputWithIconProps {
   value: string;
   size?: InputProps["size"];
   my?: InputProps["my"];
+  autoFocus?: boolean;
   action?: string;
   iconPosition?: "start" | "end";
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -30,17 +31,19 @@ const InputWithIcon = ({
   my,
   action,
   iconPosition = "end",
+  autoFocus = false,
   onChange,
 }: InputWithIconProps) => (
   <InputGroup my={my}>
     <Input
       placeholder={placeholder}
       value={value}
-      onChange={onChange}
       size={size}
       p={`8px ${iconPosition === "end" ? "40px" : "12px"} 8px ${
         iconPosition === "start" ? "40px" : "12px"
       } !important`}
+      onChange={onChange}
+      autoFocus={autoFocus}
       onClick={action ? () => AmpTrack(AmpEvent.USE_SEARCH_INPUT) : undefined}
     />
     {iconPosition === "end" ? (

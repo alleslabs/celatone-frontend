@@ -15,7 +15,7 @@ const primaryBg = "primary.background";
 const accentBg = "accent.background";
 const accentMain = "accent.main";
 const accentDarker = "accent.darker";
-const borderDefualt = "1px solid";
+const borderDefault = "1px solid";
 const errorDark = "error.dark";
 const secondaryBg = "secondary.background";
 
@@ -135,7 +135,7 @@ export const Button: ComponentStyleConfig = {
     "outline-primary": CURR_THEME.button?.outlinePrimary
       ? generateStyle({
           basic: {
-            border: borderDefualt,
+            border: borderDefault,
             borderColor: CURR_THEME.button.outlinePrimary.borderColor,
             color: CURR_THEME.button.outlinePrimary.color,
             "> div": {
@@ -146,7 +146,7 @@ export const Button: ComponentStyleConfig = {
             },
           },
           disabled: {
-            border: borderDefualt,
+            border: borderDefault,
             borderColor: CURR_THEME.button.outlinePrimary.disabledBorderColor,
             color: CURR_THEME.button.outlinePrimary.disabledColor,
             "& span": {
@@ -158,7 +158,7 @@ export const Button: ComponentStyleConfig = {
         })
       : generateStyle({
           basic: {
-            border: borderDefualt,
+            border: borderDefault,
             borderColor: primaryLight,
             color: primaryLight,
             "> div": {
@@ -169,7 +169,7 @@ export const Button: ComponentStyleConfig = {
             },
           },
           disabled: {
-            border: borderDefualt,
+            border: borderDefault,
             borderColor: gray700,
             color: gray600,
             "> svg": {
@@ -181,7 +181,7 @@ export const Button: ComponentStyleConfig = {
         }),
     "outline-gray": generateStyle({
       basic: {
-        border: borderDefualt,
+        border: borderDefault,
         borderColor: gray600,
         color: "text.dark",
         "> svg": {
@@ -189,7 +189,7 @@ export const Button: ComponentStyleConfig = {
         },
       },
       disabled: {
-        border: borderDefualt,
+        border: borderDefault,
         borderColor: gray700,
         color: gray600,
         "> svg": {
@@ -201,7 +201,7 @@ export const Button: ComponentStyleConfig = {
     }),
     "outline-white": generateStyle({
       basic: {
-        border: borderDefualt,
+        border: borderDefault,
         borderColor: gray100,
         color: "text.main",
         "> svg": {
@@ -209,7 +209,7 @@ export const Button: ComponentStyleConfig = {
         },
       },
       disabled: {
-        border: borderDefualt,
+        border: borderDefault,
         borderColor: gray500,
         color: gray500,
         "> svg": {
@@ -221,7 +221,7 @@ export const Button: ComponentStyleConfig = {
     }),
     "outline-accent": generateStyle({
       basic: {
-        border: borderDefualt,
+        border: borderDefault,
         borderColor: accentBg,
         color: accentMain,
         "> svg": {
@@ -240,7 +240,7 @@ export const Button: ComponentStyleConfig = {
     }),
     "command-button": generateStyle({
       basic: {
-        border: borderDefualt,
+        border: borderDefault,
         borderColor: accentDarker,
         color: "text.main",
       },

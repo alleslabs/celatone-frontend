@@ -24,7 +24,7 @@ export interface SingleMsgProps {
   type: string;
   text1?: string;
   tokens?: Token[];
-  tags?: string[];
+  tags?: Option<string>[];
   length?: number;
   text2?: string;
   link1?: LinkElement;
@@ -43,13 +43,10 @@ export const SingleMsg = ({
   text3,
   link2,
 }: SingleMsgProps) => {
-  if (!type)
-    return (
-      <Text variant={{ base: "body2", md: "body1" }}>Message Unavailable</Text>
-    );
+  if (!type) return <Text variant="body2">Message Unavailable</Text>;
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
-      <Text variant={{ base: "body2", md: "body1" }}>
+      <Text variant="body2">
         {type} {text1}
       </Text>
       {tokens?.map((token: Token, index: number) => (
@@ -67,9 +64,14 @@ export const SingleMsg = ({
         />
       ))}
       {/* Tags  */}
-      {tags?.map((tag: string, index: number) => (
-        <Tag variant="gray" size="sm" key={index.toString() + tag}>
-          {snakeCase(tag) || tag}
+      {tags?.map((tag, index: number) => (
+        <Tag
+          variant="gray"
+          size="sm"
+          key={index.toString() + tag}
+          color={tag ? "text.main" : "text.disabled"}
+        >
+          {tag ? snakeCase(tag) : "undefined"}
         </Tag>
       ))}
       {/* Tag left over */}
@@ -85,7 +87,7 @@ export const SingleMsg = ({
         </Tag>
       )}
       {/* Text2 */}
-      <Text variant={{ base: "body2", md: "body1" }}>{text2}</Text>
+      <Text variant="body2">{text2}</Text>
       {/* Link */}
       {link1 && (
         <ExplorerLink
@@ -98,7 +100,7 @@ export const SingleMsg = ({
         />
       )}
       {/* Text3 */}
-      <Text variant={{ base: "body2", md: "body1" }}>{text3}</Text>
+      <Text variant="body2">{text3}</Text>
       {/* Link2 */}
       {link2 && (
         <ExplorerLink

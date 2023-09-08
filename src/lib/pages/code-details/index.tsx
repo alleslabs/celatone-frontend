@@ -1,11 +1,22 @@
-import { Divider, Flex, Heading, Text, Image, Spinner } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Text,
+  Image,
+  Spinner,
+  Tabs,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useWasmConfig, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
+import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
@@ -14,19 +25,24 @@ import { PublicDescription } from "lib/components/PublicDescription";
 import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
-import { useCodeStore } from "lib/providers/store";
+import { useCodeStore, useSchemaStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getFirstQueryParam, isCodeId } from "lib/utils";
 
-import { CodeInfoSection } from "./components/CodeInfoSection";
+import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
 import { CTASection } from "./components/CTASection";
-import { CodeContractsTable } from "./components/table/CodeContractsTable";
+import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
 
 interface CodeDetailsBodyProps {
   codeDataState: CodeDataState;
   codeId: number;
+}
+
+enum TabIndex {
+  CodeInfo,
+  JsonSchema,
 }
 
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
@@ -62,7 +78,11 @@ const CodeDetailsBody = observer(
       publicProject,
       lcdCodeData: { codeHash, isLcdCodeLoading, isLcdCodeError },
     } = codeDataState;
+    const { getSchemaByCodeHash } = useSchemaStore();
+    const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
     const isMobile = useMobile();
+
+    const [tabIndex, setTabIndex] = useState(TabIndex.CodeInfo);
 
     if (!codeData) return <InvalidCode />;
 
@@ -196,9 +216,43 @@ const CodeDetailsBody = observer(
             icon={<CustomIcon name="public-project" ml={0} color="gray.600" />}
           />
         )}
-        <Divider borderColor="gray.700" my={{ base: 6, md: 12 }} />
-        <CodeInfoSection codeData={codeData} chainId={chainId} />
-        <CodeContractsTable codeId={codeId} />
+        <Tabs
+          isLazy
+          lazyBehavior="keepMounted"
+          my={{ base: 6, md: 12 }}
+          index={tabIndex}
+          onChange={setTabIndex}
+        >
+          <TabList
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX="scroll"
+          >
+            <CustomTab>Code Information</CustomTab>
+            <CustomTab>JSON Schema</CustomTab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <CodeInfoSection
+                codeData={codeData}
+                chainId={chainId}
+                codeHash={codeHash}
+                isCodeHashLoading={isLcdCodeLoading}
+                attached={!!jsonSchema}
+                toJsonSchemaTab={() => setTabIndex(TabIndex.JsonSchema)}
+              />
+              <CodeContractsTable codeId={codeId} />
+            </TabPanel>
+            <TabPanel>
+              <CodeSchemaSection
+                codeId={codeId}
+                codeHash={codeHash}
+                isCodeHashLoading={isLcdCodeLoading}
+                jsonSchema={jsonSchema}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </>
     );
   }

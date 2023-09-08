@@ -354,7 +354,8 @@ export class ContractStore {
     list.lastUpdated = getCurrentDate();
   }
 
-  addActivity(userKey: string, activity: Activity) {
+  addActivity(activity: Activity) {
+    const { userKey } = this;
     const recent = this.recentActivities[userKey];
 
     if (recent) {

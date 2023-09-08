@@ -23,7 +23,7 @@ export const Footer = ({
       position="sticky"
       zIndex={2}
       templateAreas={`"prespace main postspace"`}
-      templateColumns="1fr 6fr 5fr"
+      templateColumns="1fr 5fr 4fr"
     >
       <GridItem area="main">
         <Flex flex="5" align="center" justify="space-between" h="full" w="full">
