@@ -95,7 +95,7 @@ export const PublishModule = () => {
             />
           </GridItem>
         </Grid>
-        <Box position="relative" display="flex" mt={12}>
+        <Flex position="relative" mt={12}>
           <Box w="10%" />
           <Box w="50%">
             <Heading as="h6" variant="h6" fontWeight={600}>
@@ -157,9 +157,9 @@ export const PublishModule = () => {
             </Box>
           </Box>
           <Box w="10%" />
-        </Box>
+        </Flex>
         {/* Upgrade Policy */}
-        <Box position="relative" display="flex" mt={12}>
+        <Flex position="relative" mt={12}>
           <Box w="10%" />
           <Box w="50%">
             <Heading as="h6" variant="h6" fontWeight={600}>
@@ -188,7 +188,6 @@ export const PublishModule = () => {
               color="text.dark"
               alignSelf="flex-start"
               alignItems="center"
-              display="flex"
               gap={1}
             >
               <p>Transaction Fee:</p>
@@ -273,7 +272,7 @@ export const PublishModule = () => {
             </Box>
           </Box>
           <Box w="10%" />
-        </Box>
+        </Flex>
       </Box>
       <Footer isLoading={false} fieldAmount={fields.length} />
     </>
