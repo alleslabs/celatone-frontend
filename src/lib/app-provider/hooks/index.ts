@@ -13,3 +13,4 @@ export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
 export * from "./useConfig";
 export * from "./useCurrentChain";
+export * from "./useConvertHexAddress";

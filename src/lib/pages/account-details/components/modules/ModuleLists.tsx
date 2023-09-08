@@ -2,7 +2,7 @@ import { Flex, SimpleGrid } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { ModuleCard } from "lib/components/module/ModuleCard";
+// import { ModuleCard } from "lib/components/module/ModuleCard";
 import { TableTitle, ViewMore } from "lib/components/table";
 
 interface ModuleListsProps {
@@ -52,6 +52,7 @@ export const ModuleLists = ({ onViewMore, totalAsset }: ModuleListsProps) => {
       <ModuleTitle onViewMore={onViewMore} totalAsset={totalAsset} />
       {!(isMobile && onViewMore) && (
         <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={6}>
+          {/* <ModuleCard />
           <ModuleCard />
           <ModuleCard />
           <ModuleCard />
@@ -59,8 +60,7 @@ export const ModuleLists = ({ onViewMore, totalAsset }: ModuleListsProps) => {
           <ModuleCard />
           <ModuleCard />
           <ModuleCard />
-          <ModuleCard />
-          <ModuleCard />
+          <ModuleCard /> */}
         </SimpleGrid>
       )}
       {!isMobile && onViewMore && <ViewMore onClick={onViewMore} />}

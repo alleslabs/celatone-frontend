@@ -2,6 +2,7 @@ import { fromBech32 } from "@cosmjs/encoding";
 import { useCallback, useMemo } from "react";
 
 import type { Option } from "lib/types";
+import { isHexAddress } from "lib/utils";
 
 import { useCurrentChain } from "./useCurrentChain";
 import { useExampleAddresses } from "./useExampleAddresses";
@@ -133,6 +134,11 @@ export const useValidateAddress = () => {
           getAddressTypeByLength
         ),
       [bech32Prefix, getAddressTypeByLength]
+    ),
+    validateHexAddress: useCallback(
+      (address: string) =>
+        !address.startsWith(bech32Prefix) && isHexAddress(address),
+      [bech32Prefix]
     ),
   };
 };

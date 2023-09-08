@@ -5,12 +5,11 @@ import type { ChainConfigs } from "./types";
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "stone-9": {
     chain: "initia",
-    registryChainName: "osmosis",
+    registryChainName: "initiatestnet",
     prettyName: "Initia Testnet",
-    // TODO change to initia
-    lcd: "https://lcd.osmosis.zone",
-    rpc: "https://rpc.osmosis.zone:443",
-    indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
+    lcd: "https://stone-rest.initia.tech",
+    rpc: "https://stone-rpc.initia.tech:443",
+    indexer: "https://initia-tesnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
@@ -39,7 +38,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     gas: {
       gasPrice: {
         tokenPerGas: 0.025,
-        denom: "init",
+        denom: "uinit",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,

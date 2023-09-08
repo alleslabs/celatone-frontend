@@ -64,6 +64,7 @@ export const TextInput = ({
 
     <InputGroup>
       <Input
+        autoFocus={autoFocus}
         size={size}
         placeholder={placeholder}
         type={type}
@@ -71,7 +72,6 @@ export const TextInput = ({
         pr={status && "36px"}
         onChange={(e) => setInputState(e.target.value)}
         maxLength={maxLength}
-        autoFocus={autoFocus}
       />
       <InputRightElement h="full">
         {status && getStatusIcon(status.state, "16px")}
@@ -81,11 +81,13 @@ export const TextInput = ({
       {error ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
-        <FormHelperText className="helper-text">
+        <FormHelperText className="helper-text" mt={0}>
           {status?.message ? (
             getResponseMsg(status, helperText)
           ) : (
-            <Text color="text.dark">{helperText}</Text>
+            <Text color="text.dark" variant="body3">
+              {helperText}
+            </Text>
           )}
         </FormHelperText>
       )}
