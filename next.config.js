@@ -44,7 +44,6 @@ const nextConfig = {
       "project",
       "contract-list",
       "past-tx",
-      "my-code",
       "pool",
     ];
 

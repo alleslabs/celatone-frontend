@@ -1,11 +1,11 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
+import { capitalize } from "lodash";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, CodeNameCell } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
-import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationRowProps {
@@ -19,17 +19,10 @@ export const RemarkRender = ({
   remark: ContractMigrationHistory["remark"];
 }) => {
   const { operation, type, value } = remark;
+  if (type === "genesis") return <Text variant="body2">Genesis</Text>;
+
   const isGovernance = type === "governance";
-  if (
-    operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
-  )
-    return <Text variant="body2">Genesis</Text>;
-
-  const prefix =
-    operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
-      ? "Instantiate"
-      : "Migrate";
-
+  const prefix = capitalize(operation.split("_").pop());
   const textFormat = isGovernance ? "normal" : "truncate";
   return (
     <Flex

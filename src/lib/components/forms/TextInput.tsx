@@ -22,7 +22,7 @@ import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
   value: string;
-  setInputState: Dispatch<SetStateAction<string>>;
+  setInputState: Dispatch<SetStateAction<string>> | ((value: string) => void);
   label?: string;
   labelBgColor?: string;
   helperText?: string;
@@ -31,6 +31,7 @@ export interface TextInputProps extends FormControlProps {
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
+  autoFocus?: boolean;
 }
 
 export const TextInput = ({
@@ -46,6 +47,7 @@ export const TextInput = ({
   status,
   maxLength,
   helperAction,
+  autoFocus = false,
   ...componentProps
 }: TextInputProps) => (
   // Design system size: md = 40px, lg = 56px
@@ -62,6 +64,7 @@ export const TextInput = ({
 
     <InputGroup>
       <Input
+        autoFocus={autoFocus}
         size={size}
         placeholder={placeholder}
         type={type}
@@ -71,18 +74,20 @@ export const TextInput = ({
         maxLength={maxLength}
       />
       <InputRightElement h="full">
-        {status && getStatusIcon(status.state, "20px")}
+        {status && getStatusIcon(status.state, "16px")}
       </InputRightElement>
     </InputGroup>
     <Flex gap={1} alignItems="center" mt={1} flexDir="row">
       {error ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
-        <FormHelperText className="helper-text">
+        <FormHelperText className="helper-text" mt={0}>
           {status?.message ? (
             getResponseMsg(status, helperText)
           ) : (
-            <Text color="text.dark">{helperText}</Text>
+            <Text color="text.dark" variant="body3">
+              {helperText}
+            </Text>
           )}
         </FormHelperText>
       )}

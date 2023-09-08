@@ -5,6 +5,10 @@ import { assets, chains } from "chain-registry";
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
 import {
+  initiatestnet,
+  initiatestnetAssets,
+} from "lib/chain-registry/initiatestnet";
+import {
   localosmosis,
   localosmosisAsset,
 } from "lib/chain-registry/localosmosis";
@@ -35,12 +39,13 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider
-      chains={[...chains, localosmosis, sei, terra2testnet]}
+      chains={[...chains, localosmosis, sei, terra2testnet, initiatestnet]}
       assetLists={[
         ...assets,
         localosmosisAsset,
         seiAssets,
         terra2testnetAssets,
+        initiatestnetAssets,
       ]}
       wallets={wallets}
       endpointOptions={{

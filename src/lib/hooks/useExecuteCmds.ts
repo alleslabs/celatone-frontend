@@ -24,15 +24,18 @@ export const useExecuteCmds = (contractAddress: ContractAddr) => {
         funds: [],
       }),
     ],
+    retry: false,
     onError: (e) => {
       if (e.message.includes("contract: ")) {
         setExecCmds([]);
-      } else {
+      } else if (e.message.includes("Error parsing into type")) {
         const executeCmds: string[] = [];
         Array.from(e.message?.matchAll(/`(.*?)`/g) || [])
           .slice(1)
           .forEach((match) => executeCmds.push(match[1]));
         setExecCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
+      } else {
+        setExecCmds([["", "{}"]]);
       }
     },
   });

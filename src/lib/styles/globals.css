@@ -1,7 +1,6 @@
 /* Global Styling here */
 .copier-wrapper:hover .copier {
   display: inline;
-  max-height: 11px;
 }
 
 .accordion-stepper-wrapper:not(:first-of-type) div#before-stepper {

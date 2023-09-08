@@ -15,7 +15,8 @@ export const ContractCmdButton = ({
     borderRadius="16px"
     fontWeight={400}
     onClick={onClickCmd}
+    color={cmd ? "text.main" : "text.disabled"}
   >
-    {cmd}
+    {cmd || "undefined"}
   </Button>
 );

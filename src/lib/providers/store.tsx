@@ -49,3 +49,8 @@ export function usePublicProjectStore() {
   const { publicProjectStore } = useStore();
   return publicProjectStore;
 }
+
+export function useSchemaStore() {
+  const { schemaStore } = useStore();
+  return schemaStore;
+}

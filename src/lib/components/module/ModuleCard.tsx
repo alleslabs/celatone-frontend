@@ -1,31 +1,67 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
+import type { Dispatch, SetStateAction } from "react";
 
 import { CustomIcon } from "../icon";
+import type { IndexedModule } from "lib/services/moduleService";
+import { useVerifyModule } from "lib/services/moduleService";
+import type { HumanAddr, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
 
-export const ModuleCard = () => {
+interface ModuleCardProps {
+  selectedAddress: HumanAddr;
+  module: IndexedModule;
+  selectedModule: Option<IndexedModule>;
+  setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
+}
+
+export const ModuleCard = ({
+  selectedAddress,
+  module,
+  selectedModule,
+  setSelectedModule,
+}: ModuleCardProps) => {
+  const { data: isVerified } = useVerifyModule({
+    address: selectedAddress,
+    moduleName: module.moduleName,
+  });
+
   return (
-    <Flex
+    <Grid
       borderRadius={8}
-      bgColor="gray.800"
+      bgColor={
+        module.moduleName === selectedModule?.moduleName
+          ? "gray.700"
+          : "gray.800"
+      }
       p={3}
       alignItems="center"
-      justifyContent="space-between"
+      cursor="pointer"
+      onClick={() => setSelectedModule(module)}
+      gap={1}
+      templateColumns="20px 1fr auto"
+      _hover={{
+        bg: "gray.700",
+      }}
+      transition=".25s all ease-out"
     >
-      <Flex alignItems="center" gap={1}>
-        <CustomIcon name="contract-address" color="primary.main" boxSize={3} />
-        Module name
-        <CustomIcon
-          name="check-circle-solid"
-          color="success.main"
-          boxSize={3}
-        />
+      <CustomIcon name="contract-address" color="primary.main" boxSize={3} />
+      <Flex align="center" overflow="hidden" gap={1}>
+        <Text className="ellipsis" variant="body2">
+          {module.moduleName}
+        </Text>
+        {isVerified && (
+          <CustomIcon
+            name="check-circle-solid"
+            color="success.main"
+            boxSize={3}
+          />
+        )}
       </Flex>
-      <Flex gap={1}>
-        <CountBadge count={12} variant="view" />
-        <CountBadge count={0} variant="execute" />
+      <Flex gap={1} ml="auto">
+        <CountBadge count={module.viewFunctions.length} variant="view" />
+        <CountBadge count={module.executeFunctions.length} variant="execute" />
       </Flex>
-    </Flex>
+    </Grid>
   );
 };

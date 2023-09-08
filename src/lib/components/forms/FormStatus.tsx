@@ -6,7 +6,7 @@ export type ResponseState = "init" | "loading" | "success" | "error";
 
 export interface FormStatus {
   state: ResponseState;
-  message?: string;
+  message?: string | null;
   messageColor?: string;
 }
 
@@ -40,13 +40,13 @@ export const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
   switch (statusInfo.state) {
     case "success":
       return (
-        <Text color={statusInfo.messageColor ?? "success.main"}>
+        <Text color={statusInfo.messageColor ?? "success.main"} variant="body3">
           {statusInfo.message}
         </Text>
       );
     case "error":
       return (
-        <Text color={statusInfo.messageColor ?? "error.main"}>
+        <Text color={statusInfo.messageColor ?? "error.main"} variant="body3">
           {statusInfo.message}
         </Text>
       );
@@ -54,7 +54,9 @@ export const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
     case "loading":
     default:
       return (
-        <Text color={statusInfo.messageColor ?? "text.dark"}>{helperText}</Text>
+        <Text color={statusInfo.messageColor ?? "text.dark"} variant="body3">
+          {helperText}
+        </Text>
       );
   }
 };

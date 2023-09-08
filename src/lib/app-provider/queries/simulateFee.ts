@@ -1,6 +1,7 @@
 import type { Coin } from "@cosmjs/amino";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useQuery } from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
 import { CELATONE_QUERY_KEYS } from "../env";
@@ -19,6 +20,7 @@ interface SimulateQueryParams {
   enabled: boolean;
   messages: ComposedMsg[];
   isDummyUser?: boolean;
+  retry?: UseQueryOptions["retry"];
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -27,6 +29,7 @@ export const useSimulateFeeQuery = ({
   enabled,
   messages,
   isDummyUser,
+  retry = 2,
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
@@ -64,9 +67,9 @@ export const useSimulateFeeQuery = ({
       messages,
       rpcEndpoint,
     ],
-    queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
+    queryFn: async () => simulateFn(messages),
     enabled,
-    retry: 2,
+    retry,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     onSuccess,

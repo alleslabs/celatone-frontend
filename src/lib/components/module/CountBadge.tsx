@@ -11,8 +11,6 @@ export const CountBadge = ({ count, variant }: CountBadgeProps) => (
     bgColor={variant === "common" ? "gray.700" : "transparent"}
     textColor="text.main"
     p="2px 8px"
-    maxH="unset"
-    textDecoration={count === 0 ? "line-through" : undefined}
   >
     {count}
   </Badge>
