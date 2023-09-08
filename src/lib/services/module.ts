@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import type {
-  AccountAddr,
+  MoveAccountAddr,
   ResponseModule,
   ResponseModules,
   InternalModule,
@@ -15,7 +15,7 @@ interface ModuleReturn {
 
 export const getAccountModules = async (
   baseEndpoint: string,
-  address: AccountAddr
+  address: MoveAccountAddr
 ): Promise<InternalModule[]> => {
   const result: ResponseModule[] = [];
 
@@ -36,7 +36,7 @@ export const getAccountModules = async (
 
 export const getAccountModule = async (
   baseEndpoint: string,
-  address: AccountAddr,
+  address: MoveAccountAddr,
   moduleName: string
 ): Promise<InternalModule> => {
   const { data } = await axios.get<ModuleReturn>(
@@ -57,7 +57,7 @@ interface ModuleVerificationReturn {
 }
 
 export const getModuleVerificationStatus = async (
-  address: AccountAddr,
+  address: MoveAccountAddr,
   moduleName: string
 ): Promise<boolean> =>
   // TODO: move url to base api route? wait for celatone api implementation?

@@ -16,7 +16,7 @@ import { TextInput } from "lib/components/forms";
 import { useValidateModuleInput } from "lib/pages/interaction/hooks/useValidateModuleInput";
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAddressModules } from "lib/services/moduleService";
-import type { AccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
+import type { MoveAccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
 import { bech32AddressToHex } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
@@ -45,7 +45,7 @@ export const ModuleSelectorInput = ({
   const validateModuleInput = useValidateModuleInput();
   const { user } = useExampleAddresses();
   const { refetch, isFetching } = useAddressModules({
-    address: addr as AccountAddr,
+    address: addr as MoveAccountAddr,
     moduleName,
     options: {
       refetchOnWindowFocus: false,

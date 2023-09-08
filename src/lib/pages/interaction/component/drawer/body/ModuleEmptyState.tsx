@@ -18,26 +18,22 @@ export const ModuleEmptyState = ({
   noBorder = false,
   h = "full",
   p,
-}: ModuleEmptyStateProps) => {
-  return (
-    <Flex
-      h={h}
-      p={p}
-      w="full"
-      justifyContent="center"
-      alignItems="center"
-      border={noBorder ? "none" : "1px solid"}
-      borderRadius="8px"
-      borderColor="gray.700"
-    >
-      <Flex flexDirection="column" gap={4} alignItems="center">
-        {hasImage && (
-          <StateImage imageVariant="empty" imageWidth={imageWidth} />
-        )}
-        <Text variant="body2" color="text.dark" textAlign="center">
-          {description}
-        </Text>
-      </Flex>
-    </Flex>
-  );
-};
+}: ModuleEmptyStateProps) => (
+  <Flex
+    h={h}
+    p={p}
+    w="full"
+    justifyContent="center"
+    alignItems="center"
+    border={noBorder ? "none" : "1px solid"}
+    borderRadius="8px"
+    borderColor="gray.700"
+    direction="column"
+    gap={4}
+  >
+    {hasImage && <StateImage imageVariant="empty" imageWidth={imageWidth} />}
+    <Text variant="body2" color="text.dark" textAlign="center">
+      {description}
+    </Text>
+  </Flex>
+);
