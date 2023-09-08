@@ -8,10 +8,15 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
-import { useValidateAddress, useWasmConfig, useMobile } from "lib/app-provider";
+import {
+  useValidateAddress,
+  useWasmConfig,
+  useMobile,
+  useInternalNavigate,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -23,6 +28,7 @@ import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
+import { ContractStates } from "./components/contract-state/ContractStates";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
@@ -35,6 +41,14 @@ import { TokenSection } from "./components/TokenSection";
 import { useContractData } from "./data";
 import type { ContractData } from "./types";
 
+const tableTabHeaderId = "contractDetailTab";
+
+enum TabIndex {
+  Overview = "overview",
+  Assets = "assets",
+  Txs = "txs",
+  States = "states",
+}
 interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
   contractData: ContractData;
@@ -42,7 +56,7 @@ interface ContractDetailsBodyProps {
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
-const ContractDetailsBody = observer(
+const ContractTxsTable = observer(
   ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailsTableHeader";
     const { data: contractAccountId } = useAccountId(contractAddress);
@@ -54,7 +68,6 @@ const ContractDetailsBody = observer(
     } = useContractDetailsTableCounts(contractAddress, contractAccountId);
     const isMobile = useMobile();
     if (!contractData.contractDetail) return <InvalidContract />;
-
     return (
       <>
         <ContractTop contractAddress={contractAddress} {...contractData} />
@@ -70,6 +83,7 @@ const ContractDetailsBody = observer(
           codeHash={contractData.contractDetail.codeHash}
           codeId={String(contractData.contractDetail.codeId)}
         />
+
         {/* Instantiate/Contract Info Section */}
         <Flex
           my={12}
@@ -111,7 +125,7 @@ const ContractDetailsBody = observer(
         </Flex>
         {/* History Table section */}
         <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
-          History
+          Transaction & History
         </Heading>
         <Tabs isLazy lazyBehavior="keepMounted">
           <TabList
@@ -154,6 +168,165 @@ const ContractDetailsBody = observer(
                 totalData={tableCounts.relatedProposalsCount}
                 refetchCount={refetchRelatedProposals}
               />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </>
+    );
+  }
+);
+
+const ContractDetailsBody = observer(
+  ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
+    const tableHeaderId = "contractDetailsTableHeader";
+    const isMobile = useMobile();
+    if (!contractData.contractDetail) return <InvalidContract />;
+    const router = useRouter();
+    const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+    const navigate = useInternalNavigate();
+    const handleTabChange = useCallback(
+      (nextTab: TabIndex) => () => {
+        if (nextTab === tab) return;
+        navigate({
+          pathname: "/contracts/[contractAddress]/[tab]",
+          query: {
+            contractAddress,
+            tab: nextTab,
+          },
+          options: {
+            shallow: true,
+          },
+        });
+      },
+      [contractAddress, tab, navigate]
+    );
+    useEffect(() => {
+      if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
+        navigate({
+          replace: true,
+          pathname: "/contracts/[contractAddress]/[tab]",
+          query: {
+            contractAddress,
+            tab: TabIndex.Overview,
+          },
+          options: {
+            shallow: true,
+          },
+        });
+      }
+    }, [router.isReady, tab, contractAddress, navigate]);
+
+    return (
+      <>
+        <ContractTop contractAddress={contractAddress} {...contractData} />
+        <Tabs>
+          <TabList
+            mt={6}
+            mb={8}
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX="scroll"
+            id={tableTabHeaderId}
+          >
+            <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+              Overview
+            </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.Assets)}>
+              Assets
+            </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.Txs)}>
+              Transaction & History
+            </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.States)}>
+              Contract States
+            </CustomTab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p={0}>
+              <Flex flexDirection="column" gap={8}>
+                {/* Contract Description Section */}
+                <ContractDesc {...contractData} />
+                {/* Tokens Section */}
+                <TokenSection
+                  contractAddress={contractAddress}
+                  {...contractData}
+                  onViewMore={handleTabChange(TabIndex.Assets)}
+                />
+                {/* Query/Execute commands section */}
+                <CommandSection
+                  contractAddress={contractAddress}
+                  codeHash={contractData.contractDetail.codeHash}
+                  codeId={contractData.contractDetail.codeId.toString()}
+                />
+                {/* Instantiate/Contract Info Section */}
+                <Heading as="h6" variant="h6" minW="fit-content">
+                  Contract Information
+                </Heading>
+                <Flex
+                  mb={12}
+                  mt={6}
+                  justify="space-between"
+                  direction={{ base: "column", md: "row" }}
+                >
+                  {/* Instantiate Info */}
+                  {isMobile && (
+                    <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+                      Instantiate Info
+                    </Heading>
+                  )}
+                  <InstantiateInfo
+                    isLoading={
+                      contractData.isContractDetailLoading ||
+                      contractData.isContractCw2InfoLoading ||
+                      contractData.isInstantiateDetailLoading
+                    }
+                    {...contractData}
+                  />
+                  {/* Contract Info (Expand) */}
+                  <Flex
+                    direction="column"
+                    flex={0.8}
+                    gap={4}
+                    mt={{ base: 12, md: 0 }}
+                  >
+                    <JsonInfo
+                      header="Contract Info"
+                      jsonString={jsonPrettify(
+                        JSON.stringify(
+                          contractData.rawContractResponse?.contract_info ?? {}
+                        )
+                      )}
+                      isLoading={contractData.isRawContractResponseLoading}
+                    />
+                    <JsonInfo
+                      header="Instantiate Message"
+                      jsonString={jsonPrettify(contractData.initMsg ?? "")}
+                      isLoading={contractData.isInstantiateDetailLoading}
+                      defaultExpand
+                    />
+                  </Flex>
+                </Flex>
+                <ContractTxsTable
+                  contractAddress={contractAddress}
+                  contractData={contractData}
+                />
+              </Flex>
+            </TabPanel>
+            <TabPanel p={0}>
+              <TokenSection
+                contractAddress={contractAddress}
+                isDetailPage
+                {...contractData}
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <ContractTxsTable
+                contractAddress={contractAddress}
+                contractData={contractData}
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <ContractStates />
             </TabPanel>
           </TabPanels>
         </Tabs>
