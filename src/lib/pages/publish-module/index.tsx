@@ -75,6 +75,7 @@ export const PublishModule = () => {
     name: "modules",
   });
 
+  // TODO: revisit sticky and grid
   return (
     <>
       <Box as="main" p={{ base: "16px", md: "48px" }} minH="inherit">
