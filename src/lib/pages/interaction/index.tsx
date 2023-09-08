@@ -115,7 +115,7 @@ export const Interaction = () => {
       <Grid
         borderTop="1px solid"
         borderColor="gray.700"
-        py={8}
+        pt={8}
         gap={8}
         templateColumns="minmax(300px, 20%) 1fr"
         overflow="hidden"

@@ -17,7 +17,7 @@ import { useValidateModuleInput } from "lib/pages/interaction/hooks/useValidateM
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAddressModules } from "lib/services/moduleService";
 import type { AccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
-import { bech32AddressToHex } from "lib/utils";
+import { bech32AddressToHex, splitModule } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
   selectedAddress: SelectedAddress;
@@ -38,7 +38,10 @@ export const ModuleSelectorInput = ({
 }: ModuleSelectorInputProps) => {
   const [keyword, setKeyword] = useState(selectedAddress.address as string);
   const [error, setError] = useState("");
-  const [addr, moduleName] = useMemo(() => keyword.split("::"), [keyword]);
+  const [addr, moduleName, functionName] = useMemo(
+    () => splitModule(keyword),
+    [keyword]
+  );
 
   const convertHexAddr = useConvertHexAddress();
   const { validateHexAddress } = useValidateAddress();
@@ -47,6 +50,7 @@ export const ModuleSelectorInput = ({
   const { refetch, isFetching } = useAddressModules({
     address: addr as AccountAddr,
     moduleName,
+    functionName,
     options: {
       refetchOnWindowFocus: false,
       enabled: false,
@@ -69,8 +73,9 @@ export const ModuleSelectorInput = ({
           setModules(data);
           setMode("display");
         } else {
-          handleModuleSelect(data);
+          handleModuleSelect(data, data.searchedFn);
           closeModal();
+          setMode("display");
         }
       },
       onError: (err) => setError((err as Error).message),
@@ -116,7 +121,7 @@ export const ModuleSelectorInput = ({
         setInputState={setKeyword}
         error={error}
         size="md"
-        helperText={`ex. “${user}” or “${user}::module_name”`}
+        helperText={`ex. “${user}”, “${user}::module_name”, or “${user}::module_name::function_name”`}
         label="Fill in address or module path"
         variant="floating"
         labelBgColor="gray.800"

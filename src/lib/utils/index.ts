@@ -30,3 +30,4 @@ export * from "./icon";
 export * from "./window";
 export * from "./number";
 export * from "./math";
+export * from "./modules";

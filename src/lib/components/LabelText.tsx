@@ -29,7 +29,9 @@ export const LabelText = ({
       {tooltipText && <TooltipInfo label={tooltipText} />}
     </Flex>
     {typeof children === "string" ? (
-      <Text variant="body2">{children}</Text>
+      <Text variant="body2" overflowWrap="anywhere">
+        {children}
+      </Text>
     ) : (
       children
     )}

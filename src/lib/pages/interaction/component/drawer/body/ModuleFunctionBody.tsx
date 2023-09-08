@@ -97,7 +97,7 @@ export const ModuleFunctionBody = ({
             placeholder="Search functions ..."
             my={4}
           />
-          <Flex gap={6} maxH={maxHeight}>
+          <Flex gap={6} h={maxHeight}>
             <Flex flex={0.5} gap={3} {...functionGridBaseStyle}>
               <Flex alignItems="center" gap={1}>
                 <Text variant="body2" fontWeight={600} color="text.dark">

@@ -6,6 +6,7 @@ import { CustomIcon } from "../icon";
 import { Tooltip } from "lib/components/Tooltip";
 import type { ExposedFunction } from "lib/types";
 import { getVisibilityIcon } from "lib/utils";
+import { checkAvailability } from "lib/utils/abi";
 
 type CardVariant = "common" | "disabled" | "selected";
 
@@ -43,8 +44,8 @@ export const FunctionCard = ({
   exposedFn,
   onFunctionSelect,
 }: FunctionCardProps) => {
-  const { is_entry: isEntry, is_view: isView, visibility, name } = exposedFn;
-  const disabled = !isEntry || visibility !== "public";
+  const { is_view: isView, visibility, name } = exposedFn;
+  const disabled = !checkAvailability(exposedFn);
 
   return (
     <Flex
@@ -70,19 +71,23 @@ export const FunctionCard = ({
           </Text>
         </Flex>
         <Flex alignItems="center" gap={2}>
-          <Tooltip
-            bg="primary.dark"
-            label="Only functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
-          >
-            <Flex pointerEvents="auto">
-              {disabled ? (
-                <CustomIcon name="close" color="gray.600" boxSize={3} />
-              ) : (
-                <CustomIcon name="check" color="success.main" boxSize={3} />
-              )}
-            </Flex>
-          </Tooltip>
-          <DotSeparator bg="gray.600" />
+          {!isView && (
+            <>
+              <Tooltip
+                bg="primary.dark"
+                label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+              >
+                <Flex pointerEvents="auto" onClick={(e) => e.stopPropagation()}>
+                  {disabled ? (
+                    <CustomIcon name="close" color="gray.600" boxSize={3} />
+                  ) : (
+                    <CustomIcon name="check" color="success.main" boxSize={3} />
+                  )}
+                </Flex>
+              </Tooltip>
+              <DotSeparator bg="gray.600" />
+            </>
+          )}
           <Flex alignItems="center" gap={1}>
             <CustomIcon
               name={getVisibilityIcon(visibility)}

@@ -18,7 +18,7 @@ export const FunctionSelectBody = ({
   selectedFn,
 }: FunctionSelectBodyProps) => {
   return selectedFn ? (
-    <Flex direction="column">
+    <Flex direction="column" maxW="full">
       <SelectedFunctionCard fn={selectedFn} />
     </Flex>
   ) : (

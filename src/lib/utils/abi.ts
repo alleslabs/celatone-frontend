@@ -1,7 +1,7 @@
 import type { ExposedFunction, ResponseABI } from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
-  fn.is_entry && fn.visibility === "public";
+  fn.visibility === "public" && (fn.is_view || fn.is_entry);
 
 export const parseJsonABI = (jsonString: string): ResponseABI => {
   try {
