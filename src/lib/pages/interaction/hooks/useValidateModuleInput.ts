@@ -15,7 +15,7 @@ export const useValidateModuleInput = () => {
 
   const { user } = useExampleAddresses();
   const truncateExampleAddr = truncate(user);
-  const errText = `Input must be address (${truncateExampleAddr} or “0x123...456) or module path (“${truncateExampleAddr}::module_name” or “0x123...456::module_name)`;
+  const errText = `Input must be address (${truncateExampleAddr} or “0x123...456“) or module path (“${truncateExampleAddr}::module_name” or “0x123...456::module_name“)`;
 
   return useCallback(
     (input: string): string | null => {

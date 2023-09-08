@@ -39,7 +39,7 @@ const indexModuleResponse = (module: InternalModule): IndexedModule => {
   };
 };
 
-export const useAddressModules = ({
+export const useAccountModules = ({
   address,
   moduleName,
   options = {},
