@@ -110,7 +110,7 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
               // TODO change path to /account/0x1
               {
                 name: "0x1 Page",
-                slug: "/deploy",
+                slug: "/account/0x1",
                 icon: "home" as IconKeys,
               },
               {
@@ -129,8 +129,8 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
                 icon: "execute" as IconKeys,
               },
               {
-                name: "Deploy Script",
-                slug: "/deploy-script",
+                name: "Script",
+                slug: "/script",
                 icon: "code" as IconKeys,
               },
             ],

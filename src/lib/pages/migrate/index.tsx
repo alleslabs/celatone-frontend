@@ -8,11 +8,11 @@ import {
   useInternalNavigate,
   useWasmConfig,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import { useUploadAccessParams } from "lib/services/proposalService";
@@ -127,7 +127,7 @@ const Migrate = () => {
 
   if (isFetching) return <Loading withBorder={false} />;
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       {firstStep ? (
         <Box w="full" mb={6}>
           <Text
@@ -165,7 +165,7 @@ const Migrate = () => {
       <Box mt={12} w="full">
         {renderBody()}
       </Box>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

@@ -18,6 +18,7 @@ import {
   useExampleAddresses,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -31,7 +32,6 @@ import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -291,7 +291,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
   return (
     <>
-      <WasmPageContainer>
+      <ActionPageContainer>
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
@@ -384,7 +384,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             loading={isSimulating}
           />
         </Flex>
-      </WasmPageContainer>
+      </ActionPageContainer>
       <Footer
         onInstantiate={proceed}
         disabled={!enableInstantiate || isSimulating}

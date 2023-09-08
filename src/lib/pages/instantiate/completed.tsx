@@ -1,10 +1,10 @@
 import { Flex, Heading, Button } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import type { ContractAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
@@ -19,7 +19,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   const navigate = useInternalNavigate();
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
         Instantiate Complete!
@@ -98,7 +98,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         contractAddress={txInfo.contractAddress as ContractAddr}
         contractLabel={txInfo.contractLabel}
       />
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

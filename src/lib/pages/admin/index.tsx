@@ -13,13 +13,13 @@ import {
   useWasmConfig,
   useCurrentChain,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -170,7 +170,7 @@ const UpdateAdmin = () => {
   }, [router.isReady, contractAddressParam]);
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Heading as="h5" variant="h5" mb={6}>
         Update Admin
       </Heading>
@@ -212,7 +212,7 @@ const UpdateAdmin = () => {
       <Button disabled={!estimatedFee || isFetching} onClick={proceed} mt={12}>
         Update Admin
       </Button>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

@@ -16,12 +16,12 @@ import {
   useInternalNavigate,
   useWasmConfig,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { HumanAddr } from "lib/types";
@@ -84,7 +84,7 @@ const Deploy = () => {
     chainPrettyName
   );
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
       </Text>
@@ -128,7 +128,7 @@ const Deploy = () => {
           Cancel
         </Button>
       </Flex>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

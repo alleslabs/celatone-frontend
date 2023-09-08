@@ -1,15 +1,15 @@
 import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-type WasmPageContainerProps = {
+type ActionPageContainerProps = {
   children: ReactNode;
   width?: string;
 };
 
-const WasmPageContainer = ({
+const ActionPageContainer = ({
   children,
   width = "540px",
-}: WasmPageContainerProps) => (
+}: ActionPageContainerProps) => (
   <Flex
     as="main"
     align="center"
@@ -22,4 +22,4 @@ const WasmPageContainer = ({
   </Flex>
 );
 
-export default WasmPageContainer;
+export default ActionPageContainer;

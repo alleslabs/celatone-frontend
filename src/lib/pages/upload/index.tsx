@@ -7,10 +7,10 @@ import {
   useInternalNavigate,
   useWasmConfig,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { HumanAddr } from "lib/types";
@@ -39,7 +39,7 @@ const Upload = () => {
   }, [enableUpload, isLoading, navigate, router.isReady]);
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
       </Text>
@@ -52,7 +52,7 @@ const Upload = () => {
         mb={12}
       />
       <UploadSection handleBack={() => router.back()} />
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 
