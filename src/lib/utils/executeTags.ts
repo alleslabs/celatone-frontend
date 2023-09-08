@@ -1,4 +1,4 @@
-import type { DetailExecute, Message } from "lib/types";
+import type { DetailExecute, Message, Option } from "lib/types";
 
 /**
  * Returns execute tags to be displayed.
@@ -14,11 +14,11 @@ import type { DetailExecute, Message } from "lib/types";
 export const getExecuteMsgTags = (
   messages: Message[],
   max: number
-): string[] => {
+): Option<string>[] => {
   const executeMessages = messages.filter(
     (message) => message.type === "/cosmwasm.wasm.v1.MsgExecuteContract"
   );
-  const tags = [];
+  const tags: Option<string>[] = [];
   for (let i = 0; i < max; i += 1) {
     if (executeMessages[i]) {
       const msg = executeMessages[i].detail as DetailExecute;

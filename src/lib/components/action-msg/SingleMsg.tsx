@@ -24,7 +24,7 @@ export interface SingleMsgProps {
   type: string;
   text1?: string;
   tokens?: Token[];
-  tags?: string[];
+  tags?: Option<string>[];
   length?: number;
   text2?: string;
   link1?: LinkElement;
@@ -67,9 +67,14 @@ export const SingleMsg = ({
         />
       ))}
       {/* Tags  */}
-      {tags?.map((tag: string, index: number) => (
-        <Tag variant="gray" size="sm" key={index.toString() + tag}>
-          {snakeCase(tag) || tag}
+      {tags?.map((tag, index: number) => (
+        <Tag
+          variant="gray"
+          size="sm"
+          key={index.toString() + tag}
+          color={tag ? "text.main" : "text.disabled"}
+        >
+          {tag ? snakeCase(tag) : "undefined"}
         </Tag>
       ))}
       {/* Tag left over */}
