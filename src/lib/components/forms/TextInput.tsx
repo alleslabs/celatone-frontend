@@ -22,8 +22,7 @@ import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
   value: string;
-  setInputState: Dispatch<SetStateAction<string>>;
-  autoFocus?: boolean;
+  setInputState: Dispatch<SetStateAction<string>> | ((value: string) => void);
   label?: string;
   labelBgColor?: string;
   helperText?: string;
@@ -32,12 +31,12 @@ export interface TextInputProps extends FormControlProps {
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
+  autoFocus?: boolean;
 }
 
 export const TextInput = ({
   value,
   setInputState,
-  autoFocus,
   label = "",
   labelBgColor = "background.main",
   helperText,
@@ -48,6 +47,7 @@ export const TextInput = ({
   status,
   maxLength,
   helperAction,
+  autoFocus = false,
   ...componentProps
 }: TextInputProps) => (
   // Design system size: md = 40px, lg = 56px
@@ -74,7 +74,7 @@ export const TextInput = ({
         maxLength={maxLength}
       />
       <InputRightElement h="full">
-        {status && getStatusIcon(status.state, "20px")}
+        {status && getStatusIcon(status.state, "16px")}
       </InputRightElement>
     </InputGroup>
     <Flex gap={1} alignItems="center" mt={1} flexDir="row">

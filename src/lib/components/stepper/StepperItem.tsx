@@ -5,7 +5,7 @@ import { CustomIcon } from "../icon";
 import type { Mode, Step } from "./types";
 
 export const stepperText: Record<Mode, Record<number, string>> = {
-  deploy: { 1: "Upload or Select Code ID", 2: "Instantiate Code" },
+  deploy: { 1: "Upload or Select Code ID", 2: "Instantiate Contract" },
   migrate: { 1: "Migrate Options", 2: "Migrate Details" },
 };
 
@@ -21,7 +21,7 @@ const StepLabel = ({
   <Flex
     justify="center"
     align="center"
-    backgroundColor={disabled ? "text.disabled" : "primary.main"}
+    backgroundColor={disabled ? "gray.500" : "primary.main"}
     width="24px"
     height="24px"
     borderRadius="50%"
@@ -29,7 +29,9 @@ const StepLabel = ({
     {currentStep > step ? (
       <CustomIcon name="check" color="text.main" boxSize={3} />
     ) : (
-      <Text variant="body3">{step}</Text>
+      <Text variant="body3" color={disabled ? "background.main" : "text.main"}>
+        {step}
+      </Text>
     )}
   </Flex>
 );
@@ -54,7 +56,7 @@ export const StepperItem = ({
           content: '""',
           flex: 1,
           height: "1px",
-          backgroundColor: "gray.600",
+          backgroundColor: "gray.400",
           marginInlineEnd: "8px",
         },
       }}
@@ -63,7 +65,7 @@ export const StepperItem = ({
       <Text
         variant="body2"
         fontWeight={disabled ? 400 : 700}
-        color={disabled ? "text.disabled" : "text.main"}
+        color={disabled ? "text.dark" : "text.main"}
       >
         {stepperText[mode][step]}
       </Text>

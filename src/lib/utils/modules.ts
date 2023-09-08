@@ -1,4 +1,4 @@
-import type { AccountAddr } from "lib/types";
+import type { MoveAccountAddr } from "lib/types";
 
 /**
  * @input init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d::any::pack
@@ -6,9 +6,9 @@ import type { AccountAddr } from "lib/types";
  */
 
 type SplitReturn =
-  | [AccountAddr, undefined, undefined]
-  | [AccountAddr, string, undefined]
-  | [AccountAddr, string, string];
+  | [MoveAccountAddr, undefined, undefined]
+  | [MoveAccountAddr, string, undefined]
+  | [MoveAccountAddr, string, string];
 
 export const splitModule = (path: string): SplitReturn => {
   return path.split("::") as SplitReturn;

@@ -39,9 +39,10 @@ const ToPage = ({ onClick, title }: ToPageProps) => (
   <Flex
     align="center"
     cursor="pointer"
-    borderRadius={8}
+    borderRadius={4}
     p={1}
-    gap={2}
+    gap={1}
+    alignItems="center"
     width="fit-content"
     transition="all 0.25s ease-in-out"
     color="secondary.main"
@@ -51,7 +52,7 @@ const ToPage = ({ onClick, title }: ToPageProps) => (
     }}
     onClick={onClick}
   >
-    <Text variant="body3" color="inherit" fontWeight={700}>
+    <Text variant="body3" color="secondary.main" fontWeight={700}>
       {title}
     </Text>
     <CustomIcon name="chevron-right" color="secondary.main" boxSize={3} m={0} />
@@ -104,7 +105,7 @@ export const StickySidebar = ({
           <AccordionItem borderTop="none" borderColor="gray.700">
             <AccordionButton py={3} px={0}>
               <Text
-                variant="body1"
+                variant="body2"
                 fontWeight={700}
                 color="text.main"
                 textAlign="start"
@@ -125,6 +126,7 @@ export const StickySidebar = ({
                 color="text.dark"
                 mb={hasAction ? 3 : 0}
                 pb={2}
+                p={1}
               >
                 {description}
               </Text>

@@ -62,7 +62,7 @@ export const Interaction = () => {
             <Flex direction="column" gap={4}>
               <LabelText label="Module Path" labelWeight={600}>
                 <Flex align="center" gap={1}>
-                  <Text variant="body1">{module.address}</Text>
+                  <Text variant="body1">{module.address.toString()}</Text>
                   <CustomIcon
                     name="chevron-right"
                     color="gray.600"

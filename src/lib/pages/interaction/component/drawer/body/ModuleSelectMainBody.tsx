@@ -67,7 +67,7 @@ export const ModuleSelectMainBody = ({
   const [selectedModule, setSelectedModule] = useState<IndexedModule>();
 
   const filteredModules = useMemo(
-    () => modules.filter((el) => el.moduleName.includes(keyword)),
+    () => modules.filter((each) => each.moduleName.includes(keyword)),
     [modules, keyword]
   );
 

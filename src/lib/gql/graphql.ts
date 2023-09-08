@@ -2234,6 +2234,7 @@ export type Codes = {
   contracts_aggregate: Contracts_Aggregate;
   cw2_contract?: Maybe<Scalars["String"]>;
   cw2_version?: Maybe<Scalars["String"]>;
+  hash: Scalars["bytea"];
   id: Scalars["Int"];
   /** An object relationship */
   transaction?: Maybe<Transactions>;
@@ -2396,6 +2397,7 @@ export type Codes_Bool_Exp = {
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Bool_Exp>;
   cw2_contract?: InputMaybe<String_Comparison_Exp>;
   cw2_version?: InputMaybe<String_Comparison_Exp>;
+  hash?: InputMaybe<Bytea_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   transaction?: InputMaybe<Transactions_Bool_Exp>;
   transaction_id?: InputMaybe<Int_Comparison_Exp>;
@@ -2427,6 +2429,7 @@ export type Codes_Insert_Input = {
   contracts?: InputMaybe<Contracts_Arr_Rel_Insert_Input>;
   cw2_contract?: InputMaybe<Scalars["String"]>;
   cw2_version?: InputMaybe<Scalars["String"]>;
+  hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction?: InputMaybe<Transactions_Obj_Rel_Insert_Input>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
@@ -2513,6 +2516,7 @@ export type Codes_Order_By = {
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Order_By>;
   cw2_contract?: InputMaybe<Order_By>;
   cw2_version?: InputMaybe<Order_By>;
+  hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction?: InputMaybe<Transactions_Order_By>;
   transaction_id?: InputMaybe<Order_By>;
@@ -2537,6 +2541,8 @@ export enum Codes_Select_Column {
   /** column name */
   Cw2Version = "cw2_version",
   /** column name */
+  Hash = "hash",
+  /** column name */
   Id = "id",
   /** column name */
   TransactionId = "transaction_id",
@@ -2551,6 +2557,7 @@ export type Codes_Set_Input = {
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   cw2_contract?: InputMaybe<Scalars["String"]>;
   cw2_version?: InputMaybe<Scalars["String"]>;
+  hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
   uploader?: InputMaybe<Scalars["Int"]>;
@@ -2622,6 +2629,7 @@ export type Codes_Stream_Cursor_Value_Input = {
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   cw2_contract?: InputMaybe<Scalars["String"]>;
   cw2_version?: InputMaybe<Scalars["String"]>;
+  hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
   uploader?: InputMaybe<Scalars["Int"]>;
@@ -2656,6 +2664,8 @@ export enum Codes_Update_Column {
   Cw2Contract = "cw2_contract",
   /** column name */
   Cw2Version = "cw2_version",
+  /** column name */
+  Hash = "hash",
   /** column name */
   Id = "id",
   /** column name */
@@ -6195,10 +6205,10 @@ export type Pool_Transactions = {
   block: Blocks;
   block_height: Scalars["Int"];
   is_bond: Scalars["Boolean"];
-  is_clp: Scalars["Boolean"];
-  is_collect: Scalars["Boolean"];
+  is_clp?: Maybe<Scalars["Boolean"]>;
+  is_collect?: Maybe<Scalars["Boolean"]>;
   is_lp: Scalars["Boolean"];
-  is_migrate: Scalars["Boolean"];
+  is_migrate?: Maybe<Scalars["Boolean"]>;
   is_superfluid: Scalars["Boolean"];
   is_swap: Scalars["Boolean"];
   /** An object relationship */
@@ -12089,15 +12099,14 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
   contracts_by_pk?: {
     __typename?: "contracts";
     init_msg?: string | null;
-    transaction?: {
-      __typename?: "transactions";
-      hash: any;
-      block_height: number;
-      block: { __typename?: "blocks"; timestamp: any };
-    } | null;
+    transaction?: { __typename?: "transactions"; hash: any } | null;
     contract_proposals: Array<{
       __typename?: "contract_proposals";
       proposal: { __typename?: "proposals"; id: number; title: string };
+    }>;
+    contract_histories: Array<{
+      __typename?: "contract_histories";
+      block: { __typename?: "blocks"; height: number; timestamp: any };
     }>;
   } | null;
 };
@@ -14139,23 +14148,6 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block_height" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
                     ],
                   },
                 },
@@ -14259,6 +14251,62 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "title" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
                             },
                           ],
                         },

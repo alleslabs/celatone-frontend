@@ -34,6 +34,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gov: {
         enabled: true,
       },
+      nft: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -54,7 +57,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",
     lcd: "https://lcd.osmotest5.osmosis.zone",
-    rpc: "https://rpc.osmotest5.osmosis.zone:443",
+    rpc: "https://osmosis-testnet-rpc.polkachu.com:443",
     indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
@@ -80,6 +83,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {
@@ -126,6 +132,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {

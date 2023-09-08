@@ -53,7 +53,7 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
         endpoints: availableChainsEndpoints,
       }}
       signerOptions={{
-        preferredSignType: () => "amino",
+        preferredSignType: () => "direct",
       }}
     >
       {children}

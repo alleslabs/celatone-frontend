@@ -30,21 +30,6 @@ export const initiatestnet: Chain = {
       },
     ],
   },
-  codebase: {
-    git_repo: "https://github.com/sei-protocol/sei-chain",
-    recommended_version: "v3.0.0",
-    compatible_versions: ["v3.0.0"],
-    cosmos_sdk_version: "",
-    cosmwasm_enabled: true,
-    genesis: {
-      genesis_url: "",
-    },
-    versions: [
-      {
-        name: "v1",
-      },
-    ],
-  },
   logo_URIs: {
     png: "",
     svg: "",

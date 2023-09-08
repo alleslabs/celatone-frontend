@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
+import type {
+  UploadSucceedCallback,
+  UploadTxInternalResult,
+} from "lib/app-provider";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -35,11 +39,13 @@ import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
   handleBack: () => void;
+  onComplete?: UploadSucceedCallback;
   isMigrate?: boolean;
 }
 
 export const UploadSection = ({
   handleBack,
+  onComplete,
   isMigrate = false,
 }: UploadSectionProps) => {
   const {
@@ -153,11 +159,12 @@ export const UploadSection = ({
         permission,
         codeName,
         estimatedFee,
-        onTxSucceed: (codeId: number) => {
+        onTxSucceed: (txResult: UploadTxInternalResult) => {
+          onComplete?.(txResult);
           updateCodeInfo(
-            codeId,
+            Number(txResult.codeId),
             address as HumanAddr,
-            codeName || `${wasmFile?.name}(${codeId})`
+            codeName || `${wasmFile?.name}(${txResult.codeId})`
           );
         },
       });
@@ -174,6 +181,7 @@ export const UploadSection = ({
     estimatedFee,
     broadcast,
     updateCodeInfo,
+    onComplete,
     disableAnyOfAddresses,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(addresses),
@@ -210,7 +218,10 @@ export const UploadSection = ({
           }}
         />
       ) : (
-        <DropZone setFile={(file) => setValue("wasmFile", file)} />
+        <DropZone
+          setFile={(file) => setValue("wasmFile", file)}
+          fileType="wasm"
+        />
       )}
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput

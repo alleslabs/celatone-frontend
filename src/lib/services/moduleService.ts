@@ -7,13 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import type {
-  AccountAddr,
+  MoveAccountAddr,
   ExposedFunction,
   InternalModule,
   ResponseABI,
   Option,
 } from "lib/types";
-import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils/abi";
+import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils";
 
 import {
   getAccountModule,
@@ -47,13 +47,13 @@ const indexModuleResponse = (
   };
 };
 
-export const useAddressModules = ({
+export const useAccountModules = ({
   address,
   moduleName,
   functionName,
   options = {},
 }: {
-  address: AccountAddr;
+  address: MoveAccountAddr;
   moduleName: Option<string>;
   functionName: Option<string>;
   options?: Omit<UseQueryOptions<IndexedModule | IndexedModule[]>, "queryKey">;
@@ -85,7 +85,7 @@ export const useVerifyModule = ({
   address,
   moduleName,
 }: {
-  address: AccountAddr;
+  address: MoveAccountAddr;
   moduleName: string;
 }) =>
   useQuery(

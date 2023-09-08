@@ -9,12 +9,14 @@ export enum UpgradePolicy {
 
 export type Visibility = "public" | "friend" | "private" | "script";
 
+// TODO: revisit address type later
 export interface ABIModule {
   address: string;
   name: string;
   functions: ABIFunction[];
 }
 
+// TODO: revisit moduleAddress type later
 interface ABIFunction {
   method: "query" | "tx";
   moduleAddress: string;
@@ -26,7 +28,7 @@ interface ABIFunction {
 
 /* response */
 export interface ResponseModule {
-  address: string;
+  address: HexAddr;
   module_name: string;
   abi: string;
   raw_bytes: string;
