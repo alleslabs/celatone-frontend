@@ -11,10 +11,10 @@ export enum InteractionTabs {
 }
 
 interface InteractionTypeSwitchProps extends FlexProps {
-  currentTab: Option<InteractionTabs>;
+  currentTab: InteractionTabs;
   disabled?: boolean;
   counts: [Option<number>, Option<number>];
-  onTabChange: Dispatch<SetStateAction<Option<InteractionTabs>>>;
+  onTabChange: Dispatch<SetStateAction<InteractionTabs>>;
 }
 
 const tabs = Object.values(InteractionTabs);

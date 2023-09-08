@@ -119,13 +119,8 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
                 icon: "add-new" as IconKeys,
               },
               {
-                name: "View",
-                slug: "/interaction/view",
-                icon: "query" as IconKeys,
-              },
-              {
-                name: "Execute",
-                slug: "/interaction/execute",
+                name: "View / Execute",
+                slug: "/interaction",
                 icon: "execute" as IconKeys,
               },
               {

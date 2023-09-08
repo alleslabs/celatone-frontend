@@ -46,6 +46,7 @@ export const FunctionAccordion = ({
           {filteredFns.length ? (
             filteredFns.map((fn) => (
               <FunctionCard
+                key={fn.name}
                 variant={selectedFn?.name === fn.name ? "selected" : "common"}
                 exposedFn={fn}
                 onFunctionSelect={setSelectedFn}

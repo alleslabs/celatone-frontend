@@ -112,14 +112,7 @@ export const Interaction = () => {
           handleModuleSelect={handleModuleSelect}
         />
       </Flex>
-      <Grid
-        borderTop="1px solid"
-        borderColor="gray.700"
-        pt={8}
-        gap={8}
-        templateColumns="minmax(300px, 20%) 1fr"
-        overflow="hidden"
-      >
+      <Grid gap={8} templateColumns="minmax(300px, 20%) 1fr" overflow="hidden">
         {/* Left side */}
         <FunctionSelectPanel
           module={module}
@@ -127,7 +120,11 @@ export const Interaction = () => {
           setSelectedFn={setSelectedFn}
         />
         {/* Right side */}
-        <FunctionSelectBody module={module} selectedFn={selectedFn} />
+        <FunctionSelectBody
+          module={module}
+          selectedFn={selectedFn}
+          openDrawer={onOpen}
+        />
       </Grid>
     </PageContainer>
   );

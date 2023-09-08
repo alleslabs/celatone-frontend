@@ -8,5 +8,6 @@ export const ModuleContainer = chakra(Flex, {
     justifyContent: "center",
     borderRadius: 8,
     gap: 4,
+    px: 4,
   },
 });

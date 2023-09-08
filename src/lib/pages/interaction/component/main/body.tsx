@@ -11,30 +11,25 @@ import { SelectedFunctionCard } from "./SelectedFunctionCard";
 interface FunctionSelectBodyProps {
   module: Option<IndexedModule>;
   selectedFn: Option<ExposedFunction>;
+  openDrawer: () => void;
 }
 
 export const FunctionSelectBody = ({
   module,
   selectedFn,
+  openDrawer,
 }: FunctionSelectBodyProps) => {
   return selectedFn ? (
     <Flex direction="column" maxW="full">
       <SelectedFunctionCard fn={selectedFn} />
     </Flex>
   ) : (
-    <ModuleContainer flexDirection="column" py={24}>
+    <ModuleContainer flexDirection="column">
       {module ? (
-        <Flex
-          align="center"
-          gap={6}
-          h="20%"
-          w="20%"
-          alignSelf="flex-start"
-          ml="40px"
-        >
+        <Flex align="center" gap={6} alignSelf="flex-start" ml="40px">
           <CustomIcon name="arrow-left" boxSize={6} color="gray.600" />
           <Flex
-            h="full"
+            gap={4}
             color="text.dark"
             fontSize="14px"
             justifyContent="space-between"
@@ -54,7 +49,9 @@ export const FunctionSelectBody = ({
             my={0}
             py={4}
           />
-          <Button variant="primary">Select Module</Button>
+          <Button variant="primary" onClick={openDrawer}>
+            Select Module
+          </Button>
         </>
       )}
     </ModuleContainer>

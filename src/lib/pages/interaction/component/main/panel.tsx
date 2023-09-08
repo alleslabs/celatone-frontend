@@ -1,7 +1,6 @@
 import { Accordion, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   NoImageEmptyState,
@@ -85,8 +84,7 @@ export const FunctionSelectPanel = ({
   selectedFn,
   setSelectedFn,
 }: FunctionSelectPanelProps) => {
-  const { query, isReady } = useRouter();
-  const [tab, setTab] = useState<InteractionTabs>();
+  const [tab, setTab] = useState(InteractionTabs.VIEW_MODULE);
   const [keyword, setKeyword] = useState("");
 
   const functionStates = useMemo<FunctionStates>(() => {
@@ -105,16 +103,6 @@ export const FunctionSelectPanel = ({
         targetFunctions?.filter((fn) => !checkAvailability(fn)).length === 0,
     };
   }, [keyword, tab, module?.executeFunctions, module?.viewFunctions]);
-
-  useEffect(() => {
-    if (isReady) {
-      setTab(
-        query.type === "execute"
-          ? InteractionTabs.EXECUTE_MODULE
-          : InteractionTabs.VIEW_MODULE
-      );
-    }
-  }, [isReady, query.type]);
 
   return (
     <Flex direction="column" overflow="scroll">
