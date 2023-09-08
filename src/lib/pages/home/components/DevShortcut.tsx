@@ -29,7 +29,7 @@ const shortcutList: ShortcutMetadata[] = [
   {
     title: "Deploy",
     subtitle: "Upload code or instantiate contract",
-    slug: "/deploy",
+    slug: "deploy",
     icon: "add-new",
   },
   {

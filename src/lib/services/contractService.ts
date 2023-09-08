@@ -4,6 +4,7 @@ import { useCallback } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
   useCelatoneApp,
   useWasmConfig,
 } from "lib/app-provider";
@@ -36,8 +37,11 @@ import type {
 } from "lib/types";
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
+import { getCodeIdInfo } from "./code";
+
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
+  codeHash: string;
   admin: Option<Addr>;
 }
 
@@ -56,15 +60,22 @@ export const useContractDetailByContractAddress = (
   onError?: (err: Error) => void
 ): UseQueryResult<ContractDetail> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getContractByContractAddressQueryDocument, { contractAddress })
-      .then<ContractDetail>(({ contracts_by_pk }) => {
+      .then<ContractDetail>(async ({ contracts_by_pk }) => {
         if (!contracts_by_pk) throw Error("Contract not found");
+        // TODO: retrieve code hash from gql instead when available
+        const codeHash = await getCodeIdInfo(
+          lcdEndpoint,
+          String(contracts_by_pk.code_id)
+        ).then((data) => data.code_info.data_hash);
         return {
           contractAddress,
           codeId: contracts_by_pk.code_id,
+          codeHash,
           label: contracts_by_pk.label,
           instantiator: contracts_by_pk.accountByInitBy?.address as Addr,
           admin: contracts_by_pk.admin
@@ -72,7 +83,7 @@ export const useContractDetailByContractAddress = (
             : undefined,
         };
       });
-  }, [contractAddress, indexerGraphClient]);
+  }, [contractAddress, lcdEndpoint, indexerGraphClient]);
 
   return useQuery(
     [
@@ -99,9 +110,9 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then<InstantiateDetail>(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdHeight: contracts_by_pk?.contract_histories?.at(0)?.block.height,
         createdTime: parseDateOpt(
-          contracts_by_pk?.transaction?.block.timestamp
+          contracts_by_pk?.contract_histories?.at(0)?.block.timestamp
         ),
         initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),

@@ -27,7 +27,7 @@ export const TransactionsTable = ({
 
   const templateColumns = `40px 190px 48px minmax(360px, 1fr) ${
     showRelations ? "100px " : ""
-  }max(160px) ${showTimestamp ? "max(230px) " : ""}${
+  }max(190px) ${showTimestamp ? "max(230px) " : ""}${
     showAction ? "100px " : ""
   }`;
 

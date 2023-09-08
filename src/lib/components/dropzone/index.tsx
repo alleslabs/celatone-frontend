@@ -6,14 +6,21 @@ import { useDropzone } from "react-dropzone";
 import { UploadIcon } from "../icon";
 import { useWasmConfig } from "lib/app-provider";
 
+import type { DropzoneFileType } from "./config";
+import { DROPZONE_CONFIG } from "./config";
+
 interface DropZoneProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   setFile: (file: File) => void;
+  fileType: DropzoneFileType;
 }
 
-export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
+export function DropZone({
+  setFile,
+  fileType,
+  ...componentProps
+}: DropZoneProps) {
   const wasm = useWasmConfig({ shouldRedirect: false });
-
   const onDrop = useCallback(
     (file: File[]) => {
       setFile(file[0]);
@@ -21,16 +28,17 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
     [setFile]
   );
 
+  const config = DROPZONE_CONFIG[fileType];
+
   // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
   const maxSize = wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
 
+  // TODO: JSON Schema file size ??
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
     maxFiles: 1,
-    accept: {
-      "application/wasm": [".wasm"],
-    },
-    maxSize,
+    accept: config.accept,
+    maxSize: fileType === "wasm" ? maxSize : undefined,
   });
 
   return (
@@ -61,10 +69,13 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
           >
             Click to upload
           </Text>
-          <Text variant="body1">or drag Wasm file here</Text>
+          <Text variant="body1">
+            or drag {config.text.prettyFileType} file here
+          </Text>
         </Flex>
         <Text variant="body2" color="text.dark">
-          .wasm (max. {maxSize / 1000}KB)
+          {config.text.rawFileType}{" "}
+          {fileType === "wasm" && `(max. ${maxSize / 1000}KB)`}
         </Text>
       </Flex>
       {fileRejections.length > 0 && (
