@@ -1,4 +1,5 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+import { wallets as staionWallets } from "@cosmos-kit/station";
 
 import type { ChainConfigs } from "./types";
 
@@ -11,7 +12,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://terra2-rpc.lavenderfive.com:443",
     indexer: "https://phoenix-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
-    wallets: [...keplrWallets],
+    wallets: [...staionWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -34,7 +35,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.0125,
+        tokenPerGas: 0.0151,
         denom: "uluna",
       },
       gasAdjustment: 1.5,
@@ -54,7 +55,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://terra-testnet-rpc.polkachu.com:443",
     indexer: "https://pisco-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
-    wallets: [...keplrWallets],
+    wallets: [...staionWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -77,7 +78,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.0125,
+        tokenPerGas: 0.151,
         denom: "uluna",
       },
       gasAdjustment: 1.5,
