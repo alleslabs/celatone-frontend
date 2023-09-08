@@ -2,16 +2,13 @@ import { Button, Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 interface FooterProps {
-  onSubmit: () => void;
-  disabled: boolean;
+  //   onSubmit: () => void;
+  //   disabled: boolean;
   isLoading: boolean;
+  fieldAmount: number;
 }
 
-export const Footer = ({
-  onSubmit,
-  disabled,
-  isLoading = false,
-}: FooterProps) => {
+export const Footer = ({ isLoading = false, fieldAmount }: FooterProps) => {
   const router = useRouter();
   return (
     <Grid
@@ -30,16 +27,11 @@ export const Footer = ({
           <Button variant="outline-primary" onClick={router.back}>
             Cancel
           </Button>
-          <Button
-            variant="primary"
-            onClick={onSubmit}
-            disabled={disabled}
-            isDisabled={isLoading}
-          >
+          <Button variant="primary" isDisabled={isLoading}>
             {isLoading ? (
               <Spinner size="md" variant="light" />
             ) : (
-              "Submit Proposal"
+              `Publish ${fieldAmount} Modules`
             )}
           </Button>
         </Flex>
