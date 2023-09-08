@@ -16,6 +16,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
+import type { KeyboardEvent } from "react";
 
 import { CustomIcon } from "../icon";
 import {
@@ -55,6 +56,8 @@ export const SelectContractInstantiator = ({
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
+
+  const isMobile = useMobile();
 
   // TODO - Revisit false case
   const { instantiatedListInfo, isLoading } = useInstantiatedByMe(true);
@@ -98,7 +101,21 @@ export const SelectContractInstantiator = ({
     setListSlug(slug);
   };
 
-  const isMobile = useMobile();
+  const handleSubmit = () => {
+    const err = validateContractAddress(searchContract);
+    if (err !== null) setInvalid(err);
+    else {
+      AmpTrack(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
+      refetch();
+    }
+  };
+
+  const handleKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <>
       <Button
@@ -151,20 +168,15 @@ export const SelectContractInstantiator = ({
                     }}
                     placeholder={`ex. ${exampleContractAddress}`}
                     size="lg"
+                    autoFocus
+                    onKeyDown={handleKeydown}
                   />
                   <Button
                     height="56px"
                     minW="72px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
-                    onClick={() => {
-                      const err = validateContractAddress(searchContract);
-                      if (err !== null) setInvalid(err);
-                      else {
-                        AmpTrack(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
-                        refetch();
-                      }
-                    }}
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>

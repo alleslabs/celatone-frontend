@@ -17,8 +17,14 @@ export const useQueryCmds = (contractAddress: ContractAddr) => {
       contractAddress,
       '{"": {}}',
     ],
-    async () =>
-      queryData(lcdEndpoint, contractAddress as ContractAddr, '{"": {}}'),
+    async () => {
+      if (!contractAddress) return [];
+      return queryData(
+        lcdEndpoint,
+        contractAddress as ContractAddr,
+        '{"": {}}'
+      );
+    },
     {
       enabled: !!contractAddress,
       retry: false,

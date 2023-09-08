@@ -21,7 +21,7 @@ export const MsgToken = ({
   ampCopierSection,
 }: MsgTokenProps) => (
   <Flex role="group" align="center" gap={1}>
-    <Text fontWeight={fontWeight} variant={{ base: "body2", md: "body1" }}>
+    <Text fontWeight={fontWeight} variant="body2">
       {formatBalanceWithDenom({
         coin,
         symbol,

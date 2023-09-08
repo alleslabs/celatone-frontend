@@ -1,23 +1,19 @@
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
   useInternalNavigate,
   useWasmConfig,
   useMobile,
 } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { AmpTrackToQuery } from "lib/services/amplitude";
-import { queryData } from "lib/services/contract";
-import type { ContractAddr, RpcQueryError } from "lib/types";
+import type { ContractDetail } from "lib/services/contractService";
+import type { ContractAddr } from "lib/types";
 import {
   jsonPrettify,
   getFirstQueryParam,
@@ -27,16 +23,17 @@ import {
 
 import { QueryArea } from "./components/QueryArea";
 
-const Query = () => {
+const Query = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const lcdEndpoint = useBaseApiRoute("rest");
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
+  const [codeHash, setCodeHash] = useState("");
+  const [codeId, setCodeId] = useState("");
   const [initialMsg, setInitialMsg] = useState("");
-  const [cmds, setCmds] = useState<[string, string][]>([]);
   const isMobile = useMobile();
+
   const goToExecute = () => {
     navigate({
       pathname: "/execute",
@@ -55,30 +52,6 @@ const Query = () => {
     [navigate]
   );
 
-  // TODO: Abstract query and make query key
-  const { isFetching } = useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACT_QUERY_CMDS,
-      lcdEndpoint,
-      contractAddress,
-      '{"": {}}',
-    ],
-    async () => queryData(lcdEndpoint, contractAddress, '{"": {}}'),
-    {
-      enabled: !!contractAddress,
-      retry: false,
-      cacheTime: 0,
-      refetchOnWindowFocus: false,
-      onError: (e: AxiosError<RpcQueryError>) => {
-        const queryCmds: string[] = [];
-        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/g) || [])
-          .slice(1)
-          .forEach((match) => queryCmds.push(match[1]));
-        setCmds(queryCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
-      },
-    }
-  );
-
   useEffect(() => {
     if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
@@ -95,7 +68,6 @@ const Query = () => {
 
       setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddressParam) setCmds([]);
 
       AmpTrackToQuery(!!contractAddressParam, !!msgParam);
     }
@@ -103,7 +75,6 @@ const Query = () => {
 
   return (
     <PageContainer>
-      {isFetching && <LoadingOverlay />}
       <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5">
           Query Contract
@@ -128,15 +99,20 @@ const Query = () => {
         mode="all-lists"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
+        successCallback={(data: ContractDetail) => {
+          setCodeHash(data.codeHash);
+          setCodeId(String(data.codeId));
+        }}
       />
 
       <QueryArea
         contractAddress={contractAddress}
         initialMsg={initialMsg}
-        cmds={cmds}
+        codeId={codeId}
+        codeHash={codeHash}
       />
     </PageContainer>
   );
-};
+});
 
 export default Query;

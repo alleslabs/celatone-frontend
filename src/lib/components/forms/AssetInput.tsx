@@ -17,6 +17,7 @@ interface AssetInputProps {
   amountInput: JSX.Element;
   assetOptions: AssetOptions[];
   initialSelected: string;
+  labelBgColor?: string;
 }
 
 export const AssetInput = ({
@@ -26,6 +27,7 @@ export const AssetInput = ({
   amountInput: AmountInput,
   assetOptions,
   initialSelected,
+  labelBgColor,
 }: AssetInputProps) => (
   <Grid templateColumns="130px 1fr auto" columnGap={4} w="full" mb={4}>
     <SelectInput
@@ -34,6 +36,7 @@ export const AssetInput = ({
       onChange={setCurrencyValue}
       placeholder="Select"
       initialSelected={initialSelected}
+      labelBgColor={labelBgColor}
     />
     {AmountInput}
     <Button
@@ -43,8 +46,9 @@ export const AssetInput = ({
       size="lg"
       disabled={disableDelete}
       onClick={onDelete}
+      p={0}
     >
-      <CustomIcon name="delete" />
+      <CustomIcon name="delete" boxSize={3} />
     </Button>
   </Grid>
 );

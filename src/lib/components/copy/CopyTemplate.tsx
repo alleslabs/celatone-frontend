@@ -1,3 +1,4 @@
+import type { BoxProps } from "@chakra-ui/react";
 import { Box, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -8,6 +9,7 @@ interface CopyTemplateProps {
   copyLabel?: string;
   triggerElement: JSX.Element;
   isDisabled?: boolean;
+  ml?: BoxProps["ml"];
 }
 
 export const CopyTemplate = ({
@@ -15,6 +17,7 @@ export const CopyTemplate = ({
   copyLabel = "Copied!",
   triggerElement,
   isDisabled = false,
+  ml,
 }: CopyTemplateProps) => {
   const { onCopy, hasCopied, setValue } = useClipboard(value);
   useEffect(() => setValue(value), [value, setValue]);
@@ -27,6 +30,7 @@ export const CopyTemplate = ({
           onCopy();
           e.stopPropagation();
         }}
+        ml={ml}
       >
         {triggerElement}
       </Box>

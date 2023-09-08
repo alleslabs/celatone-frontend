@@ -46,7 +46,7 @@ export const TxRelationSelection = ({
     case undefined:
       initialValue = RelationType.ALL;
       break;
-    case false:
+    case true:
       initialValue = RelationType.SIGNING;
       break;
     default:
