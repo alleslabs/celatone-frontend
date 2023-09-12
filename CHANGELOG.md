@@ -96,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#525](https://github.com/alleslabs/celatone-frontend/pull/525) Add accountId to query keys
+- [#525](https://github.com/alleslabs/celatone-frontend/pull/525) Add accountId to txs count query keys
 - [#522](https://github.com/alleslabs/celatone-frontend/pull/522) Fix to support undefined execute msg
 - [#520](https://github.com/alleslabs/celatone-frontend/pull/520) Fix update instantiated info height data and handle genesis height case
 - [#518](https://github.com/alleslabs/celatone-frontend/pull/518) Fix contract migration remark data
