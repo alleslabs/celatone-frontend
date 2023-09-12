@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable sonarjs/max-switch-cases */
 /* eslint-disable complexity */
 import { Flex } from "@chakra-ui/react";
@@ -602,7 +603,8 @@ export const generateReceipts = (
         log && proposalIdReceipt(details.proposal_id),
         log && {
           title: "Proposal Type",
-          value: details.proposal_type,
+          value:
+            details.proposal_type ?? details.content["@type"].split(".").at(-1),
         },
         {
           title: "Is Expedited",
