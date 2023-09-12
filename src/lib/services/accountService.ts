@@ -27,7 +27,7 @@ export const useAccountId = (
   walletAddress: Option<Addr>
 ): UseQueryResult<number | null> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = () => {
+  const queryFn = async () => {
     if (!walletAddress)
       throw new Error("Error fetching account id: failed to retrieve address.");
     return indexerGraphClient
