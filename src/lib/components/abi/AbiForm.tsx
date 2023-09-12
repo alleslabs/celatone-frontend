@@ -46,11 +46,11 @@ export const AbiForm = ({
         <ParamForm
           params={fn.params}
           initialData={args}
-          propsOnChange={(value, errors) => {
+          propsOnChange={(value) => {
             setValue("args", value);
             propsOnChange?.(getValues());
-            propsOnErrors?.(errors);
           }}
+          propsOnErrors={propsOnErrors}
         />
       )}
     </Flex>

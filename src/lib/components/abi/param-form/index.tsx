@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 import { ParamField } from "./ParamField";
 
 interface ParamFormProps {
+  title?: string;
   params: string[];
   initialData: Record<string, string>;
-  propsOnChange?: (
-    data: Record<string, string>,
-    errors: [string, string][]
-  ) => void;
+  propsOnChange?: (data: Record<string, string>) => void;
+  propsOnErrors?: (errors: [string, string][]) => void;
+  isReadOnly?: boolean;
 }
 
 const formatErrors = (
@@ -23,9 +23,12 @@ const formatErrors = (
   ]);
 
 export const ParamForm = ({
+  title = "args",
   params,
   initialData,
   propsOnChange,
+  propsOnErrors,
+  isReadOnly = false,
 }: ParamFormProps) => {
   const {
     trigger,
@@ -44,11 +47,14 @@ export const ParamForm = ({
   return (
     <Flex direction="column" gap={4}>
       <Heading variant="h6" as="h6" color="text.main">
-        args
+        {title}
       </Heading>
       {params.map((param, index) => {
         control.register(`${index}`, {
-          onChange: () => propsOnChange?.(getValues(), formatErrors(errors)),
+          onChange: () => {
+            propsOnChange?.(getValues());
+            propsOnErrors?.(formatErrors(errors));
+          },
         });
         return (
           <ParamField
@@ -57,6 +63,7 @@ export const ParamForm = ({
             param={param}
             control={control}
             error={errors[`${index}`]?.message}
+            isReadOnly={isReadOnly}
           />
         );
       })}
