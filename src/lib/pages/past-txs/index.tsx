@@ -56,7 +56,6 @@ const PastTxs = () => {
 
   const { data: accountId } = useAccountId(address as HumanAddr);
   const { data: countTxs = 0 } = useTxsCountByAddress({
-    address: undefined,
     accountId,
     search: pastTxsState.search,
     filters: pastTxsState.filters,
@@ -80,7 +79,6 @@ const PastTxs = () => {
   });
 
   const { data: txs, isLoading } = useTxsByAddressPagination(
-    undefined,
     accountId,
     pastTxsState.search,
     pastTxsState.filters,

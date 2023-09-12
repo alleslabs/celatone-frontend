@@ -76,7 +76,6 @@ export const useTxData = (
 };
 
 export const useTxsByAddressPagination = (
-  address: Option<Addr>,
   accountId: Option<number | null>,
   search: string,
   filters: TxFilters,
@@ -86,7 +85,6 @@ export const useTxsByAddressPagination = (
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression({
-    address,
     accountId,
     search,
     filters,
@@ -94,7 +92,7 @@ export const useTxsByAddressPagination = (
   });
 
   const queryFn = useCallback(async () => {
-    if (!address && !accountId) return [];
+    if (!accountId) return [];
     return indexerGraphClient
       .request(getTxsByAddressPagination, {
         expression,
@@ -138,11 +136,10 @@ export const useTxsByAddressPagination = (
           isInstantiate: transaction.transaction.is_instantiate,
         }))
       );
-  }, [accountId, address, expression, indexerGraphClient, offset, pageSize]);
+  }, [accountId, expression, indexerGraphClient, offset, pageSize]);
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION,
-      address,
       accountId,
       search,
       filters,
@@ -153,6 +150,7 @@ export const useTxsByAddressPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
+      enabled: accountId !== undefined,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -160,13 +158,11 @@ export const useTxsByAddressPagination = (
 };
 
 export const useTxsCountByAddress = ({
-  address,
   accountId,
   search,
   filters,
   isSigner,
 }: {
-  address: Option<Addr>;
   accountId: Option<number | null>;
   search: string;
   filters: TxFilters;
@@ -174,7 +170,6 @@ export const useTxsCountByAddress = ({
 }): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression({
-    address,
     accountId,
     search,
     filters,
@@ -182,7 +177,7 @@ export const useTxsCountByAddress = ({
   });
 
   const queryFn = useCallback(async () => {
-    if (!address && !accountId) return 0;
+    if (!accountId) return 0;
     return indexerGraphClient
       .request(getTxsCountByAddress, {
         expression,
@@ -191,12 +186,12 @@ export const useTxsCountByAddress = ({
         ({ account_transactions_aggregate }) =>
           account_transactions_aggregate.aggregate?.count
       );
-  }, [expression, indexerGraphClient, accountId, address]);
+  }, [accountId, expression, indexerGraphClient]);
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_COUNT,
-      address,
+      accountId,
       search,
       filters,
       isSigner,
@@ -204,7 +199,7 @@ export const useTxsCountByAddress = ({
     ],
     queryFn,
     {
-      enabled: !!address || accountId !== undefined,
+      enabled: accountId !== undefined,
       retry: 0,
       refetchOnWindowFocus: false,
     }
