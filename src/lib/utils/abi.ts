@@ -40,3 +40,11 @@ export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
 
   return functionMap;
 };
+
+export const getAbiInitialData = (length: number): Record<string, string> =>
+  Array(length)
+    .fill("")
+    .reduce<Record<string, string>>(
+      (prev, _, index) => ({ ...prev, [index.toString()]: "" }),
+      {}
+    );

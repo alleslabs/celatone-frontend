@@ -73,7 +73,7 @@ interface Struct {
   fields: Field[];
 }
 
-interface GenericTypeParam {
+export interface GenericTypeParam {
   constraints: string[];
 }
 
