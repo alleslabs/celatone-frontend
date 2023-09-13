@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   Button,
+  Heading,
 } from "@chakra-ui/react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
@@ -13,6 +14,7 @@ import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import { useIsCurrentPage } from "lib/hooks";
 import type { Option } from "lib/types";
 
@@ -22,7 +24,7 @@ interface SubHeaderMenuInfo {
   icon: IconKeys;
 }
 
-const boxShadow = "0px 1px 5px 0px var(--chakra-colors-gray-900)";
+const boxShadow = "0px 4px 8px 0px var(--chakra-colors-gray-900)";
 const FirstLandPrompt = ({
   setIsDevMode,
 }: {
@@ -32,6 +34,8 @@ const FirstLandPrompt = ({
     position="absolute"
     right="24px"
     mt={1}
+    gap={2}
+    p={6}
     direction="column"
     bg="gray.800"
     color="text.main"
@@ -39,28 +43,28 @@ const FirstLandPrompt = ({
     borderRadius={4}
     boxShadow={boxShadow}
     zIndex="popover"
-    sx={{
-      "& > header": { p: "16px 24px", fontSize: "18px", fontWeight: 500 },
-      "& > div": { p: "8px 24px", fontSize: "14px" },
-      "& > footer": {
-        p: "12px",
-        display: "flex",
-        justifyContent: "flex-end",
-        gap: 2,
-      },
-    }}
   >
-    <header>Looking for developer features?</header>
-    <div>
-      For quick access to our deploy, query, and other developer features, try
-      our Dev Mode. You can change it back at any time
-    </div>
-    <footer>
+    <Flex>
+      <Heading as="h6" variant="h6" fontWeight={600}>
+        Want to{" "}
+        <Text as="span" color="accent.main">
+          Deploy, Query, or Execute?
+        </Text>
+      </Heading>
+    </Flex>
+    <Text variant="body2" color="text.main" my={1}>
+      Turn on Dev Features to access to our deploy, query, execute and other
+      developer features through side bar navigation.
+    </Text>
+    <Flex direction="column" gap={2}>
+      <Button onClick={() => setIsDevMode(true)}>Turn on Dev Feature!</Button>
       <Button variant="outline-primary" onClick={() => setIsDevMode(false)}>
-        No, I just want to explore
+        Use Celatone as Explorer
       </Button>
-      <Button onClick={() => setIsDevMode(true)}>Try Dev Mode!</Button>
-    </footer>
+      <Text variant="body2" textAlign="center" color="text.dark">
+        You can change it back anytime
+      </Text>
+    </Flex>
   </Flex>
 );
 
@@ -166,12 +170,17 @@ const SubHeader = ({
           style={isDevMode === undefined ? switchHighlight : undefined}
         >
           <FormLabel mb={0} cursor="pointer" mr={2}>
-            <Text
-              variant="body2"
-              color={isDevMode === undefined ? "text.main" : "text.dark"}
+            <Tooltip
+              label="Toggle to enable or disable access to our deploy, query, execute, and other developer features."
+              placement="bottom"
             >
-              Dev Mode
-            </Text>
+              <Text
+                variant="body2"
+                color={isDevMode === undefined ? "text.main" : "text.dark"}
+              >
+                Dev Features
+              </Text>
+            </Tooltip>
           </FormLabel>
           <Switch
             size="md"
