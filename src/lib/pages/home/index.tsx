@@ -7,7 +7,7 @@ import { CURR_THEME } from "env";
 import {
   useCelatoneApp,
   useInternalNavigate,
-  useNavContext,
+  useMobile,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -112,8 +112,7 @@ const calculateAverageBlockTime = (
 const Home = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { isDevMode } = useNavContext();
-
+  const isMobile = useMobile();
   const {
     chainConfig: { prettyName },
   } = useCelatoneApp();
@@ -223,7 +222,7 @@ const Home = () => {
           />
         </Flex>
       </Flex>
-      {isDevMode && (
+      {!isMobile && (
         <section style={{ marginBottom: "48px" }}>
           <Flex gap={4} direction="column">
             <Heading as="h5" variant="h5">
@@ -237,7 +236,6 @@ const Home = () => {
           </Flex>
         </section>
       )}
-
       <section style={{ marginBottom: "48px" }}>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
