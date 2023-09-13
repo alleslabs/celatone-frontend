@@ -1,5 +1,5 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Grid, GridItem } from "@chakra-ui/react";
 
 import type { ExplorerConfig } from "config/chain/types";
 import type { AddressReturnType } from "lib/app-provider";
@@ -105,7 +105,6 @@ const LinkRender = ({
   hrefLink,
   textValue,
   isEllipsis,
-  maxWidth,
   textVariant,
   openNewTab,
 }: {
@@ -114,7 +113,6 @@ const LinkRender = ({
   hrefLink: string;
   textValue: string;
   isEllipsis: boolean;
-  maxWidth: ExplorerLinkProps["maxWidth"];
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
@@ -126,7 +124,6 @@ const LinkRender = ({
       transition="all .25s ease-in-out"
       _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
-      maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
@@ -161,7 +158,6 @@ export const ExplorerLink = ({
   showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
-  maxWidth = "160px",
   textVariant = "body2",
   ampCopierSection,
   openNewTab,
@@ -193,7 +189,6 @@ export const ExplorerLink = ({
   return (
     <Box
       className="copier-wrapper"
-      display="inline-flex"
       alignItems="center"
       transition="all .25s ease-in-out"
       _hover={{
@@ -209,30 +204,39 @@ export const ExplorerLink = ({
           {textValue}
         </Text>
       ) : (
-        <Flex
-          display={{ base: "inline-flex", md: "flex" }}
-          align="center"
+        <Grid
+          id="beeb"
+          className="copier-grid"
           h={fixedHeight ? "24px" : "auto"}
+          gridTemplateColumns={`1fr ${
+            showCopyOnHover && !isMobile ? "0px" : "24px"
+          }`}
+          alignItems="center"
         >
-          <LinkRender
-            type={type}
-            isInternal={isInternal}
-            hrefLink={hrefLink}
-            textValue={textValue}
-            isEllipsis={textFormat === "ellipsis"}
-            maxWidth={maxWidth}
-            textVariant={textVariant}
-            openNewTab={openNewTab}
-          />
-          <Copier
-            type={type}
-            value={copyValue || value}
-            copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-            display={showCopyOnHover && !isMobile ? "none" : "inline"}
-            ml={2}
-            amptrackSection={ampCopierSection}
-          />
-        </Flex>
+          <GridItem overflow="hidden">
+            <LinkRender
+              type={type}
+              isInternal={isInternal}
+              hrefLink={hrefLink}
+              textValue={textValue}
+              isEllipsis={textFormat === "ellipsis"}
+              textVariant={textVariant}
+              openNewTab={openNewTab}
+            />
+          </GridItem>
+          <GridItem>
+            <Copier
+              type={type}
+              value={copyValue || value}
+              copyLabel={
+                copyValue ? `${getCopyLabel(type)} Copied!` : undefined
+              }
+              display="block"
+              ml={2}
+              amptrackSection={ampCopierSection}
+            />
+          </GridItem>
+        </Grid>
       )}
     </Box>
   );

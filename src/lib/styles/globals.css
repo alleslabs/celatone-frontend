@@ -1,6 +1,9 @@
 /* Global Styling here */
 .copier-wrapper:hover .copier {
-  display: inline;
+  display: block;
+}
+.copier-wrapper:hover .copier-grid {
+  grid-template-columns: 1fr 24px;
 }
 
 .accordion-stepper-wrapper:not(:first-of-type) div#before-stepper {

@@ -1,5 +1,5 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
+import { Spinner, Flex, Image, Text, Box } from "@chakra-ui/react";
 
 import validatorDefaultImg from "../../../public/validator.svg";
 import { useMobile } from "lib/app-provider";
@@ -44,7 +44,7 @@ export const ValidatorBadge = ({
   const { data: valImgSrc, isLoading } = useValidatorImage(validator);
   const isMobile = useMobile();
   return (
-    <Flex alignItems="center" gap={2}>
+    <Flex alignItems="center" gap={2} w="full">
       {validator ? (
         <>
           {isLoading ? (
@@ -59,7 +59,7 @@ export const ValidatorBadge = ({
               fallbackStrategy="onError"
             />
           )}
-          <Flex direction="column">
+          <Box>
             {isMobile && hasLabel && <MobileLabel label="Validator" />}
             <ExplorerLink
               value={validator.moniker ?? validator.validatorAddress}
@@ -71,7 +71,7 @@ export const ValidatorBadge = ({
               maxWidth={maxWidth}
               fixedHeight
             />
-          </Flex>
+          </Box>
         </>
       ) : (
         <FallbackRender badgeSize={badgeSize} />
