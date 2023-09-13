@@ -38,7 +38,6 @@ const FirstLandPrompt = ({
     p={6}
     direction="column"
     bg="gray.800"
-    color="text.main"
     w="430px"
     borderRadius={4}
     boxShadow={boxShadow}
@@ -46,8 +45,8 @@ const FirstLandPrompt = ({
   >
     <Flex>
       <Heading as="h6" variant="h6" fontWeight={600}>
-        Want to{" "}
-        <Text as="span" color="accent.main">
+        Want to
+        <Text as="span" color="accent.main" pl={1}>
           Deploy, Query, or Execute?
         </Text>
       </Heading>
@@ -110,7 +109,7 @@ const SubHeader = ({
   const switchHighlight: CSSProperties = {
     borderRadius: "4px",
     padding: "6px 8px",
-    backgroundColor: "var(--chakra-colors-gray-800)",
+    backgroundColor: "var(--chakra-colors-gray-700)",
   };
 
   useEffect(() => {
@@ -173,11 +172,9 @@ const SubHeader = ({
             <Tooltip
               label="Toggle to enable or disable access to our deploy, query, execute, and other developer features."
               placement="bottom"
+              isDisabled={isDevMode === undefined}
             >
-              <Text
-                variant="body2"
-                color={isDevMode === undefined ? "text.main" : "text.dark"}
-              >
+              <Text variant="body2" color="text.dark" fontWeight={600}>
                 Dev Features
               </Text>
             </Tooltip>
