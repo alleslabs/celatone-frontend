@@ -31,4 +31,4 @@ export * from "./window";
 export * from "./number";
 export * from "./math";
 export * from "./abi";
-export * from "./module";
+export * from "./modules";

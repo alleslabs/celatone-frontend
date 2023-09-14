@@ -2,6 +2,7 @@ import { Grid, GridItem, Text, Flex, Box, Button } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
+import { NoImageEmptyState } from "../../common";
 import type {
   DisplayMode,
   ModuleSelectFunction,
@@ -13,7 +14,6 @@ import { ModuleCard } from "lib/components/module/ModuleCard";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { Option } from "lib/types";
 
-import { ModuleEmptyState } from "./ModuleEmptyState";
 import { ModuleFunctionBody } from "./ModuleFunctionBody";
 
 interface ModuleSelectBodyProps {
@@ -38,14 +38,7 @@ const RenderModules = ({
   setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
 }) => {
   if (!modulesLength)
-    return (
-      <ModuleEmptyState
-        h="fit-content"
-        p={4}
-        description="This address does not have any modules."
-        hasImage={false}
-      />
-    );
+    return <NoImageEmptyState desc="This address does not have any modules." />;
   return filtered?.length ? (
     <>
       {filtered.map((module) => (
@@ -59,12 +52,7 @@ const RenderModules = ({
       ))}
     </>
   ) : (
-    <ModuleEmptyState
-      h="fit-content"
-      p={4}
-      description="No matching module found."
-      hasImage={false}
-    />
+    <NoImageEmptyState desc="No matching module found." />
   );
 };
 
@@ -88,7 +76,7 @@ export const ModuleSelectMainBody = ({
       templateAreas={`"panel main""button button"`}
       columnGap={4}
       rowGap={6}
-      templateColumns="300px 1fr"
+      templateColumns="minmax(300px, 20%) 1fr"
       templateRows="1fr auto"
       position="relative"
       overflow="hidden"
