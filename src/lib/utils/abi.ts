@@ -1,4 +1,6 @@
-import type { ExposedFunction, ResponseABI } from "lib/types";
+import { BCS } from "@initia/initia.js";
+
+import type { ExposedFunction, Option, ResponseABI } from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
   fn.visibility === "public" && (fn.is_view || fn.is_entry);
@@ -41,10 +43,45 @@ export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   return functionMap;
 };
 
-export const getAbiInitialData = (length: number): Record<string, string> =>
+export const getAbiInitialData = (length: number) =>
   Array(length)
     .fill("")
     .reduce<Record<string, string>>(
       (prev, _, index) => ({ ...prev, [index.toString()]: "" }),
       {}
     );
+
+// ------------------------------------------//
+// -----------------MOVE ARGS----------------//
+// ------------------------------------------//
+const getArgType = (argType: string) =>
+  argType
+    .replaceAll("0x1::string::String", "string")
+    .replaceAll("0x1::option::Option", "option");
+
+const getArgValue = ({
+  type,
+  value,
+}: {
+  type: string;
+  value: Option<string>;
+}) => {
+  try {
+    if (value === undefined) return null;
+    if (type.startsWith("vector")) return JSON.parse(value) as string[];
+    return value.trim();
+  } catch (e) {
+    return "";
+  }
+};
+
+export const serializeArg = (arg: { type: string; value: Option<string> }) => {
+  const bcs = BCS.getInstance();
+  try {
+    const argType = getArgType(arg.type);
+    const argValue = getArgValue(arg);
+    return bcs.serialize(argType, argValue);
+  } catch (e) {
+    return "";
+  }
+};

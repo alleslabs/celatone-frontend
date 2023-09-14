@@ -1,21 +1,21 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import type { GenericTypeParam } from "lib/types";
+import type { AbiFormData, GenericTypeParam } from "lib/types";
 
 import { TypeFieldInput } from "./TypeFieldInput";
 
-interface TypeFormProps {
+interface TypesFormProps {
   genericTypeParams: GenericTypeParam[];
-  initialData: Record<string, string>;
-  propsOnChange?: (data: Record<string, string>) => void;
+  initialData: AbiFormData["typeArgs"];
+  propsOnChange?: (data: AbiFormData["typeArgs"]) => void;
 }
 
-export const TypeForm = ({
+export const TypesForm = ({
   genericTypeParams,
   initialData,
   propsOnChange,
-}: TypeFormProps) => {
+}: TypesFormProps) => {
   const { setValue, getValues } = useForm<Record<string, string>>({
     defaultValues: initialData,
     mode: "all",
@@ -37,8 +37,8 @@ export const TypeForm = ({
         <TypeFieldInput
           key={constraints.join() + index.toString()}
           index={index}
-          value={initialData[index]}
           constraints={constraints}
+          value={initialData[index]}
           onChange={handleOnChange(index)}
         />
       ))}

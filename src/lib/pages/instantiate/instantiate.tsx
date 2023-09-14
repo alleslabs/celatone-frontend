@@ -405,7 +405,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             placeholder="ex. Token Factory"
             label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
-            variant="floating"
+            variant="fixed-floating"
             mb={8}
             rules={{ required: "Label is required" }}
           />
@@ -415,7 +415,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Admin Address (optional)"
             placeholder={`ex. ${exampleUserAddress}`}
             helperText="The contract's admin will be able to migrate and update future admins."
-            variant="floating"
+            variant="fixed-floating"
             error={validateAdmin(adminAddress)}
             helperAction={
               <AssignMe

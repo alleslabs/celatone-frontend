@@ -3,13 +3,15 @@ import { useEffect } from "react";
 import type { FormState } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
-import { ParamField } from "./ParamField";
+import type { AbiFormData, Option } from "lib/types";
 
-interface ParamFormProps {
+import { ArgFieldTemplate } from "./field";
+
+interface ArgsFormProps {
   title?: string;
   params: string[];
-  initialData: Record<string, string>;
-  propsOnChange?: (data: Record<string, string>) => void;
+  initialData: AbiFormData["args"];
+  propsOnChange?: (data: AbiFormData["args"]) => void;
   propsOnErrors?: (errors: [string, string][]) => void;
   isReadOnly?: boolean;
 }
@@ -22,20 +24,20 @@ const formatErrors = (
     error?.message ?? "invalid input",
   ]);
 
-export const ParamForm = ({
+export const ArgsForm = ({
   title = "args",
   params,
   initialData,
   propsOnChange,
   propsOnErrors,
   isReadOnly = false,
-}: ParamFormProps) => {
+}: ArgsFormProps) => {
   const {
     trigger,
     control,
     getValues,
     formState: { errors },
-  } = useForm<Record<string, string>>({
+  } = useForm<Record<string, Option<string>>>({
     defaultValues: initialData,
     mode: "all",
   });
@@ -57,7 +59,7 @@ export const ParamForm = ({
           },
         });
         return (
-          <ParamField
+          <ArgFieldTemplate
             key={param + index.toString()}
             index={index}
             param={param}

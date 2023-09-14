@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { AbiForm, type AbiFormData } from "lib/components/abi";
-import type { ExposedFunction } from "lib/types";
+import { AbiForm } from "lib/components/abi";
+import type { AbiFormData, ExposedFunction } from "lib/types";
 import { getAbiInitialData } from "lib/utils";
 
 export const ExecuteArea = ({ fn }: { fn: ExposedFunction }) => {

@@ -96,7 +96,7 @@ export const PublicProjectContractTable = observer(
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
           <TextInput
-            variant="floating"
+            variant="fixed-floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
             placeholder="Search with Contract Address or Contract Name"

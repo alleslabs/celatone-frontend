@@ -68,7 +68,7 @@ export const AllProject = observer(() => {
   return (
     <Box minH="xs" w="100%">
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         value={searchKeyword}
         setInputState={setSearchKeyword}
         labelBgColor="background"

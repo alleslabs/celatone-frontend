@@ -92,7 +92,7 @@ export function EditListNameModal({
       otherAction={() => setListName(list.label)}
     >
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         value={listName}
         setInputState={setListName}
         labelBgColor="gray.900"

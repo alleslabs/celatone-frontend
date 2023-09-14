@@ -1,4 +1,5 @@
 import type { HexAddr } from "./addrs";
+import type { Option } from "./common";
 import type { SnakeToCamelCaseNested } from "./converter";
 
 export enum UpgradePolicy {
@@ -80,4 +81,9 @@ export interface GenericTypeParam {
 interface Field {
   name: string;
   type: string;
+}
+
+export interface AbiFormData {
+  typeArgs: Record<string, string>;
+  args: Record<string, Option<string>>;
 }

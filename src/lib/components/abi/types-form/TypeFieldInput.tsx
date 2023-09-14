@@ -3,8 +3,8 @@ import { capitalize } from "lodash";
 
 interface TypeFieldInputProps {
   index: number;
-  value: string;
   constraints: string[];
+  value: string;
   onChange: (value: string) => void;
 }
 
@@ -14,11 +14,11 @@ export const TypeFieldInput = ({
   constraints,
   onChange,
 }: TypeFieldInputProps) => {
-  const placeholder = `Ability : ${
-    constraints.length
-      ? constraints.map((constraint) => capitalize(constraint)).join(" + ")
-      : "none"
-  }`;
+  const placeholder = constraints.length
+    ? `Ability : ${constraints
+        .map((constraint) => capitalize(constraint))
+        .join(" + ")}`
+    : "No ability";
 
   return (
     <Flex

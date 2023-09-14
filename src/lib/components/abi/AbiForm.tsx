@@ -1,15 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import type { ExposedFunction } from "lib/types";
+import type { AbiFormData, ExposedFunction } from "lib/types";
 
-import { ParamForm } from "./param-form";
-import { TypeForm } from "./type-form";
-
-export interface AbiFormData {
-  typeArgs: Record<string, string>;
-  args: Record<string, string>;
-}
+import { ArgsForm } from "./args-form";
+import { TypesForm } from "./types-form";
 
 interface AbiFormProps {
   fn: ExposedFunction;
@@ -33,7 +28,7 @@ export const AbiForm = ({
   return (
     <Flex direction="column" gap={4}>
       {Object.keys(typeArgs).length > 0 && (
-        <TypeForm
+        <TypesForm
           genericTypeParams={fn.generic_type_params}
           initialData={typeArgs}
           propsOnChange={(value) => {
@@ -43,7 +38,7 @@ export const AbiForm = ({
         />
       )}
       {Object.keys(args).length > 0 && (
-        <ParamForm
+        <ArgsForm
           params={fn.params}
           initialData={args}
           propsOnChange={(value) => {
