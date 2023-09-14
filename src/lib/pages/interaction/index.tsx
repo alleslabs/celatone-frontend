@@ -1,37 +1,34 @@
-import type { FlexProps } from "@chakra-ui/react";
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import {
+  Grid,
+  useDisclosure,
+  Button,
+  Flex,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
-import { CountBadge } from "lib/components/module/CountBadge";
+import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction } from "lib/types";
+import { parseJsonABI } from "lib/utils";
 
-import { ModuleSelectDrawerTrigger } from "./component/drawer";
 import {
-  InteractionTypeSwitch,
-  InteractionTabs,
-} from "./component/InteractionTypeSwitch";
-
-const containerBaseStyle: FlexProps = {
-  direction: "column",
-  bgColor: "gray.900",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: 8,
-  gap: 4,
-};
+  ModuleSelectDrawerTrigger,
+  ModuleSelectDrawer,
+  FunctionSelectPanel,
+  FunctionSelectBody,
+} from "./component";
 
 export const Interaction = () => {
-  const { query, isReady } = useRouter();
-  const [tab, setTab] = useState<InteractionTabs>();
-  // TODO: Remove when wiring up this page
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const [module, setModule] = useState<IndexedModule>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedFn, setSelectedFn] = useState<ExposedFunction>();
+
+  const abi = module ? parseJsonABI(module.abi) : undefined;
 
   const handleModuleSelect = useCallback(
     (selectedModule: IndexedModule, fn?: ExposedFunction) => {
@@ -41,18 +38,14 @@ export const Interaction = () => {
     []
   );
 
-  useEffect(() => {
-    if (isReady) {
-      setTab(
-        query.type === "execute"
-          ? InteractionTabs.EXECUTE_MODULE
-          : InteractionTabs.VIEW_MODULE
-      );
-    }
-  }, [isReady, query.type]);
-
   return (
-    <PageContainer>
+    <PageContainer
+      overflow="hidden"
+      minH="unset"
+      maxH="calc(100vh - 129px)"
+      display="grid"
+      gridTemplateRows="auto auto 1fr"
+    >
       <Heading as="h5" variant="h5">
         Module Interactions
       </Heading>
@@ -64,39 +57,75 @@ export const Interaction = () => {
         borderRadius={4}
         my={8}
       >
-        <p>Select module to interact with ...</p>
-        <ModuleSelectDrawerTrigger handleModuleSelect={handleModuleSelect} />
-      </Flex>
-      <Flex borderTop="1px solid" borderColor="gray.700" py={8} gap={8}>
-        {/* Left side */}
-        <Flex direction="column" flex={0.2}>
-          <Flex alignItems="center" gap={2}>
-            <Text variant="body2" fontWeight={600}>
-              Available functions
-            </Text>
-            <CountBadge variant="common" count={0} />
-          </Flex>
-          <InteractionTypeSwitch currentTab={tab} onTabChange={setTab} my={3} />
-          <Flex {...containerBaseStyle} p={4} height="full">
-            <EmptyState
-              imageWidth="80px"
-              imageVariant="empty"
-              message="Available functions for selected modules will display here"
-              textVariant="body2"
+        {module ? (
+          <>
+            <Flex direction="column" gap={4}>
+              <LabelText label="Module Path" labelWeight={600}>
+                <Flex align="center" gap={1}>
+                  <Text variant="body1">{module.address.toString()}</Text>
+                  <CustomIcon
+                    name="chevron-right"
+                    color="gray.600"
+                    boxSize={3}
+                  />
+                  <Text variant="body1" fontWeight={700}>
+                    {module.moduleName}
+                  </Text>
+                </Flex>
+              </LabelText>
+              <LabelText label="Friends" labelWeight={600}>
+                <Text variant="body2" color="gray.400">
+                  {abi?.friends ? JSON.stringify(abi.friends) : "N/A"}
+                </Text>
+              </LabelText>
+            </Flex>
+            <Flex direction="column" gap={2}>
+              <ModuleSelectDrawerTrigger
+                triggerVariant="change-module"
+                buttonText="Change Module"
+                onOpen={onOpen}
+              />
+              <Button
+                variant="ghost-gray"
+                rightIcon={
+                  <CustomIcon name="launch" boxSize={3} color="text.dark" />
+                }
+                // TODO: Link to module section in account page
+                onClick={() => {}}
+              >
+                View Module
+              </Button>
+            </Flex>
+          </>
+        ) : (
+          <>
+            <p>Select a module to interact with ...</p>
+            <ModuleSelectDrawerTrigger
+              triggerVariant="select-module"
+              onOpen={onOpen}
             />
-          </Flex>
-        </Flex>
-        {/* Right side */}
-        <Flex {...containerBaseStyle} flex={0.8} py={24}>
-          <EmptyState
-            imageWidth="80px"
-            imageVariant="empty"
-            message={`Initiate your Module interactions by choosing a module and its associated function. ${"\n"} This section will showcase the input or response type required for the functions.`}
-            textVariant="body2"
-          />
-          <Button variant="primary">Select Module</Button>
-        </Flex>
+          </>
+        )}
+        <ModuleSelectDrawer
+          isOpen={isOpen}
+          onClose={onClose}
+          handleModuleSelect={handleModuleSelect}
+        />
       </Flex>
+      <Grid gap={8} templateColumns="minmax(300px, 20%) 1fr" overflow="hidden">
+        {/* Left side */}
+        <FunctionSelectPanel
+          module={module}
+          selectedFn={selectedFn}
+          setSelectedFn={setSelectedFn}
+        />
+        {/* Right side */}
+        <FunctionSelectBody
+          module={module}
+          selectedFn={selectedFn}
+          openDrawer={onOpen}
+        />
+      </Grid>
     </PageContainer>
   );
 };

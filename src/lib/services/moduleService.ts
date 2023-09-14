@@ -11,6 +11,7 @@ import type {
   ExposedFunction,
   InternalModule,
   ResponseABI,
+  Option,
 } from "lib/types";
 import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils";
 
@@ -24,9 +25,13 @@ export interface IndexedModule extends InternalModule {
   parsedAbi: ResponseABI;
   viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];
+  searchedFn: Option<ExposedFunction>;
 }
 
-const indexModuleResponse = (module: InternalModule): IndexedModule => {
+const indexModuleResponse = (
+  module: InternalModule,
+  functionName?: string
+): IndexedModule => {
   const parsedAbi = parseJsonABI(module.abi);
   const { view, execute } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
@@ -36,30 +41,41 @@ const indexModuleResponse = (module: InternalModule): IndexedModule => {
     parsedAbi,
     viewFunctions: view,
     executeFunctions: execute,
+    searchedFn: parsedAbi.exposed_functions.find(
+      (fn) => fn.name === functionName
+    ),
   };
 };
 
 export const useAccountModules = ({
   address,
   moduleName,
+  functionName,
   options = {},
 }: {
   address: MoveAccountAddr;
-  moduleName: string;
+  moduleName: Option<string>;
+  functionName: Option<string>;
   options?: Omit<UseQueryOptions<IndexedModule | IndexedModule[]>, "queryKey">;
 }): UseQueryResult<IndexedModule | IndexedModule[]> => {
   const baseEndpoint = useBaseApiRoute("rest");
   const queryFn: QueryFunction<IndexedModule | IndexedModule[]> = () =>
     moduleName
       ? getAccountModule(baseEndpoint, address, moduleName).then((module) =>
-          indexModuleResponse(module)
+          indexModuleResponse(module, functionName)
         )
       : getAccountModules(baseEndpoint, address).then((modules) =>
           modules.map((module) => indexModuleResponse(module))
         );
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_MODULES, baseEndpoint, address, moduleName],
+    [
+      CELATONE_QUERY_KEYS.ACCOUNT_MODULES,
+      baseEndpoint,
+      address,
+      moduleName,
+      functionName,
+    ],
     queryFn,
     options
   );

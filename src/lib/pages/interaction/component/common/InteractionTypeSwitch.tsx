@@ -1,7 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
-import { useRef } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
@@ -12,9 +11,10 @@ export enum InteractionTabs {
 }
 
 interface InteractionTypeSwitchProps extends FlexProps {
-  currentTab: Option<InteractionTabs>;
+  currentTab: InteractionTabs;
   disabled?: boolean;
-  onTabChange: Dispatch<SetStateAction<Option<InteractionTabs>>>;
+  counts: [Option<number>, Option<number>];
+  onTabChange: Dispatch<SetStateAction<InteractionTabs>>;
 }
 
 const tabs = Object.values(InteractionTabs);
@@ -22,10 +22,10 @@ const tabs = Object.values(InteractionTabs);
 export const InteractionTypeSwitch = ({
   currentTab,
   disabled = false,
+  counts,
   onTabChange,
   ...flexProps
 }: InteractionTypeSwitchProps) => {
-  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
   return (
@@ -33,6 +33,7 @@ export const InteractionTypeSwitch = ({
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="4px"
       p={1}
+      h="32px"
       direction="row"
       align="center"
       position="relative"
@@ -43,9 +44,6 @@ export const InteractionTypeSwitch = ({
         <MotionBox
           key={tab}
           w="full"
-          ref={(el) => {
-            tabRefs.current[idx] = el;
-          }}
           cursor="pointer"
           p="2px 10px"
           variants={{
@@ -61,17 +59,17 @@ export const InteractionTypeSwitch = ({
           textAlign="center"
         >
           <Heading as="h6" variant="h6" fontSize="14px">
-            {tab}
+            {tab} {counts[idx] && `(${counts[idx]})`}
           </Heading>
         </MotionBox>
       ))}
       <MotionBox
-        h={tabRefs.current[activeIndex]?.clientHeight}
-        w={tabRefs.current[activeIndex]?.clientWidth}
+        h="calc(100% - 8px)"
+        w="calc(50% - 4px)"
         position="absolute"
         borderRadius="2px"
         backgroundColor="primary.dark"
-        animate={{ left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px` }}
+        animate={{ left: activeIndex === 0 ? "4px" : "50%" }}
         transition={{
           type: "spring",
           stiffness: "250",
