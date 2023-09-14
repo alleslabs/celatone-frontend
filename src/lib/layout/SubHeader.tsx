@@ -180,31 +180,31 @@ const SubHeader = ({
             </AppLink>
           ))}
         </Flex>
-        <FormControl
-          display="flex"
-          alignItems="center"
-          width="fit-content"
-          style={isDevMode === undefined ? switchHighlight : undefined}
+        <Tooltip
+          label="Enable to access to our deploy, query, execute, and other developer features."
+          placement="bottom"
+          isDisabled={isDevMode === undefined}
         >
-          <FormLabel mb={0} cursor="pointer" mr={2}>
-            <Tooltip
-              label="Enable to access to our deploy, query, execute, and other developer features."
-              placement="bottom"
-              isDisabled={isDevMode === undefined}
-            >
+          <FormControl
+            display="flex"
+            alignItems="center"
+            width="fit-content"
+            style={isDevMode === undefined ? switchHighlight : undefined}
+          >
+            <FormLabel mb={0} cursor="pointer" mr={2}>
               <Text variant="body2" color="text.dark" fontWeight={600}>
                 Dev Features
               </Text>
-            </Tooltip>
-          </FormLabel>
-          <Switch
-            size="md"
-            isChecked={isDevMode}
-            onChange={(e) => {
-              setIsDevMode(e.target.checked);
-            }}
-          />
-        </FormControl>
+            </FormLabel>
+            <Switch
+              size="md"
+              isChecked={isDevMode}
+              onChange={(e) => {
+                setIsDevMode(e.target.checked);
+              }}
+            />
+          </FormControl>
+        </Tooltip>
       </Flex>
       {isDevMode === undefined && (
         <FirstLandPrompt setIsDevMode={setIsDevMode} />
