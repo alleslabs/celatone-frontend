@@ -69,7 +69,7 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
     ...(isDevMode && wasm.enabled
       ? [
           {
-            category: "Quick Actions",
+            category: "Dev Features",
             submenu: [
               {
                 name: "Deploy Contract",
