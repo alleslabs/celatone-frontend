@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable sonarjs/max-switch-cases */
 /* eslint-disable complexity */
 import { Flex } from "@chakra-ui/react";
@@ -10,7 +11,13 @@ import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
 import type { TxReceipt, Option, AssetInfo } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import { voteOption, extractTxDetails, formatUTC, parseDate } from "lib/utils";
+import {
+  voteOption,
+  extractTxDetails,
+  formatUTC,
+  parseDate,
+  extractMsgType,
+} from "lib/utils";
 
 import {
   attachFundsReceipt,
@@ -602,7 +609,8 @@ export const generateReceipts = (
         log && proposalIdReceipt(details.proposal_id),
         log && {
           title: "Proposal Type",
-          value: details.proposal_type,
+          value:
+            details.proposal_type ?? extractMsgType(details.content["@type"]),
         },
         {
           title: "Is Expedited",

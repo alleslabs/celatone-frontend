@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#528](https://github.com/alleslabs/celatone-frontend/pull/528) Improve developer features toggle for a smoother ux
 - [#519](https://github.com/alleslabs/celatone-frontend/pull/519) Validate schema input when initialFormData has changed
 - [#513](https://github.com/alleslabs/celatone-frontend/pull/513) Disable simulating fee when JSON input is invalid
 - [#510](https://github.com/alleslabs/celatone-frontend/pull/510) Support optional fields for array, boolean, and string
@@ -96,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#526](https://github.com/alleslabs/celatone-frontend/pull/526) Fix missing Tx proposal type
 - [#525](https://github.com/alleslabs/celatone-frontend/pull/525) Add accountId to txs count query keys
 - [#522](https://github.com/alleslabs/celatone-frontend/pull/522) Fix to support undefined execute msg
 - [#520](https://github.com/alleslabs/celatone-frontend/pull/520) Fix update instantiated info height data and handle genesis height case
