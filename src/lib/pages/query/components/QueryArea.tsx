@@ -36,7 +36,10 @@ export const QueryArea = ({
     if (!codeId) return "Please select contract first.";
 
     if (!attached)
-      return `You haven't attached the JSON Schema for code id ${codeId}. \n To use the schema, please add it on the code detail page.`;
+      return `
+          You haven’t attached the JSON Schema for
+          code ${codeId} yet
+       `;
 
     return "Attached JSON Schema doesn’t have query message.";
   })();

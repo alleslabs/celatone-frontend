@@ -1,4 +1,11 @@
-import { Button, Flex, Heading, Radio, RadioGroup } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Radio,
+  RadioGroup,
+  Text,
+} from "@chakra-ui/react";
 import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
@@ -287,6 +294,14 @@ export const UploadTemplate = ({
       >
         Save JSON Schema
       </Button>
+      <Flex justifyContent="center" w="full" my={3}>
+        <Text variant="body2" color="text.dark">
+          Your JSON schema will be
+        </Text>
+        <Text variant="body2" color="text.dark" fontWeight={600}>
+          stored locally on your device
+        </Text>
+      </Flex>
     </Flex>
   );
 };

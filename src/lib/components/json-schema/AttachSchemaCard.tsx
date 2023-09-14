@@ -26,8 +26,9 @@ export const AttachSchemaCard = ({
 
   return (
     <Flex
-      border="1px solid var(--chakra-colors-gray-700)"
-      bg="gray.800"
+      border={!attached ? "1px dashed" : "1px solid"}
+      borderColor="gray.700"
+      bg={!attached ? "gray.900" : "gray.800"}
       justify="space-between"
       align="center"
       p={4}
