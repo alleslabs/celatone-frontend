@@ -5,8 +5,7 @@ import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "lib/components/Tooltip";
 import type { ExposedFunction } from "lib/types";
-import { getVisibilityIcon } from "lib/utils";
-import { checkAvailability } from "lib/utils/abi";
+import { getVisibilityIcon, checkAvailability } from "lib/utils";
 
 type CardVariant = "common" | "disabled" | "selected";
 
