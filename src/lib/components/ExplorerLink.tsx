@@ -129,7 +129,6 @@ const LinkRender = ({
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
-      display={{ base: "inline", md: "flex" }}
     >
       {textValue}
     </Text>
@@ -190,6 +189,7 @@ export const ExplorerLink = ({
 
   const readOnly = isReadOnly || !hrefLink;
   const isMobile = useMobile();
+  // TODO: handle auto width
   return (
     <Box
       className="copier-wrapper"
