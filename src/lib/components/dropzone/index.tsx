@@ -1,16 +1,15 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
-import type { DetailedHTMLProps, HTMLAttributes } from "react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
-import { useWasmConfig } from "lib/app-provider";
+import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 
 import type { DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
 
-interface DropZoneProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface DropZoneProps extends FlexProps {
   setFile: (file: File) => void;
   fileType: DropzoneFileType;
 }
@@ -21,6 +20,7 @@ export function DropZone({
   ...componentProps
 }: DropZoneProps) {
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
   const onDrop = useCallback(
     (file: File[]) => {
       setFile(file[0]);
@@ -31,14 +31,17 @@ export function DropZone({
   const config = DROPZONE_CONFIG[fileType];
 
   // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
-  const maxSize = wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
+  const maxSize = (() => {
+    if (wasm.enabled) return wasm.storeCodeMaxFileSize;
+    return move.enabled ? move.moduleMaxFileSize : 0;
+  })();
 
   // TODO: JSON Schema file size ??
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
     maxFiles: 1,
     accept: config.accept,
-    maxSize: fileType === "wasm" ? maxSize : undefined,
+    maxSize,
   });
 
   return (

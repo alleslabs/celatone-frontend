@@ -16,11 +16,12 @@ export const Footer = ({ isLoading = false, fieldAmount }: FooterProps) => {
       px={12}
       bg="gray.900"
       h="70px"
-      bottom="0"
+      bottom={0}
       position="sticky"
       zIndex={2}
       templateAreas={`"prespace main postspace"`}
-      templateColumns="1fr 5fr 4fr"
+      templateColumns="1fr 4fr 2fr"
+      gap="48px"
     >
       <GridItem area="main">
         <Flex flex="5" align="center" justify="space-between" h="full" w="full">

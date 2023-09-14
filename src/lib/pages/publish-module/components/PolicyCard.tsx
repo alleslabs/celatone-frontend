@@ -1,46 +1,77 @@
-import { Flex, Radio, Text, Heading, Spinner } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+
+import type { UpgradePolicy } from "lib/types";
+
+import { Leaflet } from "./leaflet";
+
+interface RadioCardProps extends FlexProps {
+  checked: boolean;
+}
+
+const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
+  <Flex
+    w="full"
+    p="12px 16px"
+    gap={4}
+    border="2px solid"
+    borderRadius="12px"
+    borderColor={checked ? "text.main" : "gray.700"}
+    bgColor={checked ? "gray.700" : "gray.900"}
+    overflowX="scroll"
+    alignItems="center"
+    cursor="pointer"
+    {...props}
+  >
+    <Flex
+      w="18px"
+      h="18px"
+      flexShrink={0}
+      borderRadius="50%"
+      border="2px solid"
+      borderColor={checked ? "text.main" : "text.dark"}
+      align="center"
+      justify="center"
+    >
+      {checked && (
+        <Box w="9px" h="9px" bgColor="text.main" borderRadius="50%" />
+      )}
+    </Flex>
+    {children}
+  </Flex>
+);
 
 interface PolicyCardProps {
-  value: string;
+  value: UpgradePolicy;
+  selected: UpgradePolicy;
   description: string;
-  // total: Option<Record<string, TokenWithValue>>;
-  // defaultToken: TokenWithValue;
   hasCondition?: boolean;
-  isLoading: boolean;
+  onSelect: () => void;
 }
 
 export const PolicyCard = ({
   value,
+  selected,
   description,
-  isLoading,
   hasCondition = false,
+  onSelect,
 }: PolicyCardProps) => {
+  const isChecked = value === selected;
   return (
-    <Radio variant="card" value={value} overflowX="hidden">
-      <Flex direction="column" gap={1} py={1}>
-        {isLoading ? (
-          <Spinner mt={2} alignSelf="center" size="xl" />
-        ) : (
-          <Flex flexDirection="column">
-            <Heading
-              variant="h6"
-              as="h6"
-              fontWeight={600}
-              textTransform="capitalize"
-            >
-              {value}
-            </Heading>
-            <Text variant="body2" textColor="text.dark" mt={1}>
-              {description}
-              {hasCondition && (
-                <Text ml={1} as="span" variant="body2" textColor="primary.main">
-                  View conditions
-                </Text>
-              )}
-            </Text>
-          </Flex>
-        )}
+    <RadioCard onClick={onSelect} checked={isChecked}>
+      <Flex flexDirection="column">
+        <Text
+          variant="body1"
+          textTransform="lowercase"
+          sx={{ "&:first-letter": { textTransform: "uppercase" } }}
+        >
+          {value}
+        </Text>
+        <Text variant="body2" textColor="text.dark" fontWeight={600}>
+          {description}
+          {hasCondition && <Leaflet />}
+        </Text>
       </Flex>
-    </Radio>
+    </RadioCard>
   );
 };

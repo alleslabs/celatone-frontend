@@ -21,6 +21,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
+        moduleMaxFileSize: 1_048_576,
       },
       pool: {
         enabled: false,

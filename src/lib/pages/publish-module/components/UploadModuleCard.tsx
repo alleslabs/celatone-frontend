@@ -1,16 +1,26 @@
 import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 
+import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
+import { UploadCard } from "lib/components/upload/UploadCard";
+import type { Option } from "lib/types";
 
 interface UploadModuleCardProps {
   index: number;
-  remove: () => void;
+  file: Option<File>;
   fieldAmount: number;
+  setFile: (file: File, modulePath: string) => void;
+  removeFile: () => void;
+  removeEntry: () => void;
 }
+
 export const UploadModuleCard = ({
   index,
-  remove,
+  file,
   fieldAmount,
+  setFile,
+  removeFile,
+  removeEntry,
 }: UploadModuleCardProps) => {
   return (
     <Flex
@@ -27,7 +37,7 @@ export const UploadModuleCard = ({
           Module {index + 1}
         </Heading>
         <IconButton
-          onClick={remove}
+          onClick={removeEntry}
           aria-label="remove"
           variant="ghost"
           size="sm"
@@ -36,10 +46,19 @@ export const UploadModuleCard = ({
           <CustomIcon name="close" color="gray.600" />
         </IconButton>
       </Flex>
-      {/* UPLOAD CARD */}
-      add upload card here
+      {file ? (
+        <UploadCard file={file} deleteFile={removeFile} theme="secondary" />
+      ) : (
+        // TODO: Retrieve module path
+        <DropZone
+          setFile={(target) => setFile(target, "")}
+          fileType="move"
+          bgColor="background.main"
+          _hover={undefined}
+        />
+      )}
       <Flex justifyContent="space-between" w="full">
-        <Text variant="body2" color="text.dark">
+        <Text variant="body2" color="text.dark" fontWeight={600}>
           Module Path
         </Text>
         <Text variant="body2" color="text.dark">
