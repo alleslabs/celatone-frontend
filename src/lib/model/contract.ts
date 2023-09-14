@@ -74,14 +74,14 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
  *
  */
 export const useContractDetailsTableCounts = (
-  contractAddress: ContractAddr
+  contractAddress: ContractAddr,
+  contractAccountId: Option<number | null>
 ) => {
   const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount, refetch: refetchTransactions } =
     useTxsCountByAddress({
-      address: contractAddress,
-      accountId: undefined,
+      accountId: contractAccountId,
       search: "",
       filters: DEFAULT_TX_FILTERS,
       isSigner: undefined,

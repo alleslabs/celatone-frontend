@@ -45,13 +45,13 @@ const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 const ContractDetailsBody = observer(
   ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailsTableHeader";
+    const { data: contractAccountId } = useAccountId(contractAddress);
     const {
       tableCounts,
       refetchMigration,
       refetchTransactions,
       refetchRelatedProposals,
-    } = useContractDetailsTableCounts(contractAddress);
-    const { data: contractAccountId } = useAccountId(contractAddress);
+    } = useContractDetailsTableCounts(contractAddress, contractAccountId);
     const isMobile = useMobile();
     if (!contractData.contractDetail) return <InvalidContract />;
 

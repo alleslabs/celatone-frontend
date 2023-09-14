@@ -24,7 +24,7 @@ import { TxsBody } from "./TxsBody";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  accountId?: Option<number | null>;
+  accountId: Option<number | null>;
   scrollComponentId: string;
   onViewMore?: () => void;
 }
@@ -83,7 +83,6 @@ export const TxsTable = ({
     isLoading: txsCountLoading,
     failureReason,
   } = useTxsCountByAddress({
-    address: undefined,
     accountId,
     search: "",
     filters,
@@ -121,7 +120,6 @@ export const TxsTable = ({
   );
 
   const { data: transactions, isLoading } = useTxsByAddressPagination(
-    undefined,
     accountId,
     "",
     filters,
