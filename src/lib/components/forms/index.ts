@@ -5,5 +5,5 @@ export * from "./FilterByPermission";
 export * from "./FormStatus";
 export * from "./NumberInput";
 export * from "./SelectInput";
-export * from "./Textarea";
+export * from "./TextareaInput";
 export * from "./TextInput";
