@@ -50,6 +50,7 @@ export const ArgFieldWidget = ({
         classNamePrefix="chakra-react-select"
         size="md"
         options={boolOptions}
+        placeholder={" "}
         value={boolOptions.find(({ value }) => value === watcher)}
         onChange={(e) => onChange(e?.value)}
         menuPosition="fixed"
