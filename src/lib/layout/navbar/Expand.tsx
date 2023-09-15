@@ -63,23 +63,29 @@ export const ExpandNavMenu = ({
   <Box px={4} py={2} overflowY="auto">
     {navMenu.map((item) => (
       <Box
-        pb={4}
-        mb={4}
+        pt={!item.isSubSection ? 4 : 2}
+        mt={!item.isSubSection ? 4 : 0}
         key={item.category}
-        borderBottom="1px solid"
-        borderColor="gray.700"
+        borderTop={!item.isSubSection ? "1px solid" : "none"}
+        borderColor={!item.isSubSection ? "gray.700" : "transparent"}
         sx={{
-          "&:last-of-type": {
-            borderBottom: "none",
-            paddingBottom: "0px",
-            marginBottom: "0px",
+          "&:first-of-type": {
+            borderTop: "none",
+            paddingTop: "0px",
+            marginTop: "0px",
           },
         }}
       >
         <Flex justifyContent="space-between" alignItems="center">
-          <Text py={2} variant="body3" fontWeight={700}>
-            {item.category}
-          </Text>
+          {item.isSubSection ? (
+            <Text py={2} variant="body3" fontWeight={700} color="text.dark">
+              {item.category}
+            </Text>
+          ) : (
+            <Text py={2} variant="body2" fontWeight={700}>
+              {item.category}
+            </Text>
+          )}
           {item.category === "Your Account" && (
             <Button
               variant="ghost-accent"

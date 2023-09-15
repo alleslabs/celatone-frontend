@@ -12,6 +12,7 @@ export interface SubmenuInfo {
 export interface MenuInfo {
   category: string;
   submenu: SubmenuInfo[];
+  isSubSection: boolean;
 }
 
 export interface NavMenuProps {
