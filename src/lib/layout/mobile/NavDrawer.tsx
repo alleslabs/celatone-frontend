@@ -68,7 +68,6 @@ export const NavDrawer = () => {
           icon: "query",
         },
       ],
-      isSubSection: false,
     },
   ];
 
@@ -87,7 +86,6 @@ export const NavDrawer = () => {
           icon: "public-project",
         },
       ],
-      isSubSection: false,
     });
   }
 

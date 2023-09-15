@@ -47,7 +47,6 @@ const Navbar = ({ isExpand, setIsExpand }: NavbarProps) => {
             "You need to connect wallet to view your account details.",
         },
       ],
-      isSubSection: false,
     },
     ...(publicProject.enabled
       ? [
@@ -65,7 +64,6 @@ const Navbar = ({ isExpand, setIsExpand }: NavbarProps) => {
                 icon: "public-project" as IconKeys,
               },
             ],
-            isSubSection: false,
           },
         ]
       : []),
@@ -100,54 +98,45 @@ const Navbar = ({ isExpand, setIsExpand }: NavbarProps) => {
               //   icon: "list" as IconKeys,
               // },
             ],
-            isSubSection: false,
-          },
-        ]
-      : []),
-    ...(wasm.enabled
-      ? [
-          {
-            category: "This Wallet",
-            submenu: [
+            subSection: [
               {
-                name: "My Stored Codes",
-                slug: "/stored-codes",
-                icon: "code" as IconKeys,
+                category: "This Wallet",
+                submenu: [
+                  {
+                    name: "My Stored Codes",
+                    slug: "/stored-codes",
+                    icon: "code" as IconKeys,
+                  },
+                  {
+                    name: INSTANTIATED_LIST_NAME,
+                    slug: `/contract-lists/${formatSlugName(
+                      INSTANTIATED_LIST_NAME
+                    )}`,
+                    icon: getListIcon(INSTANTIATED_LIST_NAME),
+                  },
+                ],
               },
               {
-                name: INSTANTIATED_LIST_NAME,
-                slug: `/contract-lists/${formatSlugName(
-                  INSTANTIATED_LIST_NAME
-                )}`,
-                icon: getListIcon(INSTANTIATED_LIST_NAME),
-              },
-            ],
-            isSubSection: true,
-          },
-        ]
-      : []),
-    ...(wasm.enabled
-      ? [
-          {
-            category: "This Device",
-            submenu: [
-              {
-                name: "Saved Codes",
-                slug: "/saved-codes",
-                icon: "code" as IconKeys,
-              },
-              {
-                name: SAVED_LIST_NAME,
-                slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
-                icon: "contract-address" as IconKeys,
-              },
-              {
-                name: "View All Contract List",
-                slug: "/contract-lists",
-                icon: "more" as IconKeys,
+                category: "This Device",
+                submenu: [
+                  {
+                    name: "Saved Codes",
+                    slug: "/saved-codes",
+                    icon: "code" as IconKeys,
+                  },
+                  {
+                    name: SAVED_LIST_NAME,
+                    slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
+                    icon: "contract-address" as IconKeys,
+                  },
+                  {
+                    name: "View All Contract List",
+                    slug: "/contract-lists",
+                    icon: "more" as IconKeys,
+                  },
+                ],
               },
             ],
-            isSubSection: true,
           },
         ]
       : []),

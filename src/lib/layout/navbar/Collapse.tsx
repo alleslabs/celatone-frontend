@@ -94,26 +94,27 @@ export const CollapseNavMenu = ({
               </Tooltip>
             )}
           </Flex>
-          {item.submenu.map((submenu) =>
-            submenu.isDisable ? (
-              <CollapseNavInfo
-                key={submenu.slug}
-                submenu={submenu}
-                isCurrentPage={isCurrentPage}
-              />
-            ) : (
-              <AppLink
-                href={submenu.slug}
-                key={submenu.slug}
-                onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
-              >
+          {!item.subSection &&
+            item.submenu.map((submenu) =>
+              submenu.isDisable ? (
                 <CollapseNavInfo
+                  key={submenu.slug}
                   submenu={submenu}
                   isCurrentPage={isCurrentPage}
                 />
-              </AppLink>
-            )
-          )}
+              ) : (
+                <AppLink
+                  href={submenu.slug}
+                  key={submenu.slug}
+                  onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+                >
+                  <CollapseNavInfo
+                    submenu={submenu}
+                    isCurrentPage={isCurrentPage}
+                  />
+                </AppLink>
+              )
+            )}
         </Box>
       ))}
     </Box>
