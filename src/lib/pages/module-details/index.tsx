@@ -75,15 +75,16 @@ export const ModuleDetails = () => {
       });
     }
   }, [router.isReady, tab, modulePath, navigate]);
+
   const contractAddress = "" as ContractAddr;
   const { data: contractAccountId } = useAccountId(contractAddress);
-
   const {
     tableCounts,
     refetchMigration,
     refetchTransactions,
     refetchRelatedProposals,
-  } = useContractDetailsTableCounts(contractAddress);
+  } = useContractDetailsTableCounts(contractAddress, contractAccountId);
+
   return (
     <PageContainer>
       <ModuleTop isVerified />
