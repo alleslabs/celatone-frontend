@@ -94,27 +94,51 @@ export const CollapseNavMenu = ({
               </Tooltip>
             )}
           </Flex>
-          {!item.subSection &&
-            item.submenu.map((submenu) =>
-              submenu.isDisable ? (
+          {item.submenu.map((submenu) =>
+            submenu.isDisable ? (
+              <CollapseNavInfo
+                key={submenu.slug}
+                submenu={submenu}
+                isCurrentPage={isCurrentPage}
+              />
+            ) : (
+              <AppLink
+                href={submenu.slug}
+                key={submenu.slug}
+                onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+              >
                 <CollapseNavInfo
-                  key={submenu.slug}
                   submenu={submenu}
                   isCurrentPage={isCurrentPage}
                 />
-              ) : (
-                <AppLink
-                  href={submenu.slug}
-                  key={submenu.slug}
-                  onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
-                >
-                  <CollapseNavInfo
-                    submenu={submenu}
-                    isCurrentPage={isCurrentPage}
-                  />
-                </AppLink>
-              )
-            )}
+              </AppLink>
+            )
+          )}
+          {item.subSection &&
+            item.subSection.map((section) => (
+              <>
+                {section.submenu.map((subitem) =>
+                  subitem.isDisable ? (
+                    <CollapseNavInfo
+                      key={subitem.slug}
+                      submenu={subitem}
+                      isCurrentPage={isCurrentPage}
+                    />
+                  ) : (
+                    <AppLink
+                      href={subitem.slug}
+                      key={subitem.slug}
+                      onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+                    >
+                      <CollapseNavInfo
+                        submenu={subitem}
+                        isCurrentPage={isCurrentPage}
+                      />
+                    </AppLink>
+                  )
+                )}
+              </>
+            ))}
         </Box>
       ))}
     </Box>
