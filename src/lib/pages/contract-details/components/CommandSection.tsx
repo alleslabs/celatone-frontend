@@ -95,10 +95,10 @@ export const CommandSection = observer(
             Available command shortcuts
           </Heading>
           {attached ? (
-            <Flex alignItems="center" justify="space-between" w="full">
+            <Flex alignItems="center" justify="flex-start" w="full" gap={2}>
               <Tag variant="gray" gap={1}>
                 <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
-                <Text variant="body3">Attached JSON Schema</Text>
+                <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
               </Tag>
               <EditSchemaButtons
                 codeId={codeId}
@@ -153,6 +153,7 @@ export const CommandSection = observer(
           onClose={onClose}
           codeId={String(codeId)}
           codeHash={codeHash}
+          isReattach={!!attached}
         />
       </Flex>
     );

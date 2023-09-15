@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex, IconButton } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
@@ -15,25 +15,41 @@ export const EditSchemaButtons = ({
   openDrawer,
 }: EditSchemaButtonsProps) => (
   <Flex gap={2}>
-    <Button
-      variant="outline-gray"
-      size="sm"
-      leftIcon={<CustomIcon name="edit" boxSize={3} />}
+    {/* <Button
+      variant="ghost-gray"
+      size="xs"
+      leftIcon={<CustomIcon name="code" boxSize={4} />}
       onClick={openDrawer}
     >
-      Reattach Schema
-    </Button>
+      View Schema
+    </Button> */}
+    <IconButton
+      variant="ghost-gray"
+      size="xs"
+      onClick={openDrawer}
+      color="gray.600"
+      icon={<CustomIcon name="edit" boxSize={3} />}
+      aria-label="reattach schema"
+    />
+    <IconButton
+      variant="ghost-gray"
+      size="xs"
+      onClick={openDrawer}
+      color="gray.600"
+      icon={<CustomIcon name="edit" boxSize={3} />}
+      aria-label="reattach schema"
+    />
     <RemoveSchemaModal
       codeId={String(codeId)}
       codeHash={codeHash}
       trigger={
-        <Button
-          variant="outline-gray"
-          size="sm"
-          leftIcon={<CustomIcon name="delete" boxSize={3} />}
-        >
-          Delete Schema
-        </Button>
+        <IconButton
+          variant="ghost-gray"
+          size="xs"
+          color="gray.600"
+          icon={<CustomIcon name="delete" boxSize={3} />}
+          aria-label="delete schema"
+        />
       }
     />
   </Flex>

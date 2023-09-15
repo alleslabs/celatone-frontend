@@ -19,6 +19,7 @@ interface JsonSchemaDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onSchemaSave?: () => void;
+  isReattach?: boolean;
 }
 
 export const JsonSchemaDrawer = ({
@@ -27,6 +28,7 @@ export const JsonSchemaDrawer = ({
   isOpen,
   onClose,
   onSchemaSave,
+  isReattach = false,
 }: JsonSchemaDrawerProps) => (
   <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
     <ModalOverlay />
@@ -39,7 +41,7 @@ export const JsonSchemaDrawer = ({
       </ModalHeader>
       <ModalCloseButton color="gray.600" />
       <ModalBody px={4} maxH="640px" overflow="scroll" pt={0}>
-        <AttachStatus codeId={codeId} />
+        <AttachStatus codeId={codeId} isReattach={isReattach} />
         <UploadTemplate
           codeHash={codeHash}
           codeId={codeId}

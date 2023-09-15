@@ -4,11 +4,11 @@ import { ConnectingLine } from "../ConnectingLine";
 import { CustomIcon } from "../icon";
 
 interface AttachStatusProps {
-  attached?: boolean;
+  isReattach?: boolean;
   codeId?: string;
 }
 export const AttachStatus = ({
-  attached = false,
+  isReattach = false,
   codeId,
 }: AttachStatusProps) => {
   return (
@@ -26,7 +26,7 @@ export const AttachStatus = ({
       </Flex>
       <ConnectingLine
         alignment="horizontal"
-        isFilled={attached}
+        isFilled={isReattach}
         style={{
           width: "full",
           top: "calc(50% - 6px)",
@@ -34,10 +34,10 @@ export const AttachStatus = ({
         }}
       />
       <Flex
-        bgColor={attached ? "gray.800" : "transparent"}
+        bgColor={isReattach ? "gray.800" : "transparent"}
         borderRadius={4}
         border={
-          attached
+          isReattach
             ? "1px solid var(--chakra-colors-gray-600)"
             : "1px dashed var(--chakra-colors-primary-light)"
         }
@@ -47,11 +47,13 @@ export const AttachStatus = ({
         w="full"
       >
         <CustomIcon
-          name={attached ? "edit" : "upload"}
-          color={attached ? "gray.400" : "primary.light"}
+          name={isReattach ? "edit" : "upload"}
+          color={isReattach ? "gray.400" : "primary.light"}
         />
-        <Text color={attached ? "gray.400" : "primary.light"}>
-          {attached ? "Reattaching JSON Schema..." : "Attaching JSON Schema..."}
+        <Text color={isReattach ? "gray.400" : "primary.light"}>
+          {isReattach
+            ? "Reattaching JSON Schema..."
+            : "Attaching JSON Schema..."}
         </Text>
       </Flex>
     </Flex>

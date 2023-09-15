@@ -121,6 +121,7 @@ export const CodeSchemaSection = ({
         onClose={onClose}
         codeId={String(codeId)}
         codeHash={codeHash}
+        isReattach={!!jsonSchema}
       />
     </>
   ) : (
