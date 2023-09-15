@@ -14,7 +14,7 @@ import type {
 } from "react-hook-form";
 import { useWatch, useController } from "react-hook-form";
 
-import type { TextareaProps } from "./TextareaInput";
+import type { TextareaProps } from "./Textarea";
 
 interface ControllerTextareaProps<T extends FieldValues>
   extends Omit<TextareaProps, "value" | "setInputState"> {
