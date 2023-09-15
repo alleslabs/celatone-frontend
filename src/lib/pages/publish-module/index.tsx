@@ -1,4 +1,4 @@
-import { Text, Grid, GridItem, Heading, Flex, Button } from "@chakra-ui/react";
+import { Text, Grid, Heading, Flex, Button, Box } from "@chakra-ui/react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { useCelatoneApp, useMoveConfig } from "lib/app-provider";
@@ -80,17 +80,14 @@ export const PublishModule = () => {
 
   return (
     <>
-      <PageContainer>
+      <PageContainer display="unset" p={0}>
         <Grid
-          templateAreas={`
-          "prespace header postspace"
-          "prespace upload upload-accordion"
-          "prespace policy policy-accordion"
-          `}
-          templateColumns="1fr 4fr 2fr"
-          gap="48px"
+          templateColumns="1fr 6fr 4fr 1fr"
+          columnGap="16px"
+          rowGap="48px"
+          p={{ base: "16px", md: "48px" }}
         >
-          <GridItem area="header">
+          <Box gridArea="1 / 2">
             <Heading as="h5" variant="h5" textAlign="center">
               {PUBLISH_MODULE_TEXT.header}
             </Heading>
@@ -101,10 +98,11 @@ export const PublishModule = () => {
               subtitle={PUBLISH_MODULE_TEXT.connectWallet}
               mt={12}
             />
-          </GridItem>
-          <GridItem area="upload">
+          </Box>
+          {/* Upload File Section */}
+          <Box gridArea="2 / 2">
             <Heading as="h6" variant="h6" fontWeight={600}>
-              Upload .mv files(s)
+              Upload .mv file(s)
             </Heading>
             <Flex gap={6} flexDirection="column" my={6}>
               {fields.map((field, idx) => (
@@ -131,11 +129,9 @@ export const PublishModule = () => {
             >
               Publish More Modules
             </Button>
-          </GridItem>
-          <GridItem area="upload-accordion">
-            <UploadAccordion />
-          </GridItem>
-          <GridItem area="policy">
+          </Box>
+          {/* Upgrade Policy Section */}
+          <Box gridArea="3 / 2">
             <Heading as="h6" variant="h6" fontWeight={600}>
               Upgrade Policy
             </Heading>
@@ -169,10 +165,13 @@ export const PublishModule = () => {
               <p>Transaction Fee:</p>
               <EstimatedFeeRender estimatedFee={undefined} loading={false} />
             </Flex>
-          </GridItem>
-          <GridItem area="policy-accordion">
+          </Box>
+          <Box gridArea="2 / 3" pl="32px">
+            <UploadAccordion />
+          </Box>
+          <Box gridArea="3 / 3" pl="32px">
             <PolicyAccordion chainName={chainPrettyName} />
-          </GridItem>
+          </Box>
         </Grid>
       </PageContainer>
       <Footer isLoading={false} fieldAmount={fields.length} />

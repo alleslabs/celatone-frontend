@@ -9,5 +9,5 @@ export const structToString = (obj: Record<string, string>, indent = 4) => {
       : "";
     return `${spacing}${key}: ${val.trim()}${commentRender}`;
   });
-  return `struct ExampleStruct {\n${keyValuePairs.join(",\n")}\n}`;
+  return `<p>struct ExampleStruct {\n${keyValuePairs.join(",\n")}\n}</p>`;
 };

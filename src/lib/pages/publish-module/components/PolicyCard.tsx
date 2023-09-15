@@ -18,7 +18,6 @@ const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
     borderRadius="12px"
     borderColor={checked ? "text.main" : "gray.700"}
     bgColor={checked ? "gray.700" : "gray.900"}
-    overflowX="scroll"
     alignItems="center"
     cursor="pointer"
     {...props}

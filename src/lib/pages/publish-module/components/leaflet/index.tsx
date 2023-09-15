@@ -21,30 +21,31 @@ import { CustomIcon } from "lib/components/icon";
 
 import { metadata } from "./metadata";
 
-const TitleContainer = chakra(Flex, {
-  baseStyle: {
-    bg: "gray.700",
-    fontSize: "14px",
-    color: "text.main",
-    fontWeight: 600,
-    p: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    wordBreak: "break-all",
-    whiteSpace: "pre",
-  },
-});
+const TitleContainer = (props: GridItemProps) => (
+  <GridItem
+    display="flex"
+    bg="gray.700"
+    fontSize="14px"
+    color="text.main"
+    fontWeight={600}
+    p={1}
+    justifyContent="center"
+    wordBreak="break-all"
+    whiteSpace="pre"
+    alignItems="center"
+    {...props}
+  />
+);
 
 const ContentContainer = (props: GridItemProps) => (
   <GridItem
-    sx={{
-      backgroundColor: "gray.900",
-      color: "text.main",
-      whiteSpace: "pre-wrap",
-      p: "12px 16px",
-      fontSize: "14px",
-      height: "full",
-    }}
+    display="flex"
+    bgColor="gray.900"
+    color="text.main"
+    whiteSpace="pre-wrap"
+    p="12px 16px"
+    fontSize="14px"
+    h="full"
     {...props}
   />
 );
@@ -53,57 +54,86 @@ const GridTemplate = chakra(Grid, {
   baseStyle: {
     gridTemplateColumns: "140px repeat(3, 1fr)",
     columnGap: "2px",
-    rowGap: "4px",
+    rowGap: "2px",
   },
 });
 
 const Header = () => (
-  <>
+  <GridTemplate>
     {metadata.header.map((header) => (
       <TitleContainer key={header}>{header}</TitleContainer>
     ))}
-  </>
+  </GridTemplate>
 );
 
-const columnMapper = (col: string[]) => (
-  <Flex key={JSON.stringify(col)} direction="column" gap="2px">
-    {col.map((row) => (
-      <ContentContainer key={row} dangerouslySetInnerHTML={{ __html: row }} />
-    ))}
-  </Flex>
-);
+const rowMapper = (row: string[]) =>
+  row.map((each, idx) => (
+    <ContentContainer
+      key={each + idx.toString()}
+      dangerouslySetInnerHTML={{ __html: each }}
+    />
+  ));
+
+const centerRowMapper = (row: string[]) =>
+  row.map((each, idx) => (
+    <ContentContainer
+      key={each + idx.toString()}
+      dangerouslySetInnerHTML={{ __html: each }}
+      alignItems="center"
+    />
+  ));
 
 const StructContent = () => (
-  <>
-    <TitleContainer>fields</TitleContainer>
-    {metadata.fields.map(columnMapper)}
-  </>
+  <GridTemplate mt={1}>
+    <TitleContainer rowSpan={2}>fields</TitleContainer>
+    <ContentContainer
+      rowSpan={2}
+      dangerouslySetInnerHTML={{ __html: metadata.fields[0][0] }}
+    />
+    {metadata.fields.slice(1).map(rowMapper)}
+  </GridTemplate>
 );
 
 const ExposedFnsContent = () => (
-  <>
-    <TitleContainer>visibility</TitleContainer>
-    {metadata.visibility.map(columnMapper)}
-    <TitleContainer>is_entry</TitleContainer>
-    {metadata.is_entry.map(columnMapper)}
-    <TitleContainer>parameter</TitleContainer>
-    <ContentContainer colSpan={3}>{metadata.parameter}</ContentContainer>
-    <TitleContainer>generic_type_{"\n"}params</TitleContainer>
-    <GridItem
-      colSpan={3}
-      display="grid"
-      gridTemplateColumns="repeat(3, minmax(0, 1fr))"
-      gap="2px"
-    >
-      <ContentContainer colSpan={3}>
-        {metadata.generic_type_params[0]}
-      </ContentContainer>
-      {metadata.generic_type_params[1].map((title) => (
-        <TitleContainer key={title.toString()}>{title}</TitleContainer>
-      ))}
-      {(metadata.generic_type_params[2] as Array<string[]>).map(columnMapper)}
-    </GridItem>
-  </>
+  <Flex direction="column" rowGap={1} mt={1}>
+    <GridTemplate>
+      <TitleContainer rowSpan={3}>visibility</TitleContainer>
+      {metadata.visibility.map(centerRowMapper)}
+    </GridTemplate>
+    <GridTemplate>
+      <TitleContainer rowSpan={2}>is_entry</TitleContainer>
+      {metadata.is_entry.map(centerRowMapper)}
+    </GridTemplate>
+    <GridTemplate>
+      <TitleContainer>parameter</TitleContainer>
+      <ContentContainer colSpan={3}>{metadata.parameter}</ContentContainer>
+    </GridTemplate>
+    <GridTemplate>
+      <TitleContainer rowSpan={3}>generic_type_{"\n"}params</TitleContainer>
+      <GridItem
+        colSpan={3}
+        display="grid"
+        gridTemplateColumns="repeat(3, minmax(0, 1fr))"
+        gap="2px"
+      >
+        <ContentContainer colSpan={3}>
+          {metadata.generic_type_params[0]}
+        </ContentContainer>
+        {metadata.generic_type_params[1].map((title) => (
+          <TitleContainer key={title.toString()}>{title}</TitleContainer>
+        ))}
+        <ContentContainer
+          rowSpan={2}
+          dangerouslySetInnerHTML={{
+            __html: metadata.generic_type_params[2][0][0],
+          }}
+        />
+        {(metadata.generic_type_params[2].slice(1) as Array<string[]>).map(
+          rowMapper
+        )}
+      </GridItem>
+    </GridTemplate>
+  </Flex>
 );
 export const Leaflet = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -150,10 +180,8 @@ export const Leaflet = () => {
               but current fields can be removed. Example for struct fields are
               displayed below
             </Text>
-            <GridTemplate>
-              <Header />
-              <StructContent />
-            </GridTemplate>
+            <Header />
+            <StructContent />
             <Heading variant="h6" as="h6" mt={6}>
               Exposed Functions
             </Heading>
@@ -162,10 +190,10 @@ export const Leaflet = () => {
               subset of republished module. Example for exposed_functions
               properties changes are displayed below
             </Text>
-            <GridTemplate>
-              <Header />
-              <ExposedFnsContent />
-            </GridTemplate>
+            {/* Exposed Functions Table Content */}
+            <Header />
+            <ExposedFnsContent />
+            {/*  */}
             <Heading variant="h6" as="h6" mt={6}>
               Friends
             </Heading>

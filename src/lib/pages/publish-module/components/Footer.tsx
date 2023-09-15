@@ -10,6 +10,8 @@ interface FooterProps {
 
 export const Footer = ({ isLoading = false, fieldAmount }: FooterProps) => {
   const router = useRouter();
+  const publishText =
+    fieldAmount > 1 ? `Publish ${fieldAmount} Modules` : "Publish Module";
   return (
     <Grid
       w="full"
@@ -19,21 +21,17 @@ export const Footer = ({ isLoading = false, fieldAmount }: FooterProps) => {
       bottom={0}
       position="sticky"
       zIndex={2}
-      templateAreas={`"prespace main postspace"`}
-      templateColumns="1fr 4fr 2fr"
-      gap="48px"
+      templateAreas={`"prespace main accordion postspace"`}
+      templateColumns="1fr 6fr 4fr 1fr"
+      columnGap="16px"
     >
       <GridItem area="main">
-        <Flex flex="5" align="center" justify="space-between" h="full" w="full">
+        <Flex align="center" justify="space-between" h="full">
           <Button variant="outline-primary" onClick={router.back}>
             Cancel
           </Button>
           <Button variant="primary" isDisabled={isLoading}>
-            {isLoading ? (
-              <Spinner size="md" variant="light" />
-            ) : (
-              `Publish ${fieldAmount} Modules`
-            )}
+            {isLoading ? <Spinner size="md" variant="light" /> : publishText}
           </Button>
         </Flex>
       </GridItem>

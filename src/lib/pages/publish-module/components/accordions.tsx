@@ -5,15 +5,18 @@ import {
   AccordionIcon,
   AccordionPanel,
   Text,
-  Button,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "lib/components/icon";
-
 export const UploadAccordion = () => (
-  <Accordion allowToggle defaultIndex={[0]} variant="transparent">
+  <Accordion
+    allowToggle
+    defaultIndex={[0]}
+    variant="transparent"
+    position="sticky"
+    top={0}
+  >
     <AccordionItem borderTop="none" borderColor="gray.700">
-      <AccordionButton py={3} px={0}>
+      <AccordionButton>
         <Text
           variant="body2"
           fontWeight={700}
@@ -42,13 +45,14 @@ export const UploadAccordion = () => (
 
 export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
   <Accordion
-    position="relative"
     allowToggle
     defaultIndex={[0]}
     variant="transparent"
+    position="sticky"
+    top={0}
   >
     <AccordionItem borderTop="none" borderColor="gray.700">
-      <AccordionButton py={3} px={0}>
+      <AccordionButton>
         <Text
           variant="body2"
           fontWeight={700}
@@ -80,21 +84,6 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
           Choosing “Immutable” will not allow you to make any changes with this
           module ever.
         </Text>
-        <Button
-          variant="ghost-secondary"
-          size="sm"
-          px="1 !important"
-          rightIcon={
-            <CustomIcon
-              name="chevron-right"
-              color="secondary.main"
-              boxSize={3}
-              m={0}
-            />
-          }
-        >
-          See Initia Doc
-        </Button>
       </AccordionPanel>
     </AccordionItem>
   </Accordion>
