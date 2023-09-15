@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#529](https://github.com/alleslabs/celatone-frontend/pull/529) Improve developer features ux writing and transition
 - [#528](https://github.com/alleslabs/celatone-frontend/pull/528) Improve developer features toggle for a smoother ux
 - [#519](https://github.com/alleslabs/celatone-frontend/pull/519) Validate schema input when initialFormData has changed
 - [#513](https://github.com/alleslabs/celatone-frontend/pull/513) Disable simulating fee when JSON input is invalid

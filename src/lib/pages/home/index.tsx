@@ -225,9 +225,6 @@ const Home = () => {
       {!isMobile && (
         <section style={{ marginBottom: "48px" }}>
           <Flex gap={4} direction="column">
-            <Heading as="h5" variant="h5">
-              Dev Shortcuts
-            </Heading>
             <ConnectWalletAlert
               title={`Connect wallet to start using ${CURR_THEME.branding.seo.appName}`}
               subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."

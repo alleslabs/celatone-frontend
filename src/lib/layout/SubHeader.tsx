@@ -7,6 +7,7 @@ import {
   Button,
   Heading,
 } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 
@@ -14,6 +15,7 @@ import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
+import { MotionBox } from "lib/components/MotionBox";
 import { Tooltip } from "lib/components/Tooltip";
 import { useIsCurrentPage } from "lib/hooks";
 import type { Option } from "lib/types";
@@ -30,41 +32,57 @@ const FirstLandPrompt = ({
 }: {
   setIsDevMode: Dispatch<SetStateAction<Option<boolean>>>;
 }) => (
-  <Flex
-    position="absolute"
-    right="24px"
-    mt={1}
-    gap={2}
-    p={6}
-    direction="column"
-    bg="gray.800"
-    w="430px"
-    borderRadius={4}
-    boxShadow={boxShadow}
-    zIndex="popover"
-  >
-    <Flex>
-      <Heading as="h6" variant="h6" fontWeight={600}>
-        Want to
-        <Text as="span" color="accent.main" pl={1}>
-          Deploy, Query, or Execute?
+  <AnimatePresence>
+    <MotionBox
+      key="modal"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        delay: "1",
+        duration: "0.5",
+        ease: "easeInOut",
+      }}
+      position="absolute"
+      right="24px"
+      mt={1}
+      gap={2}
+      p={6}
+      display="flex"
+      flexDirection="column"
+      bg="gray.800"
+      w="430px"
+      borderRadius={4}
+      boxShadow={boxShadow}
+      zIndex="popover"
+    >
+      <Flex>
+        <Heading as="h6" variant="h6" fontWeight={600}>
+          Want to
+          <Text as="span" color="accent.main" pl={1}>
+            Deploy, Query, or Execute?
+          </Text>
+        </Heading>
+      </Flex>
+      <Text variant="body2" color="text.main" my={1}>
+        Turn on Dev Features to get full access to our deploy, query, execute
+        and other developer features through{" "}
+        <Text as="span" fontWeight={600}>
+          sidebar navigation
         </Text>
-      </Heading>
-    </Flex>
-    <Text variant="body2" color="text.main" my={1}>
-      Turn on Dev Features to access to our deploy, query, execute and other
-      developer features through side bar navigation.
-    </Text>
-    <Flex direction="column" gap={2}>
-      <Button onClick={() => setIsDevMode(true)}>Turn on Dev Feature!</Button>
-      <Button variant="outline-primary" onClick={() => setIsDevMode(false)}>
-        Use Celatone as Explorer
-      </Button>
-      <Text variant="body2" textAlign="center" color="text.dark">
-        You can change it back anytime
+        .
       </Text>
-    </Flex>
-  </Flex>
+      <Flex direction="column" gap={2}>
+        <Button onClick={() => setIsDevMode(true)}>Turn on Dev Feature!</Button>
+        <Button variant="outline-primary" onClick={() => setIsDevMode(false)}>
+          Use Celatone as Explorer
+        </Button>
+        <Text variant="body3" textAlign="center" color="text.dark">
+          You can change it back anytime
+        </Text>
+      </Flex>
+    </MotionBox>
+  </AnimatePresence>
 );
 
 interface SubHeaderProps {
@@ -162,31 +180,31 @@ const SubHeader = ({
             </AppLink>
           ))}
         </Flex>
-        <FormControl
-          display="flex"
-          alignItems="center"
-          width="fit-content"
-          style={isDevMode === undefined ? switchHighlight : undefined}
+        <Tooltip
+          label="Enable to access to our deploy, query, execute, and other developer features."
+          placement="bottom"
+          isDisabled={isDevMode === undefined}
         >
-          <FormLabel mb={0} cursor="pointer" mr={2}>
-            <Tooltip
-              label="Toggle to enable or disable access to our deploy, query, execute, and other developer features."
-              placement="bottom"
-              isDisabled={isDevMode === undefined}
-            >
+          <FormControl
+            display="flex"
+            alignItems="center"
+            width="fit-content"
+            style={isDevMode === undefined ? switchHighlight : undefined}
+          >
+            <FormLabel mb={0} cursor="pointer" mr={2}>
               <Text variant="body2" color="text.dark" fontWeight={600}>
                 Dev Features
               </Text>
-            </Tooltip>
-          </FormLabel>
-          <Switch
-            size="md"
-            isChecked={isDevMode}
-            onChange={(e) => {
-              setIsDevMode(e.target.checked);
-            }}
-          />
-        </FormControl>
+            </FormLabel>
+            <Switch
+              size="md"
+              isChecked={isDevMode}
+              onChange={(e) => {
+                setIsDevMode(e.target.checked);
+              }}
+            />
+          </FormControl>
+        </Tooltip>
       </Flex>
       {isDevMode === undefined && (
         <FirstLandPrompt setIsDevMode={setIsDevMode} />
