@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import {
   useInternalNavigate,
   useWasmConfig,
@@ -11,7 +12,6 @@ import {
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
-import { AmpTrackToQuery } from "lib/services/amplitude";
 import type { ContractDetail } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 import {
@@ -33,6 +33,7 @@ const Query = observer(() => {
   const [codeId, setCodeId] = useState("");
   const [initialMsg, setInitialMsg] = useState("");
   const isMobile = useMobile();
+  const { trackToQuery } = useTrack();
 
   const goToExecute = () => {
     navigate({
@@ -69,9 +70,9 @@ const Query = observer(() => {
       setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
 
-      AmpTrackToQuery(!!contractAddressParam, !!msgParam);
+      trackToQuery(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect]);
+  }, [router, onContractSelect, trackToQuery]);
 
   return (
     <PageContainer>

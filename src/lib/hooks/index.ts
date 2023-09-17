@@ -9,3 +9,4 @@ export * from "./useUserKey";
 export * from "./useOpenTab";
 export * from "./useIsCurrentPage";
 export * from "./useGetMaxLengthError";
+export * from "./useLocalStorage";

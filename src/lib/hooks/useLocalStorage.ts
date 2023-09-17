@@ -8,9 +8,10 @@ export const useLocalStorage = <T>(
   key: string,
   defaultValue: T
 ): PersistedState<T> => {
+  const storageKey = `celatone-${key}`;
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const value = window.localStorage.getItem(key);
+      const value = window.localStorage.getItem(storageKey);
       return value ? (JSON.parse(value) as T) : defaultValue;
     } catch (e) {
       return defaultValue as T;
@@ -19,11 +20,11 @@ export const useLocalStorage = <T>(
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(storedValue));
+      window.localStorage.setItem(storageKey, JSON.stringify(storedValue));
     } catch (e) {
       // I want application to not crush, but don't care about the message
     }
-  }, [key, storedValue]);
+  }, [storageKey, storedValue]);
 
   return [storedValue, setStoredValue];
 };

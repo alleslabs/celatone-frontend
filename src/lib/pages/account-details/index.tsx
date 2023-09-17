@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useInternalNavigate,
   useValidateAddress,
@@ -22,7 +23,6 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
-import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
@@ -66,6 +66,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
+  const { trackUseTab } = useTrack();
   // TODO: remove assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
@@ -86,7 +87,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
-      AmpTrackUseTab(nextTab);
+      trackUseTab(nextTab);
       navigate({
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
@@ -98,7 +99,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         },
       });
     },
-    [accountAddress, tab, navigate]
+    [tab, trackUseTab, navigate, accountAddress]
   );
 
   useEffect(() => {
@@ -331,6 +332,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
 const AccountDetails = () => {
   const router = useRouter();
+  const { track } = useTrack();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
@@ -340,8 +342,9 @@ const AccountDetails = () => {
 
   useEffect(() => {
     if (router.isReady)
-      AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL, { ...(tab && { tab }) });
-  }, [router.isReady, tab]);
+      // TODO
+      track(AmpEvent.TO_ACCOUNT_DETAIL, { ...(tab && { tab }) });
+  }, [router.isReady, tab, track]);
 
   if (!router.isReady) return <Loading />;
 

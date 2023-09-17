@@ -13,6 +13,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useWasmConfig, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
@@ -26,7 +27,6 @@ import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useCodeStore, useSchemaStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getFirstQueryParam, isCodeId } from "lib/utils";
@@ -260,13 +260,14 @@ const CodeDetailsBody = observer(
 
 const CodeDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
+  const { track } = useTrack();
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(codeIdParam);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_CODE_DETAIL);
+  }, [router.isReady, track]);
 
   if (data.isLoading) return <Loading withBorder />;
   return (

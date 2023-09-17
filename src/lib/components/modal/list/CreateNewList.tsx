@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError, useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { shortenName } from "lib/utils";
 
 interface CreateNewListModalProps {
@@ -28,6 +28,7 @@ export function CreateNewListModal({
   onCreate,
   onClose,
 }: CreateNewListModalProps) {
+  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const userKey = useUserKey();
@@ -70,7 +71,7 @@ export function CreateNewListModal({
     onCreate?.(listName);
     onClose?.();
 
-    AmpTrack(AmpEvent.LIST_CREATE);
+    track(AmpEvent.LIST_CREATE);
 
     toast({
       title: `Create ${shortenName(listName)} successfully`,
@@ -85,6 +86,7 @@ export function CreateNewListModal({
     userKey,
     listName,
     resetListName,
+    track,
     onCreate,
     onClose,
     toast,

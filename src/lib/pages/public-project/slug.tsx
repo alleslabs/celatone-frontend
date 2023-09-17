@@ -2,6 +2,7 @@ import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   usePublicProjectConfig,
   useWasmConfig,
@@ -10,7 +11,6 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -27,6 +27,7 @@ enum TabIndex {
 }
 
 const ProjectDetail = () => {
+  const { track } = useTrack();
   const router = useRouter();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
@@ -71,9 +72,9 @@ const ProjectDetail = () => {
           },
         });
       }
-      AmpTrack(AmpEvent.TO_PROJECT_DETAIL, { ...(tab && { tab }) });
+      track(AmpEvent.TO_PROJECT_DETAIL, { ...(tab && { tab }) });
     }
-  }, [router.isReady, tab, slug, navigate]);
+  }, [router.isReady, tab, slug, navigate, track]);
 
   const overviewCount =
     publicAccounts.length +

@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
@@ -10,10 +11,10 @@ import PageContainer from "lib/components/PageContainer";
 import { AllContractLists } from "lib/components/select-contract";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const AllContractListsPage = observer(() => {
   useWasmConfig({ shouldRedirect: true });
+  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { getContractLists } = useContractStore();
@@ -24,8 +25,8 @@ const AllContractListsPage = observer(() => {
   };
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_ALL_LISTS);
+  }, [router.isReady, track]);
 
   return (
     <PageContainer>

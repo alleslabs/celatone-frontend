@@ -3,13 +3,13 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
@@ -32,6 +32,7 @@ export const ContractDetailsTemplateModal = ({
   defaultList = [],
   isSave = false,
 }: ContractDetailsTemplateModalProps) => {
+  const { track } = useTrack();
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
@@ -86,7 +87,7 @@ export const ContractDetailsTemplateModal = ({
     tags: offchainState.tags,
     lists: offchainState.lists,
     actions: () =>
-      AmpTrack(isSave ? AmpEvent.CONTRACT_SAVE : AmpEvent.CONTRACT_EDIT),
+      track(isSave ? AmpEvent.CONTRACT_SAVE : AmpEvent.CONTRACT_EDIT),
   });
 
   return (

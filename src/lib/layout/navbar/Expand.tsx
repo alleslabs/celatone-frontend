@@ -1,9 +1,9 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps, SubmenuInfo } from "./type";
 
@@ -59,61 +59,65 @@ export const ExpandNavMenu = ({
   navMenu,
   isCurrentPage,
   setIsExpand,
-}: NavMenuProps) => (
-  <Box px={4} py={2} overflowY="auto">
-    {navMenu.map((item) => (
-      <Box
-        pb={4}
-        mb={4}
-        key={item.category}
-        borderBottom="1px solid"
-        borderColor="gray.700"
-        sx={{
-          "&:last-of-type": {
-            borderBottom: "none",
-            paddingBottom: "0px",
-            marginBottom: "0px",
-          },
-        }}
-      >
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text py={2} variant="body3" fontWeight={700}>
-            {item.category}
-          </Text>
-          {item.category === "Your Account" && (
-            <Button
-              variant="ghost-accent"
-              size="xs"
-              iconSpacing={1}
-              leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
-              onClick={() => setIsExpand(false)}
-            >
-              HIDE
-            </Button>
-          )}
-        </Flex>
-        {item.submenu.map((submenu) =>
-          submenu.isDisable ? (
-            <Tooltip
-              key={submenu.slug}
-              label={submenu.tooltipText}
-              maxW="240px"
-            >
-              <div>
+}: NavMenuProps) => {
+  const { track } = useTrack();
+
+  return (
+    <Box px={4} py={2} overflowY="auto">
+      {navMenu.map((item) => (
+        <Box
+          pb={4}
+          mb={4}
+          key={item.category}
+          borderBottom="1px solid"
+          borderColor="gray.700"
+          sx={{
+            "&:last-of-type": {
+              borderBottom: "none",
+              paddingBottom: "0px",
+              marginBottom: "0px",
+            },
+          }}
+        >
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text py={2} variant="body3" fontWeight={700}>
+              {item.category}
+            </Text>
+            {item.category === "Your Account" && (
+              <Button
+                variant="ghost-accent"
+                size="xs"
+                iconSpacing={1}
+                leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
+                onClick={() => setIsExpand(false)}
+              >
+                HIDE
+              </Button>
+            )}
+          </Flex>
+          {item.submenu.map((submenu) =>
+            submenu.isDisable ? (
+              <Tooltip
+                key={submenu.slug}
+                label={submenu.tooltipText}
+                maxW="240px"
+              >
+                <div>
+                  <NavInfo submenu={submenu} isCurrentPage={isCurrentPage} />
+                </div>
+              </Tooltip>
+            ) : (
+              <AppLink
+                href={submenu.slug}
+                key={submenu.slug}
+                onClick={() => track(AmpEvent.USE_SIDEBAR)}
+              >
                 <NavInfo submenu={submenu} isCurrentPage={isCurrentPage} />
-              </div>
-            </Tooltip>
-          ) : (
-            <AppLink
-              href={submenu.slug}
-              key={submenu.slug}
-              onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
-            >
-              <NavInfo submenu={submenu} isCurrentPage={isCurrentPage} />
-            </AppLink>
-          )
-        )}
-      </Box>
-    ))}
-  </Box>
-);
+              </AppLink>
+            )
+          )}
+        </Box>
+      ))}
+    </Box>
+  );
+};

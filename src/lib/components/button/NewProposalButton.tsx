@@ -1,13 +1,14 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import { Tooltip } from "../Tooltip";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useInternalNavigate, useGovConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 // import { useGovParams } from "lib/services/proposalService";
 // import { AccessConfigPermission } from "lib/types";
 
 export const NewProposalButton = () => {
+  const { track } = useTrack();
   const navigate = useInternalNavigate();
   const govConfig = useGovConfig({ shouldRedirect: false });
   // const { data: govParams } = useGovParams();
@@ -19,7 +20,7 @@ export const NewProposalButton = () => {
   return (
     <Menu>
       <MenuButton
-        onClick={() => AmpTrack(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
+        onClick={() => track(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
         variant="primary"
         as={Button}
         rightIcon={<CustomIcon name="chevron-down" />}

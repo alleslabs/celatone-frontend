@@ -19,6 +19,7 @@ import {
 
 import type { MenuInfo } from "../navbar/type";
 import { CHAIN_CONFIGS } from "config/chain";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   usePublicProjectConfig,
@@ -28,9 +29,9 @@ import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const NavDrawer = () => {
+  const { track } = useTrack();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentChainId, availableChainIds } = useCelatoneApp();
   const isCurrentPage = useIsCurrentPage();
@@ -100,7 +101,7 @@ export const NavDrawer = () => {
         <DrawerContent w="90%">
           <DrawerHeader alignItems="center" px={4}>
             <Flex align="center" justify="space-between" w="full">
-              <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
+              <Menu onOpen={() => track(AmpEvent.USE_SELECT_NETWORK)}>
                 <MenuButton
                   pl={4}
                   pr={2}
@@ -205,7 +206,7 @@ export const NavDrawer = () => {
                       href={submenu.slug}
                       key={submenu.slug}
                       onClick={() => {
-                        AmpTrack(AmpEvent.USE_SIDEBAR);
+                        track(AmpEvent.USE_SIDEBAR);
                         onClose();
                       }}
                     >

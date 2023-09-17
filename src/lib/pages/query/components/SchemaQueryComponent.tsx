@@ -17,6 +17,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { memo, useState, useEffect, useCallback } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -27,7 +28,6 @@ import {
 } from "lib/components/json-schema";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
@@ -88,6 +88,7 @@ export const SchemaQueryComponent = ({
   initialMsg,
   addActivity,
 }: SchemaQueryComponentProps) => {
+  const { track } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );
@@ -137,9 +138,10 @@ export const SchemaQueryComponent = ({
   );
 
   const handleQuery = useCallback(() => {
-    AmpTrack(AmpEvent.ACTION_QUERY);
+    // ASK
+    track(AmpEvent.ACTION_QUERY);
     refetch();
-  }, [refetch]);
+  }, [refetch, track]);
 
   useEffect(() => {
     if (isNonEmptyJsonData(initialMsg)) {

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useFabricateFee,
   useExecuteContractTx,
@@ -30,7 +31,6 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useExecuteCmds } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -69,6 +69,7 @@ export const JsonExecute = ({
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
+  const { trackAction } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -152,7 +153,7 @@ export const JsonExecute = ({
       assetsJsonStr,
       assetsSelect
     );
-    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+    trackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
@@ -175,6 +176,7 @@ export const JsonExecute = ({
     contractAddress,
     msg,
     getAttachFunds,
+    trackAction,
     assetsJsonStr,
     assetsSelect,
     addActivity,

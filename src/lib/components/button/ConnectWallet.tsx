@@ -2,14 +2,15 @@ import { Button } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const ConnectWalletBtn = () => {
   const { connect } = useCurrentChain();
+  const { track } = useTrack();
 
   const onClickConnect: MouseEventHandler = async (e) => {
-    AmpTrack(AmpEvent.USE_CLICK_WALLET);
+    track(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     await connect();
   };

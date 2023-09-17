@@ -4,6 +4,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -19,7 +20,6 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useQueryCmds } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
 import {
@@ -40,6 +40,7 @@ interface JsonQueryProps {
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
+  const { track } = useTrack();
   const isMobile = useMobile();
   const { isFetching: cmdsFetching, queryCmds } = useQueryCmds(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
@@ -83,7 +84,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   );
 
   const handleQuery = () => {
-    AmpTrack(AmpEvent.ACTION_QUERY);
+    track(AmpEvent.ACTION_QUERY);
     refetch();
   };
 
@@ -124,7 +125,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
                 onClickCmd={() => {
-                  AmpTrack(AmpEvent.USE_CMD_QUERY);
+                  track(AmpEvent.USE_CMD_QUERY);
                   setMsg(jsonPrettify(queryMsg));
                 }}
               />

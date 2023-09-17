@@ -1,12 +1,12 @@
 import { Accordion, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { useContractStore } from "lib/providers/store";
-import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { QuerySchema } from "lib/stores/schema";
 import type { ContractAddr } from "lib/types";
 import { resolveInitialMsg } from "lib/utils";
@@ -27,6 +27,7 @@ export const SchemaQuery = ({
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
+  const { trackUseExpandAll } = useTrack();
 
   const accordionRef = useRef<HTMLDivElement>(null);
   const [keyword, setKeyword] = useState("");
@@ -82,7 +83,7 @@ export const SchemaQuery = ({
           }
           minH="40px"
           onClick={() => {
-            AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");
+            trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
             setExpandedIndexes((prev) =>
               prev.length ? [] : Array.from(Array(schema.length).keys())
             );

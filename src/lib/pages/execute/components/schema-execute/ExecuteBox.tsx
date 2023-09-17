@@ -18,6 +18,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCurrentChain,
   useExecuteContractTx,
@@ -40,7 +41,6 @@ import { CustomIcon } from "lib/components/icon";
 import { JsonSchemaForm } from "lib/components/json-schema";
 import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
 import type {
@@ -92,6 +92,7 @@ export const ExecuteBox = ({
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
+  const { trackAction } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -188,7 +189,7 @@ export const ExecuteBox = ({
       assetsJsonStr,
       assetsSelect
     );
-    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+    trackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
@@ -211,6 +212,7 @@ export const ExecuteBox = ({
     contractAddress,
     msg,
     getAttachFunds,
+    trackAction,
     assetsJsonStr,
     assetsSelect,
     addActivity,

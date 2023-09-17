@@ -3,9 +3,9 @@ import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
 
+import { useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { PoolDetail, USD } from "lib/types";
 import { PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
@@ -17,10 +17,12 @@ interface PoolAssetsProps {
 }
 
 export const PoolAssets = ({ pool }: PoolAssetsProps) => {
+  const { trackWebsite } = useTrack();
   const totalLiquidity = pool.poolLiquidity.reduce(
     (totalVal, token) => totalVal.add(token.value ?? 0),
     big(0)
   ) as USD<Big>;
+
   return (
     <>
       <Flex mt={12} mb={4} justifyContent="space-between" align="center">
@@ -62,7 +64,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() =>
-                AmpTrackWebsite(
+                trackWebsite(
                   "https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
                 )
               }

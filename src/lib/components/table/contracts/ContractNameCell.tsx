@@ -1,7 +1,7 @@
 import { EditableCell } from "../EditableCell";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 
 interface ContractNameCellProps {
@@ -13,13 +13,14 @@ export const ContractNameCell = ({
   contractLocalInfo,
   isReadOnly = false,
 }: ContractNameCellProps) => {
+  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const onSave = useHandleContractSave({
     title: "Changed name successfully!",
     contractAddress: contractLocalInfo.contractAddress,
     instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
-    actions: () => AmpTrack(AmpEvent.USE_QUICK_EDIT_CONTRACT),
+    actions: () => track(AmpEvent.USE_QUICK_EDIT_CONTRACT),
   });
   return (
     <EditableCell

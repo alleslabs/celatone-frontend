@@ -1,5 +1,4 @@
 export * from "./useAddress";
-export * from "./useAmplitude";
 export * from "./useDummyWallet";
 export * from "./useExampleAddresses";
 export * from "./useFabricateFee";
@@ -13,3 +12,4 @@ export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
 export * from "./useConfig";
 export * from "./useCurrentChain";
+export * from "./usePreviousPathname";
