@@ -13,6 +13,7 @@ export interface SubSection {
   category: string;
   submenu: SubmenuInfo[];
 }
+
 export interface MenuInfo {
   category: string;
   submenu: SubmenuInfo[];

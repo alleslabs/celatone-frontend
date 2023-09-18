@@ -155,7 +155,7 @@ export const ExpandNavMenu = ({
               {item.subSection && (
                 <Text py={2} variant="small" fontWeight={700} color="text.dark">
                   {item.subSection.map((subitem) => (
-                    <>
+                    <div key={subitem.category}>
                       <Text
                         py={2}
                         variant="small"
@@ -191,7 +191,7 @@ export const ExpandNavMenu = ({
                           </AppLink>
                         )
                       )}
-                    </>
+                    </div>
                   ))}
                 </Text>
               )}

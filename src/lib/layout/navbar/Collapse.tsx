@@ -116,7 +116,7 @@ export const CollapseNavMenu = ({
           )}
           {item.subSection &&
             item.subSection.map((section) => (
-              <>
+              <div key={section.category}>
                 {section.submenu.map((subitem) =>
                   subitem.isDisable ? (
                     <CollapseNavInfo
@@ -137,7 +137,7 @@ export const CollapseNavMenu = ({
                     </AppLink>
                   )
                 )}
-              </>
+              </div>
             ))}
         </Box>
       ))}

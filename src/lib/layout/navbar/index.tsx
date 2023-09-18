@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import type { Dispatch, SetStateAction } from "react";
 
 import {
@@ -21,7 +22,7 @@ interface NavbarProps {
   setIsExpand: Dispatch<SetStateAction<boolean>>;
 }
 
-const Navbar = ({ isExpand, setIsExpand }: NavbarProps) => {
+const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
@@ -159,6 +160,6 @@ const Navbar = ({ isExpand, setIsExpand }: NavbarProps) => {
       )}
     </Flex>
   );
-};
+});
 
 export default Navbar;
