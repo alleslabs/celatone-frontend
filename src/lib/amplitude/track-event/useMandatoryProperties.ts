@@ -1,9 +1,10 @@
-import { createHash } from "crypto";
+import { fromBech32 } from "@cosmjs/encoding";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 import { useCelatoneApp, useNavContext } from "lib/app-provider/contexts";
 import { useCurrentChain, useMobile } from "lib/app-provider/hooks";
+import { sha256Hex } from "lib/utils";
 
 export const useMandatoryProperties = () => {
   const { currentChainId } = useCelatoneApp();
@@ -13,15 +14,15 @@ export const useMandatoryProperties = () => {
   const router = useRouter();
 
   // TODO: make util function
-  const walletAddress = address
-    ? createHash("sha256").update(address).digest("hex")
+  const rawAddressHash = address
+    ? sha256Hex(fromBech32(address).data)
     : "Not Connected";
 
   return useMemo(
     () => ({
       page: router.pathname.replace("/[network]", ""),
       prevPathname,
-      walletAddress,
+      rawAddressHash,
       chain: currentChainId,
       mobile: isMobile,
       navOpen: isExpand,
@@ -34,7 +35,7 @@ export const useMandatoryProperties = () => {
       isMobile,
       prevPathname,
       router.pathname,
-      walletAddress,
+      rawAddressHash,
     ]
   );
 };

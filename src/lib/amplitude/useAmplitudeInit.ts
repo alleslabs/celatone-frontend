@@ -1,9 +1,10 @@
 import { Identify, identify, init } from "@amplitude/analytics-browser";
-import { createHash } from "crypto";
+import { fromBech32 } from "@cosmjs/encoding";
 
 import { useCelatoneApp, useNavContext } from "lib/app-provider/contexts";
 import { useCurrentChain } from "lib/app-provider/hooks";
 import { useLocalStorage } from "lib/hooks/useLocalStorage";
+import { sha256Hex } from "lib/utils";
 
 export const useAmplitudeInit = () => {
   const { currentChainId } = useCelatoneApp();
@@ -24,10 +25,10 @@ export const useAmplitudeInit = () => {
 
     // TODO: make util function
     if (address) {
-      const addressHash = createHash("sha256").update(address).digest("hex");
+      const rawAddressHash = sha256Hex(fromBech32(address).data);
 
-      if (!wallets.includes(addressHash)) {
-        setWallets([...wallets, addressHash]);
+      if (!wallets.includes(rawAddressHash)) {
+        setWallets([...wallets, rawAddressHash]);
       }
     }
 
