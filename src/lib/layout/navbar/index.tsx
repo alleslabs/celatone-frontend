@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import type { Dispatch, SetStateAction } from "react";
 
 import {
@@ -10,7 +11,6 @@ import type { IconKeys } from "lib/components/icon";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
-import type { Option } from "lib/types";
 import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
@@ -19,11 +19,10 @@ import type { MenuInfo } from "./type";
 
 interface NavbarProps {
   isExpand: boolean;
-  isDevMode: Option<boolean>;
   setIsExpand: Dispatch<SetStateAction<boolean>>;
 }
 
-const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
+const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
@@ -48,28 +47,31 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
           tooltipText:
             "You need to connect wallet to view your account details.",
         },
-        ...(isDevMode && wasm.enabled
-          ? [
-              {
-                name: "My Stored Codes",
-                slug: "/stored-codes",
-                icon: "code" as IconKeys,
-              },
-              {
-                name: INSTANTIATED_LIST_NAME,
-                slug: `/contract-lists/${formatSlugName(
-                  INSTANTIATED_LIST_NAME
-                )}`,
-                icon: getListIcon(INSTANTIATED_LIST_NAME),
-              },
-            ]
-          : []),
       ],
     },
-    ...(isDevMode && wasm.enabled
+    ...(publicProject.enabled
       ? [
           {
-            category: "Dev Features",
+            category: "Public Projects",
+            submenu: [
+              ...getSavedPublicProjects().map((list) => ({
+                name: list.name,
+                slug: `/projects/${list.slug}`,
+                logo: list.logo as IconKeys,
+              })),
+              {
+                name: "View All Projects",
+                slug: "/projects",
+                icon: "public-project" as IconKeys,
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(wasm.enabled
+      ? [
+          {
+            category: "Developer Tools",
             submenu: [
               {
                 name: "Deploy Contract",
@@ -97,48 +99,43 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
               //   icon: "list" as IconKeys,
               // },
             ],
-          },
-        ]
-      : []),
-    ...(wasm.enabled
-      ? [
-          {
-            category: "This Device",
-            submenu: [
+            subSection: [
               {
-                name: "Saved Codes",
-                slug: "/saved-codes",
-                icon: "code" as IconKeys,
+                category: "This Wallet",
+                submenu: [
+                  {
+                    name: "My Stored Codes",
+                    slug: "/stored-codes",
+                    icon: "code" as IconKeys,
+                  },
+                  {
+                    name: INSTANTIATED_LIST_NAME,
+                    slug: `/contract-lists/${formatSlugName(
+                      INSTANTIATED_LIST_NAME
+                    )}`,
+                    icon: getListIcon(INSTANTIATED_LIST_NAME),
+                  },
+                ],
               },
               {
-                name: SAVED_LIST_NAME,
-                slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
-                icon: "contract-address" as IconKeys,
-              },
-              {
-                name: "View All Contract List",
-                slug: "/contract-lists",
-                icon: "more" as IconKeys,
-              },
-            ],
-          },
-        ]
-      : []),
-
-    ...(publicProject.enabled
-      ? [
-          {
-            category: "Public Projects",
-            submenu: [
-              ...getSavedPublicProjects().map((list) => ({
-                name: list.name,
-                slug: `/projects/${list.slug}`,
-                logo: list.logo as IconKeys,
-              })),
-              {
-                name: "View All Projects",
-                slug: "/projects",
-                icon: "public-project" as IconKeys,
+                category: "This Device",
+                submenu: [
+                  {
+                    name: "Saved Codes",
+                    slug: "/saved-codes",
+                    icon: "code" as IconKeys,
+                  },
+                  {
+                    name: SAVED_LIST_NAME,
+                    slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
+                    icon: "contract-address" as IconKeys,
+                  },
+                  {
+                    name: "View All Contract List",
+                    slug: "/contract-lists",
+                    icon: "more" as IconKeys,
+                  },
+                ],
               },
             ],
           },
@@ -163,6 +160,6 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
       )}
     </Flex>
   );
-};
+});
 
 export default Navbar;

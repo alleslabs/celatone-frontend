@@ -125,7 +125,7 @@ export const DelegationsSection = ({
               {isValidator && (
                 <TotalCard
                   title="Commission"
-                  message="Total commission reward earned by your validator"
+                  message="Total commission reward earned by validator"
                   token={totalCommissionBondDenom}
                   isLoading={isLoadingTotalCommission}
                 />

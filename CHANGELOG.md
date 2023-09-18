@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
+- [#531](https://github.com/alleslabs/celatone-frontend/pull/531) Revise developer features and add accordion to sidebar navigation
 - [#529](https://github.com/alleslabs/celatone-frontend/pull/529) Improve developer features ux writing and transition
 - [#528](https://github.com/alleslabs/celatone-frontend/pull/528) Improve developer features toggle for a smoother ux
 - [#519](https://github.com/alleslabs/celatone-frontend/pull/519) Validate schema input when initialFormData has changed
