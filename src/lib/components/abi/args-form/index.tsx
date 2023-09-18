@@ -1,4 +1,3 @@
-import { Flex, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import type { FormState } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -8,7 +7,6 @@ import type { AbiFormData, Option } from "lib/types";
 import { ArgFieldTemplate } from "./field";
 
 interface ArgsFormProps {
-  title?: string;
   params: string[];
   initialData: AbiFormData["args"];
   propsOnChange?: (data: AbiFormData["args"]) => void;
@@ -25,7 +23,6 @@ const formatErrors = (
   ]);
 
 export const ArgsForm = ({
-  title = "args",
   params,
   initialData,
   propsOnChange,
@@ -53,10 +50,7 @@ export const ArgsForm = ({
   );
 
   return (
-    <Flex direction="column" gap={4}>
-      <Heading variant="h6" as="h6" color="text.main">
-        {title}
-      </Heading>
+    <>
       {params.map((param, index) => {
         control.register(`${index}`, {
           onChange: () => propsOnChange?.(getValues()),
@@ -72,6 +66,6 @@ export const ArgsForm = ({
           />
         );
       })}
-    </Flex>
+    </>
   );
 };

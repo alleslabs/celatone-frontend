@@ -6,8 +6,10 @@ import type {
   ResponseModules,
   InternalModule,
   HexAddr,
+  AbiFormData,
+  ExposedFunction,
 } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { serializeAbiData, snakeToCamel } from "lib/utils";
 
 interface ModuleReturn {
   module: ResponseModule;
@@ -67,3 +69,17 @@ export const getModuleVerificationStatus = async (
     )
     .then(() => true)
     .catch(() => false);
+
+export const getFunctionView = async (
+  baseEndpoint: string,
+  address: MoveAccountAddr,
+  moduleName: string,
+  fn: ExposedFunction,
+  abiData: AbiFormData
+): Promise<string> => {
+  const { data } = await axios.post(
+    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}/view_functions/${fn.name}`,
+    serializeAbiData(fn, abiData)
+  );
+  return data.data;
+};

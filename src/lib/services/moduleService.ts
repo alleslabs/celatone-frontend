@@ -4,6 +4,7 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import type {
@@ -12,12 +13,15 @@ import type {
   InternalModule,
   ResponseABI,
   Option,
+  AbiFormData,
+  RpcQueryError,
 } from "lib/types";
 import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils";
 
 import {
   getAccountModule,
   getAccountModules,
+  getFunctionView,
   getModuleVerificationStatus,
 } from "./module";
 
@@ -98,3 +102,41 @@ export const useVerifyModule = ({
       keepPreviousData: true,
     }
   );
+
+export const useFunctionView = ({
+  address,
+  moduleName,
+  fn,
+  abiData,
+  onSuccess,
+  onError,
+}: {
+  address: MoveAccountAddr;
+  moduleName: string;
+  fn: ExposedFunction;
+  abiData: AbiFormData;
+  onSuccess?: (data: string) => void;
+  onError?: (err: AxiosError<RpcQueryError>) => void;
+}): UseQueryResult<string> => {
+  // TODO: handle POST in celatone API
+  const baseEndpoint = "https://stone-rest.initia.tech";
+  const queryFn: QueryFunction<string> = () =>
+    getFunctionView(baseEndpoint, address, moduleName, fn, abiData);
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.FUNCTION_VIEW,
+      address,
+      moduleName,
+      fn.name,
+      JSON.stringify(abiData),
+    ] as readonly string[],
+    queryFn,
+    {
+      enabled: false,
+      retry: 0,
+      keepPreviousData: true,
+      onSuccess,
+      onError,
+    }
+  );
+};
