@@ -1,4 +1,6 @@
+import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { Coin } from "@cosmjs/stargate";
+import type { Msg } from "@initia/initia.js";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
 import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
 
@@ -15,6 +17,14 @@ import type {
 } from "lib/types";
 import { MsgType } from "lib/types";
 
+export const toEncodeObject = (msgs: Msg[]): EncodeObject[] => {
+  return msgs.map((msg) => ({
+    typeUrl: msg.toData()["@type"],
+    value: msg.toProto(),
+  }));
+};
+
+// TODO: remove `composeMsg` and use `toEnCodeObject` for sending tx instead
 export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
   const typeUrl = typeUrlDict[msgType];
   return {

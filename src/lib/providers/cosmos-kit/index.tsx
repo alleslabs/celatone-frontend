@@ -18,6 +18,8 @@ import {
   terra2testnetAssets,
 } from "lib/chain-registry/terra2testnet";
 
+import { getCustomedSigningCosmwasm } from "./options";
+
 // Remark: The avaliable wallet list won't change after the app is loaded.
 // So we have to revisit this later if we have another solution.
 export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
@@ -53,6 +55,7 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
         endpoints: availableChainsEndpoints,
       }}
       signerOptions={{
+        signingCosmwasm: () => getCustomedSigningCosmwasm(),
         preferredSignType: () => "direct",
       }}
     >

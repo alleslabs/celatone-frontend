@@ -26,11 +26,11 @@ import type {
 import { getAbiInitialData, jsonPrettify } from "lib/utils";
 
 export const ViewArea = ({
-  address,
+  moduleAddress,
   moduleName,
   fn,
 }: {
-  address: HexAddr;
+  moduleAddress: HexAddr;
   moduleName: string;
   fn: ExposedFunction;
 }) => {
@@ -47,7 +47,7 @@ export const ViewArea = ({
     isFetching: queryFetching,
     isRefetching: queryRefetching,
   } = useFunctionView({
-    address,
+    moduleAddress,
     moduleName,
     fn,
     abiData,
