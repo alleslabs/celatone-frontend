@@ -12,9 +12,7 @@ const validateNull = (v: Option<string>) =>
 const validateUint = (uintType: string) => (v: string) => {
   const value = parseInt(v);
   const maxValue = 2 ** parseInt(uintType.slice(1)) - 1;
-  return value >= 0 && value <= maxValue
-    ? undefined
-    : `need to be within 0 and ${maxValue}`;
+  return value >= 0 && value <= maxValue ? undefined : `need to be ${uintType}`;
 };
 
 const validateBool = (v: string) =>

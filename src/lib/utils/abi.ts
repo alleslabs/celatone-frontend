@@ -1,6 +1,11 @@
 import { BCS } from "@initia/initia.js";
 
-import type { ExposedFunction, Option, ResponseABI } from "lib/types";
+import type {
+  AbiFormData,
+  ExposedFunction,
+  Option,
+  ResponseABI,
+} from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
   fn.visibility === "public" && (fn.is_view || fn.is_entry);
@@ -75,8 +80,10 @@ const getArgValue = ({
   }
 };
 
-export const serializeArg = (arg: { type: string; value: Option<string> }) => {
-  const bcs = BCS.getInstance();
+const serializeArg = (
+  arg: { type: string; value: Option<string> },
+  bcs: BCS
+) => {
   try {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
@@ -84,4 +91,15 @@ export const serializeArg = (arg: { type: string; value: Option<string> }) => {
   } catch (e) {
     return "";
   }
+};
+
+export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
+  const bcs = BCS.getInstance();
+  const serializedArgs = fn.params.map((type, index) =>
+    serializeArg({ type, value: abiData.args[index] }, bcs)
+  );
+  return {
+    typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
+    args: serializedArgs,
+  };
 };

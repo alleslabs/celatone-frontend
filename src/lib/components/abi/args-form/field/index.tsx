@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { useWatch, type Control, useController } from "react-hook-form";
+import { type Control, useController } from "react-hook-form";
 
 import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";
@@ -46,16 +46,11 @@ export const ArgFieldTemplate = ({
   const type = isOptional ? param.split(/<(.*)>/)[1] : param;
   const rules = getRules(type, isOptional, isReadOnly, isValidArgAddress);
 
-  const name = `${index}`;
-  const watcher = useWatch({
-    name,
-    control,
-  });
   const {
-    field,
+    field: { value, onChange, ...fieldProps },
     fieldState: { isTouched },
   } = useController({
-    name,
+    name: `${index}`,
     control,
     rules,
   });
@@ -63,7 +58,7 @@ export const ArgFieldTemplate = ({
 
   const size = "md";
   const isSigner = type === "&signer";
-  const isNull = watcher === undefined;
+  const isNull = value === undefined;
   return (
     <Box>
       <FormControl
@@ -77,13 +72,9 @@ export const ArgFieldTemplate = ({
         isInvalid={isError}
         isReadOnly={isReadOnly}
         isDisabled={(isSigner && !isReadOnly) || isNull}
-        {...field}
+        {...fieldProps}
       >
-        <ArgFieldWidget
-          type={type}
-          watcher={watcher}
-          onChange={field.onChange}
-        />
+        <ArgFieldWidget type={type} value={value} onChange={onChange} />
         <FormLabel className={`${size}-label`} bgColor="background.main">
           {param}
         </FormLabel>
@@ -98,8 +89,8 @@ export const ArgFieldTemplate = ({
         <Checkbox
           pt="2px"
           pl={2}
-          isChecked={watcher === undefined}
-          onChange={(e) => field.onChange(e.target.checked ? undefined : "")}
+          isChecked={value === undefined}
+          onChange={(e) => onChange(e.target.checked ? undefined : "")}
         >
           <Text variant="body3">Send as null</Text>
         </Checkbox>

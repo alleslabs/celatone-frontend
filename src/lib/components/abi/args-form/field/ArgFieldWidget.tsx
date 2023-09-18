@@ -20,13 +20,13 @@ const boolOptions = [
 
 interface ArgFieldWidgetProps {
   type: string;
-  watcher: Option<string>;
+  value: Option<string>;
   onChange: ControllerRenderProps["onChange"];
 }
 
 export const ArgFieldWidget = ({
   type,
-  watcher,
+  value,
   onChange,
 }: ArgFieldWidgetProps) => {
   if (
@@ -38,8 +38,8 @@ export const ArgFieldWidget = ({
     return (
       <Input
         size="md"
-        placeholder={getInputPlaceholder(type, watcher === undefined)}
-        value={watcher ?? ""}
+        placeholder={getInputPlaceholder(type, value === undefined)}
+        // value={watcher ?? ""}
         onChange={onChange}
       />
     );
@@ -51,7 +51,9 @@ export const ArgFieldWidget = ({
         size="md"
         options={boolOptions}
         placeholder={" "}
-        value={boolOptions.find(({ value }) => value === watcher)}
+        value={boolOptions.find(
+          ({ value: optionValue }) => optionValue === value
+        )}
         onChange={(e) => onChange(e?.value)}
         menuPosition="fixed"
         chakraStyles={{
@@ -82,7 +84,7 @@ export const ArgFieldWidget = ({
       minH="112px"
       h="fit-content"
       placeholder={" "}
-      value={watcher ?? ""}
+      value={value ?? ""}
       onChange={onChange}
     />
   );

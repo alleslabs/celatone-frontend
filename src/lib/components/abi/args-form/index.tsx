@@ -46,6 +46,12 @@ export const ArgsForm = ({
     trigger();
   }, [trigger]);
 
+  useEffect(
+    () => propsOnErrors?.(formatErrors(errors)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(errors), propsOnErrors]
+  );
+
   return (
     <Flex direction="column" gap={4}>
       <Heading variant="h6" as="h6" color="text.main">
@@ -53,10 +59,7 @@ export const ArgsForm = ({
       </Heading>
       {params.map((param, index) => {
         control.register(`${index}`, {
-          onChange: () => {
-            propsOnChange?.(getValues());
-            propsOnErrors?.(formatErrors(errors));
-          },
+          onChange: () => propsOnChange?.(getValues()),
         });
         return (
           <ArgFieldTemplate
