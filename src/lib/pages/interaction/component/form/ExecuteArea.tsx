@@ -26,14 +26,18 @@ export const ExecuteArea = ({
   moduleName: string;
   fn: ExposedFunction;
 }) => {
+  const executeFn = fn;
+  executeFn.params =
+    fn.params[0] === "&signer" ? fn.params.slice(1) : fn.params;
+
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeModuleTx = useExecuteModuleTx();
   const { broadcast } = useTxBroadcast();
 
   const [data, setData] = useState<AbiFormData>({
-    typeArgs: getAbiInitialData(fn.generic_type_params.length),
-    args: getAbiInitialData(fn.params.length),
+    typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
+    args: getAbiInitialData(executeFn.params.length),
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([]);
 
@@ -62,14 +66,14 @@ export const ExecuteArea = ({
   });
 
   const proceed = useCallback(async () => {
-    const serializedData = serializeAbiData(fn, data);
-
+    const { typeArgs, args } = serializeAbiData(executeFn, data);
     const stream = await executeModuleTx({
       moduleAddress,
       moduleName,
-      functionName: fn.name,
-      typeArgs: serializedData.typeArgs,
-      args: serializedData.args,
+      functionName: executeFn.name,
+      typeArgs,
+      args,
+      estimatedFee: fee,
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
@@ -77,20 +81,28 @@ export const ExecuteArea = ({
       setProcessing(true);
       broadcast(stream);
     }
-  }, [broadcast, data, executeModuleTx, fn, moduleAddress, moduleName]);
+  }, [
+    broadcast,
+    data,
+    executeFn,
+    executeModuleTx,
+    fee,
+    moduleAddress,
+    moduleName,
+  ]);
 
   useEffect(() => {
     if (enableExecute) {
-      const serializedData = serializeAbiData(fn, data);
+      const { typeArgs, args } = serializeAbiData(executeFn, data);
 
       const composedMsgs = toEncodeObject([
         new MsgExecuteModule(
           address as string,
           moduleAddress,
           moduleName,
-          fn.name,
-          serializedData.typeArgs,
-          serializedData.args
+          executeFn.name,
+          typeArgs,
+          args
         ),
       ]);
 
@@ -100,12 +112,12 @@ export const ExecuteArea = ({
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [address, data, enableExecute, fn, moduleAddress, moduleName]);
+  }, [address, data, enableExecute, executeFn, moduleAddress, moduleName]);
 
   return (
     <Flex direction="column">
       <AbiForm
-        fn={fn}
+        fn={executeFn}
         initialData={data}
         propsOnChange={setData}
         propsOnErrors={setAbiErrors}
