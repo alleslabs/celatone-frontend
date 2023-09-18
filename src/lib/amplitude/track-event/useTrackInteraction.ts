@@ -256,13 +256,6 @@ export const useTrackInteraction = () => {
     [mandatoryProperties]
   );
 
-  // ASK
-  const trackUseAlertCTA = useCallback(
-    (action: string) =>
-      track(AmpEvent.USE_ALERT_CTA, { ...mandatoryProperties, action }),
-    [mandatoryProperties]
-  );
-
   return {
     trackUseMainSearch,
     trackUseTab,
@@ -285,6 +278,5 @@ export const useTrackInteraction = () => {
     trackUseSort,
     trackUseView,
     trackUseToggle,
-    trackUseAlertCTA,
   };
 };

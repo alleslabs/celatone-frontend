@@ -22,6 +22,7 @@ export const useAmplitudeInit = () => {
       serverUrl: "/amplitude",
     });
 
+    // TODO: make util function
     if (address) {
       const addressHash = createHash("sha256").update(address).digest("hex");
 

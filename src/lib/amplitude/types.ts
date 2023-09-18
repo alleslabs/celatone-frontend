@@ -122,7 +122,6 @@ export enum AmpEvent {
   USE_SORT = "Use Sort",
   USE_VIEW = "Use View",
   USE_TOGGLE = "Use Toggle",
-  USE_ALERT_CTA = "Use Alert CTA",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -169,7 +168,6 @@ export type SpecialAmpEvent =
   | AmpEvent.USE_FILTER_PROPOSALS_STATUS
   | AmpEvent.USE_FILTER_PROPOSALS_TYPE
   | AmpEvent.USE_FILTER_POOL_TYPE
-  | AmpEvent.USE_ALERT_CTA
   | AmpEvent.USE_SORT
   | AmpEvent.USE_VIEW
   | AmpEvent.USE_TOGGLE;
