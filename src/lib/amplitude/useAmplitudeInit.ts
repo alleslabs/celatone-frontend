@@ -19,7 +19,7 @@ export const useAmplitudeInit = () => {
         region: false,
         ipAddress: false,
       },
-      // serverUrl: "/amplitude",
+      serverUrl: "/amplitude",
     });
 
     if (address) {
