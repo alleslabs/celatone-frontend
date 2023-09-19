@@ -398,6 +398,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           codeId={codeId}
         />
         <form style={{ width: "100%" }}>
+          <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+            Label
+          </Heading>
           <ControllerInput
             name="label"
             control={control}
@@ -406,9 +409,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
             variant="floating"
-            mb={8}
+            mb={12}
             rules={{ required: "Label is required" }}
           />
+          <Heading variant="h6" as="h6" my={6} alignSelf="flex-start">
+            Admin Address
+          </Heading>
           <ControllerInput
             name="adminAddress"
             control={control}
@@ -427,8 +433,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               />
             }
           />
-          <Flex align="center" justify="space-between">
-            <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+          <Flex align="center" justify="space-between" mt={12} mb={4}>
+            <Heading variant="h6" as="h6" alignSelf="flex-start">
               Instantiate Message
             </Heading>
             <MessageInputSwitch
@@ -460,7 +466,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               />
             }
           />
-          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+          <Heading variant="h6" as="h6" mt={12} mb={6} alignSelf="flex-start">
             Send asset to contract
           </Heading>
           <AttachFund

@@ -1,7 +1,16 @@
-import { Button, Flex, Heading, Radio, RadioGroup } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Radio,
+  RadioGroup,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
+import { CustomIcon } from "../icon";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
@@ -160,7 +169,7 @@ const MethodRender = ({
               })
             }
             validateFn={validateSchema}
-            maxLines={25}
+            maxLines={12}
           />
         </>
       );
@@ -186,6 +195,7 @@ export const UploadTemplate = ({
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
   const [urlLoading, setUrlLoading] = useState(false);
+  const toast = useToast();
 
   const handleSave = useCallback(async () => {
     let { schemaString } = jsonState[method];
@@ -231,6 +241,15 @@ export const UploadTemplate = ({
       });
     }
     saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
+    toast({
+      title: `Attached JSON Schema`,
+      status: "success",
+      duration: 5000,
+      isClosable: false,
+      position: "bottom-right",
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+    });
+
     setUrlLoading(false);
     onSchemaSave?.();
     closeDrawer();
@@ -243,6 +262,7 @@ export const UploadTemplate = ({
     method,
     onSchemaSave,
     saveNewSchema,
+    toast,
   ]);
 
   const disabledState = useMemo(() => {
@@ -260,7 +280,14 @@ export const UploadTemplate = ({
   }, [method, jsonState, urlLoading]);
 
   return (
-    <Flex direction="column">
+    <Flex
+      direction="column"
+      px={6}
+      mt={6}
+      pt={6}
+      borderTop="1px solid"
+      borderColor="gray.700"
+    >
       <RadioGroup
         onChange={(nextVal) => setMethod(nextVal as Method)}
         value={method}
@@ -287,6 +314,14 @@ export const UploadTemplate = ({
       >
         Save JSON Schema
       </Button>
+      <Flex justifyContent="center" w="full" my={3}>
+        <Text variant="body2" color="text.dark">
+          Your JSON schema will be
+        </Text>
+        <Text variant="body2" color="text.dark" fontWeight={600}>
+          stored locally on your device
+        </Text>
+      </Flex>
     </Flex>
   );
 };

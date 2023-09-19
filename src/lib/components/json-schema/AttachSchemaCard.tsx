@@ -5,7 +5,7 @@ import { useSchemaStore } from "lib/providers/store";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
 
-import { ViewSchemaButton } from "./ViewSchemaButton";
+import { ViewSchemaModal } from "./view/ViewSchemaModal";
 
 interface AttachSchemaCardProps {
   attached: boolean;
@@ -26,8 +26,9 @@ export const AttachSchemaCard = ({
 
   return (
     <Flex
-      border="1px solid var(--chakra-colors-gray-700)"
-      bg="gray.800"
+      border={!attached ? "1px dashed" : "1px solid"}
+      borderColor="gray.700"
+      bg={!attached ? "gray.900" : "gray.800"}
       justify="space-between"
       align="center"
       p={4}
@@ -51,8 +52,8 @@ export const AttachSchemaCard = ({
             />
             <Text variant="body2">JSON Schema attached</Text>
           </Flex>
-          <Flex align="center">
-            <ViewSchemaButton codeId={codeId} schema={schema} mr={2} />
+          <Flex align="center" gap={2}>
+            <ViewSchemaModal codeId={codeId} jsonSchema={schema} />
             <Button variant="outline-gray" size="sm" onClick={openDrawer}>
               Reattach
             </Button>
@@ -61,9 +62,7 @@ export const AttachSchemaCard = ({
               variant="gray"
               aria-label="delete_schema"
               onClick={() => deleteSchema(codeHash)}
-              icon={
-                <CustomIcon name="delete" color="gray.600" boxSize={4} m={0} />
-              }
+              icon={<CustomIcon name="delete" color="gray.600" boxSize={4} />}
             />
           </Flex>
         </>

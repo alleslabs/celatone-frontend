@@ -13,10 +13,7 @@ import { capitalize } from "lodash";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import {
-  JsonSchemaDrawer,
-  EditSchemaButtons,
-} from "lib/components/json-schema";
+import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
 import { Loading } from "lib/components/Loading";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
@@ -39,7 +36,7 @@ const StyledTabPanel = chakra(TabPanel, {
 });
 
 interface CodeSchemaSectionProps {
-  codeId: number;
+  codeId: string;
   codeHash: Option<string>;
   isCodeHashLoading: boolean;
   jsonSchema: Option<CodeSchema>;
@@ -63,11 +60,11 @@ export const CodeSchemaSection = ({
   if (isCodeHashLoading) return <Loading />;
   return codeHash ? (
     <>
-      <Flex justify="space-between" mt={6} mb={3}>
+      <Flex mt={8} mb={3} alignItems="center" gap={2}>
         <Heading as="h6" variant="h6">
           JSON Schema
         </Heading>
-        {!!jsonSchema && (
+        {Boolean(jsonSchema) && (
           <EditSchemaButtons
             codeId={codeId}
             codeHash={codeHash}
@@ -101,26 +98,25 @@ export const CodeSchemaSection = ({
               codeId={codeId}
               codeHash={codeHash}
               schema={jsonSchema}
-              openDrawer={onOpen}
             />
           </StyledTabPanel>
           {SchemaMsgTabList.map((schemaProperty) => (
-            <StyledTabPanel>
+            <StyledTabPanel key={schemaProperty}>
               <SchemaPanel
                 codeId={codeId}
                 codeHash={codeHash}
                 schema={jsonSchema?.[schemaProperty]}
-                openDrawer={onOpen}
               />
             </StyledTabPanel>
           ))}
         </TabPanels>
       </Tabs>
-      <JsonSchemaDrawer
+      <JsonSchemaModal
         isOpen={isOpen}
         onClose={onClose}
-        codeId={String(codeId)}
+        codeId={codeId}
         codeHash={codeHash}
+        isReattach={Boolean(jsonSchema)}
       />
     </>
   ) : (

@@ -9,10 +9,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 
-import { useGetAddressType } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { JsonSchemaDrawer } from "lib/components/json-schema";
+import { JsonSchemaModal } from "lib/components/json-schema";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
@@ -131,9 +131,9 @@ export const CodeInfoSection = ({
     }
   );
   const uploaderType = getAddressType(uploader);
-
+  const isMobile = useMobile();
   return (
-    <Box my={12}>
+    <Box my={8}>
       <Heading as="h6" variant="h6" mb={6}>
         Code Info
       </Heading>
@@ -179,38 +179,40 @@ export const CodeInfoSection = ({
             {storedBlockRender}
           </Flex>
         </LabelText>
-        <LabelText label="JSON Schema">
-          {isCodeHashLoading ? (
-            <Spinner size="sm" ml={2} />
-          ) : (
-            <div>
-              {codeHash ? (
-                <>
-                  <Button
-                    variant="outline-primary"
-                    p="8px 6px"
-                    leftIcon={
-                      attached ? undefined : (
-                        <CustomIcon name="upload" boxSize={4} />
-                      )
-                    }
-                    onClick={attached ? toJsonSchemaTab : onOpen}
-                  >
-                    {attached ? "View Schema" : "Attach"}
-                  </Button>
-                  <JsonSchemaDrawer
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    codeId={String(codeData.codeId)}
-                    codeHash={codeHash}
-                  />
-                </>
-              ) : (
-                "Fetch fail"
-              )}
-            </div>
-          )}
-        </LabelText>
+        {!isMobile && (
+          <LabelText label="JSON Schema">
+            {isCodeHashLoading ? (
+              <Spinner size="sm" ml={2} />
+            ) : (
+              <div>
+                {codeHash ? (
+                  <>
+                    <Button
+                      variant="outline-primary"
+                      p="8px 6px"
+                      leftIcon={
+                        attached ? undefined : (
+                          <CustomIcon name="upload" boxSize={4} />
+                        )
+                      }
+                      onClick={attached ? toJsonSchemaTab : onOpen}
+                    >
+                      {attached ? "View Schema" : "Attach"}
+                    </Button>
+                    <JsonSchemaModal
+                      isOpen={isOpen}
+                      onClose={onClose}
+                      codeId={String(codeData.codeId)}
+                      codeHash={codeHash}
+                    />
+                  </>
+                ) : (
+                  "Fetch fail"
+                )}
+              </div>
+            )}
+          </LabelText>
+        )}
       </Grid>
     </Box>
   );
