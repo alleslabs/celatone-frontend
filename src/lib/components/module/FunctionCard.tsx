@@ -28,7 +28,6 @@ const cardStyles: { [key in CardVariant]: FlexProps } = {
     bgColor: "gray.900",
     _hover: { bg: "gray.900" },
     cursor: "not-allowed",
-    pointerEvents: "none",
     borderColor: "gray.700",
   },
   selected: {
@@ -48,61 +47,81 @@ export const FunctionCard = ({
   const disabled = !checkAvailability(exposedFn);
 
   return (
-    <Flex
-      borderRadius={8}
-      py={2}
-      px={3}
-      transition="all .25s ease-in-out"
-      flexDirection="column"
-      gap={1}
-      border="1px solid"
-      onClick={() => onFunctionSelect(exposedFn)}
-      {...cardStyles[disabled ? "disabled" : variant]}
+    <Tooltip
+      bg="primary.dark"
+      label="Only functions with “is_entry: true” are able to interacted through Celatone’s module interactions."
+      isDisabled={!disabled}
     >
-      <Flex gap={1} justifyContent="space-between" w="full">
-        <Flex gap={1} alignItems="center">
-          <CustomIcon
-            name="query"
-            color={isView ? "primary.main" : "accent.dark"}
-            boxSize={3}
-          />
-          <Text variant="body3" color={isView ? "primary.main" : "accent.dark"}>
-            {isView ? "View" : "Execute"}
-          </Text>
-        </Flex>
-        <Flex alignItems="center" gap={2}>
-          {!isView && (
-            <>
-              <Tooltip
-                bg="primary.dark"
-                label="Only execute functions with “is_entry: true” are interactable through Celatone’s module interactions."
-              >
-                <Flex pointerEvents="auto" onClick={(e) => e.stopPropagation()}>
-                  {disabled ? (
-                    <CustomIcon name="close" color="gray.600" boxSize={3} />
-                  ) : (
-                    <CustomIcon name="check" color="success.main" boxSize={3} />
-                  )}
-                </Flex>
-              </Tooltip>
-              <DotSeparator bg="gray.600" />
-            </>
-          )}
-          <Flex alignItems="center" gap={1}>
+      <Flex
+        borderRadius={8}
+        py={2}
+        px={3}
+        transition="all .25s ease-in-out"
+        flexDirection="column"
+        gap={1}
+        border="1px solid"
+        onClick={disabled ? undefined : () => onFunctionSelect(exposedFn)}
+        {...cardStyles[disabled ? "disabled" : variant]}
+      >
+        <Flex gap={1} justifyContent="space-between" w="full">
+          <Flex gap={1} alignItems="center">
             <CustomIcon
-              name={getVisibilityIcon(visibility)}
-              color="gray.600"
+              name="query"
+              color={isView ? "primary.main" : "accent.dark"}
               boxSize={3}
             />
-            <Text variant="body3" color="text.dark" textTransform="capitalize">
-              {visibility}
+            <Text
+              variant="body3"
+              color={isView ? "primary.main" : "accent.dark"}
+            >
+              {isView ? "View" : "Execute"}
             </Text>
           </Flex>
+          <Flex alignItems="center" gap={2}>
+            {!isView && (
+              <>
+                <Tooltip
+                  bg="primary.dark"
+                  label={`is_entry: ${exposedFn.is_entry}`}
+                >
+                  <Flex
+                    pointerEvents="auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {disabled ? (
+                      <CustomIcon name="close" color="gray.600" boxSize={3} />
+                    ) : (
+                      <CustomIcon
+                        name="check"
+                        color="success.main"
+                        boxSize={3}
+                      />
+                    )}
+                  </Flex>
+                </Tooltip>
+                <DotSeparator bg="gray.600" />
+              </>
+            )}
+            <Flex alignItems="center" gap={1}>
+              <CustomIcon
+                name={getVisibilityIcon(visibility)}
+                color="gray.600"
+                boxSize={3}
+              />
+              <Text
+                variant="body3"
+                color="text.dark"
+                textTransform="capitalize"
+              >
+                {visibility}
+              </Text>
+            </Flex>
+          </Flex>
         </Flex>
+        <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
+          {name}
+        </Text>
       </Flex>
-      <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
-        {name}
-      </Text>
-    </Flex>
+    </Tooltip>
   );
 };

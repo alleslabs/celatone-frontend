@@ -11,6 +11,7 @@ import {
   useCurrentChain,
 } from "lib/app-provider";
 import { AbiForm } from "lib/components/abi";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -116,6 +117,10 @@ export const ExecuteArea = ({
 
   return (
     <Flex direction="column">
+      <ConnectWalletAlert
+        subtitle="You need to connect your wallet to perform this action"
+        mb={8}
+      />
       <AbiForm
         fn={executeFn}
         initialData={data}
@@ -129,7 +134,7 @@ export const ExecuteArea = ({
           </AlertDescription>
         </Alert>
       )}
-      <Flex alignItems="center" justify="space-between">
+      <Flex alignItems="center" justify="space-between" mt={6}>
         <Button>TODO: CodeSnippet</Button>
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
