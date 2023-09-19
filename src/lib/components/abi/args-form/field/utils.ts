@@ -12,11 +12,12 @@ const validateNull = (v: Option<string>) =>
 const validateUint = (uintType: string) => (v: string) => {
   const value = parseInt(v);
   const maxValue = 2 ** parseInt(uintType.slice(1)) - 1;
-  return value >= 0 && value <= maxValue ? undefined : `need to be ${uintType}`;
+  return value >= 0 && value <= maxValue
+    ? undefined
+    : `Input must be ‘${uintType}’`;
 };
-
 const validateBool = (v: string) =>
-  v === "true" || v === "false" ? undefined : "need to be either true or false";
+  v === "true" || v === "false" ? undefined : "Input must be ‘boolean’";
 
 const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: string) =>
@@ -29,7 +30,7 @@ const validateVector = (
 ) => {
   const value = v.trim();
   if (!value.startsWith("[") || !value.endsWith("]"))
-    return "need to be a vector";
+    return "Input must be ‘vector’";
 
   const [, elementType] = vectorType.split(/<(.*)>/);
 
