@@ -9,7 +9,6 @@ import { UintTypes } from "./utils";
 const getInputPlaceholder = (type: string, isNull: boolean) => {
   if (type === "0x1::string::String" && !isNull)
     return "Left blank to send as empty string";
-  if (type === "&signer") return "Signer is auto-filled when signing a tx";
   return " ";
 };
 
@@ -32,8 +31,7 @@ export const ArgFieldWidget = ({
   if (
     UintTypes.includes(type) ||
     type === "address" ||
-    type === "0x1::string::String" ||
-    type === "&signer"
+    type === "0x1::string::String"
   )
     return (
       <Input

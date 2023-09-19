@@ -75,7 +75,7 @@ export const FunctionCard = ({
             <>
               <Tooltip
                 bg="primary.dark"
-                label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+                label="Only execute functions with “is_entry: true” are interactable through Celatone’s module interactions."
               >
                 <Flex pointerEvents="auto" onClick={(e) => e.stopPropagation()}>
                   {disabled ? (

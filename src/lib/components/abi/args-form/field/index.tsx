@@ -57,21 +57,20 @@ export const ArgFieldTemplate = ({
   const isError = isTouched && !!error;
 
   const size = "md";
-  const isSigner = type === "&signer";
   const isNull = value === undefined;
   return (
     <Box>
       <FormControl
         className={`${size}-form`}
         variant={
-          isSigner || (type === "0x1::string::String" && !isNull)
+          type === "0x1::string::String" && !isNull
             ? "fixed-floating"
             : "floating"
         }
         size="md"
         isInvalid={isError}
         isReadOnly={isReadOnly}
-        isDisabled={(isSigner && !isReadOnly) || isNull}
+        isDisabled={isNull}
         {...fieldProps}
       >
         <ArgFieldWidget type={type} value={value} onChange={onChange} />
