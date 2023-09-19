@@ -94,7 +94,8 @@ const MethodRender = ({
               schemaString: "",
             });
           }}
-          error={error}
+          status={error ? "error" : undefined}
+          statusText={error}
         />
       ) : (
         <DropZone

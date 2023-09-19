@@ -28,3 +28,8 @@ export const hexToBech32Address = (
   if (strip.length < 40) strip = strip.padStart(40, "0");
   return toBech32(prefix, fromHex(strip)) as HumanAddr;
 };
+
+export const unpadHexAddress = (hexAddr: HexAddr) => {
+  const hex = hexAddr.startsWith("0x") ? hexAddr.slice(2) : hexAddr;
+  return "0x".concat(hex.replace(/^0+/, ""));
+};

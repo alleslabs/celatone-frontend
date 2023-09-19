@@ -12,10 +12,19 @@ import type {
   InternalModule,
   ResponseABI,
   Option,
+  HumanAddr,
+  UpgradePolicy,
 } from "lib/types";
-import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils";
+import {
+  bech32AddressToHex,
+  parseJsonABI,
+  splitViewExecuteFunctions,
+  truncate,
+  unpadHexAddress,
+} from "lib/utils";
 
 import {
+  decodeModule,
   getAccountModule,
   getAccountModules,
   getModuleVerificationStatus,
@@ -98,3 +107,47 @@ export const useVerifyModule = ({
       keepPreviousData: true,
     }
   );
+
+export interface DecodeModuleQueryResponse {
+  abi: ResponseABI;
+  modulePath: string;
+  validPublisher: boolean;
+  currentPolicy: Option<UpgradePolicy>;
+}
+
+export const useDecodeModule = ({
+  moduleEncode,
+  address,
+  options,
+}: {
+  moduleEncode: string;
+  address: Option<HumanAddr>;
+  options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
+}) => {
+  const baseEndpoint = useBaseApiRoute("rest");
+
+  const queryFn = async (): Promise<DecodeModuleQueryResponse> => {
+    const abi = await decodeModule(moduleEncode);
+    const modulePath = `${truncate(abi.address)}::${abi.name}`;
+
+    const validPublisher = address
+      ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) ===
+        abi.address
+      : false;
+
+    const currentPolicy = await getAccountModule(
+      baseEndpoint,
+      abi.address,
+      abi.name
+    )
+      .then((data) => data.upgradePolicy)
+      .catch(() => undefined);
+    return { abi, modulePath, validPublisher, currentPolicy };
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_DECODE, moduleEncode, address],
+    queryFn,
+    options
+  );
+};

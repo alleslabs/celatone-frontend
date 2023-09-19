@@ -6,8 +6,8 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
 import type { Option } from "lib/types";
-import { UpgradePolicy } from "lib/types";
 
 import {
   PolicyAccordion,
@@ -16,42 +16,9 @@ import {
   PolicyCard,
   UploadModuleCard,
 } from "./components";
-
-interface Module {
-  file: Option<File>;
-  path: string;
-}
-
-interface PublishModuleState {
-  modules: Module[];
-  upgradePolicy: UpgradePolicy;
-}
-
-const emptyModule: Module = { file: undefined, path: "" };
-
-const policies = [
-  {
-    value: UpgradePolicy.ARBITRARY,
-    description: "You can publish these modules again without any restrictions",
-    condition: false,
-  },
-  {
-    value: UpgradePolicy.COMPATIBLE,
-    description:
-      "This address can publish these modules again but need to maintain several properties.",
-    condition: true,
-  },
-  {
-    value: UpgradePolicy.IMMUTABLE,
-    description: "You cannot publish these modules again with this address",
-    condition: false,
-  },
-];
-
-const defaultValues: PublishModuleState = {
-  modules: [emptyModule],
-  upgradePolicy: UpgradePolicy.ARBITRARY,
-};
+import type { PublishModuleState, PublishStatus } from "./formConstants";
+import { emptyModule, policies, defaultValues } from "./formConstants";
+import { statusResolver } from "./utils";
 
 export const PublishModule = () => {
   const {
@@ -109,10 +76,21 @@ export const PublishModule = () => {
                 <UploadModuleCard
                   key={field.id}
                   index={idx}
-                  fieldAmount={fields.length}
-                  file={field.file}
-                  setFile={(file: File, modulePath: string) => {
-                    update(idx, { file, path: modulePath });
+                  fields={fields}
+                  fileState={field}
+                  policy={upgradePolicy}
+                  setFile={(
+                    file: Option<File>,
+                    base64File: string,
+                    decodeRes: DecodeModuleQueryResponse,
+                    publishStatus: PublishStatus
+                  ) => {
+                    update(idx, {
+                      file,
+                      base64File,
+                      decodeRes,
+                      publishStatus,
+                    });
                   }}
                   removeFile={() => {
                     update(idx, emptyModule);
@@ -144,7 +122,20 @@ export const PublishModule = () => {
                   key={item.value}
                   value={item.value}
                   selected={upgradePolicy}
-                  onSelect={() => setValue("upgradePolicy", item.value)}
+                  onSelect={() => {
+                    setValue("upgradePolicy", item.value);
+                    fields.forEach((field, index) =>
+                      update(index, {
+                        ...field,
+                        publishStatus: statusResolver({
+                          data: field.decodeRes,
+                          fields,
+                          index,
+                          policy: item.value,
+                        }),
+                      })
+                    );
+                  }}
                   description={item.description}
                   hasCondition={item.condition}
                 />
