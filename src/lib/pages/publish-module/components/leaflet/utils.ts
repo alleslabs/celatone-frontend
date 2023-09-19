@@ -1,5 +1,5 @@
-export const structToString = (obj: Record<string, string>, indent = 4) => {
-  const spacing = " ".repeat(indent);
+export const structToString = (obj: Record<string, string>) => {
+  const spacing = "\t";
   const keys = Object.keys(obj);
   const keyValuePairs = keys.map((key) => {
     const value = obj[key];

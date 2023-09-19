@@ -32,11 +32,18 @@ export function DropZone({
 
   // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
   const maxSize = (() => {
-    if (wasm.enabled) return wasm.storeCodeMaxFileSize;
-    return move.enabled ? move.moduleMaxFileSize : 0;
+    switch (fileType) {
+      case "schema":
+        return 10_000_000;
+      case "wasm":
+        return wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
+      case "move":
+        return move.enabled ? move.moduleMaxFileSize : 0;
+      default:
+        return 0;
+    }
   })();
 
-  // TODO: JSON Schema file size ??
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
     maxFiles: 1,
