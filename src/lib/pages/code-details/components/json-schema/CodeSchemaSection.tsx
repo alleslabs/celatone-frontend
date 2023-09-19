@@ -13,10 +13,7 @@ import { capitalize } from "lodash";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import {
-  JsonSchemaDrawer,
-  EditSchemaButtons,
-} from "lib/components/json-schema";
+import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
 import { Loading } from "lib/components/Loading";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
@@ -39,7 +36,7 @@ const StyledTabPanel = chakra(TabPanel, {
 });
 
 interface CodeSchemaSectionProps {
-  codeId: number;
+  codeId: string;
   codeHash: Option<string>;
   isCodeHashLoading: boolean;
   jsonSchema: Option<CodeSchema>;
@@ -101,7 +98,6 @@ export const CodeSchemaSection = ({
               codeId={codeId}
               codeHash={codeHash}
               schema={jsonSchema}
-              openDrawer={onOpen}
             />
           </StyledTabPanel>
           {SchemaMsgTabList.map((schemaProperty) => (
@@ -110,16 +106,15 @@ export const CodeSchemaSection = ({
                 codeId={codeId}
                 codeHash={codeHash}
                 schema={jsonSchema?.[schemaProperty]}
-                openDrawer={onOpen}
               />
             </StyledTabPanel>
           ))}
         </TabPanels>
       </Tabs>
-      <JsonSchemaDrawer
+      <JsonSchemaModal
         isOpen={isOpen}
         onClose={onClose}
-        codeId={String(codeId)}
+        codeId={codeId}
         codeHash={codeHash}
         isReattach={!!jsonSchema}
       />

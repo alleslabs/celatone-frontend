@@ -4,7 +4,7 @@ import { CustomIcon } from "../icon";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 
 interface EditSchemaButtonsProps {
-  codeId: number;
+  codeId: string;
   codeHash: string;
   openDrawer: () => void;
 }
@@ -15,22 +15,6 @@ export const EditSchemaButtons = ({
   openDrawer,
 }: EditSchemaButtonsProps) => (
   <Flex gap={2}>
-    {/* <Button
-      variant="ghost-gray"
-      size="xs"
-      leftIcon={<CustomIcon name="code" boxSize={4} />}
-      onClick={openDrawer}
-    >
-      View Schema
-    </Button> */}
-    <IconButton
-      variant="ghost-gray"
-      size="xs"
-      onClick={openDrawer}
-      color="gray.600"
-      icon={<CustomIcon name="edit" boxSize={3} />}
-      aria-label="reattach schema"
-    />
     <IconButton
       variant="ghost-gray"
       size="xs"
@@ -40,7 +24,7 @@ export const EditSchemaButtons = ({
       aria-label="reattach schema"
     />
     <RemoveSchemaModal
-      codeId={String(codeId)}
+      codeId={codeId}
       codeHash={codeHash}
       trigger={
         <IconButton

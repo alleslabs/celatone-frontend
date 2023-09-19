@@ -12,7 +12,7 @@ import {
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { JsonSchemaDrawer } from "lib/components/json-schema";
+import { JsonSchemaModal } from "lib/components/json-schema";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
@@ -198,7 +198,7 @@ export const CodeInfoSection = ({
                   >
                     {attached ? "View Schema" : "Attach"}
                   </Button>
-                  <JsonSchemaDrawer
+                  <JsonSchemaModal
                     isOpen={isOpen}
                     onClose={onClose}
                     codeId={String(codeData.codeId)}

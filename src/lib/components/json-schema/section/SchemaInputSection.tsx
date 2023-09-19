@@ -5,8 +5,8 @@ import { observer } from "mobx-react-lite";
 
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaForm } from "../form";
-import { JsonSchemaDrawer } from "../JsonSchemaDrawer";
-import { ViewSchemaButton } from "../ViewSchemaButton";
+import { JsonSchemaModal } from "../JsonSchemaModal";
+import { ViewSchemaModal } from "../ViewSchemaModal";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -107,12 +107,13 @@ export const SchemaInputSection = observer(
               />
             </>
           )}
-          <JsonSchemaDrawer
+          <JsonSchemaModal
             isOpen={isOpen}
             onClose={onClose}
             codeHash={codeHash}
             codeId={codeId}
             onSchemaSave={onSchemaSave}
+            isReattach={!!msgSchema}
           />
         </Flex>
         {msgSchema && (
@@ -121,7 +122,7 @@ export const SchemaInputSection = observer(
               You are using a locally attached JSON Schema
             </Text>
             <Flex gap={3}>
-              <ViewSchemaButton schema={jsonSchema} codeId={codeId} />
+              <ViewSchemaModal codeId={codeId} jsonSchema={jsonSchema} />
               <Button variant="outline-gray" size="sm" onClick={onOpen}>
                 Reattach
               </Button>

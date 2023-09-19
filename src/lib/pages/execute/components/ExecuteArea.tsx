@@ -1,13 +1,11 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useState, useEffect } from "react";
 
-import {
-  MessageInputContent,
-  MessageInputSwitch,
-  MessageTabs,
-} from "lib/components/json-schema";
-import { EmptyState } from "lib/components/state";
+import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
+import { MessageInputContent, MessageTabs } from "lib/components/json-schema";
+import { UploadSchemaSection } from "lib/components/json-schema/UploadSchemaSection";
 import { useSchemaStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 
@@ -30,22 +28,8 @@ export const ExecuteArea = ({
   codeId,
 }: ExecuteAreaProps) => {
   const [tab, setTab] = useState<MessageTabs>();
-
-  const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
+  const { getExecuteSchema } = useSchemaStore();
   const schema = getExecuteSchema(codeHash);
-  const attached = Boolean(getSchemaByCodeHash(codeHash));
-
-  const tooltipLabel = (() => {
-    if (!codeId) return "Please select contract first.";
-
-    if (!attached)
-      return `
-        You haven’t attached the JSON Schema for
-        code ${codeId} yet
-     `;
-
-    return "Attached JSON Schema doesn’t have execute message.";
-  })();
 
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
@@ -55,17 +39,19 @@ export const ExecuteArea = ({
 
   return (
     <Box my={4}>
-      <Flex align="center" my={8}>
-        <Heading variant="h6" as="h6" mr={2}>
-          Execute Message
-        </Heading>
-        <MessageInputSwitch
-          currentTab={tab}
-          onTabChange={setTab}
-          disabled={!schema}
-          tooltipLabel={tooltipLabel}
-        />
-      </Flex>
+      <Heading variant="h6" as="h6" mt={8} mb={4}>
+        Execute Message
+      </Heading>
+      <Tabs isLazy lazyBehavior="keepMounted">
+        <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+          <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
+            JSON Input
+          </CustomTab>
+          <CustomTab onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}>
+            Your Schema
+          </CustomTab>
+        </TabList>
+      </Tabs>
       <MessageInputContent
         currentTab={tab}
         jsonContent={
@@ -84,11 +70,19 @@ export const ExecuteArea = ({
               initialMsg={initialMsg}
             />
           ) : (
-            <EmptyState
-              imageVariant="not-found"
-              message="We are currently unable to retrieve the JSON schema due to
-            the absence of a code hash linked to the selected contract. Please try again."
-              withBorder
+            <UploadSchemaSection
+              codeId={codeId}
+              codeHash={codeHash}
+              title={
+                <Flex flexDirection="column" alignItems="center">
+                  <Flex>
+                    You haven&#39;t attached the JSON Schema for
+                    <CustomIcon name="code" mx={1} color="gray.400" />
+                    code {codeId} yet
+                  </Flex>
+                  <Flex>from which this contract is instantiated yet.</Flex>
+                </Flex>
+              }
             />
           )
         }

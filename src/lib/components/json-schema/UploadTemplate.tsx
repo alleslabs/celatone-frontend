@@ -5,10 +5,12 @@ import {
   Radio,
   RadioGroup,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
+import { CustomIcon } from "../icon";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
@@ -167,7 +169,7 @@ const MethodRender = ({
               })
             }
             validateFn={validateSchema}
-            maxLines={25}
+            maxLines={14}
           />
         </>
       );
@@ -193,6 +195,7 @@ export const UploadTemplate = ({
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
   const [urlLoading, setUrlLoading] = useState(false);
+  const toast = useToast();
 
   const handleSave = useCallback(async () => {
     let { schemaString } = jsonState[method];
@@ -238,6 +241,15 @@ export const UploadTemplate = ({
       });
     }
     saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
+    toast({
+      title: `Attached JSON Schema`,
+      status: "success",
+      duration: 5000,
+      isClosable: false,
+      position: "bottom-right",
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+    });
+
     setUrlLoading(false);
     onSchemaSave?.();
     closeDrawer();
@@ -250,6 +262,7 @@ export const UploadTemplate = ({
     method,
     onSchemaSave,
     saveNewSchema,
+    toast,
   ]);
 
   const disabledState = useMemo(() => {

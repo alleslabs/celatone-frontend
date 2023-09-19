@@ -13,10 +13,8 @@ import { observer } from "mobx-react-lite";
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CustomIcon } from "lib/components/icon";
-import {
-  EditSchemaButtons,
-  JsonSchemaDrawer,
-} from "lib/components/json-schema";
+import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
+import { ViewSchemaModal } from "lib/components/json-schema/ViewSchemaModal";
 import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds, useQueryCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
@@ -26,7 +24,7 @@ import { encode, jsonPrettify } from "lib/utils";
 interface CommandSectionProps {
   contractAddress: ContractAddr;
   codeHash: string;
-  codeId: number;
+  codeId: string;
 }
 
 export const CommandSection = observer(
@@ -36,6 +34,7 @@ export const CommandSection = observer(
 
     const { getSchemaByCodeHash } = useSchemaStore();
     const attached = Boolean(getSchemaByCodeHash(codeHash));
+    const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
 
     const { isFetching: isQueryCmdsFetching, queryCmds } =
       useQueryCmds(contractAddress);
@@ -100,6 +99,7 @@ export const CommandSection = observer(
                 <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
                 <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
               </Tag>
+              <ViewSchemaModal isIcon codeId={codeId} jsonSchema={jsonSchema} />
               <EditSchemaButtons
                 codeId={codeId}
                 codeHash={codeHash}
@@ -148,10 +148,10 @@ export const CommandSection = observer(
             {renderCmds(isExecuteCmdsFetching, execCmds, "execute")}
           </Flex>
         </Flex>
-        <JsonSchemaDrawer
+        <JsonSchemaModal
           isOpen={isOpen}
           onClose={onClose}
-          codeId={String(codeId)}
+          codeId={codeId}
           codeHash={codeHash}
           isReattach={!!attached}
         />

@@ -12,7 +12,7 @@ export const AttachStatus = ({
   codeId,
 }: AttachStatusProps) => {
   return (
-    <Flex position="relative" gap={10} mb={4}>
+    <Flex position="relative" gap={10} mb={6}>
       <Flex
         bgColor="gray.800"
         borderRadius={4}

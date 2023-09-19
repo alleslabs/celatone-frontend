@@ -13,7 +13,7 @@ import { CustomIcon } from "lib/components/icon";
 import { AttachStatus } from "./AttachStatus";
 import { UploadTemplate } from "./UploadTemplate";
 
-interface JsonSchemaDrawerProps {
+interface JsonSchemaModalProps {
   codeId: string;
   codeHash: string;
   isOpen: boolean;
@@ -22,17 +22,23 @@ interface JsonSchemaDrawerProps {
   isReattach?: boolean;
 }
 
-export const JsonSchemaDrawer = ({
+export const JsonSchemaModal = ({
   codeId,
   codeHash,
   isOpen,
   onClose,
   onSchemaSave,
   isReattach = false,
-}: JsonSchemaDrawerProps) => (
-  <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+}: JsonSchemaModalProps) => (
+  <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    isCentered
+    size="4xl"
+    scrollBehavior="inside"
+  >
     <ModalOverlay />
-    <ModalContent w="840px">
+    <ModalContent w="840px" h="680px">
       <ModalHeader>
         <CustomIcon name="code" boxSize={6} color="gray.600" />
         <Heading as="h5" variant="h5">
@@ -40,7 +46,7 @@ export const JsonSchemaDrawer = ({
         </Heading>
       </ModalHeader>
       <ModalCloseButton color="gray.600" />
-      <ModalBody px={4} maxH="640px" overflow="scroll" pt={0}>
+      <ModalBody px={4} maxH="640px" overflow="scroll" py={1}>
         <AttachStatus codeId={codeId} isReattach={isReattach} />
         <UploadTemplate
           codeHash={codeHash}
