@@ -45,7 +45,6 @@ const StyledTabPanel = chakra(TabPanel, {
 interface ViewSchemaModalProps {
   codeId: string;
   jsonSchema: Option<CodeSchema>;
-  isAttached?: boolean;
   isIcon?: boolean;
 }
 
@@ -59,7 +58,6 @@ const SchemaMsgTabList = [
 export const ViewSchemaModal = ({
   codeId,
   jsonSchema,
-  isAttached = true,
   isIcon = false,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -97,14 +95,12 @@ export const ViewSchemaModal = ({
                 View JSON Schema for code ID “{codeId}”
               </Heading>
             </Flex>
-            {isAttached && (
-              <AppLink href={`/codes/${codeId}/schema`}>
-                <Button mr={8} gap={1} size="sm" variant="outline-gray">
-                  <CustomIcon name="view" />
-                  View in code detail
-                </Button>
-              </AppLink>
-            )}
+            <AppLink href={`/codes/${codeId}/schema`}>
+              <Button mr={8} gap={1} size="sm" variant="outline-gray">
+                <CustomIcon name="view" />
+                View in code detail
+              </Button>
+            </AppLink>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
