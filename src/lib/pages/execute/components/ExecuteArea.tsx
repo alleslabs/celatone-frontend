@@ -47,7 +47,10 @@ export const ExecuteArea = ({
           <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
             JSON Input
           </CustomTab>
-          <CustomTab onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}>
+          <CustomTab
+            onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}
+            isDisabled={!contractAddress}
+          >
             Your Schema
           </CustomTab>
         </TabList>
@@ -75,12 +78,14 @@ export const ExecuteArea = ({
               codeHash={codeHash}
               title={
                 <Flex flexDirection="column" alignItems="center">
-                  <Flex>
+                  <Flex display="inline" textAlign="center">
                     You haven&#39;t attached the JSON Schema for
                     <CustomIcon name="code" mx={1} color="gray.400" />
                     code {codeId} yet
                   </Flex>
-                  <Flex>from which this contract is instantiated yet.</Flex>
+                  <Flex textAlign="center">
+                    from which this contract is instantiated yet.
+                  </Flex>
                 </Flex>
               }
             />

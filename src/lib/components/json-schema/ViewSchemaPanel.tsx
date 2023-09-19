@@ -42,7 +42,7 @@ export const ViewSchemaPanel = ({
         <JsonReadOnly
           text={jsonSchema ? jsonPrettify(JSON.stringify(jsonSchema)) : "null"}
           canCopy
-          showLines={24}
+          showLines={26}
         />
       )}
     </>

@@ -60,7 +60,7 @@ export const CodeSchemaSection = ({
   if (isCodeHashLoading) return <Loading />;
   return codeHash ? (
     <>
-      <Flex justify="space-between" mt={6} mb={3}>
+      <Flex mt={8} mb={3} alignItems="center" gap={2}>
         <Heading as="h6" variant="h6">
           JSON Schema
         </Heading>

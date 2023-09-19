@@ -20,6 +20,7 @@ import { capitalize } from "lodash";
 
 import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 import { CustomTab } from "lib/components/CustomTab";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
@@ -65,14 +66,16 @@ export const ViewSchemaModal = ({
   return (
     <>
       {isIcon ? (
-        <IconButton
-          variant="ghost-gray"
-          size="xs"
-          onClick={onOpen}
-          color="gray.600"
-          icon={<CustomIcon name="view" boxSize={4} />}
-          aria-label="view schema"
-        />
+        <Tooltip label="View attached JSON schema">
+          <IconButton
+            variant="ghost-gray"
+            size="sm"
+            onClick={onOpen}
+            color="gray.600"
+            icon={<CustomIcon name="view" boxSize={5} />}
+            aria-label="view schema"
+          />
+        </Tooltip>
       ) : (
         <Button variant="outline-gray" size="sm" onClick={onOpen}>
           View Schema
@@ -86,7 +89,7 @@ export const ViewSchemaModal = ({
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <ModalContent w="840px" h="680px">
+        <ModalContent w="960px" h="680px">
           <ModalHeader justifyContent="space-between" alignItems="center">
             <Flex alignItems="center" gap={2}>
               <CustomIcon name="view" boxSize={6} color="gray.600" />
@@ -95,7 +98,7 @@ export const ViewSchemaModal = ({
               </Heading>
             </Flex>
             {isAttached && (
-              <AppLink href={`/codes/${codeId}`}>
+              <AppLink href={`/codes/${codeId}/schema`}>
                 <Button mr={8} gap={1} size="sm" variant="outline-gray">
                   <CustomIcon name="view" />
                   View in code detail

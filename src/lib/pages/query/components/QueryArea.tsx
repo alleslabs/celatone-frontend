@@ -2,6 +2,7 @@ import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { MessageInputContent, MessageTabs } from "lib/components/json-schema";
@@ -25,7 +26,7 @@ export const QueryArea = observer(
 
     const { getQuerySchema } = useSchemaStore();
     const schema = getQuerySchema(codeHash);
-
+    const isMobile = useMobile();
     useEffect(() => {
       if (!schema) setTab(MessageTabs.JSON_INPUT);
       else setTab(MessageTabs.YOUR_SCHEMA);
@@ -41,16 +42,21 @@ export const QueryArea = observer(
         <Heading variant="h6" as="h6" mr={2} mt={8} mb={4}>
           Query Message
         </Heading>
-        <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
-          <TabList mb={8} borderBottom="1px" borderColor="gray.800">
-            <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
-              JSON Input
-            </CustomTab>
-            <CustomTab onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}>
-              Your Schema
-            </CustomTab>
-          </TabList>
-        </Tabs>
+        {!isMobile && (
+          <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
+            <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+              <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
+                JSON Input
+              </CustomTab>
+              <CustomTab
+                onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}
+                isDisabled={!contractAddress}
+              >
+                Your Schema
+              </CustomTab>
+            </TabList>
+          </Tabs>
+        )}
         <MessageInputContent
           currentTab={tab}
           jsonContent={
@@ -72,12 +78,14 @@ export const QueryArea = observer(
                 codeHash={codeHash}
                 title={
                   <Flex flexDirection="column" alignItems="center">
-                    <Flex>
+                    <Flex display="inline" textAlign="center">
                       You haven&#39;t attached the JSON Schema for
                       <CustomIcon name="code" mx={1} color="gray.400" />
                       code {codeId} yet
                     </Flex>
-                    <Flex>from which this contract is instantiated yet.</Flex>
+                    <Flex textAlign="center">
+                      from which this contract is instantiated yet.
+                    </Flex>
                   </Flex>
                 }
               />

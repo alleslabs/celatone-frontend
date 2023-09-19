@@ -40,7 +40,6 @@ export const CommandSection = observer(
       useQueryCmds(contractAddress);
     const { isFetching: isExecuteCmdsFetching, execCmds } =
       useExecuteCmds(contractAddress);
-
     const renderCmds = (
       isFetching: boolean,
       cmds: [string, string][],
@@ -94,8 +93,14 @@ export const CommandSection = observer(
             Available command shortcuts
           </Heading>
           {attached ? (
-            <Flex alignItems="center" justify="flex-start" w="full" gap={2}>
-              <Tag variant="gray" gap={1}>
+            <Flex
+              display={{ base: "none", md: "flex" }}
+              alignItems="center"
+              justify="flex-start"
+              w="full"
+              gap={1}
+            >
+              <Tag variant="gray" gap={1} mr={1}>
                 <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
                 <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
               </Tag>
@@ -112,7 +117,12 @@ export const CommandSection = observer(
               minW="330px"
               textAlign="center"
             >
-              <Button variant="outline-gray" size="sm" onClick={onOpen}>
+              <Button
+                variant="outline-gray"
+                size="sm"
+                onClick={onOpen}
+                display={{ base: "none", md: "flex" }}
+              >
                 Attach JSON Schema
               </Button>
             </Tooltip>
@@ -121,7 +131,6 @@ export const CommandSection = observer(
         <Flex
           gap={{ base: 4, md: 6 }}
           direction={{ base: "column", md: "row" }}
-          mt={{ base: 4, md: 0 }}
         >
           <Flex
             direction="column"

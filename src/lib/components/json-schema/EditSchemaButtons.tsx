@@ -2,6 +2,7 @@ import { Flex, IconButton } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
+import { Tooltip } from "../Tooltip";
 
 interface EditSchemaButtonsProps {
   codeId: string;
@@ -14,26 +15,30 @@ export const EditSchemaButtons = ({
   codeHash,
   openDrawer,
 }: EditSchemaButtonsProps) => (
-  <Flex gap={2}>
-    <IconButton
-      variant="ghost-gray"
-      size="xs"
-      onClick={openDrawer}
-      color="gray.600"
-      icon={<CustomIcon name="edit" boxSize={3} />}
-      aria-label="reattach schema"
-    />
+  <Flex gap={1}>
+    <Tooltip label="Reattach JSON schema">
+      <IconButton
+        variant="ghost-gray"
+        size="sm"
+        onClick={openDrawer}
+        color="gray.600"
+        icon={<CustomIcon name="edit" boxSize={4} />}
+        aria-label="reattach schema"
+      />
+    </Tooltip>
     <RemoveSchemaModal
       codeId={codeId}
       codeHash={codeHash}
       trigger={
-        <IconButton
-          variant="ghost-gray"
-          size="xs"
-          color="gray.600"
-          icon={<CustomIcon name="delete" boxSize={3} />}
-          aria-label="delete schema"
-        />
+        <Tooltip label="Delete your attached schema">
+          <IconButton
+            variant="ghost-gray"
+            size="sm"
+            color="gray.600"
+            icon={<CustomIcon name="delete" boxSize={4} />}
+            aria-label="delete schema"
+          />
+        </Tooltip>
       }
     />
   </Flex>

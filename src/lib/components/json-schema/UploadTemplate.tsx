@@ -169,7 +169,7 @@ const MethodRender = ({
               })
             }
             validateFn={validateSchema}
-            maxLines={14}
+            maxLines={12}
           />
         </>
       );
@@ -280,7 +280,14 @@ export const UploadTemplate = ({
   }, [method, jsonState, urlLoading]);
 
   return (
-    <Flex direction="column">
+    <Flex
+      direction="column"
+      px={6}
+      mt={6}
+      pt={6}
+      borderTop="1px solid"
+      borderColor="gray.700"
+    >
       <RadioGroup
         onChange={(nextVal) => setMethod(nextVal as Method)}
         value={method}
