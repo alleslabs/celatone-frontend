@@ -12,7 +12,7 @@ interface SchemaQueryResponseProps {
   resTab: Option<OutputMessageTabs>;
   msgSchema: SchemaInfo;
   resSchema: SchemaInfo;
-  timestamp: Date | undefined;
+  timestamp: Option<Date>;
   isRefetching: boolean;
 }
 

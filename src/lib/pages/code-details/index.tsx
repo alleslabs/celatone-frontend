@@ -25,7 +25,7 @@ import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
 const codeTabId = "codeDetailsTab";
 
 enum TabIndex {
-  CodeInfo = "code",
+  CodeInfo = "info",
   JsonSchema = "schema",
 }
 interface CodeDetailsBodyProps {

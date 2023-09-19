@@ -190,6 +190,7 @@ export const SchemaQueryComponent = ({
             </GridItem>
           )}
           <GridItem>
+            {/* TODO: refactor query response */}
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
                 <Text variant="body2" color="text.dark" fontWeight={700}>

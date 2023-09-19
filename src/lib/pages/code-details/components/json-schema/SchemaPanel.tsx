@@ -1,4 +1,4 @@
-import { UploadSchemaSection } from "lib/components/json-schema/UploadSchemaSection";
+import { UploadSchemaSection } from "lib/components/json-schema";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { Option } from "lib/types";
 import { jsonPrettify } from "lib/utils";

@@ -65,7 +65,6 @@ const ContractDetailsBody = observer(
         {/* Contract Description Section */}
         <ContractDesc {...contractData} />
         {/* Query/Execute commands section */}
-        {/* TODO json schema */}
         <CommandSection
           contractAddress={contractAddress}
           codeHash={contractData.contractDetail.codeHash}

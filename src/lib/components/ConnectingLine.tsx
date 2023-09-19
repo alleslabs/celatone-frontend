@@ -18,22 +18,20 @@ export const ConnectingLine = ({
   alignment = "vertical",
   isFilled = false,
   style,
-}: ConnectingLineProp) => {
-  return (
+}: ConnectingLineProp) => (
+  <Flex
+    top="36px"
+    style={style}
+    position="absolute"
+    alignItems="center"
+    direction={alignment === "vertical" ? "column" : "row"}
+  >
+    <Flex sx={indicatorProp} bgColor="gray.100" />
     <Flex
-      top="36px"
-      style={style}
-      position="absolute"
-      alignItems="center"
-      direction={alignment === "vertical" ? "column" : "row"}
-    >
-      <Flex sx={indicatorProp} bgColor="gray.100" />
-      <Flex
-        h={alignment === "vertical" ? "24px" : "2px"}
-        w={alignment === "vertical" ? "2px" : "24px"}
-        bgColor="gray.600"
-      />
-      <Flex sx={indicatorProp} bgColor={isFilled ? "gray.100" : "gray.900"} />
-    </Flex>
-  );
-};
+      h={alignment === "vertical" ? "24px" : "2px"}
+      w={alignment === "vertical" ? "2px" : "24px"}
+      bgColor="gray.600"
+    />
+    <Flex sx={indicatorProp} bgColor={isFilled ? "gray.100" : "gray.900"} />
+  </Flex>
+);

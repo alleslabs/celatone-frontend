@@ -6,12 +6,11 @@ import { useInternalNavigate } from "lib/app-provider";
 import { ConnectingLine } from "lib/components/ConnectingLine";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { UploadSchema } from "lib/components/json-schema";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
-
-import { UploadSchema } from "./components/UploadSchema";
 
 interface UploadCompleteProps {
   txResult: UploadTxInternalResult;

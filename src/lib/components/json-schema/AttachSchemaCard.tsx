@@ -5,13 +5,13 @@ import { useSchemaStore } from "lib/providers/store";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
 
-import { ViewSchemaModal } from "./ViewSchemaModal";
+import { ViewSchemaModal } from "./view/ViewSchemaModal";
 
 interface AttachSchemaCardProps {
   attached: boolean;
   codeId: string;
   codeHash: string;
-  schema?: Option<CodeSchema>;
+  schema: Option<CodeSchema>;
   openDrawer: () => void;
 }
 

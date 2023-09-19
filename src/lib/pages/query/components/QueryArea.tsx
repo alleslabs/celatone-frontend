@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import { MessageInputContent, MessageTabs } from "lib/components/json-schema";
-import { UploadSchemaSection } from "lib/components/json-schema/UploadSchemaSection";
+import {
+  MessageInputContent,
+  MessageTabs,
+  UploadSchemaSection,
+} from "lib/components/json-schema";
 import { useSchemaStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 
@@ -27,15 +30,14 @@ export const QueryArea = observer(
     const { getQuerySchema } = useSchemaStore();
     const schema = getQuerySchema(codeHash);
     const isMobile = useMobile();
+
+    const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
+
     useEffect(() => {
       if (!schema) setTab(MessageTabs.JSON_INPUT);
       else setTab(MessageTabs.YOUR_SCHEMA);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(schema)]);
-
-    const currentTabIdx = Object.values(MessageTabs).indexOf(
-      tab ?? MessageTabs.JSON_INPUT
-    );
 
     return (
       <Box my={4}>

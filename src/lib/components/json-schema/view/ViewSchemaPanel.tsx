@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
-import JsonReadOnly from "../json/JsonReadOnly";
+import { CustomIcon } from "lib/components/icon";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { Option } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
@@ -9,6 +9,7 @@ interface ViewSchemaPanelProps {
   jsonSchema: Option<object | null>;
   codeId: string;
 }
+
 export const ViewSchemaPanel = ({
   jsonSchema,
   codeId,

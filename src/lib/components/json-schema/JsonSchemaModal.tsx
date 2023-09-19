@@ -17,18 +17,18 @@ interface JsonSchemaModalProps {
   codeId: string;
   codeHash: string;
   isOpen: boolean;
+  isReattach?: boolean;
   onClose: () => void;
   onSchemaSave?: () => void;
-  isReattach?: boolean;
 }
 
 export const JsonSchemaModal = ({
   codeId,
   codeHash,
   isOpen,
+  isReattach = false,
   onClose,
   onSchemaSave,
-  isReattach = false,
 }: JsonSchemaModalProps) => (
   <Modal
     isOpen={isOpen}

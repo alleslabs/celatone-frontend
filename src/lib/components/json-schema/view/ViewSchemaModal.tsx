@@ -18,10 +18,10 @@ import {
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 
-import { AppLink } from "../AppLink";
-import { CustomIcon } from "../icon";
-import { Tooltip } from "../Tooltip";
+import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -104,6 +104,7 @@ export const ViewSchemaModal = ({
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {/* Remark: It's identical to code detail */}
             <Tabs variant="unstyled" orientation="vertical">
               <TabList>
                 <StyledCustomTab>Full Schema</StyledCustomTab>
@@ -118,7 +119,7 @@ export const ViewSchemaModal = ({
                   <ViewSchemaPanel jsonSchema={jsonSchema} codeId={codeId} />
                 </StyledTabPanel>
                 {SchemaMsgTabList.map((schemaProperty) => (
-                  <StyledTabPanel>
+                  <StyledTabPanel key={schemaProperty}>
                     <ViewSchemaPanel
                       jsonSchema={jsonSchema?.[schemaProperty]}
                       codeId={codeId}

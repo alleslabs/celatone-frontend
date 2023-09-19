@@ -64,7 +64,7 @@ export const CodeSchemaSection = ({
         <Heading as="h6" variant="h6">
           JSON Schema
         </Heading>
-        {!!jsonSchema && (
+        {Boolean(jsonSchema) && (
           <EditSchemaButtons
             codeId={codeId}
             codeHash={codeHash}
@@ -101,7 +101,7 @@ export const CodeSchemaSection = ({
             />
           </StyledTabPanel>
           {SchemaMsgTabList.map((schemaProperty) => (
-            <StyledTabPanel>
+            <StyledTabPanel key={schemaProperty}>
               <SchemaPanel
                 codeId={codeId}
                 codeHash={codeHash}
@@ -116,7 +116,7 @@ export const CodeSchemaSection = ({
         onClose={onClose}
         codeId={codeId}
         codeHash={codeHash}
-        isReattach={!!jsonSchema}
+        isReattach={Boolean(jsonSchema)}
       />
     </>
   ) : (

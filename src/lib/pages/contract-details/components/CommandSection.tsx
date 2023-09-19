@@ -13,8 +13,11 @@ import { observer } from "mobx-react-lite";
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CustomIcon } from "lib/components/icon";
-import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
-import { ViewSchemaModal } from "lib/components/json-schema/ViewSchemaModal";
+import {
+  EditSchemaButtons,
+  JsonSchemaModal,
+  ViewSchemaModal,
+} from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds, useQueryCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
@@ -33,8 +36,8 @@ export const CommandSection = observer(
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     const { getSchemaByCodeHash } = useSchemaStore();
-    const attached = Boolean(getSchemaByCodeHash(codeHash));
-    const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
+    const jsonSchema = getSchemaByCodeHash(codeHash);
+    const attached = Boolean(jsonSchema);
 
     const { isFetching: isQueryCmdsFetching, queryCmds } =
       useQueryCmds(contractAddress);
@@ -162,7 +165,7 @@ export const CommandSection = observer(
           onClose={onClose}
           codeId={codeId}
           codeHash={codeHash}
-          isReattach={!!attached}
+          isReattach={attached}
         />
       </Flex>
     );

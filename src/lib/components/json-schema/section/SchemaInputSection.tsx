@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaForm } from "../form";
 import { JsonSchemaModal } from "../JsonSchemaModal";
-import { ViewSchemaModal } from "../ViewSchemaModal";
+import { ViewSchemaModal } from "../view/ViewSchemaModal";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -86,7 +86,6 @@ export const SchemaInputSection = observer(
                   </>
                 )}
               </Text>
-
               <Text
                 color="text.disabled"
                 fontWeight={500}
@@ -113,7 +112,7 @@ export const SchemaInputSection = observer(
             codeHash={codeHash}
             codeId={codeId}
             onSchemaSave={onSchemaSave}
-            isReattach={!!msgSchema}
+            isReattach={Boolean(msgSchema)}
           />
         </Flex>
         {msgSchema && (
