@@ -122,6 +122,7 @@ export enum AmpEvent {
   USE_SORT = "Use Sort",
   USE_VIEW = "Use View",
   USE_TOGGLE = "Use Toggle",
+  USE_SCHEMA_TOGGLE = "Use Schema Toggle",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -137,7 +138,9 @@ export enum AmpEvent {
 
 export type ActionAmpEvent =
   | AmpEvent.ACTION_INSTANTIATE
-  | AmpEvent.ACTION_EXECUTE;
+  | AmpEvent.ACTION_EXECUTE
+  | AmpEvent.ACTION_QUERY
+  | AmpEvent.ACTION_MIGRATE;
 
 export type SpecialAmpEvent =
   | AmpEvent.INVALID_STATE

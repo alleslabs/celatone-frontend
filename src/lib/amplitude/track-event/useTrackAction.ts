@@ -9,21 +9,32 @@ import { useMandatoryProperties } from "./useMandatoryProperties";
 export const useTrackAction = () => {
   const mandatoryProperties = useMandatoryProperties();
 
-  const trackAction = useCallback(
+  const trackActionWithFunds = useCallback(
     (
       event: ActionAmpEvent,
       funds: number,
-      attachFundsOption: AttachFundsType
+      attachFundsOption: AttachFundsType,
+      method: "json-input" | "schema"
     ) =>
       track(event, {
         ...mandatoryProperties,
         funds,
         attachFundsOption,
+        method,
+      }),
+    [mandatoryProperties]
+  );
+
+  const trackAction = useCallback(
+    (event: ActionAmpEvent, method: "json-input" | "schema") =>
+      track(event, {
+        ...mandatoryProperties,
+        method,
       }),
     [mandatoryProperties]
   );
 
   // TODO: implement custom action here
 
-  return { trackAction };
+  return { trackAction, trackActionWithFunds };
 };

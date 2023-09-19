@@ -88,7 +88,7 @@ export const SchemaQueryComponent = ({
   initialMsg,
   addActivity,
 }: SchemaQueryComponentProps) => {
-  const { track } = useTrack();
+  const { trackAction } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );
@@ -138,10 +138,9 @@ export const SchemaQueryComponent = ({
   );
 
   const handleQuery = useCallback(() => {
-    // ASK
-    track(AmpEvent.ACTION_QUERY);
+    trackAction(AmpEvent.ACTION_QUERY, "schema");
     refetch();
-  }, [refetch, track]);
+  }, [refetch, trackAction]);
 
   useEffect(() => {
     if (isNonEmptyJsonData(initialMsg)) {

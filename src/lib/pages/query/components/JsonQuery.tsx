@@ -40,7 +40,7 @@ interface JsonQueryProps {
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
-  const { track } = useTrack();
+  const { track, trackAction } = useTrack();
   const isMobile = useMobile();
   const { isFetching: cmdsFetching, queryCmds } = useQueryCmds(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
@@ -84,7 +84,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   );
 
   const handleQuery = () => {
-    track(AmpEvent.ACTION_QUERY);
+    trackAction(AmpEvent.ACTION_QUERY, "json-input");
     refetch();
   };
 

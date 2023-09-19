@@ -211,4 +211,9 @@ export class SchemaStore {
       ];
     }, []);
   }
+
+  // TODO: add test
+  getSchemaCount(): number {
+    return Object.keys(this.jsonSchemas).length;
+  }
 }

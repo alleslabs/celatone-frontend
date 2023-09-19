@@ -57,7 +57,7 @@ export const MigrateContract = ({
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const { track } = useTrack();
+  const { trackAction } = useTrack();
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -173,7 +173,10 @@ export const MigrateContract = ({
   );
 
   const proceed = useCallback(async () => {
-    track(AmpEvent.ACTION_MIGRATE);
+    trackAction(
+      AmpEvent.ACTION_MIGRATE,
+      tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
+    );
     const stream = await migrateTx({
       contractAddress,
       codeId: Number(codeId),
@@ -189,7 +192,8 @@ export const MigrateContract = ({
     }
   }, [
     migrateTx,
-    track,
+    trackAction,
+    tab,
     contractAddress,
     codeId,
     currentInput,

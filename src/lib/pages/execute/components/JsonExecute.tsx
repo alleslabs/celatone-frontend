@@ -69,7 +69,7 @@ export const JsonExecute = ({
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
-  const { trackAction } = useTrack();
+  const { trackActionWithFunds } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -153,7 +153,12 @@ export const JsonExecute = ({
       assetsJsonStr,
       assetsSelect
     );
-    trackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+    trackActionWithFunds(
+      AmpEvent.ACTION_EXECUTE,
+      funds.length,
+      attachFundsOption,
+      "json-input"
+    );
     const stream = await executeTx({
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
@@ -176,7 +181,7 @@ export const JsonExecute = ({
     contractAddress,
     msg,
     getAttachFunds,
-    trackAction,
+    trackActionWithFunds,
     assetsJsonStr,
     assetsSelect,
     addActivity,

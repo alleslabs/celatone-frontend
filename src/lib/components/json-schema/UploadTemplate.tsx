@@ -2,6 +2,7 @@ import { Button, Flex, Heading, Radio, RadioGroup } from "@chakra-ui/react";
 import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
@@ -182,6 +183,7 @@ export const UploadTemplate = ({
   closeDrawer,
   onSchemaSave,
 }: UploadTemplateInterface) => {
+  const { track } = useTrack();
   const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
@@ -231,6 +233,7 @@ export const UploadTemplate = ({
       });
     }
     saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
+    track(AmpEvent.ACTION_ATTACH_JSON, { method });
     setUrlLoading(false);
     onSchemaSave?.();
     closeDrawer();
@@ -242,6 +245,7 @@ export const UploadTemplate = ({
     jsonState,
     method,
     onSchemaSave,
+    track,
     saveNewSchema,
   ]);
 

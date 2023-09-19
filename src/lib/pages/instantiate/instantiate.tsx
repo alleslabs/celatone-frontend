@@ -87,7 +87,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const { track, trackAction, trackToInstantiate } = useTrack();
+  const { track, trackActionWithFunds, trackToInstantiate } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -238,7 +238,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   );
 
   const proceed = useCallback(async () => {
-    trackAction(AmpEvent.ACTION_INSTANTIATE, funds.length, attachFundsOption);
+    trackActionWithFunds(
+      AmpEvent.ACTION_INSTANTIATE,
+      funds.length,
+      attachFundsOption,
+      tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
+    );
     const stream = await postInstantiateTx({
       codeId: Number(codeId),
       initMsg: JSON.parse(currentInput),
@@ -259,9 +264,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [
     funds,
+    tab,
     attachFundsOption,
     postInstantiateTx,
-    trackAction,
+    trackActionWithFunds,
     codeId,
     currentInput,
     label,
