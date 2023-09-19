@@ -39,7 +39,7 @@ export const ArgFieldWidget = ({
       <Input
         size="md"
         placeholder={getInputPlaceholder(type, value === undefined)}
-        // value={watcher ?? ""}
+        value={value ?? ""}
         onChange={onChange}
       />
     );
