@@ -114,6 +114,31 @@ export const CollapseNavMenu = ({
               </AppLink>
             )
           )}
+          {item.subSection &&
+            item.subSection.map((section) => (
+              <div key={section.category}>
+                {section.submenu.map((subitem) =>
+                  subitem.isDisable ? (
+                    <CollapseNavInfo
+                      key={subitem.slug}
+                      submenu={subitem}
+                      isCurrentPage={isCurrentPage}
+                    />
+                  ) : (
+                    <AppLink
+                      href={subitem.slug}
+                      key={subitem.slug}
+                      onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+                    >
+                      <CollapseNavInfo
+                        submenu={subitem}
+                        isCurrentPage={isCurrentPage}
+                      />
+                    </AppLink>
+                  )
+                )}
+              </div>
+            ))}
         </Box>
       ))}
     </Box>

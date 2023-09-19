@@ -1,4 +1,15 @@
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Text,
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+} from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -55,6 +66,33 @@ const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
   </Flex>
 );
 
+interface SubMenuProps {
+  submenu: SubmenuInfo[];
+  isCurrentPage: (slug: string) => boolean;
+}
+
+const SubMenuRenderer = ({ isCurrentPage, submenu }: SubMenuProps) => (
+  <>
+    {submenu.map((subitem) =>
+      subitem.isDisable ? (
+        <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
+          <div>
+            <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+          </div>
+        </Tooltip>
+      ) : (
+        <AppLink
+          href={subitem.slug}
+          key={subitem.slug}
+          onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+        >
+          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+        </AppLink>
+      )
+    )}
+  </>
+);
+
 export const ExpandNavMenu = ({
   navMenu,
   isCurrentPage,
@@ -62,58 +100,105 @@ export const ExpandNavMenu = ({
 }: NavMenuProps) => (
   <Box px={4} py={2} overflowY="auto">
     {navMenu.map((item) => (
-      <Box
-        pb={4}
-        mb={4}
+      <Accordion
+        pt={2}
+        allowMultiple
+        defaultIndex={[0]}
+        mt={2}
         key={item.category}
-        borderBottom="1px solid"
+        borderTop="1px solid"
         borderColor="gray.700"
         sx={{
-          "&:last-of-type": {
-            borderBottom: "none",
-            paddingBottom: "0px",
-            marginBottom: "0px",
+          "&:first-of-type": {
+            borderTop: "none",
+            paddingTop: "0px",
+            marginTop: "0px",
           },
         }}
       >
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text py={2} variant="body3" fontWeight={700}>
-            {item.category}
-          </Text>
-          {item.category === "Your Account" && (
-            <Button
-              variant="ghost-accent"
-              size="xs"
-              iconSpacing={1}
-              leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
-              onClick={() => setIsExpand(false)}
-            >
-              HIDE
-            </Button>
-          )}
-        </Flex>
-        {item.submenu.map((submenu) =>
-          submenu.isDisable ? (
-            <Tooltip
-              key={submenu.slug}
-              label={submenu.tooltipText}
-              maxW="240px"
-            >
-              <div>
-                <NavInfo submenu={submenu} isCurrentPage={isCurrentPage} />
-              </div>
-            </Tooltip>
+        <AccordionItem>
+          {item.category === "Your Account" ? (
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text py={2} variant="body3" fontWeight={700}>
+                {item.category}
+              </Text>
+
+              <Button
+                variant="ghost-accent"
+                size="xs"
+                iconSpacing={1}
+                leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
+                onClick={() => setIsExpand(false)}
+              >
+                HIDE
+              </Button>
+            </Flex>
           ) : (
-            <AppLink
-              href={submenu.slug}
-              key={submenu.slug}
-              onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
-            >
-              <NavInfo submenu={submenu} isCurrentPage={isCurrentPage} />
-            </AppLink>
-          )
-        )}
-      </Box>
+            <AccordionButton justifyContent="space-between" alignItems="center">
+              <Text py={2} variant="body3" fontWeight={700}>
+                {item.category}
+              </Text>
+              <AccordionIcon color="gray.600" ml="auto" />
+            </AccordionButton>
+          )}
+          {item.category === "Your Account" ? (
+            <SubMenuRenderer
+              isCurrentPage={isCurrentPage}
+              submenu={item.submenu}
+            />
+          ) : (
+            <AccordionPanel p={0}>
+              <SubMenuRenderer
+                isCurrentPage={isCurrentPage}
+                submenu={item.submenu}
+              />
+              {item.subSection && (
+                <Text py={2} variant="small" fontWeight={700} color="text.dark">
+                  {item.subSection.map((subitem) => (
+                    <div key={subitem.category}>
+                      <Text
+                        py={2}
+                        variant="small"
+                        fontWeight={700}
+                        color="text.dark"
+                      >
+                        {subitem.category}
+                      </Text>
+                      {subitem.submenu.map((submenu) =>
+                        submenu.isDisable ? (
+                          <Tooltip
+                            key={submenu.slug}
+                            label={submenu.tooltipText}
+                            maxW="240px"
+                          >
+                            <div>
+                              <NavInfo
+                                submenu={submenu}
+                                isCurrentPage={isCurrentPage}
+                              />
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <AppLink
+                            href={submenu.slug}
+                            key={submenu.slug}
+                            onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+                          >
+                            <NavInfo
+                              submenu={submenu}
+                              isCurrentPage={isCurrentPage}
+                            />
+                          </AppLink>
+                        )
+                      )}
+                    </div>
+                  ))}
+                </Text>
+              )}
+            </AccordionPanel>
+          )}
+        </AccordionItem>
+      </Accordion>
     ))}
   </Box>
 );
