@@ -13,7 +13,7 @@ export const useMandatoryProperties = () => {
   const isMobile = useMobile();
   const router = useRouter();
 
-  // TODO: make util function
+  // TODO: make utility function
   const rawAddressHash = address
     ? sha256Hex(fromBech32(address).data)
     : "Not Connected";
