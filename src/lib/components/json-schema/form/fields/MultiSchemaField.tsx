@@ -230,7 +230,7 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
       }
       // Rust optional case
       else if (option.type === "null") {
-        optionTitle = `No ${name}`;
+        optionTitle = `${name} as null`;
       }
       // Here we do the second part of the above, because the non optional
       else if (
