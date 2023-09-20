@@ -318,7 +318,7 @@ export const UploadTemplate = ({
         <Text variant="body2" color="text.dark">
           Your JSON schema will be
         </Text>
-        <Text variant="body2" color="text.dark" fontWeight={600}>
+        <Text variant="body2" color="text.dark" fontWeight={600} ml={1}>
           stored locally on your device
         </Text>
       </Flex>
