@@ -124,6 +124,7 @@ export enum AmpEvent {
   USE_VIEW = "Use View",
   USE_TOGGLE = "Use Toggle",
   USE_SCHEMA_TOGGLE = "Use Schema Toggle",
+  USE_JSON_QUERY_AGAIN = "Use Json Query Again",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",

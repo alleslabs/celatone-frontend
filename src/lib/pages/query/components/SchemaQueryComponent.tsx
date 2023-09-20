@@ -72,7 +72,7 @@ export const SchemaQueryComponent = ({
   opened,
   addActivity,
 }: SchemaQueryComponentProps) => {
-  const { trackAction } = useTrack();
+  const { trackActionQuery, track } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );
@@ -112,6 +112,11 @@ export const SchemaQueryComponent = ({
           msg: encode(msg),
           timestamp: currentDate,
         });
+        trackActionQuery(
+          AmpEvent.ACTION_QUERY,
+          "schema",
+          Boolean(msgSchema.inputRequired)
+        );
       },
       onError(err: AxiosError<RpcQueryError>) {
         setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
@@ -122,9 +127,8 @@ export const SchemaQueryComponent = ({
   );
 
   const handleQuery = useCallback(() => {
-    trackAction(AmpEvent.ACTION_QUERY, "schema");
     refetch();
-  }, [refetch, trackAction]);
+  }, [refetch]);
 
   useEffect(() => {
     if (isNonEmptyJsonData(initialMsg)) {
@@ -246,7 +250,10 @@ export const SchemaQueryComponent = ({
                   <Button
                     variant="primary"
                     size="sm"
-                    onClick={handleQuery}
+                    onClick={() => {
+                      handleQuery();
+                      track(AmpEvent.USE_JSON_QUERY_AGAIN);
+                    }}
                     isDisabled={jsonValidate(msg) !== null}
                     isLoading={queryFetching || queryRefetching}
                     leftIcon={<CustomIcon name="query" />}

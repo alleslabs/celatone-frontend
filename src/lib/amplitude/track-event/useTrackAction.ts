@@ -34,7 +34,21 @@ export const useTrackAction = () => {
     [mandatoryProperties]
   );
 
+  const trackActionQuery = useCallback(
+    (
+      event: ActionAmpEvent,
+      method: "json-input" | "schema",
+      isInputRequired: boolean
+    ) =>
+      track(event, {
+        ...mandatoryProperties,
+        method,
+        isInputRequired,
+      }),
+    [mandatoryProperties]
+  );
+
   // TODO: implement custom action here
 
-  return { trackAction, trackActionWithFunds };
+  return { trackAction, trackActionWithFunds, trackActionQuery };
 };
