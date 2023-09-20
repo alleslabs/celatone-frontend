@@ -27,6 +27,8 @@ export const ExecuteArea = ({
   moduleName: string;
   fn: ExposedFunction;
 }) => {
+  // Remove `signer` or `&signer` field from the params
+  // as they are auto-filled by the chain
   const executeFn = fn;
   executeFn.params =
     fn.params[0] === "signer" || fn.params[0] === "&signer"
