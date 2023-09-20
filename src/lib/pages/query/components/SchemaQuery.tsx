@@ -103,7 +103,7 @@ export const SchemaQuery = ({
           onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
         >
-          {filteredMsgs.map(([msg, res]) => (
+          {filteredMsgs.map(([msg, res], idx) => (
             <SchemaQueryComponent
               key={JSON.stringify(msg.schema) + JSON.stringify(res)}
               msgSchema={msg}
@@ -113,6 +113,7 @@ export const SchemaQuery = ({
               walletAddress={address}
               initialMsg={resolveInitialMsg(initialMsg, msg)}
               addActivity={addActivity}
+              opened={expandedIndexes.includes(idx)}
             />
           ))}
         </Accordion>

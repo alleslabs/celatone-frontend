@@ -1,5 +1,6 @@
 import {
   Flex,
+  Text,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -70,7 +71,15 @@ export const ControllerInput = <T extends FieldValues>({
       {...field}
     >
       {label && (
-        <FormLabel className={`${size}-label`} bgColor={labelBgColor}>
+        <FormLabel
+          className={`${size}-label`}
+          bgColor={labelBgColor}
+          requiredIndicator={
+            <Text as="span" color="error.main" pl={1}>
+              * (Required)
+            </Text>
+          }
+        >
           {label}
         </FormLabel>
       )}

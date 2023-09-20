@@ -1,12 +1,15 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
 import {
   MessageInputContent,
-  MessageInputSwitch,
   MessageTabs,
+  UploadSchemaSection,
 } from "lib/components/json-schema";
-import { EmptyState } from "lib/components/state";
 import { useSchemaStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 
@@ -20,71 +23,78 @@ interface QueryAreaProps {
   initialMsg: string;
 }
 
-export const QueryArea = ({
-  contractAddress,
-  codeId,
-  codeHash,
-  initialMsg,
-}: QueryAreaProps) => {
-  const [tab, setTab] = useState<MessageTabs>();
+export const QueryArea = observer(
+  ({ contractAddress, codeId, codeHash, initialMsg }: QueryAreaProps) => {
+    const [tab, setTab] = useState<MessageTabs>();
 
-  const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
-  const schema = getQuerySchema(codeHash);
-  const attached = Boolean(getSchemaByCodeHash(codeHash));
+    const { getQuerySchema } = useSchemaStore();
+    const schema = getQuerySchema(codeHash);
+    const isMobile = useMobile();
 
-  const tooltipLabel = (() => {
-    if (!codeId) return "Please select contract first.";
+    const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
 
-    if (!attached)
-      return `You haven't attached the JSON Schema for code id ${codeId}. \n To use the schema, please add it on the code detail page.`;
+    useEffect(() => {
+      if (!schema) setTab(MessageTabs.JSON_INPUT);
+      else setTab(MessageTabs.YOUR_SCHEMA);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(schema)]);
 
-    return "Attached JSON Schema doesn’t have query message.";
-  })();
-
-  useEffect(() => {
-    if (!schema) setTab(MessageTabs.JSON_INPUT);
-    else setTab(MessageTabs.YOUR_SCHEMA);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(schema)]);
-
-  return (
-    <>
-      <Flex align="center" my={8}>
-        <Heading variant="h6" as="h6" mr={2}>
+    return (
+      <Box my={4}>
+        <Heading variant="h6" as="h6" mr={2} mt={8} mb={4}>
           Query Message
         </Heading>
-        <MessageInputSwitch
+        {!isMobile && (
+          <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
+            <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+              <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
+                JSON Input
+              </CustomTab>
+              <CustomTab
+                onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}
+                isDisabled={!contractAddress}
+              >
+                Your Schema
+              </CustomTab>
+            </TabList>
+          </Tabs>
+        )}
+        <MessageInputContent
           currentTab={tab}
-          onTabChange={setTab}
-          disabled={!schema}
-          tooltipLabel={tooltipLabel}
-        />
-      </Flex>
-      <MessageInputContent
-        currentTab={tab}
-        jsonContent={
-          <JsonQuery
-            contractAddress={contractAddress}
-            initialMsg={initialMsg}
-          />
-        }
-        schemaContent={
-          codeHash && schema ? (
-            <SchemaQuery
-              schema={schema}
+          jsonContent={
+            <JsonQuery
               contractAddress={contractAddress}
               initialMsg={initialMsg}
             />
-          ) : (
-            <EmptyState
-              imageVariant="not-found"
-              message="We are currently unable to retrieve the JSON schema due to
-            the absence of a code hash linked to the selected contract. Please try again."
-              withBorder
-            />
-          )
-        }
-      />
-    </>
-  );
-};
+          }
+          schemaContent={
+            codeHash && schema ? (
+              <SchemaQuery
+                schema={schema}
+                contractAddress={contractAddress}
+                initialMsg={initialMsg}
+              />
+            ) : (
+              <UploadSchemaSection
+                codeId={codeId}
+                codeHash={codeHash}
+                title={
+                  <Flex flexDirection="column" alignItems="center">
+                    <Flex display="inline" textAlign="center">
+                      You haven&#39;t attached the JSON Schema for
+                      <CustomIcon name="code" mx={1} color="gray.400" />
+                      code {codeId} yet
+                    </Flex>
+                    <Flex textAlign="center">
+                      from which this contract is instantiated yet.
+                    </Flex>
+                  </Flex>
+                }
+              />
+            )
+          }
+        />
+      </Box>
+    );
+  }
+);

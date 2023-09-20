@@ -68,7 +68,7 @@ const ContractDetailsBody = observer(
         <CommandSection
           contractAddress={contractAddress}
           codeHash={contractData.contractDetail.codeHash}
-          codeId={contractData.contractDetail.codeId}
+          codeId={String(contractData.contractDetail.codeId)}
         />
         {/* Instantiate/Contract Info Section */}
         <Flex
