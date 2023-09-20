@@ -29,7 +29,9 @@ export const ExecuteArea = ({
 }) => {
   const executeFn = fn;
   executeFn.params =
-    fn.params[0] === "&signer" ? fn.params.slice(1) : fn.params;
+    fn.params[0] === "signer" || fn.params[0] === "&signer"
+      ? fn.params.slice(1)
+      : fn.params;
 
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
