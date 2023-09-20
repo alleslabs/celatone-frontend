@@ -1,22 +1,26 @@
-import { Accordion, Button, Flex } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { EmptyState } from "lib/components/state";
+import { UploadSchema } from "lib/components/json-schema";
+import { EmptyState, StateImage } from "lib/components/state";
+import { useSchemaStore } from "lib/providers/store";
 import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { ExecuteSchema } from "lib/stores/schema";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 import { getDefaultMsg, resolveInitialMsg } from "lib/utils";
 
 import { ExecuteBox } from "./ExecuteBox";
 
 interface SchemaExecuteProps {
+  schema: Option<ExecuteSchema>;
   contractAddress: ContractAddr;
-  schema: ExecuteSchema;
   initialMsg: string;
   initialFunds: Coin[];
+  codeId: string;
+  codeHash: string;
 }
 
 // TODO: add initialMsg and initialFunds
@@ -25,12 +29,15 @@ export const SchemaExecute = ({
   schema,
   initialMsg,
   initialFunds,
+  codeId,
+  codeHash,
 }: SchemaExecuteProps) => {
   // ------------------------------------------//
   // --------------------REF-------------------//
   // ------------------------------------------//
   const accordionRef = useRef<HTMLDivElement>(null);
-
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const fullSchema = getSchemaByCodeHash(codeHash);
   // ------------------------------------------//
   // -------------------STATES-----------------//
   // ------------------------------------------//
@@ -43,7 +50,7 @@ export const SchemaExecute = ({
   const filteredMsgs = useMemo(() => {
     if (!keyword) return schema;
 
-    return schema.filter((msg) => msg.title?.includes(keyword));
+    return schema?.filter((msg) => msg.title?.includes(keyword));
   }, [keyword, schema]);
 
   // ------------------------------------------//
@@ -72,7 +79,38 @@ export const SchemaExecute = ({
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schema, initialMsg, accordionRef.current]);
-
+  if (!schema)
+    return (
+      <Flex
+        p="24px 16px"
+        direction="column"
+        alignItems="center"
+        bgColor="gray.900"
+        borderRadius="8px"
+      >
+        <Flex direction="column" alignItems="center">
+          <StateImage imageVariant="not-found" width="128px" />
+          <Text variant="body1" fontWeight={700} mt={2}>
+            Attached JSON Schema doesn’t have ExecuteMsg
+          </Text>
+          <Text
+            variant="body2"
+            textColor="text.disabled"
+            fontWeight={500}
+            mt={2}
+            mb={4}
+          >
+            Please fill in Execute Message manually or change the schema
+          </Text>
+          <UploadSchema
+            attached
+            schema={fullSchema}
+            codeId={codeId}
+            codeHash={codeHash}
+          />
+        </Flex>
+      </Flex>
+    );
   return (
     <>
       <Flex gap={6} mb={6}>

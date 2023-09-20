@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#538](https://github.com/alleslabs/celatone-frontend/pull/538) Add empty state in query and execute with json schema
 - [#537](https://github.com/alleslabs/celatone-frontend/pull/537) Change json schema select widget null option wording for readability
 - [#535](https://github.com/alleslabs/celatone-frontend/pull/535) Improve json schema features
 - [#531](https://github.com/alleslabs/celatone-frontend/pull/531) Revise developer features and add accordion to sidebar navigation

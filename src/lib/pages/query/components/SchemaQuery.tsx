@@ -1,37 +1,42 @@
-import { Accordion, Button, Flex } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { EmptyState } from "lib/components/state";
-import { useContractStore } from "lib/providers/store";
+import { UploadSchema } from "lib/components/json-schema";
+import { EmptyState, StateImage } from "lib/components/state";
+import { useContractStore, useSchemaStore } from "lib/providers/store";
 import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { QuerySchema } from "lib/stores/schema";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 import { resolveInitialMsg } from "lib/utils";
 
 import { SchemaQueryComponent } from "./SchemaQueryComponent";
 
 interface SchemaQueryProps {
-  schema: QuerySchema;
+  schema: Option<QuerySchema>;
   contractAddress: ContractAddr;
   initialMsg: string;
+  codeId: string;
+  codeHash: string;
 }
 
 export const SchemaQuery = ({
   schema,
   contractAddress,
   initialMsg,
+  codeId,
+  codeHash,
 }: SchemaQueryProps) => {
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
-
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const fullSchema = getSchemaByCodeHash(codeHash);
   const accordionRef = useRef<HTMLDivElement>(null);
   const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
-
   const filteredMsgs = useMemo(
     () =>
       schema?.filter((querySchema) => querySchema[0].title?.includes(keyword)),
@@ -61,7 +66,38 @@ export const SchemaQuery = ({
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schema, initialMsg, accordionRef.current]);
-
+  if (!schema)
+    return (
+      <Flex
+        p="24px 16px"
+        direction="column"
+        alignItems="center"
+        bgColor="gray.900"
+        borderRadius="8px"
+      >
+        <Flex direction="column" alignItems="center">
+          <StateImage imageVariant="not-found" width="128px" />
+          <Text variant="body1" fontWeight={700} mt={2}>
+            Attached JSON Schema doesn’t have QueryMsg
+          </Text>
+          <Text
+            variant="body2"
+            textColor="text.disabled"
+            fontWeight={500}
+            mt={2}
+            mb={4}
+          >
+            Please fill in Query Message manually or change the schema
+          </Text>
+          <UploadSchema
+            attached
+            schema={fullSchema}
+            codeId={codeId}
+            codeHash={codeHash}
+          />
+        </Flex>
+      </Flex>
+    );
   return (
     <>
       <Flex gap={6} mb={6}>
