@@ -17,7 +17,7 @@ import { useValidateModuleInput } from "lib/pages/interaction/hooks/useValidateM
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAccountModules } from "lib/services/moduleService";
 import type { MoveAccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
-import { bech32AddressToHex, formatHexAddress, splitModule } from "lib/utils";
+import { bech32AddressToHex, splitModule, unpadHexAddress } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
   selectedAddress: SelectedAddress;
@@ -62,11 +62,11 @@ export const ModuleSelectorInput = ({
           return isHex
             ? {
                 address: convertHexAddr(addr as HexAddr),
-                hex: formatHexAddress(addr as HexAddr),
+                hex: unpadHexAddress(addr as HexAddr),
               }
             : {
                 address: addr as HumanAddr,
-                hex: bech32AddressToHex(addr as HumanAddr),
+                hex: unpadHexAddress(bech32AddressToHex(addr as HumanAddr)),
               };
         });
         if (Array.isArray(data)) {

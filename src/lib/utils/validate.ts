@@ -2,7 +2,7 @@ import { fromHex } from "@cosmjs/encoding";
 
 import type { HexAddr } from "lib/types";
 
-import { formatHexAddress } from "./address";
+import { padHexAddress } from "./address";
 
 export const isCodeId = (input: string): boolean => {
   const numberValue = Number(input);
@@ -28,7 +28,7 @@ export const isHexAddress = (address: string): boolean => {
     return false;
   }
 
-  const strip = formatHexAddress(address as HexAddr).slice(2);
+  const strip = padHexAddress(address as HexAddr).slice(2);
   try {
     fromHex(strip);
   } catch {
