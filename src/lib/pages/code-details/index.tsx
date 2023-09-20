@@ -48,12 +48,17 @@ const CodeDetailsBody = observer(
     const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
     const isMobile = useMobile();
     const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-    const { trackUseTab } = useTrack();
+    const { track } = useTrack();
+
+    useEffect(() => {
+      if (router.isReady) track(AmpEvent.TO_CODE_DETAIL, { tab });
+      // Note: we don't want to track when tab changes
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.isReady, track]);
 
     const handleTabChange = useCallback(
       (nextTab: TabIndex) => () => {
         if (nextTab === tab) return;
-        trackUseTab(nextTab);
         navigate({
           pathname: "/codes/[codeId]/[tab]",
           query: {
@@ -65,7 +70,7 @@ const CodeDetailsBody = observer(
           },
         });
       },
-      [codeId, tab, navigate, trackUseTab]
+      [codeId, tab, navigate]
     );
 
     useEffect(() => {
@@ -139,14 +144,9 @@ const CodeDetailsBody = observer(
 
 const CodeDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(codeIdParam);
-
-  useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_CODE_DETAIL);
-  }, [router.isReady, track]);
 
   if (data.isLoading) return <Loading withBorder />;
   return (

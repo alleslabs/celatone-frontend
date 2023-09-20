@@ -111,7 +111,7 @@ export const CommandSection = observer(
               <EditSchemaButtons
                 codeId={codeId}
                 codeHash={codeHash}
-                openDrawer={onOpen}
+                openModal={onOpen}
               />
             </Flex>
           ) : (

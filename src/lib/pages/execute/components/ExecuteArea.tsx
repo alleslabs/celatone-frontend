@@ -1,8 +1,9 @@
 import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { observer } from "mobx-react-lite";
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -32,11 +33,20 @@ export const ExecuteArea = observer(
     codeHash,
     codeId,
   }: ExecuteAreaProps) => {
+    const { trackUseTab } = useTrack();
     const [tab, setTab] = useState<MessageTabs>();
     const { getExecuteSchema } = useSchemaStore();
     const schema = getExecuteSchema(codeHash);
 
     const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
+
+    const handleTabChange = useCallback(
+      (nextTab: MessageTabs) => {
+        trackUseTab(nextTab);
+        setTab(nextTab);
+      },
+      [trackUseTab]
+    );
 
     useEffect(() => {
       if (!schema) setTab(MessageTabs.JSON_INPUT);
@@ -51,11 +61,11 @@ export const ExecuteArea = observer(
         </Heading>
         <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
           <TabList mb={8} borderBottom="1px" borderColor="gray.800">
-            <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
+            <CustomTab onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}>
               JSON Input
             </CustomTab>
             <CustomTab
-              onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}
+              onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
               isDisabled={!contractAddress}
             >
               Your Schema

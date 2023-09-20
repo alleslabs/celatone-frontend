@@ -68,7 +68,7 @@ export const CodeSchemaSection = ({
           <EditSchemaButtons
             codeId={codeId}
             codeHash={codeHash}
-            openDrawer={onOpen}
+            openModal={onOpen}
           />
         )}
       </Flex>

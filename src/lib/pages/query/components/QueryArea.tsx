@@ -1,7 +1,8 @@
 import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -25,6 +26,7 @@ interface QueryAreaProps {
 
 export const QueryArea = observer(
   ({ contractAddress, codeId, codeHash, initialMsg }: QueryAreaProps) => {
+    const { trackUseTab } = useTrack();
     const [tab, setTab] = useState<MessageTabs>();
 
     const { getQuerySchema } = useSchemaStore();
@@ -32,6 +34,14 @@ export const QueryArea = observer(
     const isMobile = useMobile();
 
     const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
+
+    const handleTabChange = useCallback(
+      (nextTab: MessageTabs) => {
+        trackUseTab(nextTab);
+        setTab(nextTab);
+      },
+      [trackUseTab]
+    );
 
     useEffect(() => {
       if (!schema) setTab(MessageTabs.JSON_INPUT);
@@ -47,11 +57,13 @@ export const QueryArea = observer(
         {!isMobile && (
           <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
             <TabList mb={8} borderBottom="1px" borderColor="gray.800">
-              <CustomTab onClick={() => setTab(MessageTabs.JSON_INPUT)}>
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
+              >
                 JSON Input
               </CustomTab>
               <CustomTab
-                onClick={() => setTab(MessageTabs.YOUR_SCHEMA)}
+                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
                 isDisabled={!contractAddress}
               >
                 Your Schema

@@ -79,10 +79,11 @@ export enum AmpEvent {
   USE_CODE_MODAL = "Use Code Modal",
   USE_CODE_FILL = "Use Code Fill",
   USE_ASSIGN_ME = "Use Assign Me",
-  USE_ATTACHED_JSON_DRAWER = "Use Attached Json Drawer", // change to modal later
+  USE_ATTACHED_JSON_MODAL = "Use Attached Json Modal",
   USE_VIEW_ATTACHED_JSON = "Use View Attached Json",
   USE_EDIT_ATTACHED_JSON = "Use Edit Attached Json",
   USE_REMOVE_ATTACHED_JSON = "Use Remove Attached Json",
+  USE_VIEW_JSON_IN_CODE_DETAIL = "Use View Json In Code Detail",
   USE_SWITCH_JSON_INPUT = "Use Switch Json Input",
   USE_CONTRACT_FORM = "Use Contract Form",
   USE_CONTRACT_MODAL = "Use Contract Modal",

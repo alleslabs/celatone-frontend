@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 
