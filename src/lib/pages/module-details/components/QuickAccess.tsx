@@ -9,25 +9,33 @@ interface ActionInfo {
   count: number;
 }
 
-export const QuickAccess = () => {
+interface QuickAccessProps {
+  viewFnCount: number;
+  executeFnCount: number;
+}
+
+export const QuickAccess = ({
+  viewFnCount,
+  executeFnCount,
+}: QuickAccessProps) => {
   const actionList: ActionInfo[] = [
     {
       icon: "query" as IconKeys,
       iconColor: "primary.main",
       name: "View Functions",
-      count: 430,
+      count: viewFnCount,
     },
     {
       icon: "execute" as IconKeys,
       iconColor: "accent.main",
       name: "Execute Functions",
-      count: 30,
+      count: executeFnCount,
     },
     {
       icon: "list" as IconKeys,
       iconColor: "gray.600",
       name: "Transactions",
-      count: 30,
+      count: 0,
     },
   ];
 

@@ -3,12 +3,16 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import { Tooltip } from "lib/components/Tooltip";
+import type { IndexedModule } from "lib/services/moduleService";
 
 interface ModuleTopProps {
   isVerified?: boolean;
+  moduleData: IndexedModule;
 }
 
 const baseTextStyle: TextProps = {
@@ -18,18 +22,24 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
+export const ModuleTop = ({
+  moduleData,
+  isVerified = false,
+}: ModuleTopProps) => {
   const isMobile = useMobile();
-  //   TODO Name
-  const displayName = "Module Name";
+  if (!moduleData) return <Loading />;
 
   return (
     <Flex direction="column">
       <Breadcrumb
         items={[
-          { text: "TODO Account Address", href: "/" },
-          { text: "Module" },
-          { text: "Module Name" },
+          // TODO recheck how to get account
+          {
+            text: moduleData.parsedAbi.address,
+            href: `/accounts/${moduleData.parsedAbi.address}`,
+          },
+          { text: "Modules" },
+          { text: moduleData.moduleName },
         ]}
       />
       <Flex
@@ -60,7 +70,7 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
               variant={{ base: "h6", md: "h5" }}
               className={!isMobile ? "ellipsis" : ""}
             >
-              {displayName}
+              {moduleData.moduleName}
             </Heading>
             {isVerified && (
               <Tooltip label="This module's verification is supported by its provided source code.">
@@ -82,13 +92,11 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
-            {/* TODO module path */}
-            <Flex>
-              <Text {...baseTextStyle}>
-                cltn13a2sywe6g4a9w84g98w4g1dasdrfafdstlju97::
-              </Text>
-              <Text {...baseTextStyle}>beeb</Text>
-            </Flex>
+            {/* TODO recheck module path */}
+            <Text {...baseTextStyle}>
+              {moduleData.parsedAbi.address}::
+              {moduleData.parsedAbi.name}
+            </Text>
           </Flex>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -100,7 +108,7 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             </Text>
             {/* TODO Creator */}
             <CopyLink
-              value="cltn1m9y7um59yxtmek68qkwg3ykm28s52rrell6prx"
+              value={moduleData.parsedAbi.address}
               amptrackSection="contract_top"
               type="contract_address"
             />
@@ -113,11 +121,25 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Friends:
             </Text>
-            {/* TODO Friends */}
             <Flex gap={1}>
-              <Text {...baseTextStyle}>0x1::any,</Text>
-              <Text {...baseTextStyle}>0x1::copyable_any</Text>
-              <Text {...baseTextStyle}>0x1::copyable_any::function_name</Text>
+              {moduleData.parsedAbi.friends.length ? (
+                <Flex
+                  sx={{
+                    "> p:last-child > span": {
+                      display: "none",
+                    },
+                  }}
+                >
+                  {moduleData.parsedAbi.friends.map((item) => (
+                    <Text {...baseTextStyle}>
+                      {item}
+                      <span>,</span>
+                    </Text>
+                  ))}
+                </Flex>
+              ) : (
+                <Text {...baseTextStyle}>-</Text>
+              )}
             </Flex>
           </Flex>
         </Flex>
@@ -142,14 +164,12 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
           >
             Execute
           </Button>
-          <Button
+          <CopyButton
+            value={moduleData.abi}
             variant="outline-primary"
-            w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="copy" />}
             size={{ base: "sm", md: "md" }}
-          >
-            Copy ABI
-          </Button>
+            buttonText="Copy ABI"
+          />
         </Flex>
       </Flex>
     </Flex>

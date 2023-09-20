@@ -55,7 +55,7 @@ export const useAccountModules = ({
 }: {
   address: MoveAccountAddr;
   moduleName: Option<string>;
-  functionName: Option<string>;
+  functionName?: Option<string>;
   options?: Omit<UseQueryOptions<IndexedModule | IndexedModule[]>, "queryKey">;
 }): UseQueryResult<IndexedModule | IndexedModule[]> => {
   const baseEndpoint = useBaseApiRoute("rest");

@@ -3,14 +3,21 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
+import { Loading } from "lib/components/Loading";
+import type { IndexedModule } from "lib/services/moduleService";
 
 import { ModuleSourceCode } from "./ModuleSourceCode";
 
 interface ModuleInfoProps {
+  moduleData: IndexedModule;
   isVerified?: boolean;
 }
 
-export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
+export const ModuleInfo = ({
+  moduleData,
+  isVerified = false,
+}: ModuleInfoProps) => {
+  if (!moduleData) return <Loading />;
   return (
     <Flex flexDirection="column" gap={4}>
       <Flex justifyContent="space-between" alignItems="center" w="full">
@@ -27,7 +34,6 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
           </Flex>
         )}
       </Flex>
-      {/* TODO data */}
       <Flex
         p={4}
         borderRadius={8}
@@ -35,7 +41,8 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
         borderColor="gray.700"
         sx={{ "& > div": { flex: 1 } }}
       >
-        <LabelText label="Upgrade Policy">ARBITRARY</LabelText>
+        <LabelText label="Upgrade Policy">{moduleData.upgradePolicy}</LabelText>
+        {/* TODO data */}
         <LabelText
           label="Initial Published Block Height"
           helperText1="formatUTC(createdTime)"

@@ -16,13 +16,17 @@ import {
 } from "../contract-details/components/tables";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
 import { AmpTrackUseTab } from "lib/services/amplitude";
-import type { ContractAddr } from "lib/types";
+import type { IndexedModule } from "lib/services/moduleService";
+import { useAccountModules } from "lib/services/moduleService";
+import type { ContractAddr, MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
+import { ModuleFunction } from "./components/ModuleFunction";
 import { ModuleInfo } from "./components/ModuleInfo";
 import { ModuleTop } from "./components/ModuleTop";
 import { QuickAccess } from "./components/QuickAccess";
@@ -41,15 +45,22 @@ export const ModuleDetails = () => {
   const navigate = useInternalNavigate();
   const router = useRouter();
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-  const modulePath = getFirstQueryParam(router.query.modulePath);
+  const moduleName = getFirstQueryParam(router.query.moduleName);
+  const addr = getFirstQueryParam(router.query.address);
+  const { data, isLoading } = useAccountModules({
+    address: addr as MoveAccountAddr,
+    moduleName,
+  });
+
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
       AmpTrackUseTab(nextTab);
       navigate({
-        pathname: "/modules/[modulePath]/[tab]",
+        pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          modulePath,
+          address: addr,
+          moduleName,
           tab: nextTab,
         },
         options: {
@@ -57,16 +68,17 @@ export const ModuleDetails = () => {
         },
       });
     },
-    [modulePath, tab, navigate]
+    [addr, moduleName, tab, navigate]
   );
 
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
       navigate({
         replace: true,
-        pathname: "/modules/[modulePath]/[tab]",
+        pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          modulePath,
+          address: addr,
+          moduleName,
           tab: TabIndex.Overview,
         },
         options: {
@@ -74,7 +86,7 @@ export const ModuleDetails = () => {
         },
       });
     }
-  }, [router.isReady, tab, modulePath, navigate]);
+  }, [router.isReady, tab, addr, moduleName, navigate]);
   const contractAddress = "" as ContractAddr;
   const { data: contractAccountId } = useAccountId(contractAddress);
 
@@ -84,9 +96,15 @@ export const ModuleDetails = () => {
     refetchTransactions,
     refetchRelatedProposals,
   } = useContractDetailsTableCounts(contractAddress);
+
+  if (isLoading && !data) return <Loading />;
+  const moduleData = data as IndexedModule;
+  // moduleData.parsedAbi.exposed_functions
+  // moduleData.viewFunctions
+  // moduleData.executeFunctions
   return (
     <PageContainer>
-      <ModuleTop isVerified />
+      <ModuleTop isVerified moduleData={moduleData} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -102,21 +120,32 @@ export const ModuleDetails = () => {
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
-          <CustomTab count={12} onClick={handleTabChange(TabIndex.Function)}>
+          <CustomTab
+            count={moduleData.parsedAbi.exposed_functions.length}
+            onClick={handleTabChange(TabIndex.Function)}
+            isDisabled={!moduleData.parsedAbi.exposed_functions.length}
+          >
             Function
           </CustomTab>
           <CustomTab count={12} onClick={handleTabChange(TabIndex.Txs)}>
             Transactions
           </CustomTab>
-          <CustomTab count={12} onClick={handleTabChange(TabIndex.Structs)}>
+          <CustomTab
+            count={moduleData.parsedAbi.structs.length}
+            onClick={handleTabChange(TabIndex.Structs)}
+            isDisabled={!moduleData.parsedAbi.structs.length}
+          >
             Structs
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              <QuickAccess />
-              <ModuleInfo isVerified />
+              <QuickAccess
+                viewFnCount={moduleData.viewFunctions.length}
+                executeFnCount={moduleData.executeFunctions.length}
+              />
+              <ModuleInfo isVerified moduleData={moduleData} />
               {/* TODO History */}
               <Flex flexDirection="column" mt={6}>
                 <Heading
@@ -177,7 +206,9 @@ export const ModuleDetails = () => {
               </Flex>
             </Flex>
           </TabPanel>
-          <TabPanel p={0}>2</TabPanel>
+          <TabPanel p={0}>
+            <ModuleFunction moduleData={moduleData} />
+          </TabPanel>
           <TabPanel p={0}>
             {/* TODO History */}
             <Flex flexDirection="column" mt={6}>
