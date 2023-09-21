@@ -132,7 +132,7 @@ export const ExecuteArea = ({
         propsOnErrors={setAbiErrors}
       />
       {simulateFeeError && (
-        <Alert variant="error" mb={3} alignItems="center">
+        <Alert variant="error" mt={4} alignItems="center">
           <AlertDescription wordBreak="break-word">
             {simulateFeeError}
           </AlertDescription>
