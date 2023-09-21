@@ -314,14 +314,10 @@ export const UploadTemplate = ({
       >
         Save JSON Schema
       </Button>
-      <Flex justifyContent="center" w="full" my={3}>
-        <Text variant="body2" color="text.dark">
-          Your JSON schema will be
-        </Text>
-        <Text variant="body2" color="text.dark" fontWeight={600} ml={1}>
-          stored locally on your device
-        </Text>
-      </Flex>
+      <Text variant="body2" color="text.dark" alignSelf="center" my={3}>
+        Your JSON schema will be{" "}
+        <span style={{ fontWeight: 600 }}>stored locally on your device</span>
+      </Text>
     </Flex>
   );
 };
