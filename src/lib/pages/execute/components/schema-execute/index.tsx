@@ -23,7 +23,6 @@ interface SchemaExecuteProps {
   codeHash: string;
 }
 
-// TODO: add initialMsg and initialFunds
 export const SchemaExecute = ({
   contractAddress,
   schema,
@@ -79,6 +78,7 @@ export const SchemaExecute = ({
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schema, initialMsg, accordionRef.current]);
+
   if (!schema)
     return (
       <Flex
@@ -111,6 +111,7 @@ export const SchemaExecute = ({
         </Flex>
       </Flex>
     );
+
   return (
     <>
       <Flex gap={6} mb={6}>

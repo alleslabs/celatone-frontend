@@ -66,6 +66,7 @@ export const SchemaQuery = ({
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schema, initialMsg, accordionRef.current]);
+
   if (!schema)
     return (
       <Flex
@@ -98,6 +99,7 @@ export const SchemaQuery = ({
         </Flex>
       </Flex>
     );
+
   return (
     <>
       <Flex gap={6} mb={6}>
