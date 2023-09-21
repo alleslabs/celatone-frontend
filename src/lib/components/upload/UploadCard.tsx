@@ -54,7 +54,10 @@ export const UploadCard = ({
           <Flex direction="column">
             <Text variant="body1">{file.name}</Text>
             <Text variant="body2" color="text.dark" display="flex" gap="4px">
-              {big(file.size).div(1000).toFixed(0)} KB
+              {big(file.size)
+                .div(1000)
+                .toFixed(file.size > 1000 ? 0 : undefined)}{" "}
+              KB
             </Text>
           </Flex>
         </Flex>
