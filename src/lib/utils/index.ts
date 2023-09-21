@@ -31,3 +31,4 @@ export * from "./window";
 export * from "./number";
 export * from "./math";
 export * from "./sha256";
+export * from "./storage";

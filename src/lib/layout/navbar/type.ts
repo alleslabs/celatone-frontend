@@ -16,6 +16,7 @@ export interface SubSection {
 
 export interface MenuInfo {
   category: string;
+  slug: string;
   submenu: SubmenuInfo[];
   subSection?: SubSection[];
 }

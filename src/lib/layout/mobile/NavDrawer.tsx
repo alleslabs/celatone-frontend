@@ -41,6 +41,7 @@ export const NavDrawer = () => {
   const mobileMenu: MenuInfo[] = [
     {
       category: "Overview",
+      slug: "overview",
       submenu: [
         { name: "Overview", slug: "/", icon: "home" },
         {
@@ -75,6 +76,7 @@ export const NavDrawer = () => {
   if (publicProject.enabled) {
     mobileMenu.push({
       category: "Public Projects",
+      slug: "public-projects",
       submenu: [
         ...getSavedPublicProjects().map((list) => ({
           name: list.name,

@@ -8,7 +8,7 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME, StorageKeys } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 import { formatSlugName, getListIcon } from "lib/utils";
@@ -33,6 +33,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const navMenu: MenuInfo[] = [
     {
       category: "Your Account",
+      slug: "your-account",
       submenu: [
         {
           name: "Past Transactions",
@@ -53,6 +54,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       ? [
           {
             category: "Public Projects",
+            slug: StorageKeys.PublicProjects,
             submenu: [
               ...getSavedPublicProjects().map((list) => ({
                 name: list.name,
@@ -72,6 +74,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       ? [
           {
             category: "Developer Tools",
+            slug: StorageKeys.DeveloperTools,
             submenu: [
               {
                 name: "Deploy Contract",

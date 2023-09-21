@@ -4,11 +4,12 @@ import { useMemo } from "react";
 
 import { useCelatoneApp, useNavContext } from "lib/app-provider/contexts";
 import { useCurrentChain, useMobile } from "lib/app-provider/hooks";
-import { sha256Hex } from "lib/utils";
+import { StorageKeys } from "lib/data";
+import { sha256Hex, getItem } from "lib/utils";
 
 export const useMandatoryProperties = () => {
   const { currentChainId } = useCelatoneApp();
-  const { isExpand, isDevMode, prevPathname } = useNavContext();
+  const { prevPathname } = useNavContext();
   const { address } = useCurrentChain();
   const isMobile = useMobile();
   const router = useRouter();
@@ -25,17 +26,9 @@ export const useMandatoryProperties = () => {
       rawAddressHash,
       chain: currentChainId,
       mobile: isMobile,
-      navOpen: isExpand,
-      devMode: isDevMode,
+      navbar: getItem(StorageKeys.Navbar, ""),
+      developerTools: getItem(StorageKeys.DeveloperTools, ""),
     }),
-    [
-      currentChainId,
-      isDevMode,
-      isExpand,
-      isMobile,
-      prevPathname,
-      router.pathname,
-      rawAddressHash,
-    ]
+    [currentChainId, isMobile, prevPathname, router.pathname, rawAddressHash]
   );
 };
