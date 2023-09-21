@@ -46,10 +46,11 @@ export const useAmplitudeInit = () => {
     const identifyEvent = new Identify();
     identifyEvent.set("Wallets", wallets);
     identifyEvent.set("Wallets Count", wallets.length);
-    identifyEvent.set("Navbar", getItem(StorageKeys.Navbar, ""));
+    identifyEvent.set("Nav Sidebar", getItem(StorageKeys.NavSidebar, ""));
+    identifyEvent.set("Dev Sidebar", getItem(StorageKeys.DevSidebar, ""));
     identifyEvent.set(
-      "Developer Tools",
-      getItem(StorageKeys.DeveloperTools, "")
+      "Project Sidebar",
+      getItem(StorageKeys.ProjectSidebar, "")
     );
     identifyEvent.set("Networks", networks);
     identifyEvent.set("Networks Count", networks.length);

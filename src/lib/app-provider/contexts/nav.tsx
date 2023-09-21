@@ -17,7 +17,7 @@ const NavContext = createContext<NavContextInterface>({
 });
 
 export const NavProvider = ({ children }: { children: ReactNode }) => {
-  const [isExpand, setIsExpand] = useLocalStorage(StorageKeys.Navbar, false);
+  const [isExpand, setIsExpand] = useLocalStorage(StorageKeys.NavSidebar, true);
   const prevPathname = usePreviousPathname();
 
   const states = useMemo<NavContextInterface>(

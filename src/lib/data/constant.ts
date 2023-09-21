@@ -46,9 +46,9 @@ export const DEFAULT_TX_FILTERS = {
 export const UPPERBOUND_COUNT = 10000;
 
 export enum StorageKeys {
-  Navbar = "navbar",
-  DeveloperTools = "developer-tools",
+  NavSidebar = "nav-sidebar",
+  DevSidebar = "dev-sidebar",
+  ProjectSidebar = "project-sidebar",
   Wallets = "wallets",
   Networks = "networks",
-  PublicProjects = "public-projects",
 }

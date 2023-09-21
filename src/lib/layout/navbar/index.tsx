@@ -54,7 +54,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       ? [
           {
             category: "Public Projects",
-            slug: StorageKeys.PublicProjects,
+            slug: StorageKeys.ProjectSidebar,
             submenu: [
               ...getSavedPublicProjects().map((list) => ({
                 name: list.name,
@@ -74,7 +74,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       ? [
           {
             category: "Developer Tools",
-            slug: StorageKeys.DeveloperTools,
+            slug: StorageKeys.DevSidebar,
             submenu: [
               {
                 name: "Deploy Contract",

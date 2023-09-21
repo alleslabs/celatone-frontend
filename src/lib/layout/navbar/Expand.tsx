@@ -105,7 +105,7 @@ interface NavbarRenderProps {
 
 const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
   const { track } = useTrack();
-  const [isExpand, setIsExpand] = useLocalStorage(menuInfo.slug, false);
+  const [isExpand, setIsExpand] = useLocalStorage(menuInfo.slug, true);
   const defaultIndex = isExpand ? [0] : [];
 
   const handleChange = (index: number[]) => {

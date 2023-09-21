@@ -26,8 +26,9 @@ export const useMandatoryProperties = () => {
       rawAddressHash,
       chain: currentChainId,
       mobile: isMobile,
-      navbar: getItem(StorageKeys.Navbar, ""),
-      developerTools: getItem(StorageKeys.DeveloperTools, ""),
+      navSidebar: getItem(StorageKeys.NavSidebar, ""),
+      devSidebar: getItem(StorageKeys.DevSidebar, ""),
+      projectSidebar: getItem(StorageKeys.ProjectSidebar, ""),
     }),
     [currentChainId, isMobile, prevPathname, router.pathname, rawAddressHash]
   );
