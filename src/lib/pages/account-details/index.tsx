@@ -338,12 +338,11 @@ const AccountDetails = () => {
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ).toLowerCase() as HumanAddr;
+  // TODO: fix assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
   useEffect(() => {
-    if (router.isReady)
-      // TODO
-      track(AmpEvent.TO_ACCOUNT_DETAIL, { ...(tab && { tab }) });
+    if (router.isReady && tab) track(AmpEvent.TO_ACCOUNT_DETAIL, { tab });
   }, [router.isReady, tab, track]);
 
   if (!router.isReady) return <Loading />;

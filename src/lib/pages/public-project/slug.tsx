@@ -60,6 +60,8 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     if (router.isReady) {
+      if (tab) track(AmpEvent.TO_PROJECT_DETAIL, { tab });
+
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
           pathname: "/projects/[slug]/[tab]",
@@ -72,7 +74,6 @@ const ProjectDetail = () => {
           },
         });
       }
-      track(AmpEvent.TO_PROJECT_DETAIL, { ...(tab && { tab }) });
     }
   }, [router.isReady, tab, slug, navigate, track]);
 
