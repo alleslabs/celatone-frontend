@@ -15,7 +15,12 @@ export const NewProposalButton = () => {
   // const isPermissionless =
   //   govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
 
-  if (govConfig.enabled && govConfig.disableOpenProposal) return null;
+  if (govConfig.enabled && govConfig.hideOpenProposal) return null;
+
+  const disableWhitelist =
+    (govConfig.enabled && govConfig.disableWhitelistProposal) ?? false;
+  const disableStoreCode =
+    (govConfig.enabled && govConfig.disableStoreCodeProposal) ?? false;
 
   return (
     <Menu>
@@ -28,8 +33,9 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        {govConfig.enabled && !govConfig.disableStoreCodeProposal && (
+        <Tooltip label="Coming soon!" hidden={!disableStoreCode}>
           <MenuItem
+            isDisabled={disableStoreCode}
             icon={<CustomIcon name="code" color="gray.600" />}
             onClick={() => {
               navigate({
@@ -39,7 +45,7 @@ export const NewProposalButton = () => {
           >
             To Store Code
           </MenuItem>
-        )}
+        </Tooltip>
         {/* <MenuItem
           icon={<CustomIcon name="contract-address" color="gray.600"/>}
           onClick={() => {
@@ -57,9 +63,9 @@ export const NewProposalButton = () => {
               : undefined
           }
         > */}
-        <Tooltip label="Coming soon!">
+        <Tooltip label="Coming soon!" hidden={!disableWhitelist}>
           <MenuItem
-            isDisabled
+            isDisabled={disableWhitelist}
             icon={<CustomIcon name="admin" color="gray.600" />}
             onClick={() => {
               navigate({

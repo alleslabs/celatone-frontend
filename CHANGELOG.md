@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
 - [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
 - [#538](https://github.com/alleslabs/celatone-frontend/pull/538) Add empty state in query and execute with json schema
 - [#537](https://github.com/alleslabs/celatone-frontend/pull/537) Change json schema select widget null option wording for readability
