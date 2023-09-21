@@ -366,10 +366,11 @@ const ProposalToWhitelist = () => {
                     h="56px"
                     variant="outline-gray"
                     size="lg"
+                    p={0}
                     disabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon name="delete" />
+                    <CustomIcon name="delete" boxSize={4} />
                   </Button>
                 </Flex>
               ))}
