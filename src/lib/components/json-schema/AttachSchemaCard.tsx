@@ -1,9 +1,9 @@
 import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 
+import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { AmpEvent, useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import { useSchemaStore } from "lib/providers/store";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
 
@@ -24,7 +24,6 @@ export const AttachSchemaCard = ({
   schema,
   openModal,
 }: AttachSchemaCardProps) => {
-  const { deleteSchema } = useSchemaStore();
   const { track } = useTrack();
 
   const handleAttach = useCallback(() => {
@@ -71,12 +70,18 @@ export const AttachSchemaCard = ({
             <Button variant="outline-gray" size="sm" onClick={handleReattach}>
               Reattach
             </Button>
-            <IconButton
-              size="sm"
-              variant="gray"
-              aria-label="delete_schema"
-              onClick={() => deleteSchema(codeHash)}
-              icon={<CustomIcon name="delete" color="gray.600" boxSize={4} />}
+            <RemoveSchemaModal
+              codeId={codeId}
+              codeHash={codeHash}
+              trigger={
+                <IconButton
+                  variant="ghost-gray"
+                  size="sm"
+                  color="gray.600"
+                  icon={<CustomIcon name="delete" boxSize={4} />}
+                  aria-label="delete schema"
+                />
+              }
             />
           </Flex>
         </>
