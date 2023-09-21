@@ -8,7 +8,9 @@ import {
   useDisclosure,
   Spinner,
 } from "@chakra-ui/react";
+import { useCallback } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -132,6 +134,18 @@ export const CodeInfoSection = ({
   );
   const uploaderType = getAddressType(uploader);
   const isMobile = useMobile();
+  const { track } = useTrack();
+
+  const handleView = useCallback(() => {
+    toJsonSchemaTab();
+    track(AmpEvent.USE_VIEW_ATTACHED_JSON);
+  }, [toJsonSchemaTab, track]);
+
+  const handleAttach = useCallback(() => {
+    onOpen();
+    track(AmpEvent.USE_ATTACHED_JSON_MODAL);
+  }, [onOpen, track]);
+
   return (
     <Box my={8}>
       <Heading as="h6" variant="h6" mb={6}>
@@ -195,7 +209,7 @@ export const CodeInfoSection = ({
                           <CustomIcon name="upload" boxSize={4} />
                         )
                       }
-                      onClick={attached ? toJsonSchemaTab : onOpen}
+                      onClick={attached ? handleView : handleAttach}
                     >
                       {attached ? "View Schema" : "Attach"}
                     </Button>

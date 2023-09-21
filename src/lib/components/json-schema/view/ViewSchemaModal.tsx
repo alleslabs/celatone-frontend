@@ -67,7 +67,7 @@ export const ViewSchemaModal = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { track } = useTrack();
 
-  const handleOpen = useCallback(() => {
+  const handleView = useCallback(() => {
     onOpen();
     track(AmpEvent.USE_VIEW_ATTACHED_JSON, { tab: ALL_TABS[0] });
   }, [onOpen, track]);
@@ -93,14 +93,14 @@ export const ViewSchemaModal = ({
           <IconButton
             variant="ghost-gray"
             size="sm"
-            onClick={handleOpen}
+            onClick={handleView}
             color="gray.600"
             icon={<CustomIcon name="view" boxSize={5} />}
             aria-label="view schema"
           />
         </Tooltip>
       ) : (
-        <Button variant="outline-gray" size="sm" onClick={onOpen}>
+        <Button variant="outline-gray" size="sm" onClick={handleView}>
           View Schema
         </Button>
       )}
