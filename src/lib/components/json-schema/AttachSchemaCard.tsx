@@ -33,6 +33,7 @@ export const AttachSchemaCard = ({
       align="center"
       p={4}
       w="full"
+      minW="480px"
       borderRadius="4px"
     >
       {!attached ? (

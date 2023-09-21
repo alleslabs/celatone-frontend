@@ -12,12 +12,16 @@ const imageSourceMap: Record<ImageVariant, string> = {
 
 interface StateImageProps {
   imageVariant: ImageVariant;
+  width?: string;
 }
 
-export const StateImage = ({ imageVariant }: StateImageProps) => (
+export const StateImage = ({
+  imageVariant,
+  width = "200px",
+}: StateImageProps) => (
   <Image
     src={imageSourceMap[imageVariant]}
     alt="result not found"
-    width="200px"
+    width={width}
   />
 );
