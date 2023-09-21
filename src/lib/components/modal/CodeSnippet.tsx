@@ -21,6 +21,7 @@ import AceEditor from "react-ace";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { CURR_THEME } from "env";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -28,7 +29,6 @@ import {
   useRPCEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
 
@@ -59,6 +59,7 @@ const CodeSnippet = ({
   const {
     chain: { chain_name: chainName, daemon_name: daemonName },
   } = useCurrentChain();
+  const { track } = useTrack();
   const isDisabled = !contractAddress || !message.length;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
@@ -211,7 +212,7 @@ execute();
         ml={ml}
         gap={1}
         onClick={() => {
-          AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
+          track(AmpEvent.USE_CONTRACT_SNIPPET);
           onOpen();
         }}
       >

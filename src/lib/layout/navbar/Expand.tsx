@@ -11,12 +11,13 @@ import {
   AccordionPanel,
 } from "@chakra-ui/react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useLocalStorage } from "lib/hooks";
 
-import type { NavMenuProps, SubmenuInfo } from "./type";
+import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./type";
 
 interface NavInfoProps {
   submenu: SubmenuInfo;
@@ -71,134 +72,165 @@ interface SubMenuProps {
   isCurrentPage: (slug: string) => boolean;
 }
 
-const SubMenuRenderer = ({ isCurrentPage, submenu }: SubMenuProps) => (
-  <>
-    {submenu.map((subitem) =>
-      subitem.isDisable ? (
-        <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
-          <div>
+const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => {
+  const { track } = useTrack();
+
+  return (
+    <>
+      {submenu.map((subitem) =>
+        subitem.isDisable ? (
+          <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
+            <div>
+              <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+            </div>
+          </Tooltip>
+        ) : (
+          <AppLink
+            href={subitem.slug}
+            key={subitem.slug}
+            onClick={() => {
+              track(AmpEvent.USE_SIDEBAR);
+              subitem.trackEvent?.();
+            }}
+          >
             <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
-          </div>
-        </Tooltip>
-      ) : (
-        <AppLink
-          href={subitem.slug}
-          key={subitem.slug}
-          onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
-        >
-          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
-        </AppLink>
-      )
-    )}
-  </>
-);
+          </AppLink>
+        )
+      )}
+    </>
+  );
+};
+
+interface NavbarRenderProps {
+  menuInfo: MenuInfo;
+  isCurrentPage: (slug: string) => boolean;
+}
+
+const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
+  const { track } = useTrack();
+  const [isExpand, setIsExpand] = useLocalStorage(menuInfo.slug, true);
+  const defaultIndex = isExpand ? [0] : [];
+
+  const handleChange = (index: number[]) => {
+    setIsExpand(index.includes(0));
+  };
+
+  return (
+    <Accordion
+      pt={2}
+      allowMultiple
+      defaultIndex={defaultIndex}
+      mt={2}
+      key={menuInfo.slug}
+      borderTop="1px solid"
+      borderColor="gray.700"
+      sx={{
+        "&:first-of-type": {
+          borderTop: "none",
+          paddingTop: "0px",
+          marginTop: "0px",
+        },
+      }}
+      onChange={handleChange}
+    >
+      <AccordionItem>
+        <AccordionButton justifyContent="space-between" alignItems="center">
+          <Text py={2} variant="body3" fontWeight={700}>
+            {menuInfo.category}
+          </Text>
+          <AccordionIcon color="gray.600" ml="auto" />
+        </AccordionButton>
+        <AccordionPanel p={0}>
+          <SubMenuRender
+            isCurrentPage={isCurrentPage}
+            submenu={menuInfo.submenu}
+          />
+          {menuInfo.subSection && (
+            <Text py={2} variant="small" fontWeight={700} color="text.dark">
+              {menuInfo.subSection.map((subitem) => (
+                <div key={subitem.category}>
+                  <Text
+                    py={2}
+                    variant="small"
+                    fontWeight={700}
+                    color="text.dark"
+                  >
+                    {subitem.category}
+                  </Text>
+                  {subitem.submenu.map((submenu) =>
+                    submenu.isDisable ? (
+                      <Tooltip
+                        key={submenu.slug}
+                        label={submenu.tooltipText}
+                        maxW="240px"
+                      >
+                        <div>
+                          <NavInfo
+                            submenu={submenu}
+                            isCurrentPage={isCurrentPage}
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : (
+                      <AppLink
+                        href={submenu.slug}
+                        key={submenu.slug}
+                        onClick={() => track(AmpEvent.USE_SIDEBAR)}
+                      >
+                        <NavInfo
+                          submenu={submenu}
+                          isCurrentPage={isCurrentPage}
+                        />
+                      </AppLink>
+                    )
+                  )}
+                </div>
+              ))}
+            </Text>
+          )}
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
+  );
+};
 
 export const ExpandNavMenu = ({
   navMenu,
   isCurrentPage,
   setIsExpand,
-}: NavMenuProps) => (
-  <Box px={4} py={2} overflowY="auto">
-    {navMenu.map((item) => (
-      <Accordion
-        pt={2}
-        allowMultiple
-        defaultIndex={[0]}
-        mt={2}
-        key={item.category}
-        borderTop="1px solid"
-        borderColor="gray.700"
-        sx={{
-          "&:first-of-type": {
-            borderTop: "none",
-            paddingTop: "0px",
-            marginTop: "0px",
-          },
-        }}
-      >
-        <AccordionItem>
-          {item.category === "Your Account" ? (
-            <Flex justifyContent="space-between" alignItems="center">
-              <Text py={2} variant="body3" fontWeight={700}>
-                {item.category}
-              </Text>
+}: NavMenuProps) => {
+  const yourAccountMenu = navMenu[0];
+  const restNavMenu = navMenu.slice(1);
 
-              <Button
-                variant="ghost-accent"
-                size="xs"
-                iconSpacing={1}
-                leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
-                onClick={() => setIsExpand(false)}
-              >
-                HIDE
-              </Button>
-            </Flex>
-          ) : (
-            <AccordionButton justifyContent="space-between" alignItems="center">
-              <Text py={2} variant="body3" fontWeight={700}>
-                {item.category}
-              </Text>
-              <AccordionIcon color="gray.600" ml="auto" />
-            </AccordionButton>
-          )}
-          {item.category === "Your Account" ? (
-            <SubMenuRenderer
-              isCurrentPage={isCurrentPage}
-              submenu={item.submenu}
-            />
-          ) : (
-            <AccordionPanel p={0}>
-              <SubMenuRenderer
-                isCurrentPage={isCurrentPage}
-                submenu={item.submenu}
-              />
-              {item.subSection && (
-                <Text py={2} variant="small" fontWeight={700} color="text.dark">
-                  {item.subSection.map((subitem) => (
-                    <div key={subitem.category}>
-                      <Text
-                        py={2}
-                        variant="small"
-                        fontWeight={700}
-                        color="text.dark"
-                      >
-                        {subitem.category}
-                      </Text>
-                      {subitem.submenu.map((submenu) =>
-                        submenu.isDisable ? (
-                          <Tooltip
-                            key={submenu.slug}
-                            label={submenu.tooltipText}
-                            maxW="240px"
-                          >
-                            <div>
-                              <NavInfo
-                                submenu={submenu}
-                                isCurrentPage={isCurrentPage}
-                              />
-                            </div>
-                          </Tooltip>
-                        ) : (
-                          <AppLink
-                            href={submenu.slug}
-                            key={submenu.slug}
-                            onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
-                          >
-                            <NavInfo
-                              submenu={submenu}
-                              isCurrentPage={isCurrentPage}
-                            />
-                          </AppLink>
-                        )
-                      )}
-                    </div>
-                  ))}
-                </Text>
-              )}
-            </AccordionPanel>
-          )}
-        </AccordionItem>
-      </Accordion>
-    ))}
-  </Box>
-);
+  return (
+    <Box px={4} py={2} overflowY="auto">
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text py={2} variant="body3" fontWeight={700}>
+          {yourAccountMenu.category}
+        </Text>
+
+        <Button
+          variant="ghost-accent"
+          size="xs"
+          iconSpacing={1}
+          leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
+          onClick={() => setIsExpand(false)}
+        >
+          HIDE
+        </Button>
+      </Flex>
+      <SubMenuRender
+        isCurrentPage={isCurrentPage}
+        submenu={yourAccountMenu.submenu}
+      />
+
+      {restNavMenu.map((item) => (
+        <NavbarRender
+          menuInfo={item}
+          key={item.slug}
+          isCurrentPage={isCurrentPage}
+        />
+      ))}
+    </Box>
+  );
+};

@@ -17,6 +17,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useCallback } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -26,7 +27,6 @@ import {
   OutputMessageTabs,
 } from "lib/components/json-schema";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
@@ -72,6 +72,7 @@ export const SchemaQueryComponent = ({
   opened,
   addActivity,
 }: SchemaQueryComponentProps) => {
+  const { trackActionQuery, track } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );
@@ -111,6 +112,11 @@ export const SchemaQueryComponent = ({
           msg: encode(msg),
           timestamp: currentDate,
         });
+        trackActionQuery(
+          AmpEvent.ACTION_QUERY,
+          "schema",
+          Boolean(msgSchema.inputRequired)
+        );
       },
       onError(err: AxiosError<RpcQueryError>) {
         setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
@@ -121,7 +127,6 @@ export const SchemaQueryComponent = ({
   );
 
   const handleQuery = useCallback(() => {
-    AmpTrack(AmpEvent.ACTION_QUERY);
     refetch();
   }, [refetch]);
 
@@ -245,7 +250,10 @@ export const SchemaQueryComponent = ({
                   <Button
                     variant="primary"
                     size="sm"
-                    onClick={handleQuery}
+                    onClick={() => {
+                      handleQuery();
+                      track(AmpEvent.USE_JSON_QUERY_AGAIN);
+                    }}
                     isDisabled={jsonValidate(msg) !== null}
                     isLoading={queryFetching || queryRefetching}
                     leftIcon={<CustomIcon name="query" />}

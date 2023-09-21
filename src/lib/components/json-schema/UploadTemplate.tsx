@@ -11,6 +11,7 @@ import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
@@ -181,6 +182,7 @@ const MethodRender = ({
 interface UploadTemplateInterface {
   codeHash: string;
   codeId: string;
+  isReattach: boolean;
   closeDrawer: () => void;
   onSchemaSave?: () => void;
 }
@@ -188,9 +190,11 @@ interface UploadTemplateInterface {
 export const UploadTemplate = ({
   codeHash,
   codeId,
+  isReattach,
   closeDrawer,
   onSchemaSave,
 }: UploadTemplateInterface) => {
+  const { track } = useTrack();
   const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
@@ -241,6 +245,7 @@ export const UploadTemplate = ({
       });
     }
     saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
+    track(AmpEvent.ACTION_ATTACH_JSON, { method, isReattach });
     toast({
       title: `Attached JSON Schema`,
       status: "success",
@@ -260,7 +265,9 @@ export const UploadTemplate = ({
     codeId,
     jsonState,
     method,
+    isReattach,
     onSchemaSave,
+    track,
     saveNewSchema,
     toast,
   ]);

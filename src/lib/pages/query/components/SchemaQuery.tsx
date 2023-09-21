@@ -1,13 +1,13 @@
 import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { UploadSchema } from "lib/components/json-schema";
 import { EmptyState, StateImage } from "lib/components/state";
 import { useContractStore, useSchemaStore } from "lib/providers/store";
-import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { QuerySchema } from "lib/stores/schema";
 import type { ContractAddr, Option } from "lib/types";
 import { resolveInitialMsg } from "lib/utils";
@@ -32,6 +32,8 @@ export const SchemaQuery = ({
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
+  const { trackUseExpandAll } = useTrack();
+
   const { getSchemaByCodeHash } = useSchemaStore();
   const fullSchema = getSchemaByCodeHash(codeHash);
   const accordionRef = useRef<HTMLDivElement>(null);
@@ -120,7 +122,7 @@ export const SchemaQuery = ({
           }
           minH="40px"
           onClick={() => {
-            AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");
+            trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
             setExpandedIndexes((prev) =>
               prev.length ? [] : Array.from(Array(schema.length).keys())
             );

@@ -1,11 +1,11 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
-import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { TxData } from "lib/services/txService";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -20,6 +20,7 @@ const DotSeparator = () => (
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const openLcdTab = useOpenTxTab("lcd");
   const isMobile = useMobile();
+  const { trackUseViewJSON } = useTrack();
   return (
     <Flex direction="column" gap={2} {...flexProps}>
       <Flex justify="space-between" align="center">
@@ -66,7 +67,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
             variant="ghost-gray"
             rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
             onClick={() => {
-              AmpTrackViewJson("tx_page_transaction_hash");
+              trackUseViewJSON("tx_page_transaction_hash");
               openLcdTab(txData.txhash);
             }}
           >

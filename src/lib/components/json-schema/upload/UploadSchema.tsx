@@ -26,7 +26,7 @@ export const UploadSchema = ({
         codeId={codeId}
         codeHash={codeHash}
         schema={schema}
-        openDrawer={onOpen}
+        openModal={onOpen}
       />
       <JsonSchemaModal
         codeId={codeId}

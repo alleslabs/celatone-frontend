@@ -7,6 +7,7 @@ export interface SubmenuInfo {
   logo?: string;
   isDisable?: boolean;
   tooltipText?: string;
+  trackEvent?: () => void;
 }
 
 export interface SubSection {
@@ -16,6 +17,7 @@ export interface SubSection {
 
 export interface MenuInfo {
   category: string;
+  slug: string;
   submenu: SubmenuInfo[];
   subSection?: SubSection[];
 }

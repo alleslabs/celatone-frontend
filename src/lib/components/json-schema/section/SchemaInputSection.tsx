@@ -2,11 +2,13 @@ import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { capitalize } from "lodash";
 import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaForm } from "../form";
 import { JsonSchemaModal } from "../JsonSchemaModal";
 import { ViewSchemaModal } from "../view/ViewSchemaModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -32,8 +34,14 @@ export const SchemaInputSection = observer(
     onSchemaSave,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
+    const { track } = useTrack();
     const msgSchema = jsonSchema?.[type];
     const prettyType = capitalize(type);
+
+    const handleReattach = useCallback(() => {
+      onOpen();
+      track(AmpEvent.USE_EDIT_ATTACHED_JSON);
+    }, [onOpen, track]);
 
     return (
       <>
@@ -102,7 +110,7 @@ export const SchemaInputSection = observer(
                 schema={jsonSchema}
                 codeId={codeId}
                 codeHash={codeHash}
-                openDrawer={onOpen}
+                openModal={onOpen}
               />
             </>
           )}
@@ -122,7 +130,7 @@ export const SchemaInputSection = observer(
             </Text>
             <Flex gap={3}>
               <ViewSchemaModal codeId={codeId} jsonSchema={jsonSchema} />
-              <Button variant="outline-gray" size="sm" onClick={onOpen}>
+              <Button variant="outline-gray" size="sm" onClick={handleReattach}>
                 Reattach
               </Button>
             </Flex>

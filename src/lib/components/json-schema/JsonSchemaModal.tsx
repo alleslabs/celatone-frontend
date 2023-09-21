@@ -51,6 +51,7 @@ export const JsonSchemaModal = ({
         <UploadTemplate
           codeHash={codeHash}
           codeId={codeId}
+          isReattach={isReattach}
           closeDrawer={onClose}
           onSchemaSave={onSchemaSave}
         />

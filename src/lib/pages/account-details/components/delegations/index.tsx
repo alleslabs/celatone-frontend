@@ -2,10 +2,10 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import type Big from "big.js";
 import big from "big.js";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   HumanAddr,
   Option,
@@ -37,6 +37,7 @@ export const DelegationsSection = ({
   walletAddress,
   onViewMore,
 }: DelegationsSectionProps) => {
+  const { track } = useTrack();
   const { isOpen, onToggle } = useDisclosure();
   const {
     stakingParams,
@@ -134,7 +135,7 @@ export const DelegationsSection = ({
           onViewMore={onViewMore}
           redelegationCount={redelegationCount}
           onClickToggle={() => {
-            AmpTrack(AmpEvent.USE_SEE_REDELEGATIONS);
+            track(AmpEvent.USE_SEE_REDELEGATIONS);
             onToggle();
           }}
         />

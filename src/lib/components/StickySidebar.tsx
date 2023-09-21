@@ -12,8 +12,8 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
-import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
 
@@ -63,6 +63,7 @@ export const StickySidebar = ({
   hasForumAlert = false,
   ...boxProps
 }: StickySidebarProps) => {
+  const { trackUseRightHelperPanel } = useTrack();
   const navigate = useInternalNavigate();
   const { title, description, toPagePath, toPageTitle, toPage, page } =
     metadata;
@@ -131,7 +132,7 @@ export const StickySidebar = ({
               {toPage && toPagePath && toPageTitle && (
                 <ToPage
                   onClick={() => {
-                    AmpTrackUseRightHelperPanel(page, `to-${toPagePath}`);
+                    trackUseRightHelperPanel(page, `to-${toPagePath}`);
                     navigate({ pathname: toPagePath });
                   }}
                   title={toPageTitle}

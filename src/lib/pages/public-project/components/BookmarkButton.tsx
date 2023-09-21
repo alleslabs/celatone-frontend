@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import { usePublicProjectStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
 interface BookmarkButtonProps {
@@ -67,6 +67,7 @@ const StyledButton = ({
 
 export const BookmarkButton = observer(
   ({ details, slug, hasText = true }: BookmarkButtonProps) => {
+    const { track } = useTrack();
     const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
     const toast = useToast({
@@ -78,7 +79,7 @@ export const BookmarkButton = observer(
     });
 
     const handleSave = useCallback(() => {
-      AmpTrack(AmpEvent.PUBLIC_SAVE);
+      track(AmpEvent.PUBLIC_SAVE);
       savePublicProject({
         name: details?.name || "",
         slug,
@@ -87,15 +88,15 @@ export const BookmarkButton = observer(
       toast({
         title: `Bookmarked \u2018${details?.name}\u2019 successfully`,
       });
-    }, [slug, details, savePublicProject, toast]);
+    }, [track, savePublicProject, details?.name, details?.logo, slug, toast]);
 
     const handleRemove = useCallback(() => {
-      AmpTrack(AmpEvent.PUBLIC_REMOVE);
+      track(AmpEvent.PUBLIC_REMOVE);
       removePublicProject(slug);
       toast({
         title: `\u2018${details?.name}\u2019 is removed from bookmark`,
       });
-    }, [slug, details, removePublicProject, toast]);
+    }, [track, removePublicProject, slug, toast, details?.name]);
 
     return (
       <Flex alignItems="center">

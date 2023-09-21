@@ -18,6 +18,7 @@ import { InitialDeposit } from "../components/InitialDeposit";
 import { PermissionlessAlert } from "../components/PermissionlessAlert";
 import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -38,13 +39,6 @@ import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackUseSubmitProposal,
-  AmpTrackUseWhitelistedAddresses,
-  AmpTrackUseDepositFill,
-} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import { AccessConfigPermission } from "lib/types";
 import type { Addr } from "lib/types";
@@ -64,10 +58,14 @@ const defaultValues: WhiteListState = {
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
-const ampPage = "proposal_whitelist";
-
 const ProposalToWhitelist = () => {
   useWasmConfig({ shouldRedirect: true });
+  const {
+    track,
+    trackUseDepositFill,
+    trackUseWhitelistedAddress,
+    trackUseSubmitProposal,
+  } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { constants } = useCelatoneApp();
@@ -190,7 +188,7 @@ const ProposalToWhitelist = () => {
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
-    AmpTrackUseSubmitProposal(ampPage, {
+    trackUseSubmitProposal({
       initialDeposit: initialDeposit.amount,
       assetDenom: initialDeposit.denom,
       minDeposit: minDeposit?.formattedAmount,
@@ -204,6 +202,7 @@ const ProposalToWhitelist = () => {
     addresses.length,
     minDeposit,
     submitProposalTx,
+    trackUseSubmitProposal,
     estimatedFee,
     submitWhitelistProposalMsg,
     addressesArray.length,
@@ -215,8 +214,7 @@ const ProposalToWhitelist = () => {
     const emptyAddressesLength = addresses.filter(
       (addr) => addr.address.trim().length === 0
     ).length;
-    AmpTrackUseWhitelistedAddresses(
-      ampPage,
+    trackUseWhitelistedAddress(
       emptyAddressesLength,
       addresses.length - emptyAddressesLength
     );
@@ -235,9 +233,9 @@ const ProposalToWhitelist = () => {
   useEffect(() => {
     navigate({ pathname: "/", replace: true });
     if (router.isReady) {
-      AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
+      track(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
     }
-  }, [router.isReady, navigate]);
+  }, [router.isReady, navigate, track]);
 
   return (
     <>
@@ -272,7 +270,6 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
-              page={ampPage}
             />
             <form>
               <Flex
@@ -352,7 +349,7 @@ const ProposalToWhitelist = () => {
                     helperAction={
                       <AssignMe
                         onClick={() => {
-                          AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                          track(AmpEvent.USE_ASSIGN_ME);
                           setValue(
                             `addresses.${idx}.address`,
                             walletAddress as Addr
@@ -408,10 +405,7 @@ const ProposalToWhitelist = () => {
                       color="accent.main"
                       onClick={() => {
                         if (!minDeposit) return;
-                        AmpTrackUseDepositFill(
-                          ampPage,
-                          minDeposit.formattedAmount
-                        );
+                        trackUseDepositFill(minDeposit.formattedAmount);
                         setValue(
                           "initialDeposit.amount",
                           minDeposit.formattedAmount

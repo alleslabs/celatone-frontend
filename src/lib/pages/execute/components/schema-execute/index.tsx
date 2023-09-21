@@ -2,12 +2,12 @@ import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { UploadSchema } from "lib/components/json-schema";
 import { EmptyState, StateImage } from "lib/components/state";
 import { useSchemaStore } from "lib/providers/store";
-import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { ExecuteSchema } from "lib/stores/schema";
 import type { ContractAddr, Option } from "lib/types";
 import { getDefaultMsg, resolveInitialMsg } from "lib/utils";
@@ -32,7 +32,12 @@ export const SchemaExecute = ({
   codeHash,
 }: SchemaExecuteProps) => {
   // ------------------------------------------//
-  // --------------------REF-------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
+  const { trackUseExpandAll } = useTrack();
+
+  // ------------------------------------------//
+  // -----------------REFERENCE----------------//
   // ------------------------------------------//
   const accordionRef = useRef<HTMLDivElement>(null);
   const { getSchemaByCodeHash } = useSchemaStore();
@@ -131,7 +136,7 @@ export const SchemaExecute = ({
           }
           minH="40px"
           onClick={() => {
-            AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");
+            trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
             setExpandedIndexes((prev) =>
               !prev.length ? Array.from(Array(schema.length).keys()) : []
             );

@@ -4,11 +4,11 @@ import big from "big.js";
 import Link from "next/link";
 
 import { PoolHeader } from "../PoolHeader";
+import { useTrack } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { USD, Pool, Token, U } from "lib/types";
 import { PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
@@ -27,6 +27,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
+  const { trackWebsite } = useTrack();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     // First version, navigate to contract details page if pool type is CosmWasm
@@ -79,7 +80,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           <Link
             href={`${poolUrl}/${item.id}`}
             onClick={(e) => {
-              AmpTrackWebsite(`${poolUrl}/${item.id}`);
+              trackWebsite(`${poolUrl}/${item.id}`);
               e.stopPropagation();
             }}
             target="_blank"

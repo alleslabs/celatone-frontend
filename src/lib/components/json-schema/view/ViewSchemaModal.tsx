@@ -17,7 +17,9 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
+import { useCallback } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -49,11 +51,13 @@ interface ViewSchemaModalProps {
 }
 
 const SchemaMsgTabList = [
-  SchemaProperties.INSTANTIATE as "instantiate",
-  SchemaProperties.EXECUTE as "execute",
-  SchemaProperties.QUERY as "query",
-  SchemaProperties.MIGRATE as "migrate",
-];
+  SchemaProperties.INSTANTIATE,
+  SchemaProperties.EXECUTE,
+  SchemaProperties.QUERY,
+  SchemaProperties.MIGRATE,
+] as const;
+
+const ALL_TABS = ["full schema", ...SchemaMsgTabList];
 
 export const ViewSchemaModal = ({
   codeId,
@@ -61,6 +65,27 @@ export const ViewSchemaModal = ({
   isIcon = false,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { track } = useTrack();
+
+  const handleView = useCallback(() => {
+    onOpen();
+    track(AmpEvent.USE_VIEW_ATTACHED_JSON, { tab: ALL_TABS[0] });
+  }, [onOpen, track]);
+
+  const trackTabOnChange = useCallback(
+    (index: number) => {
+      track(AmpEvent.USE_VIEW_ATTACHED_JSON, {
+        tab: ALL_TABS[index],
+      });
+    },
+    [track]
+  );
+
+  const trackUseViewJsonInCodeDetail = useCallback(
+    () => track(AmpEvent.USE_VIEW_JSON_IN_CODE_DETAIL),
+    [track]
+  );
+
   return (
     <>
       {isIcon ? (
@@ -68,14 +93,14 @@ export const ViewSchemaModal = ({
           <IconButton
             variant="ghost-gray"
             size="sm"
-            onClick={onOpen}
+            onClick={handleView}
             color="gray.600"
             icon={<CustomIcon name="view" boxSize={5} />}
             aria-label="view schema"
           />
         </Tooltip>
       ) : (
-        <Button variant="outline-gray" size="sm" onClick={onOpen}>
+        <Button variant="outline-gray" size="sm" onClick={handleView}>
           View Schema
         </Button>
       )}
@@ -95,7 +120,10 @@ export const ViewSchemaModal = ({
                 View JSON Schema for code ID “{codeId}”
               </Heading>
             </Flex>
-            <AppLink href={`/codes/${codeId}/schema`}>
+            <AppLink
+              href={`/codes/${codeId}/schema`}
+              onClick={trackUseViewJsonInCodeDetail}
+            >
               <Button mr={8} gap={1} size="sm" variant="outline-gray">
                 <CustomIcon name="view" />
                 View in code detail
@@ -105,7 +133,11 @@ export const ViewSchemaModal = ({
           <ModalCloseButton />
           <ModalBody>
             {/* Remark: It's identical to code detail */}
-            <Tabs variant="unstyled" orientation="vertical">
+            <Tabs
+              variant="unstyled"
+              orientation="vertical"
+              onChange={trackTabOnChange}
+            >
               <TabList>
                 <StyledCustomTab>Full Schema</StyledCustomTab>
                 {SchemaMsgTabList.map((schemaProperty) => (

@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useWasmConfig,
   useMobile,
@@ -15,7 +16,6 @@ import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import { getFirstQueryParam, isCodeId } from "lib/utils";
 
 import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
@@ -48,11 +48,17 @@ const CodeDetailsBody = observer(
     const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
     const isMobile = useMobile();
     const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+    const { track } = useTrack();
+
+    useEffect(() => {
+      if (router.isReady) track(AmpEvent.TO_CODE_DETAIL, { tab });
+      // Note: we don't want to track when tab changes
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.isReady, track]);
 
     const handleTabChange = useCallback(
       (nextTab: TabIndex) => () => {
         if (nextTab === tab) return;
-        AmpTrackUseTab(nextTab);
         navigate({
           pathname: "/codes/[codeId]/[tab]",
           query: {
@@ -141,10 +147,6 @@ const CodeDetails = observer(() => {
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(codeIdParam);
-
-  useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
-  }, [router.isReady]);
 
   if (data.isLoading) return <Loading withBorder />;
   return (
