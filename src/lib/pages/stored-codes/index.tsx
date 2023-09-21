@@ -95,7 +95,7 @@ const StoredCodes = observer(() => {
               {govConfig.enabled &&
                 !(
                   govConfig.disableStoreCodeProposal ||
-                  govConfig.disableOpenProposal
+                  govConfig.hideOpenProposal
                 ) && <ProposalButton />}
             </>
           ) : (

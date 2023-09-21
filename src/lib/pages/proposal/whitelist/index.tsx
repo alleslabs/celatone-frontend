@@ -23,7 +23,6 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
-  useInternalNavigate,
   useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
   useWasmConfig,
@@ -67,7 +66,6 @@ const ProposalToWhitelist = () => {
     trackUseSubmitProposal,
   } = useTrack();
   const router = useRouter();
-  const navigate = useInternalNavigate();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useCurrentChain();
@@ -231,11 +229,10 @@ const ProposalToWhitelist = () => {
   }, [minDeposit, reset]);
 
   useEffect(() => {
-    navigate({ pathname: "/", replace: true });
     if (router.isReady) {
       track(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
     }
-  }, [router.isReady, navigate, track]);
+  }, [router.isReady, track]);
 
   return (
     <>
@@ -369,10 +366,11 @@ const ProposalToWhitelist = () => {
                     h="56px"
                     variant="outline-gray"
                     size="lg"
+                    p={0}
                     disabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon name="delete" />
+                    <CustomIcon name="delete" boxSize={4} />
                   </Button>
                 </Flex>
               ))}
