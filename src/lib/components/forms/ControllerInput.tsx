@@ -52,7 +52,7 @@ export const ControllerInput = <T extends FieldValues>({
     control,
   });
 
-  const { field } = useController({
+  const { field } = useController<T>({
     name,
     control,
     rules,

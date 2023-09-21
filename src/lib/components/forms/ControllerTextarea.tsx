@@ -39,7 +39,7 @@ export const ControllerTextarea = <T extends FieldValues>({
     name,
     control,
   });
-  const { field } = useController({ name, control, rules });
+  const { field } = useController<T>({ name, control, rules });
   const isError = Boolean(error);
   const isRequired = "required" in rules;
   return (

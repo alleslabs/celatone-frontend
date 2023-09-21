@@ -1,7 +1,9 @@
 import type { Coin } from "@cosmjs/stargate";
+import { MsgPublish } from "@initia/initia.js";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
 import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
 
+import { toEncodeObject } from "../encode";
 import { exponentify } from "../formatter";
 import { typeUrlDict } from "lib/data";
 import type {
@@ -12,6 +14,7 @@ import type {
   Token,
   HumanAddr,
   Option,
+  UpgradePolicy,
 } from "lib/types";
 import { MsgType } from "lib/types";
 
@@ -155,3 +158,12 @@ export const composeStoreCodeProposalMsg = ({
     ],
     proposer,
   });
+
+export const composePublishMsg = (
+  address: HumanAddr,
+  codeBytesArr: string[],
+  upgradePolicy: UpgradePolicy
+) =>
+  toEncodeObject([
+    new MsgPublish(address as HumanAddr, codeBytesArr, upgradePolicy),
+  ]);

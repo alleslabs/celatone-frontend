@@ -1,4 +1,4 @@
-import type { Chain, AssetList } from "@chain-registry/types";
+import type { AssetList, Chain } from "@chain-registry/types";
 
 export const initiatestnet: Chain = {
   $schema: "../chain.schema.json",
@@ -6,7 +6,7 @@ export const initiatestnet: Chain = {
   status: "live",
   network_type: "testnet",
   pretty_name: "Initia Testnet",
-  chain_id: "stone-9",
+  chain_id: "stone-10",
   bech32_prefix: "init",
   daemon_name: "initd",
   node_home: "$HOME/.init",
@@ -18,8 +18,8 @@ export const initiatestnet: Chain = {
         denom: "uinit",
         fixed_min_gas_price: 0,
         low_gas_price: 0,
-        average_gas_price: 0.025,
-        high_gas_price: 0.04,
+        average_gas_price: 0.151,
+        high_gas_price: 0.25,
       },
     ],
   },
@@ -47,6 +47,7 @@ export const initiatestnet: Chain = {
     ],
   },
 };
+
 export const initiatestnetAssets: AssetList = {
   $schema: "../assetlist.schema.json",
   chain_name: "initiatestnet",

@@ -3,7 +3,7 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import type { ChainConfigs } from "./types";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
-  "stone-9": {
+  "stone-10": {
     chain: "initia",
     registryChainName: "initiatestnet",
     prettyName: "Initia Testnet",
@@ -38,7 +38,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
+        tokenPerGas: 0.151,
         denom: "uinit",
       },
       gasAdjustment: 1.5,
