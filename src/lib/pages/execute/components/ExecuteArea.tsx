@@ -11,6 +11,7 @@ import {
   MessageTabs,
   UploadSchemaSection,
 } from "lib/components/json-schema";
+import { Tooltip } from "lib/components/Tooltip";
 import { useSchemaStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 
@@ -35,9 +36,9 @@ export const ExecuteArea = observer(
   }: ExecuteAreaProps) => {
     const { trackUseTab } = useTrack();
     const [tab, setTab] = useState<MessageTabs>();
-    const { getExecuteSchema } = useSchemaStore();
+    const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
     const schema = getExecuteSchema(codeHash);
-
+    const attached = Boolean(getSchemaByCodeHash(codeHash));
     const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
 
     const handleTabChange = useCallback(
@@ -68,7 +69,12 @@ export const ExecuteArea = observer(
               onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
               isDisabled={!contractAddress}
             >
-              Your Schema
+              <Tooltip
+                label="Please select contract first"
+                isDisabled={Boolean(contractAddress)}
+              >
+                Your Schema
+              </Tooltip>
             </CustomTab>
           </TabList>
         </Tabs>
@@ -82,8 +88,10 @@ export const ExecuteArea = observer(
             />
           }
           schemaContent={
-            codeHash && schema ? (
+            codeHash && attached ? (
               <SchemaExecute
+                codeId={codeId}
+                codeHash={codeHash}
                 schema={schema}
                 contractAddress={contractAddress}
                 initialFunds={initialFunds}
@@ -98,7 +106,7 @@ export const ExecuteArea = observer(
                     <Flex display="inline" textAlign="center">
                       You haven&#39;t attached the JSON Schema for
                       <CustomIcon name="code" mx={1} color="gray.400" />
-                      code {codeId} yet
+                      code {codeId}
                     </Flex>
                     <Flex textAlign="center">
                       from which this contract is instantiated yet.
