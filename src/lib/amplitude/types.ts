@@ -44,7 +44,6 @@ export enum AmpEvent {
   TO_ALL_LISTS = "To All Lists",
   TO_ALL_PROJECTS = "To All Public Projects",
   TO_ACCOUNT_DETAIL = "To Account Detail",
-  TO_YOUR_ACCOUNT = "To Your Account",
   TO_CONTRACT_DETAIL = "To Contract Detail",
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
@@ -125,6 +124,7 @@ export enum AmpEvent {
   USE_TOGGLE = "Use Toggle",
   USE_SCHEMA_TOGGLE = "Use Schema Toggle",
   USE_JSON_QUERY_AGAIN = "Use Json Query Again",
+  USE_TO_YOUR_ACCOUNT = "Use To Your Account",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",

@@ -88,7 +88,10 @@ const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => {
           <AppLink
             href={subitem.slug}
             key={subitem.slug}
-            onClick={() => track(AmpEvent.USE_SIDEBAR)}
+            onClick={() => {
+              track(AmpEvent.USE_SIDEBAR);
+              subitem.trackEvent?.();
+            }}
           >
             <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
           </AppLink>
