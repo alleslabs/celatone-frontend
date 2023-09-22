@@ -1,4 +1,4 @@
-import type { RJSFSchema } from "@rjsf/utils";
+import { getSchemaType, type RJSFSchema } from "@rjsf/utils";
 
 import type { SchemaInfo } from "lib/stores/schema";
 import type { JsonDataType } from "lib/types";
@@ -45,7 +45,7 @@ export const getDefaultMsg = (msgSchema: SchemaInfo) => {
   if (type === "object") {
     if (required && properties) {
       const propertyName = Object.keys(properties)[0];
-      if ((properties[propertyName] as RJSFSchema).type === "object")
+      if (getSchemaType(properties[propertyName] as RJSFSchema) === "object")
         return { [required[0]]: {} };
     }
     return {};

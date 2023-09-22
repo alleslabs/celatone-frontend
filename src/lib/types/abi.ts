@@ -1,3 +1,4 @@
+import type { Option } from "./common";
 import type { SnakeToCamelCaseNested } from "./converter";
 
 export enum UpgradePolicy {
@@ -74,11 +75,16 @@ interface Struct {
   fields: Field[];
 }
 
-interface GenericTypeParam {
+export interface GenericTypeParam {
   constraints: string[];
 }
 
 interface Field {
   name: string;
   type: string;
+}
+
+export interface AbiFormData {
+  typeArgs: Record<string, string>;
+  args: Record<string, Option<string>>;
 }

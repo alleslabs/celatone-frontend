@@ -3,12 +3,12 @@ import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
-import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractDetail } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 import {
@@ -37,6 +37,7 @@ const Execute = () => {
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState("");
+  const { trackToExecute } = useTrack();
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
@@ -65,12 +66,11 @@ const Execute = () => {
   // ---------------SIDE EFFECTS---------------//
   // ------------------------------------------//
   useEffect(() => {
-    const msgParam = getFirstQueryParam(router.query.msg);
     if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
-
+      const msgParam = getFirstQueryParam(router.query.msg);
       if (!msgParam.length) {
         setInitialMsg("");
         setInitialFunds([]);
@@ -89,9 +89,9 @@ const Execute = () => {
       }
 
       setContractAddress(contractAddressParam);
-      AmpTrackToExecute(!!contractAddressParam, !!msgParam);
+      trackToExecute(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect]);
+  }, [router, onContractSelect, trackToExecute]);
 
   return (
     <PageContainer>

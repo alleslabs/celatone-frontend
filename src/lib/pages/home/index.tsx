@@ -4,10 +4,11 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { CURR_THEME } from "env";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useInternalNavigate,
-  useNavContext,
+  useMobile,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -16,13 +17,12 @@ import { ViewMore } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useAverageBlockTime,
   useLatestBlockInfo,
 } from "lib/services/blockService";
 import { useTxsCount } from "lib/services/txService";
-import type { Option } from "lib/types";
+import { type Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { DevShortcut, TopDecorations } from "./components";
@@ -112,8 +112,7 @@ const calculateAverageBlockTime = (
 const Home = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { isDevMode } = useNavContext();
-
+  const isMobile = useMobile();
   const {
     chainConfig: { prettyName },
   } = useCelatoneApp();
@@ -122,6 +121,7 @@ const Home = () => {
     isLoading: isLoadingLatestBlockInfo,
     error: latestBlockInfoError,
   } = useLatestBlockInfo();
+  const { track } = useTrack();
   const { data } = useAverageBlockTime();
   const averageBlockTime = calculateAverageBlockTime(
     data?.latest,
@@ -140,8 +140,8 @@ const Home = () => {
     });
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_NETWORK_OVERVIEW);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_OVERVIEW);
+  }, [track, router.isReady]);
 
   return (
     <PageContainer>
@@ -223,12 +223,9 @@ const Home = () => {
           />
         </Flex>
       </Flex>
-      {isDevMode && (
+      {!isMobile && (
         <section style={{ marginBottom: "48px" }}>
           <Flex gap={4} direction="column">
-            <Heading as="h5" variant="h5">
-              Dev Shortcuts
-            </Heading>
             <ConnectWalletAlert
               title={`Connect wallet to start using ${CURR_THEME.branding.seo.appName}`}
               subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
@@ -237,7 +234,6 @@ const Home = () => {
           </Flex>
         </section>
       )}
-
       <section style={{ marginBottom: "48px" }}>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions

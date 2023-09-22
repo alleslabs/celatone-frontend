@@ -4,15 +4,14 @@ import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import type { UploadSucceedCallback } from "lib/app-provider";
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
 import type { HumanAddr, TxResultRendering, ComposedMsg } from "lib/types";
 import { findAttr } from "lib/utils";
 import { formatUFee } from "lib/utils/formatter/denom";
 
-import { catchTxError } from "./common/catchTxError";
 import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
@@ -24,8 +23,9 @@ interface UploadTxParams {
   fee: StdFee;
   memo?: string;
   client: SigningCosmWasmClient;
-  onTxSucceed: UploadSucceedCallback;
   isMigrate: boolean;
+  catchTxError: CatchTxError;
+  onTxSucceed: UploadSucceedCallback;
 }
 
 export const uploadContractTx = ({
@@ -36,8 +36,9 @@ export const uploadContractTx = ({
   fee,
   memo,
   client,
-  onTxSucceed,
   isMigrate,
+  catchTxError,
+  onTxSucceed,
 }: UploadTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -45,7 +46,6 @@ export const uploadContractTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee, memo),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       const mimicLog: logs.Log = {
         msg_index: 0,
         log: "",

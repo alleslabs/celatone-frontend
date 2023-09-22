@@ -9,27 +9,26 @@ import {
 import type { AlertProps } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
-import { AmpTrackUseClickWallet } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
 
 interface ConnectWalletAlertProps extends AlertProps {
   title?: string;
   subtitle?: string;
-  page?: string;
 }
 
 export const ConnectWalletAlert = ({
   title,
   subtitle,
-  page,
   ...alertProps
 }: ConnectWalletAlertProps) => {
   const { address, connect } = useCurrentChain();
+  const { trackUseClickWallet } = useTrack();
 
   const onClickConnect: MouseEventHandler = async (e) => {
-    AmpTrackUseClickWallet(page, "alert");
+    trackUseClickWallet("alert");
     e.preventDefault();
     await connect();
   };

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -15,7 +16,6 @@ import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr, HumanAddr } from "lib/types";
 import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
@@ -26,7 +26,7 @@ interface SaveNewCodeModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { address } = useCurrentChain();
-
+  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
 
@@ -104,7 +104,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   };
 
   const handleSave = () => {
-    AmpTrack(AmpEvent.CODE_SAVE);
+    track(AmpEvent.CODE_SAVE);
     const id = Number(codeId);
 
     saveNewCode(id);
@@ -191,7 +191,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
-          variant="floating"
+          variant="fixed-floating"
           value={codeId}
           onInputChange={setCodeId}
           label="Code ID"
@@ -200,7 +200,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           placeholder="ex. 1234"
         />
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={uploader}
           label="Uploader"
           labelBgColor="gray.900"
@@ -210,7 +210,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           isDisabled
         />
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={name}
           setInputState={setName}
           label="Code Name"

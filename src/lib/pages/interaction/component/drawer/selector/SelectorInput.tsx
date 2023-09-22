@@ -123,7 +123,7 @@ export const ModuleSelectorInput = ({
         size="md"
         helperText={`ex. “${user}”, “${user}::module_name”, or “${user}::module_name::function_name”`}
         label="Fill in address or module path"
-        variant="floating"
+        variant="fixed-floating"
         labelBgColor="gray.800"
         onKeyDown={handleKeydown}
         autoFocus

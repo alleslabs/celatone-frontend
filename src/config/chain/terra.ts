@@ -33,7 +33,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
-        disableOpenProposal: true,
+        hideOpenProposal: true,
       },
       nft: {
         enabled: false,
@@ -82,7 +82,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
-        disableOpenProposal: true,
+        hideOpenProposal: true,
       },
       nft: {
         enabled: false,

@@ -35,7 +35,7 @@ const ModuleTitle = ({
   return (
     <TableTitle
       title="Module Instances"
-      helperText="Modules are ‘smart contracts' deployed by this account"
+      helperText="Modules are ‘smart contracts’ deployed by this account"
       count={totalAsset}
     />
   );

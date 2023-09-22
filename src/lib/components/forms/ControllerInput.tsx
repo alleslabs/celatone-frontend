@@ -1,5 +1,6 @@
 import {
   Flex,
+  Text,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -52,13 +53,16 @@ export const ControllerInput = <T extends FieldValues>({
     control,
   });
 
-  const { field } = useController({
+  const {
+    field,
+    fieldState: { isTouched },
+  } = useController({
     name,
     control,
     rules,
   });
 
-  const isError = !!error;
+  const isError = isTouched && !!error;
   const isRequired = "required" in rules;
 
   return (
@@ -70,7 +74,15 @@ export const ControllerInput = <T extends FieldValues>({
       {...field}
     >
       {label && (
-        <FormLabel className={`${size}-label`} bgColor={labelBgColor}>
+        <FormLabel
+          className={`${size}-label`}
+          bgColor={labelBgColor}
+          requiredIndicator={
+            <Text as="span" color="error.main" pl={1}>
+              * (Required)
+            </Text>
+          }
+        >
           {label}
         </FormLabel>
       )}
