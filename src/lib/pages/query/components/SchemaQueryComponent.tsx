@@ -15,8 +15,9 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
-import { memo, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -25,9 +26,7 @@ import {
   MessageInputSwitch,
   OutputMessageTabs,
 } from "lib/components/json-schema";
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
@@ -39,14 +38,14 @@ import type {
   JsonDataType,
 } from "lib/types";
 import {
-  dateFromNow,
   encode,
   getCurrentDate,
   getDefaultMsg,
   isNonEmptyJsonData,
   jsonValidate,
-  parseSchemaInitialData,
 } from "lib/utils";
+
+import { SchemaQueryResponse } from "./SchemaQueryResponse";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -59,25 +58,9 @@ interface SchemaQueryComponentProps {
   lcdEndpoint: string;
   walletAddress: Option<string>;
   initialMsg: JsonDataType;
+  opened: boolean;
   addActivity: (activity: Activity) => void;
 }
-
-const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
-  const [, setRenderCount] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRenderCount((prev) => prev + 1);
-    }, 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <Text variant="body3" color="text.dark" opacity={timestamp ? 1 : 0}>
-      ({timestamp ? `Last queried ${dateFromNow(timestamp)}` : "N/A"})
-    </Text>
-  );
-});
 
 export const SchemaQueryComponent = ({
   msgSchema,
@@ -86,8 +69,10 @@ export const SchemaQueryComponent = ({
   lcdEndpoint,
   walletAddress,
   initialMsg,
+  opened,
   addActivity,
 }: SchemaQueryComponentProps) => {
+  const { trackActionQuery, track } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );
@@ -111,7 +96,7 @@ export const SchemaQueryComponent = ({
     ],
     async () => queryData(lcdEndpoint, contractAddress, msg),
     {
-      enabled: false,
+      enabled: !msgSchema.inputRequired && opened,
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
@@ -127,6 +112,11 @@ export const SchemaQueryComponent = ({
           msg: encode(msg),
           timestamp: currentDate,
         });
+        trackActionQuery(
+          AmpEvent.ACTION_QUERY,
+          "schema",
+          Boolean(msgSchema.inputRequired)
+        );
       },
       onError(err: AxiosError<RpcQueryError>) {
         setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
@@ -137,14 +127,12 @@ export const SchemaQueryComponent = ({
   );
 
   const handleQuery = useCallback(() => {
-    AmpTrack(AmpEvent.ACTION_QUERY);
     refetch();
   }, [refetch]);
 
   useEffect(() => {
     if (isNonEmptyJsonData(initialMsg)) {
       setMsg(JSON.stringify(initialMsg));
-      if (!msgSchema.inputRequired) refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(initialMsg), msgSchema.inputRequired, refetch]);
@@ -207,6 +195,7 @@ export const SchemaQueryComponent = ({
             </GridItem>
           )}
           <GridItem>
+            {/* TODO: refactor query response */}
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
                 <Text variant="body2" color="text.dark" fontWeight={700}>
@@ -230,25 +219,14 @@ export const SchemaQueryComponent = ({
                 </AlertDescription>
               </Alert>
             )}
-            <Flex direction="column" gap={2}>
-              {resTab === OutputMessageTabs.JSON_OUTPUT ? (
-                <JsonReadOnly
-                  topic="Return Output"
-                  labelBgColor="gray.900"
-                  text={res}
-                  canCopy={res !== ""}
-                />
-              ) : (
-                <Box bg="gray.800" p={4} borderRadius="8px">
-                  <JsonSchemaForm
-                    formId={`response-${msgSchema.title}`}
-                    schema={resSchema.schema}
-                    initialFormData={parseSchemaInitialData(res)}
-                  />
-                </Box>
-              )}
-              <TimestampText timestamp={timestamp} />
-            </Flex>
+            <SchemaQueryResponse
+              res={res}
+              resTab={resTab}
+              msgSchema={msgSchema}
+              resSchema={resSchema}
+              timestamp={timestamp}
+              isRefetching={queryFetching || queryRefetching}
+            />
             {!msgSchema.inputRequired ? (
               <Flex gap={2} justify="flex-start" mt={3}>
                 <CopyButton
@@ -272,7 +250,10 @@ export const SchemaQueryComponent = ({
                   <Button
                     variant="primary"
                     size="sm"
-                    onClick={handleQuery}
+                    onClick={() => {
+                      handleQuery();
+                      track(AmpEvent.USE_JSON_QUERY_AGAIN);
+                    }}
                     isDisabled={jsonValidate(msg) !== null}
                     isLoading={queryFetching || queryRefetching}
                     leftIcon={<CustomIcon name="query" />}

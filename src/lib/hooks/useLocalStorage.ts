@@ -1,6 +1,7 @@
-/* eslint-disable no-console */
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
+
+import { setItem, getItem } from "lib/utils";
 
 type PersistedState<T> = [T, Dispatch<SetStateAction<T>>];
 
@@ -8,22 +9,11 @@ export const useLocalStorage = <T>(
   key: string,
   defaultValue: T
 ): PersistedState<T> => {
-  const [storedValue, setStoredValue] = useState<T>(() => {
-    try {
-      const value = window.localStorage.getItem(key);
-      return value ? (JSON.parse(value) as T) : defaultValue;
-    } catch (e) {
-      return defaultValue as T;
-    }
-  });
+  const [storedValue, setStoredValue] = useState<T>(() =>
+    getItem(key, defaultValue)
+  );
 
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(key, JSON.stringify(storedValue));
-    } catch (e) {
-      // I want application to not crush, but don't care about the message
-    }
-  }, [key, storedValue]);
+  useEffect(() => setItem(key, storedValue), [key, storedValue]);
 
   return [storedValue, setStoredValue];
 };

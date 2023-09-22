@@ -18,7 +18,7 @@ import { useCallback } from "react";
 
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { AmpTrackUseOtherModal } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 
 export interface ActionModalProps {
   icon?: IconKeys;
@@ -57,6 +57,7 @@ export function ActionModal({
   closeOnOverlayClick = true,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { trackUseOtherModal } = useTrack();
 
   const handleOnMain = useCallback(() => {
     mainAction();
@@ -72,7 +73,7 @@ export function ActionModal({
       <Flex
         onClick={(e) => {
           e.stopPropagation();
-          AmpTrackUseOtherModal(title);
+          trackUseOtherModal(title);
           onOpen();
         }}
       >

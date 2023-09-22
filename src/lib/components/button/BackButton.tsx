@@ -3,10 +3,11 @@ import type { ButtonProps } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpEvent, useTrack } from "lib/amplitude";
 
 export const BackButton = (props: ButtonProps) => {
   const router = useRouter();
+  const { track } = useTrack();
 
   return (
     <Button
@@ -16,7 +17,7 @@ export const BackButton = (props: ButtonProps) => {
       p="unset"
       pr={2}
       onClick={() => {
-        AmpTrack(AmpEvent.USE_BACK_BUTTON);
+        track(AmpEvent.USE_BACK_BUTTON);
         router.back();
       }}
       {...props}

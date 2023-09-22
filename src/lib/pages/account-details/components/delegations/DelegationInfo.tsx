@@ -2,9 +2,9 @@ import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { MouseEventHandler, ReactNode } from "react";
 
 import { MobileDelegationTitle } from "../mobile/MobileDelegationTitle";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 interface DelegationInfoProps {
   onViewMore?: () => void;
@@ -40,6 +40,7 @@ const DelegationsTitle = ({
     </Heading>
   );
 };
+
 export const DelegationInfo = ({
   onViewMore,
   onClickToggle,
@@ -47,13 +48,16 @@ export const DelegationInfo = ({
   infoCards,
   TotalBondedCard,
 }: DelegationInfoProps) => {
+  const { track } = useTrack();
   const isMobile = useMobile();
+
   let isMobileDetail = null;
   if (isMobile && onViewMore) {
     isMobileDetail = false;
   } else {
     isMobileDetail = true;
   }
+
   return (
     <>
       <DelegationsTitle
@@ -76,7 +80,7 @@ export const DelegationInfo = ({
               minW="fit-content"
               rightIcon={<CustomIcon name="chevron-right" />}
               onClick={() => {
-                AmpTrack(AmpEvent.USE_VIEW_MORE);
+                track(AmpEvent.USE_VIEW_MORE);
                 onViewMore();
               }}
             >

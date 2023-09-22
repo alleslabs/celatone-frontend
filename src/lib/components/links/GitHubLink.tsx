@@ -1,13 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
-import { AmpTrackSocial } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 
 interface GitHubLinkProps {
   github: string;
 }
 
 export const GitHubLink = ({ github }: GitHubLinkProps) => {
+  const { trackSocial } = useTrack();
   const [, , , org, repo] = github.split("/");
   return (
     <Flex gap={{ base: 0, md: 2 }} direction={{ base: "column", md: "row" }}>
@@ -16,7 +17,7 @@ export const GitHubLink = ({ github }: GitHubLinkProps) => {
       </Text>
       <a
         href={github}
-        onClick={() => AmpTrackSocial(github)}
+        onClick={() => trackSocial(github)}
         target="_blank"
         rel="noreferrer noopener"
         style={{ display: "flex" }}

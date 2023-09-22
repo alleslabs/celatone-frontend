@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 
+import { useTrack } from "lib/amplitude";
 import { CustomIconButton } from "lib/components/button";
 import type { IconKeys } from "lib/components/icon";
-import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string): IconKeys => {
@@ -22,6 +22,8 @@ interface SocialMediaProps {
   details: Option<PublicDetail>;
 }
 export const SocialMedia = ({ details }: SocialMediaProps) => {
+  const { trackWebsite, trackSocial } = useTrack();
+
   if (!details) return null;
   return (
     <Flex
@@ -33,14 +35,14 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         <CustomIconButton
           href={details.website}
           icon="website"
-          onClick={() => AmpTrackWebsite(details.website)}
+          onClick={() => trackWebsite(details.website)}
         />
       )}
       {details.github && (
         <CustomIconButton
           href={details.github}
           icon="github"
-          onClick={() => AmpTrackSocial(details.github)}
+          onClick={() => trackSocial(details.github)}
         />
       )}
       {details.socials.length &&
@@ -51,7 +53,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
                 key={social.name}
                 href={social.url}
                 icon={renderSocial(social.name)}
-                onClick={() => AmpTrackSocial(social.url)}
+                onClick={() => trackSocial(social.url)}
               />
             )
         )}

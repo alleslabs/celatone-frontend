@@ -17,16 +17,12 @@ import { SUPERFLUID_ICON } from "../../constant";
 import { usePools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
+import { useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { Order_By } from "lib/gql/graphql";
-import {
-  AmpTrackExpandAll,
-  AmpTrackUseSort,
-  AmpTrackUseToggle,
-} from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
@@ -40,6 +36,7 @@ interface UnsupportedSectionProp {
 export const UnsupportedSection = ({
   scrollComponentId,
 }: UnsupportedSectionProp) => {
+  const { trackUseSort, trackUseToggle } = useTrack();
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
       poolTypeValue: PoolType.ALL,
@@ -57,6 +54,8 @@ export const UnsupportedSection = ({
     isSuperfluidOnly,
     search,
   });
+
+  const { trackUseExpandAll } = useTrack();
 
   const [showNewest, setShowNewest] = useState(true);
 
@@ -132,9 +131,10 @@ export const UnsupportedSection = ({
                 size="md"
                 defaultChecked={isSuperfluidOnly}
                 onChange={(e) => {
+                  const isChecked = e.target.checked;
                   setCurrentPage(1);
-                  AmpTrackUseToggle("isSuperfluidOnly", e.target.checked);
-                  setValue("isSuperfluidOnly", e.target.checked);
+                  trackUseToggle("isSuperfluidOnly", isChecked);
+                  setValue("isSuperfluidOnly", isChecked);
                 }}
               />
               <FormLabel mb={0} cursor="pointer">
@@ -168,7 +168,7 @@ export const UnsupportedSection = ({
               pr={1}
               onClick={() => {
                 const isDesc = !showNewest;
-                AmpTrackUseSort(isDesc ? "descending" : "ascending");
+                trackUseSort(isDesc ? "descending" : "ascending");
                 setShowNewest(isDesc);
               }}
             >
@@ -190,7 +190,7 @@ export const UnsupportedSection = ({
                 />
               }
               onClick={() => {
-                AmpTrackExpandAll(
+                trackUseExpandAll(
                   expandedIndexes.length ? "collapse" : "expand"
                 );
                 setExpandedIndexes((prev) =>

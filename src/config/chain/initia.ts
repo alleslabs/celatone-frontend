@@ -9,7 +9,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Initia Testnet",
     lcd: "https://stone-rest.initia.tech",
     rpc: "https://stone-rpc.initia.tech:443",
-    indexer: "https://initia-tesnet-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://stone-10-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
@@ -46,7 +46,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     explorerLink: {
       validator: "https://app.initia.tech/validator",
-      proposal: "https://app.initia.tech/proposals",
+      proposal: "https://app.initia.tech/proposal",
     },
     extra: {},
   },

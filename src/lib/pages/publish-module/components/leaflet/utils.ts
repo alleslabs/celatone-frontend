@@ -1,7 +1,6 @@
-export const structToString = (obj: Record<string, string>, indent = 4) => {
-  const spacing = " ".repeat(indent);
-  const keys = Object.keys(obj);
-  const keyValuePairs = keys.map((key) => {
+export const structToString = (obj: Record<string, string>) => {
+  const spacing = "\t";
+  const keyValuePairs = Object.entries(obj).map(([key]) => {
     const value = obj[key];
     const [val, comment] = value.split("//");
     const commentRender = comment
