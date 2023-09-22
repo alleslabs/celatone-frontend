@@ -76,7 +76,7 @@ export const useAccountModules = ({
     [
       CELATONE_QUERY_KEYS.ACCOUNT_MODULES,
       baseEndpoint,
-      address as string,
+      address,
       moduleName,
       functionName,
     ],

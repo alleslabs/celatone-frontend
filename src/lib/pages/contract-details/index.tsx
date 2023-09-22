@@ -10,6 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useValidateAddress, useWasmConfig, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
@@ -17,7 +18,6 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -68,7 +68,7 @@ const ContractDetailsBody = observer(
         <CommandSection
           contractAddress={contractAddress}
           codeHash={contractData.contractDetail.codeHash}
-          codeId={contractData.contractDetail.codeId}
+          codeId={String(contractData.contractDetail.codeId)}
         />
         {/* Instantiate/Contract Info Section */}
         <Flex
@@ -164,6 +164,7 @@ const ContractDetailsBody = observer(
 
 const ContractDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
+  const { track } = useTrack();
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
   const contractAddressParam = getFirstQueryParam(
@@ -172,8 +173,8 @@ const ContractDetails = observer(() => {
   const contractData = useContractData(contractAddressParam);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_CONTRACT_DETAIL);
+  }, [router.isReady, track]);
 
   if (contractData.isContractDetailLoading) return <Loading withBorder />;
   return (

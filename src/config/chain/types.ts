@@ -17,7 +17,9 @@ type WasmConfig =
       enabled: false;
     };
 
-type MoveConfig = { enabled: boolean };
+type MoveConfig =
+  | { enabled: true; moduleMaxFileSize: number }
+  | { enabled: false };
 
 type PoolConfig =
   | {
@@ -31,7 +33,8 @@ type PublicProjectConfig = { enabled: boolean };
 type GovConfig =
   | {
       enabled: true;
-      disableOpenProposal?: boolean;
+      hideOpenProposal?: boolean;
+      disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
     }
   | {

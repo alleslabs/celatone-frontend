@@ -33,6 +33,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        disableStoreCodeProposal: true,
+        disableWhitelistProposal: true,
       },
       nft: {
         enabled: false,
@@ -83,6 +85,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        disableWhitelistProposal: true,
+        disableStoreCodeProposal: true,
       },
       nft: {
         enabled: false,
@@ -132,6 +136,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        disableWhitelistProposal: true,
+        disableStoreCodeProposal: true,
       },
       nft: {
         enabled: false,

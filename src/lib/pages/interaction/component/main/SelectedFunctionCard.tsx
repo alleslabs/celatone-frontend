@@ -66,9 +66,7 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
               transform={expand ? "rotate(180deg)" : "rotate(0)"}
             />
           }
-          onClick={() => {
-            setExpand((prev) => !prev);
-          }}
+          onClick={() => setExpand((prev) => !prev)}
         >
           {expand ? "View Less" : "View More"}
         </Button>

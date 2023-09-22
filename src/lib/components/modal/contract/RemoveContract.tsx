@@ -1,9 +1,9 @@
 import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, Text, Highlight } from "@chakra-ui/react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
@@ -19,6 +19,7 @@ export function RemoveContractModal({
   contractRemovalInfo,
   menuItemProps,
 }: RemoveContractModalProps) {
+  const { track } = useTrack();
   const displayName = contractLocalInfo.name
     ? contractLocalInfo.name
     : truncate(contractLocalInfo.contractAddress);
@@ -31,7 +32,7 @@ export function RemoveContractModal({
     lists: contractLocalInfo.lists?.filter(
       (item) => item.value !== contractRemovalInfo.value
     ),
-    actions: () => AmpTrack(AmpEvent.CONTRACT_REMOVE),
+    actions: () => track(AmpEvent.CONTRACT_REMOVE),
   });
 
   return (

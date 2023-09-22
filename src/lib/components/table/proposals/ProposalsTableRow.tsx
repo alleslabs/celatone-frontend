@@ -2,11 +2,11 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
+import { useTrack } from "lib/amplitude";
 import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { Proposer } from "lib/components/table/proposals/Proposer";
-import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option, Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { openNewTab } from "lib/utils";
@@ -31,6 +31,7 @@ export const ProposalsTableRow = ({
     chainConfig: { explorerLink },
   } = useCelatoneApp();
   const lcdEndpoint = useBaseApiRoute("rest");
+  const { trackMintScan } = useTrack();
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
@@ -53,7 +54,7 @@ export const ProposalsTableRow = ({
       onClick={
         !isDepositFailed
           ? () => {
-              AmpTrackMintscan("proposal-detail", {
+              trackMintScan("proposal-detail", {
                 type: proposal.type,
                 status: proposal.status,
               });

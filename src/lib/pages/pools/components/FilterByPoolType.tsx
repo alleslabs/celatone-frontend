@@ -6,8 +6,8 @@ import {
   STABLESWAP_ICON,
   CLP_ICON,
 } from "../constant";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { SelectInput } from "lib/components/forms";
-import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
 
@@ -60,17 +60,20 @@ export const FilterByPoolType = ({
   setPoolTypeValue,
   initialSelected,
   labelBgColor = "background.main",
-}: FilterByPoolTypeProps) => (
-  <Grid columnGap="16px" w="full" maxW="360px">
-    <SelectInput<PoolTypeFilter>
-      formLabel="Filter by Pool Type"
-      options={options}
-      onChange={(newVal) => {
-        AmpTrackUseFilter(AmpEvent.USE_FILTER_POOL_TYPE, [newVal], newVal);
-        setPoolTypeValue(newVal);
-      }}
-      initialSelected={initialSelected}
-      labelBgColor={labelBgColor}
-    />
-  </Grid>
-);
+}: FilterByPoolTypeProps) => {
+  const { trackUseFilter } = useTrack();
+  return (
+    <Grid columnGap="16px" w="full" maxW="360px">
+      <SelectInput<PoolTypeFilter>
+        formLabel="Filter by Pool Type"
+        options={options}
+        onChange={(newVal) => {
+          trackUseFilter(AmpEvent.USE_FILTER_POOL_TYPE, [newVal], newVal);
+          setPoolTypeValue(newVal);
+        }}
+        initialSelected={initialSelected}
+        labelBgColor={labelBgColor}
+      />
+    </Grid>
+  );
+};

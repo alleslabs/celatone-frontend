@@ -14,12 +14,12 @@ import {
   RelatedProposalsTable,
   TxsTable,
 } from "../contract-details/components/tables";
+import { useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
-import { AmpTrackUseTab } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -40,12 +40,14 @@ const txTableHeaderId = "ModuleTxsTableHeader";
 export const ModuleDetails = () => {
   const navigate = useInternalNavigate();
   const router = useRouter();
+  const { trackUseTab } = useTrack();
+
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const modulePath = getFirstQueryParam(router.query.modulePath);
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
-      AmpTrackUseTab(nextTab);
+      trackUseTab(nextTab);
       navigate({
         pathname: "/modules/[modulePath]/[tab]",
         query: {
@@ -57,7 +59,7 @@ export const ModuleDetails = () => {
         },
       });
     },
-    [modulePath, tab, navigate]
+    [modulePath, navigate, tab, trackUseTab]
   );
 
   useEffect(() => {

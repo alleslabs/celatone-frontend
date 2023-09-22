@@ -19,6 +19,7 @@ import { useState } from "react";
 import type { KeyboardEvent } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -29,7 +30,6 @@ import {
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
@@ -49,6 +49,7 @@ export const SelectContractInstantiator = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
+  const { track } = useTrack();
 
   const [searchContract, setSearchContract] = useState<ContractAddr>(
     "" as ContractAddr
@@ -74,7 +75,7 @@ export const SelectContractInstantiator = ({
   };
 
   const onSelectThenClose = (contract: ContractAddr) => {
-    AmpTrack(AmpEvent.USE_CONTRACT_MODAL_LISTS);
+    track(AmpEvent.USE_CONTRACT_MODAL_LISTS);
     onContractSelect(contract);
     resetOnClose();
   };
@@ -105,7 +106,7 @@ export const SelectContractInstantiator = ({
     const err = validateContractAddress(searchContract);
     if (err !== null) setInvalid(err);
     else {
-      AmpTrack(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
+      track(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
       refetch();
     }
   };
@@ -124,7 +125,7 @@ export const SelectContractInstantiator = ({
         size="sm"
         px={4}
         onClick={() => {
-          AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
+          track(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
         leftIcon={

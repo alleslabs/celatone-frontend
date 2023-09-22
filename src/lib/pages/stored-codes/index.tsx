@@ -5,6 +5,7 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCurrentChain,
   useGovConfig,
@@ -15,7 +16,6 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
@@ -30,6 +30,7 @@ interface CodeFilterState {
 }
 
 const StoredCodes = observer(() => {
+  const { track } = useTrack();
   const router = useRouter();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
@@ -56,8 +57,8 @@ const StoredCodes = observer(() => {
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);
+  }, [router.isReady, track]);
   const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
   const { address } = useCurrentChain();
   const isAllowed = Boolean(data?.addresses?.includes(address as Addr));
@@ -94,7 +95,7 @@ const StoredCodes = observer(() => {
               {govConfig.enabled &&
                 !(
                   govConfig.disableStoreCodeProposal ||
-                  govConfig.disableOpenProposal
+                  govConfig.hideOpenProposal
                 ) && <ProposalButton />}
             </>
           ) : (

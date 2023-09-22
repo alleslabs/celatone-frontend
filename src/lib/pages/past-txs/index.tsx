@@ -10,6 +10,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
@@ -21,7 +22,6 @@ import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useAccountId } from "lib/services/accountService";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useTxsByAddressPagination,
   useTxsCountByAddress,
@@ -35,6 +35,7 @@ interface PastTxsState {
 }
 
 const PastTxs = () => {
+  const { track } = useTrack();
   const router = useRouter();
   const {
     address,
@@ -120,8 +121,8 @@ const PastTxs = () => {
   }, [pastTxsState]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_PAST_TXS);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_PAST_TXS);
+  }, [router.isReady, track]);
 
   useEffect(() => {
     setPageSize(10);

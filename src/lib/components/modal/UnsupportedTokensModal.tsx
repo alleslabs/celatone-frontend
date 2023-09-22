@@ -18,10 +18,10 @@ import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
+import { useTrack } from "lib/amplitude";
 import { useGetAddressType, useGetAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
-import { AmpTrackUnsupportedToken } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
   getTokenType,
@@ -147,6 +147,7 @@ export const UnsupportedTokensModal = ({
 }: UnsupportedTokensModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const getAddressTypeByLength = useGetAddressTypeByLength();
+  const { trackUseUnsupportedToken } = useTrack();
 
   if (unsupportedAssets.length === 0) return null;
 
@@ -161,7 +162,7 @@ export const UnsupportedTokensModal = ({
         size="sm"
         {...buttonProps}
         onClick={() => {
-          AmpTrackUnsupportedToken(amptrackSection);
+          trackUseUnsupportedToken(amptrackSection);
           onOpen();
         }}
       >

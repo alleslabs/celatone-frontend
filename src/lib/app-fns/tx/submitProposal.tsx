@@ -5,35 +5,37 @@ import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";
 
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { findAttr, formatUFee } from "lib/utils";
 
-import { catchTxError, postTx, sendingTx } from "./common";
+import { postTx, sendingTx } from "./common";
 
 interface SubmitWhitelistProposalTxParams {
   address: HumanAddr;
   client: SigningCosmWasmClient;
-  onTxSucceed?: () => void;
-  onTxFailed?: () => void;
   fee: StdFee;
   messages: EncodeObject[];
   whitelistNumber: number;
   amountToVote: string | null;
+  catchTxError: CatchTxError;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const submitWhitelistProposalTx = ({
   address,
   client,
-  onTxSucceed,
-  onTxFailed,
   fee,
   messages,
   whitelistNumber,
   amountToVote,
+  catchTxError,
+  onTxSucceed,
+  onTxFailed,
 }: SubmitWhitelistProposalTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -41,7 +43,6 @@ export const submitWhitelistProposalTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
       const mimicLog: logs.Log = {
         msg_index: 0,
@@ -109,6 +110,7 @@ interface SubmitStoreCodeProposalTxParams {
   wasmFileName: string;
   messages: EncodeObject[];
   amountToVote: string | null;
+  catchTxError: CatchTxError;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -121,6 +123,7 @@ export const submitStoreCodeProposalTx = ({
   wasmFileName,
   messages,
   amountToVote,
+  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: SubmitStoreCodeProposalTxParams): Observable<TxResultRendering> => {
@@ -130,7 +133,6 @@ export const submitStoreCodeProposalTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
       const mimicLog: logs.Log = {
         msg_index: 0,

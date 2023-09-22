@@ -1,7 +1,7 @@
 import type { MouseEventHandler } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 
 import {
@@ -14,16 +14,17 @@ import {
 
 export const WalletSection = () => {
   const { address, connect, openView, status } = useCurrentChain();
+  const { track } = useTrack();
 
   // Events
   const onClickConnect: MouseEventHandler = async (e) => {
-    AmpTrack(AmpEvent.USE_CLICK_WALLET);
+    track(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     await connect();
   };
 
   const onClickOpenView: MouseEventHandler = (e) => {
-    AmpTrack(AmpEvent.USE_CLICK_WALLET);
+    track(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     openView();
   };
