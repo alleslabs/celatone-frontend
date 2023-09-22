@@ -32,3 +32,5 @@ export * from "./number";
 export * from "./math";
 export * from "./abi";
 export * from "./modules";
+export * from "./sha256";
+export * from "./storage";

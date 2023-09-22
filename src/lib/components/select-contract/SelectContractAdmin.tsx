@@ -10,11 +10,11 @@ import {
   DrawerBody,
 } from "@chakra-ui/react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useContractListByAdmin } from "lib/services/contractService";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
@@ -31,6 +31,7 @@ export const SelectContractAdmin = ({
   notSelected,
   onContractSelect,
 }: SelectContractAdminProps) => {
+  const { track } = useTrack();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
@@ -63,7 +64,7 @@ export const SelectContractAdmin = ({
         px={4}
         size="sm"
         onClick={() => {
-          AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
+          track(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
         leftIcon={

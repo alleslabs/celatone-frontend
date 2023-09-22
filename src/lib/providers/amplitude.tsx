@@ -1,16 +1,11 @@
-import { useAmplitude, useCelatoneApp } from "lib/app-provider";
+import { useAmplitudeInit } from "lib/amplitude";
 
 export const AmplitudeProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const {
-    chainConfig: { registryChainName },
-  } = useCelatoneApp();
-
-  // TODO: revisit new structure later
-  useAmplitude(registryChainName);
+  useAmplitudeInit();
 
   return <>{children}</>;
 };

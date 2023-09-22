@@ -3,14 +3,14 @@ import { observer } from "mobx-react-lite";
 
 import type { UploadTxInternalResult } from "lib/app-provider";
 import { useInternalNavigate } from "lib/app-provider";
+import { ConnectingLine } from "lib/components/ConnectingLine";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { UploadSchema } from "lib/components/json-schema";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
-
-import { UploadSchema } from "./components/UploadSchema";
 
 interface UploadCompleteProps {
   txResult: UploadTxInternalResult;
@@ -72,13 +72,29 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <Text color="text.disabled" variant="body2" fontWeight={500} mb={4}>
         Your attached JSON schema will be stored locally on your device
       </Text>
-
-      <UploadSchema
-        attached={attached}
-        schema={schema}
-        codeId={txResult.codeId}
-        codeHash={txResult.codeHash}
-      />
+      <Flex direction="column" w="full" gap={10} position="relative">
+        <Flex
+          bgColor="gray.800"
+          borderRadius={4}
+          p={2}
+          gap={2}
+          w="full"
+          justifyContent="center"
+        >
+          <CustomIcon name="code" color="gray.400" />
+          Code ID: {txResult.codeId}
+        </Flex>
+        <ConnectingLine
+          isFilled={attached}
+          style={{ left: "calc(50% - 6px)", top: "36px" }}
+        />
+        <UploadSchema
+          attached={attached}
+          schema={schema}
+          codeId={txResult.codeId}
+          codeHash={txResult.codeHash}
+        />
+      </Flex>
 
       {!attached && (
         <Flex my={8} gap={4} alignItems="center" w="full">

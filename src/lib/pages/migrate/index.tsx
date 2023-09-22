@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { useTrack } from "lib/amplitude";
 import {
   useCurrentChain,
   useInternalNavigate,
@@ -13,7 +14,6 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { ContractAddr } from "lib/types";
@@ -36,6 +36,7 @@ const Migrate = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { data: uploadAccess, isFetching } = useUploadAccessParams();
+  const { trackToMigrate } = useTrack();
 
   const { address = "" } = useCurrentChain();
 
@@ -92,9 +93,8 @@ const Migrate = () => {
   }, [codeIdParam, contractAddressParam, setValue]);
 
   useEffect(() => {
-    if (router.isReady)
-      AmpTrackToMigrate(!!contractAddressParam, !!codeIdParam);
-  }, [router.isReady, codeIdParam, contractAddressParam]);
+    if (router.isReady) trackToMigrate(!!contractAddressParam, !!codeIdParam);
+  }, [router.isReady, codeIdParam, contractAddressParam, trackToMigrate]);
 
   const renderBody = () => {
     switch (migrateStep) {

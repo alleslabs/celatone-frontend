@@ -4,12 +4,12 @@ import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState, useRef, forwardRef } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { FilterChip } from "lib/components/filter/FilterChip";
 import { DropdownContainer } from "lib/components/filter/FilterComponents";
 import { FilterDropdownItem } from "lib/components/filter/FilterDropdownItem";
 import { FilterInput } from "lib/components/filter/FilterInput";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
-import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import { ProposalStatus } from "lib/types";
 
 export interface ProposalStatusFilterProps extends InputProps {
@@ -36,6 +36,7 @@ export const ProposalStatusFilter = forwardRef<
     }: ProposalStatusFilterProps,
     ref
   ) => {
+    const { trackUseFilter } = useTrack();
     const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -59,14 +60,10 @@ export const ProposalStatusFilter = forwardRef<
         setKeyword("");
       }
       if (result.includes(option)) {
-        AmpTrackUseFilter(
-          AmpEvent.USE_FILTER_PROPOSALS_STATUS,
-          result,
-          "remove"
-        );
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
         setResult((prevState) => prevState.filter((value) => value !== option));
       } else {
-        AmpTrackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
         setResult((prevState) => [...prevState, option]);
       }
     };

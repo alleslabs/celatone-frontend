@@ -31,7 +31,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       gov: {
-        enabled: true,
+        enabled: false,
       },
       nft: {
         enabled: false,
@@ -79,7 +79,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       gov: {
-        enabled: true,
+        enabled: false,
       },
       nft: {
         enabled: true,

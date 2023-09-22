@@ -1,10 +1,10 @@
 import { useToast } from "@chakra-ui/react";
 
 import { EditableCell } from "../EditableCell";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeLocalInfo } from "lib/stores/code";
 
 interface CodeNameCellProps {
@@ -16,12 +16,13 @@ export const CodeNameCell = ({
   code,
   isReadOnly = false,
 }: CodeNameCellProps) => {
+  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();
 
   const onSave = (inputValue?: string) => {
-    AmpTrack(AmpEvent.USE_QUICK_EDIT_CODE);
+    track(AmpEvent.USE_QUICK_EDIT_CODE);
     updateCodeInfo(code.id, code.uploader, inputValue);
     toast({
       title: "New Code Name Saved",

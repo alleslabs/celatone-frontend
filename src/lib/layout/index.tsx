@@ -19,7 +19,7 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
-  const { isExpand, isDevMode, setIsExpand, setIsDevMode } = useNavContext();
+  const { isExpand, setIsExpand } = useNavContext();
 
   const defaultRow = "70px 48px 1fr";
   const mode = useMemo(() => {
@@ -37,16 +37,9 @@ const Layout = ({ children }: LayoutProps) => {
       templateRows: defaultRow,
       templateCols: isExpand ? "250px 1fr" : "48px 1fr",
       header: <Header />,
-      subHeader: (
-        <SubHeader
-          isExpand={isExpand}
-          isDevMode={isDevMode}
-          setIsDevMode={setIsDevMode}
-          setIsExpand={setIsExpand}
-        />
-      ),
+      subHeader: <SubHeader />,
     };
-  }, [isMobile, isExpand, isDevMode, setIsDevMode, setIsExpand]);
+  }, [isExpand, isMobile]);
 
   useEffect(() => {
     scrollToTop();
@@ -81,11 +74,7 @@ const Layout = ({ children }: LayoutProps) => {
             area="nav"
             overflowY="auto"
           >
-            <Navbar
-              isExpand={isExpand}
-              setIsExpand={setIsExpand}
-              isDevMode={isDevMode}
-            />
+            <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
           </GridItem>
         </>
       )}

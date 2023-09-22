@@ -2,13 +2,13 @@ import { Text, Flex, Heading, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, HumanAddr, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
@@ -28,6 +28,7 @@ export const InstantiateOffChainForm = observer(
     contractAddress,
     contractLabel,
   }: InstantiateOffChainFormProps) => {
+    const { track } = useTrack();
     const { address = "" } = useCurrentChain();
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
@@ -65,7 +66,7 @@ export const InstantiateOffChainForm = observer(
 
     const saveContract = () => {
       handleSubmit((data) => {
-        AmpTrack(AmpEvent.CONTRACT_SAVE_AFTER_INIT);
+        track(AmpEvent.CONTRACT_SAVE_AFTER_INIT);
         updateContractLocalInfo(
           userKey,
           contractAddress,
