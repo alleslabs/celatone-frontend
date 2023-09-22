@@ -6,6 +6,7 @@ import type {
   ResponseModules,
   InternalModule,
   HexAddr,
+  SnakeToCamelCaseNested,
   ResponseABI,
   ExposedFunction,
   AbiFormData,
@@ -64,17 +65,29 @@ interface ModuleVerificationReturn {
   chain_id: string;
 }
 
+// TODO: Figure out how to correctly infer NominalType intersection
+export interface ModuleVerificationInternal
+  extends Omit<
+    SnakeToCamelCaseNested<ModuleVerificationReturn>,
+    "moduleAddress"
+  > {
+  moduleAddress: HexAddr;
+}
+
 export const getModuleVerificationStatus = async (
   address: MoveAccountAddr,
   moduleName: string
-): Promise<boolean> =>
+): Promise<ModuleVerificationInternal | null> =>
   // TODO: move url to base api route? wait for celatone api implementation?
   axios
     .get<ModuleVerificationReturn>(
       `https://stone-compiler.initia.tech/contracts/${address}/${moduleName}`
     )
-    .then(() => true)
-    .catch(() => false);
+    .then(({ data }) => ({
+      ...snakeToCamel(data),
+      moduleAddress: data.module_address,
+    }))
+    .catch(() => null);
 
 export const getFunctionView = async (
   baseEndpoint: string,

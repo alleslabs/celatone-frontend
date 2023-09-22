@@ -1,4 +1,4 @@
-import type { NominalType } from "./currency/common";
+import type { NominalType } from "./common";
 
 export type HumanAddr = string & NominalType<"HumanAddr">;
 export type HexAddr = string & NominalType<"HexAddr">;

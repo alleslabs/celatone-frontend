@@ -3,8 +3,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
-
-import { ModuleSourceCode } from "./ModuleSourceCode";
+import { ModuleSourceCode } from "lib/components/module";
 
 interface ModuleInfoProps {
   isVerified?: boolean;
@@ -76,7 +75,8 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
           />
         </LabelText>
       </Flex>
-      <ModuleSourceCode />
+      {/* TODO: Wireup */}
+      <ModuleSourceCode sourceCode="" />
     </Flex>
   );
 };

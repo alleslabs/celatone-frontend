@@ -21,6 +21,7 @@ import type {
   RpcQueryError,
   HumanAddr,
   UpgradePolicy,
+  HexAddr,
 } from "lib/types";
 import {
   bech32AddressToHex,
@@ -102,12 +103,15 @@ export const useVerifyModule = ({
   address,
   moduleName,
 }: {
-  address: MoveAccountAddr;
-  moduleName: string;
+  address: Option<MoveAccountAddr>;
+  moduleName: Option<string>;
 }) =>
   useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
-    () => getModuleVerificationStatus(address, moduleName),
+    () => {
+      if (!address || !moduleName) return null;
+      return getModuleVerificationStatus(address, moduleName);
+    },
     {
       enabled: Boolean(address && moduleName),
       retry: 0,
@@ -185,7 +189,7 @@ export const useDecodeModule = ({
 
     const currentPolicy = await getAccountModule(
       baseEndpoint,
-      abi.address,
+      abi.address as HexAddr,
       abi.name
     )
       .then((data) => data.upgradePolicy)
