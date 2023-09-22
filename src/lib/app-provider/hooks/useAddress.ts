@@ -54,7 +54,7 @@ const validateAddress = (
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   if (!bech32Prefix)
-    return "Can not retrieve bech32 prefix of the current network.";
+    return "Cannot retrieve bech32 prefix of the current network.";
 
   const prefix = getPrefix(bech32Prefix, addressType);
 

@@ -1,6 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 
 import { ModuleContainer } from "../common";
+import { ExecuteArea, ViewArea } from "../form";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
@@ -18,10 +19,20 @@ export const FunctionSelectBody = ({
   module,
   selectedFn,
   openDrawer,
-}: FunctionSelectBodyProps) => {
-  return selectedFn ? (
-    <Flex direction="column" maxW="full">
+}: FunctionSelectBodyProps) =>
+  selectedFn ? (
+    <Flex
+      key={selectedFn.name + selectedFn.is_view}
+      direction="column"
+      maxW="full"
+      gap={8}
+    >
       <SelectedFunctionCard fn={selectedFn} />
+      {selectedFn.is_view ? (
+        <ViewArea fn={selectedFn} />
+      ) : (
+        <ExecuteArea fn={selectedFn} />
+      )}
     </Flex>
   ) : (
     <ModuleContainer flexDirection="column">
@@ -56,4 +67,3 @@ export const FunctionSelectBody = ({
       )}
     </ModuleContainer>
   );
-};

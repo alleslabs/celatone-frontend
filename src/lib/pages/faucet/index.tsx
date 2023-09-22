@@ -174,7 +174,7 @@ const Faucet = () => {
           "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         placeholder="Enter your address"
         value={address}
         setInputState={setAddress}

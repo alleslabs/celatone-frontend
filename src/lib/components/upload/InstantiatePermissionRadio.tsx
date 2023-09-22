@@ -109,7 +109,7 @@ export const InstantiatePermissionRadio = ({
                       name={`addresses.${idx}.address`}
                       control={control}
                       label="Address"
-                      variant="floating"
+                      variant="fixed-floating"
                       error={
                         (addresses[idx]?.address &&
                           addresses.find(

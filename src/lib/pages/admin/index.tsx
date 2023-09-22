@@ -183,7 +183,7 @@ const UpdateAdmin = () => {
         onContractSelect={(contract) => onContractPathChange(contract)}
       />
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         label="New Admin Address"
         helperText="This address will be an admin for the deployed smart contract."
         value={adminAddress}
