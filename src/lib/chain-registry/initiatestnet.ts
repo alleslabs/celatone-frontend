@@ -17,9 +17,9 @@ export const initiatestnet: Chain = {
       {
         denom: "uinit",
         fixed_min_gas_price: 0,
-        low_gas_price: 0,
+        low_gas_price: 0.151,
         average_gas_price: 0.151,
-        high_gas_price: 0.25,
+        high_gas_price: 0.151,
       },
     ],
   },

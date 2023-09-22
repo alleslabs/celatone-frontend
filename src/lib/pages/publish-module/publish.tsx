@@ -167,13 +167,17 @@ export const PublishModule = ({
     }
   }, [fields]);
 
-  const PUBLISH_MODULE_TEXT = {
-    header: "Publish new module",
-    description: `Upload .mv files to publish new module to ${chainPrettyName}. You can
-    upload multiple .mv files to publish many modules within a
-    transaction.`,
-    connectWallet: "You need to connect wallet to proceed this action",
-  };
+  const publishModuleText = useMemo(
+    () => ({
+      header: "Publish new module",
+      description: `Upload .mv files to publish new module to ${chainPrettyName}. You can
+      upload multiple .mv files to publish many modules within a
+      transaction.`,
+      connectWallet: "You need to connect wallet to proceed this action",
+    }),
+    [chainPrettyName]
+  );
+
   return (
     <>
       <PageContainer display="unset" p={0}>
@@ -185,13 +189,13 @@ export const PublishModule = ({
         >
           <Box gridArea="1 / 2">
             <Heading as="h5" variant="h5" textAlign="center">
-              {PUBLISH_MODULE_TEXT.header}
+              {publishModuleText.header}
             </Heading>
             <Text color="text.dark" pt={4} textAlign="center">
-              {PUBLISH_MODULE_TEXT.description}
+              {publishModuleText.description}
             </Text>
             <ConnectWalletAlert
-              subtitle={PUBLISH_MODULE_TEXT.connectWallet}
+              subtitle={publishModuleText.connectWallet}
               mt={12}
             />
           </Box>
