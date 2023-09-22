@@ -6,7 +6,11 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useMoveConfig,
+} from "lib/app-provider";
 import type {
   MoveAccountAddr,
   ExposedFunction,
@@ -15,10 +19,19 @@ import type {
   Option,
   AbiFormData,
   RpcQueryError,
+  HumanAddr,
+  UpgradePolicy,
 } from "lib/types";
-import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils";
+import {
+  bech32AddressToHex,
+  parseJsonABI,
+  splitViewExecuteFunctions,
+  truncate,
+  unpadHexAddress,
+} from "lib/utils";
 
 import {
+  decodeModule,
   getAccountModule,
   getAccountModules,
   getFunctionView,
@@ -125,6 +138,7 @@ export const useFunctionView = ({
   return useQuery(
     [
       CELATONE_QUERY_KEYS.FUNCTION_VIEW,
+      baseEndpoint,
       moduleAddress,
       moduleName,
       fn.name,
@@ -138,5 +152,56 @@ export const useFunctionView = ({
       onSuccess,
       onError,
     }
+  );
+};
+export interface DecodeModuleQueryResponse {
+  abi: ResponseABI;
+  modulePath: string;
+  validPublisher: boolean;
+  currentPolicy: Option<UpgradePolicy>;
+}
+
+export const useDecodeModule = ({
+  base64EncodedFile,
+  address,
+  options,
+}: {
+  base64EncodedFile: string;
+  address: Option<HumanAddr>;
+  options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
+}) => {
+  const baseEndpoint = useBaseApiRoute("rest");
+  const move = useMoveConfig({ shouldRedirect: false });
+
+  const queryFn = async (): Promise<DecodeModuleQueryResponse> => {
+    if (!move.enabled) throw new Error("Move configuration is disabled.");
+    const abi = await decodeModule(move.decodeApi, base64EncodedFile);
+    const modulePath = `${truncate(abi.address)}::${abi.name}`;
+
+    const validPublisher = address
+      ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) ===
+        abi.address
+      : false;
+
+    const currentPolicy = await getAccountModule(
+      baseEndpoint,
+      abi.address,
+      abi.name
+    )
+      .then((data) => data.upgradePolicy)
+      .catch(() => undefined);
+    return { abi, modulePath, validPublisher, currentPolicy };
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_DECODE,
+      baseEndpoint,
+      move.enabled,
+      address,
+      base64EncodedFile,
+    ],
+    queryFn,
+    options
   );
 };

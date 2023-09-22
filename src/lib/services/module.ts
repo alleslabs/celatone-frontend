@@ -6,10 +6,16 @@ import type {
   ResponseModules,
   InternalModule,
   HexAddr,
-  AbiFormData,
+  ResponseABI,
   ExposedFunction,
+  AbiFormData,
 } from "lib/types";
-import { serializeAbiData, snakeToCamel } from "lib/utils";
+import {
+  libDecode,
+  parseJsonABI,
+  serializeAbiData,
+  snakeToCamel,
+} from "lib/utils";
 
 interface ModuleReturn {
   module: ResponseModule;
@@ -83,3 +89,16 @@ export const getFunctionView = async (
   );
   return data.data;
 };
+interface DecodeModuleReturn {
+  abi: string;
+}
+
+export const decodeModule = async (
+  decodeAPI: string,
+  moduleEncode: string
+): Promise<ResponseABI> =>
+  axios
+    .post<DecodeModuleReturn>(decodeAPI, {
+      code_bytes: moduleEncode,
+    })
+    .then(({ data }) => parseJsonABI(libDecode(data.abi)));

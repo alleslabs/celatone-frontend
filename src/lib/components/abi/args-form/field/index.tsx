@@ -65,7 +65,7 @@ export const ArgFieldTemplate = ({
             ? "fixed-floating"
             : "floating"
         }
-        size="md"
+        size={size}
         isInvalid={isError}
         isDisabled={isNull}
         {...fieldProps}

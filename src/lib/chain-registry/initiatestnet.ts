@@ -6,7 +6,7 @@ export const initiatestnet: Chain = {
   status: "live",
   network_type: "testnet",
   pretty_name: "Initia Testnet",
-  chain_id: "stone-9",
+  chain_id: "stone-10",
   bech32_prefix: "init",
   daemon_name: "initd",
   node_home: "$HOME/.init",
