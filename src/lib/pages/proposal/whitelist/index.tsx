@@ -289,7 +289,7 @@ const ProposalToWhitelist = () => {
                   placeholder="ex. Allow XYZ to store code without proposal"
                   label="Proposal Title"
                   labelBgColor="gray.900"
-                  variant="floating"
+                  variant="fixed-floating"
                   rules={{
                     required: "Proposal Title is required",
                     maxLength: constants.maxProposalTitleLength,
@@ -306,7 +306,7 @@ const ProposalToWhitelist = () => {
                   height="160px"
                   label="Proposal Description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
-                  variant="floating"
+                  variant="fixed-floating"
                   labelBgColor="gray.900"
                   rules={{
                     required: "Proposal Description is required",
@@ -327,7 +327,7 @@ const ProposalToWhitelist = () => {
                     name={`addresses.${idx}.address`}
                     control={control}
                     label="Address"
-                    variant="floating"
+                    variant="fixed-floating"
                     validation={{
                       duplicate: () =>
                         addresses.find(
@@ -390,7 +390,7 @@ const ProposalToWhitelist = () => {
                   control={control}
                   label="Amount"
                   placeholder="0.00"
-                  variant="floating"
+                  variant="fixed-floating"
                   type="number"
                   helperAction={
                     <Text

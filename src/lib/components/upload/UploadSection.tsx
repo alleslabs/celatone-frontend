@@ -238,7 +238,7 @@ export const UploadSection = ({
         error={
           errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
-        variant="floating"
+        variant="fixed-floating"
       />
       <InstantiatePermissionRadio
         control={control}

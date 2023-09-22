@@ -181,7 +181,7 @@ export function SaveNewContractModal({
           name="contractAddress"
           control={control}
           label="Contract Address"
-          variant="floating"
+          variant="fixed-floating"
           placeholder={`ex. ${exampleContractAddress}`}
           status={status}
           labelBgColor="gray.900"
@@ -190,7 +190,7 @@ export function SaveNewContractModal({
           name="instantiator"
           control={control}
           label="Instantiated by"
-          variant="floating"
+          variant="fixed-floating"
           isDisabled
           labelBgColor="gray.900"
         />

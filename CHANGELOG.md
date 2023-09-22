@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#536](https://github.com/alleslabs/celatone-frontend/pull/536) Add publish module validation and decode query
+- [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Add initia abi form
 - [#530](https://github.com/alleslabs/celatone-frontend/pull/530) Publish module component state wireup and add leaflet
 - [#521](https://github.com/alleslabs/celatone-frontend/pull/521) Initia module interaction function panel and selected function info accordion
 - [#515](https://github.com/alleslabs/celatone-frontend/pull/515) Initia select module drawer wireup

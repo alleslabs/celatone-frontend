@@ -117,7 +117,7 @@ export const CodeDetailsTemplateModal = ({
       }
     >
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         value={name}
         setInputState={setName}
         size="lg"

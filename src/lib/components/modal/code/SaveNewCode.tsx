@@ -191,7 +191,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
-          variant="floating"
+          variant="fixed-floating"
           value={codeId}
           onInputChange={setCodeId}
           label="Code ID"
@@ -200,7 +200,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           placeholder="ex. 1234"
         />
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={uploader}
           label="Uploader"
           labelBgColor="gray.900"
@@ -210,7 +210,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           isDisabled
         />
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={name}
           setInputState={setName}
           label="Code Name"
