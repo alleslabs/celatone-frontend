@@ -1,3 +1,4 @@
+import { Flex, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import type { FormState } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -11,7 +12,6 @@ interface ArgsFormProps {
   initialData: AbiFormData["args"];
   propsOnChange?: (data: AbiFormData["args"]) => void;
   propsOnErrors?: (errors: [string, string][]) => void;
-  isReadOnly?: boolean;
 }
 
 const formatErrors = (
@@ -27,7 +27,6 @@ export const ArgsForm = ({
   initialData,
   propsOnChange,
   propsOnErrors,
-  isReadOnly = false,
 }: ArgsFormProps) => {
   const {
     trigger,
@@ -50,7 +49,10 @@ export const ArgsForm = ({
   );
 
   return (
-    <>
+    <Flex direction="column" gap={4}>
+      <Heading variant="h6" as="h6" color="text.main">
+        args
+      </Heading>
       {params.map((param, index) => {
         control.register(`${index}`, {
           onChange: () => propsOnChange?.(getValues()),
@@ -62,10 +64,9 @@ export const ArgsForm = ({
             param={param}
             control={control}
             error={errors[`${index}`]?.message}
-            isReadOnly={isReadOnly}
           />
         );
       })}
-    </>
+    </Flex>
   );
 };

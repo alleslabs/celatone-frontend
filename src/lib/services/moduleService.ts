@@ -117,14 +117,14 @@ export const useVerifyModule = ({
   );
 
 export const useFunctionView = ({
-  address,
+  moduleAddress,
   moduleName,
   fn,
   abiData,
   onSuccess,
   onError,
 }: {
-  address: MoveAccountAddr;
+  moduleAddress: MoveAccountAddr;
   moduleName: string;
   fn: ExposedFunction;
   abiData: AbiFormData;
@@ -134,12 +134,12 @@ export const useFunctionView = ({
   // TODO: handle POST in celatone API
   const baseEndpoint = "https://stone-rest.initia.tech";
   const queryFn: QueryFunction<string> = () =>
-    getFunctionView(baseEndpoint, address, moduleName, fn, abiData);
+    getFunctionView(baseEndpoint, moduleAddress, moduleName, fn, abiData);
   return useQuery(
     [
       CELATONE_QUERY_KEYS.FUNCTION_VIEW,
       baseEndpoint,
-      address,
+      moduleAddress,
       moduleName,
       fn.name,
       JSON.stringify(abiData),

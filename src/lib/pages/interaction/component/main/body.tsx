@@ -30,12 +30,16 @@ export const FunctionSelectBody = ({
       <SelectedFunctionCard fn={selectedFn} />
       {selectedFn.is_view ? (
         <ViewArea
-          address={module.address.toString() as HexAddr}
+          moduleAddress={module.address.toString() as HexAddr}
           moduleName={module.moduleName}
           fn={selectedFn}
         />
       ) : (
-        <ExecuteArea fn={selectedFn} />
+        <ExecuteArea
+          moduleAddress={module.address.toString() as HexAddr}
+          moduleName={module.moduleName}
+          fn={selectedFn}
+        />
       )}
     </Flex>
   ) : (

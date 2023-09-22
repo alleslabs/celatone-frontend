@@ -8,7 +8,7 @@ import type {
 } from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
-  fn.visibility === "public" && (fn.is_view || fn.is_entry);
+  fn.is_view || fn.is_entry;
 
 export const parseJsonABI = (jsonString: string): ResponseABI => {
   try {
@@ -19,7 +19,8 @@ export const parseJsonABI = (jsonString: string): ResponseABI => {
 };
 
 const sortByAvailability = (a: ExposedFunction, b: ExposedFunction) => {
-  if (checkAvailability(a) === checkAvailability(b)) return 0;
+  if (checkAvailability(a) === checkAvailability(b))
+    return a.name < b.name ? -1 : 1;
   return checkAvailability(a) ? -1 : 1;
 };
 
@@ -29,11 +30,11 @@ export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
     execute: ExposedFunction[];
   }>(
     (acc, fn) => {
-      if (fn.is_view) {
-        acc.view.push(fn);
-      } else {
-        acc.execute.push(fn);
-      }
+      if (fn.is_view) acc.view.push(fn);
+      // Filtering out execute fns with
+      // is_entry === false and visibility === private
+      // as these fns are this module's internal fns
+      else if (fn.is_entry || fn.visibility !== "private") acc.execute.push(fn);
       return acc;
     },
     {

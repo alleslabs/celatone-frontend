@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#534](https://github.com/alleslabs/celatone-frontend/pull/534) Wire up initia execute function
 - [#533](https://github.com/alleslabs/celatone-frontend/pull/533) Wire up initia view function
 - [#536](https://github.com/alleslabs/celatone-frontend/pull/536) Add publish module validation and decode query
 - [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Add initia abi form

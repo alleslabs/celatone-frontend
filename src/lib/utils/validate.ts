@@ -1,5 +1,9 @@
 import { fromHex } from "@cosmjs/encoding";
 
+import type { HexAddr } from "lib/types";
+
+import { padHexAddress } from "./address";
+
 export const isCodeId = (input: string): boolean => {
   const numberValue = Number(input);
   return input.length <= 7 && Number.isInteger(numberValue) && numberValue > 0;
@@ -20,12 +24,11 @@ export const isBlock = (input: string): boolean => {
 };
 
 export const isHexAddress = (address: string): boolean => {
-  if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
+  if (!/^0x[a-fA-F0-9]{1,40}$/.test(address)) {
     return false;
   }
 
-  const strip = address.slice(2);
-
+  const strip = padHexAddress(address as HexAddr).slice(2);
   try {
     fromHex(strip);
   } catch {
