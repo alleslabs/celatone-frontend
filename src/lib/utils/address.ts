@@ -29,7 +29,7 @@ export const hexToBech32Address = (
   return toBech32(prefix, fromHex(strip)) as HumanAddr;
 };
 
-export const unpadHexAddress = (hexAddr: HexAddr) => {
+export const unpadHexAddress = (hexAddr: HexAddr): HexAddr => {
   const hex = hexAddr.startsWith("0x") ? hexAddr.slice(2) : hexAddr;
-  return "0x".concat(hex.replace(/^0+/, ""));
+  return "0x".concat(hex.replace(/^0+/, "")) as HexAddr;
 };
