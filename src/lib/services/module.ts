@@ -6,7 +6,6 @@ import type {
   ResponseModules,
   InternalModule,
   HexAddr,
-  Option,
   SnakeToCamelCaseNested,
 } from "lib/types";
 import { snakeToCamel } from "lib/utils";
@@ -70,7 +69,7 @@ export interface ModuleVerificationInternal
 export const getModuleVerificationStatus = async (
   address: MoveAccountAddr,
   moduleName: string
-): Promise<Option<ModuleVerificationInternal>> =>
+): Promise<ModuleVerificationInternal | null> =>
   // TODO: move url to base api route? wait for celatone api implementation?
   axios
     .get<ModuleVerificationReturn>(
@@ -80,4 +79,4 @@ export const getModuleVerificationStatus = async (
       ...snakeToCamel(data),
       moduleAddress: data.module_address,
     }))
-    .catch(() => undefined);
+    .catch(() => null);
