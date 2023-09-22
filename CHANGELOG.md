@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#530](https://github.com/alleslabs/celatone-frontend/pull/530) Publish module component state wireup and add leaflet
 - [#521](https://github.com/alleslabs/celatone-frontend/pull/521) Initia module interaction function panel and selected function info accordion
 - [#515](https://github.com/alleslabs/celatone-frontend/pull/515) Initia select module drawer wireup
 - [#494](https://github.com/alleslabs/celatone-frontend/pull/494) Initia select module drawer UI
@@ -101,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#543](https://github.com/alleslabs/celatone-frontend/pull/543) Fix Initia testnet chain config
 - [#522](https://github.com/alleslabs/celatone-frontend/pull/522) Fix to support undefined execute msg
 - [#520](https://github.com/alleslabs/celatone-frontend/pull/520) Fix update instantiated info height data and handle genesis height case
 - [#518](https://github.com/alleslabs/celatone-frontend/pull/518) Fix contract migration remark data

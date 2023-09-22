@@ -17,7 +17,9 @@ type WasmConfig =
       enabled: false;
     };
 
-type MoveConfig = { enabled: boolean };
+type MoveConfig =
+  | { enabled: true; moduleMaxFileSize: number }
+  | { enabled: false };
 
 type PoolConfig =
   | {

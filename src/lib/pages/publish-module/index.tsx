@@ -1,62 +1,63 @@
-import {
-  Text,
-  Grid,
-  GridItem,
-  Heading,
-  Box,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
-  Flex,
-  Button,
-} from "@chakra-ui/react";
+import { Text, Grid, Heading, Flex, Button, Box } from "@chakra-ui/react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useMoveConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
+import PageContainer from "lib/components/PageContainer";
+import type { Option } from "lib/types";
+import { UpgradePolicy } from "lib/types";
 
-import { Footer } from "./components/Footer";
-import { PolicyCard } from "./components/PolicyCard";
-import { UploadModuleCard } from "./components/UploadModuleCard";
+import {
+  PolicyAccordion,
+  UploadAccordion,
+  Footer,
+  PolicyCard,
+  UploadModuleCard,
+} from "./components";
 
 interface Module {
-  file: string;
+  file: Option<File>;
   path: string;
 }
+
 interface PublishModuleState {
-  modules: { module: Module }[];
+  modules: Module[];
+  upgradePolicy: UpgradePolicy;
 }
+
+const emptyModule: Module = { file: undefined, path: "" };
 
 const policies = [
   {
-    value: "arbitrary",
+    value: UpgradePolicy.ARBITRARY,
     description: "You can publish these modules again without any restrictions",
     condition: false,
   },
   {
-    value: "compatible",
+    value: UpgradePolicy.COMPATIBLE,
     description:
       "This address can publish these modules again but need to maintain several properties.",
     condition: true,
   },
   {
-    value: "immutable",
+    value: UpgradePolicy.IMMUTABLE,
     description: "You cannot publish these modules again with this address",
     condition: false,
   },
 ];
 
 const defaultValues: PublishModuleState = {
-  modules: [{ module: { file: "", path: "" } }],
+  modules: [emptyModule],
+  upgradePolicy: UpgradePolicy.ARBITRARY,
 };
 
 export const PublishModule = () => {
   const {
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
+  useMoveConfig({ shouldRedirect: true });
 
   const PUBLISH_MODULE_TEXT = {
     header: "Publish new module",
@@ -66,53 +67,62 @@ export const PublishModule = () => {
     connectWallet: "You need to connect wallet to proceed this action",
   };
 
-  const { control } = useForm<PublishModuleState>({
+  const { control, setValue, watch } = useForm<PublishModuleState>({
     defaultValues,
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { upgradePolicy } = watch();
+
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: "modules",
   });
 
-  // TODO: revisit sticky and grid
   return (
     <>
-      <Box as="main" p={{ base: "16px", md: "48px" }} minH="inherit">
+      <PageContainer display="unset" p={0}>
         <Grid
-          templateAreas={`"prespace main postspace"`}
-          templateColumns="1fr 5fr 4fr"
+          templateColumns="1fr 6fr 4fr 1fr"
+          columnGap="16px"
+          rowGap="48px"
+          p={{ base: "16px", md: "48px" }}
         >
-          <GridItem area="main">
-            <Heading as="h5" variant="h5">
+          <Box gridArea="1 / 2">
+            <Heading as="h5" variant="h5" textAlign="center">
               {PUBLISH_MODULE_TEXT.header}
             </Heading>
-            <Text color="text.dark" pt={4}>
+            <Text color="text.dark" pt={4} textAlign="center">
               {PUBLISH_MODULE_TEXT.description}
             </Text>
             <ConnectWalletAlert
               subtitle={PUBLISH_MODULE_TEXT.connectWallet}
               mt={12}
             />
-          </GridItem>
-        </Grid>
-        <Flex position="relative" mt={12}>
-          <Box w="10%" />
-          <Box w="50%">
+          </Box>
+          {/* Upload File Section */}
+          <Box gridArea="2 / 2">
             <Heading as="h6" variant="h6" fontWeight={600}>
-              Upload .mv files(s)
+              Upload .mv file(s)
             </Heading>
             <Flex gap={6} flexDirection="column" my={6}>
               {fields.map((field, idx) => (
                 <UploadModuleCard
+                  key={field.id}
                   index={idx}
                   fieldAmount={fields.length}
-                  remove={() => remove(idx)}
+                  file={field.file}
+                  setFile={(file: File, modulePath: string) => {
+                    update(idx, { file, path: modulePath });
+                  }}
+                  removeFile={() => {
+                    update(idx, emptyModule);
+                  }}
+                  removeEntry={() => remove(idx)}
                 />
               ))}
             </Flex>
             <Button
-              onClick={() => append({ module: { file: "", path: "" } })}
+              onClick={() => append(emptyModule)}
               leftIcon={<CustomIcon name="add-new" />}
               variant="ghost-primary"
               p="0 4px"
@@ -120,61 +130,22 @@ export const PublishModule = () => {
               Publish More Modules
             </Button>
           </Box>
-          <Box w="30%" position="relative" pl={12}>
-            <Box position="sticky" top={0}>
-              <Accordion
-                position="relative"
-                allowToggle
-                width={96}
-                defaultIndex={[0]}
-                variant="transparent"
-              >
-                <AccordionItem borderTop="none" borderColor="gray.700">
-                  <AccordionButton py={3} px={0}>
-                    <Text
-                      variant="body2"
-                      fontWeight={700}
-                      color="text.main"
-                      textAlign="start"
-                    >
-                      What should I provide in my .mv files?
-                    </Text>
-                    <AccordionIcon color="gray.600" ml="auto" />
-                  </AccordionButton>
-                  <AccordionPanel
-                    bg="transparent"
-                    py={3}
-                    px={0}
-                    borderTop="1px solid"
-                    borderColor="gray.700"
-                  >
-                    <Text variant="body2" color="text.dark" p={1}>
-                      Your .mv files should consist of module name, available
-                      functions and their properties, module mechanics, friends.
-                    </Text>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            </Box>
-          </Box>
-          <Box w="10%" />
-        </Flex>
-        {/* Upgrade Policy */}
-        <Flex position="relative" mt={12}>
-          <Box w="10%" />
-          <Box w="50%">
+          {/* Upgrade Policy Section */}
+          <Box gridArea="3 / 2">
             <Heading as="h6" variant="h6" fontWeight={600}>
               Upgrade Policy
             </Heading>
             <Text color="text.dark" variant="body2" mt={2}>
               Specify how publishing modules will be able to republish.
             </Text>
-            <Flex flexDirection="column" gap={2} my={4}>
+            <Flex direction="column" gap={2} my={4}>
               {policies.map((item) => (
                 <PolicyCard
+                  key={item.value}
                   value={item.value}
+                  selected={upgradePolicy}
+                  onSelect={() => setValue("upgradePolicy", item.value)}
                   description={item.description}
-                  isLoading={false}
                   hasCondition={item.condition}
                 />
               ))}
@@ -192,89 +163,17 @@ export const PublishModule = () => {
               gap={1}
             >
               <p>Transaction Fee:</p>
-              {/* <EstimatedFeeRender
-              estimatedFee={estimatedFee}
-              loading={isSimulating}
-            /> */}
+              <EstimatedFeeRender estimatedFee={undefined} loading={false} />
             </Flex>
           </Box>
-          <Box w="30%" position="relative" pl={12}>
-            <Box position="sticky" top={0}>
-              <Accordion
-                position="relative"
-                allowToggle
-                width={96}
-                defaultIndex={[0]}
-                variant="transparent"
-              >
-                <AccordionItem borderTop="none" borderColor="gray.700">
-                  <AccordionButton py={3} px={0}>
-                    <Text
-                      variant="body2"
-                      fontWeight={700}
-                      color="text.main"
-                      textAlign="start"
-                    >
-                      What is republishing module?
-                    </Text>
-                    <AccordionIcon color="gray.600" ml="auto" />
-                  </AccordionButton>
-                  <AccordionPanel
-                    bg="transparent"
-                    py={3}
-                    px={0}
-                    borderTop="1px solid"
-                    borderColor="gray.700"
-                  >
-                    <Text variant="body2" color="text.dark" p={1}>
-                      In {chainPrettyName}, You can republish the module which
-                      serve the purpose to migrate or upgrade the published
-                      module by uploading new .mv file with similar
-                      configurations. Each policy will provide different
-                      flexibility for further upgrades whether you can add new
-                      functions without maintaining old functions (Arbitrary),
-                      or required to maintain old functions (Compatible).
-                      Choosing “Immutable” will not allow you to make any
-                      changes with this module ever. You should read more about
-                    </Text>
-                    <Flex
-                      align="center"
-                      cursor="pointer"
-                      borderRadius={4}
-                      p={1}
-                      gap={1}
-                      alignItems="center"
-                      width="fit-content"
-                      transition="all 0.25s ease-in-out"
-                      color="secondary.main"
-                      _hover={{
-                        color: "secondary.light",
-                        bgColor: "secondary.background",
-                      }}
-                      // onClick={onClick}
-                    >
-                      <Text
-                        variant="body3"
-                        color="secondary.main"
-                        fontWeight={700}
-                      >
-                        See Initia Doc
-                      </Text>
-                      <CustomIcon
-                        name="chevron-right"
-                        color="secondary.main"
-                        boxSize={3}
-                        m={0}
-                      />
-                    </Flex>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            </Box>
+          <Box gridArea="2 / 3" pl="32px">
+            <UploadAccordion />
           </Box>
-          <Box w="10%" />
-        </Flex>
-      </Box>
+          <Box gridArea="3 / 3" pl="32px">
+            <PolicyAccordion chainName={chainPrettyName} />
+          </Box>
+        </Grid>
+      </PageContainer>
       <Footer isLoading={false} fieldAmount={fields.length} />
     </>
   );
