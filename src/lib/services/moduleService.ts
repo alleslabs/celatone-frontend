@@ -85,12 +85,15 @@ export const useVerifyModule = ({
   address,
   moduleName,
 }: {
-  address: MoveAccountAddr;
-  moduleName: string;
+  address: Option<MoveAccountAddr>;
+  moduleName: Option<string>;
 }) =>
   useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
-    () => getModuleVerificationStatus(address, moduleName),
+    () => {
+      if (!address || !moduleName) return undefined;
+      return getModuleVerificationStatus(address, moduleName);
+    },
     {
       enabled: Boolean(address && moduleName),
       retry: 0,
