@@ -10,6 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
@@ -23,12 +24,12 @@ import { ContractListDetail } from "lib/components/select-contract";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const ContractsByList = observer(() => {
   useWasmConfig({ shouldRedirect: true });
+  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -63,16 +64,16 @@ const ContractsByList = observer(() => {
     if (router.isReady) {
       switch (listSlug) {
         case formatSlugName(INSTANTIATED_LIST_NAME):
-          AmpTrack(AmpEvent.TO_LIST_BY_ME);
+          track(AmpEvent.TO_INSTANTIATED_BY_ME);
           break;
         case formatSlugName(SAVED_LIST_NAME):
-          AmpTrack(AmpEvent.TO_LIST_SAVED);
+          track(AmpEvent.TO_SAVED_CONTRACT);
           break;
         default:
-          AmpTrack(AmpEvent.TO_LIST_OTHERS);
+          track(AmpEvent.TO_LIST_OTHERS);
       }
     }
-  }, [router.isReady, listSlug]);
+  }, [router.isReady, listSlug, track]);
 
   if (!contractListInfo) return null;
 

@@ -5,13 +5,13 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { MySavedCodesSection } from "./components/MySavedCodesSection";
 import { SaveCodeButton } from "./components/SaveCodeButton";
@@ -22,6 +22,7 @@ interface CodeFilterState {
 }
 
 const SavedCodes = observer(() => {
+  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -47,8 +48,8 @@ const SavedCodes = observer(() => {
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_MY_SAVED_CODES);
+  }, [router.isReady, track]);
 
   return (
     <PageContainer>

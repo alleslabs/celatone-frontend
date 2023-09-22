@@ -1,10 +1,10 @@
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps, SubmenuInfo } from "./type";
 
@@ -59,6 +59,7 @@ export const CollapseNavMenu = ({
   setIsExpand,
 }: NavMenuProps) => {
   const isMobile = useMobile();
+  const { track } = useTrack();
 
   return (
     <Box overflowY="auto" overflowX="hidden">
@@ -105,7 +106,7 @@ export const CollapseNavMenu = ({
               <AppLink
                 href={submenu.slug}
                 key={submenu.slug}
-                onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+                onClick={() => track(AmpEvent.USE_SIDEBAR)}
               >
                 <CollapseNavInfo
                   submenu={submenu}
@@ -114,6 +115,31 @@ export const CollapseNavMenu = ({
               </AppLink>
             )
           )}
+          {item.subSection &&
+            item.subSection.map((section) => (
+              <div key={section.category}>
+                {section.submenu.map((subitem) =>
+                  subitem.isDisable ? (
+                    <CollapseNavInfo
+                      key={subitem.slug}
+                      submenu={subitem}
+                      isCurrentPage={isCurrentPage}
+                    />
+                  ) : (
+                    <AppLink
+                      href={subitem.slug}
+                      key={subitem.slug}
+                      onClick={() => track(AmpEvent.USE_SIDEBAR)}
+                    >
+                      <CollapseNavInfo
+                        submenu={subitem}
+                        isCurrentPage={isCurrentPage}
+                      />
+                    </AppLink>
+                  )
+                )}
+              </div>
+            ))}
         </Box>
       ))}
     </Box>

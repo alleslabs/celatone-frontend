@@ -2,9 +2,12 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
+import { useTrack } from "lib/amplitude";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import type { Activity } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
+
+import { useCatchTxError } from "./catchTxError";
 
 export interface ExecuteStreamParams {
   onTxSucceed?: (activity: Activity) => void;
@@ -17,6 +20,8 @@ export interface ExecuteStreamParams {
 
 export const useExecuteContractTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -39,10 +44,14 @@ export const useExecuteContractTx = () => {
         msg,
         funds,
         client,
-        onTxSucceed,
+        catchTxError,
+        onTxSucceed: (activity) => {
+          trackTxSucceed();
+          onTxSucceed?.(activity);
+        },
         onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
   );
 };

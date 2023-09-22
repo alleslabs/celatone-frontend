@@ -2,7 +2,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpTrackInvalidState } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 
 import { StateImage } from "./StateImage";
 
@@ -12,9 +12,11 @@ interface InvalidStateProps {
 
 export const InvalidState = ({ title }: InvalidStateProps) => {
   const router = useRouter();
+  const { trackInvalidState } = useTrack();
+
   useEffect(() => {
-    if (router.isReady) AmpTrackInvalidState(title);
-  }, [router.isReady, title]);
+    if (router.isReady) trackInvalidState(title);
+  }, [router.isReady, title, trackInvalidState]);
 
   return (
     <Flex

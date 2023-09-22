@@ -2,6 +2,7 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
@@ -9,7 +10,6 @@ import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useGetMaxLengthError, useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
 
@@ -23,11 +23,13 @@ export function EditListNameModal({
   menuItemProps,
   reroute = false,
 }: EditListNameModalProps) {
+  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const userKey = useUserKey();
   const { renameList, isContractListExist } = useContractStore();
   const navigate = useInternalNavigate();
+  const toast = useToast();
 
   const [listName, setListName] = useState<string>(list.label);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
@@ -57,9 +59,8 @@ export function EditListNameModal({
     userKey,
   ]);
 
-  const toast = useToast();
   const handleSave = () => {
-    AmpTrack(AmpEvent.LIST_EDIT);
+    track(AmpEvent.LIST_EDIT);
     // TODO: check list name and different toast status
     renameList(userKey, list.value, listName);
     toast({

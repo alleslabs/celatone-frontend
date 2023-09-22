@@ -4,11 +4,11 @@ import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import { extractMsgType, formatBalanceWithDenom, voteOption } from "lib/utils";
@@ -29,6 +29,7 @@ export const TxMsgExpand = ({
   onClick,
 }: TxMsgExpandProps) => {
   const getAddressType = useGetAddressType();
+  const { track } = useTrack();
   const { "@type": type, ...body } = msgBody;
   const isMobile = useMobile();
   const isIBC =
@@ -36,6 +37,7 @@ export const TxMsgExpand = ({
     type.startsWith("/ibc");
   let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
+
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":
       msgIcon = "upload";
@@ -299,7 +301,7 @@ export const TxMsgExpand = ({
       transition="all .25s ease-in-out"
       cursor="pointer"
       onClick={() => {
-        AmpTrack(AmpEvent.USE_TX_MSG_EXPAND, {
+        track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
           msg: type,
           ibc: isIBC,

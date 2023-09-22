@@ -2,9 +2,9 @@ import { useToast, Text, chakra, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
@@ -33,10 +33,11 @@ export function RemoveCodeModal({
   ),
 }: RemoveCodeModalProps) {
   const { removeSavedCode } = useCodeStore();
+  const { track } = useTrack();
   const toast = useToast();
 
   const handleRemove = useCallback(() => {
-    AmpTrack(AmpEvent.CODE_REMOVE);
+    track(AmpEvent.CODE_REMOVE);
 
     removeSavedCode(codeId);
 
@@ -50,7 +51,7 @@ export function RemoveCodeModal({
       position: "bottom-right",
       icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
-  }, [codeId, name, removeSavedCode, toast]);
+  }, [codeId, name, removeSavedCode, toast, track]);
 
   return (
     <ActionModal

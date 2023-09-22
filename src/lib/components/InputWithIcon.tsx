@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpEvent, useTrack } from "lib/amplitude";
 
 import { CustomIcon } from "./icon";
 
@@ -33,33 +33,40 @@ const InputWithIcon = ({
   iconPosition = "end",
   autoFocus = false,
   onChange,
-}: InputWithIconProps) => (
-  <InputGroup my={my}>
-    <Input
-      placeholder={placeholder}
-      value={value}
-      size={size}
-      p={`8px ${iconPosition === "end" ? "40px" : "12px"} 8px ${
-        iconPosition === "start" ? "40px" : "12px"
-      } !important`}
-      onChange={onChange}
-      autoFocus={autoFocus}
-      onClick={action ? () => AmpTrack(AmpEvent.USE_SEARCH_INPUT) : undefined}
-    />
-    {iconPosition === "end" ? (
-      <InputRightElement
-        h={size === "lg" ? "56px" : "full"}
-        alignItems="center"
-        mr={1}
-      >
-        <SearchIcon />
-      </InputRightElement>
-    ) : (
-      <InputLeftElement h={size === "lg" ? "56px" : "full"} alignItems="center">
-        <SearchIcon />
-      </InputLeftElement>
-    )}
-  </InputGroup>
-);
+}: InputWithIconProps) => {
+  const { track } = useTrack();
+
+  return (
+    <InputGroup my={my}>
+      <Input
+        placeholder={placeholder}
+        value={value}
+        size={size}
+        p={`8px ${iconPosition === "end" ? "40px" : "12px"} 8px ${
+          iconPosition === "start" ? "40px" : "12px"
+        } !important`}
+        onChange={onChange}
+        autoFocus={autoFocus}
+        onClick={action ? () => track(AmpEvent.USE_SEARCH_INPUT) : undefined}
+      />
+      {iconPosition === "end" ? (
+        <InputRightElement
+          h={size === "lg" ? "56px" : "full"}
+          alignItems="center"
+          mr={1}
+        >
+          <SearchIcon />
+        </InputRightElement>
+      ) : (
+        <InputLeftElement
+          h={size === "lg" ? "56px" : "full"}
+          alignItems="center"
+        >
+          <SearchIcon />
+        </InputLeftElement>
+      )}
+    </InputGroup>
+  );
+};
 
 export default InputWithIcon;

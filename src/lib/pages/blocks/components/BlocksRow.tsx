@@ -26,7 +26,11 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
       </TableRow>
       <TableRow>{truncate(blockData.hash.toUpperCase())}</TableRow>
       <TableRow>
-        <ValidatorBadge validator={blockData.proposer} badgeSize={7} />
+        <ValidatorBadge
+          validator={blockData.proposer}
+          badgeSize={7}
+          maxWidth="220px"
+        />
       </TableRow>
       <TableRow
         justifyContent="center"

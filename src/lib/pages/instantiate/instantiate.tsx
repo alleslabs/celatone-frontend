@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useFabricateFee,
   useInstantiateTx,
@@ -40,12 +41,6 @@ import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackAction,
-  AmpTrackToInstantiate,
-} from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, HumanAddr } from "lib/types";
@@ -92,6 +87,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
+  const { track, trackActionWithFunds, trackToInstantiate } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -242,7 +238,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   );
 
   const proceed = useCallback(async () => {
-    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+    trackActionWithFunds(
+      AmpEvent.ACTION_INSTANTIATE,
+      funds.length,
+      attachFundsOption,
+      tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
+    );
     const stream = await postInstantiateTx({
       codeId: Number(codeId),
       initMsg: JSON.parse(currentInput),
@@ -263,8 +264,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [
     funds,
+    tab,
     attachFundsOption,
     postInstantiateTx,
+    trackActionWithFunds,
     codeId,
     currentInput,
     label,
@@ -366,8 +369,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   }, [jsonSchema, setValue]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
-  }, [router.isReady, msgQuery, codeIdQuery]);
+    if (router.isReady) trackToInstantiate(!!msgQuery, !!codeIdQuery);
+  }, [router.isReady, msgQuery, codeIdQuery, trackToInstantiate]);
 
   return (
     <>
@@ -398,6 +401,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           codeId={codeId}
         />
         <form style={{ width: "100%" }}>
+          <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+            Label
+          </Heading>
           <ControllerInput
             name="label"
             control={control}
@@ -406,9 +412,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
             variant="floating"
-            mb={8}
+            mb={12}
             rules={{ required: "Label is required" }}
           />
+          <Heading variant="h6" as="h6" my={6} alignSelf="flex-start">
+            Admin Address
+          </Heading>
           <ControllerInput
             name="adminAddress"
             control={control}
@@ -420,15 +429,15 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             helperAction={
               <AssignMe
                 onClick={() => {
-                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                  track(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address);
                 }}
                 isDisable={adminAddress === address}
               />
             }
           />
-          <Flex align="center" justify="space-between">
-            <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+          <Flex align="center" justify="space-between" mt={12} mb={4}>
+            <Heading variant="h6" as="h6" alignSelf="flex-start">
               Instantiate Message
             </Heading>
             <MessageInputSwitch
@@ -460,7 +469,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               />
             }
           />
-          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+          <Heading variant="h6" as="h6" mt={12} mb={6} alignSelf="flex-start">
             Send asset to contract
           </Heading>
           <AttachFund

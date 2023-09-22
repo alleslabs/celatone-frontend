@@ -2,6 +2,7 @@ import { Flex, Grid, Text, Button } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
 
+import { useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -10,7 +11,6 @@ import { TableTitle, ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
 import { useOpenAssetTab } from "lib/hooks";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
-import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
 import { calTotalValue, formatPrice } from "lib/utils";
 
@@ -70,6 +70,7 @@ const AssetTitle = ({
 const AssetCta = ({ walletAddress, totalAsset }: AssetCtaProps) => {
   const { unsupportedAssets } = useUserAssetInfos(walletAddress);
   const openAssetTab = useOpenAssetTab();
+  const { trackUseViewJSON } = useTrack();
 
   return (
     <Flex
@@ -83,7 +84,7 @@ const AssetCta = ({ walletAddress, totalAsset }: AssetCtaProps) => {
           size="sm"
           rightIcon={<CustomIcon name="launch" boxSize={3} color="text.dark" />}
           onClick={() => {
-            AmpTrackViewJson("account_details_page_assets");
+            trackUseViewJSON("account_details_page_assets");
             openAssetTab(walletAddress);
           }}
         >

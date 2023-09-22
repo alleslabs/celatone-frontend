@@ -1,6 +1,7 @@
 import { useDisclosure } from "@chakra-ui/react";
 
-import { AttachSchemaCard, JsonSchemaDrawer } from "lib/components/json-schema";
+import { AttachSchemaCard } from "../AttachSchemaCard";
+import { JsonSchemaModal } from "../JsonSchemaModal";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
 
@@ -25,11 +26,12 @@ export const UploadSchema = ({
         codeId={codeId}
         codeHash={codeHash}
         schema={schema}
-        openDrawer={onOpen}
+        openModal={onOpen}
       />
-      <JsonSchemaDrawer
+      <JsonSchemaModal
         codeId={codeId}
         codeHash={codeHash}
+        isReattach={attached}
         isOpen={isOpen}
         onClose={onClose}
       />

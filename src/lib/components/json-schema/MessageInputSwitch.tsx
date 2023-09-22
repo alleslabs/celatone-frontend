@@ -1,8 +1,9 @@
 import { Flex } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
 import { Tooltip } from "../Tooltip";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
 
@@ -38,13 +39,22 @@ export const MessageInputSwitch = <
   tooltipLabel = "Select or fill code id first",
   ml,
   isOutput = false,
-  onTabChange,
+  onTabChange: onTabChangeProps,
 }: MessageInputSwitchProps<T>) => {
+  const { track } = useTrack();
   const tabs = useMemo<T[]>(
     () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
     [isOutput]
   );
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
+
+  const onTabChange = useCallback(
+    (tab: T) => {
+      track(AmpEvent.USE_SCHEMA_TOGGLE, { tab });
+      onTabChangeProps(tab);
+    },
+    [onTabChangeProps, track]
+  );
 
   /**
    * @todos current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
