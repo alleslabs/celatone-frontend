@@ -1,4 +1,4 @@
-import type { Chain, AssetList } from "@chain-registry/types";
+import type { AssetList, Chain } from "@chain-registry/types";
 
 export const initiatestnet: Chain = {
   $schema: "../chain.schema.json",
@@ -17,9 +17,9 @@ export const initiatestnet: Chain = {
       {
         denom: "uinit",
         fixed_min_gas_price: 0,
-        low_gas_price: 0.15,
-        average_gas_price: 0.15,
-        high_gas_price: 0.15,
+        low_gas_price: 0.151,
+        average_gas_price: 0.151,
+        high_gas_price: 0.151,
       },
     ],
   },
@@ -47,6 +47,7 @@ export const initiatestnet: Chain = {
     ],
   },
 };
+
 export const initiatestnetAssets: AssetList = {
   $schema: "../assetlist.schema.json",
   chain_name: "initiatestnet",

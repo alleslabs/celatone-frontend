@@ -1,5 +1,6 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { Coin } from "@cosmjs/stargate";
+import { MsgPublish } from "@initia/initia.js";
 import type { Msg } from "@initia/initia.js";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
 import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
@@ -15,7 +16,7 @@ import type {
   HumanAddr,
   Option,
 } from "lib/types";
-import { MsgType } from "lib/types";
+import { UpgradePolicy, MsgType } from "lib/types";
 
 export const toEncodeObject = (msgs: Msg[]): EncodeObject[] => {
   return msgs.map((msg) => ({
@@ -165,3 +166,16 @@ export const composeStoreCodeProposalMsg = ({
     ],
     proposer,
   });
+
+export const composePublishMsg = (
+  address: HumanAddr,
+  codeBytesArr: string[],
+  upgradePolicy: UpgradePolicy
+) =>
+  toEncodeObject([
+    new MsgPublish(
+      address as HumanAddr,
+      codeBytesArr,
+      Object.keys(UpgradePolicy).findIndex((policy) => policy === upgradePolicy)
+    ),
+  ]);

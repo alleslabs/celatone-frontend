@@ -56,7 +56,7 @@ export const ControllerInput = <T extends FieldValues>({
   const {
     field,
     fieldState: { isTouched },
-  } = useController({
+  } = useController<T>({
     name,
     control,
     rules,

@@ -39,7 +39,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.15,
+        tokenPerGas: 0.151,
         denom: "uinit",
       },
       gasAdjustment: 1.5,

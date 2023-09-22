@@ -80,6 +80,5 @@ export const statusResolver = ({
       text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
     };
   }
-
   return { status: "init", text: "" };
 };
