@@ -62,10 +62,17 @@ export const statusResolver = ({
           text: `“${abi.name}” is published with “${currentPolicy}” policy, which cannot be republished to “${policy}”`,
         };
   }
-  if (priorUpload)
+  if (priorUpload) {
+    if (policy === UpgradePolicy.IMMUTABLE) {
+      return {
+        status: "error",
+        text: `“${abi.name}” is published with “Immutable” policy, which cannot be republished.`,
+      };
+    }
     return {
       status: "info",
       text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
     };
+  }
   return { status: "init", text: "" };
 };

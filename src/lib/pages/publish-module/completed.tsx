@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
+import plur from "plur";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -19,7 +20,7 @@ export const PublishCompleted = ({
     <WasmPageContainer>
       <CustomIcon boxSize={8} color="success.main" name="check-circle-solid" />
       <Heading as="h4" variant="h4" mt={4} mb={2}>
-        {`<${modules.length}>`} Modules published!
+        {modules.length} {plur("module", modules.length)} published!
       </Heading>
       <Text variant="body2" color="text.dark">
         Your .mv files are uploaded and published as modules.
@@ -44,7 +45,7 @@ export const PublishCompleted = ({
       />
       <Flex direction="column" gap={6} w="full">
         <Heading as="h6" variant="h6">
-          Published {`<${modules.length}>`} modules
+          Published {modules.length} {plur("module", modules.length)}
         </Heading>
         {modules.map((module) => (
           <ModulePublishCard key={module.id} module={module} />

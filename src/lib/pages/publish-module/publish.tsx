@@ -99,8 +99,10 @@ export const PublishModule = ({
       upgradePolicy
     ),
     onSuccess: (gasRes) => {
-      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
-      else setEstimatedFee(undefined);
+      if (gasRes) {
+        setEstimatedFee(fabricateFee(gasRes));
+        setSimulateError("");
+      } else setEstimatedFee(undefined);
     },
     onError: (e) => {
       setSimulateError(e.message);

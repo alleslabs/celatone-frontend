@@ -14,9 +14,8 @@ import type {
   Token,
   HumanAddr,
   Option,
-  UpgradePolicy,
 } from "lib/types";
-import { MsgType } from "lib/types";
+import { UpgradePolicy, MsgType } from "lib/types";
 
 export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
   const typeUrl = typeUrlDict[msgType];
@@ -165,5 +164,9 @@ export const composePublishMsg = (
   upgradePolicy: UpgradePolicy
 ) =>
   toEncodeObject([
-    new MsgPublish(address as HumanAddr, codeBytesArr, upgradePolicy),
+    new MsgPublish(
+      address as HumanAddr,
+      codeBytesArr,
+      Object.keys(UpgradePolicy).findIndex((policy) => policy === upgradePolicy)
+    ),
   ]);
