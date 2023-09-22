@@ -1,3 +1,4 @@
+import { Flex, Heading } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import type { AbiFormData, GenericTypeParam } from "lib/types";
@@ -28,7 +29,10 @@ export const TypesForm = ({
   };
 
   return (
-    <>
+    <Flex direction="column" gap={4}>
+      <Heading variant="h6" as="h6" color="text.main">
+        type_args
+      </Heading>
       {genericTypeParams.map(({ constraints }, index) => (
         <TypeFieldInput
           key={constraints.join() + index.toString()}
@@ -38,6 +42,6 @@ export const TypesForm = ({
           onChange={handleOnChange(index)}
         />
       ))}
-    </>
+    </Flex>
   );
 };

@@ -55,11 +55,9 @@ const validateVector = (
 export const getRules = <T extends FieldValues>(
   type: string,
   isOptional: boolean,
-  isReadOnly: boolean,
   isValidArgAddress: (input: string) => boolean
 ): UseControllerProps<T>["rules"] => {
   const rules: UseControllerProps<T>["rules"] = {};
-  if (isReadOnly) return rules;
 
   if (!isOptional) {
     rules.validate = {
