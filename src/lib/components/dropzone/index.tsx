@@ -1,5 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
+import big from "big.js";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -84,8 +85,11 @@ export function DropZone({
           </Text>
         </Flex>
         <Text variant="body2" color="text.dark">
-          {config.text.rawFileType}{" "}
-          {fileType === "wasm" && `(max. ${maxSize / 1000}KB)`}
+          {config.text.rawFileType} (max.{" "}
+          {fileType === "wasm"
+            ? `${maxSize / 1000}KB`
+            : `${big(maxSize).div(1_000_000).toPrecision(3)}MB`}
+          )
         </Text>
       </Flex>
       {fileRejections.length > 0 && (

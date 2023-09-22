@@ -68,7 +68,7 @@ export const ArgFieldTemplate = ({
             ? "fixed-floating"
             : "floating"
         }
-        size="md"
+        size={size}
         isInvalid={isError}
         isReadOnly={isReadOnly}
         isDisabled={(isSigner && !isReadOnly) || isNull}
