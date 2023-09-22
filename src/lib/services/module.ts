@@ -74,13 +74,11 @@ interface DecodeModuleReturn {
 }
 
 export const decodeModule = async (
+  decodeAPI: string,
   moduleEncode: string
 ): Promise<ResponseABI> =>
   axios
-    .post<DecodeModuleReturn>(
-      "https://initia-api-jiod42ec2q-as.a.run.app/decode_module",
-      {
-        code_bytes: moduleEncode,
-      }
-    )
+    .post<DecodeModuleReturn>(decodeAPI, {
+      code_bytes: moduleEncode,
+    })
     .then(({ data }) => parseJsonABI(libDecode(data.abi)));

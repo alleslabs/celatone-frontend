@@ -3,8 +3,11 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
+import { useTrack } from "lib/amplitude";
 import { publishModuleTx } from "lib/app-fns/tx/publish";
 import type { HumanAddr } from "lib/types";
+
+import { useCatchTxError } from "./catchTxError";
 
 export interface PublishTxInternalResult {
   txHash: string;
@@ -24,6 +27,9 @@ export interface PublishModuleStreamParams {
 
 export const usePublishModuleTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
+
   return useCallback(
     async ({
       onTxSucceed,
@@ -38,12 +44,16 @@ export const usePublishModuleTx = () => {
       return publishModuleTx({
         address: address as HumanAddr,
         client,
-        onTxSucceed,
+        onTxSucceed: (txResult) => {
+          trackTxSucceed();
+          onTxSucceed?.(txResult);
+        },
         onTxFailed,
+        catchTxError,
         fee: estimatedFee,
         messages,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
   );
 };

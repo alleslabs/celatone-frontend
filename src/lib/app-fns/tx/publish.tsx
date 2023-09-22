@@ -4,18 +4,19 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import type { PublishSucceedCallback } from "lib/app-provider/tx/publish";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { formatUFee } from "lib/utils";
 
-import { catchTxError, postTx, sendingTx } from "./common";
+import { postTx, sendingTx } from "./common";
 
 interface PublishModuleTxParams {
   address: HumanAddr;
   client: SigningCosmWasmClient;
   onTxSucceed?: PublishSucceedCallback;
   onTxFailed?: () => void;
+  catchTxError: CatchTxError;
   fee: StdFee;
   messages: EncodeObject[];
 }
@@ -23,6 +24,7 @@ interface PublishModuleTxParams {
 export const publishModuleTx = ({
   address,
   client,
+  catchTxError,
   onTxSucceed,
   onTxFailed,
   fee,
@@ -37,7 +39,6 @@ export const publishModuleTx = ({
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
       const formattedFee = txFee ? formatUFee(txFee) : "N/A";
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.({ txHash: txInfo.transactionHash, formattedFee });
       return null as unknown as TxResultRendering;
     }

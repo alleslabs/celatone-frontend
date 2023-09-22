@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -16,7 +17,6 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useProposalList,
   useProposalListCount,
@@ -27,6 +27,7 @@ import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
 import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 
 const Proposals = () => {
+  const { track } = useTrack();
   const { currentChainId } = useCelatoneApp();
   useGovConfig({ shouldRedirect: true });
   const router = useRouter();
@@ -69,8 +70,8 @@ const Proposals = () => {
     proposer
   );
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_LIST);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
+  }, [router.isReady, track]);
 
   useEffect(() => {
     setPageSize(10);
@@ -133,12 +134,12 @@ const Proposals = () => {
                 disabled={!address}
                 onChange={(e) => {
                   if (e.target.checked && address) {
-                    AmpTrack(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
                       toggle: "on",
                     });
                     setProposer(address as Addr);
                   } else {
-                    AmpTrack(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
                       toggle: "off",
                     });
                     setProposer(undefined);

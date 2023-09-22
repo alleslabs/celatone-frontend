@@ -6,14 +6,13 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
 import type { TxResultRendering, ContractAddr, HumanAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
-import { catchTxError } from "./common/catchTxError";
 import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
@@ -24,6 +23,7 @@ interface ClearAdminTxParams {
   memo?: string;
   client: SigningCosmWasmClient;
   onTxSucceed?: () => void;
+  catchTxError: CatchTxError;
 }
 
 export const clearAdminTx = ({
@@ -33,6 +33,7 @@ export const clearAdminTx = ({
   memo,
   client,
   onTxSucceed,
+  catchTxError,
 }: ClearAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -40,7 +41,6 @@ export const clearAdminTx = ({
       postFn: () => client.clearAdmin(address, contractAddress, fee, memo),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;

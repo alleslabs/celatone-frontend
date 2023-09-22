@@ -1,6 +1,6 @@
 import { structToString } from "./utils";
 
-const indent = " ".repeat(4);
+const indent = "\t";
 
 // Render by row
 export const metadata = {

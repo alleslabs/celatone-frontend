@@ -5,6 +5,7 @@ import Long from "long";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
@@ -26,7 +27,6 @@ import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
@@ -57,6 +57,7 @@ export const MigrateContract = ({
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
+  const { trackAction } = useTrack();
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -172,7 +173,10 @@ export const MigrateContract = ({
   );
 
   const proceed = useCallback(async () => {
-    AmpTrack(AmpEvent.ACTION_MIGRATE);
+    trackAction(
+      AmpEvent.ACTION_MIGRATE,
+      tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
+    );
     const stream = await migrateTx({
       contractAddress,
       codeId: Number(codeId),
@@ -188,6 +192,8 @@ export const MigrateContract = ({
     }
   }, [
     migrateTx,
+    trackAction,
+    tab,
     contractAddress,
     codeId,
     currentInput,

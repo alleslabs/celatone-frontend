@@ -102,7 +102,7 @@ export const PublicProjectCodeTable = observer(
         <TableTitle title="Codes" count={codes.length} />
         {!onViewMore && (
           <TextInput
-            variant="floating"
+            variant="fixed-floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
             placeholder="Search with Code ID or Code Name"

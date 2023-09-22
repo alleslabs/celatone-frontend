@@ -28,7 +28,7 @@ export const Footer = ({
       zIndex={2}
       templateAreas={`"prespace main accordion postspace"`}
       templateColumns="1fr 6fr 4fr 1fr"
-      columnGap="16px"
+      columnGap={4}
     >
       <GridItem area="main">
         <Flex align="center" justify="space-between" h="full">

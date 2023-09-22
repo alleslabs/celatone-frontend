@@ -18,11 +18,11 @@ import { InitialDeposit } from "../components/InitialDeposit";
 import { PermissionlessAlert } from "../components/PermissionlessAlert";
 import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
-  useInternalNavigate,
   useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
   useWasmConfig,
@@ -38,13 +38,6 @@ import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackUseSubmitProposal,
-  AmpTrackUseWhitelistedAddresses,
-  AmpTrackUseDepositFill,
-} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import { AccessConfigPermission } from "lib/types";
 import type { Addr } from "lib/types";
@@ -64,12 +57,15 @@ const defaultValues: WhiteListState = {
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
-const ampPage = "proposal_whitelist";
-
 const ProposalToWhitelist = () => {
   useWasmConfig({ shouldRedirect: true });
+  const {
+    track,
+    trackUseDepositFill,
+    trackUseWhitelistedAddress,
+    trackUseSubmitProposal,
+  } = useTrack();
   const router = useRouter();
-  const navigate = useInternalNavigate();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useCurrentChain();
@@ -190,7 +186,7 @@ const ProposalToWhitelist = () => {
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
-    AmpTrackUseSubmitProposal(ampPage, {
+    trackUseSubmitProposal({
       initialDeposit: initialDeposit.amount,
       assetDenom: initialDeposit.denom,
       minDeposit: minDeposit?.formattedAmount,
@@ -204,6 +200,7 @@ const ProposalToWhitelist = () => {
     addresses.length,
     minDeposit,
     submitProposalTx,
+    trackUseSubmitProposal,
     estimatedFee,
     submitWhitelistProposalMsg,
     addressesArray.length,
@@ -215,8 +212,7 @@ const ProposalToWhitelist = () => {
     const emptyAddressesLength = addresses.filter(
       (addr) => addr.address.trim().length === 0
     ).length;
-    AmpTrackUseWhitelistedAddresses(
-      ampPage,
+    trackUseWhitelistedAddress(
       emptyAddressesLength,
       addresses.length - emptyAddressesLength
     );
@@ -233,11 +229,10 @@ const ProposalToWhitelist = () => {
   }, [minDeposit, reset]);
 
   useEffect(() => {
-    navigate({ pathname: "/", replace: true });
     if (router.isReady) {
-      AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
+      track(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
     }
-  }, [router.isReady, navigate]);
+  }, [router.isReady, track]);
 
   return (
     <>
@@ -272,7 +267,6 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
-              page={ampPage}
             />
             <form>
               <Flex
@@ -295,7 +289,7 @@ const ProposalToWhitelist = () => {
                   placeholder="ex. Allow XYZ to store code without proposal"
                   label="Proposal Title"
                   labelBgColor="gray.900"
-                  variant="floating"
+                  variant="fixed-floating"
                   rules={{
                     required: "Proposal Title is required",
                     maxLength: constants.maxProposalTitleLength,
@@ -312,7 +306,7 @@ const ProposalToWhitelist = () => {
                   height="160px"
                   label="Proposal Description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
-                  variant="floating"
+                  variant="fixed-floating"
                   labelBgColor="gray.900"
                   rules={{
                     required: "Proposal Description is required",
@@ -333,7 +327,7 @@ const ProposalToWhitelist = () => {
                     name={`addresses.${idx}.address`}
                     control={control}
                     label="Address"
-                    variant="floating"
+                    variant="fixed-floating"
                     validation={{
                       duplicate: () =>
                         addresses.find(
@@ -352,7 +346,7 @@ const ProposalToWhitelist = () => {
                     helperAction={
                       <AssignMe
                         onClick={() => {
-                          AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                          track(AmpEvent.USE_ASSIGN_ME);
                           setValue(
                             `addresses.${idx}.address`,
                             walletAddress as Addr
@@ -372,10 +366,11 @@ const ProposalToWhitelist = () => {
                     h="56px"
                     variant="outline-gray"
                     size="lg"
+                    p={0}
                     disabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon name="delete" />
+                    <CustomIcon name="delete" boxSize={4} />
                   </Button>
                 </Flex>
               ))}
@@ -395,7 +390,7 @@ const ProposalToWhitelist = () => {
                   control={control}
                   label="Amount"
                   placeholder="0.00"
-                  variant="floating"
+                  variant="fixed-floating"
                   type="number"
                   helperAction={
                     <Text
@@ -408,10 +403,7 @@ const ProposalToWhitelist = () => {
                       color="accent.main"
                       onClick={() => {
                         if (!minDeposit) return;
-                        AmpTrackUseDepositFill(
-                          ampPage,
-                          minDeposit.formattedAmount
-                        );
+                        trackUseDepositFill(minDeposit.formattedAmount);
                         setValue(
                           "initialDeposit.amount",
                           minDeposit.formattedAmount

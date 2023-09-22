@@ -5,7 +5,11 @@ import type {
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useMoveConfig,
+} from "lib/app-provider";
 import type {
   MoveAccountAddr,
   ExposedFunction,
@@ -116,18 +120,20 @@ export interface DecodeModuleQueryResponse {
 }
 
 export const useDecodeModule = ({
-  moduleEncode,
+  base64EncodedFile,
   address,
   options,
 }: {
-  moduleEncode: string;
+  base64EncodedFile: string;
   address: Option<HumanAddr>;
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
   const baseEndpoint = useBaseApiRoute("rest");
+  const move = useMoveConfig({ shouldRedirect: false });
 
   const queryFn = async (): Promise<DecodeModuleQueryResponse> => {
-    const abi = await decodeModule(moduleEncode);
+    if (!move.enabled) throw new Error("Move configuration is disabled.");
+    const abi = await decodeModule(move.decodeApi, base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
     const validPublisher = address
@@ -146,7 +152,12 @@ export const useDecodeModule = ({
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_DECODE, moduleEncode, address],
+    [
+      CELATONE_QUERY_KEYS.MODULE_DECODE,
+      move.enabled,
+      base64EncodedFile,
+      address,
+    ],
     queryFn,
     options
   );

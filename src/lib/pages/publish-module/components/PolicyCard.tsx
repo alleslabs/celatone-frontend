@@ -1,5 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { capitalize } from "lodash";
 
 import type { UpgradePolicy } from "lib/types";
 
@@ -59,13 +60,7 @@ export const PolicyCard = ({
   return (
     <RadioCard onClick={onSelect} checked={isChecked}>
       <Flex flexDirection="column">
-        <Text
-          variant="body1"
-          textTransform="lowercase"
-          sx={{ "&:first-letter": { textTransform: "uppercase" } }}
-        >
-          {value}
-        </Text>
+        <Text variant="body1">{capitalize(value)}</Text>
         <Text variant="body2" textColor="text.dark" fontWeight={600}>
           {description}
           {hasCondition && <Leaflet />}

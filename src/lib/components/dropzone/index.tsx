@@ -1,5 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
+import big from "big.js";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -32,11 +33,18 @@ export function DropZone({
 
   // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
   const maxSize = (() => {
-    if (wasm.enabled) return wasm.storeCodeMaxFileSize;
-    return move.enabled ? move.moduleMaxFileSize : 0;
+    switch (fileType) {
+      case "schema":
+        return 10_000_000;
+      case "wasm":
+        return wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
+      case "move":
+        return move.enabled ? move.moduleMaxFileSize : 0;
+      default:
+        return 0;
+    }
   })();
 
-  // TODO: JSON Schema file size ??
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
     maxFiles: 1,
@@ -77,8 +85,11 @@ export function DropZone({
           </Text>
         </Flex>
         <Text variant="body2" color="text.dark">
-          {config.text.rawFileType}{" "}
-          {fileType === "wasm" && `(max. ${maxSize / 1000}KB)`}
+          {config.text.rawFileType} (max.{" "}
+          {fileType === "wasm"
+            ? `${maxSize / 1000}KB`
+            : `${big(maxSize).div(1_000_000).toPrecision(3)}MB`}
+          )
         </Text>
       </Flex>
       {fileRejections.length > 0 && (

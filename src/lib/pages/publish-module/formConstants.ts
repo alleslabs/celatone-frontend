@@ -13,7 +13,7 @@ export interface PublishStatus {
 
 interface Module {
   file: Option<File>;
-  base64File: string;
+  base64EncodedFile: string;
   decodeRes: Option<DecodeModuleQueryResponse>;
   publishStatus: PublishStatus;
 }
@@ -32,13 +32,13 @@ export const publishStatusDefault: { status: Status; text: string } = {
 };
 
 export const emptyModule: Module = {
-  base64File: "",
+  base64EncodedFile: "",
   decodeRes: undefined,
   publishStatus: publishStatusDefault,
   file: undefined,
 };
 
-export const policies = [
+export const POLICIES = [
   {
     value: UpgradePolicy.ARBITRARY,
     description: "You can publish these modules again without any restrictions",

@@ -1,5 +1,6 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 import {
   useCelatoneApp,
@@ -27,13 +28,15 @@ export const useAccountId = (
   walletAddress: Option<Addr>
 ): UseQueryResult<number | null> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = () => {
+
+  const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error("Error fetching account id: failed to retrieve address.");
     return indexerGraphClient
       .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
       .then<number | null>(({ accounts_by_pk }) => accounts_by_pk?.id ?? null);
-  };
+  }, [indexerGraphClient, walletAddress]);
+
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, walletAddress],
     queryFn,

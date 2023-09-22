@@ -1,12 +1,12 @@
 import { Flex, FormControl, Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal";
 import { TagSelection } from "lib/components/TagSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import { getTagsDefault } from "lib/utils";
 
@@ -15,6 +15,7 @@ interface EditTagsProps {
 }
 
 export function EditTags({ contractLocalInfo }: EditTagsProps) {
+  const { track } = useTrack();
   const [tagResult, setTagResult] = useState<string[]>(
     getTagsDefault(contractLocalInfo.tags)
   );
@@ -24,7 +25,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
     tags: tagResult,
-    actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_TAGS),
+    actions: () => track(AmpEvent.CONTRACT_EDIT_TAGS),
   });
 
   return (

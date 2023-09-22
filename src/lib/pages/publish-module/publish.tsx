@@ -31,7 +31,7 @@ import {
   UploadModuleCard,
 } from "./components";
 import type { PublishModuleState, PublishStatus } from "./formConstants";
-import { emptyModule, policies, defaultValues } from "./formConstants";
+import { emptyModule, POLICIES, defaultValues } from "./formConstants";
 import { statusResolver } from "./utils";
 
 interface PublishModuleProps {
@@ -76,6 +76,24 @@ export const PublishModule = ({
     name: "modules",
   });
 
+  const setFileValue = useCallback(
+    (index: number) =>
+      (
+        file: Option<File>,
+        base64EncodedFile: string,
+        decodeRes: DecodeModuleQueryResponse,
+        publishStatus: PublishStatus
+      ) => {
+        update(index, {
+          file,
+          base64EncodedFile,
+          decodeRes,
+          publishStatus,
+        });
+      },
+    [update]
+  );
+
   // ------------------------------------------//
   // ---------------TRANSACTION----------------//
   // ------------------------------------------//
@@ -85,7 +103,7 @@ export const PublishModule = ({
         address &&
           fields.every(
             (field) =>
-              field.base64File && field.publishStatus.status !== "error"
+              field.base64EncodedFile && field.publishStatus.status !== "error"
           )
       ),
     [address, fields]
@@ -95,7 +113,7 @@ export const PublishModule = ({
     enabled: enablePublish,
     messages: composePublishMsg(
       address as HumanAddr,
-      fields.map((file) => file.base64File),
+      fields.map((file) => file.base64EncodedFile),
       upgradePolicy
     ),
     onSuccess: (gasRes) => {
@@ -121,7 +139,7 @@ export const PublishModule = ({
       estimatedFee,
       messages: composePublishMsg(
         address as HumanAddr,
-        fields.map((file) => file.base64File),
+        fields.map((file) => file.base64EncodedFile),
         upgradePolicy
       ),
     });
@@ -144,7 +162,7 @@ export const PublishModule = ({
   // ---------------SIDE EFFECTS---------------//
   // ------------------------------------------//
   useEffect(() => {
-    if (!fields.every((field) => field.base64File)) {
+    if (!fields.every((field) => field.base64EncodedFile)) {
       setEstimatedFee(undefined);
     }
   }, [fields]);
@@ -190,19 +208,7 @@ export const PublishModule = ({
                   fields={fields}
                   fileState={field}
                   policy={upgradePolicy}
-                  setFile={(
-                    file: Option<File>,
-                    base64File: string,
-                    decodeRes: DecodeModuleQueryResponse,
-                    publishStatus: PublishStatus
-                  ) => {
-                    update(idx, {
-                      file,
-                      base64File,
-                      decodeRes,
-                      publishStatus,
-                    });
-                  }}
+                  setFile={setFileValue(idx)}
                   removeFile={() => {
                     update(idx, emptyModule);
                   }}
@@ -228,7 +234,7 @@ export const PublishModule = ({
               Specify how publishing modules will be able to republish.
             </Text>
             <Flex direction="column" gap={2} my={4}>
-              {policies.map((item) => (
+              {POLICIES.map((item) => (
                 <PolicyCard
                   key={item.value}
                   value={item.value}

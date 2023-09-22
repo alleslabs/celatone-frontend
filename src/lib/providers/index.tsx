@@ -13,11 +13,11 @@ export default ({ children }: { children: React.ReactNode }) => (
       <StoreProvider>
         <AppProvider>
           <ChainProvider>
-            <AmplitudeProvider>
-              <NavProvider>
+            <NavProvider>
+              <AmplitudeProvider>
                 <TxBroadcastProvider>{children}</TxBroadcastProvider>
-              </NavProvider>
-            </AmplitudeProvider>
+              </AmplitudeProvider>
+            </NavProvider>
           </ChainProvider>
         </AppProvider>
       </StoreProvider>

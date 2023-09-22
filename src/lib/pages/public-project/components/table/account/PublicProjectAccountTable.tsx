@@ -73,7 +73,7 @@ export const PublicProjectAccountTable = ({
       <TableTitle title="Accounts" count={accounts.length} />
       {!onViewMore && (
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={searchKeyword}
           setInputState={setSearchKeyword}
           placeholder="Search with Account Address, Name, or Description"
