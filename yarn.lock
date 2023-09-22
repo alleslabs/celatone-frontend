@@ -3431,7 +3431,7 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@initia/initia.js@0.1.8":
+"@initia/initia.js@^0.1.8":
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.8.tgz#f1d1d12a37788054061b2e5f9db55c33dcc5f67c"
   integrity sha512-Q7GhXHgIZ3th6k2vou+e+CO4C5JA/JeA6w3oP/kb2cxbqOAOM1+ybN/8oMtHNApxh/gpmCWUXi7axHV5v/91UA==
@@ -3453,7 +3453,7 @@
     tmp "^0.2.1"
     ws "^7.5.9"
 
-"@initia/initia.proto@0.1.11", "@initia/initia.proto@^0.1.11":
+"@initia/initia.proto@^0.1.11":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.11.tgz#39016bbb4d15f06aaec17e56d6f431ddadc600ce"
   integrity sha512-G9HRTy5xfza6hTjYLuLgcmJWjSDsnLXnc2HvWceDcaSlHp212rMH07+gpazwY0L6aCm3uWyqLh4Yig60L3AaRA==
@@ -6337,7 +6337,7 @@ capital-case@^1.0.4:
     tslib "^2.0.3"
     upper-case-first "^2.0.2"
 
-chain-registry@1.19.0:
+chain-registry@^1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/chain-registry/-/chain-registry-1.19.0.tgz#6d2d56b56efebee0d15ced8f9bd8329a099ce04d"
   integrity sha512-7Ax0cRurfS+I0Oru3Td8NqBY/2YRCv570XM555E5vu3ib3f/k5SELwxsSalTtQj+Furx6quEyKWuOjrNwPpcQg==
