@@ -1,6 +1,5 @@
 import { Flex, Heading, IconButton, Spinner, Text } from "@chakra-ui/react";
-import type { ReactNode } from "react";
-import { useState } from "react";
+import { type PropsWithChildren, useCallback, useState } from "react";
 
 import type {
   FileArrayFields,
@@ -12,8 +11,10 @@ import { useCurrentChain } from "lib/app-provider";
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
-import { useDecodeModule } from "lib/services/moduleService";
+import {
+  type DecodeModuleQueryResponse,
+  useDecodeModule,
+} from "lib/services/moduleService";
 import type { HumanAddr, UpgradePolicy, Option } from "lib/types";
 
 interface UploadModuleCardProps {
@@ -34,10 +35,7 @@ interface UploadModuleCardProps {
 const ComponentLoader = ({
   isLoading,
   children,
-}: {
-  isLoading: boolean;
-  children: ReactNode;
-}) => {
+}: PropsWithChildren<{ isLoading: boolean }>) => {
   if (isLoading) return <Spinner size="lg" mx="auto" />;
   return <>{children}</>;
 };
@@ -65,7 +63,7 @@ export const UploadModuleCard = ({
   const { address } = useCurrentChain();
 
   const { isFetching } = useDecodeModule({
-    moduleEncode: tempFile.base64,
+    base64EncodedFile: tempFile.base64,
     address: address as HumanAddr,
     options: {
       enabled: Boolean(tempFile.base64),
@@ -80,6 +78,18 @@ export const UploadModuleCard = ({
         ),
     },
   });
+
+  const handleFileDrop = useCallback(async (target: File) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      // strip "data:application/octet-stream;base64,oRzrCw..."
+      const base64String = dataUrl.replace(/^data:.*;base64,/, "");
+      setTempFile({ file: target, base64: base64String });
+    };
+    reader.readAsDataURL(target);
+  }, []);
 
   return (
     <Flex
@@ -117,17 +127,7 @@ export const UploadModuleCard = ({
             />
           ) : (
             <DropZone
-              setFile={async (target) => {
-                const reader = new FileReader();
-
-                reader.onload = () => {
-                  const dataUrl = reader.result as string;
-                  // strip "data:application/octet-stream;base64,oRzrCw..."
-                  const base64String = dataUrl.replace(/^data:.*;base64,/, "");
-                  setTempFile({ file: target, base64: base64String });
-                };
-                reader.readAsDataURL(target);
-              }}
+              setFile={handleFileDrop}
               fileType="move"
               bgColor="background.main"
               _hover={undefined}

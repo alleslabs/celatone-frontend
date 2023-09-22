@@ -1,4 +1,5 @@
 import { Text, Grid, Heading, Flex, Button, Box } from "@chakra-ui/react";
+import { useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { useCelatoneApp, useMoveConfig } from "lib/app-provider";
@@ -17,7 +18,7 @@ import {
   UploadModuleCard,
 } from "./components";
 import type { PublishModuleState, PublishStatus } from "./formConstants";
-import { emptyModule, policies, defaultValues } from "./formConstants";
+import { emptyModule, POLICIES, defaultValues } from "./formConstants";
 import { statusResolver } from "./utils";
 
 export const PublishModule = () => {
@@ -44,6 +45,24 @@ export const PublishModule = () => {
     control,
     name: "modules",
   });
+
+  const setFileValue = useCallback(
+    (index: number) =>
+      (
+        file: Option<File>,
+        base64EncodedFile: string,
+        decodeRes: DecodeModuleQueryResponse,
+        publishStatus: PublishStatus
+      ) => {
+        update(index, {
+          file,
+          base64EncodedFile,
+          decodeRes,
+          publishStatus,
+        });
+      },
+    [update]
+  );
 
   return (
     <>
@@ -79,19 +98,7 @@ export const PublishModule = () => {
                   fields={fields}
                   fileState={field}
                   policy={upgradePolicy}
-                  setFile={(
-                    file: Option<File>,
-                    base64File: string,
-                    decodeRes: DecodeModuleQueryResponse,
-                    publishStatus: PublishStatus
-                  ) => {
-                    update(idx, {
-                      file,
-                      base64File,
-                      decodeRes,
-                      publishStatus,
-                    });
-                  }}
+                  setFile={setFileValue(idx)}
                   removeFile={() => {
                     update(idx, emptyModule);
                   }}
@@ -117,7 +124,7 @@ export const PublishModule = () => {
               Specify how publishing modules will be able to republish.
             </Text>
             <Flex direction="column" gap={2} my={4}>
-              {policies.map((item) => (
+              {POLICIES.map((item) => (
                 <PolicyCard
                   key={item.value}
                   value={item.value}

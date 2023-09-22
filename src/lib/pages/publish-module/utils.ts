@@ -32,12 +32,18 @@ export const statusResolver = ({
 
   const policyUpdateText = `Its upgrade policy will be updated from ${currentPolicy} to ${policy}`;
 
+  // Check module address and connected wallet address equality
   if (!validPublisher)
     return {
       status: "error",
       text: `This .mv file can be published by ${truncate(abi.address)} only.`,
     };
+  // Condition check for existing module
   if (currentPolicy) {
+    // Policy check
+    // IMMUTABLE -> cannot be republished
+    // COMPATIBLE -> can be republished as COMPATIBLE and IMMUTABLE only
+    // ARBITRARY -> can be freely republished
     if (currentPolicy === UpgradePolicy.IMMUTABLE)
       return {
         status: "error",
@@ -62,6 +68,7 @@ export const statusResolver = ({
           text: `“${abi.name}” is published with “${currentPolicy}” policy, which cannot be republished to “${policy}”`,
         };
   }
+  // Condition check for non-existing module with identical module file uploaded
   if (priorUpload) {
     if (policy === UpgradePolicy.IMMUTABLE)
       return {
