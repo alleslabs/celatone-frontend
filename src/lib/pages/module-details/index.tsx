@@ -99,9 +99,9 @@ export const ModuleDetails = () => {
 
   if (isLoading && !data) return <Loading />;
   const moduleData = data as IndexedModule;
-  // moduleData.parsedAbi.exposed_functions
-  // moduleData.viewFunctions
-  // moduleData.executeFunctions
+  // moduleData?.parsedAbi.exposed_functions
+  // moduleData?.viewFunctions
+  // moduleData?.executeFunctions
   return (
     <PageContainer>
       <ModuleTop isVerified moduleData={moduleData} />
@@ -121,9 +121,9 @@ export const ModuleDetails = () => {
             Overview
           </CustomTab>
           <CustomTab
-            count={moduleData.parsedAbi.exposed_functions.length}
+            count={moduleData?.parsedAbi.exposed_functions.length}
             onClick={handleTabChange(TabIndex.Function)}
-            isDisabled={!moduleData.parsedAbi.exposed_functions.length}
+            isDisabled={!moduleData?.parsedAbi.exposed_functions.length}
           >
             Function
           </CustomTab>
@@ -131,9 +131,9 @@ export const ModuleDetails = () => {
             Transactions
           </CustomTab>
           <CustomTab
-            count={moduleData.parsedAbi.structs.length}
+            count={moduleData?.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
-            isDisabled={!moduleData.parsedAbi.structs.length}
+            isDisabled={!moduleData?.parsedAbi.structs.length}
           >
             Structs
           </CustomTab>
@@ -142,8 +142,8 @@ export const ModuleDetails = () => {
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
               <QuickAccess
-                viewFnCount={moduleData.viewFunctions.length}
-                executeFnCount={moduleData.executeFunctions.length}
+                viewFnCount={moduleData?.viewFunctions.length}
+                executeFnCount={moduleData?.executeFunctions.length}
               />
               <ModuleInfo isVerified moduleData={moduleData} />
               {/* TODO History */}
