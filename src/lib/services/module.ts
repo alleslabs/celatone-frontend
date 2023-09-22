@@ -6,8 +6,9 @@ import type {
   ResponseModules,
   InternalModule,
   HexAddr,
+  ResponseABI,
 } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { libDecode, parseJsonABI, snakeToCamel } from "lib/utils";
 
 interface ModuleReturn {
   module: ResponseModule;
@@ -67,3 +68,17 @@ export const getModuleVerificationStatus = async (
     )
     .then(() => true)
     .catch(() => false);
+
+interface DecodeModuleReturn {
+  abi: string;
+}
+
+export const decodeModule = async (
+  decodeAPI: string,
+  moduleEncode: string
+): Promise<ResponseABI> =>
+  axios
+    .post<DecodeModuleReturn>(decodeAPI, {
+      code_bytes: moduleEncode,
+    })
+    .then(({ data }) => parseJsonABI(libDecode(data.abi)));

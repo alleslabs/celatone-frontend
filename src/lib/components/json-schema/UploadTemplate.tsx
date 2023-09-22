@@ -104,7 +104,9 @@ const MethodRender = ({
               schemaString: "",
             });
           }}
-          error={error}
+          // TODO: change to discriminated union pattern later
+          status={error ? "error" : undefined}
+          statusText={error}
         />
       ) : (
         <DropZone

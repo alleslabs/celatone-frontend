@@ -2,14 +2,18 @@ import { Flex, Text } from "@chakra-ui/react";
 import big from "big.js";
 
 import { CustomIcon, UploadIcon } from "lib/components/icon";
+import type { Option } from "lib/types";
 
 type CardTheme = "primary" | "secondary";
+
+type Status = "error" | "info" | "init";
 
 interface UploadCardProps {
   file: File;
   deleteFile: () => void;
   theme?: CardTheme;
-  error?: string | null;
+  status?: Status;
+  statusText?: string | null;
 }
 
 const getTheme = (theme: CardTheme) => {
@@ -29,13 +33,27 @@ const getTheme = (theme: CardTheme) => {
       };
   }
 };
+
+const resolveStatusColor = (status: Option<Status>): Option<string> => {
+  switch (status) {
+    case "error":
+      return "error.main";
+    case "info":
+      return "primary.main";
+    default:
+      return undefined;
+  }
+};
+
 export const UploadCard = ({
   file,
   deleteFile,
   theme = "primary",
-  error,
+  status,
+  statusText,
 }: UploadCardProps) => {
   const themeConfig = getTheme(theme);
+  const statusColor = resolveStatusColor(status);
   return (
     <>
       <Flex
@@ -45,7 +63,7 @@ export const UploadCard = ({
         w="full"
         bgColor={themeConfig.bgColor}
         border={themeConfig.border}
-        borderColor={error ? "error.main" : undefined}
+        borderColor={statusColor}
         borderRadius="8px"
         justifyContent="space-between"
       >
@@ -68,7 +86,7 @@ export const UploadCard = ({
             onClick={deleteFile}
             cursor="pointer"
           />
-          {error && (
+          {status === "error" && (
             <CustomIcon
               name="alert-triangle-solid"
               color="error.main"
@@ -77,9 +95,9 @@ export const UploadCard = ({
           )}
         </Flex>
       </Flex>
-      {error && (
-        <Text variant="body3" color="error.main" mt={1}>
-          {error}
+      {status && (
+        <Text variant="body3" color={statusColor} mt={1}>
+          {statusText}
         </Text>
       )}
     </>
