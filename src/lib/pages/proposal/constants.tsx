@@ -1,6 +1,6 @@
+import { useTrack } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
 import type { SidebarMetadata } from "lib/components/StickySidebar";
-import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
 
 export type NetworkPermission = "permissioned" | "permissionless";
 
@@ -54,8 +54,10 @@ const storeCodePage = "proposal-store-code";
 export const SIDEBAR_STORE_CODE_DETAILS: (
   chainName: string,
   permission: NetworkPermission
-) => SidebarMetadata = (chainName, permission) =>
-  ({
+) => SidebarMetadata = (chainName, permission) => {
+  const { trackUseRightHelperPanel } = useTrack();
+
+  return {
     permissioned: {
       page: storeCodePage,
       title: "Why do I need to submit proposal?",
@@ -82,7 +84,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
           using{" "}
           <AppLink
             onClick={() =>
-              AmpTrackUseRightHelperPanel(storeCodePage, "to-/deploy")
+              trackUseRightHelperPanel(storeCodePage, "to-/deploy")
             }
             color="secondary.main"
             href="/deploy"
@@ -104,7 +106,8 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
       toPagePath: "/deploy",
       toPageTitle: "Go To Deploy Contract",
     },
-  }[permission]);
+  }[permission];
+};
 
 export const PROPOSAL_STORE_CODE_TEXT = {
   header: "Create Proposal to Store Code",

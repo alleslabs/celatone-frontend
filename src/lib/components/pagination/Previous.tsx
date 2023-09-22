@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { useContext } from "react";
 import type { ReactNode } from "react";
 
-import { AmpTrackPaginationNavigate } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 
 import { PaginatorContext } from "./PaginatorProvider";
 
@@ -17,6 +17,7 @@ export const Previous = ({
   ...buttonProps
 }: PreviousProps) => {
   const { actions, state } = useContext(PaginatorContext);
+  const { trackUsePaginationNavigate } = useTrack();
 
   const { changePage } = actions;
   const { currentPage, isDisabled } = state;
@@ -25,7 +26,7 @@ export const Previous = ({
   const handlePreviousClick = () => {
     const currPage = currentPage - 1;
     if (!isFirst) changePage(currPage);
-    AmpTrackPaginationNavigate("previous", pageSize, currPage);
+    trackUsePaginationNavigate("previous", pageSize, currPage);
   };
 
   return (

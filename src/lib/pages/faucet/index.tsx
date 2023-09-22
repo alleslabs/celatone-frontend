@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -24,7 +25,6 @@ import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useOpenTxTab } from "lib/hooks";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useFaucetInfo } from "lib/services/faucetService";
 
 type ResultStatus = "success" | "error" | "warning";
@@ -42,6 +42,7 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 };
 
 const Faucet = () => {
+  const { track } = useTrack();
   const { address: walletAddress = "" } = useCurrentChain();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -76,8 +77,8 @@ const Faucet = () => {
   }, [faucet.enabled, faucetInfo?.formattedAmount, faucetInfo?.formattedDenom]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
-  }, [router]);
+    if (router.isReady) track(AmpEvent.TO_FAUCET);
+  }, [router, track]);
 
   useEffect(() => {
     if (address) {
@@ -92,7 +93,7 @@ const Faucet = () => {
 
   const onSubmit = async () => {
     setIsLoading(true);
-    AmpTrack(AmpEvent.ACTION_FAUCET);
+    track(AmpEvent.ACTION_FAUCET);
 
     if (!faucetUrl) {
       setResult({ status: "error", message: "Faucet URL not set" });
@@ -122,7 +123,7 @@ const Faucet = () => {
           ),
         });
 
-        AmpTrack(AmpEvent.TX_SUCCEED);
+        track(AmpEvent.TX_SUCCEED);
         setIsLoading(false);
         setResult({
           status: "success",
@@ -155,7 +156,7 @@ const Faucet = () => {
           });
         }
 
-        AmpTrack(AmpEvent.TX_FAILED);
+        track(AmpEvent.TX_FAILED);
         setIsLoading(false);
       });
   };
@@ -182,7 +183,7 @@ const Faucet = () => {
         helperAction={
           <AssignMe
             onClick={() => {
-              AmpTrack(AmpEvent.USE_ASSIGN_ME);
+              track(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);
             }}
             isDisable={address === walletAddress}

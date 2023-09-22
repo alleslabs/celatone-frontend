@@ -3,23 +3,28 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
+import { useTrack } from "lib/amplitude";
 import {
   submitStoreCodeProposalTx,
   submitWhitelistProposalTx,
 } from "lib/app-fns/tx/submitProposal";
 import type { HumanAddr } from "lib/types";
 
+import { useCatchTxError } from "./catchTxError";
+
 export interface SubmitWhitelistProposalStreamParams {
-  onTxSucceed?: () => void;
-  onTxFailed?: () => void;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
   whitelistNumber: number;
   amountToVote: string | null;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const useSubmitWhitelistProposalTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -37,15 +42,19 @@ export const useSubmitWhitelistProposalTx = () => {
       return submitWhitelistProposalTx({
         address: address as HumanAddr,
         client,
-        onTxSucceed,
-        onTxFailed,
         fee: estimatedFee,
         messages,
         whitelistNumber,
         amountToVote,
+        catchTxError,
+        onTxSucceed: () => {
+          trackTxSucceed();
+          onTxSucceed?.();
+        },
+        onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
   );
 };
 
@@ -60,6 +69,9 @@ interface SubmitStoreCodeProposalStreamParams {
 
 export const useSubmitStoreCodeProposalTx = () => {
   const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
+
   return useCallback(
     async ({
       estimatedFee,
@@ -77,14 +89,24 @@ export const useSubmitStoreCodeProposalTx = () => {
         address: address as HumanAddr,
         chainName: chain.chain_name,
         client,
-        onTxSucceed,
-        onTxFailed,
         fee: estimatedFee,
         messages,
         wasmFileName,
         amountToVote,
+        catchTxError,
+        onTxSucceed: () => {
+          trackTxSucceed();
+          onTxSucceed?.();
+        },
+        onTxFailed,
       });
     },
-    [address, chain.chain_name, getSigningCosmWasmClient]
+    [
+      address,
+      chain.chain_name,
+      getSigningCosmWasmClient,
+      trackTxSucceed,
+      catchTxError,
+    ]
   );
 };

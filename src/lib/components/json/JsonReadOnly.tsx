@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 import { CopyButton } from "../copy";
-import { AmpTrackExpand } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 import { jsonLineCount, jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
@@ -36,6 +36,7 @@ const JsonReadOnly = ({
   amptrackSection,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
+  const { trackUseExpand } = useTrack();
 
   const isJsonValid = useMemo(() => {
     return jsonValidate(text) === null || text.length === 0;
@@ -93,7 +94,7 @@ const JsonReadOnly = ({
       {showExpandButton && (
         <ViewFullMsgButton
           onClick={() => {
-            AmpTrackExpand({
+            trackUseExpand({
               action: viewFull ? "collapse" : "expand",
               component: "json",
               section: amptrackSection,

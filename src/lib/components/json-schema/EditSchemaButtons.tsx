@@ -1,40 +1,56 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex, IconButton } from "@chakra-ui/react";
+import { useCallback } from "react";
 
 import { CustomIcon } from "../icon";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
+import { Tooltip } from "../Tooltip";
+import { AmpEvent, useTrack } from "lib/amplitude";
 
 interface EditSchemaButtonsProps {
-  codeId: number;
+  codeId: string;
   codeHash: string;
-  openDrawer: () => void;
+  openModal: () => void;
 }
 
 export const EditSchemaButtons = ({
   codeId,
   codeHash,
-  openDrawer,
-}: EditSchemaButtonsProps) => (
-  <Flex gap={2}>
-    <Button
-      variant="outline-gray"
-      size="sm"
-      leftIcon={<CustomIcon name="edit" boxSize={3} />}
-      onClick={openDrawer}
-    >
-      Reattach Schema
-    </Button>
-    <RemoveSchemaModal
-      codeId={String(codeId)}
-      codeHash={codeHash}
-      trigger={
-        <Button
-          variant="outline-gray"
+  openModal,
+}: EditSchemaButtonsProps) => {
+  const { track } = useTrack();
+
+  const handleReattach = useCallback(() => {
+    track(AmpEvent.USE_EDIT_ATTACHED_JSON);
+    openModal();
+  }, [openModal, track]);
+
+  return (
+    <Flex gap={1}>
+      <Tooltip label="Reattach JSON schema">
+        <IconButton
+          variant="ghost-gray"
           size="sm"
-          leftIcon={<CustomIcon name="delete" boxSize={3} />}
-        >
-          Delete Schema
-        </Button>
-      }
-    />
-  </Flex>
-);
+          onClick={handleReattach}
+          color="gray.600"
+          icon={<CustomIcon name="edit" boxSize={4} />}
+          aria-label="reattach schema"
+        />
+      </Tooltip>
+      <RemoveSchemaModal
+        codeId={codeId}
+        codeHash={codeHash}
+        trigger={
+          <Tooltip label="Delete your attached schema">
+            <IconButton
+              variant="ghost-gray"
+              size="sm"
+              color="gray.600"
+              icon={<CustomIcon name="delete" boxSize={4} />}
+              aria-label="delete schema"
+            />
+          </Tooltip>
+        }
+      />
+    </Flex>
+  );
+};

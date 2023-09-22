@@ -15,7 +15,8 @@ import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CustomIcon } from "lib/components/icon";
 import {
   EditSchemaButtons,
-  JsonSchemaDrawer,
+  JsonSchemaModal,
+  ViewSchemaModal,
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds, useQueryCmds } from "lib/hooks";
@@ -26,7 +27,7 @@ import { encode, jsonPrettify } from "lib/utils";
 interface CommandSectionProps {
   contractAddress: ContractAddr;
   codeHash: string;
-  codeId: number;
+  codeId: string;
 }
 
 export const CommandSection = observer(
@@ -35,13 +36,13 @@ export const CommandSection = observer(
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     const { getSchemaByCodeHash } = useSchemaStore();
-    const attached = Boolean(getSchemaByCodeHash(codeHash));
+    const jsonSchema = getSchemaByCodeHash(codeHash);
+    const attached = Boolean(jsonSchema);
 
     const { isFetching: isQueryCmdsFetching, queryCmds } =
       useQueryCmds(contractAddress);
     const { isFetching: isExecuteCmdsFetching, execCmds } =
       useExecuteCmds(contractAddress);
-
     const renderCmds = (
       isFetching: boolean,
       cmds: [string, string][],
@@ -95,15 +96,22 @@ export const CommandSection = observer(
             Available command shortcuts
           </Heading>
           {attached ? (
-            <Flex alignItems="center" justify="space-between" w="full">
-              <Tag variant="gray" gap={1}>
+            <Flex
+              display={{ base: "none", md: "flex" }}
+              alignItems="center"
+              justify="flex-start"
+              w="full"
+              gap={1}
+            >
+              <Tag variant="gray" gap={1} mr={1}>
                 <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
-                <Text variant="body3">Attached JSON Schema</Text>
+                <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
               </Tag>
+              <ViewSchemaModal isIcon codeId={codeId} jsonSchema={jsonSchema} />
               <EditSchemaButtons
                 codeId={codeId}
                 codeHash={codeHash}
-                openDrawer={onOpen}
+                openModal={onOpen}
               />
             </Flex>
           ) : (
@@ -112,7 +120,12 @@ export const CommandSection = observer(
               minW="330px"
               textAlign="center"
             >
-              <Button variant="outline-gray" size="sm" onClick={onOpen}>
+              <Button
+                variant="outline-gray"
+                size="sm"
+                onClick={onOpen}
+                display={{ base: "none", md: "flex" }}
+              >
                 Attach JSON Schema
               </Button>
             </Tooltip>
@@ -121,7 +134,6 @@ export const CommandSection = observer(
         <Flex
           gap={{ base: 4, md: 6 }}
           direction={{ base: "column", md: "row" }}
-          mt={{ base: 4, md: 0 }}
         >
           <Flex
             direction="column"
@@ -148,11 +160,12 @@ export const CommandSection = observer(
             {renderCmds(isExecuteCmdsFetching, execCmds, "execute")}
           </Flex>
         </Flex>
-        <JsonSchemaDrawer
+        <JsonSchemaModal
           isOpen={isOpen}
           onClose={onClose}
-          codeId={String(codeId)}
+          codeId={codeId}
           codeHash={codeHash}
+          isReattach={attached}
         />
       </Flex>
     );

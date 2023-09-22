@@ -1,7 +1,7 @@
 import { Box, Text, ButtonGroup } from "@chakra-ui/react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
@@ -16,6 +16,8 @@ export const MsgSuggestion = ({
   cmds,
   setMsg,
 }: MsgSuggestionProps) => {
+  const { track } = useTrack();
+
   return (
     <Box>
       {contractAddress && (
@@ -39,7 +41,7 @@ export const MsgSuggestion = ({
               key={`query-cmd-${cmd}`}
               cmd={cmd}
               onClickCmd={() => {
-                AmpTrack(AmpEvent.USE_CMD_EXECUTE);
+                track(AmpEvent.USE_CMD_EXECUTE);
                 setMsg(jsonPrettify(queryMsg));
               }}
             />

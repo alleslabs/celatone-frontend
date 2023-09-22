@@ -141,6 +141,7 @@ export const ModuleFunctionBody = ({
           description="Choose a module to see its functions."
           imageWidth="80px"
           noBorder
+          hasImage
         />
       )}
     </GridItem>

@@ -72,7 +72,10 @@ export const ModuleSelectDrawer = ({
                 closeModal={onClose}
               />
             ) : (
-              <ModuleEmptyState />
+              <ModuleEmptyState
+                description="Available functions for selected modules will display here"
+                hasImage
+              />
             )}
           </Flex>
         </DrawerBody>

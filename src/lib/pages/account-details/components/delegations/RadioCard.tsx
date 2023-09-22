@@ -22,7 +22,7 @@ export const RadioCard = ({
 }: RadioCardProps) => {
   const token = total?.[defaultToken.denom] ?? defaultToken;
   return (
-    <Radio variant="card" value={value} overflowX="hidden">
+    <Radio variant="card-primary" value={value} overflowX="hidden">
       <Flex alignItems="center" gap={2} justifyContent="space-between">
         <Flex direction="column" gap={1}>
           <Text variant="body2" textColor="gray.400" fontWeight={500}>

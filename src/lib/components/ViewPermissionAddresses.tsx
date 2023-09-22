@@ -1,8 +1,8 @@
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import { useGetAddressType } from "lib/app-provider";
-import { AmpTrackExpand } from "lib/services/amplitude";
 import type { PermissionAddresses } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
@@ -17,6 +17,7 @@ export const ViewPermissionAddresses = ({
 }) => {
   const [viewAll, setViewAll] = useState(false);
   const getAddressType = useGetAddressType();
+  const { trackUseExpand } = useTrack();
   const showAddressses =
     viewAll ||
     (typeof permissionAddresses === "object" &&
@@ -37,7 +38,7 @@ export const ViewPermissionAddresses = ({
         <Button
           variant="ghost-secondary"
           onClick={() => {
-            AmpTrackExpand({
+            trackUseExpand({
               action: viewAll ? "collapse" : "expand",
               component: "permission_address",
               section: amptrackSection,

@@ -13,7 +13,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction, Option } from "lib/types";
-import { checkAvailability } from "lib/utils/abi";
+import { checkAvailability } from "lib/utils";
 
 const EmptyStateRender = ({ desc }: { desc: string }) => (
   <ModuleContainer h="full">

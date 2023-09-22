@@ -13,7 +13,7 @@ import { LabelText } from "lib/components/LabelText";
 import PageContainer from "lib/components/PageContainer";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction } from "lib/types";
-import { parseJsonABI } from "lib/utils/abi";
+import { parseJsonABI } from "lib/utils";
 
 import {
   ModuleSelectDrawerTrigger,

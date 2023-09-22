@@ -4,7 +4,7 @@ import { Text, Flex } from "@chakra-ui/react";
 import { StateImage } from "lib/components/state";
 
 interface ModuleEmptyStateProps {
-  description?: string;
+  description: string;
   imageWidth?: string;
   hasImage?: boolean;
   noBorder?: boolean;
@@ -13,9 +13,9 @@ interface ModuleEmptyStateProps {
 }
 
 export const ModuleEmptyState = ({
-  description = "Available functions for selected modules will display here",
+  description,
   imageWidth = "160px",
-  hasImage = true,
+  hasImage = false,
   noBorder = false,
   h = "full",
   p,
@@ -40,5 +40,5 @@ export const ModuleEmptyState = ({
 );
 
 export const NoImageEmptyState = ({ desc }: { desc: string }) => (
-  <ModuleEmptyState h="fit-content" p={4} hasImage={false} description={desc} />
+  <ModuleEmptyState h="fit-content" p={4} description={desc} />
 );

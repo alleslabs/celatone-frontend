@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
@@ -12,7 +13,6 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { Addr, ContractAddr, LVPair } from "lib/types";
 import {
@@ -35,6 +35,7 @@ export function SaveNewContractModal({
   list,
   buttonProps,
 }: SaveNewContractModalProps) {
+  const { track } = useTrack();
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
@@ -157,7 +158,7 @@ export function SaveNewContractModal({
     tags: offchainState.tags,
     lists: offchainState.lists,
     actions: () => {
-      AmpTrack(AmpEvent.CONTRACT_SAVE);
+      track(AmpEvent.CONTRACT_SAVE);
       resetForm();
     },
   });

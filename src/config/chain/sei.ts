@@ -52,7 +52,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "",
+      validator: "https://mintscan.io/sei/validators",
       proposal: "",
     },
     extra: {

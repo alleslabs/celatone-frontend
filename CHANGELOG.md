@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Add initia abi form
+- [#530](https://github.com/alleslabs/celatone-frontend/pull/530) Publish module component state wireup and add leaflet
 - [#521](https://github.com/alleslabs/celatone-frontend/pull/521) Initia module interaction function panel and selected function info accordion
 - [#515](https://github.com/alleslabs/celatone-frontend/pull/515) Initia select module drawer wireup
 - [#494](https://github.com/alleslabs/celatone-frontend/pull/494) Initia select module drawer UI
@@ -70,6 +71,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
+- [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
+- [#538](https://github.com/alleslabs/celatone-frontend/pull/538) Add empty state in query and execute with json schema
+- [#537](https://github.com/alleslabs/celatone-frontend/pull/537) Change json schema select widget null option wording for readability
+- [#535](https://github.com/alleslabs/celatone-frontend/pull/535) Improve json schema features
+- [#531](https://github.com/alleslabs/celatone-frontend/pull/531) Revise developer features and add accordion to sidebar navigation
+- [#529](https://github.com/alleslabs/celatone-frontend/pull/529) Improve developer features ux writing and transition
 - [#528](https://github.com/alleslabs/celatone-frontend/pull/528) Improve developer features toggle for a smoother ux
 - [#519](https://github.com/alleslabs/celatone-frontend/pull/519) Validate schema input when initialFormData has changed
 - [#513](https://github.com/alleslabs/celatone-frontend/pull/513) Disable simulating fee when JSON input is invalid
@@ -103,6 +111,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#543](https://github.com/alleslabs/celatone-frontend/pull/543) Fix Initia testnet chain config
+- [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
 - [#527](https://github.com/alleslabs/celatone-frontend/pull/527) Fix ellipsis explorer link
 - [#526](https://github.com/alleslabs/celatone-frontend/pull/526) Fix missing Tx proposal type
 - [#525](https://github.com/alleslabs/celatone-frontend/pull/525) Add accountId to txs count query keys
