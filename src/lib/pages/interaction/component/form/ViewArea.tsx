@@ -1,38 +1,129 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
-import { AbiForm, ArgsForm } from "lib/components/abi";
-import type { AbiFormData, ExposedFunction, Option } from "lib/types";
-import { getAbiInitialData } from "lib/utils";
+import { AbiForm } from "lib/components/abi";
+import { CustomIcon } from "lib/components/icon";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { DEFAULT_RPC_ERROR } from "lib/data";
+import { useFunctionView } from "lib/services/moduleService";
+import type {
+  Option,
+  AbiFormData,
+  ExposedFunction,
+  HexAddr,
+  JsonDataType,
+} from "lib/types";
+import { getAbiInitialData, jsonPrettify } from "lib/utils";
 
-export const ViewArea = ({ fn }: { fn: ExposedFunction }) => {
-  const [data, setData] = useState<AbiFormData>({
+export const ViewArea = ({
+  moduleAddress,
+  moduleName,
+  fn,
+}: {
+  moduleAddress: HexAddr;
+  moduleName: string;
+  fn: ExposedFunction;
+}) => {
+  const [abiData, setAbiData] = useState<AbiFormData>({
     typeArgs: getAbiInitialData(fn.generic_type_params.length),
     args: getAbiInitialData(fn.params.length),
   });
-  const [, setErrors] = useState<[string, string][]>([]);
-  const [res, setRes] = useState<Record<string, Option<string>>>(
-    getAbiInitialData(fn.return.length)
-  );
+  const [abiErrors, setAbiErrors] = useState<[string, string][]>([]);
+  const [res, setRes] = useState<JsonDataType>(undefined);
+  const [error, setError] = useState<Option<string>>(undefined);
 
+  const {
+    refetch,
+    isFetching: queryFetching,
+    isRefetching: queryRefetching,
+  } = useFunctionView({
+    moduleAddress,
+    moduleName,
+    fn,
+    abiData,
+    onSuccess: (data) => setRes(JSON.parse(data)),
+    onError: (err) => setError(err.response?.data.message || DEFAULT_RPC_ERROR),
+  });
+
+  const handleQuery = () => {
+    refetch();
+    setError(undefined);
+  };
+
+  const isLoading = queryFetching || queryRefetching;
+  const isDisabled = Boolean(abiErrors.length);
   return (
     <Grid templateColumns="1fr 1fr" gap={6}>
       <GridItem>
         <AbiForm
           fn={fn}
-          initialData={data}
-          propsOnChange={setData}
-          propsOnErrors={setErrors}
+          initialData={abiData}
+          propsOnChange={setAbiData}
+          propsOnErrors={setAbiErrors}
         />
+        <Flex justify="space-between" mt={4}>
+          <Button>TODO: CodeSnippet</Button>
+          <Button
+            variant="primary"
+            fontSize="14px"
+            p="6px 16px"
+            size={{ base: "sm", md: "md" }}
+            onClick={handleQuery}
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            leftIcon={<CustomIcon name="query" />}
+          >
+            View
+          </Button>
+        </Flex>
       </GridItem>
       <GridItem>
-        <ArgsForm
-          title="Return"
-          params={fn.return}
-          initialData={res}
-          propsOnChange={setRes}
-          isReadOnly
-        />
+        <Flex direction="column" gap={4}>
+          <Heading variant="h6" as="h6" color="text.main">
+            Return
+          </Heading>
+          {error && (
+            <Alert variant="error" alignItems="center" gap={4}>
+              <CustomIcon
+                name="alert-circle-solid"
+                color="error.main"
+                boxSize={4}
+              />
+              <AlertDescription wordBreak="break-word">
+                {error}
+              </AlertDescription>
+            </Alert>
+          )}
+          {res === undefined ? (
+            <Flex
+              direction="column"
+              alignItems="center"
+              gap={4}
+              p="24px 8px"
+              borderRadius="8px"
+              bg="gray.900"
+            >
+              {isLoading && <Spinner size="xl" />}
+              <Text variant="body2" color="text.dark">
+                {isLoading
+                  ? "Viewing ..."
+                  : "Result from viewing function will display here."}
+              </Text>
+            </Flex>
+          ) : (
+            <JsonReadOnly text={jsonPrettify(JSON.stringify(res))} canCopy />
+          )}
+        </Flex>
       </GridItem>
     </Grid>
   );

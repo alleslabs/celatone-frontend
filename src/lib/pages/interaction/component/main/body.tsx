@@ -5,7 +5,7 @@ import { ExecuteArea, ViewArea } from "../form";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
-import type { ExposedFunction, Option } from "lib/types";
+import type { ExposedFunction, HexAddr, Option } from "lib/types";
 
 import { SelectedFunctionCard } from "./SelectedFunctionCard";
 
@@ -20,7 +20,7 @@ export const FunctionSelectBody = ({
   selectedFn,
   openDrawer,
 }: FunctionSelectBodyProps) =>
-  selectedFn ? (
+  module && selectedFn ? (
     <Flex
       key={selectedFn.name + selectedFn.is_view}
       direction="column"
@@ -29,9 +29,17 @@ export const FunctionSelectBody = ({
     >
       <SelectedFunctionCard fn={selectedFn} />
       {selectedFn.is_view ? (
-        <ViewArea fn={selectedFn} />
+        <ViewArea
+          moduleAddress={module.address.toString() as HexAddr}
+          moduleName={module.moduleName}
+          fn={selectedFn}
+        />
       ) : (
-        <ExecuteArea fn={selectedFn} />
+        <ExecuteArea
+          moduleAddress={module.address.toString() as HexAddr}
+          moduleName={module.moduleName}
+          fn={selectedFn}
+        />
       )}
     </Flex>
   ) : (

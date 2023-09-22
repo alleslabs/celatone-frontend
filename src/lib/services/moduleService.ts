@@ -4,6 +4,7 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -16,6 +17,8 @@ import type {
   InternalModule,
   ResponseABI,
   Option,
+  AbiFormData,
+  RpcQueryError,
   HumanAddr,
   UpgradePolicy,
   HexAddr,
@@ -32,6 +35,7 @@ import {
   decodeModule,
   getAccountModule,
   getAccountModules,
+  getFunctionView,
   getModuleVerificationStatus,
 } from "./module";
 
@@ -116,6 +120,44 @@ export const useVerifyModule = ({
     }
   );
 
+export const useFunctionView = ({
+  moduleAddress,
+  moduleName,
+  fn,
+  abiData,
+  onSuccess,
+  onError,
+}: {
+  moduleAddress: MoveAccountAddr;
+  moduleName: string;
+  fn: ExposedFunction;
+  abiData: AbiFormData;
+  onSuccess?: (data: string) => void;
+  onError?: (err: AxiosError<RpcQueryError>) => void;
+}): UseQueryResult<string> => {
+  // TODO: handle POST in celatone API
+  const baseEndpoint = "https://stone-rest.initia.tech";
+  const queryFn: QueryFunction<string> = () =>
+    getFunctionView(baseEndpoint, moduleAddress, moduleName, fn, abiData);
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.FUNCTION_VIEW,
+      baseEndpoint,
+      moduleAddress,
+      moduleName,
+      fn.name,
+      JSON.stringify(abiData),
+    ] as readonly string[],
+    queryFn,
+    {
+      enabled: false,
+      retry: 0,
+      keepPreviousData: true,
+      onSuccess,
+      onError,
+    }
+  );
+};
 export interface DecodeModuleQueryResponse {
   abi: ResponseABI;
   modulePath: string;
@@ -158,9 +200,10 @@ export const useDecodeModule = ({
   return useQuery(
     [
       CELATONE_QUERY_KEYS.MODULE_DECODE,
+      baseEndpoint,
       move.enabled,
-      base64EncodedFile,
       address,
+      base64EncodedFile,
     ],
     queryFn,
     options

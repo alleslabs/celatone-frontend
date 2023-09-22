@@ -8,8 +8,15 @@ import type {
   HexAddr,
   SnakeToCamelCaseNested,
   ResponseABI,
+  ExposedFunction,
+  AbiFormData,
 } from "lib/types";
-import { libDecode, parseJsonABI, snakeToCamel } from "lib/utils";
+import {
+  libDecode,
+  parseJsonABI,
+  serializeAbiData,
+  snakeToCamel,
+} from "lib/utils";
 
 interface ModuleReturn {
   module: ResponseModule;
@@ -82,6 +89,19 @@ export const getModuleVerificationStatus = async (
     }))
     .catch(() => null);
 
+export const getFunctionView = async (
+  baseEndpoint: string,
+  address: MoveAccountAddr,
+  moduleName: string,
+  fn: ExposedFunction,
+  abiData: AbiFormData
+): Promise<string> => {
+  const { data } = await axios.post(
+    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}/view_functions/${fn.name}`,
+    serializeAbiData(fn, abiData)
+  );
+  return data.data;
+};
 interface DecodeModuleReturn {
   abi: string;
 }
