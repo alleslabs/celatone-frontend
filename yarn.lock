@@ -3431,10 +3431,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@initia/initia.js@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.9.tgz#e15c63b78b6385ce39f9677a75bd1abc1da92f4c"
-  integrity sha512-ZTN/uAd6r4f/SHgtzsNeAnAS1dIyyHa46sD0CXrzrWbIPFHs8dpJgNJY7Qca8bZaANecobU9jB6eI1K/MWVcLQ==
+"@initia/initia.js@0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.8.tgz#f1d1d12a37788054061b2e5f9db55c33dcc5f67c"
+  integrity sha512-Q7GhXHgIZ3th6k2vou+e+CO4C5JA/JeA6w3oP/kb2cxbqOAOM1+ybN/8oMtHNApxh/gpmCWUXi7axHV5v/91UA==
   dependencies:
     "@initia/initia.proto" "^0.1.11"
     "@ledgerhq/hw-transport" "^6.27.12"
@@ -3453,7 +3453,7 @@
     tmp "^0.2.1"
     ws "^7.5.9"
 
-"@initia/initia.proto@^0.1.11":
+"@initia/initia.proto@0.1.11", "@initia/initia.proto@^0.1.11":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.11.tgz#39016bbb4d15f06aaec17e56d6f431ddadc600ce"
   integrity sha512-G9HRTy5xfza6hTjYLuLgcmJWjSDsnLXnc2HvWceDcaSlHp212rMH07+gpazwY0L6aCm3uWyqLh4Yig60L3AaRA==

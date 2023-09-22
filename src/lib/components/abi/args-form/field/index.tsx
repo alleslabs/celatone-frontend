@@ -21,7 +21,6 @@ interface ArgFieldTemplateProps {
   param: string;
   control: Control<AbiFormData["args"]>;
   error?: string;
-  isReadOnly?: boolean;
 }
 
 export const ArgFieldTemplate = ({
@@ -29,7 +28,6 @@ export const ArgFieldTemplate = ({
   param,
   control,
   error,
-  isReadOnly = false,
 }: ArgFieldTemplateProps) => {
   const { validateUserAddress, validateContractAddress, validateHexAddress } =
     useValidateAddress();
@@ -44,7 +42,7 @@ export const ArgFieldTemplate = ({
 
   const isOptional = param.startsWith("0x1::option::Option");
   const type = isOptional ? param.split(/<(.*)>/)[1] : param;
-  const rules = getRules(type, isOptional, isReadOnly, isValidArgAddress);
+  const rules = getRules(type, isOptional, isValidArgAddress);
 
   const {
     field: { value, onChange, ...fieldProps },
@@ -57,21 +55,19 @@ export const ArgFieldTemplate = ({
   const isError = isTouched && !!error;
 
   const size = "md";
-  const isSigner = type === "&signer";
   const isNull = value === undefined;
   return (
     <Box>
       <FormControl
         className={`${size}-form`}
         variant={
-          isSigner || (type === "0x1::string::String" && !isNull)
+          type === "0x1::string::String" && !isNull
             ? "fixed-floating"
             : "floating"
         }
         size={size}
         isInvalid={isError}
-        isReadOnly={isReadOnly}
-        isDisabled={(isSigner && !isReadOnly) || isNull}
+        isDisabled={isNull}
         {...fieldProps}
       >
         <ArgFieldWidget type={type} value={value} onChange={onChange} />

@@ -1,3 +1,5 @@
+import type { MainWalletBase } from "@cosmos-kit/core";
+
 type FaucetConfig =
   | {
       enabled: true;
@@ -54,9 +56,7 @@ export interface ChainConfig {
   rpc: string;
   indexer: string;
   api: string;
-  // TODO: Fix MainWalletBase type conflict
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wallets: any[];
+  wallets: MainWalletBase[];
   features: {
     faucet: FaucetConfig;
     wasm: WasmConfig;

@@ -4,6 +4,7 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -16,8 +17,11 @@ import type {
   InternalModule,
   ResponseABI,
   Option,
+  AbiFormData,
+  RpcQueryError,
   HumanAddr,
   UpgradePolicy,
+  HexAddr,
 } from "lib/types";
 import {
   bech32AddressToHex,
@@ -31,6 +35,7 @@ import {
   decodeModule,
   getAccountModule,
   getAccountModules,
+  getFunctionView,
   getModuleVerificationStatus,
 } from "./module";
 
@@ -98,12 +103,15 @@ export const useVerifyModule = ({
   address,
   moduleName,
 }: {
-  address: MoveAccountAddr;
-  moduleName: string;
+  address: Option<MoveAccountAddr>;
+  moduleName: Option<string>;
 }) =>
   useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
-    () => getModuleVerificationStatus(address, moduleName),
+    () => {
+      if (!address || !moduleName) return null;
+      return getModuleVerificationStatus(address, moduleName);
+    },
     {
       enabled: Boolean(address && moduleName),
       retry: 0,
@@ -112,6 +120,44 @@ export const useVerifyModule = ({
     }
   );
 
+export const useFunctionView = ({
+  moduleAddress,
+  moduleName,
+  fn,
+  abiData,
+  onSuccess,
+  onError,
+}: {
+  moduleAddress: MoveAccountAddr;
+  moduleName: string;
+  fn: ExposedFunction;
+  abiData: AbiFormData;
+  onSuccess?: (data: string) => void;
+  onError?: (err: AxiosError<RpcQueryError>) => void;
+}): UseQueryResult<string> => {
+  // TODO: handle POST in celatone API
+  const baseEndpoint = "https://stone-rest.initia.tech";
+  const queryFn: QueryFunction<string> = () =>
+    getFunctionView(baseEndpoint, moduleAddress, moduleName, fn, abiData);
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.FUNCTION_VIEW,
+      baseEndpoint,
+      moduleAddress,
+      moduleName,
+      fn.name,
+      JSON.stringify(abiData),
+    ] as readonly string[],
+    queryFn,
+    {
+      enabled: false,
+      retry: 0,
+      keepPreviousData: true,
+      onSuccess,
+      onError,
+    }
+  );
+};
 export interface DecodeModuleQueryResponse {
   abi: ResponseABI;
   modulePath: string;
@@ -143,7 +189,7 @@ export const useDecodeModule = ({
 
     const currentPolicy = await getAccountModule(
       baseEndpoint,
-      abi.address,
+      abi.address as HexAddr,
       abi.name
     )
       .then((data) => data.upgradePolicy)
@@ -154,9 +200,10 @@ export const useDecodeModule = ({
   return useQuery(
     [
       CELATONE_QUERY_KEYS.MODULE_DECODE,
+      baseEndpoint,
       move.enabled,
-      base64EncodedFile,
       address,
+      base64EncodedFile,
     ],
     queryFn,
     options
