@@ -4,12 +4,11 @@ import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import { catchTxError } from "../common/catchTxError";
 import { postTx } from "../common/post";
 import { sendingTx } from "../common/sending";
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { formatUFee } from "lib/utils/formatter/denom";
@@ -19,6 +18,7 @@ interface ExecuteModuleTxParams {
   messages: EncodeObject[];
   fee: StdFee;
   client: SigningCosmWasmClient;
+  catchTxError: CatchTxError;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -28,6 +28,7 @@ export const executeModuleTx = ({
   messages,
   fee,
   client,
+  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: ExecuteModuleTxParams): Observable<TxResultRendering> => {
@@ -37,7 +38,6 @@ export const executeModuleTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
