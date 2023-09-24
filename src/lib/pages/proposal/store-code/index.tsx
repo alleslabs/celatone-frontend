@@ -22,6 +22,7 @@ import {
   PROPOSAL_STORE_CODE_TEXT,
 } from "../constants";
 import { getAlert } from "../utils";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -48,13 +49,6 @@ import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRend
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackUseDepositFill,
-  AmpTrackUseSubmitProposal,
-  AmpTrackUseUnpin,
-} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type {
   Addr,
@@ -91,10 +85,10 @@ const defaultValues: StoreCodeProposalState = {
   codeHash: "",
 };
 
-const page = "proposal-store-code";
-
 const StoreCodeProposal = () => {
   useWasmConfig({ shouldRedirect: true });
+  const { track, trackUseUnpin, trackUseDepositFill, trackUseSubmitProposal } =
+    useTrack();
   const {
     constants,
     chainConfig: { prettyName },
@@ -159,8 +153,8 @@ const StoreCodeProposal = () => {
   // Amp
   const router = useRouter();
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
+  }, [router.isReady, track]);
 
   const { variant, description, icon } = getAlert(
     initialDeposit.amount,
@@ -279,7 +273,7 @@ const StoreCodeProposal = () => {
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;
 
-    AmpTrackUseSubmitProposal(page, {
+    trackUseSubmitProposal({
       initialDeposit: initialDeposit.amount,
       assetDenom: initialDeposit.denom,
       minDeposit: minDeposit?.formattedAmount,
@@ -335,6 +329,7 @@ const StoreCodeProposal = () => {
     runAs,
     source,
     submitStoreCodeProposalTx,
+    trackUseSubmitProposal,
     title,
     unpinCode,
     walletAddress,
@@ -358,7 +353,6 @@ const StoreCodeProposal = () => {
             <ConnectWalletAlert
               subtitle={PROPOSAL_STORE_CODE_TEXT.connectWallet}
               mt={12}
-              page={page}
             />
             <form>
               <Flex my="48px" gap={6} direction="column">
@@ -373,7 +367,7 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.titlePlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.titleLabel}
                   labelBgColor="background.main"
-                  variant="floating"
+                  variant="fixed-floating"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
                     maxLength: constants.maxProposalTitleLength,
@@ -392,7 +386,7 @@ const StoreCodeProposal = () => {
                   height="160px"
                   label={PROPOSAL_STORE_CODE_TEXT.descriptionLabel}
                   placeholder={PROPOSAL_STORE_CODE_TEXT.descriptionPlaceholder}
-                  variant="floating"
+                  variant="fixed-floating"
                   labelBgColor="background.main"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.descriptionRequired,
@@ -407,7 +401,7 @@ const StoreCodeProposal = () => {
                   label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
                   labelBgColor="background.main"
                   placeholder={`ex. ${exampleUserAddress}`}
-                  variant="floating"
+                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
                   requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
                   error={errors.runAs?.message}
@@ -416,7 +410,7 @@ const StoreCodeProposal = () => {
                       onClick={
                         walletAddress
                           ? () => {
-                              AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                              track(AmpEvent.USE_ASSIGN_ME);
                               setValue("runAs", walletAddress as HumanAddr);
                               trigger("runAs");
                             }
@@ -451,7 +445,7 @@ const StoreCodeProposal = () => {
                 <Flex direction="row" alignItems="center" gap={1}>
                   <Checkbox
                     onChange={(e) => {
-                      AmpTrackUseUnpin(page, e.target.checked);
+                      trackUseUnpin(e.target.checked);
                       setValue("unpinCode", e.target.checked);
                     }}
                   >
@@ -478,7 +472,7 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.builderPlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.builderLabel}
                   labelBgColor="background.main"
-                  variant="floating"
+                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.builderHelperText}
                   // Builder is a docker image, can be tagged, digested, or both
                   rules={{
@@ -500,7 +494,7 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.sourcePlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.sourceLabel}
                   labelBgColor="background.main"
-                  variant="floating"
+                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.sourceHelperText}
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
@@ -526,7 +520,6 @@ const StoreCodeProposal = () => {
                   control={uploadSectionControl}
                   setValue={uploadSectionSetValue}
                   trigger={uploadSectionTrigger}
-                  page={page}
                 />
 
                 {/* Deposit  */}
@@ -538,7 +531,7 @@ const StoreCodeProposal = () => {
                     control={control}
                     label="Amount"
                     placeholder="0.00"
-                    variant="floating"
+                    variant="fixed-floating"
                     type="number"
                     helperAction={
                       <Text
@@ -551,10 +544,7 @@ const StoreCodeProposal = () => {
                         color="accent.main"
                         onClick={() => {
                           if (!minDeposit) return;
-                          AmpTrackUseDepositFill(
-                            page,
-                            minDeposit.formattedAmount
-                          );
+                          trackUseDepositFill(minDeposit.formattedAmount);
                           setValue(
                             "initialDeposit.amount",
                             minDeposit.formattedAmount

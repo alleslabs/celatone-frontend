@@ -13,7 +13,7 @@ import type { FormStatus } from "./FormStatus";
 import { getResponseMsg } from "./FormStatus";
 
 // TODO: remove
-export interface TextAreaProps extends FormControlProps {
+export interface TextareaProps extends FormControlProps {
   value: string;
   setInputState: Dispatch<SetStateAction<string>> | ((newVal: string) => void);
   label?: string;
@@ -23,7 +23,7 @@ export interface TextAreaProps extends FormControlProps {
   status?: FormStatus;
 }
 
-export const TextAreaInput = ({
+export const TextareaInput = ({
   value,
   setInputState,
   label,
@@ -33,7 +33,7 @@ export const TextAreaInput = ({
   error,
   status,
   ...componentProps
-}: TextAreaProps) => (
+}: TextareaProps) => (
   <FormControl
     isInvalid={!!error || status?.state === "error"}
     size="md"

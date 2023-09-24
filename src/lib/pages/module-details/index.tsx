@@ -16,6 +16,7 @@ import {
   RelatedProposalsTable,
   TxsTable,
 } from "../contract-details/components/tables";
+import { useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { IconKeys } from "lib/components/icon";
@@ -24,7 +25,6 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
-import { AmpTrackUseTab } from "lib/services/amplitude";
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAccountModules } from "lib/services/moduleService";
 import type { ContractAddr, MoveAccountAddr } from "lib/types";
@@ -57,6 +57,8 @@ const txTableHeaderId = "ModuleTxsTableHeader";
 export const ModuleDetails = () => {
   const navigate = useInternalNavigate();
   const router = useRouter();
+  const { trackUseTab } = useTrack();
+
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const moduleName = getFirstQueryParam(router.query.moduleName);
   const addr = getFirstQueryParam(router.query.address);
@@ -68,7 +70,7 @@ export const ModuleDetails = () => {
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
-      AmpTrackUseTab(nextTab);
+      trackUseTab(nextTab);
       navigate({
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
@@ -81,7 +83,7 @@ export const ModuleDetails = () => {
         },
       });
     },
-    [addr, moduleName, tab, navigate]
+    [addr, moduleName, tab, navigate, trackUseTab]
   );
 
   useEffect(() => {
@@ -102,13 +104,12 @@ export const ModuleDetails = () => {
   }, [router.isReady, tab, addr, moduleName, navigate]);
   const contractAddress = "" as ContractAddr;
   const { data: contractAccountId } = useAccountId(contractAddress);
-
   const {
     tableCounts,
     refetchMigration,
     refetchTransactions,
     refetchRelatedProposals,
-  } = useContractDetailsTableCounts(contractAddress);
+  } = useContractDetailsTableCounts(contractAddress, contractAccountId);
 
   if (isLoading && !data) return <Loading />;
   const moduleData = data as IndexedModule;

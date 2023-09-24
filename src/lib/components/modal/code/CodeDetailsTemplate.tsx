@@ -2,6 +2,7 @@ import { Flex, Text, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCelatoneApp, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
@@ -9,7 +10,6 @@ import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useCodeStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr, CodeInfo } from "lib/types";
 
 interface CodeDetailsTemplateModalProps {
@@ -31,6 +31,7 @@ export const CodeDetailsTemplateModal = ({
   triggerElement,
   icon = "bookmark-solid",
 }: CodeDetailsTemplateModalProps) => {
+  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const { saveNewCode, updateCodeInfo } = useCodeStore();
   const toast = useToast();
@@ -42,10 +43,10 @@ export const CodeDetailsTemplateModal = ({
 
   const handleAction = useCallback(() => {
     if (isNewCode) {
-      AmpTrack(AmpEvent.CODE_SAVE);
+      track(AmpEvent.CODE_SAVE);
       saveNewCode(codeInfo.id);
     } else {
-      AmpTrack(AmpEvent.CODE_EDIT);
+      track(AmpEvent.CODE_EDIT);
     }
 
     updateCodeInfo(codeInfo.id, codeInfo.uploader as Addr, name);
@@ -68,6 +69,7 @@ export const CodeDetailsTemplateModal = ({
     title,
     toast,
     updateCodeInfo,
+    track,
   ]);
 
   // fix prefilling blank space problem (e.g. name saved as "     ")
@@ -115,7 +117,7 @@ export const CodeDetailsTemplateModal = ({
       }
     >
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         value={name}
         setInputState={setName}
         size="lg"

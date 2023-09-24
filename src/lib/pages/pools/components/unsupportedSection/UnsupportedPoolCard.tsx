@@ -13,11 +13,11 @@ import Link from "next/link";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
+import { useTrack } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpTrackExpand, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Pool } from "lib/types";
 import { PoolType } from "lib/types";
 import { formatUTokenWithPrecision, openNewTab } from "lib/utils";
@@ -41,6 +41,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
+  const { trackWebsite, trackUseExpand } = useTrack();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     // First version, navigate to contract details page if pool type is CosmWasm
@@ -66,7 +67,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
         <>
           <AccordionButton
             onClick={() =>
-              AmpTrackExpand({
+              trackUseExpand({
                 action: !isExpanded ? "expand" : "collapse",
                 component: "unsupported_pool",
                 info: { poolId: item.id },
@@ -87,7 +88,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                     <Link
                       href={`${poolUrl}/${item.id}`}
                       onClick={(e) => {
-                        AmpTrackWebsite(`${poolUrl}/${item.id}`);
+                        trackWebsite(`${poolUrl}/${item.id}`);
                         e.stopPropagation();
                       }}
                       target="_blank"
@@ -165,7 +166,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                   </Button>
                   <Button
                     onClick={() => {
-                      AmpTrackWebsite(`${poolUrl}/${item.id}`);
+                      trackWebsite(`${poolUrl}/${item.id}`);
                       openNewTab(`${poolUrl}/${item.id}`);
                     }}
                     size="sm"

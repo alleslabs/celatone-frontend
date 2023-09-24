@@ -13,7 +13,6 @@ import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
 import { Tooltip } from "../Tooltip";
-import { AmpTrackExpand } from "lib/services/amplitude";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
@@ -64,13 +63,11 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
           <AccordionButton
             flexDirection="column"
             alignItems="flex-start"
-            onClick={() =>
-              AmpTrackExpand({
-                action: !isExpanded ? "expand" : "collapse",
-                component: "unsupported_pool",
-                section: "pool-list-page",
-              })
-            }
+            onClick={() => ({
+              action: !isExpanded ? "expand" : "collapse",
+              component: "unsupported_pool",
+              section: "pool-list-page",
+            })}
           >
             <Flex justifyContent="space-between" w="full">
               <Flex direction="column" gap={1} alignItems="flex-start">

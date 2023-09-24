@@ -1,6 +1,9 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useInternalNavigate,
   useWasmConfig,
@@ -17,7 +20,10 @@ import { useRecentContractsData } from "./data";
 
 const RecentContracts = observer(() => {
   useWasmConfig({ shouldRedirect: true });
+  const { track } = useTrack();
+  const router = useRouter();
   const navigate = useInternalNavigate();
+  const isMobile = useMobile();
   const onRowSelect = (contract: ContractAddr) =>
     navigate({
       pathname: "/contracts/[contract]",
@@ -26,6 +32,10 @@ const RecentContracts = observer(() => {
 
   const { recentContracts, isLoading } = useRecentContractsData("");
 
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_RECENT_CONTRACT);
+  }, [router.isReady, track]);
+
   const emptyState = (
     <EmptyState
       imageVariant="empty"
@@ -33,7 +43,6 @@ const RecentContracts = observer(() => {
       withBorder
     />
   );
-  const isMobile = useMobile();
   const MobileSection = () => {
     if (isLoading) return <Loading />;
     if (!recentContracts?.length) return emptyState;
@@ -48,6 +57,7 @@ const RecentContracts = observer(() => {
       </Flex>
     );
   };
+
   return (
     <PageContainer>
       <Box>

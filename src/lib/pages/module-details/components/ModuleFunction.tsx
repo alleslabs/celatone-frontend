@@ -5,7 +5,6 @@ import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
-import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { IndexedModule } from "lib/services/moduleService";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
@@ -63,7 +62,6 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
               />
             }
             onClick={() => {
-              AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");
               setExpandedIndexes((prev) =>
                 !prev.length
                   ? Array.from(

@@ -1,11 +1,11 @@
 import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
-import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import { PoolType } from "lib/types";
 
@@ -18,7 +18,9 @@ enum TabIndex {
 }
 
 export const PoolIndex = () => {
+  const { track } = useTrack();
   const router = useRouter();
+  const { trackUseTab } = useTrack();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 
   const { data: supportedPoolCount, isLoading: isLoadingSupported } =
@@ -36,16 +38,19 @@ export const PoolIndex = () => {
       search: "",
     });
 
-  const handleTabChange = (tab: TabIndex) => {
-    AmpTrackUseTab(TabIndex[tab]);
-    setTabIndex(tab);
-  };
+  const handleTabChange = useCallback(
+    (tab: TabIndex) => {
+      trackUseTab(TabIndex[tab]);
+      setTabIndex(tab);
+    },
+    [trackUseTab]
+  );
 
   const sectionHeaderId = "poolListTab";
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_POOL_LIST);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_POOL_LIST);
+  }, [router.isReady, track]);
 
   useEffect(() => {
     if (
@@ -56,7 +61,7 @@ export const PoolIndex = () => {
         handleTabChange(TabIndex.Unsupported);
       else handleTabChange(TabIndex.Supported);
     }
-  }, [supportedPoolCount, unsupportedPoolCount]);
+  }, [handleTabChange, supportedPoolCount, unsupportedPoolCount]);
 
   if (isLoadingSupported || isLoadingUnsupported) return <LoadingOverlay />;
   return (

@@ -5,7 +5,6 @@ import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { StructCard } from "lib/components/module/StructCard";
-import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { IndexedModule } from "lib/services/moduleService";
 
 interface ModuleStructProps {
@@ -41,7 +40,6 @@ export const ModuleStruct = ({ moduleData }: ModuleStructProps) => {
               />
             }
             onClick={() => {
-              AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");
               setExpandedIndexes((prev) =>
                 !prev.length
                   ? Array.from(

@@ -1,4 +1,4 @@
-import type { HexAddr } from "./addrs";
+import type { Option } from "./common";
 import type { SnakeToCamelCaseNested } from "./converter";
 
 export enum UpgradePolicy {
@@ -27,8 +27,9 @@ interface ABIFunction {
 }
 
 /* response */
+// TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection
 export interface ResponseModule {
-  address: HexAddr;
+  address: string;
   module_name: string;
   abi: string;
   raw_bytes: string;
@@ -45,8 +46,9 @@ export interface ModulePagination {
   total: string;
 }
 
+// TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection
 export interface ResponseABI {
-  address: HexAddr;
+  address: string;
   name: string;
   friends: string[];
   exposed_functions: ExposedFunction[];
@@ -73,11 +75,16 @@ export interface Struct {
   fields: Field[];
 }
 
-interface GenericTypeParam {
+export interface GenericTypeParam {
   constraints: string[];
 }
 
 interface Field {
   name: string;
   type: string;
+}
+
+export interface AbiFormData {
+  typeArgs: Record<string, string>;
+  args: Record<string, Option<string>>;
 }

@@ -11,7 +11,6 @@ import {
 
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
-import { AmpTrackExpand } from "lib/services/amplitude";
 import type { Struct } from "lib/types";
 
 interface StructCardProps {
@@ -44,13 +43,11 @@ export const StructCard = ({ struct }: StructCardProps) => {
           <AccordionButton
             flexDirection="column"
             alignItems="flex-start"
-            onClick={() =>
-              AmpTrackExpand({
-                action: !isExpanded ? "expand" : "collapse",
-                component: "unsupported_pool",
-                section: "pool-list-page",
-              })
-            }
+            onClick={() => ({
+              action: !isExpanded ? "expand" : "collapse",
+              component: "unsupported_pool",
+              section: "pool-list-page",
+            })}
           >
             <Flex justifyContent="space-between" w="full" alignItems="center">
               <Text variant="body2">{struct.name}</Text>

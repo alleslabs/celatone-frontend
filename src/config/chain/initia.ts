@@ -22,6 +22,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
+        decodeApi: "https://initia-api-jiod42ec2q-as.a.run.app/decode_module",
       },
       pool: {
         enabled: false,
@@ -38,7 +39,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
+        tokenPerGas: 0.151,
         denom: "uinit",
       },
       gasAdjustment: 1.5,

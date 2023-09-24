@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import type {
   UploadSucceedCallback,
   UploadTxInternalResult,
@@ -22,7 +23,6 @@ import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   Addr,
   HumanAddr,
@@ -48,6 +48,7 @@ export const UploadSection = ({
   onComplete,
   isMigrate = false,
 }: UploadSectionProps) => {
+  const { track } = useTrack();
   const {
     constants,
     chainConfig: {
@@ -148,7 +149,7 @@ export const UploadSection = ({
 
   const proceed = useCallback(async () => {
     if (address) {
-      AmpTrack(AmpEvent.ACTION_UPLOAD);
+      track(AmpEvent.ACTION_UPLOAD);
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
@@ -174,6 +175,7 @@ export const UploadSection = ({
   }, [
     address,
     postUploadTx,
+    track,
     wasmFile,
     addresses,
     permission,
@@ -236,7 +238,7 @@ export const UploadSection = ({
         error={
           errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
-        variant="floating"
+        variant="fixed-floating"
       />
       <InstantiatePermissionRadio
         control={control}

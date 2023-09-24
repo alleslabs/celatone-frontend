@@ -17,7 +17,7 @@ import { useValidateModuleInput } from "lib/pages/interaction/hooks/useValidateM
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAccountModules } from "lib/services/moduleService";
 import type { MoveAccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
-import { bech32AddressToHex, splitModule } from "lib/utils";
+import { bech32AddressToHex, splitModule, unpadHexAddress } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
   selectedAddress: SelectedAddress;
@@ -62,11 +62,11 @@ export const ModuleSelectorInput = ({
           return isHex
             ? {
                 address: convertHexAddr(addr as HexAddr),
-                hex: addr as HexAddr,
+                hex: unpadHexAddress(addr as HexAddr),
               }
             : {
                 address: addr as HumanAddr,
-                hex: bech32AddressToHex(addr as HumanAddr),
+                hex: unpadHexAddress(bech32AddressToHex(addr as HumanAddr)),
               };
         });
         if (Array.isArray(data)) {
@@ -123,7 +123,7 @@ export const ModuleSelectorInput = ({
         size="md"
         helperText={`ex. “${user}”, “${user}::module_name”, or “${user}::module_name::function_name”`}
         label="Fill in address or module path"
-        variant="floating"
+        variant="fixed-floating"
         labelBgColor="gray.800"
         onKeyDown={handleKeydown}
         autoFocus

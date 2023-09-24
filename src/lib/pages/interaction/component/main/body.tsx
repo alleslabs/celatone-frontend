@@ -1,10 +1,11 @@
 import { Button, Flex } from "@chakra-ui/react";
 
 import { ModuleContainer } from "../common";
+import { ExecuteArea, ViewArea } from "../form";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
-import type { ExposedFunction, Option } from "lib/types";
+import type { ExposedFunction, HexAddr, Option } from "lib/types";
 
 import { SelectedFunctionCard } from "./SelectedFunctionCard";
 
@@ -18,10 +19,28 @@ export const FunctionSelectBody = ({
   module,
   selectedFn,
   openDrawer,
-}: FunctionSelectBodyProps) => {
-  return selectedFn ? (
-    <Flex direction="column" maxW="full">
+}: FunctionSelectBodyProps) =>
+  module && selectedFn ? (
+    <Flex
+      key={selectedFn.name + selectedFn.is_view}
+      direction="column"
+      maxW="full"
+      gap={8}
+    >
       <SelectedFunctionCard fn={selectedFn} />
+      {selectedFn.is_view ? (
+        <ViewArea
+          moduleAddress={module.address.toString() as HexAddr}
+          moduleName={module.moduleName}
+          fn={selectedFn}
+        />
+      ) : (
+        <ExecuteArea
+          moduleAddress={module.address.toString() as HexAddr}
+          moduleName={module.moduleName}
+          fn={selectedFn}
+        />
+      )}
     </Flex>
   ) : (
     <ModuleContainer flexDirection="column">
@@ -56,4 +75,3 @@ export const FunctionSelectBody = ({
       )}
     </ModuleContainer>
   );
-};

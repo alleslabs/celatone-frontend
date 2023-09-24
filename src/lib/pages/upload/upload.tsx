@@ -2,13 +2,13 @@ import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import type { UploadSucceedCallback } from "lib/app-provider";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
@@ -19,6 +19,7 @@ export const Upload = ({
   onComplete: UploadSucceedCallback;
 }) => {
   const router = useRouter();
+  const { track } = useTrack();
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useUploadAccessParams();
@@ -34,8 +35,8 @@ export const Upload = ({
     // Redirect back to deploy page
     if (!enableUpload && !isLoading)
       navigate({ pathname: "/deploy", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);
-  }, [enableUpload, isLoading, navigate, router.isReady]);
+    else if (router.isReady) track(AmpEvent.TO_UPLOAD);
+  }, [enableUpload, isLoading, navigate, router.isReady, track]);
 
   return (
     <WasmPageContainer>

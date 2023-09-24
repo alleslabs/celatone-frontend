@@ -3,7 +3,6 @@ import { catchError } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   ActionVariant,
   ReceiptInfo,
@@ -39,15 +38,17 @@ const getActionVariant = (isRejected: boolean): ActionVariant =>
   isRejected ? "rejected" : "failed";
 
 export const catchTxError = (
+  trackTxFailed: () => void,
+  trackTxRejected: () => void,
   onTxFailed?: () => void
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
     const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
-    AmpTrack(
-      error.message === "Request rejected"
-        ? AmpEvent.TX_REJECTED
-        : AmpEvent.TX_FAILED
-    );
+    if (error.message === "Request rejected") {
+      trackTxRejected();
+    } else {
+      trackTxFailed();
+    }
     onTxFailed?.();
     return Promise.resolve<TxResultRendering>({
       value: null,

@@ -119,7 +119,7 @@ export const ContractListDetail = ({
     <Box minH="xs">
       <Flex gap={3} w="full" my={isReadOnly ? "24px" : "48px"}>
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={searchKeyword}
           setInputState={setSearchKeyword}
           placeholder="Search with Contract Address, Name, or Description"

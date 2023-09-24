@@ -4,9 +4,8 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
+import { ModuleSourceCode } from "lib/components/module";
 import type { IndexedModule } from "lib/services/moduleService";
-
-import { ModuleSourceCode } from "./ModuleSourceCode";
 
 interface ModuleInfoProps {
   moduleData: IndexedModule;
@@ -83,7 +82,8 @@ export const ModuleInfo = ({
           />
         </LabelText>
       </Flex>
-      <ModuleSourceCode />
+      {/* TODO: Wireup */}
+      <ModuleSourceCode sourceCode="" />
     </Flex>
   );
 };

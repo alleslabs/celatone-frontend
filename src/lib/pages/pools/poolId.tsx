@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -15,14 +15,15 @@ import {
 import { usePool } from "./data";
 
 export const PoolId = () => {
+  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const poolId = Number(getFirstQueryParam(router.query.poolId));
   const { pool, isLoading } = usePool(poolId);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_POOL_DETAIL);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_POOL_DETAIL);
+  }, [router.isReady, track]);
 
   if (isLoading) return <Loading />;
   if (!pool) return navigate({ pathname: `/pools` });
