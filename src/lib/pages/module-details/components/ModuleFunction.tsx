@@ -1,7 +1,8 @@
 import { Flex, Heading, Button, Accordion } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
 import { AmpTrackExpandAll } from "lib/services/amplitude";
@@ -16,6 +17,14 @@ interface ModuleFunctionProps {
 export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
   const [tab, setTab] = useState(FunctionTypeTabs.ALL);
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+  const [keyword, setKeyword] = useState("");
+
+  const exposedFns = moduleData.parsedAbi.exposed_functions;
+  const filteredFns = useMemo(() => {
+    if (!keyword) return exposedFns;
+    return exposedFns.filter((fn) => fn.name?.includes(keyword));
+  }, [keyword, exposedFns]);
+
   const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
 
@@ -23,17 +32,22 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
 
   return (
     <Flex direction="column" gap={8}>
-      <Heading as="h6" variant="h6" fontWeight={600}>
+      <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
         Exposed Function
       </Heading>
-      <Flex>search input ja</Flex>
+      <InputWithIcon
+        placeholder="Search functions..."
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        action="exposed-function-search"
+      />
       <Flex justifyContent="space-between" alignItems="center">
         <FunctionTypeSwitch
           currentTab={tab}
           onTabChange={setTab}
           my={3}
           counts={[
-            moduleData.parsedAbi.exposed_functions.length,
+            filteredFns.length,
             moduleData.viewFunctions.length,
             moduleData.executeFunctions.length,
           ]}
@@ -101,7 +115,7 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
         onChange={updateExpandedIndexes}
       >
         <Flex direction="column" gap={4}>
-          {moduleData.parsedAbi.exposed_functions.map((fn) => (
+          {filteredFns.map((fn) => (
             <FunctionDetailCard exposedFn={fn} key={fn.name} />
           ))}
         </Flex>

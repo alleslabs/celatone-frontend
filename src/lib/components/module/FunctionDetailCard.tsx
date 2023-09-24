@@ -18,7 +18,6 @@ import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
 interface FunctionDetailCardProps {
-  // isSelected?: boolean;
   exposedFn: ExposedFunction;
 }
 
@@ -35,7 +34,7 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
   const { is_view: isView, visibility, name } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
 
-  const getColor = () => {
+  const getFnColor = () => {
     switch (isView) {
       case false:
         return "accent.main";
@@ -45,6 +44,11 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
     }
   };
 
+  const getButtonStyle = () => {
+    if (disabled) return { variant: "outline-gray", color: "gray.500" };
+    if (isView) return { variant: "outline-primary", color: "primary.dark" };
+    return { variant: "outline-accent", color: "accent.dark" };
+  };
   return (
     <AccordionItem
       bg="gray.800"
@@ -69,14 +73,14 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
             }
           >
             <Flex justifyContent="space-between" w="full">
-              <Flex direction="column" gap={1}>
+              <Flex direction="column" gap={1} alignItems="flex-start">
                 <Flex gap={1} alignItems="center">
                   <CustomIcon
                     name={isView ? "query" : "execute"}
-                    color={getColor()}
+                    color={getFnColor()}
                     boxSize={3}
                   />
-                  <Text variant="body3" color={getColor()}>
+                  <Text variant="body3" color={getFnColor()}>
                     {isView ? "View" : "Execute"}
                   </Text>
                 </Flex>
@@ -134,19 +138,20 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
                   </Flex>
                 </Flex>
                 <Button
-                  variant={isView ? "outline-primary" : "outline-accent"}
-                  borderColor={isView ? "primary.dark" : "accent.dark"}
+                  variant={getButtonStyle().variant}
+                  isDisabled={disabled}
+                  borderColor={getButtonStyle().color}
                   size="sm"
                   leftIcon={
                     <CustomIcon
                       mx={0}
                       name={isView ? "query" : "execute"}
-                      color={getColor()}
+                      color={getButtonStyle().color}
                       boxSize={3}
                     />
                   }
                 >
-                  <Text color={getColor()} mt="2px">
+                  <Text color={getButtonStyle().color} mt="2px">
                     {isView ? "View" : "Execute"}
                   </Text>
                 </Button>
@@ -168,25 +173,31 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
           <AccordionPanel bg="gray.900" borderRadius={8} mt={4} py={3} px={4}>
             <Flex gap={3} direction="column">
               <Flex gap={8}>
-                <LabelText isSmall label="Visibility" labelWeight={700}>
-                  <Flex
-                    align="center"
-                    gap={1}
-                    color="text.dark"
-                    lineHeight={0}
-                    textTransform="capitalize"
-                  >
+                <LabelText
+                  isSmall
+                  label="visibility"
+                  labelWeight={700}
+                  labelColor="text.disabled"
+                >
+                  <Flex align="center">
                     <CustomIcon
                       name={getVisibilityIcon(exposedFn.visibility)}
                       boxSize={3}
                       ml={0}
                       color="gray.600"
                     />
-                    <Text variant="body3">{exposedFn.visibility}</Text>
+                    <Text variant="body3" textTransform="capitalize">
+                      {exposedFn.visibility}
+                    </Text>
                   </Flex>
                 </LabelText>
-                <LabelText isSmall label="is_entry" labelWeight={700}>
-                  <Flex align="center" gap={1} color="text.dark" lineHeight={0}>
+                <LabelText
+                  isSmall
+                  label="is_entry"
+                  labelWeight={700}
+                  labelColor="text.disabled"
+                >
+                  <Flex align="center">
                     <CustomIcon
                       boxSize={3}
                       ml={0}
@@ -196,8 +207,13 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
                     <Text variant="body3">{String(exposedFn.is_entry)}</Text>
                   </Flex>
                 </LabelText>
-                <LabelText isSmall label="is_view" labelWeight={700}>
-                  <Flex align="center" gap={1} color="text.dark" lineHeight={0}>
+                <LabelText
+                  isSmall
+                  label="is_view"
+                  labelWeight={700}
+                  labelColor="text.disabled"
+                >
+                  <Flex align="center">
                     <CustomIcon
                       boxSize={3}
                       ml={0}
@@ -208,12 +224,22 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
                   </Flex>
                 </LabelText>
               </Flex>
-              <LabelText isSmall label="generic_type_params" labelWeight={700}>
+              <LabelText
+                isSmall
+                label="generic_type_params"
+                labelWeight={700}
+                labelColor="text.disabled"
+              >
                 <Text variant="body3">
                   {JSON.stringify(exposedFn.generic_type_params)}
                 </Text>
               </LabelText>
-              <LabelText isSmall label="params" labelWeight={700}>
+              <LabelText
+                isSmall
+                label="params"
+                labelWeight={700}
+                labelColor="text.disabled"
+              >
                 <Text variant="body3">{JSON.stringify(exposedFn.params)}</Text>
               </LabelText>
             </Flex>

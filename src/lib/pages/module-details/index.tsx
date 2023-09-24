@@ -1,5 +1,6 @@
 import {
   Flex,
+  Text,
   Tabs,
   TabList,
   TabPanel,
@@ -7,6 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import type { MouseEventHandler } from "react";
 import { useCallback, useEffect } from "react";
 
 import {
@@ -16,6 +18,8 @@ import {
 } from "../contract-details/components/tables";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import type { IconKeys } from "lib/components/icon";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetailsTableCounts } from "lib/model/contract";
@@ -28,8 +32,8 @@ import { getFirstQueryParam } from "lib/utils";
 
 import { ModuleFunction } from "./components/ModuleFunction";
 import { ModuleInfo } from "./components/ModuleInfo";
+import { ModuleStruct } from "./components/ModuleStruct";
 import { ModuleTop } from "./components/ModuleTop";
-import { QuickAccess } from "./components/QuickAccess";
 
 const tableHeaderId = "moduleDetailsTab";
 export enum TabIndex {
@@ -38,6 +42,15 @@ export enum TabIndex {
   Txs = "txs",
   Structs = "structs",
 }
+
+interface ActionInfo {
+  icon: IconKeys;
+  iconColor: string;
+  name: string;
+  count: number;
+  onClick: MouseEventHandler<HTMLDivElement>;
+}
+
 // TODO get module path
 const txTableHeaderId = "ModuleTxsTableHeader";
 
@@ -99,9 +112,29 @@ export const ModuleDetails = () => {
 
   if (isLoading && !data) return <Loading />;
   const moduleData = data as IndexedModule;
-  // moduleData?.parsedAbi.exposed_functions
-  // moduleData?.viewFunctions
-  // moduleData?.executeFunctions
+  const actionList: ActionInfo[] = [
+    {
+      icon: "query" as IconKeys,
+      iconColor: "primary.main",
+      name: "View Functions",
+      count: moduleData?.viewFunctions.length,
+      onClick: handleTabChange(TabIndex.Function),
+    },
+    {
+      icon: "execute" as IconKeys,
+      iconColor: "accent.main",
+      name: "Execute Functions",
+      count: moduleData?.executeFunctions.length,
+      onClick: handleTabChange(TabIndex.Function),
+    },
+    {
+      icon: "list" as IconKeys,
+      iconColor: "gray.600",
+      name: "Transactions",
+      count: 0,
+      onClick: handleTabChange(TabIndex.Txs),
+    },
+  ];
   return (
     <PageContainer>
       <ModuleTop isVerified moduleData={moduleData} />
@@ -141,10 +174,43 @@ export const ModuleDetails = () => {
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              <QuickAccess
-                viewFnCount={moduleData?.viewFunctions.length}
-                executeFnCount={moduleData?.executeFunctions.length}
-              />
+              <Flex justifyContent="space-between" gap={6} mb={6}>
+                {actionList.map((item) => (
+                  <Flex
+                    p={4}
+                    bg="gray.800"
+                    _hover={{ bg: "gray.700" }}
+                    transition="all .25s ease-in-out"
+                    borderRadius={8}
+                    w="full"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                    onClick={item.onClick}
+                  >
+                    <Flex gap={3} alignItems="center">
+                      <CustomIcon
+                        name={item.icon}
+                        boxSize={6}
+                        color={item.iconColor}
+                      />
+                      <Flex flexDirection="column">
+                        <Text
+                          variant="body1"
+                          color="text.dark"
+                          fontWeight={600}
+                        >
+                          {item.name}
+                        </Text>
+                        <Heading as="h6" variant="h6" fontWeight={600}>
+                          {item.count}
+                        </Heading>
+                      </Flex>
+                    </Flex>
+                    <CustomIcon name="chevron-right" color="gray.600" />
+                  </Flex>
+                ))}
+              </Flex>
               <ModuleInfo isVerified moduleData={moduleData} />
               {/* TODO History */}
               <Flex flexDirection="column" mt={6}>
@@ -269,7 +335,9 @@ export const ModuleDetails = () => {
               </Tabs>
             </Flex>
           </TabPanel>
-          <TabPanel p={0}>4</TabPanel>
+          <TabPanel p={0}>
+            <ModuleStruct moduleData={moduleData} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </PageContainer>

@@ -6,6 +6,7 @@ import { TooltipInfo } from "./Tooltip";
 interface LabelTextProps extends FlexProps {
   label: string;
   labelWeight?: number;
+  labelColor?: string;
   isSmall?: boolean;
   tooltipText?: string;
   children: string | JSX.Element;
@@ -17,6 +18,7 @@ export const LabelText = ({
   label,
   labelWeight = 500,
   isSmall = false,
+  labelColor = "text.dark",
   tooltipText,
   children,
   helperText1,
@@ -27,7 +29,7 @@ export const LabelText = ({
     <Flex align="center" gap={1}>
       <Text
         variant={isSmall ? "body3" : "body2"}
-        color="text.dark"
+        color={labelColor}
         fontWeight={labelWeight}
       >
         {label}
@@ -42,12 +44,12 @@ export const LabelText = ({
       children
     )}
     {helperText1 && (
-      <Text variant="body3" color="text.dark">
+      <Text variant="body3" color={labelColor}>
         {helperText1}
       </Text>
     )}
     {helperText2 && (
-      <Text variant="body3" color="text.dark">
+      <Text variant="body3" color={labelColor}>
         {helperText2}
       </Text>
     )}

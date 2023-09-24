@@ -60,7 +60,7 @@ export const FunctionTypeSwitch = ({
           textAlign="center"
         >
           <Heading as="h6" variant="h6" fontSize="14px">
-            {tab} {counts[idx] && `(${counts[idx]})`}
+            {tab} {`(${counts[idx]})`}
           </Heading>
         </MotionBox>
       ))}
