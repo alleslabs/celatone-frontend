@@ -5,17 +5,21 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
 import { ModuleSourceCode } from "lib/components/module";
-import type { IndexedModule } from "lib/services/moduleService";
+import {
+  useVerifyModule,
+  type IndexedModule,
+} from "lib/services/moduleService";
+import type { HexAddr, Option } from "lib/types";
 
 interface ModuleInfoProps {
   moduleData: IndexedModule;
-  isVerified?: boolean;
 }
 
-export const ModuleInfo = ({
-  moduleData,
-  isVerified = false,
-}: ModuleInfoProps) => {
+export const ModuleInfo = ({ moduleData }: ModuleInfoProps) => {
+  const { data: verificationData } = useVerifyModule({
+    address: moduleData?.address as Option<HexAddr>,
+    moduleName: moduleData?.moduleName,
+  });
   if (!moduleData) return <Loading />;
   return (
     <Flex flexDirection="column" gap={4}>
@@ -23,7 +27,7 @@ export const ModuleInfo = ({
         <Heading as="h6" variant="h6" fontWeight={600}>
           Module Information
         </Heading>
-        {isVerified && (
+        {verificationData?.source && (
           <Flex alignItems="center" gap={1}>
             <CustomIcon name="check-circle-solid" color="success.main" />
             <Text variant="body2" color="text.dark">
@@ -41,7 +45,7 @@ export const ModuleInfo = ({
         sx={{ "& > div": { flex: 1 } }}
       >
         <LabelText label="Upgrade Policy">{moduleData.upgradePolicy}</LabelText>
-        {/* TODO data */}
+        {/* TODO get block height */}
         <LabelText
           label="Initial Published Block Height"
           helperText1="formatUTC(createdTime)"
@@ -57,11 +61,12 @@ export const ModuleInfo = ({
         <LabelText label="Initial Published by" helperText1="(Account Address)">
           <ExplorerLink
             type="user_address"
-            value="cltn1...7tlju97"
+            value={moduleData.address}
             showCopyOnHover
             fixedHeight
           />
         </LabelText>
+        {/* TODO get  Transaction or proposal */}
         <LabelText label="Initial Published Transaction">
           <ExplorerLink
             type="tx_hash"
@@ -82,8 +87,7 @@ export const ModuleInfo = ({
           />
         </LabelText>
       </Flex>
-      {/* TODO: Wireup */}
-      <ModuleSourceCode sourceCode="" />
+      <ModuleSourceCode sourceCode={verificationData?.source} />
     </Flex>
   );
 };

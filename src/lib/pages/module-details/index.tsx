@@ -30,6 +30,7 @@ import { useAccountModules } from "lib/services/moduleService";
 import type { ContractAddr, MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
+import { FunctionTypeTabs } from "./components/FunctionTypeSwitch";
 import { ModuleFunction } from "./components/ModuleFunction";
 import { ModuleInfo } from "./components/ModuleInfo";
 import { ModuleStruct } from "./components/ModuleStruct";
@@ -68,7 +69,7 @@ export const ModuleDetails = () => {
   });
 
   const handleTabChange = useCallback(
-    (nextTab: TabIndex) => () => {
+    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
@@ -77,6 +78,7 @@ export const ModuleDetails = () => {
           address: addr,
           moduleName,
           tab: nextTab,
+          ...(fnType ? { type: fnType } : {}),
         },
         options: {
           shallow: true,
@@ -119,16 +121,17 @@ export const ModuleDetails = () => {
       iconColor: "primary.main",
       name: "View Functions",
       count: moduleData?.viewFunctions.length,
-      onClick: handleTabChange(TabIndex.Function),
+      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
     },
     {
       icon: "execute" as IconKeys,
       iconColor: "accent.main",
       name: "Execute Functions",
       count: moduleData?.executeFunctions.length,
-      onClick: handleTabChange(TabIndex.Function),
+      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
     },
     {
+      // TO DO get tx count
       icon: "list" as IconKeys,
       iconColor: "gray.600",
       name: "Transactions",
@@ -156,7 +159,7 @@ export const ModuleDetails = () => {
           </CustomTab>
           <CustomTab
             count={moduleData?.parsedAbi.exposed_functions.length}
-            onClick={handleTabChange(TabIndex.Function)}
+            onClick={handleTabChange(TabIndex.Function, FunctionTypeTabs.ALL)}
             isDisabled={!moduleData?.parsedAbi.exposed_functions.length}
           >
             Function
@@ -212,7 +215,7 @@ export const ModuleDetails = () => {
                   </Flex>
                 ))}
               </Flex>
-              <ModuleInfo isVerified moduleData={moduleData} />
+              <ModuleInfo moduleData={moduleData} />
               {/* TODO History */}
               <Flex flexDirection="column" mt={6}>
                 <Heading
@@ -276,8 +279,8 @@ export const ModuleDetails = () => {
           <TabPanel p={0}>
             <ModuleFunction moduleData={moduleData} />
           </TabPanel>
+          {/* TODO TX History */}
           <TabPanel p={0}>
-            {/* TODO History */}
             <Flex flexDirection="column" mt={6}>
               <Heading
                 as="h6"

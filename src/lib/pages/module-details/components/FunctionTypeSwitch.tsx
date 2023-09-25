@@ -1,6 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
@@ -15,7 +14,7 @@ interface FunctionTypeSwitchProps extends FlexProps {
   currentTab: FunctionTypeTabs;
   disabled?: boolean;
   counts: [Option<number>, Option<number>, Option<number>];
-  onTabChange: Dispatch<SetStateAction<FunctionTypeTabs>>;
+  onTabChange: (newTab: FunctionTypeTabs) => void;
 }
 
 const tabs = Object.values(FunctionTypeTabs);

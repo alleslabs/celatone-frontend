@@ -1,11 +1,14 @@
 import { Flex, Heading, Button, Accordion } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { useCallback, useMemo, useState } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
 import type { IndexedModule } from "lib/services/moduleService";
+import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
 
@@ -14,18 +17,48 @@ interface ModuleFunctionProps {
 }
 
 export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
-  const [tab, setTab] = useState(FunctionTypeTabs.ALL);
+  const router = useRouter();
+  const navigate = useInternalNavigate();
+
+  const tab = getFirstQueryParam(router.query.type) as FunctionTypeTabs;
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
   const [keyword, setKeyword] = useState("");
 
   const exposedFns = moduleData.parsedAbi.exposed_functions;
-  const filteredFns = useMemo(() => {
+
+  const searchedFns = useMemo(() => {
     if (!keyword) return exposedFns;
     return exposedFns.filter((fn) => fn.name?.includes(keyword));
   }, [keyword, exposedFns]);
+  const viewFns = searchedFns.filter((fn) => fn.is_view);
+  const executeFns = searchedFns.filter((fn) => !fn.is_view);
+
+  const getDisplayedFns = (selectedTab: FunctionTypeTabs) => {
+    if (selectedTab === FunctionTypeTabs.VIEW) return viewFns;
+    if (selectedTab === FunctionTypeTabs.EXECUTE) return executeFns;
+    return searchedFns;
+  };
 
   const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
+
+  const handleTabChange = useCallback(
+    (nextTab: FunctionTypeTabs) => {
+      if (nextTab === tab) return;
+      navigate({
+        pathname: `/modules/[address]/[moduleName]/function`,
+        query: {
+          address: moduleData.address,
+          moduleName: moduleData.moduleName,
+          type: nextTab,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [tab, moduleData.address, moduleData.moduleName, navigate]
+  );
 
   if (!moduleData) return <Loading />;
 
@@ -43,13 +76,9 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
       <Flex justifyContent="space-between" alignItems="center">
         <FunctionTypeSwitch
           currentTab={tab}
-          onTabChange={setTab}
+          onTabChange={handleTabChange}
           my={3}
-          counts={[
-            filteredFns.length,
-            moduleData.viewFunctions.length,
-            moduleData.executeFunctions.length,
-          ]}
+          counts={[searchedFns.length, viewFns.length, executeFns.length]}
         />
         <Flex gap={4} alignItems="center">
           <Button
@@ -113,7 +142,7 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
         onChange={updateExpandedIndexes}
       >
         <Flex direction="column" gap={4}>
-          {filteredFns.map((fn) => (
+          {getDisplayedFns(tab).map((fn) => (
             <FunctionDetailCard exposedFn={fn} key={fn.name} />
           ))}
         </Flex>
