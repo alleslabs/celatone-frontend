@@ -27,6 +27,7 @@ export const useNetworkChange = (
         router.pathname === "/[network]" &&
         !SUPPORTED_CHAIN_IDS.includes(networkRoute)
       ) {
+        // Redirect to default network 404 if `/invalid_network`
         navigate({
           pathname: "/404",
           query: {
@@ -39,6 +40,8 @@ export const useNetworkChange = (
       }
     } else if (router.pathname === "/404") {
       const networkRoute = router.asPath.split("/")[1];
+      // Redirect to the current network 404 if `/current_network/random_path`
+      // If the current network is also invalid, redicrect to default network 404
       navigate({
         pathname: "/404",
         query: {
