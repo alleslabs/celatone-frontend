@@ -52,7 +52,9 @@ export const ModuleSelectorInput = ({
     moduleName,
     functionName,
     options: {
+      refetchOnWindowFocus: false,
       enabled: false,
+      refetchOnMount: true,
       retry: false,
       onSuccess: (data) => {
         setError("");
