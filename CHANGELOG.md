@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
 - [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
 - [#538](https://github.com/alleslabs/celatone-frontend/pull/538) Add empty state in query and execute with json schema
