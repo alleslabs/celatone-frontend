@@ -1,6 +1,7 @@
 import type { Big } from "big.js";
 import big from "big.js";
 
+import { UPPERBOUND_COUNT } from "lib/data";
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
@@ -134,11 +135,10 @@ export const usePoolTxsCount = (
   const loading = isLoading || txsIsLoading;
   if (error && txs?.length === 0)
     return { count: 0, countDisplay: "0", isLoading: loading };
-  const upperboundCount = 10000;
-  const showActualCount = data !== undefined && data <= upperboundCount;
+  const showActualCount = data !== undefined && data <= UPPERBOUND_COUNT;
   return {
-    count: showActualCount ? data : upperboundCount,
-    countDisplay: showActualCount ? data.toString() : `${upperboundCount}+`,
+    count: showActualCount ? data : UPPERBOUND_COUNT,
+    countDisplay: showActualCount ? data.toString() : `${UPPERBOUND_COUNT}+`,
     isLoading: loading,
   };
 };

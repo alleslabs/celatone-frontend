@@ -66,38 +66,47 @@ const getArgType = (argType: string) =>
     .replaceAll("0x1::option::Option", "option");
 
 const getArgValue = ({
-  // type,
+  type,
   value,
 }: {
-  // type: string;
+  type: string;
   value: Nullable<string>;
 }) => {
   try {
     if (value === null) return null;
-    // if (type.startsWith("vector")) return JSON.parse(value) as string[];
+    if (type.startsWith("vector")) {
+      const [, elementType] = type.split(/<(.*)>/);
+      const values = value
+        .split(/\[(.*)\]/)[1]
+        .split(",")
+        .map((element) => element.trim());
+      return elementType === "bool"
+        ? values.map((element) => element.toLowerCase() === "true")
+        : values;
+    }
+    if (type === "bool") return value === "true";
     return value.trim();
   } catch (e) {
     return "";
   }
 };
 
-const serializeArg = (
-  arg: { type: string; value: Nullable<string> },
-  bcs: BCS
-) => {
+const BUFFER_SIZE = 1024 * 1024;
+const bcs = BCS.getInstance();
+
+const serializeArg = (arg: { type: string; value: Nullable<string> }) => {
   try {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
-    return bcs.serialize(argType, argValue, 1024 * 1024);
+    return bcs.serialize(argType, argValue, BUFFER_SIZE);
   } catch (e) {
     return "";
   }
 };
 
 export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
-  const bcs = BCS.getInstance();
   const serializedArgs = fn.params.map((type, index) =>
-    serializeArg({ type, value: abiData.args[index] }, bcs)
+    serializeArg({ type, value: abiData.args[index] })
   );
   return {
     typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),

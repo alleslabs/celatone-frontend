@@ -17,7 +17,9 @@ const validateUint = (uintType: string) => (v: string) => {
     : `Input must be ‘${uintType}’`;
 };
 const validateBool = (v: string) =>
-  v === "true" || v === "false" ? undefined : "Input must be ‘boolean’";
+  v.toLowerCase() === "true" || v.toLowerCase() === "false"
+    ? undefined
+    : "Input must be ‘boolean’";
 
 const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: string) =>
@@ -29,6 +31,9 @@ const validateVector = (
   isValidArgAddress: (input: string) => boolean
 ) => {
   const value = v.trim();
+  if (!value.startsWith("[") || !value.endsWith("]"))
+    return "Input must be ‘vector’";
+
   const [, elementType] = vectorType.split(/<(.*)>/);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,10 +46,13 @@ const validateVector = (
   // TODO: handle Vector?
 
   let error: Option<string>;
-  value.split(",").forEach((elementValue) => {
-    const res = validateElement(elementValue.trim());
-    if (res !== undefined) error = `Invalid element: ${res}`;
-  });
+  value
+    .slice(1, -1)
+    .split(",")
+    .forEach((elementValue) => {
+      const res = validateElement(elementValue.trim());
+      if (res !== undefined) error = `Invalid element: ${res}`;
+    });
 
   return error;
 };
