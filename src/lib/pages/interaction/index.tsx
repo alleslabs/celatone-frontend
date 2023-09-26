@@ -38,15 +38,10 @@ export const Interaction = () => {
     []
   );
 
-  const { data: verificationData, refetch } = useVerifyModule({
+  const { data: verificationData } = useVerifyModule({
     address: module?.address as Option<HexAddr>,
     moduleName: module?.moduleName,
   });
-
-  const handleChangeModule = () => {
-    refetch();
-    onOpen();
-  };
 
   return (
     <>
@@ -96,7 +91,7 @@ export const Interaction = () => {
                 <ModuleSelectDrawerTrigger
                   triggerVariant="change-module"
                   buttonText="Change Module"
-                  onOpen={handleChangeModule}
+                  onOpen={onOpen}
                 />
                 <Button
                   variant="ghost-gray"

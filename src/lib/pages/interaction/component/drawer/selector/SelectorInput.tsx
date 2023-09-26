@@ -52,7 +52,6 @@ export const ModuleSelectorInput = ({
     moduleName,
     functionName,
     options: {
-      refetchOnWindowFocus: false,
       enabled: false,
       retry: false,
       onSuccess: (data) => {
