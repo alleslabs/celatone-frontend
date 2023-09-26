@@ -14,11 +14,8 @@ export const useNetworkChange = (
   const navigate = useInternalNavigate();
 
   useEffect(() => {
-    const networkRoute = router.query.network
-      ? getFirstQueryParam(router.query.network, DEFAULT_SUPPORTED_CHAIN_ID)
-      : router.asPath.split("/")[1];
-
-    if (router.isReady || router.pathname === "/404") {
+    if (router.isReady) {
+      const networkRoute = getFirstQueryParam(router.query.network);
       // Redirect to default chain if there is no network query provided
       if (!router.query.network) {
         navigate({
@@ -31,13 +28,25 @@ export const useNetworkChange = (
         !SUPPORTED_CHAIN_IDS.includes(networkRoute)
       ) {
         navigate({
-          pathname: "/",
-          replace: true,
+          pathname: "/404",
+          query: {
+            network: DEFAULT_SUPPORTED_CHAIN_ID,
+          },
         });
       } else if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;
         handleOnChainIdChange(networkRoute);
       }
+    } else if (router.pathname === "/404") {
+      const networkRoute = router.asPath.split("/")[1];
+      navigate({
+        pathname: "/404",
+        query: {
+          network: SUPPORTED_CHAIN_IDS.includes(networkRoute)
+            ? networkRoute
+            : DEFAULT_SUPPORTED_CHAIN_ID,
+        },
+      });
     }
   }, [
     handleOnChainIdChange,
