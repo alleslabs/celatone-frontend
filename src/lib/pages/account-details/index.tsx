@@ -25,6 +25,10 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import { useAccountModules } from "lib/services/move/moduleService";
+import { useAccountResources } from "lib/services/move/resourceService";
+import type { IndexedResource } from "lib/services/move/resourceService";
 import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
@@ -58,12 +62,12 @@ enum TabIndex {
   Codes = "codes",
   Contracts = "contracts",
   Admins = "admins",
-  Resources = "resouces",
+  Resource = "resources",
   Modules = "modules",
   Proposals = "proposals",
 }
 
-interface AccountDetailsBodyProps {
+export interface AccountDetailsBodyProps {
   accountAddress: HumanAddr;
 }
 
@@ -82,6 +86,20 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const { data: accountId } = useAccountId(accountAddress);
   const { data: icnsName } = useICNSNamesByAddress(accountAddress);
+
+  // TODO: combine with useAccountDetailsTableCounts and remove type assertion
+  // move
+  const { data = [] } = useAccountModules({
+    address: accountAddress,
+    moduleName: undefined,
+    functionName: undefined,
+  });
+  const modulesData = data as IndexedModule[];
+
+  const { data: resourcesData = [] } = useAccountResources({
+    address: accountAddress,
+  });
+  const resources = resourcesData as IndexedResource[];
 
   const publicDetail = publicInfoBySlug?.details;
   const {
@@ -237,16 +255,16 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
-            count={tableCounts.txsCount}
-            isDisabled={txCountLoading || tableCounts.txsCount === 0}
-            onClick={handleTabChange(TabIndex.Resources)}
+            count={resources.length}
+            isDisabled={!resources.length}
+            onClick={handleTabChange(TabIndex.Resource)}
             hidden={!move.enabled}
           >
-            Resources
+            Resource
           </CustomTab>
           <CustomTab
-            count={tableCounts.txsCount}
-            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            count={modulesData.length}
+            isDisabled={!modulesData.length}
             onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
           >
@@ -310,11 +328,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             {move.enabled && (
               <>
                 <ResourceLists
+                  address={accountAddress}
                   totalAsset={0}
-                  onViewMore={handleTabChange(TabIndex.Resources)}
+                  onViewMore={handleTabChange(TabIndex.Resource)}
                 />
+                {/* TODO remove type assertion */}
                 <ModuleLists
-                  totalAsset={0}
+                  selectedAddress={accountAddress}
+                  totalCount={modulesData.length}
                   onViewMore={handleTabChange(TabIndex.Modules)}
                 />
               </>
@@ -362,10 +383,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ResourceSection />
+            <ResourceSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleLists totalAsset={0} />
+            <ModuleLists
+              selectedAddress={accountAddress}
+              totalCount={modulesData.length}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <OpenedProposalsTable

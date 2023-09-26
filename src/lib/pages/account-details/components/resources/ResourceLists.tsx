@@ -2,13 +2,32 @@ import { Flex, SimpleGrid } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource/ResourceCard";
 import { TableTitle, ViewMore } from "lib/components/table";
+import {
+  useAccountResources,
+  type IndexedResource,
+} from "lib/services/move/resourceService";
+import type { HumanAddr } from "lib/types";
+import { truncate } from "lib/utils";
+
+export interface ResourceGroup {
+  group: string;
+  items: IndexedResource[];
+}
+
+export interface ResourceGroupByAccount {
+  owner: string;
+  resources: Record<string, ResourceGroup>;
+}
 
 interface ResourcesListsProps {
   onViewMore?: () => void;
   totalAsset: number;
+  address: HumanAddr;
 }
+
 const ResourceTitle = ({
   onViewMore,
   totalAsset,
@@ -43,8 +62,36 @@ const ResourceTitle = ({
 export const ResourceLists = ({
   onViewMore,
   totalAsset,
+  address,
 }: ResourcesListsProps) => {
   const isMobile = useMobile();
+  const { data: resourcesData = [] } = useAccountResources({
+    address,
+  });
+  const resources = resourcesData as IndexedResource[];
+
+  const restructuredResources = resources.reduce<Record<string, ResourceGroup>>(
+    (acc, resource) => {
+      const [ownerName, groupName] = resource.structTag.split("::");
+
+      const name = `${truncate(ownerName)}::${groupName}`;
+      const groupResources = acc[name] ?? {};
+      const items = groupResources?.items ?? [];
+      items.push(resource);
+
+      return {
+        ...acc,
+        [name]: {
+          group: name,
+          items,
+        },
+      };
+    },
+    {} as Record<string, ResourceGroup>
+  );
+  const groupedResources = Object.values(restructuredResources);
+
+  if (!resources) return <Loading />;
   return (
     <Flex
       direction="column"
@@ -54,13 +101,11 @@ export const ResourceLists = ({
     >
       <ResourceTitle onViewMore={onViewMore} totalAsset={totalAsset} />
       {!isMobile && (
-        // TODO: data
         <>
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
-            <ResourceCard name="resource ja" amount={3} />
-            <ResourceCard name="resource ja" amount={3} />
-            <ResourceCard name="resource ja" amount={3} />
-            <ResourceCard name="resource ja" amount={3} />
+            {groupedResources.slice(0, 8).map((item) => (
+              <ResourceCard name={item.group} amount={item.items.length} />
+            ))}
           </SimpleGrid>
           {onViewMore && <ViewMore onClick={onViewMore} />}
         </>

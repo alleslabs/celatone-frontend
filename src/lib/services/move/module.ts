@@ -18,10 +18,6 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-interface ModuleReturn {
-  module: ResponseModule;
-}
-
 export const getAccountModules = async (
   baseEndpoint: string,
   address: MoveAccountAddr
@@ -42,6 +38,10 @@ export const getAccountModules = async (
 
   return snakeToCamel(result);
 };
+
+interface ModuleReturn {
+  module: ResponseModule;
+}
 
 export const getAccountModule = async (
   baseEndpoint: string,
@@ -102,6 +102,7 @@ export const getFunctionView = async (
   );
   return data.data;
 };
+
 interface DecodeModuleReturn {
   abi: string;
 }

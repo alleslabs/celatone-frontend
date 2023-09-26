@@ -1,4 +1,5 @@
 export * from "./currency";
+export * from "./move";
 export * from "./tx";
 export * from "./code";
 export * from "./common";
@@ -15,5 +16,4 @@ export * from "./upload";
 export * from "./block";
 export * from "./asset";
 export * from "./converter";
-export * from "./abi";
 export * from "./json";

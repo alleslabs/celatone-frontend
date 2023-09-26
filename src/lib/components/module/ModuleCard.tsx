@@ -1,9 +1,8 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 
 import { CustomIcon } from "../icon";
-import type { IndexedModule } from "lib/services/moduleService";
-import { useVerifyModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import { useVerifyModule } from "lib/services/move/moduleService";
 import type { HumanAddr, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
@@ -12,7 +11,8 @@ interface ModuleCardProps {
   selectedAddress: HumanAddr;
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
-  setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
+  setSelectedModule: (module: IndexedModule) => void;
+  isLarge?: boolean;
 }
 
 export const ModuleCard = ({
@@ -20,6 +20,7 @@ export const ModuleCard = ({
   module,
   selectedModule,
   setSelectedModule,
+  isLarge = false,
 }: ModuleCardProps) => {
   const { data: isVerified } = useVerifyModule({
     address: selectedAddress,
@@ -34,7 +35,7 @@ export const ModuleCard = ({
           ? "gray.700"
           : "gray.800"
       }
-      p={3}
+      p={isLarge ? 4 : 3}
       alignItems="center"
       cursor="pointer"
       onClick={() => setSelectedModule(module)}

@@ -13,8 +13,8 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
-import type { IndexedModule } from "lib/services/moduleService";
-import { useVerifyModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import { useVerifyModule } from "lib/services/move/moduleService";
 import type { ExposedFunction, HexAddr, Option } from "lib/types";
 
 import {

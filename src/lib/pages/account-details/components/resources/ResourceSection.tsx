@@ -13,8 +13,48 @@ import { CustomIcon } from "lib/components/icon";
 import { ResourceCard } from "lib/components/resource/ResourceCard";
 import { ResourceDetailCard } from "lib/components/resource/ResourceDetailCard";
 import { TableTitle } from "lib/components/table";
+import type { IndexedResource } from "lib/services/move/resourceService";
+import { useAccountResources } from "lib/services/move/resourceService";
+import type { HumanAddr } from "lib/types";
+import { truncate } from "lib/utils";
 
-export const ResourceSection = () => {
+import type { ResourceGroupByAccount } from "./ResourceLists";
+
+interface ResourceSectionProps {
+  address: HumanAddr;
+}
+export const ResourceSection = ({ address }: ResourceSectionProps) => {
+  const { data: resourcesData = [] } = useAccountResources({
+    address,
+  });
+  const resources = resourcesData as IndexedResource[];
+
+  const sortedResource = resources.reduce<
+    Record<string, ResourceGroupByAccount>
+  >((acc, resource) => {
+    const [ownerName, groupName] = resource.structTag.split("::");
+
+    const ownerResources = acc[ownerName]?.resources ?? {};
+    const groupResources = ownerResources[groupName] ?? {};
+    const items = groupResources?.items ?? [];
+    items.push(resource);
+
+    return {
+      ...acc,
+      [ownerName]: {
+        owner: ownerName,
+        resources: {
+          ...ownerResources,
+          [groupName]: {
+            group: groupName,
+            items,
+          },
+        },
+      },
+    };
+  }, {} as Record<string, ResourceGroupByAccount>);
+
+  const groupedResources = Object.values(sortedResource);
   return (
     <Flex direction="column" mt={8}>
       <TableTitle
@@ -24,43 +64,26 @@ export const ResourceSection = () => {
       />
       <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
         <Flex width={{ base: "full", md: 80 }}>
-          <Accordion defaultIndex={[0]} allowToggle width="full">
-            <AccordionItem mb={4}>
-              <AccordionButton>
-                <Flex p={4} justifyContent="space-between" w="full">
-                  <Text variant="body1" fontWeight={600}>
-                    0x1
-                  </Text>
-                  <CustomIcon name="chevron-down" color="gray.600" />
-                </Flex>
-              </AccordionButton>
-              <AccordionPanel>
-                <Flex direction="column" gap={3}>
-                  <ResourceCard hasBorder name="beeb" amount={2} />
-                  <ResourceCard isSelected hasBorder name="beeb" amount={2} />
-                  <ResourceCard hasBorder name="beeb" amount={2} />
-                  <ResourceCard hasBorder name="beeb" amount={2} />
-                </Flex>
-              </AccordionPanel>
-            </AccordionItem>
-            <AccordionItem mb={4}>
-              <AccordionButton>
-                <Flex p={4} justifyContent="space-between" w="full">
-                  <Text variant="body1" fontWeight={600}>
-                    0x2
-                  </Text>
-                  <CustomIcon name="chevron-down" color="gray.600" />
-                </Flex>
-              </AccordionButton>
-              <AccordionPanel>
-                <Flex direction="column" gap={3}>
-                  <ResourceCard hasBorder name="beeb" amount={2} />
-                  <ResourceCard isSelected hasBorder name="beeb" amount={2} />
-                  <ResourceCard hasBorder name="beeb" amount={2} />
-                  <ResourceCard hasBorder name="beeb" amount={2} />
-                </Flex>
-              </AccordionPanel>
-            </AccordionItem>
+          <Accordion defaultIndex={[0]} allowToggle width="full" allowMultiple>
+            {groupedResources.map((item) => (
+              <AccordionItem mb={4}>
+                <AccordionButton>
+                  <Flex p={4} justifyContent="space-between" w="full">
+                    <Text variant="body1" fontWeight={600}>
+                      {truncate(item.owner)}
+                    </Text>
+                    <CustomIcon name="chevron-down" color="gray.600" />
+                  </Flex>
+                </AccordionButton>
+                <AccordionPanel>
+                  <Flex direction="column" gap={3}>
+                    {Object.values(item.resources).map((subitem) => (
+                      <ResourceCard hasBorder name={subitem.group} amount={2} />
+                    ))}
+                  </Flex>
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
           </Accordion>
         </Flex>
         <Flex direction="column" w="full">

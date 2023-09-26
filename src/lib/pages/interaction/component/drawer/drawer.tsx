@@ -12,7 +12,7 @@ import { useState } from "react";
 
 import { ModuleEmptyState } from "../common";
 import { CustomIcon } from "lib/components/icon";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { HexAddr, HumanAddr } from "lib/types";
 
 import { ModuleSelectMainBody } from "./body";
