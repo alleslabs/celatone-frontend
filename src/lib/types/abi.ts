@@ -1,4 +1,4 @@
-import type { Option } from "./common";
+import type { Nullable } from "./common";
 import type { SnakeToCamelCaseNested } from "./converter";
 
 export enum UpgradePolicy {
@@ -86,5 +86,5 @@ interface Field {
 
 export interface AbiFormData {
   typeArgs: Record<string, string>;
-  args: Record<string, Option<string>>;
+  args: Record<string, Nullable<string>>;
 }

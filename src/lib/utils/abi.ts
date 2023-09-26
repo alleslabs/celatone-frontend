@@ -3,7 +3,7 @@ import { BCS } from "@initia/initia.js";
 import type {
   AbiFormData,
   ExposedFunction,
-  Option,
+  Nullable,
   ResponseABI,
 } from "lib/types";
 
@@ -66,15 +66,15 @@ const getArgType = (argType: string) =>
     .replaceAll("0x1::option::Option", "option");
 
 const getArgValue = ({
-  type,
+  // type,
   value,
 }: {
-  type: string;
-  value: Option<string>;
+  // type: string;
+  value: Nullable<string>;
 }) => {
   try {
-    if (value === undefined) return null;
-    if (type.startsWith("vector")) return JSON.parse(value) as string[];
+    if (value === null) return null;
+    // if (type.startsWith("vector")) return JSON.parse(value) as string[];
     return value.trim();
   } catch (e) {
     return "";
@@ -82,13 +82,13 @@ const getArgValue = ({
 };
 
 const serializeArg = (
-  arg: { type: string; value: Option<string> },
+  arg: { type: string; value: Nullable<string> },
   bcs: BCS
 ) => {
   try {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
-    return bcs.serialize(argType, argValue);
+    return bcs.serialize(argType, argValue, 1024 * 1024);
   } catch (e) {
     return "";
   }

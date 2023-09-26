@@ -1,5 +1,5 @@
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { Option, Addr } from "lib/types";
+import type { Option, Addr, Nullable } from "lib/types";
 
 export enum AccessConfigPermission {
   EVERYBODY = "Everybody",
@@ -16,8 +16,8 @@ export interface CodeInfo extends CodeLocalInfo {
   contractCount: Option<number>;
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
-  cw2Contract: Option<string | null>;
-  cw2Version: Option<string | null>;
+  cw2Contract: Option<Nullable<string>>;
+  cw2Version: Option<Nullable<string>>;
   isSaved?: boolean;
 }
 
@@ -36,6 +36,6 @@ export interface CodeData {
   proposal: Option<CodeProposal>;
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
-  cw2Contract: Option<string | null>;
-  cw2Version: Option<string | null>;
+  cw2Contract: Option<Nullable<string>>;
+  cw2Version: Option<Nullable<string>>;
 }

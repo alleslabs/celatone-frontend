@@ -1,12 +1,13 @@
 import { Spinner, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
+import type { Nullable } from "lib/types";
 
 export type ResponseState = "init" | "loading" | "success" | "error";
 
 export interface FormStatus {
   state: ResponseState;
-  message?: string | null;
+  message?: Nullable<string>;
   messageColor?: string;
 }
 

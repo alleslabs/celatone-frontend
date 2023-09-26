@@ -7,6 +7,7 @@ import type {
   AccessConfigPermission,
   Option,
   ValidatorAddr,
+  Nullable,
 } from "lib/types";
 
 import type { VoteOption } from "./mapping";
@@ -32,7 +33,7 @@ export interface MsgStoreCodeDetails extends MsgBaseDetails {
   code_id: Option<string>;
   sender: Addr;
   wasm_byte_code: string; // base64
-  instantiate_permission: InstantiatePermissionResponse | null;
+  instantiate_permission: Nullable<InstantiatePermissionResponse>;
 }
 
 export interface MsgInstantiateDetails extends MsgBaseDetails {

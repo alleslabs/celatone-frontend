@@ -10,7 +10,8 @@ import {
 import type { Observable } from "rxjs";
 
 import { TxModal } from "lib/components/tx";
-import type { TxResultRendering } from "lib/types";
+import type { Nullable } from "lib/types";
+import { type TxResultRendering } from "lib/types";
 
 interface TxBroadcast {
   broadcast: (nextStream: Observable<TxResultRendering>) => void;
@@ -20,10 +21,9 @@ const TxBroadcastContext = createContext<TxBroadcast>({
 });
 
 export const TxBroadcastProvider = ({ children }: { children: ReactNode }) => {
-  const [stream, setStream] = useState<Observable<TxResultRendering> | null>(
-    null
-  );
-  const [result, setResult] = useState<TxResultRendering | null>(null);
+  const [stream, setStream] =
+    useState<Nullable<Observable<TxResultRendering>>>(null);
+  const [result, setResult] = useState<Nullable<TxResultRendering>>(null);
 
   const broadcast = useCallback((nextStream: Observable<TxResultRendering>) => {
     setStream(nextStream);

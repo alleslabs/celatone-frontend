@@ -2,7 +2,7 @@ import { Input, Textarea } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import type { ControllerRenderProps } from "react-hook-form";
 
-import type { Option } from "lib/types";
+import type { Nullable } from "lib/types";
 
 import { UintTypes } from "./utils";
 
@@ -19,7 +19,7 @@ const boolOptions = [
 
 interface ArgFieldWidgetProps {
   type: string;
-  value: Option<string>;
+  value: Nullable<string>;
   onChange: ControllerRenderProps["onChange"];
 }
 
@@ -36,7 +36,7 @@ export const ArgFieldWidget = ({
     return (
       <Input
         size="md"
-        placeholder={getInputPlaceholder(type, value === undefined)}
+        placeholder={getInputPlaceholder(type, value === null)}
         value={value ?? ""}
         onChange={onChange}
       />

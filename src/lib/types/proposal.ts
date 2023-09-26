@@ -1,4 +1,4 @@
-import type { Addr, Option } from "lib/types";
+import type { Addr, Nullable, Option } from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -55,7 +55,7 @@ export interface Proposal {
   status: ProposalStatus;
   votingEndTime: Date;
   depositEndTime: Date;
-  resolvedHeight: Option<number | null>;
+  resolvedHeight: Option<Nullable<number>>;
   type: ProposalType;
   proposer: Option<Addr>;
   isExpedited: boolean;
