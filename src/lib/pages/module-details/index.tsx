@@ -221,7 +221,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   </Flex>
                 ))}
               </Flex>
-              <ModuleInfo moduleData={moduleData} />
+              <ModuleInfo {...moduleData} />
               {/* TODO History */}
               <Flex flexDirection="column" mt={6}>
                 <Heading

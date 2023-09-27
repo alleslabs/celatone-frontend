@@ -3,24 +3,29 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
-import { Loading } from "lib/components/Loading";
 import { ModuleSourceCode } from "lib/components/module";
 import {
   useVerifyModule,
   type IndexedModule,
 } from "lib/services/moduleService";
-import type { HexAddr, Option } from "lib/types";
+import type { HexAddr } from "lib/types";
 
 interface ModuleInfoProps {
-  moduleData: IndexedModule;
+  address: IndexedModule["address"];
+  moduleName: IndexedModule["moduleName"];
+  upgradePolicy: IndexedModule["upgradePolicy"];
 }
 
-export const ModuleInfo = ({ moduleData }: ModuleInfoProps) => {
+export const ModuleInfo = ({
+  address,
+  moduleName,
+  upgradePolicy,
+}: ModuleInfoProps) => {
   const { data: verificationData } = useVerifyModule({
-    address: moduleData?.address as Option<HexAddr>,
-    moduleName: moduleData?.moduleName,
+    address: address as HexAddr,
+    moduleName,
   });
-  if (!moduleData) return <Loading />;
+
   return (
     <Flex flexDirection="column" gap={4}>
       <Flex justifyContent="space-between" alignItems="center" w="full">
@@ -44,7 +49,7 @@ export const ModuleInfo = ({ moduleData }: ModuleInfoProps) => {
         borderColor="gray.700"
         sx={{ "& > div": { flex: 1 } }}
       >
-        <LabelText label="Upgrade Policy">{moduleData.upgradePolicy}</LabelText>
+        <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
         {/* TODO get block height */}
         <LabelText
           label="Initial Published Block Height"
@@ -61,7 +66,7 @@ export const ModuleInfo = ({ moduleData }: ModuleInfoProps) => {
         <LabelText label="Initial Published by" helperText1="(Account Address)">
           <ExplorerLink
             type="user_address"
-            value={moduleData.address}
+            value={address}
             showCopyOnHover
             fixedHeight
           />
