@@ -88,14 +88,14 @@ export const Interact = () => {
     moduleName: module?.moduleName,
   });
 
-  const address = getFirstQueryParam(router.query.address);
-  const moduleName = getFirstQueryParam(router.query.moduleName);
-  const functionName = getFirstQueryParam(router.query.functionName);
-  const functionType = getFirstQueryParam(router.query.functionType);
+  const addressParam = getFirstQueryParam(router.query.address);
+  const moduleNameParam = getFirstQueryParam(router.query.moduleName);
+  const functionNameParam = getFirstQueryParam(router.query.functionName);
+  const functionTypeParam = getFirstQueryParam(router.query.functionType);
   const { refetch } = useAccountModules({
-    address: address as MoveAccountAddr,
-    moduleName,
-    functionName,
+    address: addressParam as MoveAccountAddr,
+    moduleName: moduleNameParam,
+    functionName: functionNameParam,
     options: {
       refetchOnWindowFocus: false,
       enabled: false,
@@ -103,28 +103,29 @@ export const Interact = () => {
       onSuccess: (data) => {
         if (!Array.isArray(data)) {
           setModule(data);
-          if (functionName) {
+          if (functionNameParam) {
             const fn = [...data.viewFunctions, ...data.executeFunctions].find(
-              (exposedFn) => exposedFn.name === functionName
+              (exposedFn) => exposedFn.name === functionNameParam
             );
             if (fn) {
               handleSetSelectedType(fn.is_view ? "view" : "execute");
               setSelectedFn(fn);
             }
-          } else if (functionType) handleSetSelectedType(functionType);
+          } else if (functionTypeParam)
+            handleSetSelectedType(functionTypeParam);
         }
       },
     },
   });
 
   useEffect(() => {
-    if (!!address && !!moduleName) refetch();
+    if (!!addressParam && !!moduleNameParam) refetch();
     else {
       setModule(undefined);
       setSelectedType(InteractionTabs.VIEW_MODULE);
       setSelectedFn(undefined);
     }
-  }, [address, moduleName, refetch]);
+  }, [addressParam, moduleNameParam, refetch]);
 
   return (
     <>
