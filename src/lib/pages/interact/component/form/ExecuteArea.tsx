@@ -138,8 +138,8 @@ export const ExecuteArea = ({
           </AlertDescription>
         </Alert>
       )}
-      <Flex alignItems="center" justify="space-between" mt={6}>
-        <Button>TODO: CodeSnippet</Button>
+      <Flex alignItems="center" justify="end" mt={6}>
+        {/* <Button>TODO: CodeSnippet</Button> */}
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
             Transaction Fee:{" "}

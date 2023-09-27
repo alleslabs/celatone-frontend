@@ -8,7 +8,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -91,14 +91,14 @@ export const Interact = () => {
   const address = getFirstQueryParam(router.query.address);
   const moduleName = getFirstQueryParam(router.query.moduleName);
   const functionName = getFirstQueryParam(router.query.functionName);
-  let functionType = getFirstQueryParam(router.query.functionType);
-  useAccountModules({
+  const functionType = getFirstQueryParam(router.query.functionType);
+  const { refetch } = useAccountModules({
     address: address as MoveAccountAddr,
     moduleName,
     functionName,
     options: {
       refetchOnWindowFocus: false,
-      enabled: !!address && !!moduleName,
+      enabled: false,
       retry: false,
       onSuccess: (data) => {
         if (!Array.isArray(data)) {
@@ -108,15 +108,23 @@ export const Interact = () => {
               (exposedFn) => exposedFn.name === functionName
             );
             if (fn) {
-              functionType = fn.is_view ? "view" : "execute";
+              handleSetSelectedType(fn.is_view ? "view" : "execute");
               setSelectedFn(fn);
             }
-          }
-          if (functionType) handleSetSelectedType(functionType);
+          } else if (functionType) handleSetSelectedType(functionType);
         }
       },
     },
   });
+
+  useEffect(() => {
+    if (!!address && !!moduleName) refetch();
+    else {
+      setModule(undefined);
+      setSelectedType(InteractionTabs.VIEW_MODULE);
+      setSelectedFn(undefined);
+    }
+  }, [address, moduleName, refetch]);
 
   return (
     <>

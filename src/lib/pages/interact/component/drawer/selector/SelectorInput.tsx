@@ -36,7 +36,7 @@ export const ModuleSelectorInput = ({
   setMode,
   closeModal,
 }: ModuleSelectorInputProps) => {
-  const [keyword, setKeyword] = useState(selectedAddress.address as string);
+  const [keyword, setKeyword] = useState(selectedAddress.hex as string);
   const [error, setError] = useState("");
   const [addr, moduleName, functionName] = useMemo(
     () => splitModule(keyword),
@@ -54,7 +54,6 @@ export const ModuleSelectorInput = ({
     options: {
       refetchOnWindowFocus: false,
       enabled: false,
-      refetchOnMount: true,
       retry: false,
       onSuccess: (data) => {
         setError("");

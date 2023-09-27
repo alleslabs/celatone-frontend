@@ -86,7 +86,7 @@ export const useAccountModules = ({
         )
       : getAccountModules(baseEndpoint, address).then((modules) =>
           modules
-            .sort((a, b) => (a.moduleName < b.moduleName ? -1 : 1))
+            .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
             .map((module) => indexModuleResponse(module))
         );
 
