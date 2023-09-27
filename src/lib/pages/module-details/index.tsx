@@ -79,7 +79,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
           address: moduleData.address,
           moduleName: moduleData.moduleName,
           tab: nextTab,
-          ...(fnType ? { type: fnType } : {}),
+          ...(fnType && { type: fnType }),
         },
         options: {
           shallow: true,
