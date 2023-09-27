@@ -127,12 +127,11 @@ export const ExecuteArea = ({
           mb={8}
         />
       ) : (
-        <Alert variant="warning" mb={8} alignItems="center">
+        <Alert variant="warning" mb={8} alignItems="center" gap={4}>
           <CustomIcon
             name="alert-circle-solid"
             boxSize={4}
             color="warning.main"
-            mr={4}
           />
           <AlertDescription wordBreak="break-word">
             Title This function cannot be executed through this page. Only
