@@ -26,6 +26,7 @@ import type {
   PermissionAddresses,
   Addr,
   HumanAddr,
+  Nullable,
 } from "lib/types";
 import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
@@ -141,10 +142,9 @@ interface CodeDataByCodeIdParams {
 export const useCodeDataByCodeId = ({
   codeId,
   enabled = true,
-}: CodeDataByCodeIdParams): UseQueryResult<Omit<
-  CodeData,
-  "chainId"
-> | null> => {
+}: CodeDataByCodeIdParams): UseQueryResult<
+  Nullable<Omit<CodeData, "chainId">>
+> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {

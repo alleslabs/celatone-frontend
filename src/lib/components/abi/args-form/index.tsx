@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import type { FormState } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
-import type { AbiFormData, Option } from "lib/types";
+import type { AbiFormData, Nullable } from "lib/types";
 
 import { ArgFieldTemplate } from "./field";
 
@@ -33,7 +33,7 @@ export const ArgsForm = ({
     control,
     getValues,
     formState: { errors },
-  } = useForm<Record<string, Option<string>>>({
+  } = useForm<Record<string, Nullable<string>>>({
     defaultValues: initialData,
     mode: "all",
   });

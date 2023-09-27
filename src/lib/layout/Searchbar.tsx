@@ -35,7 +35,7 @@ import type {
   SearchResultType,
 } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 
 const NOT_FOUND_MSG =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
@@ -60,7 +60,7 @@ interface ResultItemProps {
 
 const getRouteOptions = (
   type: Option<SearchResultType>
-): { pathname: string; query: string } | null => {
+): Nullable<{ pathname: string; query: string }> => {
   switch (type) {
     case "Wallet Address":
       return {

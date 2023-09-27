@@ -14,6 +14,7 @@ import type {
   BlockInfo,
   BlockTimeInfo,
   LatestBlock,
+  Nullable,
   ValidatorAddr,
 } from "lib/types";
 import { isBlock, parseDate, parseDateOpt, parseTxHash } from "lib/utils";
@@ -80,7 +81,7 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
 
 export const useBlockInfoQuery = (
   height: string
-): UseQueryResult<BlockDetails | null> => {
+): UseQueryResult<Nullable<BlockDetails>> => {
   const { currentChainId } = useCelatoneApp();
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -90,7 +91,7 @@ export const useBlockInfoQuery = (
         .request(getBlockDetailsByHeightQueryDocument, {
           height: Number(height),
         })
-        .then<BlockDetails | null>(({ blocks_by_pk }) =>
+        .then<Nullable<BlockDetails>>(({ blocks_by_pk }) =>
           blocks_by_pk
             ? {
                 network: currentChainId,

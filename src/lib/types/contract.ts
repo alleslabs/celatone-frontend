@@ -1,5 +1,5 @@
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { Addr, Option } from "lib/types";
+import type { Addr, Nullable, Option } from "lib/types";
 
 export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT",
@@ -30,6 +30,6 @@ export interface ContractMigrationHistory {
   timestamp: Date;
   remark: ContractHistoryRemark;
   uploader: Addr;
-  cw2Contract: Option<string | null>;
-  cw2Version: Option<string | null>;
+  cw2Contract: Option<Nullable<string>>;
+  cw2Version: Option<Nullable<string>>;
 }

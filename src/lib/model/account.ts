@@ -8,7 +8,7 @@ import {
 } from "lib/services/contractService";
 import { useProposalsCountByWalletAddress } from "lib/services/proposalService";
 import { useTxsCountByAddress } from "lib/services/txService";
-import type { HumanAddr, Option } from "lib/types";
+import type { HumanAddr, Nullable, Option } from "lib/types";
 
 /**
  * @remark
@@ -16,7 +16,7 @@ import type { HumanAddr, Option } from "lib/types";
  */
 export const useAccountDetailsTableCounts = (
   walletAddress: HumanAddr,
-  accountId: Option<number | null>
+  accountId: Option<Nullable<number>>
 ) => {
   const { data: codesCount, refetch: refetchCodesCount } =
     useCodeListCountByWalletAddress(walletAddress);

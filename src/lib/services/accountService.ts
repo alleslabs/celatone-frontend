@@ -8,7 +8,7 @@ import {
   CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
 import { getAccountIdByAddressQueryDocument } from "lib/query";
-import type { Addr, Balance, Option } from "lib/types";
+import type { Addr, Balance, Nullable, Option } from "lib/types";
 
 import { getAccountBalanceInfo } from "./account";
 
@@ -26,7 +26,7 @@ export const useAccountBalances = (
 
 export const useAccountId = (
   walletAddress: Option<Addr>
-): UseQueryResult<number | null> => {
+): UseQueryResult<Nullable<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -34,7 +34,9 @@ export const useAccountId = (
       throw new Error("Error fetching account id: failed to retrieve address.");
     return indexerGraphClient
       .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
-      .then<number | null>(({ accounts_by_pk }) => accounts_by_pk?.id ?? null);
+      .then<Nullable<number>>(
+        ({ accounts_by_pk }) => accounts_by_pk?.id ?? null
+      );
   }, [indexerGraphClient, walletAddress]);
 
   return useQuery(

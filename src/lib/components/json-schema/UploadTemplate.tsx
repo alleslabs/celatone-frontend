@@ -18,6 +18,7 @@ import { TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useSchemaStore } from "lib/providers/store";
+import type { Nullable } from "lib/types";
 import { jsonValidate } from "lib/utils";
 
 enum Method {
@@ -26,7 +27,10 @@ enum Method {
   FILL_MANUALLY = "fill-manually",
 }
 
-type JsonState = Record<Method, { schemaString: string; error: string | null }>;
+type JsonState = Record<
+  Method,
+  { schemaString: string; error: Nullable<string> }
+>;
 
 enum ActionType {
   SET_SCHEMA = "set-schema",
@@ -38,7 +42,7 @@ type Action = {
   type: ActionType;
   method: Method;
   schemaString?: string;
-  error?: string | null;
+  error?: Nullable<string>;
 };
 
 const initialJsonState: JsonState = {
@@ -68,7 +72,7 @@ const reducer = (state: JsonState, action: Action): JsonState => {
   }
 };
 
-const validateSchema = (schemaString: string): string | null => {
+const validateSchema = (schemaString: string): Nullable<string> => {
   return (
     jsonValidate(schemaString) ??
     ("instantiate" in JSON.parse(schemaString)

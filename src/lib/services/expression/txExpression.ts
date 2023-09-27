@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { Option, PoolTxFilter, TxFilters } from "lib/types";
+import type { Nullable, Option, PoolTxFilter, TxFilters } from "lib/types";
 import { isTxHash } from "lib/utils";
 
 const actions = {
@@ -40,7 +40,7 @@ export const useTxExpression = ({
   filters,
   isSigner,
 }: {
-  accountId: Option<number | null>;
+  accountId: Option<Nullable<number>>;
   search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
