@@ -74,9 +74,10 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
     ) => {
       if (account === selectedAccount && resource === selectedName) return;
       navigate({
-        pathname: `/accounts/[address]/resources`,
+        pathname: `/accounts/[address]/[tab]`,
         query: {
           address,
+          tab: "resources",
           account,
           selected: resource,
         },
