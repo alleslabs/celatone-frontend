@@ -352,7 +352,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             </Flex>
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleStruct moduleData={moduleData} />
+            <ModuleStruct structs={moduleData.parsedAbi.structs} />
           </TabPanel>
         </TabPanels>
       </Tabs>

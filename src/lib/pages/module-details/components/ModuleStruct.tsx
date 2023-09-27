@@ -3,26 +3,24 @@ import { useMemo, useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { Loading } from "lib/components/Loading";
 import { StructCard } from "lib/components/module/StructCard";
 import type { IndexedModule } from "lib/services/moduleService";
 
 interface ModuleStructProps {
-  moduleData: IndexedModule;
+  structs: IndexedModule["parsedAbi"]["structs"];
 }
-export const ModuleStruct = ({ moduleData }: ModuleStructProps) => {
+export const ModuleStruct = ({ structs }: ModuleStructProps) => {
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
   const [keyword, setKeyword] = useState("");
 
-  const moduleStructs = moduleData.parsedAbi.structs;
   const filteredStructs = useMemo(() => {
-    if (!keyword) return moduleStructs;
-    return moduleStructs.filter((struct) => struct.name?.includes(keyword));
-  }, [keyword, moduleStructs]);
+    if (!keyword) return structs;
+    return structs.filter((struct) => struct.name.includes(keyword));
+  }, [keyword, structs]);
 
   const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
-  if (!moduleData) return <Loading />;
+
   return (
     <Flex direction="column" gap={8}>
       <Flex maxH="24px" justifyContent="space-between" alignItems="center">
@@ -41,13 +39,7 @@ export const ModuleStruct = ({ moduleData }: ModuleStructProps) => {
             }
             onClick={() => {
               setExpandedIndexes((prev) =>
-                !prev.length
-                  ? Array.from(
-                      Array(
-                        moduleData.parsedAbi.exposed_functions.length
-                      ).keys()
-                    )
-                  : []
+                !prev.length ? Array.from(Array(structs.length).keys()) : []
               );
             }}
           >
@@ -58,16 +50,12 @@ export const ModuleStruct = ({ moduleData }: ModuleStructProps) => {
             size="sm"
             rightIcon={<CustomIcon name="launch" />}
             onClick={() => {
-              const jsonString = JSON.stringify(
-                moduleData.parsedAbi.exposed_functions,
-                null,
-                2
-              );
+              const jsonString = JSON.stringify(structs, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Module Exposed Function</title>`
+                  `<html><head><title>Module Structs</title>`
                 );
 
                 // Add styling
