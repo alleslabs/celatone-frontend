@@ -40,7 +40,7 @@ const RenderFunctions = ({
 }: {
   states: FunctionStates;
   selectedFn: Option<ExposedFunction>;
-  setSelectedFn: Dispatch<SetStateAction<Option<ExposedFunction>>>;
+  setSelectedFn: (fn: ExposedFunction) => void;
 }) => {
   if (!states.filteredFunctions)
     return (
@@ -75,16 +75,19 @@ const RenderFunctions = ({
 
 interface FunctionSelectPanelProps {
   module: Option<IndexedModule>;
+  tab: InteractionTabs;
+  setTab: Dispatch<SetStateAction<InteractionTabs>>;
   selectedFn: Option<ExposedFunction>;
-  setSelectedFn: Dispatch<SetStateAction<Option<ExposedFunction>>>;
+  setSelectedFn: (fn: ExposedFunction) => void;
 }
 
 export const FunctionSelectPanel = ({
   module,
+  tab,
+  setTab,
   selectedFn,
   setSelectedFn,
 }: FunctionSelectPanelProps) => {
-  const [tab, setTab] = useState(InteractionTabs.VIEW_MODULE);
   const [keyword, setKeyword] = useState("");
 
   const functionStates = useMemo<FunctionStates>(() => {

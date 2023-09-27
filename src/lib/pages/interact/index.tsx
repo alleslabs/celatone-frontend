@@ -7,40 +7,115 @@ import {
   Text,
   Box,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import type { IndexedModule } from "lib/services/moduleService";
-import { useVerifyModule } from "lib/services/moduleService";
-import type { ExposedFunction, HexAddr, Option } from "lib/types";
+import { useAccountModules, useVerifyModule } from "lib/services/moduleService";
+import type {
+  ExposedFunction,
+  HexAddr,
+  MoveAccountAddr,
+  Option,
+} from "lib/types";
+import { getFirstQueryParam } from "lib/utils";
 
 import {
   ModuleSelectDrawerTrigger,
   ModuleSelectDrawer,
   FunctionSelectPanel,
   FunctionSelectBody,
+  InteractionTabs,
 } from "./component";
 
-export const Interaction = () => {
+export const Interact = () => {
+  const router = useRouter();
+  const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [module, setModule] = useState<IndexedModule>();
+  const [selectedType, setSelectedType] = useState<InteractionTabs>(
+    InteractionTabs.VIEW_MODULE
+  );
   const [selectedFn, setSelectedFn] = useState<ExposedFunction>();
+
+  const handleSetSelectedType = (type: string) =>
+    setSelectedType(
+      type === "execute"
+        ? InteractionTabs.EXECUTE_MODULE
+        : InteractionTabs.VIEW_MODULE
+    );
 
   const handleModuleSelect = useCallback(
     (selectedModule: IndexedModule, fn?: ExposedFunction) => {
       setModule(selectedModule);
       setSelectedFn(fn);
+      navigate({
+        pathname: "/interact",
+        query: {
+          address: selectedModule.address,
+          moduleName: selectedModule.moduleName,
+          ...(fn && { functionName: fn.name }),
+        },
+        options: { shallow: true },
+      });
     },
-    []
+    [navigate]
+  );
+
+  const handleFunctionSelect = useCallback(
+    (fn: ExposedFunction) => {
+      setSelectedFn(fn);
+      navigate({
+        pathname: "/interact",
+        query: {
+          ...router.query,
+          functionName: fn.name,
+        },
+        options: { shallow: true },
+      });
+    },
+    [navigate, router.query]
   );
 
   const { data: verificationData } = useVerifyModule({
     address: module?.address as Option<HexAddr>,
     moduleName: module?.moduleName,
+  });
+
+  const address = getFirstQueryParam(router.query.address);
+  const moduleName = getFirstQueryParam(router.query.moduleName);
+  const functionName = getFirstQueryParam(router.query.functionName);
+  let functionType = getFirstQueryParam(router.query.functionType);
+  useAccountModules({
+    address: address as MoveAccountAddr,
+    moduleName,
+    functionName,
+    options: {
+      refetchOnWindowFocus: false,
+      enabled: !!address && !!moduleName,
+      retry: false,
+      onSuccess: (data) => {
+        if (!Array.isArray(data)) {
+          setModule(data);
+          if (functionName) {
+            const fn = [...data.viewFunctions, ...data.executeFunctions].find(
+              (exposedFn) => exposedFn.name === functionName
+            );
+            if (fn) {
+              functionType = fn.is_view ? "view" : "execute";
+              setSelectedFn(fn);
+            }
+          }
+          if (functionType) handleSetSelectedType(functionType);
+        }
+      },
+    },
   });
 
   return (
@@ -81,9 +156,7 @@ export const Interaction = () => {
                 </LabelText>
                 <LabelText label="Friends" labelWeight={600}>
                   <Text variant="body2" color="gray.400">
-                    {module?.parsedAbi.friends
-                      ? JSON.stringify(module?.parsedAbi.friends)
-                      : "N/A"}
+                    {JSON.stringify(module.parsedAbi.friends)}
                   </Text>
                 </LabelText>
               </Flex>
@@ -117,6 +190,7 @@ export const Interaction = () => {
           <ModuleSelectDrawer
             isOpen={isOpen}
             onClose={onClose}
+            hexAddress={module?.address}
             handleModuleSelect={handleModuleSelect}
           />
         </Flex>
@@ -128,8 +202,10 @@ export const Interaction = () => {
           {/* Left side */}
           <FunctionSelectPanel
             module={module}
+            tab={selectedType}
+            setTab={setSelectedType}
             selectedFn={selectedFn}
-            setSelectedFn={setSelectedFn}
+            setSelectedFn={handleFunctionSelect}
           />
           {/* Right side */}
           <FunctionSelectBody

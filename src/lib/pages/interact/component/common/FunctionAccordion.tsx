@@ -6,7 +6,6 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 
 import { CountBadge, FunctionCard } from "lib/components/module";
 import type { ExposedFunction, Option } from "lib/types";
@@ -18,7 +17,7 @@ interface FunctionAccordionProps {
   isEmpty: boolean;
   triggerText: string;
   selectedFn: Option<ExposedFunction>;
-  setSelectedFn: Dispatch<SetStateAction<Option<ExposedFunction>>>;
+  setSelectedFn: (fn: ExposedFunction) => void;
 }
 
 export const FunctionAccordion = ({

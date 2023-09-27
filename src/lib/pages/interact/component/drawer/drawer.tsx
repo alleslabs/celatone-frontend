@@ -8,12 +8,13 @@ import {
   DrawerBody,
   Flex,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ModuleEmptyState } from "../common";
+import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { IndexedModule } from "lib/services/moduleService";
-import type { HexAddr, HumanAddr } from "lib/types";
+import type { HexAddr, HumanAddr, Option } from "lib/types";
 
 import { ModuleSelectMainBody } from "./body";
 import { ModuleSelector } from "./selector";
@@ -23,23 +24,37 @@ import type {
   ModuleSelectFunction,
 } from "./types";
 
-interface ModuleSelectDrawerTriggerProps {
+interface ModuleSelectDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  hexAddress: Option<HexAddr>;
   handleModuleSelect: ModuleSelectFunction;
 }
 
 export const ModuleSelectDrawer = ({
   isOpen,
   onClose,
+  hexAddress,
   handleModuleSelect,
-}: ModuleSelectDrawerTriggerProps) => {
-  const [modules, setModules] = useState<IndexedModule[]>();
+}: ModuleSelectDrawerProps) => {
+  const convertHexAddr = useConvertHexAddress();
+
   const [mode, setMode] = useState<DisplayMode>("input");
   const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>({
     address: "" as HumanAddr,
     hex: "" as HexAddr,
   });
+  const [modules, setModules] = useState<IndexedModule[]>();
+
+  useEffect(() => {
+    if (hexAddress) {
+      // setMode("display");
+      // setSelectedAddress({
+      //   address: convertHexAddr(hexAddress),
+      //   hex: hexAddress,
+      // });
+    }
+  }, [convertHexAddr, hexAddress]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">

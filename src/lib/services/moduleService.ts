@@ -40,6 +40,7 @@ import {
 } from "./module";
 
 export interface IndexedModule extends InternalModule {
+  address: HexAddr;
   parsedAbi: ResponseABI;
   viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];
@@ -56,6 +57,7 @@ const indexModuleResponse = (
   );
   return {
     ...module,
+    address: module.address as HexAddr,
     parsedAbi,
     viewFunctions: view,
     executeFunctions: execute,

@@ -13,7 +13,7 @@ import {
   useExampleAddresses,
 } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
-import { useValidateModuleInput } from "lib/pages/interaction/hooks/useValidateModuleInput";
+import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAccountModules } from "lib/services/moduleService";
 import type { MoveAccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
