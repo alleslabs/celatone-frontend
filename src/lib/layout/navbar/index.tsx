@@ -95,7 +95,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 },
                 {
                   name: "View / Execute",
-                  slug: "/interaction",
+                  slug: "/interact",
                   icon: "execute" as IconKeys,
                 },
                 {

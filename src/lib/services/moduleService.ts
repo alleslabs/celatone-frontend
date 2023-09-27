@@ -40,6 +40,7 @@ import {
 } from "./module";
 
 export interface IndexedModule extends InternalModule {
+  address: HexAddr;
   parsedAbi: ResponseABI;
   viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];
@@ -56,6 +57,7 @@ const indexModuleResponse = (
   );
   return {
     ...module,
+    address: module.address as HexAddr,
     parsedAbi,
     viewFunctions: view,
     executeFunctions: execute,
@@ -84,7 +86,7 @@ export const useAccountModules = ({
         )
       : getAccountModules(baseEndpoint, address).then((modules) =>
           modules
-            .sort((a, b) => (a.moduleName < b.moduleName ? -1 : 1))
+            .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
             .map((module) => indexModuleResponse(module))
         );
 

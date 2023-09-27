@@ -89,11 +89,11 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           variant="outline-white"
           onClick={() =>
             navigate({
-              pathname: "/interaction",
+              pathname: "/interact",
               query: {
-                functionType: "view",
                 address: decodeRes?.abi.address,
                 moduleName: decodeRes?.abi.name,
+                functionType: "view",
               },
             })
           }
@@ -105,11 +105,11 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           variant="outline-white"
           onClick={() =>
             navigate({
-              pathname: "/interaction",
+              pathname: "/interact",
               query: {
-                functionType: "execute",
                 address: decodeRes?.abi.address,
                 moduleName: decodeRes?.abi.name,
+                functionType: "execute",
               },
             })
           }
