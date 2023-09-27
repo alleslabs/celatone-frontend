@@ -23,6 +23,7 @@ import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { InvalidState } from "lib/components/state";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/moduleService";
@@ -55,18 +56,18 @@ interface ActionInfo {
 // TODO get module path
 const txTableHeaderId = "ModuleTxsTableHeader";
 
-export const ModuleDetails = () => {
-  const navigate = useInternalNavigate();
+interface ModuleDetailsBodyProps {
+  moduleData: IndexedModule;
+}
+
+const InvalidModule = () => <InvalidState title="Module does not exist" />;
+
+export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const { trackUseTab } = useTrack();
 
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-  const moduleName = getFirstQueryParam(router.query.moduleName);
-  const addr = getFirstQueryParam(router.query.address);
-  const { data, isLoading } = useAccountModules({
-    address: addr as MoveAccountAddr,
-    moduleName,
-  });
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
@@ -75,8 +76,8 @@ export const ModuleDetails = () => {
       navigate({
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          address: addr,
-          moduleName,
+          address: moduleData.address,
+          moduleName: moduleData.moduleName,
           tab: nextTab,
           ...(fnType ? { type: fnType } : {}),
         },
@@ -85,7 +86,7 @@ export const ModuleDetails = () => {
         },
       });
     },
-    [addr, moduleName, tab, navigate, trackUseTab]
+    [moduleData.address, moduleData.moduleName, navigate, tab, trackUseTab]
   );
 
   useEffect(() => {
@@ -94,8 +95,8 @@ export const ModuleDetails = () => {
         replace: true,
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          address: addr,
-          moduleName,
+          address: moduleData.address,
+          moduleName: moduleData.moduleName,
           tab: TabIndex.Overview,
         },
         options: {
@@ -103,7 +104,14 @@ export const ModuleDetails = () => {
         },
       });
     }
-  }, [router.isReady, tab, addr, moduleName, navigate]);
+  }, [
+    router.isReady,
+    tab,
+    navigate,
+    moduleData.address,
+    moduleData.moduleName,
+  ]);
+
   const contractAddress = "" as ContractAddr;
   const { data: contractAccountId } = useAccountId(contractAddress);
   const {
@@ -113,8 +121,6 @@ export const ModuleDetails = () => {
     refetchRelatedProposals,
   } = useContractDetailsTableCounts(contractAddress, contractAccountId);
 
-  if (isLoading && !data) return <Loading />;
-  const moduleData = data as IndexedModule;
   const actionList: ActionInfo[] = [
     {
       icon: "query" as IconKeys,
@@ -140,7 +146,7 @@ export const ModuleDetails = () => {
     },
   ];
   return (
-    <PageContainer>
+    <>
       <ModuleTop isVerified moduleData={moduleData} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
@@ -277,7 +283,13 @@ export const ModuleDetails = () => {
             </Flex>
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleFunction moduleData={moduleData} />
+            <ModuleFunction
+              address={moduleData.address}
+              moduleName={moduleData.moduleName}
+              fns={moduleData.parsedAbi.exposed_functions}
+              viewFns={moduleData.viewFunctions}
+              executeFns={moduleData.executeFunctions}
+            />
           </TabPanel>
           {/* TODO TX History */}
           <TabPanel p={0}>
@@ -344,6 +356,29 @@ export const ModuleDetails = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+    </>
+  );
+};
+
+export const ModuleDetails = () => {
+  const router = useRouter();
+
+  const addr = getFirstQueryParam(router.query.address);
+  const moduleName = getFirstQueryParam(router.query.moduleName);
+
+  const { data, isLoading } = useAccountModules({
+    address: addr as MoveAccountAddr,
+    moduleName,
+  });
+
+  if (!router.isReady || isLoading) return <Loading />;
+  return (
+    <PageContainer>
+      {data === undefined ? (
+        <InvalidModule />
+      ) : (
+        <ModuleDetailsBody moduleData={data as IndexedModule} />
+      )}
     </PageContainer>
   );
 };

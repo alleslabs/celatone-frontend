@@ -5,18 +5,54 @@ import { useCallback, useMemo, useState } from "react";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { Loading } from "lib/components/Loading";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
 import type { IndexedModule } from "lib/services/moduleService";
+import type { ExposedFunction } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
 
 interface ModuleFunctionProps {
-  moduleData: IndexedModule;
+  address: IndexedModule["address"];
+  moduleName: IndexedModule["moduleName"];
+  fns: IndexedModule["parsedAbi"]["exposed_functions"];
+  viewFns: IndexedModule["viewFunctions"];
+  executeFns: IndexedModule["executeFunctions"];
 }
 
-export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
+const FunctionAccordions = ({
+  type,
+  fns,
+  expandedIndexes,
+  updateExpandedIndexes,
+}: {
+  type: FunctionTypeTabs;
+  fns: ExposedFunction[];
+  expandedIndexes: number[];
+  updateExpandedIndexes: (indexes: number[]) => void;
+}) => (
+  <Accordion
+    id={type}
+    display="none"
+    allowMultiple
+    index={expandedIndexes}
+    onChange={updateExpandedIndexes}
+  >
+    <Flex direction="column" gap={4}>
+      {fns.map((fn) => (
+        <FunctionDetailCard exposedFn={fn} key={fn.name} />
+      ))}
+    </Flex>
+  </Accordion>
+);
+
+export const ModuleFunction = ({
+  address,
+  moduleName,
+  fns,
+  viewFns,
+  executeFns,
+}: ModuleFunctionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
@@ -24,20 +60,14 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
   const [keyword, setKeyword] = useState("");
 
-  const exposedFns = moduleData.parsedAbi.exposed_functions;
-
-  const searchedFns = useMemo(() => {
-    if (!keyword) return exposedFns;
-    return exposedFns.filter((fn) => fn.name?.includes(keyword));
-  }, [keyword, exposedFns]);
-  const viewFns = searchedFns.filter((fn) => fn.is_view);
-  const executeFns = searchedFns.filter((fn) => !fn.is_view);
-
-  const getDisplayedFns = (selectedTab: FunctionTypeTabs) => {
-    if (selectedTab === FunctionTypeTabs.VIEW) return viewFns;
-    if (selectedTab === FunctionTypeTabs.EXECUTE) return executeFns;
-    return searchedFns;
-  };
+  const [filteredFns, filteredViewFns, filteredExecuteFns] = useMemo(() => {
+    if (!keyword) return [fns, viewFns, executeFns];
+    return [
+      fns.filter((fn) => fn.name.includes(keyword)),
+      viewFns.filter((fn) => fn.name.includes(keyword)),
+      executeFns.filter((fn) => fn.name.includes(keyword)),
+    ];
+  }, [executeFns, fns, keyword, viewFns]);
 
   const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
@@ -46,10 +76,11 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
     (nextTab: FunctionTypeTabs) => {
       if (nextTab === tab) return;
       navigate({
-        pathname: `/modules/[address]/[moduleName]/function`,
+        pathname: `/modules/[address]/[moduleName]/[tab]`,
         query: {
-          address: moduleData.address,
-          moduleName: moduleData.moduleName,
+          address,
+          moduleName,
+          tab: "function",
           type: nextTab,
         },
         options: {
@@ -57,15 +88,17 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
         },
       });
     },
-    [tab, moduleData.address, moduleData.moduleName, navigate]
+    [address, moduleName, navigate, tab]
   );
 
-  if (!moduleData) return <Loading />;
-
   return (
-    <Flex direction="column" gap={8}>
+    <Flex
+      direction="column"
+      gap={8}
+      sx={{ [`& #${tab}`]: { display: "block" } }}
+    >
       <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
-        Exposed Function
+        Exposed Functions
       </Heading>
       <InputWithIcon
         placeholder="Search functions..."
@@ -78,7 +111,11 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
           currentTab={tab}
           onTabChange={handleTabChange}
           my={3}
-          counts={[searchedFns.length, viewFns.length, executeFns.length]}
+          counts={[
+            filteredFns.length,
+            filteredViewFns.length,
+            filteredExecuteFns.length,
+          ]}
         />
         <Flex gap={4} alignItems="center">
           <Button
@@ -92,13 +129,7 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
             }
             onClick={() => {
               setExpandedIndexes((prev) =>
-                !prev.length
-                  ? Array.from(
-                      Array(
-                        moduleData.parsedAbi.exposed_functions.length
-                      ).keys()
-                    )
-                  : []
+                !prev.length ? Array.from(Array(fns.length).keys()) : []
               );
             }}
           >
@@ -109,11 +140,7 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
             size="sm"
             rightIcon={<CustomIcon name="launch" />}
             onClick={() => {
-              const jsonString = JSON.stringify(
-                moduleData.parsedAbi.exposed_functions,
-                null,
-                2
-              );
+              const jsonString = JSON.stringify(fns, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
                 // Modify styling later
@@ -136,17 +163,26 @@ export const ModuleFunction = ({ moduleData }: ModuleFunctionProps) => {
           </Button>
         </Flex>
       </Flex>
-      <Accordion
-        allowMultiple
-        index={expandedIndexes}
-        onChange={updateExpandedIndexes}
-      >
-        <Flex direction="column" gap={4}>
-          {getDisplayedFns(tab).map((fn) => (
-            <FunctionDetailCard exposedFn={fn} key={fn.name} />
-          ))}
-        </Flex>
-      </Accordion>
+
+      {/* rendering all tabs at once and use css selector to avoid lagginess when changing tab */}
+      <FunctionAccordions
+        type={FunctionTypeTabs.ALL}
+        fns={filteredFns}
+        expandedIndexes={expandedIndexes}
+        updateExpandedIndexes={updateExpandedIndexes}
+      />
+      <FunctionAccordions
+        type={FunctionTypeTabs.VIEW}
+        fns={filteredViewFns}
+        expandedIndexes={expandedIndexes}
+        updateExpandedIndexes={updateExpandedIndexes}
+      />
+      <FunctionAccordions
+        type={FunctionTypeTabs.EXECUTE}
+        fns={filteredExecuteFns}
+        expandedIndexes={expandedIndexes}
+        updateExpandedIndexes={updateExpandedIndexes}
+      />
     </Flex>
   );
 };
