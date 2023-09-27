@@ -2,18 +2,19 @@ import { Accordion, Flex } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
-import {
-  NoImageEmptyState,
-  ModuleContainer,
-  InteractionTabs,
-  InteractionTypeSwitch,
-} from "../common";
-import { FunctionAccordion } from "../common/FunctionAccordion";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction, Option } from "lib/types";
 import { checkAvailability } from "lib/utils";
+
+import {
+  NoImageEmptyState,
+  ModuleContainer,
+  InteractionTabs,
+  InteractionTypeSwitch,
+  FunctionAccordion,
+} from "./common";
 
 const EmptyStateRender = ({ desc }: { desc: string }) => (
   <ModuleContainer h="full">
@@ -40,7 +41,7 @@ const RenderFunctions = ({
 }: {
   states: FunctionStates;
   selectedFn: Option<ExposedFunction>;
-  setSelectedFn: Dispatch<SetStateAction<Option<ExposedFunction>>>;
+  setSelectedFn: (fn: ExposedFunction) => void;
 }) => {
   if (!states.filteredFunctions)
     return (
@@ -75,16 +76,19 @@ const RenderFunctions = ({
 
 interface FunctionSelectPanelProps {
   module: Option<IndexedModule>;
+  tab: InteractionTabs;
+  setTab: Dispatch<SetStateAction<InteractionTabs>>;
   selectedFn: Option<ExposedFunction>;
-  setSelectedFn: Dispatch<SetStateAction<Option<ExposedFunction>>>;
+  setSelectedFn: (fn: ExposedFunction) => void;
 }
 
 export const FunctionSelectPanel = ({
   module,
+  tab,
+  setTab,
   selectedFn,
   setSelectedFn,
 }: FunctionSelectPanelProps) => {
-  const [tab, setTab] = useState(InteractionTabs.VIEW_MODULE);
   const [keyword, setKeyword] = useState("");
 
   const functionStates = useMemo<FunctionStates>(() => {
@@ -104,9 +108,8 @@ export const FunctionSelectPanel = ({
     };
   }, [keyword, tab, module?.executeFunctions, module?.viewFunctions]);
 
-  // TODO: find a better way to handle height
   return (
-    <Flex direction="column" maxH="calc(100vh - 364px)" overflow="scroll">
+    <div>
       <InputWithIcon
         iconPosition="start"
         value={keyword}
@@ -119,11 +122,14 @@ export const FunctionSelectPanel = ({
         my={3}
         counts={[module?.viewFunctions.length, module?.executeFunctions.length]}
       />
-      <RenderFunctions
-        states={functionStates}
-        selectedFn={selectedFn}
-        setSelectedFn={setSelectedFn}
-      />
-    </Flex>
+      {/* TODO: find a better way to handle height */}
+      <Flex direction="column" maxH="calc(100vh - 400px)" overflow="scroll">
+        <RenderFunctions
+          states={functionStates}
+          selectedFn={selectedFn}
+          setSelectedFn={setSelectedFn}
+        />
+      </Flex>
+    </div>
   );
 };
