@@ -164,9 +164,9 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             Overview
           </CustomTab>
           <CustomTab
-            count={moduleData?.parsedAbi.exposed_functions.length}
+            count={moduleData.parsedAbi.exposed_functions.length}
             onClick={handleTabChange(TabIndex.Function, FunctionTypeTabs.ALL)}
-            isDisabled={!moduleData?.parsedAbi.exposed_functions.length}
+            isDisabled={!moduleData.parsedAbi.exposed_functions.length}
           >
             Function
           </CustomTab>
@@ -174,9 +174,9 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             Transactions
           </CustomTab>
           <CustomTab
-            count={moduleData?.parsedAbi.structs.length}
+            count={moduleData.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
-            isDisabled={!moduleData?.parsedAbi.structs.length}
+            isDisabled={!moduleData.parsedAbi.structs.length}
           >
             Structs
           </CustomTab>
