@@ -126,14 +126,14 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       icon: "query" as IconKeys,
       iconColor: "primary.main",
       name: "View Functions",
-      count: moduleData?.viewFunctions.length,
+      count: moduleData.viewFunctions.length,
       onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
     },
     {
       icon: "execute" as IconKeys,
       iconColor: "accent.main",
       name: "Execute Functions",
-      count: moduleData?.executeFunctions.length,
+      count: moduleData.executeFunctions.length,
       onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
     },
     {
