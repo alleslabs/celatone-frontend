@@ -10,6 +10,7 @@ import type {
   ResponseABI,
   ExposedFunction,
   AbiFormData,
+  Nullable,
 } from "lib/types";
 import {
   libDecode,
@@ -28,7 +29,7 @@ export const getAccountModules = async (
 ): Promise<InternalModule[]> => {
   const result: ResponseModule[] = [];
 
-  const fetchFn = async (paginationKey: string | null) => {
+  const fetchFn = async (paginationKey: Nullable<string>) => {
     const { data } = await axios.get<ResponseModules>(
       `${baseEndpoint}/initia/move/v1/accounts/${address}/modules${
         paginationKey ? `?pagination.key=${paginationKey}` : ""
@@ -77,7 +78,7 @@ export interface ModuleVerificationInternal
 export const getModuleVerificationStatus = async (
   address: MoveAccountAddr,
   moduleName: string
-): Promise<ModuleVerificationInternal | null> =>
+): Promise<Nullable<ModuleVerificationInternal>> =>
   // TODO: move url to base api route? wait for celatone api implementation?
   axios
     .get<ModuleVerificationReturn>(

@@ -55,7 +55,7 @@ export const ArgFieldTemplate = ({
   const isError = isTouched && !!error;
 
   const size = "md";
-  const isNull = value === undefined;
+  const isNull = value === null;
   return (
     <Box>
       <FormControl
@@ -85,8 +85,11 @@ export const ArgFieldTemplate = ({
         <Checkbox
           pt="2px"
           pl={2}
-          isChecked={value === undefined}
-          onChange={(e) => onChange(e.target.checked ? undefined : "")}
+          isChecked={isNull}
+          onChange={(e) => {
+            const newValue = e.target.checked;
+            onChange(newValue ? null : "");
+          }}
         >
           <Text variant="body3">Send as null</Text>
         </Checkbox>

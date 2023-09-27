@@ -85,7 +85,9 @@ export const useAccountModules = ({
           indexModuleResponse(module, functionName)
         )
       : getAccountModules(baseEndpoint, address).then((modules) =>
-          modules.map((module) => indexModuleResponse(module))
+          modules
+            .sort((a, b) => (a.moduleName < b.moduleName ? -1 : 1))
+            .map((module) => indexModuleResponse(module))
         );
 
   return useQuery(

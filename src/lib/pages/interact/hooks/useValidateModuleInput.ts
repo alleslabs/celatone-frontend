@@ -5,6 +5,7 @@ import {
   useExampleAddresses,
   useValidateAddress,
 } from "lib/app-provider";
+import type { Nullable } from "lib/types";
 import { isHexAddress, splitModule, truncate } from "lib/utils";
 
 export const useValidateModuleInput = () => {
@@ -20,7 +21,7 @@ export const useValidateModuleInput = () => {
   or function path (“${truncateExampleAddr}::module_name::function_name” or “0x123...456::module_name::function_name“)`;
 
   return useCallback(
-    (input: string): string | null => {
+    (input: string): Nullable<string> => {
       const inputArr = splitModule(input);
       // Allow only module path for now
       if (inputArr.length > 3) return errText;

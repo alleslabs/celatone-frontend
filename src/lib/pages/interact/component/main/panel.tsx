@@ -107,8 +107,9 @@ export const FunctionSelectPanel = ({
     };
   }, [keyword, tab, module?.executeFunctions, module?.viewFunctions]);
 
+  // TODO: find a better way to handle height
   return (
-    <Flex direction="column" overflow="scroll">
+    <Flex direction="column" maxH="calc(100vh - 364px)" overflow="scroll">
       <InputWithIcon
         iconPosition="start"
         value={keyword}

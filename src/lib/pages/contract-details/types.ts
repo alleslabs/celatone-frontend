@@ -4,6 +4,7 @@ import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   BalanceWithAssetInfo,
+  Nullable,
   Option,
   PublicDetail,
   PublicInfo,
@@ -23,7 +24,7 @@ export interface ContractData {
   isBalancesLoading: boolean;
   contractCw2Info: Option<ContractCw2Info>;
   isContractCw2InfoLoading: boolean;
-  initMsg: Option<string | null>;
+  initMsg: Option<Nullable<string>>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;

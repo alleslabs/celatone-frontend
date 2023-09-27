@@ -6,6 +6,7 @@ import type {
   AccessConfigPermission,
   PermissionAddresses,
   Option,
+  Nullable,
 } from "lib/types";
 
 export interface Account {
@@ -27,8 +28,8 @@ export interface RawPublicCode {
   permissionAddresses: PermissionAddresses;
   github: string;
   verified: boolean;
-  cw2Contract: Option<string | null>;
-  cw2Version: Option<string | null>;
+  cw2Contract: Option<Nullable<string>>;
+  cw2Version: Option<Nullable<string>>;
 }
 
 export interface PublicCode extends Omit<RawPublicCode, "contracts"> {

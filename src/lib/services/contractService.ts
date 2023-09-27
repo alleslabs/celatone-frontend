@@ -34,6 +34,7 @@ import type {
   Dict,
   Addr,
   ContractInfo,
+  Nullable,
 } from "lib/types";
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
@@ -48,7 +49,7 @@ export interface ContractDetail extends ContractLocalInfo {
 interface InstantiateDetail {
   createdHeight: Option<number>;
   createdTime: Option<Date>;
-  initMsg: Option<string | null>;
+  initMsg: Option<Nullable<string>>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
