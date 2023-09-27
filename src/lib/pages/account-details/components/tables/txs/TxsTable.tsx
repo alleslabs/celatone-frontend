@@ -17,14 +17,14 @@ import {
   useTxsByAddressPagination,
   useTxsCountByAddress,
 } from "lib/services/txService";
-import type { Option, Transaction, TxFilters } from "lib/types";
+import type { Nullable, Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsBody } from "./TxsBody";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  accountId: Option<number | null>;
+  accountId: Option<Nullable<number>>;
   scrollComponentId: string;
   onViewMore?: () => void;
 }

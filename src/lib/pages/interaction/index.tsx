@@ -48,7 +48,6 @@ export const Interaction = () => {
       <PageContainer
         overflow="hidden"
         minH="unset"
-        maxH="calc(100vh - 129px)"
         display="grid"
         gridTemplateRows="auto auto 1fr"
       >

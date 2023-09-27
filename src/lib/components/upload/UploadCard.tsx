@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import big from "big.js";
 
 import { CustomIcon, UploadIcon } from "lib/components/icon";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 
 type CardTheme = "primary" | "secondary";
 
@@ -13,7 +13,7 @@ interface UploadCardProps {
   deleteFile: () => void;
   theme?: CardTheme;
   status?: Status;
-  statusText?: string | null;
+  statusText?: Nullable<string>;
 }
 
 const getTheme = (theme: CardTheme) => {

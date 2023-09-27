@@ -1,5 +1,3 @@
-import { Box } from "@chakra-ui/react";
-
 import type { DisplayMode } from "../types";
 
 import { ModuleSelectorDisplay } from "./SelectorDisplay";
@@ -20,25 +18,19 @@ export const ModuleSelector = ({
   closeModal,
 }: ModuleSelectorProps) => {
   const showDisplay = mode === "display" && Boolean(selectedAddress.address);
-  return (
-    <Box
-      sx={{
-        "& .selector-display": { display: showDisplay ? "flex" : "none" },
-        "& .selector-input": { display: showDisplay ? "none" : "flex" },
-      }}
-    >
-      <ModuleSelectorDisplay
-        selectedAddress={selectedAddress}
-        setMode={setMode}
-      />
-      <ModuleSelectorInput
-        setModules={setModules}
-        closeModal={closeModal}
-        selectedAddress={selectedAddress}
-        setSelectedAddress={setSelectedAddress}
-        setMode={setMode}
-        handleModuleSelect={handleModuleSelect}
-      />
-    </Box>
+  return showDisplay ? (
+    <ModuleSelectorDisplay
+      selectedAddress={selectedAddress}
+      setMode={setMode}
+    />
+  ) : (
+    <ModuleSelectorInput
+      setModules={setModules}
+      closeModal={closeModal}
+      selectedAddress={selectedAddress}
+      setSelectedAddress={setSelectedAddress}
+      setMode={setMode}
+      handleModuleSelect={handleModuleSelect}
+    />
   );
 };

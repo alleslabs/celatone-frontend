@@ -9,10 +9,10 @@ import { EmptyState } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddressPagination } from "lib/services/txService";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 
 interface TxsTableProps {
-  contractAccountId: Option<number | null>;
+  contractAccountId: Option<Nullable<number>>;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;

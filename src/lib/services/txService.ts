@@ -28,6 +28,7 @@ import type {
   TxFilters,
   Message,
   PoolTxFilter,
+  Nullable,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
@@ -76,7 +77,7 @@ export const useTxData = (
 };
 
 export const useTxsByAddressPagination = (
-  accountId: Option<number | null>,
+  accountId: Option<Nullable<number>>,
   search: string,
   filters: TxFilters,
   isSigner: Option<boolean>,
@@ -163,7 +164,7 @@ export const useTxsCountByAddress = ({
   filters,
   isSigner,
 }: {
-  accountId: Option<number | null>;
+  accountId: Option<Nullable<number>>;
   search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;

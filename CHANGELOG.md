@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
 - [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
 - [#538](https://github.com/alleslabs/celatone-frontend/pull/538) Add empty state in query and execute with json schema
@@ -116,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#547](https://github.com/alleslabs/celatone-frontend/pull/547) Fix form null and sort modules when submit an address
 - [#543](https://github.com/alleslabs/celatone-frontend/pull/543) Fix Initia testnet chain config
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
 - [#527](https://github.com/alleslabs/celatone-frontend/pull/527) Fix ellipsis explorer link
