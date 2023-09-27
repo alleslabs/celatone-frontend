@@ -121,10 +121,27 @@ export const ExecuteArea = ({
 
   return (
     <Flex direction="column">
-      <ConnectWalletAlert
-        subtitle="You need to connect your wallet to perform this action"
-        mb={8}
-      />
+      {fn.is_entry ? (
+        <ConnectWalletAlert
+          subtitle="You need to connect your wallet to perform this action"
+          mb={8}
+        />
+      ) : (
+        <Alert variant="warning" mb={8} alignItems="center">
+          <CustomIcon
+            name="alert-circle-solid"
+            boxSize={4}
+            color="warning.main"
+            mr={4}
+          />
+          <AlertDescription wordBreak="break-word">
+            Title This function cannot be executed through this page. Only
+            execute functions with “is_entry: true” and visibility is “public”
+            or “friend” are able to interacted through Celatone’s module
+            interactions.
+          </AlertDescription>
+        </Alert>
+      )}
       <AbiForm
         fn={executeFn}
         initialData={data}
