@@ -9,7 +9,7 @@ import { getAccountResources } from "./resource";
 
 export interface IndexedResource extends InternalResource {
   address: string;
-  move_resources: string;
+  move_resource: string;
   raw_bytes: string;
   struct_tag: string;
 }

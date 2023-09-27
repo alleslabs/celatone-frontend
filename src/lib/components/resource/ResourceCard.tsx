@@ -5,12 +5,14 @@ interface ResourceCardProps {
   amount: number;
   hasBorder?: boolean;
   isSelected?: boolean;
+  onClick?: () => void;
 }
 export const ResourceCard = ({
   name,
   amount,
   hasBorder = false,
   isSelected = false,
+  onClick,
 }: ResourceCardProps) => {
   return (
     <Flex
@@ -24,6 +26,7 @@ export const ResourceCard = ({
       borderRadius={8}
       p={3}
       alignItems="center"
+      onClick={onClick}
     >
       {name}
       <Badge variant={isSelected ? "primary" : "gray"} ml={2}>

@@ -3,7 +3,7 @@ import type { Pagination } from "../rest";
 
 export interface ResponseResource {
   address: string;
-  move_resources: string;
+  move_resource: string;
   raw_bytes: string;
   struct_tag: string;
 }

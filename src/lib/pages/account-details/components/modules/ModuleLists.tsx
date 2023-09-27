@@ -93,7 +93,7 @@ export const ModuleLists = ({
       <Flex direction="column" gap={8}>
         {!onViewMore && (
           <InputWithIcon
-            placeholder="Search with Execute Message"
+            placeholder="Search with Module Name..."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             action="execute-message-search"
