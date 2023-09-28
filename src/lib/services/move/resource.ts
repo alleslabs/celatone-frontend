@@ -27,6 +27,6 @@ export const getAccountResources = async (
   await fetchFn(null);
 
   return snakeToCamel(result).sort((a, b) =>
-    a.structTag < b.structTag ? -1 : 1
+    a.structTag.localeCompare(b.structTag)
   );
 };

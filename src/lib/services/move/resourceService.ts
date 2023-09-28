@@ -7,39 +7,16 @@ import type { InternalResource } from "lib/types/move/resource";
 
 import { getAccountResources } from "./resource";
 
-export interface IndexedResource extends InternalResource {
-  address: string;
-  move_resource: string;
-  raw_bytes: string;
-  struct_tag: string;
-}
-
-// const indexResourceResponse = (resource: InternalResource): IndexedResource => {
-//   const parsedAbi = parseJsonABI(module.abi);
-//   const { view, execute } = splitViewExecuteFunctions(
-//     parsedAbi.exposed_functions
-//   );
-//   return {
-//     ...module,
-//     parsedAbi,
-//     viewFunctions: view,
-//     executeFunctions: execute,
-//     searchedFn: parsedAbi.exposed_functions.find(
-//       (fn) => fn.name === functionName
-//     ),
-//   };
-// };
-
 export const useAccountResources = ({
   address,
 }: {
   address: MoveAccountAddr;
-}): UseQueryResult<IndexedResource[]> => {
+}): UseQueryResult<InternalResource[]> => {
   const baseEndpoint = useBaseApiRoute("rest");
   const queryFn: QueryFunction<InternalResource[]> = () =>
     getAccountResources(baseEndpoint, address);
   return useQuery(
-    [CELATONE_QUERY_KEYS.RESOURCE_MODULES, baseEndpoint, address],
+    [CELATONE_QUERY_KEYS.ACCOUNT_RESOURCES, baseEndpoint, address],
     queryFn
   );
 };

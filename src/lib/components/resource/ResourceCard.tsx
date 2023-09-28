@@ -1,11 +1,11 @@
-import { Badge, Flex } from "@chakra-ui/react";
+import { Badge, Flex, Text } from "@chakra-ui/react";
 
 interface ResourceCardProps {
   name: string;
   amount: number;
   hasBorder?: boolean;
   isSelected?: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 }
 export const ResourceCard = ({
   name,
@@ -28,7 +28,7 @@ export const ResourceCard = ({
       alignItems="center"
       onClick={onClick}
     >
-      {name}
+      <Text className="ellipsis">{name}</Text>
       <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
         {amount}
       </Badge>

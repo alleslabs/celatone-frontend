@@ -1,6 +1,4 @@
-import type { ExpandedIndex } from "@chakra-ui/react";
 import {
-  Accordion,
   AccordionButton,
   AccordionItem,
   AccordionPanel,
@@ -10,18 +8,37 @@ import {
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import type { IndexedResource } from "lib/services/move/resourceService";
+import type { InternalResource } from "lib/types";
 
 interface ResourceDetailCardProps {
-  resourceData: IndexedResource;
-  defaultIndex: ExpandedIndex;
+  resourceData: InternalResource;
 }
 export const ResourceDetailCard = ({
   resourceData,
-  defaultIndex,
 }: ResourceDetailCardProps) => {
   const moveResourceObject = JSON.parse(resourceData.moveResource);
-  const dataObject = moveResourceObject.data;
+
+  if (resourceData.moveResource === '""')
+    return (
+      <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
+        <CustomIcon
+          name="alert-circle-solid"
+          color="gray.600"
+          boxSize={4}
+          mr={3}
+        />
+        <Text color="text.dark" textAlign="center">
+          Invalid Data, resource and module provided are incompatible or contain
+          invalid data within the module.
+        </Text>
+      </Flex>
+    );
+
+  const dataObject = moveResourceObject.data as {
+    key: string;
+    value: unknown;
+  }[];
+
   const formattedArray: { key: string; value: unknown }[] = Object.entries(
     dataObject
   ).map(([key, value]) => ({
@@ -30,46 +47,50 @@ export const ResourceDetailCard = ({
   }));
 
   return (
-    <Accordion allowMultiple width="full" defaultIndex={defaultIndex}>
-      <AccordionItem>
-        <AccordionButton>
-          <Flex p={4} justifyContent="space-between" w="full" align="center">
-            <Text variant="body1" fontWeight={600} textAlign="left">
-              {resourceData.structTag}
-            </Text>
-            <Flex alignItems="center" gap={2}>
-              {/* TODO  <button> cannot appear as a descendant of <button> */}
-              <CopyButton
-                value={resourceData.moveResource}
-                variant="outline-primary"
-                size="sm"
-                buttonText="Copy JSON"
-              />
-              <CustomIcon name="chevron-down" color="gray.600" />
-            </Flex>
+    <AccordionItem mb={4}>
+      <AccordionButton>
+        <Flex
+          p={4}
+          justifyContent="space-between"
+          w="full"
+          align="center"
+          gap={8}
+        >
+          <Text variant="body1" fontWeight={600} textAlign="left">
+            {resourceData.structTag}
+          </Text>
+          <Flex alignItems="center" gap={2} minW={36}>
+            {/* TODO  <button> cannot appear as a descendant of <button> */}
+            <CopyButton
+              value={resourceData.moveResource}
+              variant="outline-primary"
+              size="xs"
+              buttonText="Copy JSON"
+            />
+            <CustomIcon name="chevron-down" color="gray.600" />
           </Flex>
-        </AccordionButton>
-        <AccordionPanel p={4} borderTop="1px solid" borderColor="gray.700">
-          <Flex direction="column" gap={3}>
-            {formattedArray.map((item) => (
-              <Flex gap={4}>
-                <Text variant="body2" color="text.dark" w={52}>
-                  {item.key}
+        </Flex>
+      </AccordionButton>
+      <AccordionPanel p={4} borderTop="1px solid" borderColor="gray.700">
+        <Flex direction="column" gap={3}>
+          {formattedArray.map((item) => (
+            <Flex gap={4}>
+              <Text variant="body2" color="text.dark" w={52}>
+                {item.key}
+              </Text>
+              {typeof item.value === "object" ? (
+                <Text variant="body2" color="text.main">
+                  {JSON.stringify(item.value)}
                 </Text>
-                {typeof item.value === "object" ? (
-                  <Text variant="body2" color="text.main">
-                    {JSON.stringify(item.value)}
-                  </Text>
-                ) : (
-                  <Text variant="body2" color="text.main">
-                    {item.value?.toString()}
-                  </Text>
-                )}
-              </Flex>
-            ))}
-          </Flex>
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+              ) : (
+                <Text variant="body2" color="text.main">
+                  {item.value?.toString()}
+                </Text>
+              )}
+            </Flex>
+          ))}
+        </Flex>
+      </AccordionPanel>
+    </AccordionItem>
   );
 };

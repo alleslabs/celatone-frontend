@@ -4,20 +4,22 @@ import {
   AccordionItem,
   AccordionPanel,
   Badge,
+  Button,
   Flex,
   Heading,
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource/ResourceCard";
 import { ResourceDetailCard } from "lib/components/resource/ResourceDetailCard";
+import { EmptyState } from "lib/components/state";
 import { TableTitle } from "lib/components/table";
-import type { IndexedResource } from "lib/services/move/resourceService";
 import { useAccountResources } from "lib/services/move/resourceService";
 import type { HumanAddr } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
@@ -30,11 +32,41 @@ interface ResourceSectionProps {
 export const ResourceSection = ({ address }: ResourceSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+  const selectedAccountParam = getFirstQueryParam(router.query.account);
+  const selectedNameParam = getFirstQueryParam(router.query.selected);
 
-  const { data: resourcesData = [] } = useAccountResources({
+  const handleSelectResource = useCallback(
+    (
+      account: ResourceGroupByAccount["owner"],
+      resource: ResourceGroup["group"]
+    ) => {
+      if (account === selectedAccountParam && resource === selectedNameParam)
+        return;
+      navigate({
+        pathname: `/accounts/[accountAddress]/[tab]`,
+        query: {
+          accountAddress: address,
+          tab: "resources",
+          account,
+          selected: resource,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [selectedNameParam, selectedAccountParam, address, navigate]
+  );
+
+  const { data: resources, isLoading } = useAccountResources({
     address,
   });
-  const resources = resourcesData as IndexedResource[];
+
+  if (isLoading) return <Loading />;
+  if (!resources) return <ErrorFetching />;
+  if (resources.length === 0)
+    return <EmptyState imageVariant="empty" message="No resources found." />;
 
   const sortedResource = resources.reduce<
     Record<string, ResourceGroupByAccount>
@@ -44,6 +76,7 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
     const ownerResources = acc[ownerName]?.resources ?? {};
     const groupResources = ownerResources[groupName] ?? {};
     const items = groupResources?.items ?? [];
+
     items.push(resource);
 
     return {
@@ -54,6 +87,8 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
           ...ownerResources,
           [groupName]: {
             group: groupName,
+            account: ownerName,
+            displayName: `${truncate(ownerName)}::${groupName}`,
             items,
           },
         },
@@ -63,56 +98,31 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
 
   const groupedResources = Object.values(sortedResource);
 
-  const selectedAccount = getFirstQueryParam(router.query.account);
-
-  const selectedName = getFirstQueryParam(router.query.selected);
-
-  const handleSelectResource = useCallback(
-    (
-      account: ResourceGroupByAccount["owner"],
-      resource: ResourceGroup["group"]
-    ) => {
-      if (account === selectedAccount && resource === selectedName) return;
-      navigate({
-        pathname: `/accounts/[address]/[tab]`,
-        query: {
-          address,
-          tab: "resources",
-          account,
-          selected: resource,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    },
-    [selectedName, selectedAccount, address, navigate]
-  );
-
   const selectedGroup =
-    groupedResources.find((item) => item.owner === router.query.account) ||
+    groupedResources.find((item) => item.owner === selectedAccountParam) ??
     groupedResources[0];
-
-  if (!selectedGroup) return null;
   const selectedGroupArray = Object.values(selectedGroup.resources);
 
-  const selectedResources = selectedGroupArray.find(
-    (item) => item.group === router.query.selected
-  );
+  const selectedResources =
+    selectedGroupArray.find((item) => item.group === selectedNameParam) ??
+    selectedGroupArray[0];
 
-  const selectedIndex = !router.query.account
+  const selectedIndex = !selectedAccountParam
     ? 0
-    : groupedResources.findIndex((item) => item.owner === router.query.account);
+    : groupedResources.findIndex((item) => item.owner === selectedAccountParam);
 
-  if (!selectedResources) return <Loading />;
+  const updateExpandedIndexes = (indexes: number[]) =>
+    setExpandedIndexes(indexes);
 
   return (
     <Flex direction="column" mt={8}>
-      <TableTitle
-        helperText="Resources stored in this account"
-        title="Resources"
-        count={12}
-      />
+      <Flex>
+        <TableTitle
+          helperText="Resources stored in this account"
+          title="Resources"
+          count={12}
+        />
+      </Flex>
       <Flex
         gap={6}
         flexDirection={{ base: "column", md: "row" }}
@@ -138,7 +148,7 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
                         name={subitem.group}
                         key={subitem.group}
                         amount={subitem.items.length}
-                        isSelected={router.query.selected === subitem.group}
+                        isSelected={selectedResources.group === subitem.group}
                         onClick={() =>
                           handleSelectResource(item.owner, subitem.group)
                         }
@@ -151,23 +161,45 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
           </Accordion>
         </Flex>
         <Flex direction="column" w="full">
-          <Flex alignItems="center" pb={6}>
-            <Heading as="h6" variant="h6">
-              {router.query.account}::{selectedResources?.group}
-            </Heading>
-            <Badge variant="primary" ml={2}>
-              {selectedResources?.items.length}
-            </Badge>
+          <Flex justifyContent="space-between" alignItems="center" pb={6}>
+            <Flex alignItems="center">
+              <Heading as="h6" variant="h6">
+                {selectedGroup.owner}::{selectedResources.group}
+              </Heading>
+              <Badge variant="primary" ml={2}>
+                {selectedResources.items.length}
+              </Badge>
+            </Flex>
+            <Button
+              variant="outline-primary"
+              size="sm"
+              rightIcon={
+                <CustomIcon
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                  boxSize={3}
+                />
+              }
+              onClick={() => {
+                setExpandedIndexes((prev) =>
+                  !prev.length
+                    ? Array.from(Array(selectedResources.items.length).keys())
+                    : []
+                );
+              }}
+            >
+              {expandedIndexes.length ? "Collapse All" : "Expand All"}
+            </Button>
           </Flex>
-          <Flex gap={4} flexDirection="column">
+          <Accordion
+            allowMultiple
+            width="full"
+            index={expandedIndexes}
+            onChange={updateExpandedIndexes}
+          >
             {selectedResources.items.map((item) => (
-              <ResourceDetailCard
-                resourceData={item}
-                key={item.struct_tag}
-                defaultIndex={selectedResources.items.length > 2 ? [] : [0]}
-              />
+              <ResourceDetailCard resourceData={item} key={item.structTag} />
             ))}
-          </Flex>
+          </Accordion>
         </Flex>
       </Flex>
     </Flex>

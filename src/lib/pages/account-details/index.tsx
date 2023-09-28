@@ -28,13 +28,12 @@ import { useAccountId } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { IndexedResource } from "lib/services/move/resourceService";
 import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { HumanAddr } from "lib/types";
+import type { HumanAddr, InternalResource } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -99,7 +98,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: resourcesData = [] } = useAccountResources({
     address: accountAddress,
   });
-  const resources = resourcesData as IndexedResource[];
+  const resources = resourcesData as InternalResource[];
 
   const publicDetail = publicInfoBySlug?.details;
   const {
