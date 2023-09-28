@@ -117,6 +117,7 @@ export const useTxsByAddressPagination = (
             transaction.transaction.is_migrate,
             transaction.transaction.is_update_admin,
             transaction.transaction.is_clear_admin,
+            // TODO: handle more action msg type
           ]),
           furtherAction: getMsgFurtherAction(
             transaction.transaction.messages.length,
