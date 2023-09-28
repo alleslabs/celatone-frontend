@@ -8,6 +8,7 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type {
   Addr,
   AssetInfo,
+  Nullable,
   Option,
   TxReceipt,
   ValidatorAddr,
@@ -20,7 +21,7 @@ type HtmlType = "json" | "explorer";
 
 interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
   type: T;
-  value: Option<V> | null;
+  value: Option<Nullable<V>>;
   linkType?: LinkType;
   fallback?: string;
 }

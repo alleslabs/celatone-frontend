@@ -8,12 +8,16 @@ import {
   DrawerBody,
   Flex,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ModuleEmptyState } from "../common";
+import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { HexAddr, HumanAddr } from "lib/types";
+import {
+  useAccountModules,
+  type IndexedModule,
+} from "lib/services/move/moduleService";
+import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
 
 import { ModuleSelectMainBody } from "./body";
 import { ModuleSelector } from "./selector";
@@ -23,23 +27,62 @@ import type {
   ModuleSelectFunction,
 } from "./types";
 
-interface ModuleSelectDrawerTriggerProps {
+interface ModuleSelectDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  hexAddress: Option<HexAddr>;
   handleModuleSelect: ModuleSelectFunction;
 }
 
 export const ModuleSelectDrawer = ({
   isOpen,
   onClose,
+  hexAddress,
   handleModuleSelect,
-}: ModuleSelectDrawerTriggerProps) => {
-  const [modules, setModules] = useState<IndexedModule[]>();
+}: ModuleSelectDrawerProps) => {
+  const convertHexAddr = useConvertHexAddress();
+
   const [mode, setMode] = useState<DisplayMode>("input");
   const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>({
     address: "" as HumanAddr,
     hex: "" as HexAddr,
   });
+  const [modules, setModules] = useState<IndexedModule[]>();
+
+  const { refetch } = useAccountModules({
+    address: selectedAddress.hex as MoveAccountAddr,
+    moduleName: undefined,
+    functionName: undefined,
+    options: {
+      refetchOnWindowFocus: false,
+      enabled: false,
+      retry: false,
+      onSuccess: (data) => {
+        if (Array.isArray(data)) setModules(data);
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (hexAddress) {
+      setMode("display");
+      setSelectedAddress({
+        address: convertHexAddr(hexAddress),
+        hex: hexAddress,
+      });
+    } else {
+      setMode("input");
+      setSelectedAddress({
+        address: "" as HumanAddr,
+        hex: "" as HexAddr,
+      });
+      setModules(undefined);
+    }
+  }, [convertHexAddr, hexAddress]);
+
+  useEffect(() => {
+    if (isOpen && selectedAddress.hex) refetch();
+  }, [isOpen, refetch, selectedAddress.hex]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
@@ -58,9 +101,9 @@ export const ModuleSelectDrawer = ({
               mode={mode}
               selectedAddress={selectedAddress}
               setSelectedAddress={setSelectedAddress}
+              setModules={setModules}
               setMode={setMode}
               handleModuleSelect={handleModuleSelect}
-              setModules={setModules}
               closeModal={onClose}
             />
             {modules ? (

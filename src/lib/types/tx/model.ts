@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import type { Nullable } from "../common";
+
 export enum TxStreamPhase {
   BROADCAST = "BROADCAST",
   SUCCEED = "SUCCEED",
@@ -13,7 +15,7 @@ export interface TxErrorRendering {
 
 export interface TxReceipt {
   title: string;
-  value?: string | number | null;
+  value?: Nullable<string | number>;
   html?: ReactNode;
 }
 

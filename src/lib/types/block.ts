@@ -1,4 +1,4 @@
-import type { Option } from "./common";
+import type { Nullable, Option } from "./common";
 import type { ValidatorInfo } from "./validator";
 
 export interface BlockInfo {
@@ -7,12 +7,12 @@ export interface BlockInfo {
   height: number;
   timestamp: Date;
   txCount: number;
-  proposer: ValidatorInfo | null;
+  proposer: Nullable<ValidatorInfo>;
 }
 
 export interface BlockDetails extends Omit<BlockInfo, "txCount"> {
-  gasUsed: Option<number | null>;
-  gasLimit: Option<number | null>;
+  gasUsed: Option<Nullable<number>>;
+  gasLimit: Option<Nullable<number>>;
 }
 
 export interface LatestBlock {

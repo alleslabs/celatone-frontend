@@ -8,7 +8,7 @@ import {
   submitStoreCodeProposalTx,
   submitWhitelistProposalTx,
 } from "lib/app-fns/tx/submitProposal";
-import type { HumanAddr } from "lib/types";
+import type { HumanAddr, Nullable } from "lib/types";
 
 import { useCatchTxError } from "./catchTxError";
 
@@ -16,7 +16,7 @@ export interface SubmitWhitelistProposalStreamParams {
   estimatedFee?: StdFee;
   messages: EncodeObject[];
   whitelistNumber: number;
-  amountToVote: string | null;
+  amountToVote: Nullable<string>;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -61,7 +61,7 @@ export const useSubmitWhitelistProposalTx = () => {
 interface SubmitStoreCodeProposalStreamParams {
   wasmFileName: string;
   messages: EncodeObject[];
-  amountToVote: string | null;
+  amountToVote: Nullable<string>;
   estimatedFee?: StdFee;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;

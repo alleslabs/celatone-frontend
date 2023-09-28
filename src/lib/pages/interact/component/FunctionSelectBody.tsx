@@ -1,12 +1,12 @@
 import { Button, Flex } from "@chakra-ui/react";
 
-import { ModuleContainer } from "../common";
-import { ExecuteArea, ViewArea } from "../form";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction, HexAddr, Option } from "lib/types";
 
+import { ModuleContainer } from "./common";
+import { ExecuteArea, ViewArea } from "./form";
 import { SelectedFunctionCard } from "./SelectedFunctionCard";
 
 interface FunctionSelectBodyProps {

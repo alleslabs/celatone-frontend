@@ -13,7 +13,7 @@ import {
   useExampleAddresses,
 } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
-import { useValidateModuleInput } from "lib/pages/interaction/hooks/useValidateModuleInput";
+import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
 import type { MoveAccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
@@ -36,7 +36,7 @@ export const ModuleSelectorInput = ({
   setMode,
   closeModal,
 }: ModuleSelectorInputProps) => {
-  const [keyword, setKeyword] = useState(selectedAddress.address as string);
+  const [keyword, setKeyword] = useState(selectedAddress.hex as string);
   const [error, setError] = useState("");
   const [addr, moduleName, functionName] = useMemo(
     () => splitModule(keyword),

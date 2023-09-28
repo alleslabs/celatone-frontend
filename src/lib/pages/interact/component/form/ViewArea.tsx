@@ -71,8 +71,8 @@ export const ViewArea = ({
           propsOnChange={setAbiData}
           propsOnErrors={setAbiErrors}
         />
-        <Flex justify="space-between" mt={4}>
-          <Button>TODO: CodeSnippet</Button>
+        <Flex justify="end" mt={4}>
+          {/* <Button>TODO: CodeSnippet</Button> */}
           <Button
             variant="primary"
             fontSize="14px"

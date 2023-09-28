@@ -17,11 +17,13 @@ const validateUint = (uintType: string) => (v: string) => {
     : `Input must be ‘${uintType}’`;
 };
 const validateBool = (v: string) =>
-  v === "true" || v === "false" ? undefined : "Input must be ‘boolean’";
+  v.toLowerCase() === "true" || v.toLowerCase() === "false"
+    ? undefined
+    : "Input must be ‘boolean’";
 
 const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: string) =>
-    isValidArgAddress(v) ? undefined : "invalid address";
+    isValidArgAddress(v) ? undefined : "Invalid address";
 
 const validateVector = (
   v: string,
@@ -44,10 +46,13 @@ const validateVector = (
   // TODO: handle Vector?
 
   let error: Option<string>;
-  value.split(",").forEach((elementValue) => {
-    const res = validateElement(elementValue);
-    if (res !== undefined) error = `invalid element: ${res}`;
-  });
+  value
+    .slice(1, -1)
+    .split(",")
+    .forEach((elementValue) => {
+      const res = validateElement(elementValue.trim());
+      if (res !== undefined) error = `Invalid element: ${res}`;
+    });
 
   return error;
 };

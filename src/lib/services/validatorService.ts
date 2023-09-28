@@ -12,7 +12,12 @@ import {
   useCelatoneApp,
 } from "lib/app-provider";
 import { getValidators } from "lib/query/validator";
-import type { ValidatorInfo, Validator, ValidatorAddr } from "lib/types";
+import type {
+  ValidatorInfo,
+  Validator,
+  ValidatorAddr,
+  Nullable,
+} from "lib/types";
 
 import { resolveValIdentity, getValidator } from "./validator";
 
@@ -70,7 +75,7 @@ export const useValidators = (): UseQueryResult<
 };
 
 export const useValidatorImage = (
-  validator: ValidatorInfo | null
+  validator: Nullable<ValidatorInfo>
 ): UseQueryResult<string> => {
   const {
     chain: { chain_name: chainName },

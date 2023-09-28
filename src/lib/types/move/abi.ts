@@ -1,4 +1,4 @@
-import type { Option } from "../common";
+import type { Nullable } from "../common";
 import type { SnakeToCamelCaseNested } from "../converter";
 import type { Pagination } from "../rest";
 
@@ -82,5 +82,5 @@ interface Field {
 
 export interface AbiFormData {
   typeArgs: Record<string, string>;
-  args: Record<string, Option<string>>;
+  args: Record<string, Nullable<string>>;
 }
