@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#550](https://github.com/alleslabs/celatone-frontend/pull/550) Add modules and resources in account detail
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Wireup publish module tx
 - [#544](https://github.com/alleslabs/celatone-frontend/pull/544) Show module source code if available
 - [#534](https://github.com/alleslabs/celatone-frontend/pull/534) Wire up initia execute function

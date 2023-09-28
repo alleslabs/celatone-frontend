@@ -33,6 +33,7 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+
   const selectedAccountParam = getFirstQueryParam(router.query.account);
   const selectedNameParam = getFirstQueryParam(router.query.selected);
 
