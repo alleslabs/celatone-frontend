@@ -16,6 +16,7 @@ import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
 import { useMemo, useState, useRef, forwardRef } from "react";
 
+import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
@@ -41,15 +42,23 @@ const listItemProps: CSSProperties = {
   cursor: "pointer",
 };
 
-const OPTIONS = [
+const OPTIONS = ["isSend", "isIbc"];
+
+const WASM_OPTIONS = [
   "isUpload",
   "isInstantiate",
   "isExecute",
-  "isSend",
-  "isIbc",
   "isMigrate",
   "isClearAdmin",
   "isUpdateAdmin",
+];
+
+const MOVE_OPTIONS = [
+  "isPublish",
+  "isExecute",
+  "isEntryExecute",
+  "isUpgrade",
+  "isScript",
 ];
 
 // TODO - Refactor this along with TagSelection
@@ -78,14 +87,26 @@ export const TxFilterSelection = forwardRef<
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
 
+    const wasm = useWasmConfig({ shouldRedirect: false });
+    const move = useMoveConfig({ shouldRedirect: false });
+
+    const options = useMemo(
+      () => [
+        ...OPTIONS,
+        ...(wasm.enabled ? WASM_OPTIONS : []),
+        ...(move.enabled ? MOVE_OPTIONS : []),
+      ],
+      [wasm.enabled, move.enabled]
+    );
+
     const partialResults = useMemo(
       () =>
         keyword
-          ? matchSorter(OPTIONS, keyword, {
+          ? matchSorter(options, keyword, {
               threshold: matchSorter.rankings.CONTAINS,
             })
-          : OPTIONS,
-      [keyword]
+          : options,
+      [options, keyword]
     );
 
     const isOptionSelected = (option: string) =>

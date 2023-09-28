@@ -129,6 +129,10 @@ export const useTxsByAddressPagination = (
               isUpdateAdmin: transaction.transaction.is_update_admin,
               isClearAdmin: transaction.transaction.is_clear_admin,
               isIbc: transaction.transaction.is_ibc,
+              isPublish: false,
+              isEntryExecute: false,
+              isUpgrade: false,
+              isScript: false,
             },
             transaction.transaction.success,
             transaction.is_signer

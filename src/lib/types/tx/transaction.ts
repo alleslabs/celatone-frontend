@@ -40,14 +40,18 @@ export interface Transaction {
 }
 
 export interface TxFilters {
+  isSend: boolean;
+  isIbc: boolean;
   isExecute: boolean;
   isInstantiate: boolean;
   isUpload: boolean;
-  isIbc: boolean;
-  isSend: boolean;
   isMigrate: boolean;
   isUpdateAdmin: boolean;
   isClearAdmin: boolean;
+  isPublish: boolean;
+  isEntryExecute: boolean;
+  isUpgrade: boolean;
+  isScript: boolean;
 }
 
 export type PoolTxFilter =
