@@ -40,7 +40,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
 
       const filtered = selected.filter((state) => {
         if (state.key.type === "singleton")
-          return state.key.type.toLowerCase().includes(keyword.toLowerCase());
+          return state.key.value.toLowerCase().includes(keyword.toLowerCase());
 
         return state.key.values.some((value) =>
           value.toLowerCase().includes(keyword.toLowerCase())
