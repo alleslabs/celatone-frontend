@@ -23,7 +23,6 @@ import {
   DEFAULT_MOVE_TX_FILTERS,
   DEFAULT_WASM_TX_FILTERS,
 } from "lib/data";
-import type { BaseTxFilters, MoveTxFilters, WasmTxFilters } from "lib/types";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
 import { DropdownChevron } from "./DropdownChevron";
@@ -48,17 +47,9 @@ const listItemProps: CSSProperties = {
   cursor: "pointer",
 };
 
-const BASE_OPTIONS = Object.keys(
-  DEFAULT_BASE_TX_FILTERS
-) as (keyof BaseTxFilters)[];
-
-const WASM_OPTIONS = Object.keys(
-  DEFAULT_WASM_TX_FILTERS
-) as (keyof WasmTxFilters)[];
-
-const MOVE_OPTIONS = Object.keys(
-  DEFAULT_MOVE_TX_FILTERS
-) as (keyof MoveTxFilters)[];
+const BASE_OPTIONS = Object.keys(DEFAULT_BASE_TX_FILTERS);
+const WASM_OPTIONS = Object.keys(DEFAULT_WASM_TX_FILTERS);
+const MOVE_OPTIONS = Object.keys(DEFAULT_MOVE_TX_FILTERS);
 
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
