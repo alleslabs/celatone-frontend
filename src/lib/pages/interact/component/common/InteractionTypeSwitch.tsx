@@ -59,7 +59,7 @@ export const InteractionTypeSwitch = ({
           textAlign="center"
         >
           <Heading as="h6" variant="h6" fontSize="14px">
-            {tab} {`(${counts[idx]})`}
+            {tab} {counts[idx] !== undefined && `(${counts[idx]})`}
           </Heading>
         </MotionBox>
       ))}
