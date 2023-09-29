@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import { useEffect, useMemo, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
+import { ErrorFetching } from "lib/pages/account-details/components/ErrorFetching";
 import { useContractStates } from "lib/services/contractStateService";
 import type { ContractAddr } from "lib/types";
 import { groupByFirstIndex } from "lib/utils";
@@ -14,8 +15,14 @@ interface ContractStatesProps {
   contractAddress: ContractAddr;
 }
 export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
-    useContractStates(contractAddress);
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useContractStates(contractAddress);
 
   const [selectedNamespace, setSelectedNamespace] = useState("");
   const [keyword, setKeyword] = useState("");
@@ -69,6 +76,8 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
 
     saveAs(blob, "state.json");
   };
+
+  if (error) return <ErrorFetching />;
 
   return (
     <Flex direction="column" gap={8}>

@@ -17,20 +17,20 @@ export const StateCard = ({ state }: StateCardProps) => {
   }, [state.key]);
 
   return (
-    <Box borderRadius={8} bgColor="gray.900" py={2} px={4}>
-      <Flex mb={3} alignItems="center" gap={2}>
-        <Text variant="body2" color="text.main">
+    <Box borderRadius={8} bgColor="gray.900" py={2} px={4} maxWidth="100%">
+      <Box mb={3}>
+        <Text variant="body2" color="text.main" wordBreak="break-word">
           {firstKey}
         </Text>
         {remainingKeys.map((each) => (
-          <Flex alignItems="center" gap={2}>
-            <DotSeparator />
-            <Text variant="body2" color="text.main">
+          <Flex key={each} gap={2}>
+            <DotSeparator mt={2} />
+            <Text variant="body2" color="text.main" wordBreak="break-word">
               {each}
             </Text>
           </Flex>
         ))}
-      </Flex>
+      </Box>
       <JsonReadOnly
         text={JSON.stringify(state.value, null, 2)}
         canCopy
