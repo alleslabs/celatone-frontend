@@ -1,4 +1,5 @@
 import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
+import plur from "plur";
 
 import { CustomIcon } from "lib/components/icon";
 
@@ -16,6 +17,8 @@ export const StateLoader = ({
   onLoadMore,
   onDownload,
 }: StateLoaderProps) => {
+  const stateAmountText = `${totalData} ${plur("State", totalData)}`;
+
   return (
     <Flex
       borderRadius={8}
@@ -39,8 +42,8 @@ export const StateLoader = ({
           <CustomIcon name="check" color="success.main" />
           <Text variant="body2" fontWeight={600} color="text.dark">
             {isCompleted
-              ? `All States Loaded (${totalData} States)`
-              : `${totalData} States Loaded`}
+              ? `All States Loaded (${stateAmountText})`
+              : `${stateAmountText} Loaded`}
           </Text>
           <Button
             size="sm"
