@@ -2,14 +2,33 @@ import { Input, Textarea } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import type { ControllerRenderProps } from "react-hook-form";
 
-import type { Nullable } from "lib/types";
+import { useExampleAddresses } from "lib/app-provider";
+import type { HumanAddr, Nullable } from "lib/types";
 
 import { UintTypes } from "./utils";
 
+const STRING_TYPE = "0x1::string::String";
+
 const getInputPlaceholder = (type: string, isNull: boolean) => {
-  if (type === "0x1::string::String" && !isNull)
+  if (type === STRING_TYPE && !isNull)
     return "Left blank to send as empty string";
   return " ";
+};
+
+const getVectorPlaceholder = (
+  type: string,
+  isNull: boolean,
+  sampleAddresses: HumanAddr
+) => {
+  if (isNull) return " ";
+  const [, elementType] = type.split(/<(.*)>/);
+
+  if (UintTypes.includes(elementType)) return "[1, 2, 3]";
+  if (elementType === "address") return `[0x1, ${sampleAddresses}]`;
+  if (elementType === STRING_TYPE)
+    return "[some first string, some second string]";
+  if (elementType === "bool") return "[true, false]";
+  return `[${elementType}]`;
 };
 
 const boolOptions = [
@@ -28,11 +47,9 @@ export const ArgFieldWidget = ({
   value,
   onChange,
 }: ArgFieldWidgetProps) => {
-  if (
-    UintTypes.includes(type) ||
-    type === "address" ||
-    type === "0x1::string::String"
-  )
+  const { user: exampleAddress } = useExampleAddresses();
+
+  if (UintTypes.includes(type) || type === "address" || type === STRING_TYPE)
     return (
       <Input
         size="md"
@@ -81,7 +98,11 @@ export const ArgFieldWidget = ({
     <Textarea
       minH="112px"
       h="fit-content"
-      placeholder={" "}
+      placeholder={
+        type.startsWith("vector")
+          ? getVectorPlaceholder(type, value === null, exampleAddress)
+          : " "
+      }
       value={value ?? ""}
       onChange={onChange}
     />

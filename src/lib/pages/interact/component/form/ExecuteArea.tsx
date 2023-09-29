@@ -52,8 +52,11 @@ export const ExecuteArea = ({
   const [processing, setProcessing] = useState(false);
 
   const enableExecute = useMemo(
-    () => !abiErrors.length && Boolean(address),
-    [abiErrors.length, address]
+    () =>
+      Object.values(data.typeArgs).every((v) => v.length) &&
+      !abiErrors.length &&
+      Boolean(address),
+    [data.typeArgs, abiErrors.length, address]
   );
 
   const { isFetching } = useSimulateFeeQuery({

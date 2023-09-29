@@ -61,7 +61,9 @@ export const ViewArea = ({
   };
 
   const isLoading = queryFetching || queryRefetching;
-  const isDisabled = Boolean(abiErrors.length);
+  const isDisabled = Boolean(
+    Object.values(abiData.typeArgs).some((v) => !v.length) || abiErrors.length
+  );
   return (
     <Grid templateColumns="1fr 1fr" gap={6}>
       <GridItem>

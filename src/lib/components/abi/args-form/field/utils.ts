@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
+import big from "big.js";
 import { parseInt } from "lodash";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
@@ -10,11 +11,14 @@ const validateNull = (v: Option<string>) =>
   v !== undefined ? undefined : "cannot be null";
 
 const validateUint = (uintType: string) => (v: string) => {
-  const value = parseInt(v);
-  const maxValue = 2 ** parseInt(uintType.slice(1)) - 1;
-  return value >= 0 && value <= maxValue
-    ? undefined
-    : `Input must be ‘${uintType}’`;
+  try {
+    const value = big(v);
+    const maxValue = big(2).pow(parseInt(uintType.slice(1)));
+    if (value.lt(0) || value.gte(maxValue)) throw new Error();
+    return undefined;
+  } catch {
+    return `Input must be ‘${uintType}’`;
+  }
 };
 const validateBool = (v: string) =>
   v.toLowerCase() === "true" || v.toLowerCase() === "false"
