@@ -28,7 +28,7 @@ import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
-import { ContractStates } from "./components/contract-state/ContractStates";
+import { ContractStates } from "./components/contract-state";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
@@ -66,63 +66,9 @@ const ContractTxsTable = observer(
       refetchTransactions,
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress, contractAccountId);
-    const isMobile = useMobile();
     if (!contractData.contractDetail) return <InvalidContract />;
     return (
       <>
-        <ContractTop contractAddress={contractAddress} {...contractData} />
-        {/* Tokens Section */}
-        <Flex direction="column" mt={{ base: 8, md: 4 }}>
-          <TokenSection contractAddress={contractAddress} {...contractData} />
-        </Flex>
-        {/* Contract Description Section */}
-        <ContractDesc {...contractData} />
-        {/* Query/Execute commands section */}
-        <CommandSection
-          contractAddress={contractAddress}
-          codeHash={contractData.contractDetail.codeHash}
-          codeId={String(contractData.contractDetail.codeId)}
-        />
-
-        {/* Instantiate/Contract Info Section */}
-        <Flex
-          my={12}
-          justify="space-between"
-          direction={{ base: "column", md: "row" }}
-        >
-          {/* Instantiate Info */}
-          {isMobile && (
-            <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
-              Instantiate Info
-            </Heading>
-          )}
-          <InstantiateInfo
-            isLoading={
-              contractData.isContractDetailLoading ||
-              contractData.isContractCw2InfoLoading ||
-              contractData.isInstantiateDetailLoading
-            }
-            {...contractData}
-          />
-          {/* Contract Info (Expand) */}
-          <Flex direction="column" flex={0.8} gap={4} mt={{ base: 12, md: 0 }}>
-            <JsonInfo
-              header="Contract Info"
-              jsonString={jsonPrettify(
-                JSON.stringify(
-                  contractData.rawContractResponse?.contract_info ?? {}
-                )
-              )}
-              isLoading={contractData.isRawContractResponseLoading}
-            />
-            <JsonInfo
-              header="Instantiate Message"
-              jsonString={jsonPrettify(contractData.initMsg ?? "")}
-              isLoading={contractData.isInstantiateDetailLoading}
-              defaultExpand
-            />
-          </Flex>
-        </Flex>
         {/* History Table section */}
         <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
           Transaction & History
@@ -180,7 +126,6 @@ const ContractDetailsBody = observer(
   ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailsTableHeader";
     const isMobile = useMobile();
-    if (!contractData.contractDetail) return <InvalidContract />;
     const router = useRouter();
     const tab = getFirstQueryParam(router.query.tab) as TabIndex;
     const navigate = useInternalNavigate();
@@ -216,10 +161,12 @@ const ContractDetailsBody = observer(
       }
     }, [router.isReady, tab, contractAddress, navigate]);
 
+    if (!contractData.contractDetail) return <InvalidContract />;
+
     return (
       <>
         <ContractTop contractAddress={contractAddress} {...contractData} />
-        <Tabs>
+        <Tabs isLazy>
           <TabList
             mt={6}
             mb={8}
@@ -326,7 +273,7 @@ const ContractDetailsBody = observer(
               />
             </TabPanel>
             <TabPanel p={0}>
-              <ContractStates />
+              <ContractStates contractAddress={contractAddress} />
             </TabPanel>
           </TabPanels>
         </Tabs>

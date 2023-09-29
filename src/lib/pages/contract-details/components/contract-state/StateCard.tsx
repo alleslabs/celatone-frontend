@@ -1,18 +1,42 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Text, Box, Flex } from "@chakra-ui/react";
+import { useMemo } from "react";
 
-export const StateCard = () => {
+import { DotSeparator } from "lib/components/DotSeparator";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import type { ContractState } from "lib/types";
+
+interface StateCardProps {
+  state: ContractState;
+}
+
+export const StateCard = ({ state }: StateCardProps) => {
+  const [firstKey, remainingKeys] = useMemo(() => {
+    if (state.key.type === "singleton") return [state.key.value, []];
+
+    return [state.key.values[0], state.key.values.slice(1)];
+  }, [state.key]);
+
   return (
-    <Flex borderRadius={8} bgColor="gray.900" p={3}>
-      <Flex w="15%">
+    <Box borderRadius={8} bgColor="gray.900" py={2} px={4}>
+      <Flex mb={3} alignItems="center" gap={2}>
         <Text variant="body2" color="text.main">
-          lorem
+          {firstKey}
         </Text>
+        {remainingKeys.map((each) => (
+          <Flex alignItems="center" gap={2}>
+            <DotSeparator />
+            <Text variant="body2" color="text.main">
+              {each}
+            </Text>
+          </Flex>
+        ))}
       </Flex>
-      <Flex w="85%">
-        <Text variant="body2" color="text.dark">
-          lorem
-        </Text>
-      </Flex>
-    </Flex>
+      <JsonReadOnly
+        text={JSON.stringify(state.value, null, 2)}
+        canCopy
+        fullWidth
+        isExpandable
+      />
+    </Box>
   );
 };

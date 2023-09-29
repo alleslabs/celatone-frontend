@@ -5,8 +5,17 @@ import { CustomIcon } from "lib/components/icon";
 interface StateLoaderProps {
   isLoading: boolean;
   isCompleted: boolean;
+  totalData: number;
+  onLoadMore: () => void;
+  onDownload: () => void;
 }
-export const StateLoader = ({ isLoading, isCompleted }: StateLoaderProps) => {
+export const StateLoader = ({
+  isLoading,
+  isCompleted,
+  totalData,
+  onLoadMore,
+  onDownload,
+}: StateLoaderProps) => {
   return (
     <Flex
       borderRadius={8}
@@ -19,7 +28,7 @@ export const StateLoader = ({ isLoading, isCompleted }: StateLoaderProps) => {
         <Flex gap={4} alignItems="center">
           <Spinner size="sm" />
           <Text variant="body2" fontWeight={600} color="text.dark">
-            Loading xx states...
+            Loading 100 states...
           </Text>
           <Button size="sm" variant="outline-primary" disabled>
             Load More
@@ -30,15 +39,25 @@ export const StateLoader = ({ isLoading, isCompleted }: StateLoaderProps) => {
           <CustomIcon name="check" color="success.main" />
           <Text variant="body2" fontWeight={600} color="text.dark">
             {isCompleted
-              ? "All States Loaded (XXX States)"
-              : "XXX States Loaded"}
+              ? `All States Loaded (${totalData} States)`
+              : `${totalData} States Loaded`}
           </Text>
-          <Button size="sm" variant="outline-primary" disabled={isCompleted}>
+          <Button
+            size="sm"
+            variant="outline-primary"
+            disabled={isCompleted}
+            onClick={onLoadMore}
+          >
             Load More
           </Button>
         </Flex>
       )}
-      <Button size="sm" variant="outline-primary" disabled={isLoading}>
+      <Button
+        size="sm"
+        variant="outline-primary"
+        disabled={isLoading}
+        onClick={onDownload}
+      >
         <CustomIcon name="download" />
         Download States
       </Button>
