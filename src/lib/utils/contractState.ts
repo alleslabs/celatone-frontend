@@ -74,11 +74,15 @@ export const parseValue = (value: string) => {
 
 export const groupByFirstIndex = (states: ContractState[]) =>
   states.reduce((acc, state) => {
+    // save all states
+    acc.all = acc.all?.concat(state) ?? [state];
+
     if (state.key.type === "bucket") {
       const firstIndexValue = state.key.values[0];
       acc[firstIndexValue] = acc[firstIndexValue]?.concat(state) ?? [state];
     } else {
       acc.others = acc.others?.concat(state) ?? [state];
     }
+
     return acc;
   }, {} as { [key: string]: ContractState[] });

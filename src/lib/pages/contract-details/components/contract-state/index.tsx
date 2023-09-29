@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Flex, Heading } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
 import { ErrorFetching } from "lib/pages/account-details/components/ErrorFetching";
@@ -11,9 +11,17 @@ import { groupByFirstIndex } from "lib/utils";
 import { StateList } from "./StateList";
 import { StateLoader } from "./StateLoader";
 
+const getDisplayName = (namespace: string) => {
+  if (namespace === "all") return "All Contract States";
+  if (namespace === "others") return "Others";
+
+  return namespace;
+};
+
 interface ContractStatesProps {
   contractAddress: ContractAddr;
 }
+
 export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
   const {
     data,
@@ -24,7 +32,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     isFetchingNextPage,
   } = useContractStates(contractAddress);
 
-  const [selectedNamespace, setSelectedNamespace] = useState("");
+  const [selectedNamespace, setSelectedNamespace] = useState("all");
   const [keyword, setKeyword] = useState("");
 
   const { namespaces, rawStates, states, totalData, totalDataByNamespace } =
@@ -63,12 +71,6 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
       };
     }, [data, keyword, selectedNamespace]);
 
-  // Set current namespace to the first namespace when data is loaded
-  useEffect(() => {
-    setSelectedNamespace(namespaces[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [namespaces.length > 0]);
-
   const handleDownload = () => {
     const jsonString = JSON.stringify(rawStates, null, 2);
 
@@ -77,7 +79,12 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     saveAs(blob, "state.json");
   };
 
-  if (error) return <ErrorFetching />;
+  if (error)
+    return (
+      <Flex>
+        <ErrorFetching />
+      </Flex>
+    );
 
   return (
     <Flex direction="column" gap={8}>
@@ -118,7 +125,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
             fontWeight={400}
             onClick={() => setSelectedNamespace(namespace)}
           >
-            {namespace}
+            {getDisplayName(namespace)}
           </Button>
         ))}
       </ButtonGroup>
