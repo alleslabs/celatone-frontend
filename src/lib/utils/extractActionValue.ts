@@ -16,13 +16,13 @@ export const displayActionValue = (isActionName: string) => {
       return "Clear Admin";
     case "isUpdateAdmin":
       return "Update Admin";
-    case "isPublish":
+    case "isMovePublish":
       return "Publish Module";
-    case "isEntryExecute":
-      return "Execute Function";
-    case "isUpgrade":
+    case "isMoveUpgrade":
       return "Upgrade Module";
-    case "isScript":
+    case "isMoveExecute":
+      return "Execute Function";
+    case "isMoveScript":
       return "Run Script";
     default:
       return "";

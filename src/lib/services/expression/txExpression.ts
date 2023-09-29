@@ -12,10 +12,10 @@ const actions = {
   isMigrate: "is_migrate",
   isUpdateAdmin: "is_update_admin",
   isClearAdmin: "is_clear_admin",
-  isPublish: "is_publish",
-  isEntryExecute: "is_entry_execute",
-  isUpgrade: "is_upgrade",
-  isScript: "is_script",
+  isMovePublish: "is_move_publish",
+  isMoveUpgrade: "is_move_upgrade",
+  isMoveExecute: "is_move_execute",
+  isMoveScript: "is_move_script",
 };
 
 const generateActionsFilter = (filters: TxFilters) =>

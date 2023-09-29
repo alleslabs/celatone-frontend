@@ -18,6 +18,12 @@ import { useMemo, useState, useRef, forwardRef } from "react";
 
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import {
+  DEFAULT_BASE_TX_FILTERS,
+  DEFAULT_MOVE_TX_FILTERS,
+  DEFAULT_WASM_TX_FILTERS,
+} from "lib/data";
+import type { BaseTxFilters, MoveTxFilters, WasmTxFilters } from "lib/types";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
 import { DropdownChevron } from "./DropdownChevron";
@@ -42,24 +48,17 @@ const listItemProps: CSSProperties = {
   cursor: "pointer",
 };
 
-const OPTIONS = ["isSend", "isIbc"];
+const BASE_OPTIONS = Object.keys(
+  DEFAULT_BASE_TX_FILTERS
+) as (keyof BaseTxFilters)[];
 
-const WASM_OPTIONS = [
-  "isUpload",
-  "isInstantiate",
-  "isExecute",
-  "isMigrate",
-  "isClearAdmin",
-  "isUpdateAdmin",
-];
+const WASM_OPTIONS = Object.keys(
+  DEFAULT_WASM_TX_FILTERS
+) as (keyof WasmTxFilters)[];
 
-const MOVE_OPTIONS = [
-  "isPublish",
-  "isExecute",
-  "isEntryExecute",
-  "isUpgrade",
-  "isScript",
-];
+const MOVE_OPTIONS = Object.keys(
+  DEFAULT_MOVE_TX_FILTERS
+) as (keyof MoveTxFilters)[];
 
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
@@ -92,7 +91,7 @@ export const TxFilterSelection = forwardRef<
 
     const options = useMemo(
       () => [
-        ...OPTIONS,
+        ...BASE_OPTIONS,
         ...(wasm.enabled ? WASM_OPTIONS : []),
         ...(move.enabled ? MOVE_OPTIONS : []),
       ],
