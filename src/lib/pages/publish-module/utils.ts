@@ -40,6 +40,10 @@ export const statusResolver = ({
     };
   // Condition check for existing module, break switch case for non-existing
   switch (currentPolicy) {
+    // Policy check
+    // IMMUTABLE -> cannot be republished
+    // COMPATIBLE -> can be republished as COMPATIBLE and IMMUTABLE only
+    // ARBITRARY -> can be freely republished
     case UpgradePolicy.IMMUTABLE:
       return {
         status: "error",
@@ -69,6 +73,7 @@ export const statusResolver = ({
           };
     }
   }
+  // Condition check for non-existing module with identical module file uploaded
   if (priorUpload) {
     if (policy === UpgradePolicy.IMMUTABLE)
       return {
