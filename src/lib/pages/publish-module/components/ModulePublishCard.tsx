@@ -1,17 +1,17 @@
 import { Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
 import type { FileField } from "../formConstants";
-import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
+import { useOpenTab } from "lib/hooks";
 
 interface ModulePublishCardProps {
   module: FileField;
 }
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
-  const navigate = useInternalNavigate();
+  const openTab = useOpenTab();
   const { file, decodeRes } = module;
   return (
     <Flex
@@ -88,7 +88,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            navigate({
+            openTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
@@ -104,7 +104,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            navigate({
+            openTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
