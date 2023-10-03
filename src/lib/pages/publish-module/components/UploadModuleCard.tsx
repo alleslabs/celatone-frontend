@@ -1,11 +1,7 @@
 import { Flex, Heading, IconButton, Spinner, Text } from "@chakra-ui/react";
 import { type PropsWithChildren, useCallback, useState } from "react";
 
-import type {
-  FileArrayFields,
-  FileField,
-  PublishStatus,
-} from "../formConstants";
+import type { Module, PublishStatus } from "../formConstants";
 import { statusResolver } from "../utils";
 import { useCurrentChain } from "lib/app-provider";
 import { DropZone } from "lib/components/dropzone";
@@ -15,12 +11,12 @@ import {
   type DecodeModuleQueryResponse,
   useDecodeModule,
 } from "lib/services/moduleService";
-import type { HumanAddr, UpgradePolicy, Option } from "lib/types";
+import type { HumanAddr, Option, UpgradePolicy } from "lib/types";
 
 interface UploadModuleCardProps {
   index: number;
-  fileState: FileField;
-  fields: FileArrayFields;
+  fileState: Module;
+  fields: Module[];
   policy: UpgradePolicy;
   setFile: (
     file: Option<File>,
@@ -74,7 +70,13 @@ export const UploadModuleCard = ({
           tempFile.file,
           tempFile.base64,
           data,
-          statusResolver({ data, fields, index, policy })
+          statusResolver({
+            data,
+            fields,
+            index,
+            policy,
+            address: address as Option<HumanAddr>,
+          })
         ),
     },
   });

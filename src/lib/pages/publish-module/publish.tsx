@@ -69,9 +69,9 @@ export const PublishModule = ({
     defaultValues,
   });
 
-  const { upgradePolicy } = watch();
+  const { upgradePolicy, modules } = watch();
 
-  const { fields, append, remove, update } = useFieldArray({
+  const { append, remove, update } = useFieldArray({
     control,
     name: "modules",
   });
@@ -101,19 +101,19 @@ export const PublishModule = ({
     () =>
       Boolean(
         address &&
-          fields.every(
+          modules.every(
             (field) =>
               field.base64EncodedFile && field.publishStatus.status !== "error"
           )
       ),
-    [address, fields]
+    [address, modules]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enablePublish,
     messages: composePublishMsg(
       address as HumanAddr,
-      fields.map((file) => file.base64EncodedFile),
+      modules.map((file) => file.base64EncodedFile),
       upgradePolicy
     ),
     onSuccess: (gasRes) => {
@@ -131,7 +131,7 @@ export const PublishModule = ({
   const proceed = useCallback(async () => {
     const stream = await postPublishTx({
       onTxSucceed: (txResult) => {
-        setPublishTxInfo({ ...txResult, upgradePolicy, modules: fields });
+        setPublishTxInfo({ ...txResult, upgradePolicy, modules });
         setProcessing(false);
         setCompleted(true);
       },
@@ -139,7 +139,7 @@ export const PublishModule = ({
       estimatedFee,
       messages: composePublishMsg(
         address as HumanAddr,
-        fields.map((file) => file.base64EncodedFile),
+        modules.map((file) => file.base64EncodedFile),
         upgradePolicy
       ),
     });
@@ -150,7 +150,7 @@ export const PublishModule = ({
   }, [
     address,
     estimatedFee,
-    fields,
+    modules,
     upgradePolicy,
     broadcast,
     postPublishTx,
@@ -163,14 +163,29 @@ export const PublishModule = ({
   // ------------------------------------------//
   useEffect(() => {
     if (
-      !fields.every(
+      !modules.every(
         (field) =>
           field.base64EncodedFile && field.publishStatus.status !== "error"
       )
     ) {
       setEstimatedFee(undefined);
     }
-  }, [fields]);
+  }, [modules]);
+
+  useEffect(() => {
+    modules.forEach((field, index) => {
+      setValue(
+        `modules.${index}.publishStatus`,
+        statusResolver({
+          data: field.decodeRes,
+          fields: modules,
+          index,
+          policy: upgradePolicy,
+          address: address as Option<HumanAddr>,
+        })
+      );
+    });
+  }, [address, upgradePolicy, modules, setValue]);
 
   const publishModuleText = useMemo(
     () => ({
@@ -211,11 +226,11 @@ export const PublishModule = ({
                 Upload .mv file(s)
               </Heading>
               <Flex gap={6} flexDirection="column" my={6}>
-                {fields.map((field, idx) => (
+                {modules.map((field, idx) => (
                   <UploadModuleCard
-                    key={field.id}
+                    key={`${field.base64EncodedFile}-${idx.toString()}`}
                     index={idx}
-                    fields={fields}
+                    fields={modules}
                     fileState={field}
                     policy={upgradePolicy}
                     setFile={setFileValue(idx)}
@@ -249,20 +264,7 @@ export const PublishModule = ({
                     key={item.value}
                     value={item.value}
                     selected={upgradePolicy}
-                    onSelect={() => {
-                      setValue("upgradePolicy", item.value);
-                      fields.forEach((field, index) =>
-                        update(index, {
-                          ...field,
-                          publishStatus: statusResolver({
-                            data: field.decodeRes,
-                            fields,
-                            index,
-                            policy: item.value,
-                          }),
-                        })
-                      );
-                    }}
+                    onSelect={() => setValue("upgradePolicy", item.value)}
                     description={item.description}
                     hasCondition={item.condition}
                   />
@@ -307,7 +309,7 @@ export const PublishModule = ({
         publishModule={proceed}
         isLoading={processing}
         disabled={!enablePublish || Boolean(simulateError) || isSimulating}
-        fieldAmount={fields.length}
+        fieldAmount={modules.length}
       />
     </>
   );

@@ -1,5 +1,3 @@
-import type { FieldArrayWithId } from "react-hook-form";
-
 import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
 import type { Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
@@ -11,7 +9,7 @@ export interface PublishStatus {
   text: string;
 }
 
-interface Module {
+export interface Module {
   file: Option<File>;
   base64EncodedFile: string;
   decodeRes: Option<DecodeModuleQueryResponse>;
@@ -23,10 +21,7 @@ export interface PublishModuleState {
   upgradePolicy: UpgradePolicy;
 }
 
-export type FileField = FieldArrayWithId<PublishModuleState, "modules", "id">;
-export type FileArrayFields = FileField[];
-
-export const publishStatusDefault: { status: Status; text: string } = {
+export const publishStatusDefault: PublishStatus = {
   status: "init",
   text: "",
 };

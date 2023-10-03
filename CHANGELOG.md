@@ -118,6 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
 - [#554](https://github.com/alleslabs/celatone-frontend/pull/554) Fix and improve ui alignment, cta, and publish error
 - [#547](https://github.com/alleslabs/celatone-frontend/pull/547) Fix form null and sort modules when submit an address
 - [#543](https://github.com/alleslabs/celatone-frontend/pull/543) Fix Initia testnet chain config

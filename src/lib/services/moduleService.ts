@@ -23,13 +23,7 @@ import type {
   UpgradePolicy,
   HexAddr,
 } from "lib/types";
-import {
-  bech32AddressToHex,
-  parseJsonABI,
-  splitViewExecuteFunctions,
-  truncate,
-  unpadHexAddress,
-} from "lib/utils";
+import { parseJsonABI, splitViewExecuteFunctions, truncate } from "lib/utils";
 
 import {
   decodeModule,
@@ -165,7 +159,6 @@ export const useFunctionView = ({
 export interface DecodeModuleQueryResponse {
   abi: ResponseABI;
   modulePath: string;
-  validPublisher: boolean;
   currentPolicy: Option<UpgradePolicy>;
 }
 
@@ -186,11 +179,6 @@ export const useDecodeModule = ({
     const abi = await decodeModule(move.decodeApi, base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
-    const validPublisher = address
-      ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) ===
-        abi.address
-      : false;
-
     const currentPolicy = await getAccountModule(
       baseEndpoint,
       abi.address as HexAddr,
@@ -198,7 +186,7 @@ export const useDecodeModule = ({
     )
       .then((data) => data.upgradePolicy)
       .catch(() => undefined);
-    return { abi, modulePath, validPublisher, currentPolicy };
+    return { abi, modulePath, currentPolicy };
   };
 
   return useQuery(
