@@ -71,7 +71,7 @@ export const PublishModule = ({
 
   const { upgradePolicy, modules } = watch();
 
-  const { append, remove, update } = useFieldArray({
+  const { append, remove, update, move } = useFieldArray({
     control,
     name: "modules",
   });
@@ -238,6 +238,7 @@ export const PublishModule = ({
                       update(idx, emptyModule);
                     }}
                     removeEntry={() => remove(idx)}
+                    moveEntry={move}
                   />
                 ))}
               </Flex>

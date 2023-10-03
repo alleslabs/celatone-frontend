@@ -6,6 +6,7 @@ import { statusResolver } from "../utils";
 import { useCurrentChain } from "lib/app-provider";
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import {
   type DecodeModuleQueryResponse,
@@ -26,6 +27,7 @@ interface UploadModuleCardProps {
   ) => void;
   removeFile: () => void;
   removeEntry: () => void;
+  moveEntry: (from: number, to: number) => void;
 }
 
 const ComponentLoader = ({
@@ -48,6 +50,7 @@ export const UploadModuleCard = ({
   setFile,
   removeFile,
   removeEntry,
+  moveEntry,
 }: UploadModuleCardProps) => {
   const [tempFile, setTempFile] = useState<{
     file: Option<File>;
@@ -107,15 +110,44 @@ export const UploadModuleCard = ({
         <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
           Module {index + 1}
         </Heading>
-        <IconButton
-          onClick={removeEntry}
-          aria-label="remove"
-          variant="ghost"
-          size="sm"
+        <Flex
+          align="center"
+          gap={1}
           visibility={fields.length > 1 ? "visible" : "hidden"}
         >
-          <CustomIcon name="close" color="gray.600" />
-        </IconButton>
+          <Tooltip label="Move up" variant="primary-light">
+            <IconButton
+              onClick={() => moveEntry(index, index - 1)}
+              aria-label="move-up"
+              variant="ghost"
+              size="sm"
+              disabled={index === 0}
+            >
+              <CustomIcon name="arrow-up" color="gray.600" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Move down" variant="primary-light">
+            <IconButton
+              onClick={() => moveEntry(index, index + 1)}
+              aria-label="move-down"
+              variant="ghost"
+              size="sm"
+              disabled={index === fields.length - 1}
+            >
+              <CustomIcon name="arrow-down" color="gray.600" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Remove item" variant="primary-light">
+            <IconButton
+              onClick={removeEntry}
+              aria-label="remove"
+              variant="ghost"
+              size="sm"
+            >
+              <CustomIcon name="close" color="gray.600" />
+            </IconButton>
+          </Tooltip>
+        </Flex>
       </Flex>
       <Flex direction="column" w="full">
         <ComponentLoader isLoading={isFetching}>
