@@ -19,7 +19,6 @@ import type {
   Option,
   AbiFormData,
   RpcQueryError,
-  HumanAddr,
   UpgradePolicy,
   HexAddr,
 } from "lib/types";
@@ -164,11 +163,9 @@ export interface DecodeModuleQueryResponse {
 
 export const useDecodeModule = ({
   base64EncodedFile,
-  address,
   options,
 }: {
   base64EncodedFile: string;
-  address: Option<HumanAddr>;
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
   const baseEndpoint = useBaseApiRoute("rest");
@@ -194,7 +191,6 @@ export const useDecodeModule = ({
       CELATONE_QUERY_KEYS.MODULE_DECODE,
       baseEndpoint,
       move.enabled,
-      address,
       base64EncodedFile,
     ],
     queryFn,

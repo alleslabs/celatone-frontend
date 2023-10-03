@@ -63,7 +63,6 @@ export const UploadModuleCard = ({
 
   const { isFetching } = useDecodeModule({
     base64EncodedFile: tempFile.base64,
-    address: address as HumanAddr,
     options: {
       enabled: Boolean(tempFile.base64),
       retry: 0,
