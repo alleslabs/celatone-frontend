@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import type { AbiFormData, ExposedFunction } from "lib/types";
@@ -19,14 +20,18 @@ export const AbiForm = ({
   propsOnChange,
   propsOnErrors,
 }: AbiFormProps) => {
-  const { setValue, watch, getValues } = useForm<AbiFormData>({
+  const { setValue, watch, getValues, reset } = useForm<AbiFormData>({
     defaultValues: initialData,
     mode: "all",
   });
   const { typeArgs, args } = watch();
 
+  useEffect(() => {
+    reset(initialData);
+  }, [initialData, reset]);
+
   return (
-    <Flex direction="column" gap={4}>
+    <Flex direction="column" gap={4} w="full">
       {Object.keys(typeArgs).length > 0 && (
         <TypesForm
           genericTypeParams={fn.generic_type_params}

@@ -1,79 +1,58 @@
-import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 
-import type {
-  FileArrayFields,
-  FileField,
-  PublishStatus,
-} from "../formConstants";
-import { statusResolver } from "../utils";
-import { useCurrentChain } from "lib/app-provider";
+import type { FileState } from "..";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
-import { CustomIcon } from "lib/components/icon";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import {
-  type DecodeModuleQueryResponse,
-  useDecodeModule,
-} from "lib/services/moduleService";
-import type { HumanAddr, UpgradePolicy, Option } from "lib/types";
+import { useDecodeScript } from "lib/services/moduleService";
+import type { ExposedFunction, Option } from "lib/types";
 
 const DEFAULT_TEMP_FILE = {
   file: undefined,
   base64: "",
 };
 
-interface UploadModuleCardProps {
-  index: number;
-  fileState: FileField;
-  fields: FileArrayFields;
-  policy: UpgradePolicy;
+interface UploadScriptCardProps {
+  fileState: FileState;
+  removeFile: () => void;
   setFile: (
     file: Option<File>,
     base64File: string,
-    decodeRes: DecodeModuleQueryResponse,
-    publishStatus: PublishStatus
+    decodeRes: Option<ExposedFunction>,
+    decodeError: string
   ) => void;
-  removeFile: () => void;
-  removeEntry: () => void;
 }
 
-export const UploadModuleCard = ({
-  index,
-  fileState: {
-    file,
-    decodeRes,
-    publishStatus: { status, text },
-  },
-  fields,
-  policy,
-  setFile,
+export const UploadScriptCard = ({
+  fileState: { file, decodeRes, decodeError },
   removeFile,
-  removeEntry,
-}: UploadModuleCardProps) => {
+  setFile,
+}: UploadScriptCardProps) => {
   const [tempFile, setTempFile] = useState<{
     file: Option<File>;
     base64: string;
   }>(DEFAULT_TEMP_FILE);
-  const { address } = useCurrentChain();
 
-  const { isFetching } = useDecodeModule({
+  const { isFetching } = useDecodeScript({
     base64EncodedFile: tempFile.base64,
-    address: address as HumanAddr,
     options: {
       enabled: Boolean(tempFile.base64),
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: (data) => {
+        setFile(tempFile.file, tempFile.base64, data, "");
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
+      onError: () => {
         setFile(
           tempFile.file,
           tempFile.base64,
-          data,
-          statusResolver({ data, fields, index, policy })
+          undefined,
+          "Failed to decode .mv script file"
         );
         setTempFile(DEFAULT_TEMP_FILE);
       },
-      onError: () => setTempFile(DEFAULT_TEMP_FILE),
     },
   });
 
@@ -98,30 +77,17 @@ export const UploadModuleCard = ({
       p={4}
       gap={4}
       flexDirection="column"
+      w="full"
     >
-      <Flex justifyContent="space-between" w="full" alignItems="center">
-        <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
-          Module {index + 1}
-        </Heading>
-        <IconButton
-          onClick={removeEntry}
-          aria-label="remove"
-          variant="ghost"
-          size="sm"
-          disabled={fields.length <= 1}
-        >
-          <CustomIcon name="close" color="gray.600" />
-        </IconButton>
-      </Flex>
-      <Flex direction="column" w="full">
+      <Flex direction="column">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
             <UploadCard
               file={file}
               deleteFile={removeFile}
               theme="secondary"
-              status={status}
-              statusText={text}
+              status={decodeError ? "error" : "init"}
+              statusText={decodeError}
             />
           ) : (
             <DropZone
@@ -135,10 +101,10 @@ export const UploadModuleCard = ({
       </Flex>
       <Flex justifyContent="space-between" w="full">
         <Text variant="body2" color="text.dark" fontWeight={600}>
-          Module Path
+          Function name
         </Text>
         <Text variant="body2" color="text.dark">
-          {decodeRes?.modulePath ?? "-"}
+          {decodeRes?.name ?? "-"}
         </Text>
       </Flex>
     </Flex>
