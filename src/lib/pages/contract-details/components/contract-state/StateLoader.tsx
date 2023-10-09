@@ -4,6 +4,7 @@ import plur from "plur";
 import { CustomIcon } from "lib/components/icon";
 
 interface StateLoaderProps {
+  numStatesToLoad: number;
   isLoading: boolean;
   isCompleted: boolean;
   totalData: number;
@@ -11,6 +12,7 @@ interface StateLoaderProps {
   onDownload: () => void;
 }
 export const StateLoader = ({
+  numStatesToLoad,
   isLoading,
   isCompleted,
   totalData,
@@ -31,7 +33,7 @@ export const StateLoader = ({
         <Flex gap={4} alignItems="center">
           <Spinner size="sm" />
           <Text variant="body2" fontWeight={600} color="text.dark">
-            Loading 100 states...
+            Loading {numStatesToLoad} states...
           </Text>
           <Button size="sm" variant="outline-primary" disabled>
             Load More

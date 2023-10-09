@@ -5,13 +5,26 @@ import type { ContractAddr } from "lib/types";
 
 import { getContractStates } from "./contractState";
 
-export const useContractStates = (contractAddress: ContractAddr) => {
+export const useContractStates = (
+  contractAddress: ContractAddr,
+  numStatesToLoad: number
+) => {
   const baseEndpoint = useBaseApiRoute("rest");
 
   return useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_STATE, baseEndpoint, contractAddress],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_STATE,
+      baseEndpoint,
+      contractAddress,
+      numStatesToLoad,
+    ],
     ({ pageParam }) =>
-      getContractStates(baseEndpoint, contractAddress, pageParam),
+      getContractStates(
+        baseEndpoint,
+        contractAddress,
+        numStatesToLoad,
+        pageParam
+      ),
     {
       getNextPageParam: (lastPage) => {
         if (lastPage.nextKey) {

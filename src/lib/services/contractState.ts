@@ -10,10 +10,11 @@ import { parseKey, parseValue } from "lib/utils";
 export const getContractStates = async (
   baseEndpoint: string,
   contractAddress: ContractAddr,
+  numStatesToLoad: number,
   paginationKey: string | null
 ) => {
   const { data } = await axios.get<ResponseContractStates>(
-    `${baseEndpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/state?pagination.limit=100${
+    `${baseEndpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/state?pagination.limit=${numStatesToLoad}${
       paginationKey ? `&pagination.key=${paginationKey}` : ""
     }`
   );

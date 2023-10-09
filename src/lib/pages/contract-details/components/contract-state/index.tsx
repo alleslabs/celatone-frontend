@@ -3,10 +3,9 @@ import { saveAs } from "file-saver";
 import { useMemo, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
-import { ErrorFetching } from "lib/pages/account-details/components/ErrorFetching";
 import { useContractStates } from "lib/services/contractStateService";
 import type { ContractAddr } from "lib/types";
-import { groupByFirstIndex } from "lib/utils";
+import { groupContractStatesByFirstIndex } from "lib/utils";
 
 import { StateList } from "./StateList";
 import { StateLoader } from "./StateLoader";
@@ -23,6 +22,7 @@ interface ContractStatesProps {
 }
 
 export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
+  const numStatesToLoad = 100;
   const {
     data,
     error,
@@ -30,7 +30,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useContractStates(contractAddress);
+  } = useContractStates(contractAddress, numStatesToLoad);
 
   const [selectedNamespace, setSelectedNamespace] = useState("all");
   const [keyword, setKeyword] = useState("");
@@ -49,7 +49,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
       const flattenRaw = data.pages.flatMap((page) => page.rawStates);
       const flatten = data.pages.flatMap((page) => page.states);
 
-      const grouped = groupByFirstIndex(flatten);
+      const grouped = groupContractStatesByFirstIndex(flatten);
 
       const selected = grouped[selectedNamespace] ?? [];
 
@@ -79,12 +79,8 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     saveAs(blob, "state.json");
   };
 
-  if (error)
-    return (
-      <Flex>
-        <ErrorFetching />
-      </Flex>
-    );
+  // eslint-disable-next-line no-alert
+  if (error) window.alert(error);
 
   return (
     <Flex direction="column" gap={8}>
@@ -93,6 +89,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           Contract States
         </Heading>
         <StateLoader
+          numStatesToLoad={numStatesToLoad}
           isLoading={isFetching || isFetchingNextPage}
           totalData={totalData}
           isCompleted={!hasNextPage}

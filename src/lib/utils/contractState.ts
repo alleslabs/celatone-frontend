@@ -1,5 +1,7 @@
 import type { ContractState, DecodedKey } from "lib/types";
 
+import { decodeToJSON } from "./base64";
+
 const nameRegex = /^[a-zA-Z0-9_]+$/;
 
 export const hexToString = (hex: string) =>
@@ -24,7 +26,7 @@ export const parseKey = (key: string): DecodedKey => {
 
       // We've assumed that the length of the key is less than 256
       // This should be the last part of key
-      if (length > 256 || lengthHex === "0000") {
+      if (!(length > 0 && length <= 256)) {
         const valueHex = key.slice(currentIndex);
         const decodedValue = hexToString(valueHex);
         values.push(nameRegex.test(decodedValue) ? decodedValue : valueHex);
@@ -66,13 +68,13 @@ export const parseKey = (key: string): DecodedKey => {
 
 export const parseValue = (value: string) => {
   try {
-    return JSON.parse(Buffer.from(value, "base64").toString());
+    return decodeToJSON(value);
   } catch (error) {
     return value;
   }
 };
 
-export const groupByFirstIndex = (states: ContractState[]) =>
+export const groupContractStatesByFirstIndex = (states: ContractState[]) =>
   states.reduce((acc, state) => {
     // save all states
     acc.all = acc.all?.concat(state) ?? [state];

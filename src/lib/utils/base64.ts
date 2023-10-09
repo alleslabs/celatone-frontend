@@ -8,3 +8,5 @@ export const decode = (str: string): string =>
 
 export const encode = (str: string): string =>
   Buffer.from(str, "binary").toString("base64");
+
+export const decodeToJSON = (str: string) => JSON.parse(decode(str));
