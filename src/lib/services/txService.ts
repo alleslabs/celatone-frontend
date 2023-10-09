@@ -19,6 +19,8 @@ import {
   getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
+  getModuleTransactionsQueryDocument,
+  getModuleTransactionsCountByTypeQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
@@ -29,6 +31,7 @@ import type {
   Message,
   PoolTxFilter,
   Nullable,
+  HumanAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
@@ -430,6 +433,141 @@ export const useTxsCountByBlockHeight = (
     {
       keepPreviousData: true,
       enabled: !!height,
+    }
+  );
+};
+
+export type ModuleTxType = "all" | "normal" | "upgrade";
+
+const getFilterExp = (txType: ModuleTxType, moduleId: number) => {
+  const base = { module_id: { _eq: moduleId } };
+  switch (txType) {
+    case "normal":
+      return { ...base, transaction: { is_move_upgrade: { _eq: false } } };
+    case "upgrade":
+      return { ...base, transaction: { is_move_upgrade: { _eq: true } } };
+    case "all":
+    default:
+      return base;
+  }
+};
+
+export const useModuleTxsByPagination = ({
+  moduleId,
+  txType,
+  pageSize,
+  offset,
+}: {
+  moduleId: Option<Nullable<number>>;
+  txType: "all" | "normal" | "upgrade";
+  pageSize: number;
+  offset: number;
+}) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) return [];
+    return indexerGraphClient
+      .request(getModuleTransactionsQueryDocument, {
+        filterExp: getFilterExp(txType, moduleId),
+        pageSize,
+        offset,
+      })
+      .then<Transaction[]>(({ module_transactions }) =>
+        module_transactions.map<Transaction>((transaction) => ({
+          hash: parseTxHash(transaction.transaction.hash),
+          messages: snakeToCamel(transaction.transaction.messages),
+          sender: transaction.transaction.account.address as HumanAddr,
+          height: transaction.block.height,
+          created: parseDate(transaction.block.timestamp),
+          success: transaction.transaction.success,
+          actionMsgType: getActionMsgType([
+            transaction.transaction.is_execute,
+            transaction.transaction.is_instantiate,
+            transaction.transaction.is_send,
+            transaction.transaction.is_store_code,
+            transaction.transaction.is_migrate,
+            transaction.transaction.is_update_admin,
+            transaction.transaction.is_clear_admin,
+          ]),
+          furtherAction: getMsgFurtherAction(
+            transaction.transaction.messages.length,
+            {
+              isExecute: transaction.transaction.is_execute,
+              isInstantiate: transaction.transaction.is_instantiate,
+              isSend: transaction.transaction.is_send,
+              isUpload: transaction.transaction.is_store_code,
+              isMigrate: transaction.transaction.is_migrate,
+              isUpdateAdmin: transaction.transaction.is_update_admin,
+              isClearAdmin: transaction.transaction.is_clear_admin,
+              isIbc: transaction.transaction.is_ibc,
+            },
+            transaction.transaction.success,
+            false
+          ),
+          isSigner: false,
+          isIbc: transaction.transaction.is_ibc,
+          isInstantiate: transaction.transaction.is_instantiate,
+        }))
+      );
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_TXS,
+      indexerGraphClient,
+      moduleId,
+      txType,
+      pageSize,
+      offset,
+    ],
+    createQueryFnWithTimeout(queryFn),
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleTxsCountByType = (moduleId: Option<Nullable<number>>) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    const requestPromise = (isUpgrade: boolean) =>
+      indexerGraphClient
+        .request(getModuleTransactionsCountByTypeQueryDocument, {
+          moduleId,
+          isUpgrade,
+        })
+        .then(
+          ({ module_transactions_aggregate }) =>
+            module_transactions_aggregate.aggregate?.count
+        );
+
+    const [normalTxsCount, upgradeTxsCount] = await Promise.all([
+      requestPromise(false),
+      requestPromise(true),
+    ]);
+    return {
+      normalTxsCount,
+      upgradeTxsCount,
+      allTxsCount: Number(normalTxsCount) + Number(upgradeTxsCount),
+    };
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_TXS_COUNT_BY_TYPE,
+      indexerGraphClient,
+      moduleId,
+    ],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };

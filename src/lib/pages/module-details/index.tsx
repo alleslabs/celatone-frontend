@@ -9,13 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { MouseEventHandler } from "react";
-import { useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 
-import {
-  MigrationTable,
-  RelatedProposalsTable,
-  TxsTable,
-} from "../contract-details/components/tables";
 import { useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -24,11 +19,14 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import { useContractDetailsTableCounts } from "lib/model/contract";
-import { useAccountId } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/moduleService";
-import { useAccountModules } from "lib/services/moduleService";
-import type { ContractAddr, MoveAccountAddr } from "lib/types";
+import {
+  useVerifyModule,
+  useModuleId,
+  useAccountModules,
+} from "lib/services/moduleService";
+import { useModuleTxsCountByType } from "lib/services/txService";
+import type { MoveAccountAddr, Option } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeTabs } from "./components/FunctionTypeSwitch";
@@ -36,12 +34,16 @@ import { ModuleFunction } from "./components/ModuleFunction";
 import { ModuleInfo } from "./components/ModuleInfo";
 import { ModuleStruct } from "./components/ModuleStruct";
 import { ModuleTop } from "./components/ModuleTop";
+import { ModuleTxsTable } from "./components/table/ModuleTxsTable";
 
-const tableHeaderId = "moduleDetailsTab";
+const mainTabHeaderId = "main-table-header";
+const overviewHistoryHeaderId = "overview-history-header";
+const historyTabHeaderId = "history-tab-header";
+
 export enum TabIndex {
   Overview = "overview",
   Function = "function",
-  Txs = "txs",
+  History = "history",
   Structs = "structs",
 }
 
@@ -49,12 +51,9 @@ interface ActionInfo {
   icon: IconKeys;
   iconColor: string;
   name: string;
-  count: number;
+  count: Option<number>;
   onClick: MouseEventHandler<HTMLDivElement>;
 }
-
-// TODO get module path
-const txTableHeaderId = "ModuleTxsTableHeader";
 
 interface ModuleDetailsBodyProps {
   moduleData: IndexedModule;
@@ -68,6 +67,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const { trackUseTab } = useTrack();
 
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+  const [historyTabIndex, setHistoryTabIndex] = useState(0);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
@@ -112,14 +112,18 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     moduleData.moduleName,
   ]);
 
-  const contractAddress = "" as ContractAddr;
-  const { data: contractAccountId } = useAccountId(contractAddress);
-  const {
-    tableCounts,
-    refetchMigration,
-    refetchTransactions,
-    refetchRelatedProposals,
-  } = useContractDetailsTableCounts(contractAddress, contractAccountId);
+  const { data: moduleId } = useModuleId(
+    moduleData.moduleName,
+    moduleData.address
+  );
+
+  const { data: verificationData } = useVerifyModule({
+    address: moduleData.address,
+    moduleName: moduleData.moduleName,
+  });
+
+  const { data: moduleTxsCount, refetch: refetchTxsCount } =
+    useModuleTxsCountByType(moduleId);
 
   const actionList: ActionInfo[] = [
     {
@@ -137,17 +141,19 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
     },
     {
-      // TO DO get tx count
       icon: "list" as IconKeys,
       iconColor: "gray.600",
       name: "Transactions",
-      count: 0,
-      onClick: handleTabChange(TabIndex.Txs),
+      count: moduleTxsCount?.allTxsCount,
+      onClick: handleTabChange(TabIndex.History),
     },
   ];
   return (
     <>
-      <ModuleTop isVerified moduleData={moduleData} />
+      <ModuleTop
+        isVerified={Boolean(verificationData)}
+        moduleData={moduleData}
+      />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -158,7 +164,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
           borderBottom="1px solid"
           borderColor="gray.700"
           overflowX="scroll"
-          id={tableHeaderId}
+          id={mainTabHeaderId}
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
@@ -170,8 +176,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
           >
             Function
           </CustomTab>
-          <CustomTab count={12} onClick={handleTabChange(TabIndex.Txs)}>
-            Transactions
+          <CustomTab onClick={handleTabChange(TabIndex.History)}>
+            History
           </CustomTab>
           <CustomTab
             count={moduleData.parsedAbi.structs.length}
@@ -187,6 +193,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               <Flex justifyContent="space-between" gap={6} mb={6}>
                 {actionList.map((item) => (
                   <Flex
+                    key={item.name}
                     p={4}
                     bg="gray.800"
                     _hover={{ bg: "gray.700" }}
@@ -213,7 +220,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                           {item.name}
                         </Text>
                         <Heading as="h6" variant="h6" fontWeight={600}>
-                          {item.count}
+                          {!item.count ? "N/A" : item.count}
                         </Heading>
                       </Flex>
                     </Flex>
@@ -221,15 +228,14 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   </Flex>
                 ))}
               </Flex>
-              <ModuleInfo {...moduleData} />
-              {/* TODO History */}
+              <ModuleInfo {...moduleData} verificationData={verificationData} />
               <Flex flexDirection="column" mt={6}>
                 <Heading
                   as="h6"
                   variant="h6"
                   mb={6}
                   fontWeight={600}
-                  id={tableHeaderId}
+                  id={overviewHistoryHeaderId}
                 >
                   History
                 </Heading>
@@ -239,42 +245,36 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                     borderColor="gray.700"
                     overflowX={{ base: "scroll", md: "auto" }}
                   >
-                    <CustomTab count={tableCounts.transactionsCount}>
+                    <CustomTab count={moduleTxsCount?.normalTxsCount}>
                       Transactions
                     </CustomTab>
-                    <CustomTab count={tableCounts.migrationCount}>
-                      Migrations
-                    </CustomTab>
-                    <CustomTab
-                      count={tableCounts.relatedProposalsCount}
-                      whiteSpace="nowrap"
-                    >
-                      Related Proposals
+                    <CustomTab count={moduleTxsCount?.upgradeTxsCount}>
+                      Upgrades
                     </CustomTab>
                   </TabList>
                   <TabPanels>
                     <TabPanel p={0}>
-                      <TxsTable
-                        contractAccountId={contractAccountId}
-                        scrollComponentId={txTableHeaderId}
-                        totalData={tableCounts.transactionsCount}
-                        refetchCount={refetchTransactions}
+                      <ModuleTxsTable
+                        moduleId={moduleId}
+                        txType="normal"
+                        txCount={moduleTxsCount?.normalTxsCount}
+                        refetchCount={refetchTxsCount}
+                        onViewMore={() => {
+                          handleTabChange(TabIndex.History)();
+                          setHistoryTabIndex(0);
+                        }}
                       />
                     </TabPanel>
                     <TabPanel p={0}>
-                      <MigrationTable
-                        contractAddress={contractAddress}
-                        scrollComponentId={txTableHeaderId}
-                        totalData={tableCounts.migrationCount}
-                        refetchCount={refetchMigration}
-                      />
-                    </TabPanel>
-                    <TabPanel p={0}>
-                      <RelatedProposalsTable
-                        contractAddress={contractAddress}
-                        scrollComponentId={txTableHeaderId}
-                        totalData={tableCounts.relatedProposalsCount}
-                        refetchCount={refetchRelatedProposals}
+                      <ModuleTxsTable
+                        moduleId={moduleId}
+                        txType="upgrade"
+                        txCount={moduleTxsCount?.upgradeTxsCount}
+                        refetchCount={refetchTxsCount}
+                        onViewMore={() => {
+                          handleTabChange(TabIndex.History)();
+                          setHistoryTabIndex(1);
+                        }}
                       />
                     </TabPanel>
                   </TabPanels>
@@ -291,7 +291,6 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               executeFns={moduleData.executeFunctions}
             />
           </TabPanel>
-          {/* TODO TX History */}
           <TabPanel p={0}>
             <Flex flexDirection="column" mt={6}>
               <Heading
@@ -299,52 +298,45 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 variant="h6"
                 mb={6}
                 fontWeight={600}
-                id={tableHeaderId}
+                id={historyTabHeaderId}
               >
                 History
               </Heading>
-              <Tabs isLazy lazyBehavior="keepMounted">
+              <Tabs
+                isLazy
+                lazyBehavior="keepMounted"
+                index={historyTabIndex}
+                onChange={(index) => setHistoryTabIndex(index)}
+              >
                 <TabList
                   borderBottom="1px solid"
                   borderColor="gray.700"
                   overflowX={{ base: "scroll", md: "auto" }}
                 >
-                  <CustomTab count={tableCounts.transactionsCount}>
+                  <CustomTab count={moduleTxsCount?.normalTxsCount}>
                     Transactions
                   </CustomTab>
-                  <CustomTab count={tableCounts.migrationCount}>
-                    Migrations
-                  </CustomTab>
-                  <CustomTab
-                    count={tableCounts.relatedProposalsCount}
-                    whiteSpace="nowrap"
-                  >
-                    Related Proposals
+                  <CustomTab count={moduleTxsCount?.upgradeTxsCount}>
+                    Upgrades
                   </CustomTab>
                 </TabList>
                 <TabPanels>
                   <TabPanel p={0}>
-                    <TxsTable
-                      contractAccountId={contractAccountId}
-                      scrollComponentId={txTableHeaderId}
-                      totalData={tableCounts.transactionsCount}
-                      refetchCount={refetchTransactions}
+                    <ModuleTxsTable
+                      moduleId={moduleId}
+                      txType="normal"
+                      txCount={moduleTxsCount?.normalTxsCount}
+                      refetchCount={refetchTxsCount}
+                      scrollComponentId={historyTabHeaderId}
                     />
                   </TabPanel>
                   <TabPanel p={0}>
-                    <MigrationTable
-                      contractAddress={contractAddress}
-                      scrollComponentId={txTableHeaderId}
-                      totalData={tableCounts.migrationCount}
-                      refetchCount={refetchMigration}
-                    />
-                  </TabPanel>
-                  <TabPanel p={0}>
-                    <RelatedProposalsTable
-                      contractAddress={contractAddress}
-                      scrollComponentId={txTableHeaderId}
-                      totalData={tableCounts.relatedProposalsCount}
-                      refetchCount={refetchRelatedProposals}
+                    <ModuleTxsTable
+                      moduleId={moduleId}
+                      txType="upgrade"
+                      txCount={moduleTxsCount?.upgradeTxsCount}
+                      refetchCount={refetchTxsCount}
+                      scrollComponentId={historyTabHeaderId}
                     />
                   </TabPanel>
                 </TabPanels>

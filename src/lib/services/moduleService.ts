@@ -9,8 +9,10 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
+import { getModuleIdByNameAndVmAddressQueryDocument } from "lib/query";
 import type {
   MoveAccountAddr,
   ExposedFunction,
@@ -22,6 +24,7 @@ import type {
   HumanAddr,
   UpgradePolicy,
   HexAddr,
+  Nullable,
 } from "lib/types";
 import {
   bech32AddressToHex,
@@ -31,6 +34,7 @@ import {
   unpadHexAddress,
 } from "lib/utils";
 
+import type { ModuleVerificationInternal } from "./module";
 import {
   decodeModule,
   getAccountModule,
@@ -109,7 +113,7 @@ export const useVerifyModule = ({
 }: {
   address: Option<MoveAccountAddr>;
   moduleName: Option<string>;
-}) =>
+}): UseQueryResult<Nullable<ModuleVerificationInternal>> =>
   useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
     () => {
@@ -211,5 +215,31 @@ export const useDecodeModule = ({
     ],
     queryFn,
     options
+  );
+};
+
+export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = async () => {
+    if (!moduleName || !vmAddress)
+      throw new Error(
+        "Error fetching module id: failed to retrieve module name or vm address."
+      );
+    return indexerGraphClient
+      .request(getModuleIdByNameAndVmAddressQueryDocument, {
+        name: moduleName,
+        vmAddress,
+      })
+      .then<Nullable<number>>(({ modules }) => modules[0]?.id ?? null);
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, moduleName, vmAddress],
+    queryFn,
+    {
+      enabled: Boolean(moduleName && vmAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };

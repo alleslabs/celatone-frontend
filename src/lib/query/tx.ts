@@ -166,3 +166,62 @@ export const getBlockTransactionCountByHeightQueryDocument = graphql(`
     }
   }
 `);
+
+export const getModuleTransactionsQueryDocument = graphql(`
+  query getModuleTransactionsQuery(
+    $filterExp: module_transactions_bool_exp
+    $pageSize: Int!
+    $offset: Int!
+  ) {
+    module_transactions(
+      where: $filterExp
+      limit: $pageSize
+      offset: $offset
+      order_by: { block_height: desc }
+    ) {
+      block {
+        height
+        timestamp
+      }
+      transaction {
+        account {
+          address
+        }
+        hash
+        success
+        messages
+        is_clear_admin
+        is_execute
+        is_ibc
+        is_instantiate
+        is_migrate
+        is_send
+        is_store_code
+        is_update_admin
+        is_move_execute
+        is_move_execute_event
+        is_move_publish
+        is_move_script
+        is_move_upgrade
+      }
+    }
+  }
+`);
+
+export const getModuleTransactionsCountByTypeQueryDocument = graphql(`
+  query getModuleTransactionsCountByTypeQuery(
+    $moduleId: Int!
+    $isUpgrade: Boolean!
+  ) {
+    module_transactions_aggregate(
+      where: {
+        module_id: { _eq: $moduleId }
+        transaction: { is_move_upgrade: { _eq: $isUpgrade } }
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
