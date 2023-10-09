@@ -7,7 +7,7 @@ const nameRegex = /^[a-zA-Z0-9_]+$/;
 export const hexToString = (hex: string) =>
   Buffer.from(hex, "hex").toString("utf-8");
 
-export const parseKey = (key: string): DecodedKey => {
+export const parseStateKey = (key: string): DecodedKey => {
   try {
     const decodedStr = hexToString(key);
     if (decodedStr === "") throw new Error("Invalid hex string for decoding");
@@ -66,7 +66,7 @@ export const parseKey = (key: string): DecodedKey => {
   };
 };
 
-export const parseValue = (value: string) => {
+export const parseStateValue = (value: string) => {
   try {
     return decodeToJSON(value);
   } catch (error) {

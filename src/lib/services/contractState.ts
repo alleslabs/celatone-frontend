@@ -5,7 +5,7 @@ import type {
   ContractState,
   ResponseContractStates,
 } from "lib/types";
-import { parseKey, parseValue } from "lib/utils";
+import { parseStateKey, parseStateValue } from "lib/utils";
 
 export const getContractStates = async (
   baseEndpoint: string,
@@ -21,8 +21,8 @@ export const getContractStates = async (
 
   const parsedStates = data.models.map<ContractState>((model) => ({
     rawKey: model.key,
-    key: parseKey(model.key),
-    value: parseValue(model.value),
+    key: parseStateKey(model.key),
+    value: parseStateValue(model.value),
   }));
 
   return {
