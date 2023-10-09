@@ -23,7 +23,7 @@ import type {
   MoveAccountAddr,
   Option,
 } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, openNewTab } from "lib/utils";
 
 import {
   ModuleSelectDrawerTrigger,
@@ -179,10 +179,15 @@ export const Interact = () => {
                   rightIcon={
                     <CustomIcon name="launch" boxSize={3} color="text.dark" />
                   }
-                  // TODO: Link to module section in account page
-                  onClick={() => {}}
+                  onClick={() => {
+                    openNewTab(
+                      `/modules/${module.address.toString()}/${
+                        module.moduleName
+                      }`
+                    );
+                  }}
                 >
-                  View Module
+                  See Module
                 </Button>
               </Flex>
             </>
