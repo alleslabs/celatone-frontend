@@ -5,7 +5,7 @@ import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 import type { Option } from "lib/types";
 
-export const UintTypes = ["u8", "u16", "u32", "u64", "u128", "u256"];
+import { UINT_TYPES } from "./constants";
 
 const validateNull = (v: Option<string>) =>
   v !== undefined ? undefined : "cannot be null";
@@ -42,7 +42,7 @@ const validateVector = (
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let validateElement = (_v: string): Option<string> => undefined;
-  if (UintTypes.includes(elementType))
+  if (UINT_TYPES.includes(elementType))
     validateElement = validateUint(elementType);
   if (elementType === "bool") validateElement = validateBool;
   if (elementType === "address")
@@ -73,7 +73,7 @@ export const getRules = <T extends FieldValues>(
       null: validateNull,
     };
   }
-  if (UintTypes.includes(type))
+  if (UINT_TYPES.includes(type))
     rules.validate = {
       ...rules.validate,
       [type]: (v: Option<string>) => {

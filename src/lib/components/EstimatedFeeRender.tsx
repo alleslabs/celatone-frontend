@@ -1,6 +1,5 @@
 import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useState } from "react";
 
 import { useAssetInfos } from "lib/services/assetService";
 import { formatBalanceWithDenom } from "lib/utils";
@@ -12,10 +11,15 @@ export const EstimatedFeeRender = ({
   estimatedFee: StdFee | undefined;
   loading: boolean;
 }) => {
-  const [isUsed, setIsUsed] = useState(false);
-  const { assetInfos, isLoading } = useAssetInfos({ withPrices: false });
-  if (loading || (isUsed && isLoading)) {
-    if (!isUsed) setIsUsed(true);
+  const { assetInfos, isLoading: isAssetInfoLoading } = useAssetInfos({
+    withPrices: false,
+  });
+
+  if (isAssetInfoLoading) {
+    return <Spinner size="sm" mx={1} />;
+  }
+
+  if (loading) {
     return (
       <>
         <Spinner size="sm" mx={1} /> Estimating ...

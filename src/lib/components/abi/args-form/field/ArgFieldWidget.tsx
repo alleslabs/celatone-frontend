@@ -5,9 +5,7 @@ import type { ControllerRenderProps } from "react-hook-form";
 import { useExampleAddresses } from "lib/app-provider";
 import type { HumanAddr, Nullable } from "lib/types";
 
-import { UintTypes } from "./utils";
-
-const STRING_TYPE = "0x1::string::String";
+import { UINT_TYPES, STRING_TYPE } from "./constants";
 
 const getInputPlaceholder = (type: string, isNull: boolean) => {
   if (type === STRING_TYPE && !isNull)
@@ -23,7 +21,7 @@ const getVectorPlaceholder = (
   if (isNull) return " ";
   const [, elementType] = type.split(/<(.*)>/);
 
-  if (UintTypes.includes(elementType)) return "[1, 2, 3]";
+  if (UINT_TYPES.includes(elementType)) return "[1, 2, 3]";
   if (elementType === "address") return `[0x1, ${sampleAddresses}]`;
   if (elementType === STRING_TYPE)
     return "[some first string, some second string]";
@@ -49,7 +47,7 @@ export const ArgFieldWidget = ({
 }: ArgFieldWidgetProps) => {
   const { user: exampleAddress } = useExampleAddresses();
 
-  if (UintTypes.includes(type) || type === "address" || type === STRING_TYPE)
+  if (UINT_TYPES.includes(type) || type === "address" || type === STRING_TYPE)
     return (
       <Input
         size="md"

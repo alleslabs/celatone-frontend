@@ -14,6 +14,7 @@ import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
+import { STRING_TYPE } from "./constants";
 import { getRules } from "./utils";
 
 interface ArgFieldTemplateProps {
@@ -60,8 +61,7 @@ export const ArgFieldTemplate = ({
       <FormControl
         className={`${size}-form`}
         variant={
-          (type === "0x1::string::String" || type.startsWith("vector")) &&
-          !isNull
+          (type === STRING_TYPE || type.startsWith("vector")) && !isNull
             ? "fixed-floating"
             : "floating"
         }
