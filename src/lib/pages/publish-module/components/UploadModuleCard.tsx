@@ -59,6 +59,7 @@ export const UploadModuleCard = ({
     file: undefined,
     base64: "",
   });
+  const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();
 
   const { isFetching } = useDecodeModule({
@@ -67,7 +68,7 @@ export const UploadModuleCard = ({
       enabled: Boolean(tempFile.base64),
       retry: 0,
       refetchOnWindowFocus: false,
-      onSuccess: (data) =>
+      onSuccess: (data) => {
         setFile(
           tempFile.file,
           tempFile.base64,
@@ -79,7 +80,14 @@ export const UploadModuleCard = ({
             policy,
             address: address as Option<HumanAddr>,
           })
-        ),
+        );
+        setDecodeError("");
+      },
+      onError: () => {
+        setDecodeError(
+          "Failed to decode .mv file. Please make sure the file is a module."
+        );
+      },
     },
   });
 
@@ -163,6 +171,7 @@ export const UploadModuleCard = ({
               setFile={handleFileDrop}
               fileType="move"
               bgColor="background.main"
+              error={decodeError}
               _hover={undefined}
             />
           )}

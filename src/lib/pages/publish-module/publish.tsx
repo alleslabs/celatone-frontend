@@ -106,7 +106,8 @@ export const PublishModule = ({
               field.base64EncodedFile && field.publishStatus.status !== "error"
           )
       ),
-    [address, modules]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [address, JSON.stringify(modules)]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
