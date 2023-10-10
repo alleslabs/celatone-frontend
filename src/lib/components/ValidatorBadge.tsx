@@ -4,7 +4,7 @@ import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
 import validatorDefaultImg from "../../../public/validator.svg";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { MobileLabel } from "lib/components/table";
 import { useValidatorImage } from "lib/services/validatorService";
 import type { Nullable, ValidatorInfo } from "lib/types";
 

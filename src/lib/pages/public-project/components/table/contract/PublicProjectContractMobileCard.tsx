@@ -1,33 +1,34 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Text, Flex } from "@chakra-ui/react";
 
-import { AppLink } from "../AppLink";
-import { ExplorerLink } from "../ExplorerLink";
-import { ContractNameCell } from "../table";
 import {
-  useGetAddressTypeByLength,
   useInternalNavigate,
+  useGetAddressTypeByLength,
 } from "lib/app-provider";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
-import type { PublicContract } from "lib/types";
+import { AppLink } from "lib/components/AppLink";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
+import type { PublicContractInfo } from "./PublicProjectContractTable";
 
-interface PublicContractCardProps {
-  publicInfo: PublicContract;
+interface PublicProjectContractMobileCardProps {
+  publicContractInfo: PublicContractInfo;
 }
 
-export const PublicContractCard = ({ publicInfo }: PublicContractCardProps) => {
+export const PublicProjectContractMobileCard = ({
+  publicContractInfo: { publicInfo },
+}: PublicProjectContractMobileCardProps) => {
   const navigate = useInternalNavigate();
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
+  const goToContractDetails = () => {
+    navigate({
+      pathname: `/contracts/${publicInfo.contractAddress}`,
+    });
+  };
+
   return (
-    <DefaultMobileCard
-      onClick={() =>
-        navigate({
-          pathname: "/contracts/[contractAddr]",
-          query: { contractAddr: publicInfo.contractAddress },
-        })
-      }
+    <MobileCardTemplate
+      onClick={goToContractDetails}
       topContent={
         <>
           <Flex align="start" direction="column">
@@ -57,7 +58,7 @@ export const PublicContractCard = ({ publicInfo }: PublicContractCardProps) => {
           <Flex flex="1" direction="column">
             <Flex direction="column">
               <MobileLabel label="Contract Name" />
-              <ContractNameCell contractLocalInfo={publicInfo} isReadOnly />
+              <Text>{publicInfo.name}</Text>
               <Text variant="body3" color="text.dark" pt={1}>
                 {publicInfo.description}
               </Text>

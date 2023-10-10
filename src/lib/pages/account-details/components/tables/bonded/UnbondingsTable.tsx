@@ -1,14 +1,16 @@
-import { Box, TableContainer } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { TableTitle } from "lib/components/table";
+import { TableContainer, TableTitle } from "lib/components/table";
 import type { Unbonding } from "lib/pages/account-details/data";
 import type { Option } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";
+import { BondedTableMobileCard } from "./BondedTableMobileCard";
 import { BondedTableRow } from "./BondedTableRow";
-import { TEMPLATE_COLUMNS } from "./constant";
+import { TEMPLATE_COLUMNS } from "./constants";
 
 interface UnbondingsTableProps {
   unbondings: Option<Unbonding[]>;
@@ -19,6 +21,8 @@ const UnbondingsTableBody = ({
   unbondings,
   isLoading,
 }: UnbondingsTableProps) => {
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading withBorder />;
   if (!unbondings?.length)
     return (
@@ -28,8 +32,26 @@ const UnbondingsTableBody = ({
       />
     );
 
-  return (
-    <TableContainer width="100%">
+  return isMobile ? (
+    <Flex direction="column" gap={4} w="full">
+      {unbondings.map((unbonding) => (
+        <BondedTableMobileCard
+          key={
+            unbonding.validator.validatorAddress +
+            unbonding.token.amount +
+            unbonding.token.denom +
+            unbonding.completionTime
+          }
+          bondedInfo={{
+            validator: unbonding.validator,
+            amount: unbonding.token,
+            completionTime: unbonding.completionTime,
+          }}
+        />
+      ))}
+    </Flex>
+  ) : (
+    <TableContainer>
       <BondedTableHeader
         templateColumns={TEMPLATE_COLUMNS}
         isDelegation={false}

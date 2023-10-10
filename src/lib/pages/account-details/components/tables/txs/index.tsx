@@ -3,13 +3,12 @@ import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { ErrorFetching } from "../../ErrorFetching";
-import { MobileTitle } from "../../mobile/MobileTitle";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { EmptyStateProps } from "lib/components/state";
 import { EmptyState } from "lib/components/state";
-import { TableTitle, ViewMore } from "lib/components/table";
+import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
@@ -20,7 +19,6 @@ import {
 import type { Nullable, Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
-import { TxsBody } from "./TxsBody";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
@@ -46,25 +44,6 @@ const getEmptyStateProps = (
   };
 };
 
-const TxTitle = ({
-  onViewMore,
-  txsCount,
-}: {
-  onViewMore: TxsTableProps["onViewMore"];
-  txsCount: Option<number>;
-}) => {
-  const isMobile = useMobile();
-
-  if (isMobile && onViewMore)
-    return (
-      <MobileTitle
-        title="Transactions"
-        count={txsCount}
-        onViewMore={onViewMore}
-      />
-    );
-  return <TableTitle title="Transactions" count={txsCount} mb={0} />;
-};
 export const TxsTable = ({
   accountId,
   scrollComponentId,
@@ -149,48 +128,58 @@ export const TxsTable = ({
     setFilters(DEFAULT_TX_FILTERS);
   }, [chainId]);
 
+  const isMobileOverview = isMobile && !!onViewMore;
+  const showErrorAlert =
+    Boolean(failureReason) && Number(transactions?.length) > 0;
   return (
     <Box mt={{ base: 4, md: 8 }}>
-      <TxsTop
-        title={<TxTitle onViewMore={onViewMore} txsCount={txsCount} />}
-        onViewMore={onViewMore}
-        relationSelection={
-          <TxRelationSelection
-            value={isSigner}
-            setValue={(value: Option<boolean>) => {
-              resetPagination();
-              setIsSigner(value);
-            }}
-            w={{ base: "full", md: "200px" }}
-            size={{ base: "md", md: "lg" }}
-          />
-        }
-        txTypeSelection={
-          <TxFilterSelection
-            result={filterSelected}
-            setResult={handleSetFilters}
-            boxWidth={{ base: "full", md: "285px" }}
-            placeholder="All"
-            size={{ base: "md", md: "lg" }}
-            tagSize={{ base: "sm", md: "md" }}
-          />
-        }
-      />
-      {Boolean(failureReason) && Number(transactions?.length) > 0 && (
-        <TxsAlert />
+      {isMobileOverview ? (
+        <MobileTitle
+          title="Transactions"
+          count={txsCount}
+          onViewMore={onViewMore}
+        />
+      ) : (
+        <TxsTop
+          txsCount={txsCount}
+          onViewMore={onViewMore}
+          relationSelection={
+            <TxRelationSelection
+              value={isSigner}
+              setValue={(value: Option<boolean>) => {
+                resetPagination();
+                setIsSigner(value);
+              }}
+              w={{ base: "full", md: "200px" }}
+              size={{ base: "md", md: "lg" }}
+            />
+          }
+          txTypeSelection={
+            <TxFilterSelection
+              result={filterSelected}
+              setResult={handleSetFilters}
+              boxWidth={{ base: "full", md: "285px" }}
+              placeholder="All"
+              size={{ base: "md", md: "lg" }}
+              tagSize={{ base: "sm", md: "md" }}
+            />
+          }
+        />
       )}
-      <TxsBody
-        transactions={transactions}
-        isLoading={isLoading || txsCountLoading}
-        emptyState={
-          <EmptyState
-            withBorder
-            {...getEmptyStateProps(filterSelected, transactions)}
-          />
-        }
-        showRelations
-        onViewMore={onViewMore}
-      />
+      {showErrorAlert && <TxsAlert />}
+      {isMobileOverview && (
+        <TransactionsTable
+          transactions={transactions}
+          isLoading={isLoading || txsCountLoading}
+          emptyState={
+            <EmptyState
+              withBorder
+              {...getEmptyStateProps(filterSelected, transactions)}
+            />
+          }
+          showRelations
+        />
+      )}
       {Boolean(transactions?.length) &&
         (onViewMore
           ? !txsCountLoading &&

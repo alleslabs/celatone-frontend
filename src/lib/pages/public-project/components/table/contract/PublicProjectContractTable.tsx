@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { PublicContractCard } from "lib/components/card/PublicContractCard";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
@@ -12,6 +11,7 @@ import { useContractStore } from "lib/providers/store";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { PublicContract, Option, ContractAddr } from "lib/types";
 
+import { PublicProjectContractMobileCard } from "./PublicProjectContractMobileCard";
 import { PublicProjectContractRow } from "./PublicProjectContractRow";
 
 export interface PublicContractInfo {
@@ -36,17 +36,16 @@ const ContractTableHeader = () => (
 
 const ContentRender = ({
   publicContracts,
-  isMobile,
 }: {
   publicContracts: PublicContractInfo[];
-  isMobile: boolean;
-}) =>
-  isMobile ? (
+}) => {
+  const isMobile = useMobile();
+  return isMobile ? (
     <Flex direction="column" gap={4} w="full" mt={4}>
       {publicContracts.map((contract) => (
-        <PublicContractCard
-          publicInfo={contract.publicInfo}
+        <PublicProjectContractMobileCard
           key={contract.publicInfo.contractAddress}
+          publicContractInfo={contract}
         />
       ))}
     </Flex>
@@ -62,12 +61,12 @@ const ContentRender = ({
       ))}
     </TableContainer>
   );
+};
 
 export const PublicProjectContractTable = observer(
   ({ contracts = [], onViewMore }: PublicProjectContractTableProps) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const { getContractLocalInfo } = useContractStore();
-    const isMobile = useMobile();
 
     const filteredContracts = useMemo(() => {
       return onViewMore
@@ -105,10 +104,7 @@ export const PublicProjectContractTable = observer(
           />
         )}
         {publicContracts.length ? (
-          <ContentRender
-            publicContracts={publicContracts}
-            isMobile={isMobile}
-          />
+          <ContentRender publicContracts={publicContracts} />
         ) : (
           <EmptyState
             my={4}

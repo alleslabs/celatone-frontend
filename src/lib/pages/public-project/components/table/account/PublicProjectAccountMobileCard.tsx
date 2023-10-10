@@ -1,24 +1,24 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
 import { useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { getNavigationArgs } from "lib/pages/public-project/components/table/account/PublicProjectAccountRow";
 import type { Account } from "lib/types";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
-
-interface AccountCardProps {
+interface PublicProjectAccountMobileCardProps {
   accountInfo: Account;
 }
-export const AccountCard = ({ accountInfo }: AccountCardProps) => {
+export const PublicProjectAccountMobileCard = ({
+  accountInfo,
+}: PublicProjectAccountMobileCardProps) => {
   const navigate = useInternalNavigate();
   const goToDetail = () => {
     navigate(getNavigationArgs(accountInfo));
   };
 
   return (
-    <DefaultMobileCard
+    <MobileCardTemplate
       onClick={goToDetail}
       topContent={
         <Flex gap={2} align="center">

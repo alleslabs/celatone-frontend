@@ -1,29 +1,29 @@
 import { Flex, Tag, Text } from "@chakra-ui/react";
 
-import { RenderActionMessages } from "../action-msg/ActionMessages";
-import { ExplorerLink } from "../ExplorerLink";
-import { CustomIcon } from "../icon";
-import { RelationChip } from "../table/transactions/RelationChip";
+import { RenderActionMessages } from "../../action-msg/ActionMessages";
+import { ExplorerLink } from "../../ExplorerLink";
+import { CustomIcon } from "../../icon";
+import { MobileCardTemplate } from "../MobileCardTemplate";
 import { useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { MobileLabel } from "lib/components/table/MobileLabel";
 import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
+import { RelationChip } from "./RelationChip";
 
-interface TransactionCardProps {
+interface TransactionsTableMobileCardProps {
   transaction: Transaction;
   showRelations?: boolean;
   showTimestamp?: boolean;
 }
-export const TransactionCard = ({
+export const TransactionsTableMobileCard = ({
   transaction,
   showRelations = true,
   showTimestamp = true,
-}: TransactionCardProps) => {
+}: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
-    <DefaultMobileCard
+    <MobileCardTemplate
       onClick={() =>
         navigate({
           pathname: "/txs/[txHash]",

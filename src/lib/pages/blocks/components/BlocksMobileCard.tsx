@@ -1,21 +1,20 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { ValidatorBadge } from "../ValidatorBadge";
+import { ExplorerLink } from "../../../components/ExplorerLink";
+import { MobileCardTemplate } from "../../../components/table/MobileCardTemplate";
+import { ValidatorBadge } from "../../../components/ValidatorBadge";
 import { useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { MobileLabel } from "lib/components/table/MobileLabel";
 import type { BlockInfo } from "lib/types/block";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
-
-interface BlockCardProps {
+interface BlocksMobileCardProps {
   blockData: BlockInfo;
 }
-export const BlockCard = ({ blockData }: BlockCardProps) => {
+export const BlocksMobileCard = ({ blockData }: BlocksMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
-    <DefaultMobileCard
+    <MobileCardTemplate
       onClick={() =>
         navigate({
           pathname: "/blocks/[blockHeight]",

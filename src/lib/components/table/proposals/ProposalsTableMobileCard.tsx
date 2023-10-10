@@ -1,27 +1,30 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { Proposer } from "../table/proposals/Proposer";
-import { ResolvedHeight } from "../table/proposals/ResolvedHeight";
-import { StatusChip } from "../table/proposals/StatusChip";
-import { VotingEndTime } from "../table/proposals/VotingEndTime";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { ExplorerLink } from "../../ExplorerLink";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "lib/components/table/MobileLabel";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
+import { Proposer } from "./Proposer";
+import { ResolvedHeight } from "./ResolvedHeight";
+import { StatusChip } from "./StatusChip";
+import { VotingEndTime } from "./VotingEndTime";
 
-export interface ProposalCardProps {
+export interface ProposalsTableMobileCardProps {
   proposal: Proposal;
 }
 
-export const ProposalCard = ({ proposal }: ProposalCardProps) => {
+export const ProposalsTableMobileCard = ({
+  proposal,
+}: ProposalsTableMobileCardProps) => {
   const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
+
   return (
-    <DefaultMobileCard
+    <MobileCardTemplate
       topContent={
         <>
           <Flex gap={2} align="center">

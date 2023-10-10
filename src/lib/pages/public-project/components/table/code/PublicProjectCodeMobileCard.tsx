@@ -1,27 +1,28 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { PermissionChip } from "../PermissionChip";
-import { CodeNameCell } from "../table";
 import { useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
-import type { CodeInfo, PublicCode } from "lib/types";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { PermissionChip } from "lib/components/PermissionChip";
+import { MobileCardTemplate } from "lib/components/table";
+import { MobileLabel } from "lib/components/table/MobileLabel";
+import type { PublicCode } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
-
-interface StoredCodeCardProps {
-  codeInfo: CodeInfo | PublicCode;
+interface PublicProjectCodeMobileCardProps {
+  publicInfo: PublicCode;
 }
-export const StoredCodeCard = ({ codeInfo }: StoredCodeCardProps) => {
-  const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
+export const PublicProjectCodeMobileCard = ({
+  publicInfo,
+}: PublicProjectCodeMobileCardProps) => {
+  const cw2Info = getCw2Info(publicInfo.cw2Contract, publicInfo.cw2Version);
   const navigate = useInternalNavigate();
+
   return (
-    <DefaultMobileCard
+    <MobileCardTemplate
       onClick={() =>
         navigate({
           pathname: "/codes/[codeId]",
-          query: { codeId: codeInfo.id.toString() },
+          query: { codeId: publicInfo.id.toString() },
         })
       }
       topContent={
@@ -29,7 +30,7 @@ export const StoredCodeCard = ({ codeInfo }: StoredCodeCardProps) => {
           <MobileLabel variant="body2" label="Code ID" />
           <ExplorerLink
             type="code_id"
-            value={codeInfo.id.toString()}
+            value={publicInfo.id.toString()}
             showCopyOnHover
           />
         </Flex>
@@ -38,7 +39,7 @@ export const StoredCodeCard = ({ codeInfo }: StoredCodeCardProps) => {
         <Flex direction="column" gap={3}>
           <Flex direction="column">
             <MobileLabel label="Code Name" />
-            <CodeNameCell code={codeInfo} isReadOnly />
+            <Text>{publicInfo.name}</Text>
           </Flex>
           <Flex direction="column">
             <MobileLabel label="CW2 Info" />
@@ -60,16 +61,16 @@ export const StoredCodeCard = ({ codeInfo }: StoredCodeCardProps) => {
               variant="body3"
               onClick={(e) => e.stopPropagation()}
               cursor="text"
-              color={codeInfo.contractCount ? "text.main" : "text.disabled"}
+              color={publicInfo.contractCount ? "text.main" : "text.disabled"}
             >
-              {codeInfo.contractCount ?? "N/A"}
+              {publicInfo.contractCount ?? "N/A"}
             </Text>
           </Flex>
           <Flex direction="column" flex="1">
             <MobileLabel label="Permission" />
             <PermissionChip
-              instantiatePermission={codeInfo.instantiatePermission}
-              permissionAddresses={codeInfo.permissionAddresses}
+              instantiatePermission={publicInfo.instantiatePermission}
+              permissionAddresses={publicInfo.permissionAddresses}
               tagSize="xs"
             />
           </Flex>

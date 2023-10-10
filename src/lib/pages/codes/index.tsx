@@ -5,14 +5,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
-import {
-  useInternalNavigate,
-  useWasmConfig,
-  useMobile,
-} from "lib/app-provider";
-import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
-import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
@@ -59,18 +53,6 @@ const RecentCodes = observer(() => {
       withBorder
     />
   );
-  const isMobile = useMobile();
-  const MobileSection = () => {
-    if (isLoading) return <Loading />;
-    if (!recentCodes?.length) return emptyState;
-    return (
-      <Flex direction="column" gap={4} w="full" mt={4}>
-        {recentCodes.map((code) => (
-          <StoredCodeCard codeInfo={code} key={code.uploader + code.id} />
-        ))}
-      </Flex>
-    );
-  };
 
   return (
     <PageContainer>
@@ -96,16 +78,12 @@ const RecentCodes = observer(() => {
           />
         </Flex>
       </Box>
-      {isMobile ? (
-        <MobileSection />
-      ) : (
-        <CodesTable
-          codes={recentCodes}
-          isLoading={isLoading}
-          emptyState={emptyState}
-          onRowSelect={onRowSelect}
-        />
-      )}
+      <CodesTable
+        codes={recentCodes}
+        isLoading={isLoading}
+        emptyState={emptyState}
+        onRowSelect={onRowSelect}
+      />
     </PageContainer>
   );
 });

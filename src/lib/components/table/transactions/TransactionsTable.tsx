@@ -1,8 +1,12 @@
+import { Flex } from "@chakra-ui/react";
+
 import { TableContainer } from "../tableComponents";
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { Option, Transaction } from "lib/types";
 
 import { TransactionsTableHeader } from "./TransactionsTableHeader";
+import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
 
 interface TransactionsTableProps {
@@ -22,6 +26,8 @@ export const TransactionsTable = ({
   showTimestamp = true,
   showAction = false,
 }: TransactionsTableProps) => {
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading withBorder />;
   if (!transactions?.length) return emptyState;
 
@@ -31,7 +37,16 @@ export const TransactionsTable = ({
     showAction ? "100px " : ""
   }`;
 
-  return (
+  return isMobile ? (
+    <Flex direction="column" gap={4} w="full" mt={4}>
+      {transactions.map((transaction) => (
+        <TransactionsTableMobileCard
+          key={transaction.hash}
+          transaction={transaction}
+        />
+      ))}
+    </Flex>
+  ) : (
     <TableContainer>
       <TransactionsTableHeader
         templateColumns={templateColumns}

@@ -1,24 +1,22 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { CodeNameCell } from "../table";
 import { useGetAddressType, useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CodeNameCell, MobileCardTemplate } from "lib/components/table";
+import { MobileLabel } from "lib/components/table/MobileLabel";
 import { RemarkRender } from "lib/pages/contract-details/components/tables/migration/MigrationRow";
 import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
-import { DefaultMobileCard } from "./DefaultMobileCard";
-
-interface MigrationCardProps {
+interface MigrationMobileCardProps {
   history: ContractMigrationHistory;
 }
-export const MigrationCard = ({ history }: MigrationCardProps) => {
+export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
   const navigate = useInternalNavigate();
   return (
-    <DefaultMobileCard
+    <MobileCardTemplate
       onClick={() =>
         navigate({
           pathname: "/codes/[codeId]",

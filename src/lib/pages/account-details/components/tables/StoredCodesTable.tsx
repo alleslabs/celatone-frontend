@@ -1,17 +1,19 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../../ErrorFetching";
-import { MobileTitle } from "../../mobile/MobileTitle";
+import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableTitle, ViewMore } from "lib/components/table";
+import {
+  CodesTable,
+  MobileTitle,
+  TableTitle,
+  ViewMore,
+} from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
 import type { HumanAddr, Option } from "lib/types";
-
-import { StoredCodesBody } from "./StoredCodesBody";
 
 interface StoredCodesTableProps {
   walletAddress: HumanAddr;
@@ -21,31 +23,6 @@ interface StoredCodesTableProps {
   onViewMore?: () => void;
 }
 
-const CodeTitle = ({
-  onViewMore,
-  totalData,
-}: {
-  onViewMore: StoredCodesTableProps["onViewMore"];
-  totalData: Option<number>;
-}) => {
-  const isMobile = useMobile();
-  if (isMobile && onViewMore)
-    return (
-      <MobileTitle
-        title="Stored Codes"
-        count={totalData ?? 0}
-        onViewMore={onViewMore}
-      />
-    );
-  return (
-    <TableTitle
-      title="Stored Codes"
-      count={totalData ?? 0}
-      mb={2}
-      helperText="This account stored the following codes"
-    />
-  );
-};
 export const StoredCodesTable = ({
   walletAddress,
   scrollComponentId,
@@ -53,6 +30,7 @@ export const StoredCodesTable = ({
   refetchCount,
   onViewMore,
 }: StoredCodesTableProps) => {
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
     navigate({
@@ -92,35 +70,42 @@ export const StoredCodesTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
-  let isMobileDetail = null;
-  if (isMobile && onViewMore) {
-    isMobileDetail = false;
-  } else {
-    isMobileDetail = true;
-  }
+
+  const isMobileOverview = isMobile && !!onViewMore;
   return (
     <Box mt={{ base: 4, md: 8 }}>
-      <CodeTitle onViewMore={onViewMore} totalData={totalData} />
-      {isMobileDetail && (
-        <StoredCodesBody
-          codes={codes}
-          isLoading={isLoading}
-          emptyState={
-            <EmptyState
-              message={
-                !codes ? (
-                  <ErrorFetching />
-                ) : (
-                  "This account did not stored any codes before."
-                )
-              }
-              withBorder
-            />
-          }
-          onRowSelect={onRowSelect}
+      {isMobileOverview ? (
+        <MobileTitle
+          title="Stored Codes"
+          count={totalData ?? 0}
           onViewMore={onViewMore}
         />
+      ) : (
+        <>
+          <TableTitle
+            title="Stored Codes"
+            count={totalData ?? 0}
+            mb={2}
+            helperText="This account stored the following codes"
+          />
+          <CodesTable
+            codes={codes}
+            isLoading={isLoading}
+            emptyState={
+              <EmptyState
+                message={
+                  !codes ? (
+                    <ErrorFetching />
+                  ) : (
+                    "This account did not stored any codes before."
+                  )
+                }
+                withBorder
+              />
+            }
+            onRowSelect={onRowSelect}
+          />
+        </>
       )}
       {!!totalData &&
         (onViewMore

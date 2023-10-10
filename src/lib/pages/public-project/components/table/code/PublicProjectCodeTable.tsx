@@ -4,13 +4,13 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
 import { useCodeStore } from "lib/providers/store";
 import type { Option, PublicCode, CodeInfo } from "lib/types";
 
+import { PublicProjectCodeMobileCard } from "./PublicProjectCodeMobileCard";
 import { PublicProjectCodeRow } from "./PublicProjectCodeRow";
 
 export interface PublicCodeInfo {
@@ -48,7 +48,10 @@ const ContentRender = ({
   isMobile ? (
     <Flex direction="column" gap={4} w="full" mt={4}>
       {publicCodes.map((code) => (
-        <StoredCodeCard key={code.publicInfo.id} codeInfo={code.publicInfo} />
+        <PublicProjectCodeMobileCard
+          key={code.publicInfo.id}
+          publicInfo={code.publicInfo}
+        />
       ))}
     </Flex>
   ) : (

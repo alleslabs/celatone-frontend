@@ -1,17 +1,19 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../../ErrorFetching";
-import { MobileTitle } from "../../mobile/MobileTitle";
+import { ErrorFetching } from "../ErrorFetching";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableTitle, ViewMore } from "lib/components/table";
+import {
+  MobileTitle,
+  ProposalsTable,
+  TableTitle,
+  ViewMore,
+} from "lib/components/table";
 import { useProposalsByWalletAddressPagination } from "lib/services/proposalService";
 import type { HumanAddr, Option } from "lib/types";
-
-import { OpenedProposalsBody } from "./OpenProposalsBody";
 
 interface OpenedProposalsTableProps {
   walletAddress: HumanAddr;
@@ -21,30 +23,6 @@ interface OpenedProposalsTableProps {
   onViewMore?: () => void;
 }
 
-const ProposalTitle = ({
-  onViewMore,
-  totalData,
-}: {
-  onViewMore: OpenedProposalsTableProps["onViewMore"];
-  totalData: Option<number>;
-}) => {
-  const isMobile = useMobile();
-  if (isMobile && onViewMore)
-    return (
-      <MobileTitle
-        title="Opened Proposals"
-        count={totalData ?? 0}
-        onViewMore={onViewMore}
-      />
-    );
-  return (
-    <TableTitle
-      title="Opened Proposals"
-      count={totalData ?? 0}
-      mb={{ base: 0, md: 2 }}
-    />
-  );
-};
 export const OpenedProposalsTable = ({
   walletAddress,
   scrollComponentId,
@@ -52,6 +30,8 @@ export const OpenedProposalsTable = ({
   refetchCount,
   onViewMore,
 }: OpenedProposalsTableProps) => {
+  const isMobile = useMobile();
+
   const {
     pagesQuantity,
     currentPage,
@@ -84,34 +64,41 @@ export const OpenedProposalsTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
-  let isMobileDetail = null;
-  if (isMobile && onViewMore) {
-    isMobileDetail = false;
-  } else {
-    isMobileDetail = true;
-  }
+
+  const isMobileOverview = isMobile && !!onViewMore;
   return (
     <Box mt={{ base: 4, md: 8 }}>
-      <ProposalTitle totalData={totalData} onViewMore={onViewMore} />
-      {isMobileDetail && (
-        <OpenedProposalsBody
-          proposals={proposals}
-          isLoading={isLoading}
-          emptyState={
-            <EmptyState
-              message={
-                !proposals ? (
-                  <ErrorFetching />
-                ) : (
-                  "This account did not open any proposals before."
-                )
-              }
-              withBorder
-            />
-          }
+      {isMobileOverview ? (
+        <MobileTitle
+          title="Opened Proposals"
+          count={totalData ?? 0}
           onViewMore={onViewMore}
         />
+      ) : (
+        <>
+          {" "}
+          <TableTitle
+            title="Opened Proposals"
+            count={totalData ?? 0}
+            mb={{ base: 0, md: 2 }}
+          />
+          <ProposalsTable
+            proposals={proposals}
+            isLoading={isLoading}
+            emptyState={
+              <EmptyState
+                message={
+                  !proposals ? (
+                    <ErrorFetching />
+                  ) : (
+                    "This account did not open any proposals before."
+                  )
+                }
+                withBorder
+              />
+            }
+          />
+        </>
       )}
       {!!totalData &&
         (onViewMore
