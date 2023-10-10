@@ -8,10 +8,12 @@ import { MobileLabel } from "lib/components/table/MobileLabel";
 import type { BlockInfo } from "lib/types/block";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
-interface BlocksMobileCardProps {
+interface BlocksTableMobileCardProps {
   blockData: BlockInfo;
 }
-export const BlocksMobileCard = ({ blockData }: BlocksMobileCardProps) => {
+export const BlocksTableMobileCard = ({
+  blockData,
+}: BlocksTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate

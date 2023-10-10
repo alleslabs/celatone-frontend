@@ -12,9 +12,9 @@ import {
   useBlocklistQuery,
 } from "lib/services/blockService";
 
-import { BlocksHeader } from "./BlocksHeader";
-import { BlocksMobileCard } from "./BlocksMobileCard";
-import { BlocksRow } from "./BlocksRow";
+import { BlocksTableHeader } from "./BlocksTableHeader";
+import { BlocksTableMobileCard } from "./BlocksTableMobileCard";
+import { BlocksTableRow } from "./BlocksTableRow";
 
 interface BlocksTableProps {
   isViewMore?: boolean;
@@ -85,17 +85,17 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
       {isMobile ? (
         <Flex direction="column" gap={4} w="full" mt={4}>
           {blocksData.map((block) => (
-            <BlocksMobileCard key={block.hash} blockData={block} />
+            <BlocksTableMobileCard key={block.hash} blockData={block} />
           ))}
         </Flex>
       ) : (
         <TableContainer>
-          <BlocksHeader
+          <BlocksTableHeader
             templateColumns={TEMPLATE_COLUMNS}
             scrollComponentId={scrollComponentId}
           />
           {blocksData.map((block) => (
-            <BlocksRow
+            <BlocksTableRow
               key={block.hash}
               templateColumns={TEMPLATE_COLUMNS}
               blockData={block}
