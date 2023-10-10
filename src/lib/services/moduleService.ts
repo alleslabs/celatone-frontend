@@ -12,7 +12,11 @@ import {
   useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
-import { getModuleIdByNameAndVmAddressQueryDocument } from "lib/query";
+import {
+  getModuleHistoriesCountQueryDocument,
+  getModuleHistoriesQueryDocument,
+  getModuleIdByNameAndVmAddressQueryDocument,
+} from "lib/query";
 import type {
   MoveAccountAddr,
   ExposedFunction,
@@ -26,8 +30,10 @@ import type {
   HexAddr,
   Nullable,
 } from "lib/types";
+import type { ModuleHistory } from "lib/types/module";
 import {
   bech32AddressToHex,
+  parseDate,
   parseJsonABI,
   splitViewExecuteFunctions,
   truncate,
@@ -238,6 +244,82 @@ export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
     queryFn,
     {
       enabled: Boolean(moduleName && vmAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleHistoriesByPagination = ({
+  moduleId,
+  pageSize,
+  offset,
+}: {
+  moduleId: Option<Nullable<number>>;
+  pageSize: number;
+  offset: number;
+}): UseQueryResult<ModuleHistory[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) return [];
+    return indexerGraphClient
+      .request(getModuleHistoriesQueryDocument, {
+        moduleId,
+        pageSize,
+        offset,
+      })
+      .then(({ module_histories }) =>
+        module_histories.map<ModuleHistory>((history, idx) => ({
+          remark: history.remark,
+          upgradePolicy: history.upgrade_policy,
+          height: history.block.height,
+          timestamp: parseDate(history.block.timestamp),
+          previousPolicy:
+            idx === module_histories.length - 1
+              ? undefined
+              : module_histories[idx + 1].upgrade_policy,
+        }))
+      );
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_HISTORIES,
+      indexerGraphClient,
+      moduleId,
+      pageSize,
+      offset,
+    ],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getModuleHistoriesCountQueryDocument, {
+        moduleId,
+      })
+      .then(
+        ({ module_histories_aggregate }) =>
+          module_histories_aggregate.aggregate?.count
+      );
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_HISTORIES_COUNT, indexerGraphClient, moduleId],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
       retry: 1,
       refetchOnWindowFocus: false,
     }

@@ -9,13 +9,11 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
-import type { ModuleTxType } from "lib/services/txService";
 import { useModuleTxsByPagination } from "lib/services/txService";
 import type { Nullable, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
   moduleId: Option<Nullable<number>>;
-  txType: ModuleTxType;
   txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
@@ -24,7 +22,6 @@ interface ModuleTxsTableProps {
 
 export const ModuleTxsTable = ({
   moduleId,
-  txType,
   txCount,
   onViewMore,
   scrollComponentId,
@@ -54,7 +51,6 @@ export const ModuleTxsTable = ({
     error,
   } = useModuleTxsByPagination({
     moduleId,
-    txType,
     pageSize,
     offset,
   });
@@ -147,14 +143,14 @@ export const ModuleTxsTable = ({
           <EmptyState
             withBorder
             imageVariant="empty"
-            message="There are no transactions on this network."
+            message="There are no transactions on this module."
           />
         }
         showAction={false}
         showRelations={false}
       />
       {onViewMore && <ViewMore onClick={onViewMore} />}
-      {!onViewMore && txCount && txCount > 10 && (
+      {!onViewMore && txCount !== undefined && Number(txCount) > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

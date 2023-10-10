@@ -169,12 +169,12 @@ export const getBlockTransactionCountByHeightQueryDocument = graphql(`
 
 export const getModuleTransactionsQueryDocument = graphql(`
   query getModuleTransactionsQuery(
-    $filterExp: module_transactions_bool_exp
+    $moduleId: Int!
     $pageSize: Int!
     $offset: Int!
   ) {
     module_transactions(
-      where: $filterExp
+      where: { module_id: { _eq: $moduleId } }
       limit: $pageSize
       offset: $offset
       order_by: { block_height: desc }
@@ -208,17 +208,9 @@ export const getModuleTransactionsQueryDocument = graphql(`
   }
 `);
 
-export const getModuleTransactionsCountByTypeQueryDocument = graphql(`
-  query getModuleTransactionsCountByTypeQuery(
-    $moduleId: Int!
-    $isUpgrade: Boolean!
-  ) {
-    module_transactions_aggregate(
-      where: {
-        module_id: { _eq: $moduleId }
-        transaction: { is_move_upgrade: { _eq: $isUpgrade } }
-      }
-    ) {
+export const getModuleTransactionsCountQueryDocument = graphql(`
+  query getModuleTransactionsCountQuery($moduleId: Int!) {
+    module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {
       aggregate {
         count
       }

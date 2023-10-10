@@ -15325,6 +15325,37 @@ export type GetModuleIdByNameAndVmAddressQueryQuery = {
   modules: Array<{ __typename?: "modules"; id: number }>;
 };
 
+export type GetModuleHistoriesQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+  pageSize: Scalars["Int"];
+  offset: Scalars["Int"];
+}>;
+
+export type GetModuleHistoriesQueryQuery = {
+  __typename?: "query_root";
+  module_histories: Array<{
+    __typename?: "module_histories";
+    remark: any;
+    upgrade_policy: any;
+    block: { __typename?: "blocks"; height: number; timestamp: any };
+  }>;
+};
+
+export type GetModuleHistoriesCountQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+}>;
+
+export type GetModuleHistoriesCountQueryQuery = {
+  __typename?: "query_root";
+  module_histories_aggregate: {
+    __typename?: "module_histories_aggregate";
+    aggregate?: {
+      __typename?: "module_histories_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
 export type GetPoolListQueryVariables = Exact<{
   expression?: InputMaybe<Pools_Bool_Exp>;
   order?: InputMaybe<Order_By>;
@@ -15704,7 +15735,7 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
 };
 
 export type GetModuleTransactionsQueryQueryVariables = Exact<{
-  filterExp?: InputMaybe<Module_Transactions_Bool_Exp>;
+  moduleId: Scalars["Int"];
   pageSize: Scalars["Int"];
   offset: Scalars["Int"];
 }>;
@@ -15737,12 +15768,11 @@ export type GetModuleTransactionsQueryQuery = {
   }>;
 };
 
-export type GetModuleTransactionsCountByTypeQueryQueryVariables = Exact<{
+export type GetModuleTransactionsCountQueryQueryVariables = Exact<{
   moduleId: Scalars["Int"];
-  isUpgrade: Scalars["Boolean"];
 }>;
 
-export type GetModuleTransactionsCountByTypeQueryQuery = {
+export type GetModuleTransactionsCountQueryQuery = {
   __typename?: "query_root";
   module_transactions_aggregate: {
     __typename?: "module_transactions_aggregate";
@@ -19392,6 +19422,235 @@ export const GetModuleIdByNameAndVmAddressQueryDocument = {
   GetModuleIdByNameAndVmAddressQueryQuery,
   GetModuleIdByNameAndVmAddressQueryQueryVariables
 >;
+export const GetModuleHistoriesQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleHistoriesQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_histories" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "height" },
+                            value: { kind: "EnumValue", value: "desc" },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "remark" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "upgrade_policy" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleHistoriesQueryQuery,
+  GetModuleHistoriesQueryQueryVariables
+>;
+export const GetModuleHistoriesCountQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleHistoriesCountQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_histories_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleHistoriesCountQueryQuery,
+  GetModuleHistoriesCountQueryQueryVariables
+>;
 export const GetPoolListDocument = {
   kind: "Document",
   definitions: [
@@ -21680,11 +21939,11 @@ export const GetModuleTransactionsQueryDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "filterExp" },
+            name: { kind: "Name", value: "moduleId" },
           },
           type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "module_transactions_bool_exp" },
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
         {
@@ -21721,8 +21980,26 @@ export const GetModuleTransactionsQueryDocument = {
                 kind: "Argument",
                 name: { kind: "Name", value: "where" },
                 value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "filterExp" },
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 },
               },
               {
@@ -21870,13 +22147,13 @@ export const GetModuleTransactionsQueryDocument = {
   GetModuleTransactionsQueryQuery,
   GetModuleTransactionsQueryQueryVariables
 >;
-export const GetModuleTransactionsCountByTypeQueryDocument = {
+export const GetModuleTransactionsCountQueryDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getModuleTransactionsCountByTypeQuery" },
+      name: { kind: "Name", value: "getModuleTransactionsCountQuery" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -21887,20 +22164,6 @@ export const GetModuleTransactionsCountByTypeQueryDocument = {
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "isUpgrade" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
           },
         },
       ],
@@ -21934,32 +22197,6 @@ export const GetModuleTransactionsCountByTypeQueryDocument = {
                         ],
                       },
                     },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "is_move_upgrade" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "isUpgrade" },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
                   ],
                 },
               },
@@ -21985,8 +22222,8 @@ export const GetModuleTransactionsCountByTypeQueryDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetModuleTransactionsCountByTypeQueryQuery,
-  GetModuleTransactionsCountByTypeQueryQueryVariables
+  GetModuleTransactionsCountQueryQuery,
+  GetModuleTransactionsCountQueryQueryVariables
 >;
 export const GetValidatorsDocument = {
   kind: "Document",

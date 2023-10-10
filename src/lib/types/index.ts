@@ -17,3 +17,4 @@ export * from "./asset";
 export * from "./converter";
 export * from "./abi";
 export * from "./json";
+export * from "./module";

@@ -24,9 +24,10 @@ import {
   useVerifyModule,
   useModuleId,
   useAccountModules,
+  useModuleHistoriesCount,
 } from "lib/services/moduleService";
-import { useModuleTxsCountByType } from "lib/services/txService";
-import type { MoveAccountAddr, Option } from "lib/types";
+import { useModuleTxsCount } from "lib/services/txService";
+import type { MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeTabs } from "./components/FunctionTypeSwitch";
@@ -34,7 +35,7 @@ import { ModuleFunction } from "./components/ModuleFunction";
 import { ModuleInfo } from "./components/ModuleInfo";
 import { ModuleStruct } from "./components/ModuleStruct";
 import { ModuleTop } from "./components/ModuleTop";
-import { ModuleTxsTable } from "./components/table/ModuleTxsTable";
+import { ModuleTxsTable, ModuleHistoryTable } from "./components/tables";
 
 const mainTabHeaderId = "main-table-header";
 const overviewHistoryHeaderId = "overview-history-header";
@@ -51,7 +52,7 @@ interface ActionInfo {
   icon: IconKeys;
   iconColor: string;
   name: string;
-  count: Option<number>;
+  count: number | string;
   onClick: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -67,6 +68,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const { trackUseTab } = useTrack();
 
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+  const [overviewHistoryTabIndex, setOverviewHistoryTabIndex] = useState(0);
   const [historyTabIndex, setHistoryTabIndex] = useState(0);
 
   const handleTabChange = useCallback(
@@ -88,6 +90,45 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     },
     [moduleData.address, moduleData.moduleName, navigate, tab, trackUseTab]
   );
+
+  const { data: moduleId } = useModuleId(
+    moduleData.moduleName,
+    moduleData.address
+  );
+
+  const { data: verificationData } = useVerifyModule({
+    address: moduleData.address,
+    moduleName: moduleData.moduleName,
+  });
+
+  const { data: moduleTxsCount, refetch: refetchTxsCount } =
+    useModuleTxsCount(moduleId);
+  const { data: moduleHistoriesCount, refetch: refetchHistoriesCount } =
+    useModuleHistoriesCount(moduleId);
+
+  const actionList: ActionInfo[] = [
+    {
+      icon: "query" as IconKeys,
+      iconColor: "primary.main",
+      name: "View Functions",
+      count: moduleData.viewFunctions.length,
+      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
+    },
+    {
+      icon: "execute" as IconKeys,
+      iconColor: "accent.main",
+      name: "Execute Functions",
+      count: moduleData.executeFunctions.length,
+      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
+    },
+    {
+      icon: "list" as IconKeys,
+      iconColor: "gray.600",
+      name: "Transactions",
+      count: Number(moduleTxsCount) + Number(moduleHistoriesCount) || "N/A",
+      onClick: handleTabChange(TabIndex.History),
+    },
+  ];
 
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
@@ -112,42 +153,13 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     moduleData.moduleName,
   ]);
 
-  const { data: moduleId } = useModuleId(
-    moduleData.moduleName,
-    moduleData.address
-  );
+  useEffect(() => {
+    if (Number(moduleTxsCount) === 0) {
+      setOverviewHistoryTabIndex(1);
+      setHistoryTabIndex(1);
+    }
+  }, [moduleTxsCount]);
 
-  const { data: verificationData } = useVerifyModule({
-    address: moduleData.address,
-    moduleName: moduleData.moduleName,
-  });
-
-  const { data: moduleTxsCount, refetch: refetchTxsCount } =
-    useModuleTxsCountByType(moduleId);
-
-  const actionList: ActionInfo[] = [
-    {
-      icon: "query" as IconKeys,
-      iconColor: "primary.main",
-      name: "View Functions",
-      count: moduleData.viewFunctions.length,
-      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
-    },
-    {
-      icon: "execute" as IconKeys,
-      iconColor: "accent.main",
-      name: "Execute Functions",
-      count: moduleData.executeFunctions.length,
-      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
-    },
-    {
-      icon: "list" as IconKeys,
-      iconColor: "gray.600",
-      name: "Transactions",
-      count: moduleTxsCount?.allTxsCount,
-      onClick: handleTabChange(TabIndex.History),
-    },
-  ];
   return (
     <>
       <ModuleTop
@@ -239,25 +251,32 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 >
                   History
                 </Heading>
-                <Tabs isLazy lazyBehavior="keepMounted">
+                <Tabs
+                  isLazy
+                  lazyBehavior="keepMounted"
+                  index={overviewHistoryTabIndex}
+                  onChange={setOverviewHistoryTabIndex}
+                >
                   <TabList
                     borderBottom="1px solid"
                     borderColor="gray.700"
                     overflowX={{ base: "scroll", md: "auto" }}
                   >
-                    <CustomTab count={moduleTxsCount?.normalTxsCount}>
+                    <CustomTab
+                      count={moduleTxsCount}
+                      isDisabled={Number(moduleTxsCount) === 0}
+                    >
                       Transactions
                     </CustomTab>
-                    <CustomTab count={moduleTxsCount?.upgradeTxsCount}>
-                      Upgrades
+                    <CustomTab count={moduleHistoriesCount}>
+                      Published Events
                     </CustomTab>
                   </TabList>
                   <TabPanels>
                     <TabPanel p={0}>
                       <ModuleTxsTable
                         moduleId={moduleId}
-                        txType="normal"
-                        txCount={moduleTxsCount?.normalTxsCount}
+                        txCount={moduleTxsCount}
                         refetchCount={refetchTxsCount}
                         onViewMore={() => {
                           handleTabChange(TabIndex.History)();
@@ -266,11 +285,10 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                       />
                     </TabPanel>
                     <TabPanel p={0}>
-                      <ModuleTxsTable
+                      <ModuleHistoryTable
                         moduleId={moduleId}
-                        txType="upgrade"
-                        txCount={moduleTxsCount?.upgradeTxsCount}
-                        refetchCount={refetchTxsCount}
+                        historyCount={moduleHistoriesCount}
+                        refetchCount={refetchHistoriesCount}
                         onViewMore={() => {
                           handleTabChange(TabIndex.History)();
                           setHistoryTabIndex(1);
@@ -306,36 +324,37 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 isLazy
                 lazyBehavior="keepMounted"
                 index={historyTabIndex}
-                onChange={(index) => setHistoryTabIndex(index)}
+                onChange={setHistoryTabIndex}
               >
                 <TabList
                   borderBottom="1px solid"
                   borderColor="gray.700"
                   overflowX={{ base: "scroll", md: "auto" }}
                 >
-                  <CustomTab count={moduleTxsCount?.normalTxsCount}>
+                  <CustomTab
+                    count={moduleTxsCount}
+                    isDisabled={Number(moduleTxsCount) === 0}
+                  >
                     Transactions
                   </CustomTab>
-                  <CustomTab count={moduleTxsCount?.upgradeTxsCount}>
-                    Upgrades
+                  <CustomTab count={moduleHistoriesCount}>
+                    Published Events
                   </CustomTab>
                 </TabList>
                 <TabPanels>
                   <TabPanel p={0}>
                     <ModuleTxsTable
                       moduleId={moduleId}
-                      txType="normal"
-                      txCount={moduleTxsCount?.normalTxsCount}
+                      txCount={moduleTxsCount}
                       refetchCount={refetchTxsCount}
                       scrollComponentId={historyTabHeaderId}
                     />
                   </TabPanel>
                   <TabPanel p={0}>
-                    <ModuleTxsTable
+                    <ModuleHistoryTable
                       moduleId={moduleId}
-                      txType="upgrade"
-                      txCount={moduleTxsCount?.upgradeTxsCount}
-                      refetchCount={refetchTxsCount}
+                      historyCount={moduleHistoriesCount}
+                      refetchCount={refetchHistoriesCount}
                       scrollComponentId={historyTabHeaderId}
                     />
                   </TabPanel>
