@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#553](https://github.com/alleslabs/celatone-frontend/pull/553) Use Cmd on Mac OS while Ctrl on others
 - [#548](https://github.com/alleslabs/celatone-frontend/pull/548) Handle interaction page query param and refactor page
 - [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration

@@ -9,6 +9,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
+  useIsMac,
   useMobile,
 } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
@@ -42,6 +43,7 @@ interface JsonQueryProps {
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const { track, trackAction } = useTrack();
   const isMobile = useMobile();
+  const isMac = useIsMac();
   const { isFetching: cmdsFetching, queryCmds } = useQueryCmds(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
@@ -88,10 +90,12 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     refetch();
   };
 
+  const isButtonDisabled = jsonValidate(msg) !== null;
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
       // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") handleQuery();
+      const specialKey = isMac ? e.metaKey : e.ctrlKey;
+      if (!isButtonDisabled && specialKey && e.key === "Enter") handleQuery();
     };
     document.addEventListener("keydown", keydownHandler);
     return () => {
@@ -161,11 +165,11 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
               p="6px 16px"
               size={{ base: "sm", md: "md" }}
               onClick={handleQuery}
-              isDisabled={jsonValidate(msg) !== null}
+              isDisabled={isButtonDisabled}
               isLoading={queryFetching || queryRefetching}
               leftIcon={<CustomIcon name="query" />}
             >
-              Query {!isMobile && "(Ctrl + Enter)"}
+              Query{!isMobile && ` (${isMac ? "⌘" : "Ctrl"} + Enter)`}
             </Button>
           </Flex>
         </Box>
