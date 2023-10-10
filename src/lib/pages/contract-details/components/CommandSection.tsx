@@ -90,7 +90,13 @@ export const CommandSection = observer(
     };
 
     return (
-      <Flex direction="column" gap={6}>
+      <Flex
+        direction="column"
+        gap={6}
+        pb={{ base: 0, md: 8 }}
+        borderBottom={{ base: "0px", md: "1px solid" }}
+        borderBottomColor={{ base: "transparent", md: "gray.700" }}
+      >
         <Flex gap={4} alignItems="center">
           <Heading as="h6" variant="h6" minW="fit-content">
             Available command shortcuts
