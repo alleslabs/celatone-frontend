@@ -2,12 +2,13 @@ import { useMemo } from "react";
 
 export const usePlatform = () => {
   return useMemo(() => {
-    if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
-      return "Mac";
+    if (typeof navigator === "undefined") {
+      return "Unknown";
     }
-    return "Windows";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigator]);
+    const { userAgent } = navigator;
+    const isMac = /Mac OS X/.test(userAgent);
+    return isMac ? "Mac" : "Windows";
+  }, []);
 };
 
 export const useIsMac = () => {
