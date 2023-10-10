@@ -1,4 +1,10 @@
-import type { LVPair } from "lib/types";
+import type {
+  BaseTxFilters,
+  LVPair,
+  MoveTxFilters,
+  TxFilters,
+  WasmTxFilters,
+} from "lib/types";
 import { MsgType } from "lib/types";
 /**
  * @todos Revisit utils import later
@@ -32,15 +38,31 @@ export const typeUrlDict = {
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
 
-export const DEFAULT_TX_FILTERS = {
-  isExecute: false,
+export const DEFAULT_BASE_TX_FILTERS: BaseTxFilters = {
+  isSend: false,
+  isIbc: false,
+};
+
+export const DEFAULT_WASM_TX_FILTERS: WasmTxFilters = {
   isInstantiate: false,
   isUpload: false,
-  isIbc: false,
-  isSend: false,
+  isExecute: false,
   isMigrate: false,
   isUpdateAdmin: false,
   isClearAdmin: false,
+};
+
+export const DEFAULT_MOVE_TX_FILTERS: MoveTxFilters = {
+  isMovePublish: false,
+  isMoveUpgrade: false,
+  isMoveExecute: false,
+  isMoveScript: false,
+};
+
+export const DEFAULT_TX_FILTERS: TxFilters = {
+  ...DEFAULT_BASE_TX_FILTERS,
+  ...DEFAULT_WASM_TX_FILTERS,
+  ...DEFAULT_MOVE_TX_FILTERS,
 };
 
 export const UPPERBOUND_COUNT = 10000;
