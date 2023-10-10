@@ -1,7 +1,5 @@
 import type { ContractState, DecodedKey } from "lib/types";
 
-import { decodeToJSON } from "./base64";
-
 const nameRegex = /^[a-zA-Z0-9_]+$/;
 
 export const hexToString = (hex: string) =>
@@ -64,14 +62,6 @@ export const parseStateKey = (key: string): DecodedKey => {
     type: "singleton",
     value: key,
   };
-};
-
-export const parseStateValue = (value: string) => {
-  try {
-    return decodeToJSON(value);
-  } catch (error) {
-    return value;
-  }
 };
 
 export const groupContractStatesByFirstIndex = (states: ContractState[]) =>

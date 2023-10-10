@@ -1,20 +1,8 @@
-import { hexToString, parseStateKey, parseStateValue } from "./contractState";
+import { hexToString, parseStateKey } from "./contractState";
 
 describe("hexToString", () => {
   it("should convert hex to string", () => {
     expect(hexToString("68656c6c6f20776f726c64")).toEqual("hello world");
-  });
-});
-
-describe("parseStateValue", () => {
-  it("should parse base64 encoded JSON", () => {
-    const value = "eyJmb28iOiJiYXIifQ=="; // {"foo":"bar"}
-    expect(parseStateValue(value)).toEqual({ foo: "bar" });
-  });
-
-  it("should return the original value if it's not JSON", () => {
-    const value = "not json";
-    expect(parseStateValue(value)).toEqual(value);
   });
 });
 

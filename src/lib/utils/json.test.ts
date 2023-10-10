@@ -1,4 +1,9 @@
-import { jsonLineCount, jsonPrettify, jsonValidate } from "./json";
+import {
+  jsonLineCount,
+  jsonPrettify,
+  jsonValidate,
+  parseJsonStr,
+} from "./json";
 
 describe("jsonValidate", () => {
   test("empty string", () => {
@@ -45,5 +50,17 @@ describe("jsonLineCount", () => {
   test("multiple lines count", () => {
     expect(jsonLineCount("line1 \n line2 \n line3")).toEqual(3);
     expect(jsonLineCount('{"key": "value", \n "key": 1}')).toEqual(2);
+  });
+});
+
+describe("parseJsonStr", () => {
+  it("should return the parsed JSON for valid input", () => {
+    const validJson = '{"name": "John", "age": 30}';
+    expect(parseJsonStr(validJson)).toEqual({ name: "John", age: 30 });
+  });
+
+  it("should return the fallback value for invalid input", () => {
+    const invalidJson = '{"name": "John", "age": 30,}';
+    expect(parseJsonStr(invalidJson, "fallback")).toEqual("fallback");
   });
 });

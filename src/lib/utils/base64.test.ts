@@ -1,4 +1,4 @@
-import { encode, decode, decodeToJSON, libEncode, libDecode } from "./base64";
+import { encode, decode, libEncode, libDecode } from "./base64";
 
 describe("base64 utility functions", () => {
   const testString = "Hello, world!";
@@ -11,12 +11,6 @@ describe("base64 utility functions", () => {
   it("should decode a base64 string to a string", () => {
     const decoded = decode("SGVsbG8sIHdvcmxkIQ==");
     expect(decoded).toEqual(testString);
-  });
-
-  it("should decode a base64 string to a JSON object", () => {
-    const encoded = libEncode(JSON.stringify({ message: testString }));
-    const decoded = decodeToJSON(encoded);
-    expect(decoded).toEqual({ message: testString });
   });
 
   it("should use js-base64 library for encoding and decoding", () => {

@@ -5,7 +5,7 @@ import { JsonSchemaForm, OutputMessageTabs } from "lib/components/json-schema";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { SchemaInfo } from "lib/stores/schema";
 import type { Option } from "lib/types";
-import { dateFromNow, parseSchemaInitialData } from "lib/utils";
+import { dateFromNow, parseJsonStr } from "lib/utils";
 
 interface SchemaQueryResponseProps {
   res: string;
@@ -84,7 +84,7 @@ export const SchemaQueryResponse = ({
               <JsonSchemaForm
                 formId={`response-${msgSchema.title}`}
                 schema={resSchema.schema}
-                initialFormData={parseSchemaInitialData(res)}
+                initialFormData={parseJsonStr(res)}
               />
             </Box>
           )}

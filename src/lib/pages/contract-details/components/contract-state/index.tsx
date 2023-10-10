@@ -1,4 +1,11 @@
-import { Button, ButtonGroup, Flex, Heading } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  ButtonGroup,
+  Flex,
+  Heading,
+} from "@chakra-ui/react";
 import { saveAs } from "file-saver";
 import { useMemo, useState } from "react";
 
@@ -21,8 +28,9 @@ interface ContractStatesProps {
   contractAddress: ContractAddr;
 }
 
+const NUM_STATES_TO_LOAD = 100;
+
 export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
-  const numStatesToLoad = 100;
   const {
     data,
     error,
@@ -30,7 +38,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useContractStates(contractAddress, numStatesToLoad);
+  } = useContractStates(contractAddress, NUM_STATES_TO_LOAD);
 
   const [selectedNamespace, setSelectedNamespace] = useState("all");
   const [keyword, setKeyword] = useState("");
@@ -79,9 +87,6 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     saveAs(blob, "state.json");
   };
 
-  // eslint-disable-next-line no-alert
-  if (error) window.alert(error);
-
   return (
     <Flex direction="column" gap={8}>
       <Flex direction="column" gap={6}>
@@ -89,7 +94,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           Contract States
         </Heading>
         <StateLoader
-          numStatesToLoad={numStatesToLoad}
+          numStatesToLoad={NUM_STATES_TO_LOAD}
           isLoading={isFetching || isFetchingNextPage}
           totalData={totalData}
           isCompleted={!hasNextPage}
@@ -97,6 +102,13 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           onDownload={handleDownload}
         />
       </Flex>
+      {typeof error === "undefined" && (
+        <Alert variant="error" alignItems="center">
+          <AlertDescription wordBreak="break-word">
+            Error fetching
+          </AlertDescription>
+        </Alert>
+      )}
       {/* Namespace filter */}
       <ButtonGroup
         flexWrap="wrap"
