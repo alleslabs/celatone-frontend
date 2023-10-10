@@ -8,7 +8,7 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 
-import type { PublicContractInfo } from "./PublicProjectContractTable";
+import type { PublicContractInfo } from ".";
 
 interface PublicProjectContractMobileCardProps {
   publicContractInfo: PublicContractInfo;

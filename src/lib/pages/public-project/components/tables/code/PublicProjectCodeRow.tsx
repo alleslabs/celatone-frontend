@@ -11,7 +11,7 @@ import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRow } from "lib/components/table";
 import { getCw2Info } from "lib/utils";
 
-import type { PublicCodeInfo } from "./PublicProjectCodeTable";
+import type { PublicCodeInfo } from ".";
 
 interface CodeTableRowProps {
   publicCodeInfo: PublicCodeInfo;

@@ -22,7 +22,7 @@ import {
 import { TableRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 
-import type { PublicContractInfo } from "./PublicProjectContractTable";
+import type { PublicContractInfo } from ".";
 
 interface ContractTableRowProps {
   publicContractInfo: PublicContractInfo;
