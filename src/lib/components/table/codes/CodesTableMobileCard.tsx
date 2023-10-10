@@ -1,10 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PermissionChip } from "lib/components/PermissionChip";
-import { MobileLabel } from "lib/components/table/MobileLabel";
 import type { CodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";
 

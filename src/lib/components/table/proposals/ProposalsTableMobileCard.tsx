@@ -1,8 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../../ExplorerLink";
 import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "lib/components/table/MobileLabel";
+import { MobileLabel } from "../MobileLabel";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 

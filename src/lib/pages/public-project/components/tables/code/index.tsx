@@ -50,7 +50,7 @@ const ContentRender = ({
       {publicCodes.map((code) => (
         <PublicProjectCodeMobileCard
           key={code.publicInfo.id}
-          publicInfo={code.publicInfo}
+          publicCodeInfo={code}
         />
       ))}
     </Flex>

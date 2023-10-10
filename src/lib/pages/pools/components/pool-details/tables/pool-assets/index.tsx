@@ -1,6 +1,6 @@
 import type { Big } from "big.js";
 
-import { TableContainer } from "lib/components/table/tableComponents";
+import { TableContainer } from "lib/components/table";
 import type { PoolDetail, USD } from "lib/types";
 
 import { PoolAssetsTableHeader } from "./PoolAssetsTableHeader";

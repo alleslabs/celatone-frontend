@@ -1,11 +1,11 @@
 import { Flex, Tag, Text } from "@chakra-ui/react";
 
-import { RenderActionMessages } from "../../action-msg/ActionMessages";
-import { ExplorerLink } from "../../ExplorerLink";
-import { CustomIcon } from "../../icon";
 import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/components/table/MobileLabel";
+import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 

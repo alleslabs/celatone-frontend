@@ -1,11 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../../../components/ExplorerLink";
-import { MobileCardTemplate } from "../../../components/table/MobileCardTemplate";
-import { ValidatorBadge } from "../../../components/ValidatorBadge";
 import { useInternalNavigate } from "lib/app-provider";
-import { MobileLabel } from "lib/components/table/MobileLabel";
-import type { BlockInfo } from "lib/types/block";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { MobileCardTemplate, MobileLabel } from "lib/components/table";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
+import type { BlockInfo } from "lib/types";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableMobileCardProps {

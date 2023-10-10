@@ -2,11 +2,15 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { useGetAddressType, useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CodeNameCell, MobileCardTemplate } from "lib/components/table";
-import { MobileLabel } from "lib/components/table/MobileLabel";
-import { RemarkRender } from "lib/pages/contract-details/components/tables/migration/MigrationRow";
+import {
+  CodeNameCell,
+  MobileCardTemplate,
+  MobileLabel,
+} from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
+
+import { RemarkRender } from "./RemarkRender";
 
 interface MigrationMobileCardProps {
   history: ContractMigrationHistory;
