@@ -102,13 +102,13 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           onDownload={handleDownload}
         />
       </Flex>
-      {typeof error === "undefined" && (
+      {error ? (
         <Alert variant="error" alignItems="center">
           <AlertDescription wordBreak="break-word">
             Error fetching
           </AlertDescription>
         </Alert>
-      )}
+      ) : null}
       {/* Namespace filter */}
       <ButtonGroup
         flexWrap="wrap"
