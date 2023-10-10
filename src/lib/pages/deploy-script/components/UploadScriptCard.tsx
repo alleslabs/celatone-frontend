@@ -19,13 +19,12 @@ interface UploadScriptCardProps {
   setFile: (
     file: Option<File>,
     base64File: string,
-    decodeRes: Option<ExposedFunction>,
-    decodeError: string
+    decodeRes: Option<ExposedFunction>
   ) => void;
 }
 
 export const UploadScriptCard = ({
-  fileState: { file, decodeRes, decodeError },
+  fileState: { file, decodeRes },
   removeFile,
   setFile,
 }: UploadScriptCardProps) => {
@@ -33,6 +32,7 @@ export const UploadScriptCard = ({
     file: Option<File>;
     base64: string;
   }>(DEFAULT_TEMP_FILE);
+  const [decodeError, setDecodeError] = useState("");
 
   const { isFetching } = useDecodeScript({
     base64EncodedFile: tempFile.base64,
@@ -41,15 +41,13 @@ export const UploadScriptCard = ({
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: (data) => {
-        setFile(tempFile.file, tempFile.base64, data, "");
+        setFile(tempFile.file, tempFile.base64, data);
         setTempFile(DEFAULT_TEMP_FILE);
+        setDecodeError("");
       },
       onError: () => {
-        setFile(
-          tempFile.file,
-          tempFile.base64,
-          undefined,
-          "Failed to decode .mv script file"
+        setDecodeError(
+          "Failed to decode .mv file. Please make sure the file is a script."
         );
         setTempFile(DEFAULT_TEMP_FILE);
       },
@@ -82,18 +80,13 @@ export const UploadScriptCard = ({
       <Flex direction="column">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
-            <UploadCard
-              file={file}
-              deleteFile={removeFile}
-              theme="secondary"
-              status={decodeError ? "error" : "init"}
-              statusText={decodeError}
-            />
+            <UploadCard file={file} deleteFile={removeFile} theme="secondary" />
           ) : (
             <DropZone
               setFile={handleFileDrop}
               fileType="move"
               bgColor="background.main"
+              error={decodeError}
               _hover={undefined}
             />
           )}

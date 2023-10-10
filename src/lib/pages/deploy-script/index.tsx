@@ -29,14 +29,12 @@ export interface FileState {
   file: Option<File>;
   base64File: string;
   decodeRes: Option<ExposedFunction>;
-  decodeError: string;
 }
 
 const DEFAULT_FILE_STATE: FileState = {
   file: undefined,
   base64File: "",
   decodeRes: undefined,
-  decodeError: "",
 };
 
 export const DeployScript = () => {
@@ -162,9 +160,8 @@ export const DeployScript = () => {
           setFile={(
             file: Option<File>,
             base64File: string,
-            decodeRes: Option<ExposedFunction>,
-            decodeError: string
-          ) => setFileState({ file, base64File, decodeRes, decodeError })}
+            decodeRes: Option<ExposedFunction>
+          ) => setFileState({ file, base64File, decodeRes })}
         />
         <Heading as="h6" variant="h6" mt={8} mb={4} alignSelf="start">
           Script input
