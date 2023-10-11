@@ -26,6 +26,7 @@ import { type Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { DevShortcut, TopDecorations } from "./components";
+import { Logo3D } from "./components/Logo3D";
 
 const cardProps: SystemStyleObject = {
   width: "100%",
@@ -241,7 +242,6 @@ const Home = () => {
         <TxsTable isViewMore />
         {txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </section>
-
       <section>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
@@ -251,6 +251,7 @@ const Home = () => {
           <ViewMore onClick={toBlocks} />
         )}
       </section>
+      <Logo3D />
     </PageContainer>
   );
 };
