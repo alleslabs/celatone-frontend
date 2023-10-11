@@ -1,7 +1,6 @@
 import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -12,50 +11,22 @@ import { TableTitle, ViewMore } from "lib/components/table";
 import { type IndexedModule } from "lib/services/move/moduleService";
 import type { HumanAddr, Option } from "lib/types";
 
+import { ErrorFetching } from "./ErrorFetching";
+
 interface ModuleListsProps {
-  onViewMore?: () => void;
   totalCount: Option<number>;
   selectedAddress: HumanAddr;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
+  onViewMore?: () => void;
 }
 
-const ModuleTitle = ({
-  onViewMore,
-  totalCount,
-}: {
-  onViewMore: ModuleListsProps["onViewMore"];
-  totalCount: ModuleListsProps["totalCount"];
-}) => {
-  const isMobile = useMobile();
-  if (isMobile && onViewMore)
-    return (
-      <Flex
-        justify="space-between"
-        w="full"
-        bg="gray.900"
-        borderRadius="8px"
-        p={4}
-        onClick={onViewMore}
-      >
-        <TableTitle title="Modules" count={totalCount} mb={0} />
-        <CustomIcon name="chevron-right" color="gray.600" />
-      </Flex>
-    );
-  return (
-    <TableTitle
-      title="Module Instances"
-      helperText="Modules are ‘smart contracts’ deployed by this account"
-      count={totalCount}
-    />
-  );
-};
 export const ModuleLists = ({
-  onViewMore,
   totalCount,
   selectedAddress,
   modules,
   isLoading,
+  onViewMore,
 }: ModuleListsProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -81,6 +52,7 @@ export const ModuleLists = ({
   if (isLoading) return <Loading />;
   if (!modules) return <ErrorFetching />;
 
+  const isMobileOverview = isMobile && !!onViewMore;
   return (
     <Flex
       direction="column"
@@ -88,21 +60,40 @@ export const ModuleLists = ({
       mb={{ base: 0, md: 8 }}
       width="full"
     >
-      <ModuleTitle onViewMore={onViewMore} totalCount={totalCount} />
-      <Flex direction="column" gap={8}>
-        {!onViewMore && (
-          <InputWithIcon
-            placeholder="Search with Module Name..."
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            action="execute-message-search"
+      {isMobileOverview ? (
+        <Flex
+          justify="space-between"
+          w="full"
+          bg="gray.900"
+          borderRadius="8px"
+          p={4}
+          onClick={onViewMore}
+        >
+          <TableTitle title="Modules" count={totalCount} mb={0} />
+          <CustomIcon name="chevron-right" color="gray.600" />
+        </Flex>
+      ) : (
+        <>
+          <TableTitle
+            title="Module Instances"
+            helperText="Modules are ‘smart contracts’ deployed by this account"
+            count={totalCount}
           />
-        )}
-        {!(isMobile && onViewMore) &&
-          (filteredModules?.length ? (
-            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={6}>
-              {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
-                (item) => (
+          <Flex direction="column" gap={8}>
+            {!onViewMore && (
+              <InputWithIcon
+                placeholder="Search with Module Name..."
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                action="execute-message-search"
+              />
+            )}
+            {filteredModules?.length ? (
+              <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={6}>
+                {(onViewMore
+                  ? filteredModules.slice(0, 9)
+                  : filteredModules
+                ).map((item) => (
                   <ModuleCard
                     key={item.moduleName}
                     isLarge
@@ -111,18 +102,19 @@ export const ModuleLists = ({
                     selectedModule={undefined}
                     setSelectedModule={handleOnSelect}
                   />
-                )
-              )}
-            </SimpleGrid>
-          ) : (
-            <EmptyState
-              imageVariant="not-found"
-              message="No matched modules found"
-              withBorder
-              my={0}
-            />
-          ))}
-      </Flex>
+                ))}
+              </SimpleGrid>
+            ) : (
+              <EmptyState
+                imageVariant="not-found"
+                message="No matched modules found"
+                withBorder
+                my={0}
+              />
+            )}
+          </Flex>
+        </>
+      )}
       {!isMobile && onViewMore && Number(filteredModules?.length) > 9 && (
         <ViewMore onClick={onViewMore} />
       )}

@@ -23,7 +23,7 @@ import { TableTitle } from "lib/components/table";
 import type { HumanAddr, InternalResource, Option } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
-import type { ResourceGroup, ResourceGroupByAccount } from "./ResourceLists";
+import type { ResourceGroup, ResourceGroupByAccount } from "./types";
 
 interface ResourceSectionProps {
   address: HumanAddr;

@@ -45,7 +45,7 @@ import {
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
-import { ModuleLists } from "./components/modules/ModuleLists";
+import { ModuleLists } from "./components/ModuleLists";
 import { ResourceLists, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
@@ -270,7 +270,7 @@ const AccountDetailsBody = ({
             onClick={handleTabChange(TabIndex.Resource)}
             hidden={!move.enabled}
           >
-            Resource
+            Resources
           </CustomTab>
           <CustomTab
             count={modulesData?.length}

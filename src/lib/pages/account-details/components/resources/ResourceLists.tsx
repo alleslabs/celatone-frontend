@@ -5,62 +5,21 @@ import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { ResourceCard } from "lib/components/resource/ResourceCard";
+import { ResourceCard } from "lib/components/resource";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { HumanAddr, InternalResource } from "lib/types";
+import type { HumanAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
-export interface ResourceGroup {
-  group: string;
-  account: string;
-  displayName: string;
-  items: InternalResource[];
-}
-
-export interface ResourceGroupByAccount {
-  owner: string;
-  resources: Record<string, ResourceGroup>;
-}
+import type { ResourceGroup } from "./types";
 
 interface ResourcesListsProps {
-  onViewMore?: () => void;
   address: HumanAddr;
+  onViewMore?: () => void;
 }
 
-const ResourceTitle = ({
-  onViewMore,
-  totalAsset,
-}: {
-  onViewMore: ResourcesListsProps["onViewMore"];
-  totalAsset: number;
-}) => {
-  const isMobile = useMobile();
-  if (!isMobile && !onViewMore) return null;
-  if (isMobile && onViewMore)
-    return (
-      <Flex
-        justify="space-between"
-        w="full"
-        bg="gray.900"
-        borderRadius="8px"
-        p={4}
-        onClick={onViewMore}
-      >
-        <TableTitle title="Resources" count={totalAsset} mb={0} />
-        <CustomIcon name="chevron-right" color="gray.600" />
-      </Flex>
-    );
-  return (
-    <TableTitle
-      helperText="Resources stored in this account"
-      title="Resources"
-      count={totalAsset}
-    />
-  );
-};
-export const ResourceLists = ({ onViewMore, address }: ResourcesListsProps) => {
+export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { data: resources, isLoading } = useAccountResources({
@@ -110,6 +69,7 @@ export const ResourceLists = ({ onViewMore, address }: ResourcesListsProps) => {
   );
   const groupedResources = Object.values(restructuredResources);
 
+  const isMobileOverview = isMobile && !!onViewMore;
   return (
     <Flex
       direction="column"
@@ -117,9 +77,25 @@ export const ResourceLists = ({ onViewMore, address }: ResourcesListsProps) => {
       mb={{ base: 0, md: 8 }}
       width="full"
     >
-      <ResourceTitle onViewMore={onViewMore} totalAsset={resources.length} />
-      {!isMobile && (
+      {!isMobileOverview ? (
+        <Flex
+          justify="space-between"
+          w="full"
+          bg="gray.900"
+          borderRadius="8px"
+          p={4}
+          onClick={onViewMore}
+        >
+          <TableTitle title="Resources" count={resources.length} mb={0} />
+          <CustomIcon name="chevron-right" color="gray.600" />
+        </Flex>
+      ) : (
         <>
+          <TableTitle
+            helperText="Resources stored in this account"
+            title="Resources"
+            count={resources.length}
+          />
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
             {groupedResources.slice(0, 8).map((item) => (
               <ResourceCard

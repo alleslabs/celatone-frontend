@@ -31,7 +31,8 @@ interface AssetCtaProps {
   walletAddress: HumanAddr;
   totalAsset: number;
 }
-const MaxAssetsShow = 8;
+
+const MAX_ASSETS_SHOW = 8;
 
 const AssetTitle = ({
   onViewMore,
@@ -117,7 +118,7 @@ const AssetSectionContent = ({
       gridTemplateColumns={{ base: "1 fr", md: "repeat(4, 1fr)" }}
     >
       {supportedAssets
-        .slice(0, onViewMore ? MaxAssetsShow : undefined)
+        .slice(0, onViewMore ? MAX_ASSETS_SHOW : undefined)
         .map((asset) => (
           <TokenCard userBalance={asset} key={asset.balance.id} minW="full" />
         ))}
@@ -196,7 +197,7 @@ export const AssetsSection = ({
       {!isMobile &&
         supportedAssets &&
         onViewMore &&
-        supportedAssets.length > MaxAssetsShow && (
+        supportedAssets.length > MAX_ASSETS_SHOW && (
           <ViewMore onClick={onViewMore} />
         )}
     </Flex>

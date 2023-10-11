@@ -14,6 +14,7 @@ import type { InternalResource } from "lib/types";
 interface ResourceDetailCardProps {
   resourceData: InternalResource;
 }
+
 export const ResourceDetailCard = ({
   resourceData,
 }: ResourceDetailCardProps) => {
@@ -80,7 +81,7 @@ export const ResourceDetailCard = ({
       <AccordionPanel p={4} borderTop="1px solid" borderColor="gray.700">
         <Flex direction="column" gap={3}>
           {formattedArray.map((item) => (
-            <Flex gap={4} key={item.key}>
+            <Flex key={item.key} gap={4}>
               <Text variant="body2" color="text.dark" w={52}>
                 {item.key}
               </Text>
