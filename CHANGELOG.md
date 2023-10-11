@@ -106,6 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#560](https://github.com/alleslabs/celatone-frontend/pull/560) Fix pool type alignment in pool card
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
 - [#527](https://github.com/alleslabs/celatone-frontend/pull/527) Fix ellipsis explorer link
 - [#526](https://github.com/alleslabs/celatone-frontend/pull/526) Fix missing Tx proposal type

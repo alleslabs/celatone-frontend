@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Box, Image } from "@chakra-ui/react";
+import { Flex, Heading, Text, Image } from "@chakra-ui/react";
 
 import {
   BALANCER_ICON,
@@ -57,7 +57,7 @@ export const PoolHeader = ({
     <Flex justifyContent="space-between" w="full">
       <Flex alignItems="center" gap={4}>
         <PoolLogo tokens={poolLiquidity} />
-        <Box>
+        <Flex direction="column">
           <Flex gap={1} flexWrap="wrap">
             <Heading as="h6" fontWeight="600" variant="h6">
               {getTokenLabel(poolLiquidity[0].denom, poolLiquidity[0].symbol)}
@@ -99,20 +99,20 @@ export const PoolHeader = ({
               </Flex>
             )}
           </Flex>
-          <Flex alignItems="center" gap={2} mt={1}>
+          <Flex alignItems="center" columnGap={2} flexWrap="wrap" mt={1}>
             <Text variant="body2" color="secondary.main">
               #{poolId}
             </Text>
             {poolType && (
-              <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center" gap={1}>
                 <Flex
                   backgroundColor="gray.600"
                   borderRadius="full"
                   w="6px"
                   h="6px"
                 />
-                <Flex alignItems="center" gap={1}>
-                  <Image boxSize={4} src={poolValue.icon} />
+                <Flex alignItems="center">
+                  <Image boxSize={4} src={poolValue.icon} mr={1} />
                   <Text variant="body2" color="text.dark">
                     {poolValue.text}
                   </Text>
@@ -136,7 +136,7 @@ export const PoolHeader = ({
               </Flex>
             )}
           </Flex>
-        </Box>
+        </Flex>
       </Flex>
     </Flex>
   );
