@@ -4,14 +4,14 @@ import type { FileField } from "../formConstants";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
-import { useOpenTab } from "lib/hooks";
+import { useOpenNewTab } from "lib/hooks";
 
 interface ModulePublishCardProps {
   module: FileField;
 }
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
-  const openTab = useOpenTab();
+  const openNewTab = useOpenNewTab();
   const { file, decodeRes } = module;
   return (
     <Flex
@@ -88,7 +88,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            openTab({
+            openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
@@ -104,7 +104,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            openTab({
+            openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,

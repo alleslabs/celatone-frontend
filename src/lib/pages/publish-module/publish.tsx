@@ -163,9 +163,9 @@ export const PublishModule = ({
   // ------------------------------------------//
   useEffect(() => {
     if (
-      !fields.every(
+      fields.some(
         (field) =>
-          field.base64EncodedFile && field.publishStatus.status !== "error"
+          !field.base64EncodedFile || field.publishStatus.status === "error"
       )
     ) {
       setEstimatedFee(undefined);

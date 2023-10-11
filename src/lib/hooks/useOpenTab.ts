@@ -28,7 +28,7 @@ export const useOpenAssetTab = () => {
   );
 };
 
-export const useOpenTab = () => {
+export const useOpenNewTab = () => {
   const { currentChainId } = useCelatoneApp();
 
   return useCallback(
@@ -39,14 +39,16 @@ export const useOpenTab = () => {
       pathname: string;
       query: Record<string, Option<string>>;
     }) => {
-      const queryString = Object.entries(query).reduce(
-        (acc, [key, value], idx) =>
-          acc.concat(
-            `${key}=${value}${idx !== Object.keys(query).length - 1 ? "&" : ""}`
-          ),
-        ""
+      const queryString = Object.entries(query)
+        .reduce((acc, [key, value]) => {
+          if (value) acc.append(key, value);
+          return acc;
+        }, new URLSearchParams())
+        .toString();
+
+      openNewTab(
+        `/${currentChainId}${pathname}${queryString ? "?" : ""}${queryString}`
       );
-      openNewTab(`/${currentChainId}${pathname}?${queryString}`);
     },
     [currentChainId]
   );
