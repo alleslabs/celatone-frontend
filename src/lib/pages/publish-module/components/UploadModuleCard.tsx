@@ -110,7 +110,7 @@ export const UploadModuleCard = ({
           aria-label="remove"
           variant="ghost"
           size="sm"
-          disabled={fields.length <= 1}
+          visibility={fields.length > 1 ? "visible" : "hidden"}
         >
           <CustomIcon name="close" color="gray.600" />
         </IconButton>
