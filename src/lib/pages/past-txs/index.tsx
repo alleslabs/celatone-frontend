@@ -11,7 +11,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
@@ -41,6 +41,7 @@ const PastTxs = () => {
     address,
     chain: { chain_id: chainId },
   } = useCurrentChain();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const defaultValues: PastTxsState = {
     search: "",
@@ -159,7 +160,9 @@ const PastTxs = () => {
               setCurrentPage(1);
               setValue("search", e.target.value);
             }}
-            placeholder="Search with Transaction Hash or Contract Address"
+            placeholder={`Search with Transaction Hash${
+              wasm.enabled ? " or Contract Address" : ""
+            }`}
             h="full"
           />
           <InputRightElement pointerEvents="none" h="full" mr={1}>

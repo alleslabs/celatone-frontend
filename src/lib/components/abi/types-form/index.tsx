@@ -16,32 +16,31 @@ export const TypesForm = ({
   initialData,
   propsOnChange,
 }: TypesFormProps) => {
-  const { setValue, getValues } = useForm<Record<string, string>>({
+  const { control, getValues } = useForm<Record<string, string>>({
     defaultValues: initialData,
     mode: "all",
   });
-
-  const handleOnChange = (index: number) => {
-    return (fieldInput: string) => {
-      setValue(`${index}`, fieldInput);
-      propsOnChange?.(getValues());
-    };
-  };
 
   return (
     <Flex direction="column" gap={4}>
       <Heading variant="h6" as="h6" color="text.main">
         type_args
       </Heading>
-      {genericTypeParams.map(({ constraints }, index) => (
-        <TypeFieldInput
-          key={constraints.join() + index.toString()}
-          index={index}
-          constraints={constraints}
-          value={initialData[index]}
-          onChange={handleOnChange(index)}
-        />
-      ))}
+      {genericTypeParams.map(({ constraints }, index) => {
+        control.register(`${index}`, {
+          onChange: () => {
+            propsOnChange?.(getValues());
+          },
+        });
+        return (
+          <TypeFieldInput
+            key={constraints.join() + index.toString()}
+            index={index}
+            constraints={constraints}
+            control={control}
+          />
+        );
+      })}
     </Flex>
   );
 };

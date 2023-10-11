@@ -27,3 +27,29 @@ export const useOpenAssetTab = () => {
     [balancesApiRoute]
   );
 };
+
+export const useOpenNewTab = () => {
+  const { currentChainId } = useCelatoneApp();
+
+  return useCallback(
+    ({
+      pathname,
+      query,
+    }: {
+      pathname: string;
+      query: Record<string, Option<string>>;
+    }) => {
+      const queryString = Object.entries(query)
+        .reduce((acc, [key, value]) => {
+          if (value) acc.append(key, value);
+          return acc;
+        }, new URLSearchParams())
+        .toString();
+
+      openNewTab(
+        `/${currentChainId}${pathname}${queryString ? "?" : ""}${queryString}`
+      );
+    },
+    [currentChainId]
+  );
+};

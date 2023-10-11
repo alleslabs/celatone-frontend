@@ -1,4 +1,4 @@
-import { chakra, Flex, GridItem } from "@chakra-ui/react";
+import { chakra, Flex, GridItem, SimpleGrid } from "@chakra-ui/react";
 
 export const TableContainer = chakra(Flex, {
   baseStyle: {
@@ -64,5 +64,15 @@ export const TableRowFreeze = chakra(GridItem, {
   baseStyle: {
     ...tableRowBaseStyle,
     ...stickyBaseStyle,
+  },
+});
+
+// Mobile
+export const MobileTableContainer = chakra(SimpleGrid, {
+  baseStyle: {
+    columns: 1,
+    gap: 4,
+    w: "full",
+    mt: 4,
   },
 });

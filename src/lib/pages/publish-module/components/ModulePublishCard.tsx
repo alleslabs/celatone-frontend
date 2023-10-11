@@ -1,18 +1,17 @@
 import { Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
 import type { FileField } from "../formConstants";
-import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
-import { openNewTab } from "lib/utils";
+import { useOpenNewTab } from "lib/hooks";
 
 interface ModulePublishCardProps {
   module: FileField;
 }
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
-  const navigate = useInternalNavigate();
+  const openNewTab = useOpenNewTab();
   const { file, decodeRes } = module;
   return (
     <Flex
@@ -81,9 +80,10 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           rightIcon={<CustomIcon name="launch" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() => {
-            openNewTab(
-              `/modules/${decodeRes?.abi.address}/${decodeRes?.abi.name}`
-            );
+            openNewTab({
+              pathname: `/modules/${decodeRes?.abi.address}/${decodeRes?.abi.name}`,
+              query: {},
+            });
           }}
         >
           See Module
@@ -92,7 +92,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            navigate({
+            openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
@@ -108,7 +108,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            navigate({
+            openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
