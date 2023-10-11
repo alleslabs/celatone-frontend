@@ -65,7 +65,7 @@ enum TabIndex {
   Codes = "codes",
   Contracts = "contracts",
   Admins = "admins",
-  Resource = "resources",
+  Resources = "resources",
   Modules = "modules",
   Proposals = "proposals",
 }
@@ -267,7 +267,7 @@ const AccountDetailsBody = ({
           <CustomTab
             count={resourcesData?.length}
             isDisabled={!resourcesData?.length}
-            onClick={handleTabChange(TabIndex.Resource)}
+            onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
           >
             Resources
@@ -339,7 +339,7 @@ const AccountDetailsBody = ({
               <>
                 <ResourceLists
                   address={accountAddress}
-                  onViewMore={handleTabChange(TabIndex.Resource)}
+                  onViewMore={handleTabChange(TabIndex.Resources)}
                 />
                 <ModuleLists
                   selectedAddress={accountAddress}

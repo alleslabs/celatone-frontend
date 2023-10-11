@@ -146,14 +146,14 @@ export const ResourceSection = ({
                   <Flex direction="column" gap={3}>
                     {Object.values(item.resources).map((subitem) => (
                       <ResourceCard
-                        hasBorder
-                        name={subitem.group}
                         key={subitem.group}
+                        name={subitem.group}
                         amount={subitem.items.length}
                         isSelected={selectedResources.group === subitem.group}
                         onClick={() =>
                           handleSelectResource(item.owner, subitem.group)
                         }
+                        hasBorder
                       />
                     ))}
                   </Flex>

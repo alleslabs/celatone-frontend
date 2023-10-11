@@ -99,6 +99,7 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
             {groupedResources.slice(0, 8).map((item) => (
               <ResourceCard
+                key={item.displayName}
                 name={item.displayName}
                 amount={item.items.length}
                 onClick={() => handleSelectResource(item)}
