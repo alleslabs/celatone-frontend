@@ -75,14 +75,17 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
         ))}
       </Flex>
       <Grid templateColumns="1fr 1fr 1fr" columnGap={4}>
-        {/* TODO: add navigation */}
         <Button
-          rightIcon={
-            <CustomIcon name="chevron-right" boxSize={3} color="text.dark" />
-          }
+          rightIcon={<CustomIcon name="launch" boxSize={3} color="text.main" />}
           variant="outline-white"
+          onClick={() =>
+            openNewTab({
+              pathname: `/modules/${decodeRes?.abi.address}/${decodeRes?.abi.name}`,
+              query: {},
+            })
+          }
         >
-          See Details
+          See Module
         </Button>
         <Button
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
