@@ -9,6 +9,7 @@ import {
   useSimulateFeeQuery,
   useExecuteModuleTx,
   useCurrentChain,
+  useIsMac,
 } from "lib/app-provider";
 import { AbiForm } from "lib/components/abi";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -35,6 +36,7 @@ export const ExecuteArea = ({
       ? fn.params.slice(1)
       : fn.params;
 
+  const isMac = useIsMac();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeModuleTx = useExecuteModuleTx();
@@ -122,6 +124,21 @@ export const ExecuteArea = ({
     return () => {};
   }, [address, data, enableExecute, executeFn, moduleAddress, moduleName]);
 
+  const isButtonDisabled = !enableExecute || !fee || isFetching;
+  useEffect(() => {
+    const keydownHandler = (e: KeyboardEvent) => {
+      // TODO: problem with safari if focusing in the textarea
+      const specialKey = isMac ? e.metaKey : e.ctrlKey;
+      if (!isButtonDisabled && specialKey && e.key === "Enter") {
+        proceed();
+      }
+    };
+    document.addEventListener("keydown", keydownHandler);
+    return () => {
+      document.removeEventListener("keydown", keydownHandler);
+    };
+  });
+
   return (
     <Flex direction="column">
       {fn.is_entry ? (
@@ -169,12 +186,12 @@ export const ExecuteArea = ({
             fontSize="14px"
             p="6px 16px"
             onClick={proceed}
-            isDisabled={!enableExecute || !fee || isFetching}
+            isDisabled={isButtonDisabled}
             leftIcon={<CustomIcon name="execute" />}
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
-            Execute
+            Execute{` (${isMac ? "⌘" : "Ctrl"} + Enter)`}
           </Button>
         </Flex>
       </Flex>

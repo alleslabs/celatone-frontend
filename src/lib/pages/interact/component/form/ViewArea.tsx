@@ -9,8 +9,9 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useIsMac } from "lib/app-provider";
 import { AbiForm } from "lib/components/abi";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
@@ -34,6 +35,7 @@ export const ViewArea = ({
   moduleName: string;
   fn: ExposedFunction;
 }) => {
+  const isMac = useIsMac();
   const [abiData, setAbiData] = useState<AbiFormData>({
     typeArgs: getAbiInitialData(fn.generic_type_params.length),
     args: getAbiInitialData(fn.params.length),
@@ -61,9 +63,21 @@ export const ViewArea = ({
   };
 
   const isLoading = queryFetching || queryRefetching;
-  const isDisabled = Boolean(
-    Object.values(abiData.typeArgs).some((v) => !v.length) || abiErrors.length
+  const isButtonDisabled = Boolean(
+    Object.values(abiData.typeArgs).some((v) => !v.length) || !!abiErrors.length
   );
+  useEffect(() => {
+    const keydownHandler = (e: KeyboardEvent) => {
+      // TODO: problem with safari if focusing in the textarea
+      const specialKey = isMac ? e.metaKey : e.ctrlKey;
+      if (!isButtonDisabled && specialKey && e.key === "Enter") handleQuery();
+    };
+    document.addEventListener("keydown", keydownHandler);
+    return () => {
+      document.removeEventListener("keydown", keydownHandler);
+    };
+  });
+
   return (
     <Grid templateColumns="1fr 1fr" gap={6}>
       <GridItem>
@@ -81,11 +95,11 @@ export const ViewArea = ({
             p="6px 16px"
             size={{ base: "sm", md: "md" }}
             onClick={handleQuery}
-            isDisabled={isDisabled}
+            isDisabled={isButtonDisabled}
             isLoading={isLoading}
             leftIcon={<CustomIcon name="query" />}
           >
-            View
+            View{` (${isMac ? "⌘" : "Ctrl"} + Enter)`}
           </Button>
         </Flex>
       </GridItem>
