@@ -55,6 +55,8 @@ export const Interact = () => {
     (selectedModule: IndexedModule, fn?: ExposedFunction) => {
       setModule(selectedModule);
       setSelectedFn(fn);
+      handleSetSelectedType(fn?.is_view ?? true ? "view" : "execute");
+
       navigate({
         pathname: "/interact",
         query: {

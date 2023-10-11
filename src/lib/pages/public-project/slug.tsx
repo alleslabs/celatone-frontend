@@ -14,9 +14,11 @@ import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
-import { PublicProjectAccountTable } from "./components/table/account/PublicProjectAccountTable";
-import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCodeTable";
-import { PublicProjectContractTable } from "./components/table/contract/PublicProjectContractTable";
+import {
+  PublicProjectAccountTable,
+  PublicProjectCodeTable,
+  PublicProjectContractTable,
+} from "./components/tables";
 import { usePublicData } from "./data";
 
 enum TabIndex {

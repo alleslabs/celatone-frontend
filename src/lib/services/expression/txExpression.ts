@@ -4,14 +4,18 @@ import type { Nullable, Option, PoolTxFilter, TxFilters } from "lib/types";
 import { isTxHash } from "lib/utils";
 
 const actions = {
+  isSend: "is_send",
+  isIbc: "is_ibc",
   isExecute: "is_execute",
   isInstantiate: "is_instantiate",
   isUpload: "is_store_code",
-  isIbc: "is_ibc",
-  isSend: "is_send",
   isMigrate: "is_migrate",
   isUpdateAdmin: "is_update_admin",
   isClearAdmin: "is_clear_admin",
+  isMovePublish: "is_move_publish",
+  isMoveUpgrade: "is_move_upgrade",
+  isMoveExecute: "is_move_execute",
+  isMoveScript: "is_move_script",
 };
 
 const generateActionsFilter = (filters: TxFilters) =>

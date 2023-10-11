@@ -1,8 +1,10 @@
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { Option, Transaction } from "lib/types";
 
 import { TransactionsTableHeader } from "./TransactionsTableHeader";
+import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
 
 interface TransactionsTableProps {
@@ -22,6 +24,8 @@ export const TransactionsTable = ({
   showTimestamp = true,
   showAction = false,
 }: TransactionsTableProps) => {
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading withBorder />;
   if (!transactions?.length) return emptyState;
 
@@ -31,7 +35,16 @@ export const TransactionsTable = ({
     showAction ? "100px " : ""
   }`;
 
-  return (
+  return isMobile ? (
+    <MobileTableContainer>
+      {transactions.map((transaction) => (
+        <TransactionsTableMobileCard
+          key={transaction.hash}
+          transaction={transaction}
+        />
+      ))}
+    </MobileTableContainer>
+  ) : (
     <TableContainer>
       <TransactionsTableHeader
         templateColumns={templateColumns}

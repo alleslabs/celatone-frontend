@@ -38,10 +38,12 @@ const RenderFunctions = ({
   states,
   selectedFn,
   setSelectedFn,
+  tab,
 }: {
   states: FunctionStates;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
+  tab: InteractionTabs;
 }) => {
   if (!states.filteredFunctions)
     return (
@@ -61,15 +63,17 @@ const RenderFunctions = ({
         selectedFn={selectedFn}
         setSelectedFn={setSelectedFn}
       />
-      <FunctionAccordion
-        triggerText="Other functions"
-        isEmpty={states.noOtherFns}
-        filteredFns={states.filteredFunctions.filter(
-          (fn) => !checkAvailability(fn)
-        )}
-        selectedFn={selectedFn}
-        setSelectedFn={setSelectedFn}
-      />
+      {tab === InteractionTabs.EXECUTE_MODULE && (
+        <FunctionAccordion
+          triggerText="Other functions"
+          isEmpty={states.noOtherFns}
+          filteredFns={states.filteredFunctions.filter(
+            (fn) => !checkAvailability(fn)
+          )}
+          selectedFn={selectedFn}
+          setSelectedFn={setSelectedFn}
+        />
+      )}
     </Accordion>
   );
 };
@@ -128,6 +132,7 @@ export const FunctionSelectPanel = ({
           states={functionStates}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
+          tab={tab}
         />
       </Flex>
     </div>
