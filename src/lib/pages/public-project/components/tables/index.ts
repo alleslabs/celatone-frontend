@@ -1,3 +1,3 @@
-export * from "./account";
-export * from "./code";
-export * from "./contract";
+export * from "./accounts";
+export * from "./codes";
+export * from "./contracts";
