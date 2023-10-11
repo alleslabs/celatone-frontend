@@ -54,6 +54,7 @@ interface ActionInfo {
   name: string;
   count: number | string;
   onClick: MouseEventHandler<HTMLDivElement>;
+  disabled: boolean;
 }
 
 interface ModuleDetailsBodyProps {
@@ -113,6 +114,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       name: "View Functions",
       count: moduleData.viewFunctions.length,
       onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
+      disabled: moduleData.viewFunctions.length === 0,
     },
     {
       icon: "execute" as IconKeys,
@@ -120,6 +122,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       name: "Execute Functions",
       count: moduleData.executeFunctions.length,
       onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
+      disabled: moduleData.executeFunctions.length === 0,
     },
     {
       icon: "list" as IconKeys,
@@ -127,6 +130,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       name: "Transactions",
       count: Number(moduleTxsCount) + Number(moduleHistoriesCount) || "N/A",
       onClick: handleTabChange(TabIndex.History),
+      disabled: Number(moduleTxsCount) + Number(moduleHistoriesCount) === 0,
     },
   ];
 
@@ -207,15 +211,22 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   <Flex
                     key={item.name}
                     p={4}
-                    bg="gray.800"
-                    _hover={{ bg: "gray.700" }}
                     transition="all .25s ease-in-out"
                     borderRadius={8}
                     w="full"
                     alignItems="center"
                     justifyContent="space-between"
-                    cursor="pointer"
-                    onClick={item.onClick}
+                    {...(item.disabled
+                      ? {
+                          bg: "gray.900",
+                          cursor: "not-allowed",
+                        }
+                      : {
+                          bg: "gray.800",
+                          _hover: { bg: "gray.700" },
+                          cursor: "pointer",
+                          onClick: item.onClick,
+                        })}
                   >
                     <Flex gap={3} alignItems="center">
                       <CustomIcon
@@ -232,7 +243,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                           {item.name}
                         </Text>
                         <Heading as="h6" variant="h6" fontWeight={600}>
-                          {!item.count ? "N/A" : item.count}
+                          {item.count}
                         </Heading>
                       </Flex>
                     </Flex>

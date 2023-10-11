@@ -93,6 +93,7 @@ export const ModuleHistoryRow = ({
   history,
 }: ModuleHistoriesRowProps) => (
   <Grid templateColumns={templateColumns}>
+    <TableRow />
     <TableRow>
       <RemarkRender remark={history.remark} />
     </TableRow>
@@ -114,9 +115,7 @@ export const ModuleHistoryRow = ({
     </TableRow>
     <TableRow>
       <Flex direction="column">
-        <Text variant="body2" color="text.dark">
-          {formatUTC(history.timestamp)}
-        </Text>
+        <Text variant="body3">{formatUTC(history.timestamp)}</Text>
         <Text variant="body3" color="text.dark" mt="2px">
           ({dateFromNow(history.timestamp)})
         </Text>

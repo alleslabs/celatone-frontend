@@ -9,6 +9,7 @@ export const ModuleHistoryHeader = ({
   templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid templateColumns={templateColumns}>
+    <TableHeader />
     <TableHeader>Remark</TableHeader>
     <TableHeader>Upgrade Policy Changes</TableHeader>
     <TableHeader>Block Height</TableHeader>

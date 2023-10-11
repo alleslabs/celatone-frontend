@@ -13,7 +13,7 @@ import type { Nullable, Option } from "lib/types";
 import { ModuleHistoryHeader } from "./ModuleHistoryHeader";
 import { ModuleHistoryRow } from "./ModuleHistoryRow";
 
-const TEMPLATE_COLUMNS = "180px minmax(300px, 1fr) 140px 260px";
+const TEMPLATE_COLUMNS = "40px 180px minmax(300px, 1fr) 140px 260px";
 
 interface ModuleTxsTableProps {
   moduleId: Option<Nullable<number>>;
