@@ -54,7 +54,7 @@ export const ModuleHistoryTable = ({
     error,
   } = useModuleHistoriesByPagination({
     moduleId,
-    pageSize,
+    pageSize: pageSize + 1,
     offset,
   });
 
@@ -76,6 +76,7 @@ export const ModuleHistoryTable = ({
     if (!onViewMore) setPageSize(10);
     setCurrentPage(1);
   }, [currentChainId, onViewMore, setCurrentPage, setPageSize]);
+
   if (!moduleId || error)
     return (
       <EmptyState
@@ -120,7 +121,7 @@ export const ModuleHistoryTable = ({
     <>
       <TableContainer>
         <ModuleHistoryHeader templateColumns={TEMPLATE_COLUMNS} />
-        {moduleHistories.map((history) => (
+        {moduleHistories.slice(0, pageSize).map((history) => (
           <ModuleHistoryRow
             key={JSON.stringify(history)}
             templateColumns={TEMPLATE_COLUMNS}
