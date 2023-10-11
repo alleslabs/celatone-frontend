@@ -4,28 +4,20 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
-import {
-  useVerifyModule,
-  type IndexedModule,
-} from "lib/services/moduleService";
-import type { HexAddr } from "lib/types";
+import type { ModuleVerificationInternal } from "lib/services/module";
+import { type IndexedModule } from "lib/services/moduleService";
 
 interface ModuleInfoProps {
   address: IndexedModule["address"];
-  moduleName: IndexedModule["moduleName"];
   upgradePolicy: IndexedModule["upgradePolicy"];
+  verificationData: ModuleVerificationInternal | null | undefined;
 }
 
 export const ModuleInfo = ({
   address,
-  moduleName,
   upgradePolicy,
+  verificationData,
 }: ModuleInfoProps) => {
-  const { data: verificationData } = useVerifyModule({
-    address: address as HexAddr,
-    moduleName,
-  });
-
   return (
     <Flex flexDirection="column" gap={4}>
       <Flex justifyContent="space-between" alignItems="center" w="full">

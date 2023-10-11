@@ -27,8 +27,8 @@ import { InvalidState } from "lib/components/state";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/moduleService";
-import { useAccountModules } from "lib/services/moduleService";
-import type { ContractAddr, MoveAccountAddr } from "lib/types";
+import { useAccountModules, useVerifyModule } from "lib/services/moduleService";
+import type { ContractAddr, HexAddr, MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeTabs } from "./components/FunctionTypeSwitch";
@@ -53,7 +53,6 @@ interface ActionInfo {
   onClick: MouseEventHandler<HTMLDivElement>;
 }
 
-// TODO get module path
 const txTableHeaderId = "ModuleTxsTableHeader";
 
 interface ModuleDetailsBodyProps {
@@ -121,6 +120,10 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     refetchRelatedProposals,
   } = useContractDetailsTableCounts(contractAddress, contractAccountId);
 
+  const { data: verificationData } = useVerifyModule({
+    address: moduleData.address as HexAddr,
+    moduleName: moduleData.moduleName,
+  });
   const actionList: ActionInfo[] = [
     {
       icon: "query" as IconKeys,
@@ -147,7 +150,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   ];
   return (
     <>
-      <ModuleTop isVerified moduleData={moduleData} />
+      <ModuleTop verificationData={verificationData} moduleData={moduleData} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -189,14 +192,15 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   <Flex
                     p={4}
                     bg="gray.800"
+                    opacity={item.count < 1 ? 0.5 : 1}
                     _hover={{ bg: "gray.700" }}
                     transition="all .25s ease-in-out"
                     borderRadius={8}
                     w="full"
                     alignItems="center"
                     justifyContent="space-between"
-                    cursor="pointer"
-                    onClick={item.onClick}
+                    cursor={item.count < 1 ? "not-allowed" : "pointer"}
+                    onClick={item.count < 1 ? undefined : item.onClick}
                   >
                     <Flex gap={3} alignItems="center">
                       <CustomIcon
@@ -221,7 +225,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   </Flex>
                 ))}
               </Flex>
-              <ModuleInfo {...moduleData} />
+              <ModuleInfo verificationData={verificationData} {...moduleData} />
               {/* TODO History */}
               <Flex flexDirection="column" mt={6}>
                 <Heading

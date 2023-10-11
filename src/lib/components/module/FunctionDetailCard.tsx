@@ -13,11 +13,15 @@ import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
 import { Tooltip } from "../Tooltip";
+import { useInternalNavigate } from "lib/app-provider";
+import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
 interface FunctionDetailCardProps {
   exposedFn: ExposedFunction;
+  address: IndexedModule["address"];
+  moduleName: IndexedModule["moduleName"];
 }
 
 const StyledIconButton = chakra(IconButton, {
@@ -29,10 +33,93 @@ const StyledIconButton = chakra(IconButton, {
   },
 });
 
-export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
+const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => {
+  return (
+    <AccordionPanel bg="gray.900" borderRadius={8} mt={4} py={3} px={4}>
+      <Flex gap={3} direction="column">
+        <Flex gap={8}>
+          <LabelText
+            isSmall
+            label="visibility"
+            labelWeight={700}
+            labelColor="text.disabled"
+          >
+            <Flex align="center">
+              <CustomIcon
+                name={getVisibilityIcon(exposedFn.visibility)}
+                boxSize={3}
+                ml={0}
+                color="gray.600"
+              />
+              <Text variant="body3" textTransform="capitalize">
+                {exposedFn.visibility}
+              </Text>
+            </Flex>
+          </LabelText>
+          <LabelText
+            isSmall
+            label="is_entry"
+            labelWeight={700}
+            labelColor="text.disabled"
+          >
+            <Flex align="center">
+              <CustomIcon
+                boxSize={3}
+                ml={0}
+                color={exposedFn.is_entry ? "success.main" : "gray.600"}
+                name={exposedFn.is_entry ? "check" : "close"}
+              />
+              <Text variant="body3">{String(exposedFn.is_entry)}</Text>
+            </Flex>
+          </LabelText>
+          <LabelText
+            isSmall
+            label="is_view"
+            labelWeight={700}
+            labelColor="text.disabled"
+          >
+            <Flex align="center">
+              <CustomIcon
+                boxSize={3}
+                ml={0}
+                color={exposedFn.is_view ? "success.main" : "gray.600"}
+                name={exposedFn.is_view ? "check" : "close"}
+              />
+              <Text variant="body3">{String(exposedFn.is_view)}</Text>
+            </Flex>
+          </LabelText>
+        </Flex>
+        <LabelText
+          isSmall
+          label="generic_type_params"
+          labelWeight={700}
+          labelColor="text.disabled"
+        >
+          <Text variant="body3">
+            {JSON.stringify(exposedFn.generic_type_params)}
+          </Text>
+        </LabelText>
+        <LabelText
+          isSmall
+          label="params"
+          labelWeight={700}
+          labelColor="text.disabled"
+        >
+          <Text variant="body3">{JSON.stringify(exposedFn.params)}</Text>
+        </LabelText>
+      </Flex>
+    </AccordionPanel>
+  );
+};
+
+export const FunctionDetailCard = ({
+  exposedFn,
+  address,
+  moduleName,
+}: FunctionDetailCardProps) => {
   const { is_view: isView, visibility, name } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
-
+  const navigate = useInternalNavigate();
   const getFnColor = () => {
     switch (isView) {
       case false:
@@ -48,6 +135,7 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
     if (isView) return { variant: "outline-primary", color: "primary.dark" };
     return { variant: "outline-accent", color: "accent.dark" };
   };
+
   return (
     <AccordionItem
       bg="gray.800"
@@ -139,6 +227,17 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
                   isDisabled={disabled}
                   borderColor={getButtonStyle().color}
                   size="sm"
+                  onClick={() =>
+                    navigate({
+                      pathname: "/interact",
+                      query: {
+                        address,
+                        moduleName,
+                        functionType: isView ? "view" : "execute",
+                        functionName: exposedFn.name,
+                      },
+                    })
+                  }
                   leftIcon={
                     <CustomIcon
                       mx={0}
@@ -167,80 +266,7 @@ export const FunctionDetailCard = ({ exposedFn }: FunctionDetailCardProps) => {
               </Flex>
             </Flex>
           </AccordionButton>
-          <AccordionPanel bg="gray.900" borderRadius={8} mt={4} py={3} px={4}>
-            <Flex gap={3} direction="column">
-              <Flex gap={8}>
-                <LabelText
-                  isSmall
-                  label="visibility"
-                  labelWeight={700}
-                  labelColor="text.disabled"
-                >
-                  <Flex align="center">
-                    <CustomIcon
-                      name={getVisibilityIcon(exposedFn.visibility)}
-                      boxSize={3}
-                      ml={0}
-                      color="gray.600"
-                    />
-                    <Text variant="body3" textTransform="capitalize">
-                      {exposedFn.visibility}
-                    </Text>
-                  </Flex>
-                </LabelText>
-                <LabelText
-                  isSmall
-                  label="is_entry"
-                  labelWeight={700}
-                  labelColor="text.disabled"
-                >
-                  <Flex align="center">
-                    <CustomIcon
-                      boxSize={3}
-                      ml={0}
-                      color={exposedFn.is_entry ? "success.main" : "gray.600"}
-                      name={exposedFn.is_entry ? "check" : "close"}
-                    />
-                    <Text variant="body3">{String(exposedFn.is_entry)}</Text>
-                  </Flex>
-                </LabelText>
-                <LabelText
-                  isSmall
-                  label="is_view"
-                  labelWeight={700}
-                  labelColor="text.disabled"
-                >
-                  <Flex align="center">
-                    <CustomIcon
-                      boxSize={3}
-                      ml={0}
-                      color={exposedFn.is_view ? "success.main" : "gray.600"}
-                      name={exposedFn.is_view ? "check" : "close"}
-                    />
-                    <Text variant="body3">{String(exposedFn.is_view)}</Text>
-                  </Flex>
-                </LabelText>
-              </Flex>
-              <LabelText
-                isSmall
-                label="generic_type_params"
-                labelWeight={700}
-                labelColor="text.disabled"
-              >
-                <Text variant="body3">
-                  {JSON.stringify(exposedFn.generic_type_params)}
-                </Text>
-              </LabelText>
-              <LabelText
-                isSmall
-                label="params"
-                labelWeight={700}
-                labelColor="text.disabled"
-              >
-                <Text variant="body3">{JSON.stringify(exposedFn.params)}</Text>
-              </LabelText>
-            </Flex>
-          </AccordionPanel>
+          <FunctionDetail exposedFn={exposedFn} />
         </>
       )}
     </AccordionItem>
