@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
@@ -64,6 +64,8 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
     address,
   });
 
+  useEffect(() => setExpandedIndexes([0]), [selectedNameParam]);
+
   if (isLoading) return <Loading />;
   if (!resources) return <ErrorFetching />;
   if (resources.length === 0)
@@ -99,18 +101,15 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
 
   const groupedResources = Object.values(sortedResource);
 
-  const selectedGroup =
-    groupedResources.find((item) => item.owner === selectedAccountParam) ??
-    groupedResources[0];
-  const selectedGroupArray = Object.values(selectedGroup.resources);
-
-  const selectedResources =
-    selectedGroupArray.find((item) => item.group === selectedNameParam) ??
-    selectedGroupArray[0];
-
   const selectedIndex = !selectedAccountParam
     ? 0
     : groupedResources.findIndex((item) => item.owner === selectedAccountParam);
+  const selectedGroup = groupedResources[selectedIndex];
+
+  const selectedGroupArray = Object.values(selectedGroup.resources);
+  const selectedResources =
+    selectedGroupArray.find((item) => item.group === selectedNameParam) ??
+    selectedGroupArray[0];
 
   const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);

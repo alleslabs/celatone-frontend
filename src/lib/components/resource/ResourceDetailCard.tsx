@@ -1,5 +1,6 @@
 import {
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Flex,
@@ -56,7 +57,12 @@ export const ResourceDetailCard = ({
           align="center"
           gap={8}
         >
-          <Text variant="body1" fontWeight={600} textAlign="left">
+          <Text
+            variant="body1"
+            fontWeight={600}
+            textAlign="left"
+            wordBreak="break-word"
+          >
             {resourceData.structTag}
           </Text>
           <Flex alignItems="center" gap={2} minW={36}>
@@ -67,7 +73,7 @@ export const ResourceDetailCard = ({
               size="xs"
               buttonText="Copy JSON"
             />
-            <CustomIcon name="chevron-down" color="gray.600" />
+            <AccordionIcon color="gray.600" />
           </Flex>
         </Flex>
       </AccordionButton>
