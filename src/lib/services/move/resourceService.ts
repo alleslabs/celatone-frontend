@@ -17,6 +17,7 @@ export const useAccountResources = ({
     getAccountResources(baseEndpoint, address);
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_RESOURCES, baseEndpoint, address],
-    queryFn
+    queryFn,
+    { enabled: Boolean(address), refetchOnWindowFocus: false, retry: 1 }
   );
 };

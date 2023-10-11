@@ -20,16 +20,22 @@ import { ResourceCard } from "lib/components/resource/ResourceCard";
 import { ResourceDetailCard } from "lib/components/resource/ResourceDetailCard";
 import { EmptyState } from "lib/components/state";
 import { TableTitle } from "lib/components/table";
-import { useAccountResources } from "lib/services/move/resourceService";
-import type { HumanAddr } from "lib/types";
+import type { HumanAddr, InternalResource, Option } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import type { ResourceGroup, ResourceGroupByAccount } from "./ResourceLists";
 
 interface ResourceSectionProps {
   address: HumanAddr;
+  resources: Option<InternalResource[]>;
+  isLoading: boolean;
 }
-export const ResourceSection = ({ address }: ResourceSectionProps) => {
+
+export const ResourceSection = ({
+  address,
+  resources,
+  isLoading,
+}: ResourceSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
@@ -59,10 +65,6 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
     },
     [selectedNameParam, selectedAccountParam, address, navigate]
   );
-
-  const { data: resources, isLoading } = useAccountResources({
-    address,
-  });
 
   useEffect(() => setExpandedIndexes([0]), [selectedNameParam]);
 
@@ -104,8 +106,8 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
   const selectedIndex = !selectedAccountParam
     ? 0
     : groupedResources.findIndex((item) => item.owner === selectedAccountParam);
-  const selectedGroup = groupedResources[selectedIndex];
 
+  const selectedGroup = groupedResources[selectedIndex];
   const selectedGroupArray = Object.values(selectedGroup.resources);
   const selectedResources =
     selectedGroupArray.find((item) => item.group === selectedNameParam) ??

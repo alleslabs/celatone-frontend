@@ -11,6 +11,7 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
+  useConvertHexAddress,
   useInternalNavigate,
   useMoveConfig,
   useValidateAddress,
@@ -32,15 +33,20 @@ import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { HumanAddr, InternalResource } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
+import {
+  bech32AddressToHex,
+  getFirstQueryParam,
+  isHexAddress,
+  truncate,
+  unpadHexAddress,
+} from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import { ModuleLists } from "./components/modules/ModuleLists";
-import { ResourceLists } from "./components/resources/ResourceLists";
-import { ResourceSection } from "./components/resources/ResourceSection";
+import { ResourceLists, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -65,12 +71,16 @@ enum TabIndex {
 }
 
 export interface AccountDetailsBodyProps {
+  hexAddress: HexAddr;
   accountAddress: HumanAddr;
 }
 
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
-const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
+const AccountDetailsBody = ({
+  hexAddress,
+  accountAddress,
+}: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   // const nft = useNftConfig({ shouldRedirect: false });
@@ -86,17 +96,19 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   // TODO: combine with useAccountDetailsTableCounts and remove type assertion
   // move
-  const { data = [] } = useAccountModules({
-    address: accountAddress,
-    moduleName: undefined,
-    functionName: undefined,
-  });
-  const modulesData = data as IndexedModule[];
+  const { data: fetchedAccountModules, isFetching: isModulesLoading } =
+    useAccountModules({
+      address: accountAddress,
+      moduleName: undefined,
+      functionName: undefined,
+      options: { refetchOnWindowFocus: false, retry: 1 },
+    });
+  const modulesData = fetchedAccountModules as Option<IndexedModule[]>;
 
-  const { data: resourcesData = [] } = useAccountResources({
-    address: accountAddress,
-  });
-  const resources = resourcesData as InternalResource[];
+  const { data: resourcesData, isFetching: isResourceLoading } =
+    useAccountResources({
+      address: accountAddress,
+    });
 
   const publicDetail = publicInfoBySlug?.details;
   const {
@@ -163,6 +175,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           publicDetail={publicDetail}
           icnsName={icnsName}
           accountAddress={accountAddress}
+          hexAddress={hexAddress}
         />
       </Flex>
       {publicInfo?.description && (
@@ -252,16 +265,16 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
-            count={resources.length}
-            isDisabled={!resources.length}
+            count={resourcesData?.length}
+            isDisabled={!resourcesData?.length}
             onClick={handleTabChange(TabIndex.Resource)}
             hidden={!move.enabled}
           >
             Resource
           </CustomTab>
           <CustomTab
-            count={modulesData.length}
-            isDisabled={!modulesData.length}
+            count={modulesData?.length}
+            isDisabled={!modulesData?.length}
             onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
           >
@@ -328,10 +341,11 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                   address={accountAddress}
                   onViewMore={handleTabChange(TabIndex.Resource)}
                 />
-                {/* TODO remove type assertion */}
                 <ModuleLists
                   selectedAddress={accountAddress}
-                  totalCount={modulesData.length}
+                  totalCount={modulesData?.length}
+                  modules={modulesData}
+                  isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules)}
                 />
               </>
@@ -379,12 +393,18 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ResourceSection address={accountAddress} />
+            <ResourceSection
+              address={accountAddress}
+              resources={resourcesData}
+              isLoading={isResourceLoading}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
               selectedAddress={accountAddress}
-              totalCount={modulesData.length}
+              totalCount={modulesData?.length}
+              modules={modulesData}
+              isLoading={isModulesLoading}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -405,10 +425,20 @@ const AccountDetails = () => {
   const router = useRouter();
   const { track } = useTrack();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const hexToBech32 = useConvertHexAddress();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
-  ).toLowerCase() as HumanAddr;
+  ).toLowerCase() as MoveAccountAddr;
+  const [hexAddr, humanAddr] = isHexAddress(accountAddressParam)
+    ? [
+        unpadHexAddress(accountAddressParam as HexAddr),
+        hexToBech32(accountAddressParam as HexAddr),
+      ]
+    : [
+        unpadHexAddress(bech32AddressToHex(accountAddressParam as HumanAddr)),
+        accountAddressParam as HumanAddr,
+      ];
   // TODO: fix assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
@@ -420,11 +450,12 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      {validateUserAddress(accountAddressParam) &&
+      {!isHexAddress(accountAddressParam) &&
+      validateUserAddress(accountAddressParam) &&
       validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody accountAddress={accountAddressParam} />
+        <AccountDetailsBody hexAddress={hexAddr} accountAddress={humanAddr} />
       )}
     </PageContainer>
   );

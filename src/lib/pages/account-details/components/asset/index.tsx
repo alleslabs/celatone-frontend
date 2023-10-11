@@ -31,7 +31,7 @@ interface AssetCtaProps {
   walletAddress: HumanAddr;
   totalAsset: number;
 }
-const MaxAssetsShow = 12;
+const MaxAssetsShow = 8;
 
 const AssetTitle = ({
   onViewMore,

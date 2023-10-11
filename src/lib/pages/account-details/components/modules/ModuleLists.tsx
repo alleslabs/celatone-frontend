@@ -1,22 +1,23 @@
 import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
+import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
-import {
-  useAccountModules,
-  type IndexedModule,
-} from "lib/services/move/moduleService";
-import type { HumanAddr } from "lib/types";
+import { type IndexedModule } from "lib/services/move/moduleService";
+import type { HumanAddr, Option } from "lib/types";
 
 interface ModuleListsProps {
   onViewMore?: () => void;
-  totalCount: number;
+  totalCount: Option<number>;
   selectedAddress: HumanAddr;
+  modules: Option<IndexedModule[]>;
+  isLoading: boolean;
 }
 
 const ModuleTitle = ({
@@ -24,7 +25,7 @@ const ModuleTitle = ({
   totalCount,
 }: {
   onViewMore: ModuleListsProps["onViewMore"];
-  totalCount: number;
+  totalCount: ModuleListsProps["totalCount"];
 }) => {
   const isMobile = useMobile();
   if (isMobile && onViewMore)
@@ -53,19 +54,14 @@ export const ModuleLists = ({
   onViewMore,
   totalCount,
   selectedAddress,
+  modules,
+  isLoading,
 }: ModuleListsProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  // move
-  const { data = [] } = useAccountModules({
-    address: selectedAddress,
-    moduleName: undefined,
-    functionName: undefined,
-  });
-  // TODO: remove assertion later
-  const modules = data as IndexedModule[] | undefined;
 
   const [keyword, setKeyword] = useState("");
+
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
@@ -81,7 +77,10 @@ export const ModuleLists = ({
       },
     });
   };
-  if (!filteredModules) return <Loading />;
+
+  if (isLoading) return <Loading />;
+  if (!modules) return <ErrorFetching />;
+
   return (
     <Flex
       direction="column"
@@ -99,23 +98,32 @@ export const ModuleLists = ({
             action="execute-message-search"
           />
         )}
-        {!(isMobile && onViewMore) && (
-          <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={6}>
-            {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
-              (item) => (
-                <ModuleCard
-                  isLarge
-                  selectedAddress={selectedAddress}
-                  module={item}
-                  selectedModule={undefined}
-                  setSelectedModule={handleOnSelect}
-                />
-              )
-            )}
-          </SimpleGrid>
-        )}
+        {!(isMobile && onViewMore) &&
+          (filteredModules?.length ? (
+            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={6}>
+              {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
+                (item) => (
+                  <ModuleCard
+                    key={item.moduleName}
+                    isLarge
+                    selectedAddress={selectedAddress}
+                    module={item}
+                    selectedModule={undefined}
+                    setSelectedModule={handleOnSelect}
+                  />
+                )
+              )}
+            </SimpleGrid>
+          ) : (
+            <EmptyState
+              imageVariant="not-found"
+              message="No matched modules found"
+              withBorder
+              my={0}
+            />
+          ))}
       </Flex>
-      {!isMobile && onViewMore && filteredModules.length > 9 && (
+      {!isMobile && onViewMore && Number(filteredModules?.length) > 9 && (
         <ViewMore onClick={onViewMore} />
       )}
     </Flex>

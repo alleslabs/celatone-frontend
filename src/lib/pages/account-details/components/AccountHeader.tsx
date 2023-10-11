@@ -5,8 +5,7 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type { ICNSNamesResponse } from "lib/services/ns";
-import type { HumanAddr, Option, PublicDetail } from "lib/types";
-import { bech32AddressToHex } from "lib/utils";
+import type { HexAddr, HumanAddr, Option, PublicDetail } from "lib/types";
 
 import { TotalAccountValue } from "./TotalAccountValue";
 
@@ -15,6 +14,7 @@ interface AccounHeaderProps {
   publicDetail: Option<PublicDetail>;
   icnsName: Option<ICNSNamesResponse>;
   accountAddress: HumanAddr;
+  hexAddress: HexAddr;
 }
 
 export const AccountHeader = ({
@@ -22,6 +22,7 @@ export const AccountHeader = ({
   publicDetail,
   icnsName,
   accountAddress,
+  hexAddress,
 }: AccounHeaderProps) => {
   const displayName = icnsName?.primary_name || "Account Details";
   const move = useMoveConfig({ shouldRedirect: false });
@@ -75,9 +76,8 @@ export const AccountHeader = ({
               <Text fontWeight={500} color="text.dark" variant="body2">
                 HEX:
               </Text>
-              {/* TODO: HEX */}
               <CopyLink
-                value={bech32AddressToHex(accountAddress)}
+                value={hexAddress}
                 amptrackSection="account_top"
                 type="user_address"
               />
