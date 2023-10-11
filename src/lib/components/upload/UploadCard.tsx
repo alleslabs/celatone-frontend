@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import big from "big.js";
 
 import { CustomIcon, UploadIcon } from "lib/components/icon";
@@ -22,14 +22,14 @@ const getTheme = (theme: CardTheme) => {
       return {
         bgColor: "gray.800",
         border: "1px solid var(--chakra-colors-gray-700)",
-        iconColor: "gray.600",
+        buttonVariant: "outline-gray",
       };
     case "primary":
     default:
       return {
         bgColor: "gray.900",
         border: "none",
-        iconColor: "text.dark",
+        buttonVariant: "outline-primary",
       };
   }
 };
@@ -80,12 +80,14 @@ export const UploadCard = ({
           </Flex>
         </Flex>
         <Flex align="center" gap={4}>
-          <CustomIcon
-            name="delete"
-            color={themeConfig.iconColor}
+          <Button
+            leftIcon={<CustomIcon name="swap" boxSize={3} />}
+            size="sm"
+            variant={themeConfig.buttonVariant}
             onClick={deleteFile}
-            cursor="pointer"
-          />
+          >
+            Change file
+          </Button>
           {status === "error" && (
             <CustomIcon
               name="alert-triangle-solid"

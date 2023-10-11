@@ -7,28 +7,28 @@ import {
   FormLabel,
   Text,
 } from "@chakra-ui/react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { type Control, useController } from "react-hook-form";
 
 import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
+import { STRING_TYPE } from "./constants";
 import { getRules } from "./utils";
 
 interface ArgFieldTemplateProps {
   index: number;
   param: string;
   control: Control<AbiFormData["args"]>;
-  error?: string;
 }
 
 export const ArgFieldTemplate = ({
   index,
   param,
   control,
-  error,
 }: ArgFieldTemplateProps) => {
+  const [isEditted, setIsEditted] = useState(false);
   const { validateUserAddress, validateContractAddress, validateHexAddress } =
     useValidateAddress();
 
@@ -46,13 +46,13 @@ export const ArgFieldTemplate = ({
 
   const {
     field: { value, onChange, ...fieldProps },
-    fieldState: { isTouched },
+    fieldState: { isTouched, error },
   } = useController({
     name: `${index}`,
     control,
     rules,
   });
-  const isError = isTouched && !!error;
+  const isError = (isTouched || isEditted) && !!error;
 
   const size = "md";
   const isNull = value === null;
@@ -61,7 +61,7 @@ export const ArgFieldTemplate = ({
       <FormControl
         className={`${size}-form`}
         variant={
-          type === "0x1::string::String" && !isNull
+          (type === STRING_TYPE || type.startsWith("vector")) && !isNull
             ? "fixed-floating"
             : "floating"
         }
@@ -70,14 +70,21 @@ export const ArgFieldTemplate = ({
         isDisabled={isNull}
         {...fieldProps}
       >
-        <ArgFieldWidget type={type} value={value} onChange={onChange} />
+        <ArgFieldWidget
+          type={type}
+          value={value}
+          onChange={(e) => {
+            setIsEditted(true);
+            onChange(e);
+          }}
+        />
         <FormLabel className={`${size}-label`} bgColor="background.main">
           {param}
         </FormLabel>
 
         {isError && (
           <FormErrorMessage className="error-text" mt={1}>
-            {error}
+            {error.message}
           </FormErrorMessage>
         )}
       </FormControl>

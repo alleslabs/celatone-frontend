@@ -1,20 +1,19 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { BlockCard } from "lib/components/card/BlockCard";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableContainer } from "lib/components/table";
+import { MobileTableContainer, TableContainer } from "lib/components/table";
 import {
   useBlockCountQuery,
   useBlocklistQuery,
 } from "lib/services/blockService";
 
-import { BlocksHeader } from "./BlocksHeader";
-import { BlocksRow } from "./BlocksRow";
+import { BlocksTableHeader } from "./BlocksTableHeader";
+import { BlocksTableMobileCard } from "./BlocksTableMobileCard";
+import { BlocksTableRow } from "./BlocksTableRow";
 
 interface BlocksTableProps {
   isViewMore?: boolean;
@@ -83,19 +82,19 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   return (
     <>
       {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
+        <MobileTableContainer>
           {blocksData.map((block) => (
-            <BlockCard blockData={block} />
+            <BlocksTableMobileCard key={block.hash} blockData={block} />
           ))}
-        </Flex>
+        </MobileTableContainer>
       ) : (
         <TableContainer>
-          <BlocksHeader
+          <BlocksTableHeader
             templateColumns={TEMPLATE_COLUMNS}
             scrollComponentId={scrollComponentId}
           />
           {blocksData.map((block) => (
-            <BlocksRow
+            <BlocksTableRow
               key={block.hash}
               templateColumns={TEMPLATE_COLUMNS}
               blockData={block}

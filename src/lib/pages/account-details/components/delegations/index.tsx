@@ -85,15 +85,6 @@ export const DelegationsSection = ({
 
   const redelegationCount = redelegations?.length ?? 0;
 
-  const TotalBondedCard = (
-    <TotalCard
-      title="Total Bonded"
-      message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
-      token={totalBondedBondDenom}
-      isLoading={isLoadingTotalBonded}
-    />
-  );
-
   return (
     <Flex
       mt={{ base: 4, md: 8 }}
@@ -112,10 +103,16 @@ export const DelegationsSection = ({
         transition="all 0.25s"
       >
         <DelegationInfo
-          TotalBondedCard={TotalBondedCard}
-          infoCards={
+          totalBondedCard={
+            <TotalCard
+              title="Total Bonded"
+              message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
+              token={totalBondedBondDenom}
+              isLoading={isLoadingTotalBonded}
+            />
+          }
+          otherInfoCards={
             <>
-              {TotalBondedCard}
               <TotalCard
                 title="Reward"
                 message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
@@ -132,12 +129,12 @@ export const DelegationsSection = ({
               )}
             </>
           }
-          onViewMore={onViewMore}
           redelegationCount={redelegationCount}
           onClickToggle={() => {
             track(AmpEvent.USE_SEE_REDELEGATIONS);
             onToggle();
           }}
+          onViewMore={onViewMore}
         />
         {!onViewMore && (
           <DelegationsBody

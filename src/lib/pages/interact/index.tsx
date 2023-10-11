@@ -15,6 +15,7 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
+import { useOpenNewTab } from "lib/hooks";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import {
   useAccountModules,
@@ -40,6 +41,7 @@ export const Interact = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const openNewTab = useOpenNewTab();
 
   const [module, setModule] = useState<IndexedModule>();
   const [selectedType, setSelectedType] = useState<InteractionTabs>(
@@ -58,6 +60,8 @@ export const Interact = () => {
     (selectedModule: IndexedModule, fn?: ExposedFunction) => {
       setModule(selectedModule);
       setSelectedFn(fn);
+      handleSetSelectedType(fn?.is_view ?? true ? "view" : "execute");
+
       navigate({
         pathname: "/interact",
         query: {
@@ -182,10 +186,16 @@ export const Interact = () => {
                   rightIcon={
                     <CustomIcon name="launch" boxSize={3} color="text.dark" />
                   }
-                  // TODO: Link to module section in account page
-                  onClick={() => {}}
+                  onClick={() => {
+                    openNewTab({
+                      pathname: `/modules/${module.address.toString()}/${
+                        module.moduleName
+                      }`,
+                      query: {},
+                    });
+                  }}
                 >
-                  View Module
+                  See Module
                 </Button>
               </Flex>
             </>
