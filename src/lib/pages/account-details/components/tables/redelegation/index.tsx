@@ -1,6 +1,7 @@
-import { Flex, TableContainer } from "@chakra-ui/react";
+import { TableContainer } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
+import { MobileTableContainer } from "lib/components/table";
 import type { Redelegation } from "lib/pages/account-details/data";
 
 import { RedelegationTableHeader } from "./RedelegationTableHeader";
@@ -19,7 +20,7 @@ export const RedelegationsTable = ({
 }: RedelegationsTableProps) => {
   const isMobile = useMobile();
   return isMobile ? (
-    <Flex w="full">
+    <MobileTableContainer mt={0}>
       {redelegations.map((redelegation) => (
         <RedelegationTableMobileCard
           key={
@@ -32,7 +33,7 @@ export const RedelegationsTable = ({
           redelegation={redelegation}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <RedelegationTableHeader templateColumns={TEMPLATE_COLUMNS} />

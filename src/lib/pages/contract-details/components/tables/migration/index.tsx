@@ -1,11 +1,10 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableContainer } from "lib/components/table";
+import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/data";
 import type { ContractAddr, Option } from "lib/types";
 
@@ -77,7 +76,7 @@ export const MigrationTable = ({
   return (
     <>
       {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
+        <MobileTableContainer>
           {migrationHistories.map((history, idx) => (
             <MigrationMobileCard
               key={
@@ -90,7 +89,7 @@ export const MigrationTable = ({
               history={history}
             />
           ))}
-        </Flex>
+        </MobileTableContainer>
       ) : (
         <TableContainer>
           <MigrationHeader templateColumns={templateColumns} />

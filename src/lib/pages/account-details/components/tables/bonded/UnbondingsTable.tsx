@@ -1,9 +1,13 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { TableContainer, TableTitle } from "lib/components/table";
+import {
+  MobileTableContainer,
+  TableContainer,
+  TableTitle,
+} from "lib/components/table";
 import type { Unbonding } from "lib/pages/account-details/data";
 import type { Option } from "lib/types";
 
@@ -33,7 +37,7 @@ const UnbondingsTableBody = ({
     );
 
   return isMobile ? (
-    <Flex direction="column" gap={4} w="full">
+    <MobileTableContainer mt={0}>
       {unbondings.map((unbonding) => (
         <BondedTableMobileCard
           key={
@@ -49,7 +53,7 @@ const UnbondingsTableBody = ({
           }}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <BondedTableHeader

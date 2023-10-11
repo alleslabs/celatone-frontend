@@ -1,4 +1,4 @@
-import { Grid, Box, Flex } from "@chakra-ui/react";
+import { Grid, Box } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
@@ -6,6 +6,7 @@ import { useMobile } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import {
+  MobileTableContainer,
   TableContainer,
   TableHeader,
   TableTitle,
@@ -39,14 +40,14 @@ const ContentRender = ({
   isMobile: boolean;
 }) =>
   isMobile ? (
-    <Flex direction="column" gap={4} w="full" mt={4}>
+    <MobileTableContainer>
       {filteredAccounts.map((account) => (
         <PublicProjectAccountMobileCard
           key={account.address}
           accountInfo={account}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer mb={4}>
       <AccountTableHeader />

@@ -1,6 +1,5 @@
-import { Flex, TableContainer } from "@chakra-ui/react";
-
 import { useMobile } from "lib/app-provider";
+import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { NonRedelegatable } from "lib/pages/account-details/type";
 
 import { NonRedelegatableTableHeader } from "./NonRedelegatableTableHeader";
@@ -18,20 +17,20 @@ export const NonRedelegatablesTable = ({
 }: NonRedelegatablesTableProps) => {
   const isMobile = useMobile();
   return isMobile ? (
-    <Flex>
+    <MobileTableContainer mt={0}>
       {nonRedelegatables.map((nonRedelegatable) => (
         <NonRedelegatablesTableMobileCard
-          key={`nonredelegatable_${nonRedelegatable.dstValidator.validatorAddress}_${nonRedelegatable.dstValidator.moniker}`}
+          key={`non_redelegatable_${nonRedelegatable.dstValidator.validatorAddress}_${nonRedelegatable.dstValidator.moniker}`}
           nonRedelegatable={nonRedelegatable}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <NonRedelegatableTableHeader templateColumns={TEMPLATE_COLUMNS} />
       {nonRedelegatables.map((nonRedelegatable) => (
         <NonRedelegatableTableRow
-          key={`nonredelegatable_${nonRedelegatable.dstValidator.validatorAddress}_${nonRedelegatable.dstValidator.moniker}`}
+          key={`non_redelegatable_${nonRedelegatable.dstValidator.validatorAddress}_${nonRedelegatable.dstValidator.moniker}`}
           nonRedelegatable={nonRedelegatable}
           templateColumns={TEMPLATE_COLUMNS}
         />

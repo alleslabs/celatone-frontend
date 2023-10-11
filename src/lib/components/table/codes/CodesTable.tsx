@@ -1,6 +1,4 @@
-import { Flex } from "@chakra-ui/react";
-
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { CodeInfo, Option } from "lib/types";
@@ -34,14 +32,14 @@ export const CodesTable = ({
     : "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
   return isMobile ? (
-    <Flex direction="column" gap={4} w="full" mt={4}>
+    <MobileTableContainer>
       {codes.map((code) => (
         <CodesTableMobileCard
           key={code.id + code.uploader + code.name}
           codeInfo={code}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer pb={6}>
       <CodesTableHeader

@@ -20,15 +20,19 @@ interface ContractsTableMobileCardProps {
   onRowSelect: (contract: ContractAddr) => void;
 }
 
-const instantiatorRemark = (remark: Option<ContractHistoryRemark>) => {
-  if (!remark) {
-    return <MobileLabel label="Instantiated by" />;
-  }
+const InstantiatorRemark = ({
+  remark,
+}: {
+  remark: Option<ContractHistoryRemark>;
+}) => {
+  if (!remark) return <MobileLabel label="Instantiated by" />;
+
   if (
     remark.operation ===
     RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
   )
     return <MobileLabel label="Genesis" />;
+
   if (
     remark.operation ===
     RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
@@ -61,7 +65,7 @@ export const ContractsTableMobileCard = ({
           <ContractNameCell contractLocalInfo={contractInfo} isReadOnly />
         </Flex>
         <Flex direction="column">
-          {instantiatorRemark(contractInfo.remark)}
+          <InstantiatorRemark remark={contractInfo.remark} />
           <ContractInstantiatorCell
             contractInfo={contractInfo}
             isReadOnly={false}

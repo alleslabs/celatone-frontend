@@ -1,5 +1,5 @@
 export * from "./redelegation";
-export * from "./nonRedelegatable";
+export * from "./non-redelegatable";
 export * from "./bonded";
 export * from "./txs";
 export * from "./AdminContractsTable";

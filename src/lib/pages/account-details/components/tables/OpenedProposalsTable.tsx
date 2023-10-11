@@ -76,7 +76,6 @@ export const OpenedProposalsTable = ({
         />
       ) : (
         <>
-          {" "}
           <TableTitle
             title="Opened Proposals"
             count={totalData ?? 0}

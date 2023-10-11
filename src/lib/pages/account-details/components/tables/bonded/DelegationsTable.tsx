@@ -1,9 +1,13 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { TableContainer, TableTitle } from "lib/components/table";
+import {
+  MobileTableContainer,
+  TableContainer,
+  TableTitle,
+} from "lib/components/table";
 import type { Delegation } from "lib/pages/account-details/data";
 import type { Option, TokenWithValue } from "lib/types";
 
@@ -37,7 +41,7 @@ const DelegationsTableBody = ({
     );
 
   return isMobile ? (
-    <Flex direction="column" gap={4} w="full">
+    <MobileTableContainer mt={0}>
       {delegations.map((delegation) => (
         <BondedTableMobileCard
           key={
@@ -55,7 +59,7 @@ const DelegationsTableBody = ({
           }}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />

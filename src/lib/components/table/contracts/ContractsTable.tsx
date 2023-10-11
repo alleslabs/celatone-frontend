@@ -1,6 +1,4 @@
-import { Flex } from "@chakra-ui/react";
-
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { ContractAddr, ContractInfo, Option } from "lib/types";
@@ -45,7 +43,7 @@ export const ContractsTable = ({
       "160px minmax(300px, 3fr) minmax(200px, 2fr) 150px 260px 80px";
 
   return isMobile ? (
-    <Flex direction="column" gap={4} w="full" mt={4}>
+    <MobileTableContainer>
       {contracts.map((contractInfo) => (
         <ContractsTableMobileCard
           key={
@@ -59,7 +57,7 @@ export const ContractsTable = ({
           onRowSelect={onRowSelect}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer pb={6}>
       <ContractsTableHeader

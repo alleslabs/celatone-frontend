@@ -1,4 +1,4 @@
-import { TableContainer, Grid, Box, Flex } from "@chakra-ui/react";
+import { TableContainer, Grid, Box } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
@@ -6,7 +6,12 @@ import { useMemo, useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
-import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
+import {
+  MobileTableContainer,
+  TableHeader,
+  TableTitle,
+  ViewMore,
+} from "lib/components/table";
 import { useCodeStore } from "lib/providers/store";
 import type { Option, PublicCode, CodeInfo } from "lib/types";
 
@@ -46,14 +51,14 @@ const ContentRender = ({
   isMobile: boolean;
 }) =>
   isMobile ? (
-    <Flex direction="column" gap={4} w="full" mt={4}>
+    <MobileTableContainer>
       {publicCodes.map((code) => (
         <PublicProjectCodeMobileCard
           key={code.publicInfo.id}
           publicCodeInfo={code}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <CodeTableHeader />

@@ -1,6 +1,4 @@
-import { Flex } from "@chakra-ui/react";
-
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { Option, Proposal } from "lib/types";
@@ -30,14 +28,14 @@ export const ProposalsTable = ({
   const boxShadow = "16px 0 32px -10px";
 
   return isMobile ? (
-    <Flex direction="column" gap={4} w="full" mt={4}>
+    <MobileTableContainer>
       {proposals.map((proposal) => (
         <ProposalsTableMobileCard
           key={proposal.proposalId}
           proposal={proposal}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <ProposalsTableHeader

@@ -1,6 +1,4 @@
-import { Flex } from "@chakra-ui/react";
-
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { Option, Transaction } from "lib/types";
@@ -38,14 +36,14 @@ export const TransactionsTable = ({
   }`;
 
   return isMobile ? (
-    <Flex direction="column" gap={4} w="full" mt={4}>
+    <MobileTableContainer>
       {transactions.map((transaction) => (
         <TransactionsTableMobileCard
           key={transaction.hash}
           transaction={transaction}
         />
       ))}
-    </Flex>
+    </MobileTableContainer>
   ) : (
     <TableContainer>
       <TransactionsTableHeader

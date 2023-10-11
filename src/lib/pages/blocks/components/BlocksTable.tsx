@@ -1,4 +1,3 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
@@ -6,7 +5,7 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableContainer } from "lib/components/table";
+import { MobileTableContainer, TableContainer } from "lib/components/table";
 import {
   useBlockCountQuery,
   useBlocklistQuery,
@@ -83,11 +82,11 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   return (
     <>
       {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
+        <MobileTableContainer>
           {blocksData.map((block) => (
             <BlocksTableMobileCard key={block.hash} blockData={block} />
           ))}
-        </Flex>
+        </MobileTableContainer>
       ) : (
         <TableContainer>
           <BlocksTableHeader
