@@ -15,6 +15,7 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
+import { useOpenNewTab } from "lib/hooks";
 import type { IndexedModule } from "lib/services/moduleService";
 import { useAccountModules, useVerifyModule } from "lib/services/moduleService";
 import type {
@@ -23,7 +24,7 @@ import type {
   MoveAccountAddr,
   Option,
 } from "lib/types";
-import { getFirstQueryParam, openNewTab } from "lib/utils";
+import { getFirstQueryParam } from "lib/utils";
 
 import {
   ModuleSelectDrawerTrigger,
@@ -37,6 +38,7 @@ export const Interact = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const openNewTab = useOpenNewTab();
 
   const [module, setModule] = useState<IndexedModule>();
   const [selectedType, setSelectedType] = useState<InteractionTabs>(
@@ -182,11 +184,12 @@ export const Interact = () => {
                     <CustomIcon name="launch" boxSize={3} color="text.dark" />
                   }
                   onClick={() => {
-                    openNewTab(
-                      `/modules/${module.address.toString()}/${
+                    openNewTab({
+                      pathname: `/modules/${module.address.toString()}/${
                         module.moduleName
-                      }`
-                    );
+                      }`,
+                      query: {},
+                    });
                   }}
                 >
                   See Module
