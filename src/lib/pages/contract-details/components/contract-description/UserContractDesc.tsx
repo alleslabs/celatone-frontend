@@ -69,7 +69,6 @@ export const UserContractDesc = ({
       maxW="100%"
       borderRadius="8px"
       p={4}
-      my={{ base: 0, md: 6 }}
       flex="1"
       role="group"
     >
