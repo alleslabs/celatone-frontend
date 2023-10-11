@@ -4,7 +4,7 @@ import { Flex, Text, Grid } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { BlockInfo } from "lib/types/block";
+import type { BlockInfo } from "lib/types";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableRowProps {
