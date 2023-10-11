@@ -63,7 +63,9 @@ export const ViewArea = ({
   };
 
   const isLoading = queryFetching || queryRefetching;
-  const isButtonDisabled = Boolean(abiErrors.length);
+  const isButtonDisabled = Boolean(
+    Object.values(abiData.typeArgs).some((v) => !v.length) || !!abiErrors.length
+  );
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
       // TODO: problem with safari if focusing in the textarea
