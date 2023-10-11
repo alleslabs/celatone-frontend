@@ -115,7 +115,9 @@ export const ModuleLists = ({
           </SimpleGrid>
         )}
       </Flex>
-      {!isMobile && onViewMore && <ViewMore onClick={onViewMore} />}
+      {!isMobile && onViewMore && filteredModules.length > 9 && (
+        <ViewMore onClick={onViewMore} />
+      )}
     </Flex>
   );
 };

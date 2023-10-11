@@ -6,6 +6,7 @@ import { CustomIcon } from "lib/components/icon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type { ICNSNamesResponse } from "lib/services/ns";
 import type { HumanAddr, Option, PublicDetail } from "lib/types";
+import { bech32AddressToHex } from "lib/utils";
 
 import { TotalAccountValue } from "./TotalAccountValue";
 
@@ -76,7 +77,7 @@ export const AccountHeader = ({
               </Text>
               {/* TODO: HEX */}
               <CopyLink
-                value={accountAddress}
+                value={bech32AddressToHex(accountAddress)}
                 amptrackSection="account_top"
                 type="user_address"
               />

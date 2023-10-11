@@ -13,7 +13,6 @@ import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useInternalNavigate,
   useMoveConfig,
-  useNftConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -56,7 +55,6 @@ enum TabIndex {
   Overview = "overview",
   Assets = "assets",
   Delegations = "delegations",
-  NFTs = "nfts",
   Txs = "txs",
   Codes = "codes",
   Contracts = "contracts",
@@ -75,7 +73,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const nft = useNftConfig({ shouldRedirect: false });
+  // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
   const { trackUseTab } = useTrack();
@@ -214,14 +212,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
             Delegations
           </CustomTab>
-          <CustomTab
+          {/* <CustomTab
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
             onClick={handleTabChange(TabIndex.NFTs)}
             hidden={!nft.enabled}
           >
             NFTs
-          </CustomTab>
+          </CustomTab> */}
           <CustomTab
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
@@ -328,7 +326,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               <>
                 <ResourceLists
                   address={accountAddress}
-                  totalAsset={0}
                   onViewMore={handleTabChange(TabIndex.Resource)}
                 />
                 {/* TODO remove type assertion */}
@@ -353,7 +350,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
-          <TabPanel p={0}>nft</TabPanel>
+          {/* <TabPanel p={0}>nft</TabPanel> */}
           <TabPanel p={0}>
             <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>

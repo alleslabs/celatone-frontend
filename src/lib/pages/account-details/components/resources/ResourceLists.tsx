@@ -26,7 +26,6 @@ export interface ResourceGroupByAccount {
 
 interface ResourcesListsProps {
   onViewMore?: () => void;
-  totalAsset: number;
   address: HumanAddr;
 }
 
@@ -61,11 +60,7 @@ const ResourceTitle = ({
     />
   );
 };
-export const ResourceLists = ({
-  onViewMore,
-  totalAsset,
-  address,
-}: ResourcesListsProps) => {
+export const ResourceLists = ({ onViewMore, address }: ResourcesListsProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { data: resources, isLoading } = useAccountResources({
@@ -122,7 +117,7 @@ export const ResourceLists = ({
       mb={{ base: 0, md: 8 }}
       width="full"
     >
-      <ResourceTitle onViewMore={onViewMore} totalAsset={totalAsset} />
+      <ResourceTitle onViewMore={onViewMore} totalAsset={resources.length} />
       {!isMobile && (
         <>
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
@@ -134,7 +129,9 @@ export const ResourceLists = ({
               />
             ))}
           </SimpleGrid>
-          {onViewMore && <ViewMore onClick={onViewMore} />}
+          {onViewMore && groupedResources.length > 8 && (
+            <ViewMore onClick={onViewMore} />
+          )}
         </>
       )}
     </Flex>

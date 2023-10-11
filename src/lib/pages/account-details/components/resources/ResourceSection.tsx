@@ -120,7 +120,7 @@ export const ResourceSection = ({ address }: ResourceSectionProps) => {
         <TableTitle
           helperText="Resources stored in this account"
           title="Resources"
-          count={12}
+          count={resources.length}
         />
       </Flex>
       <Flex
