@@ -57,7 +57,7 @@ export const PoolHeader = ({
     <Flex justifyContent="space-between" w="full">
       <Flex alignItems="center" gap={4}>
         <PoolLogo tokens={poolLiquidity} />
-        <Flex direction="column">
+        <div>
           <Flex gap={1} flexWrap="wrap">
             <Heading as="h6" fontWeight="600" variant="h6">
               {getTokenLabel(poolLiquidity[0].denom, poolLiquidity[0].symbol)}
@@ -136,7 +136,7 @@ export const PoolHeader = ({
               </Flex>
             )}
           </Flex>
-        </Flex>
+        </div>
       </Flex>
     </Flex>
   );
