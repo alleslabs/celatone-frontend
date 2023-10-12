@@ -29,8 +29,11 @@ export const MultiBondsCard = ({
   const numTokens = tokens ? Object.entries(tokens).length : 0;
   return (
     <Flex
-      aria-disabled={!isDisabled}
+      aria-disabled={isDisabled}
       minW="233px"
+      p={4}
+      align="center"
+      justify="space-between"
       bgColor="gray.900"
       borderRadius="8px"
       cursor="pointer"
@@ -69,7 +72,7 @@ export const MultiBondsCard = ({
           </>
         )}
       </Flex>
-      <CustomIcon name="chevron-right" boxSize={5} color="secondary.main" />
+      <CustomIcon name="chevron-right" boxSize={4} color="secondary.main" />
     </Flex>
   );
 };
