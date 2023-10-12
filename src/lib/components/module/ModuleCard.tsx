@@ -12,7 +12,6 @@ interface ModuleCardProps {
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: (module: IndexedModule) => void;
-  isLarge?: boolean;
 }
 
 export const ModuleCard = ({
@@ -20,7 +19,6 @@ export const ModuleCard = ({
   module,
   selectedModule,
   setSelectedModule,
-  isLarge = false,
 }: ModuleCardProps) => {
   const { data: isVerified } = useVerifyModule({
     address: selectedAddress,
@@ -35,7 +33,7 @@ export const ModuleCard = ({
           ? "gray.700"
           : "gray.800"
       }
-      p={isLarge ? 4 : 3}
+      p={4}
       alignItems="center"
       cursor="pointer"
       onClick={() => setSelectedModule(module)}

@@ -10,6 +10,7 @@ import {
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import type { InternalResource } from "lib/types";
+import { parseJsonStr } from "lib/utils";
 
 interface ResourceDetailCardProps {
   resourceData: InternalResource;
@@ -18,8 +19,6 @@ interface ResourceDetailCardProps {
 export const ResourceDetailCard = ({
   resourceData,
 }: ResourceDetailCardProps) => {
-  const moveResourceObject = JSON.parse(resourceData.moveResource);
-
   if (resourceData.moveResource === '""')
     return (
       <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
@@ -36,13 +35,13 @@ export const ResourceDetailCard = ({
       </Flex>
     );
 
-  const dataObject = moveResourceObject.data as {
-    key: string;
-    value: unknown;
-  }[];
+  const moveResourceObject = parseJsonStr(resourceData.moveResource) as {
+    type: string;
+    data: Record<string, unknown>;
+  };
 
   const formattedArray: { key: string; value: unknown }[] = Object.entries(
-    dataObject
+    moveResourceObject.data
   ).map(([key, value]) => ({
     key: key as string,
     value: value as unknown,
@@ -67,7 +66,6 @@ export const ResourceDetailCard = ({
             {resourceData.structTag}
           </Text>
           <Flex alignItems="center" gap={2} minW={36}>
-            {/* TODO  <button> cannot appear as a descendant of <button> */}
             <CopyButton
               value={resourceData.moveResource}
               variant="outline-primary"
@@ -82,15 +80,15 @@ export const ResourceDetailCard = ({
         <Flex direction="column" gap={3}>
           {formattedArray.map((item) => (
             <Flex key={item.key} gap={4}>
-              <Text variant="body2" color="text.dark" w={52}>
+              <Text variant="body2" color="text.dark" minW={40}>
                 {item.key}
               </Text>
               {typeof item.value === "object" ? (
-                <Text variant="body2" color="text.main">
+                <Text variant="body2" color="text.main" wordBreak="break-all">
                   {JSON.stringify(item.value)}
                 </Text>
               ) : (
-                <Text variant="body2" color="text.main">
+                <Text variant="body2" color="text.main" wordBreak="break-word">
                   {item.value?.toString()}
                 </Text>
               )}

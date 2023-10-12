@@ -96,7 +96,6 @@ export const ModuleLists = ({
                 ).map((item) => (
                   <ModuleCard
                     key={item.moduleName}
-                    isLarge
                     selectedAddress={selectedAddress}
                     module={item}
                     selectedModule={undefined}

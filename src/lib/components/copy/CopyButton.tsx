@@ -46,6 +46,7 @@ export const CopyButton = ({
           }
           leftIcon={
             hasIcon ? (
+              // TODO config to style later
               <CustomIcon name="copy" boxSize={size === "xs" ? 3 : 4} />
             ) : undefined
           }
