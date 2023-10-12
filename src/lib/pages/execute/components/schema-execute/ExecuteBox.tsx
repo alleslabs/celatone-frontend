@@ -121,8 +121,6 @@ export const ExecuteBox = ({
   const isValidAssetsJsonStr =
     !attachFundErrors.assetsJsonStr && jsonValidate(assetsJsonStr) === null;
 
-  const assetsSelectString = JSON.stringify(assetsSelect);
-
   const enableExecute = useMemo(() => {
     const generalCheck = Boolean(
       msg.trim().length &&
@@ -150,6 +148,14 @@ export const ExecuteBox = ({
     isValidAssetsSelect,
     isValidAssetsJsonStr,
   ]);
+
+  const assetsSelectString = JSON.stringify(assetsSelect);
+
+  const funds = useMemo(
+    () => getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [assetsJsonStr, assetsSelectString, attachFundsOption, getAttachFunds]
+  );
 
   // ------------------------------------------//
   // -----------------REACT QUERY--------------//
@@ -184,11 +190,6 @@ export const ExecuteBox = ({
   );
 
   const proceed = useCallback(async () => {
-    const funds = getAttachFunds(
-      attachFundsOption,
-      assetsJsonStr,
-      assetsSelect
-    );
     trackActionWithFunds(
       AmpEvent.ACTION_EXECUTE,
       funds.length,
@@ -211,15 +212,13 @@ export const ExecuteBox = ({
       broadcast(stream);
     }
   }, [
-    attachFundsOption,
     executeTx,
     fee,
     contractAddress,
     msg,
-    getAttachFunds,
     trackActionWithFunds,
-    assetsJsonStr,
-    assetsSelect,
+    funds,
+    attachFundsOption,
     addActivity,
     broadcast,
   ]);
@@ -259,7 +258,7 @@ export const ExecuteBox = ({
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds: getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
+        funds,
       });
 
       const timeoutId = setTimeout(() => {
@@ -273,17 +272,7 @@ export const ExecuteBox = ({
     setFee(undefined);
 
     return () => {};
-  }, [
-    address,
-    contractAddress,
-    enableExecute,
-    msg,
-    assetsJsonStr,
-    assetsSelectString,
-    getAttachFunds,
-    attachFundsOption,
-    assetsSelect,
-  ]);
+  }, [address, contractAddress, enableExecute, msg, funds]);
 
   return (
     <AccordionItem className={`execute_msg_${msgSchema.schema.required?.[0]}`}>
@@ -344,6 +333,7 @@ export const ExecuteBox = ({
                 type="execute"
                 contractAddress={contractAddress}
                 message={msg}
+                funds={funds}
               />
             </Flex>
           </GridItem>
