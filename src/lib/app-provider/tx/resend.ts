@@ -3,8 +3,11 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
+import { useTrack } from "lib/amplitude";
 import { resendTx } from "lib/app-fns/tx/resend";
 import type { HumanAddr } from "lib/types";
+
+import { useCatchTxError } from "./catchTxError";
 
 export interface ResendStreamParams {
   onTxSucceed?: (txHash: string) => void;
@@ -15,6 +18,9 @@ export interface ResendStreamParams {
 
 export const useResendTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
+
   return useCallback(
     async ({
       onTxSucceed,
@@ -29,12 +35,16 @@ export const useResendTx = () => {
       return resendTx({
         address: address as HumanAddr,
         client,
-        onTxSucceed,
-        onTxFailed,
         fee: estimatedFee,
         messages,
+        catchTxError,
+        onTxSucceed: (txHash) => {
+          trackTxSucceed();
+          onTxSucceed?.(txHash);
+        },
+        onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
   );
 };

@@ -57,7 +57,7 @@ export const TransactionsTableRow = ({
             />
           )}
         </TableRow>
-        <TableRow>
+        <TableRow pr={1}>
           <>
             <ExplorerLink
               value={transaction.hash.toLocaleUpperCase()}

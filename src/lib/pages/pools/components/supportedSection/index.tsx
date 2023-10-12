@@ -18,17 +18,13 @@ import { SUPERFLUID_ICON } from "../../constant";
 import { usePools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
+import { useTrack } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
 import { Order_By } from "lib/gql/graphql";
-import {
-  AmpTrackUseSort,
-  AmpTrackUseToggle,
-  AmpTrackUseView,
-} from "lib/services/amplitude";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
@@ -55,7 +51,8 @@ interface SupportedSectionProp {
 export const SupportedSection = ({
   scrollComponentId,
 }: SupportedSectionProp) => {
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: true });
+  const { trackUseSort, trackUseView, trackUseToggle } = useTrack();
 
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
@@ -154,16 +151,17 @@ export const SupportedSection = ({
                 size="md"
                 defaultChecked={isSuperfluidOnly}
                 onChange={(e) => {
+                  const isChecked = e.target.checked;
                   setCurrentPage(1);
-                  AmpTrackUseToggle("isSuperfluidOnly", e.target.checked);
-                  setValue("isSuperfluidOnly", e.target.checked);
+                  trackUseToggle("isSuperfluidOnly", isChecked);
+                  setValue("isSuperfluidOnly", isChecked);
                 }}
               />
               <FormLabel mb="0" cursor="pointer">
                 <Text display="flex" gap={2} alignItems="center">
                   Show only
                   <Image boxSize={4} src={SUPERFLUID_ICON} />
-                  Superfluid
+                  <Text color="#ee64e8">Superfluid</Text>
                 </Text>
               </FormLabel>
             </FormControl>
@@ -190,7 +188,7 @@ export const SupportedSection = ({
               pr={1}
               onClick={() => {
                 const isDesc = !showNewest;
-                AmpTrackUseSort(isDesc ? "descending" : "ascending");
+                trackUseSort(isDesc ? "descending" : "ascending");
                 setShowNewest(isDesc);
               }}
             >
@@ -209,7 +207,7 @@ export const SupportedSection = ({
               selectedValue={toggle}
               options={OPTIONS}
               selectOption={(value: string) => {
-                AmpTrackUseView(value);
+                trackUseView(value);
                 setToggle(value);
               }}
             />

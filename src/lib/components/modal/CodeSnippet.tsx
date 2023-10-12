@@ -1,3 +1,4 @@
+import type { ButtonProps } from "@chakra-ui/react";
 import {
   Modal,
   ModalOverlay,
@@ -14,11 +15,13 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { CURR_THEME } from "env";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -26,8 +29,8 @@ import {
   useRPCEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
+import { coinsToStr, jsonPrettify } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -41,17 +44,22 @@ interface CodeSnippetProps {
   contractAddress: ContractAddr;
   message: string;
   type: "query" | "execute";
+  ml?: ButtonProps["ml"];
+  funds?: Coin[];
 }
 
 const CodeSnippet = ({
   contractAddress,
   message,
   type = "query",
+  ml,
+  funds = [],
 }: CodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     chain: { chain_name: chainName, daemon_name: daemonName },
   } = useCurrentChain();
+  const { track } = useTrack();
   const isDisabled = !contractAddress || !message.length;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
@@ -61,6 +69,9 @@ const CodeSnippet = ({
       gas: { gasPrice },
     },
   } = useCelatoneApp();
+
+  const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
+  const fundsFlags = funds.length ? `\n  --amount ${coinsToStr(funds)} \\` : "";
 
   const codeSnippets: Record<
     string,
@@ -138,7 +149,10 @@ export EXECUTE_MSG='${message}'\n
 ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
-  --node $RPC_URL`,
+  --node $RPC_URL \\${fundsFlags}
+  --gas auto \\
+  --gas-prices ${gasPriceStr} \\
+  --gas-adjustment 1.5`,
       },
       {
         name: "CosmJS",
@@ -154,6 +168,8 @@ const mnemonic =
 const chain = chains.find(({ chain_name }) => chain_name === '${chainName}');
 const contractAddress =
   '${contractAddress}';
+const msg = ${message};
+const funds = [${funds.map((coin) => jsonPrettify(JSON.stringify(coin)))}];
 
 const execute = async () => {
   const rpcEndpoint = '${rpcEndpoint}';
@@ -162,7 +178,7 @@ const execute = async () => {
     rpcEndpoint,
     signer,
     {
-      gasPrice: GasPrice.fromString("${gasPrice.tokenPerGas}${gasPrice.denom}"),
+      gasPrice: GasPrice.fromString("${gasPriceStr}"),
     }
   );
 
@@ -172,15 +188,17 @@ const execute = async () => {
   const tx = await client.execute(
     sender.address,
     contractAddress,
-    ${message},
-    fee
+    msg,
+    fee,
+    undefined,
+    funds
   );
 
   console.log(tx.transactionHash);
 };
 
 execute();
-;`,
+`,
       },
     ],
   };
@@ -191,10 +209,10 @@ execute();
         isDisabled={isDisabled}
         variant="outline-accent"
         size="sm"
-        ml="auto"
+        ml={ml}
         gap={1}
         onClick={() => {
-          AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
+          track(AmpEvent.USE_CONTRACT_SNIPPET);
           onOpen();
         }}
       >

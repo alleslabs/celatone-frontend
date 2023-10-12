@@ -5,7 +5,11 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+} from "lib/app-provider";
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
@@ -63,7 +67,7 @@ export const useTxData = (
   );
 
   return useQuery({
-    queryKey: ["tx_data", txsApiRoute, txHash] as string[],
+    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, txsApiRoute, txHash] as string[],
     queryFn,
     enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
@@ -72,7 +76,6 @@ export const useTxData = (
 };
 
 export const useTxsByAddressPagination = (
-  address: Option<Addr>,
   accountId: Option<number | null>,
   search: string,
   filters: TxFilters,
@@ -82,7 +85,6 @@ export const useTxsByAddressPagination = (
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression({
-    address,
     accountId,
     search,
     filters,
@@ -90,7 +92,7 @@ export const useTxsByAddressPagination = (
   });
 
   const queryFn = useCallback(async () => {
-    if (!address && !accountId) return [];
+    if (!accountId) return [];
     return indexerGraphClient
       .request(getTxsByAddressPagination, {
         expression,
@@ -100,7 +102,7 @@ export const useTxsByAddressPagination = (
       .then<Transaction[]>(({ account_transactions }) =>
         account_transactions.map<Transaction>((transaction) => ({
           hash: parseTxHash(transaction.transaction.hash),
-          messages: snakeToCamel(transaction.transaction.messages) as Message[],
+          messages: snakeToCamel(transaction.transaction.messages),
           sender: transaction.transaction.account.address as Addr,
           isSigner: transaction.is_signer,
           height: transaction.block.height,
@@ -134,11 +136,10 @@ export const useTxsByAddressPagination = (
           isInstantiate: transaction.transaction.is_instantiate,
         }))
       );
-  }, [accountId, address, expression, indexerGraphClient, offset, pageSize]);
+  }, [accountId, expression, indexerGraphClient, offset, pageSize]);
   return useQuery(
     [
-      "transactions_by_address_pagination",
-      address,
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION,
       accountId,
       search,
       filters,
@@ -149,6 +150,7 @@ export const useTxsByAddressPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
+      enabled: accountId !== undefined,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -156,13 +158,11 @@ export const useTxsByAddressPagination = (
 };
 
 export const useTxsCountByAddress = ({
-  address,
   accountId,
   search,
   filters,
   isSigner,
 }: {
-  address: Option<Addr>;
   accountId: Option<number | null>;
   search: string;
   filters: TxFilters;
@@ -170,7 +170,6 @@ export const useTxsCountByAddress = ({
 }): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression({
-    address,
     accountId,
     search,
     filters,
@@ -178,7 +177,7 @@ export const useTxsCountByAddress = ({
   });
 
   const queryFn = useCallback(async () => {
-    if (!address && !accountId) return 0;
+    if (!accountId) return 0;
     return indexerGraphClient
       .request(getTxsCountByAddress, {
         expression,
@@ -187,12 +186,12 @@ export const useTxsCountByAddress = ({
         ({ account_transactions_aggregate }) =>
           account_transactions_aggregate.aggregate?.count
       );
-  }, [expression, indexerGraphClient, accountId, address]);
+  }, [accountId, expression, indexerGraphClient]);
 
   return useQuery(
     [
-      "transactions_count_by_address",
-      address,
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_COUNT,
+      accountId,
       search,
       filters,
       isSigner,
@@ -200,7 +199,7 @@ export const useTxsCountByAddress = ({
     ],
     queryFn,
     {
-      enabled: !!address || accountId !== undefined,
+      enabled: accountId !== undefined,
       retry: 0,
       refetchOnWindowFocus: false,
     }
@@ -243,7 +242,7 @@ export const useTxsByPoolIdPagination = (
 
   return useQuery(
     [
-      "transactions_by_pool_id",
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID,
       poolId,
       type,
       offset,
@@ -276,7 +275,12 @@ export const useTxsCountByPoolId = (
   }, [expression, indexerGraphClient]);
 
   return useQuery(
-    ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
+      poolId,
+      type,
+      indexerGraphClient,
+    ],
     createQueryFnWithTimeout(queryFn, 5000),
     {
       enabled: !!poolId,
@@ -302,7 +306,7 @@ export const useTxs = (
         .then<Transaction[]>(({ transactions }) =>
           transactions.map<Transaction>((transaction) => ({
             hash: parseTxHash(transaction.hash),
-            messages: snakeToCamel(transaction.messages) as Message[],
+            messages: snakeToCamel(transaction.messages),
             sender: transaction.account.address as Addr,
             isSigner: false,
             height: transaction.block.height,
@@ -326,7 +330,7 @@ export const useTxs = (
   );
 
   return useQuery(
-    ["transaction_list", offset, pageSize, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.TXS, offset, pageSize, indexerGraphClient],
     queryFn
   );
 };
@@ -341,7 +345,7 @@ export const useTxsCount = (): UseQueryResult<Option<number>> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["transaction_list_count", indexerGraphClient], queryFn);
+  return useQuery([CELATONE_QUERY_KEYS.TXS_COUNT, indexerGraphClient], queryFn);
 };
 
 export const useTxsByBlockHeightPagination = (
@@ -362,7 +366,7 @@ export const useTxsByBlockHeightPagination = (
         .then<Transaction[]>(({ transactions }) =>
           transactions.map<Transaction>((transaction) => ({
             hash: parseTxHash(transaction.hash),
-            messages: snakeToCamel(transaction.messages) as Message[],
+            messages: snakeToCamel(transaction.messages),
             sender: transaction.account.address as Addr,
             isSigner: false,
             height,
@@ -387,7 +391,7 @@ export const useTxsByBlockHeightPagination = (
 
   return useQuery(
     [
-      "transactions_by_block_height_pagination",
+      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_PAGINATION,
       indexerGraphClient,
       limit,
       offset,
@@ -420,7 +424,7 @@ export const useTxsCountByBlockHeight = (
   );
 
   return useQuery(
-    ["transactions_count_by_block_height", indexerGraphClient, height],
+    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_COUNT, indexerGraphClient, height],
     queryFn,
     {
       keepPreviousData: true,

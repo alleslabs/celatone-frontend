@@ -1,19 +1,19 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import type react from "react";
 import { useContext } from "react";
 
-import { AmpTrackPaginationNavigate } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 
 import { PaginatorContext } from "./PaginatorProvider";
 
 interface NextProps extends ButtonProps {
-  children: react.ReactNode;
+  children: React.ReactNode;
   pageSize: number;
 }
 
 export const Next = ({ children, pageSize, ...buttonProps }: NextProps) => {
   const { actions, state } = useContext(PaginatorContext);
+  const { trackUsePaginationNavigate } = useTrack();
 
   const { changePage } = actions;
   const { currentPage, pagesQuantity, isDisabled } = state;
@@ -22,7 +22,7 @@ export const Next = ({ children, pageSize, ...buttonProps }: NextProps) => {
   const handleNextClick = () => {
     const currPage = currentPage + 1;
     if (!isLast) changePage(currPage);
-    AmpTrackPaginationNavigate("next", pageSize, currPage);
+    trackUsePaginationNavigate("next", pageSize, currPage);
   };
 
   return (

@@ -24,6 +24,7 @@ export const useExecuteCmds = (contractAddress: ContractAddr) => {
         funds: [],
       }),
     ],
+    retry: false,
     onError: (e) => {
       if (e.message.includes("contract: ")) {
         setExecCmds([]);

@@ -1,10 +1,10 @@
 import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
 
+import { useTrack } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpTrackExpand } from "lib/services/amplitude";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Message, Option, PoolDetail, Transaction } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
@@ -34,6 +34,7 @@ export const PoolTxsMsg = ({
   templateColumns,
 }: PoolTxsMsgProps) => {
   const { isOpen, onToggle } = useDisclosure();
+  const { trackUseExpand } = useTrack();
   const msgDetailTemplateColumns = templateColumns
     .split(" ")
     .slice(0, 3)
@@ -43,7 +44,7 @@ export const PoolTxsMsg = ({
     <Box
       w="full"
       minW="min-content"
-      borderY="0.5px solid"
+      borderBottom="1px solid"
       borderColor="gray.700"
       _hover={{ background: "gray.900" }}
       sx={{
@@ -59,7 +60,7 @@ export const PoolTxsMsg = ({
         cursor="pointer"
         onClick={() => {
           if (message) {
-            AmpTrackExpand({
+            trackUseExpand({
               action: !isOpen ? "expand" : "collapse",
               component: "pool_tx_msg",
               info: { msgType: extractMsgType(message.type) },

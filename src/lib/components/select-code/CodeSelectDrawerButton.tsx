@@ -22,9 +22,9 @@ import { FilterByPermission } from "../forms";
 import { CustomIcon } from "../icon";
 import InputWithIcon from "../InputWithIcon";
 import { MySavedCodesTable, MyStoredCodesTable } from "../table";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 interface CodeFilterState {
   keyword: string;
@@ -55,6 +55,7 @@ export const CodeSelectDrawerButton = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
+  const { track } = useTrack();
   const {
     storedCodesCount,
     storedCodes: stored,
@@ -78,7 +79,7 @@ export const CodeSelectDrawerButton = ({
         ml="auto"
         w="120px"
         onClick={() => {
-          AmpTrack(AmpEvent.USE_CODE_MODAL);
+          track(AmpEvent.USE_CODE_MODAL);
           onOpen();
         }}
       >
@@ -88,7 +89,7 @@ export const CodeSelectDrawerButton = ({
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent h="80%">
-          <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+          <DrawerHeader>
             <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
               Select Code ID
@@ -100,6 +101,7 @@ export const CodeSelectDrawerButton = ({
               <InputWithIcon
                 placeholder="Search with Code ID or Code Name"
                 value={keyword}
+                autoFocus
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
                 }

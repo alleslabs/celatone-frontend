@@ -27,7 +27,7 @@ interface StoreCodeMsgArgs {
   sender: Addr;
   wasmByteCode: Uint8Array;
   permission: AccessType;
-  addresses: Addr[];
+  addresses?: Addr[];
 }
 
 export const composeStoreCodeMsg = ({

@@ -43,6 +43,103 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.2.0
+
+### Features
+
+- [#487](https://github.com/alleslabs/celatone-frontend/pull/487) Support Station Extension
+- [#508](https://github.com/alleslabs/celatone-frontend/pull/508) Add auto focus, enter key listener on contract selection
+- [#492](https://github.com/alleslabs/celatone-frontend/pull/492) Add jsonschema actions on contract detail page
+- [#486](https://github.com/alleslabs/celatone-frontend/pull/486) Switch to schema tab when available and prefill,expand,and scroll to the prefill msg
+- [#483](https://github.com/alleslabs/celatone-frontend/pull/483) Add json schema functionality to execute page
+- [#482](https://github.com/alleslabs/celatone-frontend/pull/482) Add json schema functionality to query page
+- [#477](https://github.com/alleslabs/celatone-frontend/pull/477) Add json schema section on code detail page
+- [#475](https://github.com/alleslabs/celatone-frontend/pull/475) Add json schema functionality to instantiate contract
+- [#472](https://github.com/alleslabs/celatone-frontend/pull/472) Add json schema functionality to migrate contract
+- [#461](https://github.com/alleslabs/celatone-frontend/pull/461) Add json schema form
+- [#455](https://github.com/alleslabs/celatone-frontend/pull/455) Implement schema store and unit test
+- [#453](https://github.com/alleslabs/celatone-frontend/pull/453) Attach schema feature on upload complete
+- [#481](https://github.com/alleslabs/celatone-frontend/pull/481) Support Stargaze testnet
+- [#471](https://github.com/alleslabs/celatone-frontend/pull/471) Add proposal config, use Hasura admin secret
+- [#467](https://github.com/alleslabs/celatone-frontend/pull/467) Dynamic wallet by network, add disableAnyofAddress config
+- [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
+- [#449](https://github.com/alleslabs/celatone-frontend/pull/449) Support searching with pool id
+- [#419](https://github.com/alleslabs/celatone-frontend/pull/419) Add error message box for tx failed modal and enhance styling
+- [#415](https://github.com/alleslabs/celatone-frontend/pull/415) Search by icns names feature and Show registered icns names on account details page
+- [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
+- [#437](https://github.com/alleslabs/celatone-frontend/pull/437) Add first landing prompt for dev mode
+- [#436](https://github.com/alleslabs/celatone-frontend/pull/436) Implement merge navigation
+
+### Improvements
+
+- [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
+- [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
+- [#538](https://github.com/alleslabs/celatone-frontend/pull/538) Add empty state in query and execute with json schema
+- [#537](https://github.com/alleslabs/celatone-frontend/pull/537) Change json schema select widget null option wording for readability
+- [#535](https://github.com/alleslabs/celatone-frontend/pull/535) Improve json schema features
+- [#531](https://github.com/alleslabs/celatone-frontend/pull/531) Revise developer features and add accordion to sidebar navigation
+- [#529](https://github.com/alleslabs/celatone-frontend/pull/529) Improve developer features ux writing and transition
+- [#528](https://github.com/alleslabs/celatone-frontend/pull/528) Improve developer features toggle for a smoother ux
+- [#519](https://github.com/alleslabs/celatone-frontend/pull/519) Validate schema input when initialFormData has changed
+- [#513](https://github.com/alleslabs/celatone-frontend/pull/513) Disable simulating fee when JSON input is invalid
+- [#510](https://github.com/alleslabs/celatone-frontend/pull/510) Support optional fields for array, boolean, and string
+- [#505](https://github.com/alleslabs/celatone-frontend/pull/505) Adjust attach funds form label and icon styling for schema section
+- [#501](https://github.com/alleslabs/celatone-frontend/pull/501) Add more JSON Schema state, e.g. empty object state, boolean field
+- [#502](https://github.com/alleslabs/celatone-frontend/pull/502) Display queried time and add json/schema output switch
+- [#500](https://github.com/alleslabs/celatone-frontend/pull/500) Disable estimated fee when input is invalid
+- [#498](https://github.com/alleslabs/celatone-frontend/pull/498) Automatically switch to schema tab and show 404 not found error
+- [#491](https://github.com/alleslabs/celatone-frontend/pull/491) Improve scrolling into view by delaying scroll function
+- [#489](https://github.com/alleslabs/celatone-frontend/pull/489) Improve jsonschema query response UI and fix jsonschema incorrect oneOf behavior
+- [#484](https://github.com/alleslabs/celatone-frontend/pull/484) Fix text size consistency in txs message
+- [#480](https://github.com/alleslabs/celatone-frontend/pull/480) Update chain registry package and add attach funds in code snippet
+- [#478](https://github.com/alleslabs/celatone-frontend/pull/478) Fix pool txs icon and style
+- [#474](https://github.com/alleslabs/celatone-frontend/pull/474) Refactor stored and saved codes pages
+- [#468](https://github.com/alleslabs/celatone-frontend/pull/468) Add breadcrumb to pool id page
+- [#466](https://github.com/alleslabs/celatone-frontend/pull/466) Fix developer mode alert
+- [#457](https://github.com/alleslabs/celatone-frontend/pull/457) Add alert for proposal forum review
+- [#389](https://github.com/alleslabs/celatone-frontend/pull/389) Fix modal consistency
+- [#381](https://github.com/alleslabs/celatone-frontend/pull/381) Correctly infer output type from snake-camel utils
+- [#422](https://github.com/alleslabs/celatone-frontend/pull/422) Create query keys enum
+- [#450](https://github.com/alleslabs/celatone-frontend/pull/450) Retrieve asset prices only when necessary (/prices url path)
+- [#451](https://github.com/alleslabs/celatone-frontend/pull/451) Add jest test cases for json, date, and number in utils
+- [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
+- [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
+- [#408](https://github.com/alleslabs/celatone-frontend/pull/408) Improve dropdown and combo box interaction
+- [#421](https://github.com/alleslabs/celatone-frontend/pull/421) Generate example addresses from a fixed-bytes array
+- [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
+- [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
+- [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
+
+### Bug fixes
+
+- [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
+- [#527](https://github.com/alleslabs/celatone-frontend/pull/527) Fix ellipsis explorer link
+- [#526](https://github.com/alleslabs/celatone-frontend/pull/526) Fix missing Tx proposal type
+- [#525](https://github.com/alleslabs/celatone-frontend/pull/525) Add accountId to txs count query keys
+- [#522](https://github.com/alleslabs/celatone-frontend/pull/522) Fix to support undefined execute msg
+- [#520](https://github.com/alleslabs/celatone-frontend/pull/520) Fix update instantiated info height data and handle genesis height case
+- [#518](https://github.com/alleslabs/celatone-frontend/pull/518) Fix contract migration remark data
+- [#511](https://github.com/alleslabs/celatone-frontend/pull/511) Fix tx relation selector incorrect option
+- [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix responsive for icns and add cl pool icon
+- [#506](https://github.com/alleslabs/celatone-frontend/pull/506) Fix simulation bugs
+- [#504](https://github.com/alleslabs/celatone-frontend/pull/504) Fix response Json schema UI
+- [#503](https://github.com/alleslabs/celatone-frontend/pull/503) Fix assets `view more` button in account detail and fix txs row
+- [#496](https://github.com/alleslabs/celatone-frontend/pull/496) Fix icns bech32 prefix searchbar display and schema switch highlight on query page
+- [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix sometimes select widget input not full, manual schema upload max lines, and expand/collapse all chevron
+- [#497](https://github.com/alleslabs/celatone-frontend/pull/497) Fix stored codes route and navbar behavior from dev to normal mode
+- [#470](https://github.com/alleslabs/celatone-frontend/pull/470) Fix json schema array field default behavior
+- [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
+- [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal
+- [#465](https://github.com/alleslabs/celatone-frontend/pull/465) Fix wrong access queryKey in validator info
+- [#464](https://github.com/alleslabs/celatone-frontend/pull/464) Fix `useFaucetInfo` hook by adding `assetInfos` to its dependencies
+- [#463](https://github.com/alleslabs/celatone-frontend/pull/463) Fix event box content clipping and improve animation
+- [#462](https://github.com/alleslabs/celatone-frontend/pull/462) Fix validator query dependencies
+- [#460](https://github.com/alleslabs/celatone-frontend/pull/460) Fix icns names and contract address alignment
+- [#459](https://github.com/alleslabs/celatone-frontend/pull/459) Fix contract txs by using contract account id instead of contract address
+- [#456](https://github.com/alleslabs/celatone-frontend/pull/456) Fix pool count chip in pool transaction table
+- [#454](https://github.com/alleslabs/celatone-frontend/pull/454) Fix contract selection loading state for other folders
+- [#452](https://github.com/alleslabs/celatone-frontend/pull/452) Fix public project data on the account details and code details page still remains when switching network
+
 ## v1.1.0
 
 ### Features

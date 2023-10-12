@@ -1,28 +1,42 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
+import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
   useCurrentChain,
-  useBaseApiRoute,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import {
+  MessageInputContent,
+  MessageInputSwitch,
+  MessageTabs,
+  SchemaInputSection,
+  jsonInputFormKey,
+  yourSchemaInputFormKey,
+} from "lib/components/json-schema";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
+import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { getCodeIdInfo } from "lib/services/code";
+import type { CodeIdInfoResponse } from "lib/services/code";
+import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
-import { AccessConfigPermission, MsgType } from "lib/types";
-import { composeMsg, jsonValidate } from "lib/utils";
+import { MsgType } from "lib/types";
+import {
+  composeMsg,
+  isCodeId,
+  jsonValidate,
+  resolvePermission,
+} from "lib/utils";
 
 interface MigrateContractProps {
   contractAddress: ContractAddr;
@@ -35,86 +49,138 @@ export const MigrateContract = ({
   codeIdParam,
   handleBack,
 }: MigrateContractProps) => {
+  // ------------------------------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
   const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
-  const lcdEndpoint = useBaseApiRoute("rest");
-
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const { trackAction } = useTrack();
 
+  // ------------------------------------------//
+  // ----------------FORM HOOKS----------------//
+  // ------------------------------------------//
   const {
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors: formErrors },
   } = useForm({
-    defaultValues: { codeId: codeIdParam, migrateMsg: "{}" },
+    defaultValues: {
+      codeId: codeIdParam,
+      codeHash: "",
+      msgInput: {
+        [jsonInputFormKey]: "{}",
+        [yourSchemaInputFormKey]: "{}",
+      },
+    },
     mode: "all",
   });
-  const { codeId, migrateMsg } = watch();
+  const { codeId, codeHash, msgInput } = watch();
+
+  // ------------------------------------------//
+  // ------------------STATES------------------//
+  // ------------------------------------------//
+  const [tab, setTab] = useState<MessageTabs>();
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
 
-  const enableMigrate =
-    !!address &&
-    codeId.length > 0 &&
-    jsonValidate(migrateMsg) === null &&
-    status.state === "success";
+  // ------------------------------------------//
+  // ------------------LOGICS------------------//
+  // ------------------------------------------//
+  const currentInput = tab ? msgInput[tab] : "{}";
+  const jsonSchema = getSchemaByCodeHash(codeHash);
+  const enableMigrate = useMemo(() => {
+    const generalChecks =
+      Boolean(address) && isCodeId(codeId) && status.state === "success";
 
+    switch (tab) {
+      case MessageTabs.JSON_INPUT:
+        return generalChecks && jsonValidate(currentInput) === null;
+      case MessageTabs.YOUR_SCHEMA:
+        return generalChecks && isValidJsonInput;
+      default:
+        return false;
+    }
+  }, [address, codeId, currentInput, isValidJsonInput, status.state, tab]);
+
+  // ------------------------------------------//
+  // ---------------SIMUATE FEE----------------//
+  // ------------------------------------------//
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onSuccess: (gasRes) => {
-      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
-      else setEstimatedFee(undefined);
-    },
+    onSuccess: (gasRes) =>
+      gasRes
+        ? setEstimatedFee(fabricateFee(gasRes))
+        : setEstimatedFee(undefined),
     onError: (e) => {
       setSimulateError(e.message);
       setEstimatedFee(undefined);
     },
   });
 
-  const { refetch } = useQuery(
-    ["query", lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, codeId),
-    {
-      enabled: !!address && !!codeId.length,
-      retry: false,
-      cacheTime: 0,
-      onSuccess(data) {
-        const permission = data.code_info.instantiate_permission;
-        if (
-          address &&
-          (permission.permission === AccessConfigPermission.EVERYBODY ||
-            permission.addresses.includes(address as HumanAddr) ||
-            permission.address === address)
+  const { refetch } = useLCDCodeInfo(codeId, {
+    enabled: false,
+    retry: false,
+    cacheTime: 0,
+    onSuccess(data) {
+      const permission = data.code_info.instantiate_permission;
+      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+      if (
+        resolvePermission(
+          address as HumanAddr,
+          permission.permission,
+          permission.addresses,
+          permission.address
         )
-          setStatus({ state: "success" });
-        else {
-          setStatus({
-            state: "error",
-            message:
-              "This wallet does not have permission to migrate to this code",
-          });
-          setSimulateError("");
-        }
-      },
-      onError() {
-        setStatus({ state: "error", message: "This code ID does not exist" });
+      )
+        setStatus({ state: "success" });
+      else {
+        setStatus({
+          state: "error",
+          message:
+            "This wallet does not have permission to migrate to this code",
+        });
         setSimulateError("");
-      },
-    }
+      }
+    },
+    onError() {
+      setStatus({ state: "error", message: "This code ID does not exist" });
+      setSimulateError("");
+    },
+  });
+
+  // ------------------------------------------//
+  // ----------------CALLBACKS-----------------//
+  // ------------------------------------------//
+  const resetMsgInputSchema = useCallback(() => {
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
+  }, [setValue]);
+
+  const handleChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidJsonInput(errors.length === 0);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
+    },
+    [setValue]
   );
 
   const proceed = useCallback(async () => {
-    AmpTrack(AmpEvent.ACTION_MIGRATE);
+    trackAction(
+      AmpEvent.ACTION_MIGRATE,
+      tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
+    );
     const stream = await migrateTx({
       contractAddress,
       codeId: Number(codeId),
-      migrateMsg: JSON.parse(migrateMsg),
+      migrateMsg: JSON.parse(currentInput),
       estimatedFee,
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
@@ -124,9 +190,24 @@ export const MigrateContract = ({
       setProcessing(true);
       broadcast(stream);
     }
-  }, [migrateTx, contractAddress, codeId, migrateMsg, estimatedFee, broadcast]);
+  }, [
+    migrateTx,
+    trackAction,
+    tab,
+    contractAddress,
+    codeId,
+    currentInput,
+    estimatedFee,
+    broadcast,
+    setProcessing,
+  ]);
 
+  // ------------------------------------------//
+  // --------------SIDE EFFECTS----------------//
+  // ------------------------------------------//
   useEffect(() => {
+    setValue("codeHash", "");
+    setTab(MessageTabs.JSON_INPUT);
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
@@ -137,7 +218,7 @@ export const MigrateContract = ({
     setStatus({ state: "init" });
 
     return () => {};
-  }, [address, codeId, refetch]);
+  }, [address, codeId, refetch, setValue, setTab]);
 
   useEffect(() => {
     if (enableMigrate) {
@@ -146,15 +227,23 @@ export const MigrateContract = ({
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         codeId: Long.fromString(codeId),
-        msg: Buffer.from(migrateMsg),
+        msg: Buffer.from(currentInput),
       });
       const timeoutId = setTimeout(() => {
         setComposedTxMsg([composedMsg]);
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // reset estimated fee and error when user change the input
+    setSimulateError("");
+    setEstimatedFee(undefined);
     return () => {};
-  }, [address, codeId, contractAddress, enableMigrate, migrateMsg]);
+  }, [address, codeId, contractAddress, enableMigrate, currentInput]);
+
+  useEffect(() => {
+    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
+  }, [jsonSchema]);
 
   return (
     <>
@@ -165,17 +254,47 @@ export const MigrateContract = ({
         name="codeId"
         control={control}
         status={status}
-        error={errors.codeId?.message}
-        onCodeSelect={(code: string) => setValue("codeId", code)}
+        error={formErrors.codeId?.message}
+        onCodeSelect={(code: string) => {
+          setValue("codeId", code);
+          resetMsgInputSchema();
+        }}
+        setCodeHash={(data: CodeIdInfoResponse) => {
+          setValue("codeHash", data.code_info.data_hash.toLowerCase());
+        }}
         codeId={codeId}
       />
-      <Heading as="h6" variant="h6" mt={12} mb={6}>
-        Migrate Message
-      </Heading>
-      <JsonInput
-        text={migrateMsg}
-        setText={(msg: string) => setValue("migrateMsg", msg)}
-        minLines={10}
+      <Flex align="center" justify="space-between" mt={12} mb={6}>
+        <Heading as="h6" variant="h6">
+          Migrate Message
+        </Heading>
+        <MessageInputSwitch
+          currentTab={tab}
+          onTabChange={setTab}
+          disabled={!codeHash}
+        />
+      </Flex>
+      <MessageInputContent
+        currentTab={tab}
+        jsonContent={
+          <JsonInput
+            text={msgInput[MessageTabs.JSON_INPUT]}
+            setText={(msg: string) =>
+              setValue(`msgInput.${jsonInputFormKey}`, msg)
+            }
+            minLines={10}
+          />
+        }
+        schemaContent={
+          <SchemaInputSection
+            type="migrate"
+            codeHash={codeHash}
+            codeId={codeId}
+            jsonSchema={jsonSchema}
+            handleChange={handleChange}
+            onSchemaSave={resetMsgInputSchema}
+          />
+        }
       />
       {simulateError && (
         <Flex gap={2} mb={4}>

@@ -1,13 +1,13 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 
-import type { ExplorerConfig } from "config/types";
+import type { ExplorerConfig } from "config/chain/types";
+import { useTrack } from "lib/amplitude";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
-import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -62,6 +62,8 @@ export const getNavigationUrl = (
       url = "/codes";
       break;
     case "block_height":
+      // no block info for Genesis height (0)
+      if (value === "0") return "";
       url = "/blocks";
       break;
     case "proposal_id":
@@ -116,6 +118,7 @@ const LinkRender = ({
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
+  const { trackMintScan } = useTrack();
   const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
@@ -127,8 +130,6 @@ const LinkRender = ({
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
-      display={{ base: "inline", md: "flex" }}
-      align={{ base: "start", md: "center" }}
     >
       {textValue}
     </Text>
@@ -145,7 +146,7 @@ const LinkRender = ({
       rel="noopener noreferrer"
       data-peer
       onClick={(e) => {
-        AmpTrackMintscan(type);
+        trackMintScan(type);
         e.stopPropagation();
       }}
     >
@@ -189,6 +190,7 @@ export const ExplorerLink = ({
 
   const readOnly = isReadOnly || !hrefLink;
   const isMobile = useMobile();
+  // TODO: handle auto width
   return (
     <Box
       className="copier-wrapper"

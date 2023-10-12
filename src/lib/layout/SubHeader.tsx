@@ -1,6 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useCallback } from "react";
 
-import { useCurrentChain } from "lib/app-provider";
+import { AmpEvent, useTrack } from "lib/amplitude";
+import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -11,26 +13,50 @@ interface SubHeaderMenuInfo {
   slug: string;
   icon: IconKeys;
 }
+
 const SubHeader = () => {
+  const wasmConfig = useWasmConfig({ shouldRedirect: false });
+  const poolConfig = usePoolConfig({ shouldRedirect: false });
+  const govConfig = useGovConfig({ shouldRedirect: false });
+  const { track } = useTrack();
+
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
-    { name: "Proposals", slug: "/proposals", icon: "proposal" },
-    // { name: "Validators", slug: "/validators", icon: "admin" },
+    ...(wasmConfig.enabled
+      ? ([
+          { name: "Codes", slug: "/codes", icon: "code" },
+          { name: "Contracts", slug: "/contracts", icon: "contract-address" },
+        ] as const)
+      : []),
+    ...(govConfig.enabled
+      ? ([{ name: "Proposals", slug: "/proposals", icon: "proposal" }] as const)
+      : []),
+    ...(poolConfig.enabled
+      ? ([{ name: "Osmosis Pools", slug: "/pools", icon: "pool" }] as const)
+      : []),
   ];
-  const { address } = useCurrentChain();
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";
 
-  const myPageSlug = `/accounts/${address}`;
+  const trackOnClick = useCallback(
+    (tab: string) => {
+      track(AmpEvent.USE_TOPBAR, { tab });
+    },
+    [track]
+  );
 
   return (
     <Flex px={6} alignItems="center" h="full" justifyContent="space-between">
       <Flex h="full">
         {subHeaderMenu.map((item) => (
-          <AppLink href={item.slug} key={item.slug}>
+          <AppLink
+            href={item.slug}
+            key={item.slug}
+            onClick={() => trackOnClick(item.name)}
+          >
             <Flex
               alignItems="center"
               px={4}
@@ -69,29 +95,6 @@ const SubHeader = () => {
           </AppLink>
         ))}
       </Flex>
-      {address && (
-        <Flex h="full">
-          <AppLink href={myPageSlug} key={myPageSlug}>
-            <Flex
-              alignItems="center"
-              px={4}
-              gap={2}
-              h="full"
-              borderBottomWidth={2}
-              borderColor={
-                isCurrentPage(myPageSlug) ? "secondary.main" : "transparent"
-              }
-              _hover={{ borderColor: "secondary.main" }}
-              transition="all .25s ease-in-out"
-            >
-              <CustomIcon boxSize={3} name="admin" color="secondary.main" />
-              <Text variant="body2" fontWeight={700} color="secondary.main">
-                My Page
-              </Text>
-            </Flex>
-          </AppLink>
-        </Flex>
-      )}
     </Flex>
   );
 };

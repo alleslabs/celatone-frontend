@@ -1,8 +1,8 @@
 import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { useTrack } from "lib/amplitude";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
-import { AmpTrackUseRadio } from "lib/services/amplitude";
 import type { Option, TokenWithValue } from "lib/types";
 
 import { DelegationsTab } from "./DelegationsTab";
@@ -32,11 +32,12 @@ export const DelegationsBody = ({
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
   const [value, setValue] = useState("Delegated");
+  const { trackUseRadio } = useTrack();
   return (
     <Flex direction="column" gap={8}>
       <RadioGroup
         onChange={(newValue) => {
-          AmpTrackUseRadio(newValue.toLocaleLowerCase());
+          trackUseRadio(newValue.toLocaleLowerCase());
           setValue(newValue);
         }}
         value={value}

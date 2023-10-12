@@ -16,18 +16,20 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
+import type { KeyboardEvent } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
+  useExampleAddresses,
   useMobile,
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
@@ -43,14 +45,11 @@ export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
+  const { track } = useTrack();
 
   const [searchContract, setSearchContract] = useState<ContractAddr>(
     "" as ContractAddr
@@ -58,6 +57,8 @@ export const SelectContractInstantiator = ({
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
+
+  const isMobile = useMobile();
 
   // TODO - Revisit false case
   const { instantiatedListInfo, isLoading } = useInstantiatedByMe(true);
@@ -74,14 +75,14 @@ export const SelectContractInstantiator = ({
   };
 
   const onSelectThenClose = (contract: ContractAddr) => {
-    AmpTrack(AmpEvent.USE_CONTRACT_MODAL_LISTS);
+    track(AmpEvent.USE_CONTRACT_MODAL_LISTS);
     onContractSelect(contract);
     resetOnClose();
   };
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", lcdEndpoint, searchContract],
+    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, searchContract],
     async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,
@@ -101,7 +102,21 @@ export const SelectContractInstantiator = ({
     setListSlug(slug);
   };
 
-  const isMobile = useMobile();
+  const handleSubmit = () => {
+    const err = validateContractAddress(searchContract);
+    if (err !== null) setInvalid(err);
+    else {
+      track(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
+      refetch();
+    }
+  };
+
+  const handleKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <>
       <Button
@@ -110,7 +125,7 @@ export const SelectContractInstantiator = ({
         size="sm"
         px={4}
         onClick={() => {
-          AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
+          track(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
         leftIcon={
@@ -154,20 +169,15 @@ export const SelectContractInstantiator = ({
                     }}
                     placeholder={`ex. ${exampleContractAddress}`}
                     size="lg"
+                    autoFocus
+                    onKeyDown={handleKeydown}
                   />
                   <Button
                     height="56px"
                     minW="72px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
-                    onClick={() => {
-                      const err = validateContractAddress(searchContract);
-                      if (err !== null) setInvalid(err);
-                      else {
-                        AmpTrack(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
-                        refetch();
-                      }
-                    }}
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>

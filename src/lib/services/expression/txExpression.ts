@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { Addr, Option, PoolTxFilter, TxFilters } from "lib/types";
+import type { Option, PoolTxFilter, TxFilters } from "lib/types";
 import { isTxHash } from "lib/utils";
 
 const actions = {
@@ -35,27 +35,19 @@ const generateSearch = (search: string) =>
     : [{}];
 
 export const useTxExpression = ({
-  address,
   accountId,
   search,
   filters,
   isSigner,
 }: {
-  address?: Option<Addr>;
-  accountId?: Option<number | null>;
+  accountId: Option<number | null>;
   search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
 }) =>
   useMemo(() => {
     const hasFilter = Object.values(filters).some((filter: boolean) => filter);
-    const accountIdExp = accountId ? { account_id: { _eq: accountId } } : {};
-    const addressExp = address
-      ? { account: { address: { _eq: address } } }
-      : {};
-    const applyAccountExp = Object.keys(accountIdExp).length
-      ? accountIdExp
-      : addressExp;
+    const accountExp = accountId ? { account_id: { _eq: accountId } } : {};
     const isSignerExp =
       isSigner === undefined ? {} : { is_signer: { _eq: isSigner } };
     const filterExp =
@@ -70,11 +62,11 @@ export const useTxExpression = ({
           }
         : {};
     return {
-      ...applyAccountExp,
+      ...accountExp,
       ...isSignerExp,
       ...filterExp,
     };
-  }, [address, accountId, filters, isSigner, search]);
+  }, [accountId, filters, isSigner, search]);
 
 export const usePoolTxExpression = (
   poolId: Option<number>,

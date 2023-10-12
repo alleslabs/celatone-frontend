@@ -16,7 +16,15 @@ export const SUPPORTED_CHAIN_IDS: string[] = (() => {
 // Remark: We've already checked that the first element is not empty on the above code
 export const DEFAULT_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
-export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
+export const DUMMY_MNEMONIC = (() => {
+  const mnemonic = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
+  if (!mnemonic)
+    throw new Error(
+      "NEXT_PUBLIC_DUMMY_MNEMONIC is empty. Please include a valid mnemonic."
+    );
+
+  return mnemonic;
+})();
 
 export const CELATONE_API_OVERRIDE =
   process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;

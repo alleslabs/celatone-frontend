@@ -2,16 +2,18 @@ import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import PageContainer from "lib/components/PageContainer";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { BlocksTable } from "./components/BlocksTable";
 
 const BlocksPage = () => {
   const router = useRouter();
+  const { track } = useTrack();
+
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_BLOCKS);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_BLOCKS);
+  }, [router.isReady, track]);
 
   return (
     <PageContainer>

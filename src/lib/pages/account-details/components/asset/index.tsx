@@ -2,6 +2,7 @@ import { Flex, Grid, Text, Button } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
 
+import { useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -10,7 +11,6 @@ import { TableTitle, ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
 import { useOpenAssetTab } from "lib/hooks";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
-import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
 import { calTotalValue, formatPrice } from "lib/utils";
 
@@ -29,16 +29,17 @@ interface AssetSectionContentProps {
 
 interface AssetCtaProps {
   walletAddress: HumanAddr;
+  totalAsset: number;
 }
 const MaxAssetsShow = 12;
 
 const AssetTitle = ({
   onViewMore,
-  assetCount,
+  totalAsset,
   children,
 }: {
   onViewMore: AssetsSectionProps["onViewMore"];
-  assetCount: number;
+  totalAsset: number;
   children: JSX.Element;
 }) => {
   const isMobile = useMobile();
@@ -56,22 +57,21 @@ const AssetTitle = ({
         onClick={onViewMore}
       >
         <Flex direction="column" gap={2}>
-          <TableTitle title="Assets" count={assetCount} mb={0} />
+          <TableTitle title="Assets" count={totalAsset} mb={0} />
           {children}
         </Flex>
         <CustomIcon name="chevron-right" color="gray.600" />
       </Flex>
     );
 
-  return <TableTitle title="Assets" count={assetCount} mb={0} />;
+  return <TableTitle title="Assets" count={totalAsset} mb={0} />;
 };
 
-const AssetCta = ({ walletAddress }: AssetCtaProps) => {
-  const { supportedAssets, unsupportedAssets } =
-    useUserAssetInfos(walletAddress);
+const AssetCta = ({ walletAddress, totalAsset }: AssetCtaProps) => {
+  const { unsupportedAssets } = useUserAssetInfos(walletAddress);
   const openAssetTab = useOpenAssetTab();
-  const totalAsset =
-    (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
+  const { trackUseViewJSON } = useTrack();
+
   return (
     <Flex
       w={{ base: "full", md: "auto" }}
@@ -84,7 +84,7 @@ const AssetCta = ({ walletAddress }: AssetCtaProps) => {
           size="sm"
           rightIcon={<CustomIcon name="launch" boxSize={3} color="text.dark" />}
           onClick={() => {
-            AmpTrackViewJson("account_details_page_assets");
+            trackUseViewJSON("account_details_page_assets");
             openAssetTab(walletAddress);
           }}
         >
@@ -154,7 +154,11 @@ export const AssetsSection = ({
     isMobileDetail = true;
   }
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
+
+  const totalAsset =
+    (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
+
   return (
     <Flex
       direction="column"
@@ -163,12 +167,7 @@ export const AssetsSection = ({
       mb={{ base: 0, md: 8 }}
       width="full"
     >
-      <AssetTitle
-        onViewMore={onViewMore}
-        assetCount={
-          (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0)
-        }
-      >
+      <AssetTitle onViewMore={onViewMore} totalAsset={totalAsset}>
         {TotalAssetValueInfo}
       </AssetTitle>
       {isMobileDetail && (
@@ -180,22 +179,26 @@ export const AssetsSection = ({
             direction={{ base: "column", md: "row" }}
           >
             <Flex gap="50px">{TotalAssetValueInfo}</Flex>
-            {!isMobile && <AssetCta walletAddress={walletAddress} />}
+            {!isMobile && (
+              <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+            )}
           </Flex>
           <AssetSectionContent
             supportedAssets={supportedAssets}
             onViewMore={onViewMore}
             error={error}
           />
-          {isMobile && <AssetCta walletAddress={walletAddress} />}
+          {isMobile && (
+            <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+          )}
         </>
       )}
-      {!isMobile ||
-        (supportedAssets &&
-          onViewMore &&
-          supportedAssets.length > MaxAssetsShow && (
-            <ViewMore onClick={onViewMore} />
-          ))}
+      {!isMobile &&
+        supportedAssets &&
+        onViewMore &&
+        supportedAssets.length > MaxAssetsShow && (
+          <ViewMore onClick={onViewMore} />
+        )}
     </Flex>
   );
 };

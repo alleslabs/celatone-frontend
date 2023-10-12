@@ -41,7 +41,7 @@ const ContractListContent = ({
   return (
     <ContractsTable
       contracts={filteredContracts}
-      isLoading={isLoading}
+      isLoading={isInstantiatedByMe && isLoading}
       emptyState={
         !contractListInfo.contracts.length ? (
           <ZeroState
@@ -123,6 +123,7 @@ export const ContractListDetail = ({
           value={searchKeyword}
           setInputState={setSearchKeyword}
           placeholder="Search with Contract Address, Name, or Description"
+          autoFocus
           size={!isReadOnly ? "lg" : "md"}
         />
         {!isReadOnly && (

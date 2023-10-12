@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -22,7 +23,6 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
@@ -56,6 +56,7 @@ const getAlertContent = (
       };
 
 const Deploy = () => {
+  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
@@ -74,10 +75,10 @@ const Deploy = () => {
   useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_DEPLOY);
+  }, [router.isReady, track]);
 
-  if (isFetching) return <Loading withBorder={false} />;
+  if (isFetching) return <Loading />;
 
   const { variant, icon, description } = getAlertContent(
     enableUpload,

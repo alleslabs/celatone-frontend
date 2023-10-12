@@ -2,11 +2,11 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast, Text } from "@chakra-ui/react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
 
@@ -18,17 +18,17 @@ interface RemoveListModalProps {
 export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   const userKey = useUserKey();
   const { removeList } = useContractStore();
-
+  const { track } = useTrack();
   const toast = useToast();
   const navigate = useInternalNavigate();
   const handleRemove = () => {
-    AmpTrack(AmpEvent.LIST_REMOVE);
+    track(AmpEvent.LIST_REMOVE);
     removeList(userKey, list.value);
     navigate({ pathname: "/contract-lists" });
     // TODO: show toast after removed and redirect to /contract-lists
     setTimeout(() => {
       toast({
-        title: `Removed ${shortenName(list.label)}`,
+        title: `Removed '${shortenName(list.label)}'`,
         status: "success",
         duration: 5000,
         isClosable: false,
@@ -41,10 +41,11 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   return (
     <ActionModal
       title={`Remove ${shortenName(list.label)}?`}
-      icon="delete"
+      icon="delete-solid"
       iconColor="error.light"
       trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Yes, Remove list"
+      mainVariant="error"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
     >

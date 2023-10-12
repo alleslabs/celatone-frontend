@@ -2,14 +2,14 @@ import type { InputProps } from "@chakra-ui/react";
 import { FormControl, Flex, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { useMemo, useState, useRef, forwardRef } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { FilterChip } from "lib/components/filter/FilterChip";
 import { DropdownContainer } from "lib/components/filter/FilterComponents";
 import { FilterDropdownItem } from "lib/components/filter/FilterDropdownItem";
 import { FilterInput } from "lib/components/filter/FilterInput";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
-import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import { ProposalStatus } from "lib/types";
 
 export interface ProposalStatusFilterProps extends InputProps {
@@ -36,38 +36,34 @@ export const ProposalStatusFilter = forwardRef<
     }: ProposalStatusFilterProps,
     ref
   ) => {
-    const [dropdownValue, setDropdownValue] = useState<ProposalStatus[]>([]);
+    const { trackUseFilter } = useTrack();
+    const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
 
-    const filterDropdown = (value: string) => {
-      setIsDropdown(true);
-      setDropdownValue(
-        value
-          ? matchSorter(OPTIONS, value, {
+    const dropdownValue = useMemo(
+      () =>
+        keyword
+          ? matchSorter(OPTIONS, keyword, {
               threshold: matchSorter.rankings.CONTAINS,
             })
-          : OPTIONS
-      );
-    };
+          : OPTIONS,
+      [keyword]
+    );
 
     const isOptionSelected = (option: ProposalStatus) =>
       result.some((selectedOption) => selectedOption === option);
 
     const selectOption = (option: ProposalStatus) => {
       if (inputRef.current) {
-        inputRef.current.value = "";
+        setKeyword("");
       }
       if (result.includes(option)) {
-        AmpTrackUseFilter(
-          AmpEvent.USE_FILTER_PROPOSALS_STATUS,
-          result,
-          "remove"
-        );
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
         setResult((prevState) => prevState.filter((value) => value !== option));
       } else {
-        AmpTrackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
         setResult((prevState) => [...prevState, option]);
       }
     };
@@ -80,13 +76,14 @@ export const ProposalStatusFilter = forwardRef<
     return (
       <FormControl ref={boxRef} minW={minW} maxW="full" h={8}>
         <FilterInput
+          keyword={keyword}
           placeholder={placeholder}
           result={result}
           label={label}
           inputRef={inputRef}
           ref={ref}
           isDropdown={isDropdown}
-          filterDropdown={filterDropdown}
+          setKeyword={setKeyword}
           setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>

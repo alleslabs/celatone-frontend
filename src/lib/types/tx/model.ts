@@ -21,17 +21,18 @@ export interface ReceiptInfo {
   header: string;
   headerIcon?: ReactNode;
   description?: ReactNode;
+  errorMsg?: string;
 }
 
 export type ActionVariant =
   | "sending"
-  | "upload"
   | "upload-migrate"
   | "migrate"
   | "rejected"
   | "resend"
   | "update-admin"
-  | "proposal";
+  | "proposal"
+  | "failed";
 
 export interface TxResultRendering<T = unknown> {
   /**

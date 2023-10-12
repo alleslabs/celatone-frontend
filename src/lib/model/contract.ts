@@ -1,47 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
-
-import {
-  useBaseApiRoute,
-  useCelatoneApp,
-  useCurrentChain,
-} from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
-import { useCodeStore, useContractStore } from "lib/providers/store";
-import { useAssetInfos } from "lib/services/assetService";
-import {
-  queryContractCw2Info,
-  queryContractBalances,
-  queryInstantiateInfo,
-} from "lib/services/contract";
+import { useContractStore } from "lib/providers/store";
+import {} from "lib/services/contract";
 import {
   useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
-  useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
   useMigrationHistoriesCountByContractAddress,
 } from "lib/services/contractService";
 import { useRelatedProposalsCountByContractAddress } from "lib/services/proposalService";
-import {
-  usePublicProjectByContractAddress,
-  usePublicProjectBySlug,
-} from "lib/services/publicProjectService";
 import { useTxsCountByAddress } from "lib/services/txService";
 import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,
-  BalanceWithAssetInfo,
   ContractAddr,
   HumanAddr,
-  ContractData,
   ContractInfo,
   Option,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
-
-export interface ContractDataState {
-  contractData: ContractData;
-  isLoading: boolean;
-}
 
 interface InstantiatedByMeState {
   instantiatedListInfo: ContractListInfo;
@@ -91,106 +68,20 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   };
 };
 
-export const useContractData = (
-  contractAddress: ContractAddr
-): ContractDataState => {
-  const balancesApiRoute = useBaseApiRoute("balances");
-  const { indexerGraphClient, currentChainId } = useCelatoneApp();
-  const { getCodeLocalInfo } = useCodeStore();
-  const { getContractLocalInfo } = useContractStore();
-  const lcdEndpoint = useBaseApiRoute("rest");
-
-  const { assetInfos } = useAssetInfos();
-  const { data: publicInfo } =
-    usePublicProjectByContractAddress(contractAddress);
-  const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
-
-  const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
-    useQuery(
-      ["query", "instantiate_info", lcdEndpoint, contractAddress],
-      async () =>
-        queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
-      { enabled: !!contractAddress, retry: false }
-    );
-
-  const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
-    useQuery(
-      ["query", "contract_cw2_info", lcdEndpoint, contractAddress],
-      async () => queryContractCw2Info(lcdEndpoint, contractAddress),
-      { enabled: !!contractAddress, retry: false }
-    );
-
-  const { data: contractBalances, isLoading: isContractBalancesLoading } =
-    useQuery(
-      ["query", "contractBalances", balancesApiRoute, contractAddress],
-      async () => queryContractBalances(balancesApiRoute, contractAddress),
-      { enabled: !!contractAddress, retry: false }
-    );
-
-  const contractBalancesWithAssetInfos = contractBalances
-    ?.map(
-      (balance): BalanceWithAssetInfo => ({
-        balance,
-        assetInfo: assetInfos?.[balance.id],
-      })
-    )
-    .sort((a, b) => {
-      if (a.balance.symbol && b.balance.symbol) {
-        return a.balance.symbol.localeCompare(b.balance.symbol);
-      }
-      return -1;
-    });
-
-  const codeInfo = instantiateInfo
-    ? getCodeLocalInfo(Number(instantiateInfo.codeId))
-    : undefined;
-  const contractLocalInfo = getContractLocalInfo(contractAddress);
-
-  const { data: instantiateDetail } =
-    useInstantiateDetailByContractQuery(contractAddress);
-
-  return {
-    contractData: {
-      chainId: currentChainId,
-      codeInfo,
-      contractLocalInfo,
-      contractCw2Info,
-      instantiateInfo,
-      publicProject: {
-        publicInfo,
-        publicDetail: publicInfoBySlug?.details,
-      },
-      balances: contractBalancesWithAssetInfos,
-      initMsg: instantiateDetail?.initMsg,
-      initTxHash: instantiateDetail?.initTxHash,
-      initProposalId: instantiateDetail?.initProposalId,
-      initProposalTitle: instantiateDetail?.initProposalTitle,
-      createdHeight:
-        instantiateInfo?.createdHeight ?? instantiateDetail?.createdHeight,
-      createdTime:
-        instantiateInfo?.createdTime ?? instantiateDetail?.createdTime,
-    },
-    isLoading:
-      isInstantiateInfoLoading ||
-      isContractCw2InfoLoading ||
-      isContractBalancesLoading,
-  };
-};
-
 /**
  * @remark
  * Remove execute table for now
  *
  */
 export const useContractDetailsTableCounts = (
-  contractAddress: ContractAddr
+  contractAddress: ContractAddr,
+  contractAccountId: Option<number | null>
 ) => {
   const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount, refetch: refetchTransactions } =
     useTxsCountByAddress({
-      address: contractAddress,
-      accountId: undefined,
+      accountId: contractAccountId,
       search: "",
       filters: DEFAULT_TX_FILTERS,
       isSigner: undefined,

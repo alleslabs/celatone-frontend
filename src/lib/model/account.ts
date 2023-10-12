@@ -27,7 +27,6 @@ export const useAccountDetailsTableCounts = (
   const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
   const { data: txsCount, isFetching: txCountFetching } = useTxsCountByAddress({
-    address: undefined,
     accountId,
     search: "",
     filters: DEFAULT_TX_FILTERS,

@@ -2,8 +2,11 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
+import { useTrack } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
 import type { Addr, ContractAddr, HumanAddr, Option } from "lib/types";
+
+import { useCatchTxError } from "./catchTxError";
 
 export interface UpdateAdminStreamParams {
   contractAddress: ContractAddr;
@@ -15,6 +18,8 @@ export interface UpdateAdminStreamParams {
 
 export const useUpdateAdminTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -35,10 +40,14 @@ export const useUpdateAdminTx = () => {
         newAdmin,
         fee: estimatedFee,
         client,
-        onTxSucceed,
+        catchTxError,
+        onTxSucceed: () => {
+          trackTxSucceed();
+          onTxSucceed?.();
+        },
         onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
   );
 };

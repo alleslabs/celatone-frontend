@@ -6,9 +6,9 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   Addr,
   ContractAddr,
@@ -18,7 +18,7 @@ import type {
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
-import { catchTxError, postTx, sendingTx } from "./common";
+import { postTx, sendingTx } from "./common";
 
 interface UpdateAdminTxParams {
   address: HumanAddr;
@@ -26,6 +26,7 @@ interface UpdateAdminTxParams {
   newAdmin: Addr;
   fee: StdFee;
   client: SigningCosmWasmClient;
+  catchTxError: CatchTxError;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -36,6 +37,7 @@ export const updateAdminTx = ({
   newAdmin,
   fee,
   client,
+  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: UpdateAdminTxParams): Observable<TxResultRendering> => {
@@ -46,7 +48,6 @@ export const updateAdminTx = ({
         client.updateAdmin(address, contractAddress, newAdmin, fee, undefined),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
@@ -71,7 +72,7 @@ export const updateAdminTx = ({
           },
         ],
         receiptInfo: {
-          header: "Update Admin Complete",
+          header: "Update Admin Complete!",
           headerIcon: (
             <CustomIcon name="check-circle-solid" color="success.main" />
           ),

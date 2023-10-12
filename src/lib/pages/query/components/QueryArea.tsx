@@ -1,192 +1,121 @@
-import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
+import { useCallback, useEffect, useState } from "react";
 
-import { useBaseApiRoute, useCurrentChain, useMobile } from "lib/app-provider";
-import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import { CopyButton } from "lib/components/copy";
+import { useTrack } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import JsonInput from "lib/components/json/JsonInput";
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
-import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useUserKey } from "lib/hooks";
-import { useContractStore } from "lib/providers/store";
-import { AmpTrack, AmpEvent } from "lib/services/amplitude";
-import { queryData } from "lib/services/contract";
-import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
 import {
-  encode,
-  getCurrentDate,
-  jsonLineCount,
-  jsonPrettify,
-  jsonValidate,
-} from "lib/utils";
+  MessageInputContent,
+  MessageTabs,
+  UploadSchemaSection,
+} from "lib/components/json-schema";
+import { Tooltip } from "lib/components/Tooltip";
+import { useSchemaStore } from "lib/providers/store";
+import type { ContractAddr } from "lib/types";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+import { JsonQuery } from "./JsonQuery";
+import { SchemaQuery } from "./SchemaQuery";
 
 interface QueryAreaProps {
   contractAddress: ContractAddr;
+  codeId: string;
+  codeHash: string;
   initialMsg: string;
-  cmds: [string, string][];
 }
 
-export const QueryArea = ({
-  contractAddress,
-  initialMsg,
-  cmds,
-}: QueryAreaProps) => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+export const QueryArea = observer(
+  ({ contractAddress, codeId, codeHash, initialMsg }: QueryAreaProps) => {
+    const { trackUseTab } = useTrack();
+    const [tab, setTab] = useState<MessageTabs>();
 
-  const userKey = useUserKey();
-  const { addActivity } = useContractStore();
-  const { address } = useCurrentChain();
+    const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
+    const schema = getQuerySchema(codeHash);
+    const attached = Boolean(getSchemaByCodeHash(codeHash));
+    const isMobile = useMobile();
 
-  const [msg, setMsg] = useState("");
-  const [res, setRes] = useState("");
+    const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
 
-  // TODO: Abstract query
-  const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", lcdEndpoint, contractAddress, msg],
-    async () => queryData(lcdEndpoint, contractAddress, msg),
-    {
-      enabled: false,
-      retry: false,
-      cacheTime: 0,
-      onSettled() {
-        setMsg(jsonPrettify(msg));
+    const handleTabChange = useCallback(
+      (nextTab: MessageTabs) => {
+        trackUseTab(nextTab);
+        setTab(nextTab);
       },
-      onSuccess(data) {
-        setRes(JSON.stringify(data.data, null, 2));
-        addActivity(userKey, {
-          type: "query",
-          action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address as HumanAddr,
-          contractAddress,
-          msg: encode(msg),
-          timestamp: getCurrentDate(),
-        });
-      },
-      onError(err: AxiosError<RpcQueryError>) {
-        setRes(err.response?.data.message || DEFAULT_RPC_ERROR);
-      },
-    }
-  );
-  const handleQuery = () => {
-    AmpTrack(AmpEvent.ACTION_QUERY);
-    refetch();
-  };
+      [trackUseTab]
+    );
 
-  useEffect(() => setMsg(initialMsg), [initialMsg]);
+    useEffect(() => {
+      if (!schema) setTab(MessageTabs.JSON_INPUT);
+      else setTab(MessageTabs.YOUR_SCHEMA);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(schema)]);
 
-  useEffect(() => {
-    const keydownHandler = (e: KeyboardEvent) => {
-      // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") handleQuery();
-    };
-    document.addEventListener("keydown", keydownHandler);
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-    };
-  });
-
-  const isMobile = useMobile();
-  return (
-    <Flex direction="column">
-      <Box width="full" mt={4} mb={8} alignItems="center">
-        {contractAddress && (
-          <Text variant="body3" mb={2}>
-            Message Suggestions:
-          </Text>
+    return (
+      <Box my={4}>
+        <Heading variant="h6" as="h6" mr={2} mt={8} mb={4}>
+          Query Message
+        </Heading>
+        {!isMobile && (
+          <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
+            <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
+              >
+                JSON Input
+              </CustomTab>
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
+                isDisabled={!contractAddress}
+              >
+                <Tooltip
+                  label="Please select contract first"
+                  isDisabled={Boolean(contractAddress)}
+                >
+                  Your Schema
+                </Tooltip>
+              </CustomTab>
+            </TabList>
+          </Tabs>
         )}
-        {cmds.length ? (
-          <ButtonGroup
-            width="90%"
-            flexWrap="wrap"
-            rowGap={2}
-            sx={{
-              "> button": {
-                marginInlineStart: "0 !important",
-                marginInlineEnd: "1",
-              },
-            }}
-          >
-            {cmds.sort().map(([cmd, queryMsg]) => (
-              <ContractCmdButton
-                key={`query-cmd-${cmd}`}
-                cmd={cmd}
-                onClickCmd={() => {
-                  AmpTrack(AmpEvent.USE_CMD_QUERY);
-                  setMsg(jsonPrettify(queryMsg));
-                }}
-              />
-            ))}
-          </ButtonGroup>
-        ) : (
-          contractAddress && (
-            <Text my={1} variant="body2" color="text.dark">
-              No QueryMsgs suggestion available
-            </Text>
-          )
-        )}
-      </Box>
-      <Flex gap={4} direction={{ base: "column", md: "row" }}>
-        <Box w="full">
-          <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
-          <Flex align="center" justify="space-between" gap={{ base: 1, md: 0 }}>
-            <Flex gap={{ base: 1, md: 2 }}>
-              <CopyButton
-                isDisable={!msg.length}
-                value={msg}
-                amptrackSection="query_msg"
-              />
-              <CodeSnippet
-                type="query"
+        <MessageInputContent
+          currentTab={tab}
+          jsonContent={
+            <JsonQuery
+              contractAddress={contractAddress}
+              initialMsg={initialMsg}
+            />
+          }
+          schemaContent={
+            codeHash && attached ? (
+              <SchemaQuery
+                codeId={codeId}
+                codeHash={codeHash}
+                schema={schema}
                 contractAddress={contractAddress}
-                message={msg}
+                initialMsg={initialMsg}
               />
-            </Flex>
-            <Button
-              variant="primary"
-              fontSize="14px"
-              p="6px 16px"
-              size={{ base: "sm", md: "md" }}
-              onClick={handleQuery}
-              isDisabled={jsonValidate(msg) !== null}
-              isLoading={isFetching || isRefetching}
-              leftIcon={<CustomIcon name="query" />}
-            >
-              Query {!isMobile && "(Ctrl + Enter)"}
-            </Button>
-          </Flex>
-        </Box>
-        <Spacer
-          border={{ base: "1px solid", md: "0px" }}
-          borderColor="gray.700"
-          my={4}
+            ) : (
+              <UploadSchemaSection
+                codeId={codeId}
+                codeHash={codeHash}
+                title={
+                  <Flex flexDirection="column" alignItems="center">
+                    <Flex display="inline" textAlign="center">
+                      You haven&#39;t attached the JSON Schema for
+                      <CustomIcon name="code" mx={1} color="gray.400" />
+                      code {codeId}
+                    </Flex>
+                    <Flex textAlign="center">
+                      from which this contract is instantiated yet.
+                    </Flex>
+                  </Flex>
+                }
+              />
+            )
+          }
         />
-
-        <Box w="full">
-          <JsonReadOnly
-            topic="Return Output"
-            text={res}
-            canCopy={res.length !== 0}
-          />
-          {/* If response line count > 100, the copy button is visible. */}
-          {jsonLineCount(res) > 100 && (
-            <Flex justifyContent="flex-end" mt={4}>
-              <CopyButton
-                isDisable={res.length === 0}
-                value={res}
-                amptrackSection="query_response"
-              />
-            </Flex>
-          )}
-        </Box>
-      </Flex>
-    </Flex>
-  );
-};
+      </Box>
+    );
+  }
+);

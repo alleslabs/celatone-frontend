@@ -5,31 +5,33 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
-import { catchTxError, postTx, sendingTx } from "./common";
+import { postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
   address: HumanAddr;
   client: SigningCosmWasmClient;
-  onTxSucceed?: (txHash: string) => void;
-  onTxFailed?: () => void;
   fee: StdFee;
   messages: EncodeObject[];
+  catchTxError: CatchTxError;
+  onTxSucceed?: (txHash: string) => void;
+  onTxFailed?: () => void;
 }
 
 export const resendTx = ({
   address,
   client,
-  onTxSucceed,
-  onTxFailed,
   fee,
   messages,
+  catchTxError,
+  onTxSucceed,
+  onTxFailed,
 }: ResendTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -37,7 +39,6 @@ export const resendTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.(txInfo.transactionHash);
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
@@ -62,7 +63,7 @@ export const resendTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Completed",
+          header: "Transaction Complete!",
           description: (
             <Text fontWeight={700}>
               Your transaction was successfully resent.

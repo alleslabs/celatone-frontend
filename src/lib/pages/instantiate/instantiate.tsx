@@ -1,20 +1,20 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
+import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useFabricateFee,
   useInstantiateTx,
-  useCelatoneApp,
   useValidateAddress,
   useSimulateFeeQuery,
   useCurrentChain,
-  useBaseApiRoute,
+  useExampleAddresses,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
@@ -27,30 +27,45 @@ import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon";
+import {
+  jsonInputFormKey,
+  MessageInputContent,
+  MessageInputSwitch,
+  MessageTabs,
+  SchemaInputSection,
+  yourSchemaInputFormKey,
+} from "lib/components/json-schema";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackAction,
-  AmpTrackToInstantiate,
-} from "lib/services/amplitude";
-import { getCodeIdInfo } from "lib/services/code";
+import type { CodeIdInfoResponse } from "lib/services/code";
+import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, HumanAddr } from "lib/types";
-import { AccessConfigPermission, MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
+import { MsgType } from "lib/types";
+import {
+  composeMsg,
+  isCodeId,
+  jsonPrettify,
+  jsonValidate,
+  libDecode,
+  resolvePermission,
+} from "lib/utils";
 
 import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
   codeId: string;
+  codeHash: string;
   label: string;
   adminAddress: string;
-  initMsg: string;
+  msgInput: {
+    [jsonInputFormKey]: string;
+    [yourSchemaInputFormKey]: string;
+  };
   simulateError: string;
 }
 interface InstantiatePageProps {
@@ -64,28 +79,27 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const router = useRouter();
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { user: exampleUserAddress } = useExampleAddresses();
   const { address = "" } = useCurrentChain();
-  const lcdEndpoint = useBaseApiRoute("rest");
-
   const postInstantiateTx = useInstantiateTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const { track, trackActionWithFunds, trackToInstantiate } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
+  const [tab, setTab] = useState<MessageTabs>();
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
+
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -98,12 +112,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     mode: "all",
     defaultValues: {
       codeId: "",
+      codeHash: "",
       label: "",
       adminAddress: "",
-      initMsg: "",
+      msgInput: {
+        [jsonInputFormKey]: "{}",
+        [yourSchemaInputFormKey]: "{}",
+      },
     },
   });
-  const { codeId, label, adminAddress, initMsg } = watch();
+  const { codeId, codeHash, label, adminAddress, msgInput } = watch();
+  const currentInput = tab ? msgInput[tab] : "{}";
 
   const {
     control: assetsControl,
@@ -119,16 +138,39 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
+  // ------------------------------------------//
+  // ------------------LOGICS------------------//
+  // ------------------------------------------//
+  const jsonSchema = getSchemaByCodeHash(codeHash);
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
-  const enableInstantiate = useMemo(
-    () =>
-      !!address &&
-      codeId.length > 0 &&
-      jsonValidate(initMsg) === null &&
-      status.state === "success",
-    [address, codeId.length, initMsg, status.state]
-  );
+  const enableInstantiate = useMemo(() => {
+    const generalChecks =
+      Boolean(address) &&
+      Boolean(label) &&
+      isCodeId(codeId) &&
+      status.state === "success";
 
+    switch (tab) {
+      case MessageTabs.JSON_INPUT:
+        return generalChecks && jsonValidate(currentInput) === null;
+      case MessageTabs.YOUR_SCHEMA:
+        return generalChecks && isValidJsonInput;
+      default:
+        return false;
+    }
+  }, [
+    address,
+    label,
+    codeId,
+    status.state,
+    tab,
+    currentInput,
+    isValidJsonInput,
+  ]);
+
+  // ------------------------------------------//
+  // ---------------SIMUATE FEE----------------//
+  // ------------------------------------------//
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
@@ -142,44 +184,69 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useQuery(
-    ["query", lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, codeId),
-    {
-      enabled: !!address && !!codeId.length,
-      retry: false,
-      cacheTime: 0,
-      onSuccess(data) {
-        const permission = data.code_info.instantiate_permission;
-        if (
-          address &&
-          (permission.permission === AccessConfigPermission.EVERYBODY ||
-            permission.addresses.includes(address as HumanAddr) ||
-            permission.address === address)
+  const { refetch } = useLCDCodeInfo(codeId, {
+    enabled: false,
+    retry: false,
+    cacheTime: 0,
+    onSuccess(data) {
+      const permission = data.code_info.instantiate_permission;
+      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+      if (
+        resolvePermission(
+          address as HumanAddr,
+          permission.permission,
+          permission.addresses,
+          permission.address
         )
-          setStatus({ state: "success" });
-        else {
-          setStatus({
-            state: "error",
-            message:
-              "This wallet does not have permission to instantiate to this code",
-          });
-        }
-      },
-      onError() {
-        setStatus({ state: "error", message: "This code ID does not exist" });
-      },
-    }
-  );
+      )
+        setStatus({ state: "success" });
+      else {
+        setStatus({
+          state: "error",
+          message:
+            "This wallet does not have permission to instantiate to this code",
+        });
+      }
+    },
+    onError() {
+      setStatus({ state: "error", message: "This code ID does not exist" });
+      setSimulateError("");
+    },
+  });
 
   // ------------------------------------------//
-  // ----------------FUNCTIONS-----------------//
+  // ----------------CALLBACKS-----------------//
   // ------------------------------------------//
+  const resetMsgInputSchema = useCallback(() => {
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
+  }, [setValue]);
+
+  const handleChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidJsonInput(errors.length === 0);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
+    },
+    [setValue]
+  );
+
+  const validateAdmin = useCallback(
+    (input: string) =>
+      input && !!validateContractAddress(input) && !!validateUserAddress(input)
+        ? "Invalid Address."
+        : undefined,
+    [validateContractAddress, validateUserAddress]
+  );
+
   const proceed = useCallback(async () => {
-    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+    trackActionWithFunds(
+      AmpEvent.ACTION_INSTANTIATE,
+      funds.length,
+      attachFundsOption,
+      tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
+    );
     const stream = await postInstantiateTx({
       codeId: Number(codeId),
-      initMsg: JSON.parse(initMsg),
+      initMsg: JSON.parse(currentInput),
       label,
       admin: adminAddress,
       funds,
@@ -197,10 +264,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [
     funds,
+    tab,
     attachFundsOption,
     postInstantiateTx,
+    trackActionWithFunds,
     codeId,
-    initMsg,
+    currentInput,
     label,
     adminAddress,
     estimatedFee,
@@ -211,59 +280,24 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
-  useEffect(() => {
-    if (codeId.length) {
-      setStatus({ state: "loading" });
-      const timer = setTimeout(() => {
-        refetch();
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    setStatus({ state: "init" });
-
-    return () => {};
-  }, [address, codeId, refetch]);
-
-  useEffect(() => {
-    if (enableInstantiate) {
-      setSimulateError("");
-      const composedMsg = composeMsg(MsgType.INSTANTIATE, {
-        sender: address as HumanAddr,
-        admin: adminAddress as HumanAddr,
-        codeId: Long.fromString(codeId),
-        label,
-        msg: Buffer.from(initMsg),
-        funds,
-      });
-      const timeoutId = setTimeout(() => {
-        setComposedTxMsg([composedMsg]);
-      }, 1000);
-      return () => clearTimeout(timeoutId);
-    }
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    address,
-    adminAddress,
-    codeId,
-    enableInstantiate,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(funds),
-    initMsg,
-    label,
-  ]);
-
+  /** Remark: parsing initial msg, initial funds from query params */
   useEffect(() => {
     if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
       const decodedMsg = libDecode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
-
         setValue("codeId", msgObject.code_id.toString());
         setValue("label", msgObject.label);
         setValue("adminAddress", msgObject.admin);
-        setValue("initMsg", JSON.stringify(msgObject.msg, null, 2));
+        setValue(
+          `msgInput.${jsonInputFormKey}`,
+          JSON.stringify(msgObject.msg, null, 2)
+        );
+        setValue(
+          `msgInput.${yourSchemaInputFormKey}`,
+          JSON.stringify(msgObject.msg)
+        );
 
         if (msgObject.funds.length) {
           setAssets("assetsSelect", defaultAsset);
@@ -280,16 +314,63 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   }, [codeIdQuery, msgQuery, setAssets, setValue]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
-  }, [router.isReady, msgQuery, codeIdQuery]);
+    setValue("codeHash", "");
+    setTab(MessageTabs.JSON_INPUT);
+    if (codeId.length) {
+      setStatus({ state: "loading" });
+      const timer = setTimeout(() => {
+        refetch();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    setStatus({ state: "init" });
 
-  const validateAdmin = useCallback(
-    (input: string) =>
-      input && !!validateContractAddress(input) && !!validateUserAddress(input)
-        ? "Invalid Address."
-        : undefined,
-    [validateContractAddress, validateUserAddress]
-  );
+    return () => {};
+  }, [codeId, refetch, setValue, setTab]);
+
+  useEffect(() => {
+    if (enableInstantiate) {
+      setSimulateError("");
+      const composedMsg = composeMsg(MsgType.INSTANTIATE, {
+        sender: address as HumanAddr,
+        admin: adminAddress as HumanAddr,
+        codeId: Long.fromString(codeId),
+        label,
+        msg: Buffer.from(currentInput),
+        funds,
+      });
+      const timeoutId = setTimeout(() => {
+        setComposedTxMsg([composedMsg]);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+
+    // reset estimated fee and error when user change the input
+    setSimulateError("");
+    setEstimatedFee(undefined);
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    address,
+    adminAddress,
+    codeId,
+    enableInstantiate,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(funds),
+    currentInput,
+    label,
+  ]);
+
+  useEffect(() => {
+    if (jsonSchema) {
+      setTab(MessageTabs.YOUR_SCHEMA);
+    }
+  }, [jsonSchema, setValue]);
+
+  useEffect(() => {
+    if (router.isReady) trackToInstantiate(!!msgQuery, !!codeIdQuery);
+  }, [router.isReady, msgQuery, codeIdQuery, trackToInstantiate]);
 
   return (
     <>
@@ -310,10 +391,19 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           control={control}
           status={status}
           error={formErrors.codeId?.message}
-          onCodeSelect={(code: string) => setValue("codeId", code)}
+          onCodeSelect={(code: string) => {
+            setValue("codeId", code);
+            resetMsgInputSchema();
+          }}
+          setCodeHash={(data: CodeIdInfoResponse) => {
+            setValue("codeHash", data.code_info.data_hash.toLowerCase());
+          }}
           codeId={codeId}
         />
         <form style={{ width: "100%" }}>
+          <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+            Label
+          </Heading>
           <ControllerInput
             name="label"
             control={control}
@@ -322,36 +412,64 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
             variant="floating"
-            mb={8}
+            mb={12}
             rules={{ required: "Label is required" }}
           />
+          <Heading variant="h6" as="h6" my={6} alignSelf="flex-start">
+            Admin Address
+          </Heading>
           <ControllerInput
             name="adminAddress"
             control={control}
             label="Admin Address (optional)"
-            placeholder={`ex. ${exampleContractAddress}`}
+            placeholder={`ex. ${exampleUserAddress}`}
             helperText="The contract's admin will be able to migrate and update future admins."
             variant="floating"
             error={validateAdmin(adminAddress)}
             helperAction={
               <AssignMe
                 onClick={() => {
-                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                  track(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address);
                 }}
                 isDisable={adminAddress === address}
               />
             }
           />
-          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
-            Instantiate Message
-          </Heading>
-          <JsonInput
-            text={initMsg}
-            setText={(newVal: string) => setValue("initMsg", newVal)}
-            minLines={10}
+          <Flex align="center" justify="space-between" mt={12} mb={4}>
+            <Heading variant="h6" as="h6" alignSelf="flex-start">
+              Instantiate Message
+            </Heading>
+            <MessageInputSwitch
+              currentTab={tab}
+              onTabChange={setTab}
+              disabled={!codeHash}
+            />
+          </Flex>
+          <MessageInputContent
+            currentTab={tab}
+            jsonContent={
+              <JsonInput
+                text={msgInput[jsonInputFormKey]}
+                setText={(newVal: string) =>
+                  setValue(`msgInput.${jsonInputFormKey}`, newVal)
+                }
+                minLines={10}
+              />
+            }
+            schemaContent={
+              <SchemaInputSection
+                type="instantiate"
+                codeHash={codeHash}
+                codeId={codeId}
+                jsonSchema={jsonSchema}
+                initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
+                handleChange={handleChange}
+                onSchemaSave={resetMsgInputSchema}
+              />
+            }
           />
-          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+          <Heading variant="h6" as="h6" mt={12} mb={6} alignSelf="flex-start">
             Send asset to contract
           </Heading>
           <AttachFund
@@ -389,7 +507,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       </WasmPageContainer>
       <Footer
         onInstantiate={proceed}
-        disabled={!enableInstantiate || isSimulating}
+        disabled={!enableInstantiate || !estimatedFee || isSimulating}
         loading={processing}
       />
     </>

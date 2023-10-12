@@ -18,7 +18,7 @@ import { useCallback } from "react";
 
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { AmpTrackUseOtherModal } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 
 export interface ActionModalProps {
   icon?: IconKeys;
@@ -35,7 +35,6 @@ export interface ActionModalProps {
   otherBtnTitle?: string;
   otherAction?: () => void;
   otherVariant?: string;
-  noHeaderBorder?: boolean;
   noCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
 }
@@ -54,11 +53,11 @@ export function ActionModal({
   otherBtnTitle = "Cancel",
   otherAction,
   otherVariant = "outline-primary",
-  noHeaderBorder = false,
   noCloseButton = false,
   closeOnOverlayClick = true,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { trackUseOtherModal } = useTrack();
 
   const handleOnMain = useCallback(() => {
     mainAction();
@@ -74,7 +73,7 @@ export function ActionModal({
       <Flex
         onClick={(e) => {
           e.stopPropagation();
-          AmpTrackUseOtherModal(title);
+          trackUseOtherModal(title);
           onOpen();
         }}
       >
@@ -88,10 +87,7 @@ export function ActionModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            borderBottomWidth={noHeaderBorder ? 0 : 1}
-            borderColor="gray.700"
-          >
+          <ModalHeader>
             <Box w="full">
               <Flex alignItems="center" gap={3}>
                 <CustomIcon name={icon} color={iconColor} boxSize={5} />

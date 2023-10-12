@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
+import { AmpEvent, useTrack } from "lib/amplitude";
+import type {
+  UploadSucceedCallback,
+  UploadTxInternalResult,
+} from "lib/app-provider";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -18,7 +23,6 @@ import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   Addr,
   HumanAddr,
@@ -35,14 +39,22 @@ import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
   handleBack: () => void;
+  onComplete?: UploadSucceedCallback;
   isMigrate?: boolean;
 }
 
 export const UploadSection = ({
   handleBack,
+  onComplete,
   isMigrate = false,
 }: UploadSectionProps) => {
-  const { constants } = useCelatoneApp();
+  const { track } = useTrack();
+  const {
+    constants,
+    chainConfig: {
+      extra: { disableAnyOfAddresses },
+    },
+  } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const fabricateFee = useFabricateFee();
   const { address } = useCurrentChain();
@@ -107,7 +119,10 @@ export const UploadSection = ({
     enabled: Boolean(wasmFile && address && !shouldNotSimulate),
     wasmFile,
     permission,
-    addresses: addresses.map((addr) => addr.address),
+    // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
+    addresses: disableAnyOfAddresses
+      ? undefined
+      : addresses.map((addr) => addr.address),
     onSuccess: (fee) => {
       if (wasmFile && address) {
         if (shouldNotSimulate) {
@@ -134,19 +149,23 @@ export const UploadSection = ({
 
   const proceed = useCallback(async () => {
     if (address) {
-      AmpTrack(AmpEvent.ACTION_UPLOAD);
+      track(AmpEvent.ACTION_UPLOAD);
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
-        addresses: addresses.map((addr) => addr.address),
+        // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
+        addresses: disableAnyOfAddresses
+          ? undefined
+          : addresses.map((addr) => addr.address),
         permission,
         codeName,
         estimatedFee,
-        onTxSucceed: (codeId: number) => {
+        onTxSucceed: (txResult: UploadTxInternalResult) => {
+          onComplete?.(txResult);
           updateCodeInfo(
-            codeId,
+            Number(txResult.codeId),
             address as HumanAddr,
-            codeName || `${wasmFile?.name}(${codeId})`
+            codeName || `${wasmFile?.name}(${txResult.codeId})`
           );
         },
       });
@@ -156,6 +175,7 @@ export const UploadSection = ({
   }, [
     address,
     postUploadTx,
+    track,
     wasmFile,
     addresses,
     permission,
@@ -163,6 +183,8 @@ export const UploadSection = ({
     estimatedFee,
     broadcast,
     updateCodeInfo,
+    onComplete,
+    disableAnyOfAddresses,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(addresses),
   ]);
@@ -198,7 +220,10 @@ export const UploadSection = ({
           }}
         />
       ) : (
-        <DropZone setFile={(file) => setValue("wasmFile", file)} />
+        <DropZone
+          setFile={(file) => setValue("wasmFile", file)}
+          fileType="wasm"
+        />
       )}
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput

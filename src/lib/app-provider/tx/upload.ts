@@ -3,22 +3,37 @@ import { gzip } from "node-gzip";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
+import { useTrack } from "lib/amplitude";
 import { uploadContractTx } from "lib/app-fns/tx/upload";
 import type { AccessType, Addr, HumanAddr, Option } from "lib/types";
 import { composeStoreCodeMsg } from "lib/utils";
 
+import { useCatchTxError } from "./catchTxError";
+
+export interface UploadTxInternalResult {
+  codeDisplayName: string;
+  codeId: string;
+  codeHash: string;
+  txHash: string;
+  formattedFee: string;
+}
+
+export type UploadSucceedCallback = (txResult: UploadTxInternalResult) => void;
+
 export interface UploadStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
-  addresses: Addr[];
+  addresses?: Addr[];
   permission: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: (codeId: number) => void;
+  onTxSucceed: UploadSucceedCallback;
 }
 
 export const useUploadContractTx = (isMigrate: boolean) => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { trackTxSucceed } = useTrack();
+  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -49,10 +64,14 @@ export const useUploadContractTx = (isMigrate: boolean) => {
         wasmFileName,
         fee: estimatedFee,
         client,
-        onTxSucceed,
         isMigrate,
+        catchTxError,
+        onTxSucceed: (txResult) => {
+          trackTxSucceed();
+          onTxSucceed(txResult);
+        },
       });
     },
-    [address, getSigningCosmWasmClient, isMigrate]
+    [address, getSigningCosmWasmClient, isMigrate, trackTxSucceed, catchTxError]
   );
 };

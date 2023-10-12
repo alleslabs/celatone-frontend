@@ -1,5 +1,5 @@
 import { useCelatoneApp } from "../contexts";
-import type { ChainConfig } from "config/types";
+import type { ChainConfig } from "config/chain/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
 
@@ -78,4 +78,18 @@ export const usePublicProjectConfig = ({
   } = useCelatoneApp();
 
   return useBaseConfig({ feature: publicProject, shouldRedirect });
+};
+
+export const useGovConfig = ({
+  shouldRedirect,
+}: {
+  shouldRedirect: boolean;
+}) => {
+  const {
+    chainConfig: {
+      features: { gov },
+    },
+  } = useCelatoneApp();
+
+  return useBaseConfig({ feature: gov, shouldRedirect });
 };

@@ -37,7 +37,6 @@ export const Radio: ComponentStyleConfig = {
       },
     },
   },
-
   variants: {
     card: {
       container: {
@@ -62,5 +61,8 @@ export const Radio: ComponentStyleConfig = {
         w: "inherit",
       },
     },
+  },
+  defaultProps: {
+    size: "lg",
   },
 };

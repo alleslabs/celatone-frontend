@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 import { CopyButton } from "../copy";
-import { AmpTrackExpand } from "lib/services/amplitude";
+import { useTrack } from "lib/amplitude";
 import { jsonLineCount, jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
@@ -14,6 +14,7 @@ const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
 
 interface JsonReadOnlyProps {
   topic?: string;
+  labelBgColor?: string;
   text: string;
   canCopy?: boolean;
   isExpandable?: boolean;
@@ -26,6 +27,7 @@ const THRESHOLD_LINES = 16;
 
 const JsonReadOnly = ({
   topic,
+  labelBgColor = "background.main",
   text,
   canCopy,
   isExpandable,
@@ -34,6 +36,7 @@ const JsonReadOnly = ({
   amptrackSection,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
+  const { trackUseExpand } = useTrack();
 
   const isJsonValid = useMemo(() => {
     return jsonValidate(text) === null || text.length === 0;
@@ -80,7 +83,7 @@ const JsonReadOnly = ({
         <Text
           top="-10px"
           w="fit-content"
-          background="background.main"
+          background={labelBgColor}
           color={!isJsonValid ? "error.main" : "text.dark"}
           fontSize="12px"
           position="absolute"
@@ -91,7 +94,7 @@ const JsonReadOnly = ({
       {showExpandButton && (
         <ViewFullMsgButton
           onClick={() => {
-            AmpTrackExpand({
+            trackUseExpand({
               action: viewFull ? "collapse" : "expand",
               component: "json",
               section: amptrackSection,
@@ -107,6 +110,7 @@ const JsonReadOnly = ({
           top="10px"
           right="10px"
           className="copy-button-box"
+          display="none"
         >
           <CopyButton value={text} amptrackSection={amptrackSection} />
         </Box>

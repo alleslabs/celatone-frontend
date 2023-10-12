@@ -1,9 +1,14 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useWasmConfig,
+} from "lib/app-provider";
 import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
@@ -23,6 +28,9 @@ import type {
   HumanAddr,
 } from "lib/types";
 import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
+
+import type { CodeIdInfoResponse } from "./code";
+import { getCodeIdInfo } from "./code";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -45,7 +53,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
       );
   }, [indexerGraphClient]);
 
-  return useQuery(["recents_codes", indexerGraphClient], queryFn);
+  return useQuery([CELATONE_QUERY_KEYS.CODES, indexerGraphClient], queryFn);
 };
 
 export const useCodeListByWalletAddress = (
@@ -76,7 +84,11 @@ export const useCodeListByWalletAddress = (
   }, [walletAddr, indexerGraphClient]);
 
   return useQuery(
-    ["code_list_by_user", walletAddr, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS,
+      walletAddr,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -111,16 +123,28 @@ export const useCodeListByCodeIds = (
       );
   }, [ids, indexerGraphClient]);
 
-  return useQuery(["code_list_by_ids", ids, indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-    enabled: !!ids,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODES_BY_IDS, ids, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!ids,
+    }
+  );
 };
 
-export const useCodeDataByCodeId = (
-  codeId: string,
-  enabled = true
-): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
+interface CodeDataByCodeIdParams {
+  codeId: string;
+  enabled?: boolean;
+}
+
+export const useCodeDataByCodeId = ({
+  codeId,
+  enabled = true,
+}: CodeDataByCodeIdParams): UseQueryResult<Omit<
+  CodeData,
+  "chainId"
+> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -156,9 +180,13 @@ export const useCodeDataByCodeId = (
         };
       });
   }, [codeId, indexerGraphClient]);
-  return useQuery(["code_data_by_id", codeId, indexerGraphClient], queryFn, {
-    enabled: enabled && isCodeId(codeId),
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient],
+    queryFn,
+    {
+      enabled: enabled && isCodeId(codeId),
+    }
+  );
 };
 
 export const useCodeListByWalletAddressPagination = (
@@ -197,7 +225,7 @@ export const useCodeListByWalletAddressPagination = (
 
   return useQuery(
     [
-      "code_list_by_wallet_address_pagination",
+      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_PAGINATION,
       indexerGraphClient,
       offset,
       pageSize,
@@ -232,11 +260,30 @@ export const useCodeListCountByWalletAddress = (
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    ["code_list_count_by_wallet_address", walletAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_COUNT,
+      walletAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
       enabled: wasm.enabled && !!walletAddress,
     }
+  );
+};
+
+export type LCDCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
+
+export const useLCDCodeInfo = (
+  codeId: string,
+  options?: Omit<UseQueryOptions<CodeIdInfoResponse>, "queryKey">
+): UseQueryResult<CodeIdInfoResponse> => {
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const queryFn = async () => getCodeIdInfo(lcdEndpoint, codeId);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
+    queryFn,
+    options
   );
 };

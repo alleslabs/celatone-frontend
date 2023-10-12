@@ -1,11 +1,10 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
-  useCelatoneApp,
   useFabricateFee,
   useInternalNavigate,
   useSimulateFeeQuery,
@@ -14,7 +13,6 @@ import {
   useValidateAddress,
   useWasmConfig,
   useCurrentChain,
-  useBaseApiRoute,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -24,12 +22,7 @@ import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackToAdminUpdate,
-} from "lib/services/amplitude";
-import { queryInstantiateInfo } from "lib/services/contract";
+import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { Addr, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
@@ -37,16 +30,15 @@ import { composeMsg, getFirstQueryParam } from "lib/utils";
 const UpdateAdmin = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
+  const { track } = useTrack();
   const { address } = useCurrentChain();
+  const { trackToAdminUpdate } = useTrack();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAddressType = useGetAddressType();
   const navigate = useInternalNavigate();
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const lcdEndpoint = useBaseApiRoute("rest");
-
-  const { indexerGraphClient } = useCelatoneApp();
 
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
@@ -95,7 +87,7 @@ const UpdateAdmin = () => {
   });
 
   const proceed = useCallback(async () => {
-    AmpTrack(AmpEvent.ACTION_ADMIN_UPDATE);
+    track(AmpEvent.ACTION_ADMIN_UPDATE);
     const stream = await updateAdminTx({
       contractAddress: contractAddressParam,
       newAdmin: adminAddress as Addr,
@@ -108,35 +100,19 @@ const UpdateAdmin = () => {
     contractAddressParam,
     updateAdminTx,
     broadcast,
+    track,
     estimatedFee,
   ]);
 
   /**
    * @remarks Contract admin validation
    */
-  useQuery(
-    [
-      "query",
-      "instantiate_info",
-      lcdEndpoint,
-      indexerGraphClient,
-      contractAddressParam,
-    ],
-    async () =>
-      queryInstantiateInfo(
-        lcdEndpoint,
-        indexerGraphClient,
-        contractAddressParam
-      ),
-    {
-      enabled: !!contractAddressParam,
-      refetchOnWindowFocus: false,
-      retry: false,
-      onSuccess: (contractInfo) => {
-        if (contractInfo.admin !== address) onContractPathChange();
-      },
-      onError: () => onContractPathChange(),
-    }
+  useContractDetailByContractAddress(
+    contractAddressParam as ContractAddr,
+    (contractDetail) => {
+      if (contractDetail.admin !== address) onContractPathChange();
+    },
+    () => onContractPathChange()
   );
 
   useEffect(() => {
@@ -189,8 +165,8 @@ const UpdateAdmin = () => {
   ]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
-  }, [router.isReady, contractAddressParam]);
+    if (router.isReady) trackToAdminUpdate(!!contractAddressParam);
+  }, [contractAddressParam, router.isReady, trackToAdminUpdate]);
 
   return (
     <WasmPageContainer>

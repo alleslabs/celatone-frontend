@@ -2,13 +2,13 @@ import { Button } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import { useCallback, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useFabricateFee,
   useResendTx,
   useSimulateFeeQuery,
 } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 
@@ -32,6 +32,7 @@ const formatMsgs = (messages: Message[]) =>
   }, []);
 
 export const ResendButton = ({ messages }: ResendButtonProps) => {
+  const { track } = useTrack();
   const fabricateFee = useFabricateFee();
   const resendTx = useResendTx();
   const { broadcast } = useTxBroadcast();
@@ -41,7 +42,7 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
 
   const proceed = useCallback(
     async (estimatedGasUsed: Option<Gas<number>>) => {
-      AmpTrack(AmpEvent.ACTION_RESEND);
+      track(AmpEvent.ACTION_RESEND);
       const stream = await resendTx({
         onTxSucceed: () => setIsProcessing(false),
         onTxFailed: () => setIsProcessing(false),
@@ -52,13 +53,13 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
       });
       if (stream) broadcast(stream);
     },
-    [broadcast, composedMsgs, fabricateFee, resendTx]
+    [broadcast, composedMsgs, fabricateFee, resendTx, track]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
     messages: composedMsgs,
-    onSuccess: (estimatedGasUsed) => proceed(estimatedGasUsed),
+    onSuccess: proceed,
     onError: () => setIsProcessing(false),
   });
 

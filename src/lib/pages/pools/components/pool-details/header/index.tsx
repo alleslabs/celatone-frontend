@@ -1,9 +1,10 @@
 import { Button, Flex } from "@chakra-ui/react";
 
 import { PoolHeader } from "../../PoolHeader";
+import { useTrack } from "lib/amplitude";
 import { useBaseApiRoute, usePoolConfig } from "lib/app-provider";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
-import { AmpTrackViewJson, AmpTrackWebsite } from "lib/services/amplitude";
 import type { PoolDetail } from "lib/types";
 import { openNewTab } from "lib/utils";
 
@@ -18,18 +19,25 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
+  const { trackWebsite, trackUseViewJSON } = useTrack();
   const lcdEndpoint = useBaseApiRoute("rest");
   const openPoolLcd = () => {
-    AmpTrackViewJson("pool_page_pool_lcd");
+    trackUseViewJSON("pool_page_pool_lcd");
     openNewTab(`${lcdEndpoint}/osmosis/gamm/v1beta1/pools/${pool.id}`);
   };
   const openOsmosisPool = () => {
-    AmpTrackWebsite(`${poolUrl}/${pool.id}`);
+    trackWebsite(`${poolUrl}/${pool.id}`);
     openNewTab(`${poolUrl}/${pool.id}`);
   };
   return (
     <>
-      <Flex justifyContent="space-between" align="center" w="full">
+      <Breadcrumb
+        items={[
+          { text: "Pools", href: "/pools" },
+          { text: `#${pool.id.toString()}` },
+        ]}
+      />
+      <Flex justifyContent="space-between" align="center" w="full" mt={4}>
         <PoolHeader
           poolId={pool.id}
           isSuperfluid={pool.isSuperfluid}

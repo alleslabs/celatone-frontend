@@ -1,11 +1,22 @@
 import type { TabProps } from "@chakra-ui/react";
-import { Button, useTab, Badge, useMultiStyleConfig } from "@chakra-ui/react";
+import {
+  Skeleton,
+  Button,
+  useTab,
+  Badge,
+  useMultiStyleConfig,
+} from "@chakra-ui/react";
 
 interface CustomTabProps extends TabProps {
   count?: number | string;
+  isLoading?: boolean;
 }
 
-export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
+export const CustomTab = ({
+  count,
+  isLoading,
+  ...restProps
+}: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
   const isSelected = tabProps["aria-selected"];
   const styles = useMultiStyleConfig("Tabs", tabProps);
@@ -36,10 +47,21 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
     >
       {tabProps.children}
 
-      {count !== undefined && (
-        <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
-          {count}
-        </Badge>
+      {isLoading ? (
+        <Skeleton
+          ml={2}
+          h={4}
+          w={8}
+          borderRadius={8}
+          startColor="gray.500"
+          endColor="gray.700"
+        />
+      ) : (
+        count !== undefined && (
+          <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
+            {count}
+          </Badge>
+        )
       )}
     </Button>
   );

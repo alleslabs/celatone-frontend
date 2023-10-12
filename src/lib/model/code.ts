@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
@@ -52,7 +53,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
   const { currentChainId } = useCelatoneApp();
   const lcdEndpoint = useBaseApiRoute("rest");
 
-  const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
+  const { data: codeInfo, isLoading } = useCodeDataByCodeId({ codeId });
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
@@ -62,7 +63,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
     isLoading: isLcdCodeLoading,
     error: isLcdCodeError,
   } = useQuery(
-    ["query", "code_data", lcdEndpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
     { enabled: Boolean(lcdEndpoint) && Boolean(codeId), retry: false }
   );

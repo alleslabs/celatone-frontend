@@ -1,8 +1,10 @@
 import type { Coin } from "@cosmjs/amino";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useQuery } from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
+import { CELATONE_QUERY_KEYS } from "../env";
 import { useCurrentChain, useDummyWallet, useRPCEndpoint } from "../hooks";
 import type {
   AccessType,
@@ -18,6 +20,7 @@ interface SimulateQueryParams {
   enabled: boolean;
   messages: ComposedMsg[];
   isDummyUser?: boolean;
+  retry?: UseQueryOptions["retry"];
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -26,6 +29,7 @@ export const useSimulateFeeQuery = ({
   enabled,
   messages,
   isDummyUser,
+  retry = 2,
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
@@ -57,15 +61,15 @@ export const useSimulateFeeQuery = ({
 
   return useQuery({
     queryKey: [
-      "simulate",
+      CELATONE_QUERY_KEYS.SIMULATE_FEE,
       chain.chain_name,
       userAddress,
       messages,
       rpcEndpoint,
     ],
-    queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
+    queryFn: async () => simulateFn(messages),
     enabled,
-    retry: 2,
+    retry,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     onSuccess,
@@ -77,7 +81,7 @@ interface SimulateQueryParamsForStoreCode {
   enabled: boolean;
   wasmFile: Option<File>;
   permission: AccessType;
-  addresses: Addr[];
+  addresses?: Addr[];
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -111,7 +115,7 @@ export const useSimulateFeeForStoreCode = ({
   };
   return useQuery({
     queryKey: [
-      "simulate_fee_store_code",
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
       chain.chain_name,
       wasmFile,
       permission,
@@ -194,7 +198,7 @@ export const useSimulateFeeForProposalStoreCode = ({
 
   return useQuery({
     queryKey: [
-      "simulate_fee_store_code_proposal",
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
       chain.chain_name,
       runAs,
       initialDeposit,

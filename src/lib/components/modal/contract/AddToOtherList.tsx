@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/ListSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
@@ -18,6 +18,7 @@ interface AddToOtherListModalProps {
 export const AddToOtherListModal = observer(
   ({ contractLocalInfo, triggerElement }: AddToOtherListModalProps) => {
     const [contractLists, setContractLists] = useState<LVPair[]>([]);
+    const { track } = useTrack();
 
     const handleSave = useHandleContractSave({
       title: "Action Complete!",
@@ -25,7 +26,7 @@ export const AddToOtherListModal = observer(
       instantiator: contractLocalInfo.instantiator,
       label: contractLocalInfo.label,
       lists: contractLists,
-      actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_LISTS),
+      actions: () => track(AmpEvent.CONTRACT_EDIT_LISTS),
     });
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export const AddToOtherListModal = observer(
 
     return (
       <ActionModal
-        title="Add or remove from other lists"
+        title="Add or remove from lists"
         icon="bookmark-solid"
         headerContent={
           <Flex pt={6} gap={9}>

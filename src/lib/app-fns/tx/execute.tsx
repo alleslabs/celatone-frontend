@@ -6,15 +6,15 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { encode, formatUFee, getCurrentDate } from "lib/utils";
 
-import { catchTxError, postTx, sendingTx } from "./common";
+import { postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: HumanAddr;
@@ -23,8 +23,8 @@ interface ExecuteTxParams {
   msg: object;
   funds: Coin[];
   client: SigningCosmWasmClient;
-  userKey: string;
-  onTxSucceed?: (userKey: string, activity: Activity) => void;
+  catchTxError: CatchTxError;
+  onTxSucceed?: (activity: Activity) => void;
   onTxFailed?: () => void;
 }
 
@@ -35,7 +35,7 @@ export const executeContractTx = ({
   msg,
   funds,
   client,
-  userKey,
+  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
@@ -46,8 +46,7 @@ export const executeContractTx = ({
         client.execute(address, contractAddress, msg, fee, undefined, funds),
     }),
     ({ value: txInfo }) => {
-      AmpTrack(AmpEvent.TX_SUCCEED);
-      onTxSucceed?.(userKey, {
+      onTxSucceed?.({
         type: "execute",
         action: Object.keys(msg)[0],
         sender: address,
@@ -83,7 +82,7 @@ export const executeContractTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Completed",
+          header: "Transaction Complete!",
           headerIcon: (
             <CustomIcon
               name="check-circle-solid"

@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 
 import { usePoolTxsCount } from "../../data";
+import { useTrack } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
-import { AmpTrackUseTab } from "lib/services/amplitude";
 import type { PoolDetail } from "lib/types";
 import { PoolType } from "lib/types";
 
@@ -21,22 +21,47 @@ interface PoolRelatedTxsProps {
 }
 
 export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
-  const { count: countAllTxs, countDisplay: countDisplayAllTxs } =
-    usePoolTxsCount(pool.id, "is_all");
-  const { count: countSwapTxs, countDisplay: countDisplaySwapTxs } =
-    usePoolTxsCount(pool.id, "is_swap");
-  const { count: countLpTxs, countDisplay: countDisplayLpTxs } =
-    usePoolTxsCount(pool.id, "is_lp");
-  const { count: countBondTxs, countDisplay: countDisplayBondTxs } =
-    usePoolTxsCount(pool.id, "is_bond");
-  const { count: countSuperfluidTxs, countDisplay: countDisplaySuperfluidTxs } =
-    usePoolTxsCount(pool.id, "is_superfluid");
-  const { count: countClpTxs, countDisplay: countDisplayClpTxs } =
-    usePoolTxsCount(pool.id, "is_clp");
-  const { count: countCollectTxs, countDisplay: countDisplayCollectTxs } =
-    usePoolTxsCount(pool.id, "is_collect");
-  const { count: countMigrateTxs, countDisplay: countDisplayMigrateTxs } =
-    usePoolTxsCount(pool.id, "is_migrate");
+  const { trackUseTab } = useTrack();
+  const {
+    count: countAllTxs,
+    countDisplay: countDisplayAllTxs,
+    isLoading: isLoadingAllTxs,
+  } = usePoolTxsCount(pool.id, "is_all");
+  const {
+    count: countSwapTxs,
+    countDisplay: countDisplaySwapTxs,
+    isLoading: isLoadingSwapTxs,
+  } = usePoolTxsCount(pool.id, "is_swap");
+  const {
+    count: countLpTxs,
+    countDisplay: countDisplayLpTxs,
+    isLoading: isLoadingLpTxs,
+  } = usePoolTxsCount(pool.id, "is_lp");
+  const {
+    count: countBondTxs,
+    countDisplay: countDisplayBondTxs,
+    isLoading: isLoadingBondTxs,
+  } = usePoolTxsCount(pool.id, "is_bond");
+  const {
+    count: countSuperfluidTxs,
+    countDisplay: countDisplaySuperfluidTxs,
+    isLoading: isLoadingSuperfluidTxs,
+  } = usePoolTxsCount(pool.id, "is_superfluid");
+  const {
+    count: countClpTxs,
+    countDisplay: countDisplayClpTxs,
+    isLoading: isLoadingClpTxs,
+  } = usePoolTxsCount(pool.id, "is_clp");
+  const {
+    count: countCollectTxs,
+    countDisplay: countDisplayCollectTxs,
+    isLoading: isLoadingCollectTxs,
+  } = usePoolTxsCount(pool.id, "is_collect");
+  const {
+    count: countMigrateTxs,
+    countDisplay: countDisplayMigrateTxs,
+    isLoading: isLoadingMigrateTxs,
+  } = usePoolTxsCount(pool.id, "is_migrate");
 
   const tableHeaderId = "poolTableHeader";
   return (
@@ -55,41 +80,47 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
         >
           <CustomTab
             count={countDisplayAllTxs}
-            onClick={() => AmpTrackUseTab("All")}
+            isLoading={isLoadingAllTxs}
+            onClick={() => trackUseTab("All")}
           >
             All
           </CustomTab>
           <CustomTab
             count={countDisplaySwapTxs}
-            onClick={() => AmpTrackUseTab("Swap")}
+            isLoading={isLoadingSwapTxs}
+            onClick={() => trackUseTab("Swap")}
           >
             Swap
           </CustomTab>
           {pool.type === PoolType.CL ? (
             <CustomTab
               count={countDisplayClpTxs}
-              onClick={() => AmpTrackUseTab("CLP")}
+              isLoading={isLoadingClpTxs}
+              onClick={() => trackUseTab("CLP")}
             >
               CLP
             </CustomTab>
           ) : (
             <CustomTab
               count={countDisplayLpTxs}
-              onClick={() => AmpTrackUseTab("LP")}
+              isLoading={isLoadingLpTxs}
+              onClick={() => trackUseTab("LP")}
             >
               LP
             </CustomTab>
           )}
           <CustomTab
             count={countDisplayBondTxs}
-            onClick={() => AmpTrackUseTab("Bonding")}
+            isLoading={isLoadingBondTxs}
+            onClick={() => trackUseTab("Bonding")}
           >
             Bonding
           </CustomTab>
           {pool.isSuperfluid && (
             <CustomTab
               count={countDisplaySuperfluidTxs}
-              onClick={() => AmpTrackUseTab("Superfluid")}
+              isLoading={isLoadingSuperfluidTxs}
+              onClick={() => trackUseTab("Superfluid")}
             >
               Superfluid
             </CustomTab>
@@ -97,7 +128,8 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.type === PoolType.CL && (
             <CustomTab
               count={countDisplayCollectTxs}
-              onClick={() => AmpTrackUseTab("Collect")}
+              isLoading={isLoadingCollectTxs}
+              onClick={() => trackUseTab("Collect")}
             >
               Collect
             </CustomTab>
@@ -105,7 +137,8 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <CustomTab
               count={countDisplayMigrateTxs}
-              onClick={() => AmpTrackUseTab("Migrate")}
+              isLoading={isLoadingMigrateTxs}
+              onClick={() => trackUseTab("Migrate")}
             >
               Migrate
             </CustomTab>

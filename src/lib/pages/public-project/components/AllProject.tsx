@@ -3,12 +3,12 @@ import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
+import { AmpEvent, useTrack } from "lib/amplitude";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { usePublicProjectStore } from "lib/providers/store";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { usePublicProjects } from "lib/services/publicProjectService";
 import type { PublicProjectInfo } from "lib/types";
 
@@ -18,6 +18,7 @@ const sortByAtoZ = (projects: PublicProjectInfo[]) =>
   projects.sort((a, b) => a.details.name.localeCompare(b.details.name));
 
 export const AllProject = observer(() => {
+  const { track } = useTrack();
   const { data: publicProjectInfo, isLoading } = usePublicProjects();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { getSavedPublicProjects } = usePublicProjectStore();
@@ -43,7 +44,7 @@ export const AllProject = observer(() => {
     return [];
   }, [publicProjectInfo, savedProjects, searchKeyword]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!publicProjectInfo)
     return (
       <Flex flexDirection="column" alignItems="center">
@@ -55,7 +56,7 @@ export const AllProject = observer(() => {
           href="https://github.com/alleslabs/celatone-api"
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
+          onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
         >
           <Button gap={2} mt={8} variant="outline-primary">
             <CustomIcon name="github" />
@@ -106,7 +107,7 @@ export const AllProject = observer(() => {
           href="https://github.com/alleslabs/celatone-api"
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
+          onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
         >
           Submit on Github
         </Link>
