@@ -19,6 +19,7 @@ interface ResourceDetailCardProps {
 export const ResourceDetailCard = ({
   resourceData,
 }: ResourceDetailCardProps) => {
+  // TODO Revisit later
   if (resourceData.moveResource === '""')
     return (
       <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
