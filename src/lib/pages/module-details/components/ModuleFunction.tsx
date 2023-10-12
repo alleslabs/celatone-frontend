@@ -6,7 +6,6 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
-import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/moduleService";
 import type { ExposedFunction } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
@@ -36,31 +35,24 @@ const FunctionAccordions = ({
   expandedIndexes: number[];
   updateExpandedIndexes: (indexes: number[]) => void;
 }) => (
-  <Flex id={type} display="none">
-    {fns.length ? (
-      <Accordion
-        allowMultiple
-        index={expandedIndexes}
-        onChange={updateExpandedIndexes}
-      >
-        <Flex direction="column" gap={4}>
-          {fns.map((fn) => (
-            <FunctionDetailCard
-              exposedFn={fn}
-              key={fn.name}
-              address={address}
-              moduleName={moduleName}
-            />
-          ))}
-        </Flex>
-      </Accordion>
-    ) : (
-      <EmptyState
-        imageVariant="empty"
-        message={"This module doesn't contain any execute functions."}
-      />
-    )}
-  </Flex>
+  <Accordion
+    id={type}
+    display="none"
+    allowMultiple
+    index={expandedIndexes}
+    onChange={updateExpandedIndexes}
+  >
+    <Flex direction="column" gap={4}>
+      {fns.map((fn) => (
+        <FunctionDetailCard
+          exposedFn={fn}
+          key={fn.name}
+          address={address}
+          moduleName={moduleName}
+        />
+      ))}
+    </Flex>
+  </Accordion>
 );
 
 export const ModuleFunction = ({

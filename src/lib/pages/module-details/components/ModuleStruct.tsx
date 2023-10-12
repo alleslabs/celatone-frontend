@@ -15,7 +15,9 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
 
   const filteredStructs = useMemo(() => {
     if (!keyword) return structs;
-    return structs.filter((struct) => struct.name.includes(keyword));
+    return structs.filter((struct) =>
+      struct.name.toLowerCase().includes(keyword.toLowerCase())
+    );
   }, [keyword, structs]);
 
   const updateExpandedIndexes = (indexes: number[]) =>

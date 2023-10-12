@@ -72,7 +72,7 @@ export const ModuleInfo = ({
             fixedHeight
           />
         </LabelText>
-        <LabelText
+        {/* <LabelText
           label="Initial Published Proposal ID"
           helperText1="TODO Published DAO Module"
         >
@@ -82,7 +82,7 @@ export const ModuleInfo = ({
             fixedHeight
             type="proposal_id"
           />
-        </LabelText>
+        </LabelText> */}
       </Flex>
       <ModuleSourceCode sourceCode={verificationData?.source} />
     </Flex>

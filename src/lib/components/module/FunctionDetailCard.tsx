@@ -151,6 +151,7 @@ export const FunctionDetailCard = ({
           <AccordionButton
             flexDirection="column"
             alignItems="flex-start"
+            _hover={{ bg: "transparent" }}
             onClick={() => ({
               action: !isExpanded ? "expand" : "collapse",
               component: "unsupported_pool",

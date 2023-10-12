@@ -44,7 +44,6 @@ export const FunctionTypeSwitch = ({
           key={tab}
           w="full"
           minW="128px"
-          cursor="pointer"
           p="2px 10px"
           variants={{
             active: { color: "var(--chakra-colors-text-main)" },
@@ -54,9 +53,18 @@ export const FunctionTypeSwitch = ({
           }}
           initial="inactive"
           animate={currentTab === tab ? "active" : "inactive"}
-          onClick={() => onTabChange(tab)}
           zIndex={1}
           textAlign="center"
+          {...(counts[idx] === 0
+            ? {
+                opacity: 0.3,
+                cursor: "not-allowed",
+                onClick: undefined,
+              }
+            : {
+                onClick: () => onTabChange(tab),
+                cursor: "pointer",
+              })}
         >
           <Heading as="h6" variant="h6" fontSize="14px">
             {tab} {`(${counts[idx]})`}
