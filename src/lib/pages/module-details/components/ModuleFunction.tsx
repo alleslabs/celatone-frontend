@@ -72,9 +72,13 @@ export const ModuleFunction = ({
   const [filteredFns, filteredViewFns, filteredExecuteFns] = useMemo(() => {
     if (!keyword) return [fns, viewFns, executeFns];
     return [
-      fns.filter((fn) => fn.name.includes(keyword)),
-      viewFns.filter((fn) => fn.name.includes(keyword)),
-      executeFns.filter((fn) => fn.name.includes(keyword)),
+      fns.filter((fn) => fn.name.toLowerCase().includes(keyword.toLowerCase())),
+      viewFns.filter((fn) =>
+        fn.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
+      executeFns.filter((fn) =>
+        fn.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
     ];
   }, [executeFns, fns, keyword, viewFns]);
 

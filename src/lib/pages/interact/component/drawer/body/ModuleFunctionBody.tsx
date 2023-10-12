@@ -60,8 +60,12 @@ export const ModuleFunctionBody = ({
   const [keyword, setKeyword] = useState("");
   const [filteredView, filteredExecute] = useMemo(
     () => [
-      module?.viewFunctions.filter((el) => el.name.includes(keyword)),
-      module?.executeFunctions.filter((el) => el.name.includes(keyword)),
+      module?.viewFunctions.filter((el) =>
+        el.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
+      module?.executeFunctions.filter((el) =>
+        el.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
     ],
     [module?.viewFunctions, module?.executeFunctions, keyword]
   );
