@@ -36,7 +36,9 @@ export const ModuleLists = ({
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
-    return modules?.filter((module) => module.moduleName?.includes(keyword));
+    return modules?.filter((module) =>
+      module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
+    );
   }, [keyword, modules]);
 
   const handleOnSelect = (module: IndexedModule) => {

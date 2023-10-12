@@ -77,7 +77,7 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
       mb={{ base: 0, md: 8 }}
       width="full"
     >
-      {!isMobileOverview ? (
+      {isMobileOverview ? (
         <Flex
           justify="space-between"
           w="full"
