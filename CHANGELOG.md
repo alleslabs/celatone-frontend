@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#563](https://github.com/alleslabs/celatone-frontend/pull/563) Order by contract latest history timestamp in account contract instances
+
 ## v1.2.0
 
 ### Features

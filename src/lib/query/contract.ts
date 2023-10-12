@@ -235,7 +235,9 @@ export const getContractListByWalletAddressPagination = graphql(`
       where: { accountByInitBy: { address: { _eq: $walletAddress } } }
       limit: $pageSize
       offset: $offset
-      order_by: { transaction: { block: { timestamp: desc } } }
+      order_by: {
+        contract_histories_aggregate: { max: { block_height: desc } }
+      }
     ) {
       address
       label
