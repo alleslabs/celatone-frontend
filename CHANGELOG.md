@@ -39,8 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Ref
-  actor contract detail page and add contract states
+- [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Refactor contract detail page and add contract states
 
 ### Improvements
 
