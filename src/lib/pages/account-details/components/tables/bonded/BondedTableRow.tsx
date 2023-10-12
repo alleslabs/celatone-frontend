@@ -1,25 +1,28 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { TokenCell } from "../TokenCell";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { TokenWithValue, ValidatorInfo } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import { TokensCell } from "./TokensCell";
+
 export interface BondedInfo {
   validator: ValidatorInfo;
-  amount: TokenWithValue;
-  reward?: TokenWithValue;
+  balances: TokenWithValue[];
+  rewards?: TokenWithValue[];
   completionTime?: Date;
 }
 
 interface BondedTableRowProps {
   bondedInfo: BondedInfo;
+  isSingleBondDenom: boolean;
   templateColumns: string;
 }
 
 export const BondedTableRow = ({
   bondedInfo,
+  isSingleBondDenom,
   templateColumns,
 }: BondedTableRowProps) => (
   <Grid
@@ -32,12 +35,18 @@ export const BondedTableRow = ({
       <ValidatorBadge validator={bondedInfo.validator} />
     </TableRow>
     <TableRow>
-      <TokenCell token={bondedInfo.amount} />
+      <TokensCell
+        tokens={bondedInfo.balances}
+        isSingleBondDenom={isSingleBondDenom}
+      />
     </TableRow>
 
-    {bondedInfo.reward && (
+    {bondedInfo.rewards && (
       <TableRow>
-        <TokenCell token={bondedInfo.reward} />
+        <TokensCell
+          tokens={bondedInfo.rewards}
+          isSingleBondDenom={isSingleBondDenom}
+        />
       </TableRow>
     )}
     {bondedInfo.completionTime && (

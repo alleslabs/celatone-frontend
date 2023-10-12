@@ -1,6 +1,6 @@
 import { useMobile } from "lib/app-provider";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { NonRedelegatable } from "lib/pages/account-details/type";
+import type { NonRedelegatable } from "lib/pages/account-details/types";
 
 import { NonRedelegatableTableHeader } from "./NonRedelegatableTableHeader";
 import { NonRedelegatablesTableMobileCard } from "./NonRedelegatableTableMobileCard";

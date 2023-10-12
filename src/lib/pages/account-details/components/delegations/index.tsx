@@ -1,37 +1,21 @@
 import { Flex, useDisclosure } from "@chakra-ui/react";
-import type Big from "big.js";
-import big from "big.js";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
-import type {
-  HumanAddr,
-  Option,
-  Token,
-  TokenWithValue,
-  U,
-  USD,
-} from "lib/types";
+import type { HumanAddr } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
 import { DelegationInfo } from "./DelegationInfo";
 import { DelegationsBody } from "./DelegationsBody";
 import { RedelegationsSection } from "./RedelegationsSection";
-import { TotalCard } from "./TotalCard";
+import { TotalCard } from "./total-card";
 
 interface DelegationsSectionProps {
   walletAddress: HumanAddr;
   onViewMore?: () => void;
 }
-
-const getTotalBondDenom = (
-  totals: Option<Record<string, TokenWithValue>>[],
-  bondDenom: string,
-  defaultToken: TokenWithValue
-) =>
-  totals.map((total) => (total ? total[bondDenom] ?? defaultToken : undefined));
 
 export const DelegationsSection = ({
   walletAddress,
@@ -64,25 +48,6 @@ export const DelegationsSection = ({
   if (!stakingParams)
     return <EmptyState message="Error fetching delegation data" />;
 
-  // TODO: support more than one Asset?
-  const defaultToken: TokenWithValue = {
-    denom: stakingParams.bondDenom,
-    amount: big(0) as U<Token<Big>>,
-    symbol: stakingParams.symbol,
-    logo: stakingParams.logo,
-    precision: stakingParams.precision,
-    value: stakingParams.logo ? (big(0) as USD<Big>) : undefined,
-  };
-
-  const bondDenomLabel = getTokenLabel(defaultToken.denom, defaultToken.symbol);
-
-  const [totalBondedBondDenom, totalRewardBondDenom, totalCommissionBondDenom] =
-    getTotalBondDenom(
-      [totalBonded, totalRewards, totalCommission],
-      stakingParams.bondDenom,
-      defaultToken
-    );
-
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
@@ -106,8 +71,17 @@ export const DelegationsSection = ({
           totalBondedCard={
             <TotalCard
               title="Total Bonded"
-              message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
-              token={totalBondedBondDenom}
+              message={`Total delegated and unbonding ${
+                stakingParams.bondDenoms.length === 1
+                  ? getTokenLabel(
+                      stakingParams.bondDenoms[0].denom,
+                      stakingParams.bondDenoms[0].symbol
+                    )
+                  : "tokens"
+              }, including those delegated through vesting`}
+              address={walletAddress}
+              bondDenoms={stakingParams.bondDenoms}
+              tokens={totalBonded}
               isLoading={isLoadingTotalBonded}
             />
           }
@@ -115,15 +89,23 @@ export const DelegationsSection = ({
             <>
               <TotalCard
                 title="Reward"
-                message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
-                token={totalRewardBondDenom}
+                message={`Total rewards earned from delegated ${
+                  stakingParams.bondDenoms.length === 1
+                    ? stakingParams.bondDenoms[0]
+                    : "tokens"
+                } across all validators`}
+                address={walletAddress}
+                bondDenoms={stakingParams.bondDenoms}
+                tokens={totalRewards}
                 isLoading={isLoadingRewards}
               />
               {isValidator && (
                 <TotalCard
                   title="Commission"
                   message="Total commission reward earned by validator"
-                  token={totalCommissionBondDenom}
+                  address={walletAddress}
+                  bondDenoms={stakingParams.bondDenoms}
+                  tokens={totalCommission}
                   isLoading={isLoadingTotalCommission}
                 />
               )}
@@ -143,9 +125,9 @@ export const DelegationsSection = ({
             totalUnbondings={totalUnbondings}
             unbondings={unbondings}
             rewards={rewards}
-            isLoadingDelegations={isLoadingDelegations}
+            isLoadingDelegations={isLoadingDelegations || isLoadingRewards}
             isLoadingUnbondings={isLoadingUnbondings}
-            defaultToken={defaultToken}
+            bondDenoms={stakingParams.bondDenoms}
           />
         )}
       </Flex>

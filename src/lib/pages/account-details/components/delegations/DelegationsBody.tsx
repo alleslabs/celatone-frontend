@@ -1,12 +1,13 @@
 import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
+import type { DenomInfo } from "../../types";
 import { DelegationsTable, UnbondingsTable } from "../tables";
 import { useTrack } from "lib/amplitude";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
 import type { Option, TokenWithValue } from "lib/types";
 
-import { RadioCard } from "./RadioCard";
+import { RadioCard } from "./radio-card";
 
 interface DelegationsBodyProps {
   totalDelegations: Option<Record<string, TokenWithValue>>;
@@ -16,7 +17,7 @@ interface DelegationsBodyProps {
   rewards: Option<Record<string, TokenWithValue[]>>;
   isLoadingDelegations: boolean;
   isLoadingUnbondings: boolean;
-  defaultToken: TokenWithValue;
+  bondDenoms: DenomInfo[];
 }
 
 export const DelegationsBody = ({
@@ -27,7 +28,7 @@ export const DelegationsBody = ({
   rewards,
   isLoadingDelegations,
   isLoadingUnbondings,
-  defaultToken,
+  bondDenoms,
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
   const [value, setValue] = useState("Delegated");
@@ -45,15 +46,15 @@ export const DelegationsBody = ({
         <Stack direction={{ base: "column", md: "row" }}>
           <RadioCard
             value="Delegated"
-            total={totalDelegations}
-            defaultToken={defaultToken}
+            tokens={totalDelegations}
             isLoading={isLoadingDelegations}
+            bondDenoms={bondDenoms}
           />
           <RadioCard
             value="Unbonding"
-            total={totalUnbondings}
-            defaultToken={defaultToken}
+            tokens={totalUnbondings}
             isLoading={isLoadingUnbondings}
+            bondDenoms={bondDenoms}
           />
         </Stack>
       </RadioGroup>
@@ -61,13 +62,14 @@ export const DelegationsBody = ({
         <DelegationsTable
           delegations={delegations}
           rewards={rewards}
-          defaultToken={defaultToken}
           isLoading={isLoadingDelegations}
+          isSingleBondDenom={bondDenoms.length === 1}
         />
       ) : (
         <UnbondingsTable
           unbondings={unbondings}
           isLoading={isLoadingUnbondings}
+          isSingleBondDenom={bondDenoms.length === 1}
         />
       )}
     </Flex>

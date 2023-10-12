@@ -49,7 +49,12 @@ export const RedelegationTableMobileCard = ({
     </Grid>
     <Flex direction="column" gap={1}>
       <MobileLabel label="Amount" />
-      <TokenCell token={redelegation.token} />
+      {
+        /* TODO: double check with multi denom */
+        redelegation.balances.map((balance) => (
+          <TokenCell token={balance} />
+        ))
+      }
     </Flex>
     <Flex direction="column" gap={1}>
       <MobileLabel label="Completed by" />

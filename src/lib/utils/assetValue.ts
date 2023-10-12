@@ -1,5 +1,5 @@
-import type { BigSource, Big } from "big.js";
-import big from "big.js";
+import type { BigSource } from "big.js";
+import big, { Big } from "big.js";
 
 import type {
   AssetInfo,
@@ -80,4 +80,24 @@ export const addTokenWithValue = (
         precision: undefined,
         value: big(0) as USD<Big>,
       };
+};
+
+export const totalValueTokenWithValue = (
+  tokens: Record<string, TokenWithValue>,
+  defaultValue: USD<Big>
+) =>
+  Object.values(tokens).reduce(
+    (acc, token) => acc.add(token.value ?? defaultValue),
+    Big(0)
+  ) as USD<Big>;
+
+export const compareTokenWithValues = (
+  token1: TokenWithValue,
+  token2: TokenWithValue
+) => {
+  if (token1.symbol && token2.symbol)
+    return token1.symbol.localeCompare(token2.symbol);
+  if (token1.symbol && !token2.symbol) return -1;
+  if (!token1.symbol && token2.symbol) return 1;
+  return token1.denom.localeCompare(token2.denom);
 };

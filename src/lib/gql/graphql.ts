@@ -12797,7 +12797,6 @@ export type GetValidatorsQuery = {
     details: string;
     identity: string;
     jailed: boolean;
-    min_self_delegation: string;
     moniker: string;
     operator_address: string;
     website: string;
@@ -18641,10 +18640,6 @@ export const GetValidatorsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "details" } },
                 { kind: "Field", name: { kind: "Name", value: "identity" } },
                 { kind: "Field", name: { kind: "Name", value: "jailed" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "min_self_delegation" },
-                },
                 { kind: "Field", name: { kind: "Name", value: "moniker" } },
                 {
                   kind: "Field",

@@ -97,7 +97,7 @@ const documents = {
     types.GetBlockTransactionsByHeightQueryDocument,
   "\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetBlockTransactionCountByHeightQueryDocument,
-  "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      min_self_delegation\n      moniker\n      operator_address\n      website\n    }\n  }\n":
+  "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      moniker\n      operator_address\n      website\n    }\n  }\n":
     types.GetValidatorsDocument,
 };
 
@@ -243,8 +243,8 @@ export function graphql(
   source: "\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      min_self_delegation\n      moniker\n      operator_address\n      website\n    }\n  }\n"
-): typeof documents["\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      min_self_delegation\n      moniker\n      operator_address\n      website\n    }\n  }\n"];
+  source: "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      moniker\n      operator_address\n      website\n    }\n  }\n"
+): typeof documents["\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      moniker\n      operator_address\n      website\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {
