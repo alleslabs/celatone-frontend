@@ -30,7 +30,7 @@ export const DevShortcut = () => {
   const isMobile = useMobile();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const shortcutList: ShortcutMetadata[] = useMemo(
+  const shortcutList = useMemo<ShortcutMetadata[]>(
     () => [
       ...(wasm.enabled
         ? [
@@ -38,19 +38,19 @@ export const DevShortcut = () => {
               title: "Deploy",
               subtitle: "Upload code or instantiate contract",
               slug: "deploy",
-              icon: "add-new" as IconKeys,
+              icon: "add-new" as const,
             },
             {
               title: "Query",
               subtitle: "Query and get contract state data",
               slug: "query",
-              icon: "query" as IconKeys,
+              icon: "query" as const,
             },
             {
               title: "Execute",
               subtitle: "Send transactions to contracts",
               slug: "execute",
-              icon: "execute" as IconKeys,
+              icon: "execute" as const,
             },
           ]
         : []),
@@ -60,19 +60,19 @@ export const DevShortcut = () => {
               title: "Publish Module",
               subtitle: "Upload .mv files to publish new module",
               slug: "publish-module",
-              icon: "add-new" as IconKeys,
+              icon: "add-new" as const,
             },
             {
               title: "View / Execute",
               subtitle: "Interact with modules and functions",
               slug: "interact",
-              icon: "execute" as IconKeys,
+              icon: "execute" as const,
             },
             {
               title: "Deploy Script",
               subtitle: "Deploy one-time use Script",
               slug: "deploy-script",
-              icon: "code" as IconKeys,
+              icon: "code" as const,
             },
           ]
         : []),
