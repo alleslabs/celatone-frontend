@@ -1,7 +1,8 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
 import { Flex, Box, Text, SimpleGrid } from "@chakra-ui/react";
+import { useMemo } from "react";
 
-import { useMobile } from "lib/app-provider";
+import { useMobile, useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
@@ -25,29 +26,60 @@ interface ShortcutMetadata {
   icon: IconKeys;
 }
 
-const shortcutList: ShortcutMetadata[] = [
-  {
-    title: "Deploy",
-    subtitle: "Upload code or instantiate contract",
-    slug: "deploy",
-    icon: "add-new",
-  },
-  {
-    title: "Query",
-    subtitle: "Query and get contract state data",
-    slug: "query",
-    icon: "query",
-  },
-  {
-    title: "Execute",
-    subtitle: "Send transactions to contracts",
-    slug: "execute",
-    icon: "execute",
-  },
-];
-
 export const DevShortcut = () => {
   const isMobile = useMobile();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const shortcutList = useMemo<ShortcutMetadata[]>(
+    () => [
+      ...(wasm.enabled
+        ? [
+            {
+              title: "Deploy",
+              subtitle: "Upload code or instantiate contract",
+              slug: "deploy",
+              icon: "add-new" as const,
+            },
+            {
+              title: "Query",
+              subtitle: "Query and get contract state data",
+              slug: "query",
+              icon: "query" as const,
+            },
+            {
+              title: "Execute",
+              subtitle: "Send transactions to contracts",
+              slug: "execute",
+              icon: "execute" as const,
+            },
+          ]
+        : []),
+      ...(move.enabled
+        ? [
+            {
+              title: "Publish Module",
+              subtitle: "Upload .mv files to publish new module",
+              slug: "publish-module",
+              icon: "add-new" as const,
+            },
+            {
+              title: "View / Execute",
+              subtitle: "Interact with modules and functions",
+              slug: "interact",
+              icon: "execute" as const,
+            },
+            {
+              title: "Deploy Script",
+              subtitle: "Deploy one-time use Script",
+              slug: "deploy-script",
+              icon: "code" as const,
+            },
+          ]
+        : []),
+    ],
+    [wasm.enabled, move.enabled]
+  );
+
   return (
     <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
       {shortcutList.map((item) => (

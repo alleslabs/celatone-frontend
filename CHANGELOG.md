@@ -77,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
 - [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables
 - [#549](https://github.com/alleslabs/celatone-frontend/pull/549) Add move tx filer options
 - [#553](https://github.com/alleslabs/celatone-frontend/pull/553) Use Cmd on Mac OS while Ctrl on others
