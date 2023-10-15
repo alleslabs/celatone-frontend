@@ -10554,6 +10554,11 @@ export type Transactions = {
   is_ibc: Scalars["Boolean"];
   is_instantiate: Scalars["Boolean"];
   is_migrate: Scalars["Boolean"];
+  is_move_execute: Scalars["Boolean"];
+  is_move_execute_event: Scalars["Boolean"];
+  is_move_publish: Scalars["Boolean"];
+  is_move_script: Scalars["Boolean"];
+  is_move_upgrade: Scalars["Boolean"];
   is_send: Scalars["Boolean"];
   is_store_code: Scalars["Boolean"];
   is_update_admin: Scalars["Boolean"];
@@ -10830,6 +10835,11 @@ export type Transactions_Bool_Exp = {
   is_ibc?: InputMaybe<Boolean_Comparison_Exp>;
   is_instantiate?: InputMaybe<Boolean_Comparison_Exp>;
   is_migrate?: InputMaybe<Boolean_Comparison_Exp>;
+  is_move_execute?: InputMaybe<Boolean_Comparison_Exp>;
+  is_move_execute_event?: InputMaybe<Boolean_Comparison_Exp>;
+  is_move_publish?: InputMaybe<Boolean_Comparison_Exp>;
+  is_move_script?: InputMaybe<Boolean_Comparison_Exp>;
+  is_move_upgrade?: InputMaybe<Boolean_Comparison_Exp>;
   is_send?: InputMaybe<Boolean_Comparison_Exp>;
   is_store_code?: InputMaybe<Boolean_Comparison_Exp>;
   is_update_admin?: InputMaybe<Boolean_Comparison_Exp>;
@@ -10882,6 +10892,11 @@ export type Transactions_Insert_Input = {
   is_ibc?: InputMaybe<Scalars["Boolean"]>;
   is_instantiate?: InputMaybe<Scalars["Boolean"]>;
   is_migrate?: InputMaybe<Scalars["Boolean"]>;
+  is_move_execute?: InputMaybe<Scalars["Boolean"]>;
+  is_move_execute_event?: InputMaybe<Scalars["Boolean"]>;
+  is_move_publish?: InputMaybe<Scalars["Boolean"]>;
+  is_move_script?: InputMaybe<Scalars["Boolean"]>;
+  is_move_upgrade?: InputMaybe<Scalars["Boolean"]>;
   is_send?: InputMaybe<Scalars["Boolean"]>;
   is_store_code?: InputMaybe<Scalars["Boolean"]>;
   is_update_admin?: InputMaybe<Scalars["Boolean"]>;
@@ -10987,6 +11002,11 @@ export type Transactions_Order_By = {
   is_ibc?: InputMaybe<Order_By>;
   is_instantiate?: InputMaybe<Order_By>;
   is_migrate?: InputMaybe<Order_By>;
+  is_move_execute?: InputMaybe<Order_By>;
+  is_move_execute_event?: InputMaybe<Order_By>;
+  is_move_publish?: InputMaybe<Order_By>;
+  is_move_script?: InputMaybe<Order_By>;
+  is_move_upgrade?: InputMaybe<Order_By>;
   is_send?: InputMaybe<Order_By>;
   is_store_code?: InputMaybe<Order_By>;
   is_update_admin?: InputMaybe<Order_By>;
@@ -11032,6 +11052,16 @@ export enum Transactions_Select_Column {
   /** column name */
   IsMigrate = "is_migrate",
   /** column name */
+  IsMoveExecute = "is_move_execute",
+  /** column name */
+  IsMoveExecuteEvent = "is_move_execute_event",
+  /** column name */
+  IsMovePublish = "is_move_publish",
+  /** column name */
+  IsMoveScript = "is_move_script",
+  /** column name */
+  IsMoveUpgrade = "is_move_upgrade",
+  /** column name */
   IsSend = "is_send",
   /** column name */
   IsStoreCode = "is_store_code",
@@ -11060,6 +11090,16 @@ export enum Transactions_Select_Column_Transactions_Aggregate_Bool_Exp_Bool_And_
   /** column name */
   IsMigrate = "is_migrate",
   /** column name */
+  IsMoveExecute = "is_move_execute",
+  /** column name */
+  IsMoveExecuteEvent = "is_move_execute_event",
+  /** column name */
+  IsMovePublish = "is_move_publish",
+  /** column name */
+  IsMoveScript = "is_move_script",
+  /** column name */
+  IsMoveUpgrade = "is_move_upgrade",
+  /** column name */
   IsSend = "is_send",
   /** column name */
   IsStoreCode = "is_store_code",
@@ -11081,6 +11121,16 @@ export enum Transactions_Select_Column_Transactions_Aggregate_Bool_Exp_Bool_Or_A
   IsInstantiate = "is_instantiate",
   /** column name */
   IsMigrate = "is_migrate",
+  /** column name */
+  IsMoveExecute = "is_move_execute",
+  /** column name */
+  IsMoveExecuteEvent = "is_move_execute_event",
+  /** column name */
+  IsMovePublish = "is_move_publish",
+  /** column name */
+  IsMoveScript = "is_move_script",
+  /** column name */
+  IsMoveUpgrade = "is_move_upgrade",
   /** column name */
   IsSend = "is_send",
   /** column name */
@@ -11105,6 +11155,11 @@ export type Transactions_Set_Input = {
   is_ibc?: InputMaybe<Scalars["Boolean"]>;
   is_instantiate?: InputMaybe<Scalars["Boolean"]>;
   is_migrate?: InputMaybe<Scalars["Boolean"]>;
+  is_move_execute?: InputMaybe<Scalars["Boolean"]>;
+  is_move_execute_event?: InputMaybe<Scalars["Boolean"]>;
+  is_move_publish?: InputMaybe<Scalars["Boolean"]>;
+  is_move_script?: InputMaybe<Scalars["Boolean"]>;
+  is_move_upgrade?: InputMaybe<Scalars["Boolean"]>;
   is_send?: InputMaybe<Scalars["Boolean"]>;
   is_store_code?: InputMaybe<Scalars["Boolean"]>;
   is_update_admin?: InputMaybe<Scalars["Boolean"]>;
@@ -11193,6 +11248,11 @@ export type Transactions_Stream_Cursor_Value_Input = {
   is_ibc?: InputMaybe<Scalars["Boolean"]>;
   is_instantiate?: InputMaybe<Scalars["Boolean"]>;
   is_migrate?: InputMaybe<Scalars["Boolean"]>;
+  is_move_execute?: InputMaybe<Scalars["Boolean"]>;
+  is_move_execute_event?: InputMaybe<Scalars["Boolean"]>;
+  is_move_publish?: InputMaybe<Scalars["Boolean"]>;
+  is_move_script?: InputMaybe<Scalars["Boolean"]>;
+  is_move_upgrade?: InputMaybe<Scalars["Boolean"]>;
   is_send?: InputMaybe<Scalars["Boolean"]>;
   is_store_code?: InputMaybe<Scalars["Boolean"]>;
   is_update_admin?: InputMaybe<Scalars["Boolean"]>;
@@ -11247,6 +11307,16 @@ export enum Transactions_Update_Column {
   IsInstantiate = "is_instantiate",
   /** column name */
   IsMigrate = "is_migrate",
+  /** column name */
+  IsMoveExecute = "is_move_execute",
+  /** column name */
+  IsMoveExecuteEvent = "is_move_execute_event",
+  /** column name */
+  IsMovePublish = "is_move_publish",
+  /** column name */
+  IsMoveScript = "is_move_script",
+  /** column name */
+  IsMoveUpgrade = "is_move_upgrade",
   /** column name */
   IsSend = "is_send",
   /** column name */
@@ -15679,19 +15749,22 @@ export const GetContractListByWalletAddressPaginationDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: {
+                        kind: "Name",
+                        value: "contract_histories_aggregate",
+                      },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
+                            name: { kind: "Name", value: "max" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
+                                  name: { kind: "Name", value: "block_height" },
                                   value: { kind: "EnumValue", value: "desc" },
                                 },
                               ],
