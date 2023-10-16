@@ -16,16 +16,20 @@ import {
   MenuItem,
   IconButton,
 } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import type { MenuInfo } from "../navbar/type";
 import { CHAIN_CONFIGS } from "config/chain";
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useMoveConfig,
   usePublicProjectConfig,
   useSelectChain,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
@@ -36,61 +40,86 @@ export const NavDrawer = () => {
   const { currentChainId, availableChainIds } = useCelatoneApp();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const selectChain = useSelectChain();
-  const mobileMenu: MenuInfo[] = [
-    {
-      category: "Overview",
-      slug: "overview",
-      submenu: [
-        { name: "Overview", slug: "/", icon: "home" },
-        {
-          name: "Transactions",
-          slug: "/txs",
-          icon: "file",
-        },
-        {
-          name: "Blocks",
-          slug: "/blocks",
-          icon: "block",
-        },
-        {
-          name: "Recent Codes",
-          slug: "/codes",
-          icon: "code",
-        },
-        {
-          name: "Recent Contracts",
-          slug: "/contracts",
-          icon: "contract-address",
-        },
-        {
-          name: "Query",
-          slug: "/query",
-          icon: "query",
-        },
-      ],
-    },
-  ];
+  const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
-  if (publicProject.enabled) {
-    mobileMenu.push({
-      category: "Public Projects",
-      slug: "public-projects",
-      submenu: [
-        ...getSavedPublicProjects().map((list) => ({
-          name: list.name,
-          slug: `/projects/${list.slug}`,
-          logo: list.logo,
-        })),
-        {
-          name: "View All Projects",
-          slug: "/projects",
-          icon: "public-project",
-        },
-      ],
-    });
-  }
+  const mobileMenu = useMemo(() => {
+    const menu: MenuInfo[] = [
+      {
+        category: "Overview",
+        slug: "overview",
+        submenu: [
+          { name: "Overview", slug: "/", icon: "home" as IconKeys },
+          {
+            name: "Transactions",
+            slug: "/txs",
+            icon: "file" as IconKeys,
+          },
+          {
+            name: "Blocks",
+            slug: "/blocks",
+            icon: "block" as IconKeys,
+          },
+          ...(wasm.enabled
+            ? [
+                {
+                  name: "Recent Codes",
+                  slug: "/codes",
+                  icon: "code" as IconKeys,
+                },
+                {
+                  name: "Recent Contracts",
+                  slug: "/contracts",
+                  icon: "contract-address" as IconKeys,
+                },
+                {
+                  name: "Query",
+                  slug: "/query",
+                  icon: "query" as IconKeys,
+                },
+              ]
+            : []),
+          ...(move.enabled
+            ? [
+                {
+                  name: "0x1 Page",
+                  slug: "/account/0x1",
+                  icon: "home" as IconKeys,
+                },
+              ]
+            : []),
+        ],
+      },
+    ];
+
+    if (publicProject.enabled) {
+      menu.push({
+        category: "Public Projects",
+        slug: "public-projects",
+        submenu: [
+          ...getSavedPublicProjects().map((list) => ({
+            name: list.name,
+            slug: `/projects/${list.slug}`,
+            logo: list.logo,
+          })),
+          {
+            name: "View All Projects",
+            slug: "/projects",
+            icon: "public-project" as IconKeys,
+          },
+        ],
+      });
+    }
+
+    return menu;
+  }, [
+    getSavedPublicProjects,
+    publicProject.enabled,
+    wasm.enabled,
+    move.enabled,
+  ]);
 
   return (
     <>
