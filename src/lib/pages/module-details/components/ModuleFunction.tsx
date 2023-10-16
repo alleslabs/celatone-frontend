@@ -6,7 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 

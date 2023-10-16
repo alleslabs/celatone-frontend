@@ -4,8 +4,8 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
-import type { ModuleVerificationInternal } from "lib/services/module";
-import { type IndexedModule } from "lib/services/moduleService";
+import type { ModuleVerificationInternal } from "lib/services/move/module";
+import { type IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleInfoProps {
   address: IndexedModule["address"];

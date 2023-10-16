@@ -26,8 +26,11 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
-import type { IndexedModule } from "lib/services/moduleService";
-import { useAccountModules, useVerifyModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import {
+  useAccountModules,
+  useVerifyModule,
+} from "lib/services/move/moduleService";
 import type { ContractAddr, HexAddr, MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 

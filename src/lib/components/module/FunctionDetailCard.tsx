@@ -14,7 +14,7 @@ import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
 import { Tooltip } from "../Tooltip";
 import { useInternalNavigate } from "lib/app-provider";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 

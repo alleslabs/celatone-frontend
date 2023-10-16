@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { StructCard } from "lib/components/module/StructCard";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleStructProps {
   structs: IndexedModule["parsedAbi"]["structs"];
