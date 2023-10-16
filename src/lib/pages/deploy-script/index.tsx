@@ -63,7 +63,7 @@ export const DeployScript = () => {
           fileState.base64File &&
           fileState.decodeRes &&
           !abiErrors.length &&
-          Object.values(inputData.typeArgs).every((val) => val)
+          Object.values(inputData.typeArgs).every((val) => val.trim())
       ),
     [
       address,

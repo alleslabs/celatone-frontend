@@ -9,7 +9,7 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
+  useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import type {
@@ -223,9 +223,7 @@ export const useDecodeScript = ({
   base64EncodedFile: string;
   options?: Omit<UseQueryOptions<ExposedFunction>, "queryKey">;
 }): UseQueryResult<ExposedFunction> => {
-  const {
-    chainConfig: { lcd },
-  } = useCelatoneApp();
+  const lcd = useLCDEndpoint();
 
   const queryFn = async (): Promise<ExposedFunction> => {
     const fn = await decodeScript(

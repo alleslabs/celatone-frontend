@@ -28,7 +28,8 @@ export const AbiForm = ({
 
   useEffect(() => {
     reset(initialData);
-  }, [initialData, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(initialData), reset]);
 
   return (
     <Flex direction="column" gap={4} w="full">
