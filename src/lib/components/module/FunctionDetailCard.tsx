@@ -13,7 +13,7 @@ import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
 import { Tooltip } from "../Tooltip";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
@@ -120,6 +120,7 @@ export const FunctionDetailCard = ({
   const { is_view: isView, visibility, name } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
   const navigate = useInternalNavigate();
+  const isMobile = useMobile();
   const getFnColor = () => {
     switch (isView) {
       case false:
@@ -141,7 +142,7 @@ export const FunctionDetailCard = ({
       bg="gray.800"
       _hover={{ bg: "gray.700" }}
       borderRadius={8}
-      p={4}
+      p={{ base: 3, md: 4 }}
       transition="all .25s ease-in-out"
       flexDirection="column"
       gap={1}
@@ -177,81 +178,86 @@ export const FunctionDetailCard = ({
                   {name}
                 </Text>
               </Flex>
-              <Flex alignItems="center" gap={4}>
-                <Flex alignItems="center" gap={2}>
-                  <Tooltip
-                    bg="primary.dark"
-                    label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
-                  >
-                    <Flex
-                      pointerEvents="auto"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Flex gap={1} alignItems="center">
-                        {disabled ? (
-                          <CustomIcon
-                            name="close"
-                            color="gray.600"
-                            boxSize={3}
-                          />
-                        ) : (
-                          <CustomIcon
-                            name="check"
-                            color="success.main"
-                            boxSize={3}
-                          />
-                        )}
-                        <Text variant="body3" color="text.dark">
-                          is_entry
+              <Flex alignItems="center" gap={{ base: 0, md: 4 }}>
+                {!isMobile && (
+                  <>
+                    {" "}
+                    <Flex alignItems="center" gap={2}>
+                      <Tooltip
+                        bg="primary.dark"
+                        label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+                      >
+                        <Flex
+                          pointerEvents="auto"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Flex gap={1} alignItems="center">
+                            {disabled ? (
+                              <CustomIcon
+                                name="close"
+                                color="gray.600"
+                                boxSize={3}
+                              />
+                            ) : (
+                              <CustomIcon
+                                name="check"
+                                color="success.main"
+                                boxSize={3}
+                              />
+                            )}
+                            <Text variant="body3" color="text.dark">
+                              is_entry
+                            </Text>
+                          </Flex>
+                        </Flex>
+                      </Tooltip>
+                      <DotSeparator bg="gray.600" />
+                      <Flex alignItems="center" gap={1}>
+                        <CustomIcon
+                          name={getVisibilityIcon(visibility)}
+                          color="gray.600"
+                          boxSize={3}
+                        />
+                        <Text
+                          variant="body3"
+                          color="text.dark"
+                          textTransform="capitalize"
+                        >
+                          {visibility}
                         </Text>
                       </Flex>
                     </Flex>
-                  </Tooltip>
-                  <DotSeparator bg="gray.600" />
-                  <Flex alignItems="center" gap={1}>
-                    <CustomIcon
-                      name={getVisibilityIcon(visibility)}
-                      color="gray.600"
-                      boxSize={3}
-                    />
-                    <Text
-                      variant="body3"
-                      color="text.dark"
-                      textTransform="capitalize"
+                    <Button
+                      variant={getButtonStyle().variant}
+                      isDisabled={disabled}
+                      borderColor={getButtonStyle().color}
+                      size="sm"
+                      onClick={() =>
+                        navigate({
+                          pathname: "/interact",
+                          query: {
+                            address,
+                            moduleName,
+                            functionType: isView ? "view" : "execute",
+                            functionName: exposedFn.name,
+                          },
+                        })
+                      }
+                      leftIcon={
+                        <CustomIcon
+                          mx={0}
+                          name={isView ? "query" : "execute"}
+                          color={getButtonStyle().color}
+                          boxSize={3}
+                        />
+                      }
                     >
-                      {visibility}
-                    </Text>
-                  </Flex>
-                </Flex>
-                <Button
-                  variant={getButtonStyle().variant}
-                  isDisabled={disabled}
-                  borderColor={getButtonStyle().color}
-                  size="sm"
-                  onClick={() =>
-                    navigate({
-                      pathname: "/interact",
-                      query: {
-                        address,
-                        moduleName,
-                        functionType: isView ? "view" : "execute",
-                        functionName: exposedFn.name,
-                      },
-                    })
-                  }
-                  leftIcon={
-                    <CustomIcon
-                      mx={0}
-                      name={isView ? "query" : "execute"}
-                      color={getButtonStyle().color}
-                      boxSize={3}
-                    />
-                  }
-                >
-                  <Text color={getButtonStyle().color} mt="2px">
-                    {isView ? "View" : "Execute"}
-                  </Text>
-                </Button>
+                      <Text color={getButtonStyle().color} mt="2px">
+                        {isView ? "View" : "Execute"}
+                      </Text>
+                    </Button>
+                  </>
+                )}
                 <StyledIconButton
                   variant="none"
                   aria-label="external"

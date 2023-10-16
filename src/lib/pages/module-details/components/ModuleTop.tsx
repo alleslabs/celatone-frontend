@@ -140,54 +140,56 @@ export const ModuleTop = ({ moduleData, verificationData }: ModuleTopProps) => {
             </Flex>
           </Flex>
         </Flex>
-        <Flex
-          gap={{ base: 2, md: 4 }}
-          mt={{ base: 8, md: 0 }}
-          w={{ base: "full", md: "auto" }}
-        >
-          <Button
-            variant="outline-primary"
+        {!isMobile && (
+          <Flex
+            gap={{ base: 2, md: 4 }}
+            mt={{ base: 8, md: 0 }}
             w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="query" />}
-            size={{ base: "sm", md: "md" }}
-            onClick={() =>
-              navigate({
-                pathname: "/interact",
-                query: {
-                  address: moduleData.address,
-                  moduleName: moduleData.moduleName,
-                  functionType: "view",
-                },
-              })
-            }
           >
-            View
-          </Button>
-          <Button
-            variant="outline-primary"
-            w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="execute" />}
-            size={{ base: "sm", md: "md" }}
-            onClick={() =>
-              navigate({
-                pathname: "/interact",
-                query: {
-                  address: moduleData.address,
-                  moduleName: moduleData.moduleName,
-                  functionType: "execute",
-                },
-              })
-            }
-          >
-            Execute
-          </Button>
-          <CopyButton
-            value={moduleData.abi}
-            variant="outline-primary"
-            size={{ base: "sm", md: "md" }}
-            buttonText="Copy ABI"
-          />
-        </Flex>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="query" />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() =>
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: moduleData.address,
+                    moduleName: moduleData.moduleName,
+                    functionType: "view",
+                  },
+                })
+              }
+            >
+              View
+            </Button>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="execute" />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() =>
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: moduleData.address,
+                    moduleName: moduleData.moduleName,
+                    functionType: "execute",
+                  },
+                })
+              }
+            >
+              Execute
+            </Button>
+            <CopyButton
+              value={moduleData.abi}
+              variant="outline-primary"
+              size={{ base: "sm", md: "md" }}
+              buttonText="Copy ABI"
+            />
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

@@ -40,6 +40,8 @@ export const ModuleInfo = ({
         border="1px solid"
         borderColor="gray.700"
         sx={{ "& > div": { flex: 1 } }}
+        gap={{ base: 4, md: 0 }}
+        direction={{ base: "column", md: "row" }}
       >
         <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
         {/* TODO get block height */}

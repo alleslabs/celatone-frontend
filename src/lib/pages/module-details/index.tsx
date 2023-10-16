@@ -190,7 +190,12 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              <Flex justifyContent="space-between" gap={6} mb={6}>
+              <Flex
+                justifyContent="space-between"
+                direction={{ base: "column", md: "row" }}
+                gap={{ base: 2, md: 6 }}
+                mb={{ base: 2, md: 6 }}
+              >
                 {actionList.map((item) => (
                   <Flex
                     p={4}
