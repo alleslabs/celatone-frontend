@@ -1,7 +1,7 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
-import { TableHeader } from "lib/components/table/tableComponents";
+import { TableHeader } from "lib/components/table";
 import type { PoolDetail } from "lib/types";
 import { PoolType } from "lib/types";
 

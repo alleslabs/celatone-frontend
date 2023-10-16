@@ -1,16 +1,15 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { MigrationCard } from "lib/components/card/MigrationCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableContainer } from "lib/components/table";
+import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/data";
 import type { ContractAddr, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
+import { MigrationMobileCard } from "./MigrationMobileCard";
 import { MigrationRow } from "./MigrationRow";
 
 interface MigrationTableProps {
@@ -26,6 +25,7 @@ export const MigrationTable = ({
   totalData,
   refetchCount,
 }: MigrationTableProps) => {
+  const isMobile = useMobile();
   const {
     pagesQuantity,
     currentPage,
@@ -42,6 +42,7 @@ export const MigrationTable = ({
     },
   });
 
+  // TODO: loading state
   const migrationHistories = useMigrationHistories(
     contractAddress,
     offset,
@@ -59,7 +60,7 @@ export const MigrationTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
+
   if (!migrationHistories?.length)
     return (
       <EmptyState
@@ -75,20 +76,20 @@ export const MigrationTable = ({
   return (
     <>
       {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
+        <MobileTableContainer>
           {migrationHistories.map((history, idx) => (
-            <MigrationCard
-              key={`mobile-${
+            <MigrationMobileCard
+              key={
                 history.codeId +
                 history.remark.operation +
                 history.remark.type +
                 history.remark.value +
                 idx.toString()
-              }`}
+              }
               history={history}
             />
           ))}
-        </Flex>
+        </MobileTableContainer>
       ) : (
         <TableContainer>
           <MigrationHeader templateColumns={templateColumns} />

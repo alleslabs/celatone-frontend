@@ -1,8 +1,11 @@
 import { TableContainer } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
+import { MobileTableContainer } from "lib/components/table";
 import type { Redelegation } from "lib/pages/account-details/data";
 
 import { RedelegationTableHeader } from "./RedelegationTableHeader";
+import { RedelegationTableMobileCard } from "./RedelegationTableMobileCard";
 import { RedelegationTableRow } from "./RedelegationTableRow";
 
 const TEMPLATE_COLUMNS =
@@ -14,21 +17,39 @@ interface RedelegationsTableProps {
 
 export const RedelegationsTable = ({
   redelegations,
-}: RedelegationsTableProps) => (
-  <TableContainer>
-    <RedelegationTableHeader templateColumns={TEMPLATE_COLUMNS} />
-    {redelegations.map((redelegation) => (
-      <RedelegationTableRow
-        key={
-          redelegation.srcValidator.validatorAddress +
-          redelegation.dstValidator.validatorAddress +
-          redelegation.token.amount +
-          redelegation.token.denom +
-          redelegation.completionTime
-        }
-        redelegation={redelegation}
-        templateColumns={TEMPLATE_COLUMNS}
-      />
-    ))}
-  </TableContainer>
-);
+}: RedelegationsTableProps) => {
+  const isMobile = useMobile();
+  return isMobile ? (
+    <MobileTableContainer mt={0}>
+      {redelegations.map((redelegation) => (
+        <RedelegationTableMobileCard
+          key={
+            redelegation.srcValidator.validatorAddress +
+            redelegation.dstValidator.validatorAddress +
+            redelegation.token.amount +
+            redelegation.token.denom +
+            redelegation.completionTime
+          }
+          redelegation={redelegation}
+        />
+      ))}
+    </MobileTableContainer>
+  ) : (
+    <TableContainer>
+      <RedelegationTableHeader templateColumns={TEMPLATE_COLUMNS} />
+      {redelegations.map((redelegation) => (
+        <RedelegationTableRow
+          key={
+            redelegation.srcValidator.validatorAddress +
+            redelegation.dstValidator.validatorAddress +
+            redelegation.token.amount +
+            redelegation.token.denom +
+            redelegation.completionTime
+          }
+          redelegation={redelegation}
+          templateColumns={TEMPLATE_COLUMNS}
+        />
+      ))}
+    </TableContainer>
+  );
+};

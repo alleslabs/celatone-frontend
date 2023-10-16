@@ -10,6 +10,7 @@ import {
   useExecuteContractTx,
   useCurrentChain,
   useMobile,
+  useIsMac,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
@@ -63,6 +64,7 @@ export const JsonExecute = ({
   // --------------DEPENDENCIES----------------//
   // ------------------------------------------//
   const isMobile = useMobile();
+  const isMac = useIsMac();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
@@ -237,10 +239,12 @@ export const JsonExecute = ({
     assetsSelect,
   ]);
 
+  const isButtonDisabled = !enableExecute || !fee || isFetching;
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
       // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") {
+      const specialKey = isMac ? e.metaKey : e.ctrlKey;
+      if (!isButtonDisabled && specialKey && e.key === "Enter") {
         proceed();
       }
     };
@@ -294,12 +298,12 @@ export const JsonExecute = ({
             fontSize="14px"
             p="6px 16px"
             onClick={proceed}
-            isDisabled={!enableExecute || !fee || isFetching}
+            isDisabled={isButtonDisabled}
             leftIcon={<CustomIcon name="execute" />}
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
-            Execute {!isMobile && "(Ctrl + Enter)"}
+            Execute {!isMobile && ` (${isMac ? "⌘" : "Ctrl"} + Enter)`}
           </Button>
         </Flex>
       </Flex>

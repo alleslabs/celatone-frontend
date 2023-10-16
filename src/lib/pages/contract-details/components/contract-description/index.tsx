@@ -21,10 +21,13 @@ export const ContractDesc = ({
 
   return (
     <Flex
-      gap={{ base: 4, md: 6 }}
       direction={{ base: "column", md: "row" }}
-      mt={{ base: 4, md: 0 }}
+      mt={{ base: 0, md: 0 }}
       mb={4}
+      gap={{ base: 4, md: 6 }}
+      pb={{ base: 0, md: 8 }}
+      borderBottom={{ base: "0px", md: "1px solid" }}
+      borderBottomColor={{ base: "transparent", md: "gray.700" }}
     >
       {publicProject.publicInfo?.description && (
         <PublicDescription
