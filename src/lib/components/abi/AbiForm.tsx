@@ -42,17 +42,15 @@ export const AbiForm = ({
           }}
         />
       )}
-      {Object.keys(args).length > 0 && (
-        <ArgsForm
-          params={fn.params}
-          initialData={args}
-          propsOnChange={(value) => {
-            setValue("args", value);
-            propsOnChange?.(getValues());
-          }}
-          propsOnErrors={propsOnErrors}
-        />
-      )}
+      <ArgsForm
+        params={fn.params}
+        initialData={args}
+        propsOnChange={(value) => {
+          setValue("args", value);
+          propsOnChange?.(getValues());
+        }}
+        propsOnErrors={propsOnErrors}
+      />
     </Flex>
   );
 };

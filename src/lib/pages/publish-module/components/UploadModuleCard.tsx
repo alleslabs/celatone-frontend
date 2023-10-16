@@ -15,7 +15,7 @@ import { UploadCard } from "lib/components/upload/UploadCard";
 import {
   type DecodeModuleQueryResponse,
   useDecodeModule,
-} from "lib/services/moduleService";
+} from "lib/services/move/moduleService";
 import type { HumanAddr, UpgradePolicy, Option } from "lib/types";
 
 const DEFAULT_TEMP_FILE = {
@@ -108,7 +108,7 @@ export const UploadModuleCard = ({
           aria-label="remove"
           variant="ghost"
           size="sm"
-          disabled={fields.length <= 1}
+          visibility={fields.length > 1 ? "visible" : "hidden"}
         >
           <CustomIcon name="close" color="gray.600" />
         </IconButton>

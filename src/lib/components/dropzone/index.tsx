@@ -49,7 +49,7 @@ export function DropZone({
 
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
-    maxFiles: 1,
+    multiple: false,
     accept: config.accept,
     maxSize,
   });

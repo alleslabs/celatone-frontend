@@ -84,7 +84,7 @@ const centerRowMapper = (row: string[]) =>
   ));
 
 const StructContent = () => (
-  <GridTemplate mt={1}>
+  <GridTemplate mt="2px">
     <TitleContainer rowSpan={2}>fields</TitleContainer>
     <ContentContainer
       rowSpan={2}
@@ -95,7 +95,7 @@ const StructContent = () => (
 );
 
 const ExposedFnsContent = () => (
-  <Flex direction="column" rowGap={1} mt={1}>
+  <Flex direction="column" rowGap="2px" mt="2px">
     <GridTemplate>
       <TitleContainer rowSpan={3}>visibility</TitleContainer>
       {metadata.visibility.map(centerRowMapper)}
@@ -109,7 +109,7 @@ const ExposedFnsContent = () => (
       <ContentContainer colSpan={3}>{metadata.parameter}</ContentContainer>
     </GridTemplate>
     <GridTemplate>
-      <TitleContainer rowSpan={3}>generic_type_{"\n"}params</TitleContainer>
+      <TitleContainer>generic_type_{"\n"}params</TitleContainer>
       <GridItem
         colSpan={3}
         display="grid"
@@ -157,17 +157,20 @@ export const Leaflet = () => {
       <Modal isOpen={isOpen} onClose={onClose} size="6xl">
         <ModalOverlay />
         <ModalContent
-          maxH="90%"
+          maxH="80%"
           overflowY="scroll"
           sx={{ "& > *": { bg: "gray.800" } }}
         >
-          <ModalHeader position="sticky" top={0}>
-            <Flex align="center" gap={2}>
-              <CustomIcon name="info-circle" boxSize={4} color="gray.600" />
-              <Heading variant="h5" as="h5">
-                Compatible Upgrade Policy
-              </Heading>
-            </Flex>
+          <ModalHeader position="sticky" top={0} gap={2}>
+            <CustomIcon
+              name="info-circle"
+              boxSize={4}
+              color="gray.600"
+              alignSelf="center"
+            />
+            <Heading variant="h5" as="h5">
+              Compatible Upgrade Policy
+            </Heading>
             <ModalCloseButton color="gray.600" />
           </ModalHeader>
           <ModalBody>

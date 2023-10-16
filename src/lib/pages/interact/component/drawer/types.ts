@@ -1,4 +1,4 @@
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { HumanAddr, HexAddr, ExposedFunction } from "lib/types";
 
 export interface SelectedAddress {

@@ -24,11 +24,11 @@ export const jsonPrettify = (text: string) => {
 
 export const jsonLineCount = (text: string) => text.split(/\n/).length;
 
-export const parseSchemaInitialData = (json: string): JsonDataType => {
+export const parseJsonStr = (json: string, fallback = ""): JsonDataType => {
   try {
     return JSON.parse(json);
   } catch (_) {
-    return "";
+    return fallback;
   }
 };
 
@@ -59,7 +59,7 @@ export const resolveInitialMsg = (
   initialMsg: string,
   msgSchema: SchemaInfo
 ) => {
-  const parsed = parseSchemaInitialData(initialMsg);
+  const parsed = parseJsonStr(initialMsg);
   const { required, enum: enumOptions } = msgSchema.schema;
   if (
     typeof parsed === "object" &&
