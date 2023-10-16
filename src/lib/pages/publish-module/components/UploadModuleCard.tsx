@@ -11,7 +11,7 @@ import { UploadCard } from "lib/components/upload/UploadCard";
 import {
   type DecodeModuleQueryResponse,
   useDecodeModule,
-} from "lib/services/moduleService";
+} from "lib/services/move/moduleService";
 import type { HumanAddr, Option, UpgradePolicy } from "lib/types";
 
 interface UploadModuleCardProps {

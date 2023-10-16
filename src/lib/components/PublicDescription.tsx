@@ -34,7 +34,6 @@ export const PublicDescription = ({
       maxW="100%"
       borderRadius="8px"
       p={4}
-      mt={{ base: 4, md: 6 }}
       flex="1"
     >
       <Flex align="center" gap={1} h="32px">

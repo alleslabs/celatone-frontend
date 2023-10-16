@@ -61,6 +61,7 @@
     "chakra-react-select": "^4.7.0",
     "cosmjs-types": "^0.7.2",
     "dayjs": "^1.11.6",
+    "file-saver": "^2.0.5",
     "framer-motion": "^7.6.12",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",
@@ -93,6 +94,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^17.1.0",
     "@commitlint/cz-commitlint": "^17.1.2",
+    "@types/file-saver": "^2.0.5",
     "@types/jest": "^29.4.0",
     "@types/node-gzip": "^1.1.0",
     "@types/react": "^18.0.21",

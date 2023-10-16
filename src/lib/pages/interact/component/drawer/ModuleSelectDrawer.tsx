@@ -16,7 +16,7 @@ import { CustomIcon } from "lib/components/icon";
 import {
   useAccountModules,
   type IndexedModule,
-} from "lib/services/moduleService";
+} from "lib/services/move/moduleService";
 import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
 
 import { ModuleSelectMainBody } from "./body";

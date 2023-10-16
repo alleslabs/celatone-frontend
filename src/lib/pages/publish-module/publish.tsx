@@ -18,7 +18,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
 import type { HumanAddr, Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
 
@@ -166,7 +166,7 @@ export const PublishModule = ({
     if (
       !modules.every(
         (field) =>
-          field.base64EncodedFile && field.publishStatus.status !== "error"
+          !field.base64EncodedFile || field.publishStatus.status === "error"
       )
     ) {
       setEstimatedFee(undefined);

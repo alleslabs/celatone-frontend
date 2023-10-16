@@ -4,14 +4,14 @@ import type { Module } from "../formConstants";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
-import { useOpenTab } from "lib/hooks";
+import { useOpenNewTab } from "lib/hooks";
 
 interface ModulePublishCardProps {
   module: Module;
 }
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
-  const openTab = useOpenTab();
+  const openNewTab = useOpenNewTab();
   const { file, decodeRes } = module;
   return (
     <Flex
@@ -75,20 +75,23 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
         ))}
       </Flex>
       <Grid templateColumns="1fr 1fr 1fr" columnGap={4}>
-        {/* TODO: add navigation */}
         <Button
-          rightIcon={
-            <CustomIcon name="chevron-right" boxSize={3} color="text.dark" />
-          }
+          rightIcon={<CustomIcon name="launch" boxSize={3} color="text.main" />}
           variant="outline-white"
+          onClick={() =>
+            openNewTab({
+              pathname: `/modules/${decodeRes?.abi.address}/${decodeRes?.abi.name}`,
+              query: {},
+            })
+          }
         >
-          See Details
+          See Module
         </Button>
         <Button
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            openTab({
+            openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
@@ -104,7 +107,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
           variant="outline-white"
           onClick={() =>
-            openTab({
+            openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,

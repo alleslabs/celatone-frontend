@@ -1,4 +1,4 @@
-import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
 import type { HumanAddr, Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
 import { bech32AddressToHex, truncate, unpadHexAddress } from "lib/utils";

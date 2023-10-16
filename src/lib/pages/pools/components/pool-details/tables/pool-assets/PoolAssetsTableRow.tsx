@@ -3,7 +3,7 @@ import { Flex, Grid, Image, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
 
 import { Copier } from "lib/components/copy";
-import { TableRow } from "lib/components/table/tableComponents";
+import { TableRow } from "lib/components/table";
 import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import type { USD, PoolDetail, TokenWithValue, Ratio } from "lib/types";

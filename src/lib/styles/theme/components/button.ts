@@ -14,7 +14,9 @@ const primaryDark = "primary.dark";
 const primaryBg = "primary.background";
 const accentBg = "accent.background";
 const accentMain = "accent.main";
+const accentDark = "accent.dark";
 const accentDarker = "accent.darker";
+const backgroundMain = "background.main";
 const borderDefault = "1px solid";
 const errorDark = "error.dark";
 const secondaryBg = "secondary.background";
@@ -237,6 +239,15 @@ export const Button: ComponentStyleConfig = {
       },
       hoverBg: accentBg,
       activeBg: "transparent",
+    }),
+    "accent-solid": generateStyle({
+      basic: {
+        background: accentDark,
+        color: backgroundMain,
+      },
+      disabled: {},
+      hoverBg: accentMain,
+      activeBg: accentDark,
     }),
     "command-button": generateStyle({
       basic: {
