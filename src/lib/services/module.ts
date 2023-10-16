@@ -119,10 +119,10 @@ export const decodeModule = async (
 
 export const decodeScript = async (
   decodeAPI: string,
-  scriptEncode: string
+  scriptBytes: string
 ): Promise<ExposedFunction> =>
   axios
     .post<DecodeModuleReturn>(decodeAPI, {
-      code_bytes: scriptEncode,
+      code_bytes: scriptBytes,
     })
     .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));

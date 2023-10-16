@@ -191,7 +191,5 @@ export const composeScriptMsg = (
 ) => {
   if (!fn) return [];
   const { typeArgs, args } = serializeAbiData(fn, data);
-  return toEncodeObject([
-    new MsgScript(address as HumanAddr, scriptBytes, typeArgs, args),
-  ]);
+  return toEncodeObject([new MsgScript(address, scriptBytes, typeArgs, args)]);
 };
