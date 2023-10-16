@@ -16,7 +16,7 @@ import { AbiForm } from "lib/components/abi";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useFunctionView } from "lib/services/moduleService";
+import { useFunctionView } from "lib/services/move/moduleService";
 import type {
   Option,
   AbiFormData,

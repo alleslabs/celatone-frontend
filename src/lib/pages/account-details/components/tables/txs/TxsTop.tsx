@@ -21,7 +21,7 @@ export const TxsTop = ({
     justify="space-between"
     alignItems={{ base: "start", md: "center" }}
   >
-    <TableTitle title="Transactions" count={txsCount} mb={0} />;
+    <TableTitle title="Transactions" count={txsCount} mb={0} />
     {!onViewMore && (
       <Flex
         gap={{ base: 6, md: 4 }}
