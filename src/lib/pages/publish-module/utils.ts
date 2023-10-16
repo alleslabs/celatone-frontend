@@ -4,7 +4,7 @@ import { UpgradePolicy } from "lib/types";
 import { bech32AddressToHex, truncate, unpadHexAddress } from "lib/utils";
 
 import type { Module, PublishStatus } from "./formConstants";
-import { publishStatusDefault } from "./formConstants";
+import { PUBLISH_STATUS_DEFAULT } from "./formConstants";
 
 const priority = Object.keys(UpgradePolicy);
 
@@ -15,18 +15,18 @@ const resolvePolicyPriority = (
 
 export const statusResolver = ({
   data,
-  fields,
+  modules,
   index,
   policy,
   address,
 }: {
   data: Option<DecodeModuleQueryResponse>;
-  fields: Module[];
+  modules: Module[];
   index: number;
   policy: UpgradePolicy;
   address: Option<HumanAddr>;
 }): PublishStatus => {
-  if (!data) return publishStatusDefault;
+  if (!data) return PUBLISH_STATUS_DEFAULT;
 
   const { abi, currentPolicy, modulePath } = data;
 
@@ -34,7 +34,7 @@ export const statusResolver = ({
     ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) === abi.address
     : false;
 
-  const priorUpload = fields
+  const priorUpload = modules
     .slice(0, index)
     .findLast((field) => field.decodeRes?.modulePath === modulePath);
 
@@ -93,5 +93,5 @@ export const statusResolver = ({
       text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
     };
   }
-  return publishStatusDefault;
+  return PUBLISH_STATUS_DEFAULT;
 };

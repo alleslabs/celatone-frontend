@@ -179,7 +179,7 @@ export const PublishModule = ({
         `modules.${index}.publishStatus`,
         statusResolver({
           data: field.decodeRes,
-          fields: modules,
+          modules,
           index,
           policy: upgradePolicy,
           address: address as Option<HumanAddr>,
@@ -231,7 +231,7 @@ export const PublishModule = ({
                   <UploadModuleCard
                     key={`${field.base64EncodedFile}-${idx.toString()}`}
                     index={idx}
-                    fields={modules}
+                    modules={modules}
                     fileState={field}
                     policy={upgradePolicy}
                     setFile={setFileValue(idx)}

@@ -21,7 +21,7 @@ export interface PublishModuleState {
   upgradePolicy: UpgradePolicy;
 }
 
-export const publishStatusDefault: PublishStatus = {
+export const PUBLISH_STATUS_DEFAULT: PublishStatus = {
   status: "init",
   text: "",
 };
@@ -29,7 +29,7 @@ export const publishStatusDefault: PublishStatus = {
 export const emptyModule: Module = {
   base64EncodedFile: "",
   decodeRes: undefined,
-  publishStatus: publishStatusDefault,
+  publishStatus: PUBLISH_STATUS_DEFAULT,
   file: undefined,
 };
 

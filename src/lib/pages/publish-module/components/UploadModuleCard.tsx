@@ -17,7 +17,7 @@ import type { HumanAddr, Option, UpgradePolicy } from "lib/types";
 interface UploadModuleCardProps {
   index: number;
   fileState: Module;
-  fields: Module[];
+  modules: Module[];
   policy: UpgradePolicy;
   setFile: (
     file: Option<File>,
@@ -45,7 +45,7 @@ export const UploadModuleCard = ({
     decodeRes,
     publishStatus: { status, text },
   },
-  fields,
+  modules,
   policy,
   setFile,
   removeFile,
@@ -75,7 +75,7 @@ export const UploadModuleCard = ({
           data,
           statusResolver({
             data,
-            fields,
+            modules,
             index,
             policy,
             address: address as Option<HumanAddr>,
@@ -120,7 +120,7 @@ export const UploadModuleCard = ({
         <Flex
           align="center"
           gap={1}
-          visibility={fields.length > 1 ? "visible" : "hidden"}
+          visibility={modules.length > 1 ? "visible" : "hidden"}
         >
           <Tooltip label="Move up" variant="primary-light">
             <IconButton
@@ -139,7 +139,7 @@ export const UploadModuleCard = ({
               aria-label="move-down"
               variant="ghost"
               size="sm"
-              disabled={index === fields.length - 1}
+              disabled={index === modules.length - 1}
             >
               <CustomIcon name="arrow-down" color="gray.600" />
             </IconButton>
