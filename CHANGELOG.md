@@ -47,7 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#570](https://github.com/alleslabs/celatone-frontend/pull/570) Use native tokens in attached funds
 - [#563](https://github.com/alleslabs/celatone-frontend/pull/563) Order by contract latest history timestamp in account contract instances
 - [#560](https://github.com/alleslabs/celatone-frontend/pull/560) Fix pool type alignment in pool card
 
@@ -121,6 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#570](https://github.com/alleslabs/celatone-frontend/pull/570) Use native tokens in attached funds
 - [#567](https://github.com/alleslabs/celatone-frontend/pull/567) Fix attached funds in code snippet
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
 - [#527](https://github.com/alleslabs/celatone-frontend/pull/527) Fix ellipsis explorer link
