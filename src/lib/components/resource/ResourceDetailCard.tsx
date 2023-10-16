@@ -19,8 +19,11 @@ interface ResourceDetailCardProps {
 export const ResourceDetailCard = ({
   resourceData,
 }: ResourceDetailCardProps) => {
-  // TODO Revisit later
-  if (resourceData.moveResource === '""')
+  const parsedMoveResource = parseJsonStr(resourceData.moveResource);
+
+  // Handle fallback case where the move resource is invalid
+  // TODO: revisit later
+  if (parsedMoveResource === "")
     return (
       <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
         <CustomIcon
@@ -36,7 +39,7 @@ export const ResourceDetailCard = ({
       </Flex>
     );
 
-  const moveResourceObject = parseJsonStr(resourceData.moveResource) as {
+  const moveResourceObject = parsedMoveResource as {
     type: string;
     data: Record<string, unknown>;
   };
