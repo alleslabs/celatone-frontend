@@ -50,9 +50,18 @@ export const StructCard = ({ struct }: StructCardProps) => {
               section: "pool-list-page",
             })}
           >
-            <Flex justifyContent="space-between" w="full" alignItems="center">
+            <Flex
+              justifyContent="space-between"
+              w="full"
+              alignItems={{ base: "flex-start", md: "center" }}
+              direction={{ base: "column", md: "row" }}
+            >
               <Text variant="body2">{struct.name}</Text>
-              <Flex align="center">
+              <Flex
+                align="center"
+                justifyContent="space-between"
+                w={{ base: "full", md: "auto" }}
+              >
                 <Flex gap={1}>
                   {structAbilities.map((item) => (
                     <Tag
