@@ -6,7 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -21,11 +21,15 @@ interface ModuleFunctionProps {
 }
 
 const FunctionAccordions = ({
+  address,
+  moduleName,
   type,
   fns,
   expandedIndexes,
   updateExpandedIndexes,
 }: {
+  address: IndexedModule["address"];
+  moduleName: IndexedModule["moduleName"];
   type: FunctionTypeTabs;
   fns: ExposedFunction[];
   expandedIndexes: number[];
@@ -40,7 +44,12 @@ const FunctionAccordions = ({
   >
     <Flex direction="column" gap={4}>
       {fns.map((fn) => (
-        <FunctionDetailCard exposedFn={fn} key={fn.name} />
+        <FunctionDetailCard
+          exposedFn={fn}
+          key={fn.name}
+          address={address}
+          moduleName={moduleName}
+        />
       ))}
     </Flex>
   </Accordion>
@@ -63,9 +72,13 @@ export const ModuleFunction = ({
   const [filteredFns, filteredViewFns, filteredExecuteFns] = useMemo(() => {
     if (!keyword) return [fns, viewFns, executeFns];
     return [
-      fns.filter((fn) => fn.name.includes(keyword)),
-      viewFns.filter((fn) => fn.name.includes(keyword)),
-      executeFns.filter((fn) => fn.name.includes(keyword)),
+      fns.filter((fn) => fn.name.toLowerCase().includes(keyword.toLowerCase())),
+      viewFns.filter((fn) =>
+        fn.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
+      executeFns.filter((fn) =>
+        fn.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
     ];
   }, [executeFns, fns, keyword, viewFns]);
 
@@ -163,25 +176,30 @@ export const ModuleFunction = ({
           </Button>
         </Flex>
       </Flex>
-
       {/* rendering all tabs at once and use css selector to avoid lagginess when changing tab */}
       <FunctionAccordions
         type={FunctionTypeTabs.ALL}
         fns={filteredFns}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
+        address={address}
+        moduleName={moduleName}
       />
       <FunctionAccordions
         type={FunctionTypeTabs.VIEW}
         fns={filteredViewFns}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
+        address={address}
+        moduleName={moduleName}
       />
       <FunctionAccordions
         type={FunctionTypeTabs.EXECUTE}
         fns={filteredExecuteFns}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
+        address={address}
+        moduleName={moduleName}
       />
     </Flex>
   );

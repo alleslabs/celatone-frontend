@@ -1,18 +1,19 @@
 import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { Tooltip } from "lib/components/Tooltip";
-import type { IndexedModule } from "lib/services/moduleService";
+import type {} from "lib/services/move/module";
+import type { IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleTopProps {
-  isVerified?: boolean;
   moduleData: IndexedModule;
+  isVerified: boolean;
 }
 
 const baseTextStyle: TextProps = {
@@ -22,11 +23,9 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-export const ModuleTop = ({
-  moduleData,
-  isVerified = false,
-}: ModuleTopProps) => {
+export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
+  const navigate = useInternalNavigate();
   if (!moduleData) return <Loading />;
 
   return (
@@ -92,7 +91,6 @@ export const ModuleTop = ({
             <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
-            {/* TODO recheck module path */}
             <Text {...baseTextStyle}>
               {moduleData.parsedAbi.address}::
               {moduleData.parsedAbi.name}
@@ -106,7 +104,6 @@ export const ModuleTop = ({
             <Text {...baseTextStyle} color="text.main">
               Creator:
             </Text>
-            {/* TODO Creator */}
             <CopyLink
               value={moduleData.parsedAbi.address}
               amptrackSection="contract_top"
@@ -153,6 +150,16 @@ export const ModuleTop = ({
             w={{ base: "full", md: "auto" }}
             leftIcon={<CustomIcon name="query" />}
             size={{ base: "sm", md: "md" }}
+            onClick={() =>
+              navigate({
+                pathname: "/interact",
+                query: {
+                  address: moduleData.address,
+                  moduleName: moduleData.moduleName,
+                  functionType: "view",
+                },
+              })
+            }
           >
             View
           </Button>
@@ -161,6 +168,16 @@ export const ModuleTop = ({
             w={{ base: "full", md: "auto" }}
             leftIcon={<CustomIcon name="execute" />}
             size={{ base: "sm", md: "md" }}
+            onClick={() =>
+              navigate({
+                pathname: "/interact",
+                query: {
+                  address: moduleData.address,
+                  moduleName: moduleData.moduleName,
+                  functionType: "execute",
+                },
+              })
+            }
           >
             Execute
           </Button>

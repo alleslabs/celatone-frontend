@@ -7,7 +7,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableContainer, ViewMore } from "lib/components/table";
-import { useModuleHistoriesByPagination } from "lib/services/moduleService";
+import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
 import type { Nullable, Option } from "lib/types";
 
 import { ModuleHistoryHeader } from "./ModuleHistoryHeader";

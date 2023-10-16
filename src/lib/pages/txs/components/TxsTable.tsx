@@ -1,10 +1,7 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
-import { TransactionCard } from "lib/components/card/TransactionCard";
-import { Loading } from "lib/components/Loading";
+import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -46,11 +43,12 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
+
   useEffect(() => {
     if (!isViewMore) setPageSize(10);
     setCurrentPage(1);
   }, [currentChainId, isViewMore, setCurrentPage, setPageSize]);
+
   // TODO - Might consider adding this state in all transaction table
   if (error)
     return (
@@ -60,54 +58,7 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
         message="There is an error during fetching transactions."
       />
     );
-  if (isMobile && isLoading)
-    return (
-      <>
-        <Loading />
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={countTxs}
-          pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-        />
-      </>
-    );
-  if (isMobile)
-    return (
-      <>
-        {txs ? (
-          <Flex direction="column" gap={4} w="full" mt={4}>
-            {txs?.map((transaction) => (
-              <TransactionCard
-                transaction={transaction}
-                key={transaction.hash}
-                showRelations={false}
-              />
-            ))}
-            {!isViewMore && countTxs > 10 && (
-              <Pagination
-                currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
-                offset={offset}
-                totalData={countTxs}
-                pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
-              />
-            )}
-          </Flex>
-        ) : (
-          <EmptyState
-            withBorder
-            imageVariant="empty"
-            message="There are no transactions in this network."
-          />
-        )}
-      </>
-    );
+
   return (
     <>
       <TransactionsTable

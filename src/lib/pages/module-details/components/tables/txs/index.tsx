@@ -1,9 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+// import { TransactionCard } from "lib/components/card/TransactionCard";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
 import { useCelatoneApp, useMobile } from "lib/app-provider";
-import { TransactionCard } from "lib/components/card/TransactionCard";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -100,40 +99,42 @@ export const ModuleTxsTable = ({
         )}
       </>
     );
-  if (isMobile)
-    return (
-      <>
-        {moduleTxs ? (
-          <Flex direction="column" gap={4} w="full" mt={4}>
-            {moduleTxs?.map((transaction) => (
-              <TransactionCard
-                transaction={transaction}
-                key={transaction.hash}
-                showRelations={false}
-              />
-            ))}
-            {!onViewMore && txCount && txCount > 10 && (
-              <Pagination
-                currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
-                offset={offset}
-                totalData={txCount}
-                pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
-                scrollComponentId={scrollComponentId}
-              />
-            )}
-          </Flex>
-        ) : (
-          <EmptyState
-            withBorder
-            imageVariant="empty"
-            message="There are no transactions in this network."
-          />
-        )}
-      </>
-    );
+
+  // TODO: Handle Mobile
+  // if (isMobile)
+  //   return (
+  //     <>
+  //       {moduleTxs ? (
+  //         <Flex direction="column" gap={4} w="full" mt={4}>
+  //           {moduleTxs?.map((transaction) => (
+  //             <TransactionCard
+  //               transaction={transaction}
+  //               key={transaction.hash}
+  //               showRelations={false}
+  //             />
+  //           ))}
+  //           {!onViewMore && txCount && txCount > 10 && (
+  //             <Pagination
+  //               currentPage={currentPage}
+  //               pagesQuantity={pagesQuantity}
+  //               offset={offset}
+  //               totalData={txCount}
+  //               pageSize={pageSize}
+  //               onPageChange={onPageChange}
+  //               onPageSizeChange={onPageSizeChange}
+  //               scrollComponentId={scrollComponentId}
+  //             />
+  //           )}
+  //         </Flex>
+  //       ) : (
+  //         <EmptyState
+  //           withBorder
+  //           imageVariant="empty"
+  //           message="There are no transactions in this network."
+  //         />
+  //       )}
+  //     </>
+  //   );
   return (
     <>
       <TransactionsTable

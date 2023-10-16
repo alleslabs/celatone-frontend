@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
+- [#550](https://github.com/alleslabs/celatone-frontend/pull/550) Add modules and resources in account detail
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Wireup publish module tx
 - [#544](https://github.com/alleslabs/celatone-frontend/pull/544) Show module source code if available
 - [#534](https://github.com/alleslabs/celatone-frontend/pull/534) Wire up initia execute function
@@ -52,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#494](https://github.com/alleslabs/celatone-frontend/pull/494) Initia select module drawer UI
 - [#490](https://github.com/alleslabs/celatone-frontend/pull/490) Add initia module interaction page
 - [#488](https://github.com/alleslabs/celatone-frontend/pull/488) Add initia navigation and sidebar
+- [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Refactor contract detail page and add contract states
 - [#487](https://github.com/alleslabs/celatone-frontend/pull/487) Support Station Extension
 - [#508](https://github.com/alleslabs/celatone-frontend/pull/508) Add auto focus, enter key listener on contract selection
 - [#492](https://github.com/alleslabs/celatone-frontend/pull/492) Add jsonschema actions on contract detail page
@@ -77,6 +79,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
+- [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables
+- [#549](https://github.com/alleslabs/celatone-frontend/pull/549) Add move tx filer options
+- [#553](https://github.com/alleslabs/celatone-frontend/pull/553) Use Cmd on Mac OS while Ctrl on others
 - [#548](https://github.com/alleslabs/celatone-frontend/pull/548) Handle interaction page query param and refactor page
 - [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
@@ -119,6 +125,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal
+- [#554](https://github.com/alleslabs/celatone-frontend/pull/554) Fix and improve ui alignment, cta, and publish error
+- [#551](https://github.com/alleslabs/celatone-frontend/pull/551) Fix various bugs on the interaction page
 - [#547](https://github.com/alleslabs/celatone-frontend/pull/547) Fix form null and sort modules when submit an address
 - [#543](https://github.com/alleslabs/celatone-frontend/pull/543) Fix Initia testnet chain config
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text

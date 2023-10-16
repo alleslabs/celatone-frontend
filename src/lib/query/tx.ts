@@ -31,6 +31,10 @@ export const getTxsByAddressPagination = graphql(`
         is_send
         is_store_code
         is_update_admin
+        is_move_publish
+        is_move_upgrade
+        is_move_execute
+        is_move_script
       }
       is_signer
     }

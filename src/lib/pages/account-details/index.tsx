@@ -11,9 +11,9 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
+  useConvertHexAddress,
   useInternalNavigate,
   useMoveConfig,
-  useNftConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -25,20 +25,28 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import { useAccountModules } from "lib/services/move/moduleService";
+import { useAccountResources } from "lib/services/move/resourceService";
 import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { HumanAddr } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
+import {
+  bech32AddressToHex,
+  getFirstQueryParam,
+  isHexAddress,
+  truncate,
+  unpadHexAddress,
+} from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
-import { ModuleLists } from "./components/modules/ModuleLists";
-import { ResourceLists } from "./components/resources/ResourceLists";
-import { ResourceSection } from "./components/resources/ResourceSection";
+import { ModuleLists } from "./components/ModuleLists";
+import { ResourceLists, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -53,26 +61,29 @@ enum TabIndex {
   Overview = "overview",
   Assets = "assets",
   Delegations = "delegations",
-  NFTs = "nfts",
   Txs = "txs",
   Codes = "codes",
   Contracts = "contracts",
   Admins = "admins",
-  Resources = "resouces",
+  Resources = "resources",
   Modules = "modules",
   Proposals = "proposals",
 }
 
-interface AccountDetailsBodyProps {
+export interface AccountDetailsBodyProps {
+  hexAddress: HexAddr;
   accountAddress: HumanAddr;
 }
 
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
-const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
+const AccountDetailsBody = ({
+  hexAddress,
+  accountAddress,
+}: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const nft = useNftConfig({ shouldRedirect: false });
+  // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
   const { trackUseTab } = useTrack();
@@ -82,6 +93,22 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const { data: accountId } = useAccountId(accountAddress);
   const { data: icnsName } = useICNSNamesByAddress(accountAddress);
+
+  // TODO: combine with useAccountDetailsTableCounts and remove type assertion
+  // move
+  const { data: fetchedAccountModules, isFetching: isModulesLoading } =
+    useAccountModules({
+      address: accountAddress,
+      moduleName: undefined,
+      functionName: undefined,
+      options: { refetchOnWindowFocus: false, retry: 1 },
+    });
+  const modulesData = fetchedAccountModules as Option<IndexedModule[]>;
+
+  const { data: resourcesData, isFetching: isResourceLoading } =
+    useAccountResources({
+      address: accountAddress,
+    });
 
   const publicDetail = publicInfoBySlug?.details;
   const {
@@ -148,6 +175,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           publicDetail={publicDetail}
           icnsName={icnsName}
           accountAddress={accountAddress}
+          hexAddress={hexAddress}
         />
       </Flex>
       {publicInfo?.description && (
@@ -197,14 +225,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
             Delegations
           </CustomTab>
-          <CustomTab
+          {/* <CustomTab
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
             onClick={handleTabChange(TabIndex.NFTs)}
             hidden={!nft.enabled}
           >
             NFTs
-          </CustomTab>
+          </CustomTab> */}
           <CustomTab
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
@@ -237,16 +265,16 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
-            count={tableCounts.txsCount}
-            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            count={resourcesData?.length}
+            isDisabled={!resourcesData?.length}
             onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
           >
             Resources
           </CustomTab>
           <CustomTab
-            count={tableCounts.txsCount}
-            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            count={modulesData?.length}
+            isDisabled={!modulesData?.length}
             onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
           >
@@ -310,11 +338,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             {move.enabled && (
               <>
                 <ResourceLists
-                  totalAsset={0}
+                  address={accountAddress}
                   onViewMore={handleTabChange(TabIndex.Resources)}
                 />
                 <ModuleLists
-                  totalAsset={0}
+                  selectedAddress={accountAddress}
+                  totalCount={modulesData?.length}
+                  modules={modulesData}
+                  isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules)}
                 />
               </>
@@ -333,7 +364,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
-          <TabPanel p={0}>nft</TabPanel>
+          {/* <TabPanel p={0}>nft</TabPanel> */}
           <TabPanel p={0}>
             <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>
@@ -362,10 +393,19 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ResourceSection />
+            <ResourceSection
+              address={accountAddress}
+              resources={resourcesData}
+              isLoading={isResourceLoading}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleLists totalAsset={0} />
+            <ModuleLists
+              selectedAddress={accountAddress}
+              totalCount={modulesData?.length}
+              modules={modulesData}
+              isLoading={isModulesLoading}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <OpenedProposalsTable
@@ -385,10 +425,20 @@ const AccountDetails = () => {
   const router = useRouter();
   const { track } = useTrack();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const hexToBech32 = useConvertHexAddress();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
-  ).toLowerCase() as HumanAddr;
+  ).toLowerCase() as MoveAccountAddr;
+  const [hexAddr, humanAddr] = isHexAddress(accountAddressParam)
+    ? [
+        unpadHexAddress(accountAddressParam as HexAddr),
+        hexToBech32(accountAddressParam as HexAddr),
+      ]
+    : [
+        unpadHexAddress(bech32AddressToHex(accountAddressParam as HumanAddr)),
+        accountAddressParam as HumanAddr,
+      ];
   // TODO: fix assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
@@ -400,11 +450,12 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      {validateUserAddress(accountAddressParam) &&
+      {!isHexAddress(accountAddressParam) &&
+      validateUserAddress(accountAddressParam) &&
       validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody accountAddress={accountAddressParam} />
+        <AccountDetailsBody hexAddress={hexAddr} accountAddress={humanAddr} />
       )}
     </PageContainer>
   );

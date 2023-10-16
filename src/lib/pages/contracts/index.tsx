@@ -1,16 +1,10 @@
-import { Heading, Box, Flex, Text } from "@chakra-ui/react";
+import { Heading, Box, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
-import {
-  useInternalNavigate,
-  useWasmConfig,
-  useMobile,
-} from "lib/app-provider";
-import { InstantiatedContractCard } from "lib/components/card/ContractCard";
-import { Loading } from "lib/components/Loading";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { ContractsTable } from "lib/components/table";
@@ -23,7 +17,6 @@ const RecentContracts = observer(() => {
   const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const isMobile = useMobile();
   const onRowSelect = (contract: ContractAddr) =>
     navigate({
       pathname: "/contracts/[contract]",
@@ -36,28 +29,6 @@ const RecentContracts = observer(() => {
     if (router.isReady) track(AmpEvent.TO_RECENT_CONTRACT);
   }, [router.isReady, track]);
 
-  const emptyState = (
-    <EmptyState
-      imageVariant="empty"
-      message="Most recent 100 contracts will display here."
-      withBorder
-    />
-  );
-  const MobileSection = () => {
-    if (isLoading) return <Loading />;
-    if (!recentContracts?.length) return emptyState;
-    return (
-      <Flex direction="column" gap={4} w="full" mt={4}>
-        {recentContracts.map((contract) => (
-          <InstantiatedContractCard
-            contractInfo={contract}
-            key={contract.contractAddress}
-          />
-        ))}
-      </Flex>
-    );
-  };
-
   return (
     <PageContainer>
       <Box>
@@ -68,17 +39,19 @@ const RecentContracts = observer(() => {
           These contracts are the most recently instantiated on this network
         </Text>
       </Box>
-      {isMobile ? (
-        <MobileSection />
-      ) : (
-        <ContractsTable
-          contracts={recentContracts}
-          isLoading={isLoading}
-          emptyState={emptyState}
-          onRowSelect={onRowSelect}
-          withoutTag
-        />
-      )}
+      <ContractsTable
+        contracts={recentContracts}
+        isLoading={isLoading}
+        emptyState={
+          <EmptyState
+            imageVariant="empty"
+            message="Most recent 100 contracts will display here."
+            withBorder
+          />
+        }
+        onRowSelect={onRowSelect}
+        withoutTag
+      />
     </PageContainer>
   );
 });

@@ -85,7 +85,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 // TODO change path to /account/0x1
                 {
                   name: "0x1 Page",
-                  slug: "/deploy",
+                  slug: "/account/0x1",
                   icon: "home" as IconKeys,
                 },
                 {
