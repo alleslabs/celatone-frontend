@@ -64,7 +64,7 @@ export const DevShortcut = () => {
             },
             {
               title: "View / Execute",
-              subtitle: "Interact with modules and functions",
+              subtitle: "Interact with module's functions",
               slug: "interact",
               icon: "execute" as const,
             },

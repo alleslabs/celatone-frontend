@@ -80,7 +80,12 @@ export const ResourceDetailCard = ({
           </Flex>
         </Flex>
       </AccordionButton>
-      <AccordionPanel p={4} borderTop="1px solid" borderColor="gray.700">
+      <AccordionPanel
+        p={4}
+        borderTop="1px solid"
+        borderColor="gray.700"
+        borderTopRadius={0}
+      >
         <Flex direction="column" gap={3}>
           {formattedArray.map((item) => (
             <Flex key={item.key} gap={4}>
