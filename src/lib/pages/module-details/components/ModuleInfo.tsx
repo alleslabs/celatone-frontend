@@ -5,9 +5,11 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
 import { ModuleSourceCode } from "lib/components/module";
-import type { ModuleVerificationInternal } from "lib/services/module";
-import type { ModuleDetailsQueryResponse } from "lib/services/moduleService";
-import { type IndexedModule } from "lib/services/moduleService";
+import type { ModuleVerificationInternal } from "lib/services/move/module";
+import type {
+  IndexedModule,
+  ModuleDetailsQueryResponse,
+} from "lib/services/move/moduleService";
 import type { Nullable, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 

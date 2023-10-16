@@ -1,14 +1,20 @@
-import { Box, Flex, TableContainer } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { TableTitle } from "lib/components/table";
+import {
+  MobileTableContainer,
+  TableContainer,
+  TableTitle,
+} from "lib/components/table";
 import type { Delegation } from "lib/pages/account-details/data";
 import type { Option, TokenWithValue } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";
+import { BondedTableMobileCard } from "./BondedTableMobileCard";
 import { BondedTableRow } from "./BondedTableRow";
-import { TEMPLATE_COLUMNS } from "./constant";
+import { TEMPLATE_COLUMNS } from "./constants";
 
 interface DelegationsTableProps {
   delegations: Option<Delegation[]>;
@@ -23,24 +29,39 @@ const DelegationsTableBody = ({
   defaultToken,
   isLoading,
 }: DelegationsTableProps) => {
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading withBorder />;
   if (!delegations?.length)
     return (
-      <Flex>
-        <TableTitle
-          title="Delegated to"
-          count={delegations?.length ?? 0}
-          mb={2}
-        />
-        <EmptyState
-          message="This account did not delegate their assets to any validators."
-          withBorder
-        />
-      </Flex>
+      <EmptyState
+        message="This account did not delegate their assets to any validators."
+        withBorder
+      />
     );
 
-  return (
-    <TableContainer width="100%">
+  return isMobile ? (
+    <MobileTableContainer mt={0}>
+      {delegations.map((delegation) => (
+        <BondedTableMobileCard
+          key={
+            delegation.validator.validatorAddress +
+            delegation.token.amount +
+            delegation.token.denom
+          }
+          bondedInfo={{
+            validator: delegation.validator,
+            amount: delegation.token,
+            reward:
+              rewards?.[delegation.validator.validatorAddress]?.find(
+                (token) => token.denom === defaultToken.denom
+              ) ?? defaultToken,
+          }}
+        />
+      ))}
+    </MobileTableContainer>
+  ) : (
+    <TableContainer>
       <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />
       {delegations.map((delegation) => (
         <BondedTableRow

@@ -1,4 +1,4 @@
-import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
 import type { Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
 import { truncate } from "lib/utils";
@@ -38,35 +38,40 @@ export const statusResolver = ({
       status: "error",
       text: `This .mv file can be published by ${truncate(abi.address)} only.`,
     };
-  // Condition check for existing module
-  if (currentPolicy) {
+  // Condition check for existing module, break switch case for non-existing
+  switch (currentPolicy) {
     // Policy check
     // IMMUTABLE -> cannot be republished
     // COMPATIBLE -> can be republished as COMPATIBLE and IMMUTABLE only
     // ARBITRARY -> can be freely republished
-    if (currentPolicy === UpgradePolicy.IMMUTABLE)
+    case UpgradePolicy.IMMUTABLE:
       return {
         status: "error",
         text: `“${abi.name}” is published with “Immutable” policy, which cannot be republished.`,
       };
-    if (currentPolicy === policy)
+    case policy:
       return {
         status: "info",
         text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
       };
-    return resolvePolicyPriority(policy, currentPolicy)
-      ? {
-          status: "info",
-          text: `The file will be uploaded to republish module “${
-            abi.name
-          }” in your address. ${
-            currentPolicy === policy ? "" : policyUpdateText
-          }`,
-        }
-      : {
+    case undefined:
+      break;
+    default: {
+      if (policy === UpgradePolicy.IMMUTABLE && priorUpload)
+        return {
           status: "error",
-          text: `“${abi.name}” is published with “${currentPolicy}” policy, which cannot be republished to “${policy}”`,
+          text: `“${abi.name}” is published with “Immutable” policy, which cannot be republished.`,
         };
+      return resolvePolicyPriority(policy, currentPolicy)
+        ? {
+            status: "info",
+            text: `The file will be uploaded to republish module “${abi.name}” in your address. ${policyUpdateText}`,
+          }
+        : {
+            status: "error",
+            text: `“${abi.name}” is published with “${currentPolicy}” policy, which cannot be republished to “${policy}”`,
+          };
+    }
   }
   // Condition check for non-existing module with identical module file uploaded
   if (priorUpload) {

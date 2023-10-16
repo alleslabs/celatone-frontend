@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import type { FormState } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -32,10 +32,12 @@ export const ArgsForm = ({
     trigger,
     control,
     getValues,
+    clearErrors,
     formState: { errors },
   } = useForm<Record<string, Nullable<string>>>({
     defaultValues: initialData,
     mode: "all",
+    delayError: 500,
   });
 
   useEffect(() => {
@@ -53,20 +55,38 @@ export const ArgsForm = ({
       <Heading variant="h6" as="h6" color="text.main">
         args
       </Heading>
-      {params.map((param, index) => {
-        control.register(`${index}`, {
-          onChange: () => propsOnChange?.(getValues()),
-        });
-        return (
-          <ArgFieldTemplate
-            key={param + index.toString()}
-            index={index}
-            param={param}
-            control={control}
-            error={errors[`${index}`]?.message}
-          />
-        );
-      })}
+      {!params.length ? (
+        <Flex
+          direction="column"
+          alignItems="center"
+          gap={4}
+          p="24px 8px"
+          border="1px solid"
+          borderColor="gray.700"
+          borderRadius="8px"
+        >
+          <Text variant="body2" color="text.dark">
+            This function does not require any inputs.
+          </Text>
+        </Flex>
+      ) : (
+        params.map((param, index) => {
+          control.register(`${index}`, {
+            onChange: () => {
+              clearErrors(`${index}`);
+              propsOnChange?.(getValues());
+            },
+          });
+          return (
+            <ArgFieldTemplate
+              key={param + index.toString()}
+              index={index}
+              param={param}
+              control={control}
+            />
+          );
+        })
+      )}
     </Flex>
   );
 };

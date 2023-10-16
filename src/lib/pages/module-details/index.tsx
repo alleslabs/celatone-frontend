@@ -19,14 +19,14 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import type { IndexedModule } from "lib/services/moduleService";
 import {
+  type IndexedModule,
   useVerifyModule,
   useModuleId,
   useAccountModules,
   useModuleHistoriesCount,
   useModuleDetailsQuery,
-} from "lib/services/moduleService";
+} from "lib/services/move/moduleService";
 import { useModuleTxsCount } from "lib/services/txService";
 import type { MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";

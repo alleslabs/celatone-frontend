@@ -15625,6 +15625,10 @@ export type GetTxsByAddressPaginationQuery = {
       is_send: boolean;
       is_store_code: boolean;
       is_update_admin: boolean;
+      is_move_publish: boolean;
+      is_move_upgrade: boolean;
+      is_move_execute: boolean;
+      is_move_script: boolean;
       account: { __typename?: "accounts"; address: string };
     };
   }>;
@@ -21454,6 +21458,22 @@ export const GetTxsByAddressPaginationDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "is_update_admin" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_publish" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_upgrade" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_execute" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_script" },
                       },
                     ],
                   },

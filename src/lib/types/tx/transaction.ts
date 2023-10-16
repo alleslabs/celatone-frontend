@@ -39,16 +39,30 @@ export interface Transaction {
   isInstantiate: boolean;
 }
 
-export interface TxFilters {
-  isExecute: boolean;
-  isInstantiate: boolean;
-  isUpload: boolean;
-  isIbc: boolean;
+export interface BaseTxFilters {
   isSend: boolean;
+  isIbc: boolean;
+}
+export interface WasmTxFilters {
+  isUpload: boolean;
+  isInstantiate: boolean;
+  isExecute: boolean;
   isMigrate: boolean;
   isUpdateAdmin: boolean;
   isClearAdmin: boolean;
 }
+
+export interface MoveTxFilters {
+  isMovePublish: boolean;
+  isMoveUpgrade: boolean;
+  isMoveExecute: boolean;
+  isMoveScript: boolean;
+}
+
+export interface TxFilters
+  extends BaseTxFilters,
+    WasmTxFilters,
+    MoveTxFilters {}
 
 export type PoolTxFilter =
   | "is_all"

@@ -1,6 +1,6 @@
 import type { FieldArrayWithId } from "react-hook-form";
 
-import type { DecodeModuleQueryResponse } from "lib/services/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
 import type { Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
 

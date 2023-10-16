@@ -43,6 +43,7 @@ export const StructCard = ({ struct }: StructCardProps) => {
           <AccordionButton
             flexDirection="column"
             alignItems="flex-start"
+            _hover={{ bg: "transparent" }}
             onClick={() => ({
               action: !isExpanded ? "expand" : "collapse",
               component: "unsupported_pool",
