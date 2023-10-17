@@ -198,6 +198,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               >
                 {actionList.map((item) => (
                   <Flex
+                    key={item.name}
                     p={4}
                     bg="gray.800"
                     opacity={item.count < 1 ? 0.5 : 1}

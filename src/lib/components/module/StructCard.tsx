@@ -65,6 +65,7 @@ export const StructCard = ({ struct }: StructCardProps) => {
                 <Flex gap={1}>
                   {structAbilities.map((item) => (
                     <Tag
+                      key={item}
                       size="sm"
                       variant="gray"
                       opacity={struct.abilities.includes(item) ? 1 : 0.3}

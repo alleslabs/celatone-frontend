@@ -33,84 +33,82 @@ const StyledIconButton = chakra(IconButton, {
   },
 });
 
-const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => {
-  return (
-    <AccordionPanel bg="gray.900" borderRadius={8} mt={4} py={3} px={4}>
-      <Flex gap={3} direction="column">
-        <Flex gap={8}>
-          <LabelText
-            isSmall
-            label="visibility"
-            labelWeight={700}
-            labelColor="text.disabled"
-          >
-            <Flex align="center">
-              <CustomIcon
-                name={getVisibilityIcon(exposedFn.visibility)}
-                boxSize={3}
-                ml={0}
-                color="gray.600"
-              />
-              <Text variant="body3" textTransform="capitalize">
-                {exposedFn.visibility}
-              </Text>
-            </Flex>
-          </LabelText>
-          <LabelText
-            isSmall
-            label="is_entry"
-            labelWeight={700}
-            labelColor="text.disabled"
-          >
-            <Flex align="center">
-              <CustomIcon
-                boxSize={3}
-                ml={0}
-                color={exposedFn.is_entry ? "success.main" : "gray.600"}
-                name={exposedFn.is_entry ? "check" : "close"}
-              />
-              <Text variant="body3">{String(exposedFn.is_entry)}</Text>
-            </Flex>
-          </LabelText>
-          <LabelText
-            isSmall
-            label="is_view"
-            labelWeight={700}
-            labelColor="text.disabled"
-          >
-            <Flex align="center">
-              <CustomIcon
-                boxSize={3}
-                ml={0}
-                color={exposedFn.is_view ? "success.main" : "gray.600"}
-                name={exposedFn.is_view ? "check" : "close"}
-              />
-              <Text variant="body3">{String(exposedFn.is_view)}</Text>
-            </Flex>
-          </LabelText>
-        </Flex>
+const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
+  <AccordionPanel bg="gray.900" borderRadius={8} mt={4} py={3} px={4}>
+    <Flex gap={3} direction="column">
+      <Flex gap={8}>
         <LabelText
           isSmall
-          label="generic_type_params"
+          label="visibility"
           labelWeight={700}
           labelColor="text.disabled"
         >
-          <Text variant="body3">
-            {JSON.stringify(exposedFn.generic_type_params)}
-          </Text>
+          <Flex align="center">
+            <CustomIcon
+              name={getVisibilityIcon(exposedFn.visibility)}
+              boxSize={3}
+              ml={0}
+              color="gray.600"
+            />
+            <Text variant="body3" textTransform="capitalize">
+              {exposedFn.visibility}
+            </Text>
+          </Flex>
         </LabelText>
         <LabelText
           isSmall
-          label="params"
+          label="is_entry"
           labelWeight={700}
           labelColor="text.disabled"
         >
-          <Text variant="body3">{JSON.stringify(exposedFn.params)}</Text>
+          <Flex align="center">
+            <CustomIcon
+              boxSize={3}
+              ml={0}
+              color={exposedFn.is_entry ? "success.main" : "gray.600"}
+              name={exposedFn.is_entry ? "check" : "close"}
+            />
+            <Text variant="body3">{String(exposedFn.is_entry)}</Text>
+          </Flex>
+        </LabelText>
+        <LabelText
+          isSmall
+          label="is_view"
+          labelWeight={700}
+          labelColor="text.disabled"
+        >
+          <Flex align="center">
+            <CustomIcon
+              boxSize={3}
+              ml={0}
+              color={exposedFn.is_view ? "success.main" : "gray.600"}
+              name={exposedFn.is_view ? "check" : "close"}
+            />
+            <Text variant="body3">{String(exposedFn.is_view)}</Text>
+          </Flex>
         </LabelText>
       </Flex>
-    </AccordionPanel>
-  );
-};
+      <LabelText
+        isSmall
+        label="generic_type_params"
+        labelWeight={700}
+        labelColor="text.disabled"
+      >
+        <Text variant="body3">
+          {JSON.stringify(exposedFn.generic_type_params)}
+        </Text>
+      </LabelText>
+      <LabelText
+        isSmall
+        label="params"
+        labelWeight={700}
+        labelColor="text.disabled"
+      >
+        <Text variant="body3">{JSON.stringify(exposedFn.params)}</Text>
+      </LabelText>
+    </Flex>
+  </AccordionPanel>
+);
 
 export const FunctionDetailCard = ({
   exposedFn,
@@ -121,15 +119,7 @@ export const FunctionDetailCard = ({
   const disabled = !checkAvailability(exposedFn);
   const navigate = useInternalNavigate();
   const isMobile = useMobile();
-  const getFnColor = () => {
-    switch (isView) {
-      case false:
-        return "accent.main";
-      case true:
-      default:
-        return "primary.main";
-    }
-  };
+  const fnColor = isView ? "primary.main" : "accent.main";
 
   const getButtonStyle = () => {
     if (disabled) return { variant: "outline-gray", color: "gray.500" };
@@ -164,17 +154,14 @@ export const FunctionDetailCard = ({
                 <Flex gap={1} alignItems="center">
                   <CustomIcon
                     name={isView ? "query" : "execute"}
-                    color={getFnColor()}
+                    color={fnColor}
                     boxSize={3}
                   />
-                  <Text variant="body3" color={getFnColor()}>
+                  <Text variant="body3" color={fnColor}>
                     {isView ? "View" : "Execute"}
                   </Text>
                 </Flex>
-                <Text
-                  variant="body2"
-                  color={disabled ? "text.disabled" : "text.main"}
-                >
+                <Text variant="body2" color="text.main">
                   {name}
                 </Text>
               </Flex>
