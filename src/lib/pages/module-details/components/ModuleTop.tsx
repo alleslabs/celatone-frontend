@@ -6,7 +6,6 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import { Tooltip } from "lib/components/Tooltip";
 import type { ModuleVerificationInternal } from "lib/services/move/module";
 import type { IndexedModule } from "lib/services/move/moduleService";
@@ -26,13 +25,11 @@ const baseTextStyle: TextProps = {
 export const ModuleTop = ({ moduleData, verificationData }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  if (!moduleData) return <Loading />;
 
   return (
     <Flex direction="column">
       <Breadcrumb
         items={[
-          // TODO recheck how to get account
           {
             text: moduleData.parsedAbi.address,
             href: `/accounts/${moduleData.parsedAbi.address}`,
@@ -92,8 +89,7 @@ export const ModuleTop = ({ moduleData, verificationData }: ModuleTopProps) => {
               Module Path:
             </Text>
             <Text {...baseTextStyle}>
-              {moduleData.parsedAbi.address}::
-              {moduleData.parsedAbi.name}
+              {moduleData.parsedAbi.address}::{moduleData.parsedAbi.name}
             </Text>
           </Flex>
           <Flex

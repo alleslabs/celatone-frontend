@@ -168,7 +168,6 @@ export const FunctionDetailCard = ({
               <Flex alignItems="center" gap={{ base: 0, md: 4 }}>
                 {!isMobile && (
                   <>
-                    {" "}
                     <Flex alignItems="center" gap={2}>
                       <Tooltip
                         bg="primary.dark"
