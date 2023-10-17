@@ -164,7 +164,7 @@ export const PublishModule = ({
   // ------------------------------------------//
   useEffect(() => {
     if (
-      !modules.every(
+      modules.some(
         (field) =>
           !field.base64EncodedFile || field.publishStatus.status === "error"
       )
