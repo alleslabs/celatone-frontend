@@ -1,5 +1,5 @@
-import { Flex, Heading, IconButton, Spinner, Text } from "@chakra-ui/react";
-import { type PropsWithChildren, useCallback, useState } from "react";
+import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
 import type {
   FileArrayFields,
@@ -8,6 +8,7 @@ import type {
 } from "../formConstants";
 import { statusResolver } from "../utils";
 import { useCurrentChain } from "lib/app-provider";
+import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { UploadCard } from "lib/components/upload/UploadCard";
@@ -16,6 +17,11 @@ import {
   useDecodeModule,
 } from "lib/services/move/moduleService";
 import type { HumanAddr, UpgradePolicy, Option } from "lib/types";
+
+const DEFAULT_TEMP_FILE = {
+  file: undefined,
+  base64: "",
+};
 
 interface UploadModuleCardProps {
   index: number;
@@ -31,14 +37,6 @@ interface UploadModuleCardProps {
   removeFile: () => void;
   removeEntry: () => void;
 }
-
-const ComponentLoader = ({
-  isLoading,
-  children,
-}: PropsWithChildren<{ isLoading: boolean }>) => {
-  if (isLoading) return <Spinner size="lg" mx="auto" />;
-  return <>{children}</>;
-};
 
 export const UploadModuleCard = ({
   index,
@@ -56,10 +54,7 @@ export const UploadModuleCard = ({
   const [tempFile, setTempFile] = useState<{
     file: Option<File>;
     base64: string;
-  }>({
-    file: undefined,
-    base64: "",
-  });
+  }>(DEFAULT_TEMP_FILE);
   const { address } = useCurrentChain();
 
   const { isFetching } = useDecodeModule({
@@ -69,13 +64,16 @@ export const UploadModuleCard = ({
       enabled: Boolean(tempFile.base64),
       retry: 0,
       refetchOnWindowFocus: false,
-      onSuccess: (data) =>
+      onSuccess: (data) => {
         setFile(
           tempFile.file,
           tempFile.base64,
           data,
           statusResolver({ data, fields, index, policy })
-        ),
+        );
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
+      onError: () => setTempFile(DEFAULT_TEMP_FILE),
     },
   });
 

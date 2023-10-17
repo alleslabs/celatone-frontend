@@ -13,11 +13,13 @@ import { DROPZONE_CONFIG } from "./config";
 interface DropZoneProps extends FlexProps {
   setFile: (file: File) => void;
   fileType: DropzoneFileType;
+  error?: string;
 }
 
 export function DropZone({
   setFile,
   fileType,
+  error,
   ...componentProps
 }: DropZoneProps) {
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -52,11 +54,13 @@ export function DropZone({
     maxSize,
   });
 
+  const isError = Boolean(error || fileRejections.length > 0);
+
   return (
     <Flex direction="column">
       <Flex
         border="1px dashed"
-        borderColor={fileRejections.length > 0 ? "error.main" : "gray.700"}
+        borderColor={isError ? "error.main" : "gray.700"}
         w="full"
         p="24px 16px"
         borderRadius="8px"
@@ -92,9 +96,9 @@ export function DropZone({
           )
         </Text>
       </Flex>
-      {fileRejections.length > 0 && (
-        <Text variant="body3" color="error.main" mt="2px">
-          {fileRejections[0].errors[0].message}
+      {isError && (
+        <Text variant="body3" color="error.main" mt={1}>
+          {fileRejections[0]?.errors[0]?.message ?? error}
         </Text>
       )}
     </Flex>
