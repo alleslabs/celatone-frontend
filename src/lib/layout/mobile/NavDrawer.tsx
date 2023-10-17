@@ -16,7 +16,6 @@ import {
   MenuItem,
   IconButton,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
 
 import type { MenuInfo } from "../navbar/type";
 import { CHAIN_CONFIGS } from "config/chain";
@@ -45,81 +44,72 @@ export const NavDrawer = () => {
   const move = useMoveConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
-  const mobileMenu = useMemo(() => {
-    const menu: MenuInfo[] = [
-      {
-        category: "Overview",
-        slug: "overview",
-        submenu: [
-          { name: "Overview", slug: "/", icon: "home" as IconKeys },
-          {
-            name: "Transactions",
-            slug: "/txs",
-            icon: "file" as IconKeys,
-          },
-          {
-            name: "Blocks",
-            slug: "/blocks",
-            icon: "block" as IconKeys,
-          },
-          ...(wasm.enabled
-            ? [
-                {
-                  name: "Recent Codes",
-                  slug: "/codes",
-                  icon: "code" as IconKeys,
-                },
-                {
-                  name: "Recent Contracts",
-                  slug: "/contracts",
-                  icon: "contract-address" as IconKeys,
-                },
-                {
-                  name: "Query",
-                  slug: "/query",
-                  icon: "query" as IconKeys,
-                },
-              ]
-            : []),
-          ...(move.enabled
-            ? [
-                {
-                  name: "0x1 Page",
-                  slug: "/account/0x1",
-                  icon: "home" as IconKeys,
-                },
-              ]
-            : []),
-        ],
-      },
-    ];
+  const mobileMenu: MenuInfo[] = [
+    {
+      category: "Overview",
+      slug: "overview",
+      submenu: [
+        { name: "Overview", slug: "/", icon: "home" },
+        {
+          name: "Transactions",
+          slug: "/txs",
+          icon: "file",
+        },
+        {
+          name: "Blocks",
+          slug: "/blocks",
+          icon: "block",
+        },
+        ...(wasm.enabled
+          ? [
+              {
+                name: "Recent Codes",
+                slug: "/codes",
+                icon: "code" as IconKeys,
+              },
+              {
+                name: "Recent Contracts",
+                slug: "/contracts",
+                icon: "contract-address" as IconKeys,
+              },
+              {
+                name: "Query",
+                slug: "/query",
+                icon: "query" as IconKeys,
+              },
+            ]
+          : []),
+        ...(move.enabled
+          ? [
+              {
+                name: "0x1 Page",
+                slug: "/account/0x1",
+                icon: "home" as IconKeys,
+              },
+            ]
+          : []),
+      ],
+    },
+  ];
 
-    if (publicProject.enabled) {
-      menu.push({
-        category: "Public Projects",
-        slug: "public-projects",
-        submenu: [
-          ...getSavedPublicProjects().map((list) => ({
-            name: list.name,
-            slug: `/projects/${list.slug}`,
-            logo: list.logo,
-          })),
-          {
-            name: "View All Projects",
-            slug: "/projects",
-            icon: "public-project" as IconKeys,
-          },
-        ],
-      });
-    }
-
-    return menu;
-  }, [
-    getSavedPublicProjects,
-    publicProject.enabled,
-    wasm.enabled,
-    move.enabled,
-  ]);
+  if (publicProject.enabled) {
+    mobileMenu.push({
+      category: "Public Projects",
+      slug: "public-projects",
+      submenu: [
+        ...getSavedPublicProjects().map((list) => ({
+          name: list.name,
+          slug: `/projects/${list.slug}`,
+          logo: list.logo,
+        })),
+        {
+          name: "View All Projects",
+          slug: "/projects",
+          icon: "public-project" as IconKeys,
+        },
+      ],
+    });
+  }
 
   return (
     <>
