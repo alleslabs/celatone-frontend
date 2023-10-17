@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useMemo, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
@@ -32,133 +32,122 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
 
   const { address } = useCurrentChain();
 
-  const navMenu: MenuInfo[] = useMemo(
-    () => [
-      {
-        category: "Your Account",
-        slug: "your-account",
-        submenu: [
+  const navMenu: MenuInfo[] = [
+    {
+      category: "Your Account",
+      slug: "your-account",
+      submenu: [
+        {
+          name: "Past Transactions",
+          slug: "/past-txs",
+          icon: "history" as IconKeys,
+        },
+        {
+          name: "Your Account Details",
+          slug: `/accounts/${address}`,
+          icon: "admin" as IconKeys,
+          isDisable: !address,
+          tooltipText:
+            "You need to connect wallet to view your account details.",
+          trackEvent: () => track(AmpEvent.USE_TO_YOUR_ACCOUNT),
+        },
+      ],
+    },
+    ...(publicProject.enabled
+      ? [
           {
-            name: "Past Transactions",
-            slug: "/past-txs",
-            icon: "history" as IconKeys,
+            category: "Public Projects",
+            slug: StorageKeys.ProjectSidebar,
+            submenu: [
+              ...getSavedPublicProjects().map((list) => ({
+                name: list.name,
+                slug: `/projects/${list.slug}`,
+                logo: list.logo as IconKeys,
+              })),
+              {
+                name: "View All Projects",
+                slug: "/projects",
+                icon: "public-project" as IconKeys,
+              },
+            ],
           },
+        ]
+      : []),
+    ...(wasm.enabled
+      ? [
           {
-            name: "Your Account Details",
-            slug: `/accounts/${address}`,
-            icon: "admin" as IconKeys,
-            isDisable: !address,
-            tooltipText:
-              "You need to connect wallet to view your account details.",
-            trackEvent: () => track(AmpEvent.USE_TO_YOUR_ACCOUNT),
+            category: "Developer Tools",
+            slug: StorageKeys.DevSidebar,
+            submenu: [
+              {
+                name: "Deploy Contract",
+                slug: "/deploy",
+                icon: "add-new" as IconKeys,
+              },
+              {
+                name: "Query",
+                slug: "/query",
+                icon: "query" as IconKeys,
+              },
+              {
+                name: "Execute",
+                slug: "/execute",
+                icon: "execute" as IconKeys,
+              },
+              {
+                name: "Migrate",
+                slug: "/migrate",
+                icon: "migrate" as IconKeys,
+              },
+              // {
+              //   name: "Recent Activities",
+              //   slug: "/",
+              //   icon: "list" as IconKeys,
+              // },
+            ],
+            subSection: [
+              {
+                category: "This Wallet",
+                submenu: [
+                  {
+                    name: "My Stored Codes",
+                    slug: "/stored-codes",
+                    icon: "code" as IconKeys,
+                  },
+                  {
+                    name: INSTANTIATED_LIST_NAME,
+                    slug: `/contract-lists/${formatSlugName(
+                      INSTANTIATED_LIST_NAME
+                    )}`,
+                    icon: getListIcon(INSTANTIATED_LIST_NAME),
+                  },
+                ],
+              },
+              {
+                category: "This Device",
+                submenu: [
+                  {
+                    name: "Saved Codes",
+                    slug: "/saved-codes",
+                    icon: "code" as IconKeys,
+                  },
+                  {
+                    name: SAVED_LIST_NAME,
+                    slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
+                    icon: "contract-address" as IconKeys,
+                  },
+                  {
+                    name: "View All Contract List",
+                    slug: "/contract-lists",
+                    icon: "more" as IconKeys,
+                  },
+                ],
+              },
+            ],
           },
-        ],
-      },
-      ...(publicProject.enabled
-        ? [
-            {
-              category: "Public Projects",
-              slug: StorageKeys.ProjectSidebar,
-              submenu: [
-                ...getSavedPublicProjects().map((list) => ({
-                  name: list.name,
-                  slug: `/projects/${list.slug}`,
-                  logo: list.logo as IconKeys,
-                })),
-                {
-                  name: "View All Projects",
-                  slug: "/projects",
-                  icon: "public-project" as IconKeys,
-                },
-              ],
-            },
-          ]
-        : []),
-      ...(wasm.enabled
-        ? [
-            {
-              category: "Developer Tools",
-              slug: StorageKeys.DevSidebar,
-              submenu: [
-                {
-                  name: "Deploy Contract",
-                  slug: "/deploy",
-                  icon: "add-new" as IconKeys,
-                },
-                {
-                  name: "Query",
-                  slug: "/query",
-                  icon: "query" as IconKeys,
-                },
-                {
-                  name: "Execute",
-                  slug: "/execute",
-                  icon: "execute" as IconKeys,
-                },
-                {
-                  name: "Migrate",
-                  slug: "/migrate",
-                  icon: "migrate" as IconKeys,
-                },
-                // {
-                //   name: "Recent Activities",
-                //   slug: "/",
-                //   icon: "list" as IconKeys,
-                // },
-              ],
-              subSection: [
-                {
-                  category: "This Wallet",
-                  submenu: [
-                    {
-                      name: "My Stored Codes",
-                      slug: "/stored-codes",
-                      icon: "code" as IconKeys,
-                    },
-                    {
-                      name: INSTANTIATED_LIST_NAME,
-                      slug: `/contract-lists/${formatSlugName(
-                        INSTANTIATED_LIST_NAME
-                      )}`,
-                      icon: getListIcon(INSTANTIATED_LIST_NAME),
-                    },
-                  ],
-                },
-                {
-                  category: "This Device",
-                  submenu: [
-                    {
-                      name: "Saved Codes",
-                      slug: "/saved-codes",
-                      icon: "code" as IconKeys,
-                    },
-                    {
-                      name: SAVED_LIST_NAME,
-                      slug: `/contract-lists/${formatSlugName(
-                        SAVED_LIST_NAME
-                      )}`,
-                      icon: "contract-address" as IconKeys,
-                    },
-                    {
-                      name: "View All Contract List",
-                      slug: "/contract-lists",
-                      icon: "more" as IconKeys,
-                    },
-                  ],
-                },
-              ],
-            },
-          ]
-        : []),
-    ],
-    [
-      address,
-      getSavedPublicProjects,
-      publicProject.enabled,
-      track,
-      wasm.enabled,
-    ]
-  );
+        ]
+      : []),
+  ];
 
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
