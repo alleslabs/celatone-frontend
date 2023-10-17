@@ -9,6 +9,7 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import type {
@@ -26,6 +27,7 @@ import { parseJsonABI, splitViewExecuteFunctions, truncate } from "lib/utils";
 
 import {
   decodeModule,
+  decodeScript,
   getAccountModule,
   getAccountModules,
   getFunctionView,
@@ -44,7 +46,7 @@ const indexModuleResponse = (
   module: InternalModule,
   functionName?: string
 ): IndexedModule => {
-  const parsedAbi = parseJsonABI(module.abi);
+  const parsedAbi = parseJsonABI<ResponseABI>(module.abi);
   const { view, execute } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
   );
@@ -193,6 +195,36 @@ export const useDecodeModule = ({
       move.enabled,
       base64EncodedFile,
     ],
+    queryFn,
+    options
+  );
+};
+
+export const useDecodeScript = ({
+  base64EncodedFile,
+  options,
+}: {
+  base64EncodedFile: string;
+  options?: Omit<UseQueryOptions<ExposedFunction>, "queryKey">;
+}): UseQueryResult<ExposedFunction> => {
+  const lcd = useLCDEndpoint();
+
+  const queryFn = async (): Promise<ExposedFunction> => {
+    const fn = await decodeScript(
+      `${lcd}/initia/move/v1/script/abi`,
+      base64EncodedFile
+    );
+    return {
+      ...fn,
+      params:
+        fn.params[0] === "signer" || fn.params[0] === "&signer"
+          ? fn.params.slice(1)
+          : fn.params,
+    };
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, lcd, base64EncodedFile],
     queryFn,
     options
   );

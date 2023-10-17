@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#556](https://github.com/alleslabs/celatone-frontend/pull/556) Fully functional deploy script page
 - [#550](https://github.com/alleslabs/celatone-frontend/pull/550) Add modules and resources in account detail
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Wireup publish module tx
 - [#544](https://github.com/alleslabs/celatone-frontend/pull/544) Show module source code if available
@@ -78,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#574](https://github.com/alleslabs/celatone-frontend/pull/574) Add min height to wasm page container to properly align footer
 - [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
 - [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables
 - [#549](https://github.com/alleslabs/celatone-frontend/pull/549) Add move tx filer options

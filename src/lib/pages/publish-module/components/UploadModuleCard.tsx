@@ -1,9 +1,10 @@
-import { Flex, Heading, IconButton, Spinner, Text } from "@chakra-ui/react";
-import { type PropsWithChildren, useCallback, useState } from "react";
+import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
 import type { Module, PublishStatus } from "../formConstants";
 import { statusResolver } from "../utils";
 import { useCurrentChain } from "lib/app-provider";
+import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
@@ -13,6 +14,11 @@ import {
   useDecodeModule,
 } from "lib/services/move/moduleService";
 import type { HumanAddr, Option, UpgradePolicy } from "lib/types";
+
+const DEFAULT_TEMP_FILE = {
+  file: undefined,
+  base64: "",
+};
 
 interface UploadModuleCardProps {
   index: number;
@@ -29,14 +35,6 @@ interface UploadModuleCardProps {
   removeEntry: () => void;
   moveEntry: (from: number, to: number) => void;
 }
-
-const ComponentLoader = ({
-  isLoading,
-  children,
-}: PropsWithChildren<{ isLoading: boolean }>) => {
-  if (isLoading) return <Spinner size="lg" mx="auto" />;
-  return <>{children}</>;
-};
 
 export const UploadModuleCard = ({
   index,
@@ -55,10 +53,7 @@ export const UploadModuleCard = ({
   const [tempFile, setTempFile] = useState<{
     file: Option<File>;
     base64: string;
-  }>({
-    file: undefined,
-    base64: "",
-  });
+  }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();
 
@@ -82,11 +77,13 @@ export const UploadModuleCard = ({
           })
         );
         setDecodeError("");
+        setTempFile(DEFAULT_TEMP_FILE);
       },
       onError: () => {
         setDecodeError(
           "Failed to decode .mv file. Please make sure the file is a module."
         );
+        setTempFile(DEFAULT_TEMP_FILE);
       },
     },
   });
