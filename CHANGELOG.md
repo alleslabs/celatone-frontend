@@ -126,6 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
 - [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal
 - [#554](https://github.com/alleslabs/celatone-frontend/pull/554) Fix and improve ui alignment, cta, and publish error
 - [#551](https://github.com/alleslabs/celatone-frontend/pull/551) Fix various bugs on the interaction page

@@ -20,17 +20,10 @@ import type {
   Option,
   AbiFormData,
   RpcQueryError,
-  HumanAddr,
   UpgradePolicy,
   HexAddr,
 } from "lib/types";
-import {
-  bech32AddressToHex,
-  parseJsonABI,
-  splitViewExecuteFunctions,
-  truncate,
-  unpadHexAddress,
-} from "lib/utils";
+import { parseJsonABI, splitViewExecuteFunctions, truncate } from "lib/utils";
 
 import {
   decodeModule,
@@ -167,17 +160,14 @@ export const useFunctionView = ({
 export interface DecodeModuleQueryResponse {
   abi: ResponseABI;
   modulePath: string;
-  validPublisher: boolean;
   currentPolicy: Option<UpgradePolicy>;
 }
 
 export const useDecodeModule = ({
   base64EncodedFile,
-  address,
   options,
 }: {
   base64EncodedFile: string;
-  address: Option<HumanAddr>;
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
   const baseEndpoint = useBaseApiRoute("rest");
@@ -188,11 +178,6 @@ export const useDecodeModule = ({
     const abi = await decodeModule(move.decodeApi, base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
-    const validPublisher = address
-      ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) ===
-        abi.address
-      : false;
-
     const currentPolicy = await getAccountModule(
       baseEndpoint,
       abi.address as HexAddr,
@@ -200,7 +185,7 @@ export const useDecodeModule = ({
     )
       .then((data) => data.upgradePolicy)
       .catch(() => undefined);
-    return { abi, modulePath, validPublisher, currentPolicy };
+    return { abi, modulePath, currentPolicy };
   };
 
   return useQuery(
@@ -208,7 +193,6 @@ export const useDecodeModule = ({
       CELATONE_QUERY_KEYS.MODULE_DECODE,
       baseEndpoint,
       move.enabled,
-      address,
       base64EncodedFile,
     ],
     queryFn,
