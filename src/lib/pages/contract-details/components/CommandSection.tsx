@@ -24,15 +24,70 @@ import { useSchemaStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 
+interface RenderCmdsProps {
+  isFetching: boolean;
+  cmds: [string, string][];
+  contractAddress: ContractAddr;
+  type: string;
+}
+
 interface CommandSectionProps {
   contractAddress: ContractAddr;
   codeHash: string;
   codeId: string;
 }
 
+const RenderCmds = ({
+  isFetching,
+  cmds,
+  contractAddress,
+  type,
+}: RenderCmdsProps) => {
+  const navigate = useInternalNavigate();
+
+  if (isFetching) {
+    return <Spinner size="md" mx={1} />;
+  }
+  if (cmds.length) {
+    return (
+      <ButtonGroup
+        width="90%"
+        flexWrap="wrap"
+        rowGap={2}
+        sx={{
+          "> button": {
+            marginInlineStart: "0 !important",
+            marginInlineEnd: "1",
+          },
+        }}
+      >
+        {cmds.sort().map(([cmd, msg]) => (
+          <ContractCmdButton
+            key={`${type}-cmd-${cmd}`}
+            cmd={cmd}
+            onClickCmd={() => {
+              navigate({
+                pathname: `/${type}`,
+                query: {
+                  contract: contractAddress,
+                  msg: encode(jsonPrettify(msg)),
+                },
+              });
+            }}
+          />
+        ))}
+      </ButtonGroup>
+    );
+  }
+  return (
+    <Text variant="body2" color="text.dark">
+      No messages available
+    </Text>
+  );
+};
+
 export const CommandSection = observer(
   ({ contractAddress, codeHash, codeId }: CommandSectionProps) => {
-    const navigate = useInternalNavigate();
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     const { getSchemaByCodeHash } = useSchemaStore();
@@ -43,51 +98,6 @@ export const CommandSection = observer(
       useQueryCmds(contractAddress);
     const { isFetching: isExecuteCmdsFetching, execCmds } =
       useExecuteCmds(contractAddress);
-    const renderCmds = (
-      isFetching: boolean,
-      cmds: [string, string][],
-      type: string
-    ) => {
-      if (isFetching) {
-        return <Spinner size="md" mx={1} />;
-      }
-      if (cmds.length) {
-        return (
-          <ButtonGroup
-            width="90%"
-            flexWrap="wrap"
-            rowGap={2}
-            sx={{
-              "> button": {
-                marginInlineStart: "0 !important",
-                marginInlineEnd: "1",
-              },
-            }}
-          >
-            {cmds.sort().map(([cmd, msg]) => (
-              <ContractCmdButton
-                key={`${type}-cmd-${cmd}`}
-                cmd={cmd}
-                onClickCmd={() => {
-                  navigate({
-                    pathname: `/${type}`,
-                    query: {
-                      contract: contractAddress,
-                      msg: encode(jsonPrettify(msg)),
-                    },
-                  });
-                }}
-              />
-            ))}
-          </ButtonGroup>
-        );
-      }
-      return (
-        <Text variant="body2" color="text.dark">
-          No messages available
-        </Text>
-      );
-    };
 
     return (
       <Flex
@@ -151,7 +161,12 @@ export const CommandSection = observer(
             <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
               Query Shortcuts
             </Text>
-            {renderCmds(isQueryCmdsFetching, queryCmds, "query")}
+            <RenderCmds
+              isFetching={isQueryCmdsFetching}
+              cmds={queryCmds}
+              contractAddress={contractAddress}
+              type="query"
+            />
           </Flex>
           <Flex
             direction="column"
@@ -163,7 +178,12 @@ export const CommandSection = observer(
             <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
               Execute Shortcuts
             </Text>
-            {renderCmds(isExecuteCmdsFetching, execCmds, "execute")}
+            <RenderCmds
+              isFetching={isExecuteCmdsFetching}
+              cmds={execCmds}
+              contractAddress={contractAddress}
+              type="execute"
+            />
           </Flex>
         </Flex>
         <JsonSchemaModal

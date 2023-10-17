@@ -79,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#575](https://github.com/alleslabs/celatone-frontend/pull/575) Support message suggestion for contract from Sylvia framework
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Update cosmjs version to latest and bump terra testnet gas price
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
 - [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
