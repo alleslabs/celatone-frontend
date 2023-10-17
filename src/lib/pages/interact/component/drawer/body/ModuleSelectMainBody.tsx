@@ -123,7 +123,6 @@ export const ModuleSelectMainBody = ({
           />
         </Flex>
       </GridItem>
-      {/* Left */}
       <ModuleFunctionBody
         area="main"
         module={selectedModule}

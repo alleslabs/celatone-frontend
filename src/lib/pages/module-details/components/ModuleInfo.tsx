@@ -4,19 +4,27 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
+import type { ModuleVerificationInternal } from "lib/services/move/module";
+import { type IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleInfoProps {
-  isVerified?: boolean;
+  address: IndexedModule["address"];
+  upgradePolicy: IndexedModule["upgradePolicy"];
+  verificationData: ModuleVerificationInternal | null | undefined;
 }
 
-export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
+export const ModuleInfo = ({
+  address,
+  upgradePolicy,
+  verificationData,
+}: ModuleInfoProps) => {
   return (
     <Flex flexDirection="column" gap={4}>
       <Flex justifyContent="space-between" alignItems="center" w="full">
         <Heading as="h6" variant="h6" fontWeight={600}>
           Module Information
         </Heading>
-        {isVerified && (
+        {verificationData?.source && (
           <Flex alignItems="center" gap={1}>
             <CustomIcon name="check-circle-solid" color="success.main" />
             <Text variant="body2" color="text.dark">
@@ -26,15 +34,17 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
           </Flex>
         )}
       </Flex>
-      {/* TODO data */}
       <Flex
         p={4}
         borderRadius={8}
         border="1px solid"
         borderColor="gray.700"
         sx={{ "& > div": { flex: 1 } }}
+        gap={{ base: 4, md: 0 }}
+        direction={{ base: "column", md: "row" }}
       >
-        <LabelText label="Upgrade Policy">ARBITRARY</LabelText>
+        <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
+        {/* TODO get block height */}
         <LabelText
           label="Initial Published Block Height"
           helperText1="formatUTC(createdTime)"
@@ -50,11 +60,12 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
         <LabelText label="Initial Published by" helperText1="(Account Address)">
           <ExplorerLink
             type="user_address"
-            value="cltn1...7tlju97"
+            value={address}
             showCopyOnHover
             fixedHeight
           />
         </LabelText>
+        {/* TODO get  Transaction or proposal */}
         <LabelText label="Initial Published Transaction">
           <ExplorerLink
             type="tx_hash"
@@ -63,7 +74,7 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
             fixedHeight
           />
         </LabelText>
-        <LabelText
+        {/* <LabelText
           label="Initial Published Proposal ID"
           helperText1="TODO Published DAO Module"
         >
@@ -73,10 +84,9 @@ export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
             fixedHeight
             type="proposal_id"
           />
-        </LabelText>
+        </LabelText> */}
       </Flex>
-      {/* TODO: Wireup */}
-      <ModuleSourceCode sourceCode="" />
+      <ModuleSourceCode sourceCode={verificationData?.source} />
     </Flex>
   );
 };

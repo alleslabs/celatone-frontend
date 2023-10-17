@@ -1,14 +1,18 @@
 import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
+import type { ModuleVerificationInternal } from "lib/services/move/module";
+import type { IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleTopProps {
-  isVerified?: boolean;
+  moduleData: IndexedModule;
+  verificationData: ModuleVerificationInternal | null | undefined;
 }
 
 const baseTextStyle: TextProps = {
@@ -18,18 +22,20 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
+export const ModuleTop = ({ moduleData, verificationData }: ModuleTopProps) => {
   const isMobile = useMobile();
-  //   TODO Name
-  const displayName = "Module Name";
+  const navigate = useInternalNavigate();
 
   return (
     <Flex direction="column">
       <Breadcrumb
         items={[
-          { text: "TODO Account Address", href: "/" },
-          { text: "Module" },
-          { text: "Module Name" },
+          {
+            text: moduleData.parsedAbi.address,
+            href: `/accounts/${moduleData.parsedAbi.address}`,
+          },
+          { text: "Modules" },
+          { text: moduleData.moduleName },
         ]}
       />
       <Flex
@@ -60,9 +66,9 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
               variant={{ base: "h6", md: "h5" }}
               className={!isMobile ? "ellipsis" : ""}
             >
-              {displayName}
+              {moduleData.moduleName}
             </Heading>
-            {isVerified && (
+            {verificationData && (
               <Tooltip label="This module's verification is supported by its provided source code.">
                 <Flex>
                   <CustomIcon
@@ -82,13 +88,9 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
-            {/* TODO module path */}
-            <Flex>
-              <Text {...baseTextStyle}>
-                cltn13a2sywe6g4a9w84g98w4g1dasdrfafdstlju97::
-              </Text>
-              <Text {...baseTextStyle}>beeb</Text>
-            </Flex>
+            <Text {...baseTextStyle}>
+              {moduleData.parsedAbi.address}::{moduleData.parsedAbi.name}
+            </Text>
           </Flex>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -98,9 +100,8 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Creator:
             </Text>
-            {/* TODO Creator */}
             <CopyLink
-              value="cltn1m9y7um59yxtmek68qkwg3ykm28s52rrell6prx"
+              value={moduleData.parsedAbi.address}
               amptrackSection="contract_top"
               type="contract_address"
             />
@@ -113,44 +114,78 @@ export const ModuleTop = ({ isVerified = false }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Friends:
             </Text>
-            {/* TODO Friends */}
             <Flex gap={1}>
-              <Text {...baseTextStyle}>0x1::any,</Text>
-              <Text {...baseTextStyle}>0x1::copyable_any</Text>
-              <Text {...baseTextStyle}>0x1::copyable_any::function_name</Text>
+              {moduleData.parsedAbi.friends.length ? (
+                <Flex
+                  sx={{
+                    "> p:last-child > span": {
+                      display: "none",
+                    },
+                  }}
+                >
+                  {moduleData.parsedAbi.friends.map((item) => (
+                    <Text {...baseTextStyle}>
+                      {item}
+                      <span>,</span>
+                    </Text>
+                  ))}
+                </Flex>
+              ) : (
+                <Text {...baseTextStyle}>-</Text>
+              )}
             </Flex>
           </Flex>
         </Flex>
-        <Flex
-          gap={{ base: 2, md: 4 }}
-          mt={{ base: 8, md: 0 }}
-          w={{ base: "full", md: "auto" }}
-        >
-          <Button
-            variant="outline-primary"
+        {!isMobile && (
+          <Flex
+            gap={{ base: 2, md: 4 }}
+            mt={{ base: 8, md: 0 }}
             w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="query" />}
-            size={{ base: "sm", md: "md" }}
           >
-            View
-          </Button>
-          <Button
-            variant="outline-primary"
-            w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="execute" />}
-            size={{ base: "sm", md: "md" }}
-          >
-            Execute
-          </Button>
-          <Button
-            variant="outline-primary"
-            w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="copy" />}
-            size={{ base: "sm", md: "md" }}
-          >
-            Copy ABI
-          </Button>
-        </Flex>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="query" />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() =>
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: moduleData.address,
+                    moduleName: moduleData.moduleName,
+                    functionType: "view",
+                  },
+                })
+              }
+            >
+              View
+            </Button>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="execute" />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() =>
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: moduleData.address,
+                    moduleName: moduleData.moduleName,
+                    functionType: "execute",
+                  },
+                })
+              }
+            >
+              Execute
+            </Button>
+            <CopyButton
+              value={moduleData.abi}
+              variant="outline-primary"
+              size={{ base: "sm", md: "md" }}
+              buttonText="Copy ABI"
+            />
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

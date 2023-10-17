@@ -143,7 +143,7 @@ export const ResourceSection = ({
                   </Flex>
                 </AccordionButton>
                 <AccordionPanel>
-                  <Flex direction="column" gap={3}>
+                  <Flex direction="column" gap={3} maxW={80}>
                     {Object.values(item.resources).map((subitem) => (
                       <ResourceCard
                         key={subitem.group}

@@ -63,7 +63,7 @@ export interface ExposedFunction {
   return: string[];
 }
 
-interface Struct {
+export interface Struct {
   name: string;
   is_native: boolean;
   abilities: string[];

@@ -1,5 +1,6 @@
 import {
   Flex,
+  Text,
   Tabs,
   TabList,
   TabPanel,
@@ -7,6 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import type { MouseEventHandler } from "react";
 import { useCallback, useEffect } from "react";
 
 import {
@@ -17,15 +19,26 @@ import {
 import { useTrack } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import type { IconKeys } from "lib/components/icon";
+import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { InvalidState } from "lib/components/state";
 import { useContractDetailsTableCounts } from "lib/model/contract";
 import { useAccountId } from "lib/services/accountService";
-import type { ContractAddr } from "lib/types";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import {
+  useAccountModules,
+  useVerifyModule,
+} from "lib/services/move/moduleService";
+import type { ContractAddr, HexAddr, MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
+import { FunctionTypeTabs } from "./components/FunctionTypeSwitch";
+import { ModuleFunction } from "./components/ModuleFunction";
 import { ModuleInfo } from "./components/ModuleInfo";
+import { ModuleStruct } from "./components/ModuleStruct";
 import { ModuleTop } from "./components/ModuleTop";
-import { QuickAccess } from "./components/QuickAccess";
 
 const tableHeaderId = "moduleDetailsTab";
 export enum TabIndex {
@@ -34,41 +47,58 @@ export enum TabIndex {
   Txs = "txs",
   Structs = "structs",
 }
-// TODO get module path
+
+interface ActionInfo {
+  icon: IconKeys;
+  iconColor: string;
+  name: string;
+  count: number;
+  onClick: MouseEventHandler<HTMLDivElement>;
+}
+
 const txTableHeaderId = "ModuleTxsTableHeader";
 
-export const ModuleDetails = () => {
-  const navigate = useInternalNavigate();
+interface ModuleDetailsBodyProps {
+  moduleData: IndexedModule;
+}
+
+const InvalidModule = () => <InvalidState title="Module does not exist" />;
+
+export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const { trackUseTab } = useTrack();
 
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-  const modulePath = getFirstQueryParam(router.query.modulePath);
+
   const handleTabChange = useCallback(
-    (nextTab: TabIndex) => () => {
+    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
-        pathname: "/modules/[modulePath]/[tab]",
+        pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          modulePath,
+          address: moduleData.address,
+          moduleName: moduleData.moduleName,
           tab: nextTab,
+          ...(fnType && { type: fnType }),
         },
         options: {
           shallow: true,
         },
       });
     },
-    [modulePath, navigate, tab, trackUseTab]
+    [moduleData.address, moduleData.moduleName, navigate, tab, trackUseTab]
   );
 
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
       navigate({
         replace: true,
-        pathname: "/modules/[modulePath]/[tab]",
+        pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          modulePath,
+          address: moduleData.address,
+          moduleName: moduleData.moduleName,
           tab: TabIndex.Overview,
         },
         options: {
@@ -76,7 +106,13 @@ export const ModuleDetails = () => {
         },
       });
     }
-  }, [router.isReady, tab, modulePath, navigate]);
+  }, [
+    router.isReady,
+    tab,
+    navigate,
+    moduleData.address,
+    moduleData.moduleName,
+  ]);
 
   const contractAddress = "" as ContractAddr;
   const { data: contractAccountId } = useAccountId(contractAddress);
@@ -87,9 +123,37 @@ export const ModuleDetails = () => {
     refetchRelatedProposals,
   } = useContractDetailsTableCounts(contractAddress, contractAccountId);
 
+  const { data: verificationData } = useVerifyModule({
+    address: moduleData.address as HexAddr,
+    moduleName: moduleData.moduleName,
+  });
+  const actionList: ActionInfo[] = [
+    {
+      icon: "query" as IconKeys,
+      iconColor: "primary.main",
+      name: "View Functions",
+      count: moduleData.viewFunctions.length,
+      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
+    },
+    {
+      icon: "execute" as IconKeys,
+      iconColor: "accent.main",
+      name: "Execute Functions",
+      count: moduleData.executeFunctions.length,
+      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
+    },
+    {
+      // TO DO get tx count
+      icon: "list" as IconKeys,
+      iconColor: "gray.600",
+      name: "Transactions",
+      count: 0,
+      onClick: handleTabChange(TabIndex.Txs),
+    },
+  ];
   return (
-    <PageContainer>
-      <ModuleTop isVerified />
+    <>
+      <ModuleTop verificationData={verificationData} moduleData={moduleData} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -105,21 +169,72 @@ export const ModuleDetails = () => {
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
-          <CustomTab count={12} onClick={handleTabChange(TabIndex.Function)}>
+          <CustomTab
+            count={moduleData.parsedAbi.exposed_functions.length}
+            onClick={handleTabChange(TabIndex.Function, FunctionTypeTabs.ALL)}
+            isDisabled={!moduleData.parsedAbi.exposed_functions.length}
+          >
             Function
           </CustomTab>
           <CustomTab count={12} onClick={handleTabChange(TabIndex.Txs)}>
             Transactions
           </CustomTab>
-          <CustomTab count={12} onClick={handleTabChange(TabIndex.Structs)}>
+          <CustomTab
+            count={moduleData.parsedAbi.structs.length}
+            onClick={handleTabChange(TabIndex.Structs)}
+            isDisabled={!moduleData.parsedAbi.structs.length}
+          >
             Structs
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              <QuickAccess />
-              <ModuleInfo isVerified />
+              <Flex
+                justifyContent="space-between"
+                direction={{ base: "column", md: "row" }}
+                gap={{ base: 2, md: 6 }}
+                mb={{ base: 2, md: 6 }}
+              >
+                {actionList.map((item) => (
+                  <Flex
+                    key={item.name}
+                    p={4}
+                    bg="gray.800"
+                    opacity={item.count < 1 ? 0.5 : 1}
+                    _hover={{ bg: "gray.700" }}
+                    transition="all .25s ease-in-out"
+                    borderRadius={8}
+                    w="full"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    cursor={item.count < 1 ? "not-allowed" : "pointer"}
+                    onClick={item.count < 1 ? undefined : item.onClick}
+                  >
+                    <Flex gap={3} alignItems="center">
+                      <CustomIcon
+                        name={item.icon}
+                        boxSize={6}
+                        color={item.iconColor}
+                      />
+                      <Flex flexDirection="column">
+                        <Text
+                          variant="body1"
+                          color="text.dark"
+                          fontWeight={600}
+                        >
+                          {item.name}
+                        </Text>
+                        <Heading as="h6" variant="h6" fontWeight={600}>
+                          {item.count}
+                        </Heading>
+                      </Flex>
+                    </Flex>
+                    <CustomIcon name="chevron-right" color="gray.600" />
+                  </Flex>
+                ))}
+              </Flex>
+              <ModuleInfo verificationData={verificationData} {...moduleData} />
               {/* TODO History */}
               <Flex flexDirection="column" mt={6}>
                 <Heading
@@ -180,9 +295,17 @@ export const ModuleDetails = () => {
               </Flex>
             </Flex>
           </TabPanel>
-          <TabPanel p={0}>2</TabPanel>
           <TabPanel p={0}>
-            {/* TODO History */}
+            <ModuleFunction
+              address={moduleData.address}
+              moduleName={moduleData.moduleName}
+              fns={moduleData.parsedAbi.exposed_functions}
+              viewFns={moduleData.viewFunctions}
+              executeFns={moduleData.executeFunctions}
+            />
+          </TabPanel>
+          {/* TODO TX History */}
+          <TabPanel p={0}>
             <Flex flexDirection="column" mt={6}>
               <Heading
                 as="h6"
@@ -241,9 +364,34 @@ export const ModuleDetails = () => {
               </Tabs>
             </Flex>
           </TabPanel>
-          <TabPanel p={0}>4</TabPanel>
+          <TabPanel p={0}>
+            <ModuleStruct structs={moduleData.parsedAbi.structs} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
+    </>
+  );
+};
+
+export const ModuleDetails = () => {
+  const router = useRouter();
+
+  const addr = getFirstQueryParam(router.query.address);
+  const moduleName = getFirstQueryParam(router.query.moduleName);
+
+  const { data, isLoading } = useAccountModules({
+    address: addr as MoveAccountAddr,
+    moduleName,
+  });
+
+  if (!router.isReady || isLoading) return <Loading />;
+  return (
+    <PageContainer>
+      {data === undefined ? (
+        <InvalidModule />
+      ) : (
+        <ModuleDetailsBody moduleData={data as IndexedModule} />
+      )}
     </PageContainer>
   );
 };

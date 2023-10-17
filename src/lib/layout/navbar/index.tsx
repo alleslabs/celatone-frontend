@@ -85,7 +85,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 {
                   name: "0x1 Page",
                   slug: "/accounts/0x1",
-                  icon: "home" as IconKeys,
+                  icon: "hex" as IconKeys,
                 },
                 {
                   name: "Publish Module",
