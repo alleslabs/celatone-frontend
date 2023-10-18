@@ -10,6 +10,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import {
@@ -25,24 +26,22 @@ import type {
   Option,
   AbiFormData,
   RpcQueryError,
-  HumanAddr,
   UpgradePolicy,
   HexAddr,
   Nullable,
 } from "lib/types";
 import type { ModuleHistory } from "lib/types/move/module";
 import {
-  bech32AddressToHex,
   parseDate,
   parseJsonABI,
   splitViewExecuteFunctions,
   truncate,
-  unpadHexAddress,
 } from "lib/utils";
 
 import type { ModuleVerificationInternal } from "./module";
 import {
   decodeModule,
+  decodeScript,
   getAccountModule,
   getAccountModules,
   getFunctionView,
@@ -61,7 +60,7 @@ const indexModuleResponse = (
   module: InternalModule,
   functionName?: string
 ): IndexedModule => {
-  const parsedAbi = parseJsonABI(module.abi);
+  const parsedAbi = parseJsonABI<ResponseABI>(module.abi);
   const { view, execute } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
   );
@@ -175,17 +174,14 @@ export const useFunctionView = ({
 export interface DecodeModuleQueryResponse {
   abi: ResponseABI;
   modulePath: string;
-  validPublisher: boolean;
   currentPolicy: Option<UpgradePolicy>;
 }
 
 export const useDecodeModule = ({
   base64EncodedFile,
-  address,
   options,
 }: {
   base64EncodedFile: string;
-  address: Option<HumanAddr>;
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
   const baseEndpoint = useBaseApiRoute("rest");
@@ -196,11 +192,6 @@ export const useDecodeModule = ({
     const abi = await decodeModule(move.decodeApi, base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
-    const validPublisher = address
-      ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) ===
-        abi.address
-      : false;
-
     const currentPolicy = await getAccountModule(
       baseEndpoint,
       abi.address as HexAddr,
@@ -208,7 +199,7 @@ export const useDecodeModule = ({
     )
       .then((data) => data.upgradePolicy)
       .catch(() => undefined);
-    return { abi, modulePath, validPublisher, currentPolicy };
+    return { abi, modulePath, currentPolicy };
   };
 
   return useQuery(
@@ -216,7 +207,6 @@ export const useDecodeModule = ({
       CELATONE_QUERY_KEYS.MODULE_DECODE,
       baseEndpoint,
       move.enabled,
-      address,
       base64EncodedFile,
     ],
     queryFn,
@@ -319,5 +309,35 @@ export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
       retry: 1,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+export const useDecodeScript = ({
+  base64EncodedFile,
+  options,
+}: {
+  base64EncodedFile: string;
+  options?: Omit<UseQueryOptions<ExposedFunction>, "queryKey">;
+}): UseQueryResult<ExposedFunction> => {
+  const lcd = useLCDEndpoint();
+
+  const queryFn = async (): Promise<ExposedFunction> => {
+    const fn = await decodeScript(
+      `${lcd}/initia/move/v1/script/abi`,
+      base64EncodedFile
+    );
+    return {
+      ...fn,
+      params:
+        fn.params[0] === "signer" || fn.params[0] === "&signer"
+          ? fn.params.slice(1)
+          : fn.params,
+    };
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, lcd, base64EncodedFile],
+    queryFn,
+    options
   );
 };

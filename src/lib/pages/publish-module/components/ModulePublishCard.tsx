@@ -1,13 +1,13 @@
 import { Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
-import type { FileField } from "../formConstants";
+import type { Module } from "../formConstants";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
 import { useOpenNewTab } from "lib/hooks";
 
 interface ModulePublishCardProps {
-  module: FileField;
+  module: Module;
 }
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {

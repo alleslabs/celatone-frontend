@@ -5,7 +5,7 @@ import { UpgradePolicy } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
 import { PublishCompleted } from "./completed";
-import type { FileArrayFields } from "./formConstants";
+import type { Module } from "./formConstants";
 import { PublishModule } from "./publish";
 
 const DEFAULT_STATE: PublishCompleteState = {
@@ -16,7 +16,7 @@ const DEFAULT_STATE: PublishCompleteState = {
 };
 export interface PublishCompleteState extends PublishTxInternalResult {
   upgradePolicy: UpgradePolicy;
-  modules: FileArrayFields;
+  modules: Module[];
 }
 
 export const PublishIndex = () => {

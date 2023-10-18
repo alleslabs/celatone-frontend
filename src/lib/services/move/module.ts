@@ -116,4 +116,14 @@ export const decodeModule = async (
     .post<DecodeModuleReturn>(decodeAPI, {
       code_bytes: moduleEncode,
     })
-    .then(({ data }) => parseJsonABI(libDecode(data.abi)));
+    .then(({ data }) => parseJsonABI<ResponseABI>(libDecode(data.abi)));
+
+export const decodeScript = async (
+  decodeAPI: string,
+  scriptBytes: string
+): Promise<ExposedFunction> =>
+  axios
+    .post<DecodeModuleReturn>(decodeAPI, {
+      code_bytes: scriptBytes,
+    })
+    .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));

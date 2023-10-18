@@ -22,10 +22,13 @@ import { CHAIN_CONFIGS } from "config/chain";
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useMoveConfig,
   usePublicProjectConfig,
   useSelectChain,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
@@ -36,8 +39,11 @@ export const NavDrawer = () => {
   const { currentChainId, availableChainIds } = useCelatoneApp();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const selectChain = useSelectChain();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
+
   const mobileMenu: MenuInfo[] = [
     {
       category: "Overview",
@@ -54,21 +60,34 @@ export const NavDrawer = () => {
           slug: "/blocks",
           icon: "block",
         },
-        {
-          name: "Recent Codes",
-          slug: "/codes",
-          icon: "code",
-        },
-        {
-          name: "Recent Contracts",
-          slug: "/contracts",
-          icon: "contract-address",
-        },
-        {
-          name: "Query",
-          slug: "/query",
-          icon: "query",
-        },
+        ...(wasm.enabled
+          ? [
+              {
+                name: "Recent Codes",
+                slug: "/codes",
+                icon: "code" as IconKeys,
+              },
+              {
+                name: "Recent Contracts",
+                slug: "/contracts",
+                icon: "contract-address" as IconKeys,
+              },
+              {
+                name: "Query",
+                slug: "/query",
+                icon: "query" as IconKeys,
+              },
+            ]
+          : []),
+        ...(move.enabled
+          ? [
+              {
+                name: "0x1 Page",
+                slug: "/account/0x1",
+                icon: "home" as IconKeys,
+              },
+            ]
+          : []),
       ],
     },
   ];
@@ -86,7 +105,7 @@ export const NavDrawer = () => {
         {
           name: "View All Projects",
           slug: "/projects",
-          icon: "public-project",
+          icon: "public-project" as IconKeys,
         },
       ],
     });

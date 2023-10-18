@@ -49,8 +49,11 @@ export const PublishCompleted = ({
       <Heading as="h6" variant="h6">
         Published {modules.length} {plur("module", modules.length)}
       </Heading>
-      {modules.map((module) => (
-        <ModulePublishCard key={module.id} module={module} />
+      {modules.map((module, idx) => (
+        <ModulePublishCard
+          key={`${module.base64EncodedFile}-${idx.toString()}`}
+          module={module}
+        />
       ))}
     </Flex>
     <Button
