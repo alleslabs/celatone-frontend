@@ -8,7 +8,6 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { Tooltip } from "lib/components/Tooltip";
-import type {} from "lib/services/move/module";
 import type { IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleTopProps {

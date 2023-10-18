@@ -227,10 +227,6 @@ export const useDecodeModule = ({
 export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = async () => {
-    if (!moduleName || !vmAddress)
-      throw new Error(
-        "Error fetching module id: failed to retrieve module name or vm address."
-      );
     return indexerGraphClient
       .request(getModuleIdByNameAndVmAddressQueryDocument, {
         name: moduleName,
@@ -240,7 +236,7 @@ export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, moduleName, vmAddress],
+    [CELATONE_QUERY_KEYS.MODULE_ID, indexerGraphClient, moduleName, vmAddress],
     queryFn,
     {
       enabled: Boolean(moduleName && vmAddress),

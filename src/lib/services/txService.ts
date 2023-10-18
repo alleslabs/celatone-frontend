@@ -469,15 +469,7 @@ export const useModuleTxsByPagination = ({
           height: transaction.block.height,
           created: parseDate(transaction.block.timestamp),
           success: transaction.transaction.success,
-          actionMsgType: getActionMsgType([
-            transaction.transaction.is_execute,
-            transaction.transaction.is_instantiate,
-            transaction.transaction.is_send,
-            transaction.transaction.is_store_code,
-            transaction.transaction.is_migrate,
-            transaction.transaction.is_update_admin,
-            transaction.transaction.is_clear_admin,
-          ]),
+          actionMsgType: getActionMsgType([]),
           furtherAction: getMsgFurtherAction(
             transaction.transaction.messages.length,
             {
