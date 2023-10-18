@@ -1,6 +1,7 @@
 import {
   Accordion,
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Badge,
@@ -139,7 +140,7 @@ export const ResourceSection = ({
                     <Text variant="body1" fontWeight={600}>
                       {truncate(item.owner)}
                     </Text>
-                    <CustomIcon name="chevron-down" color="gray.600" />
+                    <AccordionIcon color="gray.600" />
                   </Flex>
                 </AccordionButton>
                 <AccordionPanel>
@@ -163,9 +164,14 @@ export const ResourceSection = ({
           </Accordion>
         </Flex>
         <Flex direction="column" w="full">
-          <Flex justifyContent="space-between" alignItems="center" pb={6}>
+          <Flex
+            justifyContent="space-between"
+            alignItems="center"
+            pb={6}
+            gap={12}
+          >
             <Flex alignItems="center">
-              <Heading as="h6" variant="h6">
+              <Heading as="h6" variant="h6" wordBreak="break-word">
                 {selectedGroup.owner}::{selectedResources.group}
               </Heading>
               <Badge variant="primary" ml={2}>
@@ -174,6 +180,7 @@ export const ResourceSection = ({
             </Flex>
             <Button
               variant="outline-primary"
+              minW={28}
               size="sm"
               rightIcon={
                 <CustomIcon

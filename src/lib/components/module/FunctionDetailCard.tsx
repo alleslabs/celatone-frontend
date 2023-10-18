@@ -218,7 +218,7 @@ export const FunctionDetailCard = ({
                       isDisabled={disabled}
                       borderColor={getButtonStyle().color}
                       size="sm"
-                      onClick={() =>
+                      onClick={(e) => {
                         navigate({
                           pathname: "/interact",
                           query: {
@@ -227,8 +227,9 @@ export const FunctionDetailCard = ({
                             functionType: isView ? "view" : "execute",
                             functionName: exposedFn.name,
                           },
-                        })
-                      }
+                        });
+                        e.stopPropagation();
+                      }}
                       leftIcon={
                         <CustomIcon
                           mx={0}
