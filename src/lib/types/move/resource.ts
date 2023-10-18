@@ -14,3 +14,15 @@ export interface ResponseResources {
 }
 
 export type InternalResource = SnakeToCamelCaseNested<ResponseResource>;
+
+export interface ResourceGroup {
+  group: string;
+  account: string;
+  displayName: string;
+  items: InternalResource[];
+}
+
+export interface ResourceGroupByAccount {
+  owner: string;
+  resources: Record<string, ResourceGroup>;
+}

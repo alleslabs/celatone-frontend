@@ -9,10 +9,8 @@ import { ResourceCard } from "lib/components/resource";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { HumanAddr } from "lib/types";
-import { truncate } from "lib/utils";
-
-import type { ResourceGroup } from "./types";
+import type { HumanAddr, ResourceGroup } from "lib/types";
+import { scrollToTop } from "lib/utils";
 
 interface ResourcesListsProps {
   address: HumanAddr;
@@ -22,7 +20,7 @@ interface ResourcesListsProps {
 export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { data: resources, isLoading } = useAccountResources({
+  const { data: resourcesData, isLoading } = useAccountResources({
     address,
   });
 
@@ -44,31 +42,11 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
     [address, navigate]
   );
   if (isLoading) return <Loading />;
-  if (!resources) return <ErrorFetching />;
-  if (resources.length === 0)
+  if (!resourcesData) return <ErrorFetching />;
+  if (resourcesData.totalCount === 0)
     return <EmptyState imageVariant="empty" message="No resources found." />;
 
-  const restructuredResources = resources.reduce<Record<string, ResourceGroup>>(
-    (acc, resource) => {
-      const [accountName, groupName] = resource.structTag.split("::");
-      const groupResources = acc[groupName] ?? {};
-      const items = groupResources?.items ?? [];
-      items.push(resource);
-
-      return {
-        ...acc,
-        [groupName]: {
-          displayName: `${truncate(accountName)}::${groupName}`,
-          account: accountName,
-          group: groupName,
-          items,
-        },
-      };
-    },
-    {} as Record<string, ResourceGroup>
-  );
-  const groupedResources = Object.values(restructuredResources);
-
+  const resources = resourcesData.groupedByName;
   const isMobileOverview = isMobile && !!onViewMore;
   return (
     <Flex
@@ -86,7 +64,11 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
           p={4}
           onClick={onViewMore}
         >
-          <TableTitle title="Resources" count={resources.length} mb={0} />
+          <TableTitle
+            title="Resources"
+            count={resourcesData.totalCount}
+            mb={0}
+          />
           <CustomIcon name="chevron-right" color="gray.600" />
         </Flex>
       ) : (
@@ -94,10 +76,10 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
           <TableTitle
             helperText="Resources stored in this account"
             title="Resources"
-            count={resources.length}
+            count={resourcesData.totalCount}
           />
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
-            {groupedResources.slice(0, 8).map((item) => (
+            {resources.slice(0, 8).map((item) => (
               <ResourceCard
                 key={item.displayName}
                 name={item.displayName}
@@ -106,8 +88,13 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
               />
             ))}
           </SimpleGrid>
-          {onViewMore && groupedResources.length > 8 && (
-            <ViewMore onClick={onViewMore} />
+          {onViewMore && resources.length > 8 && (
+            <ViewMore
+              onClick={() => {
+                onViewMore();
+                scrollToTop();
+              }}
+            />
           )}
         </>
       )}
