@@ -9,9 +9,15 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
+import {
+  getModuleHistoriesCountQueryDocument,
+  getModuleHistoriesQueryDocument,
+  getModuleIdByNameAndVmAddressQueryDocument,
+} from "lib/query";
 import type {
   MoveAccountAddr,
   ExposedFunction,
@@ -22,9 +28,17 @@ import type {
   RpcQueryError,
   UpgradePolicy,
   HexAddr,
+  Nullable,
 } from "lib/types";
-import { parseJsonABI, splitViewExecuteFunctions, truncate } from "lib/utils";
+import type { ModuleHistory } from "lib/types/move/module";
+import {
+  parseDate,
+  parseJsonABI,
+  splitViewExecuteFunctions,
+  truncate,
+} from "lib/utils";
 
+import type { ModuleVerificationInternal } from "./module";
 import {
   decodeModule,
   decodeScript,
@@ -104,7 +118,7 @@ export const useVerifyModule = ({
 }: {
   address: Option<MoveAccountAddr>;
   moduleName: Option<string>;
-}) =>
+}): UseQueryResult<Nullable<ModuleVerificationInternal>> =>
   useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
     () => {
@@ -197,6 +211,104 @@ export const useDecodeModule = ({
     ],
     queryFn,
     options
+  );
+};
+
+export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = async () => {
+    return indexerGraphClient
+      .request(getModuleIdByNameAndVmAddressQueryDocument, {
+        name: moduleName,
+        vmAddress,
+      })
+      .then<Nullable<number>>(({ modules }) => modules[0]?.id ?? null);
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_ID, indexerGraphClient, moduleName, vmAddress],
+    queryFn,
+    {
+      enabled: Boolean(moduleName && vmAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleHistoriesByPagination = ({
+  moduleId,
+  pageSize,
+  offset,
+}: {
+  moduleId: Option<Nullable<number>>;
+  pageSize: number;
+  offset: number;
+}): UseQueryResult<ModuleHistory[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) return [];
+    return indexerGraphClient
+      .request(getModuleHistoriesQueryDocument, {
+        moduleId,
+        pageSize,
+        offset,
+      })
+      .then(({ module_histories }) =>
+        module_histories.map<ModuleHistory>((history, idx) => ({
+          remark: history.remark,
+          upgradePolicy: history.upgrade_policy,
+          height: history.block.height,
+          timestamp: parseDate(history.block.timestamp),
+          previousPolicy:
+            idx === module_histories.length - 1
+              ? undefined
+              : module_histories[idx + 1].upgrade_policy,
+        }))
+      );
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_HISTORIES,
+      indexerGraphClient,
+      moduleId,
+      pageSize,
+      offset,
+    ],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getModuleHistoriesCountQueryDocument, {
+        moduleId,
+      })
+      .then(
+        ({ module_histories_aggregate }) =>
+          module_histories_aggregate.aggregate?.count
+      );
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_HISTORIES_COUNT, indexerGraphClient, moduleId],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 

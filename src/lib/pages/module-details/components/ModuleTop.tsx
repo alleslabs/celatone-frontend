@@ -7,12 +7,11 @@ import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import type { ModuleVerificationInternal } from "lib/services/move/module";
 import type { IndexedModule } from "lib/services/move/moduleService";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
-  verificationData: ModuleVerificationInternal | null | undefined;
+  isVerified: boolean;
 }
 
 const baseTextStyle: TextProps = {
@@ -22,7 +21,7 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-export const ModuleTop = ({ moduleData, verificationData }: ModuleTopProps) => {
+export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
 
@@ -68,7 +67,7 @@ export const ModuleTop = ({ moduleData, verificationData }: ModuleTopProps) => {
             >
               {moduleData.moduleName}
             </Heading>
-            {verificationData && (
+            {isVerified && (
               <Tooltip label="This module's verification is supported by its provided source code.">
                 <Flex>
                   <CustomIcon
