@@ -1,4 +1,3 @@
-// import { TransactionCard } from "lib/components/card/TransactionCard";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
@@ -100,41 +99,6 @@ export const ModuleTxsTable = ({
       </>
     );
 
-  // TODO: Handle Mobile
-  // if (isMobile)
-  //   return (
-  //     <>
-  //       {moduleTxs ? (
-  //         <Flex direction="column" gap={4} w="full" mt={4}>
-  //           {moduleTxs?.map((transaction) => (
-  //             <TransactionCard
-  //               transaction={transaction}
-  //               key={transaction.hash}
-  //               showRelations={false}
-  //             />
-  //           ))}
-  //           {!onViewMore && txCount && txCount > 10 && (
-  //             <Pagination
-  //               currentPage={currentPage}
-  //               pagesQuantity={pagesQuantity}
-  //               offset={offset}
-  //               totalData={txCount}
-  //               pageSize={pageSize}
-  //               onPageChange={onPageChange}
-  //               onPageSizeChange={onPageSizeChange}
-  //               scrollComponentId={scrollComponentId}
-  //             />
-  //           )}
-  //         </Flex>
-  //       ) : (
-  //         <EmptyState
-  //           withBorder
-  //           imageVariant="empty"
-  //           message="There are no transactions in this network."
-  //         />
-  //       )}
-  //     </>
-  //   );
   return (
     <>
       <TransactionsTable

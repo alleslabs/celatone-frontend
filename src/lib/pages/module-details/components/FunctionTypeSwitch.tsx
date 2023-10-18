@@ -36,6 +36,7 @@ export const FunctionTypeSwitch = ({
       direction="row"
       align="center"
       position="relative"
+      w={{ base: "full", md: "auto" }}
       sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
       {...flexProps}
     >
@@ -43,7 +44,7 @@ export const FunctionTypeSwitch = ({
         <MotionBox
           key={tab}
           w="full"
-          minW="128px"
+          minW={{ base: "33%", md: "128px" }}
           p="2px 10px"
           variants={{
             active: { color: "var(--chakra-colors-text-main)" },
@@ -66,14 +67,14 @@ export const FunctionTypeSwitch = ({
                 cursor: "pointer",
               })}
         >
-          <Heading as="h6" variant="h6" fontSize="14px">
+          <Heading as="h6" variant="h6" fontSize={{ base: "12px", md: "14px" }}>
             {tab} {`(${counts[idx]})`}
           </Heading>
         </MotionBox>
       ))}
       <MotionBox
         h="calc(100% - 8px)"
-        w="128px"
+        w={{ base: "33%", md: "128px" }}
         position="absolute"
         borderRadius="2px"
         backgroundColor="primary.dark"

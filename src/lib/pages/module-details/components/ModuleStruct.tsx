@@ -25,13 +25,24 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
 
   return (
     <Flex direction="column" gap={8}>
-      <Flex maxH="24px" justifyContent="space-between" alignItems="center">
+      <Flex
+        maxH={{ md: "24px" }}
+        justifyContent="space-between"
+        alignItems={{ base: "flex-start", md: "center" }}
+        direction={{ base: "column", md: "row" }}
+        gap={{ base: 4, md: 0 }}
+      >
         <Heading as="h6" variant="h6" fontWeight={600}>
           Structs
         </Heading>
-        <Flex gap={4} alignItems="center">
+        <Flex
+          gap={{ base: 2, md: 4 }}
+          alignItems="center"
+          w={{ base: "full", md: "auto" }}
+        >
           <Button
             variant="outline-primary"
+            w="full"
             size="sm"
             rightIcon={
               <CustomIcon
@@ -49,6 +60,7 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
           </Button>
           <Button
             variant="outline-primary"
+            w="full"
             size="sm"
             rightIcon={<CustomIcon name="launch" />}
             onClick={() => {

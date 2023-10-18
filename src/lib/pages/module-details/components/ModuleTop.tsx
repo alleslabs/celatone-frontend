@@ -6,7 +6,6 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import { Tooltip } from "lib/components/Tooltip";
 import type { IndexedModule } from "lib/services/move/moduleService";
 
@@ -25,13 +24,11 @@ const baseTextStyle: TextProps = {
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  if (!moduleData) return <Loading />;
 
   return (
     <Flex direction="column">
       <Breadcrumb
         items={[
-          // TODO recheck how to get account
           {
             text: moduleData.parsedAbi.address,
             href: `/accounts/${moduleData.parsedAbi.address}`,
@@ -91,8 +88,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               Module Path:
             </Text>
             <Text {...baseTextStyle}>
-              {moduleData.parsedAbi.address}::
-              {moduleData.parsedAbi.name}
+              {moduleData.parsedAbi.address}::{moduleData.parsedAbi.name}
             </Text>
           </Flex>
           <Flex
@@ -139,54 +135,56 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             </Flex>
           </Flex>
         </Flex>
-        <Flex
-          gap={{ base: 2, md: 4 }}
-          mt={{ base: 8, md: 0 }}
-          w={{ base: "full", md: "auto" }}
-        >
-          <Button
-            variant="outline-primary"
+        {!isMobile && (
+          <Flex
+            gap={{ base: 2, md: 4 }}
+            mt={{ base: 8, md: 0 }}
             w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="query" />}
-            size={{ base: "sm", md: "md" }}
-            onClick={() =>
-              navigate({
-                pathname: "/interact",
-                query: {
-                  address: moduleData.address,
-                  moduleName: moduleData.moduleName,
-                  functionType: "view",
-                },
-              })
-            }
           >
-            View
-          </Button>
-          <Button
-            variant="outline-primary"
-            w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="execute" />}
-            size={{ base: "sm", md: "md" }}
-            onClick={() =>
-              navigate({
-                pathname: "/interact",
-                query: {
-                  address: moduleData.address,
-                  moduleName: moduleData.moduleName,
-                  functionType: "execute",
-                },
-              })
-            }
-          >
-            Execute
-          </Button>
-          <CopyButton
-            value={moduleData.abi}
-            variant="outline-primary"
-            size={{ base: "sm", md: "md" }}
-            buttonText="Copy ABI"
-          />
-        </Flex>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="query" />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() =>
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: moduleData.address,
+                    moduleName: moduleData.moduleName,
+                    functionType: "view",
+                  },
+                })
+              }
+            >
+              View
+            </Button>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="execute" />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() =>
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: moduleData.address,
+                    moduleName: moduleData.moduleName,
+                    functionType: "execute",
+                  },
+                })
+              }
+            >
+              Execute
+            </Button>
+            <CopyButton
+              value={moduleData.abi}
+              variant="outline-primary"
+              size={{ base: "sm", md: "md" }}
+              buttonText="Copy ABI"
+            />
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

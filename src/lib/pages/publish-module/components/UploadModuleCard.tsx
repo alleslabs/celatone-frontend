@@ -1,26 +1,29 @@
-import { Flex, Heading, IconButton, Spinner, Text } from "@chakra-ui/react";
-import { type PropsWithChildren, useCallback, useState } from "react";
+import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
-import type {
-  FileArrayFields,
-  FileField,
-  PublishStatus,
-} from "../formConstants";
+import type { Module, PublishStatus } from "../formConstants";
 import { statusResolver } from "../utils";
 import { useCurrentChain } from "lib/app-provider";
+import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import {
   type DecodeModuleQueryResponse,
   useDecodeModule,
 } from "lib/services/move/moduleService";
-import type { HumanAddr, UpgradePolicy, Option } from "lib/types";
+import type { HumanAddr, Option, UpgradePolicy } from "lib/types";
+
+const DEFAULT_TEMP_FILE = {
+  file: undefined,
+  base64: "",
+};
 
 interface UploadModuleCardProps {
   index: number;
-  fileState: FileField;
-  fields: FileArrayFields;
+  fileState: Module;
+  modules: Module[];
   policy: UpgradePolicy;
   setFile: (
     file: Option<File>,
@@ -30,15 +33,8 @@ interface UploadModuleCardProps {
   ) => void;
   removeFile: () => void;
   removeEntry: () => void;
+  moveEntry: (from: number, to: number) => void;
 }
-
-const ComponentLoader = ({
-  isLoading,
-  children,
-}: PropsWithChildren<{ isLoading: boolean }>) => {
-  if (isLoading) return <Spinner size="lg" mx="auto" />;
-  return <>{children}</>;
-};
 
 export const UploadModuleCard = ({
   index,
@@ -47,35 +43,48 @@ export const UploadModuleCard = ({
     decodeRes,
     publishStatus: { status, text },
   },
-  fields,
+  modules,
   policy,
   setFile,
   removeFile,
   removeEntry,
+  moveEntry,
 }: UploadModuleCardProps) => {
   const [tempFile, setTempFile] = useState<{
     file: Option<File>;
     base64: string;
-  }>({
-    file: undefined,
-    base64: "",
-  });
+  }>(DEFAULT_TEMP_FILE);
+  const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();
 
   const { isFetching } = useDecodeModule({
     base64EncodedFile: tempFile.base64,
-    address: address as HumanAddr,
     options: {
       enabled: Boolean(tempFile.base64),
       retry: 0,
       refetchOnWindowFocus: false,
-      onSuccess: (data) =>
+      onSuccess: (data) => {
         setFile(
           tempFile.file,
           tempFile.base64,
           data,
-          statusResolver({ data, fields, index, policy })
-        ),
+          statusResolver({
+            data,
+            modules,
+            index,
+            policy,
+            address: address as Option<HumanAddr>,
+          })
+        );
+        setDecodeError("");
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
+      onError: () => {
+        setDecodeError(
+          "Failed to decode .mv file. Please make sure the file is a module."
+        );
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
     },
   });
 
@@ -105,15 +114,44 @@ export const UploadModuleCard = ({
         <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
           Module {index + 1}
         </Heading>
-        <IconButton
-          onClick={removeEntry}
-          aria-label="remove"
-          variant="ghost"
-          size="sm"
-          visibility={fields.length > 1 ? "visible" : "hidden"}
+        <Flex
+          align="center"
+          gap={1}
+          visibility={modules.length > 1 ? "visible" : "hidden"}
         >
-          <CustomIcon name="close" color="gray.600" />
-        </IconButton>
+          <Tooltip label="Move up" variant="primary-light">
+            <IconButton
+              onClick={() => moveEntry(index, index - 1)}
+              aria-label="move-up"
+              variant="ghost"
+              size="sm"
+              disabled={index === 0}
+            >
+              <CustomIcon name="arrow-up" color="gray.600" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Move down" variant="primary-light">
+            <IconButton
+              onClick={() => moveEntry(index, index + 1)}
+              aria-label="move-down"
+              variant="ghost"
+              size="sm"
+              disabled={index === modules.length - 1}
+            >
+              <CustomIcon name="arrow-down" color="gray.600" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip label="Remove item" variant="primary-light">
+            <IconButton
+              onClick={removeEntry}
+              aria-label="remove"
+              variant="ghost"
+              size="sm"
+            >
+              <CustomIcon name="close" color="gray.600" />
+            </IconButton>
+          </Tooltip>
+        </Flex>
       </Flex>
       <Flex direction="column" w="full">
         <ComponentLoader isLoading={isFetching}>
@@ -130,6 +168,7 @@ export const UploadModuleCard = ({
               setFile={handleFileDrop}
               fileType="move"
               bgColor="background.main"
+              error={decodeError}
               _hover={undefined}
             />
           )}

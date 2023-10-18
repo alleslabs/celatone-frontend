@@ -1,6 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Grid, Flex, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
+import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 
 import type { UpgradePolicy } from "lib/types";
 
@@ -11,10 +12,9 @@ interface RadioCardProps extends FlexProps {
 }
 
 const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
-  <Flex
-    w="full"
+  <Grid
+    templateColumns="32px 1fr"
     p="12px 16px"
-    gap={4}
     border="2px solid"
     borderRadius="12px"
     borderColor={checked ? "text.main" : "gray.700"}
@@ -23,22 +23,13 @@ const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
     cursor="pointer"
     {...props}
   >
-    <Flex
-      w="18px"
-      h="18px"
-      flexShrink={0}
-      borderRadius="50%"
-      border="2px solid"
-      borderColor={checked ? "text.main" : "text.dark"}
-      align="center"
-      justify="center"
-    >
-      {checked && (
-        <Box w="9px" h="9px" bgColor="text.main" borderRadius="50%" />
-      )}
-    </Flex>
+    {checked ? (
+      <MdRadioButtonChecked fontSize="20px" />
+    ) : (
+      <MdRadioButtonUnchecked fontSize="20px" />
+    )}
     {children}
-  </Flex>
+  </Grid>
 );
 
 interface PolicyCardProps {

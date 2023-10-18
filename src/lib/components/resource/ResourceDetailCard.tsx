@@ -59,7 +59,7 @@ export const ResourceDetailCard = ({
           justifyContent="space-between"
           w="full"
           align="center"
-          gap={8}
+          gap={{ base: 4, md: 8 }}
         >
           <Text
             variant="body1"
@@ -69,12 +69,15 @@ export const ResourceDetailCard = ({
           >
             {resourceData.structTag}
           </Text>
-          <Flex alignItems="center" gap={2} minW={36}>
+          <Flex alignItems="center" gap={2} minW={{ base: 8, md: 36 }}>
             <CopyButton
               value={resourceData.moveResource}
-              variant="outline-primary"
+              variant="outline-gray"
               size="xs"
+              gap={1}
+              px={2}
               buttonText="Copy JSON"
+              display={{ base: "none", md: "flex" }}
             />
             <AccordionIcon color="gray.600" />
           </Flex>

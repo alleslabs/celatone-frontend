@@ -42,7 +42,7 @@ const FunctionAccordions = ({
     index={expandedIndexes}
     onChange={updateExpandedIndexes}
   >
-    <Flex direction="column" gap={4}>
+    <Flex direction="column" gap={{ base: 2, md: 4 }}>
       {fns.map((fn) => (
         <FunctionDetailCard
           exposedFn={fn}
@@ -107,7 +107,7 @@ export const ModuleFunction = ({
   return (
     <Flex
       direction="column"
-      gap={8}
+      gap={{ base: 4, md: 8 }}
       sx={{ [`& #${tab}`]: { display: "block" } }}
     >
       <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
@@ -119,7 +119,11 @@ export const ModuleFunction = ({
         onChange={(e) => setKeyword(e.target.value)}
         action="exposed-function-search"
       />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        direction={{ base: "column", md: "row" }}
+      >
         <FunctionTypeSwitch
           currentTab={tab}
           onTabChange={handleTabChange}
@@ -130,9 +134,15 @@ export const ModuleFunction = ({
             filteredExecuteFns.length,
           ]}
         />
-        <Flex gap={4} alignItems="center">
+        <Flex
+          gap={{ base: 2, md: 4 }}
+          my={{ base: 1, md: 0 }}
+          alignItems="center"
+          w={{ base: "full", md: "auto" }}
+        >
           <Button
             variant="outline-primary"
+            w={{ base: "full", md: "auto" }}
             size="sm"
             rightIcon={
               <CustomIcon
@@ -150,8 +160,9 @@ export const ModuleFunction = ({
           </Button>
           <Button
             variant="outline-primary"
+            w={{ base: "full", md: "auto" }}
             size="sm"
-            rightIcon={<CustomIcon name="launch" />}
+            rightIcon={<CustomIcon name="launch" boxSize={3} />}
             onClick={() => {
               const jsonString = JSON.stringify(fns, null, 2);
               const jsonWindow = window.open();
