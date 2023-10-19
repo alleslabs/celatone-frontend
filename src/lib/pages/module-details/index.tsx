@@ -25,6 +25,7 @@ import {
   useModuleId,
   useAccountModules,
   useModuleHistoriesCount,
+  useModuleDetailsQuery,
 } from "lib/services/move/moduleService";
 import { useModuleTxsCount } from "lib/services/txService";
 import type { MoveAccountAddr } from "lib/types";
@@ -96,6 +97,9 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     moduleData.moduleName,
     moduleData.address
   );
+
+  const { data: moduleDetails, isLoading: moduleDetailsLoading } =
+    useModuleDetailsQuery(moduleId);
 
   const { data: verificationData } = useVerifyModule({
     address: moduleData.address,
@@ -256,7 +260,12 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   </Flex>
                 ))}
               </Flex>
-              <ModuleInfo {...moduleData} verificationData={verificationData} />
+              <ModuleInfo
+                upgradePolicy={moduleData.upgradePolicy}
+                moduleDetails={moduleDetails}
+                verificationData={verificationData}
+                isLoading={moduleDetailsLoading}
+              />
               <Flex flexDirection="column" mt={6}>
                 <Heading
                   as="h6"

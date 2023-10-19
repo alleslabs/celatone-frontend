@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#572](https://github.com/alleslabs/celatone-frontend/pull/572) Wireup module publish details
+- [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
 - [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
 - [#556](https://github.com/alleslabs/celatone-frontend/pull/556) Fully functional deploy script page
 - [#550](https://github.com/alleslabs/celatone-frontend/pull/550) Add modules and resources in account detail

@@ -47,3 +47,41 @@ export const getModuleHistoriesCountQueryDocument = graphql(`
     }
   }
 `);
+
+// TODO: recheck proposal type
+export const getModuleDetailsQueryDocument = graphql(`
+  query getModuleDetailsQuery($moduleId: Int!) {
+    modules(where: { id: { _eq: $moduleId } }) {
+      publisher_vm_address: vm_address {
+        vm_address
+      }
+      publish_transaction: transaction {
+        hash
+      }
+      module_proposals(
+        where: {
+          proposal: {
+            type: {
+              _in: [
+                "/initia.move.v1.MsgGovPublish"
+                "/initia.move.v1.MsgGovExecute"
+                "/initia.move.v1.MsgGovScript"
+              ]
+            }
+          }
+        }
+      ) {
+        proposal {
+          id
+          title
+        }
+      }
+      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`);

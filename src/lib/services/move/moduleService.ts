@@ -14,6 +14,7 @@ import {
   useMoveConfig,
 } from "lib/app-provider";
 import {
+  getModuleDetailsQueryDocument,
   getModuleHistoriesCountQueryDocument,
   getModuleHistoriesQueryDocument,
   getModuleIdByNameAndVmAddressQueryDocument,
@@ -33,7 +34,9 @@ import type {
 import type { ModuleHistory } from "lib/types/move/module";
 import {
   parseDate,
+  parseDateOpt,
   parseJsonABI,
+  parseTxHashOpt,
   splitViewExecuteFunctions,
   truncate,
 } from "lib/utils";
@@ -307,6 +310,50 @@ export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
     {
       enabled: Boolean(moduleId),
       retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export interface ModuleDetailsQueryResponse {
+  publisherVmAddress: HexAddr;
+  createdHeight: Option<number>;
+  createdTime: Option<Date>;
+  initTxHash: Option<string>;
+  initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
+}
+
+export const useModuleDetailsQuery = (
+  moduleId: Option<Nullable<number>>
+): UseQueryResult<ModuleDetailsQueryResponse> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getModuleDetailsQueryDocument, { moduleId })
+      .then<ModuleDetailsQueryResponse>(({ modules }) => {
+        const target = modules[0];
+        if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
+        return {
+          publisherVmAddress: target.publisher_vm_address.vm_address as HexAddr,
+          createdHeight: target.module_histories?.at(0)?.block.height,
+          createdTime: parseDateOpt(
+            target.module_histories?.at(0)?.block.timestamp
+          ),
+          initTxHash: parseTxHashOpt(target.publish_transaction?.hash),
+          initProposalId: target.module_proposals.at(0)?.proposal.id,
+          initProposalTitle: target.module_proposals.at(0)?.proposal.title,
+        };
+      });
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_DETAILS, indexerGraphClient, moduleId],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
       refetchOnWindowFocus: false,
     }
   );

@@ -15356,6 +15356,27 @@ export type GetModuleHistoriesCountQueryQuery = {
   };
 };
 
+export type GetModuleDetailsQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+}>;
+
+export type GetModuleDetailsQueryQuery = {
+  __typename?: "query_root";
+  modules: Array<{
+    __typename?: "modules";
+    publisher_vm_address: { __typename?: "vm_addresses"; vm_address: string };
+    publish_transaction?: { __typename?: "transactions"; hash: any } | null;
+    module_proposals: Array<{
+      __typename?: "module_proposals";
+      proposal: { __typename?: "proposals"; id: number; title: string };
+    }>;
+    module_histories: Array<{
+      __typename?: "module_histories";
+      block: { __typename?: "blocks"; height: number; timestamp: any };
+    }>;
+  }>;
+};
+
 export type GetPoolListQueryVariables = Exact<{
   expression?: InputMaybe<Pools_Bool_Exp>;
   order?: InputMaybe<Order_By>;
@@ -19654,6 +19675,237 @@ export const GetModuleHistoriesCountQueryDocument = {
 } as unknown as DocumentNode<
   GetModuleHistoriesCountQueryQuery,
   GetModuleHistoriesCountQueryQueryVariables
+>;
+export const GetModuleDetailsQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleDetailsQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modules" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "publisher_vm_address" },
+                  name: { kind: "Name", value: "vm_address" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "vm_address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "publish_transaction" },
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "module_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "type" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_in" },
+                                        value: {
+                                          kind: "ListValue",
+                                          values: [
+                                            {
+                                              kind: "StringValue",
+                                              value:
+                                                "/initia.move.v1.MsgGovPublish",
+                                              block: false,
+                                            },
+                                            {
+                                              kind: "StringValue",
+                                              value:
+                                                "/initia.move.v1.MsgGovExecute",
+                                              block: false,
+                                            },
+                                            {
+                                              kind: "StringValue",
+                                              value:
+                                                "/initia.move.v1.MsgGovScript",
+                                              block: false,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proposal" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "module_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleDetailsQueryQuery,
+  GetModuleDetailsQueryQueryVariables
 >;
 export const GetPoolListDocument = {
   kind: "Document",
