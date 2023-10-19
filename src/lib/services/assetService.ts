@@ -34,23 +34,21 @@ export const useAssetInfos = ({
   };
 };
 
-export const useAssetInfoList = () => {
-  const assetsApiRoute = useBaseApiRoute("assets");
+export const useAssetInfoList = ({
+  assetType,
+}: {
+  assetType: "all" | "native" | "cw20";
+}) => {
+  const assetsApiRoute = useBaseApiRoute("assets").concat(
+    assetType !== "all" ? `/type/${assetType}` : ""
+  );
+
   return useQuery(
     [CELATONE_QUERY_KEYS.ASSET_INFO_LIST, assetsApiRoute],
     async () => getAssetInfosWithoutPricesPath(assetsApiRoute),
-    { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
-export const useNativeTokensInfo = () => {
-  const nativeTokensApiRoute = useBaseApiRoute("native_tokens");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.NATIVE_TOKENS_INFO, nativeTokensApiRoute],
-    async () => getAssetInfosWithoutPricesPath(nativeTokensApiRoute),
     {
-      enabled: Boolean(nativeTokensApiRoute),
+      enabled: Boolean(assetsApiRoute),
+      retry: 1,
       refetchOnWindowFocus: false,
     }
   );

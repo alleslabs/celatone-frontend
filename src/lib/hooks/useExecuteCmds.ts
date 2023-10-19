@@ -26,16 +26,26 @@ export const useExecuteCmds = (contractAddress: ContractAddr) => {
     ],
     retry: false,
     onError: (e) => {
-      if (e.message.includes("contract: ")) {
-        setExecCmds([]);
+      const executeCmds: string[] = [];
+
+      // Check if Sylvia framework
+      const sylviaRegex =
+        /Messages supported by this contract: (.*?): execute wasm contract failed: invalid request/;
+      const contentMatch = e.message?.match(sylviaRegex);
+
+      if (contentMatch && contentMatch[1]) {
+        const content = contentMatch[1].split(",");
+        content.forEach((each) => executeCmds.push(each.trim()));
       } else if (e.message.includes("Error parsing into type")) {
-        const executeCmds: string[] = [];
         Array.from(e.message?.matchAll(/`(.*?)`/g) || [])
           .slice(1)
           .forEach((match) => executeCmds.push(match[1]));
-        setExecCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
-      } else {
+      }
+
+      if (executeCmds.length === 0) {
         setExecCmds([["", "{}"]]);
+      } else {
+        setExecCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       }
     },
   });
