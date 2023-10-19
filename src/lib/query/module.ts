@@ -48,6 +48,7 @@ export const getModuleHistoriesCountQueryDocument = graphql(`
   }
 `);
 
+// TODO: recheck proposal type
 export const getModuleDetailsQueryDocument = graphql(`
   query getModuleDetailsQuery($moduleId: Int!) {
     modules(where: { id: { _eq: $moduleId } }) {

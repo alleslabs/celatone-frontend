@@ -335,16 +335,16 @@ export const useModuleDetailsQuery = (
       .request(getModuleDetailsQueryDocument, { moduleId })
       .then<ModuleDetailsQueryResponse>(({ modules }) => {
         const target = modules[0];
+        if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
         return {
-          publisherVmAddress: target?.publisher_vm_address
-            .vm_address as HexAddr,
-          createdHeight: target?.module_histories?.at(0)?.block.height,
+          publisherVmAddress: target.publisher_vm_address.vm_address as HexAddr,
+          createdHeight: target.module_histories?.at(0)?.block.height,
           createdTime: parseDateOpt(
-            target?.module_histories?.at(0)?.block.timestamp
+            target.module_histories?.at(0)?.block.timestamp
           ),
-          initTxHash: parseTxHashOpt(target?.publish_transaction?.hash),
-          initProposalId: target?.module_proposals.at(0)?.proposal.id,
-          initProposalTitle: target?.module_proposals.at(0)?.proposal.title,
+          initTxHash: parseTxHashOpt(target.publish_transaction?.hash),
+          initProposalId: target.module_proposals.at(0)?.proposal.id,
+          initProposalTitle: target.module_proposals.at(0)?.proposal.title,
         };
       });
   };

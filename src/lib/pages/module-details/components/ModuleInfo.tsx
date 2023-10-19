@@ -40,7 +40,7 @@ const InitRender = ({
   initTxHash: ModuleDetailsQueryResponse["initTxHash"];
   initProposalTitle: ModuleDetailsQueryResponse["initProposalTitle"];
   initProposalId: ModuleDetailsQueryResponse["initProposalId"];
-  createdHeight: Option<number>;
+  createdHeight: ModuleDetailsQueryResponse["createdHeight"];
 }) => {
   if (initTxHash) {
     return (
@@ -71,11 +71,14 @@ const InitRender = ({
     );
   }
 
-  return createdHeight === 0 ? (
-    <LabelText label="Created by">
-      <Text variant="body2">Genesis</Text>
-    </LabelText>
-  ) : (
+  if (createdHeight === 0)
+    return (
+      <LabelText label="Created by">
+        <Text variant="body2">Genesis</Text>
+      </LabelText>
+    );
+
+  return (
     <LabelText label="Instantiate Transaction">
       <Text variant="body2">N/A</Text>
     </LabelText>
@@ -151,25 +154,23 @@ const ModuleDetailsBody = ({
 export const ModuleInfo = ({
   verificationData,
   ...details
-}: ModuleInfoProps) => {
-  return (
-    <Flex flexDirection="column" gap={4}>
-      <Flex justifyContent="space-between" alignItems="center" w="full">
-        <Heading as="h6" variant="h6" fontWeight={600}>
-          Module Information
-        </Heading>
-        {verificationData?.source && (
-          <Flex alignItems="center" gap={1}>
-            <CustomIcon name="check-circle-solid" color="success.main" />
-            <Text variant="body2" color="text.dark">
-              This module&#39;s verification is supported by its provided source
-              code.
-            </Text>
-          </Flex>
-        )}
-      </Flex>
-      <ModuleDetailsBody {...details} />
-      <ModuleSourceCode sourceCode={verificationData?.source} />
+}: ModuleInfoProps) => (
+  <Flex flexDirection="column" gap={4}>
+    <Flex justifyContent="space-between" alignItems="center" w="full">
+      <Heading as="h6" variant="h6" fontWeight={600}>
+        Module Information
+      </Heading>
+      {verificationData?.source && (
+        <Flex alignItems="center" gap={1}>
+          <CustomIcon name="check-circle-solid" color="success.main" />
+          <Text variant="body2" color="text.dark">
+            This module&#39;s verification is supported by its provided source
+            code.
+          </Text>
+        </Flex>
+      )}
     </Flex>
-  );
-};
+    <ModuleDetailsBody {...details} />
+    <ModuleSourceCode sourceCode={verificationData?.source} />
+  </Flex>
+);
