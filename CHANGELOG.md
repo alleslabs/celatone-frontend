@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#579](https://github.com/alleslabs/celatone-frontend/pull/579) Improve ux writing for recent items page
 - [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 
 ### Bug fixes
@@ -79,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#575](https://github.com/alleslabs/celatone-frontend/pull/575) Support message suggestion for contract from Sylvia framework
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Update cosmjs version to latest and bump terra testnet gas price
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
 - [#532](https://github.com/alleslabs/celatone-frontend/pull/532) Implement new Amplitude structure
@@ -121,6 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#560](https://github.com/alleslabs/celatone-frontend/pull/560) Fix pool type alignment in pool card
+- [#570](https://github.com/alleslabs/celatone-frontend/pull/570) Use native tokens in attached funds
 - [#567](https://github.com/alleslabs/celatone-frontend/pull/567) Fix attached funds in code snippet
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
 - [#527](https://github.com/alleslabs/celatone-frontend/pull/527) Fix ellipsis explorer link
