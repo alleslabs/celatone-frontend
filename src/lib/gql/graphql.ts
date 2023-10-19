@@ -510,8 +510,6 @@ export type Accounts = {
   /** An aggregate relationship */
   transactions_aggregate: Transactions_Aggregate;
   type?: Maybe<Scalars["accounttype"]>;
-  /** An object relationship */
-  validator?: Maybe<Validators>;
   /** An array relationship */
   validators: Array<Validators>;
   /** An aggregate relationship */
@@ -783,7 +781,6 @@ export type Accounts_Bool_Exp = {
   transactions?: InputMaybe<Transactions_Bool_Exp>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Bool_Exp>;
   type?: InputMaybe<Accounttype_Comparison_Exp>;
-  validator?: InputMaybe<Validators_Bool_Exp>;
   validators?: InputMaybe<Validators_Bool_Exp>;
   validators_aggregate?: InputMaybe<Validators_Aggregate_Bool_Exp>;
   vm_address?: InputMaybe<Vm_Addresses_Bool_Exp>;
@@ -818,7 +815,6 @@ export type Accounts_Insert_Input = {
   proposals?: InputMaybe<Proposals_Arr_Rel_Insert_Input>;
   transactions?: InputMaybe<Transactions_Arr_Rel_Insert_Input>;
   type?: InputMaybe<Scalars["accounttype"]>;
-  validator?: InputMaybe<Validators_Obj_Rel_Insert_Input>;
   validators?: InputMaybe<Validators_Arr_Rel_Insert_Input>;
   vm_address?: InputMaybe<Vm_Addresses_Obj_Rel_Insert_Input>;
   vm_address_id?: InputMaybe<Scalars["Int"]>;
@@ -899,7 +895,6 @@ export type Accounts_Order_By = {
   proposals_aggregate?: InputMaybe<Proposals_Aggregate_Order_By>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Order_By>;
   type?: InputMaybe<Order_By>;
-  validator?: InputMaybe<Validators_Order_By>;
   validators_aggregate?: InputMaybe<Validators_Aggregate_Order_By>;
   vm_address?: InputMaybe<Vm_Addresses_Order_By>;
   vm_address_id?: InputMaybe<Order_By>;
@@ -15356,11 +15351,11 @@ export type GetModuleHistoriesCountQueryQuery = {
   };
 };
 
-export type GetModuleDetailsQueryQueryVariables = Exact<{
+export type GetModuleInitialPublishInfoQueryQueryVariables = Exact<{
   moduleId: Scalars["Int"];
 }>;
 
-export type GetModuleDetailsQueryQuery = {
+export type GetModuleInitialPublishInfoQueryQuery = {
   __typename?: "query_root";
   modules: Array<{
     __typename?: "modules";
@@ -19676,13 +19671,13 @@ export const GetModuleHistoriesCountQueryDocument = {
   GetModuleHistoriesCountQueryQuery,
   GetModuleHistoriesCountQueryQueryVariables
 >;
-export const GetModuleDetailsQueryDocument = {
+export const GetModuleInitialPublishInfoQueryDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getModuleDetailsQuery" },
+      name: { kind: "Name", value: "getModuleInitialPublishInfoQuery" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -19792,18 +19787,6 @@ export const GetModuleDetailsQueryDocument = {
                                                 "/initia.move.v1.MsgGovPublish",
                                               block: false,
                                             },
-                                            {
-                                              kind: "StringValue",
-                                              value:
-                                                "/initia.move.v1.MsgGovExecute",
-                                              block: false,
-                                            },
-                                            {
-                                              kind: "StringValue",
-                                              value:
-                                                "/initia.move.v1.MsgGovScript",
-                                              block: false,
-                                            },
                                           ],
                                         },
                                       },
@@ -19812,6 +19795,20 @@ export const GetModuleDetailsQueryDocument = {
                                 },
                               ],
                             },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal_id" },
+                            value: { kind: "EnumValue", value: "asc" },
                           },
                         ],
                       },
@@ -19904,8 +19901,8 @@ export const GetModuleDetailsQueryDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetModuleDetailsQueryQuery,
-  GetModuleDetailsQueryQueryVariables
+  GetModuleInitialPublishInfoQueryQuery,
+  GetModuleInitialPublishInfoQueryQueryVariables
 >;
 export const GetPoolListDocument = {
   kind: "Document",
