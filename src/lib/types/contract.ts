@@ -1,13 +1,11 @@
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { Addr, Nullable, Option } from "lib/types";
+import type { Addr, Nullable, Option, RemarkType } from "lib/types";
 
 export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT",
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE",
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS",
 }
-
-type RemarkType = "genesis" | "governance" | "transaction";
 
 export interface ContractHistoryRemark {
   operation: RemarkOperation;

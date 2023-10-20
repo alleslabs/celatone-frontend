@@ -151,7 +151,7 @@ export const TxsTable = ({
                 setIsSigner(value);
               }}
               w={{ base: "full", md: "200px" }}
-              size={{ base: "md", md: "lg" }}
+              size="lg"
             />
           }
           txTypeSelection={
@@ -160,14 +160,14 @@ export const TxsTable = ({
               setResult={handleSetFilters}
               boxWidth={{ base: "full", md: "285px" }}
               placeholder="All"
-              size={{ base: "md", md: "lg" }}
+              size="lg"
               tagSize={{ base: "sm", md: "md" }}
             />
           }
         />
       )}
       {showErrorAlert && <TxsAlert />}
-      {isMobileOverview && (
+      {!isMobileOverview && (
         <TransactionsTable
           transactions={transactions}
           isLoading={isLoading || txsCountLoading}

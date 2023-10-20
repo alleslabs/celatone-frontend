@@ -16,8 +16,11 @@ import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import { useOpenNewTab } from "lib/hooks";
-import type { IndexedModule } from "lib/services/moduleService";
-import { useAccountModules, useVerifyModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import {
+  useAccountModules,
+  useVerifyModule,
+} from "lib/services/move/moduleService";
 import type {
   ExposedFunction,
   HexAddr,

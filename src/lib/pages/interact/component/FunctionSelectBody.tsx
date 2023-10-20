@@ -2,7 +2,7 @@ import { Button, Flex } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction, HexAddr, Option } from "lib/types";
 
 import { ModuleContainer } from "./common";

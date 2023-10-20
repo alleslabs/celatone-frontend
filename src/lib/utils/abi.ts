@@ -1,16 +1,11 @@
 import { BCS } from "@initia/initia.js";
 
-import type {
-  AbiFormData,
-  ExposedFunction,
-  Nullable,
-  ResponseABI,
-} from "lib/types";
+import type { AbiFormData, ExposedFunction, Nullable } from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
   fn.is_view || fn.is_entry;
 
-export const parseJsonABI = (jsonString: string): ResponseABI => {
+export const parseJsonABI = <T>(jsonString: string): T => {
   try {
     return JSON.parse(jsonString);
   } catch {

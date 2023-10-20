@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction, Option } from "lib/types";
 import { checkAvailability } from "lib/utils";
 
@@ -102,7 +102,7 @@ export const FunctionSelectPanel = ({
         : module?.executeFunctions;
     return {
       filteredFunctions: targetFunctions?.filter((fn) =>
-        fn.name.includes(keyword)
+        fn.name.toLowerCase().includes(keyword.toLowerCase())
       ),
       isEmpty: targetFunctions?.length === 0,
       noAvailableFns:

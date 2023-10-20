@@ -19,6 +19,8 @@ import {
   getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
+  getModuleTransactionsQueryDocument,
+  getModuleTransactionsCountQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
@@ -29,6 +31,7 @@ import type {
   Message,
   PoolTxFilter,
   Nullable,
+  HumanAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
@@ -435,6 +438,103 @@ export const useTxsCountByBlockHeight = (
     {
       keepPreviousData: true,
       enabled: !!height,
+    }
+  );
+};
+
+export const useModuleTxsByPagination = ({
+  moduleId,
+  pageSize,
+  offset,
+}: {
+  moduleId: Option<Nullable<number>>;
+  pageSize: number;
+  offset: number;
+}) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) return [];
+    return indexerGraphClient
+      .request(getModuleTransactionsQueryDocument, {
+        moduleId,
+        pageSize,
+        offset,
+      })
+      .then<Transaction[]>(({ module_transactions }) =>
+        module_transactions.map<Transaction>((transaction) => ({
+          hash: parseTxHash(transaction.transaction.hash),
+          messages: snakeToCamel(transaction.transaction.messages),
+          sender: transaction.transaction.account.address as HumanAddr,
+          height: transaction.block.height,
+          created: parseDate(transaction.block.timestamp),
+          success: transaction.transaction.success,
+          actionMsgType: getActionMsgType([]),
+          furtherAction: getMsgFurtherAction(
+            transaction.transaction.messages.length,
+            {
+              isExecute: transaction.transaction.is_execute,
+              isInstantiate: transaction.transaction.is_instantiate,
+              isSend: transaction.transaction.is_send,
+              isUpload: transaction.transaction.is_store_code,
+              isMigrate: transaction.transaction.is_migrate,
+              isUpdateAdmin: transaction.transaction.is_update_admin,
+              isClearAdmin: transaction.transaction.is_clear_admin,
+              isIbc: transaction.transaction.is_ibc,
+              isMoveExecute: transaction.transaction.is_move_execute,
+              isMovePublish: transaction.transaction.is_move_publish,
+              isMoveScript: transaction.transaction.is_move_script,
+              isMoveUpgrade: transaction.transaction.is_move_upgrade,
+            },
+            transaction.transaction.success,
+            false
+          ),
+          isSigner: false,
+          isIbc: transaction.transaction.is_ibc,
+          isInstantiate: transaction.transaction.is_instantiate,
+        }))
+      );
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_TXS,
+      indexerGraphClient,
+      moduleId,
+      pageSize,
+      offset,
+    ],
+    createQueryFnWithTimeout(queryFn),
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleTxsCount = (moduleId: Option<Nullable<number>>) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getModuleTransactionsCountQueryDocument, {
+        moduleId,
+      })
+      .then(
+        ({ module_transactions_aggregate }) =>
+          module_transactions_aggregate.aggregate?.count
+      );
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_TXS_COUNT, indexerGraphClient, moduleId],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };

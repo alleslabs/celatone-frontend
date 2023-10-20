@@ -40,6 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#562](https://github.com/alleslabs/celatone-frontend/pull/562) Support searching with hex address and module path
+- [#572](https://github.com/alleslabs/celatone-frontend/pull/572) Wireup module publish details
+- [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
+- [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
+- [#556](https://github.com/alleslabs/celatone-frontend/pull/556) Fully functional deploy script page
+- [#550](https://github.com/alleslabs/celatone-frontend/pull/550) Add modules and resources in account detail
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Wireup publish module tx
 - [#544](https://github.com/alleslabs/celatone-frontend/pull/544) Show module source code if available
 - [#534](https://github.com/alleslabs/celatone-frontend/pull/534) Wire up initia execute function
@@ -78,6 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#574](https://github.com/alleslabs/celatone-frontend/pull/574) Add min height to wasm page container to properly align footer
+- [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
 - [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables
 - [#549](https://github.com/alleslabs/celatone-frontend/pull/549) Add move tx filer options
 - [#553](https://github.com/alleslabs/celatone-frontend/pull/553) Use Cmd on Mac OS while Ctrl on others
@@ -123,6 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
 - [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal
 - [#554](https://github.com/alleslabs/celatone-frontend/pull/554) Fix and improve ui alignment, cta, and publish error
 - [#551](https://github.com/alleslabs/celatone-frontend/pull/551) Fix various bugs on the interaction page

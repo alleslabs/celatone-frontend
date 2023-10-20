@@ -82,11 +82,10 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               category: "Quick Actions",
               slug: "quick-actions",
               submenu: [
-                // TODO change path to /account/0x1
                 {
                   name: "0x1 Page",
-                  slug: "/deploy",
-                  icon: "home" as IconKeys,
+                  slug: "/accounts/0x1",
+                  icon: "hex" as IconKeys,
                 },
                 {
                   name: "Publish Module",

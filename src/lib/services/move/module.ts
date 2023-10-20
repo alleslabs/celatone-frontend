@@ -19,10 +19,6 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-interface ModuleReturn {
-  module: ResponseModule;
-}
-
 export const getAccountModules = async (
   baseEndpoint: string,
   address: MoveAccountAddr
@@ -43,6 +39,10 @@ export const getAccountModules = async (
 
   return snakeToCamel(result);
 };
+
+interface ModuleReturn {
+  module: ResponseModule;
+}
 
 export const getAccountModule = async (
   baseEndpoint: string,
@@ -82,7 +82,7 @@ export const getModuleVerificationStatus = async (
   // TODO: move url to base api route? wait for celatone api implementation?
   axios
     .get<ModuleVerificationReturn>(
-      `https://stone-compiler.initia.tech/contracts/${address}/${moduleName}`
+      `https://stone-compiler.initia.tech/contracts/verify/${address}/${moduleName}`
     )
     .then(({ data }) => ({
       ...snakeToCamel(data),
@@ -103,6 +103,7 @@ export const getFunctionView = async (
   );
   return data.data;
 };
+
 interface DecodeModuleReturn {
   abi: string;
 }
@@ -115,4 +116,14 @@ export const decodeModule = async (
     .post<DecodeModuleReturn>(decodeAPI, {
       code_bytes: moduleEncode,
     })
-    .then(({ data }) => parseJsonABI(libDecode(data.abi)));
+    .then(({ data }) => parseJsonABI<ResponseABI>(libDecode(data.abi)));
+
+export const decodeScript = async (
+  decodeAPI: string,
+  scriptBytes: string
+): Promise<ExposedFunction> =>
+  axios
+    .post<DecodeModuleReturn>(decodeAPI, {
+      code_bytes: scriptBytes,
+    })
+    .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));

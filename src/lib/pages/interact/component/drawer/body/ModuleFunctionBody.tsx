@@ -7,7 +7,7 @@ import type { ModuleSelectFunction } from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { FunctionCard } from "lib/components/module/FunctionCard";
-import type { IndexedModule } from "lib/services/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction, Option } from "lib/types";
 
 const functionGridBaseStyle: FlexProps = {
@@ -60,8 +60,12 @@ export const ModuleFunctionBody = ({
   const [keyword, setKeyword] = useState("");
   const [filteredView, filteredExecute] = useMemo(
     () => [
-      module?.viewFunctions.filter((el) => el.name.includes(keyword)),
-      module?.executeFunctions.filter((el) => el.name.includes(keyword)),
+      module?.viewFunctions.filter((el) =>
+        el.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
+      module?.executeFunctions.filter((el) =>
+        el.name.toLowerCase().includes(keyword.toLowerCase())
+      ),
     ],
     [module?.viewFunctions, module?.executeFunctions, keyword]
   );

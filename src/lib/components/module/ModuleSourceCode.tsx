@@ -8,15 +8,21 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
+import type { Monaco } from "@monaco-editor/react";
+import MonacoEditor from "@monaco-editor/react";
 
 import { CopyButton } from "../copy";
-import { CURR_THEME } from "env";
 import type { Option } from "lib/types";
 
-const AceEditor = dynamic(() => import("react-ace"), {
-  ssr: false,
-});
+import { moveLanguageConfig, moveTokenProvider } from "./moveSyntax";
+
+const loadMoveSyntax = (monaco: Monaco) => {
+  monaco.languages.register({ id: "move" });
+  monaco.languages.onLanguage("move", () => {
+    monaco.languages.setMonarchTokensProvider("move", moveTokenProvider);
+    monaco.languages.setLanguageConfiguration("move", moveLanguageConfig);
+  });
+};
 
 interface ModuleSourceCodeProps {
   sourceCode: Option<string>;
@@ -54,23 +60,13 @@ export const ModuleSourceCode = ({ sourceCode }: ModuleSourceCodeProps) => {
             borderColor="gray.700"
             borderRadius="8px"
           >
-            <AceEditor
-              readOnly
-              mode="rust"
-              theme={CURR_THEME.jsonTheme}
-              fontSize="14px"
-              style={{
-                color: CURR_THEME.colors.text.main,
-                width: "100%",
-                background: "transparent",
-              }}
+            <MonacoEditor
+              height={400}
+              language="move"
+              theme="vs-dark"
+              beforeMount={loadMoveSyntax}
               value={sourceCode}
-              setOptions={{
-                showGutter: false,
-                useWorker: false,
-                printMargin: false,
-                wrap: true,
-              }}
+              options={{ readOnly: true, scrollBeyondLastLine: false }}
             />
           </Box>
         </AccordionPanel>

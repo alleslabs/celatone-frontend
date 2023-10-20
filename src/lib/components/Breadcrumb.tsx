@@ -42,7 +42,7 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
           </ChakraBreadcrumbItem>
         )
       ) : (
-        <ChakraBreadcrumbItem isCurrentPage key={`bc-${item.href}`}>
+        <ChakraBreadcrumbItem isCurrentPage key={`bc-${item.text}`}>
           <Text
             variant={{ base: "body3", md: "body2" }}
             className="ellipsis"
