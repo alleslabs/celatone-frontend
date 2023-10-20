@@ -9,11 +9,12 @@ import {
   useGetAddressType,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-import { isCodeId } from "lib/utils";
+import { isCodeId, isHexAddress, splitModule } from "lib/utils";
 
 import { useBlockInfoQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
+import { useAccountModules } from "./moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
@@ -26,7 +27,8 @@ export type SearchResultType =
   | "Transaction Hash"
   | "Proposal ID"
   | "Block"
-  | "Pool ID";
+  | "Pool ID"
+  | "Module Path";
 
 export interface ResultMetadata {
   icns: {
@@ -37,6 +39,7 @@ export interface ResultMetadata {
 }
 
 // TODO: Add Proposal ID
+// eslint-disable-next-line complexity
 export const useSearchHandler = (
   keyword: string,
   resetHandlerStates: () => void
@@ -52,6 +55,7 @@ export const useSearchHandler = (
       features: {
         wasm: { enabled: isWasm },
         pool: { enabled: isPool },
+        move: { enabled: isMove },
       },
     },
   } = useCelatoneApp();
@@ -86,8 +90,35 @@ export const useSearchHandler = (
   const { data: icnsAddressData, isFetching: icnsAddressFetching } =
     useAddressByICNSName(debouncedKeyword);
 
+  const [initiaAddr, moduleName, functionName] = splitModule(debouncedKeyword);
+
+  const enableModuleFetching = useMemo(
+    () =>
+      Boolean(
+        isMove &&
+          (getAddressType(initiaAddr) === "user_address" ||
+            isHexAddress(initiaAddr)) &&
+          moduleName &&
+          functionName === undefined
+      ),
+    [functionName, getAddressType, initiaAddr, isMove, moduleName]
+  );
+
+  const { data: moduleData, isFetching: moduleFetching } = useAccountModules({
+    address: initiaAddr,
+    moduleName,
+    functionName: undefined,
+    options: {
+      enabled: enableModuleFetching,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  });
+
   const isAddr =
-    addressType === "user_address" || addressType === "contract_address";
+    addressType === "user_address" ||
+    addressType === "contract_address" ||
+    isHexAddress(debouncedKeyword);
 
   // provide ICNS metadata result
   const { data: icnsNames } = useICNSNamesByAddress(
@@ -117,12 +148,14 @@ export const useSearchHandler = (
   return {
     results: [
       addressResult,
+      moduleData && "Module Path",
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
       poolData && "Pool ID",
     ].filter((res) => Boolean(res)) as SearchResultType[],
     isLoading:
+      moduleFetching ||
       txFetching ||
       codeFetching ||
       contractFetching ||

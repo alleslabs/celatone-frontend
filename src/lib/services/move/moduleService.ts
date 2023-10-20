@@ -10,11 +10,10 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
-  useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import {
-  getModuleDetailsQueryDocument,
+  getModuleInitialPublishInfoQueryDocument,
   getModuleHistoriesCountQueryDocument,
   getModuleHistoriesQueryDocument,
   getModuleIdByNameAndVmAddressQueryDocument,
@@ -315,7 +314,7 @@ export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
   );
 };
 
-export interface ModuleDetailsQueryResponse {
+export interface ModuleInitialPublishInfo {
   publisherVmAddress: HexAddr;
   createdHeight: Option<number>;
   createdTime: Option<Date>;
@@ -326,14 +325,14 @@ export interface ModuleDetailsQueryResponse {
 
 export const useModuleDetailsQuery = (
   moduleId: Option<Nullable<number>>
-): UseQueryResult<ModuleDetailsQueryResponse> => {
+): UseQueryResult<ModuleInitialPublishInfo> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = async () => {
     if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
-      .request(getModuleDetailsQueryDocument, { moduleId })
-      .then<ModuleDetailsQueryResponse>(({ modules }) => {
+      .request(getModuleInitialPublishInfoQueryDocument, { moduleId })
+      .then<ModuleInitialPublishInfo>(({ modules }) => {
         const target = modules[0];
         if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
         return {
@@ -366,7 +365,7 @@ export const useDecodeScript = ({
   base64EncodedFile: string;
   options?: Omit<UseQueryOptions<ExposedFunction>, "queryKey">;
 }): UseQueryResult<ExposedFunction> => {
-  const lcd = useLCDEndpoint();
+  const lcd = useBaseApiRoute("rest");
 
   const queryFn = async (): Promise<ExposedFunction> => {
     const fn = await decodeScript(

@@ -8,7 +8,7 @@ import { ModuleSourceCode } from "lib/components/module";
 import type { ModuleVerificationInternal } from "lib/services/move/module";
 import type {
   IndexedModule,
-  ModuleDetailsQueryResponse,
+  ModuleInitialPublishInfo,
 } from "lib/services/move/moduleService";
 import type { Nullable, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -25,7 +25,7 @@ const DetailsContainer = chakra(Flex, {
 });
 
 interface ModuleInfoProps {
-  moduleDetails: Option<ModuleDetailsQueryResponse>;
+  moduleDetails: Option<ModuleInitialPublishInfo>;
   upgradePolicy: IndexedModule["upgradePolicy"];
   verificationData: Option<Nullable<ModuleVerificationInternal>>;
   isLoading: boolean;
@@ -37,10 +37,10 @@ const InitRender = ({
   initProposalId,
   createdHeight,
 }: {
-  initTxHash: ModuleDetailsQueryResponse["initTxHash"];
-  initProposalTitle: ModuleDetailsQueryResponse["initProposalTitle"];
-  initProposalId: ModuleDetailsQueryResponse["initProposalId"];
-  createdHeight: ModuleDetailsQueryResponse["createdHeight"];
+  initTxHash: ModuleInitialPublishInfo["initTxHash"];
+  initProposalTitle: ModuleInitialPublishInfo["initProposalTitle"];
+  initProposalId: ModuleInitialPublishInfo["initProposalId"];
+  createdHeight: ModuleInitialPublishInfo["createdHeight"];
 }) => {
   if (initTxHash) {
     return (
