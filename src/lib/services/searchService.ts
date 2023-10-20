@@ -14,7 +14,7 @@ import { isCodeId, isHexAddress, splitModule } from "lib/utils";
 import { useBlockInfoQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
-import { useAccountModules } from "./moduleService";
+import { useAccountModules } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
