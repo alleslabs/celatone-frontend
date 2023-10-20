@@ -6,7 +6,7 @@ export const initiatestnet: Chain[] = [
     chain_name: "initiatestnet",
     status: "live",
     network_type: "testnet",
-    pretty_name: "Initia Testnet",
+    pretty_name: "Initia Testnet 10",
     chain_id: "stone-10",
     bech32_prefix: "init",
     daemon_name: "initd",
@@ -50,10 +50,10 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: "../chain.schema.json",
-    chain_name: "initiatestnet",
+    chain_name: "initiatestnet11",
     status: "live",
     network_type: "testnet",
-    pretty_name: "Initia Testnet",
+    pretty_name: "Initia Testnet 11",
     chain_id: "stone-11",
     bech32_prefix: "init",
     daemon_name: "initd",
@@ -85,38 +85,63 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://stone-rpc.initia.tech:443",
+          address: "https://next-stone-rpc.initia.tech:443",
         },
       ],
       rest: [
         {
-          address: "https://stone-rest.initia.tech",
+          address: "https://next-stone-rest.initia.tech",
         },
       ],
     },
   },
 ];
 
-export const initiatestnetAssets: AssetList = {
-  $schema: "../assetlist.schema.json",
-  chain_name: "initiatestnet",
-  assets: [
-    {
-      description: "The native staking token of Initia.",
-      denom_units: [
-        {
-          denom: "uinit",
-          exponent: 0,
-        },
-        {
-          denom: "init",
-          exponent: 6,
-        },
-      ],
-      base: "uinit",
-      name: "Init",
-      display: "init",
-      symbol: "INIT",
-    },
-  ],
-};
+export const initiatestnetAssets: AssetList[] = [
+  {
+    $schema: "../assetlist.schema.json",
+    chain_name: "initiatestnet",
+    assets: [
+      {
+        description: "The native staking token of Initia.",
+        denom_units: [
+          {
+            denom: "uinit",
+            exponent: 0,
+          },
+          {
+            denom: "init",
+            exponent: 6,
+          },
+        ],
+        base: "uinit",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
+      },
+    ],
+  },
+  {
+    $schema: "../assetlist.schema.json",
+    chain_name: "initiatestnet11",
+    assets: [
+      {
+        description: "The native staking token of Initia.",
+        denom_units: [
+          {
+            denom: "uinit",
+            exponent: 0,
+          },
+          {
+            denom: "init",
+            exponent: 6,
+          },
+        ],
+        base: "uinit",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
+      },
+    ],
+  },
+];

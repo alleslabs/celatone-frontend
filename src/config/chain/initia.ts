@@ -6,7 +6,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "stone-10": {
     chain: "initia",
     registryChainName: "initiatestnet",
-    prettyName: "Initia Testnet",
+    prettyName: "Initia Testnet 10",
     lcd: "https://stone-rest.initia.tech",
     rpc: "https://stone-rpc.initia.tech:443",
     indexer: "https://stone-10-graphql.alleslabs.dev/v1/graphql",
@@ -53,10 +53,10 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   },
   "stone-11": {
     chain: "initia",
-    registryChainName: "initiatestnet",
-    prettyName: "Initia Testnet",
-    lcd: "https://stone-rest.initia.tech",
-    rpc: "https://stone-rpc.initia.tech:443",
+    registryChainName: "initiatestnet11",
+    prettyName: "Initia Testnet 11",
+    lcd: "https://next-stone-rest.initia.tech",
+    rpc: "https://next-stone-rpc.initia.tech:443",
     indexer: "https://stone-11-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],

@@ -47,7 +47,7 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
         localosmosisAsset,
         seiAssets,
         terra2testnetAssets,
-        initiatestnetAssets,
+        ...initiatestnetAssets,
       ]}
       wallets={wallets}
       endpointOptions={{
