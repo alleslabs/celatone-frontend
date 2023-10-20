@@ -1,52 +1,101 @@
 import type { AssetList, Chain } from "@chain-registry/types";
 
-export const initiatestnet: Chain = {
-  $schema: "../chain.schema.json",
-  chain_name: "initiatestnet",
-  status: "live",
-  network_type: "testnet",
-  pretty_name: "Initia Testnet",
-  chain_id: "stone-10",
-  bech32_prefix: "init",
-  daemon_name: "initd",
-  node_home: "$HOME/.init",
-  key_algos: ["secp256k1"],
-  slip44: 118,
-  fees: {
-    fee_tokens: [
-      {
-        denom: "uinit",
-        fixed_min_gas_price: 0,
-        low_gas_price: 0.151,
-        average_gas_price: 0.151,
-        high_gas_price: 0.151,
-      },
-    ],
+export const initiatestnet: Chain[] = [
+  {
+    $schema: "../chain.schema.json",
+    chain_name: "initiatestnet",
+    status: "live",
+    network_type: "testnet",
+    pretty_name: "Initia Testnet",
+    chain_id: "stone-10",
+    bech32_prefix: "init",
+    daemon_name: "initd",
+    node_home: "$HOME/.init",
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom: "uinit",
+          fixed_min_gas_price: 0,
+          low_gas_price: 0.151,
+          average_gas_price: 0.151,
+          high_gas_price: 0.151,
+        },
+      ],
+    },
+    staking: {
+      staking_tokens: [
+        {
+          denom: "uinit",
+        },
+      ],
+    },
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address: "https://stone-rpc.initia.tech:443",
+        },
+      ],
+      rest: [
+        {
+          address: "https://stone-rest.initia.tech",
+        },
+      ],
+    },
   },
-  staking: {
-    staking_tokens: [
-      {
-        denom: "uinit",
-      },
-    ],
+  {
+    $schema: "../chain.schema.json",
+    chain_name: "initiatestnet",
+    status: "live",
+    network_type: "testnet",
+    pretty_name: "Initia Testnet",
+    chain_id: "stone-11",
+    bech32_prefix: "init",
+    daemon_name: "initd",
+    node_home: "$HOME/.init",
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom: "uinit",
+          fixed_min_gas_price: 0,
+          low_gas_price: 0.151,
+          average_gas_price: 0.151,
+          high_gas_price: 0.151,
+        },
+      ],
+    },
+    staking: {
+      staking_tokens: [
+        {
+          denom: "uinit",
+        },
+      ],
+    },
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address: "https://stone-rpc.initia.tech:443",
+        },
+      ],
+      rest: [
+        {
+          address: "https://stone-rest.initia.tech",
+        },
+      ],
+    },
   },
-  logo_URIs: {
-    png: "",
-    svg: "",
-  },
-  apis: {
-    rpc: [
-      {
-        address: "https://stone-rpc.initia.tech:443",
-      },
-    ],
-    rest: [
-      {
-        address: "https://stone-rest.initia.tech",
-      },
-    ],
-  },
-};
+];
 
 export const initiatestnetAssets: AssetList = {
   $schema: "../assetlist.schema.json",

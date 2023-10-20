@@ -41,7 +41,7 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider
-      chains={[...chains, localosmosis, sei, terra2testnet, initiatestnet]}
+      chains={[...chains, localosmosis, sei, terra2testnet, ...initiatestnet]}
       assetLists={[
         ...assets,
         localosmosisAsset,
