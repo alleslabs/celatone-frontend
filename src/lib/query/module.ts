@@ -48,9 +48,8 @@ export const getModuleHistoriesCountQueryDocument = graphql(`
   }
 `);
 
-// TODO: recheck proposal type
-export const getModuleDetailsQueryDocument = graphql(`
-  query getModuleDetailsQuery($moduleId: Int!) {
+export const getModuleInitialPublishInfoQueryDocument = graphql(`
+  query getModuleInitialPublishInfoQuery($moduleId: Int!) {
     modules(where: { id: { _eq: $moduleId } }) {
       publisher_vm_address: vm_address {
         vm_address
@@ -60,16 +59,10 @@ export const getModuleDetailsQueryDocument = graphql(`
       }
       module_proposals(
         where: {
-          proposal: {
-            type: {
-              _in: [
-                "/initia.move.v1.MsgGovPublish"
-                "/initia.move.v1.MsgGovExecute"
-                "/initia.move.v1.MsgGovScript"
-              ]
-            }
-          }
+          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }
         }
+        order_by: { proposal_id: asc }
+        limit: 1
       ) {
         proposal {
           id

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import type { Nullable, Option, PoolTxFilter, TxFilters } from "lib/types";
 import { isTxHash } from "lib/utils";
 
@@ -30,13 +31,26 @@ const generateActionsFilter = (filters: TxFilters) =>
     {}
   );
 
-const generateSearch = (search: string) =>
-  search
-    ? [
-        { hash: { _eq: isTxHash(search) ? `\\x${search}` : "" } },
-        { contract_transactions: { contract: { address: { _eq: search } } } },
-      ]
-    : [{}];
+const generateSearch = ({
+  search,
+  wasmEnable,
+}: {
+  search: string;
+  wasmEnable: boolean;
+}) => {
+  const searchExp = [];
+
+  if (search) {
+    searchExp.push({ hash: { _eq: isTxHash(search) ? `\\x${search}` : "" } });
+
+    if (wasmEnable)
+      searchExp.push({
+        contract_transactions: { contract: { address: { _eq: search } } },
+      });
+  }
+
+  return searchExp;
+};
 
 export const useTxExpression = ({
   accountId,
@@ -48,8 +62,10 @@ export const useTxExpression = ({
   search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
-}) =>
-  useMemo(() => {
+}) => {
+  const wasmConfig = useWasmConfig({ shouldRedirect: false });
+
+  return useMemo(() => {
     const hasFilter = Object.values(filters).some((filter: boolean) => filter);
     const accountExp = accountId ? { account_id: { _eq: accountId } } : {};
     const isSignerExp =
@@ -60,7 +76,12 @@ export const useTxExpression = ({
             transaction: {
               ...(hasFilter ? generateActionsFilter(filters) : {}),
               ...(search
-                ? { _or: generateSearch(search.toLocaleLowerCase()) }
+                ? {
+                    _or: generateSearch({
+                      search: search.toLocaleLowerCase(),
+                      wasmEnable: wasmConfig.enabled,
+                    }),
+                  }
                 : {}),
             },
           }
@@ -70,7 +91,8 @@ export const useTxExpression = ({
       ...isSignerExp,
       ...filterExp,
     };
-  }, [accountId, filters, isSigner, search]);
+  }, [accountId, filters, isSigner, search, wasmConfig.enabled]);
+};
 
 export const usePoolTxExpression = (
   poolId: Option<number>,
