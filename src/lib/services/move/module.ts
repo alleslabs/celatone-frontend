@@ -82,7 +82,7 @@ export const getModuleVerificationStatus = async (
   // TODO: move url to base api route? wait for celatone api implementation?
   axios
     .get<ModuleVerificationReturn>(
-      `https://stone-compiler.initia.tech/contracts/${address}/${moduleName}`
+      `https://stone-compiler.initia.tech/contracts/verify/${address}/${moduleName}`
     )
     .then(({ data }) => ({
       ...snakeToCamel(data),

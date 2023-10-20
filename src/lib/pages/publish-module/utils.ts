@@ -1,9 +1,10 @@
 import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
-import type { Option } from "lib/types";
+import type { HumanAddr, Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
-import { truncate } from "lib/utils";
+import { bech32AddressToHex, truncate, unpadHexAddress } from "lib/utils";
 
-import type { FileArrayFields, PublishStatus } from "./formConstants";
+import type { Module, PublishStatus } from "./formConstants";
+import { PUBLISH_STATUS_DEFAULT } from "./formConstants";
 
 const priority = Object.keys(UpgradePolicy);
 
@@ -14,19 +15,26 @@ const resolvePolicyPriority = (
 
 export const statusResolver = ({
   data,
-  fields,
+  modules,
   index,
   policy,
+  address,
 }: {
   data: Option<DecodeModuleQueryResponse>;
-  fields: FileArrayFields;
+  modules: Module[];
   index: number;
   policy: UpgradePolicy;
+  address: Option<HumanAddr>;
 }): PublishStatus => {
-  if (!data) return { status: "init", text: "" };
+  if (!data) return PUBLISH_STATUS_DEFAULT;
 
-  const { abi, validPublisher, currentPolicy, modulePath } = data;
-  const priorUpload = fields
+  const { abi, currentPolicy, modulePath } = data;
+
+  const validPublisher = address
+    ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) === abi.address
+    : false;
+
+  const priorUpload = modules
     .slice(0, index)
     .findLast((field) => field.decodeRes?.modulePath === modulePath);
 
@@ -85,5 +93,5 @@ export const statusResolver = ({
       text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
     };
   }
-  return { status: "init", text: "" };
+  return PUBLISH_STATUS_DEFAULT;
 };

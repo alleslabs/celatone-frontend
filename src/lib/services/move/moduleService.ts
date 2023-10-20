@@ -9,9 +9,16 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
+import {
+  getModuleDetailsQueryDocument,
+  getModuleHistoriesCountQueryDocument,
+  getModuleHistoriesQueryDocument,
+  getModuleIdByNameAndVmAddressQueryDocument,
+} from "lib/query";
 import type {
   MoveAccountAddr,
   ExposedFunction,
@@ -20,18 +27,21 @@ import type {
   Option,
   AbiFormData,
   RpcQueryError,
-  HumanAddr,
   UpgradePolicy,
   HexAddr,
+  Nullable,
 } from "lib/types";
+import type { ModuleHistory } from "lib/types/move/module";
 import {
-  bech32AddressToHex,
+  parseDate,
+  parseDateOpt,
   parseJsonABI,
+  parseTxHashOpt,
   splitViewExecuteFunctions,
   truncate,
-  unpadHexAddress,
 } from "lib/utils";
 
+import type { ModuleVerificationInternal } from "./module";
 import {
   decodeModule,
   decodeScript,
@@ -77,7 +87,7 @@ export const useAccountModules = ({
 }: {
   address: MoveAccountAddr;
   moduleName: Option<string>;
-  functionName: Option<string>;
+  functionName?: Option<string>;
   options?: Omit<UseQueryOptions<IndexedModule | IndexedModule[]>, "queryKey">;
 }): UseQueryResult<IndexedModule | IndexedModule[]> => {
   const baseEndpoint = useBaseApiRoute("rest");
@@ -111,7 +121,7 @@ export const useVerifyModule = ({
 }: {
   address: Option<MoveAccountAddr>;
   moduleName: Option<string>;
-}) =>
+}): UseQueryResult<Nullable<ModuleVerificationInternal>> =>
   useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
     () => {
@@ -167,17 +177,14 @@ export const useFunctionView = ({
 export interface DecodeModuleQueryResponse {
   abi: ResponseABI;
   modulePath: string;
-  validPublisher: boolean;
   currentPolicy: Option<UpgradePolicy>;
 }
 
 export const useDecodeModule = ({
   base64EncodedFile,
-  address,
   options,
 }: {
   base64EncodedFile: string;
-  address: Option<HumanAddr>;
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
   const baseEndpoint = useBaseApiRoute("rest");
@@ -188,11 +195,6 @@ export const useDecodeModule = ({
     const abi = await decodeModule(move.decodeApi, base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
-    const validPublisher = address
-      ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) ===
-        abi.address
-      : false;
-
     const currentPolicy = await getAccountModule(
       baseEndpoint,
       abi.address as HexAddr,
@@ -200,7 +202,7 @@ export const useDecodeModule = ({
     )
       .then((data) => data.upgradePolicy)
       .catch(() => undefined);
-    return { abi, modulePath, validPublisher, currentPolicy };
+    return { abi, modulePath, currentPolicy };
   };
 
   return useQuery(
@@ -208,11 +210,152 @@ export const useDecodeModule = ({
       CELATONE_QUERY_KEYS.MODULE_DECODE,
       baseEndpoint,
       move.enabled,
-      address,
       base64EncodedFile,
     ],
     queryFn,
     options
+  );
+};
+
+export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = async () => {
+    return indexerGraphClient
+      .request(getModuleIdByNameAndVmAddressQueryDocument, {
+        name: moduleName,
+        vmAddress,
+      })
+      .then<Nullable<number>>(({ modules }) => modules[0]?.id ?? null);
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_ID, indexerGraphClient, moduleName, vmAddress],
+    queryFn,
+    {
+      enabled: Boolean(moduleName && vmAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleHistoriesByPagination = ({
+  moduleId,
+  pageSize,
+  offset,
+}: {
+  moduleId: Option<Nullable<number>>;
+  pageSize: number;
+  offset: number;
+}): UseQueryResult<ModuleHistory[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) return [];
+    return indexerGraphClient
+      .request(getModuleHistoriesQueryDocument, {
+        moduleId,
+        pageSize,
+        offset,
+      })
+      .then(({ module_histories }) =>
+        module_histories.map<ModuleHistory>((history, idx) => ({
+          remark: history.remark,
+          upgradePolicy: history.upgrade_policy,
+          height: history.block.height,
+          timestamp: parseDate(history.block.timestamp),
+          previousPolicy:
+            idx === module_histories.length - 1
+              ? undefined
+              : module_histories[idx + 1].upgrade_policy,
+        }))
+      );
+  };
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_HISTORIES,
+      indexerGraphClient,
+      moduleId,
+      pageSize,
+      offset,
+    ],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getModuleHistoriesCountQueryDocument, {
+        moduleId,
+      })
+      .then(
+        ({ module_histories_aggregate }) =>
+          module_histories_aggregate.aggregate?.count
+      );
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_HISTORIES_COUNT, indexerGraphClient, moduleId],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export interface ModuleDetailsQueryResponse {
+  publisherVmAddress: HexAddr;
+  createdHeight: Option<number>;
+  createdTime: Option<Date>;
+  initTxHash: Option<string>;
+  initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
+}
+
+export const useModuleDetailsQuery = (
+  moduleId: Option<Nullable<number>>
+): UseQueryResult<ModuleDetailsQueryResponse> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getModuleDetailsQueryDocument, { moduleId })
+      .then<ModuleDetailsQueryResponse>(({ modules }) => {
+        const target = modules[0];
+        if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
+        return {
+          publisherVmAddress: target.publisher_vm_address.vm_address as HexAddr,
+          createdHeight: target.module_histories?.at(0)?.block.height,
+          createdTime: parseDateOpt(
+            target.module_histories?.at(0)?.block.timestamp
+          ),
+          initTxHash: parseTxHashOpt(target.publish_transaction?.hash),
+          initProposalId: target.module_proposals.at(0)?.proposal.id,
+          initProposalTitle: target.module_proposals.at(0)?.proposal.title,
+        };
+      });
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_DETAILS, indexerGraphClient, moduleId],
+    queryFn,
+    {
+      enabled: Boolean(moduleId),
+      refetchOnWindowFocus: false,
+    }
   );
 };
 

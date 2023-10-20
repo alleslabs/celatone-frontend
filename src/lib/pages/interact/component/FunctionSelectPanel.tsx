@@ -102,7 +102,7 @@ export const FunctionSelectPanel = ({
         : module?.executeFunctions;
     return {
       filteredFunctions: targetFunctions?.filter((fn) =>
-        fn.name.includes(keyword)
+        fn.name.toLowerCase().includes(keyword.toLowerCase())
       ),
       isEmpty: targetFunctions?.length === 0,
       noAvailableFns:
