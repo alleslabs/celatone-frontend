@@ -6,8 +6,8 @@ import type { MoveAccountAddr } from "lib/types";
  */
 
 type SplitReturn =
-  | [MoveAccountAddr, undefined, undefined]
-  | [MoveAccountAddr, string, undefined]
+  | [MoveAccountAddr]
+  | [MoveAccountAddr, string]
   | [MoveAccountAddr, string, string];
 
 export const splitModule = (path: string): SplitReturn => {

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#562](https://github.com/alleslabs/celatone-frontend/pull/562) Support searching with hex address and module path
 - [#572](https://github.com/alleslabs/celatone-frontend/pull/572) Wireup module publish details
 - [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
 - [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
