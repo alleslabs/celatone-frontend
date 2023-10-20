@@ -62,6 +62,7 @@ export const getModuleInitialPublishInfoQueryDocument = graphql(`
           proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }
         }
         order_by: { proposal_id: asc }
+        limit: 1
       ) {
         proposal {
           id

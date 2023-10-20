@@ -19813,6 +19813,11 @@ export const GetModuleInitialPublishInfoQueryDocument = {
                         ],
                       },
                     },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
                   ],
                   selectionSet: {
                     kind: "SelectionSet",
