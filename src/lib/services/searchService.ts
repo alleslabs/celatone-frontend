@@ -148,7 +148,7 @@ export const useSearchHandler = (
   return {
     results: [
       addressResult,
-      enableModuleFetching && moduleData && "Module Path",
+      moduleData && "Module Path",
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
