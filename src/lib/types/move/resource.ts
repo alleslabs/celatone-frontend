@@ -1,3 +1,4 @@
+import type { MoveAccountAddr } from "../addrs";
 import type { SnakeToCamelCaseNested } from "../converter";
 import type { Pagination } from "../rest";
 
@@ -17,12 +18,12 @@ export type InternalResource = SnakeToCamelCaseNested<ResponseResource>;
 
 export interface ResourceGroup {
   group: string;
-  account: string;
+  account: MoveAccountAddr;
   displayName: string;
   items: InternalResource[];
 }
 
 export interface ResourceGroupByAccount {
-  owner: string;
+  owner: MoveAccountAddr;
   resources: Record<string, ResourceGroup>;
 }

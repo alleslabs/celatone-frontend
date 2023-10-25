@@ -25,7 +25,7 @@ const SubHeader = () => {
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
   ];
-
+  // TODO Recent Modules
   // if (moveConfig.enabled)
   //   subHeaderMenu.push({
   //     name: "Modules",

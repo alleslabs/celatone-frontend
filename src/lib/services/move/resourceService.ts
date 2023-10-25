@@ -39,19 +39,19 @@ export const useAccountResources = ({
         return {
           ...acc,
           [ownerName]: {
-            owner: ownerName,
+            owner: ownerName as MoveAccountAddr,
             resources: {
               ...ownerResources,
               [groupName]: {
                 group: groupName,
-                account: ownerName,
+                account: ownerName as MoveAccountAddr,
                 displayName: `${truncate(ownerName)}::${groupName}`,
                 items,
               },
             },
           },
         };
-      }, {} as Record<string, ResourceGroupByAccount>);
+      }, {});
 
       const groupedByName = resources.reduce<Record<string, ResourceGroup>>(
         (acc, resource) => {
@@ -64,13 +64,13 @@ export const useAccountResources = ({
             ...acc,
             [groupName]: {
               displayName: `${truncate(accountName)}::${groupName}`,
-              account: accountName,
+              account: accountName as MoveAccountAddr,
               group: groupName,
               items,
             },
           };
         },
-        {} as Record<string, ResourceGroup>
+        {}
       );
 
       return {
