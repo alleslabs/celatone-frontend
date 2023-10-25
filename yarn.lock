@@ -3431,12 +3431,12 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@initia/initia.js@0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.8.tgz#f1d1d12a37788054061b2e5f9db55c33dcc5f67c"
-  integrity sha512-Q7GhXHgIZ3th6k2vou+e+CO4C5JA/JeA6w3oP/kb2cxbqOAOM1+ybN/8oMtHNApxh/gpmCWUXi7axHV5v/91UA==
+"@initia/initia.js@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.10.tgz#cd7549a0224974d15bf225cbe057a0e112cd8572"
+  integrity sha512-qv3DPuXUfvPvWaQp/9MNgut9JbjAsflcPIFl4gUlN7tYn9re8FlqRxBjhCuIVBwOvyExVRInnCjacW26t7la9A==
   dependencies:
-    "@initia/initia.proto" "^0.1.11"
+    "@initia/initia.proto" "^0.1.12"
     "@ledgerhq/hw-transport" "^6.27.12"
     "@ledgerhq/hw-transport-webhid" "^6.27.12"
     "@ledgerhq/hw-transport-webusb" "^6.27.12"
@@ -3453,10 +3453,10 @@
     tmp "^0.2.1"
     ws "^7.5.9"
 
-"@initia/initia.proto@0.1.11", "@initia/initia.proto@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.11.tgz#39016bbb4d15f06aaec17e56d6f431ddadc600ce"
-  integrity sha512-G9HRTy5xfza6hTjYLuLgcmJWjSDsnLXnc2HvWceDcaSlHp212rMH07+gpazwY0L6aCm3uWyqLh4Yig60L3AaRA==
+"@initia/initia.proto@0.1.12", "@initia/initia.proto@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.12.tgz#bfef7f9fe2b8dfa39364a30d1e497ed214029f55"
+  integrity sha512-dJkCgMyIonVDdWWmcAkCLx7woejp0EWbC9EXT/3xHxXw+IiZJrNBJOzY2wAjOBfOwC7n7HCJkpFtp2i2rumuTQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     google-protobuf "^3.21.0"

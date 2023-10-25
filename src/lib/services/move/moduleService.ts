@@ -150,8 +150,7 @@ export const useFunctionView = ({
   onSuccess?: (data: string) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }): UseQueryResult<string> => {
-  // TODO: handle POST in celatone API
-  const baseEndpoint = "https://stone-rest.initia.tech";
+  const baseEndpoint = useBaseApiRoute("rest");
   const queryFn: QueryFunction<string> = () =>
     getFunctionView(baseEndpoint, moduleAddress, moduleName, fn, abiData);
   return useQuery(
