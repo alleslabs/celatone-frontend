@@ -62,7 +62,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     wallets: [...keplrWallets],
     features: {
       faucet: {
-        enabled: false,
+        enabled: true,
+        url: "http://initia-faucet.alleslabs.dev",
       },
       wasm: {
         enabled: false,
