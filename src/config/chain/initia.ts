@@ -63,7 +63,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     features: {
       faucet: {
         enabled: true,
-        url: "http://initia-faucet.alleslabs.dev",
+        url: process.env.NEXT_PUBLIC_INITIA_TESTNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: false,
