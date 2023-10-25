@@ -28,7 +28,7 @@ export const isHexAddress = (address: string): boolean => {
     return false;
   }
 
-  const strip = padHexAddress(address as HexAddr).slice(2);
+  const strip = padHexAddress(address as HexAddr, 40).slice(2);
   try {
     fromHex(strip);
   } catch {
@@ -42,7 +42,7 @@ export const isHexModuleAddress = (address: string): boolean => {
     return false;
   }
 
-  const strip = padHexAddress(address as HexAddr).slice(2);
+  const strip = padHexAddress(address as HexAddr, 64).slice(2);
   try {
     fromHex(strip);
   } catch {
