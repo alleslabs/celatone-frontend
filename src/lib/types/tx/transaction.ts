@@ -73,3 +73,5 @@ export type PoolTxFilter =
   | "is_clp"
   | "is_collect"
   | "is_migrate";
+
+export type RemarkType = "genesis" | "governance" | "transaction";

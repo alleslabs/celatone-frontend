@@ -3431,12 +3431,12 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@initia/initia.js@0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.8.tgz#f1d1d12a37788054061b2e5f9db55c33dcc5f67c"
-  integrity sha512-Q7GhXHgIZ3th6k2vou+e+CO4C5JA/JeA6w3oP/kb2cxbqOAOM1+ybN/8oMtHNApxh/gpmCWUXi7axHV5v/91UA==
+"@initia/initia.js@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.10.tgz#cd7549a0224974d15bf225cbe057a0e112cd8572"
+  integrity sha512-qv3DPuXUfvPvWaQp/9MNgut9JbjAsflcPIFl4gUlN7tYn9re8FlqRxBjhCuIVBwOvyExVRInnCjacW26t7la9A==
   dependencies:
-    "@initia/initia.proto" "^0.1.11"
+    "@initia/initia.proto" "^0.1.12"
     "@ledgerhq/hw-transport" "^6.27.12"
     "@ledgerhq/hw-transport-webhid" "^6.27.12"
     "@ledgerhq/hw-transport-webusb" "^6.27.12"
@@ -3453,10 +3453,10 @@
     tmp "^0.2.1"
     ws "^7.5.9"
 
-"@initia/initia.proto@0.1.11", "@initia/initia.proto@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.11.tgz#39016bbb4d15f06aaec17e56d6f431ddadc600ce"
-  integrity sha512-G9HRTy5xfza6hTjYLuLgcmJWjSDsnLXnc2HvWceDcaSlHp212rMH07+gpazwY0L6aCm3uWyqLh4Yig60L3AaRA==
+"@initia/initia.proto@0.1.12", "@initia/initia.proto@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.12.tgz#bfef7f9fe2b8dfa39364a30d1e497ed214029f55"
+  integrity sha512-dJkCgMyIonVDdWWmcAkCLx7woejp0EWbC9EXT/3xHxXw+IiZJrNBJOzY2wAjOBfOwC7n7HCJkpFtp2i2rumuTQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     google-protobuf "^3.21.0"
@@ -3983,6 +3983,20 @@
   version "6.10.1"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-6.10.1.tgz#5bd16082261d7364eabb511c788f00937dac588d"
   integrity sha512-z+ILK8Q3y+nfUl43ctCPuR4Y2bIxk/ooCQFwZxhtci1EhAtMDzMAx2W25qx8G1PPL9UUOdnUax19+F0OjXoj4w==
+
+"@monaco-editor/loader@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/loader/-/loader-1.4.0.tgz#f08227057331ec890fa1e903912a5b711a2ad558"
+  integrity sha512-00ioBig0x642hytVspPl7DbQyaSWRaolYie/UFNjoTdvoKPzo6xrXLhTk9ixgIKcLH5b5vDOjVNiGyY+uDCUlg==
+  dependencies:
+    state-local "^1.0.6"
+
+"@monaco-editor/react@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-4.6.0.tgz#bcc68671e358a21c3814566b865a54b191e24119"
+  integrity sha512-RFkU9/i7cN2bsq/iTkurMWOEErmYcY6JiQI3Jn+WeR/FGISH8JbHERjpS9oRuSOPvDMJI0Z8nJeKkbOs9sBYQw==
+  dependencies:
+    "@monaco-editor/loader" "^1.4.0"
 
 "@motionone/animation@^10.15.1":
   version "10.15.1"
@@ -10380,6 +10394,11 @@ modify-values@^1.0.0:
   resolved "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
+monaco-editor@^0.44.0:
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.44.0.tgz#3c0fe3655923bbf7dd647057302070b5095b6c59"
+  integrity sha512-5SmjNStN6bSuSE5WPT2ZV+iYn1/yI9sd4Igtk23ChvqB7kDk9lZbB9F5frsuvpB+2njdIeGGFf2G4gbE6rCC9Q==
+
 motion@^10.16.2:
   version "10.16.2"
   resolved "https://registry.yarnpkg.com/motion/-/motion-10.16.2.tgz#7dc173c6ad62210a7e9916caeeaf22c51e598d21"
@@ -12044,6 +12063,11 @@ standard-version@^9.5.0:
     semver "^7.1.1"
     stringify-package "^1.0.1"
     yargs "^16.0.0"
+
+state-local@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/state-local/-/state-local-1.0.7.tgz#da50211d07f05748d53009bee46307a37db386d5"
+  integrity sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==
 
 stream-shift@^1.0.0:
   version "1.0.1"

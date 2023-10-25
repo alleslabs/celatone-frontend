@@ -44,11 +44,12 @@ export const CopyButton = ({
           onClick={() =>
             track(AmpEvent.USE_COPY_BUTTON, { section: amptrackSection })
           }
-          leftIcon={
-            hasIcon ? <CustomIcon name="copy" boxSize={4} /> : undefined
-          }
           {...buttonProps}
+          borderRadius={size === "xs" ? 6 : 8}
         >
+          {hasIcon && (
+            <CustomIcon name="copy" boxSize={size === "xs" ? 3 : 4} />
+          )}
           {buttonText}
         </Button>
       }
