@@ -49,7 +49,8 @@ const validateDecimal = (bcsDecimalType: string) => (v: string) => {
 const validateVector = (
   v: string,
   vectorType: string,
-  isValidArgAddress: (input: string) => boolean
+  isValidArgAddress: (input: string) => boolean,
+  isValidArgObject: (input: string) => boolean
 ) => {
   const value = v.trim();
   if (!value.startsWith("[") || !value.endsWith("]"))
@@ -64,6 +65,8 @@ const validateVector = (
   if (elementType === "bool") validateElement = validateBool;
   if (elementType === "address")
     validateElement = validateAddress(isValidArgAddress);
+  if (elementType.startsWith(OBJECT_TYPE))
+    validateElement = validateAddress(isValidArgObject);
   if (DECIMAL_TYPES.includes(elementType))
     validateElement = validateDecimal(getArgType(elementType));
   // TODO: handle Vector?
@@ -143,7 +146,7 @@ export const getRules = <T extends FieldValues>(
       ...rules.validate,
       [type]: (v: Nullable<string>) => {
         if (v === null) return undefined;
-        return validateVector(v, type, isValidArgAddress);
+        return validateVector(v, type, isValidArgAddress, isValidArgObject);
       },
     };
   }
