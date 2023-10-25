@@ -30,20 +30,28 @@ export const ArgFieldTemplate = ({
   control,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const { validateUserAddress, validateContractAddress, validateHexAddress } =
-    useValidateAddress();
+  const {
+    validateUserAddress,
+    validateContractAddress,
+    validateHexAddress,
+    validateHexModuleAddress,
+  } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
     (input: string) =>
-      validateUserAddress(input) === null ||
+      validateUserAddress(input) === null || validateHexAddress(input),
+    [validateHexAddress, validateUserAddress]
+  );
+  const isValidArgObject = useCallback(
+    (input: string) =>
       validateContractAddress(input) === null ||
-      validateHexAddress(input),
-    [validateContractAddress, validateHexAddress, validateUserAddress]
+      validateHexModuleAddress(input),
+    [validateContractAddress, validateHexModuleAddress]
   );
 
   const isOptional = param.startsWith("0x1::option::Option");
   const type = isOptional ? param.split(/<(.*)>/)[1] : param;
-  const rules = getRules(type, isOptional, isValidArgAddress);
+  const rules = getRules(type, isOptional, isValidArgAddress, isValidArgObject);
 
   const {
     field: { value, onChange, ...fieldProps },

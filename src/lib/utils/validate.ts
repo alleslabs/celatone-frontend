@@ -36,3 +36,17 @@ export const isHexAddress = (address: string): boolean => {
   }
   return true;
 };
+
+export const isHexModuleAddress = (address: string): boolean => {
+  if (!/^0x[a-fA-F0-9]{1,64}$/.test(address)) {
+    return false;
+  }
+
+  const strip = padHexAddress(address as HexAddr).slice(2);
+  try {
+    fromHex(strip);
+  } catch {
+    return false;
+  }
+  return true;
+};
