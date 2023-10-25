@@ -3,7 +3,7 @@ import big from "big.js";
 import { parseInt } from "lodash";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-import { DECIMAL_TYPES, OBJECT_TYPE, UINT_TYPES } from "../constants";
+import { DECIMAL_TYPES, UINT_TYPES } from "../constants";
 import type { Option } from "lib/types";
 import { getArgType } from "lib/utils";
 
@@ -64,6 +64,8 @@ const validateVector = (
   if (elementType === "bool") validateElement = validateBool;
   if (elementType === "address")
     validateElement = validateAddress(isValidArgAddress);
+  if (DECIMAL_TYPES.includes(elementType))
+    validateElement = validateDecimal(getArgType(elementType));
   // TODO: handle Vector?
 
   let error: Option<string>;
@@ -107,7 +109,7 @@ export const getRules = <T extends FieldValues>(
       },
     };
   }
-  if (type === "address" || type.startsWith(OBJECT_TYPE)) {
+  if (type === "address") {
     rules.validate = {
       ...rules.validate,
       address: (v: Option<string>) => {
