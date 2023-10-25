@@ -2,6 +2,7 @@ import { Alert, AlertDescription, Button, Flex } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
@@ -18,6 +19,13 @@ import { CustomIcon } from "lib/components/icon";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getAbiInitialData, serializeAbiData, toEncodeObject } from "lib/utils";
+
+const MoveCodeSnippet = dynamic(
+  () => import("lib/components/modal/MoveCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 export const ExecuteArea = ({
   moduleAddress,
@@ -174,8 +182,14 @@ export const ExecuteArea = ({
           </AlertDescription>
         </Alert>
       )}
-      <Flex alignItems="center" justify="end" mt={6}>
-        {/* <Button>TODO: CodeSnippet</Button> */}
+      <Flex alignItems="center" justify="space-between" mt={6}>
+        <MoveCodeSnippet
+          moduleAddress={moduleAddress}
+          moduleName={moduleName}
+          fn={fn}
+          abiData={data}
+          type="execute"
+        />
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
             Transaction Fee:{" "}

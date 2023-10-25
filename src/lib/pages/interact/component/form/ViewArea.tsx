@@ -9,6 +9,7 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
 import { useIsMac } from "lib/app-provider";
@@ -25,6 +26,13 @@ import type {
   JsonDataType,
 } from "lib/types";
 import { getAbiInitialData, jsonPrettify } from "lib/utils";
+
+const MoveCodeSnippet = dynamic(
+  () => import("lib/components/modal/MoveCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 export const ViewArea = ({
   moduleAddress,
@@ -87,8 +95,14 @@ export const ViewArea = ({
           propsOnChange={setAbiData}
           propsOnErrors={setAbiErrors}
         />
-        <Flex justify="end" mt={4}>
-          {/* <Button>TODO: CodeSnippet</Button> */}
+        <Flex align="center" justify="space-between" mt={4}>
+          <MoveCodeSnippet
+            moduleAddress={moduleAddress}
+            moduleName={moduleName}
+            fn={fn}
+            abiData={abiData}
+            type="view"
+          />
           <Button
             variant="primary"
             fontSize="14px"
