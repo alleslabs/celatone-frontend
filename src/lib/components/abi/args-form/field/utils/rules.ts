@@ -3,10 +3,9 @@ import big from "big.js";
 import { parseInt } from "lodash";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
+import { DECIMAL_TYPES, OBJECT_TYPE, UINT_TYPES } from "../constants";
 import type { Option } from "lib/types";
 import { getArgType } from "lib/utils";
-
-import { DECIMAL_TYPES, OBJECT_TYPE, UINT_TYPES } from "./constants";
 
 const validateNull = (v: Option<string>) =>
   v !== undefined ? undefined : "cannot be null";
@@ -32,11 +31,12 @@ const validateAddress =
 
 const validateDecimal = (bcsDecimalType: string) => (v: string) => {
   const [integer, decimal] = v.split(".");
-  if (decimal && decimal.length > 18) return "Decimal length must be <= 18";
+  if (decimal && decimal.length > 18)
+    return "Decimal length must be less than 18";
   try {
     const value = big(integer)
       .times("1000000000000000000")
-      .add(decimal ?? "0");
+      .add(decimal || "0");
     const maxValue = big(2).pow(parseInt(bcsDecimalType.slice(7)));
     if (value.lt(0) || value.gte(maxValue)) throw new Error();
     return undefined;

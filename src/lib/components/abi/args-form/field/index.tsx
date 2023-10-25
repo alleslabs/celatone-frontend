@@ -4,6 +4,7 @@ import {
   Checkbox,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Text,
 } from "@chakra-ui/react";
@@ -15,7 +16,7 @@ import type { AbiFormData } from "lib/types";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
 import { OBJECT_TYPE, STRING_TYPE } from "./constants";
-import { getRules } from "./utils";
+import { getHelperText, getRules } from "./utils";
 
 interface ArgFieldTemplateProps {
   index: number;
@@ -85,10 +86,14 @@ export const ArgFieldTemplate = ({
           {param}
         </FormLabel>
 
-        {isError && (
+        {isError ? (
           <FormErrorMessage className="error-text" mt={1}>
             {error.message}
           </FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text" mt={1}>
+            {getHelperText(type)}
+          </FormHelperText>
         )}
       </FormControl>
       {isOptional && (
