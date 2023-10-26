@@ -42,8 +42,10 @@ const Layout = ({ children }: LayoutProps) => {
   }, [isExpand, isMobile]);
 
   useEffect(() => {
-    scrollToTop();
-  }, [router.asPath]);
+    if (!(router.query.tab === "resources")) {
+      scrollToTop();
+    }
+  }, [router.asPath, router.query.tab]);
 
   return (
     <Grid

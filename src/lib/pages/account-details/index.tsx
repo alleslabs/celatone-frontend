@@ -265,8 +265,8 @@ const AccountDetailsBody = ({
             Admins
           </CustomTab>
           <CustomTab
-            count={resourcesData?.length}
-            isDisabled={!resourcesData?.length}
+            count={resourcesData?.totalCount}
+            isDisabled={!resourcesData?.totalCount}
             onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
           >
@@ -395,7 +395,7 @@ const AccountDetailsBody = ({
           <TabPanel p={0}>
             <ResourceSection
               address={accountAddress}
-              resources={resourcesData}
+              resources={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />
           </TabPanel>
