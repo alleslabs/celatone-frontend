@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#589](https://github.com/alleslabs/celatone-frontend/pull/589) Adjust search bar consistency
 - [#579](https://github.com/alleslabs/celatone-frontend/pull/579) Improve ux writing for recent items page
 - [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 
