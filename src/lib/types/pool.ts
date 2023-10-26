@@ -54,3 +54,16 @@ export interface PoolDetail<
   tickSpacing: Nullable<number>;
   contractAddress: Nullable<ContractAddr>;
 }
+
+export interface LPDetails {
+  coinA: {
+    amount: string;
+    denom: string;
+    symbol: string;
+  };
+  coinB: {
+    amount: string;
+    denom: string;
+    symbol: string;
+  };
+}

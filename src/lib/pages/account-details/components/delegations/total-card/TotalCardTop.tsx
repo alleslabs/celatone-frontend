@@ -15,7 +15,7 @@ export const TotalCardTop = ({
   message,
   fontWeight,
 }: TotalCardTopProps) => (
-  <Flex alignItems="center" gap={1}>
+  <Flex alignItems="center" gap={2}>
     <Text variant="body2" fontWeight={fontWeight} textColor="text.dark">
       {title}
     </Text>

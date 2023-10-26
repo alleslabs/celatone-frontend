@@ -40,6 +40,7 @@ export const ViewArea = ({
     typeArgs: getAbiInitialData(fn.generic_type_params.length),
     args: getAbiInitialData(fn.params.length),
   });
+
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([]);
   const [res, setRes] = useState<JsonDataType>(undefined);
   const [error, setError] = useState<Option<string>>(undefined);

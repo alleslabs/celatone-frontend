@@ -18,18 +18,21 @@ interface BondedTableRowProps {
   bondedInfo: BondedInfo;
   isSingleBondDenom: boolean;
   templateColumns: string;
+  isUnbonding?: boolean;
 }
 
 export const BondedTableRow = ({
   bondedInfo,
   isSingleBondDenom,
   templateColumns,
+  isUnbonding,
 }: BondedTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
     transition="all .25s ease-in-out"
     minW="min-content"
+    sx={{ "& > div": { alignItems: "flex-start" } }}
   >
     <TableRow>
       <ValidatorBadge validator={bondedInfo.validator} />
@@ -38,6 +41,7 @@ export const BondedTableRow = ({
       <TokensCell
         tokens={bondedInfo.balances}
         isSingleBondDenom={isSingleBondDenom}
+        isUnbonding={isUnbonding}
       />
     </TableRow>
 
@@ -46,6 +50,7 @@ export const BondedTableRow = ({
         <TokensCell
           tokens={bondedInfo.rewards}
           isSingleBondDenom={isSingleBondDenom}
+          isUnbonding={isUnbonding}
         />
       </TableRow>
     )}

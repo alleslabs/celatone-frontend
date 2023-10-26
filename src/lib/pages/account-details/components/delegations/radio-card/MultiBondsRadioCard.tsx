@@ -37,7 +37,7 @@ export const MultiBondsRadioCard = ({
   isLoading,
 }: MultiBondsRadioCardProps) => (
   <Flex direction="column" gap={1}>
-    <Text variant="body2" textColor="gray.400" fontWeight={500}>
+    <Text variant="body2" textColor="gray.400" fontWeight={600}>
       {value}
     </Text>
     <MultiBondsRadioCardBody tokens={tokens} isLoading={isLoading} />
