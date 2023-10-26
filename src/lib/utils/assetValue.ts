@@ -1,8 +1,9 @@
 import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 
+import type { AssetInfosOpt } from "lib/services/assetService";
+import type { LPShareInfoReturn } from "lib/services/poolService";
 import type {
-  AssetInfo,
   Balance,
   BalanceWithAssetInfo,
   Option,
@@ -12,7 +13,7 @@ import type {
   USD,
 } from "lib/types";
 
-import { toToken } from "./formatter";
+import { formatUTokenWithPrecision, toToken } from "./formatter";
 
 export const calculateAssetValue = (
   amount: Token<BigSource>,
@@ -42,23 +43,61 @@ export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
 export const coinToTokenWithValue = (
   denom: string,
   amount: string,
-  assetInfo: Option<AssetInfo>
+  assetInfos: AssetInfosOpt,
+  lpMap: LPShareInfoReturn = {}
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;
-  return {
-    denom,
-    amount: tokenAmount,
-    symbol: assetInfo?.symbol,
-    logo: assetInfo?.logo,
-    precision: assetInfo?.precision,
-    price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
-    value: assetInfo
-      ? calculateAssetValue(
-          toToken(tokenAmount, assetInfo.precision),
-          assetInfo.price as USD<number>
-        )
-      : undefined,
-  };
+  const assetInfo = assetInfos?.[denom];
+  const isLp = denom in lpMap;
+  const lpDetails = lpMap[denom];
+  return isLp
+    ? {
+        isLpToken: isLp,
+        denom,
+        amount: tokenAmount,
+        symbol: lpDetails.symbol,
+        logo: lpDetails.image,
+        precision: lpDetails.precision,
+        lpDetails: {
+          coinA: {
+            amount: formatUTokenWithPrecision(
+              tokenAmount.times(lpDetails.coinA.amountAPerShare) as U<
+                Token<Big>
+              >,
+              lpDetails.precision
+            ),
+            denom: lpDetails.coinA.denom,
+            symbol: lpDetails.coinA.symbol,
+          },
+          coinB: {
+            amount: formatUTokenWithPrecision(
+              tokenAmount.times(lpDetails.coinB.amountBPerShare) as U<
+                Token<Big>
+              >,
+              lpDetails.precision
+            ),
+            denom: lpDetails.coinB.denom,
+            symbol: lpDetails.coinB.symbol,
+          },
+        },
+        value: tokenAmount
+          .times(lpDetails.lpPricePerShare)
+          .div(big(10).pow(lpDetails.precision)) as USD<Big>,
+      }
+    : {
+        denom,
+        amount: tokenAmount,
+        symbol: assetInfo?.symbol,
+        logo: assetInfo?.logo as string,
+        precision: assetInfo?.precision,
+        price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
+        value: assetInfo
+          ? calculateAssetValue(
+              toToken(tokenAmount, assetInfo.precision),
+              assetInfo.price as USD<number>
+            )
+          : undefined,
+      };
 };
 
 export const addTokenWithValue = (

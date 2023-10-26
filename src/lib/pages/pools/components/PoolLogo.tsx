@@ -1,7 +1,8 @@
 import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
+import { TokenImageRender } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
 
 interface PoolAssetLogoProps {
@@ -12,9 +13,9 @@ interface PoolAssetLogoProps {
 
 const PoolAssetLogo = ({ token, logoSize, idx }: PoolAssetLogoProps) => (
   <Flex key={token.denom}>
-    <Image
+    <TokenImageRender
+      logo={token.logo || getUndefinedTokenIcon(token.denom)}
       boxSize={logoSize}
-      src={token.logo || getUndefinedTokenIcon(token.denom)}
       zIndex={2 - idx}
     />
   </Flex>

@@ -18,6 +18,7 @@ import {
   useStakingParams,
   useUnbondings,
 } from "lib/services/delegationService";
+import { useLPShareInfo } from "lib/services/poolService";
 import { useValidators } from "lib/services/validatorService";
 import type {
   BalanceWithAssetInfo,
@@ -169,17 +170,32 @@ export const useUserAssetInfos = (
     error,
   } = useAccountBalances(walletAddress);
   const { assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: lpMap } = useLPShareInfo();
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
-    (balance): BalanceWithAssetInfo => ({
-      balance,
-      assetInfo: assetInfos?.[balance.id],
-    })
+    (balance): BalanceWithAssetInfo => {
+      const assetInfo = assetInfos?.[balance.id];
+      const isLp = balance.id in (lpMap || {});
+      const lpDetails = lpMap?.[balance.id];
+      return {
+        balance: {
+          ...balance,
+          price: isLp ? lpDetails?.lpPricePerShare.toNumber() : balance.price,
+          symbol: isLp ? lpDetails?.symbol : balance.symbol,
+          precision: isLp ? lpDetails?.precision ?? 0 : balance.precision,
+        },
+        assetInfo,
+        isLpToken: isLp,
+        lpLogo: lpDetails?.image,
+      };
+    }
   );
 
   // Supported assets should order by descending value
   const supportedAssets = contractBalancesWithAssetInfos
-    ?.filter((balance) => balance.assetInfo)
+    ?.filter(
+      (balance) => balance.assetInfo || balance.balance.id in (lpMap || {})
+    )
     .sort((a, b) =>
       a.balance.price && b.balance.price
         ? calAssetValueWithPrecision(b.balance).cmp(
@@ -222,6 +238,7 @@ const calBonded = (
 export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
+  const { data: lpMap, isFetching: isLpMapFetching } = useLPShareInfo();
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -239,7 +256,11 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     useCommission(addrToValoper(walletAddress));
 
   const isLoading =
-    isLoadingRawStakingParams || isLoadingAssetInfos || isLoadingValidators;
+    isLoadingRawStakingParams ||
+    isLoadingAssetInfos ||
+    isLoadingValidators ||
+    isLpMapFetching;
+
   const data: UserDelegationsData = {
     stakingParams: undefined,
     isValidator: undefined,
@@ -261,7 +282,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     isLoadingTotalCommission: isLoadingRawCommission,
   };
 
-  if (rawStakingParams && assetInfos && validators) {
+  if (rawStakingParams && assetInfos && validators && lpMap) {
     data.stakingParams = {
       ...rawStakingParams,
       bondDenoms: rawStakingParams.bondDenoms.map((denom) => ({
@@ -284,7 +305,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       },
       balances: raw.balance
         .map((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
+          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
         )
         .sort(compareTokenWithValues),
     }));
@@ -311,7 +332,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       completionTime: raw.completionTime,
       balances: raw.balance
         .map((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
+          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
         )
         .sort(compareTokenWithValues),
     }));
@@ -334,11 +355,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
         ...prev,
         [raw.validatorAddress]: raw.reward
           .map<TokenWithValue>((coin) =>
-            coinToTokenWithValue(
-              coin.denom,
-              coin.amount,
-              assetInfos[coin.denom]
-            )
+            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
           )
           .sort(compareTokenWithValues),
       }),
@@ -352,7 +369,8 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
         [raw.denom]: coinToTokenWithValue(
           raw.denom,
           raw.amount,
-          assetInfos[raw.denom]
+          assetInfos,
+          lpMap
         ),
       }),
       {}
@@ -372,7 +390,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       completionTime: raw.completionTime,
       balances: raw.balance
         .map((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
+          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
         )
         .sort(compareTokenWithValues),
     }));
@@ -385,7 +403,8 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
         [raw.denom]: coinToTokenWithValue(
           raw.denom,
           raw.amount,
-          assetInfos[raw.denom]
+          assetInfos,
+          lpMap
         ),
       }),
       {}

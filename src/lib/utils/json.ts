@@ -24,11 +24,14 @@ export const jsonPrettify = (text: string) => {
 
 export const jsonLineCount = (text: string) => text.split(/\n/).length;
 
-export const parseJsonStr = (json: string, fallback = ""): JsonDataType => {
+export const parseJsonStr = <T extends JsonDataType>(
+  json: string,
+  fallback = ""
+): T => {
   try {
     return JSON.parse(json);
   } catch (_) {
-    return fallback;
+    return fallback as T;
   }
 };
 

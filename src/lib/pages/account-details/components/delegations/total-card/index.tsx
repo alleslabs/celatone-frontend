@@ -7,7 +7,7 @@ import { MultiBondsCard } from "./MultiBondsCard";
 import { SingleBondCard } from "./SingleBondCard";
 import { SingleBondMultiAssetsCard } from "./SingleBondMultiAssetsCard";
 
-interface TotalCardProps {
+export interface TotalCardProps {
   title: string;
   message: string;
   address: Addr;

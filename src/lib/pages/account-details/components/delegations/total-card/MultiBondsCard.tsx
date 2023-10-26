@@ -46,7 +46,7 @@ export const MultiBondsCard = ({
       onClick={!isDisabled ? onOpen : undefined}
     >
       <Flex direction="column" gap={1}>
-        <TotalCardTop title={title} message={message} fontWeight={500} />
+        <TotalCardTop title={title} message={message} fontWeight={600} />
         {!tokens ? (
           <Heading variant="h6" as="h6">
             N/A
@@ -72,7 +72,7 @@ export const MultiBondsCard = ({
           </>
         )}
       </Flex>
-      <CustomIcon name="chevron-right" boxSize={4} color="secondary.main" />
+      <CustomIcon name="chevron-right" boxSize={4} color="gray.400" />
     </Flex>
   );
 };

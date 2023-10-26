@@ -89,7 +89,10 @@ const getArgValue = ({
 const BUFFER_SIZE = 1024 * 1024;
 const bcs = BCS.getInstance();
 
-const serializeArg = (arg: { type: string; value: Nullable<string> }) => {
+export const serializeArg = (arg: {
+  type: string;
+  value: Nullable<string>;
+}) => {
   try {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
@@ -103,6 +106,7 @@ export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
   const serializedArgs = fn.params.map((type, index) =>
     serializeArg({ type, value: abiData.args[index] })
   );
+
   return {
     typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
     args: serializedArgs,

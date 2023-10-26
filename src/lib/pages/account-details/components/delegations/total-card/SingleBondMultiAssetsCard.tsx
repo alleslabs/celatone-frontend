@@ -24,7 +24,7 @@ export const SingleBondMultiAssetsCard = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex direction="column" minW="233px" gap={1}>
-      <TotalCardTop title={title} message={message} fontWeight={500} />
+      <TotalCardTop title={title} message={message} fontWeight={600} />
       <Heading variant="h6" as="h6">
         {formatPrice(totalValueTokenWithValue(tokens, Big(0) as USD<Big>))}
       </Heading>

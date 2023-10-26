@@ -31,13 +31,10 @@ export const RedelegationTableRow = ({
     <TableRow>
       <ValidatorBadge validator={redelegation.dstValidator} />
     </TableRow>
-    <TableRow>
-      {
-        /* TODO: double check with multi denom */
-        redelegation.balances.map((balance) => (
-          <TokenCell token={balance} />
-        ))
-      }
+    <TableRow flexDirection="column" alignItems="start" gap={2}>
+      {redelegation.balances.map((balance) => (
+        <TokenCell key={balance.denom} token={balance} />
+      ))}
     </TableRow>
     <TableRow>
       <Flex direction="column">

@@ -10,6 +10,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useLCDEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import {
@@ -151,7 +152,7 @@ export const useFunctionView = ({
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }): UseQueryResult<string> => {
   // TODO: handle POST in celatone API
-  const baseEndpoint = "https://stone-rest.initia.tech";
+  const baseEndpoint = useLCDEndpoint();
   const queryFn: QueryFunction<string> = () =>
     getFunctionView(baseEndpoint, moduleAddress, moduleName, fn, abiData);
   return useQuery(
