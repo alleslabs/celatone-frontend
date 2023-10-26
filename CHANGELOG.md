@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#583](https://github.com/alleslabs/celatone-frontend/pull/583) Support Move code snippets
+- [#585](https://github.com/alleslabs/celatone-frontend/pull/585) Add Initia Faucet
 - [#562](https://github.com/alleslabs/celatone-frontend/pull/562) Support searching with hex address and module path
 - [#572](https://github.com/alleslabs/celatone-frontend/pull/572) Wireup module publish details
 - [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
@@ -131,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#584](https://github.com/alleslabs/celatone-frontend/pull/584) Throw an error when tx failed on postTx
 - [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
 - [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal
 - [#554](https://github.com/alleslabs/celatone-frontend/pull/554) Fix and improve ui alignment, cta, and publish error

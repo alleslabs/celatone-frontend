@@ -55,6 +55,13 @@ const InitRender = ({
     );
   }
 
+  if (createdHeight === 0)
+    return (
+      <LabelText label="Created by">
+        <Text variant="body2">Genesis</Text>
+      </LabelText>
+    );
+
   if (initProposalTitle && initProposalId) {
     return (
       <LabelText
@@ -70,13 +77,6 @@ const InitRender = ({
       </LabelText>
     );
   }
-
-  if (createdHeight === 0)
-    return (
-      <LabelText label="Created by">
-        <Text variant="body2">Genesis</Text>
-      </LabelText>
-    );
 
   return (
     <LabelText label="Instantiate Transaction">
