@@ -102,7 +102,7 @@ export const CommandSection = observer(
     return (
       <Flex
         direction="column"
-        gap={6}
+        gap={4}
         pb={{ base: 0, md: 8 }}
         borderBottom={{ base: "0px", md: "1px solid" }}
         borderBottomColor={{ base: "transparent", md: "gray.700" }}

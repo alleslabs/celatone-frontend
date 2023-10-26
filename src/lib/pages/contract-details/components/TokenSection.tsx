@@ -85,6 +85,7 @@ export const TokenSection = ({
       pb={{ base: 2, md: 8 }}
       borderBottom={onViewMore ? { base: "none", md: "1px solid" } : "none"}
       borderBottomColor={{ base: "transparent", md: "gray.700" }}
+      gap={4}
     >
       <Flex justify="space-between" align="center" mb={{ base: 2, md: 1 }}>
         <Heading as="h6" variant="h6" color="text.main" fontWeight={500}>

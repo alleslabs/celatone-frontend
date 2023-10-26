@@ -22,8 +22,6 @@ export const ContractDesc = ({
   return (
     <Flex
       direction={{ base: "column", md: "row" }}
-      mt={{ base: 0, md: 0 }}
-      mb={4}
       gap={{ base: 4, md: 6 }}
       pb={{ base: 0, md: 8 }}
       borderBottom={{ base: "0px", md: "1px solid" }}

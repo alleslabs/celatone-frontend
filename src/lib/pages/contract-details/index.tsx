@@ -71,9 +71,9 @@ const ContractTxsTable = observer(
     } = useContractDetailsTableCounts(contractAddress, contractAccountId);
     if (!contractData.contractDetail) return <InvalidContract />;
     return (
-      <Flex direction="column">
+      <Flex direction="column" gap={6}>
         {/* History Table section */}
-        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+        <Heading as="h6" variant="h6" id={tableHeaderId}>
           Transaction & History
         </Heading>
         <Tabs isLazy lazyBehavior="keepMounted">
@@ -129,7 +129,7 @@ const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => {
   return (
     <Flex
       onClick={onViewMore}
-      border="2px solid"
+      border="1px solid"
       borderColor="gray.700"
       borderRadius="8px"
       p={4}
@@ -144,10 +144,10 @@ const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => {
       <Flex alignItems="center" gap={3}>
         <CustomIcon name="contract-list" color="gray.600" boxSize={6} />
         <div>
-          <Text variant="body1" fontWeight={600}>
+          <Text variant="body2" fontWeight={600}>
             View Contracts States
           </Text>
-          <Text variant="body2" color="text.dark" fontWeight={600}>
+          <Text variant="body3" color="text.dark" fontWeight={600}>
             Access the current contract states information
           </Text>
         </div>
@@ -241,51 +241,55 @@ const ContractDetailsBody = observer(
                   codeId={contractData.contractDetail.codeId.toString()}
                 />
                 {/* Instantiate/Contract Info Section */}
-                <Heading as="h6" variant="h6" minW="fit-content">
-                  Contract Information
-                </Heading>
-                <Flex
-                  mb={12}
-                  mt={6}
-                  justify="space-between"
-                  direction={{ base: "column", md: "row" }}
-                >
-                  {/* Instantiate Info */}
-                  {isMobile && (
-                    <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
-                      Instantiate Info
+                <Flex direction="column" gap={6}>
+                  {!isMobile && (
+                    <Heading as="h6" variant="h6" minW="fit-content">
+                      Contract Information
                     </Heading>
                   )}
-                  <InstantiateInfo
-                    isLoading={
-                      contractData.isContractDetailLoading ||
-                      contractData.isContractCw2InfoLoading ||
-                      contractData.isInstantiateDetailLoading
-                    }
-                    {...contractData}
-                  />
-                  {/* Contract Info (Expand) */}
                   <Flex
-                    direction="column"
-                    flex={0.8}
-                    gap={4}
-                    mt={{ base: 12, md: 0 }}
+                    mb={12}
+                    justify="space-between"
+                    direction={{ base: "column", md: "row" }}
                   >
-                    <JsonInfo
-                      header="Contract Info"
-                      jsonString={jsonPrettify(
-                        JSON.stringify(
-                          contractData.rawContractResponse?.contract_info ?? {}
-                        )
-                      )}
-                      isLoading={contractData.isRawContractResponseLoading}
+                    {/* Instantiate Info */}
+                    {isMobile && (
+                      <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+                        Instantiate Info
+                      </Heading>
+                    )}
+                    <InstantiateInfo
+                      isLoading={
+                        contractData.isContractDetailLoading ||
+                        contractData.isContractCw2InfoLoading ||
+                        contractData.isInstantiateDetailLoading
+                      }
+                      {...contractData}
                     />
-                    <JsonInfo
-                      header="Instantiate Message"
-                      jsonString={jsonPrettify(contractData.initMsg ?? "")}
-                      isLoading={contractData.isInstantiateDetailLoading}
-                      defaultExpand
-                    />
+                    {/* Contract Info (Expand) */}
+                    <Flex
+                      direction="column"
+                      flex={0.8}
+                      gap={4}
+                      mt={{ base: 12, md: 0 }}
+                    >
+                      <JsonInfo
+                        header="Contract Info"
+                        jsonString={jsonPrettify(
+                          JSON.stringify(
+                            contractData.rawContractResponse?.contract_info ??
+                              {}
+                          )
+                        )}
+                        isLoading={contractData.isRawContractResponseLoading}
+                      />
+                      <JsonInfo
+                        header="Instantiate Message"
+                        jsonString={jsonPrettify(contractData.initMsg ?? "")}
+                        isLoading={contractData.isInstantiateDetailLoading}
+                        defaultExpand
+                      />
+                    </Flex>
                   </Flex>
                 </Flex>
                 <ContractTxsTable
