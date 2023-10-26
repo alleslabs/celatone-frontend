@@ -33,7 +33,10 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             text: moduleData.parsedAbi.address,
             href: `/accounts/${moduleData.parsedAbi.address}`,
           },
-          { text: "Modules" },
+          {
+            text: "Modules",
+            href: `/accounts/${moduleData.parsedAbi.address}/modules`,
+          },
           { text: moduleData.moduleName },
         ]}
       />

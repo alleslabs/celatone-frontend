@@ -74,3 +74,6 @@ export enum StorageKeys {
   Wallets = "wallets",
   Networks = "networks",
 }
+
+export const HEX_WALLET_ADDRESS_LENGTH = 40;
+export const HEX_MODULE_ADDRESS_LENGTH = 64;
