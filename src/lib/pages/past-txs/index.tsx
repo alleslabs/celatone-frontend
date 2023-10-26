@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
@@ -12,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -152,20 +146,15 @@ const PastTxs = () => {
         Past Transactions
       </Heading>
       <Flex my={8} gap={3}>
-        <InputGroup>
-          <Input
-            value={pastTxsState.search}
-            onChange={(e) => {
-              setCurrentPage(1);
-              setValue("search", e.target.value);
-            }}
-            placeholder="Search with Transaction Hash or Contract Address"
-            h="full"
-          />
-          <InputRightElement pointerEvents="none" h="full" mr={1}>
-            <CustomIcon name="search" color="gray.600" />
-          </InputRightElement>
-        </InputGroup>
+        <InputWithIcon
+          placeholder="Search with Transaction Hash or Contract Address"
+          value={pastTxsState.search}
+          onChange={(e) => {
+            setCurrentPage(1);
+            setValue("search", e.target.value);
+          }}
+          size={{ base: "md", md: "lg" }}
+        />
         <Flex gap={3}>
           <TxRelationSelection
             value={pastTxsState.isSigner}

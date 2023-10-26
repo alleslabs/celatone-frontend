@@ -115,7 +115,7 @@ export const UnsupportedSection = ({
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            size="lg"
+            size={{ base: "md", md: "lg" }}
             action="unsupported-pool-list-search"
           />
           <FilterByPoolType

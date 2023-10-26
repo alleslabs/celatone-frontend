@@ -76,7 +76,7 @@ export const PublicProjectAccountTable = ({
           placeholder="Search with Account Address, Name, or Description"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          size="lg"
+          size={{ base: "md", md: "lg" }}
         />
       )}
       {filteredAccounts.length ? (

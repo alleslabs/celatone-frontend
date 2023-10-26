@@ -109,6 +109,7 @@ export const SchemaQuery = ({
           placeholder="Search by command"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          size={{ base: "md", md: "lg" }}
           action="query-message-search"
         />
         <Button

@@ -31,7 +31,7 @@ const InputWithIcon = ({
         <CustomIcon name="search" color="gray.600" />
       </InputLeftElement>
       <Input
-        pl={9}
+        pl="9 !important"
         placeholder={placeholder}
         value={value}
         size={size}

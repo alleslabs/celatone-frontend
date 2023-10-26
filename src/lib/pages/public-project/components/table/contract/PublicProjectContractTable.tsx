@@ -99,7 +99,7 @@ export const PublicProjectContractTable = observer(
             placeholder="Search with Contract Address or Contract Name"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
-            size="lg"
+            size={{ base: "md", md: "lg" }}
           />
         )}
         {publicContracts.length ? (

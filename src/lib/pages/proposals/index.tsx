@@ -112,7 +112,7 @@ const Proposals = () => {
           <InputWithIcon
             placeholder="Search with Proposal ID or Proposal Title"
             onChange={(e) => setSearch(e.target.value)}
-            size="lg"
+            size={{ base: "md", md: "lg" }}
             value={search}
             action="proposal-list-search"
           />

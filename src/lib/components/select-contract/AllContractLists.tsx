@@ -1,7 +1,7 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "../InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import type { ContractListInfo } from "lib/stores/contract";
 
@@ -11,13 +11,12 @@ interface AllContractListsProps {
   contractLists: ContractListInfo[];
   handleListSelect: (value: string) => void;
   isReadOnly?: boolean;
-  formLabelBgColor?: string;
 }
 
 export const AllContractLists = ({
   contractLists,
   isReadOnly,
-  formLabelBgColor,
+
   handleListSelect,
 }: AllContractListsProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -32,14 +31,11 @@ export const AllContractLists = ({
 
   return (
     <Box minH="xs" w="100%">
-      <TextInput
-        variant="floating"
+      <InputWithIcon
+        placeholder="Search for your contract list"
         value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search for your lists"
-        labelBgColor={formLabelBgColor}
+        onChange={(e) => setSearchKeyword(e.target.value)}
         size="lg"
-        mb={isReadOnly ? 4 : 12}
       />
       {filteredContractLists.length === 0 ? (
         <EmptyState
@@ -47,7 +43,12 @@ export const AllContractLists = ({
           imageVariant="not-found"
         />
       ) : (
-        <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} w="full">
+        <SimpleGrid
+          columns={{ sm: 1, md: 2, lg: 3 }}
+          spacing={4}
+          w="full"
+          mt={isReadOnly ? 4 : 12}
+        >
           {filteredContractLists.map((item) => (
             <ContractListCard
               key={item.slug}
