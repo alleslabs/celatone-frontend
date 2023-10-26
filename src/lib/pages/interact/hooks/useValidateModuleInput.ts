@@ -6,7 +6,7 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import type { Nullable } from "lib/types";
-import { isHexAddress, splitModule, truncate } from "lib/utils";
+import { isHexWalletAddress, splitModule, truncate } from "lib/utils";
 
 export const useValidateModuleInput = () => {
   const { validateUserAddress } = useValidateAddress();
@@ -29,7 +29,7 @@ export const useValidateModuleInput = () => {
       const addrErr = validateUserAddress(address);
       const invalidAddress = address.startsWith(prefix)
         ? addrErr
-        : !isHexAddress(address);
+        : !isHexWalletAddress(address);
 
       if (invalidAddress || module === "" || functionName === "")
         return errText;

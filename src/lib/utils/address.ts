@@ -28,8 +28,9 @@ export const unpadHexAddress = (hexAddr: HexAddr) =>
 
 export const hexToBech32Address = (
   prefix: string,
-  hexAddr: HexAddr
+  hexAddr: HexAddr,
+  length: number
 ): HumanAddr => {
-  const strip = padHexAddress(hexAddr, 40).slice(2);
+  const strip = padHexAddress(hexAddr, length).slice(2);
   return toBech32(prefix, fromHex(strip)) as HumanAddr;
 };

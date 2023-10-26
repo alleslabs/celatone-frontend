@@ -7,17 +7,14 @@ import type {
   DisplayMode,
   ModuleSelectFunction,
 } from "../types";
-import {
-  useConvertHexAddress,
-  useValidateAddress,
-  useExampleAddresses,
-} from "lib/app-provider";
+import { useExampleAddresses } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
-import type { MoveAccountAddr, HexAddr, HumanAddr, Option } from "lib/types";
-import { bech32AddressToHex, splitModule, unpadHexAddress } from "lib/utils";
+import type { MoveAccountAddr, Option } from "lib/types";
+import { splitModule } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
   selectedAddress: SelectedAddress;
@@ -43,8 +40,7 @@ export const ModuleSelectorInput = ({
     [keyword]
   );
 
-  const convertHexAddr = useConvertHexAddress();
-  const { validateHexAddress } = useValidateAddress();
+  const formatAddresses = useFormatAddresses();
   const validateModuleInput = useValidateModuleInput();
   const { user } = useExampleAddresses();
   const { refetch, isFetching } = useAccountModules({
@@ -57,18 +53,7 @@ export const ModuleSelectorInput = ({
       retry: false,
       onSuccess: (data) => {
         setError("");
-        setSelectedAddress(() => {
-          const isHex = validateHexAddress(addr);
-          return isHex
-            ? {
-                address: convertHexAddr(addr as HexAddr),
-                hex: unpadHexAddress(addr as HexAddr),
-              }
-            : {
-                address: addr as HumanAddr,
-                hex: unpadHexAddress(bech32AddressToHex(addr as HumanAddr)),
-              };
-        });
+        setSelectedAddress(formatAddresses(addr));
         if (Array.isArray(data)) {
           setModules(data);
           setMode("display");

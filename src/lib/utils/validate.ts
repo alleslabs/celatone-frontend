@@ -1,5 +1,6 @@
 import { fromHex } from "@cosmjs/encoding";
 
+import { HEX_MODULE_ADDRESS_LENGTH, HEX_WALLET_ADDRESS_LENGTH } from "lib/data";
 import type { HexAddr } from "lib/types";
 
 import { padHexAddress } from "./address";
@@ -23,12 +24,13 @@ export const isBlock = (input: string): boolean => {
   return Number.isInteger(numberValue) && numberValue > 0;
 };
 
-export const isHexAddress = (address: string): boolean => {
-  if (!/^0x[a-fA-F0-9]{1,40}$/.test(address)) {
+const isHexAddress = (address: string, length: number): boolean => {
+  const regex = new RegExp(`^0x[a-fA-F0-9]{1,${length}}$`);
+  if (!regex.test(address)) {
     return false;
   }
 
-  const strip = padHexAddress(address as HexAddr, 40).slice(2);
+  const strip = padHexAddress(address as HexAddr, length).slice(2);
   try {
     fromHex(strip);
   } catch {
@@ -37,16 +39,8 @@ export const isHexAddress = (address: string): boolean => {
   return true;
 };
 
-export const isHexModuleAddress = (address: string): boolean => {
-  if (!/^0x[a-fA-F0-9]{1,64}$/.test(address)) {
-    return false;
-  }
+export const isHexWalletAddress = (address: string) =>
+  isHexAddress(address, HEX_WALLET_ADDRESS_LENGTH);
 
-  const strip = padHexAddress(address as HexAddr, 64).slice(2);
-  try {
-    fromHex(strip);
-  } catch {
-    return false;
-  }
-  return true;
-};
+export const isHexModuleAddress = (address: string) =>
+  isHexAddress(address, HEX_MODULE_ADDRESS_LENGTH);

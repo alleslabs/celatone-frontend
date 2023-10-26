@@ -19,7 +19,7 @@ import type {
 } from "lib/types";
 import {
   isBlock,
-  isHexAddress,
+  isHexWalletAddress,
   parseDate,
   parseDateOpt,
   parseTxHash,
@@ -126,7 +126,7 @@ export const useBlockInfoQuery = (
     [CELATONE_QUERY_KEYS.BLOCK_INFO, indexerGraphClient, height],
     queryFn,
     {
-      enabled: isBlock(height) && !isHexAddress(height),
+      enabled: isBlock(height) && !isHexWalletAddress(height),
       retry: false,
       refetchOnWindowFocus: false,
     }

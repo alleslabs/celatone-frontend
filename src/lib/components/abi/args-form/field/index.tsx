@@ -33,14 +33,14 @@ export const ArgFieldTemplate = ({
   const {
     validateUserAddress,
     validateContractAddress,
-    validateHexAddress,
+    validateHexWalletAddress,
     validateHexModuleAddress,
   } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
     (input: string) =>
-      validateUserAddress(input) === null || validateHexAddress(input),
-    [validateHexAddress, validateUserAddress]
+      validateUserAddress(input) === null || validateHexWalletAddress(input),
+    [validateHexWalletAddress, validateUserAddress]
   );
   const isValidArgObject = useCallback(
     (input: string) =>
