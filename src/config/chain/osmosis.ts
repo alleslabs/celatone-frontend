@@ -66,7 +66,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     features: {
       faucet: {
         enabled: true,
-        url: "https://faucet.alleslabs.dev",
+        url: process.env.NEXT_PUBLIC_OSMOSIS_TESTNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: true,

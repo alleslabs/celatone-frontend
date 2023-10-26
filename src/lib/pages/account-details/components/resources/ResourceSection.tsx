@@ -21,14 +21,17 @@ import { ResourceCard } from "lib/components/resource/ResourceCard";
 import { ResourceDetailCard } from "lib/components/resource/ResourceDetailCard";
 import { EmptyState } from "lib/components/state";
 import { TableTitle } from "lib/components/table";
-import type { HumanAddr, InternalResource, Option } from "lib/types";
+import type {
+  HumanAddr,
+  ResourceGroupByAccount,
+  ResourceGroup,
+  Option,
+} from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
-
-import type { ResourceGroup, ResourceGroupByAccount } from "./types";
 
 interface ResourceSectionProps {
   address: HumanAddr;
-  resources: Option<InternalResource[]>;
+  resources: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
 }
 
@@ -59,6 +62,7 @@ export const ResourceSection = ({
           account,
           selected: resource,
         },
+        replace: true,
         options: {
           shallow: true,
         },
@@ -67,48 +71,28 @@ export const ResourceSection = ({
     [selectedNameParam, selectedAccountParam, address, navigate]
   );
 
-  useEffect(() => setExpandedIndexes([0]), [selectedNameParam]);
+  useEffect(() => {
+    const resourcesLength = resources?.find(
+      (resource) => resource.owner === selectedAccountParam
+    )?.resources?.[selectedNameParam].items.length;
+
+    if (resourcesLength === 1) {
+      setExpandedIndexes([0]);
+    } else {
+      setExpandedIndexes([]);
+    }
+  }, [resources, selectedNameParam, selectedAccountParam]);
 
   if (isLoading) return <Loading />;
   if (!resources) return <ErrorFetching />;
   if (resources.length === 0)
     return <EmptyState imageVariant="empty" message="No resources found." />;
 
-  const sortedResource = resources.reduce<
-    Record<string, ResourceGroupByAccount>
-  >((acc, resource) => {
-    const [ownerName, groupName] = resource.structTag.split("::");
-
-    const ownerResources = acc[ownerName]?.resources ?? {};
-    const groupResources = ownerResources[groupName] ?? {};
-    const items = groupResources?.items ?? [];
-
-    items.push(resource);
-
-    return {
-      ...acc,
-      [ownerName]: {
-        owner: ownerName,
-        resources: {
-          ...ownerResources,
-          [groupName]: {
-            group: groupName,
-            account: ownerName,
-            displayName: `${truncate(ownerName)}::${groupName}`,
-            items,
-          },
-        },
-      },
-    };
-  }, {} as Record<string, ResourceGroupByAccount>);
-
-  const groupedResources = Object.values(sortedResource);
-
   const selectedIndex = !selectedAccountParam
     ? 0
-    : groupedResources.findIndex((item) => item.owner === selectedAccountParam);
+    : resources.findIndex((item) => item.owner === selectedAccountParam);
 
-  const selectedGroup = groupedResources[selectedIndex];
+  const selectedGroup = resources[selectedIndex];
   const selectedGroupArray = Object.values(selectedGroup.resources);
   const selectedResources =
     selectedGroupArray.find((item) => item.group === selectedNameParam) ??
@@ -133,7 +117,7 @@ export const ResourceSection = ({
       >
         <Flex minW={{ base: "full", md: 80 }}>
           <Accordion allowMultiple defaultIndex={[selectedIndex]} width="full">
-            {groupedResources.map((item) => (
+            {resources.map((item) => (
               <AccordionItem mb={4} key={item.owner}>
                 <AccordionButton>
                   <Flex p={4} justifyContent="space-between" w="full">
