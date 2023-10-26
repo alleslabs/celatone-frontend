@@ -10,11 +10,22 @@ import { dateFromNow, formatUTC, truncate } from "lib/utils";
 interface BlocksRowProps {
   templateColumns: GridProps["templateColumns"];
   blockData: BlockInfo;
+  onRowSelect: (blockHeight: number) => void;
 }
 
-export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
+export const BlocksRow = ({
+  templateColumns,
+  blockData,
+  onRowSelect,
+}: BlocksRowProps) => {
   return (
-    <Grid templateColumns={templateColumns}>
+    <Grid
+      templateColumns={templateColumns}
+      onClick={() => onRowSelect(blockData.height)}
+      _hover={{ bg: "gray.900" }}
+      transition="all .25s ease-in-out"
+      cursor="pointer"
+    >
       <TableRow>
         <ExplorerLink
           type="block_height"

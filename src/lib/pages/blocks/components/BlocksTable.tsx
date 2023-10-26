@@ -18,12 +18,13 @@ import { BlocksRow } from "./BlocksRow";
 
 interface BlocksTableProps {
   isViewMore?: boolean;
+  onRowSelect: (blockHeight: number) => void;
 }
 
 const TEMPLATE_COLUMNS = "140px 160px minmax(300px,1fr) 120px 280px";
 const scrollComponentId = "block-table-header";
 
-export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
+export const BlocksTable = ({ isViewMore, onRowSelect }: BlocksTableProps) => {
   const { data: blockCount, refetch: refetchCount } = useBlockCountQuery();
 
   const {
@@ -98,6 +99,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
             <BlocksRow
               key={block.hash}
               templateColumns={TEMPLATE_COLUMNS}
+              onRowSelect={onRowSelect}
               blockData={block}
             />
           ))}
