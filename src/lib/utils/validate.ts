@@ -6,6 +6,8 @@ import type { HexAddr } from "lib/types";
 import { padHexAddress } from "./address";
 
 export const isCodeId = (input: string): boolean => {
+  // TODO: refactor this to isHex later
+  if (input.startsWith("0x")) return false;
   const numberValue = Number(input);
   return input.length <= 7 && Number.isInteger(numberValue) && numberValue > 0;
 };
@@ -20,6 +22,8 @@ export const isTxHash = (input: string): boolean => {
 };
 
 export const isBlock = (input: string): boolean => {
+  // TODO: refactor this to isHex later
+  if (input.startsWith("0x")) return false;
   const numberValue = Number(input);
   return Number.isInteger(numberValue) && numberValue > 0;
 };
