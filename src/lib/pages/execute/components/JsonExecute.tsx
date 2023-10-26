@@ -45,9 +45,12 @@ interface JsonExecuteProps {
   initialFunds: Coin[];
 }
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 const assetDefault = {
   assetsSelect: defaultAsset,
@@ -282,7 +285,7 @@ export const JsonExecute = ({
             value={msg}
             amptrackSection="execute_msg"
           />
-          <CodeSnippet
+          <WasmCodeSnippet
             type="execute"
             contractAddress={contractAddress}
             message={msg}

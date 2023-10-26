@@ -4,6 +4,7 @@ import {
   Checkbox,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Text,
 } from "@chakra-ui/react";
@@ -14,8 +15,8 @@ import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
-import { STRING_TYPE } from "./constants";
-import { getRules } from "./utils";
+import { OBJECT_TYPE, STRING_TYPE } from "./constants";
+import { getHelperText, getRules } from "./utils";
 
 interface ArgFieldTemplateProps {
   index: number;
@@ -29,20 +30,36 @@ export const ArgFieldTemplate = ({
   control,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const { validateUserAddress, validateContractAddress, validateHexAddress } =
-    useValidateAddress();
+  const {
+    validateUserAddress,
+    validateContractAddress,
+    validateHexWalletAddress,
+    validateHexModuleAddress,
+  } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
     (input: string) =>
       validateUserAddress(input) === null ||
       validateContractAddress(input) === null ||
-      validateHexAddress(input),
-    [validateContractAddress, validateHexAddress, validateUserAddress]
+      validateHexWalletAddress(input) ||
+      validateHexModuleAddress(input),
+    [
+      validateContractAddress,
+      validateHexModuleAddress,
+      validateHexWalletAddress,
+      validateUserAddress,
+    ]
+  );
+  const isValidArgObject = useCallback(
+    (input: string) =>
+      validateContractAddress(input) === null ||
+      validateHexModuleAddress(input),
+    [validateContractAddress, validateHexModuleAddress]
   );
 
   const isOptional = param.startsWith("0x1::option::Option");
   const type = isOptional ? param.split(/<(.*)>/)[1] : param;
-  const rules = getRules(type, isOptional, isValidArgAddress);
+  const rules = getRules(type, isOptional, isValidArgAddress, isValidArgObject);
 
   const {
     field: { value, onChange, ...fieldProps },
@@ -61,7 +78,10 @@ export const ArgFieldTemplate = ({
       <FormControl
         className={`${size}-form`}
         variant={
-          (type === STRING_TYPE || type.startsWith("vector")) && !isNull
+          (type === STRING_TYPE ||
+            type.startsWith("vector") ||
+            type.startsWith(OBJECT_TYPE)) &&
+          !isNull
             ? "fixed-floating"
             : "floating"
         }
@@ -82,10 +102,14 @@ export const ArgFieldTemplate = ({
           {param}
         </FormLabel>
 
-        {isError && (
+        {isError ? (
           <FormErrorMessage className="error-text" mt={1}>
             {error.message}
           </FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text" mt={1}>
+            {getHelperText(type)}
+          </FormHelperText>
         )}
       </FormControl>
       {isOptional && (

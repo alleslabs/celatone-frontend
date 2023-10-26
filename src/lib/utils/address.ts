@@ -20,16 +20,17 @@ export const getAddressTypeText = (addressType: AddressReturnType) => {
 export const bech32AddressToHex = (addr: HumanAddr): HexAddr =>
   "0x".concat(toHex(fromBech32(addr).data)) as HexAddr;
 
-export const padHexAddress = (hexAddr: HexAddr): HexAddr =>
-  `0x${hexAddr.slice(2).padStart(40, "0")}` as HexAddr;
+export const padHexAddress = (hexAddr: HexAddr, length: number): HexAddr =>
+  `0x${hexAddr.slice(2).padStart(length, "0")}` as HexAddr;
 
 export const unpadHexAddress = (hexAddr: HexAddr) =>
   `0x${hexAddr.slice(2).replace(/^0+/, "")}` as HexAddr;
 
 export const hexToBech32Address = (
   prefix: string,
-  hexAddr: HexAddr
+  hexAddr: HexAddr,
+  length: number
 ): HumanAddr => {
-  const strip = padHexAddress(hexAddr).slice(2);
+  const strip = padHexAddress(hexAddr, length).slice(2);
   return toBech32(prefix, fromHex(strip)) as HumanAddr;
 };

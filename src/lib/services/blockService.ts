@@ -17,13 +17,7 @@ import type {
   Nullable,
   ValidatorAddr,
 } from "lib/types";
-import {
-  isBlock,
-  isHexAddress,
-  parseDate,
-  parseDateOpt,
-  parseTxHash,
-} from "lib/utils";
+import { isBlock, parseDate, parseDateOpt, parseTxHash } from "lib/utils";
 
 export const useBlocklistQuery = (
   limit: number,
@@ -126,7 +120,7 @@ export const useBlockInfoQuery = (
     [CELATONE_QUERY_KEYS.BLOCK_INFO, indexerGraphClient, height],
     queryFn,
     {
-      enabled: isBlock(height) && !isHexAddress(height),
+      enabled: isBlock(height),
       retry: false,
       refetchOnWindowFocus: false,
     }

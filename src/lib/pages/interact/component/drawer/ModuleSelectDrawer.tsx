@@ -18,6 +18,7 @@ import {
   type IndexedModule,
 } from "lib/services/move/moduleService";
 import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
+import { isHexWalletAddress } from "lib/utils";
 
 import { ModuleSelectMainBody } from "./body";
 import { ModuleSelector } from "./selector";
@@ -40,7 +41,8 @@ export const ModuleSelectDrawer = ({
   hexAddress,
   handleModuleSelect,
 }: ModuleSelectDrawerProps) => {
-  const convertHexAddr = useConvertHexAddress();
+  const { convertHexWalletAddress, convertHexModuleAddress } =
+    useConvertHexAddress();
 
   const [mode, setMode] = useState<DisplayMode>("input");
   const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>({
@@ -67,7 +69,9 @@ export const ModuleSelectDrawer = ({
     if (hexAddress) {
       setMode("display");
       setSelectedAddress({
-        address: convertHexAddr(hexAddress),
+        address: isHexWalletAddress(hexAddress)
+          ? convertHexWalletAddress(hexAddress)
+          : convertHexModuleAddress(hexAddress),
         hex: hexAddress,
       });
     } else {
@@ -78,7 +82,7 @@ export const ModuleSelectDrawer = ({
       });
       setModules(undefined);
     }
-  }, [convertHexAddr, hexAddress]);
+  }, [convertHexWalletAddress, convertHexModuleAddress, hexAddress]);
 
   useEffect(() => {
     if (isOpen && selectedAddress.hex) refetch();

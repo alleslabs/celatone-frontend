@@ -47,9 +47,12 @@ import {
 
 import { SchemaQueryResponse } from "./SchemaQueryResponse";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 interface SchemaQueryComponentProps {
   msgSchema: SchemaInfo;
@@ -175,7 +178,7 @@ export const SchemaQueryComponent = ({
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
                 />
-                <CodeSnippet
+                <WasmCodeSnippet
                   type="query"
                   contractAddress={contractAddress}
                   message={msg}
@@ -235,7 +238,7 @@ export const SchemaQueryComponent = ({
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
                 />
-                <CodeSnippet
+                <WasmCodeSnippet
                   type="query"
                   contractAddress={contractAddress}
                   message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}

@@ -11,7 +11,6 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
-  useConvertHexAddress,
   useInternalNavigate,
   useMoveConfig,
   useValidateAddress,
@@ -23,6 +22,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/move/moduleService";
@@ -35,11 +35,10 @@ import {
 } from "lib/services/publicProjectService";
 import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
 import {
-  bech32AddressToHex,
   getFirstQueryParam,
-  isHexAddress,
+  isHexWalletAddress,
+  isHexModuleAddress,
   truncate,
-  unpadHexAddress,
 } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -265,8 +264,8 @@ const AccountDetailsBody = ({
             Admins
           </CustomTab>
           <CustomTab
-            count={resourcesData?.length}
-            isDisabled={!resourcesData?.length}
+            count={resourcesData?.totalCount}
+            isDisabled={!resourcesData?.totalCount}
             onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
           >
@@ -395,7 +394,7 @@ const AccountDetailsBody = ({
           <TabPanel p={0}>
             <ResourceSection
               address={accountAddress}
-              resources={resourcesData}
+              resources={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />
           </TabPanel>
@@ -425,20 +424,12 @@ const AccountDetails = () => {
   const router = useRouter();
   const { track } = useTrack();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
-  const hexToBech32 = useConvertHexAddress();
+  const formatAddresses = useFormatAddresses();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ).toLowerCase() as MoveAccountAddr;
-  const [hexAddr, humanAddr] = isHexAddress(accountAddressParam)
-    ? [
-        unpadHexAddress(accountAddressParam as HexAddr),
-        hexToBech32(accountAddressParam as HexAddr),
-      ]
-    : [
-        unpadHexAddress(bech32AddressToHex(accountAddressParam as HumanAddr)),
-        accountAddressParam as HumanAddr,
-      ];
+  const { address, hex } = formatAddresses(accountAddressParam);
   // TODO: fix assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
@@ -450,12 +441,13 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      {!isHexAddress(accountAddressParam) &&
+      {!isHexWalletAddress(accountAddressParam) &&
+      !isHexModuleAddress(accountAddressParam) &&
       validateUserAddress(accountAddressParam) &&
       validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody hexAddress={hexAddr} accountAddress={humanAddr} />
+        <AccountDetailsBody hexAddress={hex} accountAddress={address} />
       )}
     </PageContainer>
   );
