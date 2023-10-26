@@ -40,7 +40,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
-interface CodeSnippetProps {
+interface WasmCodeSnippetProps {
   contractAddress: ContractAddr;
   message: string;
   type: "query" | "execute";
@@ -48,13 +48,13 @@ interface CodeSnippetProps {
   funds?: Coin[];
 }
 
-const CodeSnippet = ({
+const WasmCodeSnippet = ({
   contractAddress,
   message,
   type = "query",
   ml,
   funds = [],
-}: CodeSnippetProps) => {
+}: WasmCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     chain: { chain_name: chainName, daemon_name: daemonName },
@@ -281,4 +281,4 @@ execute();
   );
 };
 
-export default CodeSnippet;
+export default WasmCodeSnippet;

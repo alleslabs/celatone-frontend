@@ -58,9 +58,12 @@ import {
   jsonValidate,
 } from "lib/utils";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 interface ExecuteBoxProps {
   msgSchema: SchemaInfo;
@@ -340,7 +343,7 @@ export const ExecuteBox = ({
                 amptrackSection="execute_msg"
                 buttonText="Copy JSON"
               />
-              <CodeSnippet
+              <WasmCodeSnippet
                 type="execute"
                 contractAddress={contractAddress}
                 message={msg}

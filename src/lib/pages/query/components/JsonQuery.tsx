@@ -31,9 +31,12 @@ import {
   getCurrentDate,
 } from "lib/utils";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 interface JsonQueryProps {
   contractAddress: ContractAddr;
@@ -153,7 +156,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
                 value={msg}
                 amptrackSection="query_msg"
               />
-              <CodeSnippet
+              <WasmCodeSnippet
                 type="query"
                 contractAddress={contractAddress}
                 message={msg}
