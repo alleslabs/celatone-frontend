@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { AccountCard } from "lib/components/card/AccountCard";
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
 import type { Account } from "lib/types";
@@ -40,7 +40,7 @@ const ContentRender = ({
       ))}
     </Flex>
   ) : (
-    <TableContainer mb={4}>
+    <TableContainer mb={4} mt={6}>
       <AccountTableHeader />
       {filteredAccounts.map((account) => (
         <PublicProjectAccountRow
@@ -72,13 +72,11 @@ export const PublicProjectAccountTable = ({
     <Box mt={{ base: 8, md: 12 }} mb={4}>
       <TableTitle title="Accounts" count={accounts.length} />
       {!onViewMore && (
-        <TextInput
-          variant="floating"
-          value={searchKeyword}
-          setInputState={setSearchKeyword}
+        <InputWithIcon
           placeholder="Search with Account Address, Name, or Description"
-          size={{ base: "md", md: "lg" }}
-          mb={6}
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          size="lg"
         />
       )}
       {filteredAccounts.length ? (

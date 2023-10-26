@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { PublicContractCard } from "lib/components/card/PublicContractCard";
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
 import { useContractStore } from "lib/providers/store";
@@ -51,7 +51,7 @@ const ContentRender = ({
       ))}
     </Flex>
   ) : (
-    <TableContainer>
+    <TableContainer mt={6}>
       <ContractTableHeader />
       {publicContracts.map((contract) => (
         <PublicProjectContractRow
@@ -95,13 +95,11 @@ export const PublicProjectContractTable = observer(
       <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
-          <TextInput
-            variant="floating"
-            value={searchKeyword}
-            setInputState={setSearchKeyword}
+          <InputWithIcon
             placeholder="Search with Contract Address or Contract Name"
-            size={{ base: "md", md: "lg" }}
-            mb={6}
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            size="lg"
           />
         )}
         {publicContracts.length ? (
