@@ -60,7 +60,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
       mt={4}
       bg="gray.900"
       _hover={{ bg: "gray.800" }}
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
     >
       {({ isExpanded }) => (
@@ -110,7 +110,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                       <CustomIcon
                         name="chevron-down"
                         transform={isExpanded ? "rotate(180deg)" : "rotate(0)"}
-                        transition="all .25s ease-in-out"
+                        transition="all 0.25s ease-in-out"
                       />
                     }
                   />

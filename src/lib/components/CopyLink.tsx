@@ -67,7 +67,7 @@ export const CopyLink = ({
           wordBreak={{ base: "break-all", md: "inherit" }}
           variant="body2"
           color="secondary.main"
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           display="inline"
         >
           {value === address ? `${value} (Me)` : value}

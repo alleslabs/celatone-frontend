@@ -112,7 +112,7 @@ export const NavDrawer = () => {
                   borderWidth="1px"
                   borderColor="gray.600"
                   _hover={{ bg: "gray.700" }}
-                  transition="all .25s ease-in-out"
+                  transition="all 0.25s ease-in-out"
                   w="220px"
                 >
                   <Flex
@@ -147,7 +147,7 @@ export const NavDrawer = () => {
                         _hover={{
                           backgroundColor: "gray.800",
                         }}
-                        transition="all .25s ease-in-out"
+                        transition="all 0.25s ease-in-out"
                         isDisabled={noConfig}
                       >
                         <Flex justify="space-between" align="center" w="full">
@@ -218,7 +218,7 @@ export const NavDrawer = () => {
                         cursor="pointer"
                         _hover={{ bg: "gray.700", borderRadius: "8px" }}
                         my="1px"
-                        transition="all .25s ease-in-out"
+                        transition="all 0.25s ease-in-out"
                         alignItems="center"
                         position="relative"
                         bgColor={

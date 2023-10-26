@@ -56,7 +56,7 @@ export const PoolTxsMsg = ({
       <Grid
         className="copier-wrapper"
         templateColumns={templateColumns}
-        transition="all .25s ease-in-out"
+        transition="all 0.25s ease-in-out"
         cursor="pointer"
         onClick={() => {
           if (message) {
@@ -75,7 +75,7 @@ export const PoolTxsMsg = ({
             <CustomIcon
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
-              transition="all .25s ease-in-out"
+              transition="all 0.25s ease-in-out"
               color="gray.600"
             />
           )}

@@ -5,6 +5,7 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -18,6 +19,7 @@ import {
   useInternalNavigate,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
@@ -49,6 +51,7 @@ enum TabIndex {
   Txs = "txs",
   States = "states",
 }
+
 interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
   contractData: ContractData;
@@ -68,7 +71,7 @@ const ContractTxsTable = observer(
     } = useContractDetailsTableCounts(contractAddress, contractAccountId);
     if (!contractData.contractDetail) return <InvalidContract />;
     return (
-      <>
+      <Flex direction="column">
         {/* History Table section */}
         <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
           Transaction & History
@@ -117,10 +120,42 @@ const ContractTxsTable = observer(
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </>
+      </Flex>
     );
   }
 );
+
+const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => {
+  return (
+    <Flex
+      onClick={onViewMore}
+      border="2px solid"
+      borderColor="gray.700"
+      borderRadius="8px"
+      p={4}
+      mt={12}
+      alignItems="center"
+      justifyContent="space-between"
+      w="full"
+      cursor="pointer"
+      transition="all 0.25s ease-in-out"
+      _hover={{ bgColor: "gray.900" }}
+    >
+      <Flex alignItems="center" gap={3}>
+        <CustomIcon name="contract-list" color="gray.600" boxSize={6} />
+        <div>
+          <Text variant="body1" fontWeight={600}>
+            View Contracts States
+          </Text>
+          <Text variant="body2" color="text.dark" fontWeight={600}>
+            Access the current contract states information
+          </Text>
+        </div>
+      </Flex>
+      <CustomIcon name="chevron-right" color="gray.600" boxSize={6} />
+    </Flex>
+  );
+};
 
 const ContractDetailsBody = observer(
   ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
@@ -256,6 +291,9 @@ const ContractDetailsBody = observer(
                 <ContractTxsTable
                   contractAddress={contractAddress}
                   contractData={contractData}
+                />
+                <ContractStateShortcut
+                  onViewMore={handleTabChange(TabIndex.States)}
                 />
               </Flex>
             </TabPanel>

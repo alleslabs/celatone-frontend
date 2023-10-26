@@ -242,7 +242,7 @@ export const TagSelection = observer(
                     key={option}
                     style={listItemProps}
                     _hover={{ bg: "gray.700" }}
-                    transition="all .25s ease-in-out"
+                    transition="all 0.25s ease-in-out"
                     onClick={() => selectOptionFromList(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
@@ -266,7 +266,7 @@ export const TagSelection = observer(
                   <ListItem
                     style={listItemProps}
                     _hover={{ bg: "gray.700" }}
-                    transition="all .25s ease-in-out"
+                    transition="all 0.25s ease-in-out"
                     data-testid="create-option"
                     onClick={() => createOption()}
                   >

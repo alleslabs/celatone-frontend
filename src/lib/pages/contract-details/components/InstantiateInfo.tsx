@@ -39,7 +39,7 @@ const PortIdRender = ({ portId }: { portId: string }) => {
     <Box
       className="copier-wrapper"
       fontSize="14px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
