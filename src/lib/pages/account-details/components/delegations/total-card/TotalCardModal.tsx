@@ -16,10 +16,12 @@ import big from "big.js";
 
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import { TokenImageRender, TokenComposition } from "lib/components/token";
 import type { Addr, TokenWithValue, USD } from "lib/types";
 import {
   compareTokenWithValues,
   formatPrice,
+  getTokenLabel,
   totalValueTokenWithValue,
 } from "lib/utils";
 
@@ -33,6 +35,24 @@ interface TotalCardModel {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (
+  <Flex
+    bg="gray.900"
+    borderRadius="8px"
+    p="12px 16px"
+    align="center"
+    justify="space-between"
+  >
+    <Flex align="center" gap={2}>
+      <TokenImageRender boxSize={6} logo={token.logo} alt={token.denom} />
+      <Text variant="body1" fontWeight={700}>
+        {getTokenLabel(token.denom, token.symbol)}
+      </Text>
+    </Flex>
+    <TokenComposition token={token} alignItems="flex-end" />
+  </Flex>
+);
 
 export const TotalCardModal = ({
   title,
@@ -49,7 +69,7 @@ export const TotalCardModal = ({
     returnFocusOnClose={false}
   >
     <ModalOverlay />
-    <ModalContent w="640px">
+    <ModalContent w="800px" bg="gray.800">
       <ModalHeader>
         <Flex w="full" direction="row" alignItems="center" gap={3}>
           <CustomIcon name="assets-solid" boxSize={5} m={1} color="gray.600" />
@@ -58,7 +78,7 @@ export const TotalCardModal = ({
           </Heading>
         </Flex>
       </ModalHeader>
-      <ModalCloseButton color="gray.600" />
+      <ModalCloseButton color="gray.400" />
       <ModalBody maxH="400px" overflow="overlay">
         <Flex direction="column" gap={4}>
           <Grid templateColumns="1fr 1fr">
@@ -86,11 +106,10 @@ export const TotalCardModal = ({
             </GridItem>
           </Grid>
           <Flex gap={2} direction="column">
-            {/* TODO: fix */}
             {Object.values(tokens)
               .sort(compareTokenWithValues)
               .map((token) => (
-                <Text>{`${token.amount}${token.denom}`}</Text>
+                <DelegationTokenCard key={token.denom} token={token} />
               ))}
           </Flex>
         </Flex>

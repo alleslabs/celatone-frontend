@@ -82,6 +82,7 @@ const UnbondingsTableBody = ({
           }}
           isSingleBondDenom={isSingleBondDenom}
           templateColumns={TEMPLATE_COLUMNS}
+          isUnbonding
         />
       ))}
     </TableContainer>

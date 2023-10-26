@@ -10,7 +10,11 @@ export const BondedTableHeader = ({
   templateColumns: GridProps["templateColumns"];
   isDelegation: boolean;
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid
+    templateColumns={templateColumns}
+    minW="min-content"
+    sx={{ "& > div": { color: "text.dark" } }}
+  >
     <TableHeader>Validator</TableHeader>
     <TableHeader>Amount</TableHeader>
     <TableHeader>{isDelegation ? "Reward" : "Unbond Completed By"}</TableHeader>

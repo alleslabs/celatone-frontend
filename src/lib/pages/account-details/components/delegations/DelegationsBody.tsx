@@ -34,7 +34,7 @@ export const DelegationsBody = ({
   const [value, setValue] = useState("Delegated");
   const { trackUseRadio } = useTrack();
   return (
-    <Flex direction="column" gap={8}>
+    <Flex direction="column" gap={8} p={8} borderRadius="8px" bg="gray.900">
       <RadioGroup
         onChange={(newValue) => {
           trackUseRadio(newValue.toLocaleLowerCase());

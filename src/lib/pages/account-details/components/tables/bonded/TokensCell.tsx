@@ -6,6 +6,7 @@ import type { TokenWithValue } from "lib/types";
 interface TokensCellProps {
   tokens: TokenWithValue[];
   isSingleBondDenom: boolean;
+  isUnbonding?: boolean;
 }
 
 const EmptyTokenCell = () => (
@@ -14,14 +15,25 @@ const EmptyTokenCell = () => (
   </Text>
 );
 
-export const TokensCell = ({ tokens, isSingleBondDenom }: TokensCellProps) => {
+export const TokensCell = ({
+  tokens,
+  isSingleBondDenom,
+  isUnbonding,
+}: TokensCellProps) => {
   if (isSingleBondDenom) {
     if (!tokens.length) return <EmptyTokenCell />;
     return <TokenCell token={tokens[0]} />;
   }
 
   return (
-    <Flex direction="column" p={3} bgColor="gray.800" borderRadius="8px">
+    <Flex
+      direction="column"
+      p={3}
+      bgColor={isUnbonding ? undefined : "gray.800"}
+      borderRadius="8px"
+      gap={2}
+      w="full"
+    >
       {!tokens.length ? (
         <EmptyTokenCell />
       ) : (

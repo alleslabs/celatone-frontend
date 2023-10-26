@@ -1,7 +1,8 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Badge, Flex, Image, Text } from "@chakra-ui/react";
+import { Badge, Flex, Text } from "@chakra-ui/react";
 
-import { NAToken } from "lib/icon";
+import { Copier } from "../copy";
+import { Tooltip } from "../Tooltip";
 import type { BalanceWithAssetInfo, Token, U, USD } from "lib/types";
 import {
   calAssetValueWithPrecision,
@@ -9,8 +10,7 @@ import {
   formatUTokenWithPrecision,
 } from "lib/utils";
 
-import { Copier } from "./copy";
-import { Tooltip } from "./Tooltip";
+import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenCardProps extends FlexProps {
   userBalance: BalanceWithAssetInfo;
@@ -43,12 +43,10 @@ export const TokenCard = ({
           borderBottomColor="gray.700"
           pb={2}
         >
-          <Image
-            boxSize={6}
-            src={userBalance.assetInfo?.logo}
+          <TokenImageRender
+            logo={userBalance.lpLogo ?? userBalance.assetInfo?.logo}
             alt={symbol}
-            fallback={<NAToken />}
-            fallbackStrategy="onError"
+            boxSize={6}
           />
           <Text
             variant="body2"

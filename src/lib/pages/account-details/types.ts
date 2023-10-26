@@ -10,7 +10,7 @@ import type {
 export interface DenomInfo {
   denom: string;
   symbol?: string;
-  logo?: string;
+  logo?: string | string[];
   precision?: number;
 }
 

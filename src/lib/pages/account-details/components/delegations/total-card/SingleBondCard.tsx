@@ -1,6 +1,6 @@
-import { Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { NAToken } from "lib/icon";
+import { TokenImageRender } from "lib/components/token";
 import type { Option, TokenWithValue } from "lib/types";
 import {
   formatPrice,
@@ -22,7 +22,7 @@ export const SingleBondCard = ({
   token,
 }: SingleBondCardProps) => (
   <Flex direction="column" minW="233px" gap={1}>
-    <TotalCardTop title={title} message={message} fontWeight={500} />
+    <TotalCardTop title={title} message={message} fontWeight={600} />
     {!token ? (
       <Heading variant="h6" as="h6">
         N/A
@@ -35,12 +35,7 @@ export const SingleBondCard = ({
         <Text variant="body1" textColor="text.main">
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
-        <Image
-          boxSize={6}
-          src={token.logo}
-          alt={getTokenLabel(token.denom, token.symbol)}
-          fallback={<NAToken />}
-        />
+        <TokenImageRender logo={token.logo} boxSize={6} />
       </Flex>
     )}
     <Text variant="body2" textColor="text.dark">

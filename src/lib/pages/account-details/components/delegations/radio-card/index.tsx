@@ -21,7 +21,7 @@ export const RadioCard = ({
   isLoading,
   bondDenoms,
 }: RadioCardProps) => (
-  <Radio variant="card" value={value} overflowX="hidden">
+  <Radio variant="gray-card" value={value} overflowX="hidden">
     {bondDenoms.length === 1 ? (
       <SingleBondRadioCard
         value={value}
