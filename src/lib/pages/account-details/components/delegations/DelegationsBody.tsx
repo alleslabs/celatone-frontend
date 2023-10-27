@@ -1,5 +1,6 @@
 import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import type { DenomInfo } from "../../types";
 import { DelegationsTable, UnbondingsTable } from "../tables";
@@ -33,6 +34,11 @@ export const DelegationsBody = ({
   // NOTE: set between "Delegated" and "Unbonding"
   const [value, setValue] = useState("Delegated");
   const { trackUseRadio } = useTrack();
+  const router = useRouter();
+
+  useEffect(() => {
+    setValue("Delegated");
+  }, [router.query.accountAddress]);
   return (
     <Flex direction="column" gap={8} p={8} borderRadius="8px" bg="gray.900">
       <RadioGroup
