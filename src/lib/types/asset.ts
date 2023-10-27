@@ -4,7 +4,7 @@ import type { LPDetails, Option, Token, U, USD } from "lib/types";
 
 export type TokenWithValue =
   | {
-      isLpToken?: false;
+      isLPToken?: false;
       denom: string;
       amount: U<Token<Big>>;
       symbol: Option<string>;
@@ -14,7 +14,7 @@ export type TokenWithValue =
       value: Option<USD<Big>>;
     }
   | {
-      isLpToken: true;
+      isLPToken: true;
       denom: string;
       amount: U<Token<Big>>;
       symbol: Option<string>;

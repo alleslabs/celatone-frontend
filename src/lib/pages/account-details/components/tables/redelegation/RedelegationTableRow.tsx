@@ -21,6 +21,7 @@ export const RedelegationTableRow = ({
     _hover={{ bg: "gray.900" }}
     transition="all .25s ease-in-out"
     minW="min-content"
+    sx={{ "& > div": { alignItems: "flex-start" } }}
   >
     <TableRow>
       <ValidatorBadge validator={redelegation.srcValidator} />

@@ -274,26 +274,28 @@ interface PairResponse {
 }
 
 export interface LPShareInfoReturn {
-  [key: string]: {
-    coinA: {
-      symbol: string;
-      denom: string;
-      precision: number;
-      tag: HexAddr;
-      amountAPerShare: Big;
-    };
-    coinB: {
-      symbol: string;
-      denom: string;
-      precision: number;
-      tag: HexAddr;
-      amountBPerShare: Big;
-    };
-    lpPricePerShare: Big;
-    precision: number;
-    image: [string, string];
+  coinA: {
     symbol: string;
+    denom: string;
+    precision: number;
+    tag: HexAddr;
+    amountAPerShare: Big;
   };
+  coinB: {
+    symbol: string;
+    denom: string;
+    precision: number;
+    tag: HexAddr;
+    amountBPerShare: Big;
+  };
+  lpPricePerShare: Big;
+  precision: number;
+  image: [string, string];
+  symbol: string;
+}
+
+export interface LPShareInfoMap {
+  [key: string]: LPShareInfoReturn;
 }
 
 const indexPairResponse = (res: string): PairResponse[] => {
@@ -346,7 +348,7 @@ export const useLPShareInfo = () => {
       }
     ).then((res) => indexPairResponse(res));
 
-    return pairs.reduce<LPShareInfoReturn>((acc, curr) => {
+    return pairs.reduce<LPShareInfoMap>((acc, curr) => {
       const [coinA, coinB] = [curr.coin_a.denom, curr.coin_b.denom].map(
         (denom, idx) => ({
           ...(idx === 0 ? curr.coin_a : curr.coin_b),

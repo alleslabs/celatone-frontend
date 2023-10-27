@@ -2,7 +2,10 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { LPShareInfoReturn } from "lib/services/poolService";
+import type {
+  LPShareInfoMap,
+  LPShareInfoReturn,
+} from "lib/services/poolService";
 import type {
   Balance,
   BalanceWithAssetInfo,
@@ -40,19 +43,32 @@ export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
     big(0) as USD<Big>
   );
 
+type LPDetailsReturn =
+  | { isLPToken: true; lpDetails: LPShareInfoReturn }
+  | { isLPToken: false; lpDetails: undefined };
+
+export const getLPDetails = (
+  denom: string,
+  lpMap: LPShareInfoMap = {}
+): LPDetailsReturn => {
+  const isLPToken = denom in lpMap;
+  return isLPToken
+    ? { isLPToken: true, lpDetails: lpMap[denom] }
+    : { isLPToken: false, lpDetails: undefined };
+};
+
 export const coinToTokenWithValue = (
   denom: string,
   amount: string,
   assetInfos: AssetInfosOpt,
-  lpMap: LPShareInfoReturn = {}
+  lpMap?: LPShareInfoMap
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;
   const assetInfo = assetInfos?.[denom];
-  const isLp = denom in lpMap;
-  const lpDetails = lpMap[denom];
-  return isLp
+  const { isLPToken, lpDetails } = getLPDetails(denom, lpMap);
+  return isLPToken
     ? {
-        isLpToken: isLp,
+        isLPToken,
         denom,
         amount: tokenAmount,
         symbol: lpDetails.symbol,
@@ -134,9 +150,8 @@ export const compareTokenWithValues = (
   token1: TokenWithValue,
   token2: TokenWithValue
 ) => {
-  if (token1.symbol && token2.symbol)
-    return token1.symbol.localeCompare(token2.symbol);
-  if (token1.symbol && !token2.symbol) return -1;
-  if (!token1.symbol && token2.symbol) return 1;
+  if (token1.value && token2.value) return token2.value.cmp(token1.value);
+  if (token1.value && !token2.value) return -1;
+  if (!token1.value && token2.value) return 1;
   return token1.denom.localeCompare(token2.denom);
 };

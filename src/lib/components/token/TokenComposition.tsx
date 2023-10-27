@@ -16,8 +16,8 @@ export const TokenComposition = ({
   ...flexProps
 }: TokenCompositionProps) => (
   <Flex direction="column" {...flexProps}>
-    {token.isLpToken ? (
-      <Flex>
+    {token.isLPToken ? (
+      <Flex wrap="wrap">
         <Text variant="body2">
           <Text as="span" mr={1} fontWeight={700}>
             {token.lpDetails.coinA.amount}
