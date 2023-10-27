@@ -86,7 +86,7 @@ export const ResourceSection = ({
   if (isLoading) return <Loading />;
   if (!resources) return <ErrorFetching />;
   if (resources.length === 0)
-    return <EmptyState imageVariant="empty" message="No resources found." />;
+    return <EmptyState imageVariant="empty" message="No resources found" />;
 
   const selectedIndex = !selectedAccountParam
     ? 0

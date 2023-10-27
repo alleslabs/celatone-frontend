@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Flex, SimpleGrid, Box } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ErrorFetching } from "../ErrorFetching";
@@ -43,11 +43,23 @@ export const ResourceLists = ({ address, onViewMore }: ResourcesListsProps) => {
   );
   if (isLoading) return <Loading />;
   if (!resourcesData) return <ErrorFetching />;
-  if (resourcesData.totalCount === 0)
-    return <EmptyState imageVariant="empty" message="No resources found." />;
 
   const resources = resourcesData.groupedByName;
   const isMobileOverview = isMobile && !!onViewMore;
+
+  if (resourcesData.totalCount === 0 && !isMobileOverview)
+    return (
+      <Box w="full" mt={8}>
+        <TableTitle title="Resources" count={resourcesData.totalCount} mb={0} />
+        <EmptyState
+          imageVariant="empty"
+          message="No resources found"
+          withBorder
+          my={6}
+        />
+      </Box>
+    );
+
   return (
     <Flex
       direction="column"

@@ -115,7 +115,10 @@ const ModuleDetailsBody = ({
   } = moduleDetails;
 
   return (
-    <DetailsContainer>
+    <DetailsContainer
+      flexDirection={{ base: "column", md: "row" }}
+      gap={{ base: 6, md: 0 }}
+    >
       <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
       <LabelText
         label="Initial Published Block Height"

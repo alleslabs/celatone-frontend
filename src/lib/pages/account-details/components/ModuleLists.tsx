@@ -27,7 +27,9 @@ export const ModuleLists = ({
   modules,
   isLoading,
   onViewMore,
-}: ModuleListsProps) => {
+}: // TODO
+// eslint-disable-next-line sonarjs/cognitive-complexity
+ModuleListsProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
 
@@ -107,8 +109,10 @@ export const ModuleLists = ({
               </SimpleGrid>
             ) : (
               <EmptyState
-                imageVariant="not-found"
-                message="No matched modules found"
+                imageVariant={onViewMore ? "empty" : "not-found"}
+                message={
+                  onViewMore ? "No modules found" : "No matched modules found"
+                }
                 withBorder
                 my={0}
               />
