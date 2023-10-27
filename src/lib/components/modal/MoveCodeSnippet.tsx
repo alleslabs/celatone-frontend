@@ -203,11 +203,10 @@ const msg = new MsgExecute(
     '${moduleAddress}',
     '${moduleName}',
     '${fn.name}'${showTypeArgs ? ",\n\t".concat(formatedTypeArgs) : ""}${
-          showArgs
-            ? (!showTypeArgs ? ",\n\tundefined" : "") +
-              ",\n\t".concat(formatedArgs)
-            : ""
-        }
+      showArgs
+        ? (!showTypeArgs ? ",\n\tundefined" : "") + ",\n\t".concat(formatedArgs)
+        : ""
+    }
 );
 
 const execute = async () => {

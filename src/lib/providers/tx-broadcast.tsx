@@ -10,8 +10,7 @@ import {
 import type { Observable } from "rxjs";
 
 import { TxModal } from "lib/components/tx";
-import type { Nullable } from "lib/types";
-import { type TxResultRendering } from "lib/types";
+import type { Nullable, TxResultRendering } from "lib/types";
 
 interface TxBroadcast {
   broadcast: (nextStream: Observable<TxResultRendering>) => void;

@@ -26,7 +26,7 @@ export interface PoolWeight<T extends string | Big = Big> {
 }
 
 export interface Pool<
-  TLiquidity extends Coin | TokenWithValue = TokenWithValue
+  TLiquidity extends Coin | TokenWithValue = TokenWithValue,
 > {
   id: number;
   type: PoolType;
@@ -37,7 +37,7 @@ export interface Pool<
 
 export interface PoolDetail<
   TWeight extends string | Big = Big,
-  TLiquidity extends Coin | TokenWithValue = TokenWithValue
+  TLiquidity extends Coin | TokenWithValue = TokenWithValue,
 > extends Pool<TLiquidity> {
   isSupported: boolean;
   blockHeight: Option<number>;

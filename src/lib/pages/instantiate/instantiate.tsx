@@ -27,6 +27,7 @@ import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon";
+import JsonInput from "lib/components/json/JsonInput";
 import {
   jsonInputFormKey,
   MessageInputContent,
@@ -35,7 +36,6 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
-import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
