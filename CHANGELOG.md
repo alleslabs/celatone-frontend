@@ -133,6 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#590](https://github.com/alleslabs/celatone-frontend/pull/590) Fix upload script various bugs
 - [#584](https://github.com/alleslabs/celatone-frontend/pull/584) Throw an error when tx failed on postTx
 - [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
 - [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal

@@ -3,12 +3,17 @@ import big from "big.js";
 import { parseInt } from "lodash";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-import { DECIMAL_TYPES, OBJECT_TYPE, UINT_TYPES } from "../constants";
+import {
+  DECIMAL_TYPES,
+  FIXED_POINT_TYPES,
+  OBJECT_TYPE,
+  UINT_TYPES,
+} from "../constants";
 import type { Nullable, Option } from "lib/types";
 import { getArgType } from "lib/utils";
 
 const validateNull = (v: Option<string>) =>
-  v !== undefined ? undefined : "cannot be null";
+  v !== null ? undefined : "cannot be null";
 
 const validateUint = (uintType: string) => (v: string) => {
   try {
@@ -29,6 +34,21 @@ const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: string) =>
     isValidArgAddress(v) ? undefined : "Invalid address";
 
+const validateFixedPoint = (bcsFixedPointType: string) => (v: string) => {
+  const [integer, decimal] = v.split(".");
+  try {
+    const div = big(2).pow(parseInt(bcsFixedPointType.slice(11)));
+    const value = big(integer)
+      .times(div)
+      .add(decimal || "0");
+    const maxValue = div.mul(div);
+    if (value.lt(0) || value.gte(maxValue)) throw new Error();
+    return undefined;
+  } catch {
+    return `Input must be ‘${bcsFixedPointType}’`;
+  }
+};
+
 const validateDecimal = (bcsDecimalType: string) => (v: string) => {
   const [integer, decimal] = v.split(".");
   if (decimal && decimal.length > 18)
@@ -43,7 +63,6 @@ const validateDecimal = (bcsDecimalType: string) => (v: string) => {
   } catch {
     return `Input must be ‘${bcsDecimalType}’`;
   }
-  return undefined;
 };
 
 const validateVector = (
@@ -67,6 +86,8 @@ const validateVector = (
     validateElement = validateAddress(isValidArgAddress);
   if (elementType.startsWith(OBJECT_TYPE))
     validateElement = validateAddress(isValidArgObject);
+  if (FIXED_POINT_TYPES.includes(elementType))
+    validateElement = validateFixedPoint(getArgType(elementType));
   if (DECIMAL_TYPES.includes(elementType))
     validateElement = validateDecimal(getArgType(elementType));
   // TODO: handle Vector?
@@ -128,6 +149,16 @@ export const getRules = <T extends FieldValues>(
       object: (v: Nullable<string>) => {
         if (v === null) return undefined;
         return validateAddress(isValidArgObject)(v);
+      },
+    };
+  }
+  if (FIXED_POINT_TYPES.includes(type)) {
+    const bcsType = getArgType(type);
+    rules.validate = {
+      ...rules.validate,
+      [bcsType]: (v: Nullable<string>) => {
+        if (v === null) return undefined;
+        return validateFixedPoint(bcsType)(v);
       },
     };
   }

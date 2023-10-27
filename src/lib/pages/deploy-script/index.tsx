@@ -145,7 +145,8 @@ export const DeployScript = () => {
           Script
         </Heading>
         <Text fontWeight={600} variant="body2" color="text.dark" mt={2} mb={12}>
-          Upload .mv files to deploy one-time use Script which execute messages.
+          Upload a .mv file to deploy one-time use Script which execute
+          messages.
         </Text>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"
