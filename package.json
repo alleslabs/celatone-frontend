@@ -43,7 +43,7 @@
     "@graphql-codegen/client-preset": "^1.1.4",
     "@initia/initia.js": "0.1.11",
     "@initia/initia.proto": "0.1.12",
-    "@interchain-ui/react": "^1.11.8",
+    "@interchain-ui/react": "1.4.1",
     "@monaco-editor/react": "^4.6.0",
     "@rjsf/chakra-ui": "v5.0.0-beta.10",
     "@rjsf/core": "v5.0.0-beta.10",
