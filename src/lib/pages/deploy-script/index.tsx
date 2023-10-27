@@ -1,6 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import {
   useCurrentChain,
@@ -54,7 +54,9 @@ export const DeployScript = () => {
     typeArgs: {},
     args: {},
   });
-  const [abiErrors, setAbiErrors] = useState<[string, string][]>([]);
+  const [abiErrors, setAbiErrors] = useState<[string, string][]>([
+    ["form", "initial"],
+  ]);
 
   const enableDeploy = useMemo(
     () =>
@@ -79,7 +81,7 @@ export const DeployScript = () => {
     setEstimatedFee(undefined);
     setSimulateError("");
     setInputData({ typeArgs: {}, args: {} });
-    setAbiErrors([]);
+    setAbiErrors([["form", "initial"]]);
   }, []);
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
@@ -128,16 +130,6 @@ export const DeployScript = () => {
     inputData,
   ]);
 
-  useEffect(() => {
-    const script = fileState.decodeRes;
-    if (script) {
-      setInputData({
-        typeArgs: getAbiInitialData(script.generic_type_params.length),
-        args: getAbiInitialData(script.params.length),
-      });
-    }
-  }, [fileState.decodeRes]);
-
   return (
     <>
       <WasmPageContainer>
@@ -162,7 +154,16 @@ export const DeployScript = () => {
             file: Option<File>,
             base64File: string,
             decodeRes: Option<ExposedFunction>
-          ) => setFileState({ file, base64File, decodeRes })}
+          ) => {
+            setFileState({ file, base64File, decodeRes });
+            if (decodeRes)
+              setInputData({
+                typeArgs: getAbiInitialData(
+                  decodeRes.generic_type_params.length
+                ),
+                args: getAbiInitialData(decodeRes.params.length),
+              });
+          }}
         />
         <Heading as="h6" variant="h6" mt={8} mb={4} alignSelf="start">
           Script input

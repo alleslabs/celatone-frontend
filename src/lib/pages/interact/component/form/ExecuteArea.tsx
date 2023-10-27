@@ -54,7 +54,9 @@ export const ExecuteArea = ({
     typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
     args: getAbiInitialData(executeFn.params.length),
   });
-  const [abiErrors, setAbiErrors] = useState<[string, string][]>([]);
+  const [abiErrors, setAbiErrors] = useState<[string, string][]>([
+    ["form", "initial"],
+  ]);
 
   const [composedTxMsgs, setComposedTxMsgs] = useState<EncodeObject[]>([]);
   const [simulateFeeError, setSimulateFeeError] = useState<string>();
