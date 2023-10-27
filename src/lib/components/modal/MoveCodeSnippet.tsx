@@ -114,7 +114,9 @@ const MoveCodeSnippet = ({
       typeArgsFlags: displayTypeArgs
         ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
         : "",
-      argsFlags: displayArgs ? `\n\t--args ${argsWithTypes.join(" ")} \\` : "",
+      argsFlags: displayArgs
+        ? `\n\t--args '${argsWithTypes.join(" ")}' \\`
+        : "",
       isHiddenCLI: argTypes.some(
         (argType) =>
           argType === "vector" ||
