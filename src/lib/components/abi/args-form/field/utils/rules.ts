@@ -29,6 +29,10 @@ const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: string) =>
     isValidArgAddress(v) ? undefined : "Invalid address";
 
+const validateObject =
+  (isValidArgObject: (input: string) => boolean) => (v: string) =>
+    isValidArgObject(v) ? undefined : "Invalid SDK module address";
+
 const validateDecimal = (bcsDecimalType: string) => (v: string) => {
   const [integer, decimal] = v.split(".");
   if (decimal && decimal.length > 18)
@@ -127,7 +131,7 @@ export const getRules = <T extends FieldValues>(
       ...rules.validate,
       object: (v: Nullable<string>) => {
         if (v === null) return undefined;
-        return validateAddress(isValidArgObject)(v);
+        return validateObject(isValidArgObject)(v);
       },
     };
   }

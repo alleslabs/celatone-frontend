@@ -92,14 +92,14 @@ const getArgValue = ({
   }
 };
 
-const BUFFER_SIZE = 1024 * 1024;
 const bcs = BCS.getInstance();
 
 const serializeArg = (arg: { type: string; value: Nullable<string> }) => {
+  const bufferSize = Math.max(1024, 2 * (arg.value ?? "").length);
   try {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
-    return bcs.serialize(argType, argValue, BUFFER_SIZE);
+    return bcs.serialize(argType, argValue, bufferSize);
   } catch (e) {
     return "";
   }
