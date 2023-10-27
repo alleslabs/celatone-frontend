@@ -14,6 +14,7 @@ import {
   TabPanel,
   Heading,
   Box,
+  Flex,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import AceEditor from "react-ace";
@@ -119,7 +120,7 @@ const MoveCodeSnippet = ({
       {
         name: "Curl",
         mode: "sh",
-        snippet: `curl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
+        snippet: `\n\ncurl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
 --data-raw '${formatedAbiData}'`,
       },
       {
@@ -171,8 +172,8 @@ viewModule(moduleAddress, moduleName, fnName);`,
         snippet: `${daemonName} keys add --recover celatone\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
-export MODULE_ADDRESS ='${moduleAddress}'\n
-export MODULE_NAME = '${moduleName}'\n
+export MODULE_ADDRESS='${moduleAddress}'\n
+export MODULE_NAME='${moduleName}'\n
 export MODULE_FN='${fn.name}'\n
 ${daemonName} tx move execute $MODULE_ADDRESS \\
     $MODULE_NAME \\
@@ -284,10 +285,13 @@ execute();
                         }}
                       />
                       <Box position="absolute" top={4} right={4}>
-                        <CopyButton
-                          value={item.snippet}
-                          amptrackSection="code_snippet"
-                        />
+                        {/* Workaround for centering Tooltip placement */}
+                        <Flex>
+                          <CopyButton
+                            value={item.snippet}
+                            amptrackSection="code_snippet"
+                          />
+                        </Flex>
                       </Box>
                     </Box>
                   </TabPanel>
