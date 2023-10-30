@@ -5,7 +5,7 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
-  Text,
+  Button,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -125,35 +125,6 @@ const ContractTxsTable = observer(
   }
 );
 
-const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => (
-  <Flex
-    onClick={onViewMore}
-    border="1px solid"
-    borderColor="gray.700"
-    borderRadius="8px"
-    p={4}
-    alignItems="center"
-    justifyContent="space-between"
-    w="full"
-    cursor="pointer"
-    transition="all 0.25s ease-in-out"
-    _hover={{ bgColor: "gray.900" }}
-  >
-    <Flex alignItems="center" gap={3}>
-      <CustomIcon name="contract-list" color="gray.600" />
-      <div>
-        <Text as="h6" variant="h6s" fontWeight={600}>
-          View Contracts States
-        </Text>
-        <Text variant="body3" color="text.dark" fontWeight={600}>
-          Access the current contract states information
-        </Text>
-      </div>
-    </Flex>
-    <CustomIcon name="chevron-right" color="gray.600" />
-  </Flex>
-);
-
 const ContractDetailsBody = observer(
   ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailsTableHeader";
@@ -250,20 +221,31 @@ const ContractDetailsBody = observer(
                     direction={{ base: "column", md: "row" }}
                   >
                     {/* Instantiate Info */}
-                    {isMobile && (
-                      <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
-                        Instantiate Info
-                      </Heading>
-                    )}
-                    <InstantiateInfo
-                      isLoading={
-                        contractData.isContractDetailLoading ||
-                        contractData.isContractCw2InfoLoading ||
-                        contractData.isInstantiateDetailLoading
-                      }
-                      {...contractData}
-                    />
-                    {/* Contract Info (Expand) */}
+                    <div>
+                      {isMobile && (
+                        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+                          Instantiate Info
+                        </Heading>
+                      )}
+                      <InstantiateInfo
+                        isLoading={
+                          contractData.isContractDetailLoading ||
+                          contractData.isContractCw2InfoLoading ||
+                          contractData.isInstantiateDetailLoading
+                        }
+                        {...contractData}
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline-primary"
+                        mt={4}
+                        pr={1}
+                        onClick={handleTabChange(TabIndex.States)}
+                      >
+                        View Contract States
+                        <CustomIcon name="chevron-right" boxSize={3} />
+                      </Button>
+                    </div>
                     <Flex
                       direction="column"
                       flex={0.8}
@@ -285,9 +267,6 @@ const ContractDetailsBody = observer(
                         jsonString={jsonPrettify(contractData.initMsg ?? "")}
                         isLoading={contractData.isInstantiateDetailLoading}
                         defaultExpand
-                      />
-                      <ContractStateShortcut
-                        onViewMore={handleTabChange(TabIndex.States)}
                       />
                     </Flex>
                   </Flex>
