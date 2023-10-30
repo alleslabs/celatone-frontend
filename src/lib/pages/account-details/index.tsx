@@ -44,8 +44,8 @@ import {
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
-import { ModuleLists } from "./components/ModuleLists";
-import { ResourceLists, ResourceSection } from "./components/resources";
+import { ModuleLists } from "./components/modules";
+import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -93,6 +93,16 @@ const AccountDetailsBody = ({
   const { data: accountId } = useAccountId(accountAddress);
   const { data: icnsName } = useICNSNamesByAddress(accountAddress);
 
+  const publicDetail = publicInfoBySlug?.details;
+
+  const {
+    tableCounts,
+    refetchCodesCount,
+    refetchContractsAdminCount,
+    refetchContractsCount,
+    refetchProposalsCount,
+    loadingState: { txCountLoading },
+  } = useAccountDetailsTableCounts(accountAddress, accountId);
   // TODO: combine with useAccountDetailsTableCounts and remove type assertion
   // move
   const { data: fetchedAccountModules, isFetching: isModulesLoading } =
@@ -108,16 +118,6 @@ const AccountDetailsBody = ({
     useAccountResources({
       address: accountAddress,
     });
-
-  const publicDetail = publicInfoBySlug?.details;
-  const {
-    tableCounts,
-    refetchCodesCount,
-    refetchContractsAdminCount,
-    refetchContractsCount,
-    refetchProposalsCount,
-    loadingState: { txCountLoading },
-  } = useAccountDetailsTableCounts(accountAddress, accountId);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -336,13 +336,16 @@ const AccountDetailsBody = ({
             )}
             {move.enabled && (
               <>
-                <ResourceLists
+                <ResourceOverview
                   address={accountAddress}
+                  totalCount={resourcesData?.totalCount}
+                  resourcesByName={resourcesData?.groupedByName}
+                  isLoading={isResourceLoading}
                   onViewMore={handleTabChange(TabIndex.Resources)}
                 />
                 <ModuleLists
-                  selectedAddress={accountAddress}
                   totalCount={modulesData?.length}
+                  selectedAddress={accountAddress}
                   modules={modulesData}
                   isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules)}
@@ -394,7 +397,7 @@ const AccountDetailsBody = ({
           <TabPanel p={0}>
             <ResourceSection
               address={accountAddress}
-              resources={resourcesData?.groupedByOwner}
+              resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />
           </TabPanel>
