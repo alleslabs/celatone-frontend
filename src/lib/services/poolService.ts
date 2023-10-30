@@ -273,30 +273,29 @@ interface PairResponse {
   total_share: string;
 }
 
-export interface LPShareInfoReturn {
-  coinA: {
-    symbol: string;
-    denom: string;
+export type LPShareInfoMap = Record<
+  string,
+  {
+    coinA: {
+      symbol: string;
+      denom: string;
+      precision: number;
+      tag: HexAddr;
+      amountAPerShare: Big;
+    };
+    coinB: {
+      symbol: string;
+      denom: string;
+      precision: number;
+      tag: HexAddr;
+      amountBPerShare: Big;
+    };
+    lpPricePerShare: Big;
     precision: number;
-    tag: HexAddr;
-    amountAPerShare: Big;
-  };
-  coinB: {
+    image: [string, string];
     symbol: string;
-    denom: string;
-    precision: number;
-    tag: HexAddr;
-    amountBPerShare: Big;
-  };
-  lpPricePerShare: Big;
-  precision: number;
-  image: [string, string];
-  symbol: string;
-}
-
-export interface LPShareInfoMap {
-  [key: string]: LPShareInfoReturn;
-}
+  }
+>;
 
 const indexPairResponse = (res: string): PairResponse[] => {
   const parsed = parseJsonStr<PairRaw[]>(res);

@@ -2,10 +2,7 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type {
-  LPShareInfoMap,
-  LPShareInfoReturn,
-} from "lib/services/poolService";
+import type { LPShareInfoMap } from "lib/services/poolService";
 import type {
   Balance,
   BalanceWithAssetInfo,
@@ -43,20 +40,6 @@ export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
     big(0) as USD<Big>
   );
 
-type LPDetailsReturn =
-  | { isLPToken: true; lpDetails: LPShareInfoReturn }
-  | { isLPToken: false; lpDetails: undefined };
-
-export const getLPDetails = (
-  denom: string,
-  lpMap: LPShareInfoMap = {}
-): LPDetailsReturn => {
-  const isLPToken = denom in lpMap;
-  return isLPToken
-    ? { isLPToken: true, lpDetails: lpMap[denom] }
-    : { isLPToken: false, lpDetails: undefined };
-};
-
 export const coinToTokenWithValue = (
   denom: string,
   amount: string,
@@ -65,10 +48,10 @@ export const coinToTokenWithValue = (
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;
   const assetInfo = assetInfos?.[denom];
-  const { isLPToken, lpDetails } = getLPDetails(denom, lpMap);
-  return isLPToken
+  const lpDetails = lpMap?.[denom];
+  return lpDetails
     ? {
-        isLPToken,
+        isLPToken: true,
         denom,
         amount: tokenAmount,
         symbol: lpDetails.symbol,
@@ -101,6 +84,7 @@ export const coinToTokenWithValue = (
           .div(big(10).pow(lpDetails.precision)) as USD<Big>,
       }
     : {
+        isLPToken: false,
         denom,
         amount: tokenAmount,
         symbol: assetInfo?.symbol,
@@ -128,6 +112,7 @@ export const addTokenWithValue = (
         value: oldToken.value?.add(token.value ?? 0) as USD<Big>,
       }
     : {
+        isLPToken: false,
         denom: "",
         amount: big(0) as U<Token<Big>>,
         symbol: undefined,

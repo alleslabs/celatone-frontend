@@ -39,7 +39,6 @@ import {
   coinToTokenWithValue,
   totalValueTokenWithValue,
   compareTokenWithValues,
-  getLPDetails,
 } from "lib/utils";
 
 import type { DenomInfo, UserDelegationsData } from "./types";
@@ -178,8 +177,8 @@ export const useUserAssetInfos = (
     ?.filter((bal) => Number(bal.amount))
     .map<BalanceWithAssetInfo>((balance): BalanceWithAssetInfo => {
       const assetInfo = assetInfos?.[balance.id];
-      const { isLPToken, lpDetails } = getLPDetails(balance.id, lpMap);
-      return isLPToken
+      const lpDetails = lpMap?.[balance.id];
+      return lpDetails
         ? {
             balance: {
               ...balance,
@@ -188,13 +187,13 @@ export const useUserAssetInfos = (
               precision: lpDetails.precision,
             },
             assetInfo,
-            isLPToken,
+            isLPToken: true,
             lpLogo: lpDetails.image,
           }
         : {
             balance,
             assetInfo,
-            isLPToken,
+            isLPToken: false,
           };
     });
 
@@ -202,7 +201,8 @@ export const useUserAssetInfos = (
   const supportedAssets = contractBalancesWithAssetInfos
     ?.filter(
       (balance) =>
-        balance.assetInfo || getLPDetails(balance.balance.id, lpMap).isLPToken
+        !isUndefined(balance.assetInfo) ||
+        !isUndefined(lpMap?.[balance.balance.id])
     )
     .sort((a, b) =>
       !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
@@ -214,7 +214,7 @@ export const useUserAssetInfos = (
 
   const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
     (balance) =>
-      !balance.assetInfo && !getLPDetails(balance.balance.id, lpMap).isLPToken
+      isUndefined(balance.assetInfo) && isUndefined(lpMap?.[balance.balance.id])
   );
 
   return {
