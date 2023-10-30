@@ -14,7 +14,6 @@ import {
   TabPanel,
   Heading,
   Box,
-  Flex,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import AceEditor from "react-ace";
@@ -306,13 +305,10 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                         }}
                       />
                       <Box position="absolute" top={4} right={4}>
-                        {/* Workaround for centering Tooltip placement */}
-                        <Flex>
-                          <CopyButton
-                            value={item.snippet}
-                            amptrackSection="code_snippet"
-                          />
-                        </Flex>
+                        <CopyButton
+                          value={item.snippet}
+                          amptrackSection="code_snippet"
+                        />
                       </Box>
                     </Box>
                   </TabPanel>
