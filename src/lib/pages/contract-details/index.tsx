@@ -133,7 +133,6 @@ const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => {
       borderColor="gray.700"
       borderRadius="8px"
       p={4}
-      mt={12}
       alignItems="center"
       justifyContent="space-between"
       w="full"
@@ -142,9 +141,9 @@ const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => {
       _hover={{ bgColor: "gray.900" }}
     >
       <Flex alignItems="center" gap={3}>
-        <CustomIcon name="contract-list" color="gray.600" boxSize={6} />
+        <CustomIcon name="contract-list" color="gray.600" />
         <div>
-          <Text variant="body2" fontWeight={600}>
+          <Text as="h6" variant="h6s" fontWeight={600}>
             View Contracts States
           </Text>
           <Text variant="body3" color="text.dark" fontWeight={600}>
@@ -152,7 +151,7 @@ const ContractStateShortcut = ({ onViewMore }: { onViewMore: () => void }) => {
           </Text>
         </div>
       </Flex>
-      <CustomIcon name="chevron-right" color="gray.600" boxSize={6} />
+      <CustomIcon name="chevron-right" color="gray.600" />
     </Flex>
   );
 };
@@ -289,15 +288,15 @@ const ContractDetailsBody = observer(
                         isLoading={contractData.isInstantiateDetailLoading}
                         defaultExpand
                       />
+                      <ContractStateShortcut
+                        onViewMore={handleTabChange(TabIndex.States)}
+                      />
                     </Flex>
                   </Flex>
                 </Flex>
                 <ContractTxsTable
                   contractAddress={contractAddress}
                   contractData={contractData}
-                />
-                <ContractStateShortcut
-                  onViewMore={handleTabChange(TabIndex.States)}
                 />
               </Flex>
             </TabPanel>
