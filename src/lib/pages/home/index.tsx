@@ -129,12 +129,6 @@ const Home = () => {
   );
   const { data: txsCount, isLoading: isLoadingTxsCount } = useTxsCount();
 
-  const onBlockRowSelect = (blockHeight: number) =>
-    navigate({
-      pathname: "/blocks/[blockHeight]",
-      query: { blockHeight },
-    });
-
   const toTxs = () =>
     navigate({
       pathname: "/txs",
@@ -252,7 +246,7 @@ const Home = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <BlocksTable isViewMore onRowSelect={onBlockRowSelect} />
+        <BlocksTable isViewMore />
         {latestBlockInfo?.height && latestBlockInfo.height > 5 && (
           <ViewMore onClick={toBlocks} />
         )}
