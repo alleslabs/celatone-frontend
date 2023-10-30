@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { useMobile } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { BlockCard } from "lib/components/card/BlockCard";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
@@ -26,6 +26,8 @@ const scrollComponentId = "block-table-header";
 export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   const { data: blockCount, refetch: refetchCount } = useBlockCountQuery();
 
+  const navigate = useInternalNavigate();
+
   const {
     pagesQuantity,
     currentPage,
@@ -47,6 +49,12 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     isLoading,
     error,
   } = useBlocklistQuery(pageSize, offset);
+
+  const onRowSelect = (blockHeight: number) =>
+    navigate({
+      pathname: "/blocks/[blockHeight]",
+      query: { blockHeight },
+    });
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -98,6 +106,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
             <BlocksRow
               key={block.hash}
               templateColumns={TEMPLATE_COLUMNS}
+              onRowSelect={onRowSelect}
               blockData={block}
             />
           ))}

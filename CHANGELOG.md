@@ -43,7 +43,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+<<<<<<< HEAD
 - [#586](https://github.com/alleslabs/celatone-frontend/pull/586) Add shortcut for contract states
+=======
+- [#587](https://github.com/alleslabs/celatone-frontend/pull/587) Make block row clickable
+>>>>>>> develop
 - [#579](https://github.com/alleslabs/celatone-frontend/pull/579) Improve ux writing for recent items page
 - [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 
@@ -81,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#596](https://github.com/alleslabs/celatone-frontend/pull/596) Show parameter changes field for ParameterChangeProposal Tx
 - [#575](https://github.com/alleslabs/celatone-frontend/pull/575) Support message suggestion for contract from Sylvia framework
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Update cosmjs version to latest and bump terra testnet gas price
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
