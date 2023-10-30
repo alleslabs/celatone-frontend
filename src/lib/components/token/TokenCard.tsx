@@ -23,7 +23,7 @@ export const TokenCard = ({
   ...cardProps
 }: TokenCardProps) => {
   const { symbol, price, amount, precision, id } = userBalance.balance;
-
+  const priceExist = price !== undefined;
   return (
     <Tooltip label={`Token ID: ${id}`} maxW="240px" textAlign="center">
       <Flex
@@ -57,10 +57,10 @@ export const TokenCard = ({
             {symbol}
           </Text>
           <Badge variant="gray" ml={2}>
-            {price ? formatPrice(price as USD<number>) : "N/A"}
+            {priceExist ? formatPrice(price as USD<number>) : "N/A"}
           </Badge>
           <Copier
-            type={price ? "supported_asset" : "unsupported_asset"}
+            type={priceExist ? "supported_asset" : "unsupported_asset"}
             value={id}
             copyLabel="Token ID Copied!"
             display={{ base: "flex", md: "none" }}
@@ -74,7 +74,7 @@ export const TokenCard = ({
             {formatUTokenWithPrecision(amount as U<Token>, precision, false)}
           </Text>
           <Text variant="body3" color="text.dark">
-            {price
+            {priceExist
               ? `(${formatPrice(
                   calAssetValueWithPrecision(userBalance.balance)
                 )})`

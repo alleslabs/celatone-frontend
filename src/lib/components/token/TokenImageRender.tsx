@@ -19,7 +19,7 @@ interface TokenImageRenderProps extends ImageProps {
 
 export const TokenImageRender = ({ logo, ...props }: TokenImageRenderProps) =>
   Array.isArray(logo) ? (
-    <Flex>
+    <Flex minW="fit-content">
       <TokenImage src={logo[0]} alt={logo[0]} zIndex={1} {...props} />
       <TokenImage src={logo[1]} alt={logo[1]} ml="-6px" {...props} />
     </Flex>

@@ -25,7 +25,7 @@ export interface AssetInfo {
 }
 
 export interface BalanceWithAssetInfo {
-  isLpToken?: boolean;
+  isLPToken?: boolean;
   balance: Balance;
   assetInfo: Option<AssetInfo>;
   lpLogo?: Option<[string, string]>;

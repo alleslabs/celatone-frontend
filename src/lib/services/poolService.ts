@@ -273,8 +273,9 @@ interface PairResponse {
   total_share: string;
 }
 
-export interface LPShareInfoReturn {
-  [key: string]: {
+export type LPShareInfoMap = Record<
+  string,
+  {
     coinA: {
       symbol: string;
       denom: string;
@@ -293,8 +294,8 @@ export interface LPShareInfoReturn {
     precision: number;
     image: [string, string];
     symbol: string;
-  };
-}
+  }
+>;
 
 const indexPairResponse = (res: string): PairResponse[] => {
   const parsed = parseJsonStr<PairRaw[]>(res);
@@ -346,7 +347,7 @@ export const useLPShareInfo = () => {
       }
     ).then((res) => indexPairResponse(res));
 
-    return pairs.reduce<LPShareInfoReturn>((acc, curr) => {
+    return pairs.reduce<LPShareInfoMap>((acc, curr) => {
       const [coinA, coinB] = [curr.coin_a.denom, curr.coin_b.denom].map(
         (denom, idx) => ({
           ...(idx === 0 ? curr.coin_a : curr.coin_b),

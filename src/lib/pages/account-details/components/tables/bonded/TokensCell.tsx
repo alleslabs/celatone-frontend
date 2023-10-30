@@ -30,6 +30,7 @@ export const TokensCell = ({
       direction="column"
       p={3}
       bgColor={isUnbonding ? undefined : "gray.800"}
+      py={isUnbonding ? 0 : undefined}
       borderRadius="8px"
       gap={2}
       w="full"

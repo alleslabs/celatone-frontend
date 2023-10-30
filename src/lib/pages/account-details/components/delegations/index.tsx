@@ -1,6 +1,8 @@
 import { Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { AmpEvent, useTrack } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
@@ -61,7 +63,8 @@ export const DelegationsSection = ({
   onViewMore,
 }: DelegationsSectionProps) => {
   const { track } = useTrack();
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const router = useRouter();
   const {
     stakingParams,
     isValidator,
@@ -82,6 +85,11 @@ export const DelegationsSection = ({
     totalCommission,
     isLoadingTotalCommission,
   } = useUserDelegationInfos(walletAddress);
+
+  useEffect(() => {
+    onClose();
+  }, [onClose, router.query.accountAddress]);
+
   if (isLoading) return <Loading withBorder />;
   if (!stakingParams)
     return <EmptyState message="Error fetching delegation data" />;

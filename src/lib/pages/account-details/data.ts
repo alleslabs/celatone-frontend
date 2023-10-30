@@ -1,5 +1,6 @@
 import type { Big } from "big.js";
 import big from "big.js";
+import { isUndefined } from "lodash";
 
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountBalances } from "lib/services/accountService";
@@ -172,32 +173,39 @@ export const useUserAssetInfos = (
   const { assetInfos } = useAssetInfos({ withPrices: true });
   const { data: lpMap } = useLPShareInfo();
 
-  const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
-    (balance): BalanceWithAssetInfo => {
+  const contractBalancesWithAssetInfos = balances
+    ?.filter((bal) => Number(bal.amount))
+    .map<BalanceWithAssetInfo>((balance): BalanceWithAssetInfo => {
       const assetInfo = assetInfos?.[balance.id];
-      const isLp = balance.id in (lpMap || {});
       const lpDetails = lpMap?.[balance.id];
-      return {
-        balance: {
-          ...balance,
-          price: isLp ? lpDetails?.lpPricePerShare.toNumber() : balance.price,
-          symbol: isLp ? lpDetails?.symbol : balance.symbol,
-          precision: isLp ? lpDetails?.precision ?? 0 : balance.precision,
-        },
-        assetInfo,
-        isLpToken: isLp,
-        lpLogo: lpDetails?.image,
-      };
-    }
-  );
+      return lpDetails
+        ? {
+            balance: {
+              ...balance,
+              price: lpDetails.lpPricePerShare.toNumber(),
+              symbol: lpDetails.symbol,
+              precision: lpDetails.precision,
+            },
+            assetInfo,
+            isLPToken: true,
+            lpLogo: lpDetails.image,
+          }
+        : {
+            balance,
+            assetInfo,
+            isLPToken: false,
+          };
+    });
 
   // Supported assets should order by descending value
   const supportedAssets = contractBalancesWithAssetInfos
     ?.filter(
-      (balance) => balance.assetInfo || balance.balance.id in (lpMap || {})
+      (balance) =>
+        !isUndefined(balance.assetInfo) ||
+        !isUndefined(lpMap?.[balance.balance.id])
     )
     .sort((a, b) =>
-      a.balance.price && b.balance.price
+      !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
         ? calAssetValueWithPrecision(b.balance).cmp(
             calAssetValueWithPrecision(a.balance)
           )
@@ -205,7 +213,8 @@ export const useUserAssetInfos = (
     );
 
   const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
-    (balance) => !balance.assetInfo
+    (balance) =>
+      isUndefined(balance.assetInfo) && isUndefined(lpMap?.[balance.balance.id])
   );
 
   return {
@@ -282,7 +291,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     isLoadingTotalCommission: isLoadingRawCommission,
   };
 
-  if (rawStakingParams && assetInfos && validators && lpMap) {
+  if (rawStakingParams && assetInfos && validators) {
     data.stakingParams = {
       ...rawStakingParams,
       bondDenoms: rawStakingParams.bondDenoms.map((denom) => ({
