@@ -35,12 +35,11 @@ const validateAddress =
     isValidArgAddress(v) ? undefined : "Invalid address";
 
 const validateFixedPoint = (bcsFixedPointType: string) => (v: string) => {
-  const [integer, decimal] = v.split(".");
   try {
-    const div = big(2).pow(parseInt(bcsFixedPointType.slice(11)));
-    const value = big(integer)
-      .times(div)
-      .add(decimal || "0");
+    const div = big(2).pow(
+      parseInt(bcsFixedPointType.slice("fixed_point".length))
+    );
+    const value = big(v).times(div);
     const maxValue = div.mul(div);
     if (value.lt(0) || value.gte(maxValue)) throw new Error();
     return undefined;
@@ -50,14 +49,14 @@ const validateFixedPoint = (bcsFixedPointType: string) => (v: string) => {
 };
 
 const validateDecimal = (bcsDecimalType: string) => (v: string) => {
-  const [integer, decimal] = v.split(".");
+  const [, decimal] = v.split(".");
   if (decimal && decimal.length > 18)
     return "Decimal length must be less than 18";
   try {
-    const value = big(integer)
-      .times("1000000000000000000")
-      .add(decimal || "0");
-    const maxValue = big(2).pow(parseInt(bcsDecimalType.slice(7)));
+    const value = big(v).times("1000000000000000000");
+    const maxValue = big(2).pow(
+      parseInt(bcsDecimalType.slice("decimal".length))
+    );
     if (value.lt(0) || value.gte(maxValue)) throw new Error();
     return undefined;
   } catch {
