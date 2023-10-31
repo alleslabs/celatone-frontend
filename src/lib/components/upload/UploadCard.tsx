@@ -81,12 +81,12 @@ export const UploadCard = ({
         </Flex>
         <Flex align="center" gap={4}>
           <Button
-            leftIcon={<CustomIcon name="swap" boxSize={3} />}
+            leftIcon={<CustomIcon name="delete" boxSize={3} />}
             size="sm"
             variant={themeConfig.buttonVariant}
             onClick={deleteFile}
           >
-            Change file
+            Remove file
           </Button>
           {status === "error" && (
             <CustomIcon

@@ -33,7 +33,7 @@ export const ArgsForm = ({
     control,
     getValues,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<Record<string, Nullable<string>>>({
     defaultValues: initialData,
     mode: "all",
@@ -45,9 +45,14 @@ export const ArgsForm = ({
   }, [trigger]);
 
   useEffect(
-    () => propsOnErrors?.(formatErrors(errors)),
+    () => {
+      const validating: [string, string][] = isValid
+        ? []
+        : [["form", "not-valid"]];
+      propsOnErrors?.([...formatErrors(errors), ...validating]);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(errors), propsOnErrors]
+    [JSON.stringify(errors), isValid]
   );
 
   return (

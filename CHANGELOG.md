@@ -135,6 +135,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#590](https://github.com/alleslabs/celatone-frontend/pull/590) Fix upload script various bugs
 - [#594](https://github.com/alleslabs/celatone-frontend/pull/594) LP assets filtering and delegation ui/ux improvement
 - [#584](https://github.com/alleslabs/celatone-frontend/pull/584) Throw an error when tx failed on postTx
 - [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
