@@ -72,7 +72,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
       role="group"
       _hover={{
         "& .info": {
-          display: "flex",
+          visibility: "visible",
         },
       }}
     >
@@ -82,12 +82,12 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
         w="full"
         alignItems="center"
       >
-        <Flex gap={1}>
+        <Flex gap={1} alignItems="center">
           <Text variant="body2" className="ellipsis">
             {tokenLabel}
           </Text>
           <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
-            <Flex cursor="pointer" className="info" display="none">
+            <Flex cursor="pointer" className="info" visibility="hidden">
               <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
             </Flex>
           </Tooltip>
@@ -95,8 +95,8 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             type="unsupported_asset"
             value={balance.id}
             copyLabel="Token ID Copied!"
+            ml={0}
             display="none"
-            ml={1}
             amptrackSection="unsupported_token_copy"
           />
         </Flex>

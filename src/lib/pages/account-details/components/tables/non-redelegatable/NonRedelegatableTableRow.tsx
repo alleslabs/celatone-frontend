@@ -2,7 +2,7 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { NonRedelegatable } from "lib/pages/account-details/type";
+import type { NonRedelegatable } from "lib/pages/account-details/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface NonRedelegatableTableRowProps {

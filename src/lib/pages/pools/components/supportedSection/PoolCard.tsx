@@ -116,7 +116,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           <AllocationBadge
             key={asset.denom}
             denom={asset.denom}
-            logo={asset.logo}
+            logo={asset.logo as string}
             symbol={asset.symbol}
             precision={asset.precision}
             amount={asset.amount}
@@ -129,7 +129,9 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           <AllocationBadge
             key="OTHERS"
             denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
-            logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
+            logo={
+              is4Assets ? (item.poolLiquidity[3].logo as string) : undefined
+            }
             symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
             precision={is4Assets ? item.poolLiquidity[3].precision : undefined}
             amount={

@@ -3463,6 +3463,16 @@
     long "^5.2.0"
     protobufjs "^7.1.1"
 
+"@initia/initia.proto@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.12.tgz#bfef7f9fe2b8dfa39364a30d1e497ed214029f55"
+  integrity sha512-dJkCgMyIonVDdWWmcAkCLx7woejp0EWbC9EXT/3xHxXw+IiZJrNBJOzY2wAjOBfOwC7n7HCJkpFtp2i2rumuTQ==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.15.0"
+    google-protobuf "^3.21.0"
+    long "^5.2.0"
+    protobufjs "^7.1.1"
+
 "@interchain-ui/react@1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@interchain-ui/react/-/react-1.4.1.tgz#92e9eb3d657596a84f7c93c509a1c4a3f8771f10"
