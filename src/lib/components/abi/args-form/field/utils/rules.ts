@@ -53,7 +53,7 @@ const validateDecimal = (bcsDecimalType: string) => (v: string) => {
   if (decimal && decimal.length > 18)
     return "Decimal length must be less than 18";
   try {
-    const value = big(v).times("1000000000000000000");
+    const value = big(v).times(big(10).pow(18));
     const maxValue = big(2).pow(
       parseInt(bcsDecimalType.slice("decimal".length))
     );
