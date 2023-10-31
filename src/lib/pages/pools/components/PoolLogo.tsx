@@ -5,22 +5,6 @@ import { getUndefinedTokenIcon } from "../utils";
 import { TokenImageRender } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
 
-interface PoolAssetLogoProps {
-  token: TokenWithValue;
-  logoSize: ImageProps["boxSize"];
-  idx: number;
-}
-
-const PoolAssetLogo = ({ token, logoSize, idx }: PoolAssetLogoProps) => (
-  <Flex key={token.denom}>
-    <TokenImageRender
-      logo={token.logo || getUndefinedTokenIcon(token.denom)}
-      boxSize={logoSize}
-      zIndex={2 - idx}
-    />
-  </Flex>
-);
-
 interface PoolLogoProps {
   tokens: TokenWithValue[];
   logoSize?: ImageProps["boxSize"];
@@ -49,12 +33,13 @@ export const PoolLogo = ({
       justifyContent="center"
     >
       {tokens.slice(0, isShortened ? 2 : undefined).map((token, idx) => (
-        <PoolAssetLogo
-          key={token.denom}
-          token={token}
-          logoSize={logoSize}
-          idx={idx}
-        />
+        <Flex key={token.denom}>
+          <TokenImageRender
+            logo={token.logo || getUndefinedTokenIcon(token.denom)}
+            boxSize={logoSize}
+            zIndex={2 - idx}
+          />
+        </Flex>
       ))}
       {isShortened && (
         <Flex

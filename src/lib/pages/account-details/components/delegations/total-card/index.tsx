@@ -4,6 +4,7 @@ import type { DenomInfo } from "lib/pages/account-details/types";
 import type { Addr, Option, TokenWithValue } from "lib/types";
 
 import { MultiBondsCard } from "./MultiBondsCard";
+import { OverviewCard } from "./OverviewCard";
 import { SingleBondCard } from "./SingleBondCard";
 import { SingleBondMultiAssetsCard } from "./SingleBondMultiAssetsCard";
 
@@ -14,6 +15,7 @@ export interface TotalCardProps {
   bondDenoms: DenomInfo[];
   tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
+  isViewMore: boolean;
 }
 
 export const TotalCard = ({
@@ -23,6 +25,7 @@ export const TotalCard = ({
   bondDenoms,
   tokens = {},
   isLoading,
+  isViewMore,
 }: TotalCardProps) => {
   if (isLoading)
     return (
@@ -30,6 +33,9 @@ export const TotalCard = ({
         <Spinner mt={2} alignSelf="center" size="xl" />
       </Box>
     );
+
+  if (isViewMore)
+    return <OverviewCard title={title} message={message} tokens={tokens} />;
 
   if (bondDenoms.length === 1) {
     const denoms = Object.keys(tokens);

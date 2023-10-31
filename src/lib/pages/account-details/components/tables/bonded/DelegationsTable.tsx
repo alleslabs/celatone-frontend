@@ -35,7 +35,7 @@ const DelegationsTableBody = ({
   if (isLoading) return <Loading withBorder />;
   if (!delegations || !rewards)
     return <EmptyState message={<ErrorFetching />} withBorder />;
-  if (!delegations?.length)
+  if (!delegations.length)
     return (
       <EmptyState
         message="This account did not delegate their assets to any validators."

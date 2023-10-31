@@ -1,6 +1,4 @@
-import { Flex, Heading, useDisclosure } from "@chakra-ui/react";
-import type { Big } from "big.js";
-import big from "big.js";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -8,55 +6,18 @@ import { AmpEvent, useTrack } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
-import type { HumanAddr, USD } from "lib/types";
-import {
-  formatPrice,
-  getTokenLabel,
-  totalValueTokenWithValue,
-} from "lib/utils";
+import type { HumanAddr } from "lib/types";
+import { getTokenLabel } from "lib/utils";
 
 import { DelegationInfo } from "./DelegationInfo";
 import { DelegationsBody } from "./DelegationsBody";
 import { RedelegationsSection } from "./RedelegationsSection";
-import type { TotalCardProps } from "./total-card";
 import { TotalCard } from "./total-card";
-import { TotalCardTop } from "./total-card/TotalCardTop";
 
 interface DelegationsSectionProps {
   walletAddress: HumanAddr;
   onViewMore?: () => void;
 }
-
-interface DisplayCardProps extends TotalCardProps {
-  isViewMore: boolean;
-}
-
-export const DisplayCard = ({
-  isViewMore,
-  ...totalCardProps
-}: DisplayCardProps) =>
-  isViewMore ? (
-    <Flex direction="column" gap={1} minW="233px">
-      <TotalCardTop
-        title={totalCardProps.title}
-        message={totalCardProps.message}
-        fontWeight={600}
-      />
-      {!totalCardProps.tokens ? (
-        <Heading variant="h6" as="h6">
-          N/A
-        </Heading>
-      ) : (
-        <Heading variant="h6" as="h6">
-          {formatPrice(
-            totalValueTokenWithValue(totalCardProps.tokens, big(0) as USD<Big>)
-          )}
-        </Heading>
-      )}
-    </Flex>
-  ) : (
-    <TotalCard {...totalCardProps} />
-  );
 
 export const DelegationsSection = ({
   walletAddress,
@@ -115,7 +76,7 @@ export const DelegationsSection = ({
       >
         <DelegationInfo
           totalBondedCard={
-            <DisplayCard
+            <TotalCard
               title="Total Bonded"
               message={`Total delegated and unbonding ${
                 stakingParams.bondDenoms.length === 1
@@ -134,7 +95,7 @@ export const DelegationsSection = ({
           }
           otherInfoCards={
             <>
-              <DisplayCard
+              <TotalCard
                 title="Reward"
                 message={`Total rewards earned from delegated ${
                   stakingParams.bondDenoms.length === 1
@@ -148,7 +109,7 @@ export const DelegationsSection = ({
                 isViewMore={Boolean(onViewMore)}
               />
               {isValidator && (
-                <DisplayCard
+                <TotalCard
                   title="Commission"
                   message="Total commission reward earned by validator"
                   address={walletAddress}

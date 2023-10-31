@@ -30,7 +30,6 @@ const MultiBondsRadioCardBody = ({
   );
 };
 
-// TODO: double check UI
 export const MultiBondsRadioCard = ({
   value,
   tokens,

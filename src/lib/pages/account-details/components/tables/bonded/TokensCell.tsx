@@ -20,10 +20,12 @@ export const TokensCell = ({
   isSingleBondDenom,
   isUnbonding,
 }: TokensCellProps) => {
-  if (isSingleBondDenom) {
-    if (!tokens.length) return <EmptyTokenCell />;
-    return <TokenCell token={tokens[0]} />;
-  }
+  if (isSingleBondDenom)
+    return !tokens.length ? (
+      <EmptyTokenCell />
+    ) : (
+      <TokenCell token={tokens[0]} />
+    );
 
   return (
     <Flex

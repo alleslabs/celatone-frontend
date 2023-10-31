@@ -32,13 +32,14 @@ export const DelegationsBody = ({
   bondDenoms,
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
+  const router = useRouter();
   const [value, setValue] = useState("Delegated");
   const { trackUseRadio } = useTrack();
-  const router = useRouter();
 
   useEffect(() => {
     setValue("Delegated");
   }, [router.query.accountAddress]);
+
   return (
     <Flex direction="column" gap={8} p={8} borderRadius="8px" bg="gray.900">
       <RadioGroup
