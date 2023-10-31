@@ -26,8 +26,10 @@ export const RedelegationsTable = ({
           key={
             redelegation.srcValidator.validatorAddress +
             redelegation.dstValidator.validatorAddress +
-            redelegation.token.amount +
-            redelegation.token.denom +
+            redelegation.balances.reduce(
+              (prev, balance) => prev + balance.amount + balance.denom,
+              ""
+            ) +
             redelegation.completionTime
           }
           redelegation={redelegation}
@@ -42,8 +44,10 @@ export const RedelegationsTable = ({
           key={
             redelegation.srcValidator.validatorAddress +
             redelegation.dstValidator.validatorAddress +
-            redelegation.token.amount +
-            redelegation.token.denom +
+            redelegation.balances.reduce(
+              (prev, balance) => prev + balance.amount + balance.denom,
+              ""
+            ) +
             redelegation.completionTime
           }
           redelegation={redelegation}

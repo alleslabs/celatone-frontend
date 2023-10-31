@@ -4,24 +4,27 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useTrack } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
+import { truncate } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
 interface CopyLinkProps extends FlexProps {
   value: string;
-  amptrackSection?: string;
   type: string;
   withoutIcon?: boolean;
   showCopyOnHover?: boolean;
+  isTruncate?: boolean;
+  amptrackSection?: string;
 }
 
 export const CopyLink = ({
   value,
-  amptrackSection,
   type,
   withoutIcon,
   showCopyOnHover = false,
+  isTruncate = false,
+  amptrackSection,
   ...flexProps
 }: CopyLinkProps) => {
   const { address } = useCurrentChain();
@@ -44,6 +47,7 @@ export const CopyLink = ({
     setValue(value);
   }, [value, setValue]);
 
+  const textValue = isTruncate ? truncate(value) : value;
   return (
     <Tooltip
       isOpen={isHover || hasCopied}
@@ -51,6 +55,7 @@ export const CopyLink = ({
       closeOnClick={false}
     >
       <Flex
+        w="fit-content"
         align="center"
         display={{ base: "inline", md: "flex" }}
         onClick={() => {
@@ -74,7 +79,7 @@ export const CopyLink = ({
           transition="all .25s ease-in-out"
           display="inline"
         >
-          {value === address ? `${value} (Me)` : value}
+          {value === address ? `${textValue} (Me)` : textValue}
         </Text>
         {!withoutIcon && (
           <CustomIcon

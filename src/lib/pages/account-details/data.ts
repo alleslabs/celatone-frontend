@@ -1,5 +1,6 @@
 import type { Big } from "big.js";
 import big from "big.js";
+import { isUndefined } from "lodash";
 
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountBalances } from "lib/services/accountService";
@@ -18,6 +19,7 @@ import {
   useStakingParams,
   useUnbondings,
 } from "lib/services/delegationService";
+import { useLPShareInfo } from "lib/services/poolService";
 import { useValidators } from "lib/services/validatorService";
 import type {
   BalanceWithAssetInfo,
@@ -35,9 +37,11 @@ import {
   addrToValoper,
   addTokenWithValue,
   coinToTokenWithValue,
+  totalValueTokenWithValue,
+  compareTokenWithValues,
 } from "lib/utils";
 
-import type { UserDelegationsData } from "./type";
+import type { DenomInfo, UserDelegationsData } from "./types";
 
 interface AccountContracts {
   contracts: Option<ContractInfo[]>;
@@ -57,28 +61,26 @@ interface AccountAssetInfos {
   error: Error;
 }
 
-export interface StakingParams extends RawStakingParams {
-  symbol: Option<string>;
-  logo: Option<string>;
-  precision: Option<number>;
+export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
+  bondDenoms: DenomInfo[];
 }
 
 export interface Delegation {
   validator: ValidatorInfo;
-  token: TokenWithValue;
+  balances: TokenWithValue[];
 }
 
 export interface Unbonding {
   validator: ValidatorInfo;
   completionTime: Date;
-  token: TokenWithValue;
+  balances: TokenWithValue[];
 }
 
 export interface Redelegation {
   srcValidator: ValidatorInfo;
   dstValidator: ValidatorInfo;
   completionTime: Date;
-  token: TokenWithValue;
+  balances: TokenWithValue[];
 }
 
 export const useAccountContracts = (
@@ -169,19 +171,41 @@ export const useUserAssetInfos = (
     error,
   } = useAccountBalances(walletAddress);
   const { assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: lpMap } = useLPShareInfo();
 
-  const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
-    (balance): BalanceWithAssetInfo => ({
-      balance,
-      assetInfo: assetInfos?.[balance.id],
-    })
-  );
+  const contractBalancesWithAssetInfos = balances
+    ?.filter((bal) => Number(bal.amount))
+    .map<BalanceWithAssetInfo>((balance): BalanceWithAssetInfo => {
+      const assetInfo = assetInfos?.[balance.id];
+      const lpDetails = lpMap?.[balance.id];
+      return lpDetails
+        ? {
+            balance: {
+              ...balance,
+              price: lpDetails.lpPricePerShare.toNumber(),
+              symbol: lpDetails.symbol,
+              precision: lpDetails.precision,
+            },
+            assetInfo,
+            isLPToken: true,
+            lpLogo: lpDetails.image,
+          }
+        : {
+            balance,
+            assetInfo,
+            isLPToken: false,
+          };
+    });
 
   // Supported assets should order by descending value
   const supportedAssets = contractBalancesWithAssetInfos
-    ?.filter((balance) => balance.assetInfo)
+    ?.filter(
+      (balance) =>
+        !isUndefined(balance.assetInfo) ||
+        !isUndefined(lpMap?.[balance.balance.id])
+    )
     .sort((a, b) =>
-      a.balance.price && b.balance.price
+      !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
         ? calAssetValueWithPrecision(b.balance).cmp(
             calAssetValueWithPrecision(a.balance)
           )
@@ -189,7 +213,8 @@ export const useUserAssetInfos = (
     );
 
   const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
-    (balance) => !balance.assetInfo
+    (balance) =>
+      isUndefined(balance.assetInfo) && isUndefined(lpMap?.[balance.balance.id])
   );
 
   return {
@@ -222,6 +247,7 @@ const calBonded = (
 export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
+  const { data: lpMap, isFetching: isLpMapFetching } = useLPShareInfo();
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -239,7 +265,11 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     useCommission(addrToValoper(walletAddress));
 
   const isLoading =
-    isLoadingRawStakingParams || isLoadingAssetInfos || isLoadingValidators;
+    isLoadingRawStakingParams ||
+    isLoadingAssetInfos ||
+    isLoadingValidators ||
+    isLpMapFetching;
+
   const data: UserDelegationsData = {
     stakingParams: undefined,
     isValidator: undefined,
@@ -262,13 +292,15 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   };
 
   if (rawStakingParams && assetInfos && validators) {
-    const stakingParams = {
+    data.stakingParams = {
       ...rawStakingParams,
-      symbol: assetInfos[rawStakingParams.bondDenom]?.symbol,
-      logo: assetInfos[rawStakingParams.bondDenom]?.logo,
-      precision: assetInfos[rawStakingParams.bondDenom]?.precision,
+      bondDenoms: rawStakingParams.bondDenoms.map((denom) => ({
+        denom,
+        symbol: assetInfos[denom]?.symbol,
+        logo: assetInfos[denom]?.logo,
+        precision: assetInfos[denom]?.precision,
+      })),
     };
-    data.stakingParams = stakingParams;
 
     data.isValidator = Object.keys(validators).includes(
       addrToValoper(walletAddress)
@@ -278,20 +310,25 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       validator: {
         validatorAddress: raw.validatorAddress,
         moniker: validators[raw.validatorAddress]?.moniker,
-        identity: raw.identity,
+        identity: validators[raw.validatorAddress]?.identity,
       },
-      token: coinToTokenWithValue(raw.denom, raw.amount, assetInfos[raw.denom]),
+      balances: raw.balance
+        .map((coin) =>
+          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+        )
+        .sort(compareTokenWithValues),
     }));
     data.totalDelegations = data.delegations?.reduce<
       Record<string, TokenWithValue>
     >(
-      (total, delegation) => ({
-        ...total,
-        [delegation.token.denom]: addTokenWithValue(
-          total[delegation.token.denom],
-          delegation.token
+      (total, delegation) =>
+        delegation.balances.reduce(
+          (acc, balance) => ({
+            ...acc,
+            [balance.denom]: addTokenWithValue(acc[balance.denom], balance),
+          }),
+          total
         ),
-      }),
       {}
     );
 
@@ -299,34 +336,37 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       validator: {
         validatorAddress: raw.validatorAddress,
         moniker: validators[raw.validatorAddress]?.moniker,
-        identity: raw.identity,
+        identity: validators[raw.validatorAddress]?.identity,
       },
       completionTime: raw.completionTime,
-      token: coinToTokenWithValue(
-        rawStakingParams.bondDenom,
-        raw.amount,
-        assetInfos[rawStakingParams.bondDenom]
-      ),
+      balances: raw.balance
+        .map((coin) =>
+          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+        )
+        .sort(compareTokenWithValues),
     }));
     data.totalUnbondings = data.unbondings?.reduce<
       Record<string, TokenWithValue>
     >(
-      (total, unbonding) => ({
-        ...total,
-        [unbonding.token.denom]: addTokenWithValue(
-          total[unbonding.token.denom],
-          unbonding.token
+      (total, unbonding) =>
+        unbonding.balances.reduce(
+          (acc, balance) => ({
+            ...acc,
+            [balance.denom]: addTokenWithValue(acc[balance.denom], balance),
+          }),
+          total
         ),
-      }),
       {}
     );
 
     data.rewards = rawRewards?.rewards.reduce<Record<string, TokenWithValue[]>>(
       (prev, raw) => ({
         ...prev,
-        [raw.validatorAddress]: raw.reward.map<TokenWithValue>((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
-        ),
+        [raw.validatorAddress]: raw.reward
+          .map<TokenWithValue>((coin) =>
+            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+          )
+          .sort(compareTokenWithValues),
       }),
       {}
     );
@@ -338,7 +378,8 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
         [raw.denom]: coinToTokenWithValue(
           raw.denom,
           raw.amount,
-          assetInfos[raw.denom]
+          assetInfos,
+          lpMap
         ),
       }),
       {}
@@ -348,19 +389,19 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       srcValidator: {
         validatorAddress: raw.srcValidatorAddress,
         moniker: validators[raw.srcValidatorAddress]?.moniker,
-        identity: raw.srcIdentity,
+        identity: validators[raw.srcValidatorAddress]?.identity,
       },
       dstValidator: {
         validatorAddress: raw.dstValidatorAddress,
         moniker: validators[raw.dstValidatorAddress]?.moniker,
-        identity: raw.dstIdentity,
+        identity: validators[raw.dstValidatorAddress]?.identity,
       },
       completionTime: raw.completionTime,
-      token: coinToTokenWithValue(
-        stakingParams.bondDenom,
-        raw.amount,
-        assetInfos[stakingParams.bondDenom]
-      ),
+      balances: raw.balance
+        .map((coin) =>
+          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+        )
+        .sort(compareTokenWithValues),
     }));
 
     data.totalCommission = rawCommission?.commission.reduce<
@@ -371,7 +412,8 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
         [raw.denom]: coinToTokenWithValue(
           raw.denom,
           raw.amount,
-          assetInfos[raw.denom]
+          assetInfos,
+          lpMap
         ),
       }),
       {}
@@ -416,11 +458,9 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     : defaultValue;
   return {
     totalAccountValue: totalAssetValue
-      .add(totalBonded[stakingParams.bondDenom]?.value ?? defaultValue)
-      .add(totalRewards[stakingParams.bondDenom]?.value ?? defaultValue)
-      .add(
-        totalCommission[stakingParams.bondDenom]?.value ?? defaultValue
-      ) as USD<Big>,
+      .add(totalValueTokenWithValue(totalBonded, defaultValue))
+      .add(totalValueTokenWithValue(totalRewards, defaultValue))
+      .add(totalValueTokenWithValue(totalCommission, defaultValue)) as USD<Big>,
     isLoading: false,
   };
 };

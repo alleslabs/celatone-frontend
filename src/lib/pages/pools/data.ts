@@ -48,7 +48,7 @@ export const usePools = (
     type: pool.type,
     isSuperfluid: pool.isSuperfluid,
     poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
-      coinToTokenWithValue(coin.denom, coin.amount, assetInfos?.[coin.denom])
+      coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
     ),
     contractAddress: pool.contractAddress,
   }));
@@ -86,7 +86,7 @@ export const usePool = (
       isSuperfluid: pool.isSuperfluid,
       isSupported: pool.isSupported,
       poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
-        coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
+        coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
       ),
       blockHeight: pool.blockHeight,
       creator: pool.creator,
