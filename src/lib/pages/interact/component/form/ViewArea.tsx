@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertDescription,
-  Button,
   Flex,
   Grid,
   GridItem,
@@ -10,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useIsMac } from "lib/app-provider";
 import { AbiForm } from "lib/components/abi";
+import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -43,7 +42,6 @@ export const ViewArea = ({
   moduleName: string;
   fn: ExposedFunction;
 }) => {
-  const isMac = useIsMac();
   const [abiData, setAbiData] = useState<AbiFormData>({
     typeArgs: getAbiInitialData(fn.generic_type_params.length),
     args: getAbiInitialData(fn.params.length),
@@ -75,18 +73,6 @@ export const ViewArea = ({
   const isButtonDisabled = Boolean(
     Object.values(abiData.typeArgs).some((v) => !v.length) || !!abiErrors.length
   );
-  useEffect(() => {
-    const keydownHandler = (e: KeyboardEvent) => {
-      // TODO: problem with safari if focusing in the textarea
-      const specialKey = isMac ? e.metaKey : e.ctrlKey;
-      if (!isButtonDisabled && specialKey && e.key === "Enter") handleQuery();
-    };
-    document.addEventListener("keydown", keydownHandler);
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-    };
-  });
-
   return (
     <Grid templateColumns="1fr 1fr" gap={6}>
       <GridItem>
@@ -104,18 +90,12 @@ export const ViewArea = ({
             abiData={abiData}
             type="view"
           />
-          <Button
-            variant="primary"
-            fontSize="14px"
-            p="6px 16px"
-            size={{ base: "sm", md: "md" }}
-            onClick={handleQuery}
-            isDisabled={isButtonDisabled}
+          <SubmitButton
+            text="View"
             isLoading={isLoading}
-            leftIcon={<CustomIcon name="query" />}
-          >
-            View{` (${isMac ? "⌘" : "Ctrl"} + Enter)`}
-          </Button>
+            onSubmit={handleQuery}
+            isDisabled={isButtonDisabled}
+          />
         </Flex>
       </GridItem>
       <GridItem>

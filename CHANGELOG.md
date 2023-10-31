@@ -87,6 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Handle multi bond denoms data in the delegation section
+- [#593](https://github.com/alleslabs/celatone-frontend/pull/593) Refactor submit button to a common component
 - [#574](https://github.com/alleslabs/celatone-frontend/pull/574) Add min height to wasm page container to properly align footer
 - [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
 - [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables

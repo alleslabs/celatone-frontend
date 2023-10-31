@@ -85,8 +85,9 @@ export const useSearchHandler = (
   const isAddr =
     addressType === "user_address" ||
     addressType === "contract_address" ||
-    isHexWalletAddress(debouncedKeyword) ||
-    isHexModuleAddress(debouncedKeyword);
+    (isMove &&
+      (isHexWalletAddress(debouncedKeyword) ||
+        isHexModuleAddress(debouncedKeyword)));
 
   // ICNS
   const { data: icnsAddressData, isFetching: icnsAddressFetching } =
@@ -125,6 +126,7 @@ export const useSearchHandler = (
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
     isPool &&
+      !debouncedKeyword.startsWith("0x") &&
       Number.isInteger(Number(debouncedKeyword)) &&
       Number(debouncedKeyword) > 0
   );
