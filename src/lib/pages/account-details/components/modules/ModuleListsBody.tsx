@@ -25,14 +25,14 @@ export const ModuleListsBody = ({
   onViewMore,
 }: ModuleListsBodyProps) => {
   const navigate = useInternalNavigate();
-
   const [keyword, setKeyword] = useState("");
 
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
-    return modules?.filter((module) =>
-      module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
+    return modules?.filter(
+      (module) =>
+        module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, modules]);
 
