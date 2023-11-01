@@ -6,7 +6,7 @@ import { useTrack } from "lib/amplitude";
 import { type AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
-import { useMoveConfig } from "lib/app-provider/hooks/useConfig";
+import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
 import type { Option } from "lib/types";
@@ -42,13 +42,13 @@ export const getNavigationUrl = ({
   explorerConfig,
   value,
   lcdEndpoint,
-  moveEnabled = false,
+  wasmEnabled = false,
 }: {
   type: ExplorerLinkProps["type"];
   explorerConfig: ExplorerConfig;
   value: string;
   lcdEndpoint: string;
-  moveEnabled?: boolean;
+  wasmEnabled?: boolean;
 }) => {
   let url = "";
   switch (type) {
@@ -56,7 +56,7 @@ export const getNavigationUrl = ({
       url = "/txs";
       break;
     case "contract_address":
-      url = moveEnabled ? "/accounts" : "/contracts";
+      url = wasmEnabled ? "/contracts" : "/accounts";
       break;
     case "user_address":
       url = "/accounts";
@@ -179,7 +179,7 @@ export const ExplorerLink = ({
 }: ExplorerLinkProps) => {
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
-  const { enabled: moveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
   const {
     chainConfig: { explorerLink: explorerConfig },
   } = useCelatoneApp();
@@ -198,7 +198,7 @@ export const ExplorerLink = ({
       explorerConfig,
       value: copyValue || value,
       lcdEndpoint,
-      moveEnabled,
+      wasmEnabled,
     }),
     getValueText(value === address, textFormat === "truncate", value),
   ];
