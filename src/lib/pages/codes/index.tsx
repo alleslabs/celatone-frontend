@@ -61,7 +61,7 @@ const RecentCodes = observer(() => {
           Recent Codes
         </Heading>
         <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
-          These codes are the most recently stored on this network
+          Showing the 100 most recent stored codes on this network
         </Text>
         <Flex
           gap={{ base: 6, md: 3 }}

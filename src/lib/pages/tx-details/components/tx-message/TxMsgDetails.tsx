@@ -47,7 +47,7 @@ export const TxMsgDetails = ({
       pt={4}
       height={isExpand ? "full" : 0}
       overflow="hidden"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
     >
       <TxReceiptRender variant="tx-page" receipts={receipts} gap={3} />
     </Flex>

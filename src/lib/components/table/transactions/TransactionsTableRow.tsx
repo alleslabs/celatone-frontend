@@ -44,7 +44,7 @@ export const TransactionsTableRow = ({
         templateColumns={templateColumns}
         onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "gray.900" }}
-        transition="all .25s ease-in-out"
+        transition="all 0.25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
         <TableRow pl={2}>
@@ -52,7 +52,7 @@ export const TransactionsTableRow = ({
             <CustomIcon
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
-              transition="all .25s ease-in-out"
+              transition="all 0.25s ease-in-out"
               color="gray.600"
             />
           )}

@@ -1,4 +1,9 @@
-import type { ComponentStyleConfig } from "@chakra-ui/react";
+import { formAnatomy } from "@chakra-ui/anatomy";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+
+const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(
+  formAnatomy.keys
+);
 
 const errorMain = "error.main";
 
@@ -53,7 +58,7 @@ const subtextStyles = {
   },
 };
 
-export const Form: ComponentStyleConfig = {
+export const Form = defineMultiStyleConfig({
   baseStyle: {
     container: {
       label: {
@@ -111,4 +116,4 @@ export const Form: ComponentStyleConfig = {
       },
     },
   },
-};
+});

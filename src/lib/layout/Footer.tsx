@@ -81,7 +81,7 @@ const SocialMenuRender = ({
         >
           <Flex
             borderRadius="8px"
-            transition="all .25s ease-in-out"
+            transition="all 0.25s ease-in-out"
             _hover={{ backgroundColor: "gray.800" }}
           >
             <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
@@ -109,7 +109,7 @@ const AllesFeedback = () => {
         borderRadius={8}
         align="center"
         _hover={{ background: "gray.800" }}
-        transition="all .25s ease-in-out"
+        transition="all 0.25s ease-in-out"
       >
         <CustomIcon name="feedback" color="gray.600" />
         <Text variant="body3" color="text.dark">
@@ -161,7 +161,7 @@ const IconLink = ({
             as="span"
             ml={1}
             color="secondary.main"
-            transition="all .25s ease-in-out"
+            transition="all 0.25s ease-in-out"
             _hover={{ color: "secondary.light" }}
           >
             {text2}

@@ -10,7 +10,7 @@ export type TokenWithValue =
       symbol: Option<string>;
       logo: Option<string>;
       precision: Option<number>;
-      price?: Option<USD<Big>>;
+      price: Option<USD<Big>>;
       value: Option<USD<Big>>;
     }
   | {
@@ -20,7 +20,7 @@ export type TokenWithValue =
       symbol: Option<string>;
       logo: Option<string[]>;
       precision: Option<number>;
-      price?: Option<USD<Big>>;
+      price: Option<USD<Big>>;
       value: Option<USD<Big>>;
       lpDetails: LPDetails;
     };

@@ -72,7 +72,7 @@ export const DelegationsSection = ({
         position={isOpen ? "absolute" : "relative"}
         opacity={isOpen ? 0 : 1}
         left={isOpen ? "-100%" : "0"}
-        transition="all 0.25s"
+        transition="all 0.25s ease-in-out"
       >
         <DelegationInfo
           totalBondedCard={
@@ -99,7 +99,10 @@ export const DelegationsSection = ({
                 title="Reward"
                 message={`Total rewards earned from delegated ${
                   stakingParams.bondDenoms.length === 1
-                    ? stakingParams.bondDenoms[0]
+                    ? getTokenLabel(
+                        stakingParams.bondDenoms[0].denom,
+                        stakingParams.bondDenoms[0].symbol
+                      )
                     : "tokens"
                 } across all validators`}
                 address={walletAddress}
@@ -150,7 +153,7 @@ export const DelegationsSection = ({
         position={isOpen ? "relative" : "absolute"}
         opacity={isOpen ? 1 : 0}
         left={isOpen ? "0" : "100%"}
-        transition="all 0.25s"
+        transition="all 0.25s ease-in-out"
       />
     </Flex>
   );

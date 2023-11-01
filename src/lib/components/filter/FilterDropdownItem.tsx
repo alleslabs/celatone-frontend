@@ -24,7 +24,7 @@ export const FilterDropdownItem = ({
   <ListItem
     style={listItemProps}
     _hover={{ bg: "gray.800" }}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     onClick={onSelect}
   >
     <Flex alignItems="center" justifyContent="space-between">

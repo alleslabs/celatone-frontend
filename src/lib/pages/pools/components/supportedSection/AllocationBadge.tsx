@@ -46,7 +46,7 @@ export const AllocationBadge = ({
       border="1px solid"
       borderColor="gray.700"
       borderRadius="8px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       alignItems="center"
       gap={2}
     >

@@ -213,7 +213,7 @@ export const TxFilterSelection = forwardRef<
                   key={option}
                   style={listItemProps}
                   _hover={{ bg: "gray.800" }}
-                  transition="all .25s ease-in-out"
+                  transition="all 0.25s ease-in-out"
                   onClick={() => selectOption(option)}
                 >
                   <Flex alignItems="center" justifyContent="space-between">

@@ -26,7 +26,7 @@ export const SelectFund = ({
   assetsSelect,
   labelBgColor,
 }: SelectFundProps) => {
-  const { data: assetInfos = [] } = useAssetInfoList();
+  const { data: assetInfos = [] } = useAssetInfoList({ assetType: "native" });
   const { fields, append, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,

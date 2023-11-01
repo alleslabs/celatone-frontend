@@ -71,6 +71,7 @@ const ProjectDetail = () => {
 
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
+          replace: true,
           pathname: "/projects/[slug]/[tab]",
           query: {
             slug,

@@ -399,32 +399,38 @@ describe("calTotalValue", () => {
 });
 
 describe("addTokenWithValue", () => {
-  const tokenWithValue1 = {
+  const tokenWithValue1: TokenWithValue = {
+    isLPToken: false,
     denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
+    symbol: "",
+    logo: "",
     precision: 6,
+    price: big(0) as USD<Big>,
     value: big(200) as USD<Big>,
-    symbol: "",
-    logo: "",
-  } as TokenWithValue;
+  };
 
-  const tokenWithValue2 = {
+  const tokenWithValue2: TokenWithValue = {
+    isLPToken: false,
     denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
-    precision: 6,
-    value: big(3500) as USD<Big>,
     symbol: "",
     logo: "",
-  } as TokenWithValue;
+    precision: 6,
+    price: big(0) as USD<Big>,
+    value: big(3500) as USD<Big>,
+  };
 
-  const tokenWithValue3 = {
+  const tokenWithValue3: TokenWithValue = {
+    isLPToken: false,
     denom: "ubdenom",
     amount: big(100) as U<Token<Big>>,
-    precision: 6,
-    value: big(3500) as USD<Big>,
     symbol: "",
     logo: "",
-  } as TokenWithValue;
+    precision: 6,
+    price: big(0) as USD<Big>,
+    value: big(3500) as USD<Big>,
+  };
 
   test("no old total value", () => {
     expect(addTokenWithValue(undefined, tokenWithValue1)).toEqual(
@@ -451,6 +457,7 @@ describe("addTokenWithValue", () => {
 
   test("invalid, when denoms are not the same", () => {
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
+      isLPToken: false,
       denom: "",
       amount: big(0) as U<Token<Big>>,
       precision: undefined,
@@ -459,6 +466,7 @@ describe("addTokenWithValue", () => {
       logo: undefined,
     });
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
+      isLPToken: false,
       denom: "",
       amount: big(0) as U<Token<Big>>,
       precision: undefined,

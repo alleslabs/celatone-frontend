@@ -78,7 +78,7 @@ const SubHeader = () => {
               borderColor={
                 isCurrentPage(item.slug) ? activeColor : "transparent"
               }
-              transition="all .25s ease-in-out"
+              transition="all 0.25s ease-in-out"
               _hover={{ borderColor: activeColor }}
               sx={{
                 _hover: {

@@ -98,8 +98,6 @@ export const JsonExecute = ({
   const isValidAssetsJsonStr =
     !errors.assetsJsonStr && jsonValidate(assetsJsonStr) === null;
 
-  const assetsSelectString = JSON.stringify(assetsSelect);
-
   const enableExecute = useMemo(() => {
     const generalCheck = !!(
       msg.trim().length &&
@@ -123,6 +121,14 @@ export const JsonExecute = ({
     isValidAssetsSelect,
     isValidAssetsJsonStr,
   ]);
+
+  const assetsSelectString = JSON.stringify(assetsSelect);
+
+  const funds = useMemo(
+    () => getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [assetsJsonStr, assetsSelectString, attachFundsOption, getAttachFunds]
+  );
 
   // ------------------------------------------//
   // -----------------REACT QUERY--------------//
@@ -149,11 +155,6 @@ export const JsonExecute = ({
   // ------------------------------------------//
 
   const proceed = useCallback(async () => {
-    const funds = getAttachFunds(
-      attachFundsOption,
-      assetsJsonStr,
-      assetsSelect
-    );
     trackActionWithFunds(
       AmpEvent.ACTION_EXECUTE,
       funds.length,
@@ -181,10 +182,8 @@ export const JsonExecute = ({
     fee,
     contractAddress,
     msg,
-    getAttachFunds,
+    funds,
     trackActionWithFunds,
-    assetsJsonStr,
-    assetsSelect,
     addActivity,
     broadcast,
   ]);
@@ -217,7 +216,7 @@ export const JsonExecute = ({
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds: getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
+        funds,
       });
 
       const timeoutId = setTimeout(() => {
@@ -226,17 +225,7 @@ export const JsonExecute = ({
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [
-    address,
-    contractAddress,
-    enableExecute,
-    msg,
-    assetsJsonStr,
-    assetsSelectString,
-    getAttachFunds,
-    attachFundsOption,
-    assetsSelect,
-  ]);
+  }, [address, contractAddress, enableExecute, funds, msg]);
 
   const isButtonDisabled = !enableExecute || !fee || isFetching;
   return (
@@ -271,6 +260,7 @@ export const JsonExecute = ({
             type="execute"
             contractAddress={contractAddress}
             message={msg}
+            funds={funds}
           />
         </Flex>
         <Flex direction="row" align="center" gap={2}>

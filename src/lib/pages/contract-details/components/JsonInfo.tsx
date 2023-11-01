@@ -29,7 +29,7 @@ export const JsonInfo = ({
         borderRadius="8px"
         background="gray.900"
         _hover={{ backgroundColor: "gray.800" }}
-        transition="all .25s ease-in-out"
+        transition="all 0.25s ease-in-out"
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
       >
@@ -37,7 +37,7 @@ export const JsonInfo = ({
           {header}
         </Heading>
         <CustomIcon
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           name={expand ? "chevron-up" : "chevron-down"}
           color="gray.600"
         />

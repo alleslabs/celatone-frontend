@@ -53,7 +53,7 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     gap={2}
     aria-disabled={disabled}
     _hover={{ bg: "gray.800" }}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     _disabled={{ opacity: 0.4, pointerEvents: "none" }}
   >
     {children}

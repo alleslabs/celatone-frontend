@@ -157,6 +157,7 @@ export interface MsgSubmitProposalDetails extends MsgBaseDetails {
     subject_client_id: string;
     substitute_client_id: string;
     title: string;
+    changes?: { key: string; subspace: string; value: string }[];
   };
   is_expedited?: boolean;
 }

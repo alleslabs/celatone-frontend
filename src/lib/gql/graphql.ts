@@ -18771,19 +18771,22 @@ export const GetContractListByWalletAddressPaginationDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: {
+                        kind: "Name",
+                        value: "contract_histories_aggregate",
+                      },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
+                            name: { kind: "Name", value: "max" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
+                                  name: { kind: "Name", value: "block_height" },
                                   value: { kind: "EnumValue", value: "desc" },
                                 },
                               ],

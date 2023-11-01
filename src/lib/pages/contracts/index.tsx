@@ -36,7 +36,7 @@ const RecentContracts = observer(() => {
           Recent Contracts
         </Heading>
         <Text variant="body2" color="text.dark" fontWeight={500} mb={8}>
-          These contracts are the most recently instantiated on this network
+          Showing the 100 most recent instantiated contracts on this network
         </Text>
       </Box>
       <ContractsTable

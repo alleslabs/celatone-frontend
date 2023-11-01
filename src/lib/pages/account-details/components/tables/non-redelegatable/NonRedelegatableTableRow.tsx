@@ -16,7 +16,7 @@ export const NonRedelegatableTableRow = ({
 }: NonRedelegatableTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     minW="min-content"
   >
     <TableRow>

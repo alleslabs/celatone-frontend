@@ -1,4 +1,10 @@
-import type { ComponentStyleConfig, SystemStyleObject } from "@chakra-ui/react";
+import { radioAnatomy } from "@chakra-ui/anatomy";
+import type { SystemStyleObject } from "@chakra-ui/react";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+
+const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(
+  radioAnatomy.keys
+);
 
 const primaryLight = "primary.light";
 const textMain = "text.main";
@@ -29,7 +35,7 @@ const generateCardStyle = ({
   label: { w: "inherit" },
 });
 
-export const Radio: ComponentStyleConfig = {
+export const Radio = defineMultiStyleConfig({
   baseStyle: {
     label: {
       fontWeight: 500,
@@ -85,4 +91,4 @@ export const Radio: ComponentStyleConfig = {
   defaultProps: {
     size: "lg",
   },
-};
+});

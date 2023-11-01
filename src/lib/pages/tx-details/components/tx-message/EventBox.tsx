@@ -132,7 +132,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           color="gray.600"
           boxSize={4}
           transform={expand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           m={0}
         />
       </Flex>
@@ -146,10 +146,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         overflow="hidden"
         initial="collapsed"
         animate={expand ? "expanded" : "collapsed"}
-        transition={{
-          duration: "0.25",
-          ease: "easeInOut",
-        }}
+        transition="all 0.25s ease-in-out"
       >
         <Box borderTop="1px solid var(--chakra-colors-gray-700)" mx={4} />
         <TxReceiptRender
