@@ -24,7 +24,7 @@ const CollapseNavInfo = ({ submenu, isCurrentPage }: CollapseNavInfoProps) => (
       _hover={
         submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "8px" }
       }
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       alignItems="center"
       position="relative"
       bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}

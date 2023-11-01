@@ -32,9 +32,21 @@ export const useQueryCmds = (contractAddress: ContractAddr) => {
       refetchOnWindowFocus: false,
       onError: (e: AxiosError<RpcQueryError>) => {
         const cmds: string[] = [];
-        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/g) || [])
-          .slice(1)
-          .forEach((match) => cmds.push(match[1]));
+        const resMsg = e.response?.data.message;
+
+        // Check if Sylvia framework
+        const sylviaRegex =
+          /Messages supported by this contract: (.*?): query wasm contract failed: invalid request/;
+        const contentMatch = resMsg?.match(sylviaRegex);
+
+        if (contentMatch && contentMatch[1]) {
+          const content = contentMatch[1].split(",");
+          content.forEach((each) => cmds.push(each.trim()));
+        } else {
+          Array.from(resMsg?.matchAll(/`(.*?)`/g) || [])
+            .slice(1)
+            .forEach((match) => cmds.push(match[1]));
+        }
         setQueryCmds(cmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       },
     }

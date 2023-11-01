@@ -30,7 +30,7 @@ export const BondedTableRow = ({
   <Grid
     templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     minW="min-content"
     sx={{ "& > div": { alignItems: "flex-start" } }}
   >

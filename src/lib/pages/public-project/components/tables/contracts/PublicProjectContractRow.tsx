@@ -57,7 +57,7 @@ export const PublicProjectContractRow = ({
       templateColumns={templateColumns}
       onClick={goToContractDetails}
       _hover={{ bg: "gray.900" }}
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
       minW="min-content"
     >

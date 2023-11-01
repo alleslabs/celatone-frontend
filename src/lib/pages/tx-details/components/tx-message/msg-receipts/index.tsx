@@ -618,6 +618,10 @@ export const generateReceipts = (
           value: String(details.is_expedited ?? false),
         },
         { title: "Title", value: details.content.title },
+        {
+          title: "Content",
+          html: getCommonReceiptHtml({ type: "json", value: details.content }),
+        },
       ];
     }
     case "/cosmos.gov.v1beta1.MsgVote": {

@@ -57,7 +57,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       bg="gray.900"
       borderRadius="8px"
       p={4}
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
       sx={{
         _hover: {

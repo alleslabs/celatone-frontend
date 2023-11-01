@@ -8,7 +8,7 @@ import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
 
 const TEMPLATE_COLUMNS =
-  "24px 180px 50px minmax(360px, 1fr) max(160px) max(220px)";
+  "24px max(200px) 50px minmax(360px, 1fr) max(160px) max(220px)";
 
 interface PoolTxsTableProps {
   pool: PoolDetail;

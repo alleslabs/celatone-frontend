@@ -64,7 +64,7 @@ const JsonReadOnly = ({
       borderWidth="thin"
       borderColor={!isJsonValid ? "error.main" : "gray.700"}
       borderRadius="8px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       _hover={{
         borderColor: isJsonValid && "gray.600",
         "& .copy-button-box": { display: "block" },

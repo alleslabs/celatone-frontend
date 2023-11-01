@@ -6,7 +6,7 @@ export const terra2testnet: Chain = {
   status: "live",
   network_type: "testnet",
   website: "https://www.terra.money/",
-  pretty_name: "Terra 2.0",
+  pretty_name: "Terra 2.0 Testnet",
   chain_id: "pisco-1",
   daemon_name: "terrad",
   node_home: "$HOME/.terra",
@@ -16,10 +16,10 @@ export const terra2testnet: Chain = {
     fee_tokens: [
       {
         denom: "uluna",
-        fixed_min_gas_price: 0.0125,
-        low_gas_price: 0.0125,
-        average_gas_price: 0.015,
-        high_gas_price: 0.04,
+        fixed_min_gas_price: 0.125,
+        low_gas_price: 0.125,
+        average_gas_price: 0.15,
+        high_gas_price: 0.4,
       },
     ],
   },

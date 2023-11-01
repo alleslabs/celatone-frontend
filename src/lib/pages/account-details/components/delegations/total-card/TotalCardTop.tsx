@@ -1,7 +1,7 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import type { TextProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
+import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 
 interface TotalCardTopProps {
@@ -20,7 +20,14 @@ export const TotalCardTop = ({
       {title}
     </Text>
     <Tooltip label={message}>
-      <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
+      <div>
+        <CustomIcon
+          name="info-circle-solid"
+          color="gray.600"
+          boxSize={3}
+          cursor="pointer"
+        />
+      </div>
     </Tooltip>
   </Flex>
 );

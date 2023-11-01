@@ -23,8 +23,9 @@ const TEMPLATE_COLUMNS = "140px 160px minmax(300px,1fr) 120px 280px";
 const scrollComponentId = "block-table-header";
 
 export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
-  const { data: blockCount, refetch: refetchCount } = useBlockCountQuery();
+  const isMobile = useMobile();
 
+  const { data: blockCount, refetch: refetchCount } = useBlockCountQuery();
   const {
     pagesQuantity,
     currentPage,
@@ -58,7 +59,6 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;
   if (error)
