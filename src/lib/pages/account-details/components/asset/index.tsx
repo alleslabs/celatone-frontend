@@ -8,7 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { TableTitle, ViewMore } from "lib/components/table";
-import { TokenCard } from "lib/components/TokenCard";
+import { TokenCard } from "lib/components/token/TokenCard";
 import { useOpenAssetTab } from "lib/hooks";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
@@ -28,8 +28,9 @@ interface AssetSectionContentProps {
 }
 
 interface AssetCtaProps {
-  walletAddress: HumanAddr;
+  unsupportedAssets: Option<BalanceWithAssetInfo[]>;
   totalAsset: number;
+  walletAddress: HumanAddr;
 }
 
 const MAX_ASSETS_SHOW = 8;
@@ -68,8 +69,11 @@ const AssetTitle = ({
   return <TableTitle title="Assets" count={totalAsset} mb={0} />;
 };
 
-const AssetCta = ({ walletAddress, totalAsset }: AssetCtaProps) => {
-  const { unsupportedAssets } = useUserAssetInfos(walletAddress);
+const AssetCta = ({
+  unsupportedAssets,
+  totalAsset,
+  walletAddress,
+}: AssetCtaProps) => {
   const openAssetTab = useOpenAssetTab();
   const { trackUseViewJSON } = useTrack();
 
@@ -181,7 +185,11 @@ export const AssetsSection = ({
           >
             <Flex gap="50px">{TotalAssetValueInfo}</Flex>
             {!isMobile && (
-              <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+              <AssetCta
+                unsupportedAssets={unsupportedAssets}
+                walletAddress={walletAddress}
+                totalAsset={totalAsset}
+              />
             )}
           </Flex>
           <AssetSectionContent
@@ -190,7 +198,11 @@ export const AssetsSection = ({
             error={error}
           />
           {isMobile && (
-            <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+            <AssetCta
+              unsupportedAssets={unsupportedAssets}
+              walletAddress={walletAddress}
+              totalAsset={totalAsset}
+            />
           )}
         </>
       )}

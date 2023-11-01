@@ -20,7 +20,8 @@ export const getAmountToVote = (
 
   return minDepositAmount.lte(initialDeposit.amount)
     ? null
-    : `${d2Formatter(minDepositAmount.minus(initialDeposit.amount), "NaN")} ${
-        minDeposit?.formattedDenom
-      }`;
+    : `${d2Formatter(
+        minDepositAmount.minus(initialDeposit.amount),
+        "NaN"
+      )} ${minDeposit?.formattedDenom}`;
 };

@@ -1,18 +1,20 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { TokenCell } from "../TokenCell";
 import { MobileLabel } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import type { BondedInfo } from "./BondedTableRow";
+import { TokensCell } from "./TokensCell";
 
 interface BondedTableMobileCardProps {
   bondedInfo: BondedInfo;
+  isSingleBondDenom: boolean;
 }
 
 export const BondedTableMobileCard = ({
   bondedInfo,
+  isSingleBondDenom,
 }: BondedTableMobileCardProps) => (
   <Flex
     borderRadius="8px"
@@ -32,13 +34,19 @@ export const BondedTableMobileCard = ({
     >
       <Flex direction="column" gap={1}>
         <MobileLabel label="Amount" />
-        <TokenCell token={bondedInfo.amount} />
+        <TokensCell
+          tokens={bondedInfo.balances}
+          isSingleBondDenom={isSingleBondDenom}
+        />
       </Flex>
 
-      {bondedInfo.reward && (
+      {bondedInfo.rewards && (
         <Flex direction="column" gap={1}>
           <MobileLabel label="Reward" />
-          <TokenCell token={bondedInfo.reward} />
+          <TokensCell
+            tokens={bondedInfo.rewards}
+            isSingleBondDenom={isSingleBondDenom}
+          />
         </Flex>
       )}
       {bondedInfo.completionTime && (

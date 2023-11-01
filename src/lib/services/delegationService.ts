@@ -23,7 +23,7 @@ import {
 } from "./delegation";
 
 export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const lcdEndpoint = useBaseApiRoute("staking");
 
   const queryFn = useCallback(
     async () => getStakingParams(lcdEndpoint),
@@ -38,7 +38,7 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
 export const useDelegations = (
   address: Addr
 ): UseQueryResult<RawDelegation[]> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const lcdEndpoint = useBaseApiRoute("staking");
 
   const queryFn = useCallback(
     async () => getDelegations(lcdEndpoint, address),
@@ -57,7 +57,7 @@ export const useDelegations = (
 export const useUnbondings = (
   address: Addr
 ): UseQueryResult<RawUnbonding[]> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const lcdEndpoint = useBaseApiRoute("staking");
 
   const queryFn = useCallback(
     async () => getUnbondings(lcdEndpoint, address),
@@ -95,7 +95,7 @@ export const useDelegationRewards = (
 export const useRedelegations = (
   address: Addr
 ): UseQueryResult<RawRedelegation[]> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const lcdEndpoint = useBaseApiRoute("staking");
 
   const queryFn = useCallback(
     async () => getRedelegations(lcdEndpoint, address),

@@ -42,7 +42,7 @@ export const PoolRoute = ({
       </Text>
       {routes.map((pool) => {
         const tokens = poolAssets[pool.poolId].map<TokenWithValue>((denom) =>
-          coinToTokenWithValue(denom, "0", assetInfos?.[denom])
+          coinToTokenWithValue(denom, "0", assetInfos)
         );
         return (
           <Flex

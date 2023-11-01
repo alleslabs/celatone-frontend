@@ -7,6 +7,13 @@ import type {
   Unbonding,
 } from "./data";
 
+export interface DenomInfo {
+  denom: string;
+  symbol?: string;
+  logo?: string | string[];
+  precision?: number;
+}
+
 export interface NonRedelegatable {
   dstValidator: ValidatorInfo;
   completionTime: Date;

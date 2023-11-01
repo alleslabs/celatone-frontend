@@ -30,7 +30,7 @@ import {
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { AbiFormData, ExposedFunction, MoveAccountAddr } from "lib/types";
-import { serializeAbiData } from "lib/utils";
+import { getArgType, serializeAbiData } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -57,6 +57,7 @@ interface FormatedData {
   formatedAbiData: string;
   typeArgsFlags: string;
   argsFlags: string;
+  isHiddenCLI: boolean;
 }
 
 const MoveCodeSnippet = ({
@@ -91,10 +92,17 @@ const MoveCodeSnippet = ({
     formatedTypeArgs,
     typeArgsFlags,
     argsFlags,
+    isHiddenCLI,
   } = useMemo<FormatedData>(() => {
     const serializedAbiData = serializeAbiData(fn, abiData);
     const displayTypeArgs = serializedAbiData.typeArgs.length > 0;
     const displayArgs = serializedAbiData.args.length > 0;
+    const argTypes = fn.params.map((param) => getArgType(param));
+
+    const argsWithTypes = Object.values(abiData.args).map((arg, index) => {
+      const argType = argTypes[index];
+      return `${argType}:${arg}`;
+    });
 
     return {
       showTypeArgs: displayTypeArgs,
@@ -106,25 +114,36 @@ const MoveCodeSnippet = ({
         ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
         : "",
       argsFlags: displayArgs
-        ? `\n\t--args '${serializedAbiData.args.join(" ")}' \\`
+        ? `\n\t--args '${argsWithTypes.join(" ")}' \\`
         : "",
+      isHiddenCLI: argTypes.some(
+        (argType) =>
+          argType === "vector" ||
+          argType === "option" ||
+          argType === "object" ||
+          argType === "fixed_point32" ||
+          argType === "fixed_point64" ||
+          argType === "decimal128" ||
+          argType === "decimal256"
+      ),
     };
   }, [abiData, fn]);
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string }[]
+    { name: string; mode: string; snippet: string; isHidden?: boolean }[]
   > = {
     view: [
       {
         name: "Curl",
         mode: "sh",
-        snippet: `curl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
+        snippet: `\n\ncurl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
 --data-raw '${formatedAbiData}'`,
       },
       {
         name: "CLI",
         mode: "sh",
+        isHidden: isHiddenCLI,
         snippet: `export CHAIN_ID='${currentChainId}'\n
 export MODULE_ADDRESS='${moduleAddress}'\n
 export MODULE_NAME='${moduleName}'\n
@@ -166,25 +185,6 @@ viewModule(moduleAddress, moduleName, fnName);`,
     ],
     execute: [
       {
-        name: "CLI",
-        mode: "sh",
-        snippet: `${daemonName} keys add --recover celatone\n
-export CHAIN_ID='${currentChainId}'\n
-export RPC_URL='${rpcEndpoint}'\n
-export MODULE_ADDRESS ='${moduleAddress}'\n
-export MODULE_NAME = '${moduleName}'\n
-export MODULE_FN='${fn.name}'\n
-${daemonName} tx move execute $MODULE_ADDRESS \\
-    $MODULE_NAME \\
-    $MODULE_FN \\${typeArgsFlags}${argsFlags}
-    --from celatone \\
-    --chain-id $CHAIN_ID \\
-    --node $RPC_URL \\
-    --gas auto \\
-    --gas-prices ${gasPriceStr} \\
-    --gas-adjustment 1.5`,
-      },
-      {
         name: "InitiaJS",
         mode: "javascript",
         snippet: `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
@@ -203,11 +203,10 @@ const msg = new MsgExecute(
     '${moduleAddress}',
     '${moduleName}',
     '${fn.name}'${showTypeArgs ? ",\n\t".concat(formatedTypeArgs) : ""}${
-          showArgs
-            ? (!showTypeArgs ? ",\n\tundefined" : "") +
-              ",\n\t".concat(formatedArgs)
-            : ""
-        }
+      showArgs
+        ? (!showTypeArgs ? ",\n\tundefined" : "") + ",\n\t".concat(formatedArgs)
+        : ""
+    }
 );
 
 const execute = async () => {
@@ -218,8 +217,27 @@ const execute = async () => {
     const broadcastResult = await lcd.tx.broadcast(signedTx);
     console.log(broadcastResult);
 };
-execute();
-        `,
+execute();`,
+      },
+      {
+        name: "CLI",
+        mode: "sh",
+        isHidden: isHiddenCLI,
+        snippet: `${daemonName} keys add --recover celatone\n
+export CHAIN_ID='${currentChainId}'\n
+export RPC_URL='${rpcEndpoint}'\n
+export MODULE_ADDRESS='${moduleAddress}'\n
+export MODULE_NAME='${moduleName}'\n
+export MODULE_FN='${fn.name}'\n
+${daemonName} tx move execute $MODULE_ADDRESS \\
+    $MODULE_NAME \\
+    $MODULE_FN \\${typeArgsFlags}${argsFlags}
+    --from celatone \\
+    --chain-id $CHAIN_ID \\
+    --node $RPC_URL \\
+    --gas auto \\
+    --gas-prices ${gasPriceStr} \\
+    --gas-adjustment 1.5`,
       },
     ],
   };
@@ -254,7 +272,9 @@ execute();
             <Tabs>
               <TabList borderBottom="1px solid" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
-                  <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
+                  <CustomTab key={`menu-${item.name}`} hidden={item.isHidden}>
+                    {item.name}
+                  </CustomTab>
                 ))}
               </TabList>
               <TabPanels>
