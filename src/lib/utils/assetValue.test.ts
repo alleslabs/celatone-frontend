@@ -406,8 +406,8 @@ describe("addTokenWithValue", () => {
     symbol: "",
     logo: "",
     precision: 6,
-    price: big(0) as USD<Big>,
-    value: big(200) as USD<Big>,
+    price: big(35) as USD<Big>,
+    value: big(3500) as USD<Big>,
   };
 
   const tokenWithValue2: TokenWithValue = {
@@ -417,7 +417,7 @@ describe("addTokenWithValue", () => {
     symbol: "",
     logo: "",
     precision: 6,
-    price: big(0) as USD<Big>,
+    price: big(35) as USD<Big>,
     value: big(3500) as USD<Big>,
   };
 
@@ -428,8 +428,8 @@ describe("addTokenWithValue", () => {
     symbol: "",
     logo: "",
     precision: 6,
-    price: big(0) as USD<Big>,
-    value: big(3500) as USD<Big>,
+    price: big(2) as USD<Big>,
+    value: big(400) as USD<Big>,
   };
 
   test("no old total value", () => {
@@ -439,13 +439,15 @@ describe("addTokenWithValue", () => {
   });
 
   test("old value + new value", () => {
-    const expectResult = {
+    const expectResult: TokenWithValue = {
+      isLPToken: false,
       denom: "uadenom",
       amount: big(200) as U<Token<Big>>,
-      precision: 6,
-      value: big(3700) as USD<Big>,
       symbol: "",
+      precision: 6,
       logo: "",
+      price: big(35) as USD<Big>,
+      value: big(7000) as USD<Big>,
     };
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue2)).toEqual(
       expectResult
@@ -460,19 +462,21 @@ describe("addTokenWithValue", () => {
       isLPToken: false,
       denom: "",
       amount: big(0) as U<Token<Big>>,
-      precision: undefined,
-      value: big(0) as USD<Big>,
       symbol: undefined,
+      precision: undefined,
       logo: undefined,
+      price: big(0) as USD<Big>,
+      value: big(0) as USD<Big>,
     });
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
       isLPToken: false,
       denom: "",
       amount: big(0) as U<Token<Big>>,
-      precision: undefined,
-      value: big(0) as USD<Big>,
       symbol: undefined,
+      precision: undefined,
       logo: undefined,
+      price: big(0) as USD<Big>,
+      value: big(0) as USD<Big>,
     });
   });
 });
