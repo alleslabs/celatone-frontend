@@ -21,7 +21,7 @@ export const jsonInputFormKey = MessageTabs.JSON_INPUT as "JSON Input";
 export const yourSchemaInputFormKey = MessageTabs.YOUR_SCHEMA as "Your Schema";
 
 interface MessageInputSwitchProps<
-  T extends Option<MessageTabs | OutputMessageTabs>
+  T extends Option<MessageTabs | OutputMessageTabs>,
 > {
   currentTab: T;
   disabled?: boolean;
@@ -32,7 +32,7 @@ interface MessageInputSwitchProps<
 }
 
 export const MessageInputSwitch = <
-  T extends Option<MessageTabs | OutputMessageTabs>
+  T extends Option<MessageTabs | OutputMessageTabs>,
 >({
   currentTab,
   disabled = false,

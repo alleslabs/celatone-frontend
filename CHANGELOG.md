@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#591](https://github.com/alleslabs/celatone-frontend/pull/591) Bump initia.js due to decimal serialization and dynamic buffer
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Handle multi bond denoms data in the delegation section
 - [#593](https://github.com/alleslabs/celatone-frontend/pull/593) Refactor submit button to a common component
 - [#574](https://github.com/alleslabs/celatone-frontend/pull/574) Add min height to wasm page container to properly align footer

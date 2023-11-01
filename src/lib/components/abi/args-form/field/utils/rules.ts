@@ -34,6 +34,10 @@ const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: string) =>
     isValidArgAddress(v) ? undefined : "Invalid address";
 
+const validateObject =
+  (isValidArgObject: (input: string) => boolean) => (v: string) =>
+    isValidArgObject(v) ? undefined : "Invalid module address";
+
 const validateFixedPoint = (bcsFixedPointType: string) => (v: string) => {
   try {
     const div = big(2).pow(
@@ -147,7 +151,7 @@ export const getRules = <T extends FieldValues>(
       ...rules.validate,
       object: (v: Nullable<string>) => {
         if (v === null) return undefined;
-        return validateAddress(isValidArgObject)(v);
+        return validateObject(isValidArgObject)(v);
       },
     };
   }
