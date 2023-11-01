@@ -109,7 +109,7 @@ export const DelegationsSection = ({
         position={isOpen ? "absolute" : "relative"}
         opacity={isOpen ? 0 : 1}
         left={isOpen ? "-100%" : "0"}
-        transition="all 0.25s"
+        transition="all 0.25s ease-in-out"
       >
         <DelegationInfo
           TotalBondedCard={TotalBondedCard}
@@ -161,7 +161,7 @@ export const DelegationsSection = ({
         position={isOpen ? "relative" : "absolute"}
         opacity={isOpen ? 1 : 0}
         left={isOpen ? "0" : "100%"}
-        transition="all 0.25s"
+        transition="all 0.25s ease-in-out"
       />
     </Flex>
   );

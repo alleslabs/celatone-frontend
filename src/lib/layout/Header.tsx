@@ -59,7 +59,7 @@ const Header = () => {
             borderWidth="1px"
             borderColor="gray.600"
             _hover={{ bg: "gray.700" }}
-            transition="all .25s ease-in-out"
+            transition="all 0.25s ease-in-out"
             w="170px"
           >
             <Flex
@@ -93,7 +93,7 @@ const Header = () => {
                   _hover={{
                     backgroundColor: "gray.800",
                   }}
-                  transition="all .25s ease-in-out"
+                  transition="all 0.25s ease-in-out"
                   isDisabled={noConfig}
                 >
                   <Flex justify="space-between" align="center" w="full">

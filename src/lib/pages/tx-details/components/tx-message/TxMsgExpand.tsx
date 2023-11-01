@@ -298,7 +298,7 @@ export const TxMsgExpand = ({
       align="center"
       justify="space-between"
       borderRadius="8px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
@@ -352,7 +352,7 @@ export const TxMsgExpand = ({
           color="gray.600"
           boxSize={4}
           transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           m={0}
         />
       </Flex>

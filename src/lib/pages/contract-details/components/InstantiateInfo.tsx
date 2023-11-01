@@ -39,7 +39,7 @@ const PortIdRender = ({ portId }: { portId: string }) => {
     <Box
       className="copier-wrapper"
       fontSize="14px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
@@ -142,12 +142,11 @@ export const InstantiateInfo = ({
   const adminType = getAddressType(contractDetail.admin);
 
   return (
-    <Container w={{ base: "full", md: "auto" }}>
+    <Container w={{ base: "full", md: "auto" }} h="fit-content">
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
         <LabelText flex="1" label="Network">
           {chainId}
         </LabelText>
-
         <LabelText flex="1" label="From Code" helperText1={codeLocalInfo?.name}>
           <ExplorerLink
             type="code_id"
@@ -169,7 +168,6 @@ export const InstantiateInfo = ({
             </Text>
           )}
         </LabelText>
-
         {contractDetail.admin ? (
           <LabelText
             flex="1"
@@ -191,7 +189,6 @@ export const InstantiateInfo = ({
           </LabelText>
         )}
       </Flex>
-
       <Divider border="1px solid" borderColor="gray.700" />
       {createdHeight !== undefined ? (
         <LabelText

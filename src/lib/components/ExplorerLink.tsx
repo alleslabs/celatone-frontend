@@ -124,7 +124,7 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       color="secondary.main"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
@@ -196,7 +196,7 @@ export const ExplorerLink = ({
       className="copier-wrapper"
       display="inline-flex"
       alignItems="center"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       _hover={{
         ...(!readOnly && {
           textDecoration: "underline",

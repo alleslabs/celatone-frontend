@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#586](https://github.com/alleslabs/celatone-frontend/pull/586) Add shortcut for contract states
 - [#598](https://github.com/alleslabs/celatone-frontend/pull/598) Display content field for submit proposal tx details
 - [#587](https://github.com/alleslabs/celatone-frontend/pull/587) Make block row clickable
 - [#579](https://github.com/alleslabs/celatone-frontend/pull/579) Improve ux writing for recent items page

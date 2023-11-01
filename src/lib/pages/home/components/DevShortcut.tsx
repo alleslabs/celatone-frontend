@@ -57,7 +57,7 @@ export const DevShortcut = () => {
               <Flex
                 sx={cardProps}
                 _hover={{ bg: "gray.800" }}
-                transition="all .25s ease-in-out"
+                transition="all 0.25s ease-in-out"
               >
                 <Flex alignItems="center" gap={3}>
                   <CustomIcon

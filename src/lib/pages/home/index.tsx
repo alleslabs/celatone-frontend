@@ -71,7 +71,7 @@ const CardInfo = ({
   <Flex
     sx={cardProps}
     _hover={{ bg: "gray.700" }}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     bg="gray.800"
     onClick={navigate}
     cursor="pointer"

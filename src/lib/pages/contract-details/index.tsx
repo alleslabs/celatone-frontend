@@ -5,6 +5,7 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
+  Button,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -18,6 +19,7 @@ import {
   useInternalNavigate,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
@@ -49,6 +51,7 @@ enum TabIndex {
   Txs = "txs",
   States = "states",
 }
+
 interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
   contractData: ContractData;
@@ -68,9 +71,9 @@ const ContractTxsTable = observer(
     } = useContractDetailsTableCounts(contractAddress, contractAccountId);
     if (!contractData.contractDetail) return <InvalidContract />;
     return (
-      <>
+      <Flex direction="column" gap={6}>
         {/* History Table section */}
-        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+        <Heading as="h6" variant="h6" id={tableHeaderId}>
           Transaction & History
         </Heading>
         <Tabs isLazy lazyBehavior="keepMounted">
@@ -117,7 +120,7 @@ const ContractTxsTable = observer(
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </>
+      </Flex>
     );
   }
 );
@@ -166,7 +169,7 @@ const ContractDetailsBody = observer(
     return (
       <>
         <ContractTop contractAddress={contractAddress} {...contractData} />
-        <Tabs isLazy>
+        <Tabs index={Object.values(TabIndex).indexOf(tab)} isLazy>
           <TabList
             mt={6}
             mb={8}
@@ -206,51 +209,66 @@ const ContractDetailsBody = observer(
                   codeId={contractData.contractDetail.codeId.toString()}
                 />
                 {/* Instantiate/Contract Info Section */}
-                <Heading as="h6" variant="h6" minW="fit-content">
-                  Contract Information
-                </Heading>
-                <Flex
-                  mb={12}
-                  mt={6}
-                  justify="space-between"
-                  direction={{ base: "column", md: "row" }}
-                >
-                  {/* Instantiate Info */}
-                  {isMobile && (
-                    <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
-                      Instantiate Info
+                <Flex direction="column" gap={6}>
+                  {!isMobile && (
+                    <Heading as="h6" variant="h6" minW="fit-content">
+                      Contract Information
                     </Heading>
                   )}
-                  <InstantiateInfo
-                    isLoading={
-                      contractData.isContractDetailLoading ||
-                      contractData.isContractCw2InfoLoading ||
-                      contractData.isInstantiateDetailLoading
-                    }
-                    {...contractData}
-                  />
-                  {/* Contract Info (Expand) */}
                   <Flex
-                    direction="column"
-                    flex={0.8}
-                    gap={4}
-                    mt={{ base: 12, md: 0 }}
+                    mb={12}
+                    justify="space-between"
+                    direction={{ base: "column", md: "row" }}
                   >
-                    <JsonInfo
-                      header="Contract Info"
-                      jsonString={jsonPrettify(
-                        JSON.stringify(
-                          contractData.rawContractResponse?.contract_info ?? {}
-                        )
+                    {/* Instantiate Info */}
+                    <div>
+                      {isMobile && (
+                        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+                          Instantiate Info
+                        </Heading>
                       )}
-                      isLoading={contractData.isRawContractResponseLoading}
-                    />
-                    <JsonInfo
-                      header="Instantiate Message"
-                      jsonString={jsonPrettify(contractData.initMsg ?? "")}
-                      isLoading={contractData.isInstantiateDetailLoading}
-                      defaultExpand
-                    />
+                      <InstantiateInfo
+                        isLoading={
+                          contractData.isContractDetailLoading ||
+                          contractData.isContractCw2InfoLoading ||
+                          contractData.isInstantiateDetailLoading
+                        }
+                        {...contractData}
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline-primary"
+                        mt={4}
+                        pr={1}
+                        onClick={handleTabChange(TabIndex.States)}
+                      >
+                        View Contract States
+                        <CustomIcon name="chevron-right" boxSize={3} />
+                      </Button>
+                    </div>
+                    <Flex
+                      direction="column"
+                      flex={0.8}
+                      gap={4}
+                      mt={{ base: 12, md: 0 }}
+                    >
+                      <JsonInfo
+                        header="Contract Info"
+                        jsonString={jsonPrettify(
+                          JSON.stringify(
+                            contractData.rawContractResponse?.contract_info ??
+                              {}
+                          )
+                        )}
+                        isLoading={contractData.isRawContractResponseLoading}
+                      />
+                      <JsonInfo
+                        header="Instantiate Message"
+                        jsonString={jsonPrettify(contractData.initMsg ?? "")}
+                        isLoading={contractData.isInstantiateDetailLoading}
+                        defaultExpand
+                      />
+                    </Flex>
                   </Flex>
                 </Flex>
                 <ContractTxsTable

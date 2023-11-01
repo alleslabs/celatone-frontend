@@ -29,7 +29,7 @@ export const ButtonCard = ({
     w="100%"
     cursor="pointer"
     _hover={{ bgColor: "gray.700" }}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     _disabled={{
       bgColor: "gray.900",
       cursor: "not-allowed",
