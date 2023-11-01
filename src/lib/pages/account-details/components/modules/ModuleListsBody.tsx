@@ -30,8 +30,9 @@ export const ModuleListsBody = ({
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
-    return modules?.filter((module) =>
-      module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
+    return modules?.filter(
+      (module) =>
+        module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, modules]);
 

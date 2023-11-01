@@ -48,7 +48,7 @@ export const SIDEBAR_WHITELIST_DETAILS: (
         </span>
       ),
     },
-  }[permission]);
+  })[permission];
 
 const storeCodePage = "proposal-store-code";
 export const SIDEBAR_STORE_CODE_DETAILS: (

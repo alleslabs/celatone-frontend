@@ -13,7 +13,7 @@ type AssetObject = { [key: string]: AssetInfo };
 
 interface CoinComponentProps<
   T extends Coin | Coin[],
-  A extends Option<AssetObject> | AssetObject
+  A extends Option<AssetObject> | AssetObject,
 > {
   amount: T;
   assetInfos: A;
