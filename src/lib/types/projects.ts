@@ -7,6 +7,7 @@ import type {
   PermissionAddresses,
   Option,
   Nullable,
+  MoveAccountAddr,
 } from "lib/types";
 
 export interface Account {
@@ -15,6 +16,14 @@ export interface Account {
   name: string;
   slug: string;
   type: string;
+}
+
+export interface Module {
+  address: MoveAccountAddr;
+  description: string;
+  github: string;
+  name: string;
+  slug: string;
 }
 
 export interface RawPublicCode {
@@ -65,6 +74,7 @@ export interface RawPublicProjectInfo {
   assets: AssetInfo;
   codes: RawPublicCode[];
   contracts: RawPublicContract[];
+  modules: Module[];
   details: PublicDetail;
   slug: string;
 }
@@ -78,6 +88,7 @@ export interface PublicProjectInfo {
   assets: AssetInfo;
   codes: PublicCode[];
   contracts: PublicContract[];
+  modules: Module[];
   details: PublicDetail;
   slug: string;
 }
@@ -88,4 +99,12 @@ export interface PublicInfo {
   contractAddress: ContractAddr;
   description: string;
   github: string;
+}
+
+export interface PublicModule {
+  address: MoveAccountAddr;
+  name: string;
+  description: string;
+  github: string;
+  slug: string;
 }
