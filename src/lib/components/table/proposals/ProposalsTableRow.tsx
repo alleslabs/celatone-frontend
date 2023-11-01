@@ -60,12 +60,12 @@ export const ProposalsTableRow = ({
               });
               // TOOD: revisit retrieving url (make a proper hook)
               openNewTab(
-                getNavigationUrl(
-                  "proposal_id",
-                  explorerLink,
-                  proposal.proposalId.toString(),
-                  lcdEndpoint
-                )
+                getNavigationUrl({
+                  type: "proposal_id",
+                  explorerConfig: explorerLink,
+                  value: proposal.proposalId.toString(),
+                  lcdEndpoint,
+                })
               );
             }
           : undefined
