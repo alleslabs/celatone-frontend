@@ -403,30 +403,33 @@ describe("addTokenWithValue", () => {
     isLPToken: false,
     denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
-    precision: 6,
-    value: big(200) as USD<Big>,
     symbol: "",
     logo: "",
+    precision: 6,
+    price: big(0) as USD<Big>,
+    value: big(200) as USD<Big>,
   };
 
   const tokenWithValue2: TokenWithValue = {
     isLPToken: false,
     denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
-    precision: 6,
-    value: big(3500) as USD<Big>,
     symbol: "",
     logo: "",
+    precision: 6,
+    price: big(0) as USD<Big>,
+    value: big(3500) as USD<Big>,
   };
 
   const tokenWithValue3: TokenWithValue = {
     isLPToken: false,
     denom: "ubdenom",
     amount: big(100) as U<Token<Big>>,
-    precision: 6,
-    value: big(3500) as USD<Big>,
     symbol: "",
     logo: "",
+    precision: 6,
+    price: big(0) as USD<Big>,
+    value: big(3500) as USD<Big>,
   };
 
   test("no old total value", () => {

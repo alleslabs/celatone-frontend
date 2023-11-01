@@ -57,6 +57,10 @@ export const coinToTokenWithValue = (
         symbol: lpDetails.symbol,
         logo: lpDetails.image,
         precision: lpDetails.precision,
+        price: lpDetails.lpPricePerShare as USD<Big>,
+        value: tokenAmount
+          .times(lpDetails.lpPricePerShare)
+          .div(big(10).pow(lpDetails.precision)) as USD<Big>,
         lpDetails: {
           coinA: {
             amount: formatUTokenWithPrecision(
@@ -79,9 +83,6 @@ export const coinToTokenWithValue = (
             symbol: lpDetails.coinB.symbol,
           },
         },
-        value: tokenAmount
-          .times(lpDetails.lpPricePerShare)
-          .div(big(10).pow(lpDetails.precision)) as USD<Big>,
       }
     : {
         isLPToken: false,
@@ -118,6 +119,7 @@ export const addTokenWithValue = (
         symbol: undefined,
         logo: undefined,
         precision: undefined,
+        price: big(0) as USD<Big>,
         value: big(0) as USD<Big>,
       };
 };
