@@ -57,7 +57,10 @@ export const PublicProjectCard = observer(
             >
               <Flex gap={2} pr={1}>
                 <Image
-                  src={item.logo}
+                  src={
+                    item.logo ??
+                    "https://assets.alleslabs.dev/webapp-assets/asset/undefined-violet.svg"
+                  }
                   borderRadius="full"
                   alt="Celatone"
                   width={7}

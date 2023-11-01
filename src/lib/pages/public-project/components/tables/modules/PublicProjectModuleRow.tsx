@@ -3,11 +3,11 @@ import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { Module } from "lib/types";
+import type { PublicModule } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface ModuleTableRowProps {
-  module: Module;
+  module: PublicModule;
   templateColumns: string;
 }
 

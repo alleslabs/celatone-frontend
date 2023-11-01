@@ -10,7 +10,7 @@ import type {
   MoveAccountAddr,
 } from "lib/types";
 
-export interface Account {
+export interface PublicAccount {
   address: HumanAddr;
   description: string;
   name: string;
@@ -18,7 +18,7 @@ export interface Account {
   type: string;
 }
 
-export interface Module {
+export interface PublicModule {
   address: MoveAccountAddr;
   description: string;
   github: string;
@@ -70,11 +70,11 @@ export interface PublicDetail {
 }
 
 export interface RawPublicProjectInfo {
-  accounts: Account[];
+  accounts: PublicAccount[];
   assets: AssetInfo;
   codes: RawPublicCode[];
   contracts: RawPublicContract[];
-  modules: Module[];
+  modules: PublicModule[];
   details: PublicDetail;
   slug: string;
 }
@@ -84,11 +84,11 @@ export interface PublicContract extends Omit<RawPublicContract, "address"> {
 }
 
 export interface PublicProjectInfo {
-  accounts: Account[];
+  accounts: PublicAccount[];
   assets: AssetInfo;
   codes: PublicCode[];
   contracts: PublicContract[];
-  modules: Module[];
+  modules: PublicModule[];
   details: PublicDetail;
   slug: string;
 }
@@ -99,12 +99,4 @@ export interface PublicInfo {
   contractAddress: ContractAddr;
   description: string;
   github: string;
-}
-
-export interface PublicModule {
-  address: MoveAccountAddr;
-  name: string;
-  description: string;
-  github: string;
-  slug: string;
 }

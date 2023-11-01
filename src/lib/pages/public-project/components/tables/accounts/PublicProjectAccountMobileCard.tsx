@@ -3,12 +3,12 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import type { Account } from "lib/types";
+import type { PublicAccount } from "lib/types";
 
 import { getNavigationArgs } from "./utils";
 
 interface PublicProjectAccountMobileCardProps {
-  accountInfo: Account;
+  accountInfo: PublicAccount;
 }
 export const PublicProjectAccountMobileCard = ({
   accountInfo,

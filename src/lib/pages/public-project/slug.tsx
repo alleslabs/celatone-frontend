@@ -134,15 +134,14 @@ const ProjectDetail = () => {
           >
             Accounts
           </CustomTab>
-          {move.enabled && (
-            <CustomTab
-              count={publicModules.length}
-              isDisabled={!publicModules.length}
-              onClick={handleTabChange(TabIndex.Modules)}
-            >
-              Modules
-            </CustomTab>
-          )}
+          <CustomTab
+            count={publicModules.length}
+            isDisabled={!publicModules.length}
+            onClick={handleTabChange(TabIndex.Modules)}
+            hidden={!move.enabled}
+          >
+            Modules
+          </CustomTab>
         </TabList>
         <TabPanels my={8}>
           <TabPanel p={0}>

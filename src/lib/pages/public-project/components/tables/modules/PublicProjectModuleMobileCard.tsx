@@ -3,11 +3,11 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import type { Module } from "lib/types";
+import type { PublicModule } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface PublicProjectModuleMobileCardProps {
-  module: Module;
+  module: PublicModule;
 }
 export const PublicProjectModuleMobileCard = ({
   module,

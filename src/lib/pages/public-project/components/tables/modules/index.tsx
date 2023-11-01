@@ -12,13 +12,13 @@ import {
   TableTitle,
   ViewMore,
 } from "lib/components/table";
-import type { Module } from "lib/types";
+import type { PublicModule } from "lib/types";
 
 import { PublicProjectModuleMobileCard } from "./PublicProjectModuleMobileCard";
 import { PublicProjectModuleRow } from "./PublicProjectModuleRow";
 
 interface PublicProjectModuleTableProps {
-  modules: Module[];
+  modules: PublicModule[];
   onViewMore?: () => void;
 }
 
@@ -37,7 +37,7 @@ const ContentRender = ({
   filteredModules,
   isMobile,
 }: {
-  filteredModules: Module[];
+  filteredModules: PublicModule[];
   isMobile: boolean;
 }) =>
   isMobile ? (

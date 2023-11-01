@@ -6,16 +6,16 @@ import type {
   PublicContract,
   PublicDetail,
   Option,
-  Account,
-  Module,
+  PublicAccount,
+  PublicModule,
 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 interface PublicDataState {
   publicCodes: PublicCode[];
   publicContracts: PublicContract[];
-  publicAccounts: Account[];
-  publicModules: Module[];
+  publicAccounts: PublicAccount[];
+  publicModules: PublicModule[];
   projectDetail: Option<PublicDetail>;
   slug: string;
   isLoading: boolean;
