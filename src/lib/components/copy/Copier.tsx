@@ -31,7 +31,6 @@ export const Copier = ({
       triggerElement={
         <CustomIcon
           id={type}
-          h={6}
           className="copier"
           display={display}
           cursor="pointer"
@@ -41,7 +40,6 @@ export const Copier = ({
           name="copy"
           boxSize={3}
           color="gray.600"
-          minH={{ base: 6, md: "auto" }}
         />
       }
     />

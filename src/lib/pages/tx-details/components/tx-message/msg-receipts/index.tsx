@@ -618,12 +618,9 @@ export const generateReceipts = (
           value: String(details.is_expedited ?? false),
         },
         { title: "Title", value: details.content.title },
-        details.content.changes && {
-          title: "Parameter Changes",
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.content.changes,
-          }),
+        {
+          title: "Content",
+          html: getCommonReceiptHtml({ type: "json", value: details.content }),
         },
       ];
     }

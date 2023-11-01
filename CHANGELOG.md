@@ -44,12 +44,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#586](https://github.com/alleslabs/celatone-frontend/pull/586) Add shortcut for contract states
+- [#598](https://github.com/alleslabs/celatone-frontend/pull/598) Display content field for submit proposal tx details
 - [#587](https://github.com/alleslabs/celatone-frontend/pull/587) Make block row clickable
 - [#579](https://github.com/alleslabs/celatone-frontend/pull/579) Improve ux writing for recent items page
 - [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
 
 ### Bug fixes
 
+- [#597](https://github.com/alleslabs/celatone-frontend/pull/597) Fix pool txs row chevron and copy icon, add replace navigation option to public project details page
 - [#563](https://github.com/alleslabs/celatone-frontend/pull/563) Order by contract latest history timestamp in account contract instances
 - [#560](https://github.com/alleslabs/celatone-frontend/pull/560) Fix pool type alignment in pool card
 

@@ -40,6 +40,7 @@ export const PoolTxsMsg = ({
     .slice(0, 3)
     .concat("1fr")
     .join(" ");
+  const hasMsgDetails = transaction.success && message;
   return (
     <Box
       w="full"
@@ -70,13 +71,14 @@ export const PoolTxsMsg = ({
           onToggle();
         }}
       >
-        <TableNoBorderRow pl={2}>
-          {transaction.success && message && (
+        <TableNoBorderRow p="0 0 0 8px">
+          {hasMsgDetails && (
             <CustomIcon
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
               transition="all 0.25s ease-in-out"
               color="gray.600"
+              m={0}
             />
           )}
         </TableNoBorderRow>
@@ -140,17 +142,14 @@ export const PoolTxsMsg = ({
           )}
         </TableNoBorderRow>
       </Grid>
-      {transaction.success && message && (
+      {hasMsgDetails && (
         <Grid
           w="full"
           py={4}
           hidden={!isOpen}
           templateColumns={msgDetailTemplateColumns}
         >
-          <TableNoBorderRow py={0} />
-          <TableNoBorderRow py={0} />
-          <TableNoBorderRow py={0} />
-          <TableNoBorderRow py={0}>
+          <TableNoBorderRow gridArea="1 / 4" py={0}>
             <PoolMsgDetail
               txHash={transaction.hash}
               blockHeight={transaction.height}
