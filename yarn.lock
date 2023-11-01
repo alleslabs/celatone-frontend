@@ -3514,10 +3514,10 @@
   dependencies:
     browser-headers "^0.4.1"
 
-"@initia/initia.js@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.11.tgz#4f25ab35754db4db238eed564ac82aa97c9200cc"
-  integrity sha512-SlRLedPTnqU/4H2Ffo9Ufbvxofrc1ndU4kp//z/ZzFV0yid1yqkq39580RcDUudU9IsrK2MurAPjWkFIPAne+Q==
+"@initia/initia.js@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@initia/initia.js/-/initia.js-0.1.12.tgz#10e777088c759f7ce3124f1451650e564045f296"
+  integrity sha512-K6zxKMksSpPRFJKMCYokSxvHAC66juKR/gqQ+m6PnIvvkwLg8HY4GamvQKbmIuYxahHhk/WFfFwYNK5DWTwF7w==
   dependencies:
     "@initia/initia.proto" "^0.1.12"
     "@ledgerhq/hw-transport" "^6.27.12"
@@ -3537,16 +3537,6 @@
     ws "^7.5.9"
 
 "@initia/initia.proto@0.1.12", "@initia/initia.proto@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.12.tgz#bfef7f9fe2b8dfa39364a30d1e497ed214029f55"
-  integrity sha512-dJkCgMyIonVDdWWmcAkCLx7woejp0EWbC9EXT/3xHxXw+IiZJrNBJOzY2wAjOBfOwC7n7HCJkpFtp2i2rumuTQ==
-  dependencies:
-    "@improbable-eng/grpc-web" "^0.15.0"
-    google-protobuf "^3.21.0"
-    long "^5.2.0"
-    protobufjs "^7.1.1"
-
-"@initia/initia.proto@^0.1.12":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@initia/initia.proto/-/initia.proto-0.1.12.tgz#bfef7f9fe2b8dfa39364a30d1e497ed214029f55"
   integrity sha512-dJkCgMyIonVDdWWmcAkCLx7woejp0EWbC9EXT/3xHxXw+IiZJrNBJOzY2wAjOBfOwC7n7HCJkpFtp2i2rumuTQ==
