@@ -7,11 +7,11 @@ import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource";
 import { EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import type { HumanAddr, Option, ResourceGroup } from "lib/types";
+import type { MoveAccountAddr, Option, ResourceGroup } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
 interface ResourceOverviewBodyProps {
-  address: HumanAddr;
+  address: MoveAccountAddr;
   resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;

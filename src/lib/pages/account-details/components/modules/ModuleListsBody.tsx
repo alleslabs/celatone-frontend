@@ -9,10 +9,10 @@ import { ModuleCard } from "lib/components/module";
 import { EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import type { IndexedModule } from "lib/services/move/moduleService";
-import type { HumanAddr, Option } from "lib/types";
+import type { MoveAccountAddr, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
-  selectedAddress: HumanAddr;
+  selectedAddress: MoveAccountAddr;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
   onViewMore?: () => void;

@@ -3,12 +3,12 @@ import { Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
-import type { HumanAddr, Option, ResourceGroup } from "lib/types";
+import type { MoveAccountAddr, Option, ResourceGroup } from "lib/types";
 
 import { ResourceOverviewBody } from "./ResourceOverviewBody";
 
 interface ResourceOverviewProps {
-  address: HumanAddr;
+  address: MoveAccountAddr;
   totalCount: Option<number>;
   resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;

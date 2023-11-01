@@ -4,13 +4,13 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { type IndexedModule } from "lib/services/move/moduleService";
-import type { HumanAddr, Option } from "lib/types";
+import type { MoveAccountAddr, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
   totalCount: Option<number>;
-  selectedAddress: HumanAddr;
+  selectedAddress: MoveAccountAddr;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
   onViewMore?: () => void;
