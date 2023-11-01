@@ -16,6 +16,7 @@ export const useBaseApiRoute = (
     | "native_tokens"
     | "cosmwasm"
     | "move_modules"
+    | "staking"
 ): string => {
   const {
     chainConfig: { chain, api: configApi },
@@ -56,6 +57,8 @@ export const useBaseApiRoute = (
       return `${api}/cosmwasm/${chain}/${currentChainId}`;
     case "move_modules":
       return `${api}/${chain}/${currentChainId}/move_modules`;
+    case "staking":
+      return `${api}/${chain}/${currentChainId}/staking`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

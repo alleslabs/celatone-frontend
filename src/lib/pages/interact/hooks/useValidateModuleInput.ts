@@ -6,10 +6,15 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import type { Nullable } from "lib/types";
-import { isHexAddress, splitModule, truncate } from "lib/utils";
+import {
+  isHexModuleAddress,
+  isHexWalletAddress,
+  splitModule,
+  truncate,
+} from "lib/utils";
 
 export const useValidateModuleInput = () => {
-  const { validateUserAddress } = useValidateAddress();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
@@ -26,16 +31,15 @@ export const useValidateModuleInput = () => {
       // Allow only module path for now
       if (inputArr.length > 3) return errText;
       const [address, module, functionName] = inputArr;
-      const addrErr = validateUserAddress(address);
       const invalidAddress = address.startsWith(prefix)
-        ? addrErr
-        : !isHexAddress(address);
+        ? !!validateUserAddress(address) && !!validateContractAddress(address)
+        : !isHexWalletAddress(address) && !isHexModuleAddress(address);
 
       if (invalidAddress || module === "" || functionName === "")
         return errText;
 
       return null;
     },
-    [errText, prefix, validateUserAddress]
+    [errText, prefix, validateContractAddress, validateUserAddress]
   );
 };

@@ -45,6 +45,7 @@ export const PublicProjectModuleRow = ({
           onClick={goToDetail}
           color="primary.main"
           transition="all 0.25s ease-in-out"
+          cursor="pointer"
           _hover={{
             textDecoration: "underline",
             textDecorationColor: "primary.light",

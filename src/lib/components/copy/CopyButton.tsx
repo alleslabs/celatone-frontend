@@ -13,6 +13,7 @@ interface CopyButtonProps extends ButtonProps {
   hasIcon?: boolean;
   buttonText?: string;
   amptrackSection?: string;
+  iconGap?: number;
 }
 
 export const CopyButton = ({
@@ -25,6 +26,7 @@ export const CopyButton = ({
   buttonText = "Copy",
   amptrackSection,
   ml,
+  iconGap,
   ...buttonProps
 }: CopyButtonProps) => {
   const { track } = useTrack();
@@ -48,7 +50,11 @@ export const CopyButton = ({
           borderRadius={size === "xs" ? 6 : 8}
         >
           {hasIcon && (
-            <CustomIcon name="copy" boxSize={size === "xs" ? 3 : 4} />
+            <CustomIcon
+              name="copy"
+              boxSize={size === "xs" ? 3 : 4}
+              mr={iconGap}
+            />
           )}
           {buttonText}
         </Button>

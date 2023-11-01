@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#600](https://github.com/alleslabs/celatone-frontend/pull/600) Add modules in public project
+- [#581](https://github.com/alleslabs/celatone-frontend/pull/581) Support new move input i.e., object, fixed_point, and decimal
 - [#583](https://github.com/alleslabs/celatone-frontend/pull/583) Support Move code snippets
 - [#585](https://github.com/alleslabs/celatone-frontend/pull/585) Add Initia Faucet
 - [#562](https://github.com/alleslabs/celatone-frontend/pull/562) Support searching with hex address and module path
@@ -86,6 +87,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#591](https://github.com/alleslabs/celatone-frontend/pull/591) Bump initia.js due to decimal serialization and dynamic buffer
+- [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Handle multi bond denoms data in the delegation section
+- [#593](https://github.com/alleslabs/celatone-frontend/pull/593) Refactor submit button to a common component
 - [#574](https://github.com/alleslabs/celatone-frontend/pull/574) Add min height to wasm page container to properly align footer
 - [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
 - [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables
@@ -133,6 +137,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#599](https://github.com/alleslabs/celatone-frontend/pull/599) Fix getNavigationUrl to support move
+- [#590](https://github.com/alleslabs/celatone-frontend/pull/590) Fix upload script various bugs
+- [#594](https://github.com/alleslabs/celatone-frontend/pull/594) LP assets filtering and delegation ui/ux improvement
 - [#584](https://github.com/alleslabs/celatone-frontend/pull/584) Throw an error when tx failed on postTx
 - [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
 - [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal

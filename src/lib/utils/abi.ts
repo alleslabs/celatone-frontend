@@ -55,10 +55,16 @@ export const getAbiInitialData = (length: number) =>
 // ------------------------------------------//
 // -----------------MOVE ARGS----------------//
 // ------------------------------------------//
-const getArgType = (argType: string) =>
-  argType
-    .replaceAll("0x1::string::String", "string")
-    .replaceAll("0x1::option::Option", "option");
+export const getArgType = (argType: string) => {
+  if (argType === "0x1::string::String") return BCS.STRING;
+  if (argType.startsWith("0x1::option::Option")) return BCS.OPTION;
+  if (argType.startsWith("0x1::object::Object")) return BCS.OBJECT;
+  if (argType === "0x1::fixed_point32::FixedPoint32") return BCS.FIXED_POINT32;
+  if (argType === "0x1::fixed_point64::FixedPoint64") return BCS.FIXED_POINT64;
+  if (argType === "0x1::decimal128::Decimal128") return BCS.DECIMAL128;
+  if (argType === "0x1::decimal256::Decimal256") return BCS.DECIMAL256;
+  return argType;
+};
 
 const getArgValue = ({
   type,
@@ -79,21 +85,21 @@ const getArgValue = ({
         ? values.map((element) => element.toLowerCase() === "true")
         : values;
     }
-    if (type === "bool") return value === "true";
+    if (type === "bool") return value.toLowerCase() === "true";
     return value.trim();
   } catch (e) {
     return "";
   }
 };
 
-const BUFFER_SIZE = 1024 * 1024;
 const bcs = BCS.getInstance();
 
 const serializeArg = (arg: { type: string; value: Nullable<string> }) => {
+  const bufferSize = Math.max(1024, 2 * (arg.value ?? "").length);
   try {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
-    return bcs.serialize(argType, argValue, BUFFER_SIZE);
+    return bcs.serialize(argType, argValue, bufferSize);
   } catch (e) {
     return "";
   }
@@ -103,6 +109,7 @@ export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
   const serializedArgs = fn.params.map((type, index) =>
     serializeArg({ type, value: abiData.args[index] })
   );
+
   return {
     typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
     args: serializedArgs,

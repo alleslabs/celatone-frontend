@@ -33,7 +33,10 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             text: moduleData.parsedAbi.address,
             href: `/accounts/${moduleData.parsedAbi.address}`,
           },
-          { text: "Modules" },
+          {
+            text: "Modules",
+            href: `/accounts/${moduleData.parsedAbi.address}/modules`,
+          },
           { text: moduleData.moduleName },
         ]}
       />
@@ -144,7 +147,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Button
               variant="outline-primary"
               w={{ base: "full", md: "auto" }}
-              leftIcon={<CustomIcon name="query" />}
+              leftIcon={<CustomIcon name="query" mr={0} />}
               size={{ base: "sm", md: "md" }}
               onClick={() =>
                 navigate({
@@ -162,7 +165,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Button
               variant="outline-primary"
               w={{ base: "full", md: "auto" }}
-              leftIcon={<CustomIcon name="execute" />}
+              leftIcon={<CustomIcon name="execute" mr={0} />}
               size={{ base: "sm", md: "md" }}
               onClick={() =>
                 navigate({
@@ -182,6 +185,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               variant="outline-primary"
               size={{ base: "sm", md: "md" }}
               buttonText="Copy ABI"
+              iconGap={2}
             />
           </Flex>
         )}

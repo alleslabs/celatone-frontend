@@ -25,7 +25,7 @@ export const TableTitle = ({
         {count ?? "N/A"}
       </Badge>
     </Flex>
-    <Text variant="body2" textColor="text.dark">
+    <Text variant="body2" textColor="text.dark" fontWeight={600}>
       {helperText}
     </Text>
   </Box>

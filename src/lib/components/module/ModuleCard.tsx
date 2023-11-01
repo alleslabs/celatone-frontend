@@ -3,12 +3,12 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useVerifyModule } from "lib/services/move/moduleService";
-import type { HumanAddr, Option } from "lib/types";
+import type { MoveAccountAddr, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
-  selectedAddress: HumanAddr;
+  selectedAddress: MoveAccountAddr;
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: (module: IndexedModule) => void;

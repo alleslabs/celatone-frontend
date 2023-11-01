@@ -13,50 +13,46 @@ export const PublicProjectModuleMobileCard = ({
   module,
 }: PublicProjectModuleMobileCardProps) => {
   const navigate = useInternalNavigate();
-  const goToDetail = () => {
+
+  const goToModuleDetails = () => {
     navigate({
-      replace: true,
       pathname: "/modules/[address]/[moduleName]/[tab]",
       query: {
         address: module.address,
         moduleName: module.name,
         tab: "overview",
       },
-      options: {
-        shallow: true,
-      },
     });
   };
-
   return (
     <MobileCardTemplate
-      onClick={goToDetail}
+      onClick={goToModuleDetails}
       topContent={
-        <Flex direction="column">
-          <MobileLabel variant="body2" label="Module Path" />
-          <Text
-            variant="body2"
-            onClick={goToDetail}
-            color="primary.main"
-            transition="all 0.25s ease-in-out"
-            _hover={{
-              textDecoration: "underline",
-              textDecorationColor: "primary.light",
-              "& > p": { color: "primary.light" },
-            }}
-          >
-            {truncate(module.address)}::{module.name}
-          </Text>
+        <Flex gap={2} align="center">
+          <Flex direction="column">
+            <MobileLabel variant="body2" label="Module Path" />
+            <Text
+              variant="body2"
+              onClick={goToModuleDetails}
+              color="primary.main"
+            >
+              {truncate(module.address)}::{module.name}
+            </Text>
+          </Flex>
         </Flex>
       }
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
             <MobileLabel variant="body2" label="Owner" />
-            <ExplorerLink value={module.address} type="user_address" />
+            <ExplorerLink
+              value={module.address.toString()}
+              type="user_address"
+              showCopyOnHover
+            />
           </Flex>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Description" />
+            <MobileLabel variant="body2" label="Module Description" />
             <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
               {module.description || "N/A"}
             </Text>

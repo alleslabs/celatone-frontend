@@ -2,14 +2,25 @@ import { Input, Textarea } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import type { ControllerRenderProps } from "react-hook-form";
 
-import { useExampleAddresses } from "lib/app-provider";
+import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
 import type { HumanAddr, Nullable } from "lib/types";
 
-import { UINT_TYPES, STRING_TYPE } from "./constants";
+import {
+  UINT_TYPES,
+  STRING_TYPE,
+  OBJECT_TYPE,
+  FIXED_POINT_TYPES,
+  DECIMAL_TYPES,
+} from "./constants";
 
-const getInputPlaceholder = (type: string, isNull: boolean) => {
+const getInputPlaceholder = (
+  type: string,
+  isNull: boolean,
+  addressPrefix: string
+) => {
   if (type === STRING_TYPE && !isNull)
     return "Left blank to send as empty string";
+  if (type.startsWith(OBJECT_TYPE)) return `0xabc4... or ${addressPrefix}1...`;
   return " ";
 };
 
@@ -22,10 +33,16 @@ const getVectorPlaceholder = (
   const [, elementType] = type.split(/<(.*)>/);
 
   if (UINT_TYPES.includes(elementType)) return "[1, 2, 3]";
-  if (elementType === "address") return `[0x1, ${sampleAddresses}]`;
+  if (elementType === "address" || elementType.startsWith(OBJECT_TYPE))
+    return `[0x1, ${sampleAddresses}]`;
   if (elementType === STRING_TYPE)
     return "[some first string, some second string]";
   if (elementType === "bool") return "[true, false]";
+  if (
+    FIXED_POINT_TYPES.includes(elementType) ||
+    DECIMAL_TYPES.includes(elementType)
+  )
+    return "[1, 1.2, 1.23, 12.34]";
   return `[${elementType}]`;
 };
 
@@ -45,13 +62,23 @@ export const ArgFieldWidget = ({
   value,
   onChange,
 }: ArgFieldWidgetProps) => {
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
   const { user: exampleAddress } = useExampleAddresses();
 
-  if (UINT_TYPES.includes(type) || type === "address" || type === STRING_TYPE)
+  if (
+    UINT_TYPES.includes(type) ||
+    type === "address" ||
+    type === STRING_TYPE ||
+    type.startsWith(OBJECT_TYPE) ||
+    FIXED_POINT_TYPES.includes(type) ||
+    DECIMAL_TYPES.includes(type)
+  )
     return (
       <Input
         size="md"
-        placeholder={getInputPlaceholder(type, value === null)}
+        placeholder={getInputPlaceholder(type, value === null, prefix)}
         value={value ?? ""}
         onChange={onChange}
       />

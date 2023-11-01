@@ -1,2 +1,2 @@
-export * from "./ResourceLists";
+export * from "./ResourceOverview";
 export * from "./ResourceSection";

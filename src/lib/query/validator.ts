@@ -10,7 +10,6 @@ export const getValidators = graphql(`
       details
       identity
       jailed
-      min_self_delegation
       moniker
       operator_address
       website

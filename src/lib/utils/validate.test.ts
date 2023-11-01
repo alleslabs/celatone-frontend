@@ -15,6 +15,12 @@ describe("isCodeId", () => {
     test("length too long", () => {
       expect(isCodeId("12345678")).toBeFalsy();
     });
+    test("negative number", () => {
+      expect(isCodeId("-1234")).toBeFalsy();
+    });
+    test("hexstring", () => {
+      expect(isCodeId("0x1234")).toBeFalsy();
+    });
   });
 });
 
@@ -49,10 +55,16 @@ describe("isBlock", () => {
   });
   describe("invalid", () => {
     test("empty string", () => {
-      expect(isCodeId("")).toBeFalsy();
+      expect(isBlock("")).toBeFalsy();
     });
     test("non-number string", () => {
-      expect(isCodeId("1234ABCD")).toBeFalsy();
+      expect(isBlock("1234ABCD")).toBeFalsy();
+    });
+    test("negative number", () => {
+      expect(isBlock("-1234")).toBeFalsy();
+    });
+    test("hexstring", () => {
+      expect(isBlock("0x1234")).toBeFalsy();
     });
   });
 });
