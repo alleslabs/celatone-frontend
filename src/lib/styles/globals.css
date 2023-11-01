@@ -1,4 +1,9 @@
 /* Global Styling here */
+div[data-floating-ui-portal] {
+  position: relative;
+  z-index: 9999;
+}
+
 .copier-wrapper:hover .copier {
   display: inline;
 }
