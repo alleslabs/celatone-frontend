@@ -33,8 +33,8 @@ export const TotalAccountValue = ({
         />
       ) : (
         <Heading
-          as="h5"
-          variant="h5"
+          as="h6"
+          variant="h6"
           color={
             !totalAccountValue || totalAccountValue.eq(0)
               ? "text.dark"

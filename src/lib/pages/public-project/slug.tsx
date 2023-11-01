@@ -7,10 +7,12 @@ import {
   usePublicProjectConfig,
   useWasmConfig,
   useInternalNavigate,
+  useMoveConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import type { MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -18,6 +20,7 @@ import {
   PublicProjectAccountTable,
   PublicProjectCodeTable,
   PublicProjectContractTable,
+  PublicProjectModuleTable,
 } from "./components/tables";
 import { usePublicData } from "./data";
 
@@ -26,12 +29,14 @@ enum TabIndex {
   Codes = "codes",
   Contracts = "contracts",
   Accounts = "accounts",
+  Modules = "modules",
 }
 
 const ProjectDetail = () => {
   const { track } = useTrack();
   const router = useRouter();
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   // TODO: remove assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
@@ -43,6 +48,32 @@ const ProjectDetail = () => {
     slug,
     isLoading,
   } = usePublicData();
+
+  const mockupModules = [
+    {
+      slug: "initia",
+      address: "init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d" as MoveAccountAddr,
+      name: "acl",
+      description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
+      github: "",
+    },
+    {
+      slug: "initia2",
+      address: "init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d" as MoveAccountAddr,
+      name: "dex",
+      description:
+        "Consequatur, aliquam veritatis laudantium odit optio at et quo, eos a labore",
+      github: "",
+    },
+    {
+      slug: "initia3",
+      address: "init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d" as MoveAccountAddr,
+      name: "capability",
+      description:
+        "Libero quasi molestiae nulla laboriosam beatae nostrum alias harum ducimus.",
+      github: "",
+    },
+  ];
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
@@ -127,6 +158,15 @@ const ProjectDetail = () => {
           >
             Accounts
           </CustomTab>
+          {/* TODO Change to publicModules */}
+          <CustomTab
+            count={mockupModules.length}
+            isDisabled={!mockupModules.length}
+            onClick={handleTabChange(TabIndex.Modules)}
+            hidden={!move.enabled}
+          >
+            Modules
+          </CustomTab>
         </TabList>
         <TabPanels my={8}>
           <TabPanel p={0}>
@@ -146,6 +186,13 @@ const ProjectDetail = () => {
               accounts={publicAccounts}
               onViewMore={handleTabChange(TabIndex.Accounts)}
             />
+            {/* TODO Change to publicModules */}
+            {move.enabled && (
+              <PublicProjectModuleTable
+                modules={mockupModules}
+                onViewMore={handleTabChange(TabIndex.Modules)}
+              />
+            )}
           </TabPanel>
           <TabPanel p={0}>
             <PublicProjectCodeTable codes={publicCodes} />
@@ -155,6 +202,9 @@ const ProjectDetail = () => {
           </TabPanel>
           <TabPanel p={0}>
             <PublicProjectAccountTable accounts={publicAccounts} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <PublicProjectModuleTable modules={mockupModules} />
           </TabPanel>
         </TabPanels>
       </Tabs>
