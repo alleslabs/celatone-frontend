@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
+import { ErrorFetching } from "../../ErrorFetching";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -19,20 +20,22 @@ import { TEMPLATE_COLUMNS } from "./constants";
 interface DelegationsTableProps {
   delegations: Option<Delegation[]>;
   rewards: Option<Record<string, TokenWithValue[]>>;
-  defaultToken: TokenWithValue;
   isLoading: boolean;
+  isSingleBondDenom: boolean;
 }
 
 const DelegationsTableBody = ({
   delegations,
   rewards,
-  defaultToken,
   isLoading,
+  isSingleBondDenom,
 }: DelegationsTableProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;
-  if (!delegations?.length)
+  if (!delegations || !rewards)
+    return <EmptyState message={<ErrorFetching />} withBorder />;
+  if (!delegations.length)
     return (
       <EmptyState
         message="This account did not delegate their assets to any validators."
@@ -46,17 +49,17 @@ const DelegationsTableBody = ({
         <BondedTableMobileCard
           key={
             delegation.validator.validatorAddress +
-            delegation.token.amount +
-            delegation.token.denom
+            delegation.balances.reduce(
+              (prev, balance) => prev + balance.amount + balance.denom,
+              ""
+            )
           }
           bondedInfo={{
             validator: delegation.validator,
-            amount: delegation.token,
-            reward:
-              rewards?.[delegation.validator.validatorAddress]?.find(
-                (token) => token.denom === defaultToken.denom
-              ) ?? defaultToken,
+            balances: delegation.balances,
+            rewards: rewards[delegation.validator.validatorAddress] ?? [],
           }}
+          isSingleBondDenom={isSingleBondDenom}
         />
       ))}
     </MobileTableContainer>
@@ -67,17 +70,17 @@ const DelegationsTableBody = ({
         <BondedTableRow
           key={
             delegation.validator.validatorAddress +
-            delegation.token.amount +
-            delegation.token.denom
+            delegation.balances.reduce(
+              (prev, balance) => prev + balance.amount + balance.denom,
+              ""
+            )
           }
           bondedInfo={{
             validator: delegation.validator,
-            amount: delegation.token,
-            reward:
-              rewards?.[delegation.validator.validatorAddress]?.find(
-                (token) => token.denom === defaultToken.denom
-              ) ?? defaultToken,
+            balances: delegation.balances,
+            rewards: rewards[delegation.validator.validatorAddress] ?? [],
           }}
+          isSingleBondDenom={isSingleBondDenom}
           templateColumns={TEMPLATE_COLUMNS}
         />
       ))}
@@ -88,16 +91,16 @@ const DelegationsTableBody = ({
 export const DelegationsTable = ({
   delegations,
   rewards,
-  defaultToken,
   isLoading,
+  isSingleBondDenom,
 }: DelegationsTableProps) => (
   <Box width="100%">
     <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
     <DelegationsTableBody
       delegations={delegations}
       rewards={rewards}
-      defaultToken={defaultToken}
       isLoading={isLoading}
+      isSingleBondDenom={isSingleBondDenom}
     />
   </Box>
 );

@@ -109,6 +109,7 @@ export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
   const serializedArgs = fn.params.map((type, index) =>
     serializeArg({ type, value: abiData.args[index] })
   );
+
   return {
     typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
     args: serializedArgs,

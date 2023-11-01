@@ -47,7 +47,7 @@ export const PoolAssetCard = ({
     );
 
   const tokens = poolAssets[poolId].map<TokenWithValue>((denom) =>
-    coinToTokenWithValue(denom, "0", assetInfos?.[denom])
+    coinToTokenWithValue(denom, "0", assetInfos)
   );
   return (
     <>

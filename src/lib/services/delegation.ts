@@ -1,11 +1,8 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
-import big from "big.js";
 
-import type { Addr, Token, U, ValidatorAddr } from "lib/types";
+import type { Addr, StakingShare, ValidatorAddr } from "lib/types";
 import { parseDate, formatSeconds } from "lib/utils";
-
-import { getValidator } from "./validator";
 
 interface StakingParamsResponse {
   params: {
@@ -13,9 +10,10 @@ interface StakingParamsResponse {
     max_validators: number;
     max_entries: number;
     historical_entries: number;
-    bond_denom: string;
+    bond_denoms: string[];
     min_commission_rate: string;
-    min_self_delegation: string;
+    min_self_delegation?: string; // not in initia
+    min_voting_power?: string; // only in initia
   };
 }
 
@@ -24,9 +22,9 @@ interface DelegationResponse {
     delegation: {
       delegator_address: Addr;
       validator_address: ValidatorAddr;
-      shares: string;
+      shares: StakingShare[];
     };
-    balance: Coin;
+    balance: Coin[];
   }[];
 }
 
@@ -38,7 +36,7 @@ interface UnbondingResponse {
       creation_height: string;
       completion_time: string;
       initial_balance: string;
-      balance: U<Token>; // after slashed during unbonding
+      balance: Coin[]; // after slashed during unbonding
     }[];
   }[];
 }
@@ -62,10 +60,10 @@ interface RedelegationsResponse {
       redelegation_entry: {
         creation_height: number;
         completion_time: string;
-        initial_balance: string;
-        share_dst: string;
+        initial_balance: Coin[];
+        share_dst: StakingShare[];
       };
-      balance: U<Token>;
+      balance: Coin[];
     }[];
   }[];
 }
@@ -79,21 +77,18 @@ interface CommissionResponse {
 export interface RawStakingParams {
   unbondingTime: string; // e.g. "14 days"
   maxEntries: number;
-  bondDenom: string;
+  bondDenoms: string[];
 }
 
 export interface RawDelegation {
   validatorAddress: ValidatorAddr;
-  identity: string;
-  denom: string;
-  amount: string;
+  balance: Coin[];
 }
 
 export interface RawUnbonding {
   validatorAddress: ValidatorAddr;
-  identity: string;
   completionTime: Date;
-  amount: string;
+  balance: Coin[];
 }
 
 interface Reward {
@@ -108,11 +103,9 @@ export interface RawDelegationRewards {
 
 export interface RawRedelegation {
   srcValidatorAddress: ValidatorAddr;
-  srcIdentity: string;
   dstValidatorAddress: ValidatorAddr;
-  dstIdentity: string;
   completionTime: Date;
-  amount: string;
+  balance: Coin[];
 }
 
 export interface RawCommission {
@@ -122,13 +115,12 @@ export interface RawCommission {
 export const getStakingParams = async (
   endpoint: string
 ): Promise<RawStakingParams> => {
-  const { data } = await axios.get<StakingParamsResponse>(
-    `${endpoint}/cosmos/staking/v1beta1/params`
-  );
+  const { data } = await axios.get<StakingParamsResponse>(`${endpoint}/params`);
+
   return {
     unbondingTime: formatSeconds(data.params.unbonding_time),
     maxEntries: data.params.max_entries,
-    bondDenom: data.params.bond_denom,
+    bondDenoms: data.params.bond_denoms,
   };
 };
 
@@ -137,27 +129,12 @@ export const getDelegations = async (
   address: Addr
 ): Promise<RawDelegation[]> => {
   const { data } = await axios.get<DelegationResponse>(
-    `${endpoint}/cosmos/staking/v1beta1/delegations/${address}`
+    `${endpoint}/delegations/${address}`
   );
-  return Promise.all(
-    data.delegation_responses.map<Promise<RawDelegation>>(
-      async (delegation) => {
-        const valInfo = await getValidator(
-          endpoint,
-          delegation.delegation.validator_address
-        );
-        return {
-          validatorAddress: delegation.delegation
-            .validator_address as ValidatorAddr,
-          identity: valInfo.identity,
-          denom: delegation.balance.denom,
-          amount: delegation.balance.amount,
-        };
-      }
-    )
-  ).then((delegations) =>
-    delegations.sort((a, b) => big(b.amount).cmp(a.amount))
-  );
+  return data.delegation_responses.map<RawDelegation>((delegation) => ({
+    validatorAddress: delegation.delegation.validator_address as ValidatorAddr,
+    balance: delegation.balance,
+  }));
 };
 
 export const getUnbondings = async (
@@ -165,24 +142,18 @@ export const getUnbondings = async (
   address: Addr
 ): Promise<RawUnbonding[]> => {
   const { data } = await axios.get<UnbondingResponse>(
-    `${endpoint}/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`
+    `${endpoint}/unbondings/${address}`
   );
-  return Promise.all(
-    data.unbonding_responses.map<Promise<RawUnbonding[]>>(async (validator) => {
-      const valInfo = await getValidator(endpoint, validator.validator_address);
-
-      return validator.entries.map<RawUnbonding>((entry) => ({
+  return data.unbonding_responses
+    .map<RawUnbonding[]>((validator) =>
+      validator.entries.map<RawUnbonding>((entry) => ({
         validatorAddress: validator.validator_address as ValidatorAddr,
-        identity: valInfo.identity,
         completionTime: parseDate(entry.completion_time),
-        amount: entry.balance,
-      }));
-    })
-  ).then((unbondings) =>
-    unbondings
-      .flat()
-      .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime())
-  );
+        balance: entry.balance,
+      }))
+    )
+    .flat()
+    .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime());
 };
 
 export const getDelegationRewards = async (
@@ -206,30 +177,19 @@ export const getRedelegations = async (
   address: Addr
 ): Promise<RawRedelegation[]> => {
   const { data } = await axios.get<RedelegationsResponse>(
-    `${endpoint}/cosmos/staking/v1beta1/delegators/${address}/redelegations`
+    `${endpoint}/redelegations/${address}`
   );
-  return Promise.all(
-    data.redelegation_responses.map<Promise<RawRedelegation[]>>(
-      async (redelegate) => {
-        const [srcValInfo, dstValInfo] = await Promise.all([
-          getValidator(endpoint, redelegate.redelegation.validator_src_address),
-          getValidator(endpoint, redelegate.redelegation.validator_dst_address),
-        ]);
-        return redelegate.entries.map((entry) => ({
-          srcValidatorAddress: redelegate.redelegation.validator_src_address,
-          srcIdentity: srcValInfo.identity,
-          dstValidatorAddress: redelegate.redelegation.validator_dst_address,
-          dstIdentity: dstValInfo.identity,
-          completionTime: parseDate(entry.redelegation_entry.completion_time),
-          amount: entry.balance,
-        }));
-      }
+  return data.redelegation_responses
+    .map<RawRedelegation[]>((redelegate) =>
+      redelegate.entries.map((entry) => ({
+        srcValidatorAddress: redelegate.redelegation.validator_src_address,
+        dstValidatorAddress: redelegate.redelegation.validator_dst_address,
+        completionTime: parseDate(entry.redelegation_entry.completion_time),
+        balance: entry.balance,
+      }))
     )
-  ).then((redelegations) =>
-    redelegations
-      .flat()
-      .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime())
-  );
+    .flat()
+    .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime());
 };
 
 export const getCommission = async (

@@ -3,12 +3,17 @@ import big from "big.js";
 import { parseInt } from "lodash";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-import { DECIMAL_TYPES, OBJECT_TYPE, UINT_TYPES } from "../constants";
+import {
+  DECIMAL_TYPES,
+  FIXED_POINT_TYPES,
+  OBJECT_TYPE,
+  UINT_TYPES,
+} from "../constants";
 import type { Nullable, Option } from "lib/types";
 import { getArgType } from "lib/utils";
 
 const validateNull = (v: Option<string>) =>
-  v !== undefined ? undefined : "cannot be null";
+  v !== null ? undefined : "cannot be null";
 
 const validateUint = (uintType: string) => (v: string) => {
   try {
@@ -31,23 +36,36 @@ const validateAddress =
 
 const validateObject =
   (isValidArgObject: (input: string) => boolean) => (v: string) =>
-    isValidArgObject(v) ? undefined : "Invalid SDK module address";
+    isValidArgObject(v) ? undefined : "Invalid module address";
+
+const validateFixedPoint = (bcsFixedPointType: string) => (v: string) => {
+  try {
+    const div = big(2).pow(
+      parseInt(bcsFixedPointType.slice("fixed_point".length))
+    );
+    const value = big(v).times(div);
+    const maxValue = div.mul(div);
+    if (value.lt(0) || value.gte(maxValue)) throw new Error();
+    return undefined;
+  } catch {
+    return `Input must be ‘${bcsFixedPointType}’`;
+  }
+};
 
 const validateDecimal = (bcsDecimalType: string) => (v: string) => {
-  const [integer, decimal] = v.split(".");
+  const [, decimal] = v.split(".");
   if (decimal && decimal.length > 18)
     return "Decimal length must be less than 18";
   try {
-    const value = big(integer)
-      .times("1000000000000000000")
-      .add(decimal || "0");
-    const maxValue = big(2).pow(parseInt(bcsDecimalType.slice(7)));
+    const value = big(v).times(big(10).pow(18));
+    const maxValue = big(2).pow(
+      parseInt(bcsDecimalType.slice("decimal".length))
+    );
     if (value.lt(0) || value.gte(maxValue)) throw new Error();
     return undefined;
   } catch {
     return `Input must be ‘${bcsDecimalType}’`;
   }
-  return undefined;
 };
 
 const validateVector = (
@@ -71,6 +89,8 @@ const validateVector = (
     validateElement = validateAddress(isValidArgAddress);
   if (elementType.startsWith(OBJECT_TYPE))
     validateElement = validateAddress(isValidArgObject);
+  if (FIXED_POINT_TYPES.includes(elementType))
+    validateElement = validateFixedPoint(getArgType(elementType));
   if (DECIMAL_TYPES.includes(elementType))
     validateElement = validateDecimal(getArgType(elementType));
   // TODO: handle Vector?
@@ -132,6 +152,16 @@ export const getRules = <T extends FieldValues>(
       object: (v: Nullable<string>) => {
         if (v === null) return undefined;
         return validateObject(isValidArgObject)(v);
+      },
+    };
+  }
+  if (FIXED_POINT_TYPES.includes(type)) {
+    const bcsType = getArgType(type);
+    rules.validate = {
+      ...rules.validate,
+      [bcsType]: (v: Nullable<string>) => {
+        if (v === null) return undefined;
+        return validateFixedPoint(bcsType)(v);
       },
     };
   }

@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, Button, Flex } from "@chakra-ui/react";
+import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
@@ -10,9 +10,9 @@ import {
   useSimulateFeeQuery,
   useExecuteModuleTx,
   useCurrentChain,
-  useIsMac,
 } from "lib/app-provider";
 import { AbiForm } from "lib/components/abi";
+import { SubmitButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
@@ -44,7 +44,6 @@ export const ExecuteArea = ({
       ? fn.params.slice(1)
       : fn.params;
 
-  const isMac = useIsMac();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeModuleTx = useExecuteModuleTx();
@@ -54,7 +53,9 @@ export const ExecuteArea = ({
     typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
     args: getAbiInitialData(executeFn.params.length),
   });
-  const [abiErrors, setAbiErrors] = useState<[string, string][]>([]);
+  const [abiErrors, setAbiErrors] = useState<[string, string][]>([
+    ["form", "initial"],
+  ]);
 
   const [composedTxMsgs, setComposedTxMsgs] = useState<EncodeObject[]>([]);
   const [simulateFeeError, setSimulateFeeError] = useState<string>();
@@ -133,20 +134,6 @@ export const ExecuteArea = ({
   }, [address, data, enableExecute, executeFn, moduleAddress, moduleName]);
 
   const isButtonDisabled = !enableExecute || !fee || isFetching;
-  useEffect(() => {
-    const keydownHandler = (e: KeyboardEvent) => {
-      // TODO: problem with safari if focusing in the textarea
-      const specialKey = isMac ? e.metaKey : e.ctrlKey;
-      if (!isButtonDisabled && specialKey && e.key === "Enter") {
-        proceed();
-      }
-    };
-    document.addEventListener("keydown", keydownHandler);
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-    };
-  });
-
   return (
     <Flex direction="column">
       {fn.is_entry ? (
@@ -195,18 +182,12 @@ export const ExecuteArea = ({
             Transaction Fee:{" "}
             <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
           </Flex>
-          <Button
-            variant="primary"
-            fontSize="14px"
-            p="6px 16px"
-            onClick={proceed}
-            isDisabled={isButtonDisabled}
-            leftIcon={<CustomIcon name="execute" />}
+          <SubmitButton
+            text="Execute"
             isLoading={processing}
-            sx={{ pointerEvents: processing && "none" }}
-          >
-            Execute{` (${isMac ? "⌘" : "Ctrl"} + Enter)`}
-          </Button>
+            onSubmit={proceed}
+            isDisabled={isButtonDisabled}
+          />
         </Flex>
       </Flex>
     </Flex>
