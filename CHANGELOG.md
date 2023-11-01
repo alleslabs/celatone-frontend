@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#600](https://github.com/alleslabs/celatone-frontend/pull/600) Add modules in public project
 - [#583](https://github.com/alleslabs/celatone-frontend/pull/583) Support Move code snippets
 - [#585](https://github.com/alleslabs/celatone-frontend/pull/585) Add Initia Faucet
 - [#562](https://github.com/alleslabs/celatone-frontend/pull/562) Support searching with hex address and module path
