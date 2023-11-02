@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#600](https://github.com/alleslabs/celatone-frontend/pull/600) Add modules in public project
+- [#601](https://github.com/alleslabs/celatone-frontend/pull/601) Add modules in public project
 - [#581](https://github.com/alleslabs/celatone-frontend/pull/581) Support new move input i.e., object, fixed_point, and decimal
 - [#583](https://github.com/alleslabs/celatone-frontend/pull/583) Support Move code snippets
 - [#585](https://github.com/alleslabs/celatone-frontend/pull/585) Add Initia Faucet
