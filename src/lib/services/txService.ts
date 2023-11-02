@@ -9,6 +9,8 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useMoveConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import {
   getTxsByAddressPagination,
@@ -88,6 +90,8 @@ export const useTxsByAddressPagination = (
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
   const expression = useTxExpression({
     accountId,
     search,
@@ -102,6 +106,8 @@ export const useTxsByAddressPagination = (
         expression,
         offset,
         pageSize,
+        isWasm: wasmEnable,
+        isMove: moveEnable,
       })
       .then<Transaction[]>(({ account_transactions }) =>
         account_transactions.map<Transaction>((transaction) => ({
@@ -113,26 +119,26 @@ export const useTxsByAddressPagination = (
           created: parseDate(transaction.block.timestamp),
           success: transaction.transaction.success,
           actionMsgType: getActionMsgType([
+            transaction.transaction.is_send,
             transaction.transaction.is_execute,
             transaction.transaction.is_instantiate,
-            transaction.transaction.is_send,
             transaction.transaction.is_store_code,
             transaction.transaction.is_migrate,
             transaction.transaction.is_update_admin,
             transaction.transaction.is_clear_admin,
-            // TODO: handle more action msg type
+            // TODO: handle more action Move msg type
           ]),
           furtherAction: getMsgFurtherAction(
             transaction.transaction.messages.length,
             {
+              isSend: transaction.transaction.is_send,
+              isIbc: transaction.transaction.is_ibc,
               isExecute: transaction.transaction.is_execute,
               isInstantiate: transaction.transaction.is_instantiate,
-              isSend: transaction.transaction.is_send,
               isUpload: transaction.transaction.is_store_code,
               isMigrate: transaction.transaction.is_migrate,
               isUpdateAdmin: transaction.transaction.is_update_admin,
               isClearAdmin: transaction.transaction.is_clear_admin,
-              isIbc: transaction.transaction.is_ibc,
               isMovePublish: transaction.transaction.is_move_publish,
               isMoveUpgrade: transaction.transaction.is_move_upgrade,
               isMoveExecute: transaction.transaction.is_move_execute,
@@ -142,10 +148,18 @@ export const useTxsByAddressPagination = (
             transaction.is_signer
           ),
           isIbc: transaction.transaction.is_ibc,
-          isInstantiate: transaction.transaction.is_instantiate,
+          isInstantiate: transaction.transaction.is_instantiate ?? false,
         }))
       );
-  }, [accountId, expression, indexerGraphClient, offset, pageSize]);
+  }, [
+    accountId,
+    expression,
+    indexerGraphClient,
+    moveEnable,
+    offset,
+    pageSize,
+    wasmEnable,
+  ]);
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION,
@@ -304,6 +318,8 @@ export const useTxs = (
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(
     async () =>
@@ -311,6 +327,8 @@ export const useTxs = (
         .request(getTxs, {
           offset,
           pageSize,
+          isWasm: wasmEnable,
+          isMove: moveEnable,
         })
         .then<Transaction[]>(({ transactions }) =>
           transactions.map<Transaction>((transaction) => ({
@@ -322,20 +340,21 @@ export const useTxs = (
             created: parseDate(transaction.block.timestamp),
             success: transaction.success,
             actionMsgType: getActionMsgType([
+              transaction.is_send,
               transaction.is_execute,
               transaction.is_instantiate,
-              transaction.is_send,
               transaction.is_store_code,
               transaction.is_migrate,
               transaction.is_update_admin,
               transaction.is_clear_admin,
+              // TODO: implement Move msg type
             ]),
             furtherAction: MsgFurtherAction.NONE,
             isIbc: transaction.is_ibc,
-            isInstantiate: transaction.is_instantiate,
+            isInstantiate: transaction.is_instantiate ?? false,
           }))
         ),
-    [indexerGraphClient, offset, pageSize]
+    [indexerGraphClient, moveEnable, offset, pageSize, wasmEnable]
   );
 
   return useQuery(
@@ -363,6 +382,8 @@ export const useTxsByBlockHeightPagination = (
   offset: number
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(
     async () =>
@@ -371,6 +392,8 @@ export const useTxsByBlockHeightPagination = (
           limit,
           offset,
           height,
+          isWasm: wasmEnable,
+          isMove: moveEnable,
         })
         .then<Transaction[]>(({ transactions }) =>
           transactions.map<Transaction>((transaction) => ({
@@ -392,10 +415,10 @@ export const useTxsByBlockHeightPagination = (
             ]),
             furtherAction: MsgFurtherAction.NONE,
             isIbc: transaction.is_ibc,
-            isInstantiate: transaction.is_instantiate,
+            isInstantiate: transaction.is_instantiate ?? false,
           }))
         ),
-    [height, limit, offset, indexerGraphClient]
+    [height, limit, offset, indexerGraphClient, wasmEnable, moveEnable]
   );
 
   return useQuery(
@@ -469,29 +492,14 @@ export const useModuleTxsByPagination = ({
           height: transaction.block.height,
           created: parseDate(transaction.block.timestamp),
           success: transaction.transaction.success,
-          actionMsgType: getActionMsgType([]),
-          furtherAction: getMsgFurtherAction(
-            transaction.transaction.messages.length,
-            {
-              isExecute: transaction.transaction.is_execute,
-              isInstantiate: transaction.transaction.is_instantiate,
-              isSend: transaction.transaction.is_send,
-              isUpload: transaction.transaction.is_store_code,
-              isMigrate: transaction.transaction.is_migrate,
-              isUpdateAdmin: transaction.transaction.is_update_admin,
-              isClearAdmin: transaction.transaction.is_clear_admin,
-              isIbc: transaction.transaction.is_ibc,
-              isMoveExecute: transaction.transaction.is_move_execute,
-              isMovePublish: transaction.transaction.is_move_publish,
-              isMoveScript: transaction.transaction.is_move_script,
-              isMoveUpgrade: transaction.transaction.is_move_upgrade,
-            },
-            transaction.transaction.success,
-            false
-          ),
+          actionMsgType: getActionMsgType([
+            transaction.transaction.is_send,
+            // TODO: handle more action Move msg type
+          ]),
+          furtherAction: MsgFurtherAction.NONE,
           isSigner: false,
           isIbc: transaction.transaction.is_ibc,
-          isInstantiate: transaction.transaction.is_instantiate,
+          isInstantiate: false,
         }))
       );
   };

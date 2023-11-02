@@ -235,7 +235,10 @@ export interface MsgCreateClientDetails extends MsgBaseDetails {
 }
 export interface MsgUpdateClientDetails extends MsgBaseDetails {
   client_id: string;
-  header: object;
+  // newer version
+  client_message?: object;
+  // older version
+  header?: object;
   signer: Addr;
 }
 export interface MsgUpgradeClientDetails extends MsgBaseDetails {

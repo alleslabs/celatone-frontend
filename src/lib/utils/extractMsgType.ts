@@ -1,4 +1,4 @@
-import { ActionMsgType } from "lib/types";
+import { ActionMsgType, type Option } from "lib/types";
 
 export const extractMsgType = (typePath: string): string =>
   typePath.split(".").at(-1) || "";
@@ -21,7 +21,7 @@ export const extractMsgType = (typePath: string): string =>
  * @returns Returns action type
  *
  */
-export const getActionMsgType = (msgTypesSupportList: boolean[]) => {
+export const getActionMsgType = (msgTypesSupportList: Option<boolean>[]) => {
   const existLength = msgTypesSupportList.filter((type) => type).length;
   if (existLength === 0) return ActionMsgType.OTHER_ACTION_MSG;
   if (existLength === 1) return ActionMsgType.SINGLE_ACTION_MSG;

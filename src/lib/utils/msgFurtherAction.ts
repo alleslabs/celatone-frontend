@@ -3,7 +3,7 @@ import { MsgFurtherAction } from "lib/types";
 
 export const getMsgFurtherAction = (
   length: number,
-  filters: TxFilters,
+  filters: Partial<TxFilters>,
   isSuccess: boolean,
   isSigner: boolean
 ) => {
