@@ -147,6 +147,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         autoFocus={autofocus}
         value={selectedIndex === undefined ? undefined : formValue}
         menuPosition="fixed"
+        menuPortalTarget={document.querySelector("body")}
         chakraStyles={{
           control: (provided) => ({
             ...provided,
