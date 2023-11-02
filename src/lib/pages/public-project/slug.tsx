@@ -12,7 +12,6 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import type { MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -44,36 +43,11 @@ const ProjectDetail = () => {
     publicCodes,
     publicContracts,
     publicAccounts,
+    publicModules,
     projectDetail,
     slug,
     isLoading,
   } = usePublicData();
-
-  const mockupModules = [
-    {
-      slug: "initia",
-      address: "init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d" as MoveAccountAddr,
-      name: "acl",
-      description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit.",
-      github: "",
-    },
-    {
-      slug: "initia2",
-      address: "init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d" as MoveAccountAddr,
-      name: "dex",
-      description:
-        "Consequatur, aliquam veritatis laudantium odit optio at et quo, eos a labore",
-      github: "",
-    },
-    {
-      slug: "initia3",
-      address: "init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d" as MoveAccountAddr,
-      name: "capability",
-      description:
-        "Libero quasi molestiae nulla laboriosam beatae nostrum alias harum ducimus.",
-      github: "",
-    },
-  ];
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
@@ -113,7 +87,8 @@ const ProjectDetail = () => {
 
   const overviewCount =
     publicAccounts.length +
-    (wasm.enabled ? publicCodes.length + publicContracts.length : 0);
+    (wasm.enabled ? publicCodes.length + publicContracts.length : 0) +
+    (move.enabled ? publicModules.length : 0);
 
   if (isLoading) return <Loading withBorder />;
   return (
@@ -159,10 +134,9 @@ const ProjectDetail = () => {
           >
             Accounts
           </CustomTab>
-          {/* TODO Change to publicModules */}
           <CustomTab
-            count={mockupModules.length}
-            isDisabled={!mockupModules.length}
+            count={publicModules.length}
+            isDisabled={!publicModules.length}
             onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
           >
@@ -187,10 +161,9 @@ const ProjectDetail = () => {
               accounts={publicAccounts}
               onViewMore={handleTabChange(TabIndex.Accounts)}
             />
-            {/* TODO Change to publicModules */}
             {move.enabled && (
               <PublicProjectModuleTable
-                modules={mockupModules}
+                modules={publicModules}
                 onViewMore={handleTabChange(TabIndex.Modules)}
               />
             )}
@@ -205,7 +178,7 @@ const ProjectDetail = () => {
             <PublicProjectAccountTable accounts={publicAccounts} />
           </TabPanel>
           <TabPanel p={0}>
-            <PublicProjectModuleTable modules={mockupModules} />
+            <PublicProjectModuleTable modules={publicModules} />
           </TabPanel>
         </TabPanels>
       </Tabs>

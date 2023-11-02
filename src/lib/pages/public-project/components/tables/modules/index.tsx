@@ -1,4 +1,4 @@
-import { Box, Grid, TableContainer } from "@chakra-ui/react";
+import { Grid, Box } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
@@ -7,21 +7,22 @@ import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import {
   MobileTableContainer,
+  TableContainer,
   TableHeader,
   TableTitle,
   ViewMore,
 } from "lib/components/table";
-import type { Module } from "lib/types";
+import type { PublicModule } from "lib/types";
 
 import { PublicProjectModuleMobileCard } from "./PublicProjectModuleMobileCard";
 import { PublicProjectModuleRow } from "./PublicProjectModuleRow";
 
 interface PublicProjectModuleTableProps {
-  modules: Module[];
+  modules: PublicModule[];
   onViewMore?: () => void;
 }
 
-const TEMPLATE_COLUMNS = "280px 160px minmax(250px, 1fr) 160px";
+const TEMPLATE_COLUMNS = "320px 160px minmax(250px, 1fr) 160px";
 
 const ModuleTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
@@ -36,13 +37,16 @@ const ContentRender = ({
   filteredModules,
   isMobile,
 }: {
-  filteredModules: Module[];
+  filteredModules: PublicModule[];
   isMobile: boolean;
 }) =>
   isMobile ? (
     <MobileTableContainer>
       {filteredModules.map((module) => (
-        <PublicProjectModuleMobileCard key={module.address} module={module} />
+        <PublicProjectModuleMobileCard
+          key={`sm-${module.address}::${module.name}`}
+          module={module}
+        />
       ))}
     </MobileTableContainer>
   ) : (
@@ -50,7 +54,7 @@ const ContentRender = ({
       <ModuleTableHeader />
       {filteredModules.map((module) => (
         <PublicProjectModuleRow
-          key={module.name}
+          key={`${module.address}::${module.name}`}
           module={module}
           templateColumns={TEMPLATE_COLUMNS}
         />

@@ -1,13 +1,13 @@
-import { Button, Grid, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { Module } from "lib/types/projects";
+import type { PublicModule } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface ModuleTableRowProps {
-  module: Module;
+  module: PublicModule;
   templateColumns: string;
 }
 
@@ -16,14 +16,17 @@ export const PublicProjectModuleRow = ({
   templateColumns,
 }: ModuleTableRowProps) => {
   const navigate = useInternalNavigate();
-
-  const goToModuleDetails = () => {
+  const goToDetail = () => {
     navigate({
+      replace: true,
       pathname: "/modules/[address]/[moduleName]/[tab]",
       query: {
         address: module.address,
         moduleName: module.name,
         tab: "overview",
+      },
+      options: {
+        shallow: true,
       },
     });
   };
@@ -31,7 +34,7 @@ export const PublicProjectModuleRow = ({
   return (
     <Grid
       templateColumns={templateColumns}
-      onClick={goToModuleDetails}
+      onClick={goToDetail}
       _hover={{ bg: "gray.900" }}
       transition="all 0.25s ease-in-out"
       cursor="pointer"
@@ -39,14 +42,15 @@ export const PublicProjectModuleRow = ({
     >
       <TableRow>
         <Text
-          onClick={goToModuleDetails}
+          onClick={goToDetail}
           color="primary.main"
+          transition="all 0.25s ease-in-out"
+          cursor="pointer"
           _hover={{
             textDecoration: "underline",
             textDecorationColor: "primary.light",
             "& > p": { color: "primary.light" },
           }}
-          cursor="pointer"
         >
           {truncate(module.address)}::{module.name}
         </Text>
@@ -59,42 +63,45 @@ export const PublicProjectModuleRow = ({
         />
       </TableRow>
       <TableRow>
-        <Text color="text.dark">{module.description}</Text>
+        <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+          {module.description || "N/A"}
+        </Text>
       </TableRow>
-      {/* TODO check validity */}
-      <TableRow gap={2}>
-        <Button
-          variant="outline-white"
-          size="sm"
-          onClick={() =>
-            navigate({
-              pathname: "/interact",
-              query: {
-                address: module.address,
-                moduleName: module.name,
-                functionType: "view",
-              },
-            })
-          }
-        >
-          View
-        </Button>
-        <Button
-          variant="outline-white"
-          size="sm"
-          onClick={() =>
-            navigate({
-              pathname: "/interact",
-              query: {
-                address: module.address,
-                moduleName: module.name,
-                functionType: "execute",
-              },
-            })
-          }
-        >
-          Execute
-        </Button>
+      <TableRow>
+        <Flex gap={2} onClick={(e) => e.stopPropagation()}>
+          <Button
+            variant="outline-white"
+            size="sm"
+            onClick={() =>
+              navigate({
+                pathname: "/interact",
+                query: {
+                  address: module.address,
+                  moduleName: module.name,
+                  functionType: "view",
+                },
+              })
+            }
+          >
+            View
+          </Button>
+          <Button
+            variant="outline-white"
+            size="sm"
+            onClick={() =>
+              navigate({
+                pathname: "/interact",
+                query: {
+                  address: module.address,
+                  moduleName: module.name,
+                  functionType: "execute",
+                },
+              })
+            }
+          >
+            Execute
+          </Button>
+        </Flex>
       </TableRow>
     </Grid>
   );
