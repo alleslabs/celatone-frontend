@@ -12,6 +12,7 @@ export interface DenomInfo {
   symbol?: string;
   logo?: string | string[];
   precision?: number;
+  price?: number;
 }
 
 export interface NonRedelegatable {

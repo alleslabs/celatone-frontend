@@ -296,9 +296,10 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       ...rawStakingParams,
       bondDenoms: rawStakingParams.bondDenoms.map((denom) => ({
         denom,
-        symbol: assetInfos[denom]?.symbol,
-        logo: assetInfos[denom]?.logo,
-        precision: assetInfos[denom]?.precision,
+        symbol: assetInfos[denom]?.symbol ?? lpMap?.[denom].symbol,
+        logo: assetInfos[denom]?.logo ?? lpMap?.[denom].image,
+        precision: assetInfos[denom]?.precision ?? lpMap?.[denom].precision,
+        price: assetInfos[denom]?.price ?? lpMap?.[denom].lpPricePerShare,
       })),
     };
 
