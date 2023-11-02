@@ -1,8 +1,10 @@
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { ContractAddr, ContractInfo, Option } from "lib/types";
 
 import { ContractsTableHeader } from "./ContractsTableHeader";
+import { ContractsTableMobileCard } from "./ContractsTableMobileCard";
 import { ContractsTableRow } from "./ContractsTableRow";
 import type { CTAInfo } from "./ContractsTableRowCTA";
 
@@ -25,6 +27,8 @@ export const ContractsTable = ({
   withCTA,
   withoutTag,
 }: ContractsTableProps) => {
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading withBorder />;
   if (!contracts?.length) return emptyState;
 
@@ -38,7 +42,23 @@ export const ContractsTable = ({
     templateColumns =
       "160px minmax(300px, 3fr) minmax(200px, 2fr) 150px 260px 80px";
 
-  return (
+  return isMobile ? (
+    <MobileTableContainer>
+      {contracts.map((contractInfo) => (
+        <ContractsTableMobileCard
+          key={
+            contractInfo.name +
+            contractInfo.contractAddress +
+            contractInfo.description +
+            contractInfo.tags +
+            contractInfo.lists
+          }
+          contractInfo={contractInfo}
+          onRowSelect={onRowSelect}
+        />
+      ))}
+    </MobileTableContainer>
+  ) : (
     <TableContainer pb={6}>
       <ContractsTableHeader
         templateColumns={templateColumns}

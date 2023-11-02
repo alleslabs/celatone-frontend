@@ -30,7 +30,11 @@ import { AccessConfigPermission } from "lib/types";
 const getAlertContent = (
   enabled: boolean,
   chainPrettyName: string
-): { variant: AlertProps["variant"]; icon: JSX.Element; description: string } =>
+): {
+  variant: AlertProps["variant"];
+  icon: JSX.Element;
+  description: string;
+} =>
   enabled
     ? {
         variant: "success",

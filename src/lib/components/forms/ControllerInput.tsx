@@ -53,13 +53,16 @@ export const ControllerInput = <T extends FieldValues>({
     control,
   });
 
-  const { field } = useController({
+  const {
+    field,
+    fieldState: { isTouched },
+  } = useController<T>({
     name,
     control,
     rules,
   });
 
-  const isError = !!error;
+  const isError = isTouched && !!error;
   const isRequired = "required" in rules;
 
   return (

@@ -7,9 +7,15 @@ import {
   usePublicProjectConfig,
   useCurrentChain,
   useWasmConfig,
+  useMoveConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME, StorageKeys } from "lib/data";
+import {
+  INSTANTIATED_LIST_NAME,
+  SAVED_LIST_NAME,
+  StorageKeys,
+  UNDEFINED_ICON_LIST,
+} from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 import { formatSlugName, getListIcon } from "lib/utils";
@@ -28,6 +34,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
   const { track } = useTrack();
 
   const { address } = useCurrentChain();
@@ -62,12 +69,42 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               ...getSavedPublicProjects().map((list) => ({
                 name: list.name,
                 slug: `/projects/${list.slug}`,
-                logo: list.logo as IconKeys,
+                logo: list.logo || UNDEFINED_ICON_LIST[0],
               })),
               {
                 name: "View All Projects",
                 slug: "/projects",
                 icon: "public-project" as IconKeys,
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(move.enabled
+      ? [
+          {
+            category: "Quick Actions",
+            slug: "quick-actions",
+            submenu: [
+              {
+                name: "0x1 Page",
+                slug: "/accounts/0x1",
+                icon: "hex" as IconKeys,
+              },
+              {
+                name: "Publish Module",
+                slug: "/publish-module",
+                icon: "add-new" as IconKeys,
+              },
+              {
+                name: "View / Execute",
+                slug: "/interact",
+                icon: "execute" as IconKeys,
+              },
+              {
+                name: "Deploy Script",
+                slug: "/deploy-script",
+                icon: "code" as IconKeys,
               },
             ],
           },

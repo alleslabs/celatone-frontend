@@ -1,20 +1,19 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { useInternalNavigate, useMobile } from "lib/app-provider";
-import { BlockCard } from "lib/components/card/BlockCard";
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableContainer } from "lib/components/table";
+import { MobileTableContainer, TableContainer } from "lib/components/table";
 import {
   useBlockCountQuery,
   useBlocklistQuery,
 } from "lib/services/blockService";
 
-import { BlocksHeader } from "./BlocksHeader";
-import { BlocksRow } from "./BlocksRow";
+import { BlocksTableHeader } from "./BlocksTableHeader";
+import { BlocksTableMobileCard } from "./BlocksTableMobileCard";
+import { BlocksTableRow } from "./BlocksTableRow";
 
 interface BlocksTableProps {
   isViewMore?: boolean;
@@ -24,10 +23,9 @@ const TEMPLATE_COLUMNS = "140px 160px minmax(300px,1fr) 120px 280px";
 const scrollComponentId = "block-table-header";
 
 export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
+  const isMobile = useMobile();
+
   const { data: blockCount, refetch: refetchCount } = useBlockCountQuery();
-
-  const navigate = useInternalNavigate();
-
   const {
     pagesQuantity,
     currentPage,
@@ -50,12 +48,6 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     error,
   } = useBlocklistQuery(pageSize, offset);
 
-  const onRowSelect = (blockHeight: number) =>
-    navigate({
-      pathname: "/blocks/[blockHeight]",
-      query: { blockHeight },
-    });
-
   const onPageChange = (nextPage: number) => {
     refetchCount();
     setCurrentPage(nextPage);
@@ -67,7 +59,6 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;
   if (error)
@@ -91,22 +82,21 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   return (
     <>
       {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
+        <MobileTableContainer>
           {blocksData.map((block) => (
-            <BlockCard blockData={block} />
+            <BlocksTableMobileCard key={block.hash} blockData={block} />
           ))}
-        </Flex>
+        </MobileTableContainer>
       ) : (
         <TableContainer>
-          <BlocksHeader
+          <BlocksTableHeader
             templateColumns={TEMPLATE_COLUMNS}
             scrollComponentId={scrollComponentId}
           />
           {blocksData.map((block) => (
-            <BlocksRow
+            <BlocksTableRow
               key={block.hash}
               templateColumns={TEMPLATE_COLUMNS}
-              onRowSelect={onRowSelect}
               blockData={block}
             />
           ))}

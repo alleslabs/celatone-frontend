@@ -1,26 +1,29 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
-import type { DetailedHTMLProps, HTMLAttributes } from "react";
+import big from "big.js";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
-import { useWasmConfig } from "lib/app-provider";
+import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 
 import type { DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
 
-interface DropZoneProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface DropZoneProps extends FlexProps {
   setFile: (file: File) => void;
   fileType: DropzoneFileType;
+  error?: string;
 }
 
 export function DropZone({
   setFile,
   fileType,
+  error,
   ...componentProps
 }: DropZoneProps) {
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
   const onDrop = useCallback(
     (file: File[]) => {
       setFile(file[0]);
@@ -31,21 +34,33 @@ export function DropZone({
   const config = DROPZONE_CONFIG[fileType];
 
   // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
-  const maxSize = wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
+  const maxSize = (() => {
+    switch (fileType) {
+      case "schema":
+        return 10_000_000;
+      case "wasm":
+        return wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
+      case "move":
+        return move.enabled ? move.moduleMaxFileSize : 0;
+      default:
+        return 0;
+    }
+  })();
 
-  // TODO: JSON Schema file size ??
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
-    maxFiles: 1,
+    multiple: false,
     accept: config.accept,
-    maxSize: fileType === "wasm" ? maxSize : undefined,
+    maxSize,
   });
+
+  const isError = Boolean(error || fileRejections.length > 0);
 
   return (
     <Flex direction="column">
       <Flex
         border="1px dashed"
-        borderColor={fileRejections.length > 0 ? "error.main" : "gray.700"}
+        borderColor={isError ? "error.main" : "gray.700"}
         w="full"
         p="24px 16px"
         borderRadius="8px"
@@ -74,13 +89,16 @@ export function DropZone({
           </Text>
         </Flex>
         <Text variant="body2" color="text.dark">
-          {config.text.rawFileType}{" "}
-          {fileType === "wasm" && `(max. ${maxSize / 1000}KB)`}
+          {config.text.rawFileType} (max.{" "}
+          {fileType === "wasm"
+            ? `${maxSize / 1000}KB`
+            : `${big(maxSize).div(1_000_000).toPrecision(3)}MB`}
+          )
         </Text>
       </Flex>
-      {fileRejections.length > 0 && (
-        <Text variant="body3" color="error.main" mt="2px">
-          {fileRejections[0].errors[0].message}
+      {isError && (
+        <Text variant="body3" color="error.main" mt={1}>
+          {fileRejections[0]?.errors[0]?.message ?? error}
         </Text>
       )}
     </Flex>

@@ -16,6 +16,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     wasm: {
       enabled: false,
     },
+    move: {
+      enabled: false,
+    },
     pool: {
       enabled: false,
     },
@@ -23,6 +26,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
       enabled: false,
     },
     gov: {
+      enabled: false,
+    },
+    nft: {
       enabled: false,
     },
   },

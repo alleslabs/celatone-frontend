@@ -14,10 +14,10 @@ import type {
 } from "react-hook-form";
 import { useWatch, useController } from "react-hook-form";
 
-import type { TextAreaProps } from "./TextAreaInput";
+import type { TextareaProps } from "./TextareaInput";
 
 interface ControllerTextareaProps<T extends FieldValues>
-  extends Omit<TextAreaProps, "value" | "setInputState"> {
+  extends Omit<TextareaProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
   rules?: UseControllerProps["rules"];
@@ -39,7 +39,7 @@ export const ControllerTextarea = <T extends FieldValues>({
     name,
     control,
   });
-  const { field } = useController({ name, control, rules });
+  const { field } = useController<T>({ name, control, rules });
   const isError = Boolean(error);
   const isRequired = "required" in rules;
   return (

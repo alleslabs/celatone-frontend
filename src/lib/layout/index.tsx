@@ -42,8 +42,10 @@ const Layout = ({ children }: LayoutProps) => {
   }, [isExpand, isMobile]);
 
   useEffect(() => {
-    scrollToTop();
-  }, [router.asPath]);
+    if (!(router.query.tab === "resources")) {
+      scrollToTop();
+    }
+  }, [router.asPath, router.query.tab]);
 
   return (
     <Grid
@@ -79,7 +81,9 @@ const Layout = ({ children }: LayoutProps) => {
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
-        <div style={{ minHeight: "calc(100vh - 129px)" }}>{children}</div>
+        <div style={{ minHeight: "calc(100vh - 129px)", position: "relative" }}>
+          {children}
+        </div>
         <Footer />
       </GridItem>
     </Grid>

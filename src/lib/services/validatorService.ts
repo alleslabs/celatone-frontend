@@ -8,11 +8,16 @@ import { useCallback } from "react";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCurrentChain,
   useCelatoneApp,
+  useCurrentChain,
 } from "lib/app-provider";
 import { getValidators } from "lib/query/validator";
-import type { ValidatorInfo, Validator, ValidatorAddr } from "lib/types";
+import type {
+  ValidatorInfo,
+  Validator,
+  ValidatorAddr,
+  Nullable,
+} from "lib/types";
 
 import { resolveValIdentity, getValidator } from "./validator";
 
@@ -20,7 +25,7 @@ export const useValidator = (
   validatorAddr: ValidatorAddr,
   enabled = true
 ): UseQueryResult<Validator> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const lcdEndpoint = useBaseApiRoute("staking");
   const queryFn = async ({ queryKey }: QueryFunctionContext<string[]>) =>
     getValidator(queryKey[1], queryKey[2] as ValidatorAddr);
 
@@ -70,7 +75,7 @@ export const useValidators = (): UseQueryResult<
 };
 
 export const useValidatorImage = (
-  validator: ValidatorInfo | null
+  validator: Nullable<ValidatorInfo>
 ): UseQueryResult<string> => {
   const {
     chain: { chain_name: chainName },

@@ -21,6 +21,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
@@ -28,6 +31,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       gov: {
+        enabled: false,
+      },
+      nft: {
         enabled: false,
       },
     },
@@ -63,6 +69,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
@@ -71,6 +80,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: false,
+      },
+      nft: {
+        enabled: true,
       },
     },
     gas: {

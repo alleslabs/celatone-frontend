@@ -1,4 +1,4 @@
-import type { NominalType } from "./common";
+import type { NominalType } from "../common";
 
 export type U<T = string> = T & { __micro: true };
 

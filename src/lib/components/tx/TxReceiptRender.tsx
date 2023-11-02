@@ -19,6 +19,9 @@ const variantStyle: Record<
       justifyContent: "space-between",
       alignItems: "center",
     },
+    "> div > p:first-of-type": {
+      fontWeight: 600,
+    },
   },
   packed: {
     w: "60%",

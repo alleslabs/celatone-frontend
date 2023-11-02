@@ -341,7 +341,7 @@ const StoreCodeProposal = () => {
       <PageContainer>
         <Grid
           templateAreas={`"prespace main sidebar postspace"`}
-          templateColumns="1fr 6fr 4fr 1fr"
+          templateColumns="1fr 5fr 3fr 1fr"
         >
           <GridItem area="main">
             <Heading as="h5" variant="h5">
@@ -367,7 +367,7 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.titlePlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.titleLabel}
                   labelBgColor="background.main"
-                  variant="floating"
+                  variant="fixed-floating"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
                     maxLength: constants.maxProposalTitleLength,
@@ -386,7 +386,7 @@ const StoreCodeProposal = () => {
                   height="160px"
                   label={PROPOSAL_STORE_CODE_TEXT.descriptionLabel}
                   placeholder={PROPOSAL_STORE_CODE_TEXT.descriptionPlaceholder}
-                  variant="floating"
+                  variant="fixed-floating"
                   labelBgColor="background.main"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.descriptionRequired,
@@ -401,7 +401,7 @@ const StoreCodeProposal = () => {
                   label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
                   labelBgColor="background.main"
                   placeholder={`ex. ${exampleUserAddress}`}
-                  variant="floating"
+                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
                   requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
                   error={errors.runAs?.message}
@@ -472,7 +472,7 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.builderPlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.builderLabel}
                   labelBgColor="background.main"
-                  variant="floating"
+                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.builderHelperText}
                   // Builder is a docker image, can be tagged, digested, or both
                   rules={{
@@ -494,7 +494,7 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.sourcePlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.sourceLabel}
                   labelBgColor="background.main"
-                  variant="floating"
+                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.sourceHelperText}
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
@@ -531,7 +531,7 @@ const StoreCodeProposal = () => {
                     control={control}
                     label="Amount"
                     placeholder="0.00"
-                    variant="floating"
+                    variant="fixed-floating"
                     type="number"
                     helperAction={
                       <Text

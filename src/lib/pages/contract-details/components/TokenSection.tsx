@@ -5,7 +5,7 @@ import type { ContractData } from "../types";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
-import { TokenCard } from "lib/components/TokenCard";
+import { TokenCard } from "lib/components/token/TokenCard";
 import type { ContractAddr } from "lib/types";
 
 interface TokenSectionProps {

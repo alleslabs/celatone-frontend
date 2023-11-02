@@ -27,6 +27,7 @@ import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon";
+import JsonInput from "lib/components/json/JsonInput";
 import {
   jsonInputFormKey,
   MessageInputContent,
@@ -35,7 +36,6 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
-import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
@@ -411,7 +411,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             placeholder="ex. Token Factory"
             label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
-            variant="floating"
+            variant="fixed-floating"
             mb={12}
             rules={{ required: "Label is required" }}
           />
@@ -424,7 +424,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Admin Address (optional)"
             placeholder={`ex. ${exampleUserAddress}`}
             helperText="The contract's admin will be able to migrate and update future admins."
-            variant="floating"
+            variant="fixed-floating"
             error={validateAdmin(adminAddress)}
             helperAction={
               <AssignMe

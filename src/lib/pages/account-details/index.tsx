@@ -12,6 +12,7 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, useTrack } from "lib/amplitude";
 import {
   useInternalNavigate,
+  useMoveConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -21,19 +22,30 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
+import type { IndexedModule } from "lib/services/move/moduleService";
+import { useAccountModules } from "lib/services/move/moduleService";
+import { useAccountResources } from "lib/services/move/resourceService";
 import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { HumanAddr } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
+import {
+  getFirstQueryParam,
+  isHexWalletAddress,
+  isHexModuleAddress,
+  truncate,
+} from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
+import { ModuleLists } from "./components/modules";
+import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -41,7 +53,6 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
-import { TotalAccountValue } from "./components/TotalAccountValue";
 
 const tableHeaderId = "accountDetailsTab";
 
@@ -53,17 +64,25 @@ enum TabIndex {
   Codes = "codes",
   Contracts = "contracts",
   Admins = "admins",
+  Resources = "resources",
+  Modules = "modules",
   Proposals = "proposals",
 }
 
-interface AccountDetailsBodyProps {
+export interface AccountDetailsBodyProps {
+  hexAddress: HexAddr;
   accountAddress: HumanAddr;
 }
 
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
-const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
+const AccountDetailsBody = ({
+  hexAddress,
+  accountAddress,
+}: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
   const { trackUseTab } = useTrack();
@@ -75,6 +94,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: icnsName } = useICNSNamesByAddress(accountAddress);
 
   const publicDetail = publicInfoBySlug?.details;
+
   const {
     tableCounts,
     refetchCodesCount,
@@ -83,6 +103,21 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
     loadingState: { txCountLoading },
   } = useAccountDetailsTableCounts(accountAddress, accountId);
+  // TODO: combine with useAccountDetailsTableCounts and remove type assertion
+  // move
+  const { data: fetchedAccountModules, isFetching: isModulesLoading } =
+    useAccountModules({
+      address: accountAddress,
+      moduleName: undefined,
+      functionName: undefined,
+      options: { refetchOnWindowFocus: false, retry: 1 },
+    });
+  const modulesData = fetchedAccountModules as Option<IndexedModule[]>;
+
+  const { data: resourcesData, isFetching: isResourceLoading } =
+    useAccountResources({
+      address: accountAddress,
+    });
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -139,6 +174,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           publicDetail={publicDetail}
           icnsName={icnsName}
           accountAddress={accountAddress}
+          hexAddress={hexAddress}
         />
       </Flex>
       {publicInfo?.description && (
@@ -188,6 +224,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
             Delegations
           </CustomTab>
+          {/* <CustomTab
+            count={tableCounts.txsCount}
+            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            onClick={handleTabChange(TabIndex.NFTs)}
+            hidden={!nft.enabled}
+          >
+            NFTs
+          </CustomTab> */}
           <CustomTab
             count={tableCounts.txsCount}
             isDisabled={txCountLoading || tableCounts.txsCount === 0}
@@ -220,6 +264,22 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
+            count={resourcesData?.totalCount}
+            isDisabled={!resourcesData?.totalCount}
+            onClick={handleTabChange(TabIndex.Resources)}
+            hidden={!move.enabled}
+          >
+            Resources
+          </CustomTab>
+          <CustomTab
+            count={modulesData?.length}
+            isDisabled={!modulesData?.length}
+            onClick={handleTabChange(TabIndex.Modules)}
+            hidden={!move.enabled}
+          >
+            Modules
+          </CustomTab>
+          <CustomTab
             count={tableCounts.proposalsCount}
             isDisabled={!tableCounts.proposalsCount}
             onClick={handleTabChange(TabIndex.Proposals)}
@@ -229,7 +289,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <TotalAccountValue accountAddress={accountAddress} />
             <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
@@ -275,6 +334,24 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 />
               </>
             )}
+            {move.enabled && (
+              <>
+                <ResourceOverview
+                  address={accountAddress}
+                  totalCount={resourcesData?.totalCount}
+                  resourcesByName={resourcesData?.groupedByName}
+                  isLoading={isResourceLoading}
+                  onViewMore={handleTabChange(TabIndex.Resources)}
+                />
+                <ModuleLists
+                  totalCount={modulesData?.length}
+                  selectedAddress={accountAddress}
+                  modules={modulesData}
+                  isLoading={isModulesLoading}
+                  onViewMore={handleTabChange(TabIndex.Modules)}
+                />
+              </>
+            )}
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -289,6 +366,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
+          {/* <TabPanel p={0}>nft</TabPanel> */}
           <TabPanel p={0}>
             <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>
@@ -317,6 +395,21 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
+            <ResourceSection
+              address={accountAddress}
+              resourcesByOwner={resourcesData?.groupedByOwner}
+              isLoading={isResourceLoading}
+            />
+          </TabPanel>
+          <TabPanel p={0}>
+            <ModuleLists
+              selectedAddress={accountAddress}
+              totalCount={modulesData?.length}
+              modules={modulesData}
+              isLoading={isModulesLoading}
+            />
+          </TabPanel>
+          <TabPanel p={0}>
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -334,10 +427,12 @@ const AccountDetails = () => {
   const router = useRouter();
   const { track } = useTrack();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const formatAddresses = useFormatAddresses();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
-  ).toLowerCase() as HumanAddr;
+  ).toLowerCase() as MoveAccountAddr;
+  const { address, hex } = formatAddresses(accountAddressParam);
   // TODO: fix assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
@@ -349,11 +444,13 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      {validateUserAddress(accountAddressParam) &&
+      {!isHexWalletAddress(accountAddressParam) &&
+      !isHexModuleAddress(accountAddressParam) &&
+      validateUserAddress(accountAddressParam) &&
       validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody accountAddress={accountAddressParam} />
+        <AccountDetailsBody hexAddress={hex} accountAddress={address} />
       )}
     </PageContainer>
   );

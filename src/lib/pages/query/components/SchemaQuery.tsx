@@ -79,7 +79,7 @@ export const SchemaQuery = ({
         borderRadius="8px"
       >
         <Flex direction="column" alignItems="center">
-          <StateImage imageVariant="not-found" width="128px" />
+          <StateImage imageVariant="not-found" imageWidth="128px" />
           <Text variant="body1" fontWeight={700} mt={2}>
             Attached JSON Schema doesn’t have QueryMsg
           </Text>

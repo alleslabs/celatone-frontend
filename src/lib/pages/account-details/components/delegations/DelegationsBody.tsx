@@ -1,13 +1,13 @@
 import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+import { DelegationsTable, UnbondingsTable } from "../tables";
 import { useTrack } from "lib/amplitude";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
 import type { Option, TokenWithValue } from "lib/types";
 
-import { DelegationsTab } from "./DelegationsTab";
-import { RadioCard } from "./RadioCard";
-import { UnbondingTab } from "./UnbondingTab";
+import { RadioCard } from "./radio-card";
 
 interface DelegationsBodyProps {
   totalDelegations: Option<Record<string, TokenWithValue>>;
@@ -17,7 +17,7 @@ interface DelegationsBodyProps {
   rewards: Option<Record<string, TokenWithValue[]>>;
   isLoadingDelegations: boolean;
   isLoadingUnbondings: boolean;
-  defaultToken: TokenWithValue;
+  bondDenoms: TokenWithValue[];
 }
 
 export const DelegationsBody = ({
@@ -28,13 +28,19 @@ export const DelegationsBody = ({
   rewards,
   isLoadingDelegations,
   isLoadingUnbondings,
-  defaultToken,
+  bondDenoms,
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
+  const router = useRouter();
   const [value, setValue] = useState("Delegated");
   const { trackUseRadio } = useTrack();
+
+  useEffect(() => {
+    setValue("Delegated");
+  }, [router.query.accountAddress]);
+
   return (
-    <Flex direction="column" gap={8}>
+    <Flex direction="column" gap={8} p={8} borderRadius="8px" bg="gray.900">
       <RadioGroup
         onChange={(newValue) => {
           trackUseRadio(newValue.toLocaleLowerCase());
@@ -46,27 +52,31 @@ export const DelegationsBody = ({
         <Stack direction={{ base: "column", md: "row" }}>
           <RadioCard
             value="Delegated"
-            total={totalDelegations}
-            defaultToken={defaultToken}
+            tokens={totalDelegations}
             isLoading={isLoadingDelegations}
+            bondDenoms={bondDenoms}
           />
           <RadioCard
             value="Unbonding"
-            total={totalUnbondings}
-            defaultToken={defaultToken}
+            tokens={totalUnbondings}
             isLoading={isLoadingUnbondings}
+            bondDenoms={bondDenoms}
           />
         </Stack>
       </RadioGroup>
       {value === "Delegated" ? (
-        <DelegationsTab
+        <DelegationsTable
           delegations={delegations}
           rewards={rewards}
-          defaultToken={defaultToken}
           isLoading={isLoadingDelegations}
+          isSingleBondDenom={bondDenoms.length === 1}
         />
       ) : (
-        <UnbondingTab unbondings={unbondings} isLoading={isLoadingUnbondings} />
+        <UnbondingsTable
+          unbondings={unbondings}
+          isLoading={isLoadingUnbondings}
+          isSingleBondDenom={bondDenoms.length === 1}
+        />
       )}
     </Flex>
   );

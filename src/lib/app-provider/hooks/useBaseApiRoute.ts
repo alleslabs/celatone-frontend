@@ -14,6 +14,8 @@ export const useBaseApiRoute = (
     | "icns_names"
     | "icns_address"
     | "cosmwasm"
+    | "move_modules"
+    | "staking"
 ): string => {
   const {
     chainConfig: { chain, api: configApi },
@@ -50,6 +52,10 @@ export const useBaseApiRoute = (
       return `${api}/icns/address`;
     case "cosmwasm":
       return `${api}/cosmwasm/${chain}/${currentChainId}`;
+    case "move_modules":
+      return `${api}/${chain}/${currentChainId}/move_modules`;
+    case "staking":
+      return `${api}/${chain}/${currentChainId}/staking`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

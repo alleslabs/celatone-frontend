@@ -6,14 +6,14 @@ import { useTrack } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
-import { TokenCard } from "lib/components/TokenCard";
+import { TokenCard } from "lib/components/token/TokenCard";
 import type { AssetInfo, Option } from "lib/types";
 
 type AssetObject = { [key: string]: AssetInfo };
 
 interface CoinComponentProps<
   T extends Coin | Coin[],
-  A extends Option<AssetObject> | AssetObject
+  A extends Option<AssetObject> | AssetObject,
 > {
   amount: T;
   assetInfos: A;

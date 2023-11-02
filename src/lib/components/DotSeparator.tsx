@@ -1,8 +1,11 @@
 import { Box, type BoxProps } from "@chakra-ui/react";
 
-export const DotSeparator = (props: BoxProps) => (
+export const DotSeparator = ({
+  bg = "secondary.darker",
+  ...props
+}: BoxProps) => (
   <Box
-    bg="secondary.darker"
+    bg={bg}
     borderRadius="50%"
     w={1}
     h={1}

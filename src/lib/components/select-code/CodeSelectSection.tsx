@@ -72,7 +72,7 @@ export const CodeSelectSection = <T extends FieldValues>({
             error={error}
             label="Code ID"
             helperText="Input existing Code ID manually"
-            variant="floating"
+            variant="fixed-floating"
             my={8}
             rules={{ required: "Code ID is required" }}
           />

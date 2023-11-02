@@ -24,19 +24,31 @@ const SubHeader = () => {
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
-    ...(wasmConfig.enabled
-      ? ([
-          { name: "Codes", slug: "/codes", icon: "code" },
-          { name: "Contracts", slug: "/contracts", icon: "contract-address" },
-        ] as const)
-      : []),
-    ...(govConfig.enabled
-      ? ([{ name: "Proposals", slug: "/proposals", icon: "proposal" }] as const)
-      : []),
-    ...(poolConfig.enabled
-      ? ([{ name: "Osmosis Pools", slug: "/pools", icon: "pool" }] as const)
-      : []),
   ];
+  // TODO Recent Modules
+  // if (moveConfig.enabled)
+  //   subHeaderMenu.push({
+  //     name: "Modules",
+  //     slug: "/modules",
+  //     icon: "contract-address",
+  //   });
+
+  if (wasmConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Codes", slug: "/codes", icon: "code" },
+      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
+    );
+
+  if (govConfig.enabled)
+    subHeaderMenu.push({
+      name: "Proposals",
+      slug: "/proposals",
+      icon: "proposal",
+    });
+
+  if (poolConfig.enabled)
+    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
+
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";

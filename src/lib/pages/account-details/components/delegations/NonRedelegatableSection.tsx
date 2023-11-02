@@ -1,11 +1,8 @@
 import { Box, Text } from "@chakra-ui/react";
 
 import { NonRedelegatablesTable } from "../tables";
-import { useMobile } from "lib/app-provider";
 import type { Redelegation } from "lib/pages/account-details/data";
-import type { NonRedelegatable } from "lib/pages/account-details/type";
-
-import { NonRedelegatablesMobile } from "./NonRedelegatablesMobile";
+import type { NonRedelegatable } from "lib/pages/account-details/types";
 
 interface NonRedelegatableSectionProps {
   redelegations: Redelegation[];
@@ -30,7 +27,7 @@ export const NonRedelegatableSection = ({
       });
     }, [])
     .reverse();
-  const isMobile = useMobile();
+
   return (
     <Box
       px={{ base: 3, md: 6 }}
@@ -48,11 +45,7 @@ export const NonRedelegatableSection = ({
         </span>
         until their active redelegations have completed.
       </Text>
-      {isMobile ? (
-        <NonRedelegatablesMobile nonRedelegatables={nonRedelegatables} />
-      ) : (
-        <NonRedelegatablesTable nonRedelegatables={nonRedelegatables} />
-      )}
+      <NonRedelegatablesTable nonRedelegatables={nonRedelegatables} />
     </Box>
   );
 };

@@ -1,43 +1,57 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { TokenCell } from "../TokenCell";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { TokenWithValue, ValidatorInfo } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import { TokensCell } from "./TokensCell";
+
 export interface BondedInfo {
   validator: ValidatorInfo;
-  amount: TokenWithValue;
-  reward?: TokenWithValue;
+  balances: TokenWithValue[];
+  rewards?: TokenWithValue[];
   completionTime?: Date;
 }
 
 interface BondedTableRowProps {
   bondedInfo: BondedInfo;
+  isSingleBondDenom: boolean;
   templateColumns: string;
+  isUnbonding?: boolean;
 }
 
 export const BondedTableRow = ({
   bondedInfo,
+  isSingleBondDenom,
   templateColumns,
+  isUnbonding,
 }: BondedTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
     transition="all 0.25s ease-in-out"
     minW="min-content"
+    sx={{ "& > div": { alignItems: "flex-start" } }}
   >
     <TableRow>
       <ValidatorBadge validator={bondedInfo.validator} />
     </TableRow>
     <TableRow>
-      <TokenCell token={bondedInfo.amount} />
+      <TokensCell
+        tokens={bondedInfo.balances}
+        isSingleBondDenom={isSingleBondDenom}
+        isUnbonding={isUnbonding}
+      />
     </TableRow>
 
-    {bondedInfo.reward && (
+    {bondedInfo.rewards && (
       <TableRow>
-        <TokenCell token={bondedInfo.reward} />
+        <TokensCell
+          tokens={bondedInfo.rewards}
+          isSingleBondDenom={isSingleBondDenom}
+          isUnbonding={isUnbonding}
+        />
       </TableRow>
     )}
     {bondedInfo.completionTime && (

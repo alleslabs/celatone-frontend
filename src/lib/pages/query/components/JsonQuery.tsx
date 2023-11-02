@@ -1,4 +1,4 @@
-import { ButtonGroup, Flex, Button, Spacer, Box, Text } from "@chakra-ui/react";
+import { ButtonGroup, Flex, Spacer, Box, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
@@ -9,11 +9,10 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
-  useMobile,
 } from "lib/app-provider";
+import { SubmitButton } from "lib/components/button";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
-import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -30,9 +29,12 @@ import {
   getCurrentDate,
 } from "lib/utils";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 interface JsonQueryProps {
   contractAddress: ContractAddr;
@@ -41,7 +43,6 @@ interface JsonQueryProps {
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const { track, trackAction } = useTrack();
-  const isMobile = useMobile();
   const { isFetching: cmdsFetching, queryCmds } = useQueryCmds(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
@@ -88,17 +89,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     refetch();
   };
 
-  useEffect(() => {
-    const keydownHandler = (e: KeyboardEvent) => {
-      // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") handleQuery();
-    };
-    document.addEventListener("keydown", keydownHandler);
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-    };
-  });
-
+  const isButtonDisabled = jsonValidate(msg) !== null;
   return (
     <>
       {cmdsFetching && <LoadingOverlay />}
@@ -149,24 +140,18 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
                 value={msg}
                 amptrackSection="query_msg"
               />
-              <CodeSnippet
+              <WasmCodeSnippet
                 type="query"
                 contractAddress={contractAddress}
                 message={msg}
               />
             </Flex>
-            <Button
-              variant="primary"
-              fontSize="14px"
-              p="6px 16px"
-              size={{ base: "sm", md: "md" }}
-              onClick={handleQuery}
-              isDisabled={jsonValidate(msg) !== null}
+            <SubmitButton
+              text="Query"
               isLoading={queryFetching || queryRefetching}
-              leftIcon={<CustomIcon name="query" />}
-            >
-              Query {!isMobile && "(Ctrl + Enter)"}
-            </Button>
+              onSubmit={handleQuery}
+              isDisabled={isButtonDisabled}
+            />
           </Flex>
         </Box>
         <Spacer

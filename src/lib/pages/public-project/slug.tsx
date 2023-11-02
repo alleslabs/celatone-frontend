@@ -7,6 +7,7 @@ import {
   usePublicProjectConfig,
   useWasmConfig,
   useInternalNavigate,
+  useMoveConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
@@ -14,9 +15,12 @@ import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
-import { PublicProjectAccountTable } from "./components/table/account/PublicProjectAccountTable";
-import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCodeTable";
-import { PublicProjectContractTable } from "./components/table/contract/PublicProjectContractTable";
+import {
+  PublicProjectAccountTable,
+  PublicProjectCodeTable,
+  PublicProjectContractTable,
+  PublicProjectModuleTable,
+} from "./components/tables";
 import { usePublicData } from "./data";
 
 enum TabIndex {
@@ -24,12 +28,14 @@ enum TabIndex {
   Codes = "codes",
   Contracts = "contracts",
   Accounts = "accounts",
+  Modules = "modules",
 }
 
 const ProjectDetail = () => {
   const { track } = useTrack();
   const router = useRouter();
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   // TODO: remove assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
@@ -37,6 +43,7 @@ const ProjectDetail = () => {
     publicCodes,
     publicContracts,
     publicAccounts,
+    publicModules,
     projectDetail,
     slug,
     isLoading,
@@ -80,7 +87,8 @@ const ProjectDetail = () => {
 
   const overviewCount =
     publicAccounts.length +
-    (wasm.enabled ? publicCodes.length + publicContracts.length : 0);
+    (wasm.enabled ? publicCodes.length + publicContracts.length : 0) +
+    (move.enabled ? publicModules.length : 0);
 
   if (isLoading) return <Loading withBorder />;
   return (
@@ -126,6 +134,14 @@ const ProjectDetail = () => {
           >
             Accounts
           </CustomTab>
+          <CustomTab
+            count={publicModules.length}
+            isDisabled={!publicModules.length}
+            onClick={handleTabChange(TabIndex.Modules)}
+            hidden={!move.enabled}
+          >
+            Modules
+          </CustomTab>
         </TabList>
         <TabPanels my={8}>
           <TabPanel p={0}>
@@ -145,6 +161,12 @@ const ProjectDetail = () => {
               accounts={publicAccounts}
               onViewMore={handleTabChange(TabIndex.Accounts)}
             />
+            {move.enabled && (
+              <PublicProjectModuleTable
+                modules={publicModules}
+                onViewMore={handleTabChange(TabIndex.Modules)}
+              />
+            )}
           </TabPanel>
           <TabPanel p={0}>
             <PublicProjectCodeTable codes={publicCodes} />
@@ -154,6 +176,9 @@ const ProjectDetail = () => {
           </TabPanel>
           <TabPanel p={0}>
             <PublicProjectAccountTable accounts={publicAccounts} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <PublicProjectModuleTable modules={publicModules} />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -2,6 +2,7 @@ import { fromBech32 } from "@cosmjs/encoding";
 import { useCallback, useMemo } from "react";
 
 import type { Option } from "lib/types";
+import { isHexWalletAddress, isHexModuleAddress } from "lib/utils";
 
 import { useCurrentChain } from "./useCurrentChain";
 import { useExampleAddresses } from "./useExampleAddresses";
@@ -53,7 +54,7 @@ const validateAddress = (
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   if (!bech32Prefix)
-    return "Can not retrieve bech32 prefix of the current network.";
+    return "Cannot retrieve bech32 prefix of the current network.";
 
   const prefix = getPrefix(bech32Prefix, addressType);
 
@@ -133,6 +134,16 @@ export const useValidateAddress = () => {
           getAddressTypeByLength
         ),
       [bech32Prefix, getAddressTypeByLength]
+    ),
+    validateHexWalletAddress: useCallback(
+      (address: string) =>
+        !address.startsWith(bech32Prefix) && isHexWalletAddress(address),
+      [bech32Prefix]
+    ),
+    validateHexModuleAddress: useCallback(
+      (address: string) =>
+        !address.startsWith(bech32Prefix) && isHexModuleAddress(address),
+      [bech32Prefix]
     ),
   };
 };

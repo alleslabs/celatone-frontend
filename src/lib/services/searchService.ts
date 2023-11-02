@@ -9,11 +9,17 @@ import {
   useGetAddressType,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-import { isCodeId } from "lib/utils";
+import {
+  isCodeId,
+  isHexWalletAddress,
+  isHexModuleAddress,
+  splitModule,
+} from "lib/utils";
 
 import { useBlockInfoQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
+import { useAccountModules } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
@@ -26,7 +32,8 @@ export type SearchResultType =
   | "Transaction Hash"
   | "Proposal ID"
   | "Block"
-  | "Pool ID";
+  | "Pool ID"
+  | "Module Path";
 
 export interface ResultMetadata {
   icns: {
@@ -37,6 +44,7 @@ export interface ResultMetadata {
 }
 
 // TODO: Add Proposal ID
+// eslint-disable-next-line complexity
 export const useSearchHandler = (
   keyword: string,
   resetHandlerStates: () => void
@@ -52,6 +60,7 @@ export const useSearchHandler = (
       features: {
         wasm: { enabled: isWasm },
         pool: { enabled: isPool },
+        move: { enabled: isMove },
       },
     },
   } = useCelatoneApp();
@@ -61,11 +70,8 @@ export const useSearchHandler = (
   } = useCurrentChain();
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
-  const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
-  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
-    codeId: debouncedKeyword,
-    enabled: isWasm && isCodeId(debouncedKeyword),
-  });
+
+  // Contract
   const { data: contractData, isFetching: contractFetching } = useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
@@ -75,20 +81,17 @@ export const useSearchHandler = (
       retry: false,
     }
   );
-  const { data: blockData, isFetching: blockFetching } =
-    useBlockInfoQuery(debouncedKeyword);
-  const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
-    Number(debouncedKeyword),
-    isPool &&
-      Number.isInteger(Number(debouncedKeyword)) &&
-      Number(debouncedKeyword) > 0
-  );
-  const { data: icnsAddressData, isFetching: icnsAddressFetching } =
-    useAddressByICNSName(debouncedKeyword);
 
   const isAddr =
-    addressType === "user_address" || addressType === "contract_address";
+    addressType === "user_address" ||
+    addressType === "contract_address" ||
+    (isMove &&
+      (isHexWalletAddress(debouncedKeyword) ||
+        isHexModuleAddress(debouncedKeyword)));
 
+  // ICNS
+  const { data: icnsAddressData, isFetching: icnsAddressFetching } =
+    useAddressByICNSName(debouncedKeyword);
   // provide ICNS metadata result
   const { data: icnsNames } = useICNSNamesByAddress(
     (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr
@@ -106,6 +109,56 @@ export const useSearchHandler = (
     );
   }, [isAddr, contractData, icnsAddressData]);
 
+  // Code
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
+    codeId: debouncedKeyword,
+    enabled: isWasm && isCodeId(debouncedKeyword),
+  });
+
+  // Tx
+  const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
+
+  // Block
+  const { data: blockData, isFetching: blockFetching } =
+    useBlockInfoQuery(debouncedKeyword);
+
+  // Pool
+  const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
+    Number(debouncedKeyword),
+    isPool &&
+      !debouncedKeyword.startsWith("0x") &&
+      Number.isInteger(Number(debouncedKeyword)) &&
+      Number(debouncedKeyword) > 0
+  );
+
+  // Move
+  const [addr, moduleName, functionName] = splitModule(debouncedKeyword);
+
+  const enableModuleFetching = useMemo(
+    () =>
+      Boolean(
+        isMove &&
+          (getAddressType(addr) === "user_address" ||
+            isHexWalletAddress(addr)) &&
+          moduleName &&
+          functionName === undefined
+      ),
+    [functionName, getAddressType, addr, isMove, moduleName]
+  );
+
+  const { data: moduleData, isFetching: moduleFetching } = useAccountModules({
+    address: addr,
+    moduleName,
+    functionName: undefined,
+    options: {
+      enabled: enableModuleFetching,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  });
+
+  // TODO: handle module function later
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setDebouncedKeyword(keyword);
@@ -117,12 +170,14 @@ export const useSearchHandler = (
   return {
     results: [
       addressResult,
+      moduleName && moduleData && "Module Path",
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
       poolData && "Pool ID",
     ].filter((res) => Boolean(res)) as SearchResultType[],
     isLoading:
+      moduleFetching ||
       txFetching ||
       codeFetching ||
       contractFetching ||

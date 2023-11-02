@@ -17,6 +17,10 @@ type WasmConfig =
       enabled: false;
     };
 
+type MoveConfig =
+  | { enabled: true; moduleMaxFileSize: number; decodeApi: string }
+  | { enabled: false };
+
 type PoolConfig =
   | {
       enabled: true;
@@ -37,6 +41,8 @@ type GovConfig =
       enabled: false;
     };
 
+type NftConfig = { enabled: boolean };
+
 export interface ExplorerConfig {
   validator: string;
   proposal: string;
@@ -54,9 +60,11 @@ export interface ChainConfig {
   features: {
     faucet: FaucetConfig;
     wasm: WasmConfig;
+    move: MoveConfig;
     pool: PoolConfig;
     publicProject: PublicProjectConfig;
     gov: GovConfig;
+    nft: NftConfig;
   };
   gas: {
     gasPrice: {

@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { useState, useEffect, useMemo } from "react";
 
 import { CustomIcon } from "../icon";
+import type { Nullable } from "lib/types";
 import { jsonLineCount, jsonPrettify, jsonValidate } from "lib/utils";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
@@ -15,7 +16,7 @@ interface JsonInputProps {
   minLines?: number;
   maxLines?: number;
   setText: (value: string) => void;
-  validateFn?: (value: string) => string | null;
+  validateFn?: (value: string) => Nullable<string>;
 }
 
 interface JsonState {

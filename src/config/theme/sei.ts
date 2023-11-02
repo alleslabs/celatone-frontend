@@ -106,6 +106,8 @@ export const SEI_THEME: ThemeConfig = {
       color: "#0C1C23",
       disabledBackground: "#787971",
       disabledColor: "#0C1C23",
+      hoverBackground: "FAF6EF",
+      activeBackground: "FAF6EF",
     },
     outlinePrimary: {
       borderColor: "#787971",

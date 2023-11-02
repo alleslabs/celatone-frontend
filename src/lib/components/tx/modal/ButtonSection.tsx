@@ -49,12 +49,12 @@ export const ButtonSection = ({
       ?.value?.toString();
     // TOOD: revisit retrieving url (make a proper hook)
     openNewTab(
-      getNavigationUrl(
-        "proposal_id",
-        explorerLink,
-        proposalId ?? "",
-        lcdEndpoint
-      )
+      getNavigationUrl({
+        type: "proposal_id",
+        explorerConfig: explorerLink,
+        value: proposalId ?? "",
+        lcdEndpoint,
+      })
     );
     onClose?.();
   };

@@ -20,11 +20,13 @@ export type Scalars = {
   Float: number;
   _varchar: any;
   accounttype: any;
+  bigint: any;
   bytea: any;
   json: any;
   pooltype: any;
   proposalstatus: any;
   timestamp: any;
+  upgradepolicy: any;
 };
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
@@ -210,7 +212,7 @@ export type Account_Transactions_Bool_Exp = {
 
 /** unique or primary key constraints on table "account_transactions" */
 export enum Account_Transactions_Constraint {
-  /** unique or primary key constraint on columns "transaction_id", "account_id" */
+  /** unique or primary key constraint on columns "account_id", "transaction_id" */
   AccountTransactionsPkey = "account_transactions_pkey",
 }
 
@@ -512,6 +514,9 @@ export type Accounts = {
   validators: Array<Validators>;
   /** An aggregate relationship */
   validators_aggregate: Validators_Aggregate;
+  /** An object relationship */
+  vm_address: Vm_Addresses;
+  vm_address_id: Scalars["Int"];
 };
 
 /** columns and relationships of "accounts" */
@@ -683,6 +688,17 @@ export type Accounts_Aggregate = {
   nodes: Array<Accounts>;
 };
 
+export type Accounts_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Accounts_Aggregate_Bool_Exp_Count>;
+};
+
+export type Accounts_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Accounts_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Accounts_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "accounts" */
 export type Accounts_Aggregate_Fields = {
   __typename?: "accounts_aggregate_fields";
@@ -705,10 +721,39 @@ export type Accounts_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars["Boolean"]>;
 };
 
+/** order by aggregate values of table "accounts" */
+export type Accounts_Aggregate_Order_By = {
+  avg?: InputMaybe<Accounts_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Accounts_Max_Order_By>;
+  min?: InputMaybe<Accounts_Min_Order_By>;
+  stddev?: InputMaybe<Accounts_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Accounts_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Accounts_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Accounts_Sum_Order_By>;
+  var_pop?: InputMaybe<Accounts_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Accounts_Var_Samp_Order_By>;
+  variance?: InputMaybe<Accounts_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "accounts" */
+export type Accounts_Arr_Rel_Insert_Input = {
+  data: Array<Accounts_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Accounts_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Accounts_Avg_Fields = {
   __typename?: "accounts_avg_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "accounts" */
+export type Accounts_Avg_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "accounts". All fields are combined with a logical 'AND'. */
@@ -738,6 +783,8 @@ export type Accounts_Bool_Exp = {
   type?: InputMaybe<Accounttype_Comparison_Exp>;
   validators?: InputMaybe<Validators_Bool_Exp>;
   validators_aggregate?: InputMaybe<Validators_Aggregate_Bool_Exp>;
+  vm_address?: InputMaybe<Vm_Addresses_Bool_Exp>;
+  vm_address_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "accounts" */
@@ -751,6 +798,7 @@ export enum Accounts_Constraint {
 /** input type for incrementing numeric columns in table "accounts" */
 export type Accounts_Inc_Input = {
   id?: InputMaybe<Scalars["Int"]>;
+  vm_address_id?: InputMaybe<Scalars["Int"]>;
 };
 
 /** input type for inserting data into table "accounts" */
@@ -768,6 +816,8 @@ export type Accounts_Insert_Input = {
   transactions?: InputMaybe<Transactions_Arr_Rel_Insert_Input>;
   type?: InputMaybe<Scalars["accounttype"]>;
   validators?: InputMaybe<Validators_Arr_Rel_Insert_Input>;
+  vm_address?: InputMaybe<Vm_Addresses_Obj_Rel_Insert_Input>;
+  vm_address_id?: InputMaybe<Scalars["Int"]>;
 };
 
 /** aggregate max on columns */
@@ -777,6 +827,16 @@ export type Accounts_Max_Fields = {
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["accounttype"]>;
+  vm_address_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "accounts" */
+export type Accounts_Max_Order_By = {
+  address?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -786,6 +846,16 @@ export type Accounts_Min_Fields = {
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["accounttype"]>;
+  vm_address_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "accounts" */
+export type Accounts_Min_Order_By = {
+  address?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "accounts" */
@@ -826,6 +896,8 @@ export type Accounts_Order_By = {
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Order_By>;
   type?: InputMaybe<Order_By>;
   validators_aggregate?: InputMaybe<Validators_Aggregate_Order_By>;
+  vm_address?: InputMaybe<Vm_Addresses_Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: accounts */
@@ -843,6 +915,8 @@ export enum Accounts_Select_Column {
   Name = "name",
   /** column name */
   Type = "type",
+  /** column name */
+  VmAddressId = "vm_address_id",
 }
 
 /** input type for updating data in table "accounts" */
@@ -851,24 +925,46 @@ export type Accounts_Set_Input = {
   id?: InputMaybe<Scalars["Int"]>;
   name?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<Scalars["accounttype"]>;
+  vm_address_id?: InputMaybe<Scalars["Int"]>;
 };
 
 /** aggregate stddev on columns */
 export type Accounts_Stddev_Fields = {
   __typename?: "accounts_stddev_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "accounts" */
+export type Accounts_Stddev_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Accounts_Stddev_Pop_Fields = {
   __typename?: "accounts_stddev_pop_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "accounts" */
+export type Accounts_Stddev_Pop_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Accounts_Stddev_Samp_Fields = {
   __typename?: "accounts_stddev_samp_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "accounts" */
+export type Accounts_Stddev_Samp_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "accounts" */
@@ -885,12 +981,20 @@ export type Accounts_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars["Int"]>;
   name?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<Scalars["accounttype"]>;
+  vm_address_id?: InputMaybe<Scalars["Int"]>;
 };
 
 /** aggregate sum on columns */
 export type Accounts_Sum_Fields = {
   __typename?: "accounts_sum_fields";
   id?: Maybe<Scalars["Int"]>;
+  vm_address_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "accounts" */
+export type Accounts_Sum_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "accounts" */
@@ -903,6 +1007,8 @@ export enum Accounts_Update_Column {
   Name = "name",
   /** column name */
   Type = "type",
+  /** column name */
+  VmAddressId = "vm_address_id",
 }
 
 export type Accounts_Updates = {
@@ -918,18 +1024,39 @@ export type Accounts_Updates = {
 export type Accounts_Var_Pop_Fields = {
   __typename?: "accounts_var_pop_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "accounts" */
+export type Accounts_Var_Pop_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Accounts_Var_Samp_Fields = {
   __typename?: "accounts_var_samp_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "accounts" */
+export type Accounts_Var_Samp_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Accounts_Variance_Fields = {
   __typename?: "accounts_variance_fields";
   id?: Maybe<Scalars["Float"]>;
+  vm_address_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "accounts" */
+export type Accounts_Variance_Order_By = {
+  id?: InputMaybe<Order_By>;
+  vm_address_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "accounttype". All fields are combined with logical 'AND'. */
@@ -1204,6 +1331,19 @@ export type Begin_Block_Events_Variance_Order_By = {
   block_height?: InputMaybe<Order_By>;
 };
 
+/** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
+export type Bigint_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars["bigint"]>;
+  _gt?: InputMaybe<Scalars["bigint"]>;
+  _gte?: InputMaybe<Scalars["bigint"]>;
+  _in?: InputMaybe<Array<Scalars["bigint"]>>;
+  _is_null?: InputMaybe<Scalars["Boolean"]>;
+  _lt?: InputMaybe<Scalars["bigint"]>;
+  _lte?: InputMaybe<Scalars["bigint"]>;
+  _neq?: InputMaybe<Scalars["bigint"]>;
+  _nin?: InputMaybe<Array<Scalars["bigint"]>>;
+};
+
 /** columns and relationships of "blocks" */
 export type Blocks = {
   __typename?: "blocks";
@@ -1237,6 +1377,14 @@ export type Blocks = {
   lcd_tx_results: Array<Lcd_Tx_Results>;
   /** An aggregate relationship */
   lcd_tx_results_aggregate: Lcd_Tx_Results_Aggregate;
+  /** An array relationship */
+  module_histories: Array<Module_Histories>;
+  /** An aggregate relationship */
+  module_histories_aggregate: Module_Histories_Aggregate;
+  /** An array relationship */
+  module_transactions: Array<Module_Transactions>;
+  /** An aggregate relationship */
+  module_transactions_aggregate: Module_Transactions_Aggregate;
   /** An array relationship */
   pool_transactions: Array<Pool_Transactions>;
   /** An aggregate relationship */
@@ -1395,6 +1543,42 @@ export type BlocksLcd_Tx_Results_AggregateArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   order_by?: InputMaybe<Array<Lcd_Tx_Results_Order_By>>;
   where?: InputMaybe<Lcd_Tx_Results_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksModule_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksModule_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksModule_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksModule_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
 };
 
 /** columns and relationships of "blocks" */
@@ -1617,6 +1801,10 @@ export type Blocks_Bool_Exp = {
   height?: InputMaybe<Int_Comparison_Exp>;
   lcd_tx_results?: InputMaybe<Lcd_Tx_Results_Bool_Exp>;
   lcd_tx_results_aggregate?: InputMaybe<Lcd_Tx_Results_Aggregate_Bool_Exp>;
+  module_histories?: InputMaybe<Module_Histories_Bool_Exp>;
+  module_histories_aggregate?: InputMaybe<Module_Histories_Aggregate_Bool_Exp>;
+  module_transactions?: InputMaybe<Module_Transactions_Bool_Exp>;
+  module_transactions_aggregate?: InputMaybe<Module_Transactions_Aggregate_Bool_Exp>;
   pool_transactions?: InputMaybe<Pool_Transactions_Bool_Exp>;
   pool_transactions_aggregate?: InputMaybe<Pool_Transactions_Aggregate_Bool_Exp>;
   profit_by_denoms?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
@@ -1658,6 +1846,8 @@ export type Blocks_Insert_Input = {
   hash?: InputMaybe<Scalars["bytea"]>;
   height?: InputMaybe<Scalars["Int"]>;
   lcd_tx_results?: InputMaybe<Lcd_Tx_Results_Arr_Rel_Insert_Input>;
+  module_histories?: InputMaybe<Module_Histories_Arr_Rel_Insert_Input>;
+  module_transactions?: InputMaybe<Module_Transactions_Arr_Rel_Insert_Input>;
   pool_transactions?: InputMaybe<Pool_Transactions_Arr_Rel_Insert_Input>;
   profit_by_denoms?: InputMaybe<Profit_By_Denoms_Arr_Rel_Insert_Input>;
   profit_by_routes?: InputMaybe<Profit_By_Routes_Arr_Rel_Insert_Input>;
@@ -1734,6 +1924,8 @@ export type Blocks_Order_By = {
   hash?: InputMaybe<Order_By>;
   height?: InputMaybe<Order_By>;
   lcd_tx_results_aggregate?: InputMaybe<Lcd_Tx_Results_Aggregate_Order_By>;
+  module_histories_aggregate?: InputMaybe<Module_Histories_Aggregate_Order_By>;
+  module_transactions_aggregate?: InputMaybe<Module_Transactions_Aggregate_Order_By>;
   pool_transactions_aggregate?: InputMaybe<Pool_Transactions_Aggregate_Order_By>;
   profit_by_denoms_aggregate?: InputMaybe<Profit_By_Denoms_Aggregate_Order_By>;
   profit_by_routes_aggregate?: InputMaybe<Profit_By_Routes_Aggregate_Order_By>;
@@ -2234,7 +2426,6 @@ export type Codes = {
   contracts_aggregate: Contracts_Aggregate;
   cw2_contract?: Maybe<Scalars["String"]>;
   cw2_version?: Maybe<Scalars["String"]>;
-  hash: Scalars["bytea"];
   id: Scalars["Int"];
   /** An object relationship */
   transaction?: Maybe<Transactions>;
@@ -2397,7 +2588,6 @@ export type Codes_Bool_Exp = {
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Bool_Exp>;
   cw2_contract?: InputMaybe<String_Comparison_Exp>;
   cw2_version?: InputMaybe<String_Comparison_Exp>;
-  hash?: InputMaybe<Bytea_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   transaction?: InputMaybe<Transactions_Bool_Exp>;
   transaction_id?: InputMaybe<Int_Comparison_Exp>;
@@ -2429,7 +2619,6 @@ export type Codes_Insert_Input = {
   contracts?: InputMaybe<Contracts_Arr_Rel_Insert_Input>;
   cw2_contract?: InputMaybe<Scalars["String"]>;
   cw2_version?: InputMaybe<Scalars["String"]>;
-  hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction?: InputMaybe<Transactions_Obj_Rel_Insert_Input>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
@@ -2516,7 +2705,6 @@ export type Codes_Order_By = {
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Order_By>;
   cw2_contract?: InputMaybe<Order_By>;
   cw2_version?: InputMaybe<Order_By>;
-  hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction?: InputMaybe<Transactions_Order_By>;
   transaction_id?: InputMaybe<Order_By>;
@@ -2541,8 +2729,6 @@ export enum Codes_Select_Column {
   /** column name */
   Cw2Version = "cw2_version",
   /** column name */
-  Hash = "hash",
-  /** column name */
   Id = "id",
   /** column name */
   TransactionId = "transaction_id",
@@ -2557,7 +2743,6 @@ export type Codes_Set_Input = {
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   cw2_contract?: InputMaybe<Scalars["String"]>;
   cw2_version?: InputMaybe<Scalars["String"]>;
-  hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
   uploader?: InputMaybe<Scalars["Int"]>;
@@ -2629,7 +2814,6 @@ export type Codes_Stream_Cursor_Value_Input = {
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   cw2_contract?: InputMaybe<Scalars["String"]>;
   cw2_version?: InputMaybe<Scalars["String"]>;
-  hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
   uploader?: InputMaybe<Scalars["Int"]>;
@@ -2664,8 +2848,6 @@ export enum Codes_Update_Column {
   Cw2Contract = "cw2_contract",
   /** column name */
   Cw2Version = "cw2_version",
-  /** column name */
-  Hash = "hash",
   /** column name */
   Id = "id",
   /** column name */
@@ -5116,6 +5298,1427 @@ export type Lcd_Tx_Results_Variance_Order_By = {
   transaction_id?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "module_histories" */
+export type Module_Histories = {
+  __typename?: "module_histories";
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  /** An object relationship */
+  module: Modules;
+  module_id: Scalars["Int"];
+  remark: Scalars["json"];
+  upgrade_policy: Scalars["upgradepolicy"];
+};
+
+/** columns and relationships of "module_histories" */
+export type Module_HistoriesRemarkArgs = {
+  path?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregated selection of "module_histories" */
+export type Module_Histories_Aggregate = {
+  __typename?: "module_histories_aggregate";
+  aggregate?: Maybe<Module_Histories_Aggregate_Fields>;
+  nodes: Array<Module_Histories>;
+};
+
+export type Module_Histories_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Module_Histories_Aggregate_Bool_Exp_Count>;
+};
+
+export type Module_Histories_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Module_Histories_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "module_histories" */
+export type Module_Histories_Aggregate_Fields = {
+  __typename?: "module_histories_aggregate_fields";
+  avg?: Maybe<Module_Histories_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Module_Histories_Max_Fields>;
+  min?: Maybe<Module_Histories_Min_Fields>;
+  stddev?: Maybe<Module_Histories_Stddev_Fields>;
+  stddev_pop?: Maybe<Module_Histories_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Module_Histories_Stddev_Samp_Fields>;
+  sum?: Maybe<Module_Histories_Sum_Fields>;
+  var_pop?: Maybe<Module_Histories_Var_Pop_Fields>;
+  var_samp?: Maybe<Module_Histories_Var_Samp_Fields>;
+  variance?: Maybe<Module_Histories_Variance_Fields>;
+};
+
+/** aggregate fields of "module_histories" */
+export type Module_Histories_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "module_histories" */
+export type Module_Histories_Aggregate_Order_By = {
+  avg?: InputMaybe<Module_Histories_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Module_Histories_Max_Order_By>;
+  min?: InputMaybe<Module_Histories_Min_Order_By>;
+  stddev?: InputMaybe<Module_Histories_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Module_Histories_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Module_Histories_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Module_Histories_Sum_Order_By>;
+  var_pop?: InputMaybe<Module_Histories_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Module_Histories_Var_Samp_Order_By>;
+  variance?: InputMaybe<Module_Histories_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "module_histories" */
+export type Module_Histories_Arr_Rel_Insert_Input = {
+  data: Array<Module_Histories_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Module_Histories_Avg_Fields = {
+  __typename?: "module_histories_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "module_histories" */
+export type Module_Histories_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "module_histories". All fields are combined with a logical 'AND'. */
+export type Module_Histories_Bool_Exp = {
+  _and?: InputMaybe<Array<Module_Histories_Bool_Exp>>;
+  _not?: InputMaybe<Module_Histories_Bool_Exp>;
+  _or?: InputMaybe<Array<Module_Histories_Bool_Exp>>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  module?: InputMaybe<Modules_Bool_Exp>;
+  module_id?: InputMaybe<Int_Comparison_Exp>;
+  remark?: InputMaybe<Json_Comparison_Exp>;
+  upgrade_policy?: InputMaybe<Upgradepolicy_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "module_histories" */
+export type Module_Histories_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "module_histories" */
+export type Module_Histories_Insert_Input = {
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  module?: InputMaybe<Modules_Obj_Rel_Insert_Input>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  remark?: InputMaybe<Scalars["json"]>;
+  upgrade_policy?: InputMaybe<Scalars["upgradepolicy"]>;
+};
+
+/** aggregate max on columns */
+export type Module_Histories_Max_Fields = {
+  __typename?: "module_histories_max_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  module_id?: Maybe<Scalars["Int"]>;
+  upgrade_policy?: Maybe<Scalars["upgradepolicy"]>;
+};
+
+/** order by max() on columns of table "module_histories" */
+export type Module_Histories_Max_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  upgrade_policy?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Module_Histories_Min_Fields = {
+  __typename?: "module_histories_min_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  module_id?: Maybe<Scalars["Int"]>;
+  upgrade_policy?: Maybe<Scalars["upgradepolicy"]>;
+};
+
+/** order by min() on columns of table "module_histories" */
+export type Module_Histories_Min_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  upgrade_policy?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "module_histories" */
+export type Module_Histories_Mutation_Response = {
+  __typename?: "module_histories_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Module_Histories>;
+};
+
+/** Ordering options when selecting data from "module_histories". */
+export type Module_Histories_Order_By = {
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  module?: InputMaybe<Modules_Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  remark?: InputMaybe<Order_By>;
+  upgrade_policy?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "module_histories" */
+export enum Module_Histories_Select_Column {
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  ModuleId = "module_id",
+  /** column name */
+  Remark = "remark",
+  /** column name */
+  UpgradePolicy = "upgrade_policy",
+}
+
+/** input type for updating data in table "module_histories" */
+export type Module_Histories_Set_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  remark?: InputMaybe<Scalars["json"]>;
+  upgrade_policy?: InputMaybe<Scalars["upgradepolicy"]>;
+};
+
+/** aggregate stddev on columns */
+export type Module_Histories_Stddev_Fields = {
+  __typename?: "module_histories_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "module_histories" */
+export type Module_Histories_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Module_Histories_Stddev_Pop_Fields = {
+  __typename?: "module_histories_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "module_histories" */
+export type Module_Histories_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Module_Histories_Stddev_Samp_Fields = {
+  __typename?: "module_histories_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "module_histories" */
+export type Module_Histories_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "module_histories" */
+export type Module_Histories_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Module_Histories_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Module_Histories_Stream_Cursor_Value_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  remark?: InputMaybe<Scalars["json"]>;
+  upgrade_policy?: InputMaybe<Scalars["upgradepolicy"]>;
+};
+
+/** aggregate sum on columns */
+export type Module_Histories_Sum_Fields = {
+  __typename?: "module_histories_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  module_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "module_histories" */
+export type Module_Histories_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+export type Module_Histories_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Module_Histories_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Module_Histories_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Module_Histories_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Module_Histories_Var_Pop_Fields = {
+  __typename?: "module_histories_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "module_histories" */
+export type Module_Histories_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Module_Histories_Var_Samp_Fields = {
+  __typename?: "module_histories_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "module_histories" */
+export type Module_Histories_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Module_Histories_Variance_Fields = {
+  __typename?: "module_histories_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "module_histories" */
+export type Module_Histories_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "module_proposals" */
+export type Module_Proposals = {
+  __typename?: "module_proposals";
+  /** An object relationship */
+  module: Modules;
+  module_id: Scalars["Int"];
+  /** An object relationship */
+  proposal: Proposals;
+  proposal_id: Scalars["Int"];
+};
+
+/** aggregated selection of "module_proposals" */
+export type Module_Proposals_Aggregate = {
+  __typename?: "module_proposals_aggregate";
+  aggregate?: Maybe<Module_Proposals_Aggregate_Fields>;
+  nodes: Array<Module_Proposals>;
+};
+
+export type Module_Proposals_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Module_Proposals_Aggregate_Bool_Exp_Count>;
+};
+
+export type Module_Proposals_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Module_Proposals_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "module_proposals" */
+export type Module_Proposals_Aggregate_Fields = {
+  __typename?: "module_proposals_aggregate_fields";
+  avg?: Maybe<Module_Proposals_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Module_Proposals_Max_Fields>;
+  min?: Maybe<Module_Proposals_Min_Fields>;
+  stddev?: Maybe<Module_Proposals_Stddev_Fields>;
+  stddev_pop?: Maybe<Module_Proposals_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Module_Proposals_Stddev_Samp_Fields>;
+  sum?: Maybe<Module_Proposals_Sum_Fields>;
+  var_pop?: Maybe<Module_Proposals_Var_Pop_Fields>;
+  var_samp?: Maybe<Module_Proposals_Var_Samp_Fields>;
+  variance?: Maybe<Module_Proposals_Variance_Fields>;
+};
+
+/** aggregate fields of "module_proposals" */
+export type Module_Proposals_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "module_proposals" */
+export type Module_Proposals_Aggregate_Order_By = {
+  avg?: InputMaybe<Module_Proposals_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Module_Proposals_Max_Order_By>;
+  min?: InputMaybe<Module_Proposals_Min_Order_By>;
+  stddev?: InputMaybe<Module_Proposals_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Module_Proposals_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Module_Proposals_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Module_Proposals_Sum_Order_By>;
+  var_pop?: InputMaybe<Module_Proposals_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Module_Proposals_Var_Samp_Order_By>;
+  variance?: InputMaybe<Module_Proposals_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "module_proposals" */
+export type Module_Proposals_Arr_Rel_Insert_Input = {
+  data: Array<Module_Proposals_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Module_Proposals_Avg_Fields = {
+  __typename?: "module_proposals_avg_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "module_proposals" */
+export type Module_Proposals_Avg_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "module_proposals". All fields are combined with a logical 'AND'. */
+export type Module_Proposals_Bool_Exp = {
+  _and?: InputMaybe<Array<Module_Proposals_Bool_Exp>>;
+  _not?: InputMaybe<Module_Proposals_Bool_Exp>;
+  _or?: InputMaybe<Array<Module_Proposals_Bool_Exp>>;
+  module?: InputMaybe<Modules_Bool_Exp>;
+  module_id?: InputMaybe<Int_Comparison_Exp>;
+  proposal?: InputMaybe<Proposals_Bool_Exp>;
+  proposal_id?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "module_proposals" */
+export type Module_Proposals_Inc_Input = {
+  module_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "module_proposals" */
+export type Module_Proposals_Insert_Input = {
+  module?: InputMaybe<Modules_Obj_Rel_Insert_Input>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  proposal?: InputMaybe<Proposals_Obj_Rel_Insert_Input>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Module_Proposals_Max_Fields = {
+  __typename?: "module_proposals_max_fields";
+  module_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "module_proposals" */
+export type Module_Proposals_Max_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Module_Proposals_Min_Fields = {
+  __typename?: "module_proposals_min_fields";
+  module_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "module_proposals" */
+export type Module_Proposals_Min_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "module_proposals" */
+export type Module_Proposals_Mutation_Response = {
+  __typename?: "module_proposals_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Module_Proposals>;
+};
+
+/** Ordering options when selecting data from "module_proposals". */
+export type Module_Proposals_Order_By = {
+  module?: InputMaybe<Modules_Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  proposal?: InputMaybe<Proposals_Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "module_proposals" */
+export enum Module_Proposals_Select_Column {
+  /** column name */
+  ModuleId = "module_id",
+  /** column name */
+  ProposalId = "proposal_id",
+}
+
+/** input type for updating data in table "module_proposals" */
+export type Module_Proposals_Set_Input = {
+  module_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Module_Proposals_Stddev_Fields = {
+  __typename?: "module_proposals_stddev_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "module_proposals" */
+export type Module_Proposals_Stddev_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Module_Proposals_Stddev_Pop_Fields = {
+  __typename?: "module_proposals_stddev_pop_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "module_proposals" */
+export type Module_Proposals_Stddev_Pop_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Module_Proposals_Stddev_Samp_Fields = {
+  __typename?: "module_proposals_stddev_samp_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "module_proposals" */
+export type Module_Proposals_Stddev_Samp_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "module_proposals" */
+export type Module_Proposals_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Module_Proposals_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Module_Proposals_Stream_Cursor_Value_Input = {
+  module_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Module_Proposals_Sum_Fields = {
+  __typename?: "module_proposals_sum_fields";
+  module_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "module_proposals" */
+export type Module_Proposals_Sum_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+export type Module_Proposals_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Module_Proposals_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Module_Proposals_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Module_Proposals_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Module_Proposals_Var_Pop_Fields = {
+  __typename?: "module_proposals_var_pop_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "module_proposals" */
+export type Module_Proposals_Var_Pop_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Module_Proposals_Var_Samp_Fields = {
+  __typename?: "module_proposals_var_samp_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "module_proposals" */
+export type Module_Proposals_Var_Samp_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Module_Proposals_Variance_Fields = {
+  __typename?: "module_proposals_variance_fields";
+  module_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "module_proposals" */
+export type Module_Proposals_Variance_Order_By = {
+  module_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "module_transactions" */
+export type Module_Transactions = {
+  __typename?: "module_transactions";
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  is_entry: Scalars["Boolean"];
+  /** An object relationship */
+  module: Modules;
+  module_id: Scalars["Int"];
+  /** An object relationship */
+  transaction: Transactions;
+  tx_id: Scalars["Int"];
+};
+
+/** aggregated selection of "module_transactions" */
+export type Module_Transactions_Aggregate = {
+  __typename?: "module_transactions_aggregate";
+  aggregate?: Maybe<Module_Transactions_Aggregate_Fields>;
+  nodes: Array<Module_Transactions>;
+};
+
+export type Module_Transactions_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Module_Transactions_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Module_Transactions_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Module_Transactions_Aggregate_Bool_Exp_Count>;
+};
+
+export type Module_Transactions_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Module_Transactions_Select_Column_Module_Transactions_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Module_Transactions_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Module_Transactions_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Module_Transactions_Select_Column_Module_Transactions_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Module_Transactions_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Module_Transactions_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Module_Transactions_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "module_transactions" */
+export type Module_Transactions_Aggregate_Fields = {
+  __typename?: "module_transactions_aggregate_fields";
+  avg?: Maybe<Module_Transactions_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Module_Transactions_Max_Fields>;
+  min?: Maybe<Module_Transactions_Min_Fields>;
+  stddev?: Maybe<Module_Transactions_Stddev_Fields>;
+  stddev_pop?: Maybe<Module_Transactions_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Module_Transactions_Stddev_Samp_Fields>;
+  sum?: Maybe<Module_Transactions_Sum_Fields>;
+  var_pop?: Maybe<Module_Transactions_Var_Pop_Fields>;
+  var_samp?: Maybe<Module_Transactions_Var_Samp_Fields>;
+  variance?: Maybe<Module_Transactions_Variance_Fields>;
+};
+
+/** aggregate fields of "module_transactions" */
+export type Module_Transactions_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "module_transactions" */
+export type Module_Transactions_Aggregate_Order_By = {
+  avg?: InputMaybe<Module_Transactions_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Module_Transactions_Max_Order_By>;
+  min?: InputMaybe<Module_Transactions_Min_Order_By>;
+  stddev?: InputMaybe<Module_Transactions_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Module_Transactions_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Module_Transactions_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Module_Transactions_Sum_Order_By>;
+  var_pop?: InputMaybe<Module_Transactions_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Module_Transactions_Var_Samp_Order_By>;
+  variance?: InputMaybe<Module_Transactions_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "module_transactions" */
+export type Module_Transactions_Arr_Rel_Insert_Input = {
+  data: Array<Module_Transactions_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Module_Transactions_Avg_Fields = {
+  __typename?: "module_transactions_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "module_transactions" */
+export type Module_Transactions_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "module_transactions". All fields are combined with a logical 'AND'. */
+export type Module_Transactions_Bool_Exp = {
+  _and?: InputMaybe<Array<Module_Transactions_Bool_Exp>>;
+  _not?: InputMaybe<Module_Transactions_Bool_Exp>;
+  _or?: InputMaybe<Array<Module_Transactions_Bool_Exp>>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  is_entry?: InputMaybe<Boolean_Comparison_Exp>;
+  module?: InputMaybe<Modules_Bool_Exp>;
+  module_id?: InputMaybe<Int_Comparison_Exp>;
+  transaction?: InputMaybe<Transactions_Bool_Exp>;
+  tx_id?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "module_transactions" */
+export type Module_Transactions_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  tx_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "module_transactions" */
+export type Module_Transactions_Insert_Input = {
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  is_entry?: InputMaybe<Scalars["Boolean"]>;
+  module?: InputMaybe<Modules_Obj_Rel_Insert_Input>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  transaction?: InputMaybe<Transactions_Obj_Rel_Insert_Input>;
+  tx_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Module_Transactions_Max_Fields = {
+  __typename?: "module_transactions_max_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  module_id?: Maybe<Scalars["Int"]>;
+  tx_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "module_transactions" */
+export type Module_Transactions_Max_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Module_Transactions_Min_Fields = {
+  __typename?: "module_transactions_min_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  module_id?: Maybe<Scalars["Int"]>;
+  tx_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "module_transactions" */
+export type Module_Transactions_Min_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "module_transactions" */
+export type Module_Transactions_Mutation_Response = {
+  __typename?: "module_transactions_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Module_Transactions>;
+};
+
+/** Ordering options when selecting data from "module_transactions". */
+export type Module_Transactions_Order_By = {
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  is_entry?: InputMaybe<Order_By>;
+  module?: InputMaybe<Modules_Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  transaction?: InputMaybe<Transactions_Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "module_transactions" */
+export enum Module_Transactions_Select_Column {
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  IsEntry = "is_entry",
+  /** column name */
+  ModuleId = "module_id",
+  /** column name */
+  TxId = "tx_id",
+}
+
+/** select "module_transactions_aggregate_bool_exp_bool_and_arguments_columns" columns of table "module_transactions" */
+export enum Module_Transactions_Select_Column_Module_Transactions_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsEntry = "is_entry",
+}
+
+/** select "module_transactions_aggregate_bool_exp_bool_or_arguments_columns" columns of table "module_transactions" */
+export enum Module_Transactions_Select_Column_Module_Transactions_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsEntry = "is_entry",
+}
+
+/** input type for updating data in table "module_transactions" */
+export type Module_Transactions_Set_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  is_entry?: InputMaybe<Scalars["Boolean"]>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  tx_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Module_Transactions_Stddev_Fields = {
+  __typename?: "module_transactions_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "module_transactions" */
+export type Module_Transactions_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Module_Transactions_Stddev_Pop_Fields = {
+  __typename?: "module_transactions_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "module_transactions" */
+export type Module_Transactions_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Module_Transactions_Stddev_Samp_Fields = {
+  __typename?: "module_transactions_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "module_transactions" */
+export type Module_Transactions_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "module_transactions" */
+export type Module_Transactions_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Module_Transactions_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Module_Transactions_Stream_Cursor_Value_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  is_entry?: InputMaybe<Scalars["Boolean"]>;
+  module_id?: InputMaybe<Scalars["Int"]>;
+  tx_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Module_Transactions_Sum_Fields = {
+  __typename?: "module_transactions_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  module_id?: Maybe<Scalars["Int"]>;
+  tx_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "module_transactions" */
+export type Module_Transactions_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+export type Module_Transactions_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Module_Transactions_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Module_Transactions_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Module_Transactions_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Module_Transactions_Var_Pop_Fields = {
+  __typename?: "module_transactions_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "module_transactions" */
+export type Module_Transactions_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Module_Transactions_Var_Samp_Fields = {
+  __typename?: "module_transactions_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "module_transactions" */
+export type Module_Transactions_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Module_Transactions_Variance_Fields = {
+  __typename?: "module_transactions_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  module_id?: Maybe<Scalars["Float"]>;
+  tx_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "module_transactions" */
+export type Module_Transactions_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  module_id?: InputMaybe<Order_By>;
+  tx_id?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "modules" */
+export type Modules = {
+  __typename?: "modules";
+  id: Scalars["Int"];
+  module_entry_executed: Scalars["Int"];
+  /** An array relationship */
+  module_histories: Array<Module_Histories>;
+  /** An aggregate relationship */
+  module_histories_aggregate: Module_Histories_Aggregate;
+  /** An array relationship */
+  module_proposals: Array<Module_Proposals>;
+  /** An aggregate relationship */
+  module_proposals_aggregate: Module_Proposals_Aggregate;
+  /** An array relationship */
+  module_transactions: Array<Module_Transactions>;
+  /** An aggregate relationship */
+  module_transactions_aggregate: Module_Transactions_Aggregate;
+  name: Scalars["String"];
+  publish_tx_id?: Maybe<Scalars["Int"]>;
+  publisher_id: Scalars["Int"];
+  /** An object relationship */
+  transaction?: Maybe<Transactions>;
+  upgrade_policy: Scalars["upgradepolicy"];
+  /** An object relationship */
+  vm_address: Vm_Addresses;
+};
+
+/** columns and relationships of "modules" */
+export type ModulesModule_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "modules" */
+export type ModulesModule_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "modules" */
+export type ModulesModule_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "modules" */
+export type ModulesModule_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "modules" */
+export type ModulesModule_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+/** columns and relationships of "modules" */
+export type ModulesModule_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+/** aggregated selection of "modules" */
+export type Modules_Aggregate = {
+  __typename?: "modules_aggregate";
+  aggregate?: Maybe<Modules_Aggregate_Fields>;
+  nodes: Array<Modules>;
+};
+
+export type Modules_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Modules_Aggregate_Bool_Exp_Count>;
+};
+
+export type Modules_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Modules_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Modules_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "modules" */
+export type Modules_Aggregate_Fields = {
+  __typename?: "modules_aggregate_fields";
+  avg?: Maybe<Modules_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Modules_Max_Fields>;
+  min?: Maybe<Modules_Min_Fields>;
+  stddev?: Maybe<Modules_Stddev_Fields>;
+  stddev_pop?: Maybe<Modules_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Modules_Stddev_Samp_Fields>;
+  sum?: Maybe<Modules_Sum_Fields>;
+  var_pop?: Maybe<Modules_Var_Pop_Fields>;
+  var_samp?: Maybe<Modules_Var_Samp_Fields>;
+  variance?: Maybe<Modules_Variance_Fields>;
+};
+
+/** aggregate fields of "modules" */
+export type Modules_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Modules_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "modules" */
+export type Modules_Aggregate_Order_By = {
+  avg?: InputMaybe<Modules_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Modules_Max_Order_By>;
+  min?: InputMaybe<Modules_Min_Order_By>;
+  stddev?: InputMaybe<Modules_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Modules_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Modules_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Modules_Sum_Order_By>;
+  var_pop?: InputMaybe<Modules_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Modules_Var_Samp_Order_By>;
+  variance?: InputMaybe<Modules_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "modules" */
+export type Modules_Arr_Rel_Insert_Input = {
+  data: Array<Modules_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Modules_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Modules_Avg_Fields = {
+  __typename?: "modules_avg_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "modules" */
+export type Modules_Avg_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "modules". All fields are combined with a logical 'AND'. */
+export type Modules_Bool_Exp = {
+  _and?: InputMaybe<Array<Modules_Bool_Exp>>;
+  _not?: InputMaybe<Modules_Bool_Exp>;
+  _or?: InputMaybe<Array<Modules_Bool_Exp>>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  module_entry_executed?: InputMaybe<Int_Comparison_Exp>;
+  module_histories?: InputMaybe<Module_Histories_Bool_Exp>;
+  module_histories_aggregate?: InputMaybe<Module_Histories_Aggregate_Bool_Exp>;
+  module_proposals?: InputMaybe<Module_Proposals_Bool_Exp>;
+  module_proposals_aggregate?: InputMaybe<Module_Proposals_Aggregate_Bool_Exp>;
+  module_transactions?: InputMaybe<Module_Transactions_Bool_Exp>;
+  module_transactions_aggregate?: InputMaybe<Module_Transactions_Aggregate_Bool_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  publish_tx_id?: InputMaybe<Int_Comparison_Exp>;
+  publisher_id?: InputMaybe<Int_Comparison_Exp>;
+  transaction?: InputMaybe<Transactions_Bool_Exp>;
+  upgrade_policy?: InputMaybe<Upgradepolicy_Comparison_Exp>;
+  vm_address?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "modules" */
+export enum Modules_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  ModulesIdKey = "modules_id_key",
+  /** unique or primary key constraint on columns "publisher_id", "name" */
+  ModulesPkey = "modules_pkey",
+}
+
+/** input type for incrementing numeric columns in table "modules" */
+export type Modules_Inc_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+  module_entry_executed?: InputMaybe<Scalars["Int"]>;
+  publish_tx_id?: InputMaybe<Scalars["Int"]>;
+  publisher_id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "modules" */
+export type Modules_Insert_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+  module_entry_executed?: InputMaybe<Scalars["Int"]>;
+  module_histories?: InputMaybe<Module_Histories_Arr_Rel_Insert_Input>;
+  module_proposals?: InputMaybe<Module_Proposals_Arr_Rel_Insert_Input>;
+  module_transactions?: InputMaybe<Module_Transactions_Arr_Rel_Insert_Input>;
+  name?: InputMaybe<Scalars["String"]>;
+  publish_tx_id?: InputMaybe<Scalars["Int"]>;
+  publisher_id?: InputMaybe<Scalars["Int"]>;
+  transaction?: InputMaybe<Transactions_Obj_Rel_Insert_Input>;
+  upgrade_policy?: InputMaybe<Scalars["upgradepolicy"]>;
+  vm_address?: InputMaybe<Vm_Addresses_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Modules_Max_Fields = {
+  __typename?: "modules_max_fields";
+  id?: Maybe<Scalars["Int"]>;
+  module_entry_executed?: Maybe<Scalars["Int"]>;
+  name?: Maybe<Scalars["String"]>;
+  publish_tx_id?: Maybe<Scalars["Int"]>;
+  publisher_id?: Maybe<Scalars["Int"]>;
+  upgrade_policy?: Maybe<Scalars["upgradepolicy"]>;
+};
+
+/** order by max() on columns of table "modules" */
+export type Modules_Max_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+  upgrade_policy?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Modules_Min_Fields = {
+  __typename?: "modules_min_fields";
+  id?: Maybe<Scalars["Int"]>;
+  module_entry_executed?: Maybe<Scalars["Int"]>;
+  name?: Maybe<Scalars["String"]>;
+  publish_tx_id?: Maybe<Scalars["Int"]>;
+  publisher_id?: Maybe<Scalars["Int"]>;
+  upgrade_policy?: Maybe<Scalars["upgradepolicy"]>;
+};
+
+/** order by min() on columns of table "modules" */
+export type Modules_Min_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+  upgrade_policy?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "modules" */
+export type Modules_Mutation_Response = {
+  __typename?: "modules_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Modules>;
+};
+
+/** input type for inserting object relation for remote table "modules" */
+export type Modules_Obj_Rel_Insert_Input = {
+  data: Modules_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Modules_On_Conflict>;
+};
+
+/** on_conflict condition type for table "modules" */
+export type Modules_On_Conflict = {
+  constraint: Modules_Constraint;
+  update_columns?: Array<Modules_Update_Column>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "modules". */
+export type Modules_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  module_histories_aggregate?: InputMaybe<Module_Histories_Aggregate_Order_By>;
+  module_proposals_aggregate?: InputMaybe<Module_Proposals_Aggregate_Order_By>;
+  module_transactions_aggregate?: InputMaybe<Module_Transactions_Aggregate_Order_By>;
+  name?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+  transaction?: InputMaybe<Transactions_Order_By>;
+  upgrade_policy?: InputMaybe<Order_By>;
+  vm_address?: InputMaybe<Vm_Addresses_Order_By>;
+};
+
+/** primary key columns input for table: modules */
+export type Modules_Pk_Columns_Input = {
+  name: Scalars["String"];
+  publisher_id: Scalars["Int"];
+};
+
+/** select columns of table "modules" */
+export enum Modules_Select_Column {
+  /** column name */
+  Id = "id",
+  /** column name */
+  ModuleEntryExecuted = "module_entry_executed",
+  /** column name */
+  Name = "name",
+  /** column name */
+  PublishTxId = "publish_tx_id",
+  /** column name */
+  PublisherId = "publisher_id",
+  /** column name */
+  UpgradePolicy = "upgrade_policy",
+}
+
+/** input type for updating data in table "modules" */
+export type Modules_Set_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+  module_entry_executed?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  publish_tx_id?: InputMaybe<Scalars["Int"]>;
+  publisher_id?: InputMaybe<Scalars["Int"]>;
+  upgrade_policy?: InputMaybe<Scalars["upgradepolicy"]>;
+};
+
+/** aggregate stddev on columns */
+export type Modules_Stddev_Fields = {
+  __typename?: "modules_stddev_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "modules" */
+export type Modules_Stddev_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Modules_Stddev_Pop_Fields = {
+  __typename?: "modules_stddev_pop_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "modules" */
+export type Modules_Stddev_Pop_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Modules_Stddev_Samp_Fields = {
+  __typename?: "modules_stddev_samp_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "modules" */
+export type Modules_Stddev_Samp_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "modules" */
+export type Modules_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Modules_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Modules_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+  module_entry_executed?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  publish_tx_id?: InputMaybe<Scalars["Int"]>;
+  publisher_id?: InputMaybe<Scalars["Int"]>;
+  upgrade_policy?: InputMaybe<Scalars["upgradepolicy"]>;
+};
+
+/** aggregate sum on columns */
+export type Modules_Sum_Fields = {
+  __typename?: "modules_sum_fields";
+  id?: Maybe<Scalars["Int"]>;
+  module_entry_executed?: Maybe<Scalars["Int"]>;
+  publish_tx_id?: Maybe<Scalars["Int"]>;
+  publisher_id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "modules" */
+export type Modules_Sum_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "modules" */
+export enum Modules_Update_Column {
+  /** column name */
+  Id = "id",
+  /** column name */
+  ModuleEntryExecuted = "module_entry_executed",
+  /** column name */
+  Name = "name",
+  /** column name */
+  PublishTxId = "publish_tx_id",
+  /** column name */
+  PublisherId = "publisher_id",
+  /** column name */
+  UpgradePolicy = "upgrade_policy",
+}
+
+export type Modules_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Modules_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Modules_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Modules_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Modules_Var_Pop_Fields = {
+  __typename?: "modules_var_pop_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "modules" */
+export type Modules_Var_Pop_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Modules_Var_Samp_Fields = {
+  __typename?: "modules_var_samp_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "modules" */
+export type Modules_Var_Samp_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Modules_Variance_Fields = {
+  __typename?: "modules_variance_fields";
+  id?: Maybe<Scalars["Float"]>;
+  module_entry_executed?: Maybe<Scalars["Float"]>;
+  publish_tx_id?: Maybe<Scalars["Float"]>;
+  publisher_id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "modules" */
+export type Modules_Variance_Order_By = {
+  id?: InputMaybe<Order_By>;
+  module_entry_executed?: InputMaybe<Order_By>;
+  publish_tx_id?: InputMaybe<Order_By>;
+  publisher_id?: InputMaybe<Order_By>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: "mutation_root";
@@ -5155,6 +6758,16 @@ export type Mutation_Root = {
   delete_end_block_events?: Maybe<End_Block_Events_Mutation_Response>;
   /** delete data from the table: "lcd_tx_results" */
   delete_lcd_tx_results?: Maybe<Lcd_Tx_Results_Mutation_Response>;
+  /** delete data from the table: "module_histories" */
+  delete_module_histories?: Maybe<Module_Histories_Mutation_Response>;
+  /** delete data from the table: "module_proposals" */
+  delete_module_proposals?: Maybe<Module_Proposals_Mutation_Response>;
+  /** delete data from the table: "module_transactions" */
+  delete_module_transactions?: Maybe<Module_Transactions_Mutation_Response>;
+  /** delete data from the table: "modules" */
+  delete_modules?: Maybe<Modules_Mutation_Response>;
+  /** delete single row from the table: "modules" */
+  delete_modules_by_pk?: Maybe<Modules>;
   /** delete data from the table: "pool_transactions" */
   delete_pool_transactions?: Maybe<Pool_Transactions_Mutation_Response>;
   /** delete data from the table: "pools" */
@@ -5169,6 +6782,10 @@ export type Mutation_Root = {
   delete_proposals?: Maybe<Proposals_Mutation_Response>;
   /** delete single row from the table: "proposals" */
   delete_proposals_by_pk?: Maybe<Proposals>;
+  /** delete data from the table: "taker_fee" */
+  delete_taker_fee?: Maybe<Taker_Fee_Mutation_Response>;
+  /** delete single row from the table: "taker_fee" */
+  delete_taker_fee_by_pk?: Maybe<Taker_Fee>;
   /** delete data from the table: "tracking" */
   delete_tracking?: Maybe<Tracking_Mutation_Response>;
   /** delete single row from the table: "tracking" */
@@ -5185,6 +6802,10 @@ export type Mutation_Root = {
   delete_validators?: Maybe<Validators_Mutation_Response>;
   /** delete single row from the table: "validators" */
   delete_validators_by_pk?: Maybe<Validators>;
+  /** delete data from the table: "vm_addresses" */
+  delete_vm_addresses?: Maybe<Vm_Addresses_Mutation_Response>;
+  /** delete single row from the table: "vm_addresses" */
+  delete_vm_addresses_by_pk?: Maybe<Vm_Addresses>;
   /** insert data into the table: "account_transactions" */
   insert_account_transactions?: Maybe<Account_Transactions_Mutation_Response>;
   /** insert a single row into the table: "account_transactions" */
@@ -5237,6 +6858,22 @@ export type Mutation_Root = {
   insert_lcd_tx_results?: Maybe<Lcd_Tx_Results_Mutation_Response>;
   /** insert a single row into the table: "lcd_tx_results" */
   insert_lcd_tx_results_one?: Maybe<Lcd_Tx_Results>;
+  /** insert data into the table: "module_histories" */
+  insert_module_histories?: Maybe<Module_Histories_Mutation_Response>;
+  /** insert a single row into the table: "module_histories" */
+  insert_module_histories_one?: Maybe<Module_Histories>;
+  /** insert data into the table: "module_proposals" */
+  insert_module_proposals?: Maybe<Module_Proposals_Mutation_Response>;
+  /** insert a single row into the table: "module_proposals" */
+  insert_module_proposals_one?: Maybe<Module_Proposals>;
+  /** insert data into the table: "module_transactions" */
+  insert_module_transactions?: Maybe<Module_Transactions_Mutation_Response>;
+  /** insert a single row into the table: "module_transactions" */
+  insert_module_transactions_one?: Maybe<Module_Transactions>;
+  /** insert data into the table: "modules" */
+  insert_modules?: Maybe<Modules_Mutation_Response>;
+  /** insert a single row into the table: "modules" */
+  insert_modules_one?: Maybe<Modules>;
   /** insert data into the table: "pool_transactions" */
   insert_pool_transactions?: Maybe<Pool_Transactions_Mutation_Response>;
   /** insert a single row into the table: "pool_transactions" */
@@ -5257,6 +6894,10 @@ export type Mutation_Root = {
   insert_proposals?: Maybe<Proposals_Mutation_Response>;
   /** insert a single row into the table: "proposals" */
   insert_proposals_one?: Maybe<Proposals>;
+  /** insert data into the table: "taker_fee" */
+  insert_taker_fee?: Maybe<Taker_Fee_Mutation_Response>;
+  /** insert a single row into the table: "taker_fee" */
+  insert_taker_fee_one?: Maybe<Taker_Fee>;
   /** insert data into the table: "tracking" */
   insert_tracking?: Maybe<Tracking_Mutation_Response>;
   /** insert a single row into the table: "tracking" */
@@ -5277,6 +6918,10 @@ export type Mutation_Root = {
   insert_validators?: Maybe<Validators_Mutation_Response>;
   /** insert a single row into the table: "validators" */
   insert_validators_one?: Maybe<Validators>;
+  /** insert data into the table: "vm_addresses" */
+  insert_vm_addresses?: Maybe<Vm_Addresses_Mutation_Response>;
+  /** insert a single row into the table: "vm_addresses" */
+  insert_vm_addresses_one?: Maybe<Vm_Addresses>;
   /** update data of the table: "account_transactions" */
   update_account_transactions?: Maybe<Account_Transactions_Mutation_Response>;
   /** update single row of the table: "account_transactions" */
@@ -5357,6 +7002,30 @@ export type Mutation_Root = {
   update_lcd_tx_results_many?: Maybe<
     Array<Maybe<Lcd_Tx_Results_Mutation_Response>>
   >;
+  /** update data of the table: "module_histories" */
+  update_module_histories?: Maybe<Module_Histories_Mutation_Response>;
+  /** update multiples rows of table: "module_histories" */
+  update_module_histories_many?: Maybe<
+    Array<Maybe<Module_Histories_Mutation_Response>>
+  >;
+  /** update data of the table: "module_proposals" */
+  update_module_proposals?: Maybe<Module_Proposals_Mutation_Response>;
+  /** update multiples rows of table: "module_proposals" */
+  update_module_proposals_many?: Maybe<
+    Array<Maybe<Module_Proposals_Mutation_Response>>
+  >;
+  /** update data of the table: "module_transactions" */
+  update_module_transactions?: Maybe<Module_Transactions_Mutation_Response>;
+  /** update multiples rows of table: "module_transactions" */
+  update_module_transactions_many?: Maybe<
+    Array<Maybe<Module_Transactions_Mutation_Response>>
+  >;
+  /** update data of the table: "modules" */
+  update_modules?: Maybe<Modules_Mutation_Response>;
+  /** update single row of the table: "modules" */
+  update_modules_by_pk?: Maybe<Modules>;
+  /** update multiples rows of table: "modules" */
+  update_modules_many?: Maybe<Array<Maybe<Modules_Mutation_Response>>>;
   /** update data of the table: "pool_transactions" */
   update_pool_transactions?: Maybe<Pool_Transactions_Mutation_Response>;
   /** update multiples rows of table: "pool_transactions" */
@@ -5387,6 +7056,12 @@ export type Mutation_Root = {
   update_proposals_by_pk?: Maybe<Proposals>;
   /** update multiples rows of table: "proposals" */
   update_proposals_many?: Maybe<Array<Maybe<Proposals_Mutation_Response>>>;
+  /** update data of the table: "taker_fee" */
+  update_taker_fee?: Maybe<Taker_Fee_Mutation_Response>;
+  /** update single row of the table: "taker_fee" */
+  update_taker_fee_by_pk?: Maybe<Taker_Fee>;
+  /** update multiples rows of table: "taker_fee" */
+  update_taker_fee_many?: Maybe<Array<Maybe<Taker_Fee_Mutation_Response>>>;
   /** update data of the table: "tracking" */
   update_tracking?: Maybe<Tracking_Mutation_Response>;
   /** update single row of the table: "tracking" */
@@ -5417,6 +7092,14 @@ export type Mutation_Root = {
   update_validators_by_pk?: Maybe<Validators>;
   /** update multiples rows of table: "validators" */
   update_validators_many?: Maybe<Array<Maybe<Validators_Mutation_Response>>>;
+  /** update data of the table: "vm_addresses" */
+  update_vm_addresses?: Maybe<Vm_Addresses_Mutation_Response>;
+  /** update single row of the table: "vm_addresses" */
+  update_vm_addresses_by_pk?: Maybe<Vm_Addresses>;
+  /** update multiples rows of table: "vm_addresses" */
+  update_vm_addresses_many?: Maybe<
+    Array<Maybe<Vm_Addresses_Mutation_Response>>
+  >;
 };
 
 /** mutation root */
@@ -5511,6 +7194,32 @@ export type Mutation_RootDelete_Lcd_Tx_ResultsArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootDelete_Module_HistoriesArgs = {
+  where: Module_Histories_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Module_ProposalsArgs = {
+  where: Module_Proposals_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Module_TransactionsArgs = {
+  where: Module_Transactions_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_ModulesArgs = {
+  where: Modules_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Modules_By_PkArgs = {
+  name: Scalars["String"];
+  publisher_id: Scalars["Int"];
+};
+
+/** mutation root */
 export type Mutation_RootDelete_Pool_TransactionsArgs = {
   where: Pool_Transactions_Bool_Exp;
 };
@@ -5543,6 +7252,17 @@ export type Mutation_RootDelete_ProposalsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Proposals_By_PkArgs = {
   id: Scalars["Int"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Taker_FeeArgs = {
+  where: Taker_Fee_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Taker_Fee_By_PkArgs = {
+  denom0: Scalars["String"];
+  denom1: Scalars["String"];
 };
 
 /** mutation root */
@@ -5584,6 +7304,16 @@ export type Mutation_RootDelete_ValidatorsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Validators_By_PkArgs = {
   operator_address: Scalars["String"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Vm_AddressesArgs = {
+  where: Vm_Addresses_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Vm_Addresses_By_PkArgs = {
+  id: Scalars["Int"];
 };
 
 /** mutation root */
@@ -5727,6 +7457,48 @@ export type Mutation_RootInsert_Lcd_Tx_Results_OneArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootInsert_Module_HistoriesArgs = {
+  objects: Array<Module_Histories_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Module_Histories_OneArgs = {
+  object: Module_Histories_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Module_ProposalsArgs = {
+  objects: Array<Module_Proposals_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Module_Proposals_OneArgs = {
+  object: Module_Proposals_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Module_TransactionsArgs = {
+  objects: Array<Module_Transactions_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Module_Transactions_OneArgs = {
+  object: Module_Transactions_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_ModulesArgs = {
+  objects: Array<Modules_Insert_Input>;
+  on_conflict?: InputMaybe<Modules_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Modules_OneArgs = {
+  object: Modules_Insert_Input;
+  on_conflict?: InputMaybe<Modules_On_Conflict>;
+};
+
+/** mutation root */
 export type Mutation_RootInsert_Pool_TransactionsArgs = {
   objects: Array<Pool_Transactions_Insert_Input>;
 };
@@ -5778,6 +7550,18 @@ export type Mutation_RootInsert_ProposalsArgs = {
 export type Mutation_RootInsert_Proposals_OneArgs = {
   object: Proposals_Insert_Input;
   on_conflict?: InputMaybe<Proposals_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Taker_FeeArgs = {
+  objects: Array<Taker_Fee_Insert_Input>;
+  on_conflict?: InputMaybe<Taker_Fee_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Taker_Fee_OneArgs = {
+  object: Taker_Fee_Insert_Input;
+  on_conflict?: InputMaybe<Taker_Fee_On_Conflict>;
 };
 
 /** mutation root */
@@ -5834,6 +7618,18 @@ export type Mutation_RootInsert_ValidatorsArgs = {
 export type Mutation_RootInsert_Validators_OneArgs = {
   object: Validators_Insert_Input;
   on_conflict?: InputMaybe<Validators_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Vm_AddressesArgs = {
+  objects: Array<Vm_Addresses_Insert_Input>;
+  on_conflict?: InputMaybe<Vm_Addresses_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Vm_Addresses_OneArgs = {
+  object: Vm_Addresses_Insert_Input;
+  on_conflict?: InputMaybe<Vm_Addresses_On_Conflict>;
 };
 
 /** mutation root */
@@ -6028,6 +7824,61 @@ export type Mutation_RootUpdate_Lcd_Tx_Results_ManyArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Module_HistoriesArgs = {
+  _inc?: InputMaybe<Module_Histories_Inc_Input>;
+  _set?: InputMaybe<Module_Histories_Set_Input>;
+  where: Module_Histories_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Module_Histories_ManyArgs = {
+  updates: Array<Module_Histories_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Module_ProposalsArgs = {
+  _inc?: InputMaybe<Module_Proposals_Inc_Input>;
+  _set?: InputMaybe<Module_Proposals_Set_Input>;
+  where: Module_Proposals_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Module_Proposals_ManyArgs = {
+  updates: Array<Module_Proposals_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Module_TransactionsArgs = {
+  _inc?: InputMaybe<Module_Transactions_Inc_Input>;
+  _set?: InputMaybe<Module_Transactions_Set_Input>;
+  where: Module_Transactions_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Module_Transactions_ManyArgs = {
+  updates: Array<Module_Transactions_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_ModulesArgs = {
+  _inc?: InputMaybe<Modules_Inc_Input>;
+  _set?: InputMaybe<Modules_Set_Input>;
+  where: Modules_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Modules_By_PkArgs = {
+  _inc?: InputMaybe<Modules_Inc_Input>;
+  _set?: InputMaybe<Modules_Set_Input>;
+  pk_columns: Modules_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Modules_ManyArgs = {
+  updates: Array<Modules_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_Pool_TransactionsArgs = {
   _inc?: InputMaybe<Pool_Transactions_Inc_Input>;
   _set?: InputMaybe<Pool_Transactions_Set_Input>;
@@ -6099,6 +7950,23 @@ export type Mutation_RootUpdate_Proposals_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Proposals_ManyArgs = {
   updates: Array<Proposals_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Taker_FeeArgs = {
+  _set?: InputMaybe<Taker_Fee_Set_Input>;
+  where: Taker_Fee_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Taker_Fee_By_PkArgs = {
+  _set?: InputMaybe<Taker_Fee_Set_Input>;
+  pk_columns: Taker_Fee_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Taker_Fee_ManyArgs = {
+  updates: Array<Taker_Fee_Updates>;
 };
 
 /** mutation root */
@@ -6182,6 +8050,25 @@ export type Mutation_RootUpdate_Validators_ManyArgs = {
   updates: Array<Validators_Updates>;
 };
 
+/** mutation root */
+export type Mutation_RootUpdate_Vm_AddressesArgs = {
+  _inc?: InputMaybe<Vm_Addresses_Inc_Input>;
+  _set?: InputMaybe<Vm_Addresses_Set_Input>;
+  where: Vm_Addresses_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Vm_Addresses_By_PkArgs = {
+  _inc?: InputMaybe<Vm_Addresses_Inc_Input>;
+  _set?: InputMaybe<Vm_Addresses_Set_Input>;
+  pk_columns: Vm_Addresses_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Vm_Addresses_ManyArgs = {
+  updates: Array<Vm_Addresses_Updates>;
+};
+
 /** column ordering options */
 export enum Order_By {
   /** in ascending order, nulls last */
@@ -6205,10 +8092,10 @@ export type Pool_Transactions = {
   block: Blocks;
   block_height: Scalars["Int"];
   is_bond: Scalars["Boolean"];
-  is_clp?: Maybe<Scalars["Boolean"]>;
-  is_collect?: Maybe<Scalars["Boolean"]>;
+  is_clp: Scalars["Boolean"];
+  is_collect: Scalars["Boolean"];
   is_lp: Scalars["Boolean"];
-  is_migrate?: Maybe<Scalars["Boolean"]>;
+  is_migrate: Scalars["Boolean"];
   is_superfluid: Scalars["Boolean"];
   is_swap: Scalars["Boolean"];
   /** An object relationship */
@@ -7831,6 +9718,7 @@ export type Profit_By_Routes_Variance_Order_By = {
 /** columns and relationships of "proposals" */
 export type Proposals = {
   __typename?: "proposals";
+  abstain: Scalars["bigint"];
   /** An object relationship */
   account?: Maybe<Accounts>;
   /** An object relationship */
@@ -7848,15 +9736,24 @@ export type Proposals = {
   description: Scalars["String"];
   id: Scalars["Int"];
   is_expedited: Scalars["Boolean"];
+  /** An array relationship */
+  module_proposals: Array<Module_Proposals>;
+  /** An aggregate relationship */
+  module_proposals_aggregate: Module_Proposals_Aggregate;
+  no: Scalars["bigint"];
+  no_with_veto: Scalars["bigint"];
   proposal_route: Scalars["String"];
   proposer_id?: Maybe<Scalars["Int"]>;
   resolved_height?: Maybe<Scalars["Int"]>;
   status: Scalars["proposalstatus"];
   submit_time: Scalars["timestamp"];
   title: Scalars["String"];
+  total_deposit: Scalars["json"];
   type: Scalars["String"];
-  voting_end_time: Scalars["timestamp"];
-  voting_time: Scalars["timestamp"];
+  version: Scalars["String"];
+  voting_end_time?: Maybe<Scalars["timestamp"]>;
+  voting_time?: Maybe<Scalars["timestamp"]>;
+  yes: Scalars["bigint"];
 };
 
 /** columns and relationships of "proposals" */
@@ -7898,6 +9795,29 @@ export type ProposalsContract_Proposals_AggregateArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
   where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "proposals" */
+export type ProposalsModule_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "proposals" */
+export type ProposalsModule_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "proposals" */
+export type ProposalsTotal_DepositArgs = {
+  path?: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "proposals" */
@@ -7981,16 +9901,24 @@ export type Proposals_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Proposals_Avg_Fields = {
   __typename?: "proposals_avg_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by avg() on columns of table "proposals" */
 export type Proposals_Avg_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "proposals". All fields are combined with a logical 'AND'. */
@@ -7998,6 +9926,7 @@ export type Proposals_Bool_Exp = {
   _and?: InputMaybe<Array<Proposals_Bool_Exp>>;
   _not?: InputMaybe<Proposals_Bool_Exp>;
   _or?: InputMaybe<Array<Proposals_Bool_Exp>>;
+  abstain?: InputMaybe<Bigint_Comparison_Exp>;
   account?: InputMaybe<Accounts_Bool_Exp>;
   block?: InputMaybe<Blocks_Bool_Exp>;
   code_proposals?: InputMaybe<Code_Proposals_Bool_Exp>;
@@ -8009,15 +9938,22 @@ export type Proposals_Bool_Exp = {
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   is_expedited?: InputMaybe<Boolean_Comparison_Exp>;
+  module_proposals?: InputMaybe<Module_Proposals_Bool_Exp>;
+  module_proposals_aggregate?: InputMaybe<Module_Proposals_Aggregate_Bool_Exp>;
+  no?: InputMaybe<Bigint_Comparison_Exp>;
+  no_with_veto?: InputMaybe<Bigint_Comparison_Exp>;
   proposal_route?: InputMaybe<String_Comparison_Exp>;
   proposer_id?: InputMaybe<Int_Comparison_Exp>;
   resolved_height?: InputMaybe<Int_Comparison_Exp>;
   status?: InputMaybe<Proposalstatus_Comparison_Exp>;
   submit_time?: InputMaybe<Timestamp_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
+  total_deposit?: InputMaybe<Json_Comparison_Exp>;
   type?: InputMaybe<String_Comparison_Exp>;
+  version?: InputMaybe<String_Comparison_Exp>;
   voting_end_time?: InputMaybe<Timestamp_Comparison_Exp>;
   voting_time?: InputMaybe<Timestamp_Comparison_Exp>;
+  yes?: InputMaybe<Bigint_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "proposals" */
@@ -8028,13 +9964,18 @@ export enum Proposals_Constraint {
 
 /** input type for incrementing numeric columns in table "proposals" */
 export type Proposals_Inc_Input = {
+  abstain?: InputMaybe<Scalars["bigint"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  no?: InputMaybe<Scalars["bigint"]>;
+  no_with_veto?: InputMaybe<Scalars["bigint"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
+  yes?: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "proposals" */
 export type Proposals_Insert_Input = {
+  abstain?: InputMaybe<Scalars["bigint"]>;
   account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
   block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
   code_proposals?: InputMaybe<Code_Proposals_Arr_Rel_Insert_Input>;
@@ -8044,23 +9985,32 @@ export type Proposals_Insert_Input = {
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   is_expedited?: InputMaybe<Scalars["Boolean"]>;
+  module_proposals?: InputMaybe<Module_Proposals_Arr_Rel_Insert_Input>;
+  no?: InputMaybe<Scalars["bigint"]>;
+  no_with_veto?: InputMaybe<Scalars["bigint"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
   status?: InputMaybe<Scalars["proposalstatus"]>;
   submit_time?: InputMaybe<Scalars["timestamp"]>;
   title?: InputMaybe<Scalars["String"]>;
+  total_deposit?: InputMaybe<Scalars["json"]>;
   type?: InputMaybe<Scalars["String"]>;
+  version?: InputMaybe<Scalars["String"]>;
   voting_end_time?: InputMaybe<Scalars["timestamp"]>;
   voting_time?: InputMaybe<Scalars["timestamp"]>;
+  yes?: InputMaybe<Scalars["bigint"]>;
 };
 
 /** aggregate max on columns */
 export type Proposals_Max_Fields = {
   __typename?: "proposals_max_fields";
+  abstain?: Maybe<Scalars["bigint"]>;
   deposit_end_time?: Maybe<Scalars["timestamp"]>;
   description?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["Int"]>;
+  no?: Maybe<Scalars["bigint"]>;
+  no_with_veto?: Maybe<Scalars["bigint"]>;
   proposal_route?: Maybe<Scalars["String"]>;
   proposer_id?: Maybe<Scalars["Int"]>;
   resolved_height?: Maybe<Scalars["Int"]>;
@@ -8068,15 +10018,20 @@ export type Proposals_Max_Fields = {
   submit_time?: Maybe<Scalars["timestamp"]>;
   title?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
+  version?: Maybe<Scalars["String"]>;
   voting_end_time?: Maybe<Scalars["timestamp"]>;
   voting_time?: Maybe<Scalars["timestamp"]>;
+  yes?: Maybe<Scalars["bigint"]>;
 };
 
 /** order by max() on columns of table "proposals" */
 export type Proposals_Max_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   deposit_end_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
@@ -8084,16 +10039,21 @@ export type Proposals_Max_Order_By = {
   submit_time?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
+  version?: InputMaybe<Order_By>;
   voting_end_time?: InputMaybe<Order_By>;
   voting_time?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Proposals_Min_Fields = {
   __typename?: "proposals_min_fields";
+  abstain?: Maybe<Scalars["bigint"]>;
   deposit_end_time?: Maybe<Scalars["timestamp"]>;
   description?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["Int"]>;
+  no?: Maybe<Scalars["bigint"]>;
+  no_with_veto?: Maybe<Scalars["bigint"]>;
   proposal_route?: Maybe<Scalars["String"]>;
   proposer_id?: Maybe<Scalars["Int"]>;
   resolved_height?: Maybe<Scalars["Int"]>;
@@ -8101,15 +10061,20 @@ export type Proposals_Min_Fields = {
   submit_time?: Maybe<Scalars["timestamp"]>;
   title?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
+  version?: Maybe<Scalars["String"]>;
   voting_end_time?: Maybe<Scalars["timestamp"]>;
   voting_time?: Maybe<Scalars["timestamp"]>;
+  yes?: Maybe<Scalars["bigint"]>;
 };
 
 /** order by min() on columns of table "proposals" */
 export type Proposals_Min_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   deposit_end_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
@@ -8117,8 +10082,10 @@ export type Proposals_Min_Order_By = {
   submit_time?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
+  version?: InputMaybe<Order_By>;
   voting_end_time?: InputMaybe<Order_By>;
   voting_time?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "proposals" */
@@ -8146,6 +10113,7 @@ export type Proposals_On_Conflict = {
 
 /** Ordering options when selecting data from "proposals". */
 export type Proposals_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   account?: InputMaybe<Accounts_Order_By>;
   block?: InputMaybe<Blocks_Order_By>;
   code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Order_By>;
@@ -8155,15 +10123,21 @@ export type Proposals_Order_By = {
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   is_expedited?: InputMaybe<Order_By>;
+  module_proposals_aggregate?: InputMaybe<Module_Proposals_Aggregate_Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   submit_time?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
+  total_deposit?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
+  version?: InputMaybe<Order_By>;
   voting_end_time?: InputMaybe<Order_By>;
   voting_time?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: proposals */
@@ -8174,6 +10148,8 @@ export type Proposals_Pk_Columns_Input = {
 /** select columns of table "proposals" */
 export enum Proposals_Select_Column {
   /** column name */
+  Abstain = "abstain",
+  /** column name */
   Content = "content",
   /** column name */
   DepositEndTime = "deposit_end_time",
@@ -8183,6 +10159,10 @@ export enum Proposals_Select_Column {
   Id = "id",
   /** column name */
   IsExpedited = "is_expedited",
+  /** column name */
+  No = "no",
+  /** column name */
+  NoWithVeto = "no_with_veto",
   /** column name */
   ProposalRoute = "proposal_route",
   /** column name */
@@ -8196,11 +10176,17 @@ export enum Proposals_Select_Column {
   /** column name */
   Title = "title",
   /** column name */
+  TotalDeposit = "total_deposit",
+  /** column name */
   Type = "type",
+  /** column name */
+  Version = "version",
   /** column name */
   VotingEndTime = "voting_end_time",
   /** column name */
   VotingTime = "voting_time",
+  /** column name */
+  Yes = "yes",
 }
 
 /** select "proposals_aggregate_bool_exp_bool_and_arguments_columns" columns of table "proposals" */
@@ -8217,65 +10203,95 @@ export enum Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_Or_Argumen
 
 /** input type for updating data in table "proposals" */
 export type Proposals_Set_Input = {
+  abstain?: InputMaybe<Scalars["bigint"]>;
   content?: InputMaybe<Scalars["json"]>;
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   is_expedited?: InputMaybe<Scalars["Boolean"]>;
+  no?: InputMaybe<Scalars["bigint"]>;
+  no_with_veto?: InputMaybe<Scalars["bigint"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
   status?: InputMaybe<Scalars["proposalstatus"]>;
   submit_time?: InputMaybe<Scalars["timestamp"]>;
   title?: InputMaybe<Scalars["String"]>;
+  total_deposit?: InputMaybe<Scalars["json"]>;
   type?: InputMaybe<Scalars["String"]>;
+  version?: InputMaybe<Scalars["String"]>;
   voting_end_time?: InputMaybe<Scalars["timestamp"]>;
   voting_time?: InputMaybe<Scalars["timestamp"]>;
+  yes?: InputMaybe<Scalars["bigint"]>;
 };
 
 /** aggregate stddev on columns */
 export type Proposals_Stddev_Fields = {
   __typename?: "proposals_stddev_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev() on columns of table "proposals" */
 export type Proposals_Stddev_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Proposals_Stddev_Pop_Fields = {
   __typename?: "proposals_stddev_pop_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_pop() on columns of table "proposals" */
 export type Proposals_Stddev_Pop_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Proposals_Stddev_Samp_Fields = {
   __typename?: "proposals_stddev_samp_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_samp() on columns of table "proposals" */
 export type Proposals_Stddev_Samp_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "proposals" */
@@ -8288,39 +10304,55 @@ export type Proposals_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Proposals_Stream_Cursor_Value_Input = {
+  abstain?: InputMaybe<Scalars["bigint"]>;
   content?: InputMaybe<Scalars["json"]>;
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   is_expedited?: InputMaybe<Scalars["Boolean"]>;
+  no?: InputMaybe<Scalars["bigint"]>;
+  no_with_veto?: InputMaybe<Scalars["bigint"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
   status?: InputMaybe<Scalars["proposalstatus"]>;
   submit_time?: InputMaybe<Scalars["timestamp"]>;
   title?: InputMaybe<Scalars["String"]>;
+  total_deposit?: InputMaybe<Scalars["json"]>;
   type?: InputMaybe<Scalars["String"]>;
+  version?: InputMaybe<Scalars["String"]>;
   voting_end_time?: InputMaybe<Scalars["timestamp"]>;
   voting_time?: InputMaybe<Scalars["timestamp"]>;
+  yes?: InputMaybe<Scalars["bigint"]>;
 };
 
 /** aggregate sum on columns */
 export type Proposals_Sum_Fields = {
   __typename?: "proposals_sum_fields";
+  abstain?: Maybe<Scalars["bigint"]>;
   id?: Maybe<Scalars["Int"]>;
+  no?: Maybe<Scalars["bigint"]>;
+  no_with_veto?: Maybe<Scalars["bigint"]>;
   proposer_id?: Maybe<Scalars["Int"]>;
   resolved_height?: Maybe<Scalars["Int"]>;
+  yes?: Maybe<Scalars["bigint"]>;
 };
 
 /** order by sum() on columns of table "proposals" */
 export type Proposals_Sum_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "proposals" */
 export enum Proposals_Update_Column {
+  /** column name */
+  Abstain = "abstain",
   /** column name */
   Content = "content",
   /** column name */
@@ -8331,6 +10363,10 @@ export enum Proposals_Update_Column {
   Id = "id",
   /** column name */
   IsExpedited = "is_expedited",
+  /** column name */
+  No = "no",
+  /** column name */
+  NoWithVeto = "no_with_veto",
   /** column name */
   ProposalRoute = "proposal_route",
   /** column name */
@@ -8344,11 +10380,17 @@ export enum Proposals_Update_Column {
   /** column name */
   Title = "title",
   /** column name */
+  TotalDeposit = "total_deposit",
+  /** column name */
   Type = "type",
+  /** column name */
+  Version = "version",
   /** column name */
   VotingEndTime = "voting_end_time",
   /** column name */
   VotingTime = "voting_time",
+  /** column name */
+  Yes = "yes",
 }
 
 export type Proposals_Updates = {
@@ -8363,46 +10405,70 @@ export type Proposals_Updates = {
 /** aggregate var_pop on columns */
 export type Proposals_Var_Pop_Fields = {
   __typename?: "proposals_var_pop_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_pop() on columns of table "proposals" */
 export type Proposals_Var_Pop_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Proposals_Var_Samp_Fields = {
   __typename?: "proposals_var_samp_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_samp() on columns of table "proposals" */
 export type Proposals_Var_Samp_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Proposals_Variance_Fields = {
   __typename?: "proposals_variance_fields";
+  abstain?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  no?: Maybe<Scalars["Float"]>;
+  no_with_veto?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
   resolved_height?: Maybe<Scalars["Float"]>;
+  yes?: Maybe<Scalars["Float"]>;
 };
 
 /** order by variance() on columns of table "proposals" */
 export type Proposals_Variance_Order_By = {
+  abstain?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  no?: InputMaybe<Order_By>;
+  no_with_veto?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
+  yes?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "proposalstatus". All fields are combined with logical 'AND'. */
@@ -8426,9 +10492,9 @@ export type Query_Root = {
   account_transactions_aggregate: Account_Transactions_Aggregate;
   /** fetch data from the table: "account_transactions" using primary key columns */
   account_transactions_by_pk?: Maybe<Account_Transactions>;
-  /** fetch data from the table: "accounts" */
+  /** An array relationship */
   accounts: Array<Accounts>;
-  /** fetch aggregated fields from the table: "accounts" */
+  /** An aggregate relationship */
   accounts_aggregate: Accounts_Aggregate;
   /** fetch data from the table: "accounts" using primary key columns */
   accounts_by_pk?: Maybe<Accounts>;
@@ -8483,6 +10549,24 @@ export type Query_Root = {
   /** An aggregate relationship */
   lcd_tx_results_aggregate: Lcd_Tx_Results_Aggregate;
   /** An array relationship */
+  module_histories: Array<Module_Histories>;
+  /** An aggregate relationship */
+  module_histories_aggregate: Module_Histories_Aggregate;
+  /** An array relationship */
+  module_proposals: Array<Module_Proposals>;
+  /** An aggregate relationship */
+  module_proposals_aggregate: Module_Proposals_Aggregate;
+  /** An array relationship */
+  module_transactions: Array<Module_Transactions>;
+  /** An aggregate relationship */
+  module_transactions_aggregate: Module_Transactions_Aggregate;
+  /** An array relationship */
+  modules: Array<Modules>;
+  /** An aggregate relationship */
+  modules_aggregate: Modules_Aggregate;
+  /** fetch data from the table: "modules" using primary key columns */
+  modules_by_pk?: Maybe<Modules>;
+  /** An array relationship */
   pool_transactions: Array<Pool_Transactions>;
   /** An aggregate relationship */
   pool_transactions_aggregate: Pool_Transactions_Aggregate;
@@ -8510,6 +10594,12 @@ export type Query_Root = {
   search_pools_with_denoms: Array<Pools>;
   /** execute function "search_pools_with_denoms" and query aggregates on result of table type "pools" */
   search_pools_with_denoms_aggregate: Pools_Aggregate;
+  /** fetch data from the table: "taker_fee" */
+  taker_fee: Array<Taker_Fee>;
+  /** fetch aggregated fields from the table: "taker_fee" */
+  taker_fee_aggregate: Taker_Fee_Aggregate;
+  /** fetch data from the table: "taker_fee" using primary key columns */
+  taker_fee_by_pk?: Maybe<Taker_Fee>;
   /** fetch data from the table: "tracking" */
   tracking: Array<Tracking>;
   /** fetch aggregated fields from the table: "tracking" */
@@ -8536,6 +10626,12 @@ export type Query_Root = {
   validators_aggregate: Validators_Aggregate;
   /** fetch data from the table: "validators" using primary key columns */
   validators_by_pk?: Maybe<Validators>;
+  /** fetch data from the table: "vm_addresses" */
+  vm_addresses: Array<Vm_Addresses>;
+  /** fetch aggregated fields from the table: "vm_addresses" */
+  vm_addresses_aggregate: Vm_Addresses_Aggregate;
+  /** fetch data from the table: "vm_addresses" using primary key columns */
+  vm_addresses_by_pk?: Maybe<Vm_Addresses>;
 };
 
 export type Query_RootAccount_TransactionsArgs = {
@@ -8767,6 +10863,75 @@ export type Query_RootLcd_Tx_Results_AggregateArgs = {
   where?: InputMaybe<Lcd_Tx_Results_Bool_Exp>;
 };
 
+export type Query_RootModule_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+export type Query_RootModule_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+export type Query_RootModule_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+export type Query_RootModule_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+export type Query_RootModule_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+export type Query_RootModule_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+export type Query_RootModulesArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+export type Query_RootModules_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+export type Query_RootModules_By_PkArgs = {
+  name: Scalars["String"];
+  publisher_id: Scalars["Int"];
+};
+
 export type Query_RootPool_TransactionsArgs = {
   distinct_on?: InputMaybe<Array<Pool_Transactions_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -8873,6 +11038,27 @@ export type Query_RootSearch_Pools_With_Denoms_AggregateArgs = {
   where?: InputMaybe<Pools_Bool_Exp>;
 };
 
+export type Query_RootTaker_FeeArgs = {
+  distinct_on?: InputMaybe<Array<Taker_Fee_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Taker_Fee_Order_By>>;
+  where?: InputMaybe<Taker_Fee_Bool_Exp>;
+};
+
+export type Query_RootTaker_Fee_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Taker_Fee_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Taker_Fee_Order_By>>;
+  where?: InputMaybe<Taker_Fee_Bool_Exp>;
+};
+
+export type Query_RootTaker_Fee_By_PkArgs = {
+  denom0: Scalars["String"];
+  denom1: Scalars["String"];
+};
+
 export type Query_RootTrackingArgs = {
   distinct_on?: InputMaybe<Array<Tracking_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -8966,6 +11152,26 @@ export type Query_RootValidators_By_PkArgs = {
   operator_address: Scalars["String"];
 };
 
+export type Query_RootVm_AddressesArgs = {
+  distinct_on?: InputMaybe<Array<Vm_Addresses_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Vm_Addresses_Order_By>>;
+  where?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+export type Query_RootVm_Addresses_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Vm_Addresses_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Vm_Addresses_Order_By>>;
+  where?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+export type Query_RootVm_Addresses_By_PkArgs = {
+  id: Scalars["Int"];
+};
+
 export type Search_Pools_With_Denoms_Args = {
   denoms?: InputMaybe<Scalars["_varchar"]>;
 };
@@ -8980,9 +11186,9 @@ export type Subscription_Root = {
   account_transactions_by_pk?: Maybe<Account_Transactions>;
   /** fetch data from the table in a streaming manner: "account_transactions" */
   account_transactions_stream: Array<Account_Transactions>;
-  /** fetch data from the table: "accounts" */
+  /** An array relationship */
   accounts: Array<Accounts>;
-  /** fetch aggregated fields from the table: "accounts" */
+  /** An aggregate relationship */
   accounts_aggregate: Accounts_Aggregate;
   /** fetch data from the table: "accounts" using primary key columns */
   accounts_by_pk?: Maybe<Accounts>;
@@ -9061,6 +11267,32 @@ export type Subscription_Root = {
   /** fetch data from the table in a streaming manner: "lcd_tx_results" */
   lcd_tx_results_stream: Array<Lcd_Tx_Results>;
   /** An array relationship */
+  module_histories: Array<Module_Histories>;
+  /** An aggregate relationship */
+  module_histories_aggregate: Module_Histories_Aggregate;
+  /** fetch data from the table in a streaming manner: "module_histories" */
+  module_histories_stream: Array<Module_Histories>;
+  /** An array relationship */
+  module_proposals: Array<Module_Proposals>;
+  /** An aggregate relationship */
+  module_proposals_aggregate: Module_Proposals_Aggregate;
+  /** fetch data from the table in a streaming manner: "module_proposals" */
+  module_proposals_stream: Array<Module_Proposals>;
+  /** An array relationship */
+  module_transactions: Array<Module_Transactions>;
+  /** An aggregate relationship */
+  module_transactions_aggregate: Module_Transactions_Aggregate;
+  /** fetch data from the table in a streaming manner: "module_transactions" */
+  module_transactions_stream: Array<Module_Transactions>;
+  /** An array relationship */
+  modules: Array<Modules>;
+  /** An aggregate relationship */
+  modules_aggregate: Modules_Aggregate;
+  /** fetch data from the table: "modules" using primary key columns */
+  modules_by_pk?: Maybe<Modules>;
+  /** fetch data from the table in a streaming manner: "modules" */
+  modules_stream: Array<Modules>;
+  /** An array relationship */
   pool_transactions: Array<Pool_Transactions>;
   /** An aggregate relationship */
   pool_transactions_aggregate: Pool_Transactions_Aggregate;
@@ -9098,6 +11330,14 @@ export type Subscription_Root = {
   search_pools_with_denoms: Array<Pools>;
   /** execute function "search_pools_with_denoms" and query aggregates on result of table type "pools" */
   search_pools_with_denoms_aggregate: Pools_Aggregate;
+  /** fetch data from the table: "taker_fee" */
+  taker_fee: Array<Taker_Fee>;
+  /** fetch aggregated fields from the table: "taker_fee" */
+  taker_fee_aggregate: Taker_Fee_Aggregate;
+  /** fetch data from the table: "taker_fee" using primary key columns */
+  taker_fee_by_pk?: Maybe<Taker_Fee>;
+  /** fetch data from the table in a streaming manner: "taker_fee" */
+  taker_fee_stream: Array<Taker_Fee>;
   /** fetch data from the table: "tracking" */
   tracking: Array<Tracking>;
   /** fetch aggregated fields from the table: "tracking" */
@@ -9134,6 +11374,14 @@ export type Subscription_Root = {
   validators_by_pk?: Maybe<Validators>;
   /** fetch data from the table in a streaming manner: "validators" */
   validators_stream: Array<Validators>;
+  /** fetch data from the table: "vm_addresses" */
+  vm_addresses: Array<Vm_Addresses>;
+  /** fetch aggregated fields from the table: "vm_addresses" */
+  vm_addresses_aggregate: Vm_Addresses_Aggregate;
+  /** fetch data from the table: "vm_addresses" using primary key columns */
+  vm_addresses_by_pk?: Maybe<Vm_Addresses>;
+  /** fetch data from the table in a streaming manner: "vm_addresses" */
+  vm_addresses_stream: Array<Vm_Addresses>;
 };
 
 export type Subscription_RootAccount_TransactionsArgs = {
@@ -9443,6 +11691,99 @@ export type Subscription_RootLcd_Tx_Results_StreamArgs = {
   where?: InputMaybe<Lcd_Tx_Results_Bool_Exp>;
 };
 
+export type Subscription_RootModule_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+export type Subscription_RootModule_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Histories_Order_By>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+export type Subscription_RootModule_Histories_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Module_Histories_Stream_Cursor_Input>>;
+  where?: InputMaybe<Module_Histories_Bool_Exp>;
+};
+
+export type Subscription_RootModule_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootModule_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Proposals_Order_By>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootModule_Proposals_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Module_Proposals_Stream_Cursor_Input>>;
+  where?: InputMaybe<Module_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootModule_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+export type Subscription_RootModule_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+export type Subscription_RootModule_Transactions_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Module_Transactions_Stream_Cursor_Input>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+export type Subscription_RootModulesArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+export type Subscription_RootModules_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+export type Subscription_RootModules_By_PkArgs = {
+  name: Scalars["String"];
+  publisher_id: Scalars["Int"];
+};
+
+export type Subscription_RootModules_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Modules_Stream_Cursor_Input>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
 export type Subscription_RootPool_TransactionsArgs = {
   distinct_on?: InputMaybe<Array<Pool_Transactions_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -9579,6 +11920,33 @@ export type Subscription_RootSearch_Pools_With_Denoms_AggregateArgs = {
   where?: InputMaybe<Pools_Bool_Exp>;
 };
 
+export type Subscription_RootTaker_FeeArgs = {
+  distinct_on?: InputMaybe<Array<Taker_Fee_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Taker_Fee_Order_By>>;
+  where?: InputMaybe<Taker_Fee_Bool_Exp>;
+};
+
+export type Subscription_RootTaker_Fee_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Taker_Fee_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Taker_Fee_Order_By>>;
+  where?: InputMaybe<Taker_Fee_Bool_Exp>;
+};
+
+export type Subscription_RootTaker_Fee_By_PkArgs = {
+  denom0: Scalars["String"];
+  denom1: Scalars["String"];
+};
+
+export type Subscription_RootTaker_Fee_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Taker_Fee_Stream_Cursor_Input>>;
+  where?: InputMaybe<Taker_Fee_Bool_Exp>;
+};
+
 export type Subscription_RootTrackingArgs = {
   distinct_on?: InputMaybe<Array<Tracking_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -9700,6 +12068,178 @@ export type Subscription_RootValidators_StreamArgs = {
   batch_size: Scalars["Int"];
   cursor: Array<InputMaybe<Validators_Stream_Cursor_Input>>;
   where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+export type Subscription_RootVm_AddressesArgs = {
+  distinct_on?: InputMaybe<Array<Vm_Addresses_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Vm_Addresses_Order_By>>;
+  where?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+export type Subscription_RootVm_Addresses_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Vm_Addresses_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Vm_Addresses_Order_By>>;
+  where?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+export type Subscription_RootVm_Addresses_By_PkArgs = {
+  id: Scalars["Int"];
+};
+
+export type Subscription_RootVm_Addresses_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Vm_Addresses_Stream_Cursor_Input>>;
+  where?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+/** columns and relationships of "taker_fee" */
+export type Taker_Fee = {
+  __typename?: "taker_fee";
+  denom0: Scalars["String"];
+  denom1: Scalars["String"];
+  taker_fee: Scalars["String"];
+};
+
+/** aggregated selection of "taker_fee" */
+export type Taker_Fee_Aggregate = {
+  __typename?: "taker_fee_aggregate";
+  aggregate?: Maybe<Taker_Fee_Aggregate_Fields>;
+  nodes: Array<Taker_Fee>;
+};
+
+/** aggregate fields of "taker_fee" */
+export type Taker_Fee_Aggregate_Fields = {
+  __typename?: "taker_fee_aggregate_fields";
+  count: Scalars["Int"];
+  max?: Maybe<Taker_Fee_Max_Fields>;
+  min?: Maybe<Taker_Fee_Min_Fields>;
+};
+
+/** aggregate fields of "taker_fee" */
+export type Taker_Fee_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Taker_Fee_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** Boolean expression to filter rows from the table "taker_fee". All fields are combined with a logical 'AND'. */
+export type Taker_Fee_Bool_Exp = {
+  _and?: InputMaybe<Array<Taker_Fee_Bool_Exp>>;
+  _not?: InputMaybe<Taker_Fee_Bool_Exp>;
+  _or?: InputMaybe<Array<Taker_Fee_Bool_Exp>>;
+  denom0?: InputMaybe<String_Comparison_Exp>;
+  denom1?: InputMaybe<String_Comparison_Exp>;
+  taker_fee?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "taker_fee" */
+export enum Taker_Fee_Constraint {
+  /** unique or primary key constraint on columns "denom0", "denom1" */
+  TakerFeePkey = "taker_fee_pkey",
+}
+
+/** input type for inserting data into table "taker_fee" */
+export type Taker_Fee_Insert_Input = {
+  denom0?: InputMaybe<Scalars["String"]>;
+  denom1?: InputMaybe<Scalars["String"]>;
+  taker_fee?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate max on columns */
+export type Taker_Fee_Max_Fields = {
+  __typename?: "taker_fee_max_fields";
+  denom0?: Maybe<Scalars["String"]>;
+  denom1?: Maybe<Scalars["String"]>;
+  taker_fee?: Maybe<Scalars["String"]>;
+};
+
+/** aggregate min on columns */
+export type Taker_Fee_Min_Fields = {
+  __typename?: "taker_fee_min_fields";
+  denom0?: Maybe<Scalars["String"]>;
+  denom1?: Maybe<Scalars["String"]>;
+  taker_fee?: Maybe<Scalars["String"]>;
+};
+
+/** response of any mutation on the table "taker_fee" */
+export type Taker_Fee_Mutation_Response = {
+  __typename?: "taker_fee_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Taker_Fee>;
+};
+
+/** on_conflict condition type for table "taker_fee" */
+export type Taker_Fee_On_Conflict = {
+  constraint: Taker_Fee_Constraint;
+  update_columns?: Array<Taker_Fee_Update_Column>;
+  where?: InputMaybe<Taker_Fee_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "taker_fee". */
+export type Taker_Fee_Order_By = {
+  denom0?: InputMaybe<Order_By>;
+  denom1?: InputMaybe<Order_By>;
+  taker_fee?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: taker_fee */
+export type Taker_Fee_Pk_Columns_Input = {
+  denom0: Scalars["String"];
+  denom1: Scalars["String"];
+};
+
+/** select columns of table "taker_fee" */
+export enum Taker_Fee_Select_Column {
+  /** column name */
+  Denom0 = "denom0",
+  /** column name */
+  Denom1 = "denom1",
+  /** column name */
+  TakerFee = "taker_fee",
+}
+
+/** input type for updating data in table "taker_fee" */
+export type Taker_Fee_Set_Input = {
+  denom0?: InputMaybe<Scalars["String"]>;
+  denom1?: InputMaybe<Scalars["String"]>;
+  taker_fee?: InputMaybe<Scalars["String"]>;
+};
+
+/** Streaming cursor of the table "taker_fee" */
+export type Taker_Fee_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Taker_Fee_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Taker_Fee_Stream_Cursor_Value_Input = {
+  denom0?: InputMaybe<Scalars["String"]>;
+  denom1?: InputMaybe<Scalars["String"]>;
+  taker_fee?: InputMaybe<Scalars["String"]>;
+};
+
+/** update columns of table "taker_fee" */
+export enum Taker_Fee_Update_Column {
+  /** column name */
+  Denom0 = "denom0",
+  /** column name */
+  Denom1 = "denom1",
+  /** column name */
+  TakerFee = "taker_fee",
+}
+
+export type Taker_Fee_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Taker_Fee_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Taker_Fee_Bool_Exp;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
@@ -10569,6 +13109,14 @@ export type Transactions = {
   memo: Scalars["String"];
   messages: Scalars["json"];
   /** An array relationship */
+  module_transactions: Array<Module_Transactions>;
+  /** An aggregate relationship */
+  module_transactions_aggregate: Module_Transactions_Aggregate;
+  /** An array relationship */
+  modules: Array<Modules>;
+  /** An aggregate relationship */
+  modules_aggregate: Modules_Aggregate;
+  /** An array relationship */
   pool_transactions: Array<Pool_Transactions>;
   /** An aggregate relationship */
   pool_transactions_aggregate: Pool_Transactions_Aggregate;
@@ -10673,6 +13221,42 @@ export type TransactionsLcd_Tx_Results_AggregateArgs = {
 /** columns and relationships of "transactions" */
 export type TransactionsMessagesArgs = {
   path?: InputMaybe<Scalars["String"]>;
+};
+
+/** columns and relationships of "transactions" */
+export type TransactionsModule_TransactionsArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+/** columns and relationships of "transactions" */
+export type TransactionsModule_Transactions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Module_Transactions_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Module_Transactions_Order_By>>;
+  where?: InputMaybe<Module_Transactions_Bool_Exp>;
+};
+
+/** columns and relationships of "transactions" */
+export type TransactionsModulesArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+/** columns and relationships of "transactions" */
+export type TransactionsModules_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
 };
 
 /** columns and relationships of "transactions" */
@@ -10847,6 +13431,10 @@ export type Transactions_Bool_Exp = {
   lcd_tx_results_aggregate?: InputMaybe<Lcd_Tx_Results_Aggregate_Bool_Exp>;
   memo?: InputMaybe<String_Comparison_Exp>;
   messages?: InputMaybe<Json_Comparison_Exp>;
+  module_transactions?: InputMaybe<Module_Transactions_Bool_Exp>;
+  module_transactions_aggregate?: InputMaybe<Module_Transactions_Aggregate_Bool_Exp>;
+  modules?: InputMaybe<Modules_Bool_Exp>;
+  modules_aggregate?: InputMaybe<Modules_Aggregate_Bool_Exp>;
   pool_transactions?: InputMaybe<Pool_Transactions_Bool_Exp>;
   pool_transactions_aggregate?: InputMaybe<Pool_Transactions_Aggregate_Bool_Exp>;
   pools?: InputMaybe<Pools_Bool_Exp>;
@@ -10903,6 +13491,8 @@ export type Transactions_Insert_Input = {
   lcd_tx_results?: InputMaybe<Lcd_Tx_Results_Arr_Rel_Insert_Input>;
   memo?: InputMaybe<Scalars["String"]>;
   messages?: InputMaybe<Scalars["json"]>;
+  module_transactions?: InputMaybe<Module_Transactions_Arr_Rel_Insert_Input>;
+  modules?: InputMaybe<Modules_Arr_Rel_Insert_Input>;
   pool_transactions?: InputMaybe<Pool_Transactions_Arr_Rel_Insert_Input>;
   pools?: InputMaybe<Pools_Arr_Rel_Insert_Input>;
   sender?: InputMaybe<Scalars["Int"]>;
@@ -11013,6 +13603,8 @@ export type Transactions_Order_By = {
   lcd_tx_results_aggregate?: InputMaybe<Lcd_Tx_Results_Aggregate_Order_By>;
   memo?: InputMaybe<Order_By>;
   messages?: InputMaybe<Order_By>;
+  module_transactions_aggregate?: InputMaybe<Module_Transactions_Aggregate_Order_By>;
+  modules_aggregate?: InputMaybe<Modules_Aggregate_Order_By>;
   pool_transactions_aggregate?: InputMaybe<Pool_Transactions_Aggregate_Order_By>;
   pools_aggregate?: InputMaybe<Pools_Aggregate_Order_By>;
   sender?: InputMaybe<Order_By>;
@@ -11399,6 +13991,19 @@ export type Transactions_Variance_Order_By = {
   sender?: InputMaybe<Order_By>;
 };
 
+/** Boolean expression to compare columns of type "upgradepolicy". All fields are combined with logical 'AND'. */
+export type Upgradepolicy_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars["upgradepolicy"]>;
+  _gt?: InputMaybe<Scalars["upgradepolicy"]>;
+  _gte?: InputMaybe<Scalars["upgradepolicy"]>;
+  _in?: InputMaybe<Array<Scalars["upgradepolicy"]>>;
+  _is_null?: InputMaybe<Scalars["Boolean"]>;
+  _lt?: InputMaybe<Scalars["upgradepolicy"]>;
+  _lte?: InputMaybe<Scalars["upgradepolicy"]>;
+  _neq?: InputMaybe<Scalars["upgradepolicy"]>;
+  _nin?: InputMaybe<Array<Scalars["upgradepolicy"]>>;
+};
+
 /** columns and relationships of "validators" */
 export type Validators = {
   __typename?: "validators";
@@ -11420,6 +14025,8 @@ export type Validators = {
   min_self_delegation: Scalars["String"];
   moniker: Scalars["String"];
   operator_address: Scalars["String"];
+  voting_power: Scalars["bigint"];
+  voting_powers: Scalars["json"];
   website: Scalars["String"];
 };
 
@@ -11439,6 +14046,11 @@ export type ValidatorsBlocks_AggregateArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   order_by?: InputMaybe<Array<Blocks_Order_By>>;
   where?: InputMaybe<Blocks_Bool_Exp>;
+};
+
+/** columns and relationships of "validators" */
+export type ValidatorsVoting_PowersArgs = {
+  path?: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "validators" */
@@ -11524,12 +14136,14 @@ export type Validators_Avg_Fields = {
   __typename?: "validators_avg_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by avg() on columns of table "validators" */
 export type Validators_Avg_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "validators". All fields are combined with a logical 'AND'. */
@@ -11552,6 +14166,8 @@ export type Validators_Bool_Exp = {
   min_self_delegation?: InputMaybe<String_Comparison_Exp>;
   moniker?: InputMaybe<String_Comparison_Exp>;
   operator_address?: InputMaybe<String_Comparison_Exp>;
+  voting_power?: InputMaybe<Bigint_Comparison_Exp>;
+  voting_powers?: InputMaybe<Json_Comparison_Exp>;
   website?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -11569,6 +14185,7 @@ export enum Validators_Constraint {
 export type Validators_Inc_Input = {
   account_id?: InputMaybe<Scalars["Int"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  voting_power?: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "validators" */
@@ -11587,6 +14204,8 @@ export type Validators_Insert_Input = {
   min_self_delegation?: InputMaybe<Scalars["String"]>;
   moniker?: InputMaybe<Scalars["String"]>;
   operator_address?: InputMaybe<Scalars["String"]>;
+  voting_power?: InputMaybe<Scalars["bigint"]>;
+  voting_powers?: InputMaybe<Scalars["json"]>;
   website?: InputMaybe<Scalars["String"]>;
 };
 
@@ -11604,6 +14223,7 @@ export type Validators_Max_Fields = {
   min_self_delegation?: Maybe<Scalars["String"]>;
   moniker?: Maybe<Scalars["String"]>;
   operator_address?: Maybe<Scalars["String"]>;
+  voting_power?: Maybe<Scalars["bigint"]>;
   website?: Maybe<Scalars["String"]>;
 };
 
@@ -11620,6 +14240,7 @@ export type Validators_Max_Order_By = {
   min_self_delegation?: InputMaybe<Order_By>;
   moniker?: InputMaybe<Order_By>;
   operator_address?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
   website?: InputMaybe<Order_By>;
 };
 
@@ -11637,6 +14258,7 @@ export type Validators_Min_Fields = {
   min_self_delegation?: Maybe<Scalars["String"]>;
   moniker?: Maybe<Scalars["String"]>;
   operator_address?: Maybe<Scalars["String"]>;
+  voting_power?: Maybe<Scalars["bigint"]>;
   website?: Maybe<Scalars["String"]>;
 };
 
@@ -11653,6 +14275,7 @@ export type Validators_Min_Order_By = {
   min_self_delegation?: InputMaybe<Order_By>;
   moniker?: InputMaybe<Order_By>;
   operator_address?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
   website?: InputMaybe<Order_By>;
 };
 
@@ -11695,6 +14318,8 @@ export type Validators_Order_By = {
   min_self_delegation?: InputMaybe<Order_By>;
   moniker?: InputMaybe<Order_By>;
   operator_address?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
+  voting_powers?: InputMaybe<Order_By>;
   website?: InputMaybe<Order_By>;
 };
 
@@ -11730,6 +14355,10 @@ export enum Validators_Select_Column {
   /** column name */
   OperatorAddress = "operator_address",
   /** column name */
+  VotingPower = "voting_power",
+  /** column name */
+  VotingPowers = "voting_powers",
+  /** column name */
   Website = "website",
 }
 
@@ -11759,6 +14388,8 @@ export type Validators_Set_Input = {
   min_self_delegation?: InputMaybe<Scalars["String"]>;
   moniker?: InputMaybe<Scalars["String"]>;
   operator_address?: InputMaybe<Scalars["String"]>;
+  voting_power?: InputMaybe<Scalars["bigint"]>;
+  voting_powers?: InputMaybe<Scalars["json"]>;
   website?: InputMaybe<Scalars["String"]>;
 };
 
@@ -11767,12 +14398,14 @@ export type Validators_Stddev_Fields = {
   __typename?: "validators_stddev_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev() on columns of table "validators" */
 export type Validators_Stddev_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -11780,12 +14413,14 @@ export type Validators_Stddev_Pop_Fields = {
   __typename?: "validators_stddev_pop_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_pop() on columns of table "validators" */
 export type Validators_Stddev_Pop_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -11793,12 +14428,14 @@ export type Validators_Stddev_Samp_Fields = {
   __typename?: "validators_stddev_samp_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_samp() on columns of table "validators" */
 export type Validators_Stddev_Samp_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "validators" */
@@ -11823,6 +14460,8 @@ export type Validators_Stream_Cursor_Value_Input = {
   min_self_delegation?: InputMaybe<Scalars["String"]>;
   moniker?: InputMaybe<Scalars["String"]>;
   operator_address?: InputMaybe<Scalars["String"]>;
+  voting_power?: InputMaybe<Scalars["bigint"]>;
+  voting_powers?: InputMaybe<Scalars["json"]>;
   website?: InputMaybe<Scalars["String"]>;
 };
 
@@ -11831,12 +14470,14 @@ export type Validators_Sum_Fields = {
   __typename?: "validators_sum_fields";
   account_id?: Maybe<Scalars["Int"]>;
   id?: Maybe<Scalars["Int"]>;
+  voting_power?: Maybe<Scalars["bigint"]>;
 };
 
 /** order by sum() on columns of table "validators" */
 export type Validators_Sum_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "validators" */
@@ -11866,6 +14507,10 @@ export enum Validators_Update_Column {
   /** column name */
   OperatorAddress = "operator_address",
   /** column name */
+  VotingPower = "voting_power",
+  /** column name */
+  VotingPowers = "voting_powers",
+  /** column name */
   Website = "website",
 }
 
@@ -11883,12 +14528,14 @@ export type Validators_Var_Pop_Fields = {
   __typename?: "validators_var_pop_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_pop() on columns of table "validators" */
 export type Validators_Var_Pop_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -11896,12 +14543,14 @@ export type Validators_Var_Samp_Fields = {
   __typename?: "validators_var_samp_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_samp() on columns of table "validators" */
 export type Validators_Var_Samp_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -11909,12 +14558,271 @@ export type Validators_Variance_Fields = {
   __typename?: "validators_variance_fields";
   account_id?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  voting_power?: Maybe<Scalars["Float"]>;
 };
 
 /** order by variance() on columns of table "validators" */
 export type Validators_Variance_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  voting_power?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "vm_addresses" */
+export type Vm_Addresses = {
+  __typename?: "vm_addresses";
+  /** An array relationship */
+  accounts: Array<Accounts>;
+  /** An aggregate relationship */
+  accounts_aggregate: Accounts_Aggregate;
+  id: Scalars["Int"];
+  /** An array relationship */
+  modules: Array<Modules>;
+  /** An aggregate relationship */
+  modules_aggregate: Modules_Aggregate;
+  vm_address: Scalars["String"];
+};
+
+/** columns and relationships of "vm_addresses" */
+export type Vm_AddressesAccountsArgs = {
+  distinct_on?: InputMaybe<Array<Accounts_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Accounts_Order_By>>;
+  where?: InputMaybe<Accounts_Bool_Exp>;
+};
+
+/** columns and relationships of "vm_addresses" */
+export type Vm_AddressesAccounts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Accounts_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Accounts_Order_By>>;
+  where?: InputMaybe<Accounts_Bool_Exp>;
+};
+
+/** columns and relationships of "vm_addresses" */
+export type Vm_AddressesModulesArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+/** columns and relationships of "vm_addresses" */
+export type Vm_AddressesModules_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Modules_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Modules_Order_By>>;
+  where?: InputMaybe<Modules_Bool_Exp>;
+};
+
+/** aggregated selection of "vm_addresses" */
+export type Vm_Addresses_Aggregate = {
+  __typename?: "vm_addresses_aggregate";
+  aggregate?: Maybe<Vm_Addresses_Aggregate_Fields>;
+  nodes: Array<Vm_Addresses>;
+};
+
+/** aggregate fields of "vm_addresses" */
+export type Vm_Addresses_Aggregate_Fields = {
+  __typename?: "vm_addresses_aggregate_fields";
+  avg?: Maybe<Vm_Addresses_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Vm_Addresses_Max_Fields>;
+  min?: Maybe<Vm_Addresses_Min_Fields>;
+  stddev?: Maybe<Vm_Addresses_Stddev_Fields>;
+  stddev_pop?: Maybe<Vm_Addresses_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Vm_Addresses_Stddev_Samp_Fields>;
+  sum?: Maybe<Vm_Addresses_Sum_Fields>;
+  var_pop?: Maybe<Vm_Addresses_Var_Pop_Fields>;
+  var_samp?: Maybe<Vm_Addresses_Var_Samp_Fields>;
+  variance?: Maybe<Vm_Addresses_Variance_Fields>;
+};
+
+/** aggregate fields of "vm_addresses" */
+export type Vm_Addresses_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Vm_Addresses_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** aggregate avg on columns */
+export type Vm_Addresses_Avg_Fields = {
+  __typename?: "vm_addresses_avg_fields";
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** Boolean expression to filter rows from the table "vm_addresses". All fields are combined with a logical 'AND'. */
+export type Vm_Addresses_Bool_Exp = {
+  _and?: InputMaybe<Array<Vm_Addresses_Bool_Exp>>;
+  _not?: InputMaybe<Vm_Addresses_Bool_Exp>;
+  _or?: InputMaybe<Array<Vm_Addresses_Bool_Exp>>;
+  accounts?: InputMaybe<Accounts_Bool_Exp>;
+  accounts_aggregate?: InputMaybe<Accounts_Aggregate_Bool_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  modules?: InputMaybe<Modules_Bool_Exp>;
+  modules_aggregate?: InputMaybe<Modules_Aggregate_Bool_Exp>;
+  vm_address?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "vm_addresses" */
+export enum Vm_Addresses_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  VmAddressesPkey = "vm_addresses_pkey",
+  /** unique or primary key constraint on columns "vm_address" */
+  VmAddressesVmAddressKey = "vm_addresses_vm_address_key",
+}
+
+/** input type for incrementing numeric columns in table "vm_addresses" */
+export type Vm_Addresses_Inc_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "vm_addresses" */
+export type Vm_Addresses_Insert_Input = {
+  accounts?: InputMaybe<Accounts_Arr_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars["Int"]>;
+  modules?: InputMaybe<Modules_Arr_Rel_Insert_Input>;
+  vm_address?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate max on columns */
+export type Vm_Addresses_Max_Fields = {
+  __typename?: "vm_addresses_max_fields";
+  id?: Maybe<Scalars["Int"]>;
+  vm_address?: Maybe<Scalars["String"]>;
+};
+
+/** aggregate min on columns */
+export type Vm_Addresses_Min_Fields = {
+  __typename?: "vm_addresses_min_fields";
+  id?: Maybe<Scalars["Int"]>;
+  vm_address?: Maybe<Scalars["String"]>;
+};
+
+/** response of any mutation on the table "vm_addresses" */
+export type Vm_Addresses_Mutation_Response = {
+  __typename?: "vm_addresses_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Vm_Addresses>;
+};
+
+/** input type for inserting object relation for remote table "vm_addresses" */
+export type Vm_Addresses_Obj_Rel_Insert_Input = {
+  data: Vm_Addresses_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Vm_Addresses_On_Conflict>;
+};
+
+/** on_conflict condition type for table "vm_addresses" */
+export type Vm_Addresses_On_Conflict = {
+  constraint: Vm_Addresses_Constraint;
+  update_columns?: Array<Vm_Addresses_Update_Column>;
+  where?: InputMaybe<Vm_Addresses_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "vm_addresses". */
+export type Vm_Addresses_Order_By = {
+  accounts_aggregate?: InputMaybe<Accounts_Aggregate_Order_By>;
+  id?: InputMaybe<Order_By>;
+  modules_aggregate?: InputMaybe<Modules_Aggregate_Order_By>;
+  vm_address?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: vm_addresses */
+export type Vm_Addresses_Pk_Columns_Input = {
+  id: Scalars["Int"];
+};
+
+/** select columns of table "vm_addresses" */
+export enum Vm_Addresses_Select_Column {
+  /** column name */
+  Id = "id",
+  /** column name */
+  VmAddress = "vm_address",
+}
+
+/** input type for updating data in table "vm_addresses" */
+export type Vm_Addresses_Set_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+  vm_address?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate stddev on columns */
+export type Vm_Addresses_Stddev_Fields = {
+  __typename?: "vm_addresses_stddev_fields";
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Vm_Addresses_Stddev_Pop_Fields = {
+  __typename?: "vm_addresses_stddev_pop_fields";
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Vm_Addresses_Stddev_Samp_Fields = {
+  __typename?: "vm_addresses_stddev_samp_fields";
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** Streaming cursor of the table "vm_addresses" */
+export type Vm_Addresses_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Vm_Addresses_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Vm_Addresses_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars["Int"]>;
+  vm_address?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate sum on columns */
+export type Vm_Addresses_Sum_Fields = {
+  __typename?: "vm_addresses_sum_fields";
+  id?: Maybe<Scalars["Int"]>;
+};
+
+/** update columns of table "vm_addresses" */
+export enum Vm_Addresses_Update_Column {
+  /** column name */
+  Id = "id",
+  /** column name */
+  VmAddress = "vm_address",
+}
+
+export type Vm_Addresses_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Vm_Addresses_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Vm_Addresses_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Vm_Addresses_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Vm_Addresses_Var_Pop_Fields = {
+  __typename?: "vm_addresses_var_pop_fields";
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate var_samp on columns */
+export type Vm_Addresses_Var_Samp_Fields = {
+  __typename?: "vm_addresses_var_samp_fields";
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate variance on columns */
+export type Vm_Addresses_Variance_Fields = {
+  __typename?: "vm_addresses_variance_fields";
+  id?: Maybe<Scalars["Float"]>;
 };
 
 export type GetAccountIdByAddressQueryDocumentQueryVariables = Exact<{
@@ -12402,6 +15310,68 @@ export type GetContractListCountByAdminQuery = {
   };
 };
 
+export type GetModuleIdByNameAndVmAddressQueryQueryVariables = Exact<{
+  name: Scalars["String"];
+  vmAddress: Scalars["String"];
+}>;
+
+export type GetModuleIdByNameAndVmAddressQueryQuery = {
+  __typename?: "query_root";
+  modules: Array<{ __typename?: "modules"; id: number }>;
+};
+
+export type GetModuleHistoriesQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+  pageSize: Scalars["Int"];
+  offset: Scalars["Int"];
+}>;
+
+export type GetModuleHistoriesQueryQuery = {
+  __typename?: "query_root";
+  module_histories: Array<{
+    __typename?: "module_histories";
+    remark: any;
+    upgrade_policy: any;
+    block: { __typename?: "blocks"; height: number; timestamp: any };
+  }>;
+};
+
+export type GetModuleHistoriesCountQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+}>;
+
+export type GetModuleHistoriesCountQueryQuery = {
+  __typename?: "query_root";
+  module_histories_aggregate: {
+    __typename?: "module_histories_aggregate";
+    aggregate?: {
+      __typename?: "module_histories_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetModuleInitialPublishInfoQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+}>;
+
+export type GetModuleInitialPublishInfoQueryQuery = {
+  __typename?: "query_root";
+  modules: Array<{
+    __typename?: "modules";
+    publisher_vm_address: { __typename?: "vm_addresses"; vm_address: string };
+    publish_transaction?: { __typename?: "transactions"; hash: any } | null;
+    module_proposals: Array<{
+      __typename?: "module_proposals";
+      proposal: { __typename?: "proposals"; id: number; title: string };
+    }>;
+    module_histories: Array<{
+      __typename?: "module_histories";
+      block: { __typename?: "blocks"; height: number; timestamp: any };
+    }>;
+  }>;
+};
+
 export type GetPoolListQueryVariables = Exact<{
   expression?: InputMaybe<Pools_Bool_Exp>;
   order?: InputMaybe<Order_By>;
@@ -12521,7 +15491,7 @@ export type GetRelatedProposalsByContractAddressPaginationQuery = {
       __typename?: "proposals";
       title: string;
       status: any;
-      voting_end_time: any;
+      voting_end_time?: any | null;
       deposit_end_time: any;
       type: string;
       is_expedited: boolean;
@@ -12557,7 +15527,7 @@ export type GetProposalsByWalletAddressPaginationQuery = {
     __typename?: "proposals";
     title: string;
     status: any;
-    voting_end_time: any;
+    voting_end_time?: any | null;
     deposit_end_time: any;
     type: string;
     id: number;
@@ -12594,7 +15564,7 @@ export type GetProposalListQuery = {
     type: string;
     id: number;
     title: string;
-    voting_end_time: any;
+    voting_end_time?: any | null;
     deposit_end_time: any;
     resolved_height?: number | null;
     status: any;
@@ -12629,6 +15599,8 @@ export type GetTxsByAddressPaginationQueryVariables = Exact<{
   expression?: InputMaybe<Account_Transactions_Bool_Exp>;
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
+  isWasm: Scalars["Boolean"];
+  isMove: Scalars["Boolean"];
 }>;
 
 export type GetTxsByAddressPaginationQuery = {
@@ -12642,14 +15614,18 @@ export type GetTxsByAddressPaginationQuery = {
       hash: any;
       success: boolean;
       messages: any;
-      is_clear_admin: boolean;
-      is_execute: boolean;
-      is_ibc: boolean;
-      is_instantiate: boolean;
-      is_migrate: boolean;
       is_send: boolean;
-      is_store_code: boolean;
-      is_update_admin: boolean;
+      is_ibc: boolean;
+      is_clear_admin?: boolean;
+      is_execute?: boolean;
+      is_instantiate?: boolean;
+      is_migrate?: boolean;
+      is_store_code?: boolean;
+      is_update_admin?: boolean;
+      is_move_publish?: boolean;
+      is_move_upgrade?: boolean;
+      is_move_execute?: boolean;
+      is_move_script?: boolean;
       account: { __typename?: "accounts"; address: string };
     };
   }>;
@@ -12710,6 +15686,8 @@ export type GetTxsCountByPoolIdQuery = {
 export type GetTxsQueryVariables = Exact<{
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
+  isWasm: Scalars["Boolean"];
+  isMove: Scalars["Boolean"];
 }>;
 
 export type GetTxsQuery = {
@@ -12719,14 +15697,18 @@ export type GetTxsQuery = {
     hash: any;
     success: boolean;
     messages: any;
-    is_clear_admin: boolean;
-    is_execute: boolean;
-    is_ibc: boolean;
-    is_instantiate: boolean;
-    is_migrate: boolean;
     is_send: boolean;
-    is_store_code: boolean;
-    is_update_admin: boolean;
+    is_ibc: boolean;
+    is_clear_admin?: boolean;
+    is_execute?: boolean;
+    is_instantiate?: boolean;
+    is_migrate?: boolean;
+    is_store_code?: boolean;
+    is_update_admin?: boolean;
+    is_move_publish?: boolean;
+    is_move_upgrade?: boolean;
+    is_move_execute?: boolean;
+    is_move_script?: boolean;
     block: { __typename?: "blocks"; height: number; timestamp: any };
     account: { __typename?: "accounts"; address: string };
   }>;
@@ -12743,6 +15725,8 @@ export type GetBlockTransactionsByHeightQueryQueryVariables = Exact<{
   limit: Scalars["Int"];
   offset: Scalars["Int"];
   height: Scalars["Int"];
+  isWasm: Scalars["Boolean"];
+  isMove: Scalars["Boolean"];
 }>;
 
 export type GetBlockTransactionsByHeightQueryQuery = {
@@ -12752,14 +15736,18 @@ export type GetBlockTransactionsByHeightQueryQuery = {
     hash: any;
     success: boolean;
     messages: any;
-    is_clear_admin: boolean;
-    is_execute: boolean;
-    is_ibc: boolean;
-    is_instantiate: boolean;
-    is_migrate: boolean;
     is_send: boolean;
-    is_store_code: boolean;
-    is_update_admin: boolean;
+    is_ibc: boolean;
+    is_clear_admin?: boolean;
+    is_execute?: boolean;
+    is_instantiate?: boolean;
+    is_migrate?: boolean;
+    is_store_code?: boolean;
+    is_update_admin?: boolean;
+    is_move_publish?: boolean;
+    is_move_upgrade?: boolean;
+    is_move_execute?: boolean;
+    is_move_script?: boolean;
     block: { __typename?: "blocks"; height: number; timestamp: any };
     account: { __typename?: "accounts"; address: string };
   }>;
@@ -12780,6 +15768,49 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
   };
 };
 
+export type GetModuleTransactionsQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+  pageSize: Scalars["Int"];
+  offset: Scalars["Int"];
+}>;
+
+export type GetModuleTransactionsQueryQuery = {
+  __typename?: "query_root";
+  module_transactions: Array<{
+    __typename?: "module_transactions";
+    block: { __typename?: "blocks"; height: number; timestamp: any };
+    transaction: {
+      __typename?: "transactions";
+      hash: any;
+      success: boolean;
+      messages: any;
+      is_send: boolean;
+      is_ibc: boolean;
+      is_move_execute: boolean;
+      is_move_execute_event: boolean;
+      is_move_publish: boolean;
+      is_move_script: boolean;
+      is_move_upgrade: boolean;
+      account: { __typename?: "accounts"; address: string };
+    };
+  }>;
+};
+
+export type GetModuleTransactionsCountQueryQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+}>;
+
+export type GetModuleTransactionsCountQueryQuery = {
+  __typename?: "query_root";
+  module_transactions_aggregate: {
+    __typename?: "module_transactions_aggregate";
+    aggregate?: {
+      __typename?: "module_transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
 export type GetValidatorsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetValidatorsQuery = {
@@ -12793,7 +15824,6 @@ export type GetValidatorsQuery = {
     details: string;
     identity: string;
     jailed: boolean;
-    min_self_delegation: string;
     moniker: string;
     operator_address: string;
     website: string;
@@ -16313,6 +19343,582 @@ export const GetContractListCountByAdminDocument = {
   GetContractListCountByAdminQuery,
   GetContractListCountByAdminQueryVariables
 >;
+export const GetModuleIdByNameAndVmAddressQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleIdByNameAndVmAddressQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "vmAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modules" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "name" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "vm_address" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "vm_address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "vmAddress" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleIdByNameAndVmAddressQueryQuery,
+  GetModuleIdByNameAndVmAddressQueryQueryVariables
+>;
+export const GetModuleHistoriesQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleHistoriesQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_histories" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "height" },
+                            value: { kind: "EnumValue", value: "desc" },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "remark" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "upgrade_policy" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleHistoriesQueryQuery,
+  GetModuleHistoriesQueryQueryVariables
+>;
+export const GetModuleHistoriesCountQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleHistoriesCountQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_histories_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleHistoriesCountQueryQuery,
+  GetModuleHistoriesCountQueryQueryVariables
+>;
+export const GetModuleInitialPublishInfoQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleInitialPublishInfoQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modules" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "publisher_vm_address" },
+                  name: { kind: "Name", value: "vm_address" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "vm_address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "publish_transaction" },
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "module_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "type" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_in" },
+                                        value: {
+                                          kind: "ListValue",
+                                          values: [
+                                            {
+                                              kind: "StringValue",
+                                              value:
+                                                "/initia.move.v1.MsgGovPublish",
+                                              block: false,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal_id" },
+                            value: { kind: "EnumValue", value: "asc" },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proposal" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "module_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleInitialPublishInfoQueryQuery,
+  GetModuleInitialPublishInfoQueryQueryVariables
+>;
 export const GetPoolListDocument = {
   kind: "Document",
   definitions: [
@@ -17738,6 +21344,34 @@ export const GetTxsByAddressPaginationDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isWasm" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isMove" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17835,11 +21469,7 @@ export const GetTxsByAddressPaginationDocument = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "is_clear_admin" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_execute" },
+                        name: { kind: "Name", value: "is_send" },
                       },
                       {
                         kind: "Field",
@@ -17847,23 +21477,203 @@ export const GetTxsByAddressPaginationDocument = {
                       },
                       {
                         kind: "Field",
+                        name: { kind: "Name", value: "is_clear_admin" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isWasm" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_execute" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isWasm" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        kind: "Field",
                         name: { kind: "Name", value: "is_instantiate" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isWasm" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "is_migrate" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_send" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isWasm" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "is_store_code" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isWasm" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "is_update_admin" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isWasm" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_publish" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isMove" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_upgrade" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isMove" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_execute" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isMove" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_script" },
+                        directives: [
+                          {
+                            kind: "Directive",
+                            name: { kind: "Name", value: "include" },
+                            arguments: [
+                              {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "if" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "isMove" },
+                                },
+                              },
+                            ],
+                          },
+                        ],
                       },
                     ],
                   },
@@ -18189,6 +21999,34 @@ export const GetTxsDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isWasm" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isMove" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -18264,25 +22102,207 @@ export const GetTxsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "success" } },
                 { kind: "Field", name: { kind: "Name", value: "messages" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_clear_admin" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
                 { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "is_instantiate" },
+                  name: { kind: "Name", value: "is_clear_admin" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
-                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
-                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_execute" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_migrate" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_store_code" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_update_admin" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_publish" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_upgrade" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_execute" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_script" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             },
@@ -18377,6 +22397,34 @@ export const GetBlockTransactionsByHeightQueryDocument = {
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isWasm" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isMove" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
           },
         },
       ],
@@ -18480,25 +22528,207 @@ export const GetBlockTransactionsByHeightQueryDocument = {
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "success" } },
                 { kind: "Field", name: { kind: "Name", value: "messages" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_clear_admin" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
                 { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "is_instantiate" },
+                  name: { kind: "Name", value: "is_clear_admin" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
-                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
-                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_execute" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_migrate" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_store_code" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_update_admin" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isWasm" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_publish" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_upgrade" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_execute" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_move_script" },
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isMove" },
+                          },
+                        },
+                      ],
+                    },
+                  ],
                 },
               ],
             },
@@ -18589,6 +22819,280 @@ export const GetBlockTransactionCountByHeightQueryDocument = {
   GetBlockTransactionCountByHeightQueryQuery,
   GetBlockTransactionCountByHeightQueryQueryVariables
 >;
+export const GetModuleTransactionsQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleTransactionsQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "success" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "messages" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_send" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_ibc" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_execute" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_execute_event" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_publish" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_script" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_move_upgrade" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleTransactionsQueryQuery,
+  GetModuleTransactionsQueryQueryVariables
+>;
+export const GetModuleTransactionsCountQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getModuleTransactionsCountQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_transactions_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetModuleTransactionsCountQueryQuery,
+  GetModuleTransactionsCountQueryQueryVariables
+>;
 export const GetValidatorsDocument = {
   kind: "Document",
   definitions: [
@@ -18624,10 +23128,6 @@ export const GetValidatorsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "details" } },
                 { kind: "Field", name: { kind: "Name", value: "identity" } },
                 { kind: "Field", name: { kind: "Name", value: "jailed" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "min_self_delegation" },
-                },
                 { kind: "Field", name: { kind: "Name", value: "moniker" } },
                 {
                   kind: "Field",

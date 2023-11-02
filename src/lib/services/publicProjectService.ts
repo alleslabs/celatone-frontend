@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useMoveConfig,
   usePublicProjectConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -18,6 +19,7 @@ import type {
   RawPublicProjectInfo,
   PublicCode,
   RawPublicCode,
+  PublicModule,
 } from "lib/types";
 import { isCodeId } from "lib/utils";
 
@@ -171,6 +173,40 @@ export const usePublicProjectByAccountAddress = (
     queryFn,
     {
       enabled: Boolean(accountAddress) && projectConfig.enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const usePublicProjectByModulePath = (
+  address: Option<string>,
+  name: Option<string>
+): UseQueryResult<PublicModule> => {
+  const projectsApiRoute = useBaseApiRoute("move_modules");
+  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
+  const moveConfig = useMoveConfig({ shouldRedirect: false });
+
+  const queryFn = useCallback(async () => {
+    if (!address)
+      throw new Error(
+        "Module address not found (usePublicProjectByContractAddress)"
+      );
+    return axios
+      .get<PublicModule>(`${projectsApiRoute}/${address}/${name}`)
+      .then(({ data: projectInfo }) => projectInfo);
+  }, [projectsApiRoute, address, name]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_MODULE_PATH,
+      projectsApiRoute,
+      address,
+      name,
+    ],
+    queryFn,
+    {
+      enabled: Boolean(address) && projectConfig.enabled && moveConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }

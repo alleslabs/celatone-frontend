@@ -1,4 +1,7 @@
+import { fromBech32, fromHex, toBech32, toHex } from "@cosmjs/encoding";
+
 import type { AddressReturnType } from "lib/app-provider";
+import type { HexAddr, HumanAddr } from "lib/types";
 
 export const getAddressTypeText = (addressType: AddressReturnType) => {
   switch (addressType) {
@@ -12,4 +15,22 @@ export const getAddressTypeText = (addressType: AddressReturnType) => {
     default:
       return "(Invalid Address)";
   }
+};
+
+export const bech32AddressToHex = (addr: HumanAddr): HexAddr =>
+  "0x".concat(toHex(fromBech32(addr).data)) as HexAddr;
+
+export const padHexAddress = (hexAddr: HexAddr, length: number): HexAddr =>
+  `0x${hexAddr.slice(2).padStart(length, "0")}` as HexAddr;
+
+export const unpadHexAddress = (hexAddr: HexAddr) =>
+  `0x${hexAddr.slice(2).replace(/^0+/, "")}` as HexAddr;
+
+export const hexToBech32Address = (
+  prefix: string,
+  hexAddr: HexAddr,
+  length: number
+): HumanAddr => {
+  const strip = padHexAddress(hexAddr, length).slice(2);
+  return toBech32(prefix, fromHex(strip)) as HumanAddr;
 };

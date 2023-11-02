@@ -4,10 +4,11 @@ import { useContext, createContext, useMemo } from "react";
 import { usePreviousPathname } from "../hooks/usePreviousPathname";
 import { StorageKeys } from "lib/data";
 import { useLocalStorage } from "lib/hooks/useLocalStorage";
+import type { Nullable } from "lib/types";
 
 interface NavContextInterface {
   isExpand: boolean;
-  prevPathname: string | null;
+  prevPathname: Nullable<string>;
   setIsExpand: Dispatch<SetStateAction<boolean>>;
 }
 const NavContext = createContext<NavContextInterface>({

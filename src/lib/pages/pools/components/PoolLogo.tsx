@@ -1,24 +1,9 @@
 import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
+import { TokenImageRender } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
-
-interface PoolAssetLogoProps {
-  token: TokenWithValue;
-  logoSize: ImageProps["boxSize"];
-  idx: number;
-}
-
-const PoolAssetLogo = ({ token, logoSize, idx }: PoolAssetLogoProps) => (
-  <Flex key={token.denom}>
-    <Image
-      boxSize={logoSize}
-      src={token.logo || getUndefinedTokenIcon(token.denom)}
-      zIndex={2 - idx}
-    />
-  </Flex>
-);
 
 interface PoolLogoProps {
   tokens: TokenWithValue[];
@@ -48,12 +33,13 @@ export const PoolLogo = ({
       justifyContent="center"
     >
       {tokens.slice(0, isShortened ? 2 : undefined).map((token, idx) => (
-        <PoolAssetLogo
-          key={token.denom}
-          token={token}
-          logoSize={logoSize}
-          idx={idx}
-        />
+        <Flex key={token.denom}>
+          <TokenImageRender
+            logo={token.logo || getUndefinedTokenIcon(token.denom)}
+            boxSize={logoSize}
+            zIndex={2 - idx}
+          />
+        </Flex>
       ))}
       {isShortened && (
         <Flex

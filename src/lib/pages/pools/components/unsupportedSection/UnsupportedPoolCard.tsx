@@ -6,7 +6,6 @@ import {
   AccordionPanel,
   chakra,
   Text,
-  Image,
   Button,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import { useTrack } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
+import { TokenImageRender } from "lib/components/token";
 import { Tooltip } from "lib/components/Tooltip";
 import type { Pool } from "lib/types";
 import { PoolType } from "lib/types";
@@ -137,9 +137,9 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                       gap={3}
                       alignItems="center"
                     >
-                      <Image
+                      <TokenImageRender
+                        logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                         boxSize={6}
-                        src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text variant="body2" color="text.main" fontWeight="bold">
                         {formatUTokenWithPrecision(

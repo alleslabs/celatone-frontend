@@ -1,8 +1,9 @@
-import type { BigSource, Big } from "big.js";
-import big from "big.js";
+import type { BigSource } from "big.js";
+import big, { Big } from "big.js";
 
+import type { AssetInfosOpt } from "lib/services/assetService";
+import type { LPShareInfoMap } from "lib/services/poolService";
 import type {
-  AssetInfo,
   Balance,
   BalanceWithAssetInfo,
   Option,
@@ -12,7 +13,7 @@ import type {
   USD,
 } from "lib/types";
 
-import { toToken } from "./formatter";
+import { formatUTokenWithPrecision, toToken } from "./formatter";
 
 export const calculateAssetValue = (
   amount: Token<BigSource>,
@@ -42,23 +43,62 @@ export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
 export const coinToTokenWithValue = (
   denom: string,
   amount: string,
-  assetInfo: Option<AssetInfo>
+  assetInfos: AssetInfosOpt,
+  lpMap?: LPShareInfoMap
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;
-  return {
-    denom,
-    amount: tokenAmount,
-    symbol: assetInfo?.symbol,
-    logo: assetInfo?.logo,
-    precision: assetInfo?.precision,
-    price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
-    value: assetInfo
-      ? calculateAssetValue(
-          toToken(tokenAmount, assetInfo.precision),
-          assetInfo.price as USD<number>
-        )
-      : undefined,
-  };
+  const assetInfo = assetInfos?.[denom];
+  const lpDetails = lpMap?.[denom];
+  return lpDetails
+    ? {
+        isLPToken: true,
+        denom,
+        amount: tokenAmount,
+        symbol: lpDetails.symbol,
+        logo: lpDetails.image,
+        precision: lpDetails.precision,
+        price: lpDetails.lpPricePerShare as USD<Big>,
+        value: tokenAmount
+          .times(lpDetails.lpPricePerShare)
+          .div(big(10).pow(lpDetails.precision)) as USD<Big>,
+        lpDetails: {
+          coinA: {
+            amount: formatUTokenWithPrecision(
+              tokenAmount.times(lpDetails.coinA.amountAPerShare) as U<
+                Token<Big>
+              >,
+              lpDetails.precision
+            ),
+            denom: lpDetails.coinA.denom,
+            symbol: lpDetails.coinA.symbol,
+          },
+          coinB: {
+            amount: formatUTokenWithPrecision(
+              tokenAmount.times(lpDetails.coinB.amountBPerShare) as U<
+                Token<Big>
+              >,
+              lpDetails.precision
+            ),
+            denom: lpDetails.coinB.denom,
+            symbol: lpDetails.coinB.symbol,
+          },
+        },
+      }
+    : {
+        isLPToken: false,
+        denom,
+        amount: tokenAmount,
+        symbol: assetInfo?.symbol,
+        logo: assetInfo?.logo as string,
+        precision: assetInfo?.precision,
+        price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
+        value: assetInfo
+          ? calculateAssetValue(
+              toToken(tokenAmount, assetInfo.precision),
+              assetInfo.price as USD<number>
+            )
+          : undefined,
+      };
 };
 
 export const addTokenWithValue = (
@@ -73,11 +113,32 @@ export const addTokenWithValue = (
         value: oldToken.value?.add(token.value ?? 0) as USD<Big>,
       }
     : {
+        isLPToken: false,
         denom: "",
         amount: big(0) as U<Token<Big>>,
         symbol: undefined,
         logo: undefined,
         precision: undefined,
+        price: big(0) as USD<Big>,
         value: big(0) as USD<Big>,
       };
+};
+
+export const totalValueTokenWithValue = (
+  tokens: Record<string, TokenWithValue>,
+  defaultValue: USD<Big>
+) =>
+  Object.values(tokens).reduce(
+    (acc, token) => acc.add(token.value ?? defaultValue),
+    Big(0)
+  ) as USD<Big>;
+
+export const compareTokenWithValues = (
+  token1: TokenWithValue,
+  token2: TokenWithValue
+) => {
+  if (token1.value && token2.value) return token2.value.cmp(token1.value);
+  if (token1.value && !token2.value) return -1;
+  if (!token1.value && token2.value) return 1;
+  return token1.denom.localeCompare(token2.denom);
 };
