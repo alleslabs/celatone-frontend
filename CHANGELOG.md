@@ -82,6 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#602](https://github.com/alleslabs/celatone-frontend/pull/602) Fix package version client error
 - [#599](https://github.com/alleslabs/celatone-frontend/pull/599) Fix getNavigationUrl to support move
 - [#590](https://github.com/alleslabs/celatone-frontend/pull/590) Fix upload script various bugs
 - [#594](https://github.com/alleslabs/celatone-frontend/pull/594) LP assets filtering and delegation ui/ux improvement
