@@ -2,7 +2,6 @@ import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import type { DenomInfo } from "../../types";
 import { DelegationsTable, UnbondingsTable } from "../tables";
 import { useTrack } from "lib/amplitude";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
@@ -18,7 +17,7 @@ interface DelegationsBodyProps {
   rewards: Option<Record<string, TokenWithValue[]>>;
   isLoadingDelegations: boolean;
   isLoadingUnbondings: boolean;
-  bondDenoms: DenomInfo[];
+  bondDenoms: TokenWithValue[];
 }
 
 export const DelegationsBody = ({

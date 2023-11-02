@@ -1,32 +1,30 @@
 import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
-import { Big } from "big.js";
+import big, { type Big } from "big.js";
 
+import { TotalCardModal } from "../TotalCardModal";
 import { CustomIcon } from "lib/components/icon";
 import type { Addr, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
-import { TotalCardModal } from "./TotalCardModal";
-import { TotalCardTop } from "./TotalCardTop";
-
-interface SingleBondMultiAssetsCardProps {
+interface SingleBondCardBodyMultiProps {
   title: string;
   message: string;
   address: Addr;
   tokens: Record<string, TokenWithValue>;
 }
 
-export const SingleBondMultiAssetsCard = ({
+export const SingleBondCardBodyMulti = ({
   title,
   message,
   address,
   tokens,
-}: SingleBondMultiAssetsCardProps) => {
+}: SingleBondCardBodyMultiProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Flex direction="column" minW="233px" gap={1}>
-      <TotalCardTop title={title} message={message} fontWeight={600} />
+    <>
       <Heading variant="h6" as="h6">
-        {formatPrice(totalValueTokenWithValue(tokens, Big(0) as USD<Big>))}
+        {formatPrice(totalValueTokenWithValue(tokens, big(0) as USD<Big>))}
       </Heading>
       <Flex
         gap={1}
@@ -56,6 +54,6 @@ export const SingleBondMultiAssetsCard = ({
         isOpen={isOpen}
         onClose={onClose}
       />
-    </Flex>
+    </>
   );
 };

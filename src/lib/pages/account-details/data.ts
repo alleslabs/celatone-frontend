@@ -41,7 +41,7 @@ import {
   compareTokenWithValues,
 } from "lib/utils";
 
-import type { DenomInfo, UserDelegationsData } from "./types";
+import type { UserDelegationsData } from "./types";
 
 interface AccountContracts {
   contracts: Option<ContractInfo[]>;
@@ -62,7 +62,7 @@ interface AccountAssetInfos {
 }
 
 export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
-  bondDenoms: DenomInfo[];
+  bondDenoms: TokenWithValue[];
 }
 
 export interface Delegation {
@@ -294,12 +294,9 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   if (rawStakingParams && assetInfos && validators) {
     data.stakingParams = {
       ...rawStakingParams,
-      bondDenoms: rawStakingParams.bondDenoms.map((denom) => ({
-        denom,
-        symbol: assetInfos[denom]?.symbol,
-        logo: assetInfos[denom]?.logo,
-        precision: assetInfos[denom]?.precision,
-      })),
+      bondDenoms: rawStakingParams.bondDenoms.map((denom) =>
+        coinToTokenWithValue(denom, "0", assetInfos, lpMap)
+      ),
     };
 
     data.isValidator = Object.keys(validators).includes(

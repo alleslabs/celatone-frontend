@@ -1,18 +1,16 @@
 import { Box, Spinner } from "@chakra-ui/react";
 
-import type { DenomInfo } from "lib/pages/account-details/types";
 import type { Addr, Option, TokenWithValue } from "lib/types";
 
 import { MultiBondsCard } from "./MultiBondsCard";
 import { OverviewCard } from "./OverviewCard";
-import { SingleBondCard } from "./SingleBondCard";
-import { SingleBondMultiAssetsCard } from "./SingleBondMultiAssetsCard";
+import { SingleBondCard } from "./single-bond-card";
 
 export interface TotalCardProps {
   title: string;
   message: string;
   address: Addr;
-  bondDenoms: DenomInfo[];
+  bondDenoms: TokenWithValue[];
   tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
   isViewMore: boolean;
@@ -23,7 +21,7 @@ export const TotalCard = ({
   message,
   address,
   bondDenoms,
-  tokens = {},
+  tokens,
   isLoading,
   isViewMore,
 }: TotalCardProps) => {
@@ -37,29 +35,16 @@ export const TotalCard = ({
   if (isViewMore)
     return <OverviewCard title={title} message={message} tokens={tokens} />;
 
-  if (bondDenoms.length === 1) {
-    const denoms = Object.keys(tokens);
-    const bondDenom = bondDenoms[0].denom;
-    if (
-      denoms.length === 0 ||
-      (denoms.length === 1 && denoms.includes(bondDenom))
-    )
-      return (
-        <SingleBondCard
-          title={title}
-          message={message}
-          token={tokens[bondDenom]}
-        />
-      );
+  if (bondDenoms.length === 1)
     return (
-      <SingleBondMultiAssetsCard
+      <SingleBondCard
         title={title}
         message={message}
         address={address}
+        bondDenom={bondDenoms[0]}
         tokens={tokens}
       />
     );
-  }
 
   return (
     <MultiBondsCard
