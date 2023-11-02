@@ -10,7 +10,12 @@ import {
   useMoveConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME, StorageKeys } from "lib/data";
+import {
+  INSTANTIATED_LIST_NAME,
+  SAVED_LIST_NAME,
+  StorageKeys,
+  UNDEFINED_ICON_LIST,
+} from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 import { formatSlugName, getListIcon } from "lib/utils";
@@ -64,7 +69,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               ...getSavedPublicProjects().map((list) => ({
                 name: list.name,
                 slug: `/projects/${list.slug}`,
-                logo: list.logo as IconKeys,
+                logo: list.logo || UNDEFINED_ICON_LIST[0],
               })),
               {
                 name: "View All Projects",
