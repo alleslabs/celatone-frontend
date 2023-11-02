@@ -107,12 +107,14 @@ export const ArgFieldWidget = ({
             ...provided,
             color: state.isDisabled ? "gray.700" : undefined,
           }),
-          option: (provided, state) => ({
+          option: (provided) => ({
             ...provided,
-            bg: state.isSelected ? "gray.800" : undefined,
             color: "text.main",
             _hover: {
               bg: "gray.700",
+            },
+            _selected: {
+              bg: "gray.800",
             },
           }),
         }}
