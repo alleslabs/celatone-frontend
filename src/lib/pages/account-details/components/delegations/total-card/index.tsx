@@ -1,6 +1,5 @@
 import { Box, Spinner } from "@chakra-ui/react";
 
-import type { DenomInfo } from "lib/pages/account-details/types";
 import type { Addr, Option, TokenWithValue } from "lib/types";
 
 import { MultiBondsCard } from "./MultiBondsCard";
@@ -11,7 +10,7 @@ export interface TotalCardProps {
   title: string;
   message: string;
   address: Addr;
-  bondDenoms: DenomInfo[];
+  bondDenoms: TokenWithValue[];
   tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
   isViewMore: boolean;

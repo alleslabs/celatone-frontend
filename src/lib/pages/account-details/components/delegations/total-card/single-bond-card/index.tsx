@@ -1,7 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { TotalCardTop } from "../TotalCardTop";
-import type { DenomInfo } from "lib/pages/account-details/types";
 import type { Addr, Option, TokenWithValue } from "lib/types";
 
 import { SingleBondCardBody } from "./SingleBondCardBody";
@@ -10,7 +9,7 @@ interface SingleBondCardProps {
   title: string;
   message: string;
   address: Addr;
-  bondDenom: DenomInfo;
+  bondDenom: TokenWithValue;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 

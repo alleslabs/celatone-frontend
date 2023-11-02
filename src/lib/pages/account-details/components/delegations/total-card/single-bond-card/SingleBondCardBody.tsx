@@ -1,6 +1,3 @@
-import big from "big.js";
-
-import type { DenomInfo } from "lib/pages/account-details/types";
 import type { Addr, TokenWithValue } from "lib/types";
 
 import { SingleBondCardBodyMulti } from "./SingleBondCardBodyMulti";
@@ -10,7 +7,7 @@ interface SingleBondCardBodyProps {
   title: string;
   message: string;
   address: Addr;
-  bondDenom: DenomInfo;
+  bondDenom: TokenWithValue;
   tokens: Record<string, TokenWithValue>;
 }
 
@@ -25,21 +22,10 @@ export const SingleBondCardBody = ({
   if (
     denoms.length === 0 ||
     (denoms.length === 1 && denoms.includes(bondDenom.denom))
-  ) {
-    const bondToken = tokens[bondDenom.denom];
+  )
     return (
-      <SingleBondCardBodySingle
-        {...(bondToken ?? {
-          denom: bondDenom.denom,
-          amount: big(0),
-          symbol: bondDenom.symbol,
-          logo: bondDenom.logo,
-          precision: bondDenom.precision,
-          value: big(0),
-        })}
-      />
+      <SingleBondCardBodySingle token={tokens[bondDenom.denom] ?? bondDenom} />
     );
-  }
 
   return (
     <SingleBondCardBodyMulti
