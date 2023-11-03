@@ -142,18 +142,17 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
             submenu={menuInfo.submenu}
             isCurrentPage={isCurrentPage}
           />
-          {menuInfo.subSection &&
-            menuInfo.subSection.map((subitem) => (
-              <div key={subitem.category}>
-                <Text py={2} variant="small" fontWeight={700} color="text.dark">
-                  {subitem.category}
-                </Text>
-                <SubMenuRender
-                  submenu={subitem.submenu}
-                  isCurrentPage={isCurrentPage}
-                />
-              </div>
-            ))}
+          {menuInfo.subSection?.map((subitem) => (
+            <div key={subitem.category}>
+              <Text py={2} variant="small" fontWeight={700} color="text.dark">
+                {subitem.category}
+              </Text>
+              <SubMenuRender
+                submenu={subitem.submenu}
+                isCurrentPage={isCurrentPage}
+              />
+            </div>
+          ))}
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

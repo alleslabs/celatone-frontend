@@ -79,11 +79,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           },
         ]
       : []),
+    // TODO: combine move and wasm after having This Wallet subsection in move
     ...(move.enabled
       ? [
           {
-            category: "Quick Actions",
-            slug: "quick-actions",
+            category: "Developer Tools",
+            slug: StorageKeys.DevSidebar,
             submenu: [
               {
                 name: "0x1 Page",

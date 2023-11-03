@@ -73,6 +73,9 @@ export interface AccountDetailsBodyProps {
   accountAddress: HumanAddr;
 }
 
+const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
+  hexAddress === "0x1" ? hexAddress : accountAddress;
+
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({
@@ -124,7 +127,7 @@ const AccountDetailsBody = ({
       navigate({
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
-          accountAddress,
+          accountAddress: getAddressOnPath(hexAddress, accountAddress),
           tab: nextTab,
         },
         options: {
@@ -132,7 +135,7 @@ const AccountDetailsBody = ({
         },
       });
     },
-    [tab, navigate, accountAddress]
+    [accountAddress, hexAddress, navigate, tab]
   );
 
   useEffect(() => {
@@ -141,7 +144,7 @@ const AccountDetailsBody = ({
         replace: true,
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
-          accountAddress,
+          accountAddress: getAddressOnPath(hexAddress, accountAddress),
           tab: TabIndex.Overview,
         },
         options: {
@@ -149,7 +152,7 @@ const AccountDetailsBody = ({
         },
       });
     }
-  }, [router.isReady, tab, accountAddress, navigate]);
+  }, [accountAddress, hexAddress, navigate, router.isReady, tab]);
 
   return (
     <>
