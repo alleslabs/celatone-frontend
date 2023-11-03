@@ -36,7 +36,7 @@ class Amplitude {
           language: false,
           platform: false,
         },
-        // serverUrl: "/amplitude",
+        serverUrl: "/amplitude",
       });
     }
 
