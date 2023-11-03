@@ -29,12 +29,15 @@ class Amplitude {
       this.client.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "", {
         defaultTracking: {
           attribution: true,
+          fileDownloads: true,
+          formInteractions: true,
           pageViews: false,
+          sessions: true,
         },
         trackingOptions: {
           ipAddress: false,
-          language: false,
-          platform: false,
+          language: true,
+          platform: true,
         },
         serverUrl: "/amplitude",
       });
