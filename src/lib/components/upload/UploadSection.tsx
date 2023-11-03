@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import type {
   UploadSucceedCallback,
   UploadTxInternalResult,
@@ -48,7 +48,6 @@ export const UploadSection = ({
   onComplete,
   isMigrate = false,
 }: UploadSectionProps) => {
-  const { track } = useTrack();
   const {
     constants,
     chainConfig: {
@@ -175,7 +174,6 @@ export const UploadSection = ({
   }, [
     address,
     postUploadTx,
-    track,
     wasmFile,
     addresses,
     permission,

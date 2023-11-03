@@ -1,7 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
@@ -20,7 +20,6 @@ export const DelegationInfo = ({
   onClickToggle,
   onViewMore,
 }: DelegationInfoProps) => {
-  const { track } = useTrack();
   const isMobile = useMobile();
 
   const isMobileOverview = isMobile && !!onViewMore;

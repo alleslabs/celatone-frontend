@@ -5,21 +5,19 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
-import { postTx, sendingTx } from "./common";
+import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
   address: HumanAddr;
   client: SigningCosmWasmClient;
   fee: StdFee;
   messages: EncodeObject[];
-  catchTxError: CatchTxError;
   onTxSucceed?: (txHash: string) => void;
   onTxFailed?: () => void;
 }
@@ -29,7 +27,6 @@ export const resendTx = ({
   client,
   fee,
   messages,
-  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: ResendTxParams): Observable<TxResultRendering> => {

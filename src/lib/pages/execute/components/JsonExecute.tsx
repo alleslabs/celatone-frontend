@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionWithFunds } from "lib/amplitude";
 import {
   useFabricateFee,
   useExecuteContractTx,
@@ -70,7 +70,6 @@ export const JsonExecute = ({
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
-  const { trackActionWithFunds } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -183,7 +182,6 @@ export const JsonExecute = ({
     contractAddress,
     msg,
     funds,
-    trackActionWithFunds,
     addActivity,
     broadcast,
   ]);

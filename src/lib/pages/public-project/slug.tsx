@@ -2,7 +2,7 @@ import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   usePublicProjectConfig,
   useWasmConfig,
@@ -32,7 +32,6 @@ enum TabIndex {
 }
 
 const ProjectDetail = () => {
-  const { track } = useTrack();
   const router = useRouter();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
@@ -83,7 +82,7 @@ const ProjectDetail = () => {
         });
       }
     }
-  }, [router.isReady, tab, slug, navigate, track]);
+  }, [router.isReady, tab, slug, navigate]);
 
   const overviewCount =
     publicAccounts.length +

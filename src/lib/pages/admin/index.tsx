@@ -3,7 +3,7 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackToAdminUpdate, track } from "lib/amplitude";
 import {
   useFabricateFee,
   useInternalNavigate,
@@ -30,9 +30,7 @@ import { composeMsg, getFirstQueryParam } from "lib/utils";
 const UpdateAdmin = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const { track } = useTrack();
   const { address } = useCurrentChain();
-  const { trackToAdminUpdate } = useTrack();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAddressType = useGetAddressType();
   const navigate = useInternalNavigate();
@@ -100,7 +98,6 @@ const UpdateAdmin = () => {
     contractAddressParam,
     updateAdminTx,
     broadcast,
-    track,
     estimatedFee,
   ]);
 
@@ -166,7 +163,7 @@ const UpdateAdmin = () => {
 
   useEffect(() => {
     if (router.isReady) trackToAdminUpdate(!!contractAddressParam);
-  }, [contractAddressParam, router.isReady, trackToAdminUpdate]);
+  }, [contractAddressParam, router.isReady]);
 
   return (
     <WasmPageContainer>

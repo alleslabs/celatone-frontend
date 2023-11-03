@@ -10,7 +10,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
@@ -35,7 +35,6 @@ interface PastTxsState {
 }
 
 const PastTxs = () => {
-  const { track } = useTrack();
   const router = useRouter();
   const {
     address,
@@ -123,7 +122,7 @@ const PastTxs = () => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PAST_TXS);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   useEffect(() => {
     setPageSize(10);

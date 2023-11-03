@@ -17,7 +17,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionQuery, track } from "lib/amplitude";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -75,7 +75,6 @@ export const SchemaQueryComponent = ({
   opened,
   addActivity,
 }: SchemaQueryComponentProps) => {
-  const { trackActionQuery, track } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );

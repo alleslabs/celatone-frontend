@@ -18,7 +18,7 @@ import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
-import { useTrack } from "lib/amplitude";
+import { trackUseUnsupportedToken } from "lib/amplitude";
 import { useGetAddressType, useGetAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -147,7 +147,6 @@ export const UnsupportedTokensModal = ({
 }: UnsupportedTokensModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const getAddressTypeByLength = useGetAddressTypeByLength();
-  const { trackUseUnsupportedToken } = useTrack();
 
   if (unsupportedAssets.length === 0) return null;
 

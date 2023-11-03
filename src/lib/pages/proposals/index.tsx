@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -27,7 +27,6 @@ import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
 import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 
 const Proposals = () => {
-  const { track } = useTrack();
   const { currentChainId } = useCelatoneApp();
   useGovConfig({ shouldRedirect: true });
   const router = useRouter();
@@ -71,7 +70,7 @@ const Proposals = () => {
   );
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   useEffect(() => {
     setPageSize(10);

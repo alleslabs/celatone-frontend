@@ -22,7 +22,7 @@ import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
 import { CURR_THEME } from "env";
-import { useTrack } from "lib/amplitude";
+import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
   useInternalNavigate,
@@ -241,7 +241,6 @@ const Searchbar = () => {
   const [displayResults, setDisplayResults] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
-  const { trackUseMainSearch } = useTrack();
 
   const {
     chainConfig: {
@@ -282,7 +281,7 @@ const Searchbar = () => {
         setKeyword("");
       }
     },
-    [trackUseMainSearch, navigate, metadata.icns.address, keyword]
+    [navigate, metadata.icns.address, keyword]
   );
 
   const handleOnKeyEnter = useCallback(

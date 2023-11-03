@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { DelegationsTable, UnbondingsTable } from "../tables";
-import { useTrack } from "lib/amplitude";
+import { trackUseRadio } from "lib/amplitude";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
 import type { Option, TokenWithValue } from "lib/types";
 
@@ -33,7 +33,6 @@ export const DelegationsBody = ({
   // NOTE: set between "Delegated" and "Unbonding"
   const router = useRouter();
   const [value, setValue] = useState("Delegated");
-  const { trackUseRadio } = useTrack();
 
   useEffect(() => {
     setValue("Delegated");

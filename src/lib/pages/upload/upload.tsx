@@ -2,7 +2,7 @@ import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import type { UploadSucceedCallback } from "lib/app-provider";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -19,7 +19,6 @@ export const Upload = ({
   onComplete: UploadSucceedCallback;
 }) => {
   const router = useRouter();
-  const { track } = useTrack();
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useUploadAccessParams();
@@ -36,7 +35,7 @@ export const Upload = ({
     if (!enableUpload && !isLoading)
       navigate({ pathname: "/deploy", replace: true });
     else if (router.isReady) track(AmpEvent.TO_UPLOAD);
-  }, [enableUpload, isLoading, navigate, router.isReady, track]);
+  }, [enableUpload, isLoading, navigate, router.isReady]);
 
   return (
     <WasmPageContainer>

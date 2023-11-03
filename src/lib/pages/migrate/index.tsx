@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useTrack } from "lib/amplitude";
+import { trackToMigrate } from "lib/amplitude";
 import {
   useCurrentChain,
   useInternalNavigate,
@@ -36,7 +36,6 @@ const Migrate = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { data: uploadAccess, isFetching } = useUploadAccessParams();
-  const { trackToMigrate } = useTrack();
 
   const { address = "" } = useCurrentChain();
 
@@ -94,7 +93,7 @@ const Migrate = () => {
 
   useEffect(() => {
     if (router.isReady) trackToMigrate(!!contractAddressParam, !!codeIdParam);
-  }, [router.isReady, codeIdParam, contractAddressParam, trackToMigrate]);
+  }, [router.isReady, codeIdParam, contractAddressParam]);
 
   const renderBody = () => {
     switch (migrateStep) {

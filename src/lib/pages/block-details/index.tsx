@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -12,14 +12,13 @@ import { getFirstQueryParam } from "lib/utils";
 import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
 
 const BlockDetail = () => {
-  const { track } = useTrack();
   const router = useRouter();
   const heightParam = getFirstQueryParam(router.query.height);
   const { data: blockData, isLoading } = useBlockInfoQuery(heightParam);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_BLOCK_DETAIL);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   if (isLoading) return <Loading withBorder />;
 

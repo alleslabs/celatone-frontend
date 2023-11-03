@@ -11,11 +11,11 @@ import {
   AccordionPanel,
 } from "@chakra-ui/react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
+import { useNavContext } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { useLocalStorage } from "lib/hooks";
 
 import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./type";
 
@@ -38,7 +38,7 @@ const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
     bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
     borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
   >
-    <Flex
+    <Box
       opacity={isCurrentPage(submenu.slug) ? 1 : 0}
       width="3px"
       height="20px"
@@ -72,34 +72,30 @@ interface SubMenuProps {
   isCurrentPage: (slug: string) => boolean;
 }
 
-const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => {
-  const { track } = useTrack();
-
-  return (
-    <>
-      {submenu.map((subitem) =>
-        subitem.isDisable ? (
-          <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
-            <div>
-              <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
-            </div>
-          </Tooltip>
-        ) : (
-          <AppLink
-            href={subitem.slug}
-            key={subitem.slug}
-            onClick={() => {
-              track(AmpEvent.USE_SIDEBAR);
-              subitem.trackEvent?.();
-            }}
-          >
+const SubMenuRender = ({ submenu, isCurrentPage }: SubMenuProps) => (
+  <>
+    {submenu.map((subitem) =>
+      subitem.isDisable ? (
+        <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
+          <div>
             <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
-          </AppLink>
-        )
-      )}
-    </>
-  );
-};
+          </div>
+        </Tooltip>
+      ) : (
+        <AppLink
+          href={subitem.slug}
+          key={subitem.slug}
+          onClick={() => {
+            track(AmpEvent.USE_SIDEBAR);
+            subitem.trackEvent?.();
+          }}
+        >
+          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+        </AppLink>
+      )
+    )}
+  </>
+);
 
 interface NavbarRenderProps {
   menuInfo: MenuInfo;
@@ -107,8 +103,9 @@ interface NavbarRenderProps {
 }
 
 const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
-  const { track } = useTrack();
-  const [isExpand, setIsExpand] = useLocalStorage(menuInfo.slug, true);
+  // Add slug to StorageKeys and NavContext
+  const { submenus } = useNavContext();
+  const [isExpand, setIsExpand] = submenus[menuInfo.slug];
   const defaultIndex = isExpand ? [0] : [];
 
   const handleChange = (index: number[]) => {
@@ -142,52 +139,21 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
         </AccordionButton>
         <AccordionPanel p={0}>
           <SubMenuRender
-            isCurrentPage={isCurrentPage}
             submenu={menuInfo.submenu}
+            isCurrentPage={isCurrentPage}
           />
-          {menuInfo.subSection && (
-            <Text py={2} variant="small" fontWeight={700} color="text.dark">
-              {menuInfo.subSection.map((subitem) => (
-                <div key={subitem.category}>
-                  <Text
-                    py={2}
-                    variant="small"
-                    fontWeight={700}
-                    color="text.dark"
-                  >
-                    {subitem.category}
-                  </Text>
-                  {subitem.submenu.map((submenu) =>
-                    submenu.isDisable ? (
-                      <Tooltip
-                        key={submenu.slug}
-                        label={submenu.tooltipText}
-                        maxW="240px"
-                      >
-                        <div>
-                          <NavInfo
-                            submenu={submenu}
-                            isCurrentPage={isCurrentPage}
-                          />
-                        </div>
-                      </Tooltip>
-                    ) : (
-                      <AppLink
-                        href={submenu.slug}
-                        key={submenu.slug}
-                        onClick={() => track(AmpEvent.USE_SIDEBAR)}
-                      >
-                        <NavInfo
-                          submenu={submenu}
-                          isCurrentPage={isCurrentPage}
-                        />
-                      </AppLink>
-                    )
-                  )}
-                </div>
-              ))}
-            </Text>
-          )}
+          {menuInfo.subSection &&
+            menuInfo.subSection.map((subitem) => (
+              <div key={subitem.category}>
+                <Text py={2} variant="small" fontWeight={700} color="text.dark">
+                  {subitem.category}
+                </Text>
+                <SubMenuRender
+                  submenu={subitem.submenu}
+                  isCurrentPage={isCurrentPage}
+                />
+              </div>
+            ))}
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
@@ -220,8 +186,8 @@ export const ExpandNavMenu = ({
         </Button>
       </Flex>
       <SubMenuRender
-        isCurrentPage={isCurrentPage}
         submenu={yourAccountMenu.submenu}
+        isCurrentPage={isCurrentPage}
       />
 
       {restNavMenu.map((item) => (

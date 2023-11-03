@@ -5,14 +5,13 @@ import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";
 
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { HumanAddr, Nullable, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { findAttr, formatUFee } from "lib/utils";
 
-import { postTx, sendingTx } from "./common";
+import { catchTxError, postTx, sendingTx } from "./common";
 
 interface SubmitWhitelistProposalTxParams {
   address: HumanAddr;
@@ -21,7 +20,6 @@ interface SubmitWhitelistProposalTxParams {
   messages: EncodeObject[];
   whitelistNumber: number;
   amountToVote: Nullable<string>;
-  catchTxError: CatchTxError;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -33,7 +31,6 @@ export const submitWhitelistProposalTx = ({
   messages,
   whitelistNumber,
   amountToVote,
-  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: SubmitWhitelistProposalTxParams): Observable<TxResultRendering> => {
@@ -110,7 +107,6 @@ interface SubmitStoreCodeProposalTxParams {
   wasmFileName: string;
   messages: EncodeObject[];
   amountToVote: Nullable<string>;
-  catchTxError: CatchTxError;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -123,7 +119,6 @@ export const submitStoreCodeProposalTx = ({
   wasmFileName,
   messages,
   amountToVote,
-  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: SubmitStoreCodeProposalTxParams): Observable<TxResultRendering> => {

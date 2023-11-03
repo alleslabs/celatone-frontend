@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { type Dispatch, type SetStateAction } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   usePublicProjectConfig,
   useCurrentChain,
@@ -35,7 +35,6 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const { track } = useTrack();
 
   const { address } = useCurrentChain();
 

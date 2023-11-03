@@ -8,7 +8,7 @@ import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaForm } from "../form";
 import { JsonSchemaModal } from "../JsonSchemaModal";
 import { ViewSchemaModal } from "../view/ViewSchemaModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -34,14 +34,13 @@ export const SchemaInputSection = observer(
     onSchemaSave,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
-    const { track } = useTrack();
     const msgSchema = jsonSchema?.[type];
     const prettyType = capitalize(type);
 
     const handleReattach = useCallback(() => {
       onOpen();
       track(AmpEvent.USE_EDIT_ATTACHED_JSON);
-    }, [onOpen, track]);
+    }, [onOpen]);
 
     return (
       <>

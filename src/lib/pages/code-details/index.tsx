@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useWasmConfig,
   useMobile,
@@ -48,7 +48,6 @@ const CodeDetailsBody = observer(
     const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
     const isMobile = useMobile();
     const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-    const { track } = useTrack();
 
     useEffect(() => {
       if (router.isReady) track(AmpEvent.TO_CODE_DETAIL, { tab });

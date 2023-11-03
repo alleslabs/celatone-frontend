@@ -19,7 +19,7 @@ import {
 
 import type { MenuInfo } from "../navbar/type";
 import { CHAIN_CONFIGS } from "config/chain";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useMoveConfig,
@@ -34,7 +34,6 @@ import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
 export const NavDrawer = () => {
-  const { track } = useTrack();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentChainId, availableChainIds } = useCelatoneApp();
   const isCurrentPage = useIsCurrentPage();

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
@@ -28,7 +28,6 @@ export function CreateNewListModal({
   onCreate,
   onClose,
 }: CreateNewListModalProps) {
-  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const userKey = useUserKey();
@@ -86,7 +85,6 @@ export function CreateNewListModal({
     userKey,
     listName,
     resetListName,
-    track,
     onCreate,
     onClose,
     toast,

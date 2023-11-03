@@ -2,7 +2,7 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
@@ -23,7 +23,6 @@ export const DelegationsSection = ({
   walletAddress,
   onViewMore,
 }: DelegationsSectionProps) => {
-  const { track } = useTrack();
   const { isOpen, onToggle, onClose } = useDisclosure();
   const router = useRouter();
   const {

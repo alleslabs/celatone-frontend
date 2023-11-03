@@ -2,7 +2,7 @@ import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpandAll } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { UploadSchema } from "lib/components/json-schema";
@@ -31,11 +31,6 @@ export const SchemaExecute = ({
   codeId,
   codeHash,
 }: SchemaExecuteProps) => {
-  // ------------------------------------------//
-  // ---------------DEPENDENCIES---------------//
-  // ------------------------------------------//
-  const { trackUseExpandAll } = useTrack();
-
   // ------------------------------------------//
   // -----------------REFERENCE----------------//
   // ------------------------------------------//

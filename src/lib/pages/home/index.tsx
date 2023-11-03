@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { CURR_THEME } from "env";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useInternalNavigate,
@@ -121,7 +121,6 @@ const Home = () => {
     isLoading: isLoadingLatestBlockInfo,
     error: latestBlockInfoError,
   } = useLatestBlockInfo();
-  const { track } = useTrack();
   const { data } = useAverageBlockTime();
   const averageBlockTime = calculateAverageBlockTime(
     data?.latest,
@@ -141,7 +140,7 @@ const Home = () => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_OVERVIEW);
-  }, [track, router.isReady]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

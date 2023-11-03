@@ -18,7 +18,7 @@ import { SUPERFLUID_ICON } from "../../constant";
 import { usePools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
-import { useTrack } from "lib/amplitude";
+import { trackUseSort, trackUseToggle, trackUseView } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
@@ -52,7 +52,6 @@ export const SupportedSection = ({
   scrollComponentId,
 }: SupportedSectionProp) => {
   const { assetInfos } = useAssetInfos({ withPrices: true });
-  const { trackUseSort, trackUseView, trackUseToggle } = useTrack();
 
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {

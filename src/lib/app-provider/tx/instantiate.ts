@@ -3,10 +3,8 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
-import { useTrack } from "lib/amplitude";
+import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
-
-import { useCatchTxError } from "./catchTxError";
 
 export interface InstantiateStreamParams {
   estimatedFee: StdFee | undefined;
@@ -21,8 +19,6 @@ export interface InstantiateStreamParams {
 
 export const useInstantiateTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
-  const { trackTxSucceed } = useTrack();
-  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -49,7 +45,6 @@ export const useInstantiateTx = () => {
         admin,
         funds,
         client,
-        catchTxError,
         onTxSucceed: (txResult, contractLabel) => {
           trackTxSucceed();
           onTxSucceed?.(txResult, contractLabel);
@@ -57,6 +52,6 @@ export const useInstantiateTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
+    [address, getSigningCosmWasmClient]
   );
 };

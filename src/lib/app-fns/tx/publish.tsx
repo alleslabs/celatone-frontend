@@ -4,19 +4,17 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import type { PublishSucceedCallback } from "lib/app-provider/tx/publish";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { formatUFee } from "lib/utils";
 
-import { postTx, sendingTx } from "./common";
+import { catchTxError, postTx, sendingTx } from "./common";
 
 interface PublishModuleTxParams {
   address: HumanAddr;
   client: SigningCosmWasmClient;
   onTxSucceed?: PublishSucceedCallback;
   onTxFailed?: () => void;
-  catchTxError: CatchTxError;
   fee: StdFee;
   messages: EncodeObject[];
 }
@@ -24,7 +22,6 @@ interface PublishModuleTxParams {
 export const publishModuleTx = ({
   address,
   client,
-  catchTxError,
   onTxSucceed,
   onTxFailed,
   fee,

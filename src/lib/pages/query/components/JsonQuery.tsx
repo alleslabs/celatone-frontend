@@ -4,7 +4,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionQuery, track } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -42,7 +42,6 @@ interface JsonQueryProps {
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
-  const { track, trackAction } = useTrack();
   const { isFetching: cmdsFetching, queryCmds } = useQueryCmds(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
@@ -85,7 +84,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   );
 
   const handleQuery = () => {
-    trackAction(AmpEvent.ACTION_QUERY, "json-input");
+    trackActionQuery(AmpEvent.ACTION_QUERY, "json-input", true);
     refetch();
   };
 

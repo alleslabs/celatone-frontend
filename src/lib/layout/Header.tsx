@@ -10,7 +10,7 @@ import {
 
 import { CHAIN_CONFIGS } from "config/chain";
 import { CURR_THEME } from "env";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
@@ -20,7 +20,6 @@ import { WalletSection } from "lib/components/Wallet";
 import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const { track } = useTrack();
   const { availableChainIds, currentChainId } = useCelatoneApp();
   const selectChain = useSelectChain();
 
