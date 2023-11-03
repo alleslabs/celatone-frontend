@@ -1,5 +1,6 @@
 import { Identify, createInstance } from "@amplitude/analytics-browser";
 import type { BrowserClient } from "@amplitude/analytics-types";
+import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichment-browser";
 
 import type { Nullable } from "lib/types";
 
@@ -26,6 +27,15 @@ class Amplitude {
   private constructor() {
     if (typeof window !== "undefined") {
       this.client = createInstance();
+      this.client.add(
+        userAgentEnrichmentPlugin({
+          osName: true,
+          osVersion: true,
+          deviceManufacturer: true,
+          deviceModel: true,
+        })
+      );
+
       this.client.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "", {
         defaultTracking: {
           attribution: true,

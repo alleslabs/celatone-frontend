@@ -19,7 +19,7 @@
     "@amplitude/plugin-web-attribution-browser" "^2.0.13"
     tslib "^2.4.1"
 
-"@amplitude/analytics-client-common@^2.0.7":
+"@amplitude/analytics-client-common@^2.0.4", "@amplitude/analytics-client-common@^2.0.7":
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/@amplitude/analytics-client-common/-/analytics-client-common-2.0.7.tgz#3fcb3e27fc7d41345396f69405e36b9cb9c024ed"
   integrity sha512-2LqPMsY6ksS1OTda0EFPLUDFmIVTwU0bDN17+uY9WvpWTEWCAL616X2oNCQ6FTB9zWfCTr8X2I5jSS0y4rzPkw==
@@ -42,7 +42,7 @@
     "@amplitude/analytics-types" "^2.3.0"
     tslib "^2.4.1"
 
-"@amplitude/analytics-types@^2.3.0":
+"@amplitude/analytics-types@^2.1.1", "@amplitude/analytics-types@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@amplitude/analytics-types/-/analytics-types-2.3.0.tgz#3a8c3c1c8eb6ad5bae0a77dcdecb7c590e1bd1dc"
   integrity sha512-/sMCgimMzDjGZDh5ekHUrwKVi4IJc8/AFUXIxEuJn4wd9QVmThWNeKfszA36z6Ue+UOHhEUEZwruXo3PwXWz/g==
@@ -56,6 +56,16 @@
     "@amplitude/analytics-types" "^2.3.0"
     tslib "^2.4.1"
 
+"@amplitude/plugin-user-agent-enrichment-browser@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@amplitude/plugin-user-agent-enrichment-browser/-/plugin-user-agent-enrichment-browser-1.0.1.tgz#17e1f5bd7f63b95092ac99cc071cc0f864ef8735"
+  integrity sha512-kBv4Fgd+EYeW+s8ePPzc7INx4TfC4aDnHjVe1Kd6skcw+eDOSVmJ8Bnfs4qw8gWBEBDNYAlrN0a7r000TsS3Ww==
+  dependencies:
+    "@amplitude/analytics-client-common" "^2.0.4"
+    "@amplitude/analytics-types" "^2.1.1"
+    "@amplitude/ua-parser-js" "^0.7.33"
+    tslib "^2.4.1"
+
 "@amplitude/plugin-web-attribution-browser@^2.0.13":
   version "2.0.13"
   resolved "https://registry.yarnpkg.com/@amplitude/plugin-web-attribution-browser/-/plugin-web-attribution-browser-2.0.13.tgz#52dcbc833129e829b722d314f627240dacdc337d"
@@ -65,6 +75,11 @@
     "@amplitude/analytics-core" "^2.1.0"
     "@amplitude/analytics-types" "^2.3.0"
     tslib "^2.4.1"
+
+"@amplitude/ua-parser-js@^0.7.33":
+  version "0.7.33"
+  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.33.tgz#26441a0fb2e956a64e4ede50fb80b848179bb5db"
+  integrity sha512-wKEtVR4vXuPT9cVEIJkYWnlF++Gx3BdLatPBM+SZ1ztVIvnhdGBZR/mn9x/PzyrMcRlZmyi6L56I2J3doVBnjA==
 
 "@ampproject/remapping@^2.2.0":
   version "2.2.1"
