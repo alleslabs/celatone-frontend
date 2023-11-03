@@ -36,7 +36,7 @@ class Amplitude {
         },
         trackingOptions: {
           ipAddress: false,
-          language: true,
+          language: false,
           platform: true,
         },
         serverUrl: "/amplitude",

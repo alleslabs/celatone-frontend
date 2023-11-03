@@ -28,7 +28,7 @@ import { useTxData } from "./txService";
 export type SearchResultType =
   | "Code ID"
   | "Contract Address"
-  | "Wallet Address"
+  | "Account Address"
   | "Transaction Hash"
   | "Proposal ID"
   | "Block"
@@ -99,13 +99,13 @@ export const useSearchHandler = (
 
   const addressResult = useMemo(() => {
     if (isAddr) {
-      return contractData ? "Contract Address" : "Wallet Address";
+      return contractData ? "Contract Address" : "Account Address";
     }
     return (
       icnsAddressData?.address &&
       (icnsAddressData.addressType === "contract_address"
         ? "Contract Address"
-        : "Wallet Address")
+        : "Account Address")
     );
   }, [isAddr, contractData, icnsAddressData]);
 

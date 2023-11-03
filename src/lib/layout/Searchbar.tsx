@@ -68,7 +68,7 @@ const getRouteOptions = (
   type: Option<SearchResultType>
 ): Nullable<{ pathname: string; query: string[] }> => {
   switch (type) {
-    case "Wallet Address":
+    case "Account Address":
       return {
         pathname: "/accounts/[accountAddress]",
         query: ["accountAddress"],
@@ -232,7 +232,7 @@ const getPlaceholder = ({
   const wasmText = isWasm ? "/ Code ID / Contract Address" : "";
   const poolText = isPool ? "/ Pool ID" : "";
 
-  return `Search by Wallet Address / Tx Hash / Block ${wasmText} ${poolText}`;
+  return `Search by Account Address / Tx Hash / Block ${wasmText} ${poolText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
