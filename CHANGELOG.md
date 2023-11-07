@@ -107,7 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#487](https://github.com/alleslabs/celatone-frontend/pull/487) Support Station Extension
 - [#508](https://github.com/alleslabs/celatone-frontend/pull/508) Add auto focus, enter key listener on contract selection
 - [#492](https://github.com/alleslabs/celatone-frontend/pull/492) Add jsonschema actions on contract detail page
-- [#486](https://github.com/alleslabs/celatone-frontend/pull/486) Switch to schema tab when available and prefill,expand,and scroll to the prefill msg
+- [#486](https://github.com/alleslabs/celatone-frontend/pull/486) Switch to schema tab when available and prefill,expand, scroll to the prefill msg
 - [#483](https://github.com/alleslabs/celatone-frontend/pull/483) Add json schema functionality to execute page
 - [#482](https://github.com/alleslabs/celatone-frontend/pull/482) Add json schema functionality to query page
 - [#477](https://github.com/alleslabs/celatone-frontend/pull/477) Add json schema section on code detail page
