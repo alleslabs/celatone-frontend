@@ -1,5 +1,5 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, Flex, useToast } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -11,12 +11,12 @@ import {
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon";
-import { useGetMaxLengthError } from "lib/hooks";
-import type { HumanAddr } from "lib/types";
+import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
+import { useAccountStore } from "lib/providers/store";
+import type { Addr } from "lib/types";
 
 interface SaveNewAccountDetail {
-  address: HumanAddr;
+  address: Addr;
   name: string;
   description: string;
 }
@@ -25,14 +25,14 @@ interface SaveNewAccountModalProps {
 }
 
 export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
-  const toast = useToast();
   const { user: exampleUserAddress } = useExampleAddresses();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
+  const { isAccountSaved } = useAccountStore();
 
   const defaultValues: SaveNewAccountDetail = {
-    address: "" as HumanAddr,
+    address: "" as Addr,
     name: "",
     description: "",
   };
@@ -68,36 +68,47 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
       setStatus({
         state: "loading",
       });
-      const timeoutId = setTimeout(() => {
-        const errUser = validateUserAddress(addressState);
-        const errContract = validateContractAddress(addressState);
-        if (errUser && errContract)
-          setStatus({
-            state: "error",
-            message: errUser,
-          });
-        else
-          setStatus({
-            state: "success",
-            message: "Valid Address",
-          });
-      }, 1000);
-      return () => clearTimeout(timeoutId);
+      if (isAccountSaved(addressState)) {
+        setStatus({
+          state: "error",
+          message: "You already saved this address",
+        });
+      } else {
+        const timeoutId = setTimeout(() => {
+          const errUser = validateUserAddress(addressState);
+          const errContract = validateContractAddress(addressState);
+          if (errUser && errContract)
+            setStatus({
+              state: "error",
+              message: errUser,
+            });
+          // TODO validate contract type online
+          else
+            setStatus({
+              state: "success",
+              message: "Valid Address",
+            });
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+      }
     }
     return () => {};
-  }, [addressState, validateUserAddress, validateContractAddress]);
+  }, [
+    addressState,
+    isAccountSaved,
+    validateUserAddress,
+    validateContractAddress,
+  ]);
 
-  const handleSave = () => {
-    // TODO: abstract toast to template later
-    toast({
-      title: `Saved .. to Saved Codes`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon name="bookmark" />,
-    });
-  };
+  const handleSave = useHandleAccountSave({
+    title: `Saved ${nameState} `,
+    address: addressState,
+    name: nameState,
+    description: descriptionState,
+    actions: () => {
+      resetForm();
+    },
+  });
 
   return (
     <ActionModal
@@ -113,7 +124,6 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
       otherBtnTitle="Cancel"
       buttonRemark="Saved accounts are stored locally on your device."
     >
-      {/* Save other stored codes to your &ldquo;Saved Codes&rdquo; list */}
       <Flex direction="column" gap={6}>
         <ControllerInput
           name="address"
@@ -132,7 +142,6 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
           variant="fixed-floating"
           placeholder="ex. Celatone Account 1"
           labelBgColor="gray.900"
-          isRequired
           rules={{
             maxLength: constants.maxAccountNameLength,
           }}
