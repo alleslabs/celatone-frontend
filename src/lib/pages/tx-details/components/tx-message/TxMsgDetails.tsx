@@ -49,7 +49,11 @@ export const TxMsgDetails = ({
       overflow="hidden"
       transition="all 0.25s ease-in-out"
     >
-      <TxReceiptRender variant="tx-page" receipts={receipts} gap={3} />
+      <TxReceiptRender
+        variant="tx-page"
+        receipts={receipts}
+        gap={{ base: 4, md: 3 }}
+      />
     </Flex>
   );
 };
