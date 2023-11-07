@@ -2,7 +2,7 @@ import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 
 import type { ExplorerConfig } from "config/chain/types";
-import { useTrack } from "lib/amplitude";
+import { trackMintScan } from "lib/amplitude";
 import { type AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
@@ -126,7 +126,6 @@ const LinkRender = ({
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
-  const { trackMintScan } = useTrack();
   const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
@@ -154,7 +153,7 @@ const LinkRender = ({
       rel="noopener noreferrer"
       data-peer
       onClick={(e) => {
-        trackMintScan(type);
+        if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
     >

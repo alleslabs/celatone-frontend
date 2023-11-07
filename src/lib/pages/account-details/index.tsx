@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import {
   useInternalNavigate,
   useMoveConfig,
@@ -19,7 +19,6 @@ import {
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -74,6 +73,9 @@ export interface AccountDetailsBodyProps {
   accountAddress: HumanAddr;
 }
 
+const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
+  hexAddress === "0x1" ? hexAddress : accountAddress;
+
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({
@@ -85,7 +87,6 @@ const AccountDetailsBody = ({
   // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
-  const { trackUseTab } = useTrack();
   // TODO: remove assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
@@ -126,7 +127,7 @@ const AccountDetailsBody = ({
       navigate({
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
-          accountAddress,
+          accountAddress: getAddressOnPath(hexAddress, accountAddress),
           tab: nextTab,
         },
         options: {
@@ -134,7 +135,7 @@ const AccountDetailsBody = ({
         },
       });
     },
-    [tab, trackUseTab, navigate, accountAddress]
+    [accountAddress, hexAddress, navigate, tab]
   );
 
   useEffect(() => {
@@ -143,7 +144,7 @@ const AccountDetailsBody = ({
         replace: true,
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
-          accountAddress,
+          accountAddress: getAddressOnPath(hexAddress, accountAddress),
           tab: TabIndex.Overview,
         },
         options: {
@@ -151,7 +152,7 @@ const AccountDetailsBody = ({
         },
       });
     }
-  }, [router.isReady, tab, accountAddress, navigate]);
+  }, [accountAddress, hexAddress, navigate, router.isReady, tab]);
 
   return (
     <>
@@ -425,7 +426,6 @@ const AccountDetailsBody = ({
 
 const AccountDetails = () => {
   const router = useRouter();
-  const { track } = useTrack();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const formatAddresses = useFormatAddresses();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
@@ -438,9 +438,7 @@ const AccountDetails = () => {
 
   useEffect(() => {
     if (router.isReady && tab) track(AmpEvent.TO_ACCOUNT_DETAIL, { tab });
-  }, [router.isReady, tab, track]);
-
-  if (!router.isReady) return <Loading />;
+  }, [router.isReady, tab]);
 
   return (
     <PageContainer>

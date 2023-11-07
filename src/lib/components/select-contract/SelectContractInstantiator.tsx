@@ -19,7 +19,7 @@ import { useState } from "react";
 import type { KeyboardEvent } from "react";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -49,7 +49,6 @@ export const SelectContractInstantiator = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
-  const { track } = useTrack();
 
   const [searchContract, setSearchContract] = useState<ContractAddr>(
     "" as ContractAddr

@@ -2,7 +2,7 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
@@ -23,7 +23,6 @@ export function EditListNameModal({
   menuItemProps,
   reroute = false,
 }: EditListNameModalProps) {
-  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const userKey = useUserKey();

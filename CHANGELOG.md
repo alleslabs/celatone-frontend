@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#611](https://github.com/alleslabs/celatone-frontend/pull/611) Add saved accounts page
 - [#608](https://github.com/alleslabs/celatone-frontend/pull/608) Deprecate stone 10
 - [#601](https://github.com/alleslabs/celatone-frontend/pull/601) Add modules in public project
 - [#581](https://github.com/alleslabs/celatone-frontend/pull/581) Support new move input i.e., object, fixed_point, and decimal
@@ -66,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#605](https://github.com/alleslabs/celatone-frontend/pull/605) Apply singleton class style to Amplitude structure
 - [#591](https://github.com/alleslabs/celatone-frontend/pull/591) Bump initia.js due to decimal serialization and dynamic buffer
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Handle multi bond denoms data in the delegation section
 - [#593](https://github.com/alleslabs/celatone-frontend/pull/593) Refactor submit button to a common component
@@ -84,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Fix mintscan tracking in internal
 - [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state
 - [#603](https://github.com/alleslabs/celatone-frontend/pull/603) Dynamically change returned data by isWasm, isMove
 - [#602](https://github.com/alleslabs/celatone-frontend/pull/602) Fix package version client error

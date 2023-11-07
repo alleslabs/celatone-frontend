@@ -5,7 +5,7 @@ import Long from "long";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackAction } from "lib/amplitude";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
@@ -57,7 +57,6 @@ export const MigrateContract = ({
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const { trackAction } = useTrack();
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -192,7 +191,6 @@ export const MigrateContract = ({
     }
   }, [
     migrateTx,
-    trackAction,
     tab,
     contractAddress,
     codeId,

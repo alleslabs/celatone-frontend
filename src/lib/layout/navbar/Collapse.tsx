@@ -1,6 +1,6 @@
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -59,7 +59,6 @@ export const CollapseNavMenu = ({
   setIsExpand,
 }: NavMenuProps) => {
   const isMobile = useMobile();
-  const { track } = useTrack();
 
   return (
     <Box overflowY="auto" overflowX="hidden">

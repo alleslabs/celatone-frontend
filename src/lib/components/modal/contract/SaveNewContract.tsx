@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
@@ -35,7 +35,6 @@ export function SaveNewContractModal({
   list,
   buttonProps,
 }: SaveNewContractModalProps) {
-  const { track } = useTrack();
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 

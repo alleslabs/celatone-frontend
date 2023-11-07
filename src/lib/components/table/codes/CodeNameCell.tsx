@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 
 import { EditableCell } from "../EditableCell";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
@@ -16,7 +16,6 @@ export const CodeNameCell = ({
   code,
   isReadOnly = false,
 }: CodeNameCellProps) => {
-  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();

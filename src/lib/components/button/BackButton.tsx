@@ -3,11 +3,10 @@ import type { ButtonProps } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 
 export const BackButton = (props: ButtonProps) => {
   const router = useRouter();
-  const { track } = useTrack();
 
   return (
     <Button

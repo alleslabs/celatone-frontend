@@ -8,6 +8,8 @@ export class RootStore {
 
   contractStore: ContractStore;
 
+  // accountStore: AccountStore;
+
   publicProjectStore: PublicProjectStore;
 
   schemaStore: SchemaStore;
@@ -15,6 +17,7 @@ export class RootStore {
   constructor() {
     this.codeStore = new CodeStore();
     this.contractStore = new ContractStore();
+    // this.accountStore = new AccountStore();
     this.publicProjectStore = new PublicProjectStore();
     this.schemaStore = new SchemaStore();
   }

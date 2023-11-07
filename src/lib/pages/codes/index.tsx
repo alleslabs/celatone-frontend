@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import PageContainer from "lib/components/PageContainer";
@@ -21,7 +21,6 @@ interface RecentCodesState {
 
 const RecentCodes = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -44,7 +43,7 @@ const RecentCodes = observer(() => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_RECENT_CODES);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   const emptyState = (
     <EmptyState

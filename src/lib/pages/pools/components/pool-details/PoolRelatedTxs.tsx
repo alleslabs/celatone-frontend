@@ -7,21 +7,42 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
 import { usePoolTxsCount } from "../../data";
-import { useTrack } from "lib/amplitude";
+import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import type { PoolDetail } from "lib/types";
 import { PoolType } from "lib/types";
 
 import { PoolRelatedTxsTable } from "./tables/pool-txs";
 
+enum TabIndex {
+  All = "all",
+  Swap = "swap",
+  CLP = "clp",
+  LP = "lp",
+  Bonding = "bonding",
+  Superfluid = "superfluid",
+  Collect = "collect",
+}
+
 interface PoolRelatedTxsProps {
   pool: PoolDetail;
 }
 
 export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
-  const { trackUseTab } = useTrack();
+  const [tab, setTab] = useState(TabIndex.All);
+
+  const handleTabChange = useCallback(
+    (nextTab: TabIndex) => {
+      if (nextTab === tab) return;
+      trackUseTab(nextTab);
+      setTab(nextTab);
+    },
+    [tab]
+  );
+
   const {
     count: countAllTxs,
     countDisplay: countDisplayAllTxs,
@@ -81,14 +102,14 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           <CustomTab
             count={countDisplayAllTxs}
             isLoading={isLoadingAllTxs}
-            onClick={() => trackUseTab("All")}
+            onClick={() => handleTabChange(TabIndex.All)}
           >
             All
           </CustomTab>
           <CustomTab
             count={countDisplaySwapTxs}
             isLoading={isLoadingSwapTxs}
-            onClick={() => trackUseTab("Swap")}
+            onClick={() => handleTabChange(TabIndex.Swap)}
           >
             Swap
           </CustomTab>
@@ -96,7 +117,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <CustomTab
               count={countDisplayClpTxs}
               isLoading={isLoadingClpTxs}
-              onClick={() => trackUseTab("CLP")}
+              onClick={() => handleTabChange(TabIndex.CLP)}
             >
               CLP
             </CustomTab>
@@ -104,7 +125,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <CustomTab
               count={countDisplayLpTxs}
               isLoading={isLoadingLpTxs}
-              onClick={() => trackUseTab("LP")}
+              onClick={() => handleTabChange(TabIndex.LP)}
             >
               LP
             </CustomTab>
@@ -112,7 +133,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           <CustomTab
             count={countDisplayBondTxs}
             isLoading={isLoadingBondTxs}
-            onClick={() => trackUseTab("Bonding")}
+            onClick={() => handleTabChange(TabIndex.Bonding)}
           >
             Bonding
           </CustomTab>
@@ -120,7 +141,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <CustomTab
               count={countDisplaySuperfluidTxs}
               isLoading={isLoadingSuperfluidTxs}
-              onClick={() => trackUseTab("Superfluid")}
+              onClick={() => handleTabChange(TabIndex.Superfluid)}
             >
               Superfluid
             </CustomTab>
@@ -129,7 +150,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <CustomTab
               count={countDisplayCollectTxs}
               isLoading={isLoadingCollectTxs}
-              onClick={() => trackUseTab("Collect")}
+              onClick={() => handleTabChange(TabIndex.Collect)}
             >
               Collect
             </CustomTab>

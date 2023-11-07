@@ -3,11 +3,9 @@ import { useCallback } from "react";
 
 import { CELATONE_QUERY_KEYS } from "../env";
 import { useCurrentChain, useFabricateFee, useWasmConfig } from "../hooks";
-import { useTrack } from "lib/amplitude";
+import { trackTxSucceed } from "lib/amplitude";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import type { ContractAddr, HumanAddr } from "lib/types";
-
-import { useCatchTxError } from "./catchTxError";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: () => void;
@@ -18,8 +16,6 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
   const queryClient = useQueryClient();
   const fabricateFee = useFabricateFee();
   const wasm = useWasmConfig({ shouldRedirect: false });
-  const { trackTxSucceed } = useTrack();
-  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({ onTxSucceed }: ClearAdminStreamParams) => {
@@ -51,13 +47,10 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
             }),
           ]);
         },
-        catchTxError,
       });
     },
     [
       getSigningCosmWasmClient,
-      trackTxSucceed,
-      catchTxError,
       address,
       wasm,
       fabricateFee,

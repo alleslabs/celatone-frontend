@@ -1,7 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
@@ -18,7 +17,6 @@ const SubHeader = () => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
   const govConfig = useGovConfig({ shouldRedirect: false });
-  const { track } = useTrack();
 
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
@@ -53,12 +51,9 @@ const SubHeader = () => {
 
   const activeColor = "primary.light";
 
-  const trackOnClick = useCallback(
-    (tab: string) => {
-      track(AmpEvent.USE_TOPBAR, { tab });
-    },
-    [track]
-  );
+  const trackOnClick = (tab: string) => {
+    track(AmpEvent.USE_TOPBAR, { tab });
+  };
 
   return (
     <Flex px={6} alignItems="center" h="full" justifyContent="space-between">

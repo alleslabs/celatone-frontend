@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackToQuery } from "lib/amplitude";
 import {
   useInternalNavigate,
   useWasmConfig,
@@ -33,7 +33,6 @@ const Query = observer(() => {
   const [codeId, setCodeId] = useState("");
   const [initialMsg, setInitialMsg] = useState("");
   const isMobile = useMobile();
-  const { trackToQuery } = useTrack();
 
   const goToExecute = () => {
     navigate({
@@ -72,7 +71,7 @@ const Query = observer(() => {
 
       trackToQuery(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect, trackToQuery]);
+  }, [router, onContractSelect]);
 
   return (
     <PageContainer>

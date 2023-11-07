@@ -18,7 +18,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionWithFunds } from "lib/amplitude";
 import {
   useCurrentChain,
   useExecuteContractTx,
@@ -95,7 +95,6 @@ export const ExecuteBox = ({
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
-  const { trackActionWithFunds } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -219,7 +218,6 @@ export const ExecuteBox = ({
     fee,
     contractAddress,
     msg,
-    trackActionWithFunds,
     funds,
     attachFundsOption,
     addActivity,

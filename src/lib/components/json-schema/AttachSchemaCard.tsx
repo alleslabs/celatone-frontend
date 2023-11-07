@@ -2,7 +2,7 @@ import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -24,17 +24,15 @@ export const AttachSchemaCard = ({
   schema,
   openModal,
 }: AttachSchemaCardProps) => {
-  const { track } = useTrack();
-
   const handleAttach = useCallback(() => {
     openModal();
     track(AmpEvent.USE_ATTACHED_JSON_MODAL);
-  }, [track, openModal]);
+  }, [openModal]);
 
   const handleReattach = useCallback(() => {
     openModal();
     track(AmpEvent.USE_EDIT_ATTACHED_JSON);
-  }, [track, openModal]);
+  }, [openModal]);
 
   return (
     <Flex

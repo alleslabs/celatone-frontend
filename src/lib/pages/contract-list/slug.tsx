@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
@@ -29,7 +29,6 @@ import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const ContractsByList = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -73,7 +72,7 @@ const ContractsByList = observer(() => {
           track(AmpEvent.TO_LIST_OTHERS);
       }
     }
-  }, [router.isReady, listSlug, track]);
+  }, [router.isReady, listSlug]);
 
   if (!contractListInfo) return null;
 

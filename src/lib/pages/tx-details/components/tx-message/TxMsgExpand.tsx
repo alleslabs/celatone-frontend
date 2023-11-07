@@ -4,7 +4,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
@@ -28,10 +28,10 @@ export const TxMsgExpand = ({
   assetInfos,
   onClick,
 }: TxMsgExpandProps) => {
-  const getAddressType = useGetAddressType();
-  const { track } = useTrack();
-  const { "@type": type, ...body } = msgBody;
   const isMobile = useMobile();
+  const getAddressType = useGetAddressType();
+
+  const { "@type": type, ...body } = msgBody;
   const isIBC =
     Boolean(log?.events?.find((event) => event.type === "send_packet")) ||
     type.startsWith("/ibc");

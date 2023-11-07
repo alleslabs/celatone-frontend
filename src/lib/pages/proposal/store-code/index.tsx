@@ -22,7 +22,13 @@ import {
   PROPOSAL_STORE_CODE_TEXT,
 } from "../constants";
 import { getAlert } from "../utils";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import {
+  AmpEvent,
+  trackUseDepositFill,
+  trackUseSubmitProposal,
+  trackUseUnpin,
+  track,
+} from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -87,8 +93,6 @@ const defaultValues: StoreCodeProposalState = {
 
 const StoreCodeProposal = () => {
   useWasmConfig({ shouldRedirect: true });
-  const { track, trackUseUnpin, trackUseDepositFill, trackUseSubmitProposal } =
-    useTrack();
   const {
     constants,
     chainConfig: { prettyName },
@@ -154,7 +158,7 @@ const StoreCodeProposal = () => {
   const router = useRouter();
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   const { variant, description, icon } = getAlert(
     initialDeposit.amount,
@@ -329,7 +333,6 @@ const StoreCodeProposal = () => {
     runAs,
     source,
     submitStoreCodeProposalTx,
-    trackUseSubmitProposal,
     title,
     unpinCode,
     walletAddress,

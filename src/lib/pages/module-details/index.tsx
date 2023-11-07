@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import type { MouseEventHandler } from "react";
 import { useState, useCallback, useEffect } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { IconKeys } from "lib/components/icon";
@@ -67,7 +67,6 @@ const InvalidModule = () => <InvalidState title="Module does not exist" />;
 export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { trackUseTab } = useTrack();
 
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const [overviewHistoryTabIndex, setOverviewHistoryTabIndex] = useState(0);
@@ -90,7 +89,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
         },
       });
     },
-    [moduleData.address, moduleData.moduleName, navigate, tab, trackUseTab]
+    [moduleData.address, moduleData.moduleName, navigate, tab]
   );
 
   const { data: moduleId } = useModuleId(

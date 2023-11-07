@@ -1,7 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -20,7 +20,7 @@ const DotSeparator = () => (
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const openLcdTab = useOpenTxTab("lcd");
   const isMobile = useMobile();
-  const { trackUseViewJSON } = useTrack();
+
   return (
     <Flex direction="column" gap={2} {...flexProps}>
       <Flex justify="space-between" align="center">

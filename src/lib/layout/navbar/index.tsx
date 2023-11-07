@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { type Dispatch, type SetStateAction } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   usePublicProjectConfig,
   useCurrentChain,
@@ -35,7 +35,6 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const { track } = useTrack();
 
   const { address } = useCurrentChain();
 
@@ -80,11 +79,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           },
         ]
       : []),
+    // TODO: combine move and wasm after having This Wallet subsection in move
     ...(move.enabled
       ? [
           {
-            category: "Quick Actions",
-            slug: "quick-actions",
+            category: "Developer Tools",
+            slug: StorageKeys.DevSidebar,
             submenu: [
               {
                 name: "0x1 Page",
@@ -105,6 +105,18 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 name: "Deploy Script",
                 slug: "/deploy-script",
                 icon: "code" as IconKeys,
+              },
+            ],
+            subSection: [
+              {
+                category: "This Device",
+                submenu: [
+                  {
+                    name: "Saved Accounts",
+                    slug: "/saved-accounts",
+                    icon: "admin" as IconKeys,
+                  },
+                ],
               },
             ],
           },
@@ -163,6 +175,11 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               {
                 category: "This Device",
                 submenu: [
+                  {
+                    name: "Saved Accounts",
+                    slug: "/saved-accounts",
+                    icon: "admin" as IconKeys,
+                  },
                   {
                     name: "Saved Codes",
                     slug: "/saved-codes",

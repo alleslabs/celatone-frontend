@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import { useCallback, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useFabricateFee,
   useResendTx,
@@ -32,7 +32,6 @@ const formatMsgs = (messages: Message[]) =>
   }, []);
 
 export const ResendButton = ({ messages }: ResendButtonProps) => {
-  const { track } = useTrack();
   const fabricateFee = useFabricateFee();
   const resendTx = useResendTx();
   const { broadcast } = useTxBroadcast();
@@ -53,7 +52,7 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
       });
       if (stream) broadcast(stream);
     },
-    [broadcast, composedMsgs, fabricateFee, resendTx, track]
+    [broadcast, composedMsgs, fabricateFee, resendTx]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({

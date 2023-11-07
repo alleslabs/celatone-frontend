@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -14,7 +14,6 @@ import { useRecentContractsData } from "./data";
 
 const RecentContracts = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (contract: ContractAddr) =>
@@ -27,7 +26,7 @@ const RecentContracts = observer(() => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_RECENT_CONTRACT);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

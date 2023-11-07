@@ -6,13 +6,13 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import type { TxResultRendering, ContractAddr, HumanAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
+import { catchTxError } from "./common";
 import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
@@ -23,7 +23,6 @@ interface ClearAdminTxParams {
   memo?: string;
   client: SigningCosmWasmClient;
   onTxSucceed?: () => void;
-  catchTxError: CatchTxError;
 }
 
 export const clearAdminTx = ({
@@ -33,7 +32,6 @@ export const clearAdminTx = ({
   memo,
   client,
   onTxSucceed,
-  catchTxError,
 }: ClearAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),

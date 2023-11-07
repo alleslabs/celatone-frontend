@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import { usePublicProjectStore } from "lib/providers/store";
@@ -67,7 +67,6 @@ const StyledButton = ({
 
 export const BookmarkButton = observer(
   ({ details, slug, hasText = true }: BookmarkButtonProps) => {
-    const { track } = useTrack();
     const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
     const toast = useToast({
@@ -88,7 +87,7 @@ export const BookmarkButton = observer(
       toast({
         title: `Bookmarked \u2018${details?.name}\u2019 successfully`,
       });
-    }, [track, savePublicProject, details?.name, details?.logo, slug, toast]);
+    }, [savePublicProject, details?.name, details?.logo, slug, toast]);
 
     const handleRemove = useCallback(() => {
       track(AmpEvent.PUBLIC_REMOVE);
@@ -96,7 +95,7 @@ export const BookmarkButton = observer(
       toast({
         title: `\u2018${details?.name}\u2019 is removed from bookmark`,
       });
-    }, [track, removePublicProject, slug, toast, details?.name]);
+    }, [removePublicProject, slug, toast, details?.name]);
 
     return (
       <Flex alignItems="center">

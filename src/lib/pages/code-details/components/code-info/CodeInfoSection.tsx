@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -134,17 +134,16 @@ export const CodeInfoSection = ({
   );
   const uploaderType = getAddressType(uploader);
   const isMobile = useMobile();
-  const { track } = useTrack();
 
   const handleView = useCallback(() => {
     toJsonSchemaTab();
     track(AmpEvent.USE_VIEW_ATTACHED_JSON);
-  }, [toJsonSchemaTab, track]);
+  }, [toJsonSchemaTab]);
 
   const handleAttach = useCallback(() => {
     onOpen();
     track(AmpEvent.USE_ATTACHED_JSON_MODAL);
-  }, [onOpen, track]);
+  }, [onOpen]);
 
   return (
     <Box my={8}>
