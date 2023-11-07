@@ -189,7 +189,7 @@ viewModule(moduleAddress, moduleName, fnName);`,
         mode: "javascript",
         snippet: `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
 
-const lcd = new LCDClient('https://stone-rest.initia.tech/', {
+const lcd = new LCDClient('${lcdEndpoint}', {
     chainId: '${currentChainId}',
     gasPrices: '${gasPriceStr}',
     gasAdjustment: '2.0',
