@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Deprecate stone 10
 - [#601](https://github.com/alleslabs/celatone-frontend/pull/601) Add modules in public project
 - [#581](https://github.com/alleslabs/celatone-frontend/pull/581) Support new move input i.e., object, fixed_point, and decimal
 - [#583](https://github.com/alleslabs/celatone-frontend/pull/583) Support Move code snippets
