@@ -4,7 +4,6 @@ import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import type { UploadSucceedCallback } from "lib/app-provider";
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
@@ -12,6 +11,7 @@ import type { HumanAddr, TxResultRendering, ComposedMsg } from "lib/types";
 import { findAttr } from "lib/utils";
 import { formatUFee } from "lib/utils/formatter/denom";
 
+import { catchTxError } from "./common";
 import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
@@ -24,7 +24,6 @@ interface UploadTxParams {
   memo?: string;
   client: SigningCosmWasmClient;
   isMigrate: boolean;
-  catchTxError: CatchTxError;
   onTxSucceed: UploadSucceedCallback;
 }
 
@@ -37,7 +36,6 @@ export const uploadContractTx = ({
   memo,
   client,
   isMigrate,
-  catchTxError,
   onTxSucceed,
 }: UploadTxParams): Observable<TxResultRendering> => {
   return pipe(

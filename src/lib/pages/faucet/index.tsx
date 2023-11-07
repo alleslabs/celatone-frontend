@@ -11,7 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -42,7 +42,6 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 };
 
 const Faucet = () => {
-  const { track } = useTrack();
   const { address: walletAddress = "" } = useCurrentChain();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -78,7 +77,7 @@ const Faucet = () => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_FAUCET);
-  }, [router, track]);
+  }, [router]);
 
   useEffect(() => {
     if (address) {

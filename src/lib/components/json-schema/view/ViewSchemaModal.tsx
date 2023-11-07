@@ -19,7 +19,7 @@ import {
 import { capitalize } from "lodash";
 import { useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackUseViewJSON, track } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -65,26 +65,17 @@ export const ViewSchemaModal = ({
   isIcon = false,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { track } = useTrack();
 
   const handleView = useCallback(() => {
     onOpen();
     track(AmpEvent.USE_VIEW_ATTACHED_JSON, { tab: ALL_TABS[0] });
-  }, [onOpen, track]);
+  }, [onOpen]);
 
-  const trackTabOnChange = useCallback(
-    (index: number) => {
-      track(AmpEvent.USE_VIEW_ATTACHED_JSON, {
-        tab: ALL_TABS[index],
-      });
-    },
-    [track]
-  );
-
-  const trackUseViewJsonInCodeDetail = useCallback(
-    () => track(AmpEvent.USE_VIEW_JSON_IN_CODE_DETAIL),
-    [track]
-  );
+  const trackTabOnChange = (index: number) => {
+    track(AmpEvent.USE_VIEW_ATTACHED_JSON, {
+      tab: ALL_TABS[index],
+    });
+  };
 
   return (
     <>
@@ -122,7 +113,7 @@ export const ViewSchemaModal = ({
             </Flex>
             <AppLink
               href={`/codes/${codeId}/schema`}
-              onClick={trackUseViewJsonInCodeDetail}
+              onClick={() => trackUseViewJSON("code_details_schema")}
             >
               <Button mr={8} gap={1} size="sm" variant="outline-gray">
                 <CustomIcon name="view" />

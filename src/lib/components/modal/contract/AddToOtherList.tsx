@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/ListSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
@@ -18,7 +18,6 @@ interface AddToOtherListModalProps {
 export const AddToOtherListModal = observer(
   ({ contractLocalInfo, triggerElement }: AddToOtherListModalProps) => {
     const [contractLists, setContractLists] = useState<LVPair[]>([]);
-    const { track } = useTrack();
 
     const handleSave = useHandleContractSave({
       title: "Action Complete!",

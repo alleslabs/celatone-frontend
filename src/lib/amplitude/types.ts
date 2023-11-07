@@ -55,7 +55,7 @@ export enum AmpEvent {
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   // ACTIONS
-  ACTION_UPLOAD = "Act Upload",
+  ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
   ACTION_EXECUTE = "Action Execute",
   ACTION_QUERY = "Action Query",
@@ -82,7 +82,6 @@ export enum AmpEvent {
   USE_VIEW_ATTACHED_JSON = "Use View Attached Json",
   USE_EDIT_ATTACHED_JSON = "Use Edit Attached Json",
   USE_REMOVE_ATTACHED_JSON = "Use Remove Attached Json",
-  USE_VIEW_JSON_IN_CODE_DETAIL = "Use View Json In Code Detail",
   USE_SWITCH_JSON_INPUT = "Use Switch Json Input",
   USE_CONTRACT_FORM = "Use Contract Form",
   USE_CONTRACT_MODAL = "Use Contract Modal",
@@ -133,7 +132,6 @@ export enum AmpEvent {
   MINTSCAN = "Mintscan",
   WEBSITE = "Website",
   SOCIAL = "Social",
-  CELATONE = "Celatone",
   FEEDBACK = "Feedback",
   ALLESLABS = "AllesLabs",
 }
@@ -159,7 +157,6 @@ export type SpecialAmpEvent =
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
   | AmpEvent.SOCIAL
-  | AmpEvent.CELATONE
   | AmpEvent.USE_VIEW_JSON
   | AmpEvent.USE_UNSUPPORTED_ASSETS
   | AmpEvent.USE_COPIER

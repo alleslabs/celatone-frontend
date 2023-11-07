@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-import { useTrack } from "lib/amplitude";
+import { trackSocial, trackWebsite } from "lib/amplitude";
 import { CustomIconButton } from "lib/components/button";
 import type { IconKeys } from "lib/components/icon";
 import type { Option, PublicDetail } from "lib/types";
@@ -22,8 +22,6 @@ interface SocialMediaProps {
   details: Option<PublicDetail>;
 }
 export const SocialMedia = ({ details }: SocialMediaProps) => {
-  const { trackWebsite, trackSocial } = useTrack();
-
   if (!details) return null;
   return (
     <Flex

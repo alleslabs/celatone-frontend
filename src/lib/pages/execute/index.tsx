@@ -3,7 +3,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackToExecute } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -37,7 +37,6 @@ const Execute = () => {
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState("");
-  const { trackToExecute } = useTrack();
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
@@ -91,7 +90,7 @@ const Execute = () => {
       setContractAddress(contractAddressParam);
       trackToExecute(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect, trackToExecute]);
+  }, [router, onContractSelect]);
 
   return (
     <PageContainer>

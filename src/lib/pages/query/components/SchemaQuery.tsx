@@ -1,7 +1,7 @@
 import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpandAll } from "lib/amplitude";
 import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -32,7 +32,6 @@ export const SchemaQuery = ({
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
-  const { trackUseExpandAll } = useTrack();
 
   const { getSchemaByCodeHash } = useSchemaStore();
   const fullSchema = getSchemaByCodeHash(codeHash);

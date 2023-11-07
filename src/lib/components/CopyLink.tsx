@@ -2,7 +2,7 @@ import type { FlexProps, IconProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseCopier } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { truncate } from "lib/utils";
 
@@ -28,7 +28,6 @@ export const CopyLink = ({
   ...flexProps
 }: CopyLinkProps) => {
   const { address } = useCurrentChain();
-  const { trackUseCopier } = useTrack();
   const { onCopy, hasCopied, setValue } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
 

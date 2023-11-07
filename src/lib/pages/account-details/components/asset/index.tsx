@@ -2,7 +2,7 @@ import { Flex, Grid, Text, Button } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -75,7 +75,6 @@ const AssetCta = ({
   walletAddress,
 }: AssetCtaProps) => {
   const openAssetTab = useOpenAssetTab();
-  const { trackUseViewJSON } = useTrack();
 
   return (
     <Flex

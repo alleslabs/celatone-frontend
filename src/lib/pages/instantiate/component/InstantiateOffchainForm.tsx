@@ -2,7 +2,7 @@ import { Text, Flex, Heading, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
@@ -28,7 +28,6 @@ export const InstantiateOffChainForm = observer(
     contractAddress,
     contractLabel,
   }: InstantiateOffChainFormProps) => {
-    const { track } = useTrack();
     const { address = "" } = useCurrentChain();
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();

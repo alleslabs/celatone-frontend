@@ -4,7 +4,7 @@ import { isValidMotionProp, motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { useGetAddressType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -27,7 +27,6 @@ interface EventBoxProps {
 export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
   const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(true);
-  const { trackUseExpand } = useTrack();
 
   const receipts = event.attributes.map<TxReceipt>(({ key, value }) => {
     const addrType = getAddressType(value);

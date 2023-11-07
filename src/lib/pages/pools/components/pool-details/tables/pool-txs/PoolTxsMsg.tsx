@@ -1,6 +1,6 @@
 import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
@@ -34,7 +34,6 @@ export const PoolTxsMsg = ({
   templateColumns,
 }: PoolTxsMsgProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const { trackUseExpand } = useTrack();
   const msgDetailTemplateColumns = templateColumns
     .split(" ")
     .slice(0, 3)

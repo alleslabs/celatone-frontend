@@ -1,7 +1,7 @@
 import { Flex, FormControl, Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal";
@@ -15,7 +15,6 @@ interface EditTagsProps {
 }
 
 export function EditTags({ contractLocalInfo }: EditTagsProps) {
-  const { track } = useTrack();
   const [tagResult, setTagResult] = useState<string[]>(
     getTagsDefault(contractLocalInfo.tags)
   );

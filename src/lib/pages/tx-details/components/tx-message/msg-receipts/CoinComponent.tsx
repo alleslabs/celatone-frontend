@@ -2,7 +2,7 @@ import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
@@ -28,7 +28,6 @@ const MultiCoin = ({
     amount.filter((coin) => !assetInfos[coin.denom]),
   ];
   const [showMore, setShowMore] = useState(false);
-  const { trackUseExpand } = useTrack();
 
   const hasSupportedCoins = supportedCoins.length > 0;
   const isMobile = useMobile();

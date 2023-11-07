@@ -11,7 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseViewJSON } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
@@ -26,7 +26,6 @@ export const JsonModalButton = ({
   modalHeader,
 }: JsonModalButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { trackUseViewJSON } = useTrack();
   return (
     <>
       <Button

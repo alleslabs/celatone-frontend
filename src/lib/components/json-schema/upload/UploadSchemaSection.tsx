@@ -19,50 +19,59 @@ export const UploadSchemaSection = ({
   codeId,
   codeHash,
   title = `You haven't attached the JSON Schema for code ${codeId} yet`,
-}: UploadSchemaSectionProps) => (
-  <Flex
-    p="24px 16px"
-    direction="column"
-    alignItems="center"
-    bgColor="gray.900"
-    borderRadius="8px"
-  >
-    <Flex direction="column" alignItems="center">
+}: UploadSchemaSectionProps) => {
+  const sectionHeader =
+    typeof title === "string" ? (
       <Text variant="body1" fontWeight={700}>
         {title}
       </Text>
-      <Text
-        variant="body2"
-        textColor="text.disabled"
-        fontWeight={500}
-        mt={2}
-        mb={4}
-      >
-        Your attached JSON schema will be stored locally on your device
-      </Text>
-      <Flex direction="column" w="full" gap={10} position="relative">
-        <Flex
-          bgColor="gray.800"
-          borderRadius={4}
-          p={2}
-          gap={2}
-          w="full"
-          justifyContent="center"
+    ) : (
+      title
+    );
+
+  return (
+    <Flex
+      p="24px 16px"
+      direction="column"
+      alignItems="center"
+      bgColor="gray.900"
+      borderRadius="8px"
+    >
+      <Flex direction="column" alignItems="center">
+        {sectionHeader}
+        <Text
+          variant="body2"
+          textColor="text.disabled"
+          fontWeight={500}
+          mt={2}
+          mb={4}
         >
-          <CustomIcon name="code" color="gray.400" />
-          Code ID: {codeId}
+          Your attached JSON schema will be stored locally on your device
+        </Text>
+        <Flex direction="column" w="full" gap={10} position="relative">
+          <Flex
+            bgColor="gray.800"
+            borderRadius={4}
+            p={2}
+            gap={2}
+            w="full"
+            justifyContent="center"
+          >
+            <CustomIcon name="code" color="gray.400" />
+            Code ID: {codeId}
+          </Flex>
+          <ConnectingLine
+            isFilled={false}
+            style={{ left: "calc(50% - 6px)", top: "36px" }}
+          />
+          <UploadSchema
+            attached={false}
+            schema={schema}
+            codeId={codeId}
+            codeHash={codeHash}
+          />
         </Flex>
-        <ConnectingLine
-          isFilled={false}
-          style={{ left: "calc(50% - 6px)", top: "36px" }}
-        />
-        <UploadSchema
-          attached={false}
-          schema={schema}
-          codeId={codeId}
-          codeHash={codeHash}
-        />
       </Flex>
     </Flex>
-  </Flex>
-);
+  );
+};

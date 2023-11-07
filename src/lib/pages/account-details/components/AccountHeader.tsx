@@ -59,7 +59,7 @@ export const AccountHeader = ({
             direction={{ base: "column", md: "row" }}
           >
             <Text fontWeight={500} color="text.dark" variant="body2">
-              Wallet Address:
+              Account Address:
             </Text>
             <CopyLink
               value={accountAddress}

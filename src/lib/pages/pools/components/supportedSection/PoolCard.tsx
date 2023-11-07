@@ -4,7 +4,7 @@ import big from "big.js";
 import Link from "next/link";
 
 import { PoolHeader } from "../PoolHeader";
-import { useTrack } from "lib/amplitude";
+import { trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
@@ -27,7 +27,6 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
-  const { trackWebsite } = useTrack();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     // First version, navigate to contract details page if pool type is CosmWasm

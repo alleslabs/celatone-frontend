@@ -10,7 +10,7 @@ import {
   DrawerBody,
 } from "@chakra-ui/react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
@@ -31,7 +31,6 @@ export const SelectContractAdmin = ({
   notSelected,
   onContractSelect,
 }: SelectContractAdminProps) => {
-  const { track } = useTrack();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();

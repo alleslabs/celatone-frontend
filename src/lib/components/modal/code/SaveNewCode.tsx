@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -26,7 +26,6 @@ interface SaveNewCodeModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { address } = useCurrentChain();
-  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
 

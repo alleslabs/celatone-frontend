@@ -12,7 +12,7 @@ import Link from "next/link";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand, trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -41,7 +41,6 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
-  const { trackWebsite, trackUseExpand } = useTrack();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     // First version, navigate to contract details page if pool type is CosmWasm

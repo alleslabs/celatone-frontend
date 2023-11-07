@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { CURR_THEME } from "env";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { BackButton } from "lib/components/button";
 import PageContainer from "lib/components/PageContainer";
 
 const NotFoundPage = () => {
-  const { track } = useTrack();
   const router = useRouter();
+
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_NOT_FOUND);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

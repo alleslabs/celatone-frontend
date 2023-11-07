@@ -21,7 +21,7 @@ import AceEditor from "react-ace";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { CURR_THEME } from "env";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -59,7 +59,6 @@ const WasmCodeSnippet = ({
   const {
     chain: { chain_name: chainName, daemon_name: daemonName },
   } = useCurrentChain();
-  const { track } = useTrack();
   const isDisabled = !contractAddress || !message.length;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();

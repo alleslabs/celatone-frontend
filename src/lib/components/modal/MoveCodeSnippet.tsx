@@ -21,7 +21,7 @@ import AceEditor from "react-ace";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { CURR_THEME } from "env";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -72,7 +72,6 @@ const MoveCodeSnippet = ({
   const {
     chain: { daemon_name: daemonName },
   } = useCurrentChain();
-  const { track } = useTrack();
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
   const {

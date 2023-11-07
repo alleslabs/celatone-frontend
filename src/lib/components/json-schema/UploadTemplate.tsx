@@ -11,7 +11,7 @@ import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
@@ -200,7 +200,6 @@ export const UploadTemplate = ({
   closeDrawer,
   onSchemaSave,
 }: UploadTemplateInterface) => {
-  const { track } = useTrack();
   const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
@@ -273,7 +272,6 @@ export const UploadTemplate = ({
     method,
     isReattach,
     onSchemaSave,
-    track,
     saveNewSchema,
     toast,
   ]);

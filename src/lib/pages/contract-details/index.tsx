@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useValidateAddress,
   useWasmConfig,
@@ -302,7 +302,6 @@ const ContractDetailsBody = observer(
 
 const ContractDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
   const contractAddressParam = getFirstQueryParam(
@@ -312,7 +311,7 @@ const ContractDetails = observer(() => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_CONTRACT_DETAIL);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   if (contractData.isContractDetailLoading) return <Loading withBorder />;
   return (

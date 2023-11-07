@@ -7,7 +7,12 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import {
+  AmpEvent,
+  trackActionWithFunds,
+  trackToInstantiate,
+  track,
+} from "lib/amplitude";
 import {
   useFabricateFee,
   useInstantiateTx,
@@ -87,7 +92,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const { track, trackActionWithFunds, trackToInstantiate } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -267,7 +271,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     tab,
     attachFundsOption,
     postInstantiateTx,
-    trackActionWithFunds,
     codeId,
     currentInput,
     label,
@@ -370,7 +373,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
   useEffect(() => {
     if (router.isReady) trackToInstantiate(!!msgQuery, !!codeIdQuery);
-  }, [router.isReady, msgQuery, codeIdQuery, trackToInstantiate]);
+  }, [router.isReady, msgQuery, codeIdQuery]);
 
   return (
     <>

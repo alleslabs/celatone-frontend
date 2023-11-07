@@ -1,7 +1,14 @@
 import { fromBech32, fromHex, toBech32, toHex } from "@cosmjs/encoding";
 
 import type { AddressReturnType } from "lib/app-provider";
-import type { HexAddr, HumanAddr } from "lib/types";
+import type { HexAddr, HumanAddr, Option } from "lib/types";
+
+import { sha256Hex } from "./sha256";
+
+export const hashAddress = (address: Option<string>): Option<string> => {
+  if (!address) return undefined;
+  return sha256Hex(fromBech32(address).data);
+};
 
 export const getAddressTypeText = (addressType: AddressReturnType) => {
   switch (addressType) {

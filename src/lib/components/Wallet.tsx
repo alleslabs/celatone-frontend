@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { truncate } from "lib/utils";
 
@@ -14,7 +14,6 @@ import {
 
 export const WalletSection = () => {
   const { address, connect, openView, status } = useCurrentChain();
-  const { track } = useTrack();
 
   // Events
   const onClickConnect: MouseEventHandler = async (e) => {

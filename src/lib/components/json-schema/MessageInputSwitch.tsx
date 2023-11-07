@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
 import { Tooltip } from "../Tooltip";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
 
@@ -41,7 +41,6 @@ export const MessageInputSwitch = <
   isOutput = false,
   onTabChange: onTabChangeProps,
 }: MessageInputSwitchProps<T>) => {
-  const { track } = useTrack();
   const tabs = useMemo<T[]>(
     () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
     [isOutput]
@@ -53,7 +52,7 @@ export const MessageInputSwitch = <
       track(AmpEvent.USE_SCHEMA_TOGGLE, { tab });
       onTabChangeProps(tab);
     },
-    [onTabChangeProps, track]
+    [onTabChangeProps]
   );
 
   /**

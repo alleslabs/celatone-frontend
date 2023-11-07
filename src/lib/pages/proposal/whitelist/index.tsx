@@ -18,7 +18,13 @@ import { InitialDeposit } from "../components/InitialDeposit";
 import { PermissionlessAlert } from "../components/PermissionlessAlert";
 import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import {
+  AmpEvent,
+  trackUseDepositFill,
+  trackUseSubmitProposal,
+  trackUseWhitelistedAddress,
+  track,
+} from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -59,12 +65,6 @@ const defaultValues: WhiteListState = {
 
 const ProposalToWhitelist = () => {
   useWasmConfig({ shouldRedirect: true });
-  const {
-    track,
-    trackUseDepositFill,
-    trackUseWhitelistedAddress,
-    trackUseSubmitProposal,
-  } = useTrack();
   const router = useRouter();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -200,7 +200,6 @@ const ProposalToWhitelist = () => {
     addresses.length,
     minDeposit,
     submitProposalTx,
-    trackUseSubmitProposal,
     estimatedFee,
     submitWhitelistProposalMsg,
     addressesArray.length,
@@ -232,7 +231,7 @@ const ProposalToWhitelist = () => {
     if (router.isReady) {
       track(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
     }
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   return (
     <>

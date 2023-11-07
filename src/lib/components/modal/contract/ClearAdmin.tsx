@@ -2,7 +2,7 @@ import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { ContractAddr } from "lib/types";
@@ -16,7 +16,6 @@ export const ClearAdminModal = ({
   contractAddress,
   triggerElement,
 }: ClearAdminModalProps) => {
-  const { track } = useTrack();
   const { broadcast } = useTxBroadcast();
   const clearAdminTx = useClearAdminTx(contractAddress);
 
@@ -24,7 +23,7 @@ export const ClearAdminModal = ({
     track(AmpEvent.ACTION_ADMIN_CLEAR);
     const stream = await clearAdminTx({});
     if (stream) broadcast(stream);
-  }, [broadcast, clearAdminTx, track]);
+  }, [broadcast, clearAdminTx]);
 
   return (
     <ActionModal

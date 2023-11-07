@@ -4,7 +4,7 @@ import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState, useRef, forwardRef } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import {
   FilterChip,
   DropdownContainer,
@@ -38,7 +38,6 @@ export const ProposalStatusFilter = forwardRef<
     }: ProposalStatusFilterProps,
     ref
   ) => {
-    const { trackUseFilter } = useTrack();
     const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);

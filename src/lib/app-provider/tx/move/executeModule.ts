@@ -2,8 +2,7 @@ import type { StdFee } from "@cosmjs/stargate";
 import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCatchTxError } from "../catchTxError";
-import { useTrack } from "lib/amplitude";
+import { trackTxSucceed } from "lib/amplitude";
 import { executeModuleTx } from "lib/app-fns/tx/move/executeModule";
 import { useCurrentChain } from "lib/app-provider/hooks";
 import type { HexAddr, HumanAddr } from "lib/types";
@@ -22,8 +21,6 @@ export interface ExecuteModuleStreamParams {
 
 export const useExecuteModuleTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
-  const { trackTxSucceed } = useTrack();
-  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -57,7 +54,6 @@ export const useExecuteModuleTx = () => {
         messages,
         fee: estimatedFee,
         client,
-        catchTxError,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -65,6 +61,6 @@ export const useExecuteModuleTx = () => {
         onTxFailed,
       });
     },
-    [address, catchTxError, getSigningCosmWasmClient, trackTxSucceed]
+    [address, getSigningCosmWasmClient]
   );
 };
