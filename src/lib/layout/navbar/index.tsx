@@ -107,6 +107,18 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 icon: "code" as IconKeys,
               },
             ],
+            subSection: [
+              {
+                category: "This Device",
+                submenu: [
+                  {
+                    name: "Saved Accounts",
+                    slug: "/saved-accounts",
+                    icon: "admin" as IconKeys,
+                  },
+                ],
+              },
+            ],
           },
         ]
       : []),
@@ -163,6 +175,11 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               {
                 category: "This Device",
                 submenu: [
+                  {
+                    name: "Saved Accounts",
+                    slug: "/saved-accounts",
+                    icon: "admin" as IconKeys,
+                  },
                   {
                     name: "Saved Codes",
                     slug: "/saved-codes",
