@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
 - [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Fix mintscan tracking in internal
 - [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state
 - [#603](https://github.com/alleslabs/celatone-frontend/pull/603) Dynamically change returned data by isWasm, isMove

@@ -33,7 +33,7 @@ export const getPermissionHelper = (
         return address && permissionAddresses.includes(address)
           ? "You are designated to instantiate contract from this code"
           : `This code can only be instantiated by ${truncate(
-              permissionAddresses.at(0)
+              permissionAddresses[0]
             )}`;
       default:
         return "Valid Code ID";

@@ -22,7 +22,7 @@ const Container = chakra(Flex, {
 });
 
 export const TxInfo = ({ txData, assetInfos, ...flexProps }: TxInfoProps) => {
-  const feeCoin = txData.tx.auth_info.fee?.amount.at(0);
+  const feeCoin = txData.tx.auth_info.fee?.amount[0];
   const assetInfo = feeCoin ? assetInfos?.[feeCoin.denom] : undefined;
   return (
     <Container {...flexProps}>

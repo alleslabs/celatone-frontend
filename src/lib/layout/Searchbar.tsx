@@ -299,7 +299,7 @@ const Searchbar = () => {
           break;
         }
         case "Enter":
-          handleSelectResult(results.at(cursor ?? 0));
+          handleSelectResult(results[cursor ?? 0]);
           onClose?.();
           break;
         default:

@@ -42,7 +42,7 @@ export const catchTxError = (
   onTxFailed?: () => void
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
-    const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
+    const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.[1];
     if (error.message === "Request rejected") {
       trackTxRejected();
     } else {

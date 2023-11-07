@@ -37,14 +37,14 @@ export const PoolAssetsGrid = ({
     .find((log) => log.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "coin_received");
 
-  const assetAttr = receivedEvent?.attributes.at(1)?.value;
+  const assetAttr = receivedEvent?.attributes[1]?.value;
   let eventAssets = assetAttr ? coinsFromStr(assetAttr) : undefined;
   if (msgSwapDenom) {
     const specifiedAsset = eventAssets?.find(
       (asset) => asset.denom === msgSwapDenom
     );
 
-    const swapAttr = receivedEvent?.attributes.at(-1)?.value;
+    const swapAttr = receivedEvent?.attributes[-1]?.value;
     const swapAsset = swapAttr ? coinsFromStr(swapAttr)[0] : undefined;
 
     eventAssets =
