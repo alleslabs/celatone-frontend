@@ -37,6 +37,7 @@ export interface ActionModalProps {
   otherVariant?: string;
   noCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
+  buttonRemark?: string;
 }
 export function ActionModal({
   icon = "edit-solid",
@@ -55,6 +56,7 @@ export function ActionModal({
   otherVariant = "outline-primary",
   noCloseButton = false,
   closeOnOverlayClick = true,
+  buttonRemark = "Information will be stored locally on your device.",
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -105,18 +107,33 @@ export function ActionModal({
           {!noCloseButton && <ModalCloseButton color="gray.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
-            <Flex w="full" justifyContent="center" gap={2}>
-              <Button
-                w="200px"
-                onClick={handleOnMain}
-                variant={mainVariant}
-                isDisabled={disabledMain}
-              >
-                {mainBtnTitle}
-              </Button>
-              <Button w="200px" variant={otherVariant} onClick={handleOnOther}>
-                {otherBtnTitle}
-              </Button>
+            <Flex
+              alignItems="center"
+              w="full"
+              justifyContent="center"
+              direction="column"
+              gap={4}
+            >
+              <Flex gap={2}>
+                <Button
+                  w="200px"
+                  onClick={handleOnMain}
+                  variant={mainVariant}
+                  isDisabled={disabledMain}
+                >
+                  {mainBtnTitle}
+                </Button>
+                <Button
+                  w="200px"
+                  variant={otherVariant}
+                  onClick={handleOnOther}
+                >
+                  {otherBtnTitle}
+                </Button>
+              </Flex>
+              <Text variant="body3" color="text.dark">
+                {buttonRemark}
+              </Text>
             </Flex>
           </ModalFooter>
         </ModalContent>
