@@ -52,6 +52,7 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
+import { UserAccountDesc } from "./components/UserAccountDesc";
 
 const tableHeaderId = "accountDetailsTab";
 
@@ -176,30 +177,9 @@ const AccountDetailsBody = ({
           icnsName={icnsName}
           accountAddress={accountAddress}
           hexAddress={hexAddress}
+          publicDescription={publicInfo?.description}
         />
       </Flex>
-      {publicInfo?.description && (
-        <Flex
-          direction="column"
-          bg="gray.900"
-          maxW="100%"
-          borderRadius="8px"
-          py={4}
-          px={4}
-          my={6}
-          flex="1"
-        >
-          <Flex alignItems="center" gap={1} minH="32px">
-            <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
-            <Text variant="body2" fontWeight={500} color="text.dark">
-              Public Account Description
-            </Text>
-          </Flex>
-          <Text variant="body2" color="text.main" mb={1}>
-            {publicInfo?.description}
-          </Text>
-        </Flex>
-      )}
 
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
@@ -290,6 +270,35 @@ const AccountDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              gap={{ base: 4, md: 6 }}
+              my={{ base: 0, md: 8 }}
+            >
+              {publicInfo?.description && (
+                <Flex
+                  direction="column"
+                  bg="gray.900"
+                  maxW="100%"
+                  borderRadius="8px"
+                  py={4}
+                  px={4}
+                  flex="1"
+                >
+                  <Flex alignItems="center" gap={1} minH="32px">
+                    <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
+                    <Text variant="body2" fontWeight={500} color="text.dark">
+                      Public Account Description
+                    </Text>
+                  </Flex>
+                  <Text variant="body2" color="text.main" mb={1}>
+                    {publicInfo?.description}
+                  </Text>
+                </Flex>
+              )}
+              <UserAccountDesc address={accountAddress} />
+            </Flex>
+
             <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}

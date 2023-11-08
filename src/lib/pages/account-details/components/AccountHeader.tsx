@@ -20,6 +20,7 @@ interface AccounHeaderProps {
   icnsName: Option<ICNSNamesResponse>;
   accountAddress: HumanAddr;
   hexAddress: HexAddr;
+  publicDescription?: string;
 }
 
 export const AccountHeader = observer(
@@ -29,6 +30,7 @@ export const AccountHeader = observer(
     icnsName,
     accountAddress,
     hexAddress,
+    publicDescription,
   }: AccounHeaderProps) => {
     const displayName = icnsName?.primary_name || "Account Details";
     const move = useMoveConfig({ shouldRedirect: false });
@@ -91,6 +93,8 @@ export const AccountHeader = observer(
             ) : (
               <SaveNewAccountModal
                 accountAddress={accountAddress}
+                publicName={publicName ?? icnsName?.primary_name}
+                publicDescription={publicDescription}
                 buttonProps={{
                   size: "sm",
                   variant: "outline-gray",

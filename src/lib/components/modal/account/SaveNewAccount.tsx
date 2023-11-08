@@ -23,11 +23,15 @@ export interface SaveAccountDetail {
 interface SaveNewAccountModalProps {
   buttonProps: ButtonProps;
   accountAddress?: Addr;
+  publicName?: string;
+  publicDescription?: string;
 }
 
 export function SaveNewAccountModal({
   buttonProps,
   accountAddress,
+  publicName,
+  publicDescription,
 }: SaveNewAccountModalProps) {
   const { user: exampleUserAddress } = useExampleAddresses();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
@@ -38,10 +42,10 @@ export function SaveNewAccountModal({
   const defaultValues: SaveAccountDetail = useMemo(() => {
     return {
       address: accountAddress ?? ("" as Addr),
-      name: "",
-      description: "",
+      name: publicName ?? "",
+      description: publicDescription ?? "",
     };
-  }, [accountAddress]);
+  }, [accountAddress, publicName, publicDescription]);
 
   const {
     control,
