@@ -24,6 +24,7 @@ import {
   useCodeStore,
   useContractStore,
   usePublicProjectStore,
+  useAccountStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
 
@@ -51,6 +52,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
+  const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setModalTheme } = useModalTheme();
 
   const [currentChainName, setCurrentChainName] = useState<string>();
@@ -85,8 +87,15 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
+      setAccountUserKey(userKey);
     }
-  }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
+  }, [
+    currentChainName,
+    setCodeUserKey,
+    setContractUserKey,
+    setProjectUserKey,
+    setAccountUserKey,
+  ]);
 
   // Disable "Leave page" alert
   useEffect(() => {
@@ -113,6 +122,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
     !isProjectUserKeyExist() ||
+    !isAccountUserKeyExist() ||
     !currentChainId
   )
     return <LoadingOverlay />;

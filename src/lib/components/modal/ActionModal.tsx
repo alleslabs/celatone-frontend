@@ -56,7 +56,7 @@ export function ActionModal({
   otherVariant = "outline-primary",
   noCloseButton = false,
   closeOnOverlayClick = true,
-  buttonRemark = "Information will be stored locally on your device.",
+  buttonRemark,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -131,9 +131,11 @@ export function ActionModal({
                   {otherBtnTitle}
                 </Button>
               </Flex>
-              <Text variant="body3" color="text.dark">
-                {buttonRemark}
-              </Text>
+              {buttonRemark && (
+                <Text variant="body3" color="text.dark">
+                  {buttonRemark}
+                </Text>
+              )}
             </Flex>
           </ModalFooter>
         </ModalContent>

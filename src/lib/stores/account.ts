@@ -78,4 +78,15 @@ export class AccountStore {
   isAccountSaved(address: Addr): boolean {
     return this.savedAccounts[this.userKey]?.includes(address) ?? false;
   }
+
+  getSavedAccounts(): AccountLocalInfo[] {
+    const savedAccountsByUserKey = this.savedAccounts[this.userKey] ?? [];
+    return savedAccountsByUserKey
+      .map((address) => ({
+        address,
+        name: this.getAccountLocalInfo(address)?.name,
+        description: this.getAccountLocalInfo(address)?.description,
+      }))
+      .reverse();
+  }
 }

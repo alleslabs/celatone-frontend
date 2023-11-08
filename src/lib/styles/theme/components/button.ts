@@ -326,6 +326,22 @@ export const Button: ComponentStyleConfig = {
       hoverBg: gray800,
       activeBg: "transparent",
     }),
+    "ghost-gray-icon": generateStyle({
+      basic: {
+        color: "gray.400",
+        "> svg": {
+          color: "gray.600",
+        },
+      },
+      disabled: {
+        color: gray500,
+        "> svg": {
+          color: gray500,
+        },
+      },
+      hoverBg: gray800,
+      activeBg: "transparent",
+    }),
     "ghost-error": generateStyle({
       basic: { color: "error.main" },
       disabled: { color: "error.light" },
