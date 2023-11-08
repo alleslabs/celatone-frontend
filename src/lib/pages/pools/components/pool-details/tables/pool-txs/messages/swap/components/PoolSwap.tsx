@@ -39,7 +39,8 @@ export const PoolSwap = ({
   const { amount: inAmount, denom: inDenom } = coinsFromStr(inAsset)[0];
 
   // Get the token-out from the last attribute of the event e.g. 10000utoken
-  const outAsset = swapEvent.attributes[-1]?.value ?? "";
+  const outAsset =
+    swapEvent.attributes[swapEvent.attributes.length - 1]?.value ?? "";
   const { amount: outAmount, denom: outDenom } = coinsFromStr(outAsset)[0];
 
   return (

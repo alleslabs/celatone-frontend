@@ -44,7 +44,8 @@ export const PoolAssetsGrid = ({
       (asset) => asset.denom === msgSwapDenom
     );
 
-    const swapAttr = receivedEvent?.attributes[-1]?.value;
+    const swapAttr =
+      receivedEvent?.attributes[receivedEvent.attributes.length - 1]?.value;
     const swapAsset = swapAttr ? coinsFromStr(swapAttr)[0] : undefined;
 
     eventAssets =

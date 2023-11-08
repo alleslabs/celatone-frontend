@@ -17,7 +17,7 @@ export const MsgSwapExactAmountInAction = ({
   ampCopierSection,
 }: MsgSwapExactAmountInActionProps) => {
   const inAssetInfo = assetInfos?.[msg.token_in.denom];
-  const tokenOutDenom = msg.routes[-1]?.tokenOutDenom ?? "";
+  const tokenOutDenom = msg.routes[msg.routes.length - 1]?.tokenOutDenom ?? "";
   const outAssetInfo = assetInfos?.[tokenOutDenom];
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
