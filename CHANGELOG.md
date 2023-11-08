@@ -39,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#613](https://github.com/alleslabs/celatone-frontend/pull/613) Add table for saved accounts and add save, remove and edit modal
+- [#616](https://github.com/alleslabs/celatone-frontend/pull/616) Add table for saved accounts and add save, remove and edit modal
+- [#613](https://github.com/alleslabs/celatone-frontend/pull/613) Add saved accounts modal ui
 - [#611](https://github.com/alleslabs/celatone-frontend/pull/611) Add saved accounts page
 - [#601](https://github.com/alleslabs/celatone-frontend/pull/601) Add modules in public project
 - [#581](https://github.com/alleslabs/celatone-frontend/pull/581) Support new move input i.e., object, fixed_point, and decimal
