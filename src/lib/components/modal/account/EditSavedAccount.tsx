@@ -67,7 +67,7 @@ export const EditSavedAccountModal = ({
       icon="edit-solid"
       headerContent={
         <Flex gap={4} alignItems="center" pt={6}>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text variant="body2" fontWeight={500} color="text.main">
             Account Address
           </Text>
           <ExplorerLink value={account.address} type="user_address" />

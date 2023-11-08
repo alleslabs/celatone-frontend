@@ -1,6 +1,6 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
@@ -22,20 +22,26 @@ export interface SaveAccountDetail {
 }
 interface SaveNewAccountModalProps {
   buttonProps: ButtonProps;
+  accountAddress?: Addr;
 }
 
-export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
+export function SaveNewAccountModal({
+  buttonProps,
+  accountAddress,
+}: SaveNewAccountModalProps) {
   const { user: exampleUserAddress } = useExampleAddresses();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
 
-  const defaultValues: SaveAccountDetail = {
-    address: "" as Addr,
-    name: "",
-    description: "",
-  };
+  const defaultValues: SaveAccountDetail = useMemo(() => {
+    return {
+      address: accountAddress ?? ("" as Addr),
+      name: "",
+      description: "",
+    };
+  }, [accountAddress]);
 
   const {
     control,
@@ -134,6 +140,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
           status={status}
           labelBgColor="gray.900"
           isRequired
+          isReadOnly={!!addressState}
         />
         <ControllerInput
           name="name"
