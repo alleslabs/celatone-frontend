@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { ErrorFetching } from "../ErrorFetching";
@@ -58,16 +58,18 @@ export const ModuleListsBody = ({
       />
     );
   return (
-    <Flex direction="column" gap={8}>
+    <div>
       {!onViewMore && (
-        <InputWithIcon
-          placeholder="Search with Module Name..."
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          action="execute-message-search"
-        />
+        <Box mb={8}>
+          <InputWithIcon
+            placeholder="Search with Module Name..."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            action="execute-message-search"
+          />
+        </Box>
       )}
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={6}>
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={4}>
         {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
           (item) => (
             <ModuleCard
@@ -83,6 +85,6 @@ export const ModuleListsBody = ({
       {onViewMore && filteredModules.length > 9 && (
         <ViewMore onClick={onViewMore} />
       )}
-    </Flex>
+    </div>
   );
 };
