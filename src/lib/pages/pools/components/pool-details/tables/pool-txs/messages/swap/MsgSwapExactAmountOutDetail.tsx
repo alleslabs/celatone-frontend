@@ -32,7 +32,7 @@ export const MsgSwapExactAmountOutDetail = ({
     .concat(msg.token_out.denom);
   const routes = msg.routes.map((route, index) => ({
     poolId: route.poolId,
-    tokenOutDenom: outDenoms.at(index + 1) ?? "",
+    tokenOutDenom: outDenoms[index + 1] ?? "",
   }));
 
   return (

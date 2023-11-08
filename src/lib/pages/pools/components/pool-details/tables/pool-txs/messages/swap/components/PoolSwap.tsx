@@ -35,11 +35,12 @@ export const PoolSwap = ({
     );
 
   // Get the token-in from the third attribute of the event e.g. 10000utoken
-  const inAsset = swapEvent.attributes.at(3)?.value ?? "";
+  const inAsset = swapEvent.attributes[3]?.value ?? "";
   const { amount: inAmount, denom: inDenom } = coinsFromStr(inAsset)[0];
 
   // Get the token-out from the last attribute of the event e.g. 10000utoken
-  const outAsset = swapEvent.attributes.at(-1)?.value ?? "";
+  const outAsset =
+    swapEvent.attributes[swapEvent.attributes.length - 1]?.value ?? "";
   const { amount: outAmount, denom: outDenom } = coinsFromStr(outAsset)[0];
 
   return (

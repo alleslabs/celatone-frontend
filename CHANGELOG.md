@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
 - [#615](https://github.com/alleslabs/celatone-frontend/pull/615) Fix useEffect on pool page
 - [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Add saved accounts page
 - [#614](https://github.com/alleslabs/celatone-frontend/pull/614) Disabled saved account for now

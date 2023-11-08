@@ -23,7 +23,7 @@ export const EstimatedFeeRender = ({
       </>
     );
 
-  const coin = estimatedFee?.amount.at(0);
+  const coin = estimatedFee?.amount[0];
   if (!coin) return <>--</>;
 
   const chainAssetInfo = assetInfos?.[coin.denom];
