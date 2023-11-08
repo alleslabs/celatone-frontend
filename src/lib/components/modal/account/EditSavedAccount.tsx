@@ -108,7 +108,7 @@ export const EditSavedAccountModal = ({
           }}
           error={
             errors.description &&
-            getMaxLengthError(descriptionState.length, "contract_desc")
+            getMaxLengthError(descriptionState.length, "account_desc")
           }
         />
       </Flex>

@@ -161,7 +161,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
           }}
           error={
             errors.description &&
-            getMaxLengthError(descriptionState.length, "contract_desc")
+            getMaxLengthError(descriptionState.length, "account_desc")
           }
         />
       </Flex>
