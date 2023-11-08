@@ -79,6 +79,12 @@ export class AccountStore {
     return this.savedAccounts[this.userKey]?.includes(address) ?? false;
   }
 
+  removeSavedAccount(address: Addr): void {
+    this.savedAccounts[this.userKey] = this.savedAccounts[this.userKey]?.filter(
+      (each) => each !== address
+    );
+  }
+
   getSavedAccounts(): AccountLocalInfo[] {
     const savedAccountsByUserKey = this.savedAccounts[this.userKey] ?? [];
     return savedAccountsByUserKey

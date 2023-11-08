@@ -9,6 +9,7 @@ import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";
 import { CustomIcon } from "lib/components/icon";
+import { useAccountStore } from "lib/providers/store";
 import type { AccountLocalInfo } from "lib/stores/account";
 import { truncate } from "lib/utils";
 
@@ -35,8 +36,9 @@ export function RemoveSavedAccountModal({
   ),
 }: RemoveSavedAccountModalProps) {
   const toast = useToast();
+  const { removeSavedAccount } = useAccountStore();
   const handleRemove = useCallback(() => {
-    // removeSavedCode(codeId);
+    removeSavedAccount(account.address);
 
     toast({
       title: `Removed \u2018${account.name}\u2019 from Saved Codes`,
@@ -46,7 +48,7 @@ export function RemoveSavedAccountModal({
       position: "bottom-right",
       icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
-  }, [account.name, toast]);
+  }, [removeSavedAccount, account.address, account.name, toast]);
   return (
     <ActionModal
       title={
