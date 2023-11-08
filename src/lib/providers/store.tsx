@@ -45,6 +45,11 @@ export function useContractStore() {
   return contractStore;
 }
 
+// export function useAccountStore() {
+//   const { accountStore } = useStore();
+//   return accountStore;
+// }
+
 export function usePublicProjectStore() {
   const { publicProjectStore } = useStore();
   return publicProjectStore;
