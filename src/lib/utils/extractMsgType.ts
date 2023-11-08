@@ -1,7 +1,7 @@
 import { ActionMsgType, type Option } from "lib/types";
 
 export const extractMsgType = (typePath: string): string =>
-  typePath.split(".")[-1] || "";
+  typePath.split(".").pop() || "";
 
 /**
  * Returns what action type to be render.
