@@ -1,4 +1,10 @@
-import { useToast, Text, chakra, IconButton } from "@chakra-ui/react";
+import {
+  useToast,
+  Text,
+  chakra,
+  IconButton,
+  Highlight,
+} from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";
@@ -57,8 +63,19 @@ export function RemoveSavedAccountModal({
       trigger={trigger}
     >
       <Text>
-        You can save this account again later, but you will need to add its new
-        account name and description.
+        <Highlight
+          query={[
+            account.name ?? "",
+            truncate(account.address),
+            "Saved Accounts",
+          ]}
+          styles={{ fontWeight: "bold", color: "inherit" }}
+        >
+          {`This action will remove \u2018${
+            account.name ?? truncate(account.address)
+          }\u2019 from Saved Accounts. 
+          You can save this address again later, but you will need to add its new account name and description.`}
+        </Highlight>
       </Text>
     </ActionModal>
   );
