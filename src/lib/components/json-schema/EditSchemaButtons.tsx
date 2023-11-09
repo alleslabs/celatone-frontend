@@ -40,9 +40,8 @@ export const EditSchemaButtons = ({
         trigger={
           <Tooltip label="Delete your attached schema">
             <IconButton
-              variant="ghost-gray"
+              variant="ghost-gray-icon"
               size="sm"
-              color="gray.600"
               icon={<CustomIcon name="delete" boxSize={4} />}
               aria-label="delete schema"
             />

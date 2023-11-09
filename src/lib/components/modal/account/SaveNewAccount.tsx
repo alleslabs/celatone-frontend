@@ -15,7 +15,7 @@ import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useAccountStore } from "lib/providers/store";
 import type { Addr } from "lib/types";
 
-interface SaveNewAccountDetail {
+export interface SaveAccountDetail {
   address: Addr;
   name: string;
   description: string;
@@ -31,7 +31,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
 
-  const defaultValues: SaveNewAccountDetail = {
+  const defaultValues: SaveAccountDetail = {
     address: "" as Addr,
     name: "",
     description: "",
@@ -42,7 +42,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
     watch,
     reset,
     formState: { errors },
-  } = useForm<SaveNewAccountDetail>({
+  } = useForm<SaveAccountDetail>({
     defaultValues,
     mode: "all",
   });
@@ -161,7 +161,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
           }}
           error={
             errors.description &&
-            getMaxLengthError(descriptionState.length, "contract_desc")
+            getMaxLengthError(descriptionState.length, "account_desc")
           }
         />
       </Flex>

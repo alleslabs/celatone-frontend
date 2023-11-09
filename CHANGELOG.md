@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#616](https://github.com/alleslabs/celatone-frontend/pull/616) Add table for saved accounts and add save, remove and edit modal
 - [#613](https://github.com/alleslabs/celatone-frontend/pull/613) Add saved accounts modal ui
 - [#611](https://github.com/alleslabs/celatone-frontend/pull/611) Add saved accounts page
 - [#608](https://github.com/alleslabs/celatone-frontend/pull/608) Deprecate stone 10

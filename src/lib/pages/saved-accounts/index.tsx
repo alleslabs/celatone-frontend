@@ -1,12 +1,34 @@
 import { Badge, Text, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useMemo, useState } from "react";
 
+import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
+import { AccountZeroState, EmptyState } from "lib/components/state";
+import { SavedAccountsTable } from "lib/components/table/accounts/SavedAccountsTable";
+import { useAccountStore } from "lib/providers/store";
 
 import { SaveAccountButton } from "./components/SaveAccountButton";
 
 const SavedAccounts = observer(() => {
+  const { getSavedAccounts, isHydrated } = useAccountStore();
+  const savedAccounts = getSavedAccounts();
+  const accountsCount = savedAccounts.length;
+
+  const [keyword, setKeyword] = useState("");
+
+  const isSearching = !!keyword;
+
+  const filteredsavedAccounts = useMemo(() => {
+    if (!keyword) return savedAccounts;
+    return savedAccounts.filter(
+      (account) =>
+        account.address.includes(keyword.toLowerCase()) ||
+        account.name?.toLowerCase().includes(keyword.toLowerCase()) ||
+        account.description?.toLowerCase().includes(keyword.toLowerCase())
+    );
+  }, [keyword, savedAccounts]);
+
   return (
     <PageContainer>
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
@@ -22,25 +44,34 @@ const SavedAccounts = observer(() => {
               Saved Accounts
             </Heading>
             <Badge variant="primary" ml={2}>
-              0
+              {accountsCount}
             </Badge>
           </Flex>
           <Text>Your saved accounts will be stored locally</Text>
         </Flex>
         <SaveAccountButton />
       </Flex>
-      {/* <InputWithIcon
-          placeholder="Search with Code ID or Code Name"
-          value={keyword}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setValue("keyword", e.target.value)
-          }
-          size="lg"
-        /> */}
-      <EmptyState
-        imageVariant="empty"
-        message="Account saved using Celatone will display here. Saved accounts are stored locally on your device."
-        withBorder
+      <InputWithIcon
+        placeholder="Search with account name, address, or description ..."
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        size="lg"
+      />
+
+      <SavedAccountsTable
+        accounts={filteredsavedAccounts}
+        isLoading={!isHydrated}
+        emptyState={
+          isSearching ? (
+            <EmptyState
+              imageVariant="not-found"
+              message="No accounts match found. Make sure you are searching with account address, name, or description."
+              withBorder
+            />
+          ) : (
+            <AccountZeroState />
+          )
+        }
       />
     </PageContainer>
   );

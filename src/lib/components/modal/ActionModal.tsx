@@ -56,7 +56,7 @@ export function ActionModal({
   otherVariant = "outline-primary",
   noCloseButton = false,
   closeOnOverlayClick = true,
-  buttonRemark = "Information will be stored locally on your device.",
+  buttonRemark,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -92,7 +92,11 @@ export function ActionModal({
             <Box w="full">
               <Flex alignItems="center" gap={3}>
                 <CustomIcon name={icon} color={iconColor} boxSize={5} />
-                <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
+                <Heading
+                  as="h5"
+                  variant={{ base: "h6", md: "h5" }}
+                  wordBreak="break-word"
+                >
                   {title}
                 </Heading>
               </Flex>
@@ -131,9 +135,11 @@ export function ActionModal({
                   {otherBtnTitle}
                 </Button>
               </Flex>
-              <Text variant="body3" color="text.dark">
-                {buttonRemark}
-              </Text>
+              {buttonRemark && (
+                <Text variant="body3" color="text.dark">
+                  {buttonRemark}
+                </Text>
+              )}
             </Flex>
           </ModalFooter>
         </ModalContent>
