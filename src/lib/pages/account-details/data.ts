@@ -2,6 +2,7 @@ import type { Big } from "big.js";
 import big from "big.js";
 import { isUndefined } from "lodash";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountBalances } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
@@ -423,6 +424,11 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
 };
 
 export const useAccountTotalValue = (walletAddress: HumanAddr) => {
+  const {
+    chainConfig: {
+      extra: { disableDelegation },
+    },
+  } = useCelatoneApp();
   const { supportedAssets, isLoading } = useUserAssetInfos(walletAddress);
   const {
     stakingParams,
@@ -434,6 +440,15 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     totalCommission,
     isLoadingTotalCommission,
   } = useUserDelegationInfos(walletAddress);
+
+  const defaultValue = big(0) as USD<Big>;
+
+  const totalAssetValue = supportedAssets
+    ? calTotalValue(supportedAssets)
+    : defaultValue;
+
+  if (disableDelegation)
+    return { totalAccountValue: totalAssetValue, isLoading: false };
 
   if (
     isLoading ||
@@ -448,11 +463,6 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
   if (!stakingParams || !totalBonded || !totalRewards || !totalCommission)
     return { totalAccountValue: undefined, isLoading: false };
 
-  const defaultValue = big(0) as USD<Big>;
-
-  const totalAssetValue = supportedAssets
-    ? calTotalValue(supportedAssets)
-    : defaultValue;
   return {
     totalAccountValue: totalAssetValue
       .add(totalValueTokenWithValue(totalBonded, defaultValue))

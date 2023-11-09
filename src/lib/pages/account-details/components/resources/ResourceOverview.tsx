@@ -30,6 +30,7 @@ export const ResourceOverview = ({
       w="full"
       bg="gray.900"
       borderRadius="8px"
+      mt={{ base: 4, md: 8 }}
       p={4}
       onClick={onViewMore}
     >
