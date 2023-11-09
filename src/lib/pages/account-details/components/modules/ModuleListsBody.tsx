@@ -1,18 +1,17 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { SimpleGrid } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
-import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { EmptyState } from "lib/components/state";
-import { ViewMore } from "lib/components/table";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { MoveAccountAddr, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
   selectedAddress: MoveAccountAddr;
+  keyword: string;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
   onViewMore?: () => void;
@@ -20,12 +19,12 @@ interface ModuleListsBodyProps {
 
 export const ModuleListsBody = ({
   selectedAddress,
+  keyword,
   modules,
   isLoading,
   onViewMore,
 }: ModuleListsBodyProps) => {
   const navigate = useInternalNavigate();
-  const [keyword, setKeyword] = useState("");
 
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
@@ -58,33 +57,18 @@ export const ModuleListsBody = ({
       />
     );
   return (
-    <div>
-      {!onViewMore && (
-        <Box mb={8}>
-          <InputWithIcon
-            placeholder="Search with Module Name..."
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            action="execute-message-search"
+    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4}>
+      {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
+        (item) => (
+          <ModuleCard
+            key={item.moduleName}
+            selectedAddress={selectedAddress}
+            module={item}
+            selectedModule={undefined}
+            setSelectedModule={handleOnSelect}
           />
-        </Box>
+        )
       )}
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} mb={4}>
-        {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
-          (item) => (
-            <ModuleCard
-              key={item.moduleName}
-              selectedAddress={selectedAddress}
-              module={item}
-              selectedModule={undefined}
-              setSelectedModule={handleOnSelect}
-            />
-          )
-        )}
-      </SimpleGrid>
-      {onViewMore && filteredModules.length > 9 && (
-        <ViewMore onClick={onViewMore} />
-      )}
-    </div>
+    </SimpleGrid>
   );
 };
