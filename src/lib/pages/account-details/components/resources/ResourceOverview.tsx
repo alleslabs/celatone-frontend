@@ -1,8 +1,7 @@
-import { Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
-import { TableTitle } from "lib/components/table";
+import { MobileTitle, TableTitle } from "lib/components/table";
 import type { MoveAccountAddr, Option, ResourceGroup } from "lib/types";
 
 import { ResourceOverviewBody } from "./ResourceOverviewBody";
@@ -24,37 +23,29 @@ export const ResourceOverview = ({
 }: ResourceOverviewProps) => {
   const isMobile = useMobile();
 
-  return isMobile ? (
-    <Flex
-      justify="space-between"
-      w="full"
-      bg="gray.900"
-      borderRadius="8px"
-      mt={{ base: 4, md: 8 }}
-      p={4}
-      onClick={onViewMore}
-    >
-      <TableTitle title="Resources" count={totalCount} mb={0} />
-      <CustomIcon name="chevron-right" color="gray.600" />
-    </Flex>
-  ) : (
-    <Flex
-      direction="column"
-      mt={{ base: 4, md: 8 }}
-      mb={{ base: 0, md: 8 }}
-      width="full"
-    >
-      <TableTitle
-        title="Resources"
-        helperText="Resources stored in this account"
-        count={totalCount}
-      />
-      <ResourceOverviewBody
-        address={address}
-        resourcesByName={resourcesByName}
-        isLoading={isLoading}
-        onViewMore={onViewMore}
-      />
-    </Flex>
+  return (
+    <Box mt={{ base: 4, md: 8 }}>
+      {isMobile ? (
+        <MobileTitle
+          title="Resources"
+          count={totalCount}
+          onViewMore={onViewMore}
+        />
+      ) : (
+        <>
+          <TableTitle
+            title="Resources"
+            helperText="Resources stored in this account"
+            count={totalCount}
+          />
+          <ResourceOverviewBody
+            address={address}
+            resourcesByName={resourcesByName}
+            isLoading={isLoading}
+            onViewMore={onViewMore}
+          />
+        </>
+      )}
+    </Box>
   );
 };

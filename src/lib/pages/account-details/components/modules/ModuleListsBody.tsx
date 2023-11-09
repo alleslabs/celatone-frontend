@@ -57,7 +57,7 @@ export const ModuleListsBody = ({
       />
     );
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4}>
+    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} my={4} spacing={4}>
       {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
         (item) => (
           <ModuleCard
