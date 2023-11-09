@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
 import { ErrorFetching } from "../ErrorFetching";
@@ -23,105 +24,107 @@ interface StoredCodesTableProps {
   onViewMore?: () => void;
 }
 
-export const StoredCodesTable = ({
-  walletAddress,
-  scrollComponentId,
-  totalData,
-  refetchCount,
-  onViewMore,
-}: StoredCodesTableProps) => {
-  const isMobile = useMobile();
-  const navigate = useInternalNavigate();
-  const onRowSelect = (codeId: number) =>
-    navigate({
-      pathname: "/codes/[codeId]",
-      query: { codeId },
-    });
-
-  const {
-    pagesQuantity,
-    currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
-    offset,
-  } = usePaginator({
-    total: totalData,
-    initialState: {
-      pageSize: 10,
-      currentPage: 1,
-      isDisabled: false,
-    },
-  });
-  const { codes, isLoading } = useAccountCodes(
+export const StoredCodesTable = observer(
+  ({
     walletAddress,
-    offset,
-    onViewMore ? 5 : pageSize
-  );
+    scrollComponentId,
+    totalData,
+    refetchCount,
+    onViewMore,
+  }: StoredCodesTableProps) => {
+    const isMobile = useMobile();
+    const navigate = useInternalNavigate();
+    const onRowSelect = (codeId: number) =>
+      navigate({
+        pathname: "/codes/[codeId]",
+        query: { codeId },
+      });
 
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
+    const {
+      pagesQuantity,
+      currentPage,
+      setCurrentPage,
+      pageSize,
+      setPageSize,
+      offset,
+    } = usePaginator({
+      total: totalData,
+      initialState: {
+        pageSize: 10,
+        currentPage: 1,
+        isDisabled: false,
+      },
+    });
+    const { codes, isLoading } = useAccountCodes(
+      walletAddress,
+      offset,
+      onViewMore ? 5 : pageSize
+    );
 
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
+    const onPageChange = (nextPage: number) => {
+      refetchCount();
+      setCurrentPage(nextPage);
+    };
 
-  const isMobileOverview = isMobile && !!onViewMore;
-  return (
-    <Box mt={{ base: 4, md: 8 }}>
-      {isMobileOverview ? (
-        <MobileTitle
-          title="Stored Codes"
-          count={totalData ?? 0}
-          onViewMore={onViewMore}
-        />
-      ) : (
-        <>
-          <TableTitle
+    const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+      const size = Number(e.target.value);
+      refetchCount();
+      setPageSize(size);
+      setCurrentPage(1);
+    };
+
+    const isMobileOverview = isMobile && !!onViewMore;
+    return (
+      <Box mt={{ base: 4, md: 8 }}>
+        {isMobileOverview ? (
+          <MobileTitle
             title="Stored Codes"
             count={totalData ?? 0}
-            mb={2}
-            helperText="This account stored the following codes"
+            onViewMore={onViewMore}
           />
-          <CodesTable
-            codes={codes}
-            isLoading={isLoading}
-            emptyState={
-              <EmptyState
-                message={
-                  !codes ? (
-                    <ErrorFetching />
-                  ) : (
-                    "This account did not stored any codes before."
-                  )
-                }
-                withBorder
-              />
-            }
-            onRowSelect={onRowSelect}
-          />
-        </>
-      )}
-      {!!totalData &&
-        (onViewMore
-          ? totalData > 5 && !isMobile && <ViewMore onClick={onViewMore} />
-          : totalData > 10 && (
-              <Pagination
-                currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
-                offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
-              />
-            ))}
-    </Box>
-  );
-};
+        ) : (
+          <>
+            <TableTitle
+              title="Stored Codes"
+              count={totalData ?? 0}
+              mb={2}
+              helperText="This account stored the following codes"
+            />
+            <CodesTable
+              codes={codes}
+              isLoading={isLoading}
+              emptyState={
+                <EmptyState
+                  message={
+                    !codes ? (
+                      <ErrorFetching />
+                    ) : (
+                      "This account did not stored any codes before."
+                    )
+                  }
+                  withBorder
+                />
+              }
+              onRowSelect={onRowSelect}
+            />
+          </>
+        )}
+        {!!totalData &&
+          (onViewMore
+            ? totalData > 5 && !isMobile && <ViewMore onClick={onViewMore} />
+            : totalData > 10 && (
+                <Pagination
+                  currentPage={currentPage}
+                  pagesQuantity={pagesQuantity}
+                  offset={offset}
+                  totalData={totalData}
+                  scrollComponentId={scrollComponentId}
+                  pageSize={pageSize}
+                  onPageChange={onPageChange}
+                  onPageSizeChange={onPageSizeChange}
+                />
+              ))}
+      </Box>
+    );
+  }
+);

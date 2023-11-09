@@ -137,13 +137,16 @@ export const AssetsSection = ({
   walletAddress,
   onViewMore,
 }: AssetsSectionProps) => {
+  const isMobile = useMobile();
   const { supportedAssets, unsupportedAssets, isLoading, error } =
     useUserAssetInfos(walletAddress);
+  const isMobileOverview = isMobile && !!onViewMore;
 
-  let totalValue = big(0) as USD<Big>;
-  if (supportedAssets) totalValue = calTotalValue(supportedAssets);
+  if (isLoading) return <Loading withBorder />;
 
-  const isMobile = useMobile();
+  const totalValue = supportedAssets
+    ? calTotalValue(supportedAssets)
+    : (big(0) as USD<Big>);
   const TotalAssetValueInfo = (
     <UserAssetInfoCard
       value={totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"}
@@ -151,14 +154,6 @@ export const AssetsSection = ({
       helperText="Total Asset Value"
     />
   );
-  let isMobileDetail = null;
-  if (isMobile && onViewMore) {
-    isMobileDetail = false;
-  } else {
-    isMobileDetail = true;
-  }
-
-  if (isLoading) return <Loading withBorder />;
 
   const totalAsset =
     (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
@@ -174,7 +169,7 @@ export const AssetsSection = ({
       <AssetTitle onViewMore={onViewMore} totalAsset={totalAsset}>
         {TotalAssetValueInfo}
       </AssetTitle>
-      {isMobileDetail && (
+      {!isMobileOverview && (
         <>
           <Flex
             justify={{ base: "flex-start", md: "space-between" }}
@@ -203,14 +198,13 @@ export const AssetsSection = ({
               totalAsset={totalAsset}
             />
           )}
+          {onViewMore &&
+            supportedAssets &&
+            supportedAssets.length > MAX_ASSETS_SHOW && (
+              <ViewMore onClick={onViewMore} />
+            )}
         </>
       )}
-      {!isMobile &&
-        supportedAssets &&
-        onViewMore &&
-        supportedAssets.length > MAX_ASSETS_SHOW && (
-          <ViewMore onClick={onViewMore} />
-        )}
     </Flex>
   );
 };
