@@ -86,7 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#616](https://github.com/alleslabs/celatone-frontend/pull/616) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
+- [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
 - [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
 - [#615](https://github.com/alleslabs/celatone-frontend/pull/615) Fix useEffect on pool page
 - [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Add saved accounts page
