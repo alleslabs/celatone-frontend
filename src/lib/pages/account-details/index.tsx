@@ -299,7 +299,10 @@ const AccountDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
+            <Flex
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
+            >
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={handleTabChange(TabIndex.Assets)}
