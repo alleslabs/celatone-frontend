@@ -404,8 +404,8 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
-              selectedAddress={accountAddress}
               totalCount={modulesData?.length}
+              selectedAddress={accountAddress}
               modules={modulesData}
               isLoading={isModulesLoading}
             />
