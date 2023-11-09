@@ -4,9 +4,11 @@ import { observer } from "mobx-react-lite";
 import { useMoveConfig } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
-import { SaveNewAccountModal } from "lib/components/modal/account";
-import { EditSavedAccountModal } from "lib/components/modal/account/EditSavedAccount";
-import { RemoveSavedAccountModal } from "lib/components/modal/account/RemoveSavedAccount";
+import {
+  SaveNewAccountModal,
+  EditSavedAccountModal,
+  RemoveSavedAccountModal,
+} from "lib/components/modal";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { useAccountStore } from "lib/providers/store";
 import type { ICNSNamesResponse } from "lib/services/ns";
@@ -37,7 +39,7 @@ export const AccountHeader = observer(
     const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
 
     const isSaved = isAccountSaved(accountAddress);
-    const localAccountInfo = getAccountLocalInfo(accountAddress);
+    const accountLocalInfo = getAccountLocalInfo(accountAddress);
     return (
       <Flex
         justifyContent="space-between"
@@ -62,13 +64,13 @@ export const AccountHeader = observer(
                 <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
               )}
               <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-                {localAccountInfo?.name ?? publicName ?? displayName}
+                {accountLocalInfo?.name ?? publicName ?? displayName}
               </Heading>
             </Flex>
-            {isSaved && localAccountInfo ? (
+            {isSaved && accountLocalInfo ? (
               <Flex gap={2}>
                 <EditSavedAccountModal
-                  account={localAccountInfo}
+                  accountLocalInfo={accountLocalInfo}
                   triggerElement={
                     <IconButton
                       variant="ghost-gray-icon"
@@ -79,7 +81,7 @@ export const AccountHeader = observer(
                   }
                 />
                 <RemoveSavedAccountModal
-                  account={localAccountInfo}
+                  accountLocalInfo={accountLocalInfo}
                   trigger={
                     <IconButton
                       variant="ghost-gray-icon"

@@ -4,12 +4,14 @@ import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { EditSavedAccountModal } from "lib/components/modal/account/EditSavedAccount";
-import { RemoveSavedAccountModal } from "lib/components/modal/account/RemoveSavedAccount";
+import {
+  EditSavedAccountModal,
+  RemoveSavedAccountModal,
+} from "lib/components/modal";
 import type { AccountLocalInfo } from "lib/stores/account";
 import type { Addr } from "lib/types";
 
-import { SaveAccountsNameCell } from "./SavedAccountsNameCell";
+import { AccountNameCell } from "./AccountNameCell";
 
 interface SavedAccountsTableRowProps {
   accountInfo: AccountLocalInfo;
@@ -21,12 +23,12 @@ export const SavedAccountsTableRow = ({
   templateColumns,
 }: SavedAccountsTableRowProps) => {
   const navigate = useInternalNavigate();
-
   const onRowSelect = (address: Addr) =>
     navigate({
       pathname: "/accounts/[accountAddress]",
       query: { accountAddress: address },
     });
+
   return (
     <Grid
       templateColumns={templateColumns}
@@ -44,7 +46,7 @@ export const SavedAccountsTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <SaveAccountsNameCell account={accountInfo} />
+        <AccountNameCell accountLocalInfo={accountInfo} />
       </TableRow>
       <TableRow>
         <Text
@@ -59,7 +61,7 @@ export const SavedAccountsTableRow = ({
       </TableRow>
       <TableRow gap={2} justifyContent="center">
         <EditSavedAccountModal
-          account={accountInfo}
+          accountLocalInfo={accountInfo}
           triggerElement={
             <IconButton
               variant="ghost-gray-icon"
@@ -70,7 +72,7 @@ export const SavedAccountsTableRow = ({
           }
         />
         <RemoveSavedAccountModal
-          account={accountInfo}
+          accountLocalInfo={accountInfo}
           trigger={
             <IconButton
               variant="ghost-gray-icon"

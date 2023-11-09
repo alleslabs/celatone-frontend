@@ -20,6 +20,7 @@ export interface SaveAccountDetail {
   name: string;
   description: string;
 }
+
 interface SaveNewAccountModalProps {
   buttonProps: ButtonProps;
   accountAddress?: Addr;
@@ -111,7 +112,7 @@ export function SaveNewAccountModal({
   ]);
 
   const handleSave = useHandleAccountSave({
-    title: `Saved ${nameState} `,
+    title: `Saved ${nameState}`,
     address: addressState,
     name: nameState,
     description: descriptionState,

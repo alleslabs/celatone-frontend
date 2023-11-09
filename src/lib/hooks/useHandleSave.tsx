@@ -74,10 +74,9 @@ export const useHandleAccountSave = ({
   actions,
 }: UseHandleAccountSaveProps) => {
   const toast = useToast();
-  const userKey = useUserKey();
   const { updateAccountLocalInfo } = useAccountStore();
   return (inputName?: string) => {
-    updateAccountLocalInfo(userKey, address, inputName ?? name, description);
+    updateAccountLocalInfo(address, inputName ?? name, description);
 
     actions?.();
 

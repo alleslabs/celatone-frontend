@@ -6,7 +6,7 @@ import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
-import { EditSavedAccountModal } from "lib/components/modal/account/EditSavedAccount";
+import { EditSavedAccountModal } from "lib/components/modal";
 import { useAccountStore } from "lib/providers/store";
 import type { Addr } from "lib/types";
 
@@ -17,9 +17,9 @@ interface UserAccountDescProps {
 
 export const UserAccountDesc = observer(
   ({ address, publicAccount = false }: UserAccountDescProps) => {
+    const [showMore, setShowMore] = useState(false);
     const { getAccountLocalInfo } = useAccountStore();
     const accountLocalInfo = getAccountLocalInfo(address);
-    const [showMore, setShowMore] = useState(false);
     const description = accountLocalInfo?.description;
     const [ref, { noClamp, clampedText, key }] = useClampText({
       text: description || "No Contract description",
@@ -31,7 +31,7 @@ export const UserAccountDesc = observer(
       if (!accountLocalInfo) return null;
       return (
         <EditSavedAccountModal
-          account={accountLocalInfo}
+          accountLocalInfo={accountLocalInfo}
           triggerElement={
             <Button
               size="xs"

@@ -23,11 +23,12 @@ const StyledIconButton = chakra(IconButton, {
 });
 
 interface RemoveSavedAccountModalProps {
-  account: AccountLocalInfo;
+  accountLocalInfo: AccountLocalInfo;
   trigger?: JSX.Element;
 }
+
 export function RemoveSavedAccountModal({
-  account,
+  accountLocalInfo,
   trigger = (
     <StyledIconButton
       icon={<CustomIcon name="delete" />}
@@ -37,25 +38,25 @@ export function RemoveSavedAccountModal({
 }: RemoveSavedAccountModalProps) {
   const toast = useToast();
   const { removeSavedAccount } = useAccountStore();
+  const displayName =
+    accountLocalInfo.name ?? truncate(accountLocalInfo.address);
+
   const handleRemove = useCallback(() => {
-    removeSavedAccount(account.address);
+    removeSavedAccount(accountLocalInfo.address);
 
     toast({
-      title: `Removed \u2018${account.name}\u2019 from Saved Codes`,
+      title: `Removed \u2018${displayName}\u2019 from Saved Accounts`,
       status: "success",
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
       icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
-  }, [removeSavedAccount, account.address, account.name, toast]);
+  }, [accountLocalInfo.address, displayName, removeSavedAccount, toast]);
+
   return (
     <ActionModal
-      title={
-        account.name
-          ? `Remove account \u2018${account.name}\u2019?`
-          : `Remove account \u2018${truncate(account.address)}\u2019 ?`
-      }
+      title={`Remove account \u2018${displayName}\u2019?`}
       icon="delete-solid"
       iconColor="error.light"
       mainVariant="error"
@@ -66,16 +67,10 @@ export function RemoveSavedAccountModal({
     >
       <Text>
         <Highlight
-          query={[
-            account.name ?? "",
-            truncate(account.address),
-            "Saved Accounts",
-          ]}
+          query={[displayName, "Saved Accounts"]}
           styles={{ fontWeight: "bold", color: "inherit" }}
         >
-          {`This action will remove \u2018${
-            account.name ?? truncate(account.address)
-          }\u2019 from Saved Accounts. 
+          {`This action will remove \u2018${displayName}\u2019 from Saved Accounts. 
           You can save this address again later, but you will need to add its new account name and description.`}
         </Highlight>
       </Text>
