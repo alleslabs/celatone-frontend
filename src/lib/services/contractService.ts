@@ -111,15 +111,15 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then<InstantiateDetail>(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.contract_histories?.at(0)?.block.height,
+        createdHeight: contracts_by_pk?.contract_histories?.[0]?.block.height,
         createdTime: parseDateOpt(
-          contracts_by_pk?.contract_histories?.at(0)?.block.timestamp
+          contracts_by_pk?.contract_histories?.[0]?.block.timestamp
         ),
         initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+        initProposalId: contracts_by_pk?.contract_proposals[0]?.proposal.id,
         initProposalTitle:
-          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
+          contracts_by_pk?.contract_proposals[0]?.proposal.title,
       }));
   }, [contractAddress, indexerGraphClient]);
 
@@ -146,13 +146,11 @@ export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
         .then(({ contracts }) =>
           contracts.map<ContractInfo>((contract) => ({
             contractAddress: contract.address as ContractAddr,
-            instantiator: contract.init_by.at(0)?.account.address as Addr,
+            instantiator: contract.init_by[0]?.account.address as Addr,
             label: contract.label,
             admin: contract.admin?.address as Addr,
             latestUpdater: undefined,
-            latestUpdated: parseDateOpt(
-              contract.init_by.at(0)?.block.timestamp
-            ),
+            latestUpdated: parseDateOpt(contract.init_by[0]?.block.timestamp),
             remark: undefined,
           }))
         ),
@@ -390,15 +388,15 @@ export const useContractListByCodeIdPagination = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: contract.init_by.at(0)?.account.address as Addr,
+          instantiator: contract.init_by[0]?.account.address as Addr,
           label: contract.label,
           admin: contract.admin?.address as Addr,
-          latestUpdater: contract.contract_histories.at(0)?.account
+          latestUpdater: contract.contract_histories[0]?.account
             .address as Addr,
           latestUpdated: parseDateOpt(
-            contract.contract_histories.at(0)?.block.timestamp
+            contract.contract_histories[0]?.block.timestamp
           ),
-          remark: contract.contract_histories.at(0)?.remark,
+          remark: contract.contract_histories[0]?.remark,
         }))
       );
   }, [codeId, indexerGraphClient, offset, pageSize]);
@@ -471,16 +469,15 @@ export const useContractListByWalletAddressPagination = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contractFromWallet) => ({
           contractAddress: contractFromWallet.address as ContractAddr,
-          instantiator: contractFromWallet.init_by.at(0)?.account
-            .address as Addr,
+          instantiator: contractFromWallet.init_by[0]?.account.address as Addr,
           label: contractFromWallet.label,
           admin: contractFromWallet.admin?.address as Addr,
-          latestUpdater: contractFromWallet.contract_histories.at(0)?.account
+          latestUpdater: contractFromWallet.contract_histories[0]?.account
             .address as Addr,
           latestUpdated: parseDateOpt(
-            contractFromWallet.contract_histories.at(0)?.block.timestamp
+            contractFromWallet.contract_histories[0]?.block.timestamp
           ),
-          remark: contractFromWallet.contract_histories.at(0)?.remark,
+          remark: contractFromWallet.contract_histories[0]?.remark,
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);
@@ -524,15 +521,15 @@ export const useContractListByAdminPagination = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contractAdmin) => ({
           contractAddress: contractAdmin.address as ContractAddr,
-          instantiator: contractAdmin.init_by.at(0)?.account.address as Addr,
+          instantiator: contractAdmin.init_by[0]?.account.address as Addr,
           label: contractAdmin.label,
           admin: contractAdmin.admin?.address as Addr,
-          latestUpdater: contractAdmin.contract_histories.at(0)?.account
+          latestUpdater: contractAdmin.contract_histories[0]?.account
             .address as Addr,
           latestUpdated: parseDateOpt(
-            contractAdmin.contract_histories.at(0)?.block.timestamp
+            contractAdmin.contract_histories[0]?.block.timestamp
           ),
-          remark: contractAdmin.contract_histories.at(0)?.remark,
+          remark: contractAdmin.contract_histories[0]?.remark,
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);

@@ -35,8 +35,7 @@ export const PoolLPCard = ({
   const eventShareAmount = txData?.logs
     .find((log) => log.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "coin_received")
-    ?.attributes.at(3)
-    ?.value.slice(0, -poolDenom.length);
+    ?.attributes[3]?.value.slice(0, -poolDenom.length);
 
   const shareAmount = msgShareAmount ?? eventShareAmount;
   if (!shareAmount)

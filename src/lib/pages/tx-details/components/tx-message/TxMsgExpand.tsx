@@ -120,8 +120,7 @@ export const TxMsgExpand = ({
       content = (
         <Flex display="inline">
           Execute{" "}
-          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg).at(0)}</span>{" "}
-          on{" "}
+          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg)[0]}</span> on{" "}
           <ExplorerLink
             type="contract_address"
             value={body.contract}
@@ -196,7 +195,7 @@ export const TxMsgExpand = ({
     case "/cosmos.bank.v1beta1.MsgSend":
       {
         const toAddress = body.to_address as Addr;
-        const singleCoin = body.amount.at(0) as Coin;
+        const singleCoin = body.amount[0] as Coin;
         const assetInfo = assetInfos?.[singleCoin.denom];
         const assetText =
           body.amount.length > 1

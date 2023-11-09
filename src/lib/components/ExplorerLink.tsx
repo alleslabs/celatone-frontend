@@ -153,7 +153,7 @@ const LinkRender = ({
       rel="noopener noreferrer"
       data-peer
       onClick={(e) => {
-        trackMintScan(type);
+        if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
     >
