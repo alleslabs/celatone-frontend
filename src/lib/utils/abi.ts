@@ -55,16 +55,15 @@ export const getAbiInitialData = (length: number) =>
 // ------------------------------------------//
 // -----------------MOVE ARGS----------------//
 // ------------------------------------------//
-export const getArgType = (argType: string) => {
-  if (argType === "0x1::string::String") return BCS.STRING;
-  if (argType.startsWith("0x1::option::Option")) return BCS.OPTION;
-  if (argType.startsWith("0x1::object::Object")) return BCS.OBJECT;
-  if (argType === "0x1::fixed_point32::FixedPoint32") return BCS.FIXED_POINT32;
-  if (argType === "0x1::fixed_point64::FixedPoint64") return BCS.FIXED_POINT64;
-  if (argType === "0x1::decimal128::Decimal128") return BCS.DECIMAL128;
-  if (argType === "0x1::decimal256::Decimal256") return BCS.DECIMAL256;
-  return argType;
-};
+export const getArgType = (argType: string) =>
+  argType
+    .replace("0x1::string::String", BCS.STRING)
+    .replace("0x1::option::Option", BCS.OPTION)
+    .replace("0x1::object::Object", BCS.OBJECT)
+    .replace("0x1::fixed_point32::FixedPoint32", BCS.FIXED_POINT32)
+    .replace("0x1::fixed_point64::FixedPoint64", BCS.FIXED_POINT64)
+    .replace("0x1::decimal128::Decimal128", BCS.DECIMAL128)
+    .replace("0x1::decimal256::Decimal256", BCS.DECIMAL256);
 
 const getArgValue = ({
   type,
