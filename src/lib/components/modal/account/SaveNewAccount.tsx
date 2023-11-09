@@ -7,6 +7,7 @@ import { ActionModal } from "../ActionModal";
 import {
   useCelatoneApp,
   useExampleAddresses,
+  useMoveConfig,
   useValidateAddress,
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -14,6 +15,8 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useAccountStore } from "lib/providers/store";
 import type { Addr } from "lib/types";
+
+import { SavedAccountModalHeader } from "./SavedAccountModalHeader";
 
 export interface SaveAccountDetail {
   address: Addr;
@@ -35,8 +38,15 @@ export function SaveNewAccountModal({
   publicDescription,
 }: SaveNewAccountModalProps) {
   const { user: exampleUserAddress } = useExampleAddresses();
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const {
+    validateUserAddress,
+    validateContractAddress,
+    validateHexWalletAddress,
+    validateHexModuleAddress,
+  } = useValidateAddress();
   const { constants } = useCelatoneApp();
+  const move = useMoveConfig({ shouldRedirect: false });
+
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
 
@@ -88,7 +98,13 @@ export function SaveNewAccountModal({
         const timeoutId = setTimeout(() => {
           const errUser = validateUserAddress(addressState);
           const errContract = validateContractAddress(addressState);
-          if (errUser && errContract)
+          const isHex = validateHexWalletAddress(addressState);
+          const isHexModule = validateHexModuleAddress(addressState);
+
+          if (
+            (!move.enabled && errUser && errContract) ||
+            (move.enabled && errUser && errContract && !isHex && !isHexModule)
+          )
             setStatus({
               state: "error",
               message: errUser,
@@ -109,6 +125,9 @@ export function SaveNewAccountModal({
     isAccountSaved,
     validateUserAddress,
     validateContractAddress,
+    validateHexWalletAddress,
+    validateHexModuleAddress,
+    move.enabled,
   ]);
 
   const handleSave = useHandleAccountSave({
@@ -132,21 +151,25 @@ export function SaveNewAccountModal({
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
+      headerContent={
+        accountAddress && <SavedAccountModalHeader address={accountAddress} />
+      }
       otherBtnTitle="Cancel"
       buttonRemark="Saved accounts are stored locally on your device."
     >
       <Flex direction="column" gap={6}>
-        <ControllerInput
-          name="address"
-          control={control}
-          label="Account Address"
-          variant="fixed-floating"
-          placeholder={`ex. ${exampleUserAddress}`}
-          status={status}
-          labelBgColor="gray.900"
-          isRequired
-          isReadOnly={!!addressState}
-        />
+        {!accountAddress && (
+          <ControllerInput
+            name="address"
+            control={control}
+            label="Account Address"
+            variant="fixed-floating"
+            placeholder={`ex. ${exampleUserAddress}`}
+            status={status}
+            labelBgColor="gray.900"
+            isRequired
+          />
+        )}
         <ControllerInput
           name="name"
           control={control}

@@ -57,7 +57,6 @@ const SavedAccounts = observer(() => {
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"
       />
-
       <SavedAccountsTable
         accounts={filteredsavedAccounts}
         isLoading={!isHydrated}

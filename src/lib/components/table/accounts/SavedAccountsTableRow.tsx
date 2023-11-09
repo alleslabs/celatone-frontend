@@ -1,7 +1,7 @@
 import { Grid, IconButton, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -9,7 +9,8 @@ import {
   RemoveSavedAccountModal,
 } from "lib/components/modal";
 import type { AccountLocalInfo } from "lib/stores/account";
-import type { Addr } from "lib/types";
+import type { Addr, HumanAddr } from "lib/types";
+import { bech32AddressToHex, unpadHexAddress } from "lib/utils";
 
 import { AccountNameCell } from "./AccountNameCell";
 
@@ -22,6 +23,7 @@ export const SavedAccountsTableRow = ({
   accountInfo,
   templateColumns,
 }: SavedAccountsTableRowProps) => {
+  const move = useMoveConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const onRowSelect = (address: Addr) =>
     navigate({
@@ -45,6 +47,17 @@ export const SavedAccountsTableRow = ({
           showCopyOnHover
         />
       </TableRow>
+      {move.enabled && (
+        <TableRow>
+          <ExplorerLink
+            type="user_address"
+            value={unpadHexAddress(
+              bech32AddressToHex(accountInfo.address as HumanAddr)
+            )}
+            showCopyOnHover
+          />
+        </TableRow>
+      )}
       <TableRow>
         <AccountNameCell accountLocalInfo={accountInfo} />
       </TableRow>
