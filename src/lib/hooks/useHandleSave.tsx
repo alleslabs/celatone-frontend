@@ -1,11 +1,10 @@
 import { useToast } from "@chakra-ui/react";
-import { useMemo } from "react";
 
-import { useConvertHexAddress, useValidateAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore, useContractStore } from "lib/providers/store";
-import type { Addr, ContractAddr, HexAddr, LVPair, Option } from "lib/types";
+import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
+import { useFormatAddresses } from "./useFormatAddresses";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
@@ -77,24 +76,9 @@ export const useHandleAccountSave = ({
 }: UseHandleAccountSaveProps) => {
   const toast = useToast();
   const { updateAccountLocalInfo } = useAccountStore();
-  const { validateHexWalletAddress, validateHexModuleAddress } =
-    useValidateAddress();
-  const { convertHexWalletAddress, convertHexModuleAddress } =
-    useConvertHexAddress();
+  const formatAddresses = useFormatAddresses();
 
-  const bech32Address = useMemo(() => {
-    if (validateHexWalletAddress(address))
-      return convertHexWalletAddress(address as HexAddr);
-    if (validateHexModuleAddress(address))
-      return convertHexModuleAddress(address as HexAddr);
-    return address;
-  }, [
-    address,
-    convertHexModuleAddress,
-    convertHexWalletAddress,
-    validateHexModuleAddress,
-    validateHexWalletAddress,
-  ]);
+  const { address: bech32Address } = formatAddresses(address);
 
   return (inputName?: string) => {
     updateAccountLocalInfo(bech32Address, inputName ?? name, description);
