@@ -78,9 +78,8 @@ export const useHandleAccountSave = ({
   const { updateAccountLocalInfo } = useAccountStore();
   const formatAddresses = useFormatAddresses();
 
-  const { address: bech32Address } = formatAddresses(address);
-
   return (inputName?: string) => {
+    const { address: bech32Address } = formatAddresses(address);
     updateAccountLocalInfo(bech32Address, inputName ?? name, description);
 
     actions?.();
