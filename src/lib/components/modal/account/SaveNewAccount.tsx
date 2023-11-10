@@ -188,7 +188,7 @@ export function SaveNewAccountModal({
           name="description"
           control={control}
           label="Account Description"
-          placeholder="Help understanding what this account do ..."
+          placeholder="Help understanding what this account does ..."
           variant="fixed-floating"
           labelBgColor="gray.900"
           rules={{
