@@ -9,7 +9,7 @@ export const LoadingOverlay = () => (
     direction="column"
     gap={3}
     bgColor="background.overlay"
-    position="absolute"
+    position="fixed"
     top={0}
     left={0}
     zIndex="overlay"

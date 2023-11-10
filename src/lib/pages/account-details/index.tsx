@@ -11,6 +11,7 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import {
+  useCelatoneApp,
   useInternalNavigate,
   useMoveConfig,
   useValidateAddress,
@@ -83,6 +84,11 @@ const AccountDetailsBody = ({
   hexAddress,
   accountAddress,
 }: AccountDetailsBodyProps) => {
+  const {
+    chainConfig: {
+      extra: { disableDelegation },
+    },
+  } = useCelatoneApp();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   // const nft = useNftConfig({ shouldRedirect: false });
@@ -202,7 +208,10 @@ const AccountDetailsBody = ({
           >
             Assets
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
+          <CustomTab
+            onClick={handleTabChange(TabIndex.Delegations)}
+            hidden={disableDelegation}
+          >
             Delegations
           </CustomTab>
           {/* <CustomTab
@@ -305,15 +314,17 @@ const AccountDetailsBody = ({
                 onViewMore={handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            <Flex
-              borderBottom={{ base: "0px", md: "1px solid" }}
-              borderBottomColor={{ base: "transparent", md: "gray.700" }}
-            >
-              <DelegationsSection
-                walletAddress={accountAddress}
-                onViewMore={handleTabChange(TabIndex.Delegations)}
-              />
-            </Flex>
+            {disableDelegation ? null : (
+              <Flex
+                borderBottom={{ base: "0px", md: "1px solid" }}
+                borderBottomColor={{ base: "transparent", md: "gray.700" }}
+              >
+                <DelegationsSection
+                  walletAddress={accountAddress}
+                  onViewMore={handleTabChange(TabIndex.Delegations)}
+                />
+              </Flex>
+            )}
             <TxsTable
               accountId={accountId}
               scrollComponentId={tableHeaderId}
@@ -413,8 +424,8 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
-              selectedAddress={accountAddress}
               totalCount={modulesData?.length}
+              selectedAddress={accountAddress}
               modules={modulesData}
               isLoading={isModulesLoading}
             />
