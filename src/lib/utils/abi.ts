@@ -15,7 +15,7 @@ export const parseJsonABI = <T>(jsonString: string): T => {
 
 const sortByAvailability = (a: ExposedFunction, b: ExposedFunction) => {
   if (checkAvailability(a) === checkAvailability(b))
-    return a.name < b.name ? -1 : 1;
+    return a.name.localeCompare(b.name);
   return checkAvailability(a) ? -1 : 1;
 };
 
@@ -76,13 +76,13 @@ const getArgValue = ({
     if (value === null) return null;
     if (type.startsWith("vector")) {
       const [, elementType] = type.split(/<(.*)>/);
-      const values = value
-        .split(/\[(.*)\]/)[1]
-        .split(",")
-        .map((element) => element.trim());
+      const values = value.split(/\[(.*)\]/)[1].trim();
+      if (values.length === 0) return [];
+
+      const elements = values.split(",").map((element) => element.trim());
       return elementType === "bool"
-        ? values.map((element) => element.toLowerCase() === "true")
-        : values;
+        ? elements.map((element) => element.toLowerCase() === "true")
+        : elements;
     }
     if (type === "bool") return value.toLowerCase() === "true";
     return value.trim();
