@@ -15,6 +15,8 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
 const documents = {
   "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n":
     types.GetAccountIdByAddressQueryDocumentDocument,
+  "\n  query getAccountTypeByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      type\n    }\n  }\n":
+    types.GetAccountTypeByAddressQueryDocumentDocument,
   "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n":
     types.GetBlockTimestampByHeightQueryDocument,
   "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n      validator {\n        moniker\n        operator_address\n        identity\n      }\n    }\n  }\n":
@@ -143,6 +145,12 @@ export function graphql(source: string): unknown;
 export function graphql(
   source: "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"
 ): (typeof documents)["\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query getAccountTypeByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      type\n    }\n  }\n"
+): (typeof documents)["\n  query getAccountTypeByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      type\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

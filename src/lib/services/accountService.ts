@@ -7,8 +7,11 @@ import {
   useBaseApiRoute,
   CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
-import { getAccountIdByAddressQueryDocument } from "lib/query";
-import type { Addr, Balance, Nullable, Option } from "lib/types";
+import {
+  getAccountIdByAddressQueryDocument,
+  getAccountTypeByAddressQueryDocument,
+} from "lib/query";
+import type { AccountType, Addr, Balance, Nullable, Option } from "lib/types";
 
 import { getAccountBalanceInfo } from "./account";
 
@@ -46,6 +49,42 @@ export const useAccountId = (
       enabled: Boolean(walletAddress),
       retry: 1,
       refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useAccountType = (
+  walletAddress: Option<Addr>,
+  enabled: boolean,
+  onSuccess?: (type: AccountType) => void,
+  onError?: (err: Error) => void
+): UseQueryResult<AccountType> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    if (!walletAddress)
+      throw new Error(
+        "Error fetching account type: failed to retrieve address."
+      );
+    return indexerGraphClient
+      .request(getAccountTypeByAddressQueryDocument, {
+        address: walletAddress,
+      })
+      .then(
+        ({ accounts_by_pk }) =>
+          (accounts_by_pk?.type ?? "BaseAccount") as AccountType
+      );
+  }, [indexerGraphClient, walletAddress]);
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, indexerGraphClient, walletAddress],
+    queryFn,
+    {
+      enabled: enabled && Boolean(walletAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+      onSuccess,
+      onError,
     }
   );
 };

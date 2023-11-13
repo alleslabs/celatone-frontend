@@ -45,6 +45,8 @@ export const ControllerInput = <T extends FieldValues>({
   rules = {},
   status,
   maxLength,
+  autoFocus,
+  cursor,
   helperAction,
   ...componentProps
 }: ControllerInputProps<T>) => {
@@ -94,6 +96,8 @@ export const ControllerInput = <T extends FieldValues>({
           value={watcher}
           onChange={field.onChange}
           maxLength={maxLength}
+          autoFocus={autoFocus}
+          cursor={cursor}
         />
         <InputRightElement h="full">
           {status && getStatusIcon(status.state)}
