@@ -1,14 +1,14 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
 import { useCelatoneApp } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import type { AccountLocalInfo } from "lib/stores/account";
 
+import { SavedAccountModalHeader } from "./SavedAccountModalHeader";
 import type { SaveAccountDetail } from "./SaveNewAccount";
 
 interface EditSavedAccountModalProps {
@@ -70,12 +70,7 @@ export const EditSavedAccountModal = ({
       title="Edit account"
       icon="edit-solid"
       headerContent={
-        <Flex gap={4} alignItems="center" pt={6}>
-          <Text variant="body2" fontWeight={500} color="text.main">
-            Account Address
-          </Text>
-          <ExplorerLink value={accountLocalInfo.address} type="user_address" />
-        </Flex>
+        <SavedAccountModalHeader address={accountLocalInfo.address} />
       }
       trigger={triggerElement}
       mainBtnTitle="Save"
@@ -91,7 +86,7 @@ export const EditSavedAccountModal = ({
           control={control}
           label="Account Name"
           variant="fixed-floating"
-          //   placeholder="ex. Celatone Account 1"
+          placeholder="ex. Celatone Account 1"
           labelBgColor="gray.900"
           rules={{
             maxLength: constants.maxAccountNameLength,
@@ -104,7 +99,7 @@ export const EditSavedAccountModal = ({
           name="description"
           control={control}
           label="Account Description"
-          //   placeholder="Help understanding what this account do ..."
+          placeholder="Help understanding what this account does ..."
           variant="fixed-floating"
           labelBgColor="gray.900"
           rules={{

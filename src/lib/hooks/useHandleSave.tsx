@@ -4,6 +4,7 @@ import { CustomIcon } from "lib/components/icon";
 import { useAccountStore, useContractStore } from "lib/providers/store";
 import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
+import { useFormatAddresses } from "./useFormatAddresses";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
@@ -75,8 +76,11 @@ export const useHandleAccountSave = ({
 }: UseHandleAccountSaveProps) => {
   const toast = useToast();
   const { updateAccountLocalInfo } = useAccountStore();
+  const formatAddresses = useFormatAddresses();
+
   return (inputName?: string) => {
-    updateAccountLocalInfo(address, inputName ?? name, description);
+    const { address: bech32Address } = formatAddresses(address);
+    updateAccountLocalInfo(bech32Address, inputName ?? name, description);
 
     actions?.();
 

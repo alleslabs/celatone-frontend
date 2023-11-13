@@ -17,7 +17,7 @@ import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 
-import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./type";
+import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./types";
 
 interface NavInfoProps {
   submenu: SubmenuInfo;
