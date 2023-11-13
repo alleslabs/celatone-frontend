@@ -34,12 +34,17 @@ export const AccountHeader = observer(
     hexAddress,
     publicDescription,
   }: AccounHeaderProps) => {
-    const displayName = icnsName?.primary_name || "Account Details";
     const move = useMoveConfig({ shouldRedirect: false });
     const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
 
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
+    const displayName =
+      accountLocalInfo?.name ??
+      publicName ??
+      icnsName?.primary_name ??
+      "Account Details";
+
     return (
       <Flex
         justifyContent="space-between"
@@ -64,7 +69,7 @@ export const AccountHeader = observer(
                 <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
               )}
               <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-                {accountLocalInfo?.name ?? publicName ?? displayName}
+                {displayName}
               </Heading>
             </Flex>
             {isSaved && accountLocalInfo ? (

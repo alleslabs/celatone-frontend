@@ -28,7 +28,11 @@ export const EditSavedAccountModal = ({
       name: accountLocalInfo.name ?? "",
       description: accountLocalInfo.description ?? "",
     };
-  }, [accountLocalInfo]);
+  }, [
+    accountLocalInfo.address,
+    accountLocalInfo.description,
+    accountLocalInfo.name,
+  ]);
 
   const {
     control,
