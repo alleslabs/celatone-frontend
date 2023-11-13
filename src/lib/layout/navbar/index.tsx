@@ -10,19 +10,18 @@ import {
   useMoveConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import {
-  INSTANTIATED_LIST_NAME,
-  SAVED_LIST_NAME,
-  StorageKeys,
-  UNDEFINED_ICON_LIST,
-} from "lib/data";
+import { StorageKeys, UNDEFINED_ICON_LIST } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
-import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
-import type { MenuInfo } from "./type";
+import type { MenuInfo } from "./types";
+import {
+  getDevSubmenuMove,
+  getDevSubmenuWasm,
+  getDeviceSubmenuWasm,
+} from "./utils";
 
 interface NavbarProps {
   isExpand: boolean;
@@ -79,122 +78,25 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           },
         ]
       : []),
-    // TODO: combine move and wasm after having This Wallet subsection in move
-    ...(move.enabled
+    ...(move.enabled || wasm.enabled
       ? [
           {
             category: "Developer Tools",
             slug: StorageKeys.DevSidebar,
             submenu: [
-              {
-                name: "0x1 Page",
-                slug: "/accounts/0x1",
-                icon: "hex" as IconKeys,
-              },
-              {
-                name: "Publish Module",
-                slug: "/publish-module",
-                icon: "add-new" as IconKeys,
-              },
-              {
-                name: "View / Execute",
-                slug: "/interact",
-                icon: "execute" as IconKeys,
-              },
-              {
-                name: "Deploy Script",
-                slug: "/deploy-script",
-                icon: "code" as IconKeys,
-              },
-            ],
-            // subSection: [
-            //   {
-            //     category: "This Device",
-            //     submenu: [
-            //       {
-            //         name: "Saved Accounts",
-            //         slug: "/saved-accounts",
-            //         icon: "admin" as IconKeys,
-            //       },
-            //     ],
-            //   },
-            // ],
-          },
-        ]
-      : []),
-    ...(wasm.enabled
-      ? [
-          {
-            category: "Developer Tools",
-            slug: StorageKeys.DevSidebar,
-            submenu: [
-              {
-                name: "Deploy Contract",
-                slug: "/deploy",
-                icon: "add-new" as IconKeys,
-              },
-              {
-                name: "Query",
-                slug: "/query",
-                icon: "query" as IconKeys,
-              },
-              {
-                name: "Execute",
-                slug: "/execute",
-                icon: "execute" as IconKeys,
-              },
-              {
-                name: "Migrate",
-                slug: "/migrate",
-                icon: "migrate" as IconKeys,
-              },
-              // {
-              //   name: "Recent Activities",
-              //   slug: "/",
-              //   icon: "list" as IconKeys,
-              // },
+              ...getDevSubmenuMove(move.enabled),
+              ...getDevSubmenuWasm(wasm.enabled),
             ],
             subSection: [
               {
-                category: "This Wallet",
-                submenu: [
-                  {
-                    name: "My Stored Codes",
-                    slug: "/stored-codes",
-                    icon: "code" as IconKeys,
-                  },
-                  {
-                    name: INSTANTIATED_LIST_NAME,
-                    slug: `/contract-lists/${formatSlugName(
-                      INSTANTIATED_LIST_NAME
-                    )}`,
-                    icon: getListIcon(INSTANTIATED_LIST_NAME),
-                  },
-                ],
-              },
-              {
                 category: "This Device",
                 submenu: [
-                  // {
-                  //   name: "Saved Accounts",
-                  //   slug: "/saved-accounts",
-                  //   icon: "admin" as IconKeys,
-                  // },
                   {
-                    name: "Saved Codes",
-                    slug: "/saved-codes",
-                    icon: "code" as IconKeys,
+                    name: "Saved Accounts",
+                    slug: "/saved-accounts",
+                    icon: "admin" as IconKeys,
                   },
-                  {
-                    name: SAVED_LIST_NAME,
-                    slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
-                    icon: "contract-address" as IconKeys,
-                  },
-                  {
-                    name: "View All Contract List",
-                    slug: "/contract-lists",
-                    icon: "more" as IconKeys,
-                  },
+                  ...getDeviceSubmenuWasm(wasm.enabled),
                 ],
               },
             ],

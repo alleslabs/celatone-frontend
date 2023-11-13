@@ -17,7 +17,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 
-import type { MenuInfo } from "../navbar/type";
+import type { MenuInfo } from "../navbar/types";
 import { CHAIN_CONFIGS } from "config/chain";
 import { AmpEvent, track } from "lib/amplitude";
 import {
