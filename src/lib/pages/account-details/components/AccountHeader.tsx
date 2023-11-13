@@ -42,8 +42,7 @@ export const AccountHeader = observer(
     const displayName =
       accountLocalInfo?.name ??
       publicName ??
-      icnsName?.primary_name ??
-      "Account Details";
+      (icnsName?.primary_name || "Account Details");
 
     return (
       <Flex
