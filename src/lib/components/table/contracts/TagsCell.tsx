@@ -42,7 +42,7 @@ export const TagsCell = ({
         }}
       >
         {tags.length ? (
-          <Tag size={tagSize}>{tags.at(0)}</Tag>
+          <Tag size={tagSize}>{tags[0]}</Tag>
         ) : (
           <Text variant="body2" color="text.dark">
             Not Tagged

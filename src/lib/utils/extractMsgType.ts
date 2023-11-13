@@ -1,7 +1,7 @@
 import { ActionMsgType, type Option } from "lib/types";
 
 export const extractMsgType = (typePath: string): string =>
-  typePath.split(".").at(-1) || "";
+  typePath.split(".").pop() || "";
 
 /**
  * Returns what action type to be render.
@@ -19,6 +19,8 @@ export const extractMsgType = (typePath: string): string =>
  *
  * @param msgTypesSupportList - list of boolean of message type that celatone supported
  * @returns Returns action type
+ *
+ *
  *
  */
 export const getActionMsgType = (msgTypesSupportList: Option<boolean>[]) => {

@@ -53,12 +53,12 @@ export const PoolIndex = () => {
 
   useEffect(() => {
     if (
-      supportedPoolCount !== undefined &&
-      unsupportedPoolCount !== undefined
+      supportedPoolCount &&
+      unsupportedPoolCount &&
+      supportedPoolCount === 0 &&
+      unsupportedPoolCount > 0
     ) {
-      if (supportedPoolCount === 0 && unsupportedPoolCount > 0)
-        handleTabChange(TabIndex.Unsupported);
-      else handleTabChange(TabIndex.Supported);
+      handleTabChange(TabIndex.Unsupported);
     }
   }, [handleTabChange, supportedPoolCount, unsupportedPoolCount]);
 

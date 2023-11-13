@@ -59,8 +59,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
       (event) =>
         event.type.includes("lock") &&
         event.attributes.some((attr) => attr.value.includes(poolDenom))
-    )
-    ?.attributes.at(0)?.value;
+    )?.attributes[0]?.value;
 
   return (
     <Flex w="full" direction="column" gap={6}>

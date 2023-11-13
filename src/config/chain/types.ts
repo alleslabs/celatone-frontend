@@ -77,6 +77,7 @@ export interface ChainConfig {
   explorerLink: ExplorerConfig;
   extra: {
     disableAnyOfAddresses?: boolean;
+    disableDelegation?: boolean;
   };
 }
 

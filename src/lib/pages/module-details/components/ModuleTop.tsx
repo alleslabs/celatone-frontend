@@ -90,7 +90,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
-            <Text {...baseTextStyle}>
+            <Text {...baseTextStyle} whiteSpace="normal">
               {moduleData.parsedAbi.address}::{moduleData.parsedAbi.name}
             </Text>
           </Flex>
