@@ -55,6 +55,12 @@ export const getAbiInitialData = (length: number) =>
 // ------------------------------------------//
 // -----------------MOVE ARGS----------------//
 // ------------------------------------------//
+export const getVectorElements = (value: string) => {
+  const trimmed = value.split(/\[(.*)\]/)[1].trim();
+  if (trimmed.length === 0) return [];
+  return trimmed.split(",").map((element) => element.trim());
+};
+
 export const getArgType = (argType: string) =>
   argType
     .replace("0x1::string::String", BCS.STRING)
@@ -76,10 +82,7 @@ const getArgValue = ({
     if (value === null) return null;
     if (type.startsWith("vector")) {
       const [, elementType] = type.split(/<(.*)>/);
-      const values = value.split(/\[(.*)\]/)[1].trim();
-      if (values.length === 0) return [];
-
-      const elements = values.split(",").map((element) => element.trim());
+      const elements = getVectorElements(value);
       return elementType === "bool"
         ? elements.map((element) => element.toLowerCase() === "true")
         : elements;
