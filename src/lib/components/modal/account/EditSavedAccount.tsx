@@ -12,23 +12,27 @@ import type { AccountLocalInfo } from "lib/stores/account";
 import type { SaveAccountDetail } from "./SaveNewAccount";
 
 interface EditSavedAccountModalProps {
-  account: AccountLocalInfo;
+  accountLocalInfo: AccountLocalInfo;
   triggerElement: JSX.Element;
 }
 
 export const EditSavedAccountModal = ({
-  account,
+  accountLocalInfo,
   triggerElement,
 }: EditSavedAccountModalProps) => {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const defaultValues = useMemo(() => {
     return {
-      address: account.address,
-      name: account.name ?? "",
-      description: account.description ?? "",
+      address: accountLocalInfo.address,
+      name: accountLocalInfo.name ?? "",
+      description: accountLocalInfo.description ?? "",
     };
-  }, [account]);
+  }, [
+    accountLocalInfo.address,
+    accountLocalInfo.description,
+    accountLocalInfo.name,
+  ]);
 
   const {
     control,
@@ -67,10 +71,10 @@ export const EditSavedAccountModal = ({
       icon="edit-solid"
       headerContent={
         <Flex gap={4} alignItems="center" pt={6}>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text variant="body2" fontWeight={500} color="text.main">
             Account Address
           </Text>
-          <ExplorerLink value={account.address} type="user_address" />
+          <ExplorerLink value={accountLocalInfo.address} type="user_address" />
         </Flex>
       }
       trigger={triggerElement}

@@ -12,6 +12,7 @@ interface SavedAccountsTableProps {
   isLoading: boolean;
   emptyState: JSX.Element;
 }
+
 export const SavedAccountsTable = ({
   accounts,
   isLoading,
@@ -24,10 +25,11 @@ export const SavedAccountsTable = ({
     "max(160px) minmax(200px, 1fr) minmax(250px, 1fr) max(100px)";
 
   return (
-    <TableContainer>
+    <TableContainer pb={6}>
       <SavedAccountsTableHeader templateColumns={templateColumns} />
       {accounts.map((account) => (
         <SavedAccountsTableRow
+          key={account.address}
           accountInfo={account}
           templateColumns={templateColumns}
         />

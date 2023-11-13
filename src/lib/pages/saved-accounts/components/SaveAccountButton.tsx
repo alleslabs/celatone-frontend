@@ -1,5 +1,5 @@
 import { CustomIcon } from "lib/components/icon";
-import { SaveNewAccountModal } from "lib/components/modal/account";
+import { SaveNewAccountModal } from "lib/components/modal";
 
 export const SaveAccountButton = () => (
   <SaveNewAccountModal

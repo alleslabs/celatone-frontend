@@ -22,7 +22,9 @@ export class AccountStore {
     this.savedAccounts = {};
     this.accountLocalInfo = {};
     this.userKey = "";
+
     makeAutoObservable(this, {}, { autoBind: true });
+
     makePersistable(this, {
       name: "AccountStore",
       properties: ["savedAccounts", "accountLocalInfo"],
@@ -45,17 +47,12 @@ export class AccountStore {
     return this.accountLocalInfo[this.userKey]?.[address];
   }
 
-  updateAccountLocalInfo(
-    userKey: string,
-    address: Addr,
-    name?: string,
-    description?: string
-  ) {
+  updateAccountLocalInfo(address: Addr, name?: string, description?: string) {
     const savedAccounts = this.savedAccounts[this.userKey];
     if (!savedAccounts) this.savedAccounts[this.userKey] = [address];
     else if (!savedAccounts.includes(address)) savedAccounts.push(address);
 
-    const accountLocalInfo = this.accountLocalInfo[userKey]?.[address] ?? {
+    const accountLocalInfo = this.accountLocalInfo[this.userKey]?.[address] ?? {
       address,
       name,
       description,
@@ -69,8 +66,8 @@ export class AccountStore {
         ? description.trim()
         : undefined;
 
-    this.accountLocalInfo[userKey] = {
-      ...this.accountLocalInfo[userKey],
+    this.accountLocalInfo[this.userKey] = {
+      ...this.accountLocalInfo[this.userKey],
       [address]: accountLocalInfo,
     };
   }
@@ -83,6 +80,7 @@ export class AccountStore {
     this.savedAccounts[this.userKey] = this.savedAccounts[this.userKey]?.filter(
       (each) => each !== address
     );
+    delete this.accountLocalInfo[this.userKey]?.[address];
   }
 
   getSavedAccounts(): AccountLocalInfo[] {

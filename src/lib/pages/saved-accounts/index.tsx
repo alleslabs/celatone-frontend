@@ -5,10 +5,10 @@ import { useMemo, useState } from "react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { AccountZeroState, EmptyState } from "lib/components/state";
-import { SavedAccountsTable } from "lib/components/table/accounts/SavedAccountsTable";
+import { SavedAccountsTable } from "lib/components/table";
 import { useAccountStore } from "lib/providers/store";
 
-import { SaveAccountButton } from "./components/SaveAccountButton";
+import { SaveAccountButton } from "./components";
 
 const SavedAccounts = observer(() => {
   const { getSavedAccounts, isHydrated } = useAccountStore();
@@ -69,7 +69,7 @@ const SavedAccounts = observer(() => {
               withBorder
             />
           ) : (
-            <AccountZeroState />
+            <AccountZeroState button={<SaveAccountButton />} />
           )
         }
       />

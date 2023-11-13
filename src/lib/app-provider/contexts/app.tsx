@@ -21,10 +21,10 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
+  useAccountStore,
   useCodeStore,
   useContractStore,
   usePublicProjectStore,
-  useAccountStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
 
@@ -49,10 +49,10 @@ const AppContext = createContext<AppContextInterface>({
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
+  const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
-  const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setModalTheme } = useModalTheme();
 
   const [currentChainName, setCurrentChainName] = useState<string>();
@@ -84,17 +84,17 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   useEffect(() => {
     if (currentChainName) {
       const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+      setAccountUserKey(userKey);
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
-      setAccountUserKey(userKey);
     }
   }, [
     currentChainName,
+    setAccountUserKey,
     setCodeUserKey,
     setContractUserKey,
     setProjectUserKey,
-    setAccountUserKey,
   ]);
 
   // Disable "Leave page" alert
@@ -119,10 +119,10 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     return <NetworkErrorState />;
 
   if (
+    !isAccountUserKeyExist() ||
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
     !isProjectUserKeyExist() ||
-    !isAccountUserKeyExist() ||
     !currentChainId
   )
     return <LoadingOverlay />;

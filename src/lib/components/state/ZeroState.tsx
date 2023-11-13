@@ -4,7 +4,6 @@ import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
-import { SaveAccountButton } from "lib/pages/saved-accounts/components/SaveAccountButton";
 import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
@@ -88,7 +87,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   );
 };
 
-export const AccountZeroState = () => (
+export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
     alignItems="center"
     gap={4}
@@ -102,11 +101,11 @@ export const AccountZeroState = () => (
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved accounts.</Flex>
     <Flex align="center" gap={4}>
-      Save an account and entering the account address through
-      <SaveAccountButton />
+      Save an account and access the account address through
+      {button}
     </Flex>
     <Flex align="center">
-      Saved accounts are stored locally on your device..
+      Saved accounts are stored locally on your device.
     </Flex>
   </Flex>
 );

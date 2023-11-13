@@ -1,6 +1,6 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
@@ -20,22 +20,33 @@ export interface SaveAccountDetail {
   name: string;
   description: string;
 }
+
 interface SaveNewAccountModalProps {
   buttonProps: ButtonProps;
+  accountAddress?: Addr;
+  publicName?: string;
+  publicDescription?: string;
 }
 
-export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
+export function SaveNewAccountModal({
+  buttonProps,
+  accountAddress,
+  publicName,
+  publicDescription,
+}: SaveNewAccountModalProps) {
   const { user: exampleUserAddress } = useExampleAddresses();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
 
-  const defaultValues: SaveAccountDetail = {
-    address: "" as Addr,
-    name: "",
-    description: "",
-  };
+  const defaultValues: SaveAccountDetail = useMemo(() => {
+    return {
+      address: accountAddress ?? ("" as Addr),
+      name: publicName ?? "",
+      description: publicDescription ?? "",
+    };
+  }, [accountAddress, publicName, publicDescription]);
 
   const {
     control,
@@ -101,7 +112,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
   ]);
 
   const handleSave = useHandleAccountSave({
-    title: `Saved ${nameState} `,
+    title: `Saved ${nameState}`,
     address: addressState,
     name: nameState,
     description: descriptionState,
@@ -134,6 +145,7 @@ export function SaveNewAccountModal({ buttonProps }: SaveNewAccountModalProps) {
           status={status}
           labelBgColor="gray.900"
           isRequired
+          isReadOnly={!!addressState}
         />
         <ControllerInput
           name="name"
