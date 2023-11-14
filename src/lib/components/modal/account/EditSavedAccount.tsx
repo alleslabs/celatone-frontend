@@ -94,6 +94,7 @@ export const EditSavedAccountModal = ({
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
+          autoFocus
         />
         <ControllerTextarea
           name="description"

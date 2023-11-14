@@ -73,7 +73,7 @@ export function SaveNewAccountModal({
   });
 
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
-  const [isContract, setIsContract] = useState<boolean>(false);
+  const [isContract, setIsContract] = useState(false);
 
   const addressState = watch("address");
   const nameState = watch("name");
@@ -85,7 +85,7 @@ export function SaveNewAccountModal({
     });
   };
 
-  const { refetch } = useAccountType(addressState as Addr, {
+  const { refetch } = useAccountType(addressState, {
     enabled: false,
     onSuccess: (type) => {
       if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
@@ -181,7 +181,11 @@ export function SaveNewAccountModal({
           autoFocus={!accountAddress}
           isReadOnly={!!accountAddress}
           cursor={accountAddress ? "not-allowed" : "pointer"}
-          helperAction={isContract && <ToContractButton />}
+          helperAction={
+            isContract && (
+              <ToContractButton isAccountPrefilled={!accountAddress} />
+            )
+          }
         />
         <ControllerInput
           name="name"

@@ -3,11 +3,16 @@ import { useRouter } from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
 
-export const ToContractButton = () => {
+interface ToContractButtonProps {
+  isAccountPrefilled: boolean;
+}
+
+export const ToContractButton = ({
+  isAccountPrefilled,
+}: ToContractButtonProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
-  const isSavedAccounts = router.pathname === "/[network]/saved-accounts";
   return (
     <Text
       textAlign="right"
@@ -19,7 +24,7 @@ export const ToContractButton = () => {
       minW={16}
       onClick={() =>
         navigate(
-          isSavedAccounts
+          isAccountPrefilled
             ? { pathname: "/contract-lists/saved-contracts" }
             : {
                 pathname: "/contracts/[contractAddress]",
@@ -28,7 +33,7 @@ export const ToContractButton = () => {
         )
       }
     >
-      Go to {isSavedAccounts ? "Saved Contracts" : "Contract Details"}
+      Go to {isAccountPrefilled ? "Saved Contracts" : "Contract Details"}
     </Text>
   );
 };
