@@ -16,7 +16,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useAccountStore } from "lib/providers/store";
 import { useAccountType } from "lib/services/accountService";
-import type { Addr } from "lib/types";
+import { AccountType, type Addr } from "lib/types";
 
 import { ToContractButton } from "./ToContractButton";
 
@@ -85,27 +85,26 @@ export function SaveNewAccountModal({
     });
   };
 
-  const { refetch } = useAccountType(
-    addressState as Addr,
-    false,
-    (type) => {
-      if (type !== "ContractAccount") setStatus(statusSuccess);
+  const { refetch } = useAccountType(addressState as Addr, {
+    enabled: false,
+    onSuccess: (type) => {
+      if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
       else {
         setStatus({
           state: "error",
-          message: "You need to save contract through Contract Details.",
+          message: "You need to save contract through Contract page.",
         });
         setIsContract(true);
       }
     },
-    (err) => {
+    onError: (err) => {
       resetForm(false);
       setStatus({
         state: "error",
         message: err.message,
       });
-    }
-  );
+    },
+  });
 
   useEffect(() => {
     if (addressState.trim().length === 0) {

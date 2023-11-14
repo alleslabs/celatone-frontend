@@ -98,7 +98,6 @@ export const useGetAddressType = () => {
   );
 };
 
-// TODO: refactor
 export const useValidateAddress = () => {
   const {
     chain: { bech32_prefix: bech32Prefix },

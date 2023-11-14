@@ -445,7 +445,6 @@ const AccountDetails = () => {
   const router = useRouter();
   const { isSomeValidAddress } = useValidateAddress();
 
-  // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ).toLowerCase() as Addr;

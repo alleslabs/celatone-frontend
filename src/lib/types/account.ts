@@ -1,11 +1,12 @@
-export type AccountType =
-  | "BaseAccount"
-  | "InterchainAccount"
-  | "ModuleAccount"
-  | "ContinuousVestingAccount"
-  | "DelayedVestingAccount"
-  | "ClawbackVestingAccount"
-  | "ContractAccount"
-  | "PeriodicVestingAccount"
-  | "PermanentLockedAccount"
-  | "BaseVestingAccount";
+export enum AccountType {
+  BaseAccount = "BaseAccount",
+  InterchainAccount = "InterchainAccount",
+  ModuleAccount = "ModuleAccount",
+  ContinuousVestingAccount = "ContinuousVestingAccount",
+  DelayedVestingAccount = "DelayedVestingAccount",
+  ClawbackVestingAccount = "ClawbackVestingAccount",
+  ContractAccount = "ContractAccount",
+  PeriodicVestingAccount = "PeriodicVestingAccount",
+  PermanentLockedAccount = "PermanentLockedAccount",
+  BaseVestingAccount = "BaseVestingAccount",
+}

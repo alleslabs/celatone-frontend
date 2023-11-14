@@ -1,4 +1,4 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -55,9 +55,10 @@ export const useAccountId = (
 
 export const useAccountType = (
   walletAddress: Option<Addr>,
-  enabled: boolean,
-  onSuccess?: (type: AccountType) => void,
-  onError?: (err: Error) => void
+  options: Pick<
+    UseQueryOptions<AccountType, Error>,
+    "enabled" | "onSuccess" | "onError"
+  > = {}
 ): UseQueryResult<AccountType> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -80,11 +81,9 @@ export const useAccountType = (
     [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, indexerGraphClient, walletAddress],
     queryFn,
     {
-      enabled: enabled && Boolean(walletAddress),
+      ...options,
       retry: 1,
       refetchOnWindowFocus: false,
-      onSuccess,
-      onError,
     }
   );
 };
