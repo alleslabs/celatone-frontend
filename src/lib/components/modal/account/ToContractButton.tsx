@@ -28,7 +28,7 @@ export const ToContractButton = () => {
         )
       }
     >
-      {isSavedAccounts ? "To Saved Contracts" : "To Contract Details"}
+      Go to {isSavedAccounts ? "Saved Contracts" : "Contract Details"}
     </Text>
   );
 };

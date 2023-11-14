@@ -93,7 +93,7 @@ export function SaveNewAccountModal({
       else {
         setStatus({
           state: "error",
-          message: "Cannot save contract",
+          message: "You need to save contract through Contract Details.",
         });
         setIsContract(true);
       }
