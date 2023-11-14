@@ -10,7 +10,7 @@ import {
   UINT_TYPES,
 } from "../constants";
 import type { Nullable, Option } from "lib/types";
-import { getArgType } from "lib/utils";
+import { getArgType, getVectorElements } from "lib/utils";
 
 const validateNull = (v: Option<string>) =>
   v !== null ? undefined : "cannot be null";
@@ -96,13 +96,10 @@ const validateVector = (
   // TODO: handle Vector?
 
   let error: Option<string>;
-  value
-    .slice(1, -1)
-    .split(",")
-    .forEach((elementValue) => {
-      const res = validateElement(elementValue.trim());
-      if (res !== undefined) error = `Invalid element: ${res}`;
-    });
+  getVectorElements(value).forEach((elementValue) => {
+    const res = validateElement(elementValue.trim());
+    if (res !== undefined) error = `Invalid element: ${res}`;
+  });
 
   return error;
 };

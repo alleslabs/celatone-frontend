@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#623](https://github.com/alleslabs/celatone-frontend/pull/623) Fix abi empty vector serialization
 - [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state
 - [#603](https://github.com/alleslabs/celatone-frontend/pull/603) Dynamically change returned data by isWasm, isMove
 - [#602](https://github.com/alleslabs/celatone-frontend/pull/602) Fix package version client error
