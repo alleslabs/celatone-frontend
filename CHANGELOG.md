@@ -188,6 +188,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#626](https://github.com/alleslabs/celatone-frontend/pull/626) Fix handle validator image
 - [#570](https://github.com/alleslabs/celatone-frontend/pull/570) Use native tokens in attached funds
 - [#567](https://github.com/alleslabs/celatone-frontend/pull/567) Fix attached funds in code snippet
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text
