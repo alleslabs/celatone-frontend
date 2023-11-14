@@ -9,20 +9,27 @@ import {
   useExampleAddresses,
   useMoveConfig,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useAccountStore } from "lib/providers/store";
-import type { Addr } from "lib/types";
+import { useAccountType } from "lib/services/accountService";
+import { AccountType, type Addr } from "lib/types";
 
-import { SavedAccountModalHeader } from "./SavedAccountModalHeader";
+import { ToContractButton } from "./ToContractButton";
 
 export interface SaveAccountDetail {
   address: Addr;
   name: string;
   description: string;
 }
+
+const statusSuccess: FormStatus = {
+  state: "success",
+  message: "Valid Address",
+};
 
 interface SaveNewAccountModalProps {
   buttonProps: ButtonProps;
@@ -37,26 +44,23 @@ export function SaveNewAccountModal({
   publicName,
   publicDescription,
 }: SaveNewAccountModalProps) {
-  const { user: exampleUserAddress } = useExampleAddresses();
-  const {
-    validateUserAddress,
-    validateContractAddress,
-    validateHexWalletAddress,
-    validateHexModuleAddress,
-  } = useValidateAddress();
   const { constants } = useCelatoneApp();
+  const { user: exampleUserAddress } = useExampleAddresses();
+  const { isSomeValidAddress } = useValidateAddress();
   const move = useMoveConfig({ shouldRedirect: false });
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
 
+  const defaultAddress = accountAddress ?? ("" as Addr);
   const defaultValues: SaveAccountDetail = useMemo(() => {
     return {
-      address: accountAddress ?? ("" as Addr),
+      address: defaultAddress,
       name: publicName ?? "",
       description: publicDescription ?? "",
     };
-  }, [accountAddress, publicName, publicDescription]);
+  }, [defaultAddress, publicDescription, publicName]);
 
   const {
     control,
@@ -69,6 +73,7 @@ export function SaveNewAccountModal({
   });
 
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
+  const [isContract, setIsContract] = useState(false);
 
   const addressState = watch("address");
   const nameState = watch("name");
@@ -76,9 +81,30 @@ export function SaveNewAccountModal({
   const resetForm = (resetAddress = true) => {
     reset({
       ...defaultValues,
-      address: resetAddress ? "" : addressState,
+      address: resetAddress ? defaultAddress : addressState,
     });
   };
+
+  const { refetch } = useAccountType(addressState, {
+    enabled: false,
+    onSuccess: (type) => {
+      if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
+      else {
+        setStatus({
+          state: "error",
+          message: "You need to save contract through Contract page.",
+        });
+        setIsContract(true);
+      }
+    },
+    onError: (err) => {
+      resetForm(false);
+      setStatus({
+        state: "error",
+        message: err.message,
+      });
+    },
+  });
 
   useEffect(() => {
     if (addressState.trim().length === 0) {
@@ -89,6 +115,7 @@ export function SaveNewAccountModal({
       setStatus({
         state: "loading",
       });
+      setIsContract(false);
       if (isAccountSaved(addressState)) {
         setStatus({
           state: "error",
@@ -96,25 +123,13 @@ export function SaveNewAccountModal({
         });
       } else {
         const timeoutId = setTimeout(() => {
-          const errUser = validateUserAddress(addressState);
-          const errContract = validateContractAddress(addressState);
-          const isHex = validateHexWalletAddress(addressState);
-          const isHexModule = validateHexModuleAddress(addressState);
-
-          if (
-            (!move.enabled && errUser && errContract) ||
-            (move.enabled && errUser && errContract && !isHex && !isHexModule)
-          )
+          if (!isSomeValidAddress(addressState))
             setStatus({
               state: "error",
-              message: errUser,
+              message: "Invalid Address",
             });
-          // TODO validate contract type online
-          else
-            setStatus({
-              state: "success",
-              message: "Valid Address",
-            });
+          else if (wasm.enabled) refetch();
+          else setStatus(statusSuccess);
         }, 1000);
         return () => clearTimeout(timeoutId);
       }
@@ -123,11 +138,10 @@ export function SaveNewAccountModal({
   }, [
     addressState,
     isAccountSaved,
-    validateUserAddress,
-    validateContractAddress,
-    validateHexWalletAddress,
-    validateHexModuleAddress,
+    isSomeValidAddress,
+    refetch,
     move.enabled,
+    wasm.enabled,
   ]);
 
   const handleSave = useHandleAccountSave({
@@ -151,25 +165,28 @@ export function SaveNewAccountModal({
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
-      headerContent={
-        accountAddress && <SavedAccountModalHeader address={accountAddress} />
-      }
       otherBtnTitle="Cancel"
       buttonRemark="Saved accounts are stored locally on your device."
     >
       <Flex direction="column" gap={6}>
-        {!accountAddress && (
-          <ControllerInput
-            name="address"
-            control={control}
-            label="Account Address"
-            variant="fixed-floating"
-            placeholder={`ex. ${exampleUserAddress}`}
-            status={status}
-            labelBgColor="gray.900"
-            isRequired
-          />
-        )}
+        <ControllerInput
+          name="address"
+          control={control}
+          label="Account Address"
+          variant="fixed-floating"
+          placeholder={`ex. ${exampleUserAddress}`}
+          status={status}
+          labelBgColor="gray.900"
+          isRequired
+          autoFocus={!accountAddress}
+          isReadOnly={!!accountAddress}
+          cursor={accountAddress ? "not-allowed" : "pointer"}
+          helperAction={
+            isContract && (
+              <ToContractButton isAccountPrefilled={!accountAddress} />
+            )
+          }
+        />
         <ControllerInput
           name="name"
           control={control}
@@ -183,6 +200,7 @@ export function SaveNewAccountModal({
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
+          autoFocus={!!accountAddress}
         />
         <ControllerTextarea
           name="description"

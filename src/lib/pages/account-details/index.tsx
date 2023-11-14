@@ -33,13 +33,8 @@ import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
-import {
-  getFirstQueryParam,
-  isHexWalletAddress,
-  isHexModuleAddress,
-  truncate,
-} from "lib/utils";
+import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
+import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
@@ -71,8 +66,8 @@ enum TabIndex {
 }
 
 export interface AccountDetailsBodyProps {
-  hexAddress: HexAddr;
-  accountAddress: HumanAddr;
+  accountAddressParam: string;
+  tab: TabIndex;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
@@ -81,21 +76,23 @@ const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({
-  hexAddress,
-  accountAddress,
+  accountAddressParam,
+  tab,
 }: AccountDetailsBodyProps) => {
   const {
     chainConfig: {
       extra: { disableDelegation },
     },
   } = useCelatoneApp();
+  const formatAddresses = useFormatAddresses();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
-  // TODO: remove assertion later
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+
+  const { address: accountAddress, hex: hexAddress } =
+    formatAddresses(accountAddressParam);
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const { data: accountId } = useAccountId(accountAddress);
@@ -446,13 +443,11 @@ const AccountDetailsBody = ({
 
 const AccountDetails = () => {
   const router = useRouter();
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
-  const formatAddresses = useFormatAddresses();
-  // TODO: change to `Addr` for correctness (i.e. interchain account)
+  const { isSomeValidAddress } = useValidateAddress();
+
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
-  ).toLowerCase() as MoveAccountAddr;
-  const { address, hex } = formatAddresses(accountAddressParam);
+  ).toLowerCase() as Addr;
   // TODO: fix assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
@@ -462,13 +457,13 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      {!isHexWalletAddress(accountAddressParam) &&
-      !isHexModuleAddress(accountAddressParam) &&
-      validateUserAddress(accountAddressParam) &&
-      validateContractAddress(accountAddressParam) ? (
+      {!isSomeValidAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody hexAddress={hex} accountAddress={address} />
+        <AccountDetailsBody
+          accountAddressParam={accountAddressParam}
+          tab={tab}
+        />
       )}
     </PageContainer>
   );

@@ -14834,6 +14834,15 @@ export type GetAccountIdByAddressQueryDocumentQuery = {
   accounts_by_pk?: { __typename?: "accounts"; id: number } | null;
 };
 
+export type GetAccountTypeByAddressQueryDocumentQueryVariables = Exact<{
+  address: Scalars["String"];
+}>;
+
+export type GetAccountTypeByAddressQueryDocumentQuery = {
+  __typename?: "query_root";
+  accounts_by_pk?: { __typename?: "accounts"; type?: any | null } | null;
+};
+
 export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
   height: Scalars["Int"];
 }>;
@@ -15883,6 +15892,60 @@ export const GetAccountIdByAddressQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetAccountIdByAddressQueryDocumentQuery,
   GetAccountIdByAddressQueryDocumentQueryVariables
+>;
+export const GetAccountTypeByAddressQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getAccountTypeByAddressQueryDocument" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "accounts_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAccountTypeByAddressQueryDocumentQuery,
+  GetAccountTypeByAddressQueryDocumentQueryVariables
 >;
 export const GetBlockTimestampByHeightQueryDocument = {
   kind: "Document",

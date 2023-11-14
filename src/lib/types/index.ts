@@ -1,6 +1,7 @@
 export * from "./currency";
 export * from "./move";
 export * from "./tx";
+export * from "./account";
 export * from "./addrs";
 export * from "./asset";
 export * from "./block";

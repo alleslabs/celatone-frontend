@@ -1,5 +1,6 @@
-/* eslint-disable */
-import {
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type {
   ResultOf,
   TypedDocumentNode as DocumentNode,
 } from "@graphql-typed-document-node/core";

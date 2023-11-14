@@ -13,6 +13,7 @@ import { type Control, useController } from "react-hook-form";
 
 import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
 import { OBJECT_TYPE, STRING_TYPE } from "./constants";
@@ -30,31 +31,20 @@ export const ArgFieldTemplate = ({
   control,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const {
-    validateUserAddress,
-    validateContractAddress,
-    validateHexWalletAddress,
-    validateHexModuleAddress,
-  } = useValidateAddress();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
     (input: string) =>
       validateUserAddress(input) === null ||
       validateContractAddress(input) === null ||
-      validateHexWalletAddress(input) ||
-      validateHexModuleAddress(input),
-    [
-      validateContractAddress,
-      validateHexModuleAddress,
-      validateHexWalletAddress,
-      validateUserAddress,
-    ]
+      isHexWalletAddress(input) ||
+      isHexModuleAddress(input),
+    [validateContractAddress, validateUserAddress]
   );
   const isValidArgObject = useCallback(
     (input: string) =>
-      validateContractAddress(input) === null ||
-      validateHexModuleAddress(input),
-    [validateContractAddress, validateHexModuleAddress]
+      validateContractAddress(input) === null || isHexModuleAddress(input),
+    [validateContractAddress]
   );
 
   const isOptional = param.startsWith("0x1::option::Option");
