@@ -6,12 +6,11 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TableContainer, ViewMore } from "lib/components/table";
+import { ViewMore } from "lib/components/table";
 import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
 import type { Nullable, Option } from "lib/types";
 
-import { ModuleHistoryHeader } from "./ModuleHistoryHeader";
-import { ModuleHistoryRow } from "./ModuleHistoryRow";
+import { PublishedEventsTable } from "./PublishedEventsTable";
 
 const TEMPLATE_COLUMNS = "40px 180px minmax(300px, 1fr) 140px 260px";
 
@@ -115,20 +114,13 @@ export const ModuleHistoryTable = ({
       />
     );
 
-  // TODO: Mobile card version
-
   return (
     <>
-      <TableContainer>
-        <ModuleHistoryHeader templateColumns={TEMPLATE_COLUMNS} />
-        {moduleHistories.slice(0, pageSize).map((history) => (
-          <ModuleHistoryRow
-            key={JSON.stringify(history)}
-            templateColumns={TEMPLATE_COLUMNS}
-            history={history}
-          />
-        ))}
-      </TableContainer>
+      <PublishedEventsTable
+        moduleHistories={moduleHistories}
+        pageSize={pageSize}
+        templateColumns={TEMPLATE_COLUMNS}
+      />
       {onViewMore && Number(historyCount) > 5 && (
         <ViewMore onClick={onViewMore} />
       )}
