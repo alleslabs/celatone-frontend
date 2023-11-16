@@ -83,7 +83,7 @@ export const NavDrawer = () => {
               {
                 name: "0x1 Page",
                 slug: "/account/0x1",
-                icon: "home" as IconKeys,
+                icon: "hex" as IconKeys,
               },
             ]
           : []),

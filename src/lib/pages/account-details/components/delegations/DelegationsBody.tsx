@@ -39,7 +39,13 @@ export const DelegationsBody = ({
   }, [router.query.accountAddress]);
 
   return (
-    <Flex direction="column" gap={8} p={8} borderRadius="8px" bg="gray.900">
+    <Flex
+      direction="column"
+      gap={8}
+      p={{ base: 4, md: 8 }}
+      borderRadius="8px"
+      bg="gray.900"
+    >
       <RadioGroup
         onChange={(newValue) => {
           trackUseRadio(newValue.toLocaleLowerCase());

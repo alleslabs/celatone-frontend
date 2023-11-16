@@ -275,7 +275,7 @@ const AccountDetailsBody = ({
           </CustomTab>
         </TabList>
         <TabPanels>
-          <TabPanel p={0}>
+          <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Flex
               direction={{ base: "column", md: "row" }}
               gap={{ base: 4, md: 6 }}
@@ -304,8 +304,10 @@ const AccountDetailsBody = ({
               )}
               <UserAccountDesc address={accountAddress} />
             </Flex>
-
-            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
+            <Flex
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor="gray.700"
+            >
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={handleTabChange(TabIndex.Assets)}

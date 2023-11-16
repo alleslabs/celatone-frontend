@@ -27,7 +27,7 @@ export const TotalCard = ({
 }: TotalCardProps) => {
   if (isLoading)
     return (
-      <Box minW="233px">
+      <Box minW={48}>
         <Spinner mt={2} alignSelf="center" size="xl" />
       </Box>
     );
