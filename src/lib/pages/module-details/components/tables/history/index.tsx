@@ -1,8 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
+import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -12,9 +11,7 @@ import type { Nullable, Option } from "lib/types";
 
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
-const TEMPLATE_COLUMNS = "40px 180px minmax(300px, 1fr) 140px 260px";
-
-interface ModuleTxsTableProps {
+interface ModuleHistoryTableProps {
   moduleId: Option<Nullable<number>>;
   historyCount: Option<number>;
   scrollComponentId?: string;
@@ -28,7 +25,7 @@ export const ModuleHistoryTable = ({
   onViewMore,
   scrollComponentId,
   refetchCount,
-}: ModuleTxsTableProps) => {
+}: ModuleHistoryTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
@@ -53,7 +50,7 @@ export const ModuleHistoryTable = ({
     error,
   } = useModuleHistoriesByPagination({
     moduleId,
-    pageSize: pageSize + 1,
+    pageSize,
     offset,
   });
 
@@ -69,73 +66,49 @@ export const ModuleHistoryTable = ({
     setCurrentPage(1);
   };
 
-  const isMobile = useMobile();
-
   useEffect(() => {
     if (!onViewMore) setPageSize(10);
     setCurrentPage(1);
   }, [currentChainId, onViewMore, setCurrentPage, setPageSize]);
 
-  if (!moduleId || error)
-    return (
-      <EmptyState
-        withBorder
-        imageVariant="not-found"
-        message="There is an error fetching module published events history."
-      />
-    );
-  if (isLoading)
-    return isMobile ? (
-      <>
-        <Loading />
-        {historyCount && (
-          <Pagination
-            currentPage={currentPage}
-            pagesQuantity={pagesQuantity}
-            offset={offset}
-            totalData={historyCount}
-            pageSize={pageSize}
-            onPageChange={onPageChange}
-            onPageSizeChange={onPageSizeChange}
-            scrollComponentId={scrollComponentId}
-          />
-        )}
-      </>
-    ) : (
-      <Loading withBorder />
-    );
-
-  if (!moduleHistories?.length)
-    return (
-      <EmptyState
-        imageVariant="empty"
-        message="This module does not have any published events yet."
-        withBorder
-      />
-    );
-
   return (
     <>
       <PublishedEventsTable
         moduleHistories={moduleHistories}
-        pageSize={pageSize}
-        templateColumns={TEMPLATE_COLUMNS}
+        isLoading={isLoading}
+        emptyState={
+          !moduleId || error ? (
+            <EmptyState
+              withBorder
+              imageVariant="not-found"
+              message="There is an error fetching module published events history."
+            />
+          ) : (
+            <EmptyState
+              imageVariant="empty"
+              message="This module does not have any published events yet."
+              withBorder
+            />
+          )
+        }
       />
-      {onViewMore && Number(historyCount) > 5 && (
-        <ViewMore onClick={onViewMore} />
-      )}
-      {!onViewMore && historyCount !== undefined && historyCount > 10 && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={historyCount}
-          pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-          scrollComponentId={scrollComponentId}
-        />
-      )}
+      {!!historyCount &&
+        (onViewMore ? (
+          <ViewMore onClick={onViewMore} />
+        ) : (
+          historyCount > 10 && (
+            <Pagination
+              currentPage={currentPage}
+              pagesQuantity={pagesQuantity}
+              offset={offset}
+              totalData={historyCount}
+              pageSize={pageSize}
+              onPageChange={onPageChange}
+              onPageSizeChange={onPageSizeChange}
+              scrollComponentId={scrollComponentId}
+            />
+          )
+        ))}
     </>
   );
 };

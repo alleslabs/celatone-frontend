@@ -1,37 +1,46 @@
 import { TableContainer } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
 import { MobileTableContainer } from "lib/components/table";
-import type { ModuleHistory } from "lib/types";
+import type { ModuleHistory, Option } from "lib/types";
 
-import { ModuleHistoryHeader } from "./ModuleHistoryHeader";
-import { ModuleHistoryRow } from "./ModuleHistoryRow";
-import { PublishedEventsMobileCard } from "./PublishedEventsMobileCard";
+import { PublishedEventsTableHeader } from "./PublishedEventsTableHeader";
+import { PublishedEventsTableMobileCard } from "./PublishedEventsTableMobileCard";
+import { PublishedEventsTableRow } from "./PublishedEventsTableRow";
 
 interface PublishedEventsTableProps {
-  moduleHistories: ModuleHistory[];
-  pageSize: number;
-  templateColumns: string;
+  moduleHistories: Option<ModuleHistory[]>;
+  isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const PublishedEventsTable = ({
   moduleHistories,
-  templateColumns,
-  pageSize,
+  isLoading,
+  emptyState,
 }: PublishedEventsTableProps) => {
   const isMobile = useMobile();
 
+  if (isLoading) return <Loading withBorder />;
+  if (!moduleHistories?.length) return emptyState;
+
+  const templateColumns = "40px 180px minmax(300px, 1fr) 140px 260px";
+
   return isMobile ? (
     <MobileTableContainer>
-      {moduleHistories.slice(0, pageSize).map((history) => (
-        <PublishedEventsMobileCard key={history.height} history={history} />
+      {moduleHistories.map((history) => (
+        <PublishedEventsTableMobileCard
+          key={history.height}
+          history={history}
+        />
       ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <ModuleHistoryHeader templateColumns={templateColumns} />
-      {moduleHistories.slice(0, pageSize).map((history) => (
-        <ModuleHistoryRow
+      <PublishedEventsTableHeader templateColumns={templateColumns} />
+      {moduleHistories.map((history) => (
+        <PublishedEventsTableRow
           key={JSON.stringify(history)}
           templateColumns={templateColumns}
           history={history}

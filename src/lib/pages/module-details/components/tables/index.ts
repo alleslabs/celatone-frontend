@@ -1,2 +1,2 @@
 export * from "./history";
-export * from "./txs";
+export * from "./ModuleTxsTable";

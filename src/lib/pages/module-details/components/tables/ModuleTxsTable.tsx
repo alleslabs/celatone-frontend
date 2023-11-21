@@ -1,8 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
+import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -65,39 +64,10 @@ export const ModuleTxsTable = ({
     setCurrentPage(1);
   };
 
-  const isMobile = useMobile();
-
   useEffect(() => {
     if (!onViewMore) setPageSize(10);
     setCurrentPage(1);
   }, [currentChainId, onViewMore, setCurrentPage, setPageSize]);
-  // TODO - Might consider adding this state in all transaction table
-  if (!moduleId || error)
-    return (
-      <EmptyState
-        withBorder
-        imageVariant="not-found"
-        message="There is an error during fetching transactions."
-      />
-    );
-  if (isMobile && isLoading)
-    return (
-      <>
-        <Loading />
-        {txCount && (
-          <Pagination
-            currentPage={currentPage}
-            pagesQuantity={pagesQuantity}
-            offset={offset}
-            totalData={txCount}
-            pageSize={pageSize}
-            onPageChange={onPageChange}
-            onPageSizeChange={onPageSizeChange}
-            scrollComponentId={scrollComponentId}
-          />
-        )}
-      </>
-    );
 
   return (
     <>
@@ -105,28 +75,40 @@ export const ModuleTxsTable = ({
         transactions={moduleTxs}
         isLoading={isLoading}
         emptyState={
-          <EmptyState
-            withBorder
-            imageVariant="empty"
-            message="There are no transactions on this module."
-          />
+          !moduleId || error ? (
+            <EmptyState
+              withBorder
+              imageVariant="not-found"
+              message="There is an error during fetching transactions."
+            />
+          ) : (
+            <EmptyState
+              withBorder
+              imageVariant="empty"
+              message="There are no transactions on this module."
+            />
+          )
         }
         showAction={false}
         showRelations={false}
       />
-      {onViewMore && <ViewMore onClick={onViewMore} />}
-      {!onViewMore && txCount !== undefined && Number(txCount) > 10 && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={txCount}
-          pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-          scrollComponentId={scrollComponentId}
-        />
-      )}
+      {!!txCount &&
+        (onViewMore ? (
+          <ViewMore onClick={onViewMore} />
+        ) : (
+          txCount > 10 && (
+            <Pagination
+              currentPage={currentPage}
+              pagesQuantity={pagesQuantity}
+              offset={offset}
+              totalData={txCount}
+              pageSize={pageSize}
+              onPageChange={onPageChange}
+              onPageSizeChange={onPageSizeChange}
+              scrollComponentId={scrollComponentId}
+            />
+          )
+        ))}
     </>
   );
 };

@@ -253,20 +253,22 @@ export const useModuleHistoriesByPagination = ({
     return indexerGraphClient
       .request(getModuleHistoriesQueryDocument, {
         moduleId,
-        pageSize,
+        pageSize: pageSize + 1,
         offset,
       })
       .then(({ module_histories }) =>
-        module_histories.map<ModuleHistory>((history, idx) => ({
-          remark: history.remark,
-          upgradePolicy: history.upgrade_policy,
-          height: history.block.height,
-          timestamp: parseDate(history.block.timestamp),
-          previousPolicy:
-            idx === module_histories.length - 1
-              ? undefined
-              : module_histories[idx + 1].upgrade_policy,
-        }))
+        module_histories
+          .map<ModuleHistory>((history, idx) => ({
+            remark: history.remark,
+            upgradePolicy: history.upgrade_policy,
+            height: history.block.height,
+            timestamp: parseDate(history.block.timestamp),
+            previousPolicy:
+              idx === module_histories.length - 1
+                ? undefined
+                : module_histories[idx + 1].upgrade_policy,
+          }))
+          .slice(0, pageSize)
       );
   };
 
