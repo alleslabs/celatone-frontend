@@ -8,6 +8,7 @@ import {
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountLocalInfo } from "lib/stores/account";
@@ -61,7 +62,10 @@ export function RemoveSavedAccountModal({
       iconColor="error.light"
       mainVariant="error"
       mainBtnTitle="Yes, Remove It"
-      mainAction={handleRemove}
+      mainAction={() => {
+        track(AmpEvent.ACCOUNT_REMOVE);
+        handleRemove();
+      }}
       otherBtnTitle="No, Keep It"
       trigger={trigger}
     >

@@ -1,6 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 
 interface ToContractButtonProps {
@@ -22,7 +23,8 @@ export const ToContractButton = ({
       variant="body3"
       cursor="pointer"
       minW={16}
-      onClick={() =>
+      onClick={() => {
+        track(AmpEvent.ACCOUNT_TO_CONTRACT_BUTTON);
         navigate(
           isAccountPrefilled
             ? { pathname: "/contract-lists/saved-contracts" }
@@ -30,8 +32,8 @@ export const ToContractButton = ({
                 pathname: "/contracts/[contractAddress]",
                 query: { contractAddress: router.query.accountAddress },
               }
-        )
-      }
+        );
+      }}
     >
       Go to {isAccountPrefilled ? "Saved Contracts" : "Contract Details"}
     </Text>

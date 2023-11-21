@@ -47,8 +47,8 @@ const SavedCodes = observer(() => {
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_MY_SAVED_CODES);
-  }, [router.isReady]);
+    if (router.isReady) track(AmpEvent.TO_MY_SAVED_CODES, { savedCodesCount });
+  }, [router.isReady, savedCodesCount]);
 
   return (
     <PageContainer>

@@ -1,7 +1,9 @@
 import { Badge, Text, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { AccountZeroState, EmptyState } from "lib/components/state";
@@ -11,6 +13,7 @@ import { useAccountStore } from "lib/providers/store";
 import { SaveAccountButton } from "./components";
 
 const SavedAccounts = observer(() => {
+  const router = useRouter();
   const { getSavedAccounts, isHydrated } = useAccountStore();
   const savedAccounts = getSavedAccounts();
   const accountsCount = savedAccounts.length;
@@ -28,6 +31,10 @@ const SavedAccounts = observer(() => {
         account.description?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, savedAccounts]);
+
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_MY_SAVED_ACCOUNTS, { accountsCount });
+  }, [accountsCount, router.isReady]);
 
   return (
     <PageContainer>

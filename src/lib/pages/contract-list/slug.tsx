@@ -61,18 +61,21 @@ const ContractsByList = observer(() => {
 
   useEffect(() => {
     if (router.isReady) {
-      switch (listSlug) {
-        case formatSlugName(INSTANTIATED_LIST_NAME):
-          track(AmpEvent.TO_INSTANTIATED_BY_ME);
-          break;
-        case formatSlugName(SAVED_LIST_NAME):
-          track(AmpEvent.TO_SAVED_CONTRACT);
-          break;
-        default:
-          track(AmpEvent.TO_LIST_OTHERS);
-      }
+      const event = (() => {
+        switch (listSlug) {
+          case formatSlugName(INSTANTIATED_LIST_NAME):
+            return AmpEvent.TO_INSTANTIATED_BY_ME;
+          case formatSlugName(SAVED_LIST_NAME):
+            return AmpEvent.TO_SAVED_CONTRACT;
+          default:
+            return AmpEvent.TO_LIST_OTHERS;
+        }
+      })();
+      track(event, {
+        contractCounts: contractListInfo?.contracts.length ?? 0,
+      });
     }
-  }, [router.isReady, listSlug]);
+  }, [router.isReady, listSlug, contractListInfo?.contracts.length]);
 
   if (!contractListInfo) return null;
 
