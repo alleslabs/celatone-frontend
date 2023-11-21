@@ -93,22 +93,20 @@ export const ModuleTxsTable = ({
         showRelations={false}
       />
       {!!txCount &&
-        (onViewMore ? (
-          <ViewMore onClick={onViewMore} />
-        ) : (
-          txCount > 10 && (
-            <Pagination
-              currentPage={currentPage}
-              pagesQuantity={pagesQuantity}
-              offset={offset}
-              totalData={txCount}
-              pageSize={pageSize}
-              onPageChange={onPageChange}
-              onPageSizeChange={onPageSizeChange}
-              scrollComponentId={scrollComponentId}
-            />
-          )
-        ))}
+        (onViewMore
+          ? txCount > 5 && <ViewMore onClick={onViewMore} />
+          : txCount > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={txCount}
+                pageSize={pageSize}
+                onPageChange={onPageChange}
+                onPageSizeChange={onPageSizeChange}
+                scrollComponentId={scrollComponentId}
+              />
+            ))}
     </>
   );
 };

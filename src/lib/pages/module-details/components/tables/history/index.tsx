@@ -93,22 +93,20 @@ export const ModuleHistoryTable = ({
         }
       />
       {!!historyCount &&
-        (onViewMore ? (
-          <ViewMore onClick={onViewMore} />
-        ) : (
-          historyCount > 10 && (
-            <Pagination
-              currentPage={currentPage}
-              pagesQuantity={pagesQuantity}
-              offset={offset}
-              totalData={historyCount}
-              pageSize={pageSize}
-              onPageChange={onPageChange}
-              onPageSizeChange={onPageSizeChange}
-              scrollComponentId={scrollComponentId}
-            />
-          )
-        ))}
+        (onViewMore
+          ? historyCount > 5 && <ViewMore onClick={onViewMore} />
+          : historyCount > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={historyCount}
+                pageSize={pageSize}
+                onPageChange={onPageChange}
+                onPageSizeChange={onPageSizeChange}
+                scrollComponentId={scrollComponentId}
+              />
+            ))}
     </>
   );
 };
