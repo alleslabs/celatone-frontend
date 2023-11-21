@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "lib/components/table";
 
-export const ModuleHistoryHeader = ({
+export const PublishedEventsTableHeader = ({
   templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];

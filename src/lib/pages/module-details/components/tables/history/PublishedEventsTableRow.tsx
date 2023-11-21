@@ -8,7 +8,7 @@ import { TableRow } from "lib/components/table";
 import type { ModuleHistory } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface ModuleHistoriesRowProps {
+interface PublishedEventsTableRowProps {
   templateColumns: GridProps["templateColumns"];
   history: ModuleHistory;
 }
@@ -88,10 +88,10 @@ export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
   }
 };
 
-export const ModuleHistoryRow = ({
+export const PublishedEventsTableRow = ({
   templateColumns,
   history,
-}: ModuleHistoriesRowProps) => (
+}: PublishedEventsTableRowProps) => (
   <Grid templateColumns={templateColumns}>
     <TableRow />
     <TableRow>

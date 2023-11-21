@@ -43,7 +43,7 @@ export const DelegationInfo = ({
           <CustomIcon name="chevron-right" color="gray.600" />
         </Flex>
       ) : (
-        <>
+        <Flex direction="column" gap={4}>
           <Heading
             variant="h6"
             as="h6"
@@ -59,7 +59,11 @@ export const DelegationInfo = ({
             justify="space-between"
             overflowX="scroll"
           >
-            <Flex gap={8} direction={{ base: "column", md: "row" }}>
+            <Flex
+              gap={{ base: 4, md: 8 }}
+              direction={{ base: "column", md: "row" }}
+              w="full"
+            >
               {totalBondedCard}
               {otherInfoCards}
             </Flex>
@@ -94,7 +98,7 @@ export const DelegationInfo = ({
               </Flex>
             )}
           </Flex>
-        </>
+        </Flex>
       )}
     </>
   );
