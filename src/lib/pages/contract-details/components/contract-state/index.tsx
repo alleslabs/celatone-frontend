@@ -101,16 +101,16 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           isCompleted={!hasNextPage}
           onLoadMore={() => {
             trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_LOAD_MORE, {
-              current_states: totalData,
-              namespaces_count: namespaces.length,
+              currentStates: totalData,
+              namespacesCount: namespaces.length,
               namespaces,
             });
             fetchNextPage();
           }}
           onDownload={() => {
             trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_DOWNLOAD, {
-              current_states: totalData,
-              namespaces_count: namespaces.length,
+              currentStates: totalData,
+              namespacesCount: namespaces.length,
               namespaces,
             });
             handleDownload();

@@ -6,8 +6,8 @@ export const trackContractStatesLoad = (
     | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
     | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD,
   properties: {
-    current_states: number;
-    namespaces_count: number;
+    currentStates: number;
+    namespacesCount: number;
     namespaces: string[];
   }
 ) => amp.track(event, properties);
