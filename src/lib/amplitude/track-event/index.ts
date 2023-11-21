@@ -8,6 +8,7 @@ export const track = (
 
 export * from "./trackAction";
 export * from "./trackComponent";
+export * from "./trackContractStates";
 export * from "./trackExternal";
 export * from "./trackInteraction";
 export * from "./trackToPage";

@@ -44,7 +44,9 @@ const InputWithIcon = ({
       } !important`}
       onChange={onChange}
       autoFocus={autoFocus}
-      onClick={action ? () => track(AmpEvent.USE_SEARCH_INPUT) : undefined}
+      onClick={
+        action ? () => track(AmpEvent.USE_SEARCH_INPUT, { action }) : undefined
+      }
     />
     {iconPosition === "end" ? (
       <InputRightElement

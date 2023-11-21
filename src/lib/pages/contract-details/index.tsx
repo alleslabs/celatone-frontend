@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { AmpEvent, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useValidateAddress,
   useWasmConfig,
@@ -135,6 +135,7 @@ const ContractDetailsBody = observer(
     const handleTabChange = useCallback(
       (nextTab: TabIndex) => () => {
         if (nextTab === tab) return;
+        trackUseTab(nextTab);
         navigate({
           pathname: "/contracts/[contractAddress]/[tab]",
           query: {
@@ -304,14 +305,18 @@ const ContractDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
+
   const contractAddressParam = getFirstQueryParam(
     router.query.contractAddress
   ) as ContractAddr;
+  // TODO: fix assertion later
+  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+
   const contractData = useContractData(contractAddressParam);
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_CONTRACT_DETAIL);
-  }, [router.isReady]);
+    if (router.isReady && tab) track(AmpEvent.TO_CONTRACT_DETAIL, { tab });
+  }, [router.isReady, tab]);
 
   if (contractData.isContractDetailLoading) return <Loading withBorder />;
   return (

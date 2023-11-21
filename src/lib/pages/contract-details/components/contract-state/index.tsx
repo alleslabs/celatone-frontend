@@ -9,6 +9,7 @@ import {
 import { saveAs } from "file-saver";
 import { useMemo, useState } from "react";
 
+import { AmpEvent, track, trackContractStatesLoad } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { useContractStates } from "lib/services/contractStateService";
 import type { ContractAddr } from "lib/types";
@@ -98,8 +99,22 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           isLoading={isFetching || isFetchingNextPage}
           totalData={totalData}
           isCompleted={!hasNextPage}
-          onLoadMore={fetchNextPage}
-          onDownload={handleDownload}
+          onLoadMore={() => {
+            trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_LOAD_MORE, {
+              current_states: totalData,
+              namespaces_count: namespaces.length,
+              namespaces,
+            });
+            fetchNextPage();
+          }}
+          onDownload={() => {
+            trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_DOWNLOAD, {
+              current_states: totalData,
+              namespaces_count: namespaces.length,
+              namespaces,
+            });
+            handleDownload();
+          }}
         />
       </Flex>
       {!!error && (
@@ -132,7 +147,10 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
             height="28px"
             borderRadius="16px"
             fontWeight={400}
-            onClick={() => setSelectedNamespace(namespace)}
+            onClick={() => {
+              track(AmpEvent.USE_NAMESPACE_TAB, { namespace });
+              setSelectedNamespace(namespace);
+            }}
           >
             {getDisplayName(namespace)}
           </Button>
@@ -147,6 +165,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           const newVal = e.target.value;
           setKeyword(newVal);
         }}
+        action="contract-states-search"
       />
 
       {/* State List */}
