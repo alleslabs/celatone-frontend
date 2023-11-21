@@ -117,6 +117,8 @@ export enum AmpEvent {
   USE_FILTER_POOL_TYPE = "Use Filter Pool Types",
   USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
+  USE_PAGINATION_PAGE_BUTTON = "Use Pagination Page Button",
+  USE_PAGINATION_GO_TO_PAGE = "Use Pagination Go To Page",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
   USE_SORT = "Use Sort",
   USE_VIEW = "Use View",
@@ -124,6 +126,9 @@ export enum AmpEvent {
   USE_SCHEMA_TOGGLE = "Use Schema Toggle",
   USE_JSON_QUERY_AGAIN = "Use Json Query Again",
   USE_TO_YOUR_ACCOUNT = "Use To Your Account",
+  USE_CONTRACT_STATES_LOAD_MORE = "Use Contract States Load More",
+  USE_CONTRACT_STATES_DOWNLOAD = "Use Contract States Download",
+  USE_NAMESPACE_TAB = "Use Namespace Tab",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -172,4 +177,6 @@ export type SpecialAmpEvent =
   | AmpEvent.USE_FILTER_POOL_TYPE
   | AmpEvent.USE_SORT
   | AmpEvent.USE_VIEW
-  | AmpEvent.USE_TOGGLE;
+  | AmpEvent.USE_TOGGLE
+  | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
+  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD;

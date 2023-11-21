@@ -2,6 +2,7 @@ import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, track } from "lib/amplitude";
 
 interface PageGoToProps {
   lastPage: number;
@@ -12,7 +13,13 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
   const [newPage, setNewPage] = useState<string>("");
   const handleGoTo = () => {
     const newPageValue = Number(newPage);
-    if (newPageValue) onPageChange(newPageValue);
+    if (newPageValue) {
+      track(AmpEvent.USE_PAGINATION_GO_TO_PAGE, {
+        page: newPageValue,
+        lastPage,
+      });
+      onPageChange(newPageValue);
+    }
   };
 
   return (
