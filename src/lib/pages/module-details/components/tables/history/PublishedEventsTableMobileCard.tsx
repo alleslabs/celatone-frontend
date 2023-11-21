@@ -23,7 +23,7 @@ export const PublishedEventsTableMobileCard = ({
         </Flex>
         <Flex direction="column">
           <MobileLabel label="Remark" />
-          {history.remark && <RemarkRender remark={history.remark} />}
+          <RemarkRender remark={history.remark} />
         </Flex>
       </Flex>
     }
