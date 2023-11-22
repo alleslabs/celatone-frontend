@@ -6,14 +6,24 @@ import type {
   AccessConfigPermission,
   PermissionAddresses,
   Option,
+  Nullable,
+  MoveAccountAddr,
 } from "lib/types";
 
-export interface Account {
+export interface PublicAccount {
   address: HumanAddr;
   description: string;
   name: string;
   slug: string;
   type: string;
+}
+
+export interface PublicModule {
+  address: MoveAccountAddr;
+  description: string;
+  github: string;
+  name: string;
+  slug: string;
 }
 
 export interface RawPublicCode {
@@ -27,8 +37,8 @@ export interface RawPublicCode {
   permissionAddresses: PermissionAddresses;
   github: string;
   verified: boolean;
-  cw2Contract: Option<string | null>;
-  cw2Version: Option<string | null>;
+  cw2Contract: Option<Nullable<string>>;
+  cw2Version: Option<Nullable<string>>;
 }
 
 export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
@@ -60,10 +70,11 @@ export interface PublicDetail {
 }
 
 export interface RawPublicProjectInfo {
-  accounts: Account[];
+  accounts: PublicAccount[];
   assets: AssetInfo;
   codes: RawPublicCode[];
   contracts: RawPublicContract[];
+  modules: PublicModule[];
   details: PublicDetail;
   slug: string;
 }
@@ -73,10 +84,11 @@ export interface PublicContract extends Omit<RawPublicContract, "address"> {
 }
 
 export interface PublicProjectInfo {
-  accounts: Account[];
+  accounts: PublicAccount[];
   assets: AssetInfo;
   codes: PublicCode[];
   contracts: PublicContract[];
+  modules: PublicModule[];
   details: PublicDetail;
   slug: string;
 }

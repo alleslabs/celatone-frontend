@@ -11,20 +11,22 @@ export const EstimatedFeeRender = ({
   estimatedFee: StdFee | undefined;
   loading: boolean;
 }) => {
-  const { assetInfos, isLoading } = useAssetInfos({ withPrices: false });
-  if (loading || isLoading) {
+  const { assetInfos, isLoading: isAssetInfoLoading } = useAssetInfos({
+    withPrices: false,
+  });
+
+  if (isAssetInfoLoading) return <Spinner size="sm" mx={1} />;
+  if (loading)
     return (
       <>
         <Spinner size="sm" mx={1} /> Estimating ...
       </>
     );
-  }
-  const coin = estimatedFee?.amount.at(0);
 
+  const coin = estimatedFee?.amount[0];
   if (!coin) return <>--</>;
 
   const chainAssetInfo = assetInfos?.[coin.denom];
-
   return (
     <>
       {formatBalanceWithDenom({

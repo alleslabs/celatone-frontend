@@ -6,13 +6,13 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
+import { catchTxError } from "./common";
 import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
@@ -23,7 +23,6 @@ interface MigrateTxParams {
   migrateMsg: object;
   fee: StdFee;
   client: SigningCosmWasmClient;
-  catchTxError: CatchTxError;
   onTxSucceed?: (txHash: string) => void;
   onTxFailed?: () => void;
 }
@@ -35,7 +34,6 @@ export const migrateContractTx = ({
   migrateMsg,
   fee,
   client,
-  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: MigrateTxParams): Observable<TxResultRendering> => {

@@ -2,7 +2,7 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast, Text } from "@chakra-ui/react";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
@@ -18,7 +18,6 @@ interface RemoveListModalProps {
 export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   const userKey = useUserKey();
   const { removeList } = useContractStore();
-  const { track } = useTrack();
   const toast = useToast();
   const navigate = useInternalNavigate();
   const handleRemove = () => {

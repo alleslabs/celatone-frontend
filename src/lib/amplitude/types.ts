@@ -11,6 +11,12 @@ export enum AmpEvent {
   CONTRACT_EDIT_TAGS = "Contract Edit Tags",
   CONTRACT_EDIT_LISTS = "Contract Edit Lists",
   CONTRACT_REMOVE = "Contract Remove",
+  // ACCOUNT
+  ACCOUNT_SAVE = "Account Save",
+  ACCOUNT_EDIT = "Account Edit",
+  ACCOUNT_REMOVE = "Account Remove",
+  ACCOUNT_FILLED_ERROR = "Account Filled Error",
+  ACCOUNT_TO_CONTRACT_BUTTON = "Account To Contract Button",
   // TAG
   TAG_CREATE = "Tag Create",
   // LIST
@@ -36,6 +42,7 @@ export enum AmpEvent {
   TO_ADMIN_UPDATE = "To Admin Update",
   TO_MY_SAVED_CODES = "To My Saved Codes",
   TO_MY_STORED_CODES = "To My Stored Codes",
+  TO_MY_SAVED_ACCOUNTS = "To My Saved Accounts",
   TO_RECENT_CODES = "To Recent Codes",
   TO_RECENT_CONTRACT = "To Recent Contract",
   TO_INSTANTIATED_BY_ME = "To Instantiated By Me",
@@ -55,7 +62,7 @@ export enum AmpEvent {
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   // ACTIONS
-  ACTION_UPLOAD = "Act Upload",
+  ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
   ACTION_EXECUTE = "Action Execute",
   ACTION_QUERY = "Action Query",
@@ -82,7 +89,6 @@ export enum AmpEvent {
   USE_VIEW_ATTACHED_JSON = "Use View Attached Json",
   USE_EDIT_ATTACHED_JSON = "Use Edit Attached Json",
   USE_REMOVE_ATTACHED_JSON = "Use Remove Attached Json",
-  USE_VIEW_JSON_IN_CODE_DETAIL = "Use View Json In Code Detail",
   USE_SWITCH_JSON_INPUT = "Use Switch Json Input",
   USE_CONTRACT_FORM = "Use Contract Form",
   USE_CONTRACT_MODAL = "Use Contract Modal",
@@ -118,6 +124,8 @@ export enum AmpEvent {
   USE_FILTER_POOL_TYPE = "Use Filter Pool Types",
   USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
+  USE_PAGINATION_PAGE_BUTTON = "Use Pagination Page Button",
+  USE_PAGINATION_GO_TO_PAGE = "Use Pagination Go To Page",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
   USE_SORT = "Use Sort",
   USE_VIEW = "Use View",
@@ -125,6 +133,9 @@ export enum AmpEvent {
   USE_SCHEMA_TOGGLE = "Use Schema Toggle",
   USE_JSON_QUERY_AGAIN = "Use Json Query Again",
   USE_TO_YOUR_ACCOUNT = "Use To Your Account",
+  USE_CONTRACT_STATES_LOAD_MORE = "Use Contract States Load More",
+  USE_CONTRACT_STATES_DOWNLOAD = "Use Contract States Download",
+  USE_NAMESPACE_TAB = "Use Namespace Tab",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -133,7 +144,6 @@ export enum AmpEvent {
   MINTSCAN = "Mintscan",
   WEBSITE = "Website",
   SOCIAL = "Social",
-  CELATONE = "Celatone",
   FEEDBACK = "Feedback",
   ALLESLABS = "AllesLabs",
 }
@@ -159,7 +169,6 @@ export type SpecialAmpEvent =
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
   | AmpEvent.SOCIAL
-  | AmpEvent.CELATONE
   | AmpEvent.USE_VIEW_JSON
   | AmpEvent.USE_UNSUPPORTED_ASSETS
   | AmpEvent.USE_COPIER
@@ -175,4 +184,6 @@ export type SpecialAmpEvent =
   | AmpEvent.USE_FILTER_POOL_TYPE
   | AmpEvent.USE_SORT
   | AmpEvent.USE_VIEW
-  | AmpEvent.USE_TOGGLE;
+  | AmpEvent.USE_TOGGLE
+  | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
+  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD;

@@ -2,10 +2,11 @@ import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 
 import type { ExplorerConfig } from "config/chain/types";
-import { useTrack } from "lib/amplitude";
-import type { AddressReturnType } from "lib/app-provider";
+import { trackMintScan } from "lib/amplitude";
+import { type AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
+import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
 import type { Option } from "lib/types";
@@ -36,19 +37,26 @@ interface ExplorerLinkProps extends BoxProps {
   fixedHeight?: boolean;
 }
 
-export const getNavigationUrl = (
-  type: ExplorerLinkProps["type"],
-  explorerConfig: ExplorerConfig,
-  value: string,
-  lcdEndpoint: string
-) => {
+export const getNavigationUrl = ({
+  type,
+  explorerConfig,
+  value,
+  lcdEndpoint,
+  wasmEnabled = false,
+}: {
+  type: ExplorerLinkProps["type"];
+  explorerConfig: ExplorerConfig;
+  value: string;
+  lcdEndpoint: string;
+  wasmEnabled?: boolean;
+}) => {
   let url = "";
   switch (type) {
     case "tx_hash":
       url = "/txs";
       break;
     case "contract_address":
-      url = "/contracts";
+      url = wasmEnabled ? "/contracts" : "/accounts";
       break;
     case "user_address":
       url = "/accounts";
@@ -118,13 +126,12 @@ const LinkRender = ({
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
-  const { trackMintScan } = useTrack();
   const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
       variant={textVariant}
       color="secondary.main"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
@@ -146,7 +153,7 @@ const LinkRender = ({
       rel="noopener noreferrer"
       data-peer
       onClick={(e) => {
-        trackMintScan(type);
+        if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
     >
@@ -171,6 +178,7 @@ export const ExplorerLink = ({
 }: ExplorerLinkProps) => {
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
+  const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
   const {
     chainConfig: { explorerLink: explorerConfig },
   } = useCelatoneApp();
@@ -184,7 +192,13 @@ export const ExplorerLink = ({
     type === "pool_id";
 
   const [hrefLink, textValue] = [
-    getNavigationUrl(type, explorerConfig, copyValue || value, lcdEndpoint),
+    getNavigationUrl({
+      type,
+      explorerConfig,
+      value: copyValue || value,
+      lcdEndpoint,
+      wasmEnabled,
+    }),
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
@@ -196,7 +210,7 @@ export const ExplorerLink = ({
       className="copier-wrapper"
       display="inline-flex"
       alignItems="center"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       _hover={{
         ...(!readOnly && {
           textDecoration: "underline",

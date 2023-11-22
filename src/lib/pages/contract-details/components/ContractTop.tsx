@@ -134,6 +134,7 @@ export const ContractTop = ({
             gap={1}
             align={{ base: "start", md: "center" }}
             maxW={{ md: "670px" }}
+            minH="36px"
           >
             <CustomIcon
               name="contract-address"

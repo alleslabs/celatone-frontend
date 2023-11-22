@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useClampText } from "use-clamp-text";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { UNDEFINED_ICON_LIST } from "lib/data";
 import type { PublicProjectInfo } from "lib/types";
 
 import { BookmarkButton } from "./BookmarkButton";
@@ -34,7 +35,7 @@ export const PublicProjectCard = observer(
         alignItems="center"
         bg="gray.800"
         _hover={{ bg: "gray.700" }}
-        transition="all .25s ease-in-out"
+        transition="all 0.25s ease-in-out"
         borderRadius="8px"
         gap={4}
         minH={48}
@@ -57,7 +58,7 @@ export const PublicProjectCard = observer(
             >
               <Flex gap={2} pr={1}>
                 <Image
-                  src={item.logo}
+                  src={item.logo ?? UNDEFINED_ICON_LIST[0]}
                   borderRadius="full"
                   alt="Celatone"
                   width={7}

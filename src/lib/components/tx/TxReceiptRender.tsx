@@ -19,6 +19,9 @@ const variantStyle: Record<
       justifyContent: "space-between",
       alignItems: "center",
     },
+    "> div > p:first-of-type": {
+      fontWeight: 600,
+    },
   },
   packed: {
     w: "60%",
@@ -46,12 +49,7 @@ const variantStyle: Record<
 };
 
 const ReceiptRow = ({ title, value, html }: TxReceipt) => (
-  <Flex
-    fontSize="14px"
-    w="full"
-    gap={title.includes("Event Log") ? 2 : 0}
-    direction={{ base: "column", md: "row" }}
-  >
+  <Flex fontSize="14px" w="full" direction={{ base: "column", md: "row" }}>
     <Text variant="body2" mb={{ base: 1, md: 0 }}>
       {title}
     </Text>

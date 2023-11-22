@@ -4,7 +4,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
@@ -28,10 +28,10 @@ export const TxMsgExpand = ({
   assetInfos,
   onClick,
 }: TxMsgExpandProps) => {
-  const getAddressType = useGetAddressType();
-  const { track } = useTrack();
-  const { "@type": type, ...body } = msgBody;
   const isMobile = useMobile();
+  const getAddressType = useGetAddressType();
+
+  const { "@type": type, ...body } = msgBody;
   const isIBC =
     Boolean(log?.events?.find((event) => event.type === "send_packet")) ||
     type.startsWith("/ibc");
@@ -120,8 +120,7 @@ export const TxMsgExpand = ({
       content = (
         <Flex display="inline">
           Execute{" "}
-          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg).at(0)}</span>{" "}
-          on{" "}
+          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg)[0]}</span> on{" "}
           <ExplorerLink
             type="contract_address"
             value={body.contract}
@@ -196,7 +195,7 @@ export const TxMsgExpand = ({
     case "/cosmos.bank.v1beta1.MsgSend":
       {
         const toAddress = body.to_address as Addr;
-        const singleCoin = body.amount.at(0) as Coin;
+        const singleCoin = body.amount[0] as Coin;
         const assetInfo = assetInfos?.[singleCoin.denom];
         const assetText =
           body.amount.length > 1
@@ -298,7 +297,7 @@ export const TxMsgExpand = ({
       align="center"
       justify="space-between"
       borderRadius="8px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
@@ -352,7 +351,7 @@ export const TxMsgExpand = ({
           color="gray.600"
           boxSize={4}
           transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           m={0}
         />
       </Flex>

@@ -2,7 +2,7 @@ import type { RJSFSchema as JsonSchema } from "@rjsf/utils";
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
-import type { Dict, Option } from "lib/types";
+import type { Dict, Nullable, Option } from "lib/types";
 
 export enum SchemaProperties {
   CONTRACT_NAME = "contract_name",
@@ -17,8 +17,6 @@ export enum SchemaProperties {
   ATTACHED_CODE_ID = "attached_code_id",
 }
 
-type NullableJsonSchema = JsonSchema | null;
-
 export interface SchemaInfo {
   title: Option<string>;
   description: Option<string>;
@@ -31,10 +29,10 @@ export interface CodeSchema {
   [SchemaProperties.CONTRACT_VERSION]: string;
   [SchemaProperties.IDL_VERSION]: string;
   [SchemaProperties.INSTANTIATE]: JsonSchema;
-  [SchemaProperties.EXECUTE]: NullableJsonSchema;
-  [SchemaProperties.QUERY]: NullableJsonSchema;
-  [SchemaProperties.MIGRATE]: NullableJsonSchema;
-  [SchemaProperties.SUDO]: NullableJsonSchema;
+  [SchemaProperties.EXECUTE]: Nullable<JsonSchema>;
+  [SchemaProperties.QUERY]: Nullable<JsonSchema>;
+  [SchemaProperties.MIGRATE]: Nullable<JsonSchema>;
+  [SchemaProperties.SUDO]: Nullable<JsonSchema>;
   [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
   [SchemaProperties.ATTACHED_CODE_ID]: string;
 }

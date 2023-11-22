@@ -17,7 +17,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionQuery, track } from "lib/amplitude";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -47,9 +47,12 @@ import {
 
 import { SchemaQueryResponse } from "./SchemaQueryResponse";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 interface SchemaQueryComponentProps {
   msgSchema: SchemaInfo;
@@ -72,7 +75,6 @@ export const SchemaQueryComponent = ({
   opened,
   addActivity,
 }: SchemaQueryComponentProps) => {
-  const { trackActionQuery, track } = useTrack();
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
   );
@@ -175,7 +177,7 @@ export const SchemaQueryComponent = ({
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
                 />
-                <CodeSnippet
+                <WasmCodeSnippet
                   type="query"
                   contractAddress={contractAddress}
                   message={msg}
@@ -235,7 +237,7 @@ export const SchemaQueryComponent = ({
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
                 />
-                <CodeSnippet
+                <WasmCodeSnippet
                   type="query"
                   contractAddress={contractAddress}
                   message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}

@@ -21,6 +21,7 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
+  useAccountStore,
   useCodeStore,
   useContractStore,
   usePublicProjectStore,
@@ -48,6 +49,7 @@ const AppContext = createContext<AppContextInterface>({
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
+  const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
@@ -82,11 +84,18 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   useEffect(() => {
     if (currentChainName) {
       const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+      setAccountUserKey(userKey);
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
     }
-  }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
+  }, [
+    currentChainName,
+    setAccountUserKey,
+    setCodeUserKey,
+    setContractUserKey,
+    setProjectUserKey,
+  ]);
 
   // Disable "Leave page" alert
   useEffect(() => {
@@ -110,6 +119,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     return <NetworkErrorState />;
 
   if (
+    !isAccountUserKeyExist() ||
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
     !isProjectUserKeyExist() ||

@@ -1,18 +1,18 @@
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionWithFunds } from "lib/amplitude";
 import {
   useFabricateFee,
   useExecuteContractTx,
   useCurrentChain,
-  useMobile,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
+import { SubmitButton } from "lib/components/button";
 import { CopyButton } from "lib/components/copy";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -25,7 +25,6 @@ import {
 } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
-import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useExecuteCmds } from "lib/hooks";
@@ -44,9 +43,12 @@ interface JsonExecuteProps {
   initialFunds: Coin[];
 }
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 const assetDefault = {
   assetsSelect: defaultAsset,
@@ -62,14 +64,12 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // --------------DEPENDENCIES----------------//
   // ------------------------------------------//
-  const isMobile = useMobile();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
-  const { trackActionWithFunds } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -182,7 +182,6 @@ export const JsonExecute = ({
     contractAddress,
     msg,
     funds,
-    trackActionWithFunds,
     addActivity,
     broadcast,
   ]);
@@ -226,19 +225,7 @@ export const JsonExecute = ({
     return () => {};
   }, [address, contractAddress, enableExecute, funds, msg]);
 
-  useEffect(() => {
-    const keydownHandler = (e: KeyboardEvent) => {
-      // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") {
-        proceed();
-      }
-    };
-    document.addEventListener("keydown", keydownHandler);
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-    };
-  });
-
+  const isButtonDisabled = !enableExecute || !fee || isFetching;
   return (
     <>
       {cmdsFetching && <LoadingOverlay />}
@@ -267,7 +254,7 @@ export const JsonExecute = ({
             value={msg}
             amptrackSection="execute_msg"
           />
-          <CodeSnippet
+          <WasmCodeSnippet
             type="execute"
             contractAddress={contractAddress}
             message={msg}
@@ -279,18 +266,12 @@ export const JsonExecute = ({
             Transaction Fee:{" "}
             <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
           </Flex>
-          <Button
-            variant="primary"
-            fontSize="14px"
-            p="6px 16px"
-            onClick={proceed}
-            isDisabled={!enableExecute || !fee || isFetching}
-            leftIcon={<CustomIcon name="execute" />}
+          <SubmitButton
+            text="Execute"
             isLoading={processing}
-            sx={{ pointerEvents: processing && "none" }}
-          >
-            Execute {!isMobile && "(Ctrl + Enter)"}
-          </Button>
+            onSubmit={proceed}
+            isDisabled={isButtonDisabled}
+          />
         </Flex>
       </Flex>
     </>

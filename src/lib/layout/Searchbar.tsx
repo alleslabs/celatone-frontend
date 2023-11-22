@@ -22,7 +22,7 @@ import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
 import { CURR_THEME } from "env";
-import { useTrack } from "lib/amplitude";
+import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
   useInternalNavigate,
@@ -35,7 +35,8 @@ import type {
   SearchResultType,
 } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Option } from "lib/types";
+import type { MoveAccountAddr, Nullable, Option } from "lib/types";
+import { splitModule } from "lib/utils";
 
 const NOT_FOUND_MSG =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
@@ -58,28 +59,38 @@ interface ResultItemProps {
   onClose?: () => void;
 }
 
+const generateQueryObject = (params: string[], value: string | string[]) =>
+  typeof value === "string"
+    ? { [params[0]]: value }
+    : params.reduce((acc, curr, idx) => ({ ...acc, [curr]: value[idx] }), {});
+
 const getRouteOptions = (
   type: Option<SearchResultType>
-): { pathname: string; query: string } | null => {
+): Nullable<{ pathname: string; query: string[] }> => {
   switch (type) {
-    case "Wallet Address":
+    case "Account Address":
       return {
         pathname: "/accounts/[accountAddress]",
-        query: "accountAddress",
+        query: ["accountAddress"],
       };
     case "Transaction Hash":
-      return { pathname: "/txs/[txHash]", query: "txHash" };
+      return { pathname: "/txs/[txHash]", query: ["txHash"] };
     case "Code ID":
-      return { pathname: "/codes/[codeId]", query: "codeId" };
+      return { pathname: "/codes/[codeId]", query: ["codeId"] };
     case "Contract Address":
       return {
         pathname: "/contracts/[contractAddress]",
-        query: "contractAddress",
+        query: ["contractAddress"],
       };
     case "Block":
-      return { pathname: "/blocks/[height]", query: "height" };
+      return { pathname: "/blocks/[height]", query: ["height"] };
     case "Pool ID":
-      return { pathname: "/pools/[poolId]", query: "poolId" };
+      return { pathname: "/pools/[poolId]", query: ["poolId"] };
+    case "Module Path":
+      return {
+        pathname: "/modules/[address]/[moduleName]",
+        query: ["address", "moduleName"],
+      };
     default:
       return null;
   }
@@ -221,7 +232,7 @@ const getPlaceholder = ({
   const wasmText = isWasm ? "/ Code ID / Contract Address" : "";
   const poolText = isPool ? "/ Pool ID" : "";
 
-  return `Search by Wallet Address / Tx Hash / Block ${wasmText} ${poolText}`;
+  return `Search by Account Address / Tx Hash / Block ${wasmText} ${poolText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -230,7 +241,6 @@ const Searchbar = () => {
   const [displayResults, setDisplayResults] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
-  const { trackUseMainSearch } = useTrack();
 
   const {
     chainConfig: {
@@ -259,15 +269,19 @@ const Searchbar = () => {
       trackUseMainSearch(isClick);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
+        const queryValues =
+          type === "Module Path"
+            ? (splitModule(keyword) as [MoveAccountAddr, string])
+            : metadata.icns.address || keyword;
         navigate({
           pathname: routeOptions.pathname,
-          query: { [routeOptions.query]: metadata.icns.address || keyword },
+          query: generateQueryObject(routeOptions.query, queryValues),
         });
         setDisplayResults(false);
         setKeyword("");
       }
     },
-    [trackUseMainSearch, navigate, metadata.icns.address, keyword]
+    [navigate, metadata.icns.address, keyword]
   );
 
   const handleOnKeyEnter = useCallback(
@@ -285,7 +299,7 @@ const Searchbar = () => {
           break;
         }
         case "Enter":
-          handleSelectResult(results.at(cursor ?? 0));
+          handleSelectResult(results[cursor ?? 0]);
           onClose?.();
           break;
         default:

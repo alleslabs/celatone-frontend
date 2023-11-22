@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
@@ -27,9 +27,10 @@ import { useContractStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
+// TODO: revisit again
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const ContractsByList = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -61,19 +62,23 @@ const ContractsByList = observer(() => {
   }, [contractListInfo, isHydrated, navigate]);
 
   useEffect(() => {
-    if (router.isReady) {
-      switch (listSlug) {
-        case formatSlugName(INSTANTIATED_LIST_NAME):
-          track(AmpEvent.TO_INSTANTIATED_BY_ME);
-          break;
-        case formatSlugName(SAVED_LIST_NAME):
-          track(AmpEvent.TO_SAVED_CONTRACT);
-          break;
-        default:
-          track(AmpEvent.TO_LIST_OTHERS);
-      }
+    if (router.isReady && isHydrated) {
+      const event = (() => {
+        switch (listSlug) {
+          case formatSlugName(INSTANTIATED_LIST_NAME):
+            return AmpEvent.TO_INSTANTIATED_BY_ME;
+          case formatSlugName(SAVED_LIST_NAME):
+            return AmpEvent.TO_SAVED_CONTRACT;
+          default:
+            return AmpEvent.TO_LIST_OTHERS;
+        }
+      })();
+      track(event, {
+        contractCounts: contractListInfo?.contracts.length ?? 0,
+      });
     }
-  }, [router.isReady, listSlug, track]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, listSlug, isHydrated]);
 
   if (!contractListInfo) return null;
 

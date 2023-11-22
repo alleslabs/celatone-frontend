@@ -1,6 +1,7 @@
 import type { Big } from "big.js";
 import big from "big.js";
 
+import { UPPERBOUND_COUNT } from "lib/data";
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
@@ -47,7 +48,7 @@ export const usePools = (
     type: pool.type,
     isSuperfluid: pool.isSuperfluid,
     poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
-      coinToTokenWithValue(coin.denom, coin.amount, assetInfos?.[coin.denom])
+      coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
     ),
     contractAddress: pool.contractAddress,
   }));
@@ -85,7 +86,7 @@ export const usePool = (
       isSuperfluid: pool.isSuperfluid,
       isSupported: pool.isSupported,
       poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
-        coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
+        coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
       ),
       blockHeight: pool.blockHeight,
       creator: pool.creator,
@@ -134,11 +135,10 @@ export const usePoolTxsCount = (
   const loading = isLoading || txsIsLoading;
   if (error && txs?.length === 0)
     return { count: 0, countDisplay: "0", isLoading: loading };
-  const upperboundCount = 10000;
-  const showActualCount = data !== undefined && data <= upperboundCount;
+  const showActualCount = data !== undefined && data <= UPPERBOUND_COUNT;
   return {
-    count: showActualCount ? data : upperboundCount,
-    countDisplay: showActualCount ? data.toString() : `${upperboundCount}+`,
+    count: showActualCount ? data : UPPERBOUND_COUNT,
+    countDisplay: showActualCount ? data.toString() : `${UPPERBOUND_COUNT}+`,
     isLoading: loading,
   };
 };

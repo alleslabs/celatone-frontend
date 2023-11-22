@@ -17,7 +17,7 @@ import { SUPERFLUID_ICON } from "../../constant";
 import { usePools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
-import { useTrack } from "lib/amplitude";
+import { trackUseExpandAll, trackUseSort, trackUseToggle } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
@@ -36,7 +36,6 @@ interface UnsupportedSectionProp {
 export const UnsupportedSection = ({
   scrollComponentId,
 }: UnsupportedSectionProp) => {
-  const { trackUseSort, trackUseToggle } = useTrack();
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
       poolTypeValue: PoolType.ALL,
@@ -54,8 +53,6 @@ export const UnsupportedSection = ({
     isSuperfluidOnly,
     search,
   });
-
-  const { trackUseExpandAll } = useTrack();
 
   const [showNewest, setShowNewest] = useState(true);
 

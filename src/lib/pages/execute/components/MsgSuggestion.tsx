@@ -1,6 +1,6 @@
 import { Box, Text, ButtonGroup } from "@chakra-ui/react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import type { ContractAddr } from "lib/types";
 import { jsonPrettify } from "lib/utils";
@@ -15,45 +15,41 @@ export const MsgSuggestion = ({
   contractAddress,
   cmds,
   setMsg,
-}: MsgSuggestionProps) => {
-  const { track } = useTrack();
-
-  return (
-    <Box>
-      {contractAddress && (
-        <Text variant="body3" mb={4}>
-          Message Suggestions:
+}: MsgSuggestionProps) => (
+  <Box>
+    {contractAddress && (
+      <Text variant="body3" mb={4}>
+        Message Suggestions:
+      </Text>
+    )}
+    {cmds.length ? (
+      <ButtonGroup
+        flexWrap="wrap"
+        rowGap={4}
+        sx={{
+          "> button": {
+            marginInlineStart: "0 !important",
+            marginInlineEnd: "1",
+          },
+        }}
+      >
+        {cmds.sort().map(([cmd, queryMsg]) => (
+          <ContractCmdButton
+            key={`query-cmd-${cmd}`}
+            cmd={cmd}
+            onClickCmd={() => {
+              track(AmpEvent.USE_CMD_EXECUTE);
+              setMsg(jsonPrettify(queryMsg));
+            }}
+          />
+        ))}
+      </ButtonGroup>
+    ) : (
+      contractAddress && (
+        <Text mt={2} variant="body2" color="text.dark">
+          No ExecuteMsgs suggestion available
         </Text>
-      )}
-      {cmds.length ? (
-        <ButtonGroup
-          flexWrap="wrap"
-          rowGap={4}
-          sx={{
-            "> button": {
-              marginInlineStart: "0 !important",
-              marginInlineEnd: "1",
-            },
-          }}
-        >
-          {cmds.sort().map(([cmd, queryMsg]) => (
-            <ContractCmdButton
-              key={`query-cmd-${cmd}`}
-              cmd={cmd}
-              onClickCmd={() => {
-                track(AmpEvent.USE_CMD_EXECUTE);
-                setMsg(jsonPrettify(queryMsg));
-              }}
-            />
-          ))}
-        </ButtonGroup>
-      ) : (
-        contractAddress && (
-          <Text mt={2} variant="body2" color="text.dark">
-            No ExecuteMsgs suggestion available
-          </Text>
-        )
-      )}
-    </Box>
-  );
-};
+      )
+    )}
+  </Box>
+);

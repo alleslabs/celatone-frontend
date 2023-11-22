@@ -16,7 +16,7 @@ export const MsgSwapExactAmountOutAction = ({
   assetInfos,
   ampCopierSection,
 }: MsgSwapExactAmountOutActionProps) => {
-  const tokenInDenom = msg.routes.at(0)?.tokenInDenom ?? "";
+  const tokenInDenom = msg.routes[0]?.tokenInDenom ?? "";
   const inAssetInfo = assetInfos?.[tokenInDenom];
   const outAssetInfo = assetInfos?.[msg.token_out.denom];
   return (

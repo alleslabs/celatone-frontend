@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
 import { Tooltip } from "../Tooltip";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
 
@@ -21,7 +21,7 @@ export const jsonInputFormKey = MessageTabs.JSON_INPUT as "JSON Input";
 export const yourSchemaInputFormKey = MessageTabs.YOUR_SCHEMA as "Your Schema";
 
 interface MessageInputSwitchProps<
-  T extends Option<MessageTabs | OutputMessageTabs>
+  T extends Option<MessageTabs | OutputMessageTabs>,
 > {
   currentTab: T;
   disabled?: boolean;
@@ -32,7 +32,7 @@ interface MessageInputSwitchProps<
 }
 
 export const MessageInputSwitch = <
-  T extends Option<MessageTabs | OutputMessageTabs>
+  T extends Option<MessageTabs | OutputMessageTabs>,
 >({
   currentTab,
   disabled = false,
@@ -41,7 +41,6 @@ export const MessageInputSwitch = <
   isOutput = false,
   onTabChange: onTabChangeProps,
 }: MessageInputSwitchProps<T>) => {
-  const { track } = useTrack();
   const tabs = useMemo<T[]>(
     () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
     [isOutput]
@@ -53,7 +52,7 @@ export const MessageInputSwitch = <
       track(AmpEvent.USE_SCHEMA_TOGGLE, { tab });
       onTabChangeProps(tab);
     },
-    [onTabChangeProps, track]
+    [onTabChangeProps]
   );
 
   /**

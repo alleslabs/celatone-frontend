@@ -1,6 +1,5 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import { capitalize } from "lodash";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -8,43 +7,12 @@ import { TableRow, CodeNameCell } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
+import { RemarkRender } from "./RemarkRender";
+
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
   history: ContractMigrationHistory;
 }
-
-export const RemarkRender = ({
-  remark,
-}: {
-  remark: ContractMigrationHistory["remark"];
-}) => {
-  const { operation, type, value } = remark;
-  if (type === "genesis") return <Text variant="body2">Genesis</Text>;
-
-  const isGovernance = type === "governance";
-  const prefix = capitalize(operation.split("_").pop());
-  const textFormat = isGovernance ? "normal" : "truncate";
-  return (
-    <Flex
-      direction="column"
-      sx={{
-        "& > p:first-of-type": {
-          color: "text.dark",
-          fontSize: "12px",
-        },
-      }}
-      mb={{ base: 0, md: "2px" }}
-    >
-      <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
-      <ExplorerLink
-        type={isGovernance ? "proposal_id" : "tx_hash"}
-        value={value.toString()}
-        showCopyOnHover
-        textFormat={textFormat}
-      />
-    </Flex>
-  );
-};
 
 export const MigrationRow = ({
   templateColumns,

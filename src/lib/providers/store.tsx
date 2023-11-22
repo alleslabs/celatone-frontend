@@ -35,6 +35,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   );
 }
 
+export function useAccountStore() {
+  const { accountStore } = useStore();
+  return accountStore;
+}
+
 export function useCodeStore() {
   const { codeStore } = useStore();
   return codeStore;

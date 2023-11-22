@@ -1,13 +1,25 @@
 import type Big from "big.js";
 
-import type { Option, Token, U, USD } from "lib/types";
+import type { LPDetails, Option, Token, U, USD } from "lib/types";
 
-export interface TokenWithValue {
+interface BaseTokenWithValue {
   denom: string;
   amount: U<Token<Big>>;
   symbol: Option<string>;
-  logo: Option<string>;
   precision: Option<number>;
-  price?: Option<USD<Big>>;
+  price: Option<USD<Big>>;
   value: Option<USD<Big>>;
 }
+
+export type TokenWithValue = BaseTokenWithValue &
+  (
+    | {
+        isLPToken: false;
+        logo: Option<string>;
+      }
+    | {
+        isLPToken: true;
+        logo: Option<string[]>;
+        lpDetails: LPDetails;
+      }
+  );

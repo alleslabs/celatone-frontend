@@ -2,13 +2,13 @@ import { Flex, Grid, Text, Button } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { TableTitle, ViewMore } from "lib/components/table";
-import { TokenCard } from "lib/components/TokenCard";
+import { TokenCard } from "lib/components/token/TokenCard";
 import { useOpenAssetTab } from "lib/hooks";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
@@ -28,10 +28,12 @@ interface AssetSectionContentProps {
 }
 
 interface AssetCtaProps {
-  walletAddress: HumanAddr;
+  unsupportedAssets: Option<BalanceWithAssetInfo[]>;
   totalAsset: number;
+  walletAddress: HumanAddr;
 }
-const MaxAssetsShow = 12;
+
+const MAX_ASSETS_SHOW = 8;
 
 const AssetTitle = ({
   onViewMore,
@@ -67,10 +69,12 @@ const AssetTitle = ({
   return <TableTitle title="Assets" count={totalAsset} mb={0} />;
 };
 
-const AssetCta = ({ walletAddress, totalAsset }: AssetCtaProps) => {
-  const { unsupportedAssets } = useUserAssetInfos(walletAddress);
+const AssetCta = ({
+  unsupportedAssets,
+  totalAsset,
+  walletAddress,
+}: AssetCtaProps) => {
   const openAssetTab = useOpenAssetTab();
-  const { trackUseViewJSON } = useTrack();
 
   return (
     <Flex
@@ -117,7 +121,7 @@ const AssetSectionContent = ({
       gridTemplateColumns={{ base: "1 fr", md: "repeat(4, 1fr)" }}
     >
       {supportedAssets
-        .slice(0, onViewMore ? MaxAssetsShow : undefined)
+        .slice(0, onViewMore ? MAX_ASSETS_SHOW : undefined)
         .map((asset) => (
           <TokenCard userBalance={asset} key={asset.balance.id} minW="full" />
         ))}
@@ -133,13 +137,16 @@ export const AssetsSection = ({
   walletAddress,
   onViewMore,
 }: AssetsSectionProps) => {
+  const isMobile = useMobile();
   const { supportedAssets, unsupportedAssets, isLoading, error } =
     useUserAssetInfos(walletAddress);
+  const isMobileOverview = isMobile && !!onViewMore;
 
-  let totalValue = big(0) as USD<Big>;
-  if (supportedAssets) totalValue = calTotalValue(supportedAssets);
+  if (isLoading) return <Loading withBorder />;
 
-  const isMobile = useMobile();
+  const totalValue = supportedAssets
+    ? calTotalValue(supportedAssets)
+    : (big(0) as USD<Big>);
   const TotalAssetValueInfo = (
     <UserAssetInfoCard
       value={totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"}
@@ -147,14 +154,6 @@ export const AssetsSection = ({
       helperText="Total Asset Value"
     />
   );
-  let isMobileDetail = null;
-  if (isMobile && onViewMore) {
-    isMobileDetail = false;
-  } else {
-    isMobileDetail = true;
-  }
-
-  if (isLoading) return <Loading withBorder />;
 
   const totalAsset =
     (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
@@ -170,7 +169,7 @@ export const AssetsSection = ({
       <AssetTitle onViewMore={onViewMore} totalAsset={totalAsset}>
         {TotalAssetValueInfo}
       </AssetTitle>
-      {isMobileDetail && (
+      {!isMobileOverview && (
         <>
           <Flex
             justify={{ base: "flex-start", md: "space-between" }}
@@ -180,7 +179,11 @@ export const AssetsSection = ({
           >
             <Flex gap="50px">{TotalAssetValueInfo}</Flex>
             {!isMobile && (
-              <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+              <AssetCta
+                unsupportedAssets={unsupportedAssets}
+                walletAddress={walletAddress}
+                totalAsset={totalAsset}
+              />
             )}
           </Flex>
           <AssetSectionContent
@@ -189,16 +192,19 @@ export const AssetsSection = ({
             error={error}
           />
           {isMobile && (
-            <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+            <AssetCta
+              unsupportedAssets={unsupportedAssets}
+              walletAddress={walletAddress}
+              totalAsset={totalAsset}
+            />
           )}
+          {onViewMore &&
+            supportedAssets &&
+            supportedAssets.length > MAX_ASSETS_SHOW && (
+              <ViewMore onClick={onViewMore} />
+            )}
         </>
       )}
-      {!isMobile &&
-        supportedAssets &&
-        onViewMore &&
-        supportedAssets.length > MaxAssetsShow && (
-          <ViewMore onClick={onViewMore} />
-        )}
     </Flex>
   );
 };

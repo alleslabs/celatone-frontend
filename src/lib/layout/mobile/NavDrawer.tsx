@@ -17,27 +17,32 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 
-import type { MenuInfo } from "../navbar/type";
+import type { MenuInfo } from "../navbar/types";
 import { CHAIN_CONFIGS } from "config/chain";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useMoveConfig,
   usePublicProjectConfig,
   useSelectChain,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
 export const NavDrawer = () => {
-  const { track } = useTrack();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentChainId, availableChainIds } = useCelatoneApp();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const selectChain = useSelectChain();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
+
   const mobileMenu: MenuInfo[] = [
     {
       category: "Overview",
@@ -54,21 +59,34 @@ export const NavDrawer = () => {
           slug: "/blocks",
           icon: "block",
         },
-        {
-          name: "Recent Codes",
-          slug: "/codes",
-          icon: "code",
-        },
-        {
-          name: "Recent Contracts",
-          slug: "/contracts",
-          icon: "contract-address",
-        },
-        {
-          name: "Query",
-          slug: "/query",
-          icon: "query",
-        },
+        ...(wasm.enabled
+          ? [
+              {
+                name: "Recent Codes",
+                slug: "/codes",
+                icon: "code" as IconKeys,
+              },
+              {
+                name: "Recent Contracts",
+                slug: "/contracts",
+                icon: "contract-address" as IconKeys,
+              },
+              {
+                name: "Query",
+                slug: "/query",
+                icon: "query" as IconKeys,
+              },
+            ]
+          : []),
+        ...(move.enabled
+          ? [
+              {
+                name: "0x1 Page",
+                slug: "/account/0x1",
+                icon: "hex" as IconKeys,
+              },
+            ]
+          : []),
       ],
     },
   ];
@@ -86,7 +104,7 @@ export const NavDrawer = () => {
         {
           name: "View All Projects",
           slug: "/projects",
-          icon: "public-project",
+          icon: "public-project" as IconKeys,
         },
       ],
     });
@@ -112,7 +130,7 @@ export const NavDrawer = () => {
                   borderWidth="1px"
                   borderColor="gray.600"
                   _hover={{ bg: "gray.700" }}
-                  transition="all .25s ease-in-out"
+                  transition="all 0.25s ease-in-out"
                   w="220px"
                 >
                   <Flex
@@ -147,7 +165,7 @@ export const NavDrawer = () => {
                         _hover={{
                           backgroundColor: "gray.800",
                         }}
-                        transition="all .25s ease-in-out"
+                        transition="all 0.25s ease-in-out"
                         isDisabled={noConfig}
                       >
                         <Flex justify="space-between" align="center" w="full">
@@ -218,7 +236,7 @@ export const NavDrawer = () => {
                         cursor="pointer"
                         _hover={{ bg: "gray.700", borderRadius: "8px" }}
                         my="1px"
-                        transition="all .25s ease-in-out"
+                        transition="all 0.25s ease-in-out"
                         alignItems="center"
                         position="relative"
                         bgColor={

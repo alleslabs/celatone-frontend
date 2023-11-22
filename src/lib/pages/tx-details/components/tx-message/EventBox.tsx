@@ -1,23 +1,18 @@
-import { Box, Flex, chakra, shouldForwardProp } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
-import { isValidMotionProp, motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { useGetAddressType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { MotionBox } from "lib/components/MotionBox";
 import { TxReceiptRender } from "lib/components/tx";
 import type { TxReceipt } from "lib/types";
 import { jsonPrettify, jsonValidate } from "lib/utils";
-
-const MotionBox = chakra(motion.div, {
-  shouldForwardProp: (prop) =>
-    isValidMotionProp(prop) || shouldForwardProp(prop),
-});
 
 interface EventBoxProps {
   event: Event;
@@ -27,7 +22,6 @@ interface EventBoxProps {
 export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
   const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(true);
-  const { trackUseExpand } = useTrack();
 
   const receipts = event.attributes.map<TxReceipt>(({ key, value }) => {
     const addrType = getAddressType(value);
@@ -132,7 +126,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           color="gray.600"
           boxSize={4}
           transform={expand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           m={0}
         />
       </Flex>

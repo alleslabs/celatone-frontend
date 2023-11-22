@@ -1,6 +1,7 @@
 import type { OperatorFunction } from "rxjs";
 import { catchError } from "rxjs";
 
+import { trackTxFailed, trackTxRejected } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type {
@@ -38,12 +39,10 @@ const getActionVariant = (isRejected: boolean): ActionVariant =>
   isRejected ? "rejected" : "failed";
 
 export const catchTxError = (
-  trackTxFailed: () => void,
-  trackTxRejected: () => void,
   onTxFailed?: () => void
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
-    const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
+    const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.[1];
     if (error.message === "Request rejected") {
       trackTxRejected();
     } else {

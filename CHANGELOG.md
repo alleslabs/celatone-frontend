@@ -43,6 +43,90 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.3.0
+
+### Features
+
+- [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save
+- [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details
+- [#620](https://github.com/alleslabs/celatone-frontend/pull/620) Add hex address in save account feature in initia
+- [#618](https://github.com/alleslabs/celatone-frontend/pull/618) Add save account feature in account detail page
+- [#616](https://github.com/alleslabs/celatone-frontend/pull/616) Add table for saved accounts and add save, remove and edit modal
+- [#613](https://github.com/alleslabs/celatone-frontend/pull/613) Add saved accounts modal ui
+- [#611](https://github.com/alleslabs/celatone-frontend/pull/611) Add saved accounts page
+- [#608](https://github.com/alleslabs/celatone-frontend/pull/608) Deprecate stone 10
+- [#601](https://github.com/alleslabs/celatone-frontend/pull/601) Add modules in public project
+- [#581](https://github.com/alleslabs/celatone-frontend/pull/581) Support new move input i.e., object, fixed_point, and decimal
+- [#583](https://github.com/alleslabs/celatone-frontend/pull/583) Support Move code snippets
+- [#585](https://github.com/alleslabs/celatone-frontend/pull/585) Add Initia Faucet
+- [#562](https://github.com/alleslabs/celatone-frontend/pull/562) Support searching with hex address and module path
+- [#572](https://github.com/alleslabs/celatone-frontend/pull/572) Wireup module publish details
+- [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
+- [#558](https://github.com/alleslabs/celatone-frontend/pull/558) Wireup module transaction history table
+- [#556](https://github.com/alleslabs/celatone-frontend/pull/556) Fully functional deploy script page
+- [#550](https://github.com/alleslabs/celatone-frontend/pull/550) Add modules and resources in account detail
+- [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Wireup publish module tx
+- [#544](https://github.com/alleslabs/celatone-frontend/pull/544) Show module source code if available
+- [#534](https://github.com/alleslabs/celatone-frontend/pull/534) Wire up initia execute function
+- [#533](https://github.com/alleslabs/celatone-frontend/pull/533) Wire up initia view function
+- [#536](https://github.com/alleslabs/celatone-frontend/pull/536) Add publish module validation and decode query
+- [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Add initia abi form
+- [#530](https://github.com/alleslabs/celatone-frontend/pull/530) Publish module component state wireup and add leaflet
+- [#521](https://github.com/alleslabs/celatone-frontend/pull/521) Initia module interaction function panel and selected function info accordion
+- [#515](https://github.com/alleslabs/celatone-frontend/pull/515) Initia select module drawer wireup
+- [#494](https://github.com/alleslabs/celatone-frontend/pull/494) Initia select module drawer UI
+- [#490](https://github.com/alleslabs/celatone-frontend/pull/490) Add initia module interaction page
+- [#488](https://github.com/alleslabs/celatone-frontend/pull/488) Add initia navigation and sidebar
+- [#524](https://github.com/alleslabs/celatone-frontend/pull/524) Refactor contract detail page and add contract states
+
+### Improvements
+
+- [#627](https://github.com/alleslabs/celatone-frontend/pull/627) Add responsive for published event in module detail
+- [#625](https://github.com/alleslabs/celatone-frontend/pull/625) Fix abi empty vector serialization
+- [#605](https://github.com/alleslabs/celatone-frontend/pull/605) Apply singleton class style to Amplitude structure
+- [#591](https://github.com/alleslabs/celatone-frontend/pull/591) Bump initia.js due to decimal serialization and dynamic buffer
+- [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Handle multi bond denoms data in the delegation section
+- [#593](https://github.com/alleslabs/celatone-frontend/pull/593) Refactor submit button to a common component
+- [#574](https://github.com/alleslabs/celatone-frontend/pull/574) Add min height to wasm page container to properly align footer
+- [#569](https://github.com/alleslabs/celatone-frontend/pull/569) Add move config to dev shortcuts in homepage
+- [#559](https://github.com/alleslabs/celatone-frontend/pull/559) Restructure and refactor responsive tables
+- [#549](https://github.com/alleslabs/celatone-frontend/pull/549) Add move tx filer options
+- [#553](https://github.com/alleslabs/celatone-frontend/pull/553) Use Cmd on Mac OS while Ctrl on others
+- [#548](https://github.com/alleslabs/celatone-frontend/pull/548) Handle interaction page query param and refactor page
+- [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
+- [#586](https://github.com/alleslabs/celatone-frontend/pull/586) Add shortcut for contract states
+- [#598](https://github.com/alleslabs/celatone-frontend/pull/598) Display content field for submit proposal tx details
+- [#587](https://github.com/alleslabs/celatone-frontend/pull/587) Make block row clickable
+- [#579](https://github.com/alleslabs/celatone-frontend/pull/579) Improve ux writing for recent items page
+- [#546](https://github.com/alleslabs/celatone-frontend/pull/546) Handle 404 on the current selected chain
+
+### Bug fixes
+
+- [#623](https://github.com/alleslabs/celatone-frontend/pull/623) Fix abi empty vector serialization
+- [#619](https://github.com/alleslabs/celatone-frontend/pull/619) Fix observer, logo and disable delegation in Account Detail Page
+- [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
+- [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
+- [#615](https://github.com/alleslabs/celatone-frontend/pull/615) Fix useEffect on pool page
+- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Add saved accounts page
+- [#614](https://github.com/alleslabs/celatone-frontend/pull/614) Disabled saved account for now
+- [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Fix mintscan tracking in internal
+- [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state
+- [#603](https://github.com/alleslabs/celatone-frontend/pull/603) Dynamically change returned data by isWasm, isMove
+- [#602](https://github.com/alleslabs/celatone-frontend/pull/602) Fix package version client error
+- [#599](https://github.com/alleslabs/celatone-frontend/pull/599) Fix getNavigationUrl to support move
+- [#590](https://github.com/alleslabs/celatone-frontend/pull/590) Fix upload script various bugs
+- [#594](https://github.com/alleslabs/celatone-frontend/pull/594) LP assets filtering and delegation ui/ux improvement
+- [#584](https://github.com/alleslabs/celatone-frontend/pull/584) Throw an error when tx failed on postTx
+- [#555](https://github.com/alleslabs/celatone-frontend/pull/555) Rewrite publish status resolver into an effect
+- [#557](https://github.com/alleslabs/celatone-frontend/pull/557) Fix see module ux writing and policy modal
+- [#554](https://github.com/alleslabs/celatone-frontend/pull/554) Fix and improve ui alignment, cta, and publish error
+- [#551](https://github.com/alleslabs/celatone-frontend/pull/551) Fix various bugs on the interaction page
+- [#547](https://github.com/alleslabs/celatone-frontend/pull/547) Fix form null and sort modules when submit an address
+- [#543](https://github.com/alleslabs/celatone-frontend/pull/543) Fix Initia testnet chain config
+- [#597](https://github.com/alleslabs/celatone-frontend/pull/597) Fix pool txs row chevron and copy icon, add replace navigation option to public project details page
+- [#563](https://github.com/alleslabs/celatone-frontend/pull/563) Order by contract latest history timestamp in account contract instances
+- [#560](https://github.com/alleslabs/celatone-frontend/pull/560) Fix pool type alignment in pool card
+
 ## v1.2.0
 
 ### Features
@@ -72,6 +156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#596](https://github.com/alleslabs/celatone-frontend/pull/596) Show parameter changes field for ParameterChangeProposal Tx
 - [#575](https://github.com/alleslabs/celatone-frontend/pull/575) Support message suggestion for contract from Sylvia framework
 - [#564](https://github.com/alleslabs/celatone-frontend/pull/564) Update cosmjs version to latest and bump terra testnet gas price
 - [#540](https://github.com/alleslabs/celatone-frontend/pull/540) Add open proposal configuration
@@ -114,6 +199,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#626](https://github.com/alleslabs/celatone-frontend/pull/626) Fix handle validator image
 - [#570](https://github.com/alleslabs/celatone-frontend/pull/570) Use native tokens in attached funds
 - [#567](https://github.com/alleslabs/celatone-frontend/pull/567) Fix attached funds in code snippet
 - [#539](https://github.com/alleslabs/celatone-frontend/pull/539) Fix JSON schema upload text

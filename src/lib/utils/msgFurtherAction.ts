@@ -3,7 +3,7 @@ import { MsgFurtherAction } from "lib/types";
 
 export const getMsgFurtherAction = (
   length: number,
-  filters: TxFilters,
+  filters: Partial<TxFilters>,
   isSuccess: boolean,
   isSigner: boolean
 ) => {
@@ -11,7 +11,7 @@ export const getMsgFurtherAction = (
   if (
     isSigner &&
     length === 1 &&
-    (filters.isExecute || filters.isInstantiate)
+    (filters.isExecute || filters.isInstantiate || filters.isMoveExecute)
   ) {
     return MsgFurtherAction.REDO;
   }
@@ -24,7 +24,10 @@ export const getMsgFurtherAction = (
     !filters.isClearAdmin &&
     !filters.isMigrate &&
     !filters.isUpdateAdmin &&
-    (filters.isExecute || filters.isInstantiate || filters.isSend) &&
+    (filters.isSend ||
+      filters.isExecute ||
+      filters.isInstantiate ||
+      filters.isMoveExecute) &&
     isSuccess
   ) {
     return MsgFurtherAction.RESEND;

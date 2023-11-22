@@ -1,109 +1,103 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import type { MouseEventHandler, ReactNode } from "react";
+import type { MouseEventHandler } from "react";
 
-import { MobileDelegationTitle } from "../mobile/MobileDelegationTitle";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
 interface DelegationInfoProps {
-  onViewMore?: () => void;
-  infoCards: ReactNode;
+  totalBondedCard: JSX.Element;
+  otherInfoCards: JSX.Element;
   redelegationCount: number;
   onClickToggle?: MouseEventHandler<HTMLButtonElement> | undefined;
-  TotalBondedCard: JSX.Element;
-}
-const DelegationsTitle = ({
-  onViewMore,
-  TotalBondedCard,
-}: {
   onViewMore?: () => void;
-  TotalBondedCard: JSX.Element;
-}) => {
-  const isMobile = useMobile();
-  if (!isMobile && !onViewMore) return null;
-  if (isMobile && onViewMore)
-    return (
-      <MobileDelegationTitle onViewMore={onViewMore}>
-        {TotalBondedCard}
-      </MobileDelegationTitle>
-    );
-  return (
-    <Heading
-      variant="h6"
-      as="h6"
-      display="flex"
-      alignItems="center"
-      height={{ base: "29px", md: "auto" }}
-    >
-      Delegations
-    </Heading>
-  );
-};
+}
 
 export const DelegationInfo = ({
-  onViewMore,
-  onClickToggle,
+  totalBondedCard,
+  otherInfoCards,
   redelegationCount,
-  infoCards,
-  TotalBondedCard,
+  onClickToggle,
+  onViewMore,
 }: DelegationInfoProps) => {
-  const { track } = useTrack();
   const isMobile = useMobile();
 
-  let isMobileDetail = null;
-  if (isMobile && onViewMore) {
-    isMobileDetail = false;
-  } else {
-    isMobileDetail = true;
-  }
-
+  const isMobileOverview = isMobile && !!onViewMore;
   return (
     <>
-      <DelegationsTitle
-        onViewMore={onViewMore}
-        TotalBondedCard={TotalBondedCard}
-      />
-      {isMobileDetail && (
+      {isMobileOverview ? (
         <Flex
-          direction={{ base: "column", md: "row" }}
-          alignItems={{ base: "start", md: "center" }}
           justify="space-between"
-          overflowX="scroll"
+          w="full"
+          bg="gray.900"
+          borderRadius="8px"
+          p={4}
+          onClick={onViewMore}
         >
-          <Flex gap={8} direction={{ base: "column", md: "row" }}>
-            {infoCards}
+          <Flex direction="column" gap={2}>
+            <Heading variant="h6" as="h6">
+              Delegation Details
+            </Heading>
+            {totalBondedCard}
           </Flex>
-          {onViewMore ? (
-            <Button
-              variant="ghost-gray"
-              minW="fit-content"
-              rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={() => {
-                track(AmpEvent.USE_VIEW_MORE);
-                onViewMore();
-              }}
-            >
-              View Delegation Info
-            </Button>
-          ) : (
+          <CustomIcon name="chevron-right" color="gray.600" />
+        </Flex>
+      ) : (
+        <Flex direction="column" gap={4}>
+          <Heading
+            variant="h6"
+            as="h6"
+            display="flex"
+            alignItems="center"
+            height={{ base: "29px", md: "auto" }}
+          >
+            Delegations
+          </Heading>
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            alignItems={{ base: "start", md: "center" }}
+            justify="space-between"
+            overflowX="scroll"
+          >
             <Flex
-              w={{ base: "full", md: "auto" }}
-              justify={{ base: "center", md: "inherit" }}
-              mt={{ base: 6, md: 0 }}
+              gap={{ base: 4, md: 8 }}
+              direction={{ base: "column", md: "row" }}
+              w="full"
             >
+              {totalBondedCard}
+              {otherInfoCards}
+            </Flex>
+            {onViewMore ? (
               <Button
                 variant="ghost-gray"
                 minW="fit-content"
-                leftIcon={<CustomIcon name="history" />}
                 rightIcon={<CustomIcon name="chevron-right" />}
-                isDisabled={!redelegationCount}
-                onClick={onClickToggle}
+                onClick={() => {
+                  track(AmpEvent.USE_VIEW_MORE);
+                  onViewMore();
+                }}
               >
-                See Active Redelegations ({redelegationCount})
+                View Delegation Info
               </Button>
-            </Flex>
-          )}
+            ) : (
+              <Flex
+                w={{ base: "full", md: "auto" }}
+                justify={{ base: "center", md: "inherit" }}
+                mt={{ base: 6, md: 0 }}
+              >
+                <Button
+                  variant="ghost-gray"
+                  minW="fit-content"
+                  leftIcon={<CustomIcon name="history" />}
+                  rightIcon={<CustomIcon name="chevron-right" />}
+                  isDisabled={!redelegationCount}
+                  onClick={onClickToggle}
+                >
+                  See Active Redelegations ({redelegationCount})
+                </Button>
+              </Flex>
+            )}
+          </Flex>
         </Flex>
       )}
     </>

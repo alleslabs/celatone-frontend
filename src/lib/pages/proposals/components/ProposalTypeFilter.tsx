@@ -10,11 +10,13 @@ import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState, useRef, forwardRef } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
-import { FilterChip } from "lib/components/filter/FilterChip";
-import { DropdownContainer } from "lib/components/filter/FilterComponents";
-import { FilterDropdownItem } from "lib/components/filter/FilterDropdownItem";
-import { FilterInput } from "lib/components/filter/FilterInput";
+import { AmpEvent, trackUseFilter } from "lib/amplitude";
+import {
+  FilterChip,
+  DropdownContainer,
+  FilterDropdownItem,
+  FilterInput,
+} from "lib/components/filter";
 import { CustomIcon } from "lib/components/icon";
 import { useProposalTypes } from "lib/services/proposalService";
 import type { ProposalType } from "lib/types";
@@ -44,7 +46,6 @@ export const ProposalTypeFilter = forwardRef<
     }: ProposalTypeFilterProps,
     ref
   ) => {
-    const { trackUseFilter } = useTrack();
     const { data: proposalTypes } = useProposalTypes();
     const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);

@@ -6,7 +6,6 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { CatchTxError } from "lib/app-provider/tx/catchTxError";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Activity } from "lib/stores/contract";
@@ -14,7 +13,7 @@ import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { encode, formatUFee, getCurrentDate } from "lib/utils";
 
-import { postTx, sendingTx } from "./common";
+import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: HumanAddr;
@@ -23,7 +22,6 @@ interface ExecuteTxParams {
   msg: object;
   funds: Coin[];
   client: SigningCosmWasmClient;
-  catchTxError: CatchTxError;
   onTxSucceed?: (activity: Activity) => void;
   onTxFailed?: () => void;
 }
@@ -35,7 +33,6 @@ export const executeContractTx = ({
   msg,
   funds,
   client,
-  catchTxError,
   onTxSucceed,
   onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {

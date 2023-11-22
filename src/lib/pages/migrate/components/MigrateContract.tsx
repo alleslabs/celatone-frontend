@@ -5,7 +5,7 @@ import Long from "long";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackAction } from "lib/amplitude";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
@@ -15,6 +15,7 @@ import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import JsonInput from "lib/components/json/JsonInput";
 import {
   MessageInputContent,
   MessageInputSwitch,
@@ -23,7 +24,6 @@ import {
   jsonInputFormKey,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
-import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -57,7 +57,6 @@ export const MigrateContract = ({
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const { trackAction } = useTrack();
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -192,7 +191,6 @@ export const MigrateContract = ({
     }
   }, [
     migrateTx,
-    trackAction,
     tab,
     contractAddress,
     codeId,

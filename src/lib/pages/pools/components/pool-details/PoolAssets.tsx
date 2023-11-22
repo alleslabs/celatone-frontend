@@ -3,7 +3,7 @@ import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
 
-import { useTrack } from "lib/amplitude";
+import { trackWebsite } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { PoolDetail, USD } from "lib/types";
@@ -17,7 +17,6 @@ interface PoolAssetsProps {
 }
 
 export const PoolAssets = ({ pool }: PoolAssetsProps) => {
-  const { trackWebsite } = useTrack();
   const totalLiquidity = pool.poolLiquidity.reduce(
     (totalVal, token) => totalVal.add(token.value ?? 0),
     big(0)

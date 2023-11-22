@@ -618,6 +618,10 @@ export const generateReceipts = (
           value: String(details.is_expedited ?? false),
         },
         { title: "Title", value: details.content.title },
+        {
+          title: "Content",
+          html: getCommonReceiptHtml({ type: "json", value: details.content }),
+        },
       ];
     }
     case "/cosmos.gov.v1beta1.MsgVote": {
@@ -865,7 +869,16 @@ export const generateReceipts = (
           title: "Client ID",
           value: details.client_id,
         },
-        {
+        // newer version
+        details.client_message && {
+          title: "Client Message",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.client_message,
+          }),
+        },
+        // older version
+        details.header && {
           title: "Header",
           html: getCommonReceiptHtml({
             type: "json",

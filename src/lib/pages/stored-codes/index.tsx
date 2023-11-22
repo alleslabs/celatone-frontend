@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
   useGovConfig,
@@ -30,7 +30,6 @@ interface CodeFilterState {
 }
 
 const StoredCodes = observer(() => {
-  const { track } = useTrack();
   const router = useRouter();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
@@ -58,7 +57,7 @@ const StoredCodes = observer(() => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
   const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
   const { address } = useCurrentChain();
   const isAllowed = Boolean(data?.addresses?.includes(address as Addr));

@@ -5,6 +5,8 @@ export const getTxsByAddressPagination = graphql(`
     $expression: account_transactions_bool_exp
     $offset: Int!
     $pageSize: Int!
+    $isWasm: Boolean!
+    $isMove: Boolean!
   ) {
     account_transactions(
       where: $expression
@@ -23,14 +25,18 @@ export const getTxsByAddressPagination = graphql(`
         hash
         success
         messages
-        is_clear_admin
-        is_execute
-        is_ibc
-        is_instantiate
-        is_migrate
         is_send
-        is_store_code
-        is_update_admin
+        is_ibc
+        is_clear_admin @include(if: $isWasm)
+        is_execute @include(if: $isWasm)
+        is_instantiate @include(if: $isWasm)
+        is_migrate @include(if: $isWasm)
+        is_store_code @include(if: $isWasm)
+        is_update_admin @include(if: $isWasm)
+        is_move_publish @include(if: $isMove)
+        is_move_upgrade @include(if: $isMove)
+        is_move_execute @include(if: $isMove)
+        is_move_script @include(if: $isMove)
       }
       is_signer
     }
@@ -87,7 +93,12 @@ export const getTxsCountByPoolId = graphql(`
 `);
 
 export const getTxs = graphql(`
-  query getTxs($offset: Int!, $pageSize: Int!) {
+  query getTxs(
+    $offset: Int!
+    $pageSize: Int!
+    $isWasm: Boolean!
+    $isMove: Boolean!
+  ) {
     transactions(
       order_by: { block_height: desc }
       offset: $offset
@@ -103,14 +114,18 @@ export const getTxs = graphql(`
       hash
       success
       messages
-      is_clear_admin
-      is_execute
-      is_ibc
-      is_instantiate
-      is_migrate
       is_send
-      is_store_code
-      is_update_admin
+      is_ibc
+      is_clear_admin @include(if: $isWasm)
+      is_execute @include(if: $isWasm)
+      is_instantiate @include(if: $isWasm)
+      is_migrate @include(if: $isWasm)
+      is_store_code @include(if: $isWasm)
+      is_update_admin @include(if: $isWasm)
+      is_move_publish @include(if: $isMove)
+      is_move_upgrade @include(if: $isMove)
+      is_move_execute @include(if: $isMove)
+      is_move_script @include(if: $isMove)
     }
   }
 `);
@@ -128,6 +143,8 @@ export const getBlockTransactionsByHeightQueryDocument = graphql(`
     $limit: Int!
     $offset: Int!
     $height: Int!
+    $isWasm: Boolean!
+    $isMove: Boolean!
   ) {
     transactions(
       limit: $limit
@@ -145,14 +162,18 @@ export const getBlockTransactionsByHeightQueryDocument = graphql(`
       hash
       success
       messages
-      is_clear_admin
-      is_execute
-      is_ibc
-      is_instantiate
-      is_migrate
       is_send
-      is_store_code
-      is_update_admin
+      is_ibc
+      is_clear_admin @include(if: $isWasm)
+      is_execute @include(if: $isWasm)
+      is_instantiate @include(if: $isWasm)
+      is_migrate @include(if: $isWasm)
+      is_store_code @include(if: $isWasm)
+      is_update_admin @include(if: $isWasm)
+      is_move_publish @include(if: $isMove)
+      is_move_upgrade @include(if: $isMove)
+      is_move_execute @include(if: $isMove)
+      is_move_script @include(if: $isMove)
     }
   }
 `);
@@ -160,6 +181,51 @@ export const getBlockTransactionsByHeightQueryDocument = graphql(`
 export const getBlockTransactionCountByHeightQueryDocument = graphql(`
   query getBlockTransactionCountByHeightQuery($height: Int!) {
     transactions_aggregate(where: { block_height: { _eq: $height } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
+export const getModuleTransactionsQueryDocument = graphql(`
+  query getModuleTransactionsQuery(
+    $moduleId: Int!
+    $pageSize: Int!
+    $offset: Int!
+  ) {
+    module_transactions(
+      where: { module_id: { _eq: $moduleId } }
+      limit: $pageSize
+      offset: $offset
+      order_by: { block_height: desc }
+    ) {
+      block {
+        height
+        timestamp
+      }
+      transaction {
+        account {
+          address
+        }
+        hash
+        success
+        messages
+        is_send
+        is_ibc
+        is_move_execute
+        is_move_execute_event
+        is_move_publish
+        is_move_script
+        is_move_upgrade
+      }
+    }
+  }
+`);
+
+export const getModuleTransactionsCountQueryDocument = graphql(`
+  query getModuleTransactionsCountQuery($moduleId: Int!) {
+    module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {
       aggregate {
         count
       }

@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
@@ -17,7 +17,6 @@ import { MessageSection } from "./components/MessageSection";
 
 const TxDetails = () => {
   const router = useRouter();
-  const { track } = useTrack();
   const hashParam = getFirstQueryParam(router.query.txHash);
   const isMobile = useMobile();
   const {
@@ -41,7 +40,7 @@ const TxDetails = () => {
           mapTxFailed[String(txData?.isTxFailed) as keyof typeof mapTxFailed],
       });
     }
-  }, [router.isReady, txData, txLoading, txFetching, track]);
+  }, [router.isReady, txData, txLoading, txFetching]);
 
   if ((txLoading && txFetching) || assetLoading || !hashParam)
     return <Loading withBorder />;

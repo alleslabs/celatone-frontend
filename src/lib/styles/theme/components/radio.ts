@@ -1,8 +1,41 @@
-import type { ComponentStyleConfig } from "@chakra-ui/react";
+import { radioAnatomy } from "@chakra-ui/anatomy";
+import type { SystemStyleObject } from "@chakra-ui/react";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+
+const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(
+  radioAnatomy.keys
+);
 
 const primaryLight = "primary.light";
+const textMain = "text.main";
 
-export const Radio: ComponentStyleConfig = {
+const generateCardStyle = ({
+  containerChecked,
+  controlChecked,
+}: {
+  containerChecked: SystemStyleObject;
+  controlChecked?: SystemStyleObject;
+}) => ({
+  container: {
+    minW: "fit-content",
+    w: "full",
+    px: "24px",
+    py: "12px",
+    border: "2px solid",
+    borderRadius: "12px",
+    borderColor: "gray.700",
+    bgColor: "gray.900",
+    overflowX: "scroll",
+    "&[data-checked]": containerChecked,
+  },
+  control: {
+    boxSize: "18px",
+    _checked: controlChecked,
+  },
+  label: { w: "inherit" },
+});
+
+export const Radio = defineMultiStyleConfig({
   baseStyle: {
     label: {
       fontWeight: 500,
@@ -38,31 +71,24 @@ export const Radio: ComponentStyleConfig = {
     },
   },
   variants: {
-    card: {
-      container: {
-        minW: "fit-content",
-        w: "full",
-        px: "24px",
-        py: "12px",
-        border: "2px solid",
-        borderRadius: "12px",
-        borderColor: "gray.700",
-        bgColor: "gray.900",
-        overflowX: "scroll",
-        "&[data-checked]": {
-          borderColor: primaryLight,
-          bgColor: "primary.background",
-        },
+    "primary-card": generateCardStyle({
+      containerChecked: {
+        borderColor: primaryLight,
+        bgColor: "primary.background",
       },
-      control: {
-        boxSize: "18px",
+    }),
+    "gray-card": generateCardStyle({
+      containerChecked: {
+        borderColor: textMain,
+        bgColor: "gray.700",
       },
-      label: {
-        w: "inherit",
+      controlChecked: {
+        borderColor: textMain,
+        color: textMain,
       },
-    },
+    }),
   },
   defaultProps: {
     size: "lg",
   },
-};
+});

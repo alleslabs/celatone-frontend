@@ -18,7 +18,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackActionWithFunds } from "lib/amplitude";
 import {
   useCurrentChain,
   useExecuteContractTx,
@@ -58,9 +58,12 @@ import {
   jsonValidate,
 } from "lib/utils";
 
-const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
-  ssr: false,
-});
+const WasmCodeSnippet = dynamic(
+  () => import("lib/components/modal/WasmCodeSnippet"),
+  {
+    ssr: false,
+  }
+);
 
 interface ExecuteBoxProps {
   msgSchema: SchemaInfo;
@@ -92,7 +95,6 @@ export const ExecuteBox = ({
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const getAttachFunds = useAttachFunds();
-  const { trackActionWithFunds } = useTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -216,7 +218,6 @@ export const ExecuteBox = ({
     fee,
     contractAddress,
     msg,
-    trackActionWithFunds,
     funds,
     attachFundsOption,
     addActivity,
@@ -329,7 +330,7 @@ export const ExecuteBox = ({
                 amptrackSection="execute_msg"
                 buttonText="Copy JSON"
               />
-              <CodeSnippet
+              <WasmCodeSnippet
                 type="execute"
                 contractAddress={contractAddress}
                 message={msg}

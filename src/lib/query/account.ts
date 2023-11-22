@@ -7,3 +7,11 @@ export const getAccountIdByAddressQueryDocument = graphql(`
     }
   }
 `);
+
+export const getAccountTypeByAddressQueryDocument = graphql(`
+  query getAccountTypeByAddressQueryDocument($address: String!) {
+    accounts_by_pk(address: $address) {
+      type
+    }
+  }
+`);

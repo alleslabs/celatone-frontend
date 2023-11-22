@@ -33,7 +33,7 @@ export const AllContractLists = ({
   return (
     <Box minH="xs" w="100%">
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         value={searchKeyword}
         setInputState={setSearchKeyword}
         placeholder="Search for your lists"

@@ -4,7 +4,7 @@ import big from "big.js";
 import Link from "next/link";
 
 import { PoolHeader } from "../PoolHeader";
-import { useTrack } from "lib/amplitude";
+import { trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
@@ -27,7 +27,6 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
-  const { trackWebsite } = useTrack();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     // First version, navigate to contract details page if pool type is CosmWasm
@@ -57,7 +56,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       bg="gray.900"
       borderRadius="8px"
       p={4}
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
       sx={{
         _hover: {
@@ -116,7 +115,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           <AllocationBadge
             key={asset.denom}
             denom={asset.denom}
-            logo={asset.logo}
+            logo={asset.logo as string}
             symbol={asset.symbol}
             precision={asset.precision}
             amount={asset.amount}
@@ -129,7 +128,9 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           <AllocationBadge
             key="OTHERS"
             denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
-            logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
+            logo={
+              is4Assets ? (item.poolLiquidity[3].logo as string) : undefined
+            }
             symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
             precision={is4Assets ? item.poolLiquidity[3].precision : undefined}
             amount={

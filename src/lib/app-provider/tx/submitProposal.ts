@@ -3,28 +3,24 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { useCurrentChain } from "../hooks";
-import { useTrack } from "lib/amplitude";
+import { trackTxSucceed } from "lib/amplitude";
 import {
   submitStoreCodeProposalTx,
   submitWhitelistProposalTx,
 } from "lib/app-fns/tx/submitProposal";
-import type { HumanAddr } from "lib/types";
-
-import { useCatchTxError } from "./catchTxError";
+import type { HumanAddr, Nullable } from "lib/types";
 
 export interface SubmitWhitelistProposalStreamParams {
   estimatedFee?: StdFee;
   messages: EncodeObject[];
   whitelistNumber: number;
-  amountToVote: string | null;
+  amountToVote: Nullable<string>;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
 
 export const useSubmitWhitelistProposalTx = () => {
   const { address, getSigningCosmWasmClient } = useCurrentChain();
-  const { trackTxSucceed } = useTrack();
-  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -46,7 +42,6 @@ export const useSubmitWhitelistProposalTx = () => {
         messages,
         whitelistNumber,
         amountToVote,
-        catchTxError,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -54,14 +49,14 @@ export const useSubmitWhitelistProposalTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient, trackTxSucceed, catchTxError]
+    [address, getSigningCosmWasmClient]
   );
 };
 
 interface SubmitStoreCodeProposalStreamParams {
   wasmFileName: string;
   messages: EncodeObject[];
-  amountToVote: string | null;
+  amountToVote: Nullable<string>;
   estimatedFee?: StdFee;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
@@ -69,8 +64,6 @@ interface SubmitStoreCodeProposalStreamParams {
 
 export const useSubmitStoreCodeProposalTx = () => {
   const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
-  const { trackTxSucceed } = useTrack();
-  const catchTxError = useCatchTxError();
 
   return useCallback(
     async ({
@@ -93,7 +86,6 @@ export const useSubmitStoreCodeProposalTx = () => {
         messages,
         wasmFileName,
         amountToVote,
-        catchTxError,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -101,12 +93,6 @@ export const useSubmitStoreCodeProposalTx = () => {
         onTxFailed,
       });
     },
-    [
-      address,
-      chain.chain_name,
-      getSigningCosmWasmClient,
-      trackTxSucceed,
-      catchTxError,
-    ]
+    [address, chain.chain_name, getSigningCosmWasmClient]
   );
 };

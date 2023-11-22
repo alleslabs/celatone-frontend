@@ -6,17 +6,17 @@ import {
   AccordionPanel,
   chakra,
   Text,
-  Image,
   Button,
 } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand, trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
+import { TokenImageRender } from "lib/components/token";
 import { Tooltip } from "lib/components/Tooltip";
 import type { Pool } from "lib/types";
 import { PoolType } from "lib/types";
@@ -41,7 +41,6 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
-  const { trackWebsite, trackUseExpand } = useTrack();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     // First version, navigate to contract details page if pool type is CosmWasm
@@ -60,7 +59,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
       mt={4}
       bg="gray.900"
       _hover={{ bg: "gray.800" }}
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       cursor="pointer"
     >
       {({ isExpanded }) => (
@@ -110,7 +109,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                       <CustomIcon
                         name="chevron-down"
                         transform={isExpanded ? "rotate(180deg)" : "rotate(0)"}
-                        transition="all .25s ease-in-out"
+                        transition="all 0.25s ease-in-out"
                       />
                     }
                   />
@@ -137,9 +136,9 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                       gap={3}
                       alignItems="center"
                     >
-                      <Image
+                      <TokenImageRender
+                        logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                         boxSize={6}
-                        src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text variant="body2" color="text.main" fontWeight="bold">
                         {formatUTokenWithPrecision(

@@ -1,32 +1,48 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { useContext, createContext, useMemo } from "react";
 
-import { usePreviousPathname } from "../hooks/usePreviousPathname";
 import { StorageKeys } from "lib/data";
 import { useLocalStorage } from "lib/hooks/useLocalStorage";
 
 interface NavContextInterface {
   isExpand: boolean;
-  prevPathname: string | null;
   setIsExpand: Dispatch<SetStateAction<boolean>>;
+  submenus: Record<string, [boolean, Dispatch<SetStateAction<boolean>>]>;
 }
 const NavContext = createContext<NavContextInterface>({
   isExpand: false,
-  prevPathname: null,
   setIsExpand: () => {},
+  submenus: {},
 });
 
 export const NavProvider = ({ children }: { children: ReactNode }) => {
   const [isExpand, setIsExpand] = useLocalStorage(StorageKeys.NavSidebar, true);
-  const prevPathname = usePreviousPathname();
+  const [isDevExpand, setIsDevExpand] = useLocalStorage(
+    StorageKeys.DevSidebar,
+    true
+  );
+  const [isProjectExpand, setIsProjectExpand] = useLocalStorage(
+    StorageKeys.ProjectSidebar,
+    true
+  );
 
   const states = useMemo<NavContextInterface>(
     () => ({
       isExpand,
-      prevPathname,
       setIsExpand,
+      submenus: {
+        [StorageKeys.DevSidebar]: [isDevExpand, setIsDevExpand],
+        [StorageKeys.ProjectSidebar]: [isProjectExpand, setIsProjectExpand],
+      },
     }),
-    [isExpand, prevPathname, setIsExpand]
+    [
+      isExpand,
+      setIsExpand,
+      isDevExpand,
+      setIsDevExpand,
+      isProjectExpand,
+      setIsProjectExpand,
+    ]
   );
 
   return <NavContext.Provider value={states}>{children}</NavContext.Provider>;

@@ -7,3 +7,4 @@ export * from "./ResendButton";
 export * from "./ShowMoreButton";
 export * from "./CustomIconButton";
 export * from "./FaucetButton";
+export * from "./SubmitButton";

@@ -2,7 +2,7 @@ import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseTab } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -27,7 +27,6 @@ interface QueryAreaProps {
 
 export const QueryArea = observer(
   ({ contractAddress, codeId, codeHash, initialMsg }: QueryAreaProps) => {
-    const { trackUseTab } = useTrack();
     const [tab, setTab] = useState<MessageTabs>();
 
     const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
@@ -39,10 +38,11 @@ export const QueryArea = observer(
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
+        if (nextTab === tab) return;
         trackUseTab(nextTab);
         setTab(nextTab);
       },
-      [trackUseTab]
+      [tab]
     );
 
     useEffect(() => {

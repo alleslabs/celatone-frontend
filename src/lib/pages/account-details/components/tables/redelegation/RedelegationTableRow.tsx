@@ -19,8 +19,9 @@ export const RedelegationTableRow = ({
   <Grid
     templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
-    transition="all .25s ease-in-out"
+    transition="all 0.25s ease-in-out"
     minW="min-content"
+    sx={{ "& > div": { alignItems: "flex-start" } }}
   >
     <TableRow>
       <ValidatorBadge validator={redelegation.srcValidator} />
@@ -31,8 +32,10 @@ export const RedelegationTableRow = ({
     <TableRow>
       <ValidatorBadge validator={redelegation.dstValidator} />
     </TableRow>
-    <TableRow>
-      <TokenCell token={redelegation.token} />
+    <TableRow flexDirection="column" alignItems="start" gap={2}>
+      {redelegation.balances.map((balance) => (
+        <TokenCell key={balance.denom} token={balance} />
+      ))}
     </TableRow>
     <TableRow>
       <Flex direction="column">

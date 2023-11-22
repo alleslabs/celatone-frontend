@@ -2,7 +2,7 @@ import { Flex, Radio, RadioGroup } from "@chakra-ui/react";
 import { useState } from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { ControllerInput } from "lib/components/forms";
 import type { FormStatus } from "lib/components/forms";
 import type { LCDCodeInfoSuccessCallback } from "lib/services/codeService";
@@ -29,7 +29,6 @@ export const CodeSelectSection = <T extends FieldValues>({
   setCodeHash,
   status,
 }: CodeSelectSectionProps<T>) => {
-  const { track } = useTrack();
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
     "select-existing"
   );
@@ -72,7 +71,7 @@ export const CodeSelectSection = <T extends FieldValues>({
             error={error}
             label="Code ID"
             helperText="Input existing Code ID manually"
-            variant="floating"
+            variant="fixed-floating"
             my={8}
             rules={{ required: "Code ID is required" }}
           />

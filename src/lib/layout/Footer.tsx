@@ -3,7 +3,7 @@ import { Flex, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { CURR_THEME } from "env";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackSocial, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 
@@ -65,60 +65,53 @@ const SocialMenuRender = ({
 }: {
   isThemed?: boolean;
   iconSize: IconProps["boxSize"];
-}) => {
-  const { trackSocial } = useTrack();
-  return (
-    <>
-      {(isThemed ? themedSocial : socialMenu).map((item) => (
-        <Link
-          key={`${isThemed ? "themed" : "social"}-${item.slug}`}
-          href={item.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => {
-            trackSocial(item.url);
-          }}
-        >
-          <Flex
-            borderRadius="8px"
-            transition="all .25s ease-in-out"
-            _hover={{ backgroundColor: "gray.800" }}
-          >
-            <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
-          </Flex>
-        </Link>
-      ))}
-    </>
-  );
-};
-
-const AllesFeedback = () => {
-  const { track } = useTrack();
-
-  return (
-    <Link
-      href="https://feedback.alleslabs.com"
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => track(AmpEvent.FEEDBACK)}
-    >
-      <Flex
-        gap={1}
-        pr={2}
-        pl={1}
-        borderRadius={8}
-        align="center"
-        _hover={{ background: "gray.800" }}
-        transition="all .25s ease-in-out"
+}) => (
+  <>
+    {(isThemed ? themedSocial : socialMenu).map((item) => (
+      <Link
+        key={`${isThemed ? "themed" : "social"}-${item.slug}`}
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => {
+          trackSocial(item.url);
+        }}
       >
-        <CustomIcon name="feedback" color="gray.600" />
-        <Text variant="body3" color="text.dark">
-          Feedback
-        </Text>
-      </Flex>
-    </Link>
-  );
-};
+        <Flex
+          borderRadius="8px"
+          transition="all 0.25s ease-in-out"
+          _hover={{ backgroundColor: "gray.800" }}
+        >
+          <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
+        </Flex>
+      </Link>
+    ))}
+  </>
+);
+
+const AllesFeedback = () => (
+  <Link
+    href="https://feedback.alleslabs.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={() => track(AmpEvent.FEEDBACK)}
+  >
+    <Flex
+      gap={1}
+      pr={2}
+      pl={1}
+      borderRadius={8}
+      align="center"
+      _hover={{ background: "gray.800" }}
+      transition="all 0.25s ease-in-out"
+    >
+      <CustomIcon name="feedback" color="gray.600" />
+      <Text variant="body3" color="text.dark">
+        Feedback
+      </Text>
+    </Flex>
+  </Link>
+);
 
 const IconLink = ({
   href,
@@ -130,51 +123,46 @@ const IconLink = ({
   icon: IconKeys;
   text1: string;
   text2: string;
-}) => {
-  const { track } = useTrack();
-
-  return (
-    <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => track(AmpEvent.ALLESLABS)}
+}) => (
+  <Link
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={() => track(AmpEvent.ALLESLABS)}
+  >
+    <Flex
+      gap={1}
+      mr={{ base: 6, md: 0 }}
+      align="center"
+      _hover={{
+        "& svg": {
+          opacity: 1,
+        },
+      }}
     >
-      <Flex
-        gap={1}
-        mr={{ base: 6, md: 0 }}
-        align="center"
-        _hover={{
-          "& svg": {
-            opacity: 1,
-          },
-        }}
-      >
-        <CustomIcon
-          name={icon}
-          opacity={0}
-          transition="opacity .25s ease-in-out"
-        />
-        <Text variant="body3" color="text.dark">
-          {text1}
-          <Text
-            as="span"
-            ml={1}
-            color="secondary.main"
-            transition="all .25s ease-in-out"
-            _hover={{ color: "secondary.light" }}
-          >
-            {text2}
-          </Text>
+      <CustomIcon
+        name={icon}
+        opacity={0}
+        transition="opacity .25s ease-in-out"
+      />
+      <Text variant="body3" color="text.dark">
+        {text1}
+        <Text
+          as="span"
+          ml={1}
+          color="secondary.main"
+          transition="all 0.25s ease-in-out"
+          _hover={{ color: "secondary.light" }}
+        >
+          {text2}
         </Text>
-      </Flex>
-    </Link>
-  );
-};
+      </Text>
+    </Flex>
+  </Link>
+);
 
 const Footer = () => {
   const isThemed = CURR_THEME.footer;
-
   return isThemed ? (
     <Flex
       as="footer"

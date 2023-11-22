@@ -11,13 +11,14 @@ import type { Dispatch } from "react";
 import { useMemo, useCallback, useReducer, useState } from "react";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useSchemaStore } from "lib/providers/store";
+import type { Nullable } from "lib/types";
 import { jsonValidate } from "lib/utils";
 
 enum Method {
@@ -26,7 +27,10 @@ enum Method {
   FILL_MANUALLY = "fill-manually",
 }
 
-type JsonState = Record<Method, { schemaString: string; error: string | null }>;
+type JsonState = Record<
+  Method,
+  { schemaString: string; error: Nullable<string> }
+>;
 
 enum ActionType {
   SET_SCHEMA = "set-schema",
@@ -38,7 +42,7 @@ type Action = {
   type: ActionType;
   method: Method;
   schemaString?: string;
-  error?: string | null;
+  error?: Nullable<string>;
 };
 
 const initialJsonState: JsonState = {
@@ -68,7 +72,7 @@ const reducer = (state: JsonState, action: Action): JsonState => {
   }
 };
 
-const validateSchema = (schemaString: string): string | null => {
+const validateSchema = (schemaString: string): Nullable<string> => {
   return (
     jsonValidate(schemaString) ??
     ("instantiate" in JSON.parse(schemaString)
@@ -104,7 +108,9 @@ const MethodRender = ({
               schemaString: "",
             });
           }}
-          error={error}
+          // TODO: change to discriminated union pattern later
+          status={error ? "error" : undefined}
+          statusText={error}
         />
       ) : (
         <DropZone
@@ -194,7 +200,6 @@ export const UploadTemplate = ({
   closeDrawer,
   onSchemaSave,
 }: UploadTemplateInterface) => {
-  const { track } = useTrack();
   const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
@@ -267,7 +272,6 @@ export const UploadTemplate = ({
     method,
     isReattach,
     onSchemaSave,
-    track,
     saveNewSchema,
     toast,
   ]);

@@ -86,3 +86,26 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
     </Flex>
   );
 };
+
+export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
+  <Flex
+    alignItems="center"
+    gap={4}
+    color="text.dark"
+    direction="column"
+    my={12}
+    py={8}
+    borderY="1px solid"
+    borderColor="gray.700"
+  >
+    <StateImage imageVariant="empty" />
+    <Flex align="center">You don’t have any saved accounts.</Flex>
+    <Flex align="center" gap={4}>
+      Save an account and access the account address through
+      {button}
+    </Flex>
+    <Flex align="center">
+      Saved accounts are stored locally on your device.
+    </Flex>
+  </Flex>
+);

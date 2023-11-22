@@ -7,6 +7,7 @@ import type {
   AccessConfigPermission,
   Option,
   ValidatorAddr,
+  Nullable,
 } from "lib/types";
 
 import type { VoteOption } from "./mapping";
@@ -32,7 +33,7 @@ export interface MsgStoreCodeDetails extends MsgBaseDetails {
   code_id: Option<string>;
   sender: Addr;
   wasm_byte_code: string; // base64
-  instantiate_permission: InstantiatePermissionResponse | null;
+  instantiate_permission: Nullable<InstantiatePermissionResponse>;
 }
 
 export interface MsgInstantiateDetails extends MsgBaseDetails {
@@ -156,6 +157,7 @@ export interface MsgSubmitProposalDetails extends MsgBaseDetails {
     subject_client_id: string;
     substitute_client_id: string;
     title: string;
+    changes?: { key: string; subspace: string; value: string }[];
   };
   is_expedited?: boolean;
 }
@@ -233,7 +235,10 @@ export interface MsgCreateClientDetails extends MsgBaseDetails {
 }
 export interface MsgUpdateClientDetails extends MsgBaseDetails {
   client_id: string;
-  header: object;
+  // newer version
+  client_message?: object;
+  // older version
+  header?: object;
   signer: Addr;
 }
 export interface MsgUpgradeClientDetails extends MsgBaseDetails {

@@ -1,9 +1,10 @@
 import { useToast } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import { useContractStore } from "lib/providers/store";
+import { useAccountStore, useContractStore } from "lib/providers/store";
 import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
+import { useFormatAddresses } from "./useFormatAddresses";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
@@ -15,6 +16,14 @@ interface UseHandleContractSaveProps {
   description?: string;
   tags?: string[];
   lists?: LVPair[];
+  actions?: () => void;
+}
+
+interface UseHandleAccountSaveProps {
+  title: string;
+  address: Addr;
+  name: string;
+  description?: string;
   actions?: () => void;
 }
 
@@ -44,6 +53,34 @@ export const useHandleContractSave = ({
       tags,
       lists
     );
+
+    actions?.();
+
+    toast({
+      title,
+      status: "success",
+      duration: 5000,
+      isClosable: false,
+      position: "bottom-right",
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+    });
+  };
+};
+
+export const useHandleAccountSave = ({
+  title,
+  address,
+  name,
+  description,
+  actions,
+}: UseHandleAccountSaveProps) => {
+  const toast = useToast();
+  const { updateAccountLocalInfo } = useAccountStore();
+  const formatAddresses = useFormatAddresses();
+
+  return (inputName?: string) => {
+    const { address: bech32Address } = formatAddresses(address);
+    updateAccountLocalInfo(bech32Address, inputName ?? name, description);
 
     actions?.();
 

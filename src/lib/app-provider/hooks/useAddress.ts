@@ -2,7 +2,9 @@ import { fromBech32 } from "@cosmjs/encoding";
 import { useCallback, useMemo } from "react";
 
 import type { Option } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
+import { useMoveConfig } from "./useConfig";
 import { useCurrentChain } from "./useCurrentChain";
 import { useExampleAddresses } from "./useExampleAddresses";
 
@@ -53,7 +55,7 @@ const validateAddress = (
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   if (!bech32Prefix)
-    return "Can not retrieve bech32 prefix of the current network.";
+    return "Cannot retrieve bech32 prefix of the current network.";
 
   const prefix = getPrefix(bech32Prefix, addressType);
 
@@ -96,43 +98,60 @@ export const useGetAddressType = () => {
   );
 };
 
-// TODO: refactor
 export const useValidateAddress = () => {
   const {
     chain: { bech32_prefix: bech32Prefix },
   } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
+  const move = useMoveConfig({ shouldRedirect: false });
+
+  const validateContractAddress = useCallback(
+    (address: string) =>
+      validateAddress(
+        bech32Prefix,
+        address,
+        "contract_address",
+        getAddressTypeByLength
+      ),
+    [bech32Prefix, getAddressTypeByLength]
+  );
+  const validateUserAddress = useCallback(
+    (address: string) =>
+      validateAddress(
+        bech32Prefix,
+        address,
+        "user_address",
+        getAddressTypeByLength
+      ),
+    [bech32Prefix, getAddressTypeByLength]
+  );
+  const validateValidatorAddress = useCallback(
+    (address: string) =>
+      validateAddress(
+        bech32Prefix,
+        address,
+        "validator_address",
+        getAddressTypeByLength
+      ),
+    [bech32Prefix, getAddressTypeByLength]
+  );
 
   return {
-    validateContractAddress: useCallback(
-      (address: string) =>
-        validateAddress(
-          bech32Prefix,
-          address,
-          "contract_address",
-          getAddressTypeByLength
-        ),
-      [bech32Prefix, getAddressTypeByLength]
-    ),
-    validateUserAddress: useCallback(
-      (address: string) =>
-        validateAddress(
-          bech32Prefix,
-          address,
-          "user_address",
-          getAddressTypeByLength
-        ),
-      [bech32Prefix, getAddressTypeByLength]
-    ),
-    validateValidatorAddress: useCallback(
-      (address: string) =>
-        validateAddress(
-          bech32Prefix,
-          address,
-          "validator_address",
-          getAddressTypeByLength
-        ),
-      [bech32Prefix, getAddressTypeByLength]
+    validateContractAddress,
+    validateUserAddress,
+    validateValidatorAddress,
+    isSomeValidAddress: useCallback(
+      (address: string) => {
+        const errUser = validateUserAddress(address);
+        const errContract = validateContractAddress(address);
+        const isHex = isHexWalletAddress(address);
+        const isHexModule = isHexModuleAddress(address);
+
+        return (
+          !errUser || !errContract || (move.enabled && (isHex || isHexModule))
+        );
+      },
+      [move.enabled, validateContractAddress, validateUserAddress]
     ),
   };
 };

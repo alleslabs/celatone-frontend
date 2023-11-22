@@ -15,4 +15,11 @@ export const Tooltip: ComponentStyleConfig = {
     bg: "accent.darker",
     [$arrowBg.variable]: "colors.accent.darker",
   },
+  variants: {
+    "primary-light": {
+      color: "gray.900",
+      bg: "primary.light",
+      [$arrowBg.variable]: "colors.primary.light",
+    },
+  },
 };

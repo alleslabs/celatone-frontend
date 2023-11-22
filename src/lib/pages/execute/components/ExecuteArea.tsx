@@ -1,9 +1,9 @@
 import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { observer } from "mobx-react-lite";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -34,7 +34,6 @@ export const ExecuteArea = observer(
     codeHash,
     codeId,
   }: ExecuteAreaProps) => {
-    const { trackUseTab } = useTrack();
     const [tab, setTab] = useState<MessageTabs>();
     const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
     const schema = getExecuteSchema(codeHash);
@@ -43,10 +42,11 @@ export const ExecuteArea = observer(
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
+        if (nextTab === tab) return;
         trackUseTab(nextTab);
         setTab(nextTab);
       },
-      [trackUseTab]
+      [tab]
     );
 
     useEffect(() => {

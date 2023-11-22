@@ -1,6 +1,6 @@
 import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
@@ -34,12 +34,12 @@ export const PoolTxsMsg = ({
   templateColumns,
 }: PoolTxsMsgProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const { trackUseExpand } = useTrack();
   const msgDetailTemplateColumns = templateColumns
     .split(" ")
     .slice(0, 3)
     .concat("1fr")
     .join(" ");
+  const hasMsgDetails = transaction.success && message;
   return (
     <Box
       w="full"
@@ -56,7 +56,7 @@ export const PoolTxsMsg = ({
       <Grid
         className="copier-wrapper"
         templateColumns={templateColumns}
-        transition="all .25s ease-in-out"
+        transition="all 0.25s ease-in-out"
         cursor="pointer"
         onClick={() => {
           if (message) {
@@ -70,13 +70,14 @@ export const PoolTxsMsg = ({
           onToggle();
         }}
       >
-        <TableNoBorderRow pl={2}>
-          {transaction.success && message && (
+        <TableNoBorderRow p="0 0 0 8px">
+          {hasMsgDetails && (
             <CustomIcon
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
-              transition="all .25s ease-in-out"
+              transition="all 0.25s ease-in-out"
               color="gray.600"
+              m={0}
             />
           )}
         </TableNoBorderRow>
@@ -140,17 +141,14 @@ export const PoolTxsMsg = ({
           )}
         </TableNoBorderRow>
       </Grid>
-      {transaction.success && message && (
+      {hasMsgDetails && (
         <Grid
           w="full"
           py={4}
           hidden={!isOpen}
           templateColumns={msgDetailTemplateColumns}
         >
-          <TableNoBorderRow py={0} />
-          <TableNoBorderRow py={0} />
-          <TableNoBorderRow py={0} />
-          <TableNoBorderRow py={0}>
+          <TableNoBorderRow gridArea="1 / 4" py={0}>
             <PoolMsgDetail
               txHash={transaction.hash}
               blockHeight={transaction.height}

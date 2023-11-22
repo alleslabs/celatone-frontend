@@ -5,7 +5,7 @@ import { useController, useFieldArray, useWatch } from "react-hook-form";
 
 import { AddressInput } from "../AddressInput";
 import { AssignMe } from "../AssignMe";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackUseInstantiatePermission, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { Addr, UploadSectionState } from "lib/types";
@@ -34,7 +34,6 @@ export const InstantiatePermissionRadio = ({
   setValue,
   trigger,
 }: InstantiatePermissionRadioProps) => {
-  const { track, trackUseInstantiatePermission } = useTrack();
   const { address: walletAddress } = useCurrentChain();
   const {
     chainConfig: {
@@ -109,7 +108,7 @@ export const InstantiatePermissionRadio = ({
                       name={`addresses.${idx}.address`}
                       control={control}
                       label="Address"
-                      variant="floating"
+                      variant="fixed-floating"
                       error={
                         (addresses[idx]?.address &&
                           addresses.find(

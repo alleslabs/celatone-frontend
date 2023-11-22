@@ -1,7 +1,13 @@
+import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
 import { CURR_THEME } from "env";
-import type { Validator, ValidatorAddr, ValidatorInfo } from "lib/types";
+import type {
+  StakingShare,
+  Validator,
+  ValidatorAddr,
+  ValidatorInfo,
+} from "lib/types";
 import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorResponse {
@@ -12,8 +18,8 @@ interface ValidatorResponse {
   };
   jailed: boolean;
   status: string;
-  token: string;
-  delegator_shares: string;
+  tokens: Coin[];
+  delegator_shares: StakingShare[];
   description: {
     moniker: string;
     identity: string;
@@ -39,7 +45,7 @@ export const getValidator = async (
   validatorAddr: ValidatorAddr
 ): Promise<Validator> => {
   const { data } = await axios.get<{ validator: ValidatorResponse }>(
-    `${endpoint}/cosmos/staking/v1beta1/validators/${validatorAddr}`
+    `${endpoint}/validators/${validatorAddr}`
   );
   return {
     validatorAddress: data.validator.operator_address,
@@ -67,7 +73,7 @@ export const resolveValIdentity = async (
       .catch(async (_) => {
         if (validator.identity) {
           const { data } = await axios.get(keybaseUrl);
-          return data.them[0].pictures.primary.url;
+          if (data.them.length) return data.them[0].pictures.primary.url;
         }
         return uiAvatarsUrl;
       })

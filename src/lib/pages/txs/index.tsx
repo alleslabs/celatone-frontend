@@ -2,18 +2,17 @@ import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import PageContainer from "lib/components/PageContainer";
 
 import { TxsTable } from "./components/TxsTable";
 
 const Txs = () => {
   const router = useRouter();
-  const { track } = useTrack();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_TXS);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

@@ -1,9 +1,12 @@
+import { AccountStore } from "./account";
 import { CodeStore } from "./code";
 import { ContractStore } from "./contract";
 import { PublicProjectStore } from "./project";
 import { SchemaStore } from "./schema";
 
 export class RootStore {
+  accountStore: AccountStore;
+
   codeStore: CodeStore;
 
   contractStore: ContractStore;
@@ -13,6 +16,7 @@ export class RootStore {
   schemaStore: SchemaStore;
 
   constructor() {
+    this.accountStore = new AccountStore();
     this.codeStore = new CodeStore();
     this.contractStore = new ContractStore();
     this.publicProjectStore = new PublicProjectStore();

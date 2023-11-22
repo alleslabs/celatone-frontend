@@ -46,7 +46,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         label="Name"
         placeholder={contractLabel}
         helperText="Set name for your contract"
-        variant="floating"
+        variant="fixed-floating"
         rules={{
           maxLength: constants.maxContractNameLength,
         }}
@@ -59,8 +59,8 @@ export const OffChainForm = <T extends OffchainDetail>({
         name={"description" as FieldPath<T>}
         control={control}
         label="Description"
-        placeholder="Help understanding what this contract do and how it works ..."
-        variant="floating"
+        placeholder="Help understanding what this contract does and how it works ..."
+        variant="fixed-floating"
         rules={{
           maxLength: constants.maxContractDescriptionLength,
         }}

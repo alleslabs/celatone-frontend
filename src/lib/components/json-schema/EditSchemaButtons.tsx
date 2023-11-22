@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { CustomIcon } from "../icon";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { Tooltip } from "../Tooltip";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 
 interface EditSchemaButtonsProps {
   codeId: string;
@@ -17,12 +17,10 @@ export const EditSchemaButtons = ({
   codeHash,
   openModal,
 }: EditSchemaButtonsProps) => {
-  const { track } = useTrack();
-
   const handleReattach = useCallback(() => {
     track(AmpEvent.USE_EDIT_ATTACHED_JSON);
     openModal();
-  }, [openModal, track]);
+  }, [openModal]);
 
   return (
     <Flex gap={1}>
@@ -42,9 +40,8 @@ export const EditSchemaButtons = ({
         trigger={
           <Tooltip label="Delete your attached schema">
             <IconButton
-              variant="ghost-gray"
+              variant="ghost-gray-icon"
               size="sm"
-              color="gray.600"
               icon={<CustomIcon name="delete" boxSize={4} />}
               aria-label="delete schema"
             />

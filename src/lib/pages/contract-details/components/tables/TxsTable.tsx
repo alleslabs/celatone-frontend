@@ -1,18 +1,15 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { useMobile } from "lib/app-provider";
-import { TransactionCard } from "lib/components/card/TransactionCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddressPagination } from "lib/services/txService";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 
 interface TxsTableProps {
-  contractAccountId: Option<number | null>;
+  contractAccountId: Option<Nullable<number>>;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -60,34 +57,20 @@ export const TxsTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-  const isMobile = useMobile();
-  const emptyState = (
-    <EmptyState
-      imageVariant="empty"
-      message="This contract does not have any transactions"
-    />
-  );
-  if (!transactions?.length) return emptyState;
+
   return (
     <>
-      {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
-          {transactions.map((transaction) => (
-            <TransactionCard
-              transaction={transaction}
-              key={`contract-detail-txs-${transaction.hash}`}
-              showRelations={false}
-            />
-          ))}
-        </Flex>
-      ) : (
-        <TransactionsTable
-          transactions={transactions}
-          isLoading={isLoading}
-          emptyState={emptyState}
-          showRelations={false}
-        />
-      )}
+      <TransactionsTable
+        transactions={transactions}
+        isLoading={isLoading}
+        emptyState={
+          <EmptyState
+            imageVariant="empty"
+            message="This contract does not have any transactions"
+          />
+        }
+        showRelations={false}
+      />
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}

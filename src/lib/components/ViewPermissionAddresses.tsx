@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { useGetAddressType } from "lib/app-provider";
 import type { PermissionAddresses } from "lib/types";
 
@@ -17,7 +17,6 @@ export const ViewPermissionAddresses = ({
 }) => {
   const [viewAll, setViewAll] = useState(false);
   const getAddressType = useGetAddressType();
-  const { trackUseExpand } = useTrack();
   const showAddressses =
     viewAll ||
     (typeof permissionAddresses === "object" &&

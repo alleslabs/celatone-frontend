@@ -3,7 +3,7 @@ import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -18,7 +18,6 @@ const sortByAtoZ = (projects: PublicProjectInfo[]) =>
   projects.sort((a, b) => a.details.name.localeCompare(b.details.name));
 
 export const AllProject = observer(() => {
-  const { track } = useTrack();
   const { data: publicProjectInfo, isLoading } = usePublicProjects();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { getSavedPublicProjects } = usePublicProjectStore();
@@ -69,7 +68,7 @@ export const AllProject = observer(() => {
   return (
     <Box minH="xs" w="100%">
       <TextInput
-        variant="floating"
+        variant="fixed-floating"
         value={searchKeyword}
         setInputState={setSearchKeyword}
         labelBgColor="background"

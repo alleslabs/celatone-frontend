@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -26,7 +26,6 @@ interface SaveNewCodeModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { address } = useCurrentChain();
-  const { track } = useTrack();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
 
@@ -191,7 +190,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
-          variant="floating"
+          variant="fixed-floating"
           value={codeId}
           onInputChange={setCodeId}
           label="Code ID"
@@ -200,7 +199,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           placeholder="ex. 1234"
         />
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={uploader}
           label="Uploader"
           labelBgColor="gray.900"
@@ -210,7 +209,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           isDisabled
         />
         <TextInput
-          variant="floating"
+          variant="fixed-floating"
           value={name}
           setInputState={setName}
           label="Code Name"

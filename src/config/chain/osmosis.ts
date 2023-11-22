@@ -21,6 +21,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: true,
         url: "https://app.osmosis.zone/pool",
@@ -32,6 +35,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         disableStoreCodeProposal: true,
         disableWhitelistProposal: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {
@@ -60,12 +66,15 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     features: {
       faucet: {
         enabled: true,
-        url: "https://faucet.alleslabs.dev",
+        url: process.env.NEXT_PUBLIC_OSMOSIS_TESTNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: true,
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
+      },
+      move: {
+        enabled: false,
       },
       pool: {
         enabled: true,
@@ -78,6 +87,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         disableWhitelistProposal: true,
         disableStoreCodeProposal: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {
@@ -113,6 +125,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
@@ -123,6 +138,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         disableWhitelistProposal: true,
         disableStoreCodeProposal: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {

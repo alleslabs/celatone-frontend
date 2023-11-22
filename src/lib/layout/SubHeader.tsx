@@ -1,7 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useCallback } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
@@ -18,35 +17,43 @@ const SubHeader = () => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
   const govConfig = useGovConfig({ shouldRedirect: false });
-  const { track } = useTrack();
 
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
-    ...(wasmConfig.enabled
-      ? ([
-          { name: "Codes", slug: "/codes", icon: "code" },
-          { name: "Contracts", slug: "/contracts", icon: "contract-address" },
-        ] as const)
-      : []),
-    ...(govConfig.enabled
-      ? ([{ name: "Proposals", slug: "/proposals", icon: "proposal" }] as const)
-      : []),
-    ...(poolConfig.enabled
-      ? ([{ name: "Osmosis Pools", slug: "/pools", icon: "pool" }] as const)
-      : []),
   ];
+  // TODO Recent Modules
+  // if (moveConfig.enabled)
+  //   subHeaderMenu.push({
+  //     name: "Modules",
+  //     slug: "/modules",
+  //     icon: "contract-address",
+  //   });
+
+  if (wasmConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Codes", slug: "/codes", icon: "code" },
+      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
+    );
+
+  if (govConfig.enabled)
+    subHeaderMenu.push({
+      name: "Proposals",
+      slug: "/proposals",
+      icon: "proposal",
+    });
+
+  if (poolConfig.enabled)
+    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
+
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";
 
-  const trackOnClick = useCallback(
-    (tab: string) => {
-      track(AmpEvent.USE_TOPBAR, { tab });
-    },
-    [track]
-  );
+  const trackOnClick = (tab: string) => {
+    track(AmpEvent.USE_TOPBAR, { tab });
+  };
 
   return (
     <Flex px={6} alignItems="center" h="full" justifyContent="space-between">
@@ -66,7 +73,7 @@ const SubHeader = () => {
               borderColor={
                 isCurrentPage(item.slug) ? activeColor : "transparent"
               }
-              transition="all .25s ease-in-out"
+              transition="all 0.25s ease-in-out"
               _hover={{ borderColor: activeColor }}
               sx={{
                 _hover: {

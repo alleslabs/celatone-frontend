@@ -21,6 +21,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
@@ -29,6 +32,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {
@@ -63,6 +69,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
@@ -71,6 +80,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+      },
+      nft: {
+        enabled: false,
       },
     },
     gas: {

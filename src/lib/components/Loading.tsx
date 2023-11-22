@@ -1,10 +1,11 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 
-interface LoadingProps {
+interface LoadingProps extends FlexProps {
   withBorder?: boolean;
 }
 
-export const Loading = ({ withBorder = false }: LoadingProps) => (
+export const Loading = ({ withBorder = false, ...flexProps }: LoadingProps) => (
   <Flex
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="gray.700"
@@ -13,6 +14,7 @@ export const Loading = ({ withBorder = false }: LoadingProps) => (
     my={12}
     flexDirection="column"
     alignItems="center"
+    {...flexProps}
   >
     <Spinner size="xl" />
     <Text mt={5}>Loading ...</Text>

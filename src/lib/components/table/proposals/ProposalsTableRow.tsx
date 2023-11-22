@@ -2,16 +2,16 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
-import { useTrack } from "lib/amplitude";
+import { trackMintScan } from "lib/amplitude";
 import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
-import { Proposer } from "lib/components/table/proposals/Proposer";
 import type { Option, Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { openNewTab } from "lib/utils";
 
 import { ProposalTextCell } from "./ProposalTextCell";
+import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
@@ -31,7 +31,6 @@ export const ProposalsTableRow = ({
     chainConfig: { explorerLink },
   } = useCelatoneApp();
   const lcdEndpoint = useBaseApiRoute("rest");
-  const { trackMintScan } = useTrack();
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
@@ -60,12 +59,12 @@ export const ProposalsTableRow = ({
               });
               // TOOD: revisit retrieving url (make a proper hook)
               openNewTab(
-                getNavigationUrl(
-                  "proposal_id",
-                  explorerLink,
-                  proposal.proposalId.toString(),
-                  lcdEndpoint
-                )
+                getNavigationUrl({
+                  type: "proposal_id",
+                  explorerConfig: explorerLink,
+                  value: proposal.proposalId.toString(),
+                  lcdEndpoint,
+                })
               );
             }
           : undefined

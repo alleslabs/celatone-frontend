@@ -1,4 +1,4 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -7,8 +7,11 @@ import {
   useBaseApiRoute,
   CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
-import { getAccountIdByAddressQueryDocument } from "lib/query";
-import type { Addr, Balance, Option } from "lib/types";
+import {
+  getAccountIdByAddressQueryDocument,
+  getAccountTypeByAddressQueryDocument,
+} from "lib/query";
+import type { AccountType, Addr, Balance, Nullable, Option } from "lib/types";
 
 import { getAccountBalanceInfo } from "./account";
 
@@ -26,7 +29,7 @@ export const useAccountBalances = (
 
 export const useAccountId = (
   walletAddress: Option<Addr>
-): UseQueryResult<number | null> => {
+): UseQueryResult<Nullable<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -34,7 +37,9 @@ export const useAccountId = (
       throw new Error("Error fetching account id: failed to retrieve address.");
     return indexerGraphClient
       .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
-      .then<number | null>(({ accounts_by_pk }) => accounts_by_pk?.id ?? null);
+      .then<Nullable<number>>(
+        ({ accounts_by_pk }) => accounts_by_pk?.id ?? null
+      );
   }, [indexerGraphClient, walletAddress]);
 
   return useQuery(
@@ -42,6 +47,41 @@ export const useAccountId = (
     queryFn,
     {
       enabled: Boolean(walletAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useAccountType = (
+  walletAddress: Option<Addr>,
+  options: Pick<
+    UseQueryOptions<AccountType, Error>,
+    "enabled" | "onSuccess" | "onError"
+  > = {}
+): UseQueryResult<AccountType> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    if (!walletAddress)
+      throw new Error(
+        "Error fetching account type: failed to retrieve address."
+      );
+    return indexerGraphClient
+      .request(getAccountTypeByAddressQueryDocument, {
+        address: walletAddress,
+      })
+      .then(
+        ({ accounts_by_pk }) =>
+          (accounts_by_pk?.type ?? "BaseAccount") as AccountType
+      );
+  }, [indexerGraphClient, walletAddress]);
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, indexerGraphClient, walletAddress],
+    queryFn,
+    {
+      ...options,
       retry: 1,
       refetchOnWindowFocus: false,
     }

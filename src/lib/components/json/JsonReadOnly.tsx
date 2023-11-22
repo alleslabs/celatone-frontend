@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 import { CopyButton } from "../copy";
-import { useTrack } from "lib/amplitude";
+import { trackUseExpand } from "lib/amplitude";
 import { jsonLineCount, jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
@@ -36,7 +36,6 @@ const JsonReadOnly = ({
   amptrackSection,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
-  const { trackUseExpand } = useTrack();
 
   const isJsonValid = useMemo(() => {
     return jsonValidate(text) === null || text.length === 0;
@@ -64,7 +63,7 @@ const JsonReadOnly = ({
       borderWidth="thin"
       borderColor={!isJsonValid ? "error.main" : "gray.700"}
       borderRadius="8px"
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       _hover={{
         borderColor: isJsonValid && "gray.600",
         "& .copy-button-box": { display: "block" },

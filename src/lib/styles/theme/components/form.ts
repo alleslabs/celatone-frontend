@@ -1,8 +1,64 @@
-import type { ComponentStyleConfig } from "@chakra-ui/react";
+import { formAnatomy } from "@chakra-ui/anatomy";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+
+const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(
+  formAnatomy.keys
+);
 
 const errorMain = "error.main";
 
-export const Form: ComponentStyleConfig = {
+const labelStyles = {
+  top: 0,
+  left: 0,
+  zIndex: 1,
+  position: "absolute",
+  pointerEvents: "none",
+  mx: 3,
+  px: 1,
+  transformOrigin: "left top",
+  color: "text.dark",
+  fontWeight: "400",
+  _disabled: {
+    color: "text.disabled",
+  },
+  _active: {
+    color: "secondary.main",
+  },
+};
+
+const labelTransform = {
+  md: "scale(0.75) translateY(-20px)",
+  lg: "scale(0.75) translateY(-28px)",
+};
+
+const getActiveLabelStyles = (size: "md" | "lg") => ({
+  _focusWithin: {
+    label: {
+      transform: labelTransform[size],
+      lineHeight: "1.2",
+    },
+  },
+  "input:not(:placeholder-shown) ~ label, .chakra-select__wrapper ~ label, textarea:not(:placeholder-shown) ~ label, .chakra-react-select--has-value ~ label":
+    {
+      transform: labelTransform[size],
+      lineHeight: "1.2",
+    },
+});
+
+const subtextStyles = {
+  ml: 3,
+  mt: 0,
+  fontSize: "12px",
+  color: "text.dark",
+  _disabled: {
+    color: "text.disabled",
+  },
+  "&.chakra-form__error-message": {
+    color: errorMain,
+  },
+};
+
+export const Form = defineMultiStyleConfig({
   baseStyle: {
     container: {
       label: {
@@ -18,45 +74,27 @@ export const Form: ComponentStyleConfig = {
     },
   },
   variants: {
-    floating: {
+    "fixed-floating": {
       container: {
         label: {
-          top: 0,
-          left: 0,
-          zIndex: 2,
-          mx: 3,
-          px: 1,
-          position: "absolute",
-          fontWeight: "400",
+          ...labelStyles,
           lineHeight: "1.2",
-          pointerEvents: "none",
-          transformOrigin: "left top",
-          color: "text.dark",
-          _disabled: {
-            color: "text.disabled",
-          },
-          _active: {
-            color: "secondary.main",
-          },
           "&.md-label, &.textarea-label": {
-            transform: "scale(0.75) translateY(-20px)",
+            transform: labelTransform.md,
           },
           "&.lg-label": {
-            transform: "scale(0.75) translateY(-28px)",
+            transform: labelTransform.lg,
           },
         },
-        "div.helper-text, .error-text": {
-          ml: 3,
-          mt: 0,
-          fontSize: "12px",
-          color: "text.dark",
-          _disabled: {
-            color: "text.disabled",
-          },
-          "&.chakra-form__error-message": {
-            color: errorMain,
-          },
-        },
+        "div.helper-text, .error-text": { ...subtextStyles },
+      },
+    },
+    floating: {
+      container: {
+        "&.md-form, &.textarea-form": getActiveLabelStyles("md"),
+        "&.lg-form": getActiveLabelStyles("lg"),
+        label: { ...labelStyles },
+        "div.helper-text, .error-text": { ...subtextStyles },
       },
     },
   },
@@ -78,4 +116,4 @@ export const Form: ComponentStyleConfig = {
       },
     },
   },
-};
+});

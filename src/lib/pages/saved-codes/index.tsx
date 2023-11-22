@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -22,7 +22,6 @@ interface CodeFilterState {
 }
 
 const SavedCodes = observer(() => {
-  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -48,8 +47,11 @@ const SavedCodes = observer(() => {
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_MY_SAVED_CODES);
-  }, [router.isReady, track]);
+    if (router.isReady && isSavedCodesLoading) {
+      track(AmpEvent.TO_MY_SAVED_CODES, { savedCodesCount });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, isSavedCodesLoading]);
 
   return (
     <PageContainer>

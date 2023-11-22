@@ -2,7 +2,7 @@ import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
@@ -13,14 +13,12 @@ import { SupportedSection } from "./components/supportedSection";
 import { UnsupportedSection } from "./components/unsupportedSection";
 
 enum TabIndex {
-  Supported,
-  Unsupported,
+  Supported = "supported",
+  Unsupported = "unsupported",
 }
 
 export const PoolIndex = () => {
-  const { track } = useTrack();
   const router = useRouter();
-  const { trackUseTab } = useTrack();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 
   const { data: supportedPoolCount, isLoading: isLoadingSupported } =
@@ -39,27 +37,28 @@ export const PoolIndex = () => {
     });
 
   const handleTabChange = useCallback(
-    (tab: TabIndex) => {
-      trackUseTab(TabIndex[tab]);
-      setTabIndex(tab);
+    (nextTab: TabIndex) => {
+      if (nextTab === tabIndex) return;
+      trackUseTab(nextTab);
+      setTabIndex(nextTab);
     },
-    [trackUseTab]
+    [tabIndex]
   );
 
   const sectionHeaderId = "poolListTab";
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_POOL_LIST);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   useEffect(() => {
     if (
-      supportedPoolCount !== undefined &&
-      unsupportedPoolCount !== undefined
+      supportedPoolCount &&
+      unsupportedPoolCount &&
+      supportedPoolCount === 0 &&
+      unsupportedPoolCount > 0
     ) {
-      if (supportedPoolCount === 0 && unsupportedPoolCount > 0)
-        handleTabChange(TabIndex.Unsupported);
-      else handleTabChange(TabIndex.Supported);
+      handleTabChange(TabIndex.Unsupported);
     }
   }, [handleTabChange, supportedPoolCount, unsupportedPoolCount]);
 
@@ -69,7 +68,7 @@ export const PoolIndex = () => {
       <Heading variant="h5" as="h5">
         Osmosis Pools
       </Heading>
-      <Tabs index={tabIndex}>
+      <Tabs index={Object.values(TabIndex).indexOf(tabIndex)}>
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={supportedPoolCount ?? 0}

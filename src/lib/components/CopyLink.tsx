@@ -1,32 +1,34 @@
 import type { FlexProps, IconProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { useTrack } from "lib/amplitude";
+import { trackUseCopier } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
+import { truncate } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
 interface CopyLinkProps extends FlexProps {
   value: string;
-  amptrackSection?: string;
   type: string;
   withoutIcon?: boolean;
   showCopyOnHover?: boolean;
+  isTruncate?: boolean;
+  amptrackSection?: string;
 }
 
 export const CopyLink = ({
   value,
-  amptrackSection,
   type,
   withoutIcon,
   showCopyOnHover = false,
+  isTruncate = false,
+  amptrackSection,
   ...flexProps
 }: CopyLinkProps) => {
   const { address } = useCurrentChain();
-  const { trackUseCopier } = useTrack();
-  const { onCopy, hasCopied } = useClipboard(value);
+  const { onCopy, hasCopied, setValue } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
 
   // TODO - Refactor
@@ -40,6 +42,11 @@ export const CopyLink = ({
     return undefined;
   }, [showCopyOnHover, isHover]);
 
+  useEffect(() => {
+    setValue(value);
+  }, [value, setValue]);
+
+  const textValue = isTruncate ? truncate(value) : value;
   return (
     <Tooltip
       isOpen={isHover || hasCopied}
@@ -47,6 +54,7 @@ export const CopyLink = ({
       closeOnClick={false}
     >
       <Flex
+        w="fit-content"
         align="center"
         display={{ base: "inline", md: "flex" }}
         onClick={() => {
@@ -67,10 +75,10 @@ export const CopyLink = ({
           wordBreak={{ base: "break-all", md: "inherit" }}
           variant="body2"
           color="secondary.main"
-          transition="all .25s ease-in-out"
+          transition="all 0.25s ease-in-out"
           display="inline"
         >
-          {value === address ? `${value} (Me)` : value}
+          {value === address ? `${textValue} (Me)` : textValue}
         </Text>
         {!withoutIcon && (
           <CustomIcon

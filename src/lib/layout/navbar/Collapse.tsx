@@ -1,12 +1,12 @@
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 
-import type { NavMenuProps, SubmenuInfo } from "./type";
+import type { NavMenuProps, SubmenuInfo } from "./types";
 
 interface CollapseNavInfoProps {
   submenu: SubmenuInfo;
@@ -24,7 +24,7 @@ const CollapseNavInfo = ({ submenu, isCurrentPage }: CollapseNavInfoProps) => (
       _hover={
         submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "8px" }
       }
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       alignItems="center"
       position="relative"
       bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
@@ -59,7 +59,6 @@ export const CollapseNavMenu = ({
   setIsExpand,
 }: NavMenuProps) => {
   const isMobile = useMobile();
-  const { track } = useTrack();
 
   return (
     <Box overflowY="auto" overflowX="hidden">

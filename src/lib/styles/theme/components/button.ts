@@ -3,6 +3,8 @@ import { defineStyle } from "@chakra-ui/react";
 
 import { CURR_THEME } from "env";
 
+const gray100 = "gray.100";
+const gray400 = "gray.400";
 const gray500 = "gray.500";
 const gray600 = "gray.600";
 const gray700 = "gray.700";
@@ -12,7 +14,9 @@ const primaryDark = "primary.dark";
 const primaryBg = "primary.background";
 const accentBg = "accent.background";
 const accentMain = "accent.main";
+const accentDark = "accent.dark";
 const accentDarker = "accent.darker";
+const backgroundMain = "background.main";
 const borderDefault = "1px solid";
 const errorDark = "error.dark";
 const secondaryBg = "secondary.background";
@@ -88,8 +92,8 @@ export const Button: ComponentStyleConfig = {
               color: CURR_THEME.button.primary.disabledColor,
             },
           },
-          hoverBg: primaryDark,
-          activeBg: primaryLight,
+          hoverBg: CURR_THEME.button.primary.hoverBackground,
+          activeBg: CURR_THEME.button.primary.activeBackground,
         })
       : generateStyle({
           basic: {
@@ -197,6 +201,26 @@ export const Button: ComponentStyleConfig = {
       hoverBg: gray700,
       activeBg: "transparent",
     }),
+    "outline-white": generateStyle({
+      basic: {
+        border: borderDefault,
+        borderColor: gray100,
+        color: "text.main",
+        "> svg": {
+          color: "text.main",
+        },
+      },
+      disabled: {
+        border: borderDefault,
+        borderColor: gray500,
+        color: gray500,
+        "> svg": {
+          color: gray500,
+        },
+      },
+      hoverBg: gray400,
+      activeBg: "transparent",
+    }),
     "outline-accent": generateStyle({
       basic: {
         border: borderDefault,
@@ -215,6 +239,15 @@ export const Button: ComponentStyleConfig = {
       },
       hoverBg: accentBg,
       activeBg: "transparent",
+    }),
+    "accent-solid": generateStyle({
+      basic: {
+        background: accentDark,
+        color: backgroundMain,
+      },
+      disabled: {},
+      hoverBg: accentMain,
+      activeBg: accentDark,
     }),
     "command-button": generateStyle({
       basic: {
@@ -282,6 +315,22 @@ export const Button: ComponentStyleConfig = {
         color: "gray.400",
         "> svg": {
           color: "gray.400",
+        },
+      },
+      disabled: {
+        color: gray500,
+        "> svg": {
+          color: gray500,
+        },
+      },
+      hoverBg: gray800,
+      activeBg: "transparent",
+    }),
+    "ghost-gray-icon": generateStyle({
+      basic: {
+        color: "gray.400",
+        "> svg": {
+          color: "gray.600",
         },
       },
       disabled: {

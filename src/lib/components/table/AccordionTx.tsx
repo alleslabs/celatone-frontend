@@ -50,7 +50,7 @@ export const AccordionTx = ({
       pl={accordionSpacing}
       gap={3}
       _hover={{ background: "gray.800" }}
-      transition="all .25s ease-in-out"
+      transition="all 0.25s ease-in-out"
       onMouseEnter={() => setShowButton(true)}
       onMouseLeave={() => setShowButton(false)}
     >

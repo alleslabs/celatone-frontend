@@ -4,15 +4,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, useTrack } from "lib/amplitude";
-import {
-  useInternalNavigate,
-  useWasmConfig,
-  useMobile,
-} from "lib/app-provider";
-import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
+import { AmpEvent, track } from "lib/amplitude";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
-import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
@@ -27,7 +21,6 @@ interface RecentCodesState {
 
 const RecentCodes = observer(() => {
   useWasmConfig({ shouldRedirect: true });
-  const { track } = useTrack();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -50,7 +43,7 @@ const RecentCodes = observer(() => {
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_RECENT_CODES);
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   const emptyState = (
     <EmptyState
@@ -59,18 +52,6 @@ const RecentCodes = observer(() => {
       withBorder
     />
   );
-  const isMobile = useMobile();
-  const MobileSection = () => {
-    if (isLoading) return <Loading />;
-    if (!recentCodes?.length) return emptyState;
-    return (
-      <Flex direction="column" gap={4} w="full" mt={4}>
-        {recentCodes.map((code) => (
-          <StoredCodeCard codeInfo={code} key={code.uploader + code.id} />
-        ))}
-      </Flex>
-    );
-  };
 
   return (
     <PageContainer>
@@ -79,7 +60,7 @@ const RecentCodes = observer(() => {
           Recent Codes
         </Heading>
         <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
-          These codes are the most recently stored on this network
+          Showing the 100 most recent stored codes on this network
         </Text>
         <Flex
           gap={{ base: 6, md: 3 }}
@@ -96,16 +77,12 @@ const RecentCodes = observer(() => {
           />
         </Flex>
       </Box>
-      {isMobile ? (
-        <MobileSection />
-      ) : (
-        <CodesTable
-          codes={recentCodes}
-          isLoading={isLoading}
-          emptyState={emptyState}
-          onRowSelect={onRowSelect}
-        />
-      )}
+      <CodesTable
+        codes={recentCodes}
+        isLoading={isLoading}
+        emptyState={emptyState}
+        onRowSelect={onRowSelect}
+      />
     </PageContainer>
   );
 });

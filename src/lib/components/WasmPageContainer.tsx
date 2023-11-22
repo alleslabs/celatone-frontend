@@ -17,6 +17,7 @@ const WasmPageContainer = ({
     mx="auto"
     py={12}
     direction="column"
+    minH="inherit"
   >
     {children}
   </Flex>

@@ -1,3 +1,4 @@
+export * from "./move";
 export * from "./upload";
 export * from "./execute";
 export * from "./instantiate";

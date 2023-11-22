@@ -1,13 +1,13 @@
 import big from "big.js";
 
 import { CustomIcon } from "lib/components/icon";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 import { d2Formatter } from "lib/utils";
 
 interface AlertProps {
   variant: string;
   description: string;
-  icon: JSX.Element | null;
+  icon: Nullable<JSX.Element>;
 }
 const defaultAlertProps: AlertProps = {
   variant: "",

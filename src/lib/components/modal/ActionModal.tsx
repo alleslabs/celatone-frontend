@@ -18,7 +18,7 @@ import { useCallback } from "react";
 
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { useTrack } from "lib/amplitude";
+import { trackUseOtherModal } from "lib/amplitude";
 
 export interface ActionModalProps {
   icon?: IconKeys;
@@ -37,6 +37,7 @@ export interface ActionModalProps {
   otherVariant?: string;
   noCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
+  buttonRemark?: string;
 }
 export function ActionModal({
   icon = "edit-solid",
@@ -55,9 +56,9 @@ export function ActionModal({
   otherVariant = "outline-primary",
   noCloseButton = false,
   closeOnOverlayClick = true,
+  buttonRemark,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { trackUseOtherModal } = useTrack();
 
   const handleOnMain = useCallback(() => {
     mainAction();
@@ -91,7 +92,11 @@ export function ActionModal({
             <Box w="full">
               <Flex alignItems="center" gap={3}>
                 <CustomIcon name={icon} color={iconColor} boxSize={5} />
-                <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
+                <Heading
+                  as="h5"
+                  variant={{ base: "h6", md: "h5" }}
+                  wordBreak="break-word"
+                >
                   {title}
                 </Heading>
               </Flex>
@@ -106,18 +111,35 @@ export function ActionModal({
           {!noCloseButton && <ModalCloseButton color="gray.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
-            <Flex w="full" justifyContent="center" gap={2}>
-              <Button
-                w="200px"
-                onClick={handleOnMain}
-                variant={mainVariant}
-                isDisabled={disabledMain}
-              >
-                {mainBtnTitle}
-              </Button>
-              <Button w="200px" variant={otherVariant} onClick={handleOnOther}>
-                {otherBtnTitle}
-              </Button>
+            <Flex
+              alignItems="center"
+              w="full"
+              justifyContent="center"
+              direction="column"
+              gap={4}
+            >
+              <Flex gap={2}>
+                <Button
+                  w="200px"
+                  onClick={handleOnMain}
+                  variant={mainVariant}
+                  isDisabled={disabledMain}
+                >
+                  {mainBtnTitle}
+                </Button>
+                <Button
+                  w="200px"
+                  variant={otherVariant}
+                  onClick={handleOnOther}
+                >
+                  {otherBtnTitle}
+                </Button>
+              </Flex>
+              {buttonRemark && (
+                <Text variant="body3" color="text.dark">
+                  {buttonRemark}
+                </Text>
+              )}
             </Flex>
           </ModalFooter>
         </ModalContent>
