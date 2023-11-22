@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useExampleAddresses,
@@ -85,24 +86,23 @@ export function SaveNewAccountModal({
     });
   };
 
+  const setErrorStatus = (message: string) => {
+    track(AmpEvent.ACCOUNT_FILLED_ERROR, { message });
+    setStatus({ state: "error", message });
+  };
+
   const { refetch } = useAccountType(addressState, {
     enabled: false,
     onSuccess: (type) => {
       if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
       else {
-        setStatus({
-          state: "error",
-          message: "You need to save contract through Contract page.",
-        });
+        setErrorStatus("You need to save contract through Contract page.");
         setIsContract(true);
       }
     },
     onError: (err) => {
       resetForm(false);
-      setStatus({
-        state: "error",
-        message: err.message,
-      });
+      setErrorStatus(err.message);
     },
   });
 
@@ -117,17 +117,11 @@ export function SaveNewAccountModal({
       });
       setIsContract(false);
       if (isAccountSaved(addressState)) {
-        setStatus({
-          state: "error",
-          message: "You already saved this address",
-        });
+        setErrorStatus("You already saved this address");
       } else {
         const timeoutId = setTimeout(() => {
           if (!isSomeValidAddress(addressState))
-            setStatus({
-              state: "error",
-              message: "Invalid Address",
-            });
+            setErrorStatus("Invalid Address");
           else if (wasm.enabled) refetch();
           else setStatus(statusSuccess);
         }, 1000);
@@ -150,6 +144,7 @@ export function SaveNewAccountModal({
     name: nameState,
     description: descriptionState,
     actions: () => {
+      track(AmpEvent.ACCOUNT_SAVE, { isPrefilled: !!accountAddress });
       resetForm();
     },
   });

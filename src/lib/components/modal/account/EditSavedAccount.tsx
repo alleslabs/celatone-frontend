@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
@@ -74,7 +75,10 @@ export const EditSavedAccountModal = ({
       }
       trigger={triggerElement}
       mainBtnTitle="Save"
-      mainAction={handleSave}
+      mainAction={() => {
+        track(AmpEvent.ACCOUNT_EDIT);
+        handleSave();
+      }}
       disabledMain={!!errors.name || !!errors.description}
       otherBtnTitle="Cancel"
       otherAction={resetForm}

@@ -47,8 +47,11 @@ const SavedCodes = observer(() => {
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_MY_SAVED_CODES);
-  }, [router.isReady]);
+    if (router.isReady && isSavedCodesLoading) {
+      track(AmpEvent.TO_MY_SAVED_CODES, { savedCodesCount });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, isSavedCodesLoading]);
 
   return (
     <PageContainer>

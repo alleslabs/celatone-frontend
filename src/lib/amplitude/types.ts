@@ -11,6 +11,12 @@ export enum AmpEvent {
   CONTRACT_EDIT_TAGS = "Contract Edit Tags",
   CONTRACT_EDIT_LISTS = "Contract Edit Lists",
   CONTRACT_REMOVE = "Contract Remove",
+  // ACCOUNT
+  ACCOUNT_SAVE = "Account Save",
+  ACCOUNT_EDIT = "Account Edit",
+  ACCOUNT_REMOVE = "Account Remove",
+  ACCOUNT_FILLED_ERROR = "Account Filled Error",
+  ACCOUNT_TO_CONTRACT_BUTTON = "Account To Contract Button",
   // TAG
   TAG_CREATE = "Tag Create",
   // LIST
@@ -36,6 +42,7 @@ export enum AmpEvent {
   TO_ADMIN_UPDATE = "To Admin Update",
   TO_MY_SAVED_CODES = "To My Saved Codes",
   TO_MY_STORED_CODES = "To My Stored Codes",
+  TO_MY_SAVED_ACCOUNTS = "To My Saved Accounts",
   TO_RECENT_CODES = "To Recent Codes",
   TO_RECENT_CONTRACT = "To Recent Contract",
   TO_INSTANTIATED_BY_ME = "To Instantiated By Me",

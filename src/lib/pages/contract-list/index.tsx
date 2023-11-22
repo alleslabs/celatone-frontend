@@ -16,7 +16,7 @@ const AllContractListsPage = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { getContractLists } = useContractStore();
+  const { getContractLists, isHydrated } = useContractStore();
   const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   const handleListSelect = (slug: string) => {
@@ -24,8 +24,10 @@ const AllContractListsPage = observer(() => {
   };
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_ALL_LISTS);
-  }, [router.isReady]);
+    if (router.isReady && isHydrated)
+      track(AmpEvent.TO_ALL_LISTS, { contractListCount: contractLists.length });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, isHydrated]);
 
   return (
     <PageContainer>
