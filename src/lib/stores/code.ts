@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { makePersistable } from "mobx-persist-store";
+import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import type { Addr, Dict } from "lib/types";
 
@@ -27,6 +27,10 @@ export class CodeStore {
       name: "CodeStore",
       properties: ["savedCodeIds", "codeInfo"],
     });
+  }
+
+  get isHydrated(): boolean {
+    return isHydrated(this);
   }
 
   isCodeUserKeyExist(): boolean {

@@ -27,6 +27,8 @@ import { useContractStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
+// TODO: revisit again
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const ContractsByList = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
@@ -60,7 +62,7 @@ const ContractsByList = observer(() => {
   }, [contractListInfo, isHydrated, navigate]);
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && isHydrated) {
       const event = (() => {
         switch (listSlug) {
           case formatSlugName(INSTANTIATED_LIST_NAME):
@@ -75,7 +77,8 @@ const ContractsByList = observer(() => {
         contractCounts: contractListInfo?.contracts.length ?? 0,
       });
     }
-  }, [router.isReady, listSlug, contractListInfo?.contracts.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, listSlug, isHydrated]);
 
   if (!contractListInfo) return null;
 

@@ -86,7 +86,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
 
 const useStoredCodes = () => {
   const { address } = useCurrentChain();
-  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
+  const { getCodeLocalInfo, isCodeIdSaved, isHydrated } = useCodeStore();
 
   const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(
     address as HumanAddr
@@ -99,12 +99,12 @@ const useStoredCodes = () => {
       isSaved: isCodeIdSaved(code.id),
     })) ?? [];
 
-  return { storedCodes, isLoading };
+  return { storedCodes, isLoading: isLoading && isHydrated };
 };
 
 const useSavedCodes = () => {
   const userKey = useUserKey();
-  const { lastSavedCodes, lastSavedCodeIds } = useCodeStore();
+  const { lastSavedCodes, lastSavedCodeIds, isHydrated } = useCodeStore();
 
   const savedCodeIds = lastSavedCodeIds(userKey);
   const { data: rawSavedCodes, isLoading } = useCodeListByCodeIds(savedCodeIds);
@@ -125,7 +125,7 @@ const useSavedCodes = () => {
     };
   });
 
-  return { savedCodes, isLoading };
+  return { savedCodes, isLoading: isLoading && isHydrated };
 };
 
 interface MyCodesData {

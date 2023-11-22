@@ -33,8 +33,10 @@ const SavedAccounts = observer(() => {
   }, [keyword, savedAccounts]);
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_MY_SAVED_ACCOUNTS, { accountsCount });
-  }, [accountsCount, router.isReady]);
+    if (router.isReady && isHydrated)
+      track(AmpEvent.TO_MY_SAVED_ACCOUNTS, { accountsCount });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHydrated, router.isReady]);
 
   return (
     <PageContainer>
