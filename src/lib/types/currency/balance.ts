@@ -1,4 +1,4 @@
-import type { Option } from "lib/types";
+import type { AssetInfo, Option } from "lib/types";
 
 export interface Balance {
   amount: string;
@@ -8,20 +8,6 @@ export interface Balance {
   symbol?: string;
   type?: string;
   price?: number;
-}
-
-export interface AssetInfo {
-  coingecko: string;
-  coinmarketcap: string;
-  description: string;
-  id: string;
-  logo: string;
-  name: string;
-  precision: number;
-  price: number;
-  slugs: string[];
-  symbol: string;
-  type: string;
 }
 
 export interface BalanceWithAssetInfo {

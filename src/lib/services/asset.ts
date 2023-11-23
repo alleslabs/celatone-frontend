@@ -1,15 +1,17 @@
 import axios from "axios";
+import { z } from "zod";
 
-import type { AssetInfo } from "lib/types";
+import { AssetInfoSchema, type AssetInfo } from "lib/types";
 
 export const getAssetInfos = async (
   baseApiRoute: string,
   withPrices: boolean
 ): Promise<AssetInfo[]> => {
-  const { data } = await axios.get<AssetInfo[]>(`${baseApiRoute}`, {
-    params: {
-      with_prices: withPrices,
-    },
-  });
-  return data;
+  return axios
+    .get(`${baseApiRoute}`, {
+      params: {
+        with_prices: withPrices,
+      },
+    })
+    .then((res) => z.array(AssetInfoSchema).parse(res.data));
 };
