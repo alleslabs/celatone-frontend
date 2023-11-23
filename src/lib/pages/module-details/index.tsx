@@ -108,10 +108,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const { data: moduleDetails, isLoading: moduleDetailsLoading } =
     useModuleDetailsQuery(moduleId);
 
-  const { data: verificationData } = useVerifyModule({
-    address: moduleData.address,
-    moduleName: moduleData.moduleName,
-  });
+  const { data: verificationData, isLoading: verificationLoading } =
+    useVerifyModule({
+      address: moduleData.address,
+      moduleName: moduleData.moduleName,
+    });
 
   const { data: moduleTxsCount, refetch: refetchTxsCount } =
     useModuleTxsCount(moduleId);
@@ -172,12 +173,12 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   ]);
 
   useEffect(() => {
-    if (router.isReady && tab)
+    if (router.isReady && tab && !verificationLoading)
       track(AmpEvent.TO_MODULE_DETAIL, {
         tab,
         isVerified: Boolean(verificationData),
       });
-  }, [router.isReady, tab, verificationData]);
+  }, [router.isReady, tab, verificationLoading, verificationData]);
 
   useEffect(() => {
     if (Number(moduleTxsCount) === 0) {
@@ -328,6 +329,10 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                         txCount={moduleTxsCount}
                         refetchCount={refetchTxsCount}
                         onViewMore={() => {
+                          // Will remove after revamp AMP structure to provided context for each page
+                          track(AmpEvent.USE_VIEW_MORE, {
+                            table: "Module transactions",
+                          });
                           handleTabChange(TabIndex.History)();
                           setHistoryTabIndex(0);
                         }}
@@ -339,7 +344,10 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                         historyCount={moduleHistoriesCount}
                         refetchCount={refetchHistoriesCount}
                         onViewMore={() => {
-                          track(AmpEvent.USE_VIEW_MORE);
+                          // Will remove after revamp AMP structure to provided context for each page
+                          track(AmpEvent.USE_VIEW_MORE, {
+                            table: "Published Event",
+                          });
                           handleTabChange(TabIndex.History)();
                           setHistoryTabIndex(1);
                         }}
