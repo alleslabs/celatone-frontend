@@ -317,7 +317,7 @@ export interface GovParams {
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
-  const { assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const queryFn = useCallback(
     () =>
       Promise.all([

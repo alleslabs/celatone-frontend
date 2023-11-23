@@ -11,7 +11,6 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://phoenix-lcd.terra.dev:443",
     rpc: "https://terra2-rpc.lavenderfive.com:443",
     indexer: "https://phoenix-1-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...staionWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -60,7 +59,6 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://pisco-lcd.terra.dev:443",
     rpc: "https://terra-testnet-rpc.polkachu.com:443",
     indexer: "https://pisco-1-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...staionWallets, ...keplrWallets],
     features: {
       faucet: {

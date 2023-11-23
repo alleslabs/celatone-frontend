@@ -55,7 +55,6 @@ export interface ChainConfig {
   lcd: string;
   rpc: string;
   indexer: string;
-  api: string;
   wallets: MainWalletBase[];
   features: {
     faucet: FaucetConfig;

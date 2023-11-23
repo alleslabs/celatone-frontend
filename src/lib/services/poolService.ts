@@ -326,7 +326,7 @@ export const useLPShareInfo = () => {
     functionName: "get_all_pair_infos",
     options: { refetchOnWindowFocus: false, staleTime: Infinity },
   });
-  const { assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const lcdEndpoint = useLCDEndpoint();
 
   const poolInfoModule = moduleData as Option<IndexedModule>;

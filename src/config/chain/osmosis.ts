@@ -10,7 +10,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://lcd.osmosis.zone",
     rpc: "https://rpc.osmosis.zone:443",
     indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -61,7 +60,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://lcd.osmotest5.osmosis.zone",
     rpc: "https://osmosis-testnet-rpc.polkachu.com:443",
     indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -113,7 +111,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "http://localhost/rest",
     rpc: "http://localhost:80/rpc/",
     indexer: "http://localhost/hasura/v1/graphql",
-    api: "http://localhost/api",
     wallets: [...keplrWallets],
     features: {
       faucet: {

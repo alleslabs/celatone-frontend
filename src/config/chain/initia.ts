@@ -10,7 +10,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://stone-rest.initia.tech",
     rpc: "https://stone-rpc.initia.tech:443",
     indexer: "https://stone-11-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
       faucet: {

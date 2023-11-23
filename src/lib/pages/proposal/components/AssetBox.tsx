@@ -26,7 +26,7 @@ const AssetLabel = chakra(Text, {
 });
 
 export const AssetBox = ({ baseDenom }: { baseDenom: Option<string> }) => {
-  const { assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const tokenInfo = baseDenom ? assetInfos?.[baseDenom] : undefined;
 
   return (

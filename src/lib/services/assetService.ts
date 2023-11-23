@@ -6,28 +6,16 @@ import type { AssetInfo, Option } from "lib/types";
 
 export type AssetInfosOpt = Option<{ [key: string]: AssetInfo }>;
 
-export const useAssetInfos = ({
-  withPrices,
-}: {
-  withPrices: boolean;
-}): {
-  assetInfos: AssetInfosOpt;
-  isLoading: boolean;
-} => {
+export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   const assetsApiRoute = useBaseApiRoute("assets");
-  const { data: assets, isLoading } = useQuery(
+  return useQuery<AssetInfosOpt>(
     [CELATONE_QUERY_KEYS.ASSET_INFOS, assetsApiRoute, withPrices],
-    async () => getAssetInfos(assetsApiRoute, withPrices),
+    async () =>
+      getAssetInfos(assetsApiRoute, withPrices).then((assets) =>
+        assets.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {})
+      ),
     { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
   );
-
-  return {
-    assetInfos: assets?.reduce(
-      (acc, asset) => ({ ...acc, [asset.id]: asset }),
-      {}
-    ),
-    isLoading,
-  };
 };
 
 export const useAssetInfoList = ({

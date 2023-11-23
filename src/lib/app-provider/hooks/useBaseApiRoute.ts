@@ -1,5 +1,5 @@
 import { useCelatoneApp } from "../contexts";
-import { CELATONE_API_OVERRIDE } from "env";
+import { CELATONE_API_OVERRIDE as api } from "env";
 
 export const useBaseApiRoute = (
   type:
@@ -18,16 +18,14 @@ export const useBaseApiRoute = (
     | "staking"
 ): string => {
   const {
-    chainConfig: { chain, api: configApi },
+    chainConfig: { chain },
     currentChainId,
   } = useCelatoneApp();
 
-  if (!chain || !currentChainId || !configApi)
+  if (!chain || !currentChainId || !api)
     throw new Error(
       "Error retrieving chain, api, or currentChainId from chain config."
     );
-
-  const api = CELATONE_API_OVERRIDE || configApi;
 
   switch (type) {
     case "txs":
