@@ -57,6 +57,8 @@ export const trackUseExpand = ({
     | "permission_address"
     | "event_box"
     | "unsupported_pool"
+    | "Module Function Accordian"
+    | "Module Struct Accordian"
     | "pool_tx_msg";
   info?: object;
   section?: string;
@@ -72,7 +74,7 @@ export const trackUseExpandAll = (
   action: "expand" | "collapse",
   section?: string
 ) =>
-  amp.track(AmpEvent.USE_EXPAND, {
+  amp.track(AmpEvent.USE_EXPAND_ALL, {
     action,
     section,
   });

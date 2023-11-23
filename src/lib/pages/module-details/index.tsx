@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import type { MouseEventHandler } from "react";
 import { useState, useCallback, useEffect } from "react";
 
-import { trackUseTab } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { IconKeys } from "lib/components/icon";
@@ -92,6 +92,14 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     [moduleData.address, moduleData.moduleName, navigate, tab]
   );
 
+  const handleActionNavigate = useCallback(
+    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
+      track(AmpEvent.USE_NAVIGATING_BUTTON, { Label: fnType ?? "History" });
+      handleTabChange(nextTab, fnType)();
+    },
+    [handleTabChange]
+  );
+
   const { data: moduleId } = useModuleId(
     moduleData.moduleName,
     moduleData.address
@@ -116,7 +124,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       iconColor: "primary.main",
       name: "View Functions",
       count: moduleData.viewFunctions.length,
-      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.VIEW),
+      onClick: handleActionNavigate(TabIndex.Function, FunctionTypeTabs.VIEW),
       disabled: moduleData.viewFunctions.length === 0,
     },
     {
@@ -124,7 +132,10 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       iconColor: "accent.main",
       name: "Execute Functions",
       count: moduleData.executeFunctions.length,
-      onClick: handleTabChange(TabIndex.Function, FunctionTypeTabs.EXECUTE),
+      onClick: handleActionNavigate(
+        TabIndex.Function,
+        FunctionTypeTabs.EXECUTE
+      ),
       disabled: moduleData.executeFunctions.length === 0,
     },
     {
@@ -132,7 +143,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       iconColor: "gray.600",
       name: "Transactions",
       count: Number(moduleTxsCount) + Number(moduleHistoriesCount) || "N/A",
-      onClick: handleTabChange(TabIndex.History),
+      onClick: handleActionNavigate(TabIndex.History),
       disabled: Number(moduleTxsCount) + Number(moduleHistoriesCount) === 0,
     },
   ];
@@ -159,6 +170,14 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     moduleData.address,
     moduleData.moduleName,
   ]);
+
+  useEffect(() => {
+    if (router.isReady && tab)
+      track(AmpEvent.TO_MODULE_DETAIL, {
+        tab,
+        isVerified: Boolean(verificationData),
+      });
+  }, [router.isReady, tab, verificationData]);
 
   useEffect(() => {
     if (Number(moduleTxsCount) === 0) {
@@ -279,7 +298,13 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   isLazy
                   lazyBehavior="keepMounted"
                   index={overviewHistoryTabIndex}
-                  onChange={setOverviewHistoryTabIndex}
+                  onChange={(index) => {
+                    track(AmpEvent.USE_SUBTAB, {
+                      tab,
+                      subtab: index === 0 ? "Transactions" : "Published",
+                    });
+                    setOverviewHistoryTabIndex(index);
+                  }}
                 >
                   <TabList
                     borderBottom="1px solid"
@@ -314,6 +339,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                         historyCount={moduleHistoriesCount}
                         refetchCount={refetchHistoriesCount}
                         onViewMore={() => {
+                          track(AmpEvent.USE_VIEW_MORE);
                           handleTabChange(TabIndex.History)();
                           setHistoryTabIndex(1);
                         }}
@@ -348,7 +374,13 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 isLazy
                 lazyBehavior="keepMounted"
                 index={historyTabIndex}
-                onChange={setHistoryTabIndex}
+                onChange={(index) => {
+                  track(AmpEvent.USE_SUBTAB, {
+                    tab,
+                    subtab: index === 0 ? "Transactions" : "Published",
+                  });
+                  setHistoryTabIndex(index);
+                }}
               >
                 <TabList
                   borderBottom="1px solid"
