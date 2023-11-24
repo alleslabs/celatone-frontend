@@ -197,7 +197,6 @@ describe("calTotalValue", () => {
         },
         assetInfo: {
           coingecko: "",
-          coinmarketcap: "",
           description: "",
           id: "uadenom",
           logo: "",
@@ -251,7 +250,6 @@ describe("calTotalValue", () => {
         },
         assetInfo: {
           coingecko: "",
-          coinmarketcap: "",
           description: "",
           id: "uadenom",
           logo: "",
@@ -327,7 +325,6 @@ describe("calTotalValue", () => {
         },
         assetInfo: {
           coingecko: "",
-          coinmarketcap: "",
           description: "",
           id: "ubdenom",
           logo: "",
@@ -356,7 +353,6 @@ describe("calTotalValue", () => {
         },
         assetInfo: {
           coingecko: "",
-          coinmarketcap: "",
           description: "",
           id: "uadenom",
           logo: "",

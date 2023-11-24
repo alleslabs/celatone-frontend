@@ -171,7 +171,7 @@ export const useUserAssetInfos = (
     isLoading,
     error,
   } = useAccountBalances(walletAddress);
-  const { assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const { data: lpMap } = useLPShareInfo();
 
   const contractBalancesWithAssetInfos = balances
@@ -249,7 +249,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
   const { data: lpMap, isFetching: isLpMapFetching } = useLPShareInfo();
-  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
+  const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
   const { data: validators, isLoading: isLoadingValidators } = useValidators();

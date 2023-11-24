@@ -1,26 +1,17 @@
 import axios from "axios";
+import { z } from "zod";
 
 import type { AssetInfo } from "lib/types";
-
-export const getAssetInfo = async (
-  baseApiRoute: string,
-  denom: string
-): Promise<AssetInfo> => {
-  if (!denom.trim().length) throw new Error("Empty denom");
-  const { data } = await axios.get(`${baseApiRoute}/${denom}`);
-  return data;
-};
+import { AssetInfoSchema } from "lib/types";
 
 export const getAssetInfos = async (
-  baseApiRoute: string
-): Promise<AssetInfo[]> => {
-  const { data } = await axios.get<AssetInfo[]>(`${baseApiRoute}/prices`);
-  return data;
-};
-
-export const getAssetInfosWithoutPricesPath = async (
-  baseApiRoute: string
-): Promise<AssetInfo[]> => {
-  const { data } = await axios.get<AssetInfo[]>(`${baseApiRoute}`);
-  return data;
-};
+  baseApiRoute: string,
+  withPrices: boolean
+): Promise<AssetInfo[]> =>
+  axios
+    .get(`${baseApiRoute}`, {
+      params: {
+        with_prices: withPrices,
+      },
+    })
+    .then((res) => z.array(AssetInfoSchema).parse(res.data));

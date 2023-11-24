@@ -7,7 +7,6 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   lcd: "",
   rpc: "",
   indexer: "",
-  api: "",
   wallets: [],
   features: {
     faucet: {

@@ -30,7 +30,7 @@ export const usePools = (
   offset: number,
   pageSize: number
 ): { pools: Option<Pool[]>; isLoading: boolean } => {
-  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
+  const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
   const { data: poolList, isLoading: isLoadingPoolList } = usePoolListQuery({
@@ -62,7 +62,7 @@ export const usePools = (
 export const usePool = (
   poolId: number
 ): { pool: Option<PoolDetail>; isLoading: boolean } => {
-  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
+  const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
   const { data: pool, isLoading: isLoadingPoolInfo } = usePoolByPoolId(poolId);

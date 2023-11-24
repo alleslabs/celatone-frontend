@@ -11,7 +11,7 @@ export const EstimatedFeeRender = ({
   estimatedFee: StdFee | undefined;
   loading: boolean;
 }) => {
-  const { assetInfos, isLoading: isAssetInfoLoading } = useAssetInfos({
+  const { data: assetInfos, isLoading: isAssetInfoLoading } = useAssetInfos({
     withPrices: false,
   });
 

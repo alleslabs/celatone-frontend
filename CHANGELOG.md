@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#632](https://github.com/alleslabs/celatone-frontend/pull/632) api v1 - asset info
+
 ### Bug fixes
 
 ## v1.3.0

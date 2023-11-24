@@ -42,7 +42,7 @@ export const useContractData = (
   const { data: contractDetail, isLoading: isContractDetailLoading } =
     useContractDetailByContractAddress(contractAddress);
 
-  const { assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
+  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
