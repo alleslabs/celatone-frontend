@@ -2,7 +2,7 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { LPShareInfoMap } from "lib/services/poolService";
+import type { MovePoolInfos } from "lib/services/move";
 import type {
   Balance,
   BalanceWithAssetInfo,
@@ -13,7 +13,7 @@ import type {
   USD,
 } from "lib/types";
 
-import { formatUTokenWithPrecision, toToken } from "./formatter";
+import { formatUTokenWithPrecision, getTokenLabel, toToken } from "./formatter";
 
 export const calculateAssetValue = (
   amount: Token<BigSource>,
@@ -44,43 +44,51 @@ export const coinToTokenWithValue = (
   denom: string,
   amount: string,
   assetInfos: AssetInfosOpt,
-  lpMap?: LPShareInfoMap
+  poolInfos?: MovePoolInfos
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;
   const assetInfo = assetInfos?.[denom];
-  const lpDetails = lpMap?.[denom];
-  return lpDetails
+  const movePoolInfo = poolInfos?.[denom];
+  return movePoolInfo
     ? {
         isLPToken: true,
         denom,
         amount: tokenAmount,
-        symbol: lpDetails.symbol,
-        logo: lpDetails.image,
-        precision: lpDetails.precision,
-        price: lpDetails.lpPricePerShare as USD<Big>,
-        value: tokenAmount
-          .times(lpDetails.lpPricePerShare)
-          .div(big(10).pow(lpDetails.precision)) as USD<Big>,
-        lpDetails: {
+        symbol: `${getTokenLabel(
+          movePoolInfo.coinA.denom,
+          movePoolInfo.coinA.symbol
+        )}-${getTokenLabel(
+          movePoolInfo.coinB.denom,
+          movePoolInfo.coinB.symbol
+        )}`,
+        logo: movePoolInfo.images,
+        precision: movePoolInfo.precision,
+        price: movePoolInfo.lpPricePerShare,
+        value: movePoolInfo.lpPricePerShare
+          ? (tokenAmount
+              .times(movePoolInfo.lpPricePerShare)
+              .div(big(10).pow(movePoolInfo.precision)) as USD<Big>)
+          : undefined,
+        poolInfo: {
           coinA: {
             amount: formatUTokenWithPrecision(
-              tokenAmount.times(lpDetails.coinA.amountAPerShare) as U<
+              tokenAmount.times(movePoolInfo.coinA.amountAPerShare) as U<
                 Token<Big>
               >,
-              lpDetails.precision
+              movePoolInfo.precision
             ),
-            denom: lpDetails.coinA.denom,
-            symbol: lpDetails.coinA.symbol,
+            denom: movePoolInfo.coinA.denom,
+            symbol: movePoolInfo.coinA.symbol,
           },
           coinB: {
             amount: formatUTokenWithPrecision(
-              tokenAmount.times(lpDetails.coinB.amountBPerShare) as U<
+              tokenAmount.times(movePoolInfo.coinB.amountBPerShare) as U<
                 Token<Big>
               >,
-              lpDetails.precision
+              movePoolInfo.precision
             ),
-            denom: lpDetails.coinB.denom,
-            symbol: lpDetails.coinB.symbol,
+            denom: movePoolInfo.coinB.denom,
+            symbol: movePoolInfo.coinB.symbol,
           },
         },
       }
