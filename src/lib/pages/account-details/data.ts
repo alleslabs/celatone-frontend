@@ -209,7 +209,7 @@ export const useUserAssetInfos = (
     ?.filter(
       (balance) =>
         !isUndefined(balance.assetInfo) ||
-        !isUndefined(movePoolInfos?.[balance.balance.id].lpPricePerShare)
+        !isUndefined(movePoolInfos?.[balance.balance.id]?.lpPricePerShare)
     )
     .sort((a, b) =>
       !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
@@ -222,7 +222,7 @@ export const useUserAssetInfos = (
   const unsupportedAssets = balancesWithAssetInfos?.filter(
     (balance) =>
       isUndefined(balance.assetInfo) &&
-      isUndefined(movePoolInfos?.[balance.balance.id].lpPricePerShare)
+      isUndefined(movePoolInfos?.[balance.balance.id]?.lpPricePerShare)
   );
 
   return {

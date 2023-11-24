@@ -86,18 +86,21 @@ export const useMovePoolInfos = () => {
     isLoading: isAssetsLoading || isPoolsLoading,
     error: assetsErrors ?? poolsErrors,
     data: pools?.reduce<MovePoolInfos>((acc, curr) => {
+      const coinAInfo = assetInfos?.[curr.coin_a.denom];
+      const coinAprecision = coinAInfo?.precision ?? curr.coin_a.precision;
+      const coinBInfo = assetInfos?.[curr.coin_b.denom];
+      const coinBprecision = coinBInfo?.precision ?? curr.coin_b.precision;
+
       const totalShares = big(curr.total_share).div(
         big(10).pow(curr.precision)
       );
       const amountAPerShare = big(curr.coin_a.amount)
-        .div(big(10).pow(curr.coin_a.precision))
+        .div(big(10).pow(coinAprecision))
         .div(totalShares);
       const amountBPerShare = big(curr.coin_b.amount)
-        .div(big(10).pow(curr.coin_b.precision))
+        .div(big(10).pow(coinBprecision))
         .div(totalShares);
 
-      const coinAInfo = assetInfos?.[curr.coin_a.denom];
-      const coinBInfo = assetInfos?.[curr.coin_b.denom];
       const lpPricePerShare = computePricePerShare(
         amountAPerShare,
         curr.coin_a.weight,
@@ -111,11 +114,13 @@ export const useMovePoolInfos = () => {
         [curr.lp_denom]: {
           coinA: {
             ...curr.coin_a,
+            precision: coinAprecision,
             amountAPerShare,
             symbol: coinAInfo?.symbol,
           },
           coinB: {
             ...curr.coin_b,
+            precision: coinBprecision,
             amountBPerShare,
             symbol: coinBInfo?.symbol,
           },
