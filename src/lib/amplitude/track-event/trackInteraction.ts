@@ -57,8 +57,8 @@ export const trackUseExpand = ({
     | "permission_address"
     | "event_box"
     | "unsupported_pool"
-    | "Module Function Accordian"
-    | "Module Struct Accordian"
+    | "module_function_accordian"
+    | "module_struct_accordian"
     | "pool_tx_msg";
   info?: object;
   section?: string;
