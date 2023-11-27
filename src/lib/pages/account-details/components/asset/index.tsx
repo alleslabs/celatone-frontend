@@ -1,5 +1,4 @@
 import { Flex, Grid, Text, Button } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
 
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
@@ -27,7 +26,7 @@ interface AssetSectionContentProps {
 }
 
 interface AssetCtaProps {
-  unsupportedAssets: Option<Coin[]>;
+  unsupportedAssets: Option<TokenWithValue[]>;
   totalAsset: number;
   address: Addr;
 }

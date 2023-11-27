@@ -1,4 +1,3 @@
-import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 import big from "big.js";
 import { isUndefined } from "lodash";
@@ -56,7 +55,7 @@ interface AccountCodes {
 interface AccountAssetInfos {
   supportedAssets: Option<TokenWithValue[]>;
   totalSupportedAssetsValue: Option<USD<Big>>;
-  unsupportedAssets: Option<Coin[]>;
+  unsupportedAssets: Option<TokenWithValue[]>;
   isLoading: boolean;
   totalData: Option<number>;
   error: Error;
@@ -185,12 +184,9 @@ export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
     ? totalValueTokenWithValue(supportedAssets, big(0) as USD<Big>)
     : undefined;
 
-  const unsupportedAssets = balances
-    ?.filter((balance) => isUndefined(balance.price))
-    .map((balance) => ({
-      denom: balance.denom,
-      amount: balance.amount.toFixed(),
-    }));
+  const unsupportedAssets = balances?.filter((balance) =>
+    isUndefined(balance.price)
+  );
 
   return {
     supportedAssets,

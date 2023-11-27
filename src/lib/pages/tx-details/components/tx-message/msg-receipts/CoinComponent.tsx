@@ -1,5 +1,6 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
+import { isUndefined } from "lodash";
 import { useState } from "react";
 
 import { trackUseExpand } from "lib/amplitude";
@@ -24,29 +25,33 @@ const MultiCoin = ({
   amount,
   assetInfos,
 }: CoinComponentProps<Coin[], AssetObject>) => {
-  const [supportedCoins, unsupportedCoins] = [
-    amount.filter((coin) => Boolean(assetInfos[coin.denom])),
-    amount.filter((coin) => !assetInfos[coin.denom]),
-  ];
+  const isMobile = useMobile();
   const [showMore, setShowMore] = useState(false);
 
-  const hasSupportedCoins = supportedCoins.length > 0;
-  const isMobile = useMobile();
+  const tokens = amount.map((coin) =>
+    coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
+  );
+  const [supportedTokens, unsupportedTokens] = [
+    tokens.filter((token) => !isUndefined(token.price)),
+    tokens.filter((token) => isUndefined(token.price)),
+  ];
+  const hasSupportedTokens = supportedTokens.length > 0;
+
   return (
     <Flex direction="column" w="full">
-      {hasSupportedCoins && (
+      {hasSupportedTokens && (
         <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"}>
-          {supportedCoins.slice(0, showMore ? undefined : 2).map((coin) => (
+          {supportedTokens.slice(0, showMore ? undefined : 2).map((token) => (
             <TokenCard
-              key={coin.denom}
-              token={coinToTokenWithValue(coin.denom, coin.amount, assetInfos)}
+              key={token.denom}
+              token={token}
               amptrackSection="tx_msg_receipts_assets"
             />
           ))}
         </Grid>
       )}
-      <Flex gap={2} mt={hasSupportedCoins ? 2 : 0}>
-        {supportedCoins.length > 2 && (
+      <Flex gap={2} mt={hasSupportedTokens ? 2 : 0}>
+        {supportedTokens.length > 2 && (
           <ShowMoreButton
             showMoreText="View All Assets"
             showLessText="View Less Assets"
@@ -61,9 +66,9 @@ const MultiCoin = ({
             }}
           />
         )}
-        {unsupportedCoins && (
+        {unsupportedTokens && (
           <UnsupportedTokensModal
-            unsupportedAssets={unsupportedCoins}
+            unsupportedAssets={unsupportedTokens}
             buttonProps={{ fontSize: "12px", mb: 0 }}
             amptrackSection="tx_msg_receipts_unsupported_assets"
           />
@@ -76,20 +81,22 @@ const MultiCoin = ({
 const SingleCoin = ({
   amount,
   assetInfos,
-}: CoinComponentProps<Coin, AssetObject>) =>
-  assetInfos[amount.denom] ? (
+}: CoinComponentProps<Coin, AssetObject>) => {
+  const token = coinToTokenWithValue(amount.denom, amount.amount, assetInfos);
+  return token.price === undefined ? (
     <TokenCard
-      token={coinToTokenWithValue(amount.denom, amount.amount, assetInfos)}
+      token={token}
       amptrackSection="tx_msg_receipts_assets"
       w={{ base: "100%", md: "50%" }}
       mt={{ base: 2, md: 0 }}
     />
   ) : (
     <UnsupportedTokensModal
-      unsupportedAssets={[amount]}
+      unsupportedAssets={[token]}
       amptrackSection="tx_msg_receipts_unsupported_assets"
     />
   );
+};
 
 export const CoinComponent = ({
   amount,

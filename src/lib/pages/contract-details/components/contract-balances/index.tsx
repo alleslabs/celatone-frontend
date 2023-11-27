@@ -28,13 +28,7 @@ export const ContractBalances = ({
     [balances]
   );
   const unsupportedAssets = useMemo(
-    () =>
-      balances
-        ?.filter((balance) => isUndefined(balance.price))
-        .map((balance) => ({
-          denom: balance.denom,
-          amount: balance.amount.toFixed(),
-        })) ?? [],
+    () => balances?.filter((balance) => isUndefined(balance.price)) ?? [],
     [balances]
   );
 

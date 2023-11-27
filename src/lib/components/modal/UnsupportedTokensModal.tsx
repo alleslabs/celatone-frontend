@@ -12,7 +12,6 @@ import {
   Button,
   Heading,
 } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
 
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
@@ -22,7 +21,7 @@ import { trackUseUnsupportedToken } from "lib/amplitude";
 import { useGetAddressType } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
-import type { Token, U, Addr } from "lib/types";
+import type { Addr, TokenWithValue } from "lib/types";
 import {
   getTokenType,
   getTokenLabel,
@@ -30,7 +29,7 @@ import {
 } from "lib/utils";
 
 interface UnsupportedTokensModalProps {
-  unsupportedAssets: Coin[];
+  unsupportedAssets: TokenWithValue[];
   address?: Addr;
   addressType?: AddressReturnType;
   buttonProps?: ButtonProps;
@@ -42,13 +41,11 @@ const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
     ? getTokenType("cw20")
     : getTokenType("native");
 
-const UnsupportedToken = ({ balance }: { balance: Coin }) => {
+const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
   const getAddressType = useGetAddressType();
-
-  const tokenLabel = getTokenLabel(balance.denom);
-  const tokenType = !balance.denom.includes("/")
-    ? getTokenTypeWithAddress(getAddressType(balance.denom))
-    : getTokenType(balance.denom.split("/")[0]);
+  const tokenType = !token.denom.includes("/")
+    ? getTokenTypeWithAddress(getAddressType(token.denom))
+    : getTokenType(token.denom.split("/")[0]);
 
   return (
     <Flex
@@ -73,16 +70,16 @@ const UnsupportedToken = ({ balance }: { balance: Coin }) => {
       >
         <Flex gap={1} alignItems="center">
           <Text variant="body2" className="ellipsis">
-            {tokenLabel}
+            {getTokenLabel(token.denom, token.symbol)}
           </Text>
-          <Tooltip label={`Token ID: ${balance.denom}`} maxW="500px">
+          <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
             <Flex cursor="pointer" className="info" visibility="hidden">
               <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier
             type="unsupported_asset"
-            value={balance.denom}
+            value={token.denom}
             copyLabel="Token ID Copied!"
             ml={0}
             display="none"
@@ -94,7 +91,7 @@ const UnsupportedToken = ({ balance }: { balance: Coin }) => {
         </Text>
       </Flex>
       <Text variant="body2" fontWeight="900">
-        {formatUTokenWithPrecision(balance.amount as U<Token>, 0, false)}
+        {formatUTokenWithPrecision(token.amount, 0, false)}
       </Text>
     </Flex>
   );
@@ -135,7 +132,6 @@ export const UnsupportedTokensModal = ({
   if (unsupportedAssets.length === 0) return null;
 
   const content = unsupportedTokensContent(addressType);
-
   return (
     <>
       <Button
@@ -174,7 +170,7 @@ export const UnsupportedTokensModal = ({
               )}
               <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (
-                  <UnsupportedToken key={asset.denom} balance={asset} />
+                  <UnsupportedToken key={asset.denom} token={asset} />
                 ))}
               </Flex>
             </Flex>
