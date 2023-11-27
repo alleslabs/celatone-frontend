@@ -20,7 +20,8 @@ export const ResourceSection = ({
     <TableTitle
       helperText="Resources stored in this account"
       title="Resources"
-      count={resourcesByOwner?.length}
+      count={undefined}
+      showCount={false}
     />
     <Flex
       gap={6}

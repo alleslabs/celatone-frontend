@@ -251,7 +251,6 @@ const AccountDetailsBody = ({
             Admins
           </CustomTab>
           <CustomTab
-            count={resourcesData?.totalCount}
             isDisabled={!resourcesData?.totalCount}
             onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
@@ -279,7 +278,7 @@ const AccountDetailsBody = ({
             <Flex
               direction={{ base: "column", md: "row" }}
               gap={{ base: 4, md: 6 }}
-              my={{ base: 0, md: 8 }}
+              mt={{ base: 0, md: 8 }}
             >
               {publicInfo?.description && (
                 <Flex
@@ -306,7 +305,7 @@ const AccountDetailsBody = ({
             </Flex>
             <Flex
               borderBottom={{ base: "0px", md: "1px solid" }}
-              borderBottomColor="gray.700"
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
             >
               <AssetsSection
                 walletAddress={accountAddress}

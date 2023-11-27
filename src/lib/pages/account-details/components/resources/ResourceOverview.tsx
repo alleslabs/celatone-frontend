@@ -30,13 +30,15 @@ export const ResourceOverview = ({
           title="Resources"
           count={totalCount}
           onViewMore={onViewMore}
+          showCount={false}
         />
       ) : (
         <>
           <TableTitle
             title="Resources"
             helperText="Resources stored in this account"
-            count={totalCount}
+            count={undefined}
+            showCount={false}
           />
           <ResourceOverviewBody
             address={address}

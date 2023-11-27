@@ -25,5 +25,5 @@ export interface ResourceGroup {
 
 export interface ResourceGroupByAccount {
   owner: MoveAccountAddr;
-  resources: Record<string, ResourceGroup>;
+  resources: ResourceGroup[];
 }

@@ -30,8 +30,10 @@ export const useAccountResources = ({
       >((acc, resource) => {
         const [ownerName, groupName] = resource.structTag.split("::");
 
-        const ownerResources = acc[ownerName]?.resources ?? {};
-        const groupResources = ownerResources[groupName] ?? {};
+        const ownerResources = acc[ownerName]?.resources ?? [];
+        const groupResources = ownerResources.find(
+          (ownerResource) => ownerResource.group === groupName
+        );
         const items = groupResources?.items ?? [];
 
         items.push(resource);
@@ -40,15 +42,15 @@ export const useAccountResources = ({
           ...acc,
           [ownerName]: {
             owner: ownerName as MoveAccountAddr,
-            resources: {
+            resources: [
               ...ownerResources,
-              [groupName]: {
+              {
                 group: groupName,
                 account: ownerName as MoveAccountAddr,
                 displayName: `${truncate(ownerName)}::${groupName}`,
                 items,
               },
-            },
+            ],
           },
         };
       }, {});

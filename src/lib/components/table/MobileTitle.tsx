@@ -9,6 +9,7 @@ interface MobileTitleProps {
   title: string;
   count: Option<number>;
   onViewMore?: () => void;
+  showCount?: boolean;
 }
 const cardProps = {
   width: "100%",
@@ -17,14 +18,19 @@ const cardProps = {
   borderRadius: "8px",
 };
 
-export const MobileTitle = ({ onViewMore, title, count }: MobileTitleProps) => (
+export const MobileTitle = ({
+  onViewMore,
+  title,
+  count,
+  showCount = true,
+}: MobileTitleProps) => (
   <Flex
     style={cardProps}
     onClick={!count ? undefined : onViewMore}
     opacity={!count ? 0.5 : 1}
     bg="gray.900"
   >
-    <TableTitle title={title} count={count} mb={0} />
+    <TableTitle title={title} count={count} mb={0} showCount={showCount} />
     <CustomIcon name="chevron-right" color="gray.600" />
   </Flex>
 );

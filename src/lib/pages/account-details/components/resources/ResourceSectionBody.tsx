@@ -12,11 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { truncate } from "lodash";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { ResourceCard, ResourceDetailCard } from "lib/components/resource";
 import { EmptyState } from "lib/components/state";
@@ -41,6 +42,7 @@ export const ResourceSectionBody = ({
 }: ResourceSectionBodyProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
   const selectedAccountParam = getFirstQueryParam(router.query.account);
@@ -74,9 +76,10 @@ export const ResourceSectionBody = ({
     setExpandedIndexes(indexes);
 
   useEffect(() => {
-    const resourcesLength = resourcesByOwner?.find(
-      (resource) => resource.owner === selectedAccountParam
-    )?.resources?.[selectedNameParam].items.length;
+    const resourcesLength = resourcesByOwner
+      ?.find((resource) => resource.owner === selectedAccountParam)
+      ?.resources?.find((resource) => resource.group === selectedNameParam)
+      ?.items.length;
 
     if (resourcesLength === 1) {
       setExpandedIndexes([0]);
@@ -85,24 +88,51 @@ export const ResourceSectionBody = ({
     }
   }, [resourcesByOwner, selectedNameParam, selectedAccountParam]);
 
+  const filteredResourcesByOwner = useMemo(() => {
+    if (!keyword) return resourcesByOwner;
+
+    return resourcesByOwner?.map((each) => {
+      return {
+        ...each,
+        resources: each.resources.filter((resource) =>
+          resource.group
+            .toLowerCase()
+            .includes(keyword.trim().toLocaleLowerCase())
+        ),
+      };
+    });
+  }, [keyword, resourcesByOwner]);
+
   if (isLoading) return <Loading />;
-  if (!resourcesByOwner) return <ErrorFetching />;
-  if (!resourcesByOwner.length)
+  if (!filteredResourcesByOwner) return <ErrorFetching />;
+  if (!filteredResourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
 
   const selectedIndex = !selectedAccountParam
     ? 0
-    : resourcesByOwner.findIndex((item) => item.owner === selectedAccountParam);
-  const selectedGroup = resourcesByOwner[selectedIndex];
-  const selectedGroupArray = Object.values(selectedGroup.resources);
-  const selectedResources =
-    selectedGroupArray.find((item) => item.group === selectedNameParam) ??
-    selectedGroupArray[0];
+    : filteredResourcesByOwner.findIndex(
+        (item) => item.owner === selectedAccountParam
+      );
+  const selectedGroup = filteredResourcesByOwner[selectedIndex];
+  const selectedResources = selectedGroup.resources.find(
+    (item) => item.group === selectedNameParam
+  );
   return (
     <>
-      <Flex minW={{ base: "full", md: 80 }}>
-        <Accordion allowMultiple defaultIndex={[selectedIndex]} width="full">
-          {resourcesByOwner.map((item) => (
+      <Flex minW={{ base: "full", md: 80 }} direction="column">
+        <InputWithIcon
+          placeholder="Search with struct tag Name..."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          action="execute-message-search"
+        />
+        <Accordion
+          allowMultiple
+          defaultIndex={[selectedIndex]}
+          width="full"
+          mt={4}
+        >
+          {filteredResourcesByOwner.map((item) => (
             <AccordionItem mb={4} key={item.owner}>
               <AccordionButton>
                 <Flex p={4} justifyContent="space-between" w="full">
@@ -119,7 +149,7 @@ export const ResourceSectionBody = ({
                       key={subitem.group}
                       name={subitem.group}
                       amount={subitem.items.length}
-                      isSelected={selectedResources.group === subitem.group}
+                      isSelected={selectedResources?.group === subitem.group}
                       onClick={() =>
                         handleSelectResource(item.owner, subitem.group)
                       }
@@ -132,53 +162,55 @@ export const ResourceSectionBody = ({
           ))}
         </Accordion>
       </Flex>
-      <Flex direction="column" w="full">
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          pb={6}
-          gap={12}
-        >
-          <Flex alignItems="center">
-            <Heading as="h6" variant="h6" wordBreak="break-word">
-              {selectedGroup.owner}::{selectedResources.group}
-            </Heading>
-            <Badge variant="primary" ml={2}>
-              {selectedResources.items.length}
-            </Badge>
-          </Flex>
-          <Button
-            variant="outline-primary"
-            minW={28}
-            size="sm"
-            rightIcon={
-              <CustomIcon
-                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-                boxSize={3}
-              />
-            }
-            onClick={() => {
-              setExpandedIndexes((prev) =>
-                !prev.length
-                  ? Array.from(Array(selectedResources.items.length).keys())
-                  : []
-              );
-            }}
+      {selectedResources && (
+        <Flex direction="column" w="full">
+          <Flex
+            justifyContent="space-between"
+            alignItems="center"
+            pb={6}
+            gap={12}
           >
-            {expandedIndexes.length ? "Collapse All" : "Expand All"}
-          </Button>
+            <Flex alignItems="center">
+              <Heading as="h6" variant="h6" wordBreak="break-word">
+                {selectedGroup.owner}::{selectedResources.group}
+              </Heading>
+              <Badge variant="primary" ml={2}>
+                {selectedResources.items.length}
+              </Badge>
+            </Flex>
+            <Button
+              variant="outline-primary"
+              minW={28}
+              size="sm"
+              rightIcon={
+                <CustomIcon
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                  boxSize={3}
+                />
+              }
+              onClick={() => {
+                setExpandedIndexes((prev) =>
+                  !prev.length
+                    ? Array.from(Array(selectedResources.items.length).keys())
+                    : []
+                );
+              }}
+            >
+              {expandedIndexes.length ? "Collapse All" : "Expand All"}
+            </Button>
+          </Flex>
+          <Accordion
+            allowMultiple
+            width="full"
+            index={expandedIndexes}
+            onChange={updateExpandedIndexes}
+          >
+            {selectedResources.items.map((item) => (
+              <ResourceDetailCard resourceData={item} key={item.structTag} />
+            ))}
+          </Accordion>
         </Flex>
-        <Accordion
-          allowMultiple
-          width="full"
-          index={expandedIndexes}
-          onChange={updateExpandedIndexes}
-        >
-          {selectedResources.items.map((item) => (
-            <ResourceDetailCard resourceData={item} key={item.structTag} />
-          ))}
-        </Accordion>
-      </Flex>
+      )}
     </>
   );
 };
