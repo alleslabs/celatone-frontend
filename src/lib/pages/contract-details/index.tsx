@@ -29,8 +29,9 @@ import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
+import { ContractBalances } from "./components/contract-balances";
 import { ContractDesc } from "./components/contract-description";
-import { ContractStates } from "./components/contract-state";
+import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
@@ -39,7 +40,6 @@ import {
   TxsTable,
   MigrationTable,
 } from "./components/tables";
-import { TokenSection } from "./components/TokenSection";
 import { useContractData } from "./data";
 import type { ContractData } from "./types";
 
@@ -198,7 +198,7 @@ const ContractDetailsBody = observer(
                 {/* Contract Description Section */}
                 <ContractDesc {...contractData} />
                 {/* Tokens Section */}
-                <TokenSection
+                <ContractBalances
                   contractAddress={contractAddress}
                   {...contractData}
                   onViewMore={handleTabChange(TabIndex.Assets)}
@@ -279,9 +279,8 @@ const ContractDetailsBody = observer(
               </Flex>
             </TabPanel>
             <TabPanel p={0}>
-              <TokenSection
+              <ContractBalances
                 contractAddress={contractAddress}
-                isDetailPage
                 {...contractData}
               />
             </TabPanel>

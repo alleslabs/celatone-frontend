@@ -1,11 +1,12 @@
+import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 import big from "big.js";
 import { isUndefined } from "lodash";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
-import { useAccountBalances } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
+import { useBalances } from "lib/services/balanceService";
 import { useCodeListByWalletAddressPagination } from "lib/services/codeService";
 import {
   useContractListByAdminPagination,
@@ -23,7 +24,7 @@ import {
 import { useMovePoolInfos } from "lib/services/move";
 import { useValidators } from "lib/services/validatorService";
 import type {
-  BalanceWithAssetInfo,
+  Addr,
   CodeInfo,
   ContractInfo,
   HumanAddr,
@@ -33,14 +34,11 @@ import type {
   ValidatorInfo,
 } from "lib/types";
 import {
-  calAssetValueWithPrecision,
-  calTotalValue,
   addrToValoper,
   addTokenWithValue,
   coinToTokenWithValue,
   totalValueTokenWithValue,
   compareTokenWithValues,
-  getTokenLabel,
 } from "lib/utils";
 
 import type { UserDelegationsData } from "./types";
@@ -56,8 +54,9 @@ interface AccountCodes {
 }
 
 interface AccountAssetInfos {
-  supportedAssets: Option<BalanceWithAssetInfo[]>;
-  unsupportedAssets: Option<BalanceWithAssetInfo[]>;
+  supportedAssets: Option<TokenWithValue[]>;
+  totalSupportedAssetsValue: Option<USD<Big>>;
+  unsupportedAssets: Option<Coin[]>;
   isLoading: boolean;
   totalData: Option<number>;
   error: Error;
@@ -164,72 +163,41 @@ export const useAccountCodes = (
   };
 };
 
-export const useUserAssetInfos = (
-  walletAddress: HumanAddr
-): AccountAssetInfos => {
-  const {
-    data: balances,
-    isLoading,
-    error,
-  } = useAccountBalances(walletAddress);
+export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
+  const { data: accountBalances, isLoading, error } = useBalances(address);
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const { data: movePoolInfos } = useMovePoolInfos();
 
-  const balancesWithAssetInfos = balances
-    ?.filter((bal) => Number(bal.amount))
-    .map<BalanceWithAssetInfo>((balance): BalanceWithAssetInfo => {
-      const assetInfo = assetInfos?.[balance.id];
-      const movePoolInfo = movePoolInfos?.[balance.id];
-      return movePoolInfo
-        ? {
-            isLPToken: true,
-            balance: {
-              ...balance,
-              price: movePoolInfo.lpPricePerShare?.toNumber(),
-              symbol: `${getTokenLabel(
-                movePoolInfo.coinA.denom,
-                movePoolInfo.coinA.symbol
-              )}-${getTokenLabel(
-                movePoolInfo.coinB.denom,
-                movePoolInfo.coinB.symbol
-              )}`,
-              precision: movePoolInfo.precision,
-            },
-            poolLogo: movePoolInfo.images,
-          }
-        : {
-            isLPToken: false,
-            balance,
-            assetInfo,
-          };
-    });
+  const balances = accountBalances?.map<TokenWithValue>((balance) =>
+    coinToTokenWithValue(
+      balance.denom,
+      balance.amount,
+      assetInfos,
+      movePoolInfos
+    )
+  );
 
   // Supported assets should order by descending value
-  const supportedAssets = balancesWithAssetInfos
-    ?.filter(
-      (balance) =>
-        !isUndefined(balance.assetInfo) ||
-        !isUndefined(movePoolInfos?.[balance.balance.id]?.lpPricePerShare)
-    )
-    .sort((a, b) =>
-      !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
-        ? calAssetValueWithPrecision(b.balance).cmp(
-            calAssetValueWithPrecision(a.balance)
-          )
-        : 1
-    );
+  const supportedAssets = balances
+    ?.filter((balance) => !isUndefined(balance.price))
+    .sort(compareTokenWithValues);
+  const totalSupportedAssetsValue = supportedAssets
+    ? totalValueTokenWithValue(supportedAssets, big(0) as USD<Big>)
+    : undefined;
 
-  const unsupportedAssets = balancesWithAssetInfos?.filter(
-    (balance) =>
-      isUndefined(balance.assetInfo) &&
-      isUndefined(movePoolInfos?.[balance.balance.id]?.lpPricePerShare)
-  );
+  const unsupportedAssets = balances
+    ?.filter((balance) => isUndefined(balance.price))
+    .map((balance) => ({
+      denom: balance.denom,
+      amount: balance.amount.toFixed(),
+    }));
 
   return {
     supportedAssets,
+    totalSupportedAssetsValue,
     unsupportedAssets,
     isLoading,
-    totalData: balancesWithAssetInfos?.length,
+    totalData: balances?.length,
     error: error as Error,
   };
 };
@@ -252,7 +220,7 @@ const calBonded = (
   );
 };
 
-export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
+export const useUserDelegationInfos = (address: Addr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
   const { data: lpMap, isFetching: isLpMapFetching } = useMovePoolInfos();
@@ -262,15 +230,15 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: validators, isLoading: isLoadingValidators } = useValidators();
 
   const { data: rawDelegations, isLoading: isLoadingRawDelegations } =
-    useDelegations(walletAddress);
+    useDelegations(address);
   const { data: rawUnbondings, isLoading: isLoadingRawUnbondings } =
-    useUnbondings(walletAddress);
+    useUnbondings(address);
   const { data: rawRewards, isLoading: isLoadingRawRewards } =
-    useDelegationRewards(walletAddress);
+    useDelegationRewards(address);
   const { data: rawRedelegations, isLoading: isLoadingRawRedelegations } =
-    useRedelegations(walletAddress);
+    useRedelegations(address);
   const { data: rawCommission, isLoading: isLoadingRawCommission } =
-    useCommission(addrToValoper(walletAddress));
+    useCommission(addrToValoper(address as HumanAddr));
 
   const isLoading =
     isLoadingRawStakingParams ||
@@ -308,7 +276,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     };
 
     data.isValidator = Object.keys(validators).includes(
-      addrToValoper(walletAddress)
+      addrToValoper(address as HumanAddr)
     );
 
     data.delegations = rawDelegations?.map<Delegation>((raw) => ({
@@ -430,13 +398,16 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   return data;
 };
 
-export const useAccountTotalValue = (walletAddress: HumanAddr) => {
+export const useAccountTotalValue = (address: Addr) => {
+  const defaultValue = big(0) as USD<Big>;
+
   const {
     chainConfig: {
       extra: { disableDelegation },
     },
   } = useCelatoneApp();
-  const { supportedAssets, isLoading } = useUserAssetInfos(walletAddress);
+  const { totalSupportedAssetsValue = defaultValue, isLoading } =
+    useUserAssetInfos(address);
   const {
     stakingParams,
     isLoading: isLoadingStakingParams,
@@ -446,16 +417,13 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     isLoadingRewards,
     totalCommission,
     isLoadingTotalCommission,
-  } = useUserDelegationInfos(walletAddress);
-
-  const defaultValue = big(0) as USD<Big>;
-
-  const totalAssetValue = supportedAssets
-    ? calTotalValue(supportedAssets)
-    : defaultValue;
+  } = useUserDelegationInfos(address);
 
   if (disableDelegation)
-    return { totalAccountValue: totalAssetValue, isLoading: false };
+    return {
+      totalAccountValue: totalSupportedAssetsValue,
+      isLoading: false,
+    };
 
   if (
     isLoading ||
@@ -471,7 +439,7 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     return { totalAccountValue: undefined, isLoading: false };
 
   return {
-    totalAccountValue: totalAssetValue
+    totalAccountValue: totalSupportedAssetsValue
       .add(totalValueTokenWithValue(totalBonded, defaultValue))
       .add(totalValueTokenWithValue(totalRewards, defaultValue))
       .add(totalValueTokenWithValue(totalCommission, defaultValue)) as USD<Big>,

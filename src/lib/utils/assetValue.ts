@@ -3,15 +3,7 @@ import big, { Big } from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { MovePoolInfos } from "lib/services/move";
-import type {
-  Balance,
-  BalanceWithAssetInfo,
-  Option,
-  Token,
-  TokenWithValue,
-  U,
-  USD,
-} from "lib/types";
+import type { Option, Token, TokenWithValue, U, USD } from "lib/types";
 
 import { formatUTokenWithPrecision, getTokenLabel, toToken } from "./formatter";
 
@@ -19,26 +11,6 @@ export const calculateAssetValue = (
   amount: Token<BigSource>,
   price: USD<number>
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
-
-export const calAssetValueWithPrecision = (balance: Balance): USD<Big> => {
-  if (Number.isNaN(Number(balance.amount)) || !balance.amount.trim().length)
-    throw new Error("Error balance amount is not a number");
-
-  if (balance.price) {
-    return calculateAssetValue(
-      toToken(balance.amount.trim() as U<Token>, balance.precision),
-      balance.price as USD<number>
-    );
-  }
-  return big(0) as USD<Big>;
-};
-
-export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
-  assets.reduce(
-    (acc: USD<Big>, curr: BalanceWithAssetInfo) =>
-      acc.add(calAssetValueWithPrecision(curr.balance)) as USD<Big>,
-    big(0) as USD<Big>
-  );
 
 export const coinToTokenWithValue = (
   denom: string,
@@ -133,7 +105,7 @@ export const addTokenWithValue = (
 };
 
 export const totalValueTokenWithValue = (
-  tokens: Record<string, TokenWithValue>,
+  tokens: Record<string, TokenWithValue> | TokenWithValue[],
   defaultValue: USD<Big>
 ) =>
   Object.values(tokens).reduce(
