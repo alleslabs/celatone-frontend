@@ -102,7 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Fix this wallet nav bar section
+- [#638](https://github.com/alleslabs/celatone-frontend/pull/638) Fix this wallet nav bar section
 - [#623](https://github.com/alleslabs/celatone-frontend/pull/623) Fix abi empty vector serialization
 - [#619](https://github.com/alleslabs/celatone-frontend/pull/619) Fix observer, logo and disable delegation in Account Detail Page
 - [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
