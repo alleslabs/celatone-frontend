@@ -8,7 +8,7 @@ import {
   useBaseApiRoute,
   useMoveConfig,
 } from "lib/app-provider";
-import type { HexAddr, Option, USD } from "lib/types";
+import type { MovePoolInfos, Option, USD } from "lib/types";
 
 import { getMovePoolInfos } from "./pool";
 
@@ -34,29 +34,6 @@ const computePricePerShare = (
       .times(big(weightA).plus(weightB).div(weightB)) as USD<Big>;
   return undefined;
 };
-
-export type MovePoolInfos = Record<
-  string,
-  {
-    coinA: {
-      metadata: HexAddr;
-      denom: string;
-      precision: number;
-      amountAPerShare: Big;
-      symbol: Option<string>;
-    };
-    coinB: {
-      metadata: HexAddr;
-      denom: string;
-      precision: number;
-      amountBPerShare: Big;
-      symbol: Option<string>;
-    };
-    lpPricePerShare: Option<USD<Big>>;
-    precision: number;
-    images: [Option<string>, Option<string>];
-  }
->;
 
 // TODO: add withPrices option
 export const useMovePoolInfos = () => {

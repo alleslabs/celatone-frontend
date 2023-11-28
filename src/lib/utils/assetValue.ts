@@ -2,10 +2,10 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { MovePoolInfos } from "lib/services/move";
 import type {
   Balance,
   BalanceWithAssetInfo,
+  MovePoolInfos,
   Option,
   Token,
   TokenWithValue,
