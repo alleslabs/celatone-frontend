@@ -6,10 +6,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import {
-  useBlockCountQuery,
-  useBlocklistQuery,
-} from "lib/services/blockService";
+import { useBlocks } from "lib/services/blockService";
 
 import { BlocksTableHeader } from "./BlocksTableHeader";
 import { BlocksTableMobileCard } from "./BlocksTableMobileCard";
@@ -25,37 +22,33 @@ const scrollComponentId = "block-table-header";
 export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   const isMobile = useMobile();
 
-  const { data: blockCount, refetch: refetchCount } = useBlockCountQuery();
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: blockCount,
     initialState: {
       pageSize: isViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
-
-  const {
-    data: blocksData,
-    isLoading,
-    error,
-  } = useBlocklistQuery(pageSize, offset);
+  const { data, isLoading, refetch, error } = useBlocks(pageSize, offset, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
 
   const onPageChange = (nextPage: number) => {
-    refetchCount();
+    refetch();
     setCurrentPage(nextPage);
   };
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const size = Number(e.target.value);
-    refetchCount();
+    refetch();
     setPageSize(size);
     setCurrentPage(1);
   };
@@ -70,7 +63,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
       />
     );
 
-  if (!blocksData || !blockCount)
+  if (!data)
     return (
       <EmptyState
         imageVariant="empty"
@@ -83,7 +76,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     <>
       {isMobile ? (
         <MobileTableContainer>
-          {blocksData.map((block) => (
+          {data.items.map((block) => (
             <BlocksTableMobileCard key={block.hash} blockData={block} />
           ))}
         </MobileTableContainer>
@@ -93,7 +86,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
             templateColumns={TEMPLATE_COLUMNS}
             scrollComponentId={scrollComponentId}
           />
-          {blocksData.map((block) => (
+          {data.items.map((block) => (
             <BlocksTableRow
               key={block.hash}
               templateColumns={TEMPLATE_COLUMNS}
@@ -102,12 +95,12 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
           ))}
         </TableContainer>
       )}
-      {!isViewMore && blockCount > 10 && (
+      {!isViewMore && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={blockCount}
+          totalData={data.total}
           scrollComponentId={scrollComponentId}
           pageSize={pageSize}
           onPageChange={onPageChange}
