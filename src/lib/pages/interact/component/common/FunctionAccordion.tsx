@@ -7,6 +7,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { CountBadge, FunctionCard } from "lib/components/module";
 import type { ExposedFunction, Option } from "lib/types";
 
@@ -47,7 +48,12 @@ export const FunctionAccordion = ({
               key={fn.name}
               variant={selectedFn?.name === fn.name ? "selected" : "common"}
               exposedFn={fn}
-              onFunctionSelect={setSelectedFn}
+              onFunctionSelect={() => {
+                track(AmpEvent.USE_FUNCTION_SELECTION, {
+                  functionType: fn.is_view ? "view" : "Execute",
+                });
+                setSelectedFn(fn);
+              }}
             />
           ))
         ) : (

@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { AmpEvent, track, trackToModuleInteraction } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
@@ -134,6 +135,18 @@ export const Interact = () => {
     }
   }, [addressParam, moduleNameParam, refetch]);
 
+  useEffect(() => {
+    if (router.isReady)
+      trackToModuleInteraction(
+        !!addressParam,
+        !!moduleNameParam,
+        !!verificationData,
+        !!functionNameParam,
+        functionTypeParam
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
   return (
     <>
       <PageContainer
@@ -187,6 +200,9 @@ export const Interact = () => {
                     <CustomIcon name="launch" boxSize={3} color="text.dark" />
                   }
                   onClick={() => {
+                    track(AmpEvent.USE_SEE_MODULE_BUTTON, {
+                      isVerify: !!verificationData,
+                    });
                     openNewTab({
                       pathname: `/modules/${module.address.toString()}/${
                         module.moduleName

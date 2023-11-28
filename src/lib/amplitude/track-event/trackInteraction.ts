@@ -2,7 +2,8 @@ import big from "big.js";
 
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
-import type { Option, Token } from "lib/types";
+import type { MoveAccountAddr, Option, Token } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 export const trackUseMainSearch = (isClick: boolean, section?: string) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
@@ -38,10 +39,15 @@ export const trackUseUnsupportedToken = (section?: string) =>
     section,
   });
 
-export const trackUseCopier = (type: string, section?: string) =>
+export const trackUseCopier = (
+  type: string,
+  section?: string,
+  subSection?: string
+) =>
   amp.track(AmpEvent.USE_COPIER, {
     type,
     section,
+    subSection,
   });
 
 export const trackUseExpand = ({
@@ -59,6 +65,7 @@ export const trackUseExpand = ({
     | "unsupported_pool"
     | "module_function_accordion"
     | "module_struct_accordion"
+    | "module_interaction_selected_function_card"
     | "pool_tx_msg";
   info?: object;
   section?: string;
@@ -176,3 +183,15 @@ export const trackUseView = (view: string) =>
 
 export const trackUseToggle = (name: string, isActive: boolean) =>
   amp.track(AmpEvent.USE_TOGGLE, { name, isActive });
+
+export const trackUseModuleSelectionInputFill = (
+  address: MoveAccountAddr,
+  manualModuleName: boolean,
+  manualFunctionName: boolean
+) =>
+  amp.track(AmpEvent.USE_MODULE_SELECTION_INPUT_FILL, {
+    address: !!address,
+    isHex: isHexWalletAddress(address) || isHexModuleAddress(address),
+    manualModuleName,
+    manualFunctionName,
+  });

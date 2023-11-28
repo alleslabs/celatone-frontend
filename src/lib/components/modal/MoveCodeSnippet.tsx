@@ -306,6 +306,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                         <CopyButton
                           value={item.snippet}
                           amptrackSection="code_snippet"
+                          amptrackSubSection={item.name}
                         />
                       </Box>
                     </Box>

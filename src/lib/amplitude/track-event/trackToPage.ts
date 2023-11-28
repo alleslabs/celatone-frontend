@@ -34,3 +34,18 @@ export const trackToAdminUpdate = (contract: boolean) =>
   amp.track(AmpEvent.TO_ADMIN_UPDATE, {
     contract,
   });
+
+export const trackToModuleInteraction = (
+  address: boolean,
+  moduleName: boolean,
+  isVerify: boolean,
+  functionName: boolean,
+  functionType?: string
+) =>
+  amp.track(AmpEvent.TO_MODULE_INTERACTION, {
+    address,
+    moduleName,
+    isVerify,
+    functionName,
+    functionType,
+  });
