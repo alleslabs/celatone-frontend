@@ -1,15 +1,16 @@
 import type { Nullable, Option } from "./common";
-import type { Validator } from "./validator";
+import type { ValidatorInfo } from "./validator";
 
-export interface Block {
+export interface BlockInfo {
+  network: string;
   hash: string;
   height: number;
   timestamp: Date;
   txCount: number;
-  proposer: Nullable<Validator>;
+  proposer: Nullable<ValidatorInfo>;
 }
 
-export interface BlockDetails extends Omit<Block, "txCount"> {
+export interface BlockDetails extends Omit<BlockInfo, "txCount"> {
   gasUsed: Option<Nullable<number>>;
   gasLimit: Option<Nullable<number>>;
 }

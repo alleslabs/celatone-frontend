@@ -21,12 +21,10 @@ export const usePaginator = ({
   currentPage: number;
   pageSize: number;
   isDisabled: boolean;
-  setTotalData: Dispatch<SetStateAction<number>>;
   setPageSize: Dispatch<SetStateAction<number>>;
   setIsDisabled: Dispatch<SetStateAction<boolean>>;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 } => {
-  const [totalData, setTotalData] = useState<number>(total ?? 0);
   const [pageSize, setPageSize] = useState<number>(initialState.pageSize ?? 0);
   const [currentPage, setCurrentPage] = useState<number>(
     initialState.currentPage
@@ -44,18 +42,17 @@ export const usePaginator = ({
   }, [currentPage, pageSize]);
 
   const pagesQuantity = useMemo(() => {
-    if (!totalData || !pageSize) {
+    if (!total || !pageSize) {
       return 0;
     }
 
-    return Math.ceil(totalData / pageSize);
-  }, [totalData, pageSize]);
+    return Math.ceil(total / pageSize);
+  }, [total, pageSize]);
 
   return {
     offset,
     currentPage,
     pagesQuantity,
-    setTotalData,
     setCurrentPage,
     pageSize,
     setPageSize,

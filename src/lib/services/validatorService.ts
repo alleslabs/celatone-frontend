@@ -12,7 +12,12 @@ import {
   useCurrentChain,
 } from "lib/app-provider";
 import { getValidators } from "lib/query/validator";
-import type { Validator, ValidatorAddr, Nullable } from "lib/types";
+import type {
+  ValidatorInfo,
+  Validator,
+  ValidatorAddr,
+  Nullable,
+} from "lib/types";
 
 import { resolveValIdentity, getValidator } from "./validator";
 
@@ -70,7 +75,7 @@ export const useValidators = (): UseQueryResult<
 };
 
 export const useValidatorImage = (
-  validator: Nullable<Validator>
+  validator: Nullable<ValidatorInfo>
 ): UseQueryResult<string> => {
   const {
     chain: { chain_name: chainName },

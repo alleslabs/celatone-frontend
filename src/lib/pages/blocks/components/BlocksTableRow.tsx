@@ -5,12 +5,12 @@ import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { Block } from "lib/types";
+import type { BlockInfo } from "lib/types";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableRowProps {
   templateColumns: GridProps["templateColumns"];
-  blockData: Block;
+  blockData: BlockInfo;
 }
 
 export const BlocksTableRow = ({

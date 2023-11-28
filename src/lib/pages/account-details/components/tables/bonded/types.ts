@@ -1,7 +1,7 @@
-import type { TokenWithValue, Validator } from "lib/types";
+import type { TokenWithValue, ValidatorInfo } from "lib/types";
 
 export interface BondedInfo {
-  validator: Validator;
+  validator: ValidatorInfo;
   amount: TokenWithValue;
   reward?: TokenWithValue;
   completionTime?: Date;

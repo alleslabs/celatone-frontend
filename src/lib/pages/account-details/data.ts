@@ -30,7 +30,7 @@ import type {
   Option,
   TokenWithValue,
   USD,
-  Validator,
+  ValidatorInfo,
 } from "lib/types";
 import {
   calAssetValueWithPrecision,
@@ -67,19 +67,19 @@ export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
 }
 
 export interface Delegation {
-  validator: Validator;
+  validator: ValidatorInfo;
   balances: TokenWithValue[];
 }
 
 export interface Unbonding {
-  validator: Validator;
+  validator: ValidatorInfo;
   completionTime: Date;
   balances: TokenWithValue[];
 }
 
 export interface Redelegation {
-  srcValidator: Validator;
-  dstValidator: Validator;
+  srcValidator: ValidatorInfo;
+  dstValidator: ValidatorInfo;
   completionTime: Date;
   balances: TokenWithValue[];
 }
