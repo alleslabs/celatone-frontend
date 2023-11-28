@@ -19,7 +19,7 @@ const PairRawSchema = z.object({
   total_share: z.string(),
 });
 
-export interface PairResponse {
+interface PairResponse {
   coin_a: {
     metadata: HexAddr;
     denom: string;
