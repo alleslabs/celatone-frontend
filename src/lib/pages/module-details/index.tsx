@@ -331,7 +331,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                         onViewMore={() => {
                           // Will remove after revamp AMP structure to provided context for each page
                           track(AmpEvent.USE_VIEW_MORE, {
-                            table: "Module transactions",
+                            table: "Module Transactions",
                           });
                           handleTabChange(TabIndex.History)();
                           setHistoryTabIndex(0);
@@ -346,7 +346,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                         onViewMore={() => {
                           // Will remove after revamp AMP structure to provided context for each page
                           track(AmpEvent.USE_VIEW_MORE, {
-                            table: "Published Event",
+                            table: "Module Published Event",
                           });
                           handleTabChange(TabIndex.History)();
                           setHistoryTabIndex(1);

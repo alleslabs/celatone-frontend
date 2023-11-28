@@ -162,7 +162,7 @@ export const ModuleFunction = ({
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
-                "[Module Detail] Function Tab"
+                "Module Function Tab"
               );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(fns.length).keys()) : []

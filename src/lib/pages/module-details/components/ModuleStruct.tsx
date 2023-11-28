@@ -54,7 +54,7 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
-                "[Module Detail] Struct"
+                "Module Struct"
               );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(structs.length).keys()) : []
@@ -69,7 +69,7 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
             size="sm"
             rightIcon={<CustomIcon name="launch" />}
             onClick={() => {
-              trackUseViewJSON("Module Detail Struct");
+              trackUseViewJSON("Module Struct");
               const jsonString = JSON.stringify(structs, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
