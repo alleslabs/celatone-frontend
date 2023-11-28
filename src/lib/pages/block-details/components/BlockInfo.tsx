@@ -1,5 +1,6 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { LabelText } from "lib/components/LabelText";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { BlockDetails } from "lib/types";
@@ -10,6 +11,7 @@ interface BlockInfoProps {
 }
 
 export const BlockInfo = ({ blockData }: BlockInfoProps) => {
+  const { currentChainId } = useCelatoneApp();
   return (
     <Box mb={12}>
       <Heading as="h6" variant="h6" mb={6}>
@@ -18,7 +20,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
       <Flex gap={{ base: 4, md: 12 }} direction={{ base: "column", md: "row" }}>
         <Flex direction="row" flex="1" maxW={{ md: "400px" }}>
           <LabelText flex="1" label="Network">
-            {blockData.network}
+            {currentChainId}
           </LabelText>
           <LabelText flex="1" label="Gas (Used/Wanted)">
             {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${
