@@ -255,10 +255,10 @@ const calBonded = (
 export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
-  const { data: lpMap, isFetching: isLpMapFetching } = useMovePoolInfos();
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
+  const { data: lpMap, isFetching: isLpMapFetching } = useMovePoolInfos();
   const { data: validators, isLoading: isLoadingValidators } = useValidators();
 
   const { data: rawDelegations, isLoading: isLoadingRawDelegations } =
