@@ -6,7 +6,7 @@ import type { HexAddr } from "lib/types";
 const PoolRawCoinSchema = z.object({
   metadata: z.string(),
   denom: z.string(),
-  decimals: z.number(),
+  decimals: z.number().nonnegative(),
 });
 const PairRawSchema = z.object({
   coin_a: PoolRawCoinSchema,
