@@ -266,6 +266,7 @@ execute();
                         <CopyButton
                           value={item.snippet}
                           amptrackSection="code_snippet"
+                          amptrackSubSection={item.name}
                         />
                       </Box>
                     </Box>

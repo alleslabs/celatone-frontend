@@ -13,6 +13,7 @@ interface CopyButtonProps extends ButtonProps {
   hasIcon?: boolean;
   buttonText?: string;
   amptrackSection?: string;
+  amptrackSubSection?: string;
   iconGap?: number;
 }
 
@@ -25,6 +26,7 @@ export const CopyButton = ({
   variant = "outline-accent",
   buttonText = "Copy",
   amptrackSection,
+  amptrackSubSection,
   ml,
   iconGap,
   ...buttonProps
@@ -41,7 +43,10 @@ export const CopyButton = ({
         size={size}
         float="right"
         onClick={() =>
-          track(AmpEvent.USE_COPY_BUTTON, { section: amptrackSection })
+          track(AmpEvent.USE_COPY_BUTTON, {
+            section: amptrackSection,
+            subSection: amptrackSubSection,
+          })
         }
         {...buttonProps}
         borderRadius={size === "xs" ? 6 : 8}

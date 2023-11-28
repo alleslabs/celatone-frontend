@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#633](https://github.com/alleslabs/celatone-frontend/pull/633) feat: amp module detail and breadcrumb
+- [#637](https://github.com/alleslabs/celatone-frontend/pull/633) feat: amp module interaction and code snippet property
 
 ### Improvements
 

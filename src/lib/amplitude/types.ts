@@ -74,6 +74,8 @@ export enum AmpEvent {
   ACTION_RESEND = "Action Resend",
   ACTION_FAUCET = "Action Faucet",
   ACTION_ATTACH_JSON = "Action Attach Json",
+  ACTION_MOVE_VIEW = "Action Move View",
+  ACTION_MOVE_EXECUTE = "Action Move Execute",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",
