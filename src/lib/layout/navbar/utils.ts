@@ -1,7 +1,7 @@
 import { AmpEvent, track } from "lib/amplitude";
 import type { IconKeys } from "lib/components/icon";
-import { SAVED_LIST_NAME } from "lib/data";
-import { formatSlugName } from "lib/utils";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
+import { formatSlugName, getListIcon } from "lib/utils";
 
 export const getDevSubmenuMove = (isMove: boolean) =>
   isMove
@@ -58,6 +58,27 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
         //   slug: "/",
         //   icon: "list" as IconKeys,
         // },
+      ]
+    : [];
+
+export const getWalletSubSection = (isWasm: boolean) =>
+  isWasm
+    ? [
+        {
+          category: "This Wallet",
+          submenu: [
+            {
+              name: "My Stored Codes",
+              slug: "/stored-codes",
+              icon: "code" as IconKeys,
+            },
+            {
+              name: INSTANTIATED_LIST_NAME,
+              slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+              icon: getListIcon(INSTANTIATED_LIST_NAME),
+            },
+          ],
+        },
       ]
     : [];
 
