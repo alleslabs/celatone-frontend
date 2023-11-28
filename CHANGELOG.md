@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - blocks list
+- [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list
 - [#632](https://github.com/alleslabs/celatone-frontend/pull/632) api v1 - assets info
 
 ### Bug fixes
