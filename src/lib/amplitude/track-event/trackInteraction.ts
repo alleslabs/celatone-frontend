@@ -2,7 +2,8 @@ import big from "big.js";
 
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
-import type { Option, Token } from "lib/types";
+import type { MoveAccountAddr, Option, Token } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 export const trackUseMainSearch = (isClick: boolean, section?: string) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
@@ -57,8 +58,8 @@ export const trackUseExpand = ({
     | "permission_address"
     | "event_box"
     | "unsupported_pool"
-    | "Module Function Accordian"
-    | "Module Struct Accordian"
+    | "module_function_accordian"
+    | "module_struct_accordian"
     | "pool_tx_msg";
   info?: object;
   section?: string;
@@ -176,3 +177,15 @@ export const trackUseView = (view: string) =>
 
 export const trackUseToggle = (name: string, isActive: boolean) =>
   amp.track(AmpEvent.USE_TOGGLE, { name, isActive });
+
+export const trackUseModuleSelectionInputFill = (
+  address: MoveAccountAddr,
+  manualModuleName: boolean,
+  manualFunctionName: boolean
+) =>
+  amp.track(AmpEvent.USE_MODULE_SELECTION_INPUT_FILL, {
+    address: !!address,
+    isHex: isHexWalletAddress(address) || isHexModuleAddress(address),
+    manualModuleName,
+    manualFunctionName,
+  });

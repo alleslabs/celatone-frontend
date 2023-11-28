@@ -152,7 +152,7 @@ export const FunctionDetailCard = ({
             onClick={() =>
               trackUseExpand({
                 action: !isExpanded ? "expand" : "collapse",
-                component: "Module Function Accordian",
+                component: "module_function_accordian",
                 info: { functionType: isView ? "view" : "execute" },
                 section: getFirstQueryParam(router.query.type),
               })

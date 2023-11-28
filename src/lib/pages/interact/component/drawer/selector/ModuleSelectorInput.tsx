@@ -7,6 +7,7 @@ import type {
   DisplayMode,
   ModuleSelectFunction,
 } from "../types";
+import { trackUseModuleSelectionInputFill } from "lib/amplitude";
 import { useExampleAddresses } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -86,9 +87,10 @@ export const ModuleSelectorInput = ({
     (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         handleSubmit();
+        trackUseModuleSelectionInputFill(addr, !!moduleName, !!functionName);
       }
     },
-    [handleSubmit]
+    [functionName, handleSubmit, moduleName, addr]
   );
 
   return (
@@ -116,7 +118,14 @@ export const ModuleSelectorInput = ({
       <Flex gap={2}>
         <Button
           variant="primary"
-          onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit();
+            trackUseModuleSelectionInputFill(
+              addr,
+              !!moduleName,
+              !!functionName
+            );
+          }}
           isDisabled={!keyword.length || isFetching}
           isLoading={isFetching}
         >

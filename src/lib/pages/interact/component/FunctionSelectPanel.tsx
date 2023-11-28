@@ -115,6 +115,7 @@ export const FunctionSelectPanel = ({
   return (
     <div>
       <InputWithIcon
+        action="Function Select Panel Search"
         iconPosition="start"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}

@@ -62,6 +62,7 @@ export enum AmpEvent {
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   TO_MODULE_DETAIL = "To Module Detail",
+  TO_MODULE_INTERACTION = "To Module Interaction",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -143,6 +144,13 @@ export enum AmpEvent {
   USE_MAIN_CTA = "Use Main CTA",
   USE_MODULE_FUNCTION_CTA = "Use Module Function CTA",
   USE_BREADCRUMB = "Use Breadcrumb",
+  USE_MODULE_SELECTION_DRAWER = "Use Module Selection Drawer",
+  USE_MODULE_SELECTION_INPUT_FILL = "Use Module Selection Input Fill",
+  USE_MODULE_SELECTION_INPUT = "Use Module Selection Input",
+  USE_SEE_MODULE_BUTTON = "Use See Module Button",
+  USE_MODULE_SELECTION_FUNCTION = "Use Module Selection Function",
+  USE_MODULE_SELECTION_MODULE = "Use Module Selection Module",
+  USE_FUNCTION_SELECTION = "Use Function Selection",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -168,6 +176,7 @@ export type SpecialAmpEvent =
   | AmpEvent.TO_INSTANTIATE
   | AmpEvent.TO_MIGRATE
   | AmpEvent.TO_ADMIN_UPDATE
+  | AmpEvent.TO_MODULE_INTERACTION
   | AmpEvent.USE_MAIN_SEARCH
   | AmpEvent.USE_TAB
   | AmpEvent.USE_RADIO

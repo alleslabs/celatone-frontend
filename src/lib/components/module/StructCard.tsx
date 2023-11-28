@@ -49,7 +49,7 @@ export const StructCard = ({ struct }: StructCardProps) => (
           onClick={() =>
             trackUseExpand({
               action: !isExpanded ? "expand" : "collapse",
-              component: "Module Struct Accordian",
+              component: "module_struct_accordian",
               info: { structAbilities: struct.abilities },
             })
           }
