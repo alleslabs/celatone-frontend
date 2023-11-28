@@ -65,7 +65,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Sei Testnet2",
     lcd: "https://rest.atlantic-2.seinetwork.io",
     rpc: "https://rpc.atlantic-2.seinetwork.io:443",
-    indexer: "https://atlantic-2-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://atlantic-2-test-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...compassWallets, ...keplrWallets],
     features: {
