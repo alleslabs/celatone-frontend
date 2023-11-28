@@ -94,7 +94,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
 
   const handleActionNavigate = useCallback(
     (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
-      track(AmpEvent.USE_NAVIGATING_BUTTON, { Label: fnType ?? "History" });
+      track(AmpEvent.USE_NAVIGATING_BUTTON, { label: fnType ?? "History" });
       handleTabChange(nextTab, fnType)();
     },
     [handleTabChange]
