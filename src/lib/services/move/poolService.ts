@@ -58,6 +58,7 @@ export type MovePoolInfos = Record<
   }
 >;
 
+// TODO: add withPrices option
 export const useMovePoolInfos = () => {
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const moveEndpoint = useBaseApiRoute("move");
