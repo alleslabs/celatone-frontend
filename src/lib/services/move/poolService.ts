@@ -73,7 +73,7 @@ export const useMovePoolInfos = () => {
     error: poolsErrors,
     ...queryResult
   } = useQuery(
-    [CELATONE_QUERY_KEYS.POOL_MOVE_LP_SHARE_INFO, moveEndpoint],
+    [CELATONE_QUERY_KEYS.MOVE_POOL_INFOS, moveEndpoint],
     async () => getMovePoolInfos(moveEndpoint),
     {
       enabled: moveConfig.enabled,
