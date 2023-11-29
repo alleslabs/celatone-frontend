@@ -2,8 +2,14 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { MovePoolInfos } from "lib/services/move";
-import type { Option, Token, TokenWithValue, U, USD } from "lib/types";
+import type {
+  MovePoolInfos,
+  Option,
+  Token,
+  TokenWithValue,
+  U,
+  USD,
+} from "lib/types";
 
 import { formatUTokenWithPrecision, getTokenLabel, toToken } from "./formatter";
 
@@ -33,7 +39,7 @@ export const coinToTokenWithValue = (
           movePoolInfo.coinB.denom,
           movePoolInfo.coinB.symbol
         )}`,
-        logo: movePoolInfo.images,
+        logo: movePoolInfo.logo,
         precision: movePoolInfo.precision,
         price: movePoolInfo.lpPricePerShare,
         value: movePoolInfo.lpPricePerShare
