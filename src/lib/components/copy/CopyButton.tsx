@@ -14,6 +14,7 @@ interface CopyButtonProps extends ButtonProps {
   buttonText?: string;
   amptrackSection?: string;
   amptrackSubSection?: string;
+  amptrackInfo?: string;
   iconGap?: number;
 }
 
@@ -27,6 +28,7 @@ export const CopyButton = ({
   buttonText = "Copy",
   amptrackSection,
   amptrackSubSection,
+  amptrackInfo,
   ml,
   iconGap,
   ...buttonProps
@@ -46,6 +48,7 @@ export const CopyButton = ({
           track(AmpEvent.USE_COPY_BUTTON, {
             section: amptrackSection,
             subSection: amptrackSubSection,
+            info: amptrackInfo,
           })
         }
         {...buttonProps}

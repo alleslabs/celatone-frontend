@@ -137,7 +137,11 @@ export const ViewArea = ({
               </Text>
             </Flex>
           ) : (
-            <JsonReadOnly text={jsonPrettify(JSON.stringify(res))} canCopy />
+            <JsonReadOnly
+              amptrackSection="Module View Result"
+              text={jsonPrettify(JSON.stringify(res))}
+              canCopy
+            />
           )}
         </Flex>
       </GridItem>

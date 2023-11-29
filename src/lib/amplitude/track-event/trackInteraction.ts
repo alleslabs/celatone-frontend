@@ -42,12 +42,14 @@ export const trackUseUnsupportedToken = (section?: string) =>
 export const trackUseCopier = (
   type: string,
   section?: string,
-  subSection?: string
+  subSection?: string,
+  info?: string
 ) =>
   amp.track(AmpEvent.USE_COPIER, {
     type,
     section,
     subSection,
+    info,
   });
 
 export const trackUseExpand = ({
@@ -65,6 +67,7 @@ export const trackUseExpand = ({
     | "unsupported_pool"
     | "module_function_accordion"
     | "module_struct_accordion"
+    | "module_interaction_function_accordion"
     | "module_interaction_selected_function_card"
     | "pool_tx_msg";
   info?: object;
