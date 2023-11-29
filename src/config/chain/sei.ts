@@ -15,7 +15,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Sei",
     lcd: "https://sei-api.polkachu.com",
     rpc: "https://sei-rpc.polkachu.com:443",
-    indexer: "https://pacific-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://pacific-1-test-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...compassWallets, ...keplrWallets],
     features: {
@@ -53,7 +53,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     },
     explorerLink: {
       validator: "https://mintscan.io/sei/validators",
-      proposal: "",
+      proposal: "https://mintscan.io/sei/proposals",
     },
     extra: {
       disableAnyOfAddresses: true,
