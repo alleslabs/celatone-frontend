@@ -195,7 +195,7 @@ export const useUserAssetInfos = (
               )}`,
               precision: movePoolInfo.precision,
             },
-            poolLogo: movePoolInfo.images,
+            logo: movePoolInfo.logo,
           }
         : {
             isLPToken: false,

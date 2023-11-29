@@ -14,5 +14,5 @@ export interface BalanceWithAssetInfo {
   isLPToken?: boolean;
   balance: Balance;
   assetInfo?: AssetInfo;
-  poolLogo?: [Option<string>, Option<string>];
+  logo?: Option<string>[];
 }

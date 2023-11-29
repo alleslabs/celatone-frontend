@@ -61,7 +61,7 @@ export const coinToTokenWithValue = (
           movePoolInfo.coinB.denom,
           movePoolInfo.coinB.symbol
         )}`,
-        logo: movePoolInfo.images,
+        logo: movePoolInfo.logo,
         precision: movePoolInfo.precision,
         price: movePoolInfo.lpPricePerShare,
         value: movePoolInfo.lpPricePerShare

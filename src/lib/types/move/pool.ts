@@ -21,6 +21,6 @@ export type MovePoolInfos = Record<
     };
     lpPricePerShare: Option<USD<Big>>;
     precision: number;
-    images: [Option<string>, Option<string>];
+    logo: Option<string>[];
   }
 >;
