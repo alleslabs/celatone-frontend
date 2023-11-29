@@ -63,6 +63,7 @@ export enum AmpEvent {
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   TO_MODULE_DETAIL = "To Module Detail",
   TO_MODULE_INTERACTION = "To Module Interaction",
+  TO_PUBLISH_MODULE = "To Publish Module",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -148,7 +149,6 @@ export enum AmpEvent {
   USE_BREADCRUMB = "Use Breadcrumb",
   USE_MODULE_SELECTION_DRAWER = "Use Module Selection Drawer",
   USE_MODULE_SELECTION_INPUT_FILL = "Use Module Selection Input Fill",
-  USE_MODULE_SELECTION_INPUT = "Use Module Selection Input",
   USE_SEE_MODULE_BUTTON = "Use See Module Button",
   USE_MODULE_SELECTION_FUNCTION = "Use Module Selection Function",
   USE_MODULE_SELECTION_MODULE = "Use Module Selection Module",
@@ -204,4 +204,5 @@ export type SpecialAmpEvent =
   | AmpEvent.USE_VIEW
   | AmpEvent.USE_TOGGLE
   | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
-  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD;
+  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD
+  | AmpEvent.USE_MODULE_SELECTION_INPUT_FILL;
