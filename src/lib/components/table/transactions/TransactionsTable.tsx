@@ -42,6 +42,7 @@ export const TransactionsTable = ({
           key={transaction.hash}
           transaction={transaction}
           showRelations={showRelations}
+          showTimestamp={showTimestamp}
         />
       ))}
     </MobileTableContainer>
