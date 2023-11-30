@@ -1,20 +1,25 @@
 import big from "big.js";
 import type Big from "big.js";
 
-import type {
-  Balance,
-  BalanceWithAssetInfo,
-  Token,
-  TokenWithValue,
-  U,
-  USD,
+import {
+  HexAddrSchema,
+  type AssetInfo,
+  type Balance,
+  type BalanceWithAssetInfo,
+  type MovePoolInfos,
+  type Token,
+  type TokenWithValue,
+  type U,
+  type USD,
 } from "lib/types";
 
 import {
   addTokenWithValue,
   calAssetValueWithPrecision,
   calTotalValue,
+  coinToTokenWithValue,
 } from "./assetValue";
+import { formatUTokenWithPrecision } from "./formatter";
 
 describe("calAssetValueWithPrecision", () => {
   describe("invalid with error", () => {
@@ -391,6 +396,118 @@ describe("calTotalValue", () => {
 
   test("empty balance with asset", () => {
     expect(calTotalValue([])).toEqual(big(0));
+  });
+});
+
+describe("coinToTokenWithValue", () => {
+  const coin = {
+    denom: "uadenom",
+    amount: "100",
+  };
+
+  const assetInfos: Record<string, AssetInfo> = {
+    uadenom: {
+      coingecko: "",
+      description: "",
+      id: "uadenom",
+      logo: "adenom_logo",
+      name: "A denom",
+      precision: 6,
+      price: 0.5,
+      slugs: [],
+      symbol: "ADENOM",
+      type: "",
+    },
+  };
+
+  const movePoolInfos: MovePoolInfos = {
+    uadenom: {
+      coinA: {
+        metadata: HexAddrSchema.parse("0x1"),
+        denom: "denom1",
+        precision: 6,
+        amountAPerShare: big(1),
+        symbol: undefined,
+      },
+      coinB: {
+        metadata: HexAddrSchema.parse("0x2"),
+        denom: "denom2",
+        precision: 6,
+        amountBPerShare: big(1),
+        symbol: "DENOM_2",
+      },
+      lpPricePerShare: big(1) as USD<Big>,
+      precision: 6,
+      logo: ["denom1_logo", "denom2_logo"],
+    },
+  };
+
+  const assetInfo = assetInfos.uadenom;
+  const tokenAssetInfo: TokenWithValue = {
+    isLPToken: false,
+    logo: assetInfo.logo,
+    denom: coin.denom,
+    amount: big(coin.amount) as U<Token<Big>>,
+    symbol: assetInfo.symbol,
+    precision: assetInfo.precision,
+    price: big(assetInfo.price) as USD<Big>,
+    value: big(coin.amount)
+      .mul(big(assetInfo.price))
+      .div(10 ** assetInfo.precision) as USD<Big>,
+  };
+
+  const movePoolInfo = movePoolInfos.uadenom;
+  const tokenMovePoolInfo: TokenWithValue = {
+    isLPToken: true,
+    logo: movePoolInfo.logo,
+    denom: coin.denom,
+    amount: big(coin.amount) as U<Token<Big>>,
+    symbol: `${movePoolInfo.coinA.denom}-${movePoolInfo.coinB.symbol}`,
+    precision: movePoolInfo.precision,
+    price: movePoolInfo.lpPricePerShare,
+    value: big(coin.amount)
+      .mul(movePoolInfo.lpPricePerShare ?? big(0))
+      .div(10 ** movePoolInfo.precision) as USD<Big>,
+    poolInfo: {
+      coinA: {
+        amount: formatUTokenWithPrecision(
+          big(coin.amount).times(movePoolInfo.coinA.amountAPerShare) as U<
+            Token<Big>
+          >,
+          movePoolInfo.precision
+        ),
+        denom: movePoolInfo.coinA.denom,
+        symbol: movePoolInfo.coinA.symbol,
+      },
+      coinB: {
+        amount: formatUTokenWithPrecision(
+          big(coin.amount).times(movePoolInfo.coinB.amountBPerShare) as U<
+            Token<Big>
+          >,
+          movePoolInfo.precision
+        ),
+        denom: movePoolInfo.coinB.denom,
+        symbol: movePoolInfo.coinB.symbol,
+      },
+    },
+  };
+
+  test("coinToToken with only assetInfo", () => {
+    expect(coinToTokenWithValue(coin.denom, coin.amount, assetInfos)).toEqual(
+      tokenAssetInfo
+    );
+  });
+
+  test("coinToToken with only movePoolInfo", () => {
+    expect(
+      coinToTokenWithValue(coin.denom, coin.amount, undefined, movePoolInfos)
+    ).toEqual(tokenMovePoolInfo);
+  });
+
+  test("coinToToken with assetInfo and movePoolInfo", () => {
+    expect(
+      coinToTokenWithValue(coin.denom, coin.amount, assetInfos, movePoolInfos)
+    ).toEqual(tokenMovePoolInfo);
   });
 });
 

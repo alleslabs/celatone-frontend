@@ -20,7 +20,7 @@ import {
   useStakingParams,
   useUnbondings,
 } from "lib/services/delegationService";
-import { useLPShareInfo } from "lib/services/poolService";
+import { useMovePoolInfos } from "lib/services/move";
 import { useValidators } from "lib/services/validatorService";
 import type {
   BalanceWithAssetInfo,
@@ -40,6 +40,7 @@ import {
   coinToTokenWithValue,
   totalValueTokenWithValue,
   compareTokenWithValues,
+  getTokenLabel,
 } from "lib/utils";
 
 import type { UserDelegationsData } from "./types";
@@ -172,38 +173,43 @@ export const useUserAssetInfos = (
     error,
   } = useAccountBalances(walletAddress);
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
-  const { data: lpMap } = useLPShareInfo();
+  const { data: movePoolInfos } = useMovePoolInfos();
 
-  const contractBalancesWithAssetInfos = balances
+  const balancesWithAssetInfos = balances
     ?.filter((bal) => Number(bal.amount))
     .map<BalanceWithAssetInfo>((balance): BalanceWithAssetInfo => {
       const assetInfo = assetInfos?.[balance.id];
-      const lpDetails = lpMap?.[balance.id];
-      return lpDetails
+      const movePoolInfo = movePoolInfos?.[balance.id];
+      return movePoolInfo
         ? {
+            isLPToken: true,
             balance: {
               ...balance,
-              price: lpDetails.lpPricePerShare.toNumber(),
-              symbol: lpDetails.symbol,
-              precision: lpDetails.precision,
+              price: movePoolInfo.lpPricePerShare?.toNumber(),
+              symbol: `${getTokenLabel(
+                movePoolInfo.coinA.denom,
+                movePoolInfo.coinA.symbol
+              )}-${getTokenLabel(
+                movePoolInfo.coinB.denom,
+                movePoolInfo.coinB.symbol
+              )}`,
+              precision: movePoolInfo.precision,
             },
-            assetInfo,
-            isLPToken: true,
-            lpLogo: lpDetails.image,
+            logo: movePoolInfo.logo,
           }
         : {
+            isLPToken: false,
             balance,
             assetInfo,
-            isLPToken: false,
           };
     });
 
   // Supported assets should order by descending value
-  const supportedAssets = contractBalancesWithAssetInfos
+  const supportedAssets = balancesWithAssetInfos
     ?.filter(
       (balance) =>
         !isUndefined(balance.assetInfo) ||
-        !isUndefined(lpMap?.[balance.balance.id])
+        !isUndefined(movePoolInfos?.[balance.balance.id]?.lpPricePerShare)
     )
     .sort((a, b) =>
       !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
@@ -213,16 +219,17 @@ export const useUserAssetInfos = (
         : 1
     );
 
-  const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
+  const unsupportedAssets = balancesWithAssetInfos?.filter(
     (balance) =>
-      isUndefined(balance.assetInfo) && isUndefined(lpMap?.[balance.balance.id])
+      isUndefined(balance.assetInfo) &&
+      isUndefined(movePoolInfos?.[balance.balance.id]?.lpPricePerShare)
   );
 
   return {
     supportedAssets,
     unsupportedAssets,
     isLoading,
-    totalData: contractBalancesWithAssetInfos?.length,
+    totalData: balancesWithAssetInfos?.length,
     error: error as Error,
   };
 };
@@ -248,10 +255,10 @@ const calBonded = (
 export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
-  const { data: lpMap, isFetching: isLpMapFetching } = useLPShareInfo();
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
+  const { data: lpMap, isFetching: isLpMapFetching } = useMovePoolInfos();
   const { data: validators, isLoading: isLoadingValidators } = useValidators();
 
   const { data: rawDelegations, isLoading: isLoadingRawDelegations } =
