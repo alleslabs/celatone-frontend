@@ -2,12 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
 import { CURR_THEME } from "env";
-import type {
-  StakingShare,
-  Validator,
-  ValidatorAddr,
-  ValidatorInfo,
-} from "lib/types";
+import type { StakingShare, Validator, ValidatorAddr } from "lib/types";
 import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorResponse {
@@ -56,7 +51,7 @@ export const getValidator = async (
 
 export const resolveValIdentity = async (
   chainName: string,
-  validator: ValidatorInfo
+  validator: Validator
 ): Promise<string> => {
   const githubUrl = `https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${chainName}/moniker/${validator.validatorAddress}.png`;
   const keybaseUrl = `https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${validator.identity}&fields=pictures`;

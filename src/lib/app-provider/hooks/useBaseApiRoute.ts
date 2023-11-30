@@ -6,6 +6,7 @@ export const useBaseApiRoute = (
     | "txs"
     | "balances"
     | "assets"
+    | "blocks"
     | "projects"
     | "contracts"
     | "codes"
@@ -34,6 +35,8 @@ export const useBaseApiRoute = (
       return `${api}/balances/${chain}/${currentChainId}`;
     case "assets":
       return `${api}/v1/${chain}/${currentChainId}/assets`;
+    case "blocks":
+      return `${api}/v1/${chain}/${currentChainId}/blocks`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
     case "contracts":
