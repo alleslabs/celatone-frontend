@@ -10,30 +10,24 @@ import {
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource";
-import { EmptyState } from "lib/components/state";
 import type {
   HumanAddr,
   ResourceGroup,
   ResourceGroupByAccount,
-  Option,
 } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 interface ResourceSectionBodyProps {
   address: HumanAddr;
-  resourcesByOwner: Option<ResourceGroupByAccount[]>;
-  isLoading: boolean;
+  resourcesByOwner: ResourceGroupByAccount[];
 }
 
 export const ResourceLeftPanel = ({
   address,
   resourcesByOwner,
-  isLoading,
 }: ResourceSectionBodyProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -80,11 +74,6 @@ export const ResourceLeftPanel = ({
       };
     });
   }, [keyword, resourcesByOwner]);
-
-  if (isLoading) return <Loading />;
-  if (!filteredResourcesByOwner) return <ErrorFetching />;
-  if (!filteredResourcesByOwner.length)
-    return <EmptyState imageVariant="empty" message="No resources found" />;
 
   const selectedIndex = !selectedAccountParam
     ? 0

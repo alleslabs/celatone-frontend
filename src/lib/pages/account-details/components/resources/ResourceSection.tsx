@@ -23,11 +23,7 @@ export const ResourceSection = ({
       count={undefined}
       showCount={false}
     />
-    <Flex
-      gap={6}
-      flexDirection={{ base: "column", md: "row" }}
-      position="relative"
-    >
+    <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
       <ResourceSectionBody
         address={address}
         resourcesByOwner={resourcesByOwner}

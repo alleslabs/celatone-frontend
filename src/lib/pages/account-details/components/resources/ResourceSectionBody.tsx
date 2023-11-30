@@ -2,9 +2,11 @@ import { Accordion, Badge, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
+import { EmptyState } from "lib/components/state";
 import type { HumanAddr, Option, ResourceGroupByAccount } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -25,8 +27,14 @@ export const ResourceSectionBody = ({
 
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
-  const selectedAccountParam = getFirstQueryParam(router.query.account);
-  const selectedNameParam = getFirstQueryParam(router.query.selected);
+  const selectedAccountParam = getFirstQueryParam(
+    router.query.account,
+    resourcesByOwner?.[0]?.owner
+  );
+  const selectedNameParam = getFirstQueryParam(
+    router.query.selected,
+    resourcesByOwner?.[0]?.resources[0]?.group
+  );
 
   const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
@@ -45,6 +53,9 @@ export const ResourceSectionBody = ({
   }, [resourcesByOwner, selectedNameParam, selectedAccountParam]);
 
   if (isLoading) return <Loading />;
+  if (!resourcesByOwner) return <ErrorFetching />;
+  if (!resourcesByOwner.length)
+    return <EmptyState imageVariant="empty" message="No resources found" />;
 
   const selectedResource = resourcesByOwner
     ?.find((resource) => resource.owner === selectedAccountParam)
@@ -54,7 +65,6 @@ export const ResourceSectionBody = ({
       <ResourceLeftPanel
         address={address}
         resourcesByOwner={resourcesByOwner}
-        isLoading={isLoading}
       />
       {selectedResource && (
         <Flex direction="column" w="full">

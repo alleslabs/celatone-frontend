@@ -31,26 +31,23 @@ export const useAccountResources = ({
         const [ownerName, groupName] = resource.structTag.split("::");
 
         const ownerResources = acc[ownerName]?.resources ?? [];
-        const groupResources = ownerResources.find(
+        const groupResourcesIndex = ownerResources.findIndex(
           (ownerResource) => ownerResource.group === groupName
         );
-        const items = groupResources?.items ?? [];
-
-        items.push(resource);
+        if (groupResourcesIndex === -1)
+          ownerResources.push({
+            group: groupName,
+            account: ownerName as MoveAccountAddr,
+            displayName: `${truncate(ownerName)}::${groupName}`,
+            items: [resource],
+          });
+        else ownerResources[groupResourcesIndex].items.push(resource);
 
         return {
           ...acc,
           [ownerName]: {
             owner: ownerName as MoveAccountAddr,
-            resources: [
-              ...ownerResources,
-              {
-                group: groupName,
-                account: ownerName as MoveAccountAddr,
-                displayName: `${truncate(ownerName)}::${groupName}`,
-                items,
-              },
-            ],
+            resources: ownerResources,
           },
         };
       }, {});
