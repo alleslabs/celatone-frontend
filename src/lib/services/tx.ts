@@ -10,6 +10,7 @@ import { AddrSchema, MsgFurtherAction } from "lib/types";
 import type { Transaction, Option, Fee } from "lib/types";
 import {
   getActionMsgType,
+  parseDate,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
@@ -101,7 +102,7 @@ const TxsResponseItemSchema = z
   .object({
     block: z.object({
       height: z.number().nonnegative(),
-      timestamp: z.coerce.date(),
+      timestamp: z.string().transform(parseDate),
     }),
     hash: z.string(),
     messages: z.any().array(),
