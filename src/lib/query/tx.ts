@@ -92,44 +92,6 @@ export const getTxsCountByPoolId = graphql(`
   }
 `);
 
-export const getTxs = graphql(`
-  query getTxs(
-    $offset: Int!
-    $pageSize: Int!
-    $isWasm: Boolean!
-    $isMove: Boolean!
-  ) {
-    transactions(
-      order_by: { block_height: desc }
-      offset: $offset
-      limit: $pageSize
-    ) {
-      block {
-        height
-        timestamp
-      }
-      account {
-        address
-      }
-      hash
-      success
-      messages
-      is_send
-      is_ibc
-      is_clear_admin @include(if: $isWasm)
-      is_execute @include(if: $isWasm)
-      is_instantiate @include(if: $isWasm)
-      is_migrate @include(if: $isWasm)
-      is_store_code @include(if: $isWasm)
-      is_update_admin @include(if: $isWasm)
-      is_move_publish @include(if: $isMove)
-      is_move_upgrade @include(if: $isMove)
-      is_move_execute @include(if: $isMove)
-      is_move_script @include(if: $isMove)
-    }
-  }
-`);
-
 export const getTxsCount = graphql(`
   query getTxsCount {
     transactions(limit: 1, order_by: { id: desc }) {
