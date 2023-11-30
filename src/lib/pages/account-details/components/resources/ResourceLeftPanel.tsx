@@ -33,8 +33,14 @@ export const ResourceLeftPanel = ({
   const navigate = useInternalNavigate();
   const [keyword, setKeyword] = useState("");
 
-  const selectedAccountParam = getFirstQueryParam(router.query.account);
-  const selectedNameParam = getFirstQueryParam(router.query.selected);
+  const selectedAccountParam = getFirstQueryParam(
+    router.query.account,
+    resourcesByOwner?.[0]?.owner
+  );
+  const selectedNameParam = getFirstQueryParam(
+    router.query.selected,
+    resourcesByOwner?.[0]?.resources[0]?.group
+  );
 
   const handleSelectResource = useCallback(
     (
@@ -86,7 +92,14 @@ export const ResourceLeftPanel = ({
   );
 
   return (
-    <Flex minW={{ base: "full", md: 80 }} direction="column">
+    <Flex
+      minW={{ base: "full", md: 80 }}
+      direction="column"
+      pb={{ base: 4, md: 0 }}
+      mb={{ base: 4, md: 0 }}
+      borderBottom={{ base: "1px solid", md: "none" }}
+      borderColor={{ base: "gray.700", md: "transparent" }}
+    >
       <InputWithIcon
         placeholder="Search with struct tag Name..."
         value={keyword}
@@ -111,7 +124,7 @@ export const ResourceLeftPanel = ({
             </AccordionButton>
             <AccordionPanel>
               {item.resources.length ? (
-                <Flex direction="column" gap={3} maxW={80}>
+                <Flex direction="column" gap={3}>
                   {Object.values(item.resources).map((subitem) => (
                     <ResourceCard
                       key={subitem.displayName}
