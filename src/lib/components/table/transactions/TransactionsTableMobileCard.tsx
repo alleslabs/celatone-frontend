@@ -13,13 +13,13 @@ import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableMobileCardProps {
   transaction: Transaction;
-  showRelations?: boolean;
-  showTimestamp?: boolean;
+  showRelations: boolean;
+  showTimestamp: boolean;
 }
 export const TransactionsTableMobileCard = ({
   transaction,
-  showRelations = true,
-  showTimestamp = true,
+  showRelations,
+  showTimestamp,
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (

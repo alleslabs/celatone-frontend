@@ -1,3 +1,4 @@
 export * from "./abi";
-export * from "./resource";
 export * from "./module";
+export * from "./pool";
+export * from "./resource";

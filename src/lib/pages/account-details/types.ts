@@ -1,4 +1,4 @@
-import type { Option, TokenWithValue, ValidatorInfo } from "lib/types";
+import type { Option, TokenWithValue, Validator } from "lib/types";
 
 import type {
   Delegation,
@@ -8,7 +8,7 @@ import type {
 } from "./data";
 
 export interface NonRedelegatable {
-  dstValidator: ValidatorInfo;
+  dstValidator: Validator;
   completionTime: Date;
 }
 

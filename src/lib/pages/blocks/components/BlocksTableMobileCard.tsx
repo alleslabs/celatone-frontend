@@ -4,11 +4,11 @@ import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { BlockInfo } from "lib/types";
+import type { Block } from "lib/types";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableMobileCardProps {
-  blockData: BlockInfo;
+  blockData: Block;
 }
 export const BlocksTableMobileCard = ({
   blockData,

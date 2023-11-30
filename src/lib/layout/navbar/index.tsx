@@ -21,6 +21,7 @@ import {
   getDevSubmenuMove,
   getDevSubmenuWasm,
   getDeviceSubmenuWasm,
+  getWalletSubSection,
 } from "./utils";
 
 interface NavbarProps {
@@ -88,6 +89,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               ...getDevSubmenuWasm(wasm.enabled),
             ],
             subSection: [
+              ...getWalletSubSection(wasm.enabled),
               {
                 category: "This Device",
                 submenu: [

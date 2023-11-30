@@ -55,15 +55,15 @@ export interface PoolDetail<
   contractAddress: Nullable<ContractAddr>;
 }
 
-export interface LPDetails {
+export interface PoolInfo {
   coinA: {
     amount: string;
     denom: string;
-    symbol: string;
+    symbol: Option<string>;
   };
   coinB: {
     amount: string;
     denom: string;
-    symbol: string;
+    symbol: Option<string>;
   };
 }

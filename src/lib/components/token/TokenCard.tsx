@@ -44,7 +44,7 @@ export const TokenCard = ({
           pb={2}
         >
           <TokenImageRender
-            logo={userBalance.lpLogo ?? userBalance.assetInfo?.logo}
+            logo={userBalance.logo ?? userBalance.assetInfo?.logo}
             alt={symbol}
             boxSize={6}
           />

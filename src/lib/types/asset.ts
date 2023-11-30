@@ -1,7 +1,7 @@
 import type Big from "big.js";
 import { z } from "zod";
 
-import type { LPDetails, Option, Token, U, USD } from "lib/types";
+import type { PoolInfo, Option, Token, U, USD } from "lib/types";
 
 export const AssetInfoSchema = z.object({
   coingecko: z.string(),
@@ -34,7 +34,7 @@ export type TokenWithValue = BaseTokenWithValue &
       }
     | {
         isLPToken: true;
-        logo: Option<string[]>;
-        lpDetails: LPDetails;
+        logo: Option<string>[];
+        poolInfo: PoolInfo;
       }
   );

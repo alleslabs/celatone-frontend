@@ -1,6 +1,7 @@
 import { Button, Flex, Heading, Accordion } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
+import { trackUseExpandAll, trackUseViewJSON } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { StructCard } from "lib/components/module/StructCard";
@@ -51,6 +52,10 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
               />
             }
             onClick={() => {
+              trackUseExpandAll(
+                expandedIndexes.length ? "collapse" : "expand",
+                "Module Struct"
+              );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(structs.length).keys()) : []
               );
@@ -64,6 +69,7 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
             size="sm"
             rightIcon={<CustomIcon name="launch" />}
             onClick={() => {
+              trackUseViewJSON("Module Struct");
               const jsonString = JSON.stringify(structs, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
