@@ -1,16 +1,16 @@
 import big from "big.js";
 import type Big from "big.js";
 
-import type {
-  AssetInfo,
-  Balance,
-  BalanceWithAssetInfo,
-  HexAddr,
-  MovePoolInfos,
-  Token,
-  TokenWithValue,
-  U,
-  USD,
+import {
+  HexAddrSchema,
+  type AssetInfo,
+  type Balance,
+  type BalanceWithAssetInfo,
+  type MovePoolInfos,
+  type Token,
+  type TokenWithValue,
+  type U,
+  type USD,
 } from "lib/types";
 
 import {
@@ -423,14 +423,14 @@ describe("coinToTokenWithValue", () => {
   const movePoolInfos: MovePoolInfos = {
     uadenom: {
       coinA: {
-        metadata: "0x1" as HexAddr,
+        metadata: HexAddrSchema.parse("0x1"),
         denom: "denom1",
         precision: 6,
         amountAPerShare: big(1),
         symbol: undefined,
       },
       coinB: {
-        metadata: "0x2" as HexAddr,
+        metadata: HexAddrSchema.parse("0x2"),
         denom: "denom2",
         precision: 6,
         amountBPerShare: big(1),
