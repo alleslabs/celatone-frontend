@@ -8,14 +8,20 @@ import {
   Text,
   chakra,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
 import { Tooltip } from "../Tooltip";
+import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { ExposedFunction } from "lib/types";
-import { checkAvailability, getVisibilityIcon } from "lib/utils";
+import {
+  checkAvailability,
+  getFirstQueryParam,
+  getVisibilityIcon,
+} from "lib/utils";
 
 interface FunctionDetailCardProps {
   exposedFn: ExposedFunction;
@@ -119,6 +125,7 @@ export const FunctionDetailCard = ({
   const navigate = useInternalNavigate();
   const isMobile = useMobile();
   const fnColor = isView ? "primary.main" : "accent.main";
+  const router = useRouter();
 
   const getButtonStyle = () => {
     if (disabled) return { variant: "outline-gray", color: "gray.500" };
@@ -142,11 +149,14 @@ export const FunctionDetailCard = ({
             flexDirection="column"
             alignItems="flex-start"
             _hover={{ bg: "transparent" }}
-            onClick={() => ({
-              action: !isExpanded ? "expand" : "collapse",
-              component: "unsupported_pool",
-              section: "pool-list-page",
-            })}
+            onClick={() =>
+              trackUseExpand({
+                action: !isExpanded ? "expand" : "collapse",
+                component: "module_function_accordion",
+                info: { functionType: isView ? "view" : "execute" },
+                section: getFirstQueryParam(router.query.type),
+              })
+            }
           >
             <Flex justifyContent="space-between" w="full">
               <Flex direction="column" gap={1} alignItems="flex-start">
@@ -193,6 +203,13 @@ export const FunctionDetailCard = ({
                         borderColor={getButtonStyle().color}
                         size="sm"
                         onClick={(e) => {
+                          track(AmpEvent.USE_MODULE_FUNCTION_CTA, {
+                            address,
+                            moduleName,
+                            functionType: isView ? "view" : "execute",
+                            functionName: exposedFn.name,
+                            section: getFirstQueryParam(router.query.type),
+                          });
                           navigate({
                             pathname: "/interact",
                             query: {

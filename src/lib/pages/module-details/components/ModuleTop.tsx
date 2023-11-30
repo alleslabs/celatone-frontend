@@ -1,6 +1,7 @@
 import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
@@ -149,7 +150,8 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="query" mr={0} />}
               size={{ base: "sm", md: "md" }}
-              onClick={() =>
+              onClick={() => {
+                track(AmpEvent.USE_MAIN_CTA, { label: "View" });
                 navigate({
                   pathname: "/interact",
                   query: {
@@ -157,8 +159,8 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                     moduleName: moduleData.moduleName,
                     functionType: "view",
                   },
-                })
-              }
+                });
+              }}
             >
               View
             </Button>
@@ -167,7 +169,8 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="execute" mr={0} />}
               size={{ base: "sm", md: "md" }}
-              onClick={() =>
+              onClick={() => {
+                track(AmpEvent.USE_MAIN_CTA, { label: "Execute" });
                 navigate({
                   pathname: "/interact",
                   query: {
@@ -175,12 +178,13 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                     moduleName: moduleData.moduleName,
                     functionType: "execute",
                   },
-                })
-              }
+                });
+              }}
             >
               Execute
             </Button>
             <CopyButton
+              amptrackSection="[Module Detail CTA] Copy ABI "
               value={moduleData.abi}
               variant="outline-primary"
               size={{ base: "sm", md: "md" }}
