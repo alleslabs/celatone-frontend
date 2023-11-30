@@ -10,7 +10,7 @@ export const useBalances = (address: Addr): UseQueryResult<Coin[]> => {
   const endpoint = useBaseApiRoute("balances");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, address, endpoint],
+    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
     async () => getBalances(endpoint, address),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );

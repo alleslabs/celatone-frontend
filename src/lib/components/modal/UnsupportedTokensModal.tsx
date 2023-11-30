@@ -91,7 +91,7 @@ const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
         </Text>
       </Flex>
       <Text variant="body2" fontWeight="900">
-        {formatUTokenWithPrecision(token.amount, 0, false)}
+        {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
       </Text>
     </Flex>
   );

@@ -1,10 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
-import { useMemo } from "react";
 
 import { UnsupportedTokensModal } from "lib/components/modal";
 import type { ContractData } from "lib/pages/contract-details/types";
 import type { ContractAddr } from "lib/types";
+import { filterSupportedTokens } from "lib/utils";
 
 import { SupportedTokensSection } from "./SupportedTokensSection";
 
@@ -23,14 +22,10 @@ export const ContractBalances = ({
   amptrackPage,
   onViewMore,
 }: ContractBalancesProps) => {
-  const supportedAssets = useMemo(
-    () => balances?.filter((balance) => !isUndefined(balance.price)) ?? [],
-    [balances]
-  );
-  const unsupportedAssets = useMemo(
-    () => balances?.filter((balance) => isUndefined(balance.price)) ?? [],
-    [balances]
-  );
+  const {
+    supportedTokens: supportedAssets = [],
+    unsupportedTokens: unsupportedAssets = [],
+  } = filterSupportedTokens(balances);
 
   return (
     <Flex

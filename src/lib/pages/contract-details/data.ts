@@ -18,12 +18,7 @@ import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type {
-  ContractAddr,
-  ContractMigrationHistory,
-  Option,
-  TokenWithValue,
-} from "lib/types";
+import type { ContractAddr, ContractMigrationHistory, Option } from "lib/types";
 import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
 
 import type { ContractData } from "./types";
@@ -45,9 +40,8 @@ export const useContractData = (
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
     useBalances(contractAddress);
   const balances = contractBalances
-    ?.map(
-      ({ denom, amount }): TokenWithValue =>
-        coinToTokenWithValue(denom, amount, assetInfos)
+    ?.map(({ denom, amount }) =>
+      coinToTokenWithValue(denom, amount, assetInfos)
     )
     .sort(compareTokenWithValues);
 

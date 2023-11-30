@@ -10,7 +10,6 @@ import { TokenCard } from "lib/components/token/TokenCard";
 import { useOpenAssetTab } from "lib/hooks";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { Addr, Option, TokenWithValue } from "lib/types";
-import { formatPrice } from "lib/utils";
 
 import { UserAssetInfoCard } from "./UserAssetInfoCard";
 
@@ -148,14 +147,7 @@ export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
 
   const TotalAssetValueInfo = (
     <UserAssetInfoCard
-      value={
-        totalSupportedAssetsValue
-          ? formatPrice(totalSupportedAssetsValue)
-          : "N/A"
-      }
-      isZeroValue={
-        !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0)
-      }
+      totalSupportedAssetsValue={totalSupportedAssetsValue}
       helperText="Total Asset Value"
     />
   );

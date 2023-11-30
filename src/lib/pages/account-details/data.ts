@@ -1,6 +1,5 @@
 import type { Big } from "big.js";
 import big from "big.js";
-import { isUndefined } from "lodash";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
@@ -38,6 +37,7 @@ import {
   coinToTokenWithValue,
   totalValueTokenWithValue,
   compareTokenWithValues,
+  filterSupportedTokens,
 } from "lib/utils";
 
 import type { UserDelegationsData } from "./types";
@@ -177,16 +177,13 @@ export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
   );
 
   // Supported assets should order by descending value
-  const supportedAssets = balances
-    ?.filter((balance) => !isUndefined(balance.price))
-    .sort(compareTokenWithValues);
+  const {
+    supportedTokens: supportedAssets,
+    unsupportedTokens: unsupportedAssets,
+  } = filterSupportedTokens(balances);
   const totalSupportedAssetsValue = supportedAssets
     ? totalValueTokenWithValue(supportedAssets, big(0) as USD<Big>)
     : undefined;
-
-  const unsupportedAssets = balances?.filter((balance) =>
-    isUndefined(balance.price)
-  );
 
   return {
     supportedAssets,

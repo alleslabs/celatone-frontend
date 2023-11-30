@@ -1,6 +1,5 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-import { isUndefined } from "lodash";
 import { useState } from "react";
 
 import { trackUseExpand } from "lib/amplitude";
@@ -9,7 +8,7 @@ import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { TokenCard } from "lib/components/token/TokenCard";
 import type { AssetInfo, Option } from "lib/types";
-import { coinToTokenWithValue } from "lib/utils";
+import { coinToTokenWithValue, filterSupportedTokens } from "lib/utils";
 
 type AssetObject = { [key: string]: AssetInfo };
 
@@ -31,10 +30,8 @@ const MultiCoin = ({
   const tokens = amount.map((coin) =>
     coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
   );
-  const [supportedTokens, unsupportedTokens] = [
-    tokens.filter((token) => !isUndefined(token.price)),
-    tokens.filter((token) => isUndefined(token.price)),
-  ];
+  const { supportedTokens = [], unsupportedTokens = [] } =
+    filterSupportedTokens(tokens);
   const hasSupportedTokens = supportedTokens.length > 0;
 
   return (
