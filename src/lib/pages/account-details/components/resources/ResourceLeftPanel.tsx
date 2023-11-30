@@ -101,7 +101,7 @@ export const ResourceLeftPanel = ({
       borderColor={{ base: "gray.700", md: "transparent" }}
     >
       <InputWithIcon
-        placeholder="Search with struct tag Name..."
+        placeholder="Search with module name..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         action="execute-message-search"
