@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
 - [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile
 
 ## v1.3.0

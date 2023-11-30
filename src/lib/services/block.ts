@@ -3,13 +3,13 @@ import { z } from "zod";
 
 import type { Block, Validator } from "lib/types";
 import { ValidatorAddrSchema } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import { parseDate, parseTxHash } from "lib/utils";
 
 const BlocksResponseItemSchema = z
   .object({
     hash: z.string().transform(parseTxHash),
     height: z.number().nonnegative(),
-    timestamp: z.coerce.date(),
+    timestamp: z.string().transform(parseDate),
     transaction_count: z.number().nonnegative(),
     validator: z.nullable(
       z
