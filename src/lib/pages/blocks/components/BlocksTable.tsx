@@ -1,5 +1,3 @@
-import type { ChangeEvent } from "react";
-
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
@@ -37,21 +35,9 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
       isDisabled: false,
     },
   });
-  const { data, isLoading, refetch, error } = useBlocks(pageSize, offset, {
+  const { data, isLoading, error } = useBlocks(pageSize, offset, {
     onSuccess: ({ total }) => setTotalData(total),
   });
-
-  const onPageChange = (nextPage: number) => {
-    refetch();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetch();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
 
   if (isLoading) return <Loading withBorder />;
   if (error)
@@ -103,8 +89,12 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
           totalData={data.total}
           scrollComponentId={scrollComponentId}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
         />
       )}
     </>

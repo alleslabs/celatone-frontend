@@ -41,6 +41,8 @@ export const TransactionsTable = ({
         <TransactionsTableMobileCard
           key={transaction.hash}
           transaction={transaction}
+          showRelations={showRelations}
+          showTimestamp={showTimestamp}
         />
       ))}
     </MobileTableContainer>

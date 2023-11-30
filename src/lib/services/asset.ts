@@ -5,11 +5,11 @@ import type { AssetInfo } from "lib/types";
 import { AssetInfoSchema } from "lib/types";
 
 export const getAssetInfos = async (
-  baseApiRoute: string,
+  endpoint: string,
   withPrices: boolean
 ): Promise<AssetInfo[]> =>
   axios
-    .get(`${baseApiRoute}`, {
+    .get(`${endpoint}`, {
       params: {
         with_prices: withPrices,
       },
