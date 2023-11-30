@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
 - [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save
 - [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details
 - [#620](https://github.com/alleslabs/celatone-frontend/pull/620) Add hex address in save account feature in initia
