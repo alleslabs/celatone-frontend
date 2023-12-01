@@ -14,12 +14,13 @@ const zBlocksResponseItem = z
     validator: z.nullable(
       z
         .object({
-          operator_address: zValidatorAddr,
-          moniker: z.string().optional(),
-          identity: z.string().optional(),
+          operator_address: zValidatorAddr.nullable(),
+          moniker: z.string(),
+          identity: z.string(),
         })
         .transform<Validator>((val) => ({
-          validatorAddress: val.operator_address,
+          // nullable operator address for ICS chain
+          validatorAddress: val.operator_address ?? zValidatorAddr.parse(""),
           moniker: val.moniker,
           identity: val.identity,
         }))
