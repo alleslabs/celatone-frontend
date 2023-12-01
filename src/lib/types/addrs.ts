@@ -1,18 +1,18 @@
 import { z } from "zod";
 
-export const HumanAddrSchema = z.string().brand("HumanAddr");
-export type HumanAddr = z.infer<typeof HumanAddrSchema>;
+export const zHumanAddr = z.string().brand("HumanAddr");
+export type HumanAddr = z.infer<typeof zHumanAddr>;
 
-export const ContractAddrSchema = z.string().brand("ContractAddr");
-export type ContractAddr = z.infer<typeof ContractAddrSchema>;
+export const zContractAddr = z.string().brand("ContractAddr");
+export type ContractAddr = z.infer<typeof zContractAddr>;
 
-export const HexAddrSchema = z.string().brand("HexAddr");
-export type HexAddr = z.infer<typeof HexAddrSchema>;
+export const zHexAddr = z.string().brand("HexAddr");
+export type HexAddr = z.infer<typeof zHexAddr>;
 
-export const ValidatorAddrSchema = z.string().brand("ValidatorAddr");
-export type ValidatorAddr = z.infer<typeof ValidatorAddrSchema>;
+export const zValidatorAddr = z.string().brand("ValidatorAddr");
+export type ValidatorAddr = z.infer<typeof zValidatorAddr>;
 
-export const MoveAccountAddrSchema = z.union([HumanAddrSchema, HexAddrSchema]);
-export type MoveAccountAddr = z.infer<typeof MoveAccountAddrSchema>;
-export const AddrSchema = z.union([MoveAccountAddrSchema, ContractAddrSchema]);
-export type Addr = z.infer<typeof AddrSchema>;
+export const zMoveAccountAddr = z.union([zHumanAddr, zHexAddr]);
+export type MoveAccountAddr = z.infer<typeof zMoveAccountAddr>;
+export const zAddr = z.union([zMoveAccountAddr, zContractAddr]);
+export type Addr = z.infer<typeof zAddr>;

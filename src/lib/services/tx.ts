@@ -6,11 +6,10 @@ import type { Any } from "cosmjs-types/google/protobuf/any";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import { AddrSchema, MsgFurtherAction } from "lib/types";
 import type { Transaction, Option, Fee } from "lib/types";
+import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
 import {
   getActionMsgType,
-  parseDate,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
@@ -98,15 +97,15 @@ export const queryTxData = async (
   };
 };
 
-const TxsResponseItemSchema = z
+const zTxsResponseItem = z
   .object({
     block: z.object({
       height: z.number().nonnegative(),
-      timestamp: z.string().transform(parseDate),
+      timestamp: zUtcDate,
     }),
     hash: z.string(),
     messages: z.any().array(),
-    signer: AddrSchema,
+    signer: zAddr,
     success: z.boolean(),
     is_ibc: z.boolean(),
     is_send: z.boolean(),
@@ -146,11 +145,11 @@ const TxsResponseItemSchema = z
     isInstantiate: val.is_instantiate ?? false,
   }));
 
-const TxsResponseSchema = z.object({
-  items: z.array(TxsResponseItemSchema),
+const zTxsResponse = z.object({
+  items: z.array(zTxsResponseItem),
   total: z.number(),
 });
-export type TxsResponse = z.infer<typeof TxsResponseSchema>;
+export type TxsResponse = z.infer<typeof zTxsResponse>;
 
 export const getTxs = async (
   endpoint: string,
@@ -168,4 +167,4 @@ export const getTxs = async (
         is_move: isMove,
       },
     })
-    .then((res) => TxsResponseSchema.parse(res.data));
+    .then((res) => zTxsResponse.parse(res.data));

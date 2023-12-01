@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import type { Addr } from "lib/types";
 
-const BalancesResponseSchema = z
+const zBalancesResponse = z
   .array(
     z.object({
       amount: z.string(),
@@ -19,4 +19,4 @@ export const getBalances = async (
 ): Promise<Coin[]> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}`)
-    .then((res) => BalancesResponseSchema.parse(res.data));
+    .then((res) => zBalancesResponse.parse(res.data));

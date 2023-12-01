@@ -1,7 +1,6 @@
 import { Flex, Select, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 
 interface PageDetailProps {
@@ -49,7 +48,6 @@ export const PageDetail = ({
         <option value="20">20</option>
         <option value="50">50</option>
         <option value="100">100</option>
-        <CustomIcon name="chevron-down" color="gray.600" />
       </Select>
     </Flex>
     <Text variant="body3" minW="fit-content" ml={7}>

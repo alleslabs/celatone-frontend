@@ -2,7 +2,7 @@ import big from "big.js";
 import type Big from "big.js";
 
 import {
-  HexAddrSchema,
+  zHexAddr,
   type AssetInfo,
   type MovePoolInfos,
   type Token,
@@ -38,14 +38,14 @@ describe("coinToTokenWithValue", () => {
   const movePoolInfos: MovePoolInfos = {
     uadenom: {
       coinA: {
-        metadata: HexAddrSchema.parse("0x1"),
+        metadata: zHexAddr.parse("0x1"),
         denom: "denom1",
         precision: 6,
         amountAPerShare: big(1),
         symbol: undefined,
       },
       coinB: {
-        metadata: HexAddrSchema.parse("0x2"),
+        metadata: zHexAddr.parse("0x2"),
         denom: "denom2",
         precision: 6,
         amountBPerShare: big(1),
