@@ -64,6 +64,13 @@ describe("filterSupportedTokens", () => {
     },
   };
 
+  test("filter supported tokens undefined", () => {
+    expect(filterSupportedTokens(undefined)).toEqual({
+      supportedTokens: [],
+      unsupportedTokens: [],
+    });
+  });
+
   test("filter supported tokens by price undefined", () => {
     expect(filterSupportedTokens([token1, token2, token3])).toEqual({
       supportedTokens: [token2, token3],

@@ -53,9 +53,9 @@ interface AccountCodes {
 }
 
 interface AccountAssetInfos {
-  supportedAssets: Option<TokenWithValue[]>;
+  supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
-  unsupportedAssets: Option<TokenWithValue[]>;
+  unsupportedAssets: TokenWithValue[];
   isLoading: boolean;
   totalData: Option<number>;
   error: Error;
@@ -183,7 +183,7 @@ export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
     supportedTokens: supportedAssets,
     unsupportedTokens: unsupportedAssets,
   } = filterSupportedTokens(balances);
-  const totalSupportedAssetsValue = supportedAssets
+  const totalSupportedAssetsValue = balances
     ? totalValueTokenWithValue(supportedAssets, big(0) as USD<Big>)
     : undefined;
 

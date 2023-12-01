@@ -19,14 +19,8 @@ export const calculateAssetValue = (
   price: USD<number>
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
 
-export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) => {
-  if (!tokens)
-    return {
-      supportedTokens: undefined,
-      unsupportedTokens: undefined,
-    };
-
-  return tokens.reduce<{
+export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) =>
+  (tokens ?? []).reduce<{
     supportedTokens: TokenWithValue[];
     unsupportedTokens: TokenWithValue[];
   }>(
@@ -41,7 +35,6 @@ export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) => {
       unsupportedTokens: [],
     }
   );
-};
 
 export const coinToTokenWithValue = (
   denom: string,

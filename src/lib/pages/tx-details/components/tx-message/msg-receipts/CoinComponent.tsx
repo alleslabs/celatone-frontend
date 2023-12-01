@@ -1,5 +1,6 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
+import { isUndefined } from "lodash";
 import { useState } from "react";
 
 import { trackUseExpand } from "lib/amplitude";
@@ -30,8 +31,7 @@ const MultiCoin = ({
   const tokens = amount.map((coin) =>
     coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
   );
-  const { supportedTokens = [], unsupportedTokens = [] } =
-    filterSupportedTokens(tokens);
+  const { supportedTokens, unsupportedTokens } = filterSupportedTokens(tokens);
   const hasSupportedTokens = supportedTokens.length > 0;
 
   return (
@@ -63,13 +63,11 @@ const MultiCoin = ({
             }}
           />
         )}
-        {unsupportedTokens && (
-          <UnsupportedTokensModal
-            unsupportedAssets={unsupportedTokens}
-            buttonProps={{ fontSize: "12px", mb: 0 }}
-            amptrackSection="tx_msg_receipts_unsupported_assets"
-          />
-        )}
+        <UnsupportedTokensModal
+          unsupportedAssets={unsupportedTokens}
+          buttonProps={{ fontSize: "12px", mb: 0 }}
+          amptrackSection="tx_msg_receipts_unsupported_assets"
+        />
       </Flex>
     </Flex>
   );
@@ -80,7 +78,7 @@ const SingleCoin = ({
   assetInfos,
 }: CoinComponentProps<Coin, AssetObject>) => {
   const token = coinToTokenWithValue(amount.denom, amount.amount, assetInfos);
-  return token.price === undefined ? (
+  return !isUndefined(token.price) ? (
     <TokenCard
       token={token}
       amptrackSection="tx_msg_receipts_assets"

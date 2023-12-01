@@ -23,8 +23,8 @@ export const ContractBalances = ({
   onViewMore,
 }: ContractBalancesProps) => {
   const {
-    supportedTokens: supportedAssets = [],
-    unsupportedTokens: unsupportedAssets = [],
+    supportedTokens: supportedAssets,
+    unsupportedTokens: unsupportedAssets,
   } = filterSupportedTokens(balances);
 
   return (
