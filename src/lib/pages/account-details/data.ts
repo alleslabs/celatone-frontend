@@ -164,7 +164,9 @@ export const useAccountCodes = (
 
 export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
   const { data: accountBalances, isLoading, error } = useBalances(address);
-  const { data: assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
+    withPrices: true,
+  });
   const { data: movePoolInfos } = useMovePoolInfos();
 
   const balances = accountBalances?.map<TokenWithValue>((balance) =>
@@ -189,7 +191,7 @@ export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
     supportedAssets,
     totalSupportedAssetsValue,
     unsupportedAssets,
-    isLoading,
+    isLoading: isLoading || isAssetInfosLoading,
     totalData: balances?.length,
     error: error as Error,
   };
