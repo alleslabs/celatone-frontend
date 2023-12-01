@@ -11,8 +11,66 @@ import {
   type USD,
 } from "lib/types";
 
-import { addTokenWithValue, coinToTokenWithValue } from "./assetValue";
+import {
+  addTokenWithValue,
+  coinToTokenWithValue,
+  filterSupportedTokens,
+} from "./assetValue";
 import { formatUTokenWithPrecision } from "./formatter";
+
+describe("filterSupportedTokens", () => {
+  const token1: TokenWithValue = {
+    isLPToken: false,
+    denom: "denom1",
+    amount: big(100) as U<Token<Big>>,
+    symbol: "",
+    logo: "",
+    precision: 6,
+    price: undefined,
+    value: big(0) as USD<Big>,
+  };
+
+  const token2: TokenWithValue = {
+    isLPToken: false,
+    logo: undefined,
+    denom: "denom2",
+    amount: big(0) as U<Token<Big>>,
+    symbol: undefined,
+    precision: undefined,
+    price: big(2) as USD<Big>,
+    value: undefined,
+  };
+
+  const token3: TokenWithValue = {
+    isLPToken: true,
+    denom: "denom3",
+    amount: big(100) as U<Token<Big>>,
+    symbol: "",
+    logo: ["", ""],
+    precision: 6,
+    price: big(0) as USD<Big>,
+    value: big(3500) as USD<Big>,
+    poolInfo: {
+      coinA: {
+        denom: "",
+        amount: "",
+        symbol: undefined,
+      },
+      coinB: {
+        denom: "",
+        amount: "",
+        symbol: undefined,
+      },
+    },
+  };
+
+  test("filter supported tokens by price undefined", () => {
+    expect(filterSupportedTokens([token1, token2, token3])).toEqual({
+      supportedTokens: [token2, token3],
+      unsupportedTokens: [token1],
+    });
+  });
+});
 
 describe("coinToTokenWithValue", () => {
   const coin = {
