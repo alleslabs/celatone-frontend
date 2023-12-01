@@ -39,18 +39,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add Amplitude for module detail and breadcrumb
+
 ### Improvements
 
 - [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
+- [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
+- [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list
 - [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
 - [#632](https://github.com/alleslabs/celatone-frontend/pull/632) api v1 - assets info
 
 ### Bug fixes
 
+- [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
+- [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile
+
 ## v1.3.0
 
 ### Features
 
+- [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
 - [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save contract count
 - [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details
 - [#620](https://github.com/alleslabs/celatone-frontend/pull/620) Add hex address in save account feature in initia
@@ -106,6 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#639](https://github.com/alleslabs/celatone-frontend/pull/639) Fix this wallet nav bar section
 - [#623](https://github.com/alleslabs/celatone-frontend/pull/623) Fix abi empty vector serialization
 - [#619](https://github.com/alleslabs/celatone-frontend/pull/619) Fix observer, logo and disable delegation in Account Detail Page
 - [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered

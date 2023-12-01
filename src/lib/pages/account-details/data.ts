@@ -29,7 +29,7 @@ import type {
   Option,
   TokenWithValue,
   USD,
-  ValidatorInfo,
+  Validator,
 } from "lib/types";
 import {
   addrToValoper,
@@ -66,19 +66,19 @@ export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
 }
 
 export interface Delegation {
-  validator: ValidatorInfo;
+  validator: Validator;
   balances: TokenWithValue[];
 }
 
 export interface Unbonding {
-  validator: ValidatorInfo;
+  validator: Validator;
   completionTime: Date;
   balances: TokenWithValue[];
 }
 
 export interface Redelegation {
-  srcValidator: ValidatorInfo;
-  dstValidator: ValidatorInfo;
+  srcValidator: Validator;
+  dstValidator: Validator;
   completionTime: Date;
   balances: TokenWithValue[];
 }

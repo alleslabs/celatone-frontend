@@ -1,17 +1,19 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+} from "lib/app-provider";
 import {
   getLatestBlockInfoQueryDocument,
   getBlockDetailsByHeightQueryDocument,
-  getBlockListQueryDocument,
   getBlockTimeQueryDocument,
 } from "lib/query";
 import type {
   BlockDetails,
-  BlockInfo,
   BlockTimeInfo,
   LatestBlock,
   Nullable,
@@ -19,63 +21,21 @@ import type {
 } from "lib/types";
 import { isBlock, parseDate, parseDateOpt, parseTxHash } from "lib/utils";
 
-export const useBlocklistQuery = (
+import { getBlocks, type BlocksResponse } from "./block";
+
+export const useBlocks = (
   limit: number,
-  offset: number
-): UseQueryResult<BlockInfo[]> => {
-  const { currentChainId } = useCelatoneApp();
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getBlockListQueryDocument, { limit, offset })
-        .then(({ blocks }) =>
-          blocks.map<BlockInfo>(
-            ({
-              hash,
-              height,
-              timestamp,
-              transactions_aggregate,
-              validator,
-            }) => ({
-              network: currentChainId,
-              hash: parseTxHash(hash),
-              height,
-              timestamp: parseDate(timestamp),
-              txCount: transactions_aggregate.aggregate?.count ?? 0,
-              proposer: validator
-                ? {
-                    moniker: validator.moniker,
-                    validatorAddress:
-                      validator.operator_address as ValidatorAddr,
-                    identity: validator.identity,
-                  }
-                : null,
-            })
-          )
-        ),
-    [indexerGraphClient, currentChainId, limit, offset]
-  );
-
+  offset: number,
+  options: Pick<
+    UseQueryOptions<BlocksResponse, Error>,
+    "onSuccess" | "onError"
+  > = {}
+): UseQueryResult<BlocksResponse> => {
+  const endpoint = useBaseApiRoute("blocks");
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCKS, indexerGraphClient, limit, offset],
-    queryFn
-  );
-};
-
-export const useBlockCountQuery = (): UseQueryResult<number> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getLatestBlockInfoQueryDocument)
-        .then(({ blocks }) => blocks[0]?.height ?? 0),
-    [indexerGraphClient]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_COUNT, indexerGraphClient],
-    queryFn
+    [CELATONE_QUERY_KEYS.BLOCKS, endpoint, limit, offset],
+    async () => getBlocks(endpoint, limit, offset),
+    { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };
 

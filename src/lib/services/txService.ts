@@ -1,5 +1,6 @@
 import type {
   QueryFunctionContext,
+  UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +16,6 @@ import {
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
-  getTxs,
   getTxsCount,
   getTxsCountByPoolId,
   getTxsByPoolIdPagination,
@@ -46,8 +46,8 @@ import {
 } from "lib/utils";
 
 import { usePoolTxExpression, useTxExpression } from "./expression";
-import type { TxResponse } from "./tx";
-import { queryTxData } from "./tx";
+import type { TxResponse, TxsResponse } from "./tx";
+import { getTxs, queryTxData } from "./tx";
 
 export interface TxData extends TxResponse {
   chainId: string;
@@ -314,52 +314,21 @@ export const useTxsCountByPoolId = (
 };
 
 export const useTxs = (
+  limit: number,
   offset: number,
-  pageSize: number
-): UseQueryResult<Transaction[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  options: Pick<
+    UseQueryOptions<TxsResponse, Error>,
+    "onSuccess" | "onError"
+  > = {}
+): UseQueryResult<TxsResponse> => {
+  const endpoint = useBaseApiRoute("txs");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
 
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getTxs, {
-          offset,
-          pageSize,
-          isWasm: wasmEnable,
-          isMove: moveEnable,
-        })
-        .then<Transaction[]>(({ transactions }) =>
-          transactions.map<Transaction>((transaction) => ({
-            hash: parseTxHash(transaction.hash),
-            messages: snakeToCamel(transaction.messages),
-            sender: transaction.account.address as Addr,
-            isSigner: false,
-            height: transaction.block.height,
-            created: parseDate(transaction.block.timestamp),
-            success: transaction.success,
-            actionMsgType: getActionMsgType([
-              transaction.is_send,
-              transaction.is_execute,
-              transaction.is_instantiate,
-              transaction.is_store_code,
-              transaction.is_migrate,
-              transaction.is_update_admin,
-              transaction.is_clear_admin,
-              // TODO: implement Move msg type
-            ]),
-            furtherAction: MsgFurtherAction.NONE,
-            isIbc: transaction.is_ibc,
-            isInstantiate: transaction.is_instantiate ?? false,
-          }))
-        ),
-    [indexerGraphClient, moveEnable, offset, pageSize, wasmEnable]
-  );
-
   return useQuery(
-    [CELATONE_QUERY_KEYS.TXS, offset, pageSize, indexerGraphClient],
-    queryFn
+    [CELATONE_QUERY_KEYS.TXS, endpoint, limit, offset, wasmEnable, moveEnable],
+    async () => getTxs(endpoint, limit, offset, wasmEnable, moveEnable),
+    { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };
 

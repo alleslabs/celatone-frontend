@@ -4,6 +4,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import type { Option } from "lib/types";
 
 import { AppLink } from "./AppLink";
@@ -36,7 +37,11 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
             transition="all 0.25s ease-in-out"
             key={`bc-${item.href}`}
           >
-            <AppLink color="text.dark" href={item.href}>
+            <AppLink
+              color="text.dark"
+              href={item.href}
+              onClick={() => track(AmpEvent.USE_BREADCRUMB)}
+            >
               {item.text}
             </AppLink>
           </ChakraBreadcrumbItem>
