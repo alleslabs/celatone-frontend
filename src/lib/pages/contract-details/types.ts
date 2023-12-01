@@ -3,11 +3,11 @@ import type { ContractDetail } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
-  BalanceWithAssetInfo,
   Nullable,
   Option,
   PublicDetail,
   PublicInfo,
+  TokenWithValue,
 } from "lib/types";
 
 export interface ContractData {
@@ -20,7 +20,7 @@ export interface ContractData {
     publicInfo: Option<PublicInfo>;
     publicDetail: Option<PublicDetail>;
   };
-  balances: Option<BalanceWithAssetInfo[]>;
+  balances: Option<TokenWithValue[]>;
   isBalancesLoading: boolean;
   contractCw2Info: Option<ContractCw2Info>;
   isContractCw2InfoLoading: boolean;

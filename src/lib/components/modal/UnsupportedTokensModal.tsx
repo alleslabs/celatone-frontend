@@ -12,17 +12,16 @@ import {
   Button,
   Heading,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 import { trackUseUnsupportedToken } from "lib/amplitude";
-import { useGetAddressType, useGetAddressTypeByLength } from "lib/app-provider";
+import { useGetAddressType } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
-import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
+import type { Addr, TokenWithValue } from "lib/types";
 import {
   getTokenType,
   getTokenLabel,
@@ -30,36 +29,23 @@ import {
 } from "lib/utils";
 
 interface UnsupportedTokensModalProps {
-  unsupportedAssets: BalanceWithAssetInfo[];
+  unsupportedAssets: TokenWithValue[];
   address?: Addr;
+  addressType?: AddressReturnType;
   buttonProps?: ButtonProps;
   amptrackSection?: string;
 }
 
-interface UnsupportedTokenProps {
-  balance: Balance;
-}
-
-const getTokenTypeWithAddress = (
-  type: Balance["type"],
-  addrType: AddressReturnType
-) => {
-  if (type) return getTokenType(type);
-  return addrType === "contract_address"
+const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
+  addrType === "contract_address"
     ? getTokenType("cw20")
     : getTokenType("native");
-};
 
-const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
+const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
   const getAddressType = useGetAddressType();
-  // TODO - Move this to utils
-  const [tokenLabel, tokenType] = useMemo(() => {
-    const label = getTokenLabel(balance.id, balance.symbol);
-    const type = !balance.id.includes("/")
-      ? getTokenTypeWithAddress(balance.type, getAddressType(balance.id))
-      : getTokenType(balance.id.split("/")[0]);
-    return [label, type];
-  }, [balance, getAddressType]);
+  const tokenType = !token.denom.includes("/")
+    ? getTokenTypeWithAddress(getAddressType(token.denom))
+    : getTokenType(token.denom.split("/")[0]);
 
   return (
     <Flex
@@ -84,16 +70,16 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
       >
         <Flex gap={1} alignItems="center">
           <Text variant="body2" className="ellipsis">
-            {tokenLabel}
+            {getTokenLabel(token.denom, token.symbol)}
           </Text>
-          <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
+          <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
             <Flex cursor="pointer" className="info" visibility="hidden">
               <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier
             type="unsupported_asset"
-            value={balance.id}
+            value={token.denom}
             copyLabel="Token ID Copied!"
             ml={0}
             display="none"
@@ -105,11 +91,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
         </Text>
       </Flex>
       <Text variant="body2" fontWeight="900">
-        {formatUTokenWithPrecision(
-          balance.amount as U<Token>,
-          balance.precision,
-          false
-        )}
+        {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
       </Text>
     </Flex>
   );
@@ -128,7 +110,7 @@ const unsupportedTokensContent = (
     case "user_address": {
       return {
         icon: "assets-solid",
-        header: "Wallet Address",
+        header: "Account Address",
       };
     }
     default:
@@ -142,17 +124,14 @@ const unsupportedTokensContent = (
 export const UnsupportedTokensModal = ({
   unsupportedAssets,
   address,
+  addressType = "invalid_address",
   buttonProps,
   amptrackSection,
 }: UnsupportedTokensModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const getAddressTypeByLength = useGetAddressTypeByLength();
-
   if (unsupportedAssets.length === 0) return null;
 
-  const addressType = getAddressTypeByLength(address);
   const content = unsupportedTokensContent(addressType);
-
   return (
     <>
       <Button
@@ -191,10 +170,7 @@ export const UnsupportedTokensModal = ({
               )}
               <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (
-                  <UnsupportedToken
-                    balance={asset.balance}
-                    key={asset.balance.id}
-                  />
+                  <UnsupportedToken key={asset.denom} token={asset} />
                 ))}
               </Flex>
             </Flex>

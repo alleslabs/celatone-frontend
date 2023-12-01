@@ -2,30 +2,12 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import {
-  useCelatoneApp,
-  useBaseApiRoute,
-  CELATONE_QUERY_KEYS,
-} from "lib/app-provider";
+import { useCelatoneApp, CELATONE_QUERY_KEYS } from "lib/app-provider";
 import {
   getAccountIdByAddressQueryDocument,
   getAccountTypeByAddressQueryDocument,
 } from "lib/query";
-import type { AccountType, Addr, Balance, Nullable, Option } from "lib/types";
-
-import { getAccountBalanceInfo } from "./account";
-
-export const useAccountBalances = (
-  address: Addr
-): UseQueryResult<Balance[]> => {
-  const balancesApiRoute = useBaseApiRoute("balances");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_BALANCES_INFO, address, balancesApiRoute],
-    async () => getAccountBalanceInfo(balancesApiRoute, address as Addr),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
-  );
-};
+import type { AccountType, Addr, Nullable, Option } from "lib/types";
 
 export const useAccountId = (
   walletAddress: Option<Addr>

@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
 - [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
 - [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list
 - [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
