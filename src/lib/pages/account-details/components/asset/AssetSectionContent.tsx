@@ -1,10 +1,10 @@
 import { Grid, Text } from "@chakra-ui/react";
 
 import { TokenCard } from "lib/components/token";
-import type { Option, TokenWithValue } from "lib/types";
+import type { TokenWithValue } from "lib/types";
 
 interface AssetSectionContentProps {
-  supportedAssets: Option<TokenWithValue[]>;
+  supportedAssets: TokenWithValue[];
   error: Error;
 }
 
@@ -19,7 +19,7 @@ export const AssetSectionContent = ({
       </Text>
     );
 
-  return supportedAssets?.length ? (
+  return supportedAssets.length ? (
     <Grid
       gridGap={4}
       gridTemplateColumns={{ base: "1 fr", md: "repeat(4, 1fr)" }}

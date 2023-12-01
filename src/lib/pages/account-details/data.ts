@@ -169,14 +169,16 @@ export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
   });
   const { data: movePoolInfos } = useMovePoolInfos();
 
-  const balances = accountBalances?.map<TokenWithValue>((balance) =>
-    coinToTokenWithValue(
-      balance.denom,
-      balance.amount,
-      assetInfos,
-      movePoolInfos
+  const balances = accountBalances
+    ?.map<TokenWithValue>((balance) =>
+      coinToTokenWithValue(
+        balance.denom,
+        balance.amount,
+        assetInfos,
+        movePoolInfos
+      )
     )
-  );
+    .sort(compareTokenWithValues);
 
   // Supported assets should order by descending value
   const {
