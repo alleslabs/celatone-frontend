@@ -49,7 +49,10 @@ const Header = () => {
       <Searchbar />
       <Flex gap={4}>
         <FaucetBtn />
-        <Menu onOpen={() => track(AmpEvent.USE_SELECT_NETWORK)}>
+        <Menu
+          onOpen={() => track(AmpEvent.USE_SELECT_NETWORK)}
+          autoSelect={false}
+        >
           <MenuButton
             pl={4}
             pr={2}
@@ -84,14 +87,7 @@ const Header = () => {
               return (
                 <MenuItem
                   key={chainId}
-                  onClick={() => {
-                    selectChain(chainId);
-                  }}
-                  flexDirection="column"
-                  alignItems="flex-start"
-                  _hover={{
-                    backgroundColor: "gray.800",
-                  }}
+                  onClick={() => selectChain(chainId)}
                   transition="all 0.25s ease-in-out"
                   isDisabled={noConfig}
                 >
