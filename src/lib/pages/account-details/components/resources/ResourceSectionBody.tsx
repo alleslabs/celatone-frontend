@@ -1,4 +1,4 @@
-import { Accordion, Badge, Button, Flex, Heading } from "@chakra-ui/react";
+import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -24,7 +24,6 @@ export const ResourceSectionBody = ({
   isLoading,
 }: ResourceSectionBodyProps) => {
   const router = useRouter();
-
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
   const selectedAccountParam = getFirstQueryParam(
@@ -36,30 +35,18 @@ export const ResourceSectionBody = ({
     resourcesByOwner?.[0]?.resources[0]?.group
   );
 
-  const updateExpandedIndexes = (indexes: number[]) =>
-    setExpandedIndexes(indexes);
-
+  const selectedResource = resourcesByOwner
+    ?.find((resource) => resource.owner === selectedAccountParam)
+    ?.resources?.find((resource) => resource.group === selectedNameParam);
   useEffect(() => {
-    const resourcesLength = resourcesByOwner
-      ?.find((resource) => resource.owner === selectedAccountParam)
-      ?.resources?.find((resource) => resource.group === selectedNameParam)
-      ?.items.length;
-
-    if (resourcesLength === 1) {
-      setExpandedIndexes([0]);
-    } else {
-      setExpandedIndexes([]);
-    }
-  }, [resourcesByOwner, selectedNameParam, selectedAccountParam]);
+    setExpandedIndexes(selectedResource?.items.length === 1 ? [0] : []);
+  }, [resourcesByOwner, selectedResource]);
 
   if (isLoading) return <Loading />;
   if (!resourcesByOwner) return <ErrorFetching />;
   if (!resourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
 
-  const selectedResource = resourcesByOwner
-    ?.find((resource) => resource.owner === selectedAccountParam)
-    ?.resources?.find((resource) => resource.group === selectedNameParam);
   return (
     <>
       <ResourceLeftPanel
@@ -67,7 +54,7 @@ export const ResourceSectionBody = ({
         resourcesByOwner={resourcesByOwner}
       />
       {selectedResource && (
-        <Flex direction="column" w="full">
+        <Box w="full">
           <Flex
             justifyContent="space-between"
             alignItems="center"
@@ -107,16 +94,16 @@ export const ResourceSectionBody = ({
             allowMultiple
             width="full"
             index={expandedIndexes}
-            onChange={updateExpandedIndexes}
+            onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           >
             {selectedResource.items.map((item) => (
               <ResourceDetailCard
-                resourceData={item}
                 key={`${item.structTag}`}
+                resourceData={item}
               />
             ))}
           </Accordion>
-        </Flex>
+        </Box>
       )}
     </>
   );

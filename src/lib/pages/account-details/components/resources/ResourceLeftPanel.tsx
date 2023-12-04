@@ -69,25 +69,21 @@ export const ResourceLeftPanel = ({
   const filteredResourcesByOwner = useMemo(() => {
     if (!keyword) return resourcesByOwner;
 
-    return resourcesByOwner?.map((each) => {
-      return {
-        ...each,
-        resources: each.resources.filter((resource) =>
-          resource.group
-            .toLowerCase()
-            .includes(keyword.trim().toLocaleLowerCase())
-        ),
-      };
-    });
+    return resourcesByOwner?.map((each) => ({
+      ...each,
+      resources: each.resources.filter((resource) =>
+        resource.group
+          .toLowerCase()
+          .includes(keyword.trim().toLocaleLowerCase())
+      ),
+    }));
   }, [keyword, resourcesByOwner]);
 
-  const selectedIndex = !selectedAccountParam
-    ? 0
-    : filteredResourcesByOwner.findIndex(
-        (item) => item.owner === selectedAccountParam
-      );
+  const selectedIndex = filteredResourcesByOwner.findIndex(
+    (item) => item.owner === selectedAccountParam
+  );
   const selectedGroup = filteredResourcesByOwner[selectedIndex];
-  const selectedResources = selectedGroup.resources.find(
+  const selectedResources = selectedGroup?.resources.find(
     (item) => item.group === selectedNameParam
   );
 
@@ -139,21 +135,17 @@ export const ResourceLeftPanel = ({
                   ))}
                 </Flex>
               ) : (
-                <Flex
-                  w="full"
+                <Text
+                  variant="body2"
+                  color="text.dark"
+                  textAlign="center"
                   p={4}
-                  justifyContent="center"
-                  alignItems="center"
                   border="1px solid"
                   borderRadius="8px"
                   borderColor="gray.700"
-                  direction="column"
-                  gap={4}
                 >
-                  <Text variant="body2" color="text.dark" textAlign="center">
-                    No matching resource found
-                  </Text>
-                </Flex>
+                  No matching resource found
+                </Text>
               )}
             </AccordionPanel>
           </AccordionItem>
