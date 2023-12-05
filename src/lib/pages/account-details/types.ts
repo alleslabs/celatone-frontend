@@ -1,4 +1,4 @@
-import type { Option, TokenWithValue, Validator } from "lib/types";
+import { type Option, type TokenWithValue, type Validator } from "lib/types";
 
 import type {
   Delegation,

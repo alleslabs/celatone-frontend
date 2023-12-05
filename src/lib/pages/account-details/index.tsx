@@ -24,17 +24,12 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDetailsTableCounts } from "lib/model/account";
-import { useAccountId } from "lib/services/accountService";
+import { useAccountId, useAccountInfo } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
-import { useICNSNamesByAddress } from "lib/services/nameService";
-import {
-  usePublicProjectByAccountAddress,
-  usePublicProjectBySlug,
-} from "lib/services/publicProjectService";
-import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import type { HexAddr, HumanAddr, Option } from "lib/types";
+import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
@@ -49,25 +44,13 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
+import { TabIndex, zAccDetailQueryParams } from "./schema";
 
 const tableHeaderId = "accountDetailsTab";
 
-enum TabIndex {
-  Overview = "overview",
-  Assets = "assets",
-  Delegations = "delegations",
-  Txs = "txs",
-  Codes = "codes",
-  Contracts = "contracts",
-  Admins = "admins",
-  Resources = "resources",
-  Modules = "modules",
-  Proposals = "proposals",
-}
-
 export interface AccountDetailsBodyProps {
   accountAddressParam: string;
-  tab: TabIndex;
+  tabParam: string;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
@@ -77,8 +60,11 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({
   accountAddressParam,
-  tab,
+  tabParam,
 }: AccountDetailsBodyProps) => {
+  // ------------------------------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
   const {
     chainConfig: {
       extra: { disableDelegation },
@@ -90,15 +76,14 @@ const AccountDetailsBody = ({
   // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
-
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
-  const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
-  const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
-  const { data: accountId } = useAccountId(accountAddress);
-  const { data: icnsName } = useICNSNamesByAddress(accountAddress);
 
-  const publicDetail = publicInfoBySlug?.details;
+  // ------------------------------------------//
+  // ------------------QUERIES-----------------//
+  // ------------------------------------------//
+  const { data: accountId } = useAccountId(accountAddress);
+  const { data: accountInfo } = useAccountInfo(accountAddress);
 
   const {
     tableCounts,
@@ -124,9 +109,12 @@ const AccountDetailsBody = ({
       address: accountAddress,
     });
 
+  // ------------------------------------------//
+  // -----------------CALLBACKS----------------//
+  // ------------------------------------------//
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
-      if (nextTab === tab) return;
+      if (nextTab === tabParam) return;
       trackUseTab(nextTab);
       navigate({
         pathname: "/accounts/[accountAddress]/[tab]",
@@ -139,11 +127,17 @@ const AccountDetailsBody = ({
         },
       });
     },
-    [accountAddress, hexAddress, navigate, tab]
+    [accountAddress, hexAddress, navigate, tabParam]
   );
 
+  // ------------------------------------------//
+  // ----------------SIDE EFFECTS--------------//
+  // ------------------------------------------//
   useEffect(() => {
-    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
+    if (
+      router.isReady &&
+      !Object.values(TabIndex).includes(tabParam as TabIndex)
+    ) {
       navigate({
         replace: true,
         pathname: "/accounts/[accountAddress]/[tab]",
@@ -156,18 +150,18 @@ const AccountDetailsBody = ({
         },
       });
     }
-  }, [accountAddress, hexAddress, navigate, router.isReady, tab]);
+  }, [accountAddress, hexAddress, navigate, router.isReady, tabParam]);
 
   return (
     <>
       <Flex direction="column" mb={6}>
-        {publicDetail && (
+        {accountInfo?.projectInfo && accountInfo?.publicInfo && (
           <Breadcrumb
             items={[
               { text: "Public Projects", href: "/projects" },
               {
-                text: publicDetail?.name,
-                href: `/projects/${publicInfo?.slug}`,
+                text: accountInfo.projectInfo.name,
+                href: `/projects/${accountInfo.publicInfo.slug}`,
               },
               { text: truncate(accountAddress) },
             ]}
@@ -175,17 +169,14 @@ const AccountDetailsBody = ({
           />
         )}
         <AccountHeader
-          publicName={publicInfo?.name}
-          publicDetail={publicDetail}
-          icnsName={icnsName}
+          accountInfo={accountInfo}
           accountAddress={accountAddress}
           hexAddress={hexAddress}
-          publicDescription={publicInfo?.description}
         />
       </Flex>
 
       <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
+        index={Object.values(TabIndex).indexOf(tabParam as TabIndex)}
         isLazy
         lazyBehavior="keepMounted"
       >
@@ -281,7 +272,7 @@ const AccountDetailsBody = ({
               gap={{ base: 4, md: 6 }}
               my={{ base: 0, md: 8 }}
             >
-              {publicInfo?.description && (
+              {accountInfo?.publicInfo?.description && (
                 <Flex
                   direction="column"
                   bg="gray.900"
@@ -298,7 +289,7 @@ const AccountDetailsBody = ({
                     </Text>
                   </Flex>
                   <Text variant="body2" color="text.main" mb={1}>
-                    {publicInfo?.description}
+                    {accountInfo.publicInfo.description}
                   </Text>
                 </Flex>
               )}
@@ -447,24 +438,26 @@ const AccountDetails = () => {
   const router = useRouter();
   const { isSomeValidAddress } = useValidateAddress();
 
-  const accountAddressParam = getFirstQueryParam(
-    router.query.accountAddress
-  ).toLowerCase() as Addr;
-  // TODO: fix assertion later
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+  const validated = zAccDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
-    if (router.isReady && tab) track(AmpEvent.TO_ACCOUNT_DETAIL, { tab });
-  }, [router.isReady, tab]);
+    if (router.isReady && validated.success && validated.data.tab)
+      track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tab });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  if (!validated.success) return <InvalidAccount />;
+
+  const { accountAddress, tab } = validated.data;
 
   return (
     <PageContainer>
-      {!isSomeValidAddress(accountAddressParam) ? (
+      {!isSomeValidAddress(accountAddress) ? (
         <InvalidAccount />
       ) : (
         <AccountDetailsBody
-          accountAddressParam={accountAddressParam}
-          tab={tab}
+          accountAddressParam={accountAddress}
+          tabParam={tab}
         />
       )}
     </PageContainer>
