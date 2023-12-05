@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#649](https://github.com/alleslabs/celatone-frontend/pull/649) Add testnet minitias support
 - [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add Amplitude for module detail and breadcrumb
 
 ### Improvements
