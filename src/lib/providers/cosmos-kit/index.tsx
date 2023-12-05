@@ -12,6 +12,10 @@ import {
   localosmosis,
   localosmosisAsset,
 } from "lib/chain-registry/localosmosis";
+import {
+  minitiatesnetAssets,
+  minitiatestnets,
+} from "lib/chain-registry/minitiatestnets";
 import { sei, seiAssets } from "lib/chain-registry/sei";
 import {
   terra2testnet,
@@ -41,13 +45,21 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider
-      chains={[...chains, localosmosis, sei, terra2testnet, ...initiatestnet]}
+      chains={[
+        ...chains,
+        localosmosis,
+        sei,
+        terra2testnet,
+        ...initiatestnet,
+        ...minitiatestnets,
+      ]}
       assetLists={[
         ...assets,
         localosmosisAsset,
         seiAssets,
         terra2testnetAssets,
         ...initiatestnetAssets,
+        ...minitiatesnetAssets,
       ]}
       wallets={wallets}
       endpointOptions={{

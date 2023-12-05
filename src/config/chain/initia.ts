@@ -2,6 +2,9 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
 import type { ChainConfigs } from "./types";
 
+const moveDecoderApi =
+  "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
+
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "stone-11": {
     chain: "initia",
@@ -22,7 +25,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: "https://initia-api-jiod42ec2q-as.a.run.app/decode_module",
+        decodeApi: moveDecoderApi,
       },
       pool: {
         enabled: false,
@@ -70,7 +73,54 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: "https://initia-api-jiod42ec2q-as.a.run.app/decode_module",
+        decodeApi: moveDecoderApi,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: true,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom: "uinit",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    explorerLink: {
+      validator: "https://next.app.initia.tech/validator",
+      proposal: "https://next.app.initia.tech/proposal",
+    },
+    extra: {},
+  },
+  "game-3": {
+    chain: "initia",
+    registryChainName: "game3",
+    prettyName: "Marketplace Minitia",
+    lcd: "https://game-3-minitia-rest.initia.tech",
+    rpc: "https://game-3-minitia-rpc.initia.tech",
+    indexer: "https://game-3-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: moveDecoderApi,
       },
       pool: {
         enabled: false,
