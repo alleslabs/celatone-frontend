@@ -129,7 +129,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       gov: {
-        enabled: true,
+        enabled: false,
       },
       nft: {
         enabled: true,
@@ -147,6 +147,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://next.app.initia.tech/validator",
       proposal: "https://next.app.initia.tech/proposal",
     },
-    extra: {},
+    extra: { disableDelegation: true },
   },
 };
