@@ -55,6 +55,11 @@ export const TransactionsTableMobileCard = ({
               IBC
             </Tag>
           )}
+          {transaction.isOpinit && (
+            <Tag variant="accent-dark" size="sm" w={12} justifyContent="center">
+              OPInit
+            </Tag>
+          )}
         </Flex>
       }
       bottomContent={

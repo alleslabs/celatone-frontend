@@ -1,5 +1,6 @@
 import type {
   BaseTxFilters,
+  InitiaTxFilters,
   LVPair,
   MoveTxFilters,
   TxFilters,
@@ -57,6 +58,10 @@ export const DEFAULT_MOVE_TX_FILTERS: MoveTxFilters = {
   isMoveUpgrade: false,
   isMoveExecute: false,
   isMoveScript: false,
+};
+
+export const INITIA_TX_FILTERS: InitiaTxFilters = {
+  isOpinit: false,
 };
 
 export const DEFAULT_TX_FILTERS: TxFilters = {

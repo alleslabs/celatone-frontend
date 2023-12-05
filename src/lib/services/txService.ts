@@ -148,6 +148,7 @@ export const useTxsByAddressPagination = (
             transaction.is_signer
           ),
           isIbc: transaction.transaction.is_ibc,
+          isOpinit: transaction.transaction.is_opinit,
           isInstantiate: transaction.transaction.is_instantiate ?? false,
         }))
       );

@@ -15625,6 +15625,7 @@ export type GetTxsByAddressPaginationQuery = {
       messages: any;
       is_send: boolean;
       is_ibc: boolean;
+      is_opinit: boolean;
       is_clear_admin?: boolean;
       is_execute?: boolean;
       is_instantiate?: boolean;
@@ -21537,6 +21538,10 @@ export const GetTxsByAddressPaginationDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "is_ibc" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_opinit" },
                       },
                       {
                         kind: "Field",

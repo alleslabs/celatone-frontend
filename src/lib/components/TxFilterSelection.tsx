@@ -16,12 +16,17 @@ import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
 import { useMemo, useState, useRef, forwardRef } from "react";
 
-import { useMoveConfig, useWasmConfig } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useMoveConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import {
   DEFAULT_BASE_TX_FILTERS,
   DEFAULT_MOVE_TX_FILTERS,
   DEFAULT_WASM_TX_FILTERS,
+  INITIA_TX_FILTERS,
 } from "lib/data";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
@@ -50,6 +55,7 @@ const listItemProps: CSSProperties = {
 const BASE_OPTIONS = Object.keys(DEFAULT_BASE_TX_FILTERS);
 const WASM_OPTIONS = Object.keys(DEFAULT_WASM_TX_FILTERS);
 const MOVE_OPTIONS = Object.keys(DEFAULT_MOVE_TX_FILTERS);
+const INITIA_OPTIONS = Object.keys(INITIA_TX_FILTERS);
 
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
@@ -80,13 +86,17 @@ export const TxFilterSelection = forwardRef<
     const wasm = useWasmConfig({ shouldRedirect: false });
     const move = useMoveConfig({ shouldRedirect: false });
 
+    const { chain } = useCurrentChain();
+    const isInitia = chain.bech32_prefix === "init";
+
     const options = useMemo(
       () => [
         ...BASE_OPTIONS,
         ...(wasm.enabled ? WASM_OPTIONS : []),
         ...(move.enabled ? MOVE_OPTIONS : []),
+        ...(isInitia ? INITIA_OPTIONS : []),
       ],
-      [wasm.enabled, move.enabled]
+      [wasm.enabled, move.enabled, isInitia]
     );
 
     const partialResults = useMemo(

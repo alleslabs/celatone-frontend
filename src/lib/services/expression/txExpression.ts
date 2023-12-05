@@ -7,6 +7,7 @@ import { isTxHash } from "lib/utils";
 const actions = {
   isSend: "is_send",
   isIbc: "is_ibc",
+  isOpinit: "is_opinit",
   isExecute: "is_execute",
   isInstantiate: "is_instantiate",
   isUpload: "is_store_code",
