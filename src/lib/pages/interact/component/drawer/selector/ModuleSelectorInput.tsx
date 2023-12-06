@@ -69,28 +69,32 @@ export const ModuleSelectorInput = ({
   });
 
   const handleSubmit = useCallback(() => {
+    trackUseModuleSelectionInputFill(addr, !!moduleName, !!functionName);
+
     if (keyword === selectedAddress.address || keyword === selectedAddress.hex)
       return setMode("display");
 
     const err = validateModuleInput(keyword);
     return err ? setError(err) : refetch();
   }, [
+    addr,
+    moduleName,
+    functionName,
+    keyword,
     selectedAddress.address,
     selectedAddress.hex,
-    keyword,
-    refetch,
-    validateModuleInput,
     setMode,
+    validateModuleInput,
+    refetch,
   ]);
 
   const handleKeydown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         handleSubmit();
-        trackUseModuleSelectionInputFill(addr, !!moduleName, !!functionName);
       }
     },
-    [functionName, handleSubmit, moduleName, addr]
+    [handleSubmit]
   );
 
   return (
@@ -118,14 +122,7 @@ export const ModuleSelectorInput = ({
       <Flex gap={2}>
         <Button
           variant="primary"
-          onClick={() => {
-            handleSubmit();
-            trackUseModuleSelectionInputFill(
-              addr,
-              !!moduleName,
-              !!functionName
-            );
-          }}
+          onClick={() => handleSubmit()}
           isDisabled={!keyword.length || isFetching}
           isLoading={isFetching}
         >

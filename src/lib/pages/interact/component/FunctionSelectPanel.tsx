@@ -62,7 +62,7 @@ const RenderFunctions = ({
         )}
         selectedFn={selectedFn}
         setSelectedFn={setSelectedFn}
-        amptracktab={tab}
+        amptrackTab={tab}
       />
       {tab === InteractionTabs.EXECUTE_MODULE && (
         <FunctionAccordion
@@ -73,7 +73,7 @@ const RenderFunctions = ({
           )}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
-          amptracktab={tab}
+          amptrackTab={tab}
         />
       )}
     </Accordion>

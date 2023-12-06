@@ -18,7 +18,7 @@ interface FunctionAccordionProps {
   isEmpty: boolean;
   triggerText: string;
   selectedFn: Option<ExposedFunction>;
-  amptracktab: string;
+  amptrackTab: string;
   setSelectedFn: (fn: ExposedFunction) => void;
 }
 
@@ -28,7 +28,7 @@ export const FunctionAccordion = ({
   triggerText,
   selectedFn,
   setSelectedFn,
-  amptracktab,
+  amptrackTab,
 }: FunctionAccordionProps) => (
   <AccordionItem bg="background.main" py={1}>
     {({ isExpanded }) => (
@@ -39,7 +39,7 @@ export const FunctionAccordion = ({
               trackUseExpand({
                 action: isExpanded ? "collapse" : "expand",
                 component: "module_interaction_function_accordion",
-                info: { Tab: amptracktab },
+                info: { Tab: amptrackTab },
                 section: triggerText,
               });
             }}

@@ -211,7 +211,7 @@ execute();
         ml={ml}
         gap={1}
         onClick={() => {
-          track(AmpEvent.USE_CONTRACT_SNIPPET);
+          track(AmpEvent.USE_CONTRACT_SNIPPET, { actionType: type });
           onOpen();
         }}
       >
@@ -267,6 +267,7 @@ execute();
                           value={item.snippet}
                           amptrackSection="code_snippet"
                           amptrackSubSection={item.name}
+                          amptrackInfo={type}
                         />
                       </Box>
                     </Box>
