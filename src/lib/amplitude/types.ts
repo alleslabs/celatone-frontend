@@ -64,6 +64,7 @@ export enum AmpEvent {
   TO_MODULE_DETAIL = "To Module Detail",
   TO_MODULE_INTERACTION = "To Module Interaction",
   TO_PUBLISH_MODULE = "To Publish Module",
+  TO_DEPLOY_SCRIPT = "To Deploy Script",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -77,6 +78,8 @@ export enum AmpEvent {
   ACTION_ATTACH_JSON = "Action Attach Json",
   ACTION_MOVE_VIEW = "Action Move View",
   ACTION_MOVE_EXECUTE = "Action Move Execute",
+  ACTION_MOVE_PUBLISH = "Action Move Publish",
+  ACTION_EXECUTE_SCRIPT = "Action Execute Script",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",
@@ -153,6 +156,17 @@ export enum AmpEvent {
   USE_MODULE_SELECTION_FUNCTION = "Use Module Selection Function",
   USE_MODULE_SELECTION_MODULE = "Use Module Selection Module",
   USE_FUNCTION_SELECTION = "Use Function Selection",
+  USE_PUBLISH_POLICY_SELECTION = "Use Publish Policy Selection",
+  USE_ADD_MODULE_UPLOAD_BOX = "Use Add Module Upload Box",
+  USE_REMOVE_MODULE_UPLOAD_BOX = "Use Remove Module Upload Box",
+  USE_UPLOAD_FILE = "Use Upload File",
+  USE_REMOVE_UPLOAD_FILE = "Use Remove Upload File",
+  USE_VIEW_CONDITION = "Use View Condition",
+  USE_UPLOAD_CARD_MOVE_UP = "Use Upload Card Move Up",
+  USE_UPLOAD_CARD_MOVE_DOWN = "Use Upload Card Move Down",
+  USE_PUBLISH_MORE_MODULE_BUTTON = "Use Publish More Module Button",
+  USE_PUBLISHED_MODULE_ACTION = "Use Publish Module Action",
+
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",

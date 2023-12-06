@@ -2,6 +2,7 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import plur from "plur";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
@@ -61,7 +62,10 @@ export const PublishCompleted = ({
       mt={6}
       rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
       w="full"
-      onClick={resetState}
+      onClick={() => {
+        track(AmpEvent.USE_PUBLISH_MORE_MODULE_BUTTON);
+        resetState();
+      }}
     >
       Publish more modules
     </Button>

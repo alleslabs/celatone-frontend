@@ -49,7 +49,7 @@ class Amplitude {
           language: true,
           platform: true,
         },
-        serverUrl: "/amplitude",
+        // serverUrl: "/amplitude",
       });
     }
 
