@@ -37,6 +37,11 @@ export const TransactionsTableRow = ({
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
 
+  const { messages } = transaction;
+  const isOpinit = Boolean(
+    messages.find(({ type }) => type.includes("opinit"))
+  );
+
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -86,7 +91,7 @@ export const TransactionsTableRow = ({
                 IBC
               </Tag>
             )}
-            {transaction.isOpinit && (
+            {isOpinit && (
               <Tag
                 variant="accent-dark"
                 size="sm"
