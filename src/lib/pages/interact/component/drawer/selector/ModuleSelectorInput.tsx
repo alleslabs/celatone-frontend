@@ -122,7 +122,7 @@ export const ModuleSelectorInput = ({
       <Flex gap={2}>
         <Button
           variant="primary"
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
           isDisabled={!keyword.length || isFetching}
           isLoading={isFetching}
         >
