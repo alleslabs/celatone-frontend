@@ -59,8 +59,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "initiatestnet12-1",
     prettyName: "Initia Testnet 12-1",
-    lcd: "https://next-rest.initia.tech",
-    rpc: "https://next-rpc.initia.tech:443",
+    lcd: "https://next-stone-rest.initia.tech",
+    rpc: "https://next-stone-rpc.initia.tech:443",
     indexer: "https://stone-12-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {

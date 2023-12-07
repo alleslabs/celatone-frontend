@@ -85,12 +85,12 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://next-rpc.initia.tech:443",
+          address: "https://next-stone-rpc.initia.tech:443",
         },
       ],
       rest: [
         {
-          address: "https://next-rest.initia.tech",
+          address: "https://next-stone-rest.initia.tech",
         },
       ],
     },
