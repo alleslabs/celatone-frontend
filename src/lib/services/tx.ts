@@ -99,13 +99,11 @@ export const queryTxData = async (
 
 const zTxsResponseItem = z
   .object({
-    block: z.object({
-      height: z.number().nonnegative(),
-      timestamp: zUtcDate,
-    }),
+    height: z.number().nonnegative(),
+    created: zUtcDate,
     hash: z.string(),
     messages: z.any().array(),
-    signer: zAddr,
+    sender: zAddr,
     success: z.boolean(),
     is_ibc: z.boolean(),
     is_send: z.boolean(),
@@ -125,10 +123,10 @@ const zTxsResponseItem = z
   .transform<Transaction>((val) => ({
     hash: parseTxHash(val.hash),
     messages: snakeToCamel(val.messages),
-    sender: val.signer,
+    sender: val.sender,
     isSigner: false,
-    height: val.block.height,
-    created: val.block.timestamp,
+    height: val.height,
+    created: val.created,
     success: val.success,
     actionMsgType: getActionMsgType([
       val.is_send,
