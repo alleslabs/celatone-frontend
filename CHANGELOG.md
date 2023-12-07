@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
 - [#650](https://github.com/alleslabs/celatone-frontend/pull/650) api v1 - account info on account detail page
 - [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
 - [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
