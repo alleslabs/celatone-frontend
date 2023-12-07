@@ -51,13 +51,13 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
-  "stone-12": {
+  "stone-12-1": {
     chain: "initia",
-    registryChainName: "initiatestnet12",
-    prettyName: "Initia Testnet 12",
-    lcd: "https://stone-12-rest.initia.tech",
-    rpc: "https://stone-12-rpc.initia.tech:443",
-    indexer: "https://stone-12-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "initiatestnet12-1",
+    prettyName: "Initia Testnet 12-1",
+    lcd: "https://next-stone-rest.initia.tech",
+    rpc: "https://next-stone-rpc.initia.tech:443",
+    indexer: "https://stone-12-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
