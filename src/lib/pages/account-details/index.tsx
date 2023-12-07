@@ -309,7 +309,7 @@ const AccountDetailsBody = ({
               borderBottomColor="gray.700"
             >
               <AssetsSection
-                walletAddress={accountAddress}
+                address={accountAddress}
                 onViewMore={handleTabChange(TabIndex.Assets)}
               />
             </Flex>
@@ -381,7 +381,7 @@ const AccountDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <AssetsSection walletAddress={accountAddress} />
+            <AssetsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />

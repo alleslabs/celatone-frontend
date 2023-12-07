@@ -1,11 +1,10 @@
 import type { Big } from "big.js";
 import big from "big.js";
-import { isUndefined } from "lodash";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
-import { useAccountBalances } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
+import { useBalances } from "lib/services/balanceService";
 import { useCodeListByWalletAddressPagination } from "lib/services/codeService";
 import {
   useContractListByAdminPagination,
@@ -20,26 +19,25 @@ import {
   useStakingParams,
   useUnbondings,
 } from "lib/services/delegationService";
-import { useLPShareInfo } from "lib/services/poolService";
+import { useMovePoolInfos } from "lib/services/move";
 import { useValidators } from "lib/services/validatorService";
 import type {
-  BalanceWithAssetInfo,
+  Addr,
   CodeInfo,
   ContractInfo,
   HumanAddr,
   Option,
   TokenWithValue,
   USD,
-  ValidatorInfo,
+  Validator,
 } from "lib/types";
 import {
-  calAssetValueWithPrecision,
-  calTotalValue,
   addrToValoper,
   addTokenWithValue,
   coinToTokenWithValue,
   totalValueTokenWithValue,
   compareTokenWithValues,
+  filterSupportedTokens,
 } from "lib/utils";
 
 import type { UserDelegationsData } from "./types";
@@ -55,8 +53,9 @@ interface AccountCodes {
 }
 
 interface AccountAssetInfos {
-  supportedAssets: Option<BalanceWithAssetInfo[]>;
-  unsupportedAssets: Option<BalanceWithAssetInfo[]>;
+  supportedAssets: TokenWithValue[];
+  totalSupportedAssetsValue: Option<USD<Big>>;
+  unsupportedAssets: TokenWithValue[];
   isLoading: boolean;
   totalData: Option<number>;
   error: Error;
@@ -67,19 +66,19 @@ export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
 }
 
 export interface Delegation {
-  validator: ValidatorInfo;
+  validator: Validator;
   balances: TokenWithValue[];
 }
 
 export interface Unbonding {
-  validator: ValidatorInfo;
+  validator: Validator;
   completionTime: Date;
   balances: TokenWithValue[];
 }
 
 export interface Redelegation {
-  srcValidator: ValidatorInfo;
-  dstValidator: ValidatorInfo;
+  srcValidator: Validator;
+  dstValidator: Validator;
   completionTime: Date;
   balances: TokenWithValue[];
 }
@@ -163,66 +162,39 @@ export const useAccountCodes = (
   };
 };
 
-export const useUserAssetInfos = (
-  walletAddress: HumanAddr
-): AccountAssetInfos => {
-  const {
-    data: balances,
-    isLoading,
-    error,
-  } = useAccountBalances(walletAddress);
-  const { data: assetInfos } = useAssetInfos({ withPrices: true });
-  const { data: lpMap } = useLPShareInfo();
+export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
+  const { data: accountBalances, isLoading, error } = useBalances(address);
+  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
+    withPrices: true,
+  });
+  const { data: movePoolInfos } = useMovePoolInfos();
 
-  const contractBalancesWithAssetInfos = balances
-    ?.filter((bal) => Number(bal.amount))
-    .map<BalanceWithAssetInfo>((balance): BalanceWithAssetInfo => {
-      const assetInfo = assetInfos?.[balance.id];
-      const lpDetails = lpMap?.[balance.id];
-      return lpDetails
-        ? {
-            balance: {
-              ...balance,
-              price: lpDetails.lpPricePerShare.toNumber(),
-              symbol: lpDetails.symbol,
-              precision: lpDetails.precision,
-            },
-            assetInfo,
-            isLPToken: true,
-            lpLogo: lpDetails.image,
-          }
-        : {
-            balance,
-            assetInfo,
-            isLPToken: false,
-          };
-    });
+  const balances = accountBalances
+    ?.map<TokenWithValue>((balance) =>
+      coinToTokenWithValue(
+        balance.denom,
+        balance.amount,
+        assetInfos,
+        movePoolInfos
+      )
+    )
+    .sort(compareTokenWithValues);
 
   // Supported assets should order by descending value
-  const supportedAssets = contractBalancesWithAssetInfos
-    ?.filter(
-      (balance) =>
-        !isUndefined(balance.assetInfo) ||
-        !isUndefined(lpMap?.[balance.balance.id])
-    )
-    .sort((a, b) =>
-      !isUndefined(a.balance.price) && !isUndefined(b.balance.price)
-        ? calAssetValueWithPrecision(b.balance).cmp(
-            calAssetValueWithPrecision(a.balance)
-          )
-        : 1
-    );
-
-  const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
-    (balance) =>
-      isUndefined(balance.assetInfo) && isUndefined(lpMap?.[balance.balance.id])
-  );
+  const {
+    supportedTokens: supportedAssets,
+    unsupportedTokens: unsupportedAssets,
+  } = filterSupportedTokens(balances);
+  const totalSupportedAssetsValue = balances
+    ? totalValueTokenWithValue(supportedAssets, big(0) as USD<Big>)
+    : undefined;
 
   return {
     supportedAssets,
+    totalSupportedAssetsValue,
     unsupportedAssets,
-    isLoading,
-    totalData: contractBalancesWithAssetInfos?.length,
+    isLoading: isLoading || isAssetInfosLoading,
+    totalData: balances?.length,
     error: error as Error,
   };
 };
@@ -245,25 +217,25 @@ const calBonded = (
   );
 };
 
-export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
+export const useUserDelegationInfos = (address: Addr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
-  const { data: lpMap, isFetching: isLpMapFetching } = useLPShareInfo();
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
+  const { data: lpMap, isFetching: isLpMapFetching } = useMovePoolInfos();
   const { data: validators, isLoading: isLoadingValidators } = useValidators();
 
   const { data: rawDelegations, isLoading: isLoadingRawDelegations } =
-    useDelegations(walletAddress);
+    useDelegations(address);
   const { data: rawUnbondings, isLoading: isLoadingRawUnbondings } =
-    useUnbondings(walletAddress);
+    useUnbondings(address);
   const { data: rawRewards, isLoading: isLoadingRawRewards } =
-    useDelegationRewards(walletAddress);
+    useDelegationRewards(address);
   const { data: rawRedelegations, isLoading: isLoadingRawRedelegations } =
-    useRedelegations(walletAddress);
+    useRedelegations(address);
   const { data: rawCommission, isLoading: isLoadingRawCommission } =
-    useCommission(addrToValoper(walletAddress));
+    useCommission(addrToValoper(address as HumanAddr));
 
   const isLoading =
     isLoadingRawStakingParams ||
@@ -301,7 +273,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     };
 
     data.isValidator = Object.keys(validators).includes(
-      addrToValoper(walletAddress)
+      addrToValoper(address as HumanAddr)
     );
 
     data.delegations = rawDelegations?.map<Delegation>((raw) => ({
@@ -423,13 +395,16 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   return data;
 };
 
-export const useAccountTotalValue = (walletAddress: HumanAddr) => {
+export const useAccountTotalValue = (address: Addr) => {
+  const defaultValue = big(0) as USD<Big>;
+
   const {
     chainConfig: {
       extra: { disableDelegation },
     },
   } = useCelatoneApp();
-  const { supportedAssets, isLoading } = useUserAssetInfos(walletAddress);
+  const { totalSupportedAssetsValue = defaultValue, isLoading } =
+    useUserAssetInfos(address);
   const {
     stakingParams,
     isLoading: isLoadingStakingParams,
@@ -439,16 +414,13 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     isLoadingRewards,
     totalCommission,
     isLoadingTotalCommission,
-  } = useUserDelegationInfos(walletAddress);
-
-  const defaultValue = big(0) as USD<Big>;
-
-  const totalAssetValue = supportedAssets
-    ? calTotalValue(supportedAssets)
-    : defaultValue;
+  } = useUserDelegationInfos(address);
 
   if (disableDelegation)
-    return { totalAccountValue: totalAssetValue, isLoading: false };
+    return {
+      totalAccountValue: totalSupportedAssetsValue,
+      isLoading: false,
+    };
 
   if (
     isLoading ||
@@ -464,7 +436,7 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     return { totalAccountValue: undefined, isLoading: false };
 
   return {
-    totalAccountValue: totalAssetValue
+    totalAccountValue: totalSupportedAssetsValue
       .add(totalValueTokenWithValue(totalBonded, defaultValue))
       .add(totalValueTokenWithValue(totalRewards, defaultValue))
       .add(totalValueTokenWithValue(totalCommission, defaultValue)) as USD<Big>,

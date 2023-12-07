@@ -1,12 +1,6 @@
 import axios from "axios";
 
-import type {
-  Addr,
-  Balance,
-  ContractAddr,
-  Option,
-  PublicInfo,
-} from "lib/types";
+import type { Addr, ContractAddr, Option, PublicInfo } from "lib/types";
 import { encode, libDecode } from "lib/utils";
 
 export interface ContractCw2InfoRaw {
@@ -72,16 +66,6 @@ export const queryContractCw2Info = async (
     `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
   return JSON.parse(libDecode(data.data)) as ContractCw2Info;
-};
-
-export const queryContractBalances = async (
-  balancesApiRoute: string,
-  contractAddress: ContractAddr
-): Promise<Balance[]> => {
-  const { data } = await axios.get<Balance[]>(
-    `${balancesApiRoute}/${contractAddress}`
-  );
-  return data;
 };
 
 export const queryPublicInfo = async (

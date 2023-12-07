@@ -4,7 +4,7 @@ import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import { getAssetInfos } from "lib/services/asset";
 import type { AssetInfo, Option } from "lib/types";
 
-export type AssetInfosOpt = Option<{ [key: string]: AssetInfo }>;
+export type AssetInfosOpt = Option<Record<string, AssetInfo>>;
 
 export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   const assetsApiRoute = useBaseApiRoute("assets");

@@ -9,7 +9,8 @@ import type { AddressReturnType } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { TxReceipt, Option, AssetInfo } from "lib/types";
+import type { AssetInfosOpt } from "lib/services/assetService";
+import type { TxReceipt, Option } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import {
   voteOption,
@@ -36,7 +37,7 @@ import {
 export const generateReceipts = (
   { msgBody, log }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType,
-  assetInfos: Option<{ [key: string]: AssetInfo }>
+  assetInfos: AssetInfosOpt
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Option<TxReceipt | null | false>[] => {
   const { "@type": type, ...body } = msgBody;

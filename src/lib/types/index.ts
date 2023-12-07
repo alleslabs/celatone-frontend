@@ -17,6 +17,7 @@ export * from "./projects";
 export * from "./proposal";
 export * from "./rpc";
 export * from "./staking";
+export * from "./time";
 export * from "./upload";
 export * from "./validator";
 export * from "./wallet";
