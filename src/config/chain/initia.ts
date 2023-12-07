@@ -57,7 +57,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   },
   "stone-12-1": {
     chain: "initia",
-    registryChainName: "initiatestnet12",
+    registryChainName: "initiatestnet12-1",
     prettyName: "Initia Testnet 12-1",
     lcd: "https://next-rest.initia.tech",
     rpc: "https://next-rpc.initia.tech:443",

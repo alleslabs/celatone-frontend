@@ -50,11 +50,11 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: "../chain.schema.json",
-    chain_name: "initiatestnet12",
+    chain_name: "initiatestnet12-1",
     status: "live",
     network_type: "testnet",
-    pretty_name: "Initia Testnet 12",
-    chain_id: "stone-12",
+    pretty_name: "Initia Testnet 12-1",
+    chain_id: "stone-12-1",
     bech32_prefix: "init",
     daemon_name: "initiad",
     node_home: "$HOME/.init",
@@ -85,12 +85,12 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://stone-12-rpc.initia.tech:443",
+          address: "https://next-rpc.initia.tech:443",
         },
       ],
       rest: [
         {
-          address: "https://stone-12-rest.initia.tech",
+          address: "https://next-rest.initia.tech",
         },
       ],
     },
@@ -123,7 +123,7 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: "../assetlist.schema.json",
-    chain_name: "initiatestnet12",
+    chain_name: "initiatestnet12-1",
     assets: [
       {
         description: "The native staking token of Initia.",
