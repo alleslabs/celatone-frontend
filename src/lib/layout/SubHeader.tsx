@@ -1,7 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
+import {
+  usePoolConfig,
+  useGovConfig,
+  useWasmConfig,
+  useMoveConfig,
+} from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -15,6 +20,7 @@ interface SubHeaderMenuInfo {
 
 const SubHeader = () => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
+  const moveConfig = useMoveConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
   const govConfig = useGovConfig({ shouldRedirect: false });
 
@@ -23,13 +29,13 @@ const SubHeader = () => {
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
   ];
-  // TODO Recent Modules
-  // if (moveConfig.enabled)
-  //   subHeaderMenu.push({
-  //     name: "Modules",
-  //     slug: "/modules",
-  //     icon: "contract-address",
-  //   });
+
+  if (moveConfig.enabled)
+    subHeaderMenu.push({
+      name: "Modules",
+      slug: "/modules",
+      icon: "contract-address",
+    });
 
   if (wasmConfig.enabled)
     subHeaderMenu.push(

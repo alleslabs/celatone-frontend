@@ -127,3 +127,17 @@ export const decodeScript = async (
       code_bytes: scriptBytes,
     })
     .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));
+
+export const getModules = async (
+  endpoint: string,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then((res) => res.data);

@@ -12,3 +12,15 @@ export interface ModuleHistory {
   timestamp: Date;
   previousPolicy: Option<UpgradePolicy>;
 }
+
+/* recent modules */
+export interface RecentModule {
+  address: string;
+  block: {
+    height: number;
+    timestamp: string;
+  };
+  is_republish: boolean;
+  is_verify: boolean;
+  name: string;
+}
