@@ -28,7 +28,7 @@ import { useAccountId, useAccountInfo } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { HexAddr, HumanAddr, Option } from "lib/types";
+import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -49,8 +49,8 @@ import { TabIndex, zAccDetailQueryParams } from "./types";
 const tableHeaderId = "accountDetailsTab";
 
 export interface AccountDetailsBodyProps {
-  accountAddressParam: string;
-  tabParam: string;
+  accountAddressParam: Addr;
+  tabParam: TabIndex;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
@@ -75,7 +75,6 @@ const AccountDetailsBody = ({
   const move = useMoveConfig({ shouldRedirect: false });
   // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
-  const router = useRouter();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
 
@@ -130,28 +129,6 @@ const AccountDetailsBody = ({
     [accountAddress, hexAddress, navigate, tabParam]
   );
 
-  // ------------------------------------------//
-  // ----------------SIDE EFFECTS--------------//
-  // ------------------------------------------//
-  useEffect(() => {
-    if (
-      router.isReady &&
-      !Object.values(TabIndex).includes(tabParam as TabIndex)
-    ) {
-      navigate({
-        replace: true,
-        pathname: "/accounts/[accountAddress]/[tab]",
-        query: {
-          accountAddress: getAddressOnPath(hexAddress, accountAddress),
-          tab: TabIndex.Overview,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    }
-  }, [accountAddress, hexAddress, navigate, router.isReady, tabParam]);
-
   return (
     <>
       <Flex direction="column" mb={6}>
@@ -176,7 +153,7 @@ const AccountDetailsBody = ({
       </Flex>
 
       <Tabs
-        index={Object.values(TabIndex).indexOf(tabParam as TabIndex)}
+        index={Object.values(TabIndex).indexOf(tabParam)}
         isLazy
         lazyBehavior="keepMounted"
       >

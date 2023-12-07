@@ -161,7 +161,7 @@ export const AccountHeader = observer(
                     }}
                     gap={1}
                   >
-                    {name === accountInfo?.icns?.primary_name && (
+                    {name === accountInfo.icns?.primary_name && (
                       <PrimaryNameMark />
                     )}
                     <CopyLink value={name} type="icns_names" withoutIcon />

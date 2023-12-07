@@ -55,6 +55,11 @@ export enum TabIndex {
 
 export const zAccDetailQueryParams = z.object({
   accountAddress: zAddr,
-  // Remark: Didn't use enum here because we want to allow for redirect to overview
-  tab: z.string().default(TabIndex.Overview),
+  tab: z.union([
+    z.nativeEnum(TabIndex),
+    z
+      .string()
+      .optional()
+      .transform(() => TabIndex.Overview),
+  ]),
 });
