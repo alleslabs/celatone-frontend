@@ -32,6 +32,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        hideOpenProposal: true,
       },
       nft: {
         enabled: true,
@@ -80,6 +81,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        hideOpenProposal: true,
       },
       nft: {
         enabled: true,
