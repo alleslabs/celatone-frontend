@@ -1,0 +1,21 @@
+import axios from "axios";
+import { z } from "zod";
+
+const zOverviewsStatsResponse = z
+  .object({
+    transaction_count: z.number().nonnegative(),
+    latest_block: z.number().nonnegative(),
+    block_time: z.number().nonnegative(),
+  })
+  .transform((val) => ({
+    txCount: val.transaction_count,
+    latestBlock: val.latest_block,
+    blockTime: val.block_time,
+  }));
+
+export type OverviewsStats = z.infer<typeof zOverviewsStatsResponse>;
+
+export const getOverviewsStats = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/stats`)
+    .then((res) => zOverviewsStatsResponse.parse(res.data));

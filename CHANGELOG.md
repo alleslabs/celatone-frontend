@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#657](https://github.com/alleslabs/celatone-frontend/pull/657) api v1 - overview stats
 - [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
 - [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
 - [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
