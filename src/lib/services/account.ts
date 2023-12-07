@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zProjectInfo, zPublicAccountInfo } from "lib/types";
+import { zProjectInfo, zPublicAccountInfo, type Addr } from "lib/types";
 
 const zIcns = z.object({
   names: z.array(z.string()),
@@ -24,8 +24,29 @@ export type AccountInfo = z.infer<typeof zAccountInfo>;
 
 export const getAccountInfo = async (
   endpoint: string,
-  address: string
+  address: Addr
 ): Promise<AccountInfo> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
     .then((res) => zAccountInfo.parse(res.data));
+
+const zAccountTableCount = z.object({
+  code: z.number().optional(),
+  contract_by_admin: z.number().optional(),
+  instantiated: z.number().optional(),
+  proposal: z.number(),
+  tx: z.number(),
+});
+
+export type AccountTableCount = z.infer<typeof zAccountTableCount>;
+
+export const getAccountTableCount = async (
+  endpoint: string,
+  address: string,
+  isWasm: boolean
+): Promise<AccountTableCount> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/table-count`, {
+      params: { is_wasm: isWasm },
+    })
+    .then((res) => zAccountTableCount.parse(res.data));

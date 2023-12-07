@@ -6,6 +6,7 @@ import {
   useCelatoneApp,
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useWasmConfig,
 } from "lib/app-provider";
 import {
   getAccountIdByAddressQueryDocument,
@@ -13,7 +14,12 @@ import {
 } from "lib/query";
 import type { AccountType, Addr, Nullable, Option } from "lib/types";
 
-import { getAccountInfo, type AccountInfo } from "./account";
+import {
+  getAccountInfo,
+  type AccountInfo,
+  getAccountTableCount,
+  type AccountTableCount,
+} from "./account";
 
 export const useAccountId = (
   walletAddress: Option<Addr>
@@ -82,6 +88,19 @@ export const useAccountInfo = (address: Addr): UseQueryResult<AccountInfo> => {
   return useQuery(
     [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
     async () => getAccountInfo(endpoint, address),
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useAccountTableCount = (
+  address: Addr
+): UseQueryResult<AccountTableCount> => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.TABLE_COUNTS, endpoint, address, isWasm],
+    async () => getAccountTableCount(endpoint, address, isWasm),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

@@ -12,17 +12,15 @@ import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import {
-  useTxsByAddressPagination,
-  useTxsCountByAddress,
-} from "lib/services/txService";
-import type { Nullable, Option, Transaction, TxFilters } from "lib/types";
+import { useTxsByAddress, useTxsCountByAddress } from "lib/services/txService";
+import type { Addr, Nullable, Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
   accountId: Option<Nullable<number>>;
+  address: Addr;
   scrollComponentId: string;
   onViewMore?: () => void;
 }
@@ -46,6 +44,7 @@ const getEmptyStateProps = (
 
 export const TxsTable = ({
   accountId,
+  address,
   scrollComponentId,
   onViewMore,
 }: TxsTableProps) => {
@@ -98,11 +97,10 @@ export const TxsTable = ({
     (key) => filters[key as keyof typeof filters]
   );
 
-  const { data: transactions, isLoading } = useTxsByAddressPagination(
-    accountId,
-    "",
-    filters,
+  const { data: transactions, isLoading } = useTxsByAddress(
+    address,
     isSigner,
+    filters,
     offset,
     onViewMore ? 5 : pageSize
   );
@@ -130,7 +128,7 @@ export const TxsTable = ({
 
   const isMobileOverview = isMobile && !!onViewMore;
   const showErrorAlert =
-    Boolean(failureReason) && Number(transactions?.length) > 0;
+    Boolean(failureReason) && Number(transactions?.items.length) > 0;
   return (
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
@@ -169,18 +167,18 @@ export const TxsTable = ({
       {showErrorAlert && <TxsAlert />}
       {!isMobileOverview && (
         <TransactionsTable
-          transactions={transactions}
+          transactions={transactions?.items}
           isLoading={isLoading || txsCountLoading}
           emptyState={
             <EmptyState
               withBorder
-              {...getEmptyStateProps(filterSelected, transactions)}
+              {...getEmptyStateProps(filterSelected, transactions?.items)}
             />
           }
           showRelations
         />
       )}
-      {Boolean(transactions?.length) &&
+      {Boolean(transactions?.items?.length) &&
         (onViewMore
           ? !txsCountLoading &&
             (txsCount === undefined || txsCount > 5) &&

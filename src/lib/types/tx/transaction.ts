@@ -44,7 +44,7 @@ export interface BaseTxFilters {
   isIbc: boolean;
 }
 export interface WasmTxFilters {
-  isUpload: boolean;
+  isStoreCode: boolean;
   isInstantiate: boolean;
   isExecute: boolean;
   isMigrate: boolean;

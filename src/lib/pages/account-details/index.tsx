@@ -84,15 +84,9 @@ const AccountDetailsBody = ({
   const { data: accountId } = useAccountId(accountAddress);
   const { data: accountInfo } = useAccountInfo(accountAddress);
 
-  const {
-    tableCounts,
-    refetchCodesCount,
-    refetchContractsAdminCount,
-    refetchContractsCount,
-    refetchProposalsCount,
-    loadingState: { txCountLoading },
-  } = useAccountDetailsTableCounts(accountAddress, accountId);
-  // TODO: combine with useAccountDetailsTableCounts and remove type assertion
+  const { tableCounts, refetchCounts } =
+    useAccountDetailsTableCounts(accountAddress);
+
   // move
   const { data: fetchedAccountModules, isFetching: isModulesLoading } =
     useAccountModules({
@@ -189,7 +183,7 @@ const AccountDetailsBody = ({
           </CustomTab> */}
           <CustomTab
             count={tableCounts.txsCount}
-            isDisabled={txCountLoading || tableCounts.txsCount === 0}
+            isDisabled={!tableCounts.txsCount}
             onClick={handleTabChange(TabIndex.Txs)}
           >
             Transactions
@@ -294,6 +288,7 @@ const AccountDetailsBody = ({
             )}
             <TxsTable
               accountId={accountId}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               onViewMore={handleTabChange(TabIndex.Txs)}
             />
@@ -303,21 +298,21 @@ const AccountDetailsBody = ({
                   walletAddress={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.codesCount}
-                  refetchCount={refetchCodesCount}
+                  refetchCount={refetchCounts}
                   onViewMore={handleTabChange(TabIndex.Codes)}
                 />
                 <InstantiatedContractsTable
                   walletAddress={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.contractsCount}
-                  refetchCount={refetchContractsCount}
+                  refetchCount={refetchCounts}
                   onViewMore={handleTabChange(TabIndex.Contracts)}
                 />
                 <AdminContractsTable
                   walletAddress={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.contractsAdminCount}
-                  refetchCount={refetchContractsAdminCount}
+                  refetchCount={refetchCounts}
                   onViewMore={handleTabChange(TabIndex.Admins)}
                 />
               </>
@@ -344,7 +339,7 @@ const AccountDetailsBody = ({
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount}
-              refetchCount={refetchProposalsCount}
+              refetchCount={refetchCounts}
               onViewMore={handleTabChange(TabIndex.Proposals)}
             />
           </TabPanel>
@@ -356,14 +351,18 @@ const AccountDetailsBody = ({
           </TabPanel>
           {/* <TabPanel p={0}>nft</TabPanel> */}
           <TabPanel p={0}>
-            <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
+            <TxsTable
+              accountId={accountId}
+              address={accountAddress}
+              scrollComponentId={tableHeaderId}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount}
-              refetchCount={refetchCodesCount}
+              refetchCount={refetchCounts}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -371,7 +370,7 @@ const AccountDetailsBody = ({
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
-              refetchCount={refetchContractsCount}
+              refetchCount={refetchCounts}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -379,7 +378,7 @@ const AccountDetailsBody = ({
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
-              refetchCount={refetchContractsAdminCount}
+              refetchCount={refetchCounts}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -402,7 +401,7 @@ const AccountDetailsBody = ({
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount}
-              refetchCount={refetchProposalsCount}
+              refetchCount={refetchCounts}
             />
           </TabPanel>
         </TabPanels>

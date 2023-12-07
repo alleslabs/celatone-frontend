@@ -47,7 +47,7 @@ import {
 
 import { usePoolTxExpression, useTxExpression } from "./expression";
 import type { TxResponse, TxsResponse } from "./tx";
-import { getTxs, queryTxData } from "./tx";
+import { getTxs, getTxsByAddress, queryTxData } from "./tx";
 
 export interface TxData extends TxResponse {
   chainId: string;
@@ -79,6 +79,44 @@ export const useTxData = (
     refetchOnWindowFocus: false,
     retry: false,
   });
+};
+
+export const useTxsByAddress = (
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters,
+  offset: number,
+  limit: number
+): UseQueryResult<TxsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS,
+      endpoint,
+      address,
+      isSigner,
+      JSON.stringify(txFilters),
+      limit,
+      offset,
+      isWasm,
+      isMove,
+    ],
+    async () =>
+      getTxsByAddress(
+        endpoint,
+        address,
+        isSigner,
+        txFilters,
+        limit,
+        offset,
+        isWasm,
+        isMove
+      ),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
 };
 
 export const useTxsByAddressPagination = (
@@ -135,7 +173,7 @@ export const useTxsByAddressPagination = (
               isIbc: transaction.transaction.is_ibc,
               isExecute: transaction.transaction.is_execute,
               isInstantiate: transaction.transaction.is_instantiate,
-              isUpload: transaction.transaction.is_store_code,
+              isStoreCode: transaction.transaction.is_store_code,
               isMigrate: transaction.transaction.is_migrate,
               isUpdateAdmin: transaction.transaction.is_update_admin,
               isClearAdmin: transaction.transaction.is_clear_admin,
