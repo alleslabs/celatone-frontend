@@ -39,11 +39,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
 - [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add Amplitude for module detail and breadcrumb
 
 ### Improvements
 
 - [#650](https://github.com/alleslabs/celatone-frontend/pull/650) api v1 - account info on account detail page
+- [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
 - [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
 - [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
 - [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list
@@ -52,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item
 - [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
 - [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile
 
@@ -121,7 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
 - [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
 - [#615](https://github.com/alleslabs/celatone-frontend/pull/615) Fix useEffect on pool page
-- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Add saved accounts page
+- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Fix transaction detail ui
 - [#614](https://github.com/alleslabs/celatone-frontend/pull/614) Disabled saved account for now
 - [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Fix mintscan tracking in internal
 - [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state
