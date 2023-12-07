@@ -11,29 +11,19 @@ import {
 } from "lib/components/modal";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { useAccountStore } from "lib/providers/store";
-import type { ICNSNamesResponse } from "lib/services/ns";
-import type { HexAddr, HumanAddr, Option, PublicDetail } from "lib/types";
+import type { AccountInfo } from "lib/services/account";
+import type { HexAddr, HumanAddr, Option } from "lib/types";
 
 import { TotalAccountValue } from "./TotalAccountValue";
 
 interface AccounHeaderProps {
-  publicName: Option<string>;
-  publicDetail: Option<PublicDetail>;
-  icnsName: Option<ICNSNamesResponse>;
+  accountInfo: Option<AccountInfo>;
   accountAddress: HumanAddr;
   hexAddress: HexAddr;
-  publicDescription?: string;
 }
 
 export const AccountHeader = observer(
-  ({
-    publicName,
-    publicDetail,
-    icnsName,
-    accountAddress,
-    hexAddress,
-    publicDescription,
-  }: AccounHeaderProps) => {
+  ({ accountInfo, accountAddress, hexAddress }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
     const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
 
@@ -41,8 +31,8 @@ export const AccountHeader = observer(
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
     const displayName =
       accountLocalInfo?.name ??
-      publicName ??
-      (icnsName?.primary_name || "Account Details");
+      accountInfo?.publicInfo?.name ??
+      (accountInfo?.icns?.primary_name || "Account Details");
 
     return (
       <Flex
@@ -53,14 +43,18 @@ export const AccountHeader = observer(
         <Flex direction="column" gap={2} w={{ base: "full", lg: "auto" }}>
           <Flex gap={4} align="center" minH="36px">
             <Flex gap={1} align="center">
-              {publicDetail?.logo || icnsName?.primary_name ? (
+              {accountInfo?.projectInfo?.logo ||
+              accountInfo?.icns?.primary_name ? (
                 <Image
                   src={
-                    publicDetail?.logo ??
+                    accountInfo?.projectInfo?.logo ??
                     "https://celatone-api.alleslabs.dev/images/entities/icns"
                   }
                   borderRadius="full"
-                  alt={publicDetail?.name ?? icnsName?.primary_name}
+                  alt={
+                    accountInfo?.projectInfo?.name ??
+                    accountInfo?.icns?.primary_name
+                  }
                   width={7}
                   height={7}
                 />
@@ -99,8 +93,11 @@ export const AccountHeader = observer(
             ) : (
               <SaveNewAccountModal
                 accountAddress={accountAddress}
-                publicName={publicName ?? icnsName?.primary_name}
-                publicDescription={publicDescription}
+                publicName={
+                  accountInfo?.publicInfo?.name ??
+                  accountInfo?.icns?.primary_name
+                }
+                publicDescription={accountInfo?.publicInfo?.description}
                 buttonProps={{
                   size: "sm",
                   variant: "outline-gray",
@@ -142,13 +139,13 @@ export const AccountHeader = observer(
               </Flex>
             )}
           </Flex>
-          {icnsName?.primary_name && (
+          {accountInfo?.icns && (
             <Flex gap={2} align="center">
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Registered ICNS names:
               </Text>
               <Flex gap={1} align="center">
-                {icnsName.names.map((name) => (
+                {accountInfo.icns.names.map((name) => (
                   <Flex
                     key={name}
                     align="center"
@@ -164,7 +161,9 @@ export const AccountHeader = observer(
                     }}
                     gap={1}
                   >
-                    {name === icnsName.primary_name && <PrimaryNameMark />}
+                    {name === accountInfo.icns?.primary_name && (
+                      <PrimaryNameMark />
+                    )}
                     <CopyLink value={name} type="icns_names" withoutIcon />
                   </Flex>
                 ))}
