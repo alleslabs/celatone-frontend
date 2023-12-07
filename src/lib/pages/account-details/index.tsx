@@ -418,7 +418,7 @@ const AccountDetails = () => {
   const validated = zAccDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
-    if (router.isReady && validated.success && validated.data.tab)
+    if (router.isReady && validated.success)
       track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
