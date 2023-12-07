@@ -44,7 +44,7 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
-import { TabIndex, zAccDetailQueryParams } from "./schema";
+import { TabIndex, zAccDetailQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 

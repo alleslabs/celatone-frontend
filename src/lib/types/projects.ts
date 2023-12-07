@@ -122,9 +122,9 @@ export const zProjectInfo = z.object({
   website: z.string(),
 });
 
-export type ProjectInfoV1 = z.infer<typeof zProjectInfo>;
+export type ProjectInfo = z.infer<typeof zProjectInfo>;
 
-export const zPublicAccount = z.object({
+export const zPublicAccountInfo = z.object({
   address: zAddr,
   description: z.string(),
   name: z.string(),
@@ -132,4 +132,4 @@ export const zPublicAccount = z.object({
   type: z.string(),
 });
 
-export type PublicAccountV1 = z.infer<typeof zPublicAccount>;
+export type PublicAccountInfo = z.infer<typeof zPublicAccountInfo>;

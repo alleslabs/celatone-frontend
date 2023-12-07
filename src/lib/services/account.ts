@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zProjectInfo, zPublicAccount } from "lib/types";
+import { zProjectInfo, zPublicAccountInfo } from "lib/types";
 
 const zIcns = z.object({
   names: z.array(z.string()),
@@ -12,7 +12,7 @@ const zAccountInfo = z
   .object({
     icns: zIcns.nullable(),
     project_info: zProjectInfo.nullable(),
-    public_info: zPublicAccount.nullable(),
+    public_info: zPublicAccountInfo.nullable(),
   })
   .transform((accountInfo) => ({
     icns: accountInfo.icns,
@@ -25,7 +25,7 @@ export type AccountInfo = z.infer<typeof zAccountInfo>;
 export const getAccountInfo = async (
   endpoint: string,
   address: string
-): Promise<z.infer<typeof zAccountInfo>> =>
+): Promise<AccountInfo> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
     .then((res) => zAccountInfo.parse(res.data));
