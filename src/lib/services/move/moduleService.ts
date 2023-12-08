@@ -44,6 +44,7 @@ import type { ModuleVerificationInternal } from "./module";
 import {
   decodeModule,
   decodeScript,
+  getAPIAccountModules,
   getAccountModule,
   getAccountModules,
   getFunctionView,
@@ -111,6 +112,22 @@ export const useAccountModules = ({
     ],
     queryFn,
     options
+  );
+};
+
+export const useAPIAccountModules = (address: MoveAccountAddr) => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.API_ACCOUNT_MODULES, endpoint, address],
+    () =>
+      getAPIAccountModules(endpoint, address).then((modules) =>
+        modules.items.map((module) => indexModuleResponse(module))
+      ),
+    {
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
   );
 };
 
