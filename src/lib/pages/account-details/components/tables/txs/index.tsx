@@ -125,8 +125,6 @@ export const TxsTable = ({
   }, [chainId]);
 
   const isMobileOverview = isMobile && !!onViewMore;
-  const showErrorAlert =
-    isTxsCountTimeout && Number(transactions?.items.length) > 0;
   return (
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
@@ -162,7 +160,7 @@ export const TxsTable = ({
           }
         />
       )}
-      {showErrorAlert && <TxsAlert />}
+      {isTxsCountTimeout && <TxsAlert />}
       {!isMobileOverview && (
         <TransactionsTable
           transactions={transactions?.items}
