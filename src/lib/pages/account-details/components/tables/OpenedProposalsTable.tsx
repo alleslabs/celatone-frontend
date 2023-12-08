@@ -72,14 +72,14 @@ export const OpenedProposalsTable = ({
       {isMobileOverview ? (
         <MobileTitle
           title="Opened Proposals"
-          count={totalData ?? 0}
+          count={totalData}
           onViewMore={onViewMore}
         />
       ) : (
         <>
           <TableTitle
             title="Opened Proposals"
-            count={totalData ?? 0}
+            count={totalData}
             mb={{ base: 0, md: 2 }}
           />
           <ProposalsTable

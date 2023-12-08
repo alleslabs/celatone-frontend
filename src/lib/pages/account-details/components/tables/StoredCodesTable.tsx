@@ -79,14 +79,14 @@ export const StoredCodesTable = observer(
         {isMobileOverview ? (
           <MobileTitle
             title="Stored Codes"
-            count={totalData ?? 0}
+            count={totalData}
             onViewMore={onViewMore}
           />
         ) : (
           <>
             <TableTitle
               title="Stored Codes"
-              count={totalData ?? 0}
+              count={totalData}
               mb={2}
               helperText="This account stored the following codes"
             />
