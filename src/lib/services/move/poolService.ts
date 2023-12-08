@@ -42,12 +42,12 @@ export const useMovePoolInfos = () => {
 
   const {
     data: assetInfos,
-    isLoading: isAssetsLoading,
+    isFetching: isAssetsFetching,
     error: assetsErrors,
   } = useAssetInfos({ withPrices: true });
   const {
     data: pools,
-    isLoading: isPoolsLoading,
+    isFetching: isPoolsFetching,
     error: poolsErrors,
     ...queryResult
   } = useQuery(
@@ -61,9 +61,9 @@ export const useMovePoolInfos = () => {
 
   const data = pools?.reduce<MovePoolInfos>((acc, curr) => {
     const coinAInfo = assetInfos?.[curr.coin_a.denom];
-    const coinAprecision = coinAInfo?.precision ?? curr.coin_a.precision;
+    const coinAprecision = coinAInfo?.precision ?? 0;
     const coinBInfo = assetInfos?.[curr.coin_b.denom];
-    const coinBprecision = coinBInfo?.precision ?? curr.coin_b.precision;
+    const coinBprecision = coinBInfo?.precision ?? 0;
 
     const totalShares = big(curr.total_share).div(big(10).pow(curr.precision));
     const amountAPerShare = big(curr.coin_a.amount)
@@ -106,7 +106,7 @@ export const useMovePoolInfos = () => {
 
   return {
     ...queryResult,
-    isLoading: isAssetsLoading || isPoolsLoading,
+    isLoading: isAssetsFetching || isPoolsFetching,
     error: assetsErrors ?? poolsErrors,
     data,
   };
