@@ -384,8 +384,8 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ResourceSection
-              count={resourcesData?.totalCount}
               address={accountAddress}
+              totalCount={resourcesData?.totalCount}
               resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />

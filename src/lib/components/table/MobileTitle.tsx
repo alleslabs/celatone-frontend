@@ -8,8 +8,8 @@ import { TableTitle } from "./TableTitle";
 interface MobileTitleProps {
   title: string;
   count: Option<number>;
-  onViewMore?: () => void;
   showCount?: boolean;
+  onViewMore?: () => void;
 }
 const cardProps = {
   width: "100%",
@@ -19,10 +19,10 @@ const cardProps = {
 };
 
 export const MobileTitle = ({
-  onViewMore,
   title,
   count,
   showCount = true,
+  onViewMore,
 }: MobileTitleProps) => (
   <Flex
     style={cardProps}
@@ -30,7 +30,7 @@ export const MobileTitle = ({
     opacity={!count ? 0.5 : 1}
     bg="gray.900"
   >
-    <TableTitle title={title} count={count} mb={0} showCount={showCount} />
+    <TableTitle title={title} count={count} showCount={showCount} mb={0} />
     <CustomIcon name="chevron-right" color="gray.600" />
   </Flex>
 );

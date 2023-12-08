@@ -1,21 +1,19 @@
 import type { BoxProps } from "@chakra-ui/react";
 import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-import type { Option } from "lib/types";
-
 interface TableTitleProps extends BoxProps {
   title: string;
-  count: Option<number>;
-  helperText?: string;
+  count?: number;
   showCount?: boolean;
+  helperText?: string;
 }
 
 export const TableTitle = ({
   title,
   count,
+  showCount = true,
   helperText,
   mb = 6,
-  showCount = true,
   ...props
 }: TableTitleProps) => (
   <Box mb={mb} {...props}>

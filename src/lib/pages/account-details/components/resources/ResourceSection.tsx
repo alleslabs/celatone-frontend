@@ -7,22 +7,22 @@ import { ResourceSectionBody } from "./ResourceSectionBody";
 
 interface ResourceSectionProps {
   address: HumanAddr;
+  totalCount: Option<number>;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
-  count: number | undefined;
 }
 
 export const ResourceSection = ({
   address,
+  totalCount,
   resourcesByOwner,
   isLoading,
-  count,
 }: ResourceSectionProps) => (
   <Flex direction="column" mt={8}>
     <TableTitle
       helperText="Resources stored in this account"
       title="Resources"
-      count={count}
+      count={totalCount}
     />
     <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
       <ResourceSectionBody

@@ -36,7 +36,6 @@ export const ResourceOverview = ({
           <TableTitle
             title="Resources"
             helperText="Resources stored in this account"
-            count={undefined}
             showCount={false}
           />
           <ResourceOverviewBody
