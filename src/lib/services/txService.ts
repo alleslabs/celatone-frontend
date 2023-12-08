@@ -271,6 +271,7 @@ export const useTxsCountByAddress = ({
   );
 };
 
+// TODO: this will replace useTxsCountByAddress
 export const useAPITxsCountByAddress = (
   address: Addr,
   isSigner: Option<boolean>,
