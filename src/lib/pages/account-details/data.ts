@@ -216,13 +216,13 @@ export const useUserDelegationInfos = (address: Addr) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
-  const { data: lpMap, isFetching: isLpMapFetching } = useMovePoolInfos();
+  const { data: lpMap, isLoading: isLpMapLoading } = useMovePoolInfos();
 
   const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
     useAccountDelegations(address);
 
   const isLoading =
-    isLoadingAccountDelegations || isLoadingAssetInfos || isLpMapFetching;
+    isLoadingAccountDelegations || isLoadingAssetInfos || isLpMapLoading;
 
   const data: UserDelegationsData = {
     isLoading,
