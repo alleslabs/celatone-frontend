@@ -242,7 +242,7 @@ const AccountDetailsBody = ({
             <Flex
               direction={{ base: "column", md: "row" }}
               gap={{ base: 4, md: 6 }}
-              my={{ base: 0, md: 8 }}
+              mt={{ base: 0, md: 8 }}
             >
               {accountInfo?.publicInfo?.description && (
                 <Flex
@@ -269,7 +269,7 @@ const AccountDetailsBody = ({
             </Flex>
             <Flex
               borderBottom={{ base: "0px", md: "1px solid" }}
-              borderBottomColor="gray.700"
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
             >
               <AssetsSection
                 address={accountAddress}
@@ -382,6 +382,7 @@ const AccountDetailsBody = ({
           <TabPanel p={0}>
             <ResourceSection
               address={accountAddress}
+              totalCount={resourcesData?.totalCount}
               resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />

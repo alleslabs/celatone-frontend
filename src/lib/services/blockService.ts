@@ -7,19 +7,9 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
 } from "lib/app-provider";
-import {
-  getLatestBlockInfoQueryDocument,
-  getBlockDetailsByHeightQueryDocument,
-  getBlockTimeQueryDocument,
-} from "lib/query";
-import type {
-  BlockDetails,
-  BlockTimeInfo,
-  LatestBlock,
-  Nullable,
-  ValidatorAddr,
-} from "lib/types";
-import { isBlock, parseDate, parseDateOpt, parseTxHash } from "lib/utils";
+import { getBlockDetailsByHeightQueryDocument } from "lib/query";
+import type { BlockDetails, Nullable, ValidatorAddr } from "lib/types";
+import { isBlock, parseDate, parseTxHash } from "lib/utils";
 
 import { getBlocks, type BlocksResponse } from "./block";
 
@@ -84,45 +74,5 @@ export const useBlockInfoQuery = (
       retry: false,
       refetchOnWindowFocus: false,
     }
-  );
-};
-
-export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getLatestBlockInfoQueryDocument)
-        .then<LatestBlock>(({ blocks }) => ({
-          height: blocks[0].height,
-          timestamp: parseDateOpt(blocks[0].timestamp),
-        })),
-    [indexerGraphClient]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.LATEST_BLOCK_INFO, indexerGraphClient],
-    queryFn
-  );
-};
-
-export const useAverageBlockTime = (): UseQueryResult<BlockTimeInfo> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getBlockTimeQueryDocument)
-        .then(({ hundred, latest }) => {
-          return {
-            hundred: parseDateOpt(hundred[0].timestamp),
-            latest: parseDateOpt(latest[0].timestamp),
-          };
-        }),
-    [indexerGraphClient]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.AVERAGE_BLOCK_TIME, indexerGraphClient],
-    queryFn
   );
 };

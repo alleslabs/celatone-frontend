@@ -16,7 +16,6 @@ import {
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
-  getTxsCount,
   getTxsCountByPoolId,
   getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
@@ -393,19 +392,6 @@ export const useTxs = (
     async () => getTxs(endpoint, limit, offset, wasmEnable, moveEnable),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
-};
-
-export const useTxsCount = (): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getTxsCount)
-        .then(({ transactions }) => transactions[0]?.id),
-    [indexerGraphClient]
-  );
-
-  return useQuery([CELATONE_QUERY_KEYS.TXS_COUNT, indexerGraphClient], queryFn);
 };
 
 export const useTxsByBlockHeightPagination = (
