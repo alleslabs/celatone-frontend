@@ -2,6 +2,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
 
@@ -54,7 +55,10 @@ export const InteractionTypeSwitch = ({
           }}
           initial="inactive"
           animate={currentTab === tab ? "active" : "inactive"}
-          onClick={() => onTabChange(tab)}
+          onClick={() => {
+            track(AmpEvent.USE_SUBTAB, { currentTab: tab });
+            onTabChange(tab);
+          }}
           zIndex={1}
           textAlign="center"
         >
