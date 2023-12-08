@@ -3,7 +3,6 @@ import axios from "axios";
 import type { CompactBitArray } from "cosmjs-types/cosmos/crypto/multisig/v1beta1/multisig";
 import type { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import type { Any } from "cosmjs-types/google/protobuf/any";
-import _ from "lodash";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
@@ -239,7 +238,7 @@ export const getTxsByAddress = async (
         offset,
         is_wasm: isWasm,
         is_move: isMove,
-        ..._.pickBy(filterParams, (value) => value !== false),
+        ...filterParams,
         ...(isSigner !== undefined && { is_signer: isSigner }),
       },
     })
@@ -263,7 +262,7 @@ export const getAPITxsCountByAddress = async (
   return axios
     .get(`${endpoint}/${encodeURIComponent(address)}/txs-count`, {
       params: {
-        ..._.pickBy(filterParams, (value) => value !== false),
+        ...filterParams,
         ...(isSigner !== undefined && { is_signer: isSigner }),
       },
     })
