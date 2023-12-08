@@ -2,7 +2,11 @@ import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  // useCurrentChain,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
@@ -25,6 +29,14 @@ const baseTextStyle: TextProps = {
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
+  // const { address } = useCurrentChain();
+
+  // let canRepublish = false;
+  // if (address === moduleData.address) {
+  //   canRepublish = true;
+  // } else {
+  //   canRepublish = false;
+  // }
 
   return (
     <Flex direction="column">
@@ -146,7 +158,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             w={{ base: "full", md: "auto" }}
           >
             <Button
-              variant="outline-primary"
+              variant="outline-white"
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="query" mr={0} />}
               size={{ base: "sm", md: "md" }}
@@ -165,7 +177,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               View
             </Button>
             <Button
-              variant="outline-primary"
+              variant="outline-white"
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="execute" mr={0} />}
               size={{ base: "sm", md: "md" }}
@@ -183,6 +195,28 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             >
               Execute
             </Button>
+            {/* <Tooltip
+              // isOpen={isHover || hasCopied}
+              variant="primary-light"
+              label="text"
+              closeOnClick={false}
+            > */}
+            <Button
+              // disabled
+              variant="outline-white"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="migrate" mr={0} />}
+              size={{ base: "sm", md: "md" }}
+              onClick={() => {
+                track(AmpEvent.USE_MAIN_CTA, { label: "View" });
+                navigate({
+                  pathname: "/publish-module",
+                });
+              }}
+            >
+              Republish
+            </Button>
+            {/* </Tooltip> */}
             <CopyButton
               amptrackSection="[Module Detail CTA] Copy ABI "
               value={moduleData.abi}

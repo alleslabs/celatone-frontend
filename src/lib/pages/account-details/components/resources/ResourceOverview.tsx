@@ -30,7 +30,7 @@ export const ResourceOverview = ({
           title="Resources"
           count={totalCount}
           onViewMore={onViewMore}
-          showCount={false}
+          showCount={!!isMobile}
         />
       ) : (
         <>

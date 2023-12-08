@@ -9,19 +9,20 @@ interface ResourceSectionProps {
   address: HumanAddr;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
+  count: number | undefined;
 }
 
 export const ResourceSection = ({
   address,
   resourcesByOwner,
   isLoading,
+  count,
 }: ResourceSectionProps) => (
   <Flex direction="column" mt={8}>
     <TableTitle
       helperText="Resources stored in this account"
       title="Resources"
-      count={undefined}
-      showCount={false}
+      count={count}
     />
     <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
       <ResourceSectionBody
