@@ -5,10 +5,10 @@ import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
 import { useBalances } from "lib/services/balanceService";
-import { useCodeListByWalletAddressPagination } from "lib/services/codeService";
+import { useCodesByAddress } from "lib/services/codeService";
 import {
-  useContractListByAdminPagination,
-  useContractListByWalletAddressPagination,
+  useAdminContractsByAddress,
+  useInstantiatedContractsByAddress,
 } from "lib/services/contractService";
 import type { RawStakingParams } from "lib/services/delegation";
 import {
@@ -86,12 +86,15 @@ export interface Redelegation {
 export const useAccountContracts = (
   walletAddress: HumanAddr,
   offset: number,
-  pageSize: number
+  limit: number
 ): AccountContracts => {
-  const { data: contracts, isLoading } =
-    useContractListByWalletAddressPagination(walletAddress, offset, pageSize);
+  const { data: contracts, isLoading } = useInstantiatedContractsByAddress(
+    walletAddress,
+    limit,
+    offset
+  );
   const { getContractLocalInfo } = useContractStore();
-  const data = contracts?.map<ContractInfo>((contract) => {
+  const data = contracts?.items?.map<ContractInfo>((contract) => {
     const localInfo = getContractLocalInfo(contract.contractAddress);
 
     return {
@@ -113,14 +116,14 @@ export const useAccountAdminContracts = (
   offset: number,
   pageSize: number
 ): AccountContracts => {
-  const { data: contractsAdmin, isLoading } = useContractListByAdminPagination(
+  const { data: contractsAdmin, isLoading } = useAdminContractsByAddress(
     walletAddress as HumanAddr,
-    offset,
-    pageSize
+    pageSize,
+    offset
   );
   const { getContractLocalInfo } = useContractStore();
 
-  const data = contractsAdmin?.map<ContractInfo>((contractAdmin) => {
+  const data = contractsAdmin?.items?.map<ContractInfo>((contractAdmin) => {
     const localInfo = getContractLocalInfo(contractAdmin.contractAddress);
 
     return {
@@ -141,16 +144,17 @@ export const useAccountAdminContracts = (
 export const useAccountCodes = (
   walletAddress: HumanAddr,
   offset: number,
-  pageSize: number
+  limit: number
 ): AccountCodes => {
-  const { data: codes, isLoading } = useCodeListByWalletAddressPagination(
+  const { data: codes, isLoading } = useCodesByAddress(
     walletAddress as HumanAddr,
-    offset,
-    pageSize
+    limit,
+    offset
   );
+
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
-  const data = codes?.map<CodeInfo>((code) => ({
+  const data = codes?.items?.map<CodeInfo>((code) => ({
     ...code,
     name: getCodeLocalInfo(code.id)?.name,
     isSaved: isCodeIdSaved(code.id),
@@ -163,11 +167,11 @@ export const useAccountCodes = (
 };
 
 export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
-  const { data: accountBalances, isLoading, error } = useBalances(address);
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
   const { data: movePoolInfos } = useMovePoolInfos();
+  const { data: accountBalances, isLoading, error } = useBalances(address);
 
   const balances = accountBalances
     ?.map<TokenWithValue>((balance) =>

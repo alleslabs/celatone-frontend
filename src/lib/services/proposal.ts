@@ -1,12 +1,17 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import { z } from "zod";
 
-import type {
-  AccessConfigPermission,
-  Addr,
-  SnakeToCamelCaseNested,
+import {
+  type AccessConfigPermission,
+  type Addr,
+  type SnakeToCamelCaseNested,
+  type Proposal,
+  type ProposalType,
+  zAddr,
+  zUtcDate,
 } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { parseProposalStatus, snakeToCamel } from "lib/utils";
 
 interface DepositParams {
   min_deposit: Coin[];
@@ -58,3 +63,49 @@ export const fetchGovUploadAccessParams = async (
   lcdEndpoint: string
 ): Promise<UploadAccess> =>
   axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);
+
+const zProposalsResponseItem = z
+  .object({
+    deposit_end_time: zUtcDate,
+    id: z.number().nonnegative(),
+    is_expedited: z.boolean(),
+    proposer: zAddr,
+    resolved_height: z.number().nullish(),
+    status: z.string().transform(parseProposalStatus),
+    title: z.string(),
+    type: z.string(),
+    voting_end_time: zUtcDate,
+  })
+  .transform<Proposal>((val) => ({
+    depositEndTime: val.deposit_end_time,
+    proposalId: val.id,
+    isExpedited: val.is_expedited,
+    proposer: val.proposer,
+    resolvedHeight: val.resolved_height,
+    status: val.status,
+    title: val.title,
+    type: val.type as ProposalType, // TODO: remove type assertion
+    votingEndTime: val.voting_end_time,
+  }));
+
+const zProposalResponse = z.object({
+  items: z.array(zProposalsResponseItem),
+  total: z.number(),
+});
+
+export type ProposalResponse = z.infer<typeof zProposalResponse>;
+
+export const getProposalsByAddress = async (
+  endpoint: string,
+  address: Addr,
+  limit: number,
+  offset: number
+): Promise<ProposalResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/proposals`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then((res) => zProposalResponse.parse(res.data));

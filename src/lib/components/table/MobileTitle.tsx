@@ -23,14 +23,17 @@ export const MobileTitle = ({
   count,
   showCount = true,
   onViewMore,
-}: MobileTitleProps) => (
-  <Flex
-    style={cardProps}
-    onClick={!count ? undefined : onViewMore}
-    opacity={!count ? 0.5 : 1}
-    bg="gray.900"
-  >
-    <TableTitle title={title} count={count} showCount={showCount} mb={0} />
-    <CustomIcon name="chevron-right" color="gray.600" />
-  </Flex>
-);
+}: MobileTitleProps) => {
+  const isDisabled = count === 0;
+  return (
+    <Flex
+      style={cardProps}
+      onClick={isDisabled ? undefined : onViewMore}
+      opacity={isDisabled ? 0.5 : 1}
+      bg="gray.900"
+    >
+      <TableTitle title={title} count={count} showCount={showCount} mb={0} />
+      <CustomIcon name="chevron-right" color="gray.600" />
+    </Flex>
+  );
+};
