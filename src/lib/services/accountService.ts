@@ -17,8 +17,8 @@ import type { AccountType, Addr, Nullable, Option } from "lib/types";
 import {
   getAccountInfo,
   type AccountInfo,
-  getAccountTableCount,
-  type AccountTableCount,
+  getAccountTableCounts,
+  type AccountTableCounts,
 } from "./account";
 
 export const useAccountId = (
@@ -92,15 +92,15 @@ export const useAccountInfo = (address: Addr): UseQueryResult<AccountInfo> => {
   );
 };
 
-export const useAccountTableCount = (
+export const useAccountTableCounts = (
   address: Addr
-): UseQueryResult<AccountTableCount> => {
+): UseQueryResult<AccountTableCounts> => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.TABLE_COUNTS, endpoint, address, isWasm],
-    async () => getAccountTableCount(endpoint, address, isWasm),
+    async () => getAccountTableCounts(endpoint, address, isWasm),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

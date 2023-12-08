@@ -12,14 +12,16 @@ import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxsByAddress, useTxsCountByAddress } from "lib/services/txService";
-import type { Addr, Nullable, Option, Transaction, TxFilters } from "lib/types";
+import {
+  useAPITxsCountByAddress,
+  useTxsByAddress,
+} from "lib/services/txService";
+import type { Addr, Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  accountId: Option<Nullable<number>>;
   address: Addr;
   scrollComponentId: string;
   onViewMore?: () => void;
@@ -43,7 +45,6 @@ const getEmptyStateProps = (
 };
 
 export const TxsTable = ({
-  accountId,
   address,
   scrollComponentId,
   onViewMore,
@@ -56,16 +57,13 @@ export const TxsTable = ({
   const isMobile = useMobile();
 
   const {
-    data: txsCount,
+    data: rawTxCount,
+    isLoading: isTxCountLoading,
     refetch: refetchTxsCount,
-    isLoading: txsCountLoading,
-    failureReason,
-  } = useTxsCountByAddress({
-    accountId,
-    search: "",
-    filters,
-    isSigner,
-  });
+  } = useAPITxsCountByAddress(address, isSigner, filters);
+
+  const txsCount = rawTxCount ?? undefined;
+  const isTxsCountTimeout = rawTxCount === null;
 
   const {
     pagesQuantity,
@@ -118,8 +116,8 @@ export const TxsTable = ({
   };
 
   useEffect(() => {
-    if (failureReason) setPageSize(50);
-  }, [failureReason, setPageSize]);
+    if (isTxsCountTimeout) setPageSize(50);
+  }, [isTxsCountTimeout, setPageSize]);
 
   useEffect(() => {
     setIsSigner(undefined);
@@ -128,7 +126,7 @@ export const TxsTable = ({
 
   const isMobileOverview = isMobile && !!onViewMore;
   const showErrorAlert =
-    Boolean(failureReason) && Number(transactions?.items.length) > 0;
+    isTxsCountTimeout && Number(transactions?.items.length) > 0;
   return (
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
@@ -168,7 +166,7 @@ export const TxsTable = ({
       {!isMobileOverview && (
         <TransactionsTable
           transactions={transactions?.items}
-          isLoading={isLoading || txsCountLoading}
+          isLoading={isLoading || isTxCountLoading}
           emptyState={
             <EmptyState
               withBorder
@@ -180,7 +178,7 @@ export const TxsTable = ({
       )}
       {Boolean(transactions?.items?.length) &&
         (onViewMore
-          ? !txsCountLoading &&
+          ? !isTxCountLoading &&
             (txsCount === undefined || txsCount > 5) &&
             !isMobile && <ViewMore onClick={onViewMore} />
           : txsCount &&

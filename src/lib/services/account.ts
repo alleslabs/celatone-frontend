@@ -30,23 +30,31 @@ export const getAccountInfo = async (
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
     .then((res) => zAccountInfo.parse(res.data));
 
-const zAccountTableCount = z.object({
-  code: z.number().optional(),
-  contract_by_admin: z.number().optional(),
-  instantiated: z.number().optional(),
-  proposal: z.number(),
-  tx: z.number(),
-});
+const zAccountTableCounts = z
+  .object({
+    code: z.number().nullish(),
+    contract_by_admin: z.number().nullish(),
+    instantiated: z.number().nullish(),
+    proposal: z.number().nullish(),
+    tx: z.number().nullish(),
+  })
+  .transform((tableCount) => ({
+    code: tableCount.code,
+    contractByAdmin: tableCount.contract_by_admin,
+    instantiated: tableCount.instantiated,
+    proposal: tableCount.proposal,
+    tx: tableCount.tx,
+  }));
 
-export type AccountTableCount = z.infer<typeof zAccountTableCount>;
+export type AccountTableCounts = z.infer<typeof zAccountTableCounts>;
 
-export const getAccountTableCount = async (
+export const getAccountTableCounts = async (
   endpoint: string,
   address: string,
   isWasm: boolean
-): Promise<AccountTableCount> =>
+): Promise<AccountTableCounts> =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/table-count`, {
+    .get(`${endpoint}/${encodeURIComponent(address)}/table-counts`, {
       params: { is_wasm: isWasm },
     })
-    .then((res) => zAccountTableCount.parse(res.data));
+    .then((res) => zAccountTableCounts.parse(res.data));

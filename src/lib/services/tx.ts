@@ -7,7 +7,7 @@ import _ from "lodash";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type { Transaction, Option, Fee, TxFilters } from "lib/types";
+import type { Transaction, Option, Fee, TxFilters, Addr } from "lib/types";
 import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
 import {
   getActionMsgType,
@@ -217,12 +217,11 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
 
 const zAccountTxsResponse = z.object({
   items: z.array(zAccountTxsResponseItem),
-  total: z.number(),
 });
 
 export const getTxsByAddress = async (
   endpoint: string,
-  address: string,
+  address: Addr,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
   limit: number,
@@ -244,4 +243,28 @@ export const getTxsByAddress = async (
       },
     })
     .then((res) => zAccountTxsResponse.parse(res.data));
+};
+
+const zTxsCountResponse = z
+  .object({
+    count: z.number().nullish(),
+  })
+  .transform((val) => val.count);
+
+export const getAPITxsCountByAddress = async (
+  endpoint: string,
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters
+) => {
+  const filterParams = camelToSnake<TxFilters>(txFilters);
+
+  return axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/txs-count`, {
+      params: {
+        ..._.pickBy(filterParams, (value) => value !== false),
+        ...(isSigner !== undefined && { is_signer: isSigner }),
+      },
+    })
+    .then((res) => zTxsCountResponse.parse(res.data));
 };

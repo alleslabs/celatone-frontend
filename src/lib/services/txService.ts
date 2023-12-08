@@ -47,7 +47,12 @@ import {
 
 import { usePoolTxExpression, useTxExpression } from "./expression";
 import type { TxResponse, TxsResponse } from "./tx";
-import { getTxs, getTxsByAddress, queryTxData } from "./tx";
+import {
+  getTxs,
+  getTxsByAddress,
+  queryTxData,
+  getAPITxsCountByAddress,
+} from "./tx";
 
 export interface TxData extends TxResponse {
   chainId: string;
@@ -264,6 +269,26 @@ export const useTxsCountByAddress = ({
       retry: 0,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+export const useAPITxsCountByAddress = (
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters
+) => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.API_TXS_COUNT_BY_ADDRESS,
+      endpoint,
+      address,
+      isSigner,
+      JSON.stringify(txFilters),
+    ],
+    async () => getAPITxsCountByAddress(endpoint, address, isSigner, txFilters),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

@@ -12,6 +12,7 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useGovConfig,
   useInternalNavigate,
   useMoveConfig,
   useValidateAddress,
@@ -24,7 +25,7 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDetailsTableCounts } from "lib/model/account";
-import { useAccountId, useAccountInfo } from "lib/services/accountService";
+import { useAccountInfo } from "lib/services/accountService";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
@@ -71,9 +72,9 @@ const AccountDetailsBody = ({
     },
   } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
+  const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  // const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
@@ -81,11 +82,13 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
   // ------------------------------------------//
-  const { data: accountId } = useAccountId(accountAddress);
   const { data: accountInfo } = useAccountInfo(accountAddress);
 
-  const { tableCounts, refetchCounts } =
-    useAccountDetailsTableCounts(accountAddress);
+  const {
+    tableCounts,
+    refetchCounts,
+    isLoading: isLoadingAccountTableCounts,
+  } = useAccountDetailsTableCounts(accountAddress);
 
   // move
   const { data: fetchedAccountModules, isFetching: isModulesLoading } =
@@ -162,7 +165,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
-            isDisabled={!tableCounts.assetsCount}
+            isDisabled={tableCounts.assetsCount === 0}
             onClick={handleTabChange(TabIndex.Assets)}
           >
             Assets
@@ -173,41 +176,37 @@ const AccountDetailsBody = ({
           >
             Delegations
           </CustomTab>
-          {/* <CustomTab
-            count={tableCounts.txsCount}
-            isDisabled={txCountLoading || tableCounts.txsCount === 0}
-            onClick={handleTabChange(TabIndex.NFTs)}
-            hidden={!nft.enabled}
-          >
-            NFTs
-          </CustomTab> */}
           <CustomTab
             count={tableCounts.txsCount}
-            isDisabled={!tableCounts.txsCount}
+            isDisabled={tableCounts.txsCount === 0}
             onClick={handleTabChange(TabIndex.Txs)}
+            isLoading={isLoadingAccountTableCounts}
           >
             Transactions
           </CustomTab>
           <CustomTab
             count={tableCounts.codesCount}
-            isDisabled={!tableCounts.codesCount}
+            isDisabled={tableCounts.codesCount === 0}
             onClick={handleTabChange(TabIndex.Codes)}
+            isLoading={isLoadingAccountTableCounts}
             hidden={!wasm.enabled}
           >
             Codes
           </CustomTab>
           <CustomTab
             count={tableCounts.contractsCount}
-            isDisabled={!tableCounts.contractsCount}
+            isDisabled={tableCounts.contractsCount === 0}
             onClick={handleTabChange(TabIndex.Contracts)}
+            isLoading={isLoadingAccountTableCounts}
             hidden={!wasm.enabled}
           >
             Contracts
           </CustomTab>
           <CustomTab
             count={tableCounts.contractsAdminCount}
-            isDisabled={!tableCounts.contractsAdminCount}
+            isDisabled={tableCounts.contractsAdminCount === 0}
             onClick={handleTabChange(TabIndex.Admins)}
+            isLoading={isLoadingAccountTableCounts}
             hidden={!wasm.enabled}
           >
             Admins
@@ -230,8 +229,10 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={tableCounts.proposalsCount}
-            isDisabled={!tableCounts.proposalsCount}
+            isDisabled={tableCounts.proposalsCount === 0}
+            isLoading={isLoadingAccountTableCounts}
             onClick={handleTabChange(TabIndex.Proposals)}
+            hidden={!gov.enabled}
           >
             Proposals
           </CustomTab>
@@ -287,7 +288,6 @@ const AccountDetailsBody = ({
               </Flex>
             )}
             <TxsTable
-              accountId={accountId}
               address={accountAddress}
               scrollComponentId={tableHeaderId}
               onViewMore={handleTabChange(TabIndex.Txs)}
@@ -297,21 +297,21 @@ const AccountDetailsBody = ({
                 <StoredCodesTable
                   walletAddress={accountAddress}
                   scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.codesCount}
+                  totalData={tableCounts.codesCount ?? undefined}
                   refetchCount={refetchCounts}
                   onViewMore={handleTabChange(TabIndex.Codes)}
                 />
                 <InstantiatedContractsTable
                   walletAddress={accountAddress}
                   scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.contractsCount}
+                  totalData={tableCounts.contractsCount ?? undefined}
                   refetchCount={refetchCounts}
                   onViewMore={handleTabChange(TabIndex.Contracts)}
                 />
                 <AdminContractsTable
                   walletAddress={accountAddress}
                   scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.contractsAdminCount}
+                  totalData={tableCounts.contractsAdminCount ?? undefined}
                   refetchCount={refetchCounts}
                   onViewMore={handleTabChange(TabIndex.Admins)}
                 />
@@ -338,7 +338,7 @@ const AccountDetailsBody = ({
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.proposalsCount}
+              totalData={tableCounts.proposalsCount ?? undefined}
               refetchCount={refetchCounts}
               onViewMore={handleTabChange(TabIndex.Proposals)}
             />
@@ -349,10 +349,8 @@ const AccountDetailsBody = ({
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
-          {/* <TabPanel p={0}>nft</TabPanel> */}
           <TabPanel p={0}>
             <TxsTable
-              accountId={accountId}
               address={accountAddress}
               scrollComponentId={tableHeaderId}
             />
@@ -361,7 +359,7 @@ const AccountDetailsBody = ({
             <StoredCodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.codesCount}
+              totalData={tableCounts.codesCount ?? undefined}
               refetchCount={refetchCounts}
             />
           </TabPanel>
@@ -369,7 +367,7 @@ const AccountDetailsBody = ({
             <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.contractsCount}
+              totalData={tableCounts.contractsCount ?? undefined}
               refetchCount={refetchCounts}
             />
           </TabPanel>
@@ -377,7 +375,7 @@ const AccountDetailsBody = ({
             <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.contractsAdminCount}
+              totalData={tableCounts.contractsAdminCount ?? undefined}
               refetchCount={refetchCounts}
             />
           </TabPanel>
@@ -400,7 +398,7 @@ const AccountDetailsBody = ({
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.proposalsCount}
+              totalData={tableCounts.proposalsCount ?? undefined}
               refetchCount={refetchCounts}
             />
           </TabPanel>
