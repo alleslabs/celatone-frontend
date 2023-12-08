@@ -5,6 +5,7 @@ import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
@@ -185,7 +186,10 @@ export const ExecuteArea = ({
           <SubmitButton
             text="Execute"
             isLoading={processing}
-            onSubmit={proceed}
+            onSubmit={() => {
+              track(AmpEvent.ACTION_MOVE_EXECUTE);
+              proceed();
+            }}
             isDisabled={isButtonDisabled}
           />
         </Flex>

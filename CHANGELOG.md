@@ -40,11 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
-- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add Amplitude for module detail and breadcrumb
+- [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Add amp module interaction and code snippet property
+- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add amp module detail and breadcrumb
 
 ### Improvements
 
 - [#657](https://github.com/alleslabs/celatone-frontend/pull/657) api v1 - overview stats
+- [#650](https://github.com/alleslabs/celatone-frontend/pull/650) api v1 - account info on account detail page
 - [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
 - [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
 - [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list

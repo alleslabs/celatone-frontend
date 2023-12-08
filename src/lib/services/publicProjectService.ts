@@ -152,7 +152,7 @@ export const usePublicProjectByCodeId = (
 export const usePublicProjectByAccountAddress = (
   accountAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
-  const projectsApiRoute = useBaseApiRoute("accounts");
+  const projectsApiRoute = useBaseApiRoute("legacy.accounts");
   const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
