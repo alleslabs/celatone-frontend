@@ -26,24 +26,18 @@ export const DelegationsSection = ({
   const { isOpen, onToggle, onClose } = useDisclosure();
   const router = useRouter();
   const {
+    isLoading,
     stakingParams,
     isValidator,
-    isLoading,
     totalBonded,
-    isLoadingTotalBonded,
     totalDelegations,
     delegations,
-    isLoadingDelegations,
     totalUnbondings,
     unbondings,
-    isLoadingUnbondings,
     totalRewards,
     rewards,
-    isLoadingRewards,
     redelegations,
-    isLoadingRedelegations,
     totalCommission,
-    isLoadingTotalCommission,
   } = useUserDelegationInfos(walletAddress);
 
   useEffect(() => {
@@ -88,7 +82,7 @@ export const DelegationsSection = ({
               address={walletAddress}
               bondDenoms={stakingParams.bondDenoms}
               tokens={totalBonded}
-              isLoading={isLoadingTotalBonded}
+              isLoading={isLoading}
               isViewMore={Boolean(onViewMore)}
             />
           }
@@ -107,7 +101,7 @@ export const DelegationsSection = ({
                 address={walletAddress}
                 bondDenoms={stakingParams.bondDenoms}
                 tokens={totalRewards}
-                isLoading={isLoadingRewards}
+                isLoading={isLoading}
                 isViewMore={Boolean(onViewMore)}
               />
               {isValidator && (
@@ -117,7 +111,7 @@ export const DelegationsSection = ({
                   address={walletAddress}
                   bondDenoms={stakingParams.bondDenoms}
                   tokens={totalCommission}
-                  isLoading={isLoadingTotalCommission}
+                  isLoading={isLoading}
                   isViewMore={Boolean(onViewMore)}
                 />
               )}
@@ -137,8 +131,7 @@ export const DelegationsSection = ({
             totalUnbondings={totalUnbondings}
             unbondings={unbondings}
             rewards={rewards}
-            isLoadingDelegations={isLoadingDelegations || isLoadingRewards}
-            isLoadingUnbondings={isLoadingUnbondings}
+            isLoading={isLoading}
             bondDenoms={stakingParams.bondDenoms}
           />
         )}
@@ -146,7 +139,7 @@ export const DelegationsSection = ({
       <RedelegationsSection
         stakingParams={stakingParams}
         redelegations={redelegations ?? []}
-        isLoading={isLoadingRedelegations}
+        isLoading={isLoading}
         onBack={onToggle}
         w="full"
         position={isOpen ? "relative" : "absolute"}
