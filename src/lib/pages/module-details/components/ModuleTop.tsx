@@ -146,7 +146,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             w={{ base: "full", md: "auto" }}
           >
             <Button
-              variant="outline-primary"
+              variant="outline-white"
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="query" mr={0} />}
               size={{ base: "sm", md: "md" }}
@@ -165,7 +165,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               View
             </Button>
             <Button
-              variant="outline-primary"
+              variant="outline-white"
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="execute" mr={0} />}
               size={{ base: "sm", md: "md" }}

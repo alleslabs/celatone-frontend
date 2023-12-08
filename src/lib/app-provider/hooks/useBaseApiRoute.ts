@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { useCelatoneApp } from "../contexts";
 import { CELATONE_API_OVERRIDE as api } from "env";
 
