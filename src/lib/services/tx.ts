@@ -218,6 +218,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
 const zAccountTxsResponse = z.object({
   items: z.array(zAccountTxsResponseItem),
 });
+export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 
 export const getTxsByAddress = async (
   endpoint: string,

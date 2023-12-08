@@ -45,7 +45,7 @@ import {
 } from "lib/utils";
 
 import { usePoolTxExpression, useTxExpression } from "./expression";
-import type { TxResponse, TxsResponse } from "./tx";
+import type { AccountTxsResponse, TxResponse, TxsResponse } from "./tx";
 import {
   getTxs,
   getTxsByAddress,
@@ -91,7 +91,7 @@ export const useTxsByAddress = (
   txFilters: TxFilters,
   offset: number,
   limit: number
-): UseQueryResult<TxsResponse> => {
+): UseQueryResult<AccountTxsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
