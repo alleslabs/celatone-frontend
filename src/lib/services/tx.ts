@@ -3,10 +3,17 @@ import axios from "axios";
 import type { CompactBitArray } from "cosmjs-types/cosmos/crypto/multisig/v1beta1/multisig";
 import type { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import type { Any } from "cosmjs-types/google/protobuf/any";
+import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type { Option, Fee } from "lib/types";
-import { parseDateOpt } from "lib/utils";
+import type { Transaction, Option, Fee } from "lib/types";
+import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
+import {
+  getActionMsgType,
+  parseDateOpt,
+  parseTxHash,
+  snakeToCamel,
+} from "lib/utils";
 
 // ----------------------------------------
 // --------------AuthInfo------------------
@@ -89,3 +96,73 @@ export const queryTxData = async (
     timestamp: parseDateOpt(data.tx_response.timestamp),
   };
 };
+
+const zTxsResponseItem = z
+  .object({
+    height: z.number().nonnegative(),
+    created: zUtcDate,
+    hash: z.string(),
+    messages: z.any().array(),
+    sender: zAddr,
+    success: z.boolean(),
+    is_ibc: z.boolean(),
+    is_send: z.boolean(),
+    // wasm
+    is_clear_admin: z.boolean().optional(),
+    is_execute: z.boolean().optional(),
+    is_instantiate: z.boolean().optional(),
+    is_migrate: z.boolean().optional(),
+    is_store_code: z.boolean().optional(),
+    is_update_admin: z.boolean().optional(),
+    // move
+    is_move_execute: z.boolean().optional(),
+    is_move_publish: z.boolean().optional(),
+    is_move_script: z.boolean().optional(),
+    is_move_upgrade: z.boolean().optional(),
+  })
+  .transform<Transaction>((val) => ({
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages),
+    sender: val.sender,
+    isSigner: false,
+    height: val.height,
+    created: val.created,
+    success: val.success,
+    actionMsgType: getActionMsgType([
+      val.is_send,
+      val.is_execute,
+      val.is_instantiate,
+      val.is_store_code,
+      val.is_migrate,
+      val.is_update_admin,
+      val.is_clear_admin,
+      // TODO: implement Move msg type
+    ]),
+    furtherAction: MsgFurtherAction.NONE,
+    isIbc: val.is_ibc,
+    isInstantiate: val.is_instantiate ?? false,
+  }));
+
+const zTxsResponse = z.object({
+  items: z.array(zTxsResponseItem),
+  total: z.number(),
+});
+export type TxsResponse = z.infer<typeof zTxsResponse>;
+
+export const getTxs = async (
+  endpoint: string,
+  limit: number,
+  offset: number,
+  isWasm: boolean,
+  isMove: boolean
+) =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+        is_wasm: isWasm,
+        is_move: isMove,
+      },
+    })
+    .then((res) => zTxsResponse.parse(res.data));

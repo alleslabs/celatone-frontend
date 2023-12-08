@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import type { PoolInfo, Option, Token, U, USD } from "lib/types";
 
-export const AssetInfoSchema = z.object({
+export const zAssetInfo = z.object({
   coingecko: z.string(),
   description: z.string(),
   id: z.string(),
@@ -15,7 +15,7 @@ export const AssetInfoSchema = z.object({
   symbol: z.string(),
   type: z.string(),
 });
-export type AssetInfo = z.infer<typeof AssetInfoSchema>;
+export type AssetInfo = z.infer<typeof zAssetInfo>;
 
 interface BaseTokenWithValue {
   denom: string;

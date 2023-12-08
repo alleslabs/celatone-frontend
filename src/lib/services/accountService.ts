@@ -4,28 +4,16 @@ import { useCallback } from "react";
 
 import {
   useCelatoneApp,
-  useBaseApiRoute,
   CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import {
   getAccountIdByAddressQueryDocument,
   getAccountTypeByAddressQueryDocument,
 } from "lib/query";
-import type { AccountType, Addr, Balance, Nullable, Option } from "lib/types";
+import type { AccountType, Addr, Nullable, Option } from "lib/types";
 
-import { getAccountBalanceInfo } from "./account";
-
-export const useAccountBalances = (
-  address: Addr
-): UseQueryResult<Balance[]> => {
-  const balancesApiRoute = useBaseApiRoute("balances");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_BALANCES_INFO, address, balancesApiRoute],
-    async () => getAccountBalanceInfo(balancesApiRoute, address as Addr),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
-  );
-};
+import { getAccountInfo, type AccountInfo } from "./account";
 
 export const useAccountId = (
   walletAddress: Option<Addr>
@@ -85,5 +73,15 @@ export const useAccountType = (
       retry: 1,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+export const useAccountInfo = (address: Addr): UseQueryResult<AccountInfo> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
+    async () => getAccountInfo(endpoint, address),
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

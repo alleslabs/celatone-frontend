@@ -8,6 +8,7 @@ import type {
   ModuleSelectFunction,
   SelectedAddress,
 } from "../types";
+import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { ModuleCard } from "lib/components/module/ModuleCard";
@@ -95,6 +96,7 @@ export const ModuleSelectMainBody = ({
       )}
       <GridItem area="panel" overflow="hidden">
         <InputWithIcon
+          action="Module Selection Drawer Module Search"
           iconPosition="start"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
@@ -134,6 +136,7 @@ export const ModuleSelectMainBody = ({
           size="md"
           onClick={() => {
             if (selectedModule) {
+              track(AmpEvent.USE_MODULE_SELECTION_MODULE);
               handleModuleSelect(selectedModule);
               closeModal();
             }

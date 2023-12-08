@@ -1,14 +1,18 @@
 import { z } from "zod";
 
-import type { NominalType } from "./common";
+export const zHumanAddr = z.string().brand("HumanAddr");
+export type HumanAddr = z.infer<typeof zHumanAddr>;
 
-export type HumanAddr = string & NominalType<"HumanAddr">;
-export const HexAddrSchema = z.string().brand("HexAddr");
-export type HexAddr = z.infer<typeof HexAddrSchema>;
-export type ContractAddr = string & NominalType<"ContractAddr">;
+export const zContractAddr = z.string().brand("ContractAddr");
+export type ContractAddr = z.infer<typeof zContractAddr>;
 
-export const ValidatorAddrSchema = z.string().brand("ValidatorAddr");
-export type ValidatorAddr = z.infer<typeof ValidatorAddrSchema>;
+export const zHexAddr = z.string().brand("HexAddr");
+export type HexAddr = z.infer<typeof zHexAddr>;
 
-export type MoveAccountAddr = HumanAddr | HexAddr;
-export type Addr = MoveAccountAddr | ContractAddr;
+export const zValidatorAddr = z.string().brand("ValidatorAddr");
+export type ValidatorAddr = z.infer<typeof zValidatorAddr>;
+
+export const zMoveAccountAddr = z.union([zHumanAddr, zHexAddr]);
+export type MoveAccountAddr = z.infer<typeof zMoveAccountAddr>;
+export const zAddr = z.union([zMoveAccountAddr, zContractAddr]);
+export type Addr = z.infer<typeof zAddr>;

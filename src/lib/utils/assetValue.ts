@@ -1,10 +1,9 @@
 import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
+import { isUndefined } from "lodash";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
-  Balance,
-  BalanceWithAssetInfo,
   MovePoolInfos,
   Option,
   Token,
@@ -20,24 +19,21 @@ export const calculateAssetValue = (
   price: USD<number>
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
 
-export const calAssetValueWithPrecision = (balance: Balance): USD<Big> => {
-  if (Number.isNaN(Number(balance.amount)) || !balance.amount.trim().length)
-    throw new Error("Error balance amount is not a number");
+export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) =>
+  (tokens ?? []).reduce<{
+    supportedTokens: TokenWithValue[];
+    unsupportedTokens: TokenWithValue[];
+  }>(
+    ({ supportedTokens, unsupportedTokens }, token) => {
+      if (!isUndefined(token.price)) supportedTokens.push(token);
+      else unsupportedTokens.push(token);
 
-  if (balance.price) {
-    return calculateAssetValue(
-      toToken(balance.amount.trim() as U<Token>, balance.precision),
-      balance.price as USD<number>
-    );
-  }
-  return big(0) as USD<Big>;
-};
-
-export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
-  assets.reduce(
-    (acc: USD<Big>, curr: BalanceWithAssetInfo) =>
-      acc.add(calAssetValueWithPrecision(curr.balance)) as USD<Big>,
-    big(0) as USD<Big>
+      return { supportedTokens, unsupportedTokens };
+    },
+    {
+      supportedTokens: [],
+      unsupportedTokens: [],
+    }
   );
 
 export const coinToTokenWithValue = (
@@ -133,7 +129,7 @@ export const addTokenWithValue = (
 };
 
 export const totalValueTokenWithValue = (
-  tokens: Record<string, TokenWithValue>,
+  tokens: Record<string, TokenWithValue> | TokenWithValue[],
   defaultValue: USD<Big>
 ) =>
   Object.values(tokens).reduce(

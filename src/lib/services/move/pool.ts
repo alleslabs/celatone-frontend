@@ -1,18 +1,18 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { HexAddrSchema } from "lib/types";
+import { zHexAddr } from "lib/types";
 
-const PairResponseCoinSchema = z.object({
-  metadata: HexAddrSchema,
+const zPairResponseCoin = z.object({
+  metadata: zHexAddr,
   denom: z.string(),
   decimals: z.number().nonnegative(),
 });
-const PairResponseSchema = z
+const zPairResponse = z
   .object({
-    coin_a: PairResponseCoinSchema,
-    coin_b: PairResponseCoinSchema,
-    liquidity_token: PairResponseCoinSchema,
+    coin_a: zPairResponseCoin,
+    coin_b: zPairResponseCoin,
+    liquidity_token: zPairResponseCoin,
     coin_a_weight: z.string(),
     coin_b_weight: z.string(),
     coin_a_amount: z.string(),
@@ -43,4 +43,4 @@ const PairResponseSchema = z
 export const getMovePoolInfos = async (endpoint: string) =>
   axios
     .get(`${endpoint}/pools`)
-    .then((res) => z.array(PairResponseSchema).parse(res.data));
+    .then((res) => z.array(zPairResponse).parse(res.data));

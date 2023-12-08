@@ -7,11 +7,8 @@ import {
 } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
-import {
-  queryContract,
-  queryContractBalances,
-  queryContractCw2Info,
-} from "lib/services/contract";
+import { useBalances } from "lib/services/balanceService";
+import { queryContract, queryContractCw2Info } from "lib/services/contract";
 import {
   useContractDetailByContractAddress,
   useInstantiateDetailByContractQuery,
@@ -21,12 +18,8 @@ import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type {
-  BalanceWithAssetInfo,
-  ContractAddr,
-  ContractMigrationHistory,
-  Option,
-} from "lib/types";
+import type { ContractAddr, ContractMigrationHistory, Option } from "lib/types";
+import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
 
 import type { ContractData } from "./types";
 
@@ -36,7 +29,6 @@ export const useContractData = (
   const { currentChainId } = useCelatoneApp();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
-  const balancesApiRoute = useBaseApiRoute("balances");
   const lcdEndpoint = useBaseApiRoute("rest");
 
   const { data: contractDetail, isLoading: isContractDetailLoading } =
@@ -46,29 +38,12 @@ export const useContractData = (
     withPrices: true,
   });
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
-    useQuery(
-      [
-        CELATONE_QUERY_KEYS.CONTRACT_BALANCES_INFO,
-        balancesApiRoute,
-        contractAddress,
-      ],
-      async () => queryContractBalances(balancesApiRoute, contractAddress),
-      { enabled: Boolean(contractAddress), retry: false }
-    );
-
+    useBalances(contractAddress);
   const balances = contractBalances
-    ?.map(
-      (balance): BalanceWithAssetInfo => ({
-        balance,
-        assetInfo: assetInfos?.[balance.id],
-      })
+    ?.map(({ denom, amount }) =>
+      coinToTokenWithValue(denom, amount, assetInfos)
     )
-    .sort((a, b) => {
-      if (a.balance.symbol && b.balance.symbol) {
-        return a.balance.symbol.localeCompare(b.balance.symbol);
-      }
-      return -1;
-    });
+    .sort(compareTokenWithValues);
 
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);

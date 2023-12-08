@@ -1,6 +1,7 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 
 type TriggerVariant = "select-module" | "change-module";
@@ -26,7 +27,16 @@ export const ModuleSelectDrawerTrigger = ({
   buttonText = "Select Module",
   onOpen,
 }: ModuleSelectDrawerTriggerProps) => (
-  <Button {...buttonStyles[triggerVariant]} ml="auto" onClick={onOpen}>
+  <Button
+    {...buttonStyles[triggerVariant]}
+    ml="auto"
+    onClick={() => {
+      track(AmpEvent.USE_MODULE_SELECTION_DRAWER, {
+        label: buttonText,
+      });
+      onOpen();
+    }}
+  >
     {buttonText}
   </Button>
 );

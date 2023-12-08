@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import type { AssetInfo } from "lib/types";
-import { AssetInfoSchema } from "lib/types";
+import { zAssetInfo } from "lib/types";
 
 export const getAssetInfos = async (
   endpoint: string,
@@ -14,4 +14,4 @@ export const getAssetInfos = async (
         with_prices: withPrices,
       },
     })
-    .then((res) => z.array(AssetInfoSchema).parse(res.data));
+    .then((res) => z.array(zAssetInfo).parse(res.data));

@@ -1,11 +1,31 @@
 import axios from "axios";
+import { z } from "zod";
 
-import type { Addr, Balance } from "lib/types";
+import { zProjectInfo, zPublicAccountInfo } from "lib/types";
 
-export const getAccountBalanceInfo = async (
-  baseApiRoute: string,
-  walletAddr: Addr
-): Promise<Balance[]> => {
-  const { data } = await axios.get<Balance[]>(`${baseApiRoute}/${walletAddr}`);
-  return data;
-};
+const zIcns = z.object({
+  names: z.array(z.string()),
+  primary_name: z.string(),
+});
+
+const zAccountInfo = z
+  .object({
+    icns: zIcns.nullable(),
+    project_info: zProjectInfo.nullable(),
+    public_info: zPublicAccountInfo.nullable(),
+  })
+  .transform((accountInfo) => ({
+    icns: accountInfo.icns,
+    projectInfo: accountInfo.project_info,
+    publicInfo: accountInfo.public_info,
+  }));
+
+export type AccountInfo = z.infer<typeof zAccountInfo>;
+
+export const getAccountInfo = async (
+  endpoint: string,
+  address: string
+): Promise<AccountInfo> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/info`)
+    .then((res) => zAccountInfo.parse(res.data));
