@@ -3,6 +3,7 @@ import { CELATONE_API_OVERRIDE as api } from "env";
 
 export const useBaseApiRoute = (
   type:
+    | "overviews"
     | "txs"
     | "balances"
     | "assets"
@@ -31,6 +32,8 @@ export const useBaseApiRoute = (
     );
 
   switch (type) {
+    case "overviews":
+      return `${api}/v1/${chain}/${currentChainId}/overviews`;
     case "txs":
       return `${api}/v1/${chain}/${currentChainId}/txs`;
     case "balances":
