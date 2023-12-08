@@ -1,7 +1,11 @@
 import type { QueryFunction, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useMoveConfig,
+} from "lib/app-provider";
 import type {
   ResourceGroup,
   ResourceGroupByAccount,
@@ -17,12 +21,12 @@ export interface AccountResourcesReturn {
   totalCount: number;
 }
 
-export const useAccountResources = ({
-  address,
-}: {
-  address: MoveAccountAddr;
-}): UseQueryResult<AccountResourcesReturn> => {
+export const useAccountResources = (
+  address: MoveAccountAddr
+): UseQueryResult<AccountResourcesReturn> => {
   const endpoint = useBaseApiRoute("accounts");
+  const { enabled } = useMoveConfig({ shouldRedirect: false });
+
   const queryFn: QueryFunction<AccountResourcesReturn> = () =>
     getAccountResources(endpoint, address).then((resources) => {
       const groupedByOwner = resources.items.reduce<
@@ -80,6 +84,6 @@ export const useAccountResources = ({
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_RESOURCES, endpoint, address],
     queryFn,
-    { enabled: Boolean(address), refetchOnWindowFocus: false, retry: 1 }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };

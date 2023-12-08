@@ -94,9 +94,7 @@ const AccountDetailsBody = ({
     useAPIAccountModules(accountAddress);
 
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useAccountResources({
-      address: accountAddress,
-    });
+    useAccountResources(accountAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
