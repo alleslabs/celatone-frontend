@@ -18,7 +18,7 @@ const cardProps: SystemStyleObject = {
 interface CardInfoProps {
   title: string;
   tooltip: string;
-  value: Option<number>;
+  value: Option<string>;
   isLoading: boolean;
   navigate: () => void;
 }

@@ -15,7 +15,9 @@ const zOverviewsStatsResponse = z
 
 export type OverviewsStats = z.infer<typeof zOverviewsStatsResponse>;
 
-export const getOverviewsStats = async (endpoint: string) =>
+export const getOverviewsStats = async (
+  endpoint: string
+): Promise<OverviewsStats> =>
   axios
     .get(`${endpoint}/stats`)
     .then((res) => zOverviewsStatsResponse.parse(res.data));

@@ -85,21 +85,21 @@ const Home = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount}
+            value={overviewsStats?.txCount.toLocaleString()}
             isLoading={isLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={overviewsStats?.latestBlock}
+            value={overviewsStats?.latestBlock.toString()}
             isLoading={isLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={overviewsStats?.blockTime}
+            value={overviewsStats?.blockTime.toFixed(3).concat("s")}
             isLoading={isLoading}
             navigate={toTxs}
           />
