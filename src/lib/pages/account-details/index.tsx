@@ -88,11 +88,9 @@ const AccountDetailsBody = ({
     refetchCounts,
     isLoading: isLoadingAccountTableCounts,
   } = useAccountDetailsTableCounts(accountAddress);
-
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
     useAPIAccountModules(accountAddress);
-
   const { data: resourcesData, isFetching: isResourceLoading } =
     useAccountResources(accountAddress);
 
@@ -204,7 +202,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={resourcesData?.totalCount}
-            isDisabled={!resourcesData?.totalCount}
+            isDisabled={resourcesData?.totalCount === 0}
             onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
           >
@@ -212,7 +210,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={modulesData?.length}
-            isDisabled={!modulesData?.length}
+            isDisabled={modulesData?.length === 0}
             onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
           >

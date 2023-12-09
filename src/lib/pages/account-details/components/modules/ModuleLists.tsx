@@ -48,6 +48,7 @@ export const ModuleLists = ({
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               action="execute-message-search"
+              my={4}
             />
           )}
           <ModuleListsBody
