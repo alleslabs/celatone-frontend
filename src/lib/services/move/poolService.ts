@@ -42,7 +42,7 @@ export const useMovePoolInfos = () => {
 
   const {
     data: assetInfos,
-    isFetching: isAssetsFetching,
+    isLoading: isAssetsLoading,
     error: assetsErrors,
   } = useAssetInfos({ withPrices: true });
   const {
@@ -106,7 +106,7 @@ export const useMovePoolInfos = () => {
 
   return {
     ...queryResult,
-    isLoading: isAssetsFetching || isPoolsFetching,
+    isLoading: isAssetsLoading || isPoolsFetching,
     error: assetsErrors ?? poolsErrors,
     data,
   };
