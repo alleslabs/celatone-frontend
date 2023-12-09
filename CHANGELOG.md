@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
 - [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
 - [#645](https://github.com/alleslabs/celatone-frontend/pull/645) Add search for resource in account detail
 - [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info

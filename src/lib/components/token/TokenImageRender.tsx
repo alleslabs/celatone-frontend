@@ -8,7 +8,7 @@ const TokenImage = (props: ImageProps) => (
   <Image
     boxSize={5}
     fallback={<NAToken />}
-    fallbackStrategy="onError"
+    fallbackStrategy="beforeLoadOrError"
     {...props}
   />
 );

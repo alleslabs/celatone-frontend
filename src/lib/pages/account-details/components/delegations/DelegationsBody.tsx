@@ -15,8 +15,7 @@ interface DelegationsBodyProps {
   totalUnbondings: Option<Record<string, TokenWithValue>>;
   unbondings: Option<Unbonding[]>;
   rewards: Option<Record<string, TokenWithValue[]>>;
-  isLoadingDelegations: boolean;
-  isLoadingUnbondings: boolean;
+  isLoading: boolean;
   bondDenoms: TokenWithValue[];
 }
 
@@ -26,8 +25,7 @@ export const DelegationsBody = ({
   totalUnbondings,
   unbondings,
   rewards,
-  isLoadingDelegations,
-  isLoadingUnbondings,
+  isLoading,
   bondDenoms,
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
@@ -58,13 +56,13 @@ export const DelegationsBody = ({
           <RadioCard
             value="Delegated"
             tokens={totalDelegations}
-            isLoading={isLoadingDelegations}
+            isLoading={isLoading}
             bondDenoms={bondDenoms}
           />
           <RadioCard
             value="Unbonding"
             tokens={totalUnbondings}
-            isLoading={isLoadingUnbondings}
+            isLoading={isLoading}
             bondDenoms={bondDenoms}
           />
         </Stack>
@@ -73,13 +71,13 @@ export const DelegationsBody = ({
         <DelegationsTable
           delegations={delegations}
           rewards={rewards}
-          isLoading={isLoadingDelegations}
+          isLoading={isLoading}
           isSingleBondDenom={bondDenoms.length === 1}
         />
       ) : (
         <UnbondingsTable
           unbondings={unbondings}
-          isLoading={isLoadingUnbondings}
+          isLoading={isLoading}
           isSingleBondDenom={bondDenoms.length === 1}
         />
       )}
