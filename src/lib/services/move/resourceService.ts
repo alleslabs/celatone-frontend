@@ -1,7 +1,11 @@
 import type { QueryFunction, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useMoveConfig,
+} from "lib/app-provider";
 import type {
   ResourceGroup,
   ResourceGroupByAccount,
@@ -17,15 +21,15 @@ export interface AccountResourcesReturn {
   totalCount: number;
 }
 
-export const useAccountResources = ({
-  address,
-}: {
-  address: MoveAccountAddr;
-}): UseQueryResult<AccountResourcesReturn> => {
-  const baseEndpoint = useBaseApiRoute("rest");
+export const useAccountResources = (
+  address: MoveAccountAddr
+): UseQueryResult<AccountResourcesReturn> => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled } = useMoveConfig({ shouldRedirect: false });
+
   const queryFn: QueryFunction<AccountResourcesReturn> = () =>
-    getAccountResources(baseEndpoint, address).then((resources) => {
-      const groupedByOwner = resources.reduce<
+    getAccountResources(endpoint, address).then((resources) => {
+      const groupedByOwner = resources.items.reduce<
         Record<string, ResourceGroupByAccount>
       >((acc, resource) => {
         const [ownerName, groupName] = resource.structTag.split("::");
@@ -52,35 +56,34 @@ export const useAccountResources = ({
         };
       }, {});
 
-      const groupedByName = resources.reduce<Record<string, ResourceGroup>>(
-        (acc, resource) => {
-          const [accountName, groupName] = resource.structTag.split("::");
-          const groupResources = acc[groupName] ?? {};
-          const items = groupResources?.items ?? [];
-          items.push(resource);
+      const groupedByName = resources.items.reduce<
+        Record<string, ResourceGroup>
+      >((acc, resource) => {
+        const [accountName, groupName] = resource.structTag.split("::");
+        const groupResources = acc[groupName] ?? {};
+        const items = groupResources?.items ?? [];
+        items.push(resource);
 
-          return {
-            ...acc,
-            [groupName]: {
-              displayName: `${truncate(accountName)}::${groupName}`,
-              account: accountName as MoveAccountAddr,
-              group: groupName,
-              items,
-            },
-          };
-        },
-        {}
-      );
+        return {
+          ...acc,
+          [groupName]: {
+            displayName: `${truncate(accountName)}::${groupName}`,
+            account: accountName as MoveAccountAddr,
+            group: groupName,
+            items,
+          },
+        };
+      }, {});
 
       return {
-        totalCount: resources.length,
+        totalCount: resources.total,
         groupedByOwner: Object.values(groupedByOwner),
         groupedByName: Object.values(groupedByName),
       };
     });
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_RESOURCES, baseEndpoint, address],
+    [CELATONE_QUERY_KEYS.ACCOUNT_RESOURCES, endpoint, address],
     queryFn,
-    { enabled: Boolean(address), refetchOnWindowFocus: false, retry: 1 }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };

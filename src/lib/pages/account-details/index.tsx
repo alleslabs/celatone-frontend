@@ -26,10 +26,9 @@ import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountInfo } from "lib/services/accountService";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import { useAccountModules } from "lib/services/move/moduleService";
+import { useAPIAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
+import type { Addr, HexAddr, HumanAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -89,21 +88,11 @@ const AccountDetailsBody = ({
     refetchCounts,
     isLoading: isLoadingAccountTableCounts,
   } = useAccountDetailsTableCounts(accountAddress);
-
   // move
-  const { data: fetchedAccountModules, isFetching: isModulesLoading } =
-    useAccountModules({
-      address: accountAddress,
-      moduleName: undefined,
-      functionName: undefined,
-      options: { refetchOnWindowFocus: false, retry: 1 },
-    });
-  const modulesData = fetchedAccountModules as Option<IndexedModule[]>;
-
+  const { data: modulesData, isFetching: isModulesLoading } =
+    useAPIAccountModules(accountAddress);
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useAccountResources({
-      address: accountAddress,
-    });
+    useAccountResources(accountAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -213,7 +202,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={resourcesData?.totalCount}
-            isDisabled={!resourcesData?.totalCount}
+            isDisabled={resourcesData?.totalCount === 0}
             onClick={handleTabChange(TabIndex.Resources)}
             hidden={!move.enabled}
           >
@@ -221,7 +210,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={modulesData?.length}
-            isDisabled={!modulesData?.length}
+            isDisabled={modulesData?.length === 0}
             onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
           >
