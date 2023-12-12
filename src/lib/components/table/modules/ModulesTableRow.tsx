@@ -3,11 +3,11 @@ import Link from "next/link";
 
 import { TableRow } from "../tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { RecentModule } from "lib/types";
+import type { ModuleInfo } from "lib/services/move";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface ModulesTableRowProps {
-  module: RecentModule;
+  module: ModuleInfo;
   templateColumns: string;
 }
 
@@ -16,7 +16,7 @@ export const ModulesTableRow = ({
   templateColumns,
 }: ModulesTableRowProps) => {
   const modulePath = `${truncate(module.address, [5, 7])}::${module.name}`;
-  const timeStamp = new Date(module.block.timestamp);
+  const timeStamp = new Date(module.latest_updated);
 
   const buttonStyles = {
     border: "1px solid",

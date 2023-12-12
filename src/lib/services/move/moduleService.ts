@@ -5,6 +5,7 @@ import type {
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { z } from "zod";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -30,7 +31,7 @@ import type {
   HexAddr,
   Nullable,
 } from "lib/types";
-import type { ModuleHistory, RecentModule } from "lib/types/move/module";
+import type { ModuleHistory } from "lib/types/move/module";
 import {
   parseDate,
   parseDateOpt,
@@ -409,7 +410,22 @@ export const useDecodeScript = ({
   );
 };
 
-export type ModulesResponse = { items: RecentModule[]; total: number };
+const zModuleResponse = z.object({
+  address: z.string(),
+  height: z.number(),
+  is_republish: z.boolean(),
+  is_verify: z.boolean(),
+  latest_updated: z.string(),
+  name: z.string(),
+});
+
+const zBlocksResponse = z.object({
+  items: z.array(zModuleResponse),
+  total: z.number(),
+});
+
+export type ModuleInfo = z.infer<typeof zModuleResponse>;
+export type ModulesResponse = z.infer<typeof zBlocksResponse>;
 
 export const useModules = (
   limit: number,
@@ -422,7 +438,7 @@ export const useModules = (
   const endpoint = useBaseApiRoute("modules");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULES_DATA, endpoint, limit, offset],
+    [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
     async () => getModules(endpoint, limit, offset),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );

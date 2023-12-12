@@ -1,14 +1,15 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import type { Option, RecentModule } from "lib/types";
+import type { ModuleInfo } from "lib/services/move";
+import type { Option } from "lib/types";
 
 import { ModulesTableHeader } from "./ModulesTableHeader";
 import { ModulesTableMobileCard } from "./ModulesTableMobileCard";
 import { ModulesTableRow } from "./ModulesTableRow";
 
 interface ModulesTableProps {
-  modules: Option<RecentModule[]>;
+  modules: Option<ModuleInfo[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
 }

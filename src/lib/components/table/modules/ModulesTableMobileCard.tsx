@@ -5,16 +5,12 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { RecentModule } from "lib/types";
+import type { ModuleInfo } from "lib/services/move";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
-export const ModulesTableMobileCard = ({
-  module,
-}: {
-  module: RecentModule;
-}) => {
+export const ModulesTableMobileCard = ({ module }: { module: ModuleInfo }) => {
   const modulePath = `${truncate(module.address, [5, 7])}::${module.name}`;
-  const timeStamp = new Date(module.block.timestamp);
+  const timeStamp = new Date(module.latest_updated);
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
