@@ -37,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-
 ### Features
 
 - [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
