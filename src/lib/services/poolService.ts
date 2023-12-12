@@ -321,7 +321,7 @@ const indexPairResponse = (res: string): PairResponse[] => {
 
 export const useLPShareInfo = () => {
   const { data: moduleData } = useAccountModules({
-    address: "0xa36bd0a54fad4bd931c4c00e3e74815f99a6c6b4" as HexAddr,
+    address: "0x38d2a65b2be5d2c1b9f329f5b45f708c7b7d9cf5" as HexAddr,
     moduleName: "PoolInfo",
     functionName: "get_all_pair_infos",
     options: { refetchOnWindowFocus: false, staleTime: Infinity },
