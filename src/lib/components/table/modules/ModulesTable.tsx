@@ -1,8 +1,7 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import type { ModuleInfo } from "lib/services/move";
-import type { Option } from "lib/types";
+import type { ModuleInfo, Option } from "lib/types";
 
 import { ModulesTableHeader } from "./ModulesTableHeader";
 import { ModulesTableMobileCard } from "./ModulesTableMobileCard";
@@ -29,7 +28,7 @@ export const ModulesTable = ({
   return isMobile ? (
     <MobileTableContainer>
       {modules.map((module) => (
-        <ModulesTableMobileCard key={module.name} module={module} />
+        <ModulesTableMobileCard key={module.name} moduleInfo={module} />
       ))}
     </MobileTableContainer>
   ) : (
@@ -38,7 +37,7 @@ export const ModulesTable = ({
       {modules.map((module) => (
         <ModulesTableRow
           key={module.name}
-          module={module}
+          moduleInfo={module}
           templateColumns={templateColumns}
         />
       ))}

@@ -1,54 +1,68 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import Link from "next/link";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ModuleInfo } from "lib/services/move";
-import { dateFromNow, formatUTC, truncate } from "lib/utils";
+import type { ModuleInfo } from "lib/types";
+import {
+  bech32AddressToHex,
+  dateFromNow,
+  formatUTC,
+  truncate,
+} from "lib/utils";
 
-export const ModulesTableMobileCard = ({ module }: { module: ModuleInfo }) => {
-  const modulePath = `${truncate(module.address, [5, 7])}::${module.name}`;
-  const timeStamp = new Date(module.latest_updated);
+interface ModulesTableMobileCardProps {
+  moduleInfo: ModuleInfo;
+}
+
+export const ModulesTableMobileCard = ({
+  moduleInfo,
+}: ModulesTableMobileCardProps) => {
   const navigate = useInternalNavigate();
+
+  const hex = bech32AddressToHex(moduleInfo.address);
+  const modulePath = `${truncate(hex)}::${moduleInfo.name}`;
   return (
     <MobileCardTemplate
       onClick={() =>
-        navigate({ pathname: `/modules/${module.address}/${module.name}` })
+        navigate({
+          pathname: "/modules/[address]/[moduleName]/overview",
+          query: {
+            address: moduleInfo.address,
+            moduleName: moduleInfo.name,
+          },
+        })
       }
       topContent={
         <Flex w="100%" justifyContent="space-between">
           <Box>
             <MobileLabel label="Module Path" />
-            <Link href={`/modules/${module.address}/${module.name}`}>
-              <Text
-                color="secondary.main"
-                transition="all 0.25s ease-in-out"
-                _hover={{ color: "secondary.light" }}
-                wordBreak={{ base: "break-all", md: "inherit" }}
-                cursor="pointer"
-              >
-                {modulePath.toLowerCase()}
-              </Text>
-            </Link>
+            <Text
+              color="secondary.main"
+              wordBreak={{ base: "break-all", md: "inherit" }}
+            >
+              {modulePath}
+            </Text>
           </Box>
 
-          <Link
-            href={`/interact?address=${module.address}&moduleName=${module.name}&functionType=view`}
+          <Button
+            variant="outline-white"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate({
+                pathname: "/interact",
+                query: {
+                  address: hex,
+                  moduleName: moduleInfo.name,
+                  functionType: "view",
+                },
+              });
+            }}
           >
-            <Button
-              border="1px solid"
-              borderColor="gray.600"
-              bg="inherit"
-              borderRadius="8px"
-              fontSize={12}
-              textColor="gray.600"
-              p="4px 8px"
-            >
-              View
-            </Button>
-          </Link>
+            View
+          </Button>
         </Flex>
       }
       middleContent={
@@ -56,15 +70,15 @@ export const ModulesTableMobileCard = ({ module }: { module: ModuleInfo }) => {
           <Flex direction="column">
             <MobileLabel label="owner" />
             <ExplorerLink
-              value={module.address}
+              value={moduleInfo.address}
               type="user_address"
               showCopyOnHover
             />
           </Flex>
           <Flex direction="column">
-            <Text variant="body3">{formatUTC(timeStamp)}</Text>
+            <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
             <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(timeStamp)})`}
+              {`(${dateFromNow(moduleInfo.latestUpdated)})`}
             </Text>
           </Flex>
         </Flex>

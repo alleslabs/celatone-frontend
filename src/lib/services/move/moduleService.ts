@@ -19,7 +19,10 @@ import {
   getModuleHistoriesQueryDocument,
   getModuleIdByNameAndVmAddressQueryDocument,
 } from "lib/query";
+import { zHumanAddr, zUtcDate } from "lib/types";
 import type {
+  ModuleHistory,
+  ModuleInfo,
   MoveAccountAddr,
   ExposedFunction,
   InternalModule,
@@ -31,7 +34,6 @@ import type {
   HexAddr,
   Nullable,
 } from "lib/types";
-import type { ModuleHistory } from "lib/types/move/module";
 import {
   parseDate,
   parseDateOpt,
@@ -410,34 +412,38 @@ export const useDecodeScript = ({
   );
 };
 
-const zModuleResponse = z.object({
-  address: z.string(),
-  height: z.number(),
-  is_republish: z.boolean(),
-  is_verify: z.boolean(),
-  latest_updated: z.string(),
-  name: z.string(),
-});
+const zModuleResponseItem = z
+  .object({
+    address: zHumanAddr,
+    name: z.string(),
+    height: z.number(),
+    latest_updated: zUtcDate,
+    is_republished: z.boolean(),
+    is_verified: z.boolean(),
+  })
+  .transform<ModuleInfo>((val) => ({
+    address: val.address,
+    name: val.name,
+    height: val.height,
+    latestUpdated: val.latest_updated,
+    isRepublished: val.is_republished,
+    isVerified: val.is_verified,
+  }));
 
-const zBlocksResponse = z.object({
-  items: z.array(zModuleResponse),
+const zModuleResponse = z.object({
+  items: z.array(zModuleResponseItem),
   total: z.number(),
 });
-
-export type ModuleInfo = z.infer<typeof zModuleResponse>;
-export type ModulesResponse = z.infer<typeof zBlocksResponse>;
+export type ModulesResponse = z.infer<typeof zModuleResponse>;
 
 export const useModules = (
   limit: number,
   offset: number,
-  options: Pick<
-    UseQueryOptions<ModulesResponse, Error>,
-    "onSuccess" | "onError"
-  > = {}
-): UseQueryResult<ModulesResponse> => {
+  options: Pick<UseQueryOptions<ModulesResponse>, "onSuccess"> = {}
+) => {
   const endpoint = useBaseApiRoute("modules");
 
-  return useQuery(
+  return useQuery<ModulesResponse>(
     [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
     async () => getModules(endpoint, limit, offset),
     { ...options, retry: 1, refetchOnWindowFocus: false }

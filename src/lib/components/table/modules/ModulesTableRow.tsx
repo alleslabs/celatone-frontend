@@ -1,33 +1,29 @@
 import { Flex, Text, Grid, Box, Button } from "@chakra-ui/react";
-import Link from "next/link";
 
 import { TableRow } from "../tableComponents";
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ModuleInfo } from "lib/services/move";
-import { dateFromNow, formatUTC, truncate } from "lib/utils";
+import type { ModuleInfo } from "lib/types";
+import {
+  bech32AddressToHex,
+  dateFromNow,
+  formatUTC,
+  truncate,
+} from "lib/utils";
 
 interface ModulesTableRowProps {
-  module: ModuleInfo;
+  moduleInfo: ModuleInfo;
   templateColumns: string;
 }
 
 export const ModulesTableRow = ({
-  module,
+  moduleInfo,
   templateColumns,
 }: ModulesTableRowProps) => {
-  const modulePath = `${truncate(module.address, [5, 7])}::${module.name}`;
-  const timeStamp = new Date(module.latest_updated);
+  const navigate = useInternalNavigate();
 
-  const buttonStyles = {
-    border: "1px solid",
-    borderColor: "gray.600",
-    bg: "inherit",
-    borderRadius: "8px",
-    fontSize: "12px",
-    textColor: "gray.600",
-    p: "4px 8px",
-  };
-
+  const hex = bech32AddressToHex(moduleInfo.address);
+  const modulePath = `${truncate(hex)} :: ${moduleInfo.name}`;
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -35,47 +31,78 @@ export const ModulesTableRow = ({
         templateColumns={templateColumns}
         _hover={{ background: "gray.900" }}
         transition="all 0.25s ease-in-out"
+        onClick={() =>
+          navigate({
+            pathname: "/modules/[address]/[moduleName]",
+            query: {
+              address: hex,
+              moduleName: moduleInfo.name,
+            },
+          })
+        }
       >
         <TableRow>
-          <Link href={`/modules/${module.address}/${module.name}`}>
-            <Text
-              color="secondary.main"
-              transition="all 0.25s ease-in-out"
-              _hover={{ color: "secondary.light" }}
-              wordBreak={{ base: "break-all", md: "inherit" }}
-              cursor="pointer"
-            >
-              {modulePath.toLowerCase()}
-            </Text>
-          </Link>
+          <Text
+            color="secondary.main"
+            transition="all 0.25s ease-in-out"
+            _hover={{ color: "secondary.light", textDecoration: "underline" }}
+            wordBreak={{ base: "break-all", md: "inherit" }}
+            cursor="pointer"
+          >
+            {modulePath}
+          </Text>
         </TableRow>
         <TableRow>
           <ExplorerLink
-            value={module.address}
+            value={moduleInfo.address}
             type="user_address"
             showCopyOnHover
           />
         </TableRow>
         <TableRow>
           <Flex direction="column" gap={1}>
-            <Text variant="body3">{formatUTC(timeStamp)}</Text>
+            <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
             <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(timeStamp)})`}
+              {`(${dateFromNow(moduleInfo.latestUpdated)})`}
             </Text>
           </Flex>
         </TableRow>
         <TableRow>
           <Flex gap="8px">
-            <Link
-              href={`/interact?address=${module.address}&moduleName=${module.name}&functionType=view`}
+            <Button
+              variant="outline-white"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: hex,
+                    moduleName: moduleInfo.name,
+                    functionType: "view",
+                  },
+                });
+              }}
             >
-              <Button {...buttonStyles}>View</Button>
-            </Link>
-            <Link
-              href={`/interact?address=${module.address}&moduleName=${module.name}&functionType=execute`}
+              View
+            </Button>
+            <Button
+              variant="outline-white"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate({
+                  pathname: "/interact",
+                  query: {
+                    address: hex,
+                    moduleName: moduleInfo.name,
+                    functionType: "execute",
+                  },
+                });
+              }}
             >
-              <Button {...buttonStyles}>Execute</Button>
-            </Link>
+              Execute
+            </Button>
           </Flex>
         </TableRow>
       </Grid>
