@@ -7,12 +7,11 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
 import { useTxsByModule } from "lib/services/txService";
-import type { HexAddr, Nullable, Option } from "lib/types";
+import type { HexAddr, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
   address: HexAddr;
   moduleName: string;
-  moduleId: Option<Nullable<number>>;
   txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
@@ -22,7 +21,6 @@ interface ModuleTxsTableProps {
 export const ModuleTxsTable = ({
   address,
   moduleName,
-  moduleId,
   txCount,
   onViewMore,
   scrollComponentId,
@@ -75,7 +73,7 @@ export const ModuleTxsTable = ({
         transactions={moduleTxs?.items}
         isLoading={isLoading}
         emptyState={
-          !moduleId || error ? (
+          error ? (
             <EmptyState
               withBorder
               imageVariant="not-found"

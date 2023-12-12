@@ -21,7 +21,6 @@ import {
   getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
-  getModuleTransactionsQueryDocument,
   getModuleTransactionsCountQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
@@ -33,7 +32,6 @@ import type {
   Message,
   PoolTxFilter,
   Nullable,
-  HumanAddr,
   HexAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
@@ -491,62 +489,6 @@ export const useTxsCountByBlockHeight = (
   );
 };
 
-export const useModuleTxsByPagination = ({
-  moduleId,
-  pageSize,
-  offset,
-}: {
-  moduleId: Option<Nullable<number>>;
-  pageSize: number;
-  offset: number;
-}) => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = async () => {
-    if (!moduleId) return [];
-    return indexerGraphClient
-      .request(getModuleTransactionsQueryDocument, {
-        moduleId,
-        pageSize,
-        offset,
-      })
-      .then<Transaction[]>(({ module_transactions }) =>
-        module_transactions.map<Transaction>((transaction) => ({
-          hash: parseTxHash(transaction.transaction.hash),
-          messages: snakeToCamel(transaction.transaction.messages),
-          sender: transaction.transaction.account.address as HumanAddr,
-          height: transaction.block.height,
-          created: parseDate(transaction.block.timestamp),
-          success: transaction.transaction.success,
-          actionMsgType: getActionMsgType([
-            transaction.transaction.is_send,
-            // TODO: handle more action Move msg type
-          ]),
-          furtherAction: MsgFurtherAction.NONE,
-          isSigner: false,
-          isIbc: transaction.transaction.is_ibc,
-          isInstantiate: false,
-        }))
-      );
-  };
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.MODULE_TXS,
-      indexerGraphClient,
-      moduleId,
-      pageSize,
-      offset,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
-      enabled: Boolean(moduleId),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
 export const useModuleTxsCount = (moduleId: Option<Nullable<number>>) => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -586,7 +528,7 @@ export const useTxsByModule = (
 
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.TXS_BY_MODULES,
+      CELATONE_QUERY_KEYS.MODULE_TXS,
       endpoint,
       address,
       moduleName,

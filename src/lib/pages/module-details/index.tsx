@@ -327,7 +327,6 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                       <ModuleTxsTable
                         address={moduleData.address}
                         moduleName={moduleData.moduleName}
-                        moduleId={moduleId}
                         txCount={moduleTxsCount}
                         refetchCount={refetchTxsCount}
                         onViewMore={() => {
@@ -412,7 +411,6 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                     <ModuleTxsTable
                       address={moduleData.address}
                       moduleName={moduleData.moduleName}
-                      moduleId={moduleId}
                       txCount={moduleTxsCount}
                       refetchCount={refetchTxsCount}
                       scrollComponentId={historyTabHeaderId}

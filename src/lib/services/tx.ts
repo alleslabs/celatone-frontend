@@ -258,54 +258,8 @@ export const getTxsByAddress = async (
     .then((res) => zAccountTxsResponse.parse(res.data));
 };
 
-const zModuleTxsResponseItem = zBaseTxsResponseItem
-  .extend({
-    is_signer: z.boolean().optional(),
-  })
-  .transform<Transaction>((val) => ({
-    hash: parseTxHash(val.hash),
-    messages: snakeToCamel(val.messages),
-    sender: val.sender,
-    isSigner: val.is_signer ?? false,
-    height: val.height,
-    created: val.created,
-    success: val.success,
-    actionMsgType: getActionMsgType([
-      val.is_send,
-      val.is_execute,
-      val.is_instantiate,
-      val.is_store_code,
-      val.is_migrate,
-      val.is_update_admin,
-      val.is_clear_admin,
-      // TODO: implement Move msg type
-    ]),
-    furtherAction: getMsgFurtherAction(
-      val.messages.length,
-      {
-        isSend: val.is_send,
-        isIbc: val.is_ibc,
-        isExecute: val.is_execute,
-        isInstantiate: val.is_instantiate,
-        isStoreCode: val.is_store_code,
-        isMigrate: val.is_migrate,
-        isUpdateAdmin: val.is_update_admin,
-        isClearAdmin: val.is_clear_admin,
-        isMovePublish: val.is_move_publish,
-        isMoveUpgrade: val.is_move_upgrade,
-        isMoveExecute: val.is_move_execute,
-        isMoveScript: val.is_move_script,
-      },
-      val.success,
-      val.is_signer ?? false
-    ),
-    isIbc: val.is_ibc,
-    isOpinit: val.is_opinit,
-    isInstantiate: val.is_instantiate ?? false,
-  }));
-
 const zModuleTxsResponse = z.object({
-  items: z.array(zModuleTxsResponseItem),
+  items: z.array(zBaseTxsResponseItem),
 });
 
 export const getTxsByModule = async (
