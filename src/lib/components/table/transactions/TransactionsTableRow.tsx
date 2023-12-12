@@ -86,12 +86,7 @@ export const TransactionsTableRow = ({
               </Tag>
             )}
             {transaction.isOpinit && (
-              <Tag
-                variant="accent-dark"
-                size="sm"
-                w={12}
-                justifyContent="center"
-              >
+              <Tag variant="teal" size="sm">
                 OPInit
               </Tag>
             )}

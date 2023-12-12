@@ -51,12 +51,12 @@ export const TransactionsTableMobileCard = ({
         <Flex>
           <RenderActionMessages transaction={transaction} />
           {transaction.isIbc && (
-            <Tag variant="accent-dark" size="sm" w={8} justifyContent="center">
+            <Tag variant="accent-dark" size="sm">
               IBC
             </Tag>
           )}
           {transaction.isOpinit && (
-            <Tag variant="accent-dark" size="sm" w={12} justifyContent="center">
+            <Tag variant="teal" size="sm">
               OPInit
             </Tag>
           )}

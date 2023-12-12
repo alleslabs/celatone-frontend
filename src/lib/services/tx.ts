@@ -115,6 +115,7 @@ const zBaseTxsResponseItem = z.object({
   success: z.boolean(),
   is_ibc: z.boolean(),
   is_send: z.boolean(),
+  // initia
   is_opinit: z.boolean().optional(),
   // wasm
   is_clear_admin: z.boolean().optional(),
@@ -150,6 +151,7 @@ const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>((val) => ({
   ]),
   furtherAction: MsgFurtherAction.NONE,
   isIbc: val.is_ibc,
+  isOpinit: val.is_opinit ?? false,
   isInstantiate: val.is_instantiate ?? false,
 }));
 
@@ -221,7 +223,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
       val.is_signer
     ),
     isIbc: val.is_ibc,
-    isOpinit: val.is_opinit,
+    isOpinit: val.is_opinit ?? false,
     isInstantiate: val.is_instantiate ?? false,
   }));
 

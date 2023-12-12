@@ -335,25 +335,25 @@ export const TxMsgExpand = ({
           mt={{ base: 1, md: 0 }}
         />
         {content}
-        {isIBC && !isMobile && (
+        {!isMobile && isIBC && (
           <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
             IBC
           </Tag>
         )}
-        {isOpinit && !isMobile && (
-          <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
+        {!isMobile && isOpinit && (
+          <Tag mx={2} variant="teal" size="md" minW="hug-content">
             OPInit
           </Tag>
         )}
       </Flex>
       <Flex>
-        {isIBC && isMobile && (
+        {isMobile && isIBC && (
           <Tag mx={2} variant="accent-dark" size="sm" minW="hug-content">
             IBC
           </Tag>
         )}
-        {isOpinit && isMobile && (
-          <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
+        {isMobile && isOpinit && (
+          <Tag mx={2} variant="teal" size="md" minW="hug-content">
             OPInit
           </Tag>
         )}

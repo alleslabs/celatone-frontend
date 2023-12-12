@@ -199,6 +199,8 @@ export const useTxsByAddressPagination = (
           ),
           isIbc: transaction.transaction.is_ibc,
           isInstantiate: transaction.transaction.is_instantiate ?? false,
+          // TODO: use API
+          isOpinit: false,
         }))
       );
   }, [
@@ -330,6 +332,7 @@ export const useTxsByPoolIdPagination = (
           furtherAction: MsgFurtherAction.NONE,
           isIbc: transaction.transaction.is_ibc,
           isInstantiate: false,
+          isOpinit: false,
         }))
       );
   }, [expression, indexerGraphClient, offset, pageSize]);
@@ -442,6 +445,8 @@ export const useTxsByBlockHeightPagination = (
             furtherAction: MsgFurtherAction.NONE,
             isIbc: transaction.is_ibc,
             isInstantiate: transaction.is_instantiate ?? false,
+            // TODO: use API
+            isOpinit: false,
           }))
         ),
     [height, limit, offset, indexerGraphClient, wasmEnable, moveEnable]

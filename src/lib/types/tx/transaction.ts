@@ -37,7 +37,7 @@ export interface Transaction {
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
   isInstantiate: boolean;
-  isOpinit?: boolean;
+  isOpinit: boolean;
 }
 
 /* Filter for INITIA */
