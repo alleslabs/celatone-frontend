@@ -7,8 +7,10 @@ import {
   useMultiStyleConfig,
 } from "@chakra-ui/react";
 
+import type { Nullish } from "lib/types";
+
 interface CustomTabProps extends TabProps {
-  count?: number | string;
+  count?: Nullish<number | string>;
   isLoading?: boolean;
 }
 
@@ -59,7 +61,7 @@ export const CustomTab = ({
       ) : (
         count !== undefined && (
           <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
-            {count}
+            {count === null ? "N/A" : count}
           </Badge>
         )
       )}

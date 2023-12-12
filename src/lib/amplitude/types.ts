@@ -62,6 +62,8 @@ export enum AmpEvent {
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   TO_MODULE_DETAIL = "To Module Detail",
+  TO_MODULE_INTERACTION = "To Module Interaction",
+  TO_PUBLISH_MODULE = "To Publish Module",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -73,6 +75,8 @@ export enum AmpEvent {
   ACTION_RESEND = "Action Resend",
   ACTION_FAUCET = "Action Faucet",
   ACTION_ATTACH_JSON = "Action Attach Json",
+  ACTION_MOVE_VIEW = "Action Move View",
+  ACTION_MOVE_EXECUTE = "Action Move Execute",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",
@@ -143,6 +147,12 @@ export enum AmpEvent {
   USE_MAIN_CTA = "Use Main CTA",
   USE_MODULE_FUNCTION_CTA = "Use Module Function CTA",
   USE_BREADCRUMB = "Use Breadcrumb",
+  USE_MODULE_SELECTION_DRAWER = "Use Module Selection Drawer",
+  USE_MODULE_SELECTION_INPUT_FILL = "Use Module Selection Input Fill",
+  USE_SEE_MODULE_BUTTON = "Use See Module Button",
+  USE_MODULE_SELECTION_FUNCTION = "Use Module Selection Function",
+  USE_MODULE_SELECTION_MODULE = "Use Module Selection Module",
+  USE_FUNCTION_SELECTION = "Use Function Selection",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -168,6 +178,7 @@ export type SpecialAmpEvent =
   | AmpEvent.TO_INSTANTIATE
   | AmpEvent.TO_MIGRATE
   | AmpEvent.TO_ADMIN_UPDATE
+  | AmpEvent.TO_MODULE_INTERACTION
   | AmpEvent.USE_MAIN_SEARCH
   | AmpEvent.USE_TAB
   | AmpEvent.USE_RADIO
@@ -193,4 +204,5 @@ export type SpecialAmpEvent =
   | AmpEvent.USE_VIEW
   | AmpEvent.USE_TOGGLE
   | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
-  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD;
+  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD
+  | AmpEvent.USE_MODULE_SELECTION_INPUT_FILL;

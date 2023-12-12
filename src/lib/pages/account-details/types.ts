@@ -1,4 +1,11 @@
-import type { Option, TokenWithValue, Validator } from "lib/types";
+import { z } from "zod";
+
+import {
+  type Option,
+  type TokenWithValue,
+  type Validator,
+  zAddr,
+} from "lib/types";
 
 import type {
   Delegation,
@@ -13,22 +20,40 @@ export interface NonRedelegatable {
 }
 
 export interface UserDelegationsData {
+  isLoading: boolean;
   stakingParams: Option<StakingParams>;
   isValidator: Option<boolean>;
-  isLoading: Option<boolean>;
   totalBonded: Option<Record<string, TokenWithValue>>;
-  isLoadingTotalBonded: boolean;
   totalDelegations: Option<Record<string, TokenWithValue>>;
   delegations: Option<Delegation[]>;
-  isLoadingDelegations: boolean;
   totalUnbondings: Option<Record<string, TokenWithValue>>;
   unbondings: Option<Unbonding[]>;
-  isLoadingUnbondings: boolean;
   totalRewards: Option<Record<string, TokenWithValue>>;
   rewards: Option<Record<string, TokenWithValue[]>>;
-  isLoadingRewards: boolean;
   redelegations: Option<Redelegation[]>;
-  isLoadingRedelegations: boolean;
   totalCommission: Option<Record<string, TokenWithValue>>;
-  isLoadingTotalCommission: boolean;
 }
+
+export enum TabIndex {
+  Overview = "overview",
+  Assets = "assets",
+  Delegations = "delegations",
+  Txs = "txs",
+  Codes = "codes",
+  Contracts = "contracts",
+  Admins = "admins",
+  Resources = "resources",
+  Modules = "modules",
+  Proposals = "proposals",
+}
+
+export const zAccDetailQueryParams = z.object({
+  accountAddress: zAddr,
+  tab: z.union([
+    z.nativeEnum(TabIndex),
+    z
+      .string()
+      .optional()
+      .transform(() => TabIndex.Overview),
+  ]),
+});

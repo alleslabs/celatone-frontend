@@ -1,6 +1,16 @@
 import axios from "axios";
+import { z } from "zod";
 
-import type { Addr, ContractAddr, Option, PublicInfo } from "lib/types";
+import type {
+  Addr,
+  ContractAddr,
+  Option,
+  PublicInfo,
+  ContractInfo,
+  ContractHistoryRemark,
+  RemarkType,
+} from "lib/types";
+import { RemarkOperation, zAddr, zContractAddr, zUtcDate } from "lib/types";
 import { encode, libDecode } from "lib/utils";
 
 export interface ContractCw2InfoRaw {
@@ -86,3 +96,73 @@ export const queryPublicInfo = async (
         : undefined;
     });
 };
+
+const zContractsResponseItem = z
+  .object({
+    contract_address: zContractAddr,
+    label: z.string(),
+    admin: zAddr.nullable(),
+    instantiator: zAddr,
+    latest_updated: zUtcDate,
+    latest_updater: zAddr,
+    remark: z
+      .object({
+        operation: z.nativeEnum(RemarkOperation),
+        type: z.string(),
+        value: z.string(),
+      })
+      .transform<ContractHistoryRemark>((val) => ({
+        operation: val.operation,
+        type: val.type as RemarkType, // TODO: remove type assertion,
+        value: val.value,
+      })),
+  })
+  .transform<ContractInfo>((val) => ({
+    contractAddress: val.contract_address,
+    label: val.label,
+    admin: val.admin ? val.admin : undefined,
+    instantiator: val.instantiator,
+    latestUpdated: val.latest_updated,
+    latestUpdater: val.latest_updater,
+    remark: val.remark,
+  }));
+
+const zContractsResponse = z.object({
+  items: z.array(zContractsResponseItem),
+  total: z.number(),
+});
+
+export type ContractsResponse = z.infer<typeof zContractsResponse>;
+
+export const getInstantiatedContractsByAddress = async (
+  endpoint: string,
+  address: Addr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(address)}/wasm/instantiated-contracts`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) => zContractsResponse.parse(data));
+
+export const getAdminContractsByAddress = async (
+  endpoint: string,
+  address: Addr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/wasm/admin-contracts`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => zContractsResponse.parse(data));

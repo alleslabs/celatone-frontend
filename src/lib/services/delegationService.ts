@@ -20,6 +20,7 @@ import {
   getRedelegations,
   getStakingParams,
   getUnbondings,
+  getAccountDelegations,
 } from "./delegation";
 
 export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
@@ -124,6 +125,18 @@ export const useCommission = (
   return useQuery(
     [CELATONE_QUERY_KEYS.COMMISSION_BY_VAL_ADDRESS, lcdEndpoint, address],
     queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useAccountDelegations = (address: Addr) => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ACCOUNT_DELEGATIONS, endpoint, address],
+    () => getAccountDelegations(endpoint, address),
     {
       refetchOnWindowFocus: false,
     }

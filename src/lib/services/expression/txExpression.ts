@@ -10,7 +10,7 @@ const actions = {
   isOpInit: "is_opinit",
   isExecute: "is_execute",
   isInstantiate: "is_instantiate",
-  isUpload: "is_store_code",
+  isStoreCode: "is_store_code",
   isMigrate: "is_migrate",
   isUpdateAdmin: "is_update_admin",
   isClearAdmin: "is_clear_admin",

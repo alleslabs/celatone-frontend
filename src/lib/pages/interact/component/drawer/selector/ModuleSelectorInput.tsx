@@ -7,6 +7,7 @@ import type {
   DisplayMode,
   ModuleSelectFunction,
 } from "../types";
+import { trackUseModuleSelectionInputFill } from "lib/amplitude";
 import { useExampleAddresses } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -68,18 +69,23 @@ export const ModuleSelectorInput = ({
   });
 
   const handleSubmit = useCallback(() => {
+    trackUseModuleSelectionInputFill(addr, !!moduleName, !!functionName);
+
     if (keyword === selectedAddress.address || keyword === selectedAddress.hex)
       return setMode("display");
 
     const err = validateModuleInput(keyword);
     return err ? setError(err) : refetch();
   }, [
+    addr,
+    moduleName,
+    functionName,
+    keyword,
     selectedAddress.address,
     selectedAddress.hex,
-    keyword,
-    refetch,
-    validateModuleInput,
     setMode,
+    validateModuleInput,
+    refetch,
   ]);
 
   const handleKeydown = useCallback(

@@ -6,13 +6,15 @@ import type { Any } from "cosmjs-types/google/protobuf/any";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type { Transaction, Option, Fee } from "lib/types";
+import type { Transaction, Option, Fee, TxFilters, Addr } from "lib/types";
 import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
 import {
   getActionMsgType,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
+  camelToSnake,
+  getMsgFurtherAction,
 } from "lib/utils";
 
 // ----------------------------------------
@@ -97,53 +99,51 @@ export const queryTxData = async (
   };
 };
 
-const zTxsResponseItem = z
-  .object({
-    block: z.object({
-      height: z.number().nonnegative(),
-      timestamp: zUtcDate,
-    }),
-    hash: z.string(),
-    messages: z.any().array(),
-    signer: zAddr,
-    success: z.boolean(),
-    is_ibc: z.boolean(),
-    is_send: z.boolean(),
-    // wasm
-    is_clear_admin: z.boolean().optional(),
-    is_execute: z.boolean().optional(),
-    is_instantiate: z.boolean().optional(),
-    is_migrate: z.boolean().optional(),
-    is_store_code: z.boolean().optional(),
-    is_update_admin: z.boolean().optional(),
-    // move
-    is_move_execute: z.boolean().optional(),
-    is_move_publish: z.boolean().optional(),
-    is_move_script: z.boolean().optional(),
-    is_move_upgrade: z.boolean().optional(),
-  })
-  .transform<Transaction>((val) => ({
-    hash: parseTxHash(val.hash),
-    messages: snakeToCamel(val.messages),
-    sender: val.signer,
-    isSigner: false,
-    height: val.block.height,
-    created: val.block.timestamp,
-    success: val.success,
-    actionMsgType: getActionMsgType([
-      val.is_send,
-      val.is_execute,
-      val.is_instantiate,
-      val.is_store_code,
-      val.is_migrate,
-      val.is_update_admin,
-      val.is_clear_admin,
-      // TODO: implement Move msg type
-    ]),
-    furtherAction: MsgFurtherAction.NONE,
-    isIbc: val.is_ibc,
-    isInstantiate: val.is_instantiate ?? false,
-  }));
+const zBaseTxsResponseItem = z.object({
+  height: z.number().nonnegative(),
+  created: zUtcDate,
+  hash: z.string(),
+  messages: z.any().array(),
+  sender: zAddr,
+  success: z.boolean(),
+  is_ibc: z.boolean(),
+  is_send: z.boolean(),
+  // wasm
+  is_clear_admin: z.boolean().optional(),
+  is_execute: z.boolean().optional(),
+  is_instantiate: z.boolean().optional(),
+  is_migrate: z.boolean().optional(),
+  is_store_code: z.boolean().optional(),
+  is_update_admin: z.boolean().optional(),
+  // move
+  is_move_execute: z.boolean().optional(),
+  is_move_publish: z.boolean().optional(),
+  is_move_script: z.boolean().optional(),
+  is_move_upgrade: z.boolean().optional(),
+});
+
+const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>((val) => ({
+  hash: parseTxHash(val.hash),
+  messages: snakeToCamel(val.messages),
+  sender: val.sender,
+  isSigner: false,
+  height: val.height,
+  created: val.created,
+  success: val.success,
+  actionMsgType: getActionMsgType([
+    val.is_send,
+    val.is_execute,
+    val.is_instantiate,
+    val.is_store_code,
+    val.is_migrate,
+    val.is_update_admin,
+    val.is_clear_admin,
+    // TODO: implement Move msg type
+  ]),
+  furtherAction: MsgFurtherAction.NONE,
+  isIbc: val.is_ibc,
+  isInstantiate: val.is_instantiate ?? false,
+}));
 
 const zTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
@@ -168,3 +168,103 @@ export const getTxs = async (
       },
     })
     .then((res) => zTxsResponse.parse(res.data));
+
+const zAccountTxsResponseItem = zBaseTxsResponseItem
+  .extend({
+    is_signer: z.boolean(),
+  })
+  .transform<Transaction>((val) => ({
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages),
+    sender: val.sender,
+    isSigner: val.is_signer,
+    height: val.height,
+    created: val.created,
+    success: val.success,
+    actionMsgType: getActionMsgType([
+      val.is_send,
+      val.is_execute,
+      val.is_instantiate,
+      val.is_store_code,
+      val.is_migrate,
+      val.is_update_admin,
+      val.is_clear_admin,
+      // TODO: implement Move msg type
+    ]),
+    furtherAction: getMsgFurtherAction(
+      val.messages.length,
+      {
+        isSend: val.is_send,
+        isIbc: val.is_ibc,
+        isExecute: val.is_execute,
+        isInstantiate: val.is_instantiate,
+        isStoreCode: val.is_store_code,
+        isMigrate: val.is_migrate,
+        isUpdateAdmin: val.is_update_admin,
+        isClearAdmin: val.is_clear_admin,
+        isMovePublish: val.is_move_publish,
+        isMoveUpgrade: val.is_move_upgrade,
+        isMoveExecute: val.is_move_execute,
+        isMoveScript: val.is_move_script,
+      },
+      val.success,
+      val.is_signer
+    ),
+    isIbc: val.is_ibc,
+    isInstantiate: val.is_instantiate ?? false,
+  }));
+
+const zAccountTxsResponse = z.object({
+  items: z.array(zAccountTxsResponseItem),
+});
+export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
+
+export const getTxsByAddress = async (
+  endpoint: string,
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters,
+  limit: number,
+  offset: number,
+  isWasm: boolean,
+  isMove: boolean
+) => {
+  const filterParams = camelToSnake<TxFilters>(txFilters);
+
+  return axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/txs`, {
+      params: {
+        limit,
+        offset,
+        is_wasm: isWasm,
+        is_move: isMove,
+        ...filterParams,
+        ...(isSigner !== undefined && { is_signer: isSigner }),
+      },
+    })
+    .then((res) => zAccountTxsResponse.parse(res.data));
+};
+
+const zTxsCountResponse = z
+  .object({
+    count: z.number().nullish(),
+  })
+  .transform((val) => val.count);
+
+export const getAPITxsCountByAddress = async (
+  endpoint: string,
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters
+) => {
+  const filterParams = camelToSnake<TxFilters>(txFilters);
+
+  return axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/txs-count`, {
+      params: {
+        ...filterParams,
+        ...(isSigner !== undefined && { is_signer: isSigner }),
+      },
+    })
+    .then((res) => zTxsCountResponse.parse(res.data));
+};

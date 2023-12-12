@@ -16,7 +16,6 @@ import {
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
-  getTxsCount,
   getTxsCountByPoolId,
   getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
@@ -46,8 +45,13 @@ import {
 } from "lib/utils";
 
 import { usePoolTxExpression, useTxExpression } from "./expression";
-import type { TxResponse, TxsResponse } from "./tx";
-import { getTxs, queryTxData } from "./tx";
+import type { AccountTxsResponse, TxResponse, TxsResponse } from "./tx";
+import {
+  getTxs,
+  getTxsByAddress,
+  queryTxData,
+  getAPITxsCountByAddress,
+} from "./tx";
 
 export interface TxData extends TxResponse {
   chainId: string;
@@ -79,6 +83,44 @@ export const useTxData = (
     refetchOnWindowFocus: false,
     retry: false,
   });
+};
+
+export const useTxsByAddress = (
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters,
+  offset: number,
+  limit: number
+): UseQueryResult<AccountTxsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS,
+      endpoint,
+      address,
+      isSigner,
+      JSON.stringify(txFilters),
+      limit,
+      offset,
+      isWasm,
+      isMove,
+    ],
+    async () =>
+      getTxsByAddress(
+        endpoint,
+        address,
+        isSigner,
+        txFilters,
+        limit,
+        offset,
+        isWasm,
+        isMove
+      ),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
 };
 
 export const useTxsByAddressPagination = (
@@ -135,7 +177,7 @@ export const useTxsByAddressPagination = (
               isIbc: transaction.transaction.is_ibc,
               isExecute: transaction.transaction.is_execute,
               isInstantiate: transaction.transaction.is_instantiate,
-              isUpload: transaction.transaction.is_store_code,
+              isStoreCode: transaction.transaction.is_store_code,
               isMigrate: transaction.transaction.is_migrate,
               isUpdateAdmin: transaction.transaction.is_update_admin,
               isClearAdmin: transaction.transaction.is_clear_admin,
@@ -227,6 +269,27 @@ export const useTxsCountByAddress = ({
       retry: 0,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+// TODO: this will replace useTxsCountByAddress
+export const useAPITxsCountByAddress = (
+  address: Addr,
+  isSigner: Option<boolean>,
+  txFilters: TxFilters
+) => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.API_TXS_COUNT_BY_ADDRESS,
+      endpoint,
+      address,
+      isSigner,
+      JSON.stringify(txFilters),
+    ],
+    async () => getAPITxsCountByAddress(endpoint, address, isSigner, txFilters),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -332,19 +395,6 @@ export const useTxs = (
     async () => getTxs(endpoint, limit, offset, wasmEnable, moveEnable),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
-};
-
-export const useTxsCount = (): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getTxsCount)
-        .then(({ transactions }) => transactions[0]?.id),
-    [indexerGraphClient]
-  );
-
-  return useQuery([CELATONE_QUERY_KEYS.TXS_COUNT, indexerGraphClient], queryFn);
 };
 
 export const useTxsByBlockHeightPagination = (

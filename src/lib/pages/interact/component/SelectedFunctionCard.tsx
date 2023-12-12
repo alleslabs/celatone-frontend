@@ -1,6 +1,7 @@
 import { Button, Divider, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { trackUseExpand } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
@@ -66,7 +67,13 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
               transform={expand ? "rotate(180deg)" : "rotate(0)"}
             />
           }
-          onClick={() => setExpand((prev) => !prev)}
+          onClick={() => {
+            trackUseExpand({
+              action: expand ? "collapse" : "expand",
+              component: "module_interaction_selected_function_card",
+            });
+            setExpand((prev) => !prev);
+          }}
         >
           {expand ? "View Less" : "View More"}
         </Button>

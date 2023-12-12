@@ -39,6 +39,11 @@ import type {
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
 import { getCodeIdInfo } from "./code";
+import {
+  type ContractsResponse,
+  getAdminContractsByAddress,
+  getInstantiatedContractsByAddress,
+} from "./contract";
 
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
@@ -447,6 +452,26 @@ export const useContractListCountByCodeId = (
   );
 };
 
+export const useInstantiatedContractsByAddress = (
+  address: Addr,
+  limit: number,
+  offset: number
+): UseQueryResult<ContractsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS,
+      address,
+      limit,
+      offset,
+    ],
+    async () =>
+      getInstantiatedContractsByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
 export const useContractListByWalletAddressPagination = (
   walletAddress: Option<HumanAddr>,
   offset: number,
@@ -496,6 +521,20 @@ export const useContractListByWalletAddressPagination = (
       retry: 1,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+export const useAdminContractsByAddress = (
+  address: Addr,
+  limit: number,
+  offset: number
+): UseQueryResult<ContractsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ADMIN_CONTRACTS_BY_ADDRESS, address, limit, offset],
+    async () => getAdminContractsByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

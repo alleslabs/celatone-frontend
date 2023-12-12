@@ -79,14 +79,14 @@ export const AdminContractsTable = observer(
         {isMobileOverview ? (
           <MobileTitle
             title="Contract Admins"
-            count={totalData ?? 0}
+            count={totalData}
             onViewMore={onViewMore}
           />
         ) : (
           <>
             <TableTitle
               title="Contract Admins"
-              count={totalData ?? 0}
+              count={totalData}
               helperText="This account is the admin for following contracts"
               mb={2}
             />

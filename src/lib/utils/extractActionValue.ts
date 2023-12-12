@@ -6,8 +6,8 @@ export const displayActionValue = (isActionName: string) => {
       return "IBC";
     case "isOpInit":
       return "OPInit";
-    case "isUpload":
-      return "Upload";
+    case "isStoreCode":
+      return "Store Code";
     case "isInstantiate":
       return "Instantiate";
     case "isExecute":
