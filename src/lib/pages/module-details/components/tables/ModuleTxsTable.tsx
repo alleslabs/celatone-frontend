@@ -6,10 +6,12 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
-import { useModuleTxsByPagination } from "lib/services/txService";
-import type { Nullable, Option } from "lib/types";
+import { useTxsByModule } from "lib/services/txService";
+import type { HexAddr, Nullable, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
+  address: HexAddr;
+  moduleName: string;
   moduleId: Option<Nullable<number>>;
   txCount: Option<number>;
   onViewMore?: () => void;
@@ -18,6 +20,8 @@ interface ModuleTxsTableProps {
 }
 
 export const ModuleTxsTable = ({
+  address,
+  moduleName,
   moduleId,
   txCount,
   onViewMore,
@@ -46,11 +50,7 @@ export const ModuleTxsTable = ({
     data: moduleTxs,
     isLoading,
     error,
-  } = useModuleTxsByPagination({
-    moduleId,
-    pageSize,
-    offset,
-  });
+  } = useTxsByModule(address, moduleName, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -72,7 +72,7 @@ export const ModuleTxsTable = ({
   return (
     <>
       <TransactionsTable
-        transactions={moduleTxs}
+        transactions={moduleTxs?.items}
         isLoading={isLoading}
         emptyState={
           !moduleId || error ? (

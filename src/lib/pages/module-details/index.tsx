@@ -325,6 +325,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   <TabPanels>
                     <TabPanel p={0}>
                       <ModuleTxsTable
+                        address={moduleData.address}
+                        moduleName={moduleData.moduleName}
                         moduleId={moduleId}
                         txCount={moduleTxsCount}
                         refetchCount={refetchTxsCount}
@@ -408,6 +410,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 <TabPanels>
                   <TabPanel p={0}>
                     <ModuleTxsTable
+                      address={moduleData.address}
+                      moduleName={moduleData.moduleName}
                       moduleId={moduleId}
                       txCount={moduleTxsCount}
                       refetchCount={refetchTxsCount}

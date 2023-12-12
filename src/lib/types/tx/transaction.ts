@@ -68,7 +68,8 @@ export interface MoveTxFilters {
 export interface TxFilters
   extends BaseTxFilters,
     WasmTxFilters,
-    MoveTxFilters {}
+    MoveTxFilters,
+    InitiaTxFilters {}
 
 export type PoolTxFilter =
   | "is_all"

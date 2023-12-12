@@ -15625,7 +15625,6 @@ export type GetTxsByAddressPaginationQuery = {
       messages: any;
       is_send: boolean;
       is_ibc: boolean;
-      is_opinit: boolean;
       is_clear_admin?: boolean;
       is_execute?: boolean;
       is_instantiate?: boolean;
@@ -15673,7 +15672,6 @@ export type GetTxsByPoolIdPaginationQuery = {
       success: boolean;
       messages: any;
       is_ibc: boolean;
-      is_opinit: boolean;
       account: { __typename?: "accounts"; address: string };
     };
   }>;
@@ -15710,7 +15708,6 @@ export type GetTxsQuery = {
     messages: any;
     is_send: boolean;
     is_ibc: boolean;
-    is_opinit: boolean;
     is_clear_admin?: boolean;
     is_execute?: boolean;
     is_instantiate?: boolean;
@@ -15750,7 +15747,6 @@ export type GetBlockTransactionsByHeightQueryQuery = {
     messages: any;
     is_send: boolean;
     is_ibc: boolean;
-    is_opinit: boolean;
     is_clear_admin?: boolean;
     is_execute?: boolean;
     is_instantiate?: boolean;
@@ -15799,7 +15795,6 @@ export type GetModuleTransactionsQueryQuery = {
       messages: any;
       is_send: boolean;
       is_ibc: boolean;
-      is_opinit: boolean;
       is_move_execute: boolean;
       is_move_execute_event: boolean;
       is_move_publish: boolean;
@@ -21545,10 +21540,6 @@ export const GetTxsByAddressPaginationDocument = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "is_opinit" },
-                      },
-                      {
-                        kind: "Field",
                         name: { kind: "Name", value: "is_clear_admin" },
                         directives: [
                           {
@@ -21967,10 +21958,6 @@ export const GetTxsByPoolIdPaginationDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "is_ibc" },
                       },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_opinit" },
-                      },
                     ],
                   },
                 },
@@ -22180,7 +22167,6 @@ export const GetTxsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "messages" } },
                 { kind: "Field", name: { kind: "Name", value: "is_send" } },
                 { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
-                { kind: "Field", name: { kind: "Name", value: "is_opinit" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_clear_admin" },
@@ -22607,7 +22593,6 @@ export const GetBlockTransactionsByHeightQueryDocument = {
                 { kind: "Field", name: { kind: "Name", value: "messages" } },
                 { kind: "Field", name: { kind: "Name", value: "is_send" } },
                 { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
-                { kind: "Field", name: { kind: "Name", value: "is_opinit" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_clear_admin" },
@@ -23058,10 +23043,6 @@ export const GetModuleTransactionsQueryDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "is_ibc" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_opinit" },
                       },
                       {
                         kind: "Field",

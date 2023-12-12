@@ -6,7 +6,14 @@ import type { Any } from "cosmjs-types/google/protobuf/any";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type { Transaction, Option, Fee, TxFilters, Addr } from "lib/types";
+import type {
+  Transaction,
+  Option,
+  Fee,
+  TxFilters,
+  Addr,
+  HexAddr,
+} from "lib/types";
 import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
 import {
   getActionMsgType,
@@ -108,6 +115,7 @@ const zBaseTxsResponseItem = z.object({
   success: z.boolean(),
   is_ibc: z.boolean(),
   is_send: z.boolean(),
+  is_opinit: z.boolean().optional(),
   // wasm
   is_clear_admin: z.boolean().optional(),
   is_execute: z.boolean().optional(),
@@ -156,7 +164,8 @@ export const getTxs = async (
   limit: number,
   offset: number,
   isWasm: boolean,
-  isMove: boolean
+  isMove: boolean,
+  isInitia: boolean
 ) =>
   axios
     .get(`${endpoint}`, {
@@ -165,6 +174,7 @@ export const getTxs = async (
         offset,
         is_wasm: isWasm,
         is_move: isMove,
+        is_initia: isInitia,
       },
     })
     .then((res) => zTxsResponse.parse(res.data));
@@ -211,6 +221,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
       val.is_signer
     ),
     isIbc: val.is_ibc,
+    isOpinit: val.is_opinit,
     isInstantiate: val.is_instantiate ?? false,
   }));
 
@@ -227,7 +238,8 @@ export const getTxsByAddress = async (
   limit: number,
   offset: number,
   isWasm: boolean,
-  isMove: boolean
+  isMove: boolean,
+  isInitia: boolean
 ) => {
   const filterParams = camelToSnake<TxFilters>(txFilters);
 
@@ -238,11 +250,88 @@ export const getTxsByAddress = async (
         offset,
         is_wasm: isWasm,
         is_move: isMove,
+        is_initia: isInitia,
         ...filterParams,
         ...(isSigner !== undefined && { is_signer: isSigner }),
       },
     })
     .then((res) => zAccountTxsResponse.parse(res.data));
+};
+
+const zModuleTxsResponseItem = zBaseTxsResponseItem
+  .extend({
+    is_signer: z.boolean().optional(),
+  })
+  .transform<Transaction>((val) => ({
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages),
+    sender: val.sender,
+    isSigner: val.is_signer ?? false,
+    height: val.height,
+    created: val.created,
+    success: val.success,
+    actionMsgType: getActionMsgType([
+      val.is_send,
+      val.is_execute,
+      val.is_instantiate,
+      val.is_store_code,
+      val.is_migrate,
+      val.is_update_admin,
+      val.is_clear_admin,
+      // TODO: implement Move msg type
+    ]),
+    furtherAction: getMsgFurtherAction(
+      val.messages.length,
+      {
+        isSend: val.is_send,
+        isIbc: val.is_ibc,
+        isExecute: val.is_execute,
+        isInstantiate: val.is_instantiate,
+        isStoreCode: val.is_store_code,
+        isMigrate: val.is_migrate,
+        isUpdateAdmin: val.is_update_admin,
+        isClearAdmin: val.is_clear_admin,
+        isMovePublish: val.is_move_publish,
+        isMoveUpgrade: val.is_move_upgrade,
+        isMoveExecute: val.is_move_execute,
+        isMoveScript: val.is_move_script,
+      },
+      val.success,
+      val.is_signer ?? false
+    ),
+    isIbc: val.is_ibc,
+    isOpinit: val.is_opinit,
+    isInstantiate: val.is_instantiate ?? false,
+  }));
+
+const zModuleTxsResponse = z.object({
+  items: z.array(zModuleTxsResponseItem),
+});
+
+export const getTxsByModule = async (
+  endpoint: string,
+  address: HexAddr,
+  moduleName: string,
+  limit: number,
+  offset: number,
+  isWasm: boolean,
+  isMove: boolean,
+  isInitia: boolean
+) => {
+  return axios
+    .get(
+      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/txs`,
+      {
+        params: {
+          limit,
+          offset,
+          is_wasm: isWasm,
+          is_move: isMove,
+          is_initia: isInitia,
+        },
+      }
+    )
+    .then((res) => zModuleTxsResponse.parse(res.data));
 };
 
 const zTxsCountResponse = z

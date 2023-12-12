@@ -37,10 +37,7 @@ export const TransactionsTableRow = ({
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
 
-  const { messages } = transaction;
-  const isOpinit = Boolean(
-    messages.find(({ type }) => type.includes("opinit"))
-  );
+  const { isOpinit } = transaction;
 
   return (
     <Box w="full" minW="min-content">

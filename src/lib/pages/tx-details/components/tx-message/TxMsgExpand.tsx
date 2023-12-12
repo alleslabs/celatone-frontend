@@ -37,7 +37,7 @@ export const TxMsgExpand = ({
     type.startsWith("/ibc");
   let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
-  const isOpinit = Boolean(type.includes("opinit"));
+  const isOpinit = Boolean(type.startsWith("/opinit"));
 
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":

@@ -22,7 +22,7 @@ import {
   DEFAULT_BASE_TX_FILTERS,
   DEFAULT_MOVE_TX_FILTERS,
   DEFAULT_WASM_TX_FILTERS,
-  INITIA_TX_FILTERS,
+  DEFAULT_INITIA_TX_FILTERS,
 } from "lib/data";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
@@ -51,7 +51,7 @@ const listItemProps: CSSProperties = {
 const BASE_OPTIONS = Object.keys(DEFAULT_BASE_TX_FILTERS);
 const WASM_OPTIONS = Object.keys(DEFAULT_WASM_TX_FILTERS);
 const MOVE_OPTIONS = Object.keys(DEFAULT_MOVE_TX_FILTERS);
-const INITIA_OPTIONS = Object.keys(INITIA_TX_FILTERS);
+const INITIA_OPTIONS = Object.keys(DEFAULT_INITIA_TX_FILTERS);
 
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<

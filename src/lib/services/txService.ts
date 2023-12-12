@@ -10,6 +10,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useInitia,
   useMoveConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -33,6 +34,7 @@ import type {
   PoolTxFilter,
   Nullable,
   HumanAddr,
+  HexAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
@@ -51,6 +53,7 @@ import {
   getTxsByAddress,
   queryTxData,
   getAPITxsCountByAddress,
+  getTxsByModule,
 } from "./tx";
 
 export interface TxData extends TxResponse {
@@ -95,6 +98,7 @@ export const useTxsByAddress = (
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
+  const isInitia = useInitia();
 
   return useQuery(
     [
@@ -117,7 +121,8 @@ export const useTxsByAddress = (
         limit,
         offset,
         isWasm,
-        isMove
+        isMove,
+        isInitia
       ),
     { retry: 1, refetchOnWindowFocus: false }
   );
@@ -190,7 +195,6 @@ export const useTxsByAddressPagination = (
             transaction.is_signer
           ),
           isIbc: transaction.transaction.is_ibc,
-          isOpinit: transaction.transaction.is_opinit,
           isInstantiate: transaction.transaction.is_instantiate ?? false,
         }))
       );
@@ -322,7 +326,6 @@ export const useTxsByPoolIdPagination = (
           actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
           furtherAction: MsgFurtherAction.NONE,
           isIbc: transaction.transaction.is_ibc,
-          isOpinit: transaction.transaction.is_opinit,
           isInstantiate: false,
         }))
       );
@@ -389,10 +392,12 @@ export const useTxs = (
   const endpoint = useBaseApiRoute("txs");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
+  const isInitia = useInitia();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.TXS, endpoint, limit, offset, wasmEnable, moveEnable],
-    async () => getTxs(endpoint, limit, offset, wasmEnable, moveEnable),
+    async () =>
+      getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -436,7 +441,6 @@ export const useTxsByBlockHeightPagination = (
             ]),
             furtherAction: MsgFurtherAction.NONE,
             isIbc: transaction.is_ibc,
-            isOpinit: transaction.is_opinit,
             isInstantiate: transaction.is_instantiate ?? false,
           }))
         ),
@@ -521,7 +525,6 @@ export const useModuleTxsByPagination = ({
           furtherAction: MsgFurtherAction.NONE,
           isSigner: false,
           isIbc: transaction.transaction.is_ibc,
-          isOpinit: transaction.transaction.is_opinit,
           isInstantiate: false,
         }))
       );
@@ -567,5 +570,42 @@ export const useModuleTxsCount = (moduleId: Option<Nullable<number>>) => {
       retry: 1,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+export const useTxsByModule = (
+  address: HexAddr,
+  moduleName: string,
+  offset: number,
+  limit: number
+): UseQueryResult<AccountTxsResponse> => {
+  const endpoint = useBaseApiRoute("move");
+  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
+  const isInitia = useInitia();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_MODULES,
+      endpoint,
+      address,
+      moduleName,
+      limit,
+      offset,
+      isWasm,
+      isMove,
+    ],
+    async () =>
+      getTxsByModule(
+        endpoint,
+        address,
+        moduleName,
+        limit,
+        offset,
+        isWasm,
+        isMove,
+        isInitia
+      ),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
