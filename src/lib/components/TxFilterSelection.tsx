@@ -16,11 +16,7 @@ import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
 import { useMemo, useState, useRef, forwardRef } from "react";
 
-import {
-  useCurrentChain,
-  useMoveConfig,
-  useWasmConfig,
-} from "lib/app-provider";
+import { useInitia, useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import {
   DEFAULT_BASE_TX_FILTERS,
@@ -86,8 +82,7 @@ export const TxFilterSelection = forwardRef<
     const wasm = useWasmConfig({ shouldRedirect: false });
     const move = useMoveConfig({ shouldRedirect: false });
 
-    const { chain } = useCurrentChain();
-    const isInitia = chain.bech32_prefix === "init";
+    const isInitia = useInitia();
 
     const options = useMemo(
       () => [

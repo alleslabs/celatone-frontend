@@ -37,12 +37,12 @@ export interface Transaction {
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
   isInstantiate: boolean;
-  isOpinit?: boolean;
+  isOpInit?: boolean;
 }
 
 /* Filter for INITIA */
 export interface InitiaTxFilters {
-  isOpinit: boolean;
+  isOpInit: boolean;
 }
 
 export interface BaseTxFilters {

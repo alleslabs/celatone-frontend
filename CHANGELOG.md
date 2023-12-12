@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
+
 ### Features
 
 - [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add Amplitude for module detail and breadcrumb
@@ -58,7 +60,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#647](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
 - [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
 - [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save contract count
 - [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details

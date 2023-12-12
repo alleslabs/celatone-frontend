@@ -55,7 +55,7 @@ export const TransactionsTableMobileCard = ({
               IBC
             </Tag>
           )}
-          {transaction.isOpinit && (
+          {transaction.isOpInit && (
             <Tag variant="accent-dark" size="sm" w={12} justifyContent="center">
               OPInit
             </Tag>

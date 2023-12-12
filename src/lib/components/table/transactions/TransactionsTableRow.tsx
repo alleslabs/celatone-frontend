@@ -38,7 +38,7 @@ export const TransactionsTableRow = ({
   const isAccordion = transaction.messages.length > 1;
 
   const { messages } = transaction;
-  const isOpinit = Boolean(
+  const isOpInit = Boolean(
     messages.find(({ type }) => type.includes("opinit"))
   );
 
@@ -91,7 +91,7 @@ export const TransactionsTableRow = ({
                 IBC
               </Tag>
             )}
-            {isOpinit && (
+            {isOpInit && (
               <Tag
                 variant="accent-dark"
                 size="sm"

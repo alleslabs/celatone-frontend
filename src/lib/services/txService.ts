@@ -148,7 +148,7 @@ export const useTxsByAddressPagination = (
             transaction.is_signer
           ),
           isIbc: transaction.transaction.is_ibc,
-          isOpinit: transaction.transaction.is_opinit,
+          isOpInit: transaction.transaction.is_opinit,
           isInstantiate: transaction.transaction.is_instantiate ?? false,
         }))
       );
@@ -259,7 +259,7 @@ export const useTxsByPoolIdPagination = (
           actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
           furtherAction: MsgFurtherAction.NONE,
           isIbc: transaction.transaction.is_ibc,
-          isOpinit: transaction.transaction.is_opinit,
+          isOpInit: transaction.transaction.is_opinit,
           isInstantiate: false,
         }))
       );
@@ -386,7 +386,7 @@ export const useTxsByBlockHeightPagination = (
             ]),
             furtherAction: MsgFurtherAction.NONE,
             isIbc: transaction.is_ibc,
-            isOpinit: transaction.is_opinit,
+            isOpInit: transaction.is_opinit,
             isInstantiate: transaction.is_instantiate ?? false,
           }))
         ),
@@ -471,7 +471,7 @@ export const useModuleTxsByPagination = ({
           furtherAction: MsgFurtherAction.NONE,
           isSigner: false,
           isIbc: transaction.transaction.is_ibc,
-          isOpinit: transaction.transaction.is_opinit,
+          isOpInit: transaction.transaction.is_opinit,
           isInstantiate: false,
         }))
       );
