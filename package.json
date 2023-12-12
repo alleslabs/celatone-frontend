@@ -9,11 +9,11 @@
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint src --fix && yarn format",
+    "lint:fix": "eslint src --fix && bun format",
     "type-check": "tsc --noEmit",
     "format": "prettier --write src",
-    "up": "yarn upgrade-interactive",
-    "up-latest": "yarn up --latest",
+    "up": "bun upgrade-interactive",
+    "up-latest": "bun up --latest",
     "release": "cross-env HUSKY=0 standard-version",
     "push-release": "git push --follow-tags origin main",
     "prepare": "husky install"
@@ -125,6 +125,5 @@
     "standard-version": "^9.5.0",
     "ts-jest": "^29.0.5",
     "typescript": "^5.1.6"
-  },
-  "packageManager": "yarn@1.22.19"
+  }
 }
