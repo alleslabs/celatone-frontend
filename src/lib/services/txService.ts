@@ -45,7 +45,12 @@ import {
 } from "lib/utils";
 
 import { usePoolTxExpression, useTxExpression } from "./expression";
-import type { AccountTxsResponse, TxResponse, TxsResponse } from "./tx";
+import type {
+  AccountTxsResponse,
+  ModuleTxsResponse,
+  TxResponse,
+  TxsResponse,
+} from "./tx";
 import {
   getTxs,
   getTxsByAddress,
@@ -92,13 +97,13 @@ export const useTxsByAddress = (
   txFilters: TxFilters,
   offset: number,
   limit: number
-): UseQueryResult<AccountTxsResponse> => {
+) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery(
+  return useQuery<AccountTxsResponse>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS,
       endpoint,
@@ -382,17 +387,14 @@ export const useTxsCountByPoolId = (
 export const useTxs = (
   limit: number,
   offset: number,
-  options: Pick<
-    UseQueryOptions<TxsResponse, Error>,
-    "onSuccess" | "onError"
-  > = {}
-): UseQueryResult<TxsResponse> => {
+  options: Pick<UseQueryOptions<TxsResponse>, "onSuccess"> = {}
+) => {
   const endpoint = useBaseApiRoute("txs");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery(
+  return useQuery<TxsResponse>(
     [CELATONE_QUERY_KEYS.TXS, endpoint, limit, offset, wasmEnable, moveEnable],
     async () =>
       getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
@@ -520,13 +522,13 @@ export const useTxsByModule = (
   moduleName: string,
   offset: number,
   limit: number
-): UseQueryResult<AccountTxsResponse> => {
+) => {
   const endpoint = useBaseApiRoute("move");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery(
+  return useQuery<ModuleTxsResponse>(
     [
       CELATONE_QUERY_KEYS.MODULE_TXS,
       endpoint,

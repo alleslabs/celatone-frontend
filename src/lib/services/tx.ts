@@ -259,8 +259,9 @@ export const getTxsByAddress = async (
 };
 
 const zModuleTxsResponse = z.object({
-  items: z.array(zBaseTxsResponseItem),
+  items: z.array(zTxsResponseItem),
 });
+export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
 
 export const getTxsByModule = async (
   endpoint: string,
@@ -271,8 +272,8 @@ export const getTxsByModule = async (
   isWasm: boolean,
   isMove: boolean,
   isInitia: boolean
-) => {
-  return axios
+) =>
+  axios
     .get(
       `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/txs`,
       {
@@ -286,7 +287,6 @@ export const getTxsByModule = async (
       }
     )
     .then((res) => zModuleTxsResponse.parse(res.data));
-};
 
 const zTxsCountResponse = z
   .object({
