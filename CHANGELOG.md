@@ -40,10 +40,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
-- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add Amplitude for module detail and breadcrumb
+- [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
+- [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Add amp module interaction and code snippet property
+- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add amp module detail and breadcrumb
 
 ### Improvements
 
+- [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
+- [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
+- [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
+- [#645](https://github.com/alleslabs/celatone-frontend/pull/645) Add search for resource in account detail
+- [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
+- [#657](https://github.com/alleslabs/celatone-frontend/pull/657) api v1 - overview stats
+- [#650](https://github.com/alleslabs/celatone-frontend/pull/650) api v1 - account info on account detail page
+- [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
 - [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
 - [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
 - [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list

@@ -48,7 +48,7 @@ export const usePaginator = ({
   }, [currentPage, pageSize]);
 
   const pagesQuantity = useMemo(() => {
-    if (!totalData || !pageSize) {
+    if (!pageSize) {
       return 0;
     }
 
@@ -59,6 +59,10 @@ export const usePaginator = ({
     setPageSize(10);
     setCurrentPage(1);
   }, [currentChainId]);
+
+  useEffect(() => {
+    setTotalData(total ?? 0);
+  }, [total]);
 
   return {
     offset,

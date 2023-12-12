@@ -13,7 +13,7 @@ export const getDevSubmenuMove = (isMove: boolean) =>
           trackEvent: () => track(AmpEvent.USE_TO_0X1_PAGE),
         },
         {
-          name: "Publish Module",
+          name: "Publish / Republish",
           slug: "/publish-module",
           icon: "add-new" as IconKeys,
         },

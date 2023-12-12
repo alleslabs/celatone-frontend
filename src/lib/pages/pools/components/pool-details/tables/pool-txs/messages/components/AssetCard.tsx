@@ -52,7 +52,7 @@ export const AssetCard = ({
             src={assetInfo?.logo ?? getUndefinedTokenIcon(denom)}
             alt={symbol}
             fallback={<NAToken />}
-            fallbackStrategy="onError"
+            fallbackStrategy="beforeLoadOrError"
           />
           <Text variant="body2" className="ellipsis" fontWeight="bold">
             {symbol}

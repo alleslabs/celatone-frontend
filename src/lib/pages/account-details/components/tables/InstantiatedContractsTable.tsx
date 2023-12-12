@@ -79,14 +79,14 @@ export const InstantiatedContractsTable = observer(
         {isMobileOverview ? (
           <MobileTitle
             title="Contract Instances"
-            count={totalData ?? 0}
+            count={totalData}
             onViewMore={onViewMore}
           />
         ) : (
           <>
             <TableTitle
               title="Contract Instances"
-              count={totalData ?? 0}
+              count={totalData}
               helperText="This account instantiated the following contracts"
               mb={2}
             />

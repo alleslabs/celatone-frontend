@@ -249,7 +249,9 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
         ml={ml}
         gap={1}
         onClick={() => {
-          track(AmpEvent.USE_CONTRACT_SNIPPET);
+          track(AmpEvent.USE_CONTRACT_SNIPPET, {
+            functionType: fn.is_view ? "view" : "Execute",
+          });
           onOpen();
         }}
       >
@@ -306,6 +308,8 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                         <CopyButton
                           value={item.snippet}
                           amptrackSection="code_snippet"
+                          amptrackSubSection={item.name}
+                          amptrackInfo={fn.is_view ? "view" : "Execute"}
                         />
                       </Box>
                     </Box>

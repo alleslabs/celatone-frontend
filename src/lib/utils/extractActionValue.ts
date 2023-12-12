@@ -4,8 +4,8 @@ export const displayActionValue = (isActionName: string) => {
       return "Send";
     case "isIbc":
       return "IBC";
-    case "isUpload":
-      return "Upload";
+    case "isStoreCode":
+      return "Store Code";
     case "isInstantiate":
       return "Instantiate";
     case "isExecute":

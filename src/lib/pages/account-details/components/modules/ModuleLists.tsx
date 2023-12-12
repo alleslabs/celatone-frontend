@@ -28,7 +28,7 @@ export const ModuleLists = ({
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
   return (
-    <Box mt={{ base: 4, md: 8 }}>
+    <Box mt={{ base: 4, md: 16 }}>
       {isMobileOverview ? (
         <MobileTitle
           title="Modules"
@@ -48,6 +48,7 @@ export const ModuleLists = ({
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               action="execute-message-search"
+              my={4}
             />
           )}
           <ModuleListsBody

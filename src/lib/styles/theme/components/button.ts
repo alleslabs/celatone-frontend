@@ -3,7 +3,6 @@ import { defineStyle } from "@chakra-ui/react";
 
 import { CURR_THEME } from "env";
 
-const gray100 = "gray.100";
 const gray400 = "gray.400";
 const gray500 = "gray.500";
 const gray600 = "gray.600";
@@ -204,7 +203,7 @@ export const Button: ComponentStyleConfig = {
     "outline-white": generateStyle({
       basic: {
         border: borderDefault,
-        borderColor: gray100,
+        borderColor: gray400,
         color: "text.main",
         "> svg": {
           color: "text.main",
@@ -212,13 +211,13 @@ export const Button: ComponentStyleConfig = {
       },
       disabled: {
         border: borderDefault,
-        borderColor: gray500,
-        color: gray500,
+        borderColor: gray600,
+        color: gray600,
         "> svg": {
-          color: gray500,
+          color: gray600,
         },
       },
-      hoverBg: gray400,
+      hoverBg: gray700,
       activeBg: "transparent",
     }),
     "outline-accent": generateStyle({
