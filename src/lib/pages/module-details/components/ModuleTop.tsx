@@ -37,18 +37,18 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
 
   const { canRepublish, republishRemark } = useMemo(() => {
     // cannot republish if not connect to wallet
-    if (!address)
-      return {
-        canRepublish: false,
-        republishRemark: "You need to connect wallet to republish modules.",
-      };
-    // cannot republish if upgrade policy is IMMUTABLE
     if (moduleData.upgradePolicy === UpgradePolicy.IMMUTABLE)
       return {
         canRepublish: false,
         republishRemark:
           "This module cannot be republished due to “IMMUTABLE” upgrade policy.",
       };
+    if (!address)
+      return {
+        canRepublish: false,
+        republishRemark: "You need to connect wallet to republish modules.",
+      };
+    // cannot republish if upgrade policy is IMMUTABLE
     // can republish if wallet addr === creator
     if (bech32AddressToHex(address as HumanAddr) === moduleData.address)
       return { canRepublish: true, republishRemark: null };
