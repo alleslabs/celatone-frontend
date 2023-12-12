@@ -4,7 +4,7 @@ export const displayActionValue = (isActionName: string) => {
       return "Send";
     case "isIbc":
       return "IBC";
-    case "isOpInit":
+    case "isOpinit":
       return "OPInit";
     case "isStoreCode":
       return "Store Code";

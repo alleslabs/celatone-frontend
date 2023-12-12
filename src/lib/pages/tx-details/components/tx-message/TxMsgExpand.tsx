@@ -37,7 +37,7 @@ export const TxMsgExpand = ({
     type.startsWith("/ibc");
   let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
-  const isOpInit = Boolean(type.includes("opinit"));
+  const isOpinit = Boolean(type.includes("opinit"));
 
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":
@@ -340,7 +340,7 @@ export const TxMsgExpand = ({
             IBC
           </Tag>
         )}
-        {isOpInit && !isMobile && (
+        {isOpinit && !isMobile && (
           <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
             OPInit
           </Tag>
@@ -352,7 +352,7 @@ export const TxMsgExpand = ({
             IBC
           </Tag>
         )}
-        {isOpInit && isMobile && (
+        {isOpinit && isMobile && (
           <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
             OPInit
           </Tag>

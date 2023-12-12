@@ -61,7 +61,7 @@ export const DEFAULT_MOVE_TX_FILTERS: MoveTxFilters = {
 };
 
 export const INITIA_TX_FILTERS: InitiaTxFilters = {
-  isOpInit: false,
+  isOpinit: false,
 };
 
 export const DEFAULT_TX_FILTERS: TxFilters = {
