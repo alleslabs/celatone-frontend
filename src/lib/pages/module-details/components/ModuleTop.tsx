@@ -1,14 +1,22 @@
 import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import type { IndexedModule } from "lib/services/move/moduleService";
+import type { HumanAddr } from "lib/types";
+import { UpgradePolicy } from "lib/types";
+import { bech32AddressToHex } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
@@ -25,6 +33,32 @@ const baseTextStyle: TextProps = {
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
+  const { address } = useCurrentChain();
+
+  const { canRepublish, republishRemark } = useMemo(() => {
+    // cannot republish if not connect to wallet
+    if (!address)
+      return {
+        canRepublish: false,
+        republishRemark: "You need to connect wallet to republish modules.",
+      };
+    // cannot republish if upgrade policy is IMMUTABLE
+    if (moduleData.upgradePolicy === UpgradePolicy.IMMUTABLE)
+      return {
+        canRepublish: false,
+        republishRemark:
+          "This module cannot be republished due to “IMMUTABLE” upgrade policy.",
+      };
+    // can republish if wallet addr === creator
+    if (bech32AddressToHex(address as HumanAddr) === moduleData.address)
+      return { canRepublish: true, republishRemark: null };
+    // cannot republish if wallet addr !== creator
+    return {
+      canRepublish: false,
+      republishRemark:
+        "You can republish only modules that published by your account.",
+    };
+  }, [moduleData.upgradePolicy, moduleData.address, address]);
 
   return (
     <Flex direction="column">
@@ -129,7 +163,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                   {moduleData.parsedAbi.friends.map((item) => (
                     <Text {...baseTextStyle}>
                       {item}
-                      <span>,</span>
+                      <span>,&nbsp;</span>
                     </Text>
                   ))}
                 </Flex>
@@ -183,6 +217,27 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             >
               Execute
             </Button>
+            <Tooltip
+              variant="primary-light"
+              label={republishRemark}
+              closeOnClick={false}
+            >
+              <Button
+                disabled={!canRepublish}
+                variant="outline-white"
+                w={{ base: "full", md: "auto" }}
+                leftIcon={<CustomIcon name="migrate" mr={0} />}
+                size={{ base: "sm", md: "md" }}
+                onClick={() => {
+                  track(AmpEvent.USE_MAIN_CTA, { label: "View" });
+                  navigate({
+                    pathname: "/publish-module",
+                  });
+                }}
+              >
+                Republish
+              </Button>
+            </Tooltip>
             <CopyButton
               amptrackSection="[Module Detail CTA] Copy ABI "
               value={moduleData.abi}

@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
 - [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
 - [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
 - [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
