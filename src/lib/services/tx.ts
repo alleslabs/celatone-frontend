@@ -260,6 +260,33 @@ export const getTxsByAddress = async (
     .then((res) => zAccountTxsResponse.parse(res.data));
 };
 
+const zBlockTxsResponse = z.object({
+  items: z.array(zTxsResponseItem),
+  total: z.number().positive(),
+});
+export type BlockTxsResponse = z.infer<typeof zBlockTxsResponse>;
+
+export const getTxsByBlockHeight = async (
+  endpoint: string,
+  height: number,
+  limit: number,
+  offset: number,
+  isWasm: boolean,
+  isMove: boolean,
+  isInitia: boolean
+) =>
+  axios
+    .get(`${endpoint}/${height}/txs`, {
+      params: {
+        limit,
+        offset,
+        is_wasm: isWasm,
+        is_move: isMove,
+        is_initia: isInitia,
+      },
+    })
+    .then((res) => zBlockTxsResponse.parse(res.data));
+
 const zModuleTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
 });

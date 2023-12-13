@@ -19,8 +19,6 @@ import {
   getTxsCountByAddress,
   getTxsCountByPoolId,
   getTxsByPoolIdPagination,
-  getBlockTransactionCountByHeightQueryDocument,
-  getBlockTransactionsByHeightQueryDocument,
   getModuleTransactionsCountQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
@@ -50,6 +48,7 @@ import type {
   ModuleTxsResponse,
   TxResponse,
   TxsResponse,
+  BlockTxsResponse,
 } from "./tx";
 import {
   getTxs,
@@ -57,6 +56,7 @@ import {
   queryTxData,
   getAPITxsCountByAddress,
   getTxsByModule,
+  getTxsByBlockHeight,
 } from "./tx";
 
 export interface TxData extends TxResponse {
@@ -398,98 +398,55 @@ export const useTxs = (
   const isInitia = useInitia();
 
   return useQuery<TxsResponse>(
-    [CELATONE_QUERY_KEYS.TXS, endpoint, limit, offset, wasmEnable, moveEnable],
+    [
+      CELATONE_QUERY_KEYS.TXS,
+      endpoint,
+      limit,
+      offset,
+      wasmEnable,
+      moveEnable,
+      isInitia,
+    ],
     async () =>
       getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
-export const useTxsByBlockHeightPagination = (
+export const useTxsByBlockHeight = (
   height: number,
   limit: number,
-  offset: number
-): UseQueryResult<Transaction[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  offset: number,
+  options: Pick<UseQueryOptions<BlockTxsResponse>, "onSuccess"> = {}
+) => {
+  const endpoint = useBaseApiRoute("blocks");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
+  const isInitia = useInitia();
 
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getBlockTransactionsByHeightQueryDocument, {
-          limit,
-          offset,
-          height,
-          isWasm: wasmEnable,
-          isMove: moveEnable,
-        })
-        .then<Transaction[]>(({ transactions }) =>
-          transactions.map<Transaction>((transaction) => ({
-            hash: parseTxHash(transaction.hash),
-            messages: snakeToCamel(transaction.messages),
-            sender: transaction.account.address as Addr,
-            isSigner: false,
-            height,
-            created: parseDate(transaction.block.timestamp),
-            success: transaction.success,
-            actionMsgType: getActionMsgType([
-              transaction.is_execute,
-              transaction.is_instantiate,
-              transaction.is_send,
-              transaction.is_store_code,
-              transaction.is_migrate,
-              transaction.is_update_admin,
-              transaction.is_clear_admin,
-            ]),
-            furtherAction: MsgFurtherAction.NONE,
-            isIbc: transaction.is_ibc,
-            isInstantiate: transaction.is_instantiate ?? false,
-            // TODO: use API
-            isOpinit: false,
-          }))
-        ),
-    [height, limit, offset, indexerGraphClient, wasmEnable, moveEnable]
-  );
-
-  return useQuery(
+  return useQuery<BlockTxsResponse>(
     [
-      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_PAGINATION,
-      indexerGraphClient,
+      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT,
+      endpoint,
       limit,
       offset,
       height,
+      wasmEnable,
+      moveEnable,
+      isInitia,
     ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!height,
-    }
-  );
-};
-
-export const useTxsCountByBlockHeight = (
-  height: number
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(
     async () =>
-      indexerGraphClient
-        .request(getBlockTransactionCountByHeightQueryDocument, {
-          height,
-        })
-        .then(
-          ({ transactions_aggregate }) =>
-            transactions_aggregate.aggregate?.count
-        ),
-    [height, indexerGraphClient]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_COUNT, indexerGraphClient, height],
-    queryFn,
+      getTxsByBlockHeight(
+        endpoint,
+        height,
+        limit,
+        offset,
+        wasmEnable,
+        moveEnable,
+        isInitia
+      ),
     {
+      ...options,
       keepPreviousData: true,
       enabled: !!height,
     }
