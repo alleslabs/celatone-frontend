@@ -212,12 +212,12 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       wasm: {
-        enabled: false,
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
       },
       move: {
-        enabled: true,
-        moduleMaxFileSize: 1_048_576,
-        decodeApi: moveDecoderApi,
+        enabled: false,
       },
       pool: {
         enabled: false,
