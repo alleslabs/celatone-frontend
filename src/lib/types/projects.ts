@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import type {
   Addr,
   AssetInfo,
@@ -9,6 +11,8 @@ import type {
   Nullable,
   MoveAccountAddr,
 } from "lib/types";
+
+import { zAddr } from "./addrs";
 
 export interface PublicAccount {
   address: HumanAddr;
@@ -100,3 +104,32 @@ export interface PublicInfo {
   description: string;
   github: string;
 }
+
+// ------------------------------------------//
+// --------------------V1--------------------//
+// ------------------------------------------//
+export const zProjectInfo = z.object({
+  description: z.string(),
+  github: z.string(),
+  logo: z.string(),
+  name: z.string(),
+  socials: z.array(
+    z.object({
+      name: z.string(),
+      url: z.string(),
+    })
+  ),
+  website: z.string(),
+});
+
+export type ProjectInfo = z.infer<typeof zProjectInfo>;
+
+export const zPublicAccountInfo = z.object({
+  address: zAddr,
+  description: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  type: z.string(),
+});
+
+export type PublicAccountInfo = z.infer<typeof zPublicAccountInfo>;

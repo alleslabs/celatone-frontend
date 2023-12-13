@@ -62,6 +62,7 @@ const RenderFunctions = ({
         )}
         selectedFn={selectedFn}
         setSelectedFn={setSelectedFn}
+        amptrackTab={tab}
       />
       {tab === InteractionTabs.EXECUTE_MODULE && (
         <FunctionAccordion
@@ -72,6 +73,7 @@ const RenderFunctions = ({
           )}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
+          amptrackTab={tab}
         />
       )}
     </Accordion>
@@ -115,6 +117,7 @@ export const FunctionSelectPanel = ({
   return (
     <div>
       <InputWithIcon
+        action="Function Select Panel Search"
         iconPosition="start"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}

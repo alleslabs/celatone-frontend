@@ -41,6 +41,7 @@ import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
+  ProposalResponse,
   UploadAccess,
   VotingParamsInternal,
 } from "./proposal";
@@ -48,6 +49,7 @@ import {
   fetchGovVotingParams,
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
+  getProposalsByAddress,
 } from "./proposal";
 
 export const useRelatedProposalsByContractAddressPagination = (
@@ -122,6 +124,26 @@ export const useRelatedProposalsCountByContractAddress = (
       keepPreviousData: true,
       enabled: !!contractAddress,
     }
+  );
+};
+
+export const useProposalsByAddress = (
+  address: Addr,
+  offset: number,
+  limit: number
+): UseQueryResult<ProposalResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_ADDRESS,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    async () => getProposalsByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

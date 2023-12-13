@@ -19,7 +19,7 @@ export const getMsgFurtherAction = (
   if (
     isSigner &&
     !filters.isClearAdmin &&
-    !filters.isUpload &&
+    !filters.isStoreCode &&
     !filters.isIbc &&
     !filters.isClearAdmin &&
     !filters.isMigrate &&

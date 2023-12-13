@@ -1,4 +1,5 @@
 import axios from "axios";
+import { z } from "zod";
 
 import type {
   MoveAccountAddr,
@@ -12,12 +13,44 @@ import type {
   AbiFormData,
   Nullable,
 } from "lib/types";
+import { zHexAddr, UpgradePolicy } from "lib/types";
 import {
   libDecode,
   parseJsonABI,
   serializeAbiData,
   snakeToCamel,
 } from "lib/utils";
+
+const zModulesResponseItem = z
+  .object({
+    abi: z.string(),
+    address: zHexAddr,
+    module_name: z.string(),
+    raw_bytes: z.string(),
+    upgrade_policy: z.nativeEnum(UpgradePolicy),
+  })
+  .transform((val) => ({
+    abi: val.abi,
+    address: val.address,
+    moduleName: val.module_name,
+    rawBytes: val.raw_bytes,
+    upgradePolicy: val.upgrade_policy,
+  }));
+
+const zModulesResponse = z.object({
+  items: z.array(zModulesResponseItem),
+  total: z.number(),
+});
+type ModulesResponse = z.infer<typeof zModulesResponse>;
+
+// TODO: This function will replace getAccountModules later
+export const getAPIAccountModules = async (
+  endpoint: string,
+  address: MoveAccountAddr
+): Promise<ModulesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
+    .then((res) => zModulesResponse.parse(res.data));
 
 export const getAccountModules = async (
   baseEndpoint: string,

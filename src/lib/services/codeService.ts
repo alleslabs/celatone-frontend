@@ -30,8 +30,8 @@ import type {
 } from "lib/types";
 import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
-import type { CodeIdInfoResponse } from "./code";
-import { getCodeIdInfo } from "./code";
+import type { CodeIdInfoResponse, CodesResponse } from "./code";
+import { getCodeIdInfo, getCodesByAddress } from "./code";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -186,6 +186,20 @@ export const useCodeDataByCodeId = ({
     {
       enabled: enabled && isCodeId(codeId),
     }
+  );
+};
+
+export const useCodesByAddress = (
+  address: Addr,
+  limit: number,
+  offset: number
+): UseQueryResult<CodesResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
+    async () => getCodesByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

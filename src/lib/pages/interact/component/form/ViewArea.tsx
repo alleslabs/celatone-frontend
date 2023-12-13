@@ -11,6 +11,7 @@ import {
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { AbiForm } from "lib/components/abi";
 import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
@@ -94,7 +95,10 @@ export const ViewArea = ({
           <SubmitButton
             text="View"
             isLoading={isLoading}
-            onSubmit={handleQuery}
+            onSubmit={() => {
+              track(AmpEvent.ACTION_MOVE_VIEW);
+              handleQuery();
+            }}
             isDisabled={isButtonDisabled}
           />
         </Flex>
@@ -133,7 +137,11 @@ export const ViewArea = ({
               </Text>
             </Flex>
           ) : (
-            <JsonReadOnly text={jsonPrettify(JSON.stringify(res))} canCopy />
+            <JsonReadOnly
+              amptrackSection="Module View Result"
+              text={jsonPrettify(JSON.stringify(res))}
+              canCopy
+            />
           )}
         </Flex>
       </GridItem>

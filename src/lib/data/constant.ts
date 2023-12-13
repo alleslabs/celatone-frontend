@@ -45,7 +45,7 @@ export const DEFAULT_BASE_TX_FILTERS: BaseTxFilters = {
 
 export const DEFAULT_WASM_TX_FILTERS: WasmTxFilters = {
   isInstantiate: false,
-  isUpload: false,
+  isStoreCode: false,
   isExecute: false,
   isMigrate: false,
   isUpdateAdmin: false,

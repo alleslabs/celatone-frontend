@@ -12,7 +12,7 @@ import {
   TableTitle,
   ViewMore,
 } from "lib/components/table";
-import { useProposalsByWalletAddressPagination } from "lib/services/proposalService";
+import { useProposalsByAddress } from "lib/services/proposalService";
 import type { HumanAddr, Option } from "lib/types";
 
 interface OpenedProposalsTableProps {
@@ -47,7 +47,8 @@ export const OpenedProposalsTable = ({
       isDisabled: false,
     },
   });
-  const { data: proposals, isLoading } = useProposalsByWalletAddressPagination(
+
+  const { data: proposals, isLoading } = useProposalsByAddress(
     walletAddress,
     offset,
     onViewMore ? 5 : pageSize
@@ -71,18 +72,18 @@ export const OpenedProposalsTable = ({
       {isMobileOverview ? (
         <MobileTitle
           title="Opened Proposals"
-          count={totalData ?? 0}
+          count={totalData}
           onViewMore={onViewMore}
         />
       ) : (
         <>
           <TableTitle
             title="Opened Proposals"
-            count={totalData ?? 0}
+            count={totalData}
             mb={{ base: 0, md: 2 }}
           />
           <ProposalsTable
-            proposals={proposals}
+            proposals={proposals?.items}
             isLoading={isLoading}
             emptyState={
               <EmptyState

@@ -91,8 +91,17 @@ export const ResourceDetailCard = ({
       >
         <Flex direction="column" gap={3}>
           {formattedArray.map((item) => (
-            <Flex key={item.key} gap={4}>
-              <Text variant="body2" color="text.dark" minW={40}>
+            <Flex
+              key={item.key}
+              gap={{ base: 1, md: 4 }}
+              direction={{ base: "column", md: "row" }}
+            >
+              <Text
+                variant="body2"
+                color="text.dark"
+                fontWeight="600"
+                minW={40}
+              >
                 {item.key}
               </Text>
               {typeof item.value === "object" ? (
