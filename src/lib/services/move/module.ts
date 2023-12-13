@@ -12,8 +12,9 @@ import type {
   ExposedFunction,
   AbiFormData,
   Nullable,
+  ModuleInfo,
 } from "lib/types";
-import { zHexAddr, UpgradePolicy } from "lib/types";
+import { zHexAddr, UpgradePolicy, zHumanAddr, zUtcDate } from "lib/types";
 import {
   libDecode,
   parseJsonABI,
@@ -21,7 +22,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-const zModulesResponseItem = z
+const zAccountModulesResponseItem = z
   .object({
     abi: z.string(),
     address: zHexAddr,
@@ -37,20 +38,20 @@ const zModulesResponseItem = z
     upgradePolicy: val.upgrade_policy,
   }));
 
-const zModulesResponse = z.object({
-  items: z.array(zModulesResponseItem),
+const zAccountModulesResponse = z.object({
+  items: z.array(zAccountModulesResponseItem),
   total: z.number(),
 });
-type ModulesResponse = z.infer<typeof zModulesResponse>;
+type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
 // TODO: This function will replace getAccountModules later
 export const getAPIAccountModules = async (
   endpoint: string,
   address: MoveAccountAddr
-): Promise<ModulesResponse> =>
+): Promise<AccountModulesResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
-    .then((res) => zModulesResponse.parse(res.data));
+    .then((res) => zAccountModulesResponse.parse(res.data));
 
 export const getAccountModules = async (
   baseEndpoint: string,
@@ -161,6 +162,30 @@ export const decodeScript = async (
     })
     .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));
 
+const zModulesResponseItem = z
+  .object({
+    address: zHumanAddr,
+    name: z.string(),
+    height: z.number(),
+    latest_updated: zUtcDate,
+    is_republished: z.boolean(),
+    is_verified: z.boolean(),
+  })
+  .transform<ModuleInfo>((val) => ({
+    address: val.address,
+    name: val.name,
+    height: val.height,
+    latestUpdated: val.latest_updated,
+    isRepublished: val.is_republished,
+    isVerified: val.is_verified,
+  }));
+
+const zModulesResponse = z.object({
+  items: z.array(zModulesResponseItem),
+  total: z.number(),
+});
+export type ModulesResponse = z.infer<typeof zModulesResponse>;
+
 export const getModules = async (
   endpoint: string,
   limit: number,
@@ -173,4 +198,4 @@ export const getModules = async (
         offset,
       },
     })
-    .then((res) => res.data);
+    .then((res) => zModulesResponse.parse(res.data));

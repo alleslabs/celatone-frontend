@@ -5,7 +5,6 @@ import type {
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { z } from "zod";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -19,10 +18,8 @@ import {
   getModuleHistoriesQueryDocument,
   getModuleIdByNameAndVmAddressQueryDocument,
 } from "lib/query";
-import { zHumanAddr, zUtcDate } from "lib/types";
 import type {
   ModuleHistory,
-  ModuleInfo,
   MoveAccountAddr,
   ExposedFunction,
   InternalModule,
@@ -43,7 +40,7 @@ import {
   truncate,
 } from "lib/utils";
 
-import type { ModuleVerificationInternal } from "./module";
+import type { ModuleVerificationInternal, ModulesResponse } from "./module";
 import {
   decodeModule,
   decodeScript,
@@ -411,30 +408,6 @@ export const useDecodeScript = ({
     options
   );
 };
-
-const zModuleResponseItem = z
-  .object({
-    address: zHumanAddr,
-    name: z.string(),
-    height: z.number(),
-    latest_updated: zUtcDate,
-    is_republished: z.boolean(),
-    is_verified: z.boolean(),
-  })
-  .transform<ModuleInfo>((val) => ({
-    address: val.address,
-    name: val.name,
-    height: val.height,
-    latestUpdated: val.latest_updated,
-    isRepublished: val.is_republished,
-    isVerified: val.is_verified,
-  }));
-
-const zModuleResponse = z.object({
-  items: z.array(zModuleResponseItem),
-  total: z.number(),
-});
-export type ModulesResponse = z.infer<typeof zModuleResponse>;
 
 export const useModules = (
   limit: number,
