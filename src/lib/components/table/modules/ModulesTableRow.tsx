@@ -4,12 +4,9 @@ import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ModuleInfo } from "lib/types";
-import {
-  bech32AddressToHex,
-  dateFromNow,
-  formatUTC,
-  truncate,
-} from "lib/utils";
+import { bech32AddressToHex, dateFromNow, formatUTC } from "lib/utils";
+
+import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;
@@ -23,7 +20,6 @@ export const ModulesTableRow = ({
   const navigate = useInternalNavigate();
 
   const hex = bech32AddressToHex(moduleInfo.address);
-  const modulePath = `${truncate(hex)} :: ${moduleInfo.name}`;
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -42,15 +38,7 @@ export const ModulesTableRow = ({
         }
       >
         <TableRow>
-          <Text
-            color="secondary.main"
-            transition="all 0.25s ease-in-out"
-            _hover={{ color: "secondary.light", textDecoration: "underline" }}
-            wordBreak={{ base: "break-all", md: "inherit" }}
-            cursor="pointer"
-          >
-            {modulePath}
-          </Text>
+          <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
         </TableRow>
         <TableRow>
           <ExplorerLink
@@ -68,7 +56,7 @@ export const ModulesTableRow = ({
           </Flex>
         </TableRow>
         <TableRow>
-          <Flex gap="8px">
+          <Flex gap="8px" w="full" justifyContent="end">
             <Button
               variant="outline-white"
               size="sm"

@@ -5,12 +5,9 @@ import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ModuleInfo } from "lib/types";
-import {
-  bech32AddressToHex,
-  dateFromNow,
-  formatUTC,
-  truncate,
-} from "lib/utils";
+import { bech32AddressToHex, dateFromNow, formatUTC } from "lib/utils";
+
+import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableMobileCardProps {
   moduleInfo: ModuleInfo;
@@ -22,12 +19,11 @@ export const ModulesTableMobileCard = ({
   const navigate = useInternalNavigate();
 
   const hex = bech32AddressToHex(moduleInfo.address);
-  const modulePath = `${truncate(hex)}::${moduleInfo.name}`;
   return (
     <MobileCardTemplate
       onClick={() =>
         navigate({
-          pathname: "/modules/[address]/[moduleName]/overview",
+          pathname: "/modules/[address]/[moduleName]",
           query: {
             address: moduleInfo.address,
             moduleName: moduleInfo.name,
@@ -38,12 +34,7 @@ export const ModulesTableMobileCard = ({
         <Flex w="100%" justifyContent="space-between">
           <Box>
             <MobileLabel label="Module Path" />
-            <Text
-              color="secondary.main"
-              wordBreak={{ base: "break-all", md: "inherit" }}
-            >
-              {modulePath}
-            </Text>
+            <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
           </Box>
 
           <Button
