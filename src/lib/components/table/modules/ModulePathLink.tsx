@@ -15,6 +15,7 @@ export const ModulePathLink = ({
   moduleName,
 }: ModulePathLinkProps) => {
   const isMobile = useMobile();
+
   return (
     <Flex
       className="copier-wrapper"
