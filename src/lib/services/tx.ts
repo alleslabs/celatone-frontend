@@ -235,6 +235,7 @@ export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 export const getTxsByAddress = async (
   endpoint: string,
   address: Addr,
+  search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
   limit: number,
@@ -255,6 +256,7 @@ export const getTxsByAddress = async (
         is_initia: isInitia,
         ...filterParams,
         ...(isSigner !== undefined && { is_signer: isSigner }),
+        ...(search !== undefined && { search }),
       },
     })
     .then((res) => zAccountTxsResponse.parse(res.data));
@@ -326,8 +328,10 @@ const zTxsCountResponse = z
 export const getAPITxsCountByAddress = async (
   endpoint: string,
   address: Addr,
+  search: Option<string>,
   isSigner: Option<boolean>,
-  txFilters: TxFilters
+  txFilters: TxFilters,
+  isWasm: boolean
 ) => {
   const filterParams = camelToSnake<TxFilters>(txFilters);
 
@@ -335,7 +339,9 @@ export const getAPITxsCountByAddress = async (
     .get(`${endpoint}/${encodeURIComponent(address)}/txs-count`, {
       params: {
         ...filterParams,
+        is_wasm: isWasm, // only for `searching` contract txs
         ...(isSigner !== undefined && { is_signer: isSigner }),
+        ...(search !== undefined && { search }),
       },
     })
     .then((res) => zTxsCountResponse.parse(res.data));

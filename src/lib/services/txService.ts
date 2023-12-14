@@ -93,6 +93,7 @@ export const useTxData = (
 
 export const useTxsByAddress = (
   address: Addr,
+  search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
   offset: number,
@@ -108,6 +109,7 @@ export const useTxsByAddress = (
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS,
       endpoint,
       address,
+      search,
       isSigner,
       JSON.stringify(txFilters),
       limit,
@@ -119,6 +121,7 @@ export const useTxsByAddress = (
       getTxsByAddress(
         endpoint,
         address,
+        search,
         isSigner,
         txFilters,
         limit,
@@ -284,20 +287,31 @@ export const useTxsCountByAddress = ({
 // TODO: this will replace useTxsCountByAddress
 export const useAPITxsCountByAddress = (
   address: Addr,
+  search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters
 ) => {
   const endpoint = useBaseApiRoute("accounts");
+  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.API_TXS_COUNT_BY_ADDRESS,
       endpoint,
       address,
+      search,
       isSigner,
       JSON.stringify(txFilters),
     ],
-    async () => getAPITxsCountByAddress(endpoint, address, isSigner, txFilters),
+    async () =>
+      getAPITxsCountByAddress(
+        endpoint,
+        address,
+        search,
+        isSigner,
+        txFilters,
+        wasmEnable
+      ),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };

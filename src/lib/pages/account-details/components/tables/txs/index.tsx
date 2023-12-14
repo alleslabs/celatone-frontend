@@ -60,7 +60,7 @@ export const TxsTable = ({
     data: rawTxCount,
     isLoading: isTxCountLoading,
     refetch: refetchTxsCount,
-  } = useAPITxsCountByAddress(address, isSigner, filters);
+  } = useAPITxsCountByAddress(address, undefined, isSigner, filters);
 
   const txsCount = rawTxCount ?? undefined;
   const isTxsCountTimeout = rawTxCount === null;
@@ -97,6 +97,7 @@ export const TxsTable = ({
 
   const { data: transactions, isLoading } = useTxsByAddress(
     address,
+    undefined,
     isSigner,
     filters,
     offset,
