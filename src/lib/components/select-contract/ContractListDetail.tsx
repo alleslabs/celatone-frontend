@@ -117,7 +117,7 @@ export const ContractListDetail = ({
 
   return (
     <Box minH="xs">
-      <Flex gap={3} w="full" my={isReadOnly ? "24px" : "48px"}>
+      <Flex gap={3} w="full" my={isReadOnly ? 6 : 8}>
         <InputWithIcon
           placeholder="Search with Contract Address, Name, or Description"
           value={searchKeyword}

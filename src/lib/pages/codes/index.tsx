@@ -1,4 +1,4 @@
-import { Heading, Box, Flex, Text } from "@chakra-ui/react";
+import { Heading, Box, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -62,11 +62,7 @@ const RecentCodes = observer(() => {
         <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
           Showing the 100 most recent stored codes on this network
         </Text>
-        <Flex
-          gap={{ base: 6, md: 3 }}
-          mt={8}
-          direction={{ base: "column", md: "row" }}
-        >
+        <Box mt={8} mb={4}>
           <FilterByPermission
             maxWidth="full"
             initialSelected="all"
@@ -75,7 +71,7 @@ const RecentCodes = observer(() => {
               setValue("permissionValue", newVal);
             }}
           />
-        </Flex>
+        </Box>
       </Box>
       <CodesTable
         codes={recentCodes}
