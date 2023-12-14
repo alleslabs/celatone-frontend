@@ -4,6 +4,8 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 
+import { MyPublishedModulesTable } from "./components/MyPublishedModulesTable";
+
 export const MyPublishedModules = () => {
   const navigate = useInternalNavigate();
   return (
@@ -29,6 +31,7 @@ export const MyPublishedModules = () => {
           Publish New Modules
         </Button>
       </Flex>
+      <MyPublishedModulesTable />
     </PageContainer>
   );
 };
