@@ -110,7 +110,7 @@ const StoredCodes = observer(() => {
             setValue("keyword", e.target.value)
           }
           size="lg"
-          action="stored-code-search"
+          amptrackSection="stored-code-search"
         />
         <FilterByPermission
           initialSelected="all"

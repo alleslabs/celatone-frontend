@@ -115,7 +115,7 @@ export const PublicProjectCodeTable = observer(
             onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}
             my={2}
-            action="public-project-code-search"
+            amptrackSection="public-project-code-search"
           />
         )}
         {publicCodes.length ? (

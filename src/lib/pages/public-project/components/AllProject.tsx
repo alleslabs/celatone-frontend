@@ -73,7 +73,7 @@ export const AllProject = observer(() => {
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
         my={2}
-        action="public-project-search"
+        amptrackSection="public-project-search"
       />
       {!filteredPublicProjects.length ? (
         <EmptyState

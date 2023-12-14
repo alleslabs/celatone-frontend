@@ -113,7 +113,7 @@ const Proposals = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             size={{ base: "md", md: "lg" }}
-            action="proposal-list-search"
+            amptrackSection="proposal-list-search"
           />
           <Tooltip
             isDisabled={!!address}

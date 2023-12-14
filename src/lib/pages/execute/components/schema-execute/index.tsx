@@ -120,7 +120,7 @@ export const SchemaExecute = ({
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
-          action="execute-message-search"
+          amptrackSection="execute-message-search"
         />
         <Button
           variant="outline-gray"

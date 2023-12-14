@@ -87,7 +87,7 @@ export const PublicProjectAccountTable = ({
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
           my={2}
-          action="public-project-account-search"
+          amptrackSection="public-project-account-search"
         />
       )}
       {filteredAccounts.length ? (

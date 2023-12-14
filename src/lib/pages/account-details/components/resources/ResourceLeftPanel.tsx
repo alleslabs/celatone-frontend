@@ -101,7 +101,7 @@ export const ResourceLeftPanel = ({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="md"
-        action="execute-message-search"
+        amptrackSection="execute-message-search"
       />
       <Accordion
         allowMultiple

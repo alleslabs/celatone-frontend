@@ -106,7 +106,7 @@ export const PublicProjectContractTable = observer(
             onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}
             my={2}
-            action="public-project-contract-search"
+            amptrackSection="public-project-contract-search"
           />
         )}
         {publicContracts.length ? (

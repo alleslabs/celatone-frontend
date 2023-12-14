@@ -80,7 +80,7 @@ const SavedCodes = observer(() => {
             setValue("keyword", e.target.value)
           }
           size="lg"
-          action="saved-code-search"
+          amptrackSection="saved-code-search"
         />
         <FilterByPermission
           initialSelected="all"

@@ -341,7 +341,7 @@ const Searchbar = () => {
                   <Input
                     value={keyword}
                     pl={9}
-                    h="36px"
+                    h={9}
                     onChange={handleSearchChange}
                     placeholder="Type your keyword ..."
                     focusBorderColor="secondary.main"
@@ -410,8 +410,8 @@ const Searchbar = () => {
         </InputLeftElement>
         <Input
           pl={9}
+          h={9}
           value={keyword}
-          h="36px"
           onChange={handleSearchChange}
           placeholder={getPlaceholder({ isWasm, isPool })}
           focusBorderColor="secondary.main"
