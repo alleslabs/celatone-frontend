@@ -26,11 +26,11 @@ export const NoMobile = () => (
           boxSize={10}
         />
         <Heading as="h5" variant="h5" py={1}>
-          Sorry, we currently do not support mobile use.
+          Sorry, this feature is currently not supported on mobile.
         </Heading>
-        <Text variant="body1">
+        <Text variant="body1" color="text.dark" mt={2}>
           Please use Celatone through the desktop browser for the best
-          experience.
+          experience with this feature.
         </Text>
       </Flex>
     </ModalContent>
