@@ -97,9 +97,10 @@ export const ResourceLeftPanel = ({
       borderColor={{ base: "gray.700", md: "transparent" }}
     >
       <InputWithIcon
-        placeholder="Search with module name..."
+        placeholder="Search with Module Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
+        size="md"
         action="execute-message-search"
       />
       <Accordion

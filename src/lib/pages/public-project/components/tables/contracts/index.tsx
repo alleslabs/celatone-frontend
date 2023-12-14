@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import {
   MobileTableContainer,
@@ -100,13 +100,13 @@ export const PublicProjectContractTable = observer(
       <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
-          <TextInput
-            variant="fixed-floating"
-            value={searchKeyword}
-            setInputState={setSearchKeyword}
+          <InputWithIcon
             placeholder="Search with Contract Address or Contract Name"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            action="public-project-contract-search"
             size={{ base: "md", md: "lg" }}
-            mb={6}
+            my={2}
           />
         )}
         {publicContracts.length ? (

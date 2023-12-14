@@ -100,10 +100,9 @@ export const ModuleFunctionBody = ({
           </Heading>
           <InputWithIcon
             action="Module Selection Drawer Function Search"
-            iconPosition="start"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Search functions ..."
+            placeholder="Search with Function Name"
             my={4}
           />
           <Flex gap={6} h={maxHeight}>

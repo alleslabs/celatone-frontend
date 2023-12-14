@@ -110,9 +110,9 @@ const Proposals = () => {
         <Flex justify="space-between" align="center">
           <InputWithIcon
             placeholder="Search with Proposal ID or Proposal Title"
-            onChange={(e) => setSearch(e.target.value)}
-            size="lg"
             value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            size={{ base: "md", md: "lg" }}
             action="proposal-list-search"
           />
           <Tooltip

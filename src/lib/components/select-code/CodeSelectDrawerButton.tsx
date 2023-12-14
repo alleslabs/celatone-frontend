@@ -104,7 +104,7 @@ export const CodeSelectDrawerButton = ({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
                 }
-                size="lg"
+                size={{ base: "md", md: "lg" }}
               />
               <FilterByPermission
                 initialSelected="all"

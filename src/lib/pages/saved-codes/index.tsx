@@ -79,6 +79,7 @@ const SavedCodes = observer(() => {
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
           }
+          action="saved-code-search"
           size="lg"
         />
         <FilterByPermission

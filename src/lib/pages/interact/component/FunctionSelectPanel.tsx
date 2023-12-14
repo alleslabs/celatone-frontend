@@ -118,10 +118,9 @@ export const FunctionSelectPanel = ({
     <div>
       <InputWithIcon
         action="Function Select Panel Search"
-        iconPosition="start"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Search functions ..."
+        placeholder="Search with Function Name"
       />
       <InteractionTypeSwitch
         currentTab={tab}

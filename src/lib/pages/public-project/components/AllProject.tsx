@@ -4,8 +4,8 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { usePublicProjectStore } from "lib/providers/store";
@@ -67,14 +67,13 @@ export const AllProject = observer(() => {
 
   return (
     <Box minH="xs" w="100%">
-      <TextInput
-        variant="fixed-floating"
+      <InputWithIcon
+        placeholder="Search with Project Name"
         value={searchKeyword}
-        setInputState={setSearchKeyword}
-        labelBgColor="background"
-        placeholder="Search for Existing Public Projects by Project Name"
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        action="public-project-search"
         size={{ base: "md", md: "lg" }}
-        mb={{ base: 6, md: 12 }}
+        my={2}
       />
       {!filteredPublicProjects.length ? (
         <EmptyState
@@ -82,7 +81,12 @@ export const AllProject = observer(() => {
           imageVariant="not-found"
         />
       ) : (
-        <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
+        <SimpleGrid
+          columns={{ sm: 1, md: 3 }}
+          mt={{ base: 6, md: 12 }}
+          spacing={4}
+          w="full"
+        >
           {filteredPublicProjects.map((item) => (
             <PublicProjectCard
               key={item.slug}

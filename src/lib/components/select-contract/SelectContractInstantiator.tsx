@@ -199,7 +199,6 @@ export const SelectContractInstantiator = ({
                       contractLists={contractLists}
                       handleListSelect={handleListSelect}
                       isReadOnly
-                      formLabelBgColor="gray.900"
                     />
                   </>
                 )}

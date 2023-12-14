@@ -97,7 +97,6 @@ export const ModuleSelectMainBody = ({
       <GridItem area="panel" overflow="hidden">
         <InputWithIcon
           action="Module Selection Drawer Module Search"
-          iconPosition="start"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="Search module ..."

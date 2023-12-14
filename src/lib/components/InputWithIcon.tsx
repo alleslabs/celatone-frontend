@@ -24,13 +24,24 @@ interface InputWithIconProps {
 
 const SearchIcon = () => <CustomIcon name="search" color="gray.600" />;
 
+const iconHeight = (size: InputProps["size"]) => {
+  switch (size) {
+    case "md":
+    case "sm":
+      return "40px";
+    case "lg":
+      return "56px";
+    default:
+      return "56px";
+  }
+};
 const InputWithIcon = ({
   placeholder,
   value,
   size,
   my,
   action,
-  iconPosition = "end",
+  iconPosition = "start",
   autoFocus = false,
   onChange,
 }: InputWithIconProps) => (
@@ -49,15 +60,11 @@ const InputWithIcon = ({
       }
     />
     {iconPosition === "end" ? (
-      <InputRightElement
-        h={size === "lg" ? "56px" : "full"}
-        alignItems="center"
-        mr={1}
-      >
+      <InputRightElement h={iconHeight(size)} alignItems="center" mr={1}>
         <SearchIcon />
       </InputRightElement>
     ) : (
-      <InputLeftElement h={size === "lg" ? "56px" : "full"} alignItems="center">
+      <InputLeftElement h={iconHeight(size)} alignItems="center">
         <SearchIcon />
       </InputLeftElement>
     )}

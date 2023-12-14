@@ -133,7 +133,7 @@ export const SupportedSection = ({
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            size="lg"
+            size={{ base: "md", md: "lg" }}
             action="supported-pool-list-search"
           />
           <FilterByPoolType
