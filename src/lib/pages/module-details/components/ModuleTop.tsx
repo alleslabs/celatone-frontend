@@ -161,7 +161,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                   }}
                 >
                   {moduleData.parsedAbi.friends.map((item) => (
-                    <Text {...baseTextStyle}>
+                    <Text key={item} {...baseTextStyle}>
                       {item}
                       <span>,&nbsp;</span>
                     </Text>
