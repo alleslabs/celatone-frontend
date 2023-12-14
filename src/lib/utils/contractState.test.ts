@@ -33,6 +33,19 @@ describe("parseStateKey", () => {
     });
   });
 
+  it("should parse a bucket key with object value", () => {
+    const key =
+      "0005636F6C6C7300427B2261646472223A226F736D6F313033687930766B7876667964756E777536683761613230706D787830667A6A776E3639357A6B222C226163635F6964223A22227D6962632F32373339344642303932443245434344353631323343373446333645344331463932363030314345414441394341393745413632324232354634314535454232";
+    expect(parseStateKey(key)).toEqual({
+      type: "bucket",
+      values: [
+        "colls",
+        '{"addr":"osmo103hy0vkxvfydunwu6h7aa20pmxx0fzjwn695zk","acc_id":""}',
+        "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2",
+      ],
+    });
+  });
+
   it("should parse a bucket key with hex ending", () => {
     const key = "000970726F706F73616C730000000000000031";
     expect(parseStateKey(key)).toEqual({
