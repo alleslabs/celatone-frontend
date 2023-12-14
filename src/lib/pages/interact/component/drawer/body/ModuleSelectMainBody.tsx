@@ -100,7 +100,7 @@ export const ModuleSelectMainBody = ({
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="Search with Module Name"
           size="md"
-          action="module-select-drawer-module-search"
+          amptrackSection="module-select-drawer-module-search"
         />
         <Flex alignItems="center" gap={2} mt={6}>
           <Text variant="body2" fontWeight={600} color="text.dark">

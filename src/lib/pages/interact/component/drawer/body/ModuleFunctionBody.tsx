@@ -104,7 +104,7 @@ export const ModuleFunctionBody = ({
             placeholder="Search with Function Name"
             size="md"
             my={4}
-            action="module-select-drawer-function-search"
+            amptrackSection="module-select-drawer-function-search"
           />
           <Flex gap={6} h={maxHeight}>
             <Flex flex={0.5} gap={3} {...functionGridBaseStyle}>

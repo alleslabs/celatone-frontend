@@ -109,7 +109,7 @@ export const SchemaQuery = ({
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
-          action="query-message-search"
+          amptrackSection="query-message-search"
         />
         <Button
           variant="outline-gray"

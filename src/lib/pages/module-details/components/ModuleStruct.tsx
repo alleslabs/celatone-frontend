@@ -98,7 +98,7 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
-        action="module-struct-search"
+        amptrackSection="module-struct-search"
       />
       <Accordion
         mt={4}

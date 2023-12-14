@@ -65,7 +65,7 @@ const SavedAccounts = observer(() => {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"
-        action="saved-account-search"
+        amptrackSection="saved-account-search"
       />
       <SavedAccountsTable
         accounts={filteredsavedAccounts}

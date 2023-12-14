@@ -124,7 +124,7 @@ export const ModuleFunction = ({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
-        action="exposed-function-search"
+        amptrackSection="exposed-function-search"
       />
       <Flex
         justifyContent="space-between"

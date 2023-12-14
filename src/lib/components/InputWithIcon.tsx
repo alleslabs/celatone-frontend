@@ -1,10 +1,5 @@
 import type { InputProps } from "@chakra-ui/react";
-import {
-  InputLeftElement,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { InputLeftElement, Input, InputGroup } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
@@ -17,57 +12,36 @@ interface InputWithIconProps {
   size?: InputProps["size"];
   my?: InputProps["my"];
   autoFocus?: boolean;
-  action?: string;
-  iconPosition?: "start" | "end";
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  amptrackSection?: string;
 }
 
-const SearchIcon = () => <CustomIcon name="search" color="gray.600" />;
-
-const iconHeight = (size: InputProps["size"]) => {
-  switch (size) {
-    case "md":
-    case "sm":
-      return "40px";
-    case "lg":
-      return "56px";
-    default:
-      return "56px";
-  }
-};
 const InputWithIcon = ({
   placeholder,
   value,
   size = "md",
   my,
-  action,
-  iconPosition = "start",
   autoFocus = false,
   onChange,
+  amptrackSection,
 }: InputWithIconProps) => (
   <InputGroup my={my}>
+    <InputLeftElement h="full" alignItems="center">
+      <CustomIcon name="search" color="gray.600" />
+    </InputLeftElement>
     <Input
       placeholder={placeholder}
       value={value}
       size={size}
-      p={`8px ${iconPosition === "end" ? "40px" : "12px"} 8px ${
-        iconPosition === "start" ? "40px" : "12px"
-      } !important`}
+      paddingLeft="36px !important"
       onChange={onChange}
       autoFocus={autoFocus}
       onClick={
-        action ? () => track(AmpEvent.USE_SEARCH_INPUT, { action }) : undefined
+        amptrackSection
+          ? () => track(AmpEvent.USE_SEARCH_INPUT, { amptrackSection })
+          : undefined
       }
     />
-    {iconPosition === "end" ? (
-      <InputRightElement h={iconHeight(size)} alignItems="center" mr={1}>
-        <SearchIcon />
-      </InputRightElement>
-    ) : (
-      <InputLeftElement h={iconHeight(size)} alignItems="center">
-        <SearchIcon />
-      </InputLeftElement>
-    )}
   </InputGroup>
 );
 

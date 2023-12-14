@@ -123,7 +123,7 @@ export const ContractListDetail = ({
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
-          action="contract-list-item-search"
+          amptrackSection="contract-list-item-search"
         />
         {!isReadOnly && (
           <TagSelection

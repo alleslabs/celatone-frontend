@@ -113,7 +113,7 @@ export const UnsupportedSection = ({
               setValue("keyword", e.target.value);
             }}
             size={{ base: "md", md: "lg" }}
-            action="unsupported-pool-list-search"
+            amptrackSection="unsupported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"

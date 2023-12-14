@@ -147,7 +147,6 @@ const PastTxs = () => {
       </Heading>
       <Flex my={8} gap={3}>
         <InputWithIcon
-          iconPosition="start"
           placeholder={`Search with Transaction Hash${
             wasm.enabled ? " or Contract Address" : ""
           }`}
@@ -157,7 +156,7 @@ const PastTxs = () => {
             setValue("search", e.target.value);
           }}
           size={{ base: "md", md: "lg" }}
-          action="past-txs-search"
+          amptrackSection="past-txs-search"
         />
         <Flex gap={3}>
           <TxRelationSelection

@@ -88,7 +88,7 @@ export const PublicProjectModuleTable = ({
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
           my={2}
-          action="public-project-module-search"
+          amptrackSection="public-project-module-search"
         />
       )}
       {filteredModules.length ? (

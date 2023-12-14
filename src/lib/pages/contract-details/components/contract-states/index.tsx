@@ -166,7 +166,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           setKeyword(newVal);
         }}
         size={{ base: "md", md: "lg" }}
-        action="contract-states-search"
+        amptrackSection="contract-states-search"
       />
 
       {/* State List */}

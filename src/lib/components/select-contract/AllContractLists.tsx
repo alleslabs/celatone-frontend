@@ -37,7 +37,7 @@ export const AllContractLists = ({
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
         my={isReadOnly ? 4 : 0}
-        action="contract-list-search"
+        amptrackSection="contract-list-search"
       />
       {filteredContractLists.length === 0 ? (
         <EmptyState

@@ -49,7 +49,7 @@ export const ModuleLists = ({
               onChange={(e) => setKeyword(e.target.value)}
               size={{ base: "md", md: "lg" }}
               my={4}
-              action="execute-message-search"
+              amptrackSection="execute-message-search"
             />
           )}
           <ModuleListsBody
