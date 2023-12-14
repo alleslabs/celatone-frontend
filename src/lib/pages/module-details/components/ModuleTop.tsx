@@ -5,18 +5,20 @@ import { useMemo } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
+  useConvertHexAddress,
   useInternalNavigate,
   useMobile,
 } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import type { IndexedModule } from "lib/services/move/moduleService";
-import type { HumanAddr } from "lib/types";
 import { UpgradePolicy } from "lib/types";
-import { bech32AddressToHex } from "lib/utils";
+import type { HexAddr } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
@@ -34,6 +36,16 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
+  const { convertHexWalletAddress, convertHexModuleAddress } =
+    useConvertHexAddress();
+
+  const moduleAddress = useMemo(() => {
+    if (isHexWalletAddress(moduleData.address))
+      return convertHexWalletAddress(moduleData.address as HexAddr);
+    if (isHexModuleAddress(moduleData.address))
+      return convertHexModuleAddress(moduleData.address as HexAddr);
+    return moduleData.address;
+  }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
 
   const { canRepublish, republishRemark } = useMemo(() => {
     // cannot republish if upgrade policy is IMMUTABLE
@@ -50,7 +62,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
         republishRemark: "You need to connect wallet to republish modules.",
       };
     // can republish if wallet addr === creator
-    if (bech32AddressToHex(address as HumanAddr) === moduleData.address)
+    if (address === moduleAddress)
       return { canRepublish: true, republishRemark: null };
     // cannot republish if wallet addr !== creator
     return {
@@ -58,7 +70,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
       republishRemark:
         "You can republish only modules that published by your account.",
     };
-  }, [moduleData.upgradePolicy, moduleData.address, address]);
+  }, [moduleData.upgradePolicy, moduleAddress, address]);
 
   return (
     <Flex direction="column">
@@ -125,9 +137,11 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
-            <Text {...baseTextStyle} whiteSpace="normal">
-              {moduleData.parsedAbi.address}::{moduleData.parsedAbi.name}
-            </Text>
+            <CopyLink
+              value={`${moduleData.parsedAbi.address}::${moduleData.parsedAbi.name}`}
+              amptrackSection="module_top"
+              type="module_path"
+            />
           </Flex>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -137,10 +151,12 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Creator:
             </Text>
-            <CopyLink
-              value={moduleData.parsedAbi.address}
-              amptrackSection="contract_top"
-              type="contract_address"
+            <ExplorerLink
+              value={moduleAddress}
+              ampCopierSection="module_top"
+              textFormat="normal"
+              maxWidth="fit-content"
+              type="user_address"
             />
           </Flex>
           <Flex
