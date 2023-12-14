@@ -39,7 +39,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     onSuccess: ({ total }) => setTotalData(total),
   });
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (error)
     return (
       <EmptyState

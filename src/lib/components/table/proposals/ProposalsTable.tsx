@@ -20,7 +20,7 @@ export const ProposalsTable = ({
 }: ProposalsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!proposals?.length) return emptyState;
 
   const templateColumns =

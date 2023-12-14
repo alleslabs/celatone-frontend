@@ -31,7 +31,7 @@ export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
     error,
   } = useUserAssetInfos(address);
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
 
   const tableTitle = <TableTitle title="Assets" count={totalData} mb={0} />;
   const totalAssetValueInfo = (

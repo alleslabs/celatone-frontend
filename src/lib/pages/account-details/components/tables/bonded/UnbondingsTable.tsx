@@ -29,7 +29,7 @@ const UnbondingsTableBody = ({
 }: UnbondingsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!unbondings?.length)
     return (
       <EmptyState

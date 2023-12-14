@@ -32,7 +32,7 @@ const DelegationsTableBody = ({
 }: DelegationsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!delegations || !rewards)
     return <EmptyState message={<ErrorFetching />} withBorder />;
   if (!delegations.length)

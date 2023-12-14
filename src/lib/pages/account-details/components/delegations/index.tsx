@@ -44,7 +44,7 @@ export const DelegationsSection = ({
     onClose();
   }, [onClose, router.query.accountAddress]);
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!stakingParams)
     return <EmptyState message="Error fetching delegation data" />;
 
