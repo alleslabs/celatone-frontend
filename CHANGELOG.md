@@ -39,13 +39,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+<<<<<<< HEAD
 - [#666](https://github.com/alleslabs/celatone-frontend/pull/666) Add my published modules page
+=======
+- [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
+- [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
+>>>>>>> develop
 - [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
 - [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Add amp module interaction and code snippet property
 - [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add amp module detail and breadcrumb
 
 ### Improvements
 
+- [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
 - [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
 - [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
 - [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page

@@ -1,14 +1,22 @@
 import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  useConvertHexAddress,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import type { IndexedModule } from "lib/services/move/moduleService";
+import type { HexAddr } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
@@ -25,7 +33,20 @@ const baseTextStyle: TextProps = {
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
+  const { convertHexWalletAddress, convertHexModuleAddress } =
+    useConvertHexAddress();
 
+  const address = useMemo(() => {
+    if (isHexWalletAddress(moduleData.parsedAbi.address))
+      return convertHexWalletAddress(moduleData.parsedAbi.address as HexAddr);
+    if (isHexModuleAddress(moduleData.parsedAbi.address))
+      return convertHexModuleAddress(moduleData.parsedAbi.address as HexAddr);
+    return moduleData.parsedAbi.address;
+  }, [
+    convertHexModuleAddress,
+    convertHexWalletAddress,
+    moduleData.parsedAbi.address,
+  ]);
   return (
     <Flex direction="column">
       <Breadcrumb
@@ -91,9 +112,11 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Module Path:
             </Text>
-            <Text {...baseTextStyle} whiteSpace="normal">
-              {moduleData.parsedAbi.address}::{moduleData.parsedAbi.name}
-            </Text>
+            <CopyLink
+              value={`${moduleData.parsedAbi.address}::${moduleData.parsedAbi.name}`}
+              amptrackSection="module_top"
+              type="module_path"
+            />
           </Flex>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -103,10 +126,12 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             <Text {...baseTextStyle} color="text.main">
               Creator:
             </Text>
-            <CopyLink
-              value={moduleData.parsedAbi.address}
-              amptrackSection="contract_top"
-              type="contract_address"
+            <ExplorerLink
+              value={address}
+              ampCopierSection="module_top"
+              textFormat="normal"
+              maxWidth="fit-content"
+              type="user_address"
             />
           </Flex>
           <Flex
