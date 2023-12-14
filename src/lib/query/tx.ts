@@ -1,58 +1,5 @@
 import { graphql } from "lib/gql";
 
-export const getTxsByAddressPagination = graphql(`
-  query getTxsByAddressPagination(
-    $expression: account_transactions_bool_exp
-    $offset: Int!
-    $pageSize: Int!
-    $isWasm: Boolean!
-    $isMove: Boolean!
-  ) {
-    account_transactions(
-      where: $expression
-      order_by: { block_height: desc }
-      offset: $offset
-      limit: $pageSize
-    ) {
-      block {
-        height
-        timestamp
-      }
-      transaction {
-        account {
-          address
-        }
-        hash
-        success
-        messages
-        is_send
-        is_ibc
-        is_clear_admin @include(if: $isWasm)
-        is_execute @include(if: $isWasm)
-        is_instantiate @include(if: $isWasm)
-        is_migrate @include(if: $isWasm)
-        is_store_code @include(if: $isWasm)
-        is_update_admin @include(if: $isWasm)
-        is_move_publish @include(if: $isMove)
-        is_move_upgrade @include(if: $isMove)
-        is_move_execute @include(if: $isMove)
-        is_move_script @include(if: $isMove)
-      }
-      is_signer
-    }
-  }
-`);
-
-export const getTxsCountByAddress = graphql(`
-  query getTxsCountByAddress($expression: account_transactions_bool_exp) {
-    account_transactions_aggregate(where: $expression) {
-      aggregate {
-        count
-      }
-    }
-  }
-`);
-
 export const getTxsByPoolIdPagination = graphql(`
   query getTxsByPoolIdPagination(
     $expression: pool_transactions_bool_exp

@@ -24,7 +24,6 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useContractDetailsTableCounts } from "lib/model/contract";
-import { useAccountId } from "lib/services/accountService";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -62,13 +61,12 @@ const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 const ContractTxsTable = observer(
   ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailsTableHeader";
-    const { data: contractAccountId } = useAccountId(contractAddress);
     const {
       tableCounts,
       refetchMigration,
       refetchTransactions,
       refetchRelatedProposals,
-    } = useContractDetailsTableCounts(contractAddress, contractAccountId);
+    } = useContractDetailsTableCounts(contractAddress);
     if (!contractData.contractDetail) return <InvalidContract />;
     return (
       <Flex direction="column" gap={6}>
@@ -96,7 +94,7 @@ const ContractTxsTable = observer(
           <TabPanels>
             <TabPanel p={0}>
               <TxsTable
-                contractAccountId={contractAccountId}
+                contractAddress={contractAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.transactionsCount}
                 refetchCount={refetchTransactions}

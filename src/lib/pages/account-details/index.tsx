@@ -279,6 +279,7 @@ const AccountDetailsBody = ({
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
+              refetchCount={refetchCounts}
               onViewMore={handleTabChange(TabIndex.Txs)}
             />
             {wasm.enabled && (
@@ -342,6 +343,7 @@ const AccountDetailsBody = ({
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
+              refetchCount={refetchCounts}
             />
           </TabPanel>
           <TabPanel p={0}>

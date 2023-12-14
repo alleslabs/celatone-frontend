@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { ErrorFetching } from "../../ErrorFetching";
@@ -12,10 +11,7 @@ import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import {
-  useAPITxsCountByAddress,
-  useTxsByAddress,
-} from "lib/services/txService";
+import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
 import type { Addr, Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
@@ -24,6 +20,7 @@ import { TxsTop } from "./TxsTop";
 interface TxsTableProps {
   address: Addr;
   scrollComponentId: string;
+  refetchCount: () => void;
   onViewMore?: () => void;
 }
 
@@ -47,6 +44,7 @@ const getEmptyStateProps = (
 export const TxsTable = ({
   address,
   scrollComponentId,
+  refetchCount,
   onViewMore,
 }: TxsTableProps) => {
   const {
@@ -60,8 +58,7 @@ export const TxsTable = ({
     data: rawTxCount,
     isLoading: isTxCountLoading,
     refetch: refetchTxsCount,
-  } = useAPITxsCountByAddress(address, undefined, isSigner, filters);
-
+  } = useTxsCountByAddress(address, undefined, isSigner, filters);
   const txsCount = rawTxCount ?? undefined;
   const isTxsCountTimeout = rawTxCount === null;
 
@@ -81,20 +78,6 @@ export const TxsTable = ({
     },
   });
 
-  const resetPagination = () => {
-    setPageSize(10);
-    setCurrentPage(1);
-  };
-
-  const handleSetFilters = (filter: string, bool: boolean) => {
-    resetPagination();
-    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
-  };
-
-  const filterSelected = Object.keys(filters).filter(
-    (key) => filters[key as keyof typeof filters]
-  );
-
   const { data: transactions, isLoading } = useTxsByAddress(
     address,
     undefined,
@@ -104,17 +87,21 @@ export const TxsTable = ({
     onViewMore ? 5 : pageSize
   );
 
-  const onPageChange = (nextPage: number) => {
-    refetchTxsCount();
-    setCurrentPage(nextPage);
+  const handleOnIsSignerChange = (value: Option<boolean>) => {
+    setCurrentPage(1);
+    setIsSigner(value);
+    refetchCount();
   };
 
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchTxsCount();
-    setPageSize(size);
+  const handleOnFiltersChange = (filter: string, bool: boolean) => {
     setCurrentPage(1);
+    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
+    refetchCount();
   };
+
+  const filterSelected = Object.keys(filters).filter(
+    (key) => filters[key as keyof typeof filters]
+  );
 
   useEffect(() => {
     if (isTxsCountTimeout) setPageSize(50);
@@ -141,10 +128,7 @@ export const TxsTable = ({
           relationSelection={
             <TxRelationSelection
               value={isSigner}
-              setValue={(value: Option<boolean>) => {
-                resetPagination();
-                setIsSigner(value);
-              }}
+              setValue={handleOnIsSignerChange}
               w={{ base: "full", md: "200px" }}
               size="lg"
             />
@@ -152,7 +136,7 @@ export const TxsTable = ({
           txTypeSelection={
             <TxFilterSelection
               result={filterSelected}
-              setResult={handleSetFilters}
+              setResult={handleOnFiltersChange}
               boxWidth={{ base: "full", md: "285px" }}
               placeholder="All"
               size="lg"
@@ -189,8 +173,18 @@ export const TxsTable = ({
                 totalData={txsCount}
                 scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
+                onPageChange={(nextPage) => {
+                  setCurrentPage(nextPage);
+                  refetchTxsCount();
+                  refetchCount();
+                }}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                  refetchTxsCount();
+                  refetchCount();
+                }}
               />
             ))}
     </Box>

@@ -8,11 +8,8 @@ import {
   useBaseApiRoute,
   useWasmConfig,
 } from "lib/app-provider";
-import {
-  getAccountIdByAddressQueryDocument,
-  getAccountTypeByAddressQueryDocument,
-} from "lib/query";
-import type { AccountType, Addr, Nullable, Option } from "lib/types";
+import { getAccountTypeByAddressQueryDocument } from "lib/query";
+import type { AccountType, Addr, Option } from "lib/types";
 
 import {
   getAccountInfo,
@@ -20,32 +17,6 @@ import {
   getAccountTableCounts,
   type AccountTableCounts,
 } from "./account";
-
-export const useAccountId = (
-  walletAddress: Option<Addr>
-): UseQueryResult<Nullable<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error("Error fetching account id: failed to retrieve address.");
-    return indexerGraphClient
-      .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
-      .then<Nullable<number>>(
-        ({ accounts_by_pk }) => accounts_by_pk?.id ?? null
-      );
-  }, [indexerGraphClient, walletAddress]);
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, walletAddress],
-    queryFn,
-    {
-      enabled: Boolean(walletAddress),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
 
 export const useAccountType = (
   walletAddress: Option<Addr>,

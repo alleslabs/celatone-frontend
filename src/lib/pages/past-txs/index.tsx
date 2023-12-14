@@ -21,10 +21,7 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import {
-  useAPITxsCountByAddress,
-  useTxsByAddress,
-} from "lib/services/txService";
+import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
 
 interface PastTxsState {
@@ -53,7 +50,7 @@ const PastTxs = () => {
   });
   const pastTxsState = watch();
 
-  const { data: rawTxCount } = useAPITxsCountByAddress(
+  const { data: rawTxCount, refetch: refetchCount } = useTxsCountByAddress(
     address as HumanAddr,
     pastTxsState.search,
     pastTxsState.isSigner,
@@ -189,11 +186,15 @@ const PastTxs = () => {
           offset={offset}
           totalData={txCount}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
+          onPageChange={(nextPage) => {
+            setCurrentPage(nextPage);
+            refetchCount();
+          }}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
+            refetchCount();
           }}
         />
       )}
