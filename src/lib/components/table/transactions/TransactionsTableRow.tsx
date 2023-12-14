@@ -36,7 +36,6 @@ export const TransactionsTableRow = ({
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
-
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -84,6 +83,11 @@ export const TransactionsTableRow = ({
             {transaction.isIbc && (
               <Tag variant="accent-dark" size="sm">
                 IBC
+              </Tag>
+            )}
+            {transaction.isOpinit && (
+              <Tag variant="teal" size="sm">
+                OPInit
               </Tag>
             )}
           </Flex>

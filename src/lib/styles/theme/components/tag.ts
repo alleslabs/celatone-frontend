@@ -4,6 +4,13 @@ import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tagAnatomy.keys);
 
+const teal = definePartsStyle({
+  container: {
+    bg: "#69DEC9",
+    color: "gray.900",
+  },
+});
+
 const accentDark = definePartsStyle({
   container: {
     bg: "accent.dark",
@@ -67,6 +74,7 @@ export const Tag = defineMultiStyleConfig({
     "primary-light": primaryLight,
     "accent-dark": accentDark,
     "accent-darker": accentDarker,
+    teal,
     gray,
   },
   defaultProps: {
