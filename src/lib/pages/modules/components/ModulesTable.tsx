@@ -1,16 +1,14 @@
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TransactionsTable } from "lib/components/table";
-import { useTxsByBlockHeight } from "lib/services/txService";
+import { ModulesTable as ModulesTableComponent } from "lib/components/table";
+import { useModules } from "lib/services/move";
 
-const scrollComponentId = "block_tx_table_header";
-
-interface BlockTxsTableProps {
-  height: number;
+interface ModulesTableProps {
+  isViewMore: boolean;
 }
 
-export const BlockTxsTable = ({ height }: BlockTxsTableProps) => {
+export const ModulesTable = ({ isViewMore }: ModulesTableProps) => {
   const {
     pagesQuantity,
     setTotalData,
@@ -21,37 +19,42 @@ export const BlockTxsTable = ({ height }: BlockTxsTableProps) => {
     offset,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
+      pageSize: isViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
-  const { data, isLoading } = useTxsByBlockHeight(height, pageSize, offset, {
+  const { data, isLoading, error } = useModules(pageSize, offset, {
     onSuccess: ({ total }) => setTotalData(total),
   });
 
   return (
     <>
-      <TransactionsTable
-        transactions={data?.items}
+      <ModulesTableComponent
+        modules={data?.items}
         isLoading={isLoading}
         emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="There are no submitted transactions in this block"
-            withBorder
-          />
+          error ? (
+            <EmptyState
+              withBorder
+              imageVariant="not-found"
+              message="There is an error during fetching recent modules."
+            />
+          ) : (
+            <EmptyState
+              withBorder
+              imageVariant="empty"
+              message="There are no transactions on this network."
+            />
+          )
         }
-        showRelations={false}
-        showTimestamp={false}
       />
-      {data && data.total > 10 && (
+      {!isViewMore && data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
           totalData={data.total}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

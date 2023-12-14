@@ -6,7 +6,14 @@ import type { Any } from "cosmjs-types/google/protobuf/any";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type { Transaction, Option, Fee, TxFilters, Addr } from "lib/types";
+import type {
+  Transaction,
+  Option,
+  Fee,
+  TxFilters,
+  Addr,
+  HexAddr,
+} from "lib/types";
 import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
 import {
   getActionMsgType,
@@ -108,6 +115,8 @@ const zBaseTxsResponseItem = z.object({
   success: z.boolean(),
   is_ibc: z.boolean(),
   is_send: z.boolean(),
+  // initia
+  is_opinit: z.boolean().optional(),
   // wasm
   is_clear_admin: z.boolean().optional(),
   is_execute: z.boolean().optional(),
@@ -142,6 +151,7 @@ const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>((val) => ({
   ]),
   furtherAction: MsgFurtherAction.NONE,
   isIbc: val.is_ibc,
+  isOpinit: val.is_opinit ?? false,
   isInstantiate: val.is_instantiate ?? false,
 }));
 
@@ -156,7 +166,8 @@ export const getTxs = async (
   limit: number,
   offset: number,
   isWasm: boolean,
-  isMove: boolean
+  isMove: boolean,
+  isInitia: boolean
 ) =>
   axios
     .get(`${endpoint}`, {
@@ -165,6 +176,7 @@ export const getTxs = async (
         offset,
         is_wasm: isWasm,
         is_move: isMove,
+        is_initia: isInitia,
       },
     })
     .then((res) => zTxsResponse.parse(res.data));
@@ -211,6 +223,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
       val.is_signer
     ),
     isIbc: val.is_ibc,
+    isOpinit: val.is_opinit ?? false,
     isInstantiate: val.is_instantiate ?? false,
   }));
 
@@ -222,12 +235,14 @@ export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 export const getTxsByAddress = async (
   endpoint: string,
   address: Addr,
+  search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
   limit: number,
   offset: number,
   isWasm: boolean,
-  isMove: boolean
+  isMove: boolean,
+  isInitia: boolean
 ) => {
   const filterParams = camelToSnake<TxFilters>(txFilters);
 
@@ -238,12 +253,71 @@ export const getTxsByAddress = async (
         offset,
         is_wasm: isWasm,
         is_move: isMove,
+        is_initia: isInitia,
         ...filterParams,
         ...(isSigner !== undefined && { is_signer: isSigner }),
+        ...(search !== undefined && { search }),
       },
     })
     .then((res) => zAccountTxsResponse.parse(res.data));
 };
+
+const zBlockTxsResponse = z.object({
+  items: z.array(zTxsResponseItem),
+  total: z.number().positive(),
+});
+export type BlockTxsResponse = z.infer<typeof zBlockTxsResponse>;
+
+export const getTxsByBlockHeight = async (
+  endpoint: string,
+  height: number,
+  limit: number,
+  offset: number,
+  isWasm: boolean,
+  isMove: boolean,
+  isInitia: boolean
+) =>
+  axios
+    .get(`${endpoint}/${height}/txs`, {
+      params: {
+        limit,
+        offset,
+        is_wasm: isWasm,
+        is_move: isMove,
+        is_initia: isInitia,
+      },
+    })
+    .then((res) => zBlockTxsResponse.parse(res.data));
+
+const zModuleTxsResponse = z.object({
+  items: z.array(zTxsResponseItem),
+});
+export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
+
+export const getTxsByModule = async (
+  endpoint: string,
+  address: HexAddr,
+  moduleName: string,
+  limit: number,
+  offset: number,
+  isWasm: boolean,
+  isMove: boolean,
+  isInitia: boolean
+) =>
+  axios
+    .get(
+      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/txs`,
+      {
+        params: {
+          limit,
+          offset,
+          is_wasm: isWasm,
+          is_move: isMove,
+          is_initia: isInitia,
+        },
+      }
+    )
+    .then((res) => zModuleTxsResponse.parse(res.data));
 
 const zTxsCountResponse = z
   .object({
@@ -254,8 +328,10 @@ const zTxsCountResponse = z
 export const getAPITxsCountByAddress = async (
   endpoint: string,
   address: Addr,
+  search: Option<string>,
   isSigner: Option<boolean>,
-  txFilters: TxFilters
+  txFilters: TxFilters,
+  isWasm: boolean
 ) => {
   const filterParams = camelToSnake<TxFilters>(txFilters);
 
@@ -263,7 +339,9 @@ export const getAPITxsCountByAddress = async (
     .get(`${endpoint}/${encodeURIComponent(address)}/txs-count`, {
       params: {
         ...filterParams,
+        is_wasm: isWasm, // only for `searching` contract txs
         ...(isSigner !== undefined && { is_signer: isSigner }),
+        ...(search !== undefined && { search }),
       },
     })
     .then((res) => zTxsCountResponse.parse(res.data));

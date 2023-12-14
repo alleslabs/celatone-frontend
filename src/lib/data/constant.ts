@@ -1,5 +1,6 @@
 import type {
   BaseTxFilters,
+  InitiaTxFilters,
   LVPair,
   MoveTxFilters,
   TxFilters,
@@ -59,10 +60,15 @@ export const DEFAULT_MOVE_TX_FILTERS: MoveTxFilters = {
   isMoveScript: false,
 };
 
+export const DEFAULT_INITIA_TX_FILTERS: InitiaTxFilters = {
+  isOpinit: false,
+};
+
 export const DEFAULT_TX_FILTERS: TxFilters = {
   ...DEFAULT_BASE_TX_FILTERS,
   ...DEFAULT_WASM_TX_FILTERS,
   ...DEFAULT_MOVE_TX_FILTERS,
+  ...DEFAULT_INITIA_TX_FILTERS,
 };
 
 export const UPPERBOUND_COUNT = 10000;
