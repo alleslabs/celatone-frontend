@@ -5,7 +5,6 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { isNull } from "lodash";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
@@ -60,7 +59,7 @@ const PastTxs = () => {
     pastTxsState.isSigner,
     pastTxsState.filters
   );
-  const txCount = isNull(rawTxCount) ? undefined : rawTxCount;
+  const txCount = rawTxCount ?? undefined;
 
   const {
     pagesQuantity,
