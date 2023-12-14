@@ -96,10 +96,11 @@ export const ModuleSelectMainBody = ({
       )}
       <GridItem area="panel" overflow="hidden">
         <InputWithIcon
-          action="Module Selection Drawer Module Search"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          placeholder="Search module ..."
+          placeholder="Search with Module Name"
+          size="md"
+          action="module-select-drawer-module-search"
         />
         <Flex alignItems="center" gap={2} mt={6}>
           <Text variant="body2" fontWeight={600} color="text.dark">

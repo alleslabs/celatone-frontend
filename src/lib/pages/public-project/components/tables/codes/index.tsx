@@ -113,9 +113,9 @@ export const PublicProjectCodeTable = observer(
             placeholder="Search with Code ID or Code Name"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
-            action="public-project-code-search"
             size={{ base: "md", md: "lg" }}
             my={2}
+            action="public-project-code-search"
           />
         )}
         {publicCodes.length ? (

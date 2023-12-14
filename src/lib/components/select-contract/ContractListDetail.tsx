@@ -122,8 +122,8 @@ export const ContractListDetail = ({
           placeholder="Search with Contract Address, Name, or Description"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          action="contract-list-item-search"
           size={{ base: "md", md: "lg" }}
+          action="contract-list-item-search"
         />
         {!isReadOnly && (
           <TagSelection

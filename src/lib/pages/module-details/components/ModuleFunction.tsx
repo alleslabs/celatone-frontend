@@ -123,8 +123,8 @@ export const ModuleFunction = ({
         placeholder="Search with Function Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="exposed-function-search"
         size={{ base: "md", md: "lg" }}
+        action="exposed-function-search"
       />
       <Flex
         justifyContent="space-between"

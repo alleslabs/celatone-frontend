@@ -38,7 +38,7 @@ const iconHeight = (size: InputProps["size"]) => {
 const InputWithIcon = ({
   placeholder,
   value,
-  size,
+  size = "md",
   my,
   action,
   iconPosition = "start",

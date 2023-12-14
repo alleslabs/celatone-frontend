@@ -35,9 +35,9 @@ export const AllContractLists = ({
         placeholder="Search with List Name"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        action="contract-list-search"
         size={{ base: "md", md: "lg" }}
         my={isReadOnly ? 4 : 0}
+        action="contract-list-search"
       />
       {filteredContractLists.length === 0 ? (
         <EmptyState

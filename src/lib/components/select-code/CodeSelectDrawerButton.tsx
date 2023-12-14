@@ -105,6 +105,7 @@ export const CodeSelectDrawerButton = ({
                   setValue("keyword", e.target.value)
                 }
                 size={{ base: "md", md: "lg" }}
+                action="code-drawer-search"
               />
               <FilterByPermission
                 initialSelected="all"

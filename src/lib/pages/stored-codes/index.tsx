@@ -109,8 +109,8 @@ const StoredCodes = observer(() => {
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
           }
-          action="stored-code-search"
           size="lg"
+          action="stored-code-search"
         />
         <FilterByPermission
           initialSelected="all"

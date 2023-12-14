@@ -47,9 +47,9 @@ export const ModuleLists = ({
               placeholder="Search with Module Name"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              action="execute-message-search"
               size={{ base: "md", md: "lg" }}
               my={4}
+              action="execute-message-search"
             />
           )}
           <ModuleListsBody

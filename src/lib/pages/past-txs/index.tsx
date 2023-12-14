@@ -157,6 +157,7 @@ const PastTxs = () => {
             setValue("search", e.target.value);
           }}
           size={{ base: "md", md: "lg" }}
+          action="past-txs-search"
         />
         <Flex gap={3}>
           <TxRelationSelection

@@ -71,9 +71,9 @@ export const AllProject = observer(() => {
         placeholder="Search with Project Name"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        action="public-project-search"
         size={{ base: "md", md: "lg" }}
         my={2}
+        action="public-project-search"
       />
       {!filteredPublicProjects.length ? (
         <EmptyState

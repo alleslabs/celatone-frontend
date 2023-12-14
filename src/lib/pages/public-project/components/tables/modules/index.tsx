@@ -86,9 +86,9 @@ export const PublicProjectModuleTable = ({
           placeholder="Search with Module Address or Module Name"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          action="public-project-module-search"
           size={{ base: "md", md: "lg" }}
           my={2}
+          action="public-project-module-search"
         />
       )}
       {filteredModules.length ? (

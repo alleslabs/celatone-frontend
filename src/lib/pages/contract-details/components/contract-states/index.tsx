@@ -165,8 +165,8 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           const newVal = e.target.value;
           setKeyword(newVal);
         }}
-        action="contract-states-search"
         size={{ base: "md", md: "lg" }}
+        action="contract-states-search"
       />
 
       {/* State List */}

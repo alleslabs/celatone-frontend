@@ -97,8 +97,8 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
         placeholder="Search with Struct Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="module-struct-search"
         size={{ base: "md", md: "lg" }}
+        action="module-struct-search"
       />
       <Accordion
         mt={4}
