@@ -47,7 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#668](https://github.com/alleslabs/celatone-frontend/pull/668) api v1 - contract transaction
+- [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
+- [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
 - [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
 - [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
 - [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
