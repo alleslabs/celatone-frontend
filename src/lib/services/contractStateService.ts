@@ -26,13 +26,7 @@ export const useContractStates = (
         pageParam
       ),
     {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.nextKey) {
-          return lastPage.nextKey;
-        }
-
-        return false; // No more pages
-      },
+      getNextPageParam: (lastPage) => lastPage.nextKey,
       refetchOnWindowFocus: false,
     }
   );

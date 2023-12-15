@@ -207,7 +207,6 @@ export const ExplorerLink = ({
   // TODO: handle auto width
   return (
     <Box
-      className="copier-wrapper"
       display="inline-flex"
       alignItems="center"
       transition="all 0.25s ease-in-out"
@@ -225,6 +224,7 @@ export const ExplorerLink = ({
         </Text>
       ) : (
         <Flex
+          className="copier-wrapper"
           display={{ base: "inline-flex", md: "flex" }}
           align="center"
           h={fixedHeight ? "24px" : "auto"}

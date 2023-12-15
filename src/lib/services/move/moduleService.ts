@@ -19,6 +19,7 @@ import {
   getModuleIdByNameAndVmAddressQueryDocument,
 } from "lib/query";
 import type {
+  ModuleHistory,
   MoveAccountAddr,
   ExposedFunction,
   InternalModule,
@@ -30,7 +31,6 @@ import type {
   HexAddr,
   Nullable,
 } from "lib/types";
-import type { ModuleHistory } from "lib/types/move/module";
 import {
   parseDate,
   parseDateOpt,
@@ -40,14 +40,16 @@ import {
   truncate,
 } from "lib/utils";
 
-import type { ModuleVerificationInternal } from "./module";
+import type { ModuleVerificationInternal, ModulesResponse } from "./module";
 import {
   decodeModule,
   decodeScript,
+  getAPIAccountModules,
   getAccountModule,
   getAccountModules,
   getFunctionView,
   getModuleVerificationStatus,
+  getModules,
 } from "./module";
 
 export interface IndexedModule extends InternalModule {
@@ -111,6 +113,24 @@ export const useAccountModules = ({
     ],
     queryFn,
     options
+  );
+};
+
+export const useAPIAccountModules = (address: MoveAccountAddr) => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled } = useMoveConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.API_ACCOUNT_MODULES, endpoint, address],
+    () =>
+      getAPIAccountModules(endpoint, address).then((modules) =>
+        modules.items.map((module) => indexModuleResponse(module))
+      ),
+    {
+      enabled,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
   );
 };
 
@@ -386,5 +406,19 @@ export const useDecodeScript = ({
     [CELATONE_QUERY_KEYS.SCRIPT_DECODE, lcd, base64EncodedFile],
     queryFn,
     options
+  );
+};
+
+export const useModules = (
+  limit: number,
+  offset: number,
+  options: Pick<UseQueryOptions<ModulesResponse>, "onSuccess"> = {}
+) => {
+  const endpoint = useBaseApiRoute("modules");
+
+  return useQuery<ModulesResponse>(
+    [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
+    async () => getModules(endpoint, limit, offset),
+    { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };

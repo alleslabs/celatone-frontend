@@ -325,7 +325,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                   <TabPanels>
                     <TabPanel p={0}>
                       <ModuleTxsTable
-                        moduleId={moduleId}
+                        address={moduleData.address}
+                        moduleName={moduleData.moduleName}
                         txCount={moduleTxsCount}
                         refetchCount={refetchTxsCount}
                         onViewMore={() => {
@@ -408,7 +409,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 <TabPanels>
                   <TabPanel p={0}>
                     <ModuleTxsTable
-                      moduleId={moduleId}
+                      address={moduleData.address}
+                      moduleName={moduleData.moduleName}
                       txCount={moduleTxsCount}
                       refetchCount={refetchTxsCount}
                       scrollComponentId={historyTabHeaderId}

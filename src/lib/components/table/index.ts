@@ -4,6 +4,7 @@ export * from "./codes";
 export * from "./contracts";
 export * from "./proposals";
 export * from "./transactions";
+export * from "./modules";
 export * from "./EditableCell";
 export * from "./MobileCardTemplate";
 export * from "./MobileLabel";

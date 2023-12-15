@@ -18,8 +18,8 @@ interface FunctionAccordionProps {
   isEmpty: boolean;
   triggerText: string;
   selectedFn: Option<ExposedFunction>;
-  amptrackTab: string;
   setSelectedFn: (fn: ExposedFunction) => void;
+  amptrackTab: string;
 }
 
 export const FunctionAccordion = ({
@@ -54,9 +54,9 @@ export const FunctionAccordion = ({
           </AccordionButton>
         </h6>
         <AccordionPanel py={3} px={0}>
-          <Flex flexDirection="column" gap={1}>
-            {filteredFns.length ? (
-              filteredFns.map((fn) => (
+          {filteredFns.length ? (
+            <Flex flexDirection="column" gap={1}>
+              {filteredFns.map((fn) => (
                 <FunctionCard
                   key={fn.name}
                   variant={selectedFn?.name === fn.name ? "selected" : "common"}
@@ -68,13 +68,13 @@ export const FunctionAccordion = ({
                     setSelectedFn(fn);
                   }}
                 />
-              ))
-            ) : (
-              <NoImageEmptyState
-                desc={isEmpty ? "No function" : "No matching function found"}
-              />
-            )}
-          </Flex>
+              ))}
+            </Flex>
+          ) : (
+            <NoImageEmptyState
+              desc={isEmpty ? "No function" : "No matching function found"}
+            />
+          )}
         </AccordionPanel>
       </>
     )}

@@ -193,7 +193,7 @@ export const PublishModule = ({
 
   const publishModuleText = useMemo(
     () => ({
-      header: "Publish new module",
+      header: "Publish / Republish modules",
       description: `Upload .mv files to publish new module to ${chainPrettyName}. You can
       upload multiple .mv files to publish many modules within a
       transaction.`,
@@ -217,7 +217,7 @@ export const PublishModule = ({
             p={{ base: "16px", md: "48px" }}
           >
             <Box gridArea="1 / 2">
-              <Heading as="h5" variant="h5" textAlign="center">
+              <Heading as="h4" variant="h4" textAlign="center">
                 {publishModuleText.header}
               </Heading>
               <Text color="text.dark" pt={4} textAlign="center">

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { z } from "zod";
 
 import type {
   MoveAccountAddr,
@@ -11,13 +12,46 @@ import type {
   ExposedFunction,
   AbiFormData,
   Nullable,
+  ModuleInfo,
 } from "lib/types";
+import { zHexAddr, UpgradePolicy, zHumanAddr, zUtcDate } from "lib/types";
 import {
   libDecode,
   parseJsonABI,
   serializeAbiData,
   snakeToCamel,
 } from "lib/utils";
+
+const zAccountModulesResponseItem = z
+  .object({
+    abi: z.string(),
+    address: zHexAddr,
+    module_name: z.string(),
+    raw_bytes: z.string(),
+    upgrade_policy: z.nativeEnum(UpgradePolicy),
+  })
+  .transform((val) => ({
+    abi: val.abi,
+    address: val.address,
+    moduleName: val.module_name,
+    rawBytes: val.raw_bytes,
+    upgradePolicy: val.upgrade_policy,
+  }));
+
+const zAccountModulesResponse = z.object({
+  items: z.array(zAccountModulesResponseItem),
+  total: z.number(),
+});
+type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
+
+// TODO: This function will replace getAccountModules later
+export const getAPIAccountModules = async (
+  endpoint: string,
+  address: MoveAccountAddr
+): Promise<AccountModulesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
+    .then((res) => zAccountModulesResponse.parse(res.data));
 
 export const getAccountModules = async (
   baseEndpoint: string,
@@ -127,3 +161,41 @@ export const decodeScript = async (
       code_bytes: scriptBytes,
     })
     .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));
+
+const zModulesResponseItem = z
+  .object({
+    address: zHumanAddr,
+    name: z.string(),
+    height: z.number(),
+    latest_updated: zUtcDate,
+    is_republished: z.boolean(),
+    is_verified: z.boolean(),
+  })
+  .transform<ModuleInfo>((val) => ({
+    address: val.address,
+    name: val.name,
+    height: val.height,
+    latestUpdated: val.latest_updated,
+    isRepublished: val.is_republished,
+    isVerified: val.is_verified,
+  }));
+
+const zModulesResponse = z.object({
+  items: z.array(zModulesResponseItem),
+  total: z.number(),
+});
+export type ModulesResponse = z.infer<typeof zModulesResponse>;
+
+export const getModules = async (
+  endpoint: string,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then((res) => zModulesResponse.parse(res.data));

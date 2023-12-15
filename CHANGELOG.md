@@ -40,19 +40,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#652](https://github.com/alleslabs/celatone-frontend/pull/652) feat: amp publish module and deploy script
-- [#637](https://github.com/alleslabs/celatone-frontend/pull/637) feat: amp module interaction and code snippet property
-- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) feat: amp module detail and breadcrumb
+- [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
+- [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
+- [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
+- [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Add amp module interaction and code snippet property
+- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add amp module detail and breadcrumb
 
 ### Improvements
 
+- [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
+- [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
+- [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
+- [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
+- [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
+- [#645](https://github.com/alleslabs/celatone-frontend/pull/645) Add search for resource in account detail
+- [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
+- [#657](https://github.com/alleslabs/celatone-frontend/pull/657) api v1 - overview stats
+- [#650](https://github.com/alleslabs/celatone-frontend/pull/650) api v1 - account info on account detail page
+- [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
+- [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
+- [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
+- [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list
+- [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
 - [#632](https://github.com/alleslabs/celatone-frontend/pull/632) api v1 - assets info
 
 ### Bug fixes
+
+- [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
+- [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item
+- [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
+- [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile
 
 ## v1.3.0
 
 ### Features
 
+- [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
 - [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save contract count
 - [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details
 - [#620](https://github.com/alleslabs/celatone-frontend/pull/620) Add hex address in save account feature in initia
@@ -108,12 +131,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#639](https://github.com/alleslabs/celatone-frontend/pull/639) Fix this wallet nav bar section
 - [#623](https://github.com/alleslabs/celatone-frontend/pull/623) Fix abi empty vector serialization
 - [#619](https://github.com/alleslabs/celatone-frontend/pull/619) Fix observer, logo and disable delegation in Account Detail Page
 - [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
 - [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
 - [#615](https://github.com/alleslabs/celatone-frontend/pull/615) Fix useEffect on pool page
-- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Add saved accounts page
+- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Fix transaction detail ui
 - [#614](https://github.com/alleslabs/celatone-frontend/pull/614) Disabled saved account for now
 - [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Fix mintscan tracking in internal
 - [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state

@@ -8,13 +8,13 @@ const TokenImage = (props: ImageProps) => (
   <Image
     boxSize={5}
     fallback={<NAToken />}
-    fallbackStrategy="onError"
+    fallbackStrategy="beforeLoadOrError"
     {...props}
   />
 );
 
 interface TokenImageRenderProps extends ImageProps {
-  logo: Option<string | string[]>;
+  logo: Option<string> | Option<string>[];
 }
 
 export const TokenImageRender = ({ logo, ...props }: TokenImageRenderProps) =>

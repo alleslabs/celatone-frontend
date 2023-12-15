@@ -7,12 +7,14 @@ import { ResourceSectionBody } from "./ResourceSectionBody";
 
 interface ResourceSectionProps {
   address: HumanAddr;
+  totalCount: Option<number>;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
 }
 
 export const ResourceSection = ({
   address,
+  totalCount,
   resourcesByOwner,
   isLoading,
 }: ResourceSectionProps) => (
@@ -20,13 +22,9 @@ export const ResourceSection = ({
     <TableTitle
       helperText="Resources stored in this account"
       title="Resources"
-      count={resourcesByOwner?.length}
+      count={totalCount}
     />
-    <Flex
-      gap={6}
-      flexDirection={{ base: "column", md: "row" }}
-      position="relative"
-    >
+    <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
       <ResourceSectionBody
         address={address}
         resourcesByOwner={resourcesByOwner}

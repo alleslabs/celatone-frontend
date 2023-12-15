@@ -31,6 +31,7 @@ export enum AmpEvent {
   TO_BLOCKS = "To Blocks",
   TO_BLOCK_DETAIL = "To Block Detail",
   TO_TXS = "To Txs",
+  TO_MODULES = "To Modules",
   TO_PAST_TXS = "To Past Txs",
   TO_DEPLOY = "To Deploy",
   TO_UPLOAD = "To Upload",
