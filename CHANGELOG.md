@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
 - [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
 - [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
 - [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
