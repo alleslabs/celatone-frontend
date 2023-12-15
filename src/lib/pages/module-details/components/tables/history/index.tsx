@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
 import type { Nullable, Option } from "lib/types";
@@ -78,11 +78,7 @@ export const ModuleHistoryTable = ({
         isLoading={isLoading}
         emptyState={
           !moduleId || error ? (
-            <EmptyState
-              withBorder
-              imageVariant="not-found"
-              message="There is an error fetching module published events history."
-            />
+            <ErrorFetching message="There is an error fetching module published events history." />
           ) : (
             <EmptyState
               imageVariant="empty"

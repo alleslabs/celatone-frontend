@@ -1,6 +1,6 @@
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddress } from "lib/services/txService";
@@ -35,7 +35,7 @@ export const TxsTable = ({
     },
   });
 
-  const { data, isLoading } = useTxsByAddress(
+  const { data, isLoading, error } = useTxsByAddress(
     contractAddress,
     undefined,
     undefined,
@@ -50,10 +50,15 @@ export const TxsTable = ({
         transactions={data?.items}
         isLoading={isLoading}
         emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="This contract does not have any transactions"
-          />
+          error ? (
+            <ErrorFetching message="There is an error during fetching transactions." />
+          ) : (
+            <EmptyState
+              withBorder
+              imageVariant="empty"
+              message="This contract does not have any transactions"
+            />
+          )
         }
         showRelations={false}
       />

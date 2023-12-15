@@ -1,18 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { ErrorFetching } from "../../ErrorFetching";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { EmptyStateProps } from "lib/components/state";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
-import type { Addr, Option, Transaction, TxFilters } from "lib/types";
+import type { Addr, Option, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
@@ -24,22 +23,16 @@ interface TxsTableProps {
   onViewMore?: () => void;
 }
 
-const getEmptyStateProps = (
-  filterSelected: string[],
-  transactions: Option<Transaction[]>
-): EmptyStateProps => {
-  if (filterSelected.length) {
-    return { message: "No past transaction matches found with your input." };
-  }
-  if (!transactions) {
-    return {
-      message: <ErrorFetching />,
-    };
-  }
-  return {
-    message: "This account did not submit any transactions before.",
-  };
-};
+const getEmptyStateProps = (filterSelected: string[]): EmptyStateProps =>
+  filterSelected.length
+    ? {
+        imageVariant: "not-found",
+        message: "No past transaction matches found with your input.",
+      }
+    : {
+        imageVariant: "empty",
+        message: "This account did not submit any transactions before.",
+      };
 
 export const TxsTable = ({
   address,
@@ -151,10 +144,11 @@ export const TxsTable = ({
           transactions={transactions?.items}
           isLoading={isLoading || isTxCountLoading}
           emptyState={
-            <EmptyState
-              withBorder
-              {...getEmptyStateProps(filterSelected, transactions?.items)}
-            />
+            !transactions ? (
+              <ErrorFetching message="There is an error during fetching transactions." />
+            ) : (
+              <EmptyState withBorder {...getEmptyStateProps(filterSelected)} />
+            )
           }
           showRelations
         />

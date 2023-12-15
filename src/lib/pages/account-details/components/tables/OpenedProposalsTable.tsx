@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
+import { ErrorFetching } from "../../../../components/state/ErrorFetching";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -86,16 +86,14 @@ export const OpenedProposalsTable = ({
             proposals={proposals?.items}
             isLoading={isLoading}
             emptyState={
-              <EmptyState
-                message={
-                  !proposals ? (
-                    <ErrorFetching />
-                  ) : (
-                    "This account did not open any proposals before."
-                  )
-                }
-                withBorder
-              />
+              !proposals ? (
+                <ErrorFetching message="There is an error during fetching proposals." />
+              ) : (
+                <EmptyState
+                  message="This account did not open any proposals before."
+                  withBorder
+                />
+              )
             }
           />
         </>

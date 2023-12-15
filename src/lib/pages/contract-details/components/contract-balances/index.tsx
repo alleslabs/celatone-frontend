@@ -1,7 +1,7 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { UnsupportedTokensModal } from "lib/components/modal";
-import { ErrorFetching } from "lib/pages/account-details/components/ErrorFetching";
+import { ErrorFetching } from "lib/components/state/ErrorFetching";
 import { useBalanceInfos } from "lib/services/balanceService";
 import type { ContractAddr } from "lib/types";
 
@@ -21,7 +21,10 @@ export const ContractBalances = ({
   const { supportedAssets, unsupportedAssets, isLoading, totalData, error } =
     useBalanceInfos(contractAddress);
 
-  if (error) return <ErrorFetching />;
+  if (error)
+    return (
+      <ErrorFetching message="There is an error during fetching balances." />
+    );
 
   return (
     <Flex

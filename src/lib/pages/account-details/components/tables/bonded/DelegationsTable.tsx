@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-import { ErrorFetching } from "../../ErrorFetching";
+import { ErrorFetching } from "../../../../../components/state/ErrorFetching";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -34,7 +34,9 @@ const DelegationsTableBody = ({
 
   if (isLoading) return <Loading />;
   if (!delegations || !rewards)
-    return <EmptyState message={<ErrorFetching />} withBorder />;
+    return (
+      <ErrorFetching message="There is an error during fetching delegation information." />
+    );
   if (!delegations.length)
     return (
       <EmptyState

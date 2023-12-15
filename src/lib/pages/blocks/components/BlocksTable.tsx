@@ -2,7 +2,7 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useBlocks } from "lib/services/blockService";
 
@@ -42,11 +42,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   if (isLoading) return <Loading />;
   if (error)
     return (
-      <EmptyState
-        imageVariant="not-found"
-        message="There is an error during fetching recent blocks."
-        withBorder
-      />
+      <ErrorFetching message="There is an error during fetching recent blocks." />
     );
 
   if (!data)
