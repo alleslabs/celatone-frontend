@@ -24,7 +24,13 @@ export const ErrorFetching = ({ message }: ErrorFetchingProps) => (
       boxSize={20}
       mr={3}
     />
-    <Text>{message}</Text>
-    <Text>Please try again later.</Text>
+    <Text
+      color="text.dark"
+      textAlign="center"
+      whiteSpace="pre-wrap"
+      variant="body1"
+    >
+      {message} Please try again later.
+    </Text>
   </Flex>
 );

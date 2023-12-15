@@ -46,8 +46,8 @@ export enum TabIndex {
 }
 
 export const zContractDetailQueryParams = z.object({
-  contractAddressParam: zContractAddr,
-  tabParam: z.union([
+  contractAddress: zContractAddr,
+  tab: z.union([
     z.nativeEnum(TabIndex),
     z
       .string()
@@ -55,7 +55,3 @@ export const zContractDetailQueryParams = z.object({
       .transform(() => TabIndex.Overview),
   ]),
 });
-
-export type ContractDetailQueryParams = z.infer<
-  typeof zContractDetailQueryParams
->;

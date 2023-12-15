@@ -28,7 +28,7 @@ import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountInfo } from "lib/services/accountService";
 import { useAPIAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { HexAddr, HumanAddr } from "lib/types";
+import type { Addr, HexAddr, HumanAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -44,10 +44,14 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
-import type { AccountDetailQueryParams } from "./types";
 import { TabIndex, zAccountDetailQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
+
+export interface AccountDetailsBodyProps {
+  accountAddressParam: Addr;
+  tabParam: TabIndex;
+}
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
   hexAddress === "0x1" ? hexAddress : accountAddress;
@@ -57,7 +61,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({
   accountAddressParam,
   tabParam,
-}: AccountDetailQueryParams) => {
+}: AccountDetailsBodyProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
@@ -404,17 +408,20 @@ const AccountDetails = () => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tabParam });
+      track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   return (
     <PageContainer>
       {!validated.success ||
-      !isSomeValidAddress(validated.data.accountAddressParam) ? (
+      !isSomeValidAddress(validated.data.accountAddress) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody {...validated.data} />
+        <AccountDetailsBody
+          accountAddressParam={validated.data.accountAddress}
+          tabParam={validated.data.tab}
+        />
       )}
     </PageContainer>
   );

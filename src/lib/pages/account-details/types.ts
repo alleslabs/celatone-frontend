@@ -48,8 +48,8 @@ export enum TabIndex {
 }
 
 export const zAccountDetailQueryParams = z.object({
-  accountAddressParam: zAddr,
-  tabParam: z.union([
+  accountAddress: zAddr,
+  tab: z.union([
     z.nativeEnum(TabIndex),
     z
       .string()
@@ -57,7 +57,3 @@ export const zAccountDetailQueryParams = z.object({
       .transform(() => TabIndex.Overview),
   ]),
 });
-
-export type AccountDetailQueryParams = z.infer<
-  typeof zAccountDetailQueryParams
->;

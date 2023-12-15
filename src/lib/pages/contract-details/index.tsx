@@ -23,6 +23,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import type { ContractAddr } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -34,16 +35,17 @@ import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { ContractTables } from "./components/tables";
 import { useContractData } from "./data";
-import type { ContractDetailQueryParams } from "./types";
 import { TabIndex, zContractDetailQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
+interface ContractDetailsBodyProps {
+  contractAddress: ContractAddr;
+  tab: TabIndex;
+}
+
 const ContractDetailsBody = observer(
-  ({
-    contractAddressParam: contractAddress,
-    tabParam: tab,
-  }: ContractDetailQueryParams) => {
+  ({ contractAddress, tab }: ContractDetailsBodyProps) => {
     const isMobile = useMobile();
     const router = useRouter();
     const navigate = useInternalNavigate();
@@ -225,14 +227,14 @@ const ContractDetails = observer(() => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_CONTRACT_DETAIL, { tab: validated.data.tabParam });
+      track(AmpEvent.TO_CONTRACT_DETAIL, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   return (
     <PageContainer>
       {!validated.success ||
-      validateContractAddress(validated.data.contractAddressParam) ? (
+      validateContractAddress(validated.data.contractAddress) ? (
         <InvalidContract />
       ) : (
         <ContractDetailsBody {...validated.data} />
