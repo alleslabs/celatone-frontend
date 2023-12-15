@@ -18,13 +18,13 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
 };
 
 export const useOpenAssetTab = () => {
-  const balancesApiRoute = useBaseApiRoute("accounts");
+  const endpoint = useBaseApiRoute("accounts");
 
   return useCallback(
     (walletAddr: string) => {
-      openNewTab(`${balancesApiRoute}/${walletAddr}/balances`);
+      openNewTab(`${endpoint}/${walletAddr}/balances`);
     },
-    [balancesApiRoute]
+    [endpoint]
   );
 };
 

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#652](https://github.com/alleslabs/celatone-frontend/pull/652) Add amp publish module and deploy script
 - [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
 - [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
 - [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
@@ -48,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
 - [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
 - [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
 - [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
@@ -66,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
 - [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item
 - [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
 - [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile

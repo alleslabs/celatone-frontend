@@ -3,6 +3,7 @@ import { Grid, Flex, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 
+import { AmpEvent, track } from "lib/amplitude";
 import type { UpgradePolicy } from "lib/types";
 
 import { Leaflet } from "./leaflet";
@@ -49,7 +50,13 @@ export const PolicyCard = ({
 }: PolicyCardProps) => {
   const isChecked = value === selected;
   return (
-    <RadioCard onClick={onSelect} checked={isChecked}>
+    <RadioCard
+      onClick={() => {
+        track(AmpEvent.USE_PUBLISH_POLICY_SELECTION, { upgradePolicy: value });
+        onSelect();
+      }}
+      checked={isChecked}
+    >
       <Flex flexDirection="column">
         <Text variant="body1">{capitalize(value)}</Text>
         <Text variant="body2" textColor="text.dark" fontWeight={600}>
