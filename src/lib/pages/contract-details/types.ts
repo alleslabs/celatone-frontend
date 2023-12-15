@@ -41,7 +41,7 @@ export interface ContractData {
 export enum TabIndex {
   Overview = "overview",
   Assets = "assets",
-  Txs = "txs",
+  TxsHistories = "txs-histories",
   States = "states",
 }
 

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
@@ -23,8 +23,8 @@ interface TxsTableProps {
   onViewMore?: () => void;
 }
 
-const getEmptyStateProps = (filterSelected: string[]): EmptyStateProps =>
-  filterSelected.length
+const getEmptyStateProps = (selectedFilters: string[]): EmptyStateProps =>
+  selectedFilters.length
     ? {
         imageVariant: "not-found",
         message: "No past transaction matches found with your input.",
@@ -92,8 +92,12 @@ export const TxsTable = ({
     refetchCount();
   };
 
-  const filterSelected = Object.keys(filters).filter(
-    (key) => filters[key as keyof typeof filters]
+  const selectedFilters = useMemo(
+    () =>
+      Object.keys(filters).filter(
+        (key) => filters[key as keyof typeof filters]
+      ),
+    [filters]
   );
 
   useEffect(() => {
@@ -128,7 +132,7 @@ export const TxsTable = ({
           }
           txTypeSelection={
             <TxFilterSelection
-              result={filterSelected}
+              result={selectedFilters}
               setResult={handleOnFiltersChange}
               boxWidth={{ base: "full", md: "285px" }}
               placeholder="All"
@@ -147,7 +151,7 @@ export const TxsTable = ({
             !transactions ? (
               <ErrorFetching message="There is an error during fetching transactions." />
             ) : (
-              <EmptyState withBorder {...getEmptyStateProps(filterSelected)} />
+              <EmptyState withBorder {...getEmptyStateProps(selectedFilters)} />
             )
           }
           showRelations

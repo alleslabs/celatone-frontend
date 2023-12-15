@@ -110,8 +110,8 @@ const ContractDetailsBody = observer(
             <CustomTab onClick={handleTabChange(TabIndex.Assets)}>
               Assets
             </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.Txs)}>
-              Transaction & History
+            <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
+              Transactions & Histories
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.States)}>
               Contract States

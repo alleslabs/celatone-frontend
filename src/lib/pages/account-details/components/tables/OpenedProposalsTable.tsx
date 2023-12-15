@@ -1,11 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../../../../components/state/ErrorFetching";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import {
   MobileTitle,
   ProposalsTable,

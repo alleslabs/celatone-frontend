@@ -98,7 +98,7 @@ const PastTxs = () => {
     setValue("filters", { ...pastTxsState.filters, [filter]: bool });
   };
 
-  const filterSelected = useMemo(
+  const selectedFilters = useMemo(
     () =>
       Object.keys(pastTxsState.filters).reduce((acc: string[], key: string) => {
         if (pastTxsState.filters[key as keyof typeof pastTxsState.filters]) {
@@ -149,7 +149,7 @@ const PastTxs = () => {
             w="165px"
           />
           <TxFilterSelection
-            result={filterSelected}
+            result={selectedFilters}
             setResult={handleOnFiltersChange}
             boxWidth="285px"
             placeholder="All"
@@ -162,7 +162,7 @@ const PastTxs = () => {
         emptyState={
           pastTxsState.search.trim().length > 0 ||
           pastTxsState.isSigner !== undefined ||
-          filterSelected.length > 0 ? (
+          selectedFilters.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
               message={`No past transaction matches found with your input. You can search with transaction hash${

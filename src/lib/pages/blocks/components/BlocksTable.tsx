@@ -45,7 +45,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
       <ErrorFetching message="There is an error during fetching recent blocks." />
     );
 
-  if (!data)
+  if (!data?.total)
     return (
       <EmptyState
         imageVariant="empty"

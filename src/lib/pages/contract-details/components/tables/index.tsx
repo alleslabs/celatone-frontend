@@ -32,7 +32,7 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
     <Flex direction="column" gap={6}>
       {/* History Table section */}
       <Heading as="h6" variant="h6" id={tableHeaderId}>
-        Transaction & History
+        Transactions & Histories
       </Heading>
       <Tabs isLazy lazyBehavior="keepMounted">
         <TabList
