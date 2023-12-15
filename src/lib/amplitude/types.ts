@@ -166,7 +166,7 @@ export enum AmpEvent {
   USE_UPLOAD_CARD_MOVE_UP = "Use Upload Card Move Up",
   USE_UPLOAD_CARD_MOVE_DOWN = "Use Upload Card Move Down",
   USE_PUBLISH_MORE_MODULE_BUTTON = "Use Publish More Module Button",
-  USE_PUBLISHED_MODULE_ACTION = "Use Publish Module Action",
+  USE_PUBLISHED_MODULE_ACTION = "Use Published Module Action",
 
   // TX
   TX_SUCCEED = "Tx Succeed",
