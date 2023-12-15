@@ -1,13 +1,16 @@
+import { z } from "zod";
+
 import type { ContractCw2Info, ContractResponse } from "lib/services/contract";
 import type { ContractDetail } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type {
-  Nullable,
-  Option,
-  PublicDetail,
-  PublicInfo,
-  TokenWithValue,
+import {
+  zContractAddr,
+  type Nullable,
+  type Option,
+  type PublicDetail,
+  type PublicInfo,
+  type TokenWithValue,
 } from "lib/types";
 
 export interface ContractData {
@@ -34,3 +37,25 @@ export interface ContractData {
   rawContractResponse: Option<ContractResponse>;
   isRawContractResponseLoading: boolean;
 }
+
+export enum TabIndex {
+  Overview = "overview",
+  Assets = "assets",
+  Txs = "txs",
+  States = "states",
+}
+
+export const zContractDetailQueryParams = z.object({
+  contractAddressParam: zContractAddr,
+  tabParam: z.union([
+    z.nativeEnum(TabIndex),
+    z
+      .string()
+      .optional()
+      .transform(() => TabIndex.Overview),
+  ]),
+});
+
+export type ContractDetailQueryParams = z.infer<
+  typeof zContractDetailQueryParams
+>;

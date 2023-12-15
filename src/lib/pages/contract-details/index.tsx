@@ -23,9 +23,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import { useContractDetailsTableCounts } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam, jsonPrettify } from "lib/utils";
+import { jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractBalances } from "./components/contract-balances";
@@ -34,102 +32,30 @@ import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import {
-  RelatedProposalsTable,
-  TxsTable,
-  MigrationTable,
-} from "./components/tables";
+import { ContractTables } from "./components/tables";
 import { useContractData } from "./data";
-import type { ContractData } from "./types";
-
-const tableTabHeaderId = "contractDetailTab";
-
-enum TabIndex {
-  Overview = "overview",
-  Assets = "assets",
-  Txs = "txs",
-  States = "states",
-}
-
-interface ContractDetailsBodyProps {
-  contractAddress: ContractAddr;
-  contractData: ContractData;
-}
+import type { ContractDetailQueryParams } from "./types";
+import { TabIndex, zContractDetailQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
-const ContractTxsTable = observer(
-  ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
-    const tableHeaderId = "contractDetailsTableHeader";
-    const {
-      tableCounts,
-      refetchMigration,
-      refetchTransactions,
-      refetchRelatedProposals,
-    } = useContractDetailsTableCounts(contractAddress);
-    if (!contractData.contractDetail) return <InvalidContract />;
-    return (
-      <Flex direction="column" gap={6}>
-        {/* History Table section */}
-        <Heading as="h6" variant="h6" id={tableHeaderId}>
-          Transaction & History
-        </Heading>
-        <Tabs isLazy lazyBehavior="keepMounted">
-          <TabList
-            borderBottom="1px solid"
-            borderColor="gray.700"
-            overflowX={{ base: "scroll", md: "auto" }}
-          >
-            <CustomTab count={tableCounts.transactionsCount}>
-              Transactions
-            </CustomTab>
-            <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
-            <CustomTab
-              count={tableCounts.relatedProposalsCount}
-              whiteSpace="nowrap"
-            >
-              Related Proposals
-            </CustomTab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0}>
-              <TxsTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.transactionsCount}
-                refetchCount={refetchTransactions}
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <MigrationTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.migrationCount}
-                refetchCount={refetchMigration}
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <RelatedProposalsTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.relatedProposalsCount}
-                refetchCount={refetchRelatedProposals}
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Flex>
-    );
-  }
-);
-
 const ContractDetailsBody = observer(
-  ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
-    const tableHeaderId = "contractDetailsTableHeader";
+  ({
+    contractAddressParam: contractAddress,
+    tabParam: tab,
+  }: ContractDetailQueryParams) => {
     const isMobile = useMobile();
     const router = useRouter();
-    const tab = getFirstQueryParam(router.query.tab) as TabIndex;
     const navigate = useInternalNavigate();
+
+    // ------------------------------------------//
+    // ------------------QUERIES-----------------//
+    // ------------------------------------------//
+    const contractData = useContractData(contractAddress);
+
+    // ------------------------------------------//
+    // -----------------CALLBACKS----------------//
+    // ------------------------------------------//
     const handleTabChange = useCallback(
       (nextTab: TabIndex) => () => {
         if (nextTab === tab) return;
@@ -163,8 +89,8 @@ const ContractDetailsBody = observer(
       }
     }, [router.isReady, tab, contractAddress, navigate]);
 
+    if (contractData.isContractDetailLoading) return <Loading withBorder />;
     if (!contractData.contractDetail) return <InvalidContract />;
-
     return (
       <>
         <ContractTop contractAddress={contractAddress} {...contractData} />
@@ -175,7 +101,6 @@ const ContractDetailsBody = observer(
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
-            id={tableTabHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
@@ -198,7 +123,6 @@ const ContractDetailsBody = observer(
                 {/* Tokens Section */}
                 <ContractBalances
                   contractAddress={contractAddress}
-                  {...contractData}
                   onViewMore={handleTabChange(TabIndex.Assets)}
                 />
                 {/* Query/Execute commands section */}
@@ -222,7 +146,7 @@ const ContractDetailsBody = observer(
                     {/* Instantiate Info */}
                     <div>
                       {isMobile && (
-                        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+                        <Heading as="h6" variant="h6" mb={6}>
                           Instantiate Info
                         </Heading>
                       )}
@@ -270,10 +194,7 @@ const ContractDetailsBody = observer(
                     </Flex>
                   </Flex>
                 </Flex>
-                <ContractTxsTable
-                  contractAddress={contractAddress}
-                  contractData={contractData}
-                />
+                <ContractTables contractAddress={contractAddress} />
               </Flex>
             </TabPanel>
             <TabPanel p={0}>
@@ -283,10 +204,7 @@ const ContractDetailsBody = observer(
               />
             </TabPanel>
             <TabPanel p={0}>
-              <ContractTxsTable
-                contractAddress={contractAddress}
-                contractData={contractData}
-              />
+              <ContractTables contractAddress={contractAddress} />
             </TabPanel>
             <TabPanel p={0}>
               <ContractStates contractAddress={contractAddress} />
@@ -303,28 +221,21 @@ const ContractDetails = observer(() => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
 
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contractAddress
-  ) as ContractAddr;
-  // TODO: fix assertion later
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
-
-  const contractData = useContractData(contractAddressParam);
+  const validated = zContractDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
-    if (router.isReady && tab) track(AmpEvent.TO_CONTRACT_DETAIL, { tab });
-  }, [router.isReady, tab]);
+    if (router.isReady && validated.success)
+      track(AmpEvent.TO_CONTRACT_DETAIL, { tab: validated.data.tabParam });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
-  if (contractData.isContractDetailLoading) return <Loading withBorder />;
   return (
     <PageContainer>
-      {validateContractAddress(contractAddressParam) ? (
+      {!validated.success ||
+      validateContractAddress(validated.data.contractAddressParam) ? (
         <InvalidContract />
       ) : (
-        <ContractDetailsBody
-          contractAddress={contractAddressParam}
-          contractData={contractData}
-        />
+        <ContractDetailsBody {...validated.data} />
       )}
     </PageContainer>
   );

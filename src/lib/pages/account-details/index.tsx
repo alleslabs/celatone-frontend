@@ -28,7 +28,7 @@ import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountInfo } from "lib/services/accountService";
 import { useAPIAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
-import type { Addr, HexAddr, HumanAddr } from "lib/types";
+import type { HexAddr, HumanAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -44,14 +44,10 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
-import { TabIndex, zAccDetailQueryParams } from "./types";
+import type { AccountDetailQueryParams } from "./types";
+import { TabIndex, zAccountDetailQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
-
-export interface AccountDetailsBodyProps {
-  accountAddressParam: Addr;
-  tabParam: TabIndex;
-}
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
   hexAddress === "0x1" ? hexAddress : accountAddress;
@@ -61,7 +57,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({
   accountAddressParam,
   tabParam,
-}: AccountDetailsBodyProps) => {
+}: AccountDetailQueryParams) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
@@ -404,27 +400,21 @@ const AccountDetails = () => {
   const router = useRouter();
   const { isSomeValidAddress } = useValidateAddress();
 
-  const validated = zAccDetailQueryParams.safeParse(router.query);
+  const validated = zAccountDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tab });
+      track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tabParam });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  if (!validated.success) return <InvalidAccount />;
-
-  const { accountAddress, tab } = validated.data;
-
   return (
     <PageContainer>
-      {!isSomeValidAddress(accountAddress) ? (
+      {!validated.success ||
+      !isSomeValidAddress(validated.data.accountAddressParam) ? (
         <InvalidAccount />
       ) : (
-        <AccountDetailsBody
-          accountAddressParam={accountAddress}
-          tabParam={tab}
-        />
+        <AccountDetailsBody {...validated.data} />
       )}
     </PageContainer>
   );

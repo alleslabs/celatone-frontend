@@ -1,5 +1,5 @@
-import { useUserAssetInfos } from "lib/pages/account-details/data";
 import { useAccountTableCounts } from "lib/services/accountService";
+import { useBalanceInfos } from "lib/services/balanceService";
 import type { HumanAddr, Option, Nullish } from "lib/types";
 
 interface AccountDetailsTableCounts {
@@ -24,7 +24,7 @@ export const useAccountDetailsTableCounts = (
     isLoading: isLoadingAccountTableCounts,
   } = useAccountTableCounts(walletAddress);
   const { totalData: assetsCount, isLoading: isLoadingAssetCount } =
-    useUserAssetInfos(walletAddress);
+    useBalanceInfos(walletAddress);
 
   return {
     tableCounts: {
