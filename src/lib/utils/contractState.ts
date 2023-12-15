@@ -1,6 +1,6 @@
 import type { ContractState, DecodedKey } from "lib/types";
 
-const nameRegex = /^[a-zA-Z0-9_]+$/;
+const nameRegex = /^[a-zA-Z0-9_{}:"'/\\,\\[\]()]+$/;
 
 export const hexToString = (hex: string) =>
   Buffer.from(hex, "hex").toString("utf-8");

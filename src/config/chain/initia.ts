@@ -3,18 +3,18 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import type { ChainConfigs } from "./types";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
-  "stone-11": {
+  "mahalo-1": {
     chain: "initia",
-    registryChainName: "initiatestnet11",
-    prettyName: "Initia Testnet 11",
-    lcd: "https://stone-rest.initia.tech",
-    rpc: "https://stone-rpc.initia.tech:443",
-    indexer: "https://stone-11-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "initiadevnet1",
+    prettyName: "Initia Devnet 1",
+    lcd: "https://lcd.mahalo-1.initia.xyz",
+    rpc: "https://rpc.mahalo-1.initia.xyz:443",
+    indexer: "https://mahalo-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
-        url: process.env.NEXT_PUBLIC_INITIA_TESTNET_FAUCET_URL ?? "",
+        url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: false,
@@ -47,8 +47,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "https://app.initia.tech/validator",
-      proposal: "https://app.initia.tech/proposal",
+      validator: "https://app.initia.xyz/validator",
+      proposal: "https://app.initia.xyz/proposal",
     },
     extra: {},
   },

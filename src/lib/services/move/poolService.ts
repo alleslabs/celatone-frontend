@@ -66,12 +66,16 @@ export const useMovePoolInfos = () => {
     const coinBprecision = coinBInfo?.precision ?? 0;
 
     const totalShares = big(curr.total_share).div(big(10).pow(curr.precision));
-    const amountAPerShare = big(curr.coin_a.amount)
-      .div(big(10).pow(coinAprecision))
-      .div(totalShares);
-    const amountBPerShare = big(curr.coin_b.amount)
-      .div(big(10).pow(coinBprecision))
-      .div(totalShares);
+    const [amountAPerShare, amountBPerShare] = totalShares.eq(0)
+      ? [big(0), big(0)]
+      : [
+          big(curr.coin_a.amount)
+            .div(big(10).pow(coinAprecision))
+            .div(totalShares),
+          big(curr.coin_b.amount)
+            .div(big(10).pow(coinBprecision))
+            .div(totalShares),
+        ];
 
     const lpPricePerShare = computePricePerShare(
       amountAPerShare,

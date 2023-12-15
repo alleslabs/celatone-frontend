@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 
 import type { Module, PublishStatus } from "../formConstants";
 import { statusResolver } from "../utils";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
@@ -121,7 +122,14 @@ export const UploadModuleCard = ({
         >
           <Tooltip label="Move up" variant="primary-light">
             <IconButton
-              onClick={() => moveEntry(index, index - 1)}
+              onClick={() => {
+                track(AmpEvent.USE_UPLOAD_CARD_MOVE_UP, {
+                  currentPosition: index + 1,
+                  newPosition: index,
+                  currentBoxAmount: modules.length,
+                });
+                moveEntry(index, index - 1);
+              }}
               aria-label="move-up"
               variant="ghost"
               size="sm"
@@ -132,7 +140,14 @@ export const UploadModuleCard = ({
           </Tooltip>
           <Tooltip label="Move down" variant="primary-light">
             <IconButton
-              onClick={() => moveEntry(index, index + 1)}
+              onClick={() => {
+                track(AmpEvent.USE_UPLOAD_CARD_MOVE_DOWN, {
+                  currentPosition: index + 1,
+                  newPosition: index + 2,
+                  currentBoxAmount: modules.length,
+                });
+                moveEntry(index, index + 1);
+              }}
               aria-label="move-down"
               variant="ghost"
               size="sm"
@@ -143,7 +158,12 @@ export const UploadModuleCard = ({
           </Tooltip>
           <Tooltip label="Remove item" variant="primary-light">
             <IconButton
-              onClick={removeEntry}
+              onClick={() => {
+                track(AmpEvent.USE_REMOVE_MODULE_UPLOAD_BOX, {
+                  currentBoxAmount: modules.length - 1,
+                });
+                removeEntry();
+              }}
               aria-label="remove"
               variant="ghost"
               size="sm"

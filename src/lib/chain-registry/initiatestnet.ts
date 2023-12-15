@@ -3,11 +3,11 @@ import type { AssetList, Chain } from "@chain-registry/types";
 export const initiatestnet: Chain[] = [
   {
     $schema: "../chain.schema.json",
-    chain_name: "initiatestnet11",
+    chain_name: "initiadevnet1",
     status: "live",
-    network_type: "testnet",
-    pretty_name: "Initia Testnet 11",
-    chain_id: "stone-11",
+    network_type: "devnet",
+    pretty_name: "Initia Devnet 1",
+    chain_id: "mahalo-1",
     bech32_prefix: "init",
     daemon_name: "initiad",
     node_home: "$HOME/.init",
@@ -38,12 +38,12 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://stone-rpc.initia.tech:443",
+          address: "https://rpc.mahalo-1.initia.xyz:443",
         },
       ],
       rest: [
         {
-          address: "https://stone-rest.initia.tech",
+          address: "https://lcd.mahalo-1.initia.xyz",
         },
       ],
     },
@@ -100,7 +100,7 @@ export const initiatestnet: Chain[] = [
 export const initiatestnetAssets: AssetList[] = [
   {
     $schema: "../assetlist.schema.json",
-    chain_name: "initiatestnet11",
+    chain_name: "initiadevnet1",
     assets: [
       {
         description: "The native staking token of Initia.",

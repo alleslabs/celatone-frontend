@@ -1,9 +1,11 @@
 import { Text, Grid, Heading, Flex, Button, Box } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
+import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -49,6 +51,7 @@ export const PublishModule = ({
   const {
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
+  const router = useRouter();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const postPublishTx = usePublishModuleTx();
@@ -199,6 +202,10 @@ export const PublishModule = ({
     [chainPrettyName]
   );
 
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_PUBLISH_MODULE);
+  }, [router.isReady]);
+
   return (
     <>
       <PageContainer display="inline" p={0}>
@@ -244,7 +251,12 @@ export const PublishModule = ({
                 ))}
               </Flex>
               <Button
-                onClick={() => append(emptyModule)}
+                onClick={() => {
+                  track(AmpEvent.USE_ADD_MODULE_UPLOAD_BOX, {
+                    currentBoxAmount: modules.length + 1,
+                  });
+                  append(emptyModule);
+                }}
                 leftIcon={<CustomIcon name="add-new" />}
                 variant="ghost-primary"
                 p="0 4px"
@@ -308,7 +320,18 @@ export const PublishModule = ({
         </Box>
       </PageContainer>
       <Footer
-        publishModule={proceed}
+        publishModule={() => {
+          const republishModules = modules.filter((ampTrackRepublish) =>
+            ampTrackRepublish.publishStatus.text.includes("republish")
+          );
+
+          track(AmpEvent.ACTION_MOVE_PUBLISH, {
+            numberOfModule: modules.length,
+            numberOfRepublishModules: republishModules.length,
+            numberOfNewPublishModules: modules.length - republishModules.length,
+          });
+          proceed();
+        }}
         isLoading={processing}
         disabled={!enablePublish || Boolean(simulateError) || isSimulating}
         fieldAmount={modules.length}

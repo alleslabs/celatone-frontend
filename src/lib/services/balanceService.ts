@@ -7,7 +7,7 @@ import type { Addr } from "lib/types";
 import { getBalances } from "./balance";
 
 export const useBalances = (address: Addr): UseQueryResult<Coin[]> => {
-  const endpoint = useBaseApiRoute("balances");
+  const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
     [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
