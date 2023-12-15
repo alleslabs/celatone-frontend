@@ -6,7 +6,7 @@ interface ErrorFetchingProps {
   message: string;
 }
 
-// TODO: combine with EmptyState after having its image variant
+// TODO: call EmptyState here instead with a format message
 export const ErrorFetching = ({ message }: ErrorFetchingProps) => (
   <Flex
     alignItems="center"
