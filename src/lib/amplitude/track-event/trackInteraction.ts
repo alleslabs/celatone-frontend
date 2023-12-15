@@ -2,12 +2,18 @@ import big from "big.js";
 
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
+import type { SearchResultType } from "lib/services/searchService";
 import type { MoveAccountAddr, Option, Token } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
-export const trackUseMainSearch = (isClick: boolean, section?: string) =>
+export const trackUseMainSearch = (
+  isClick: boolean,
+  type?: SearchResultType,
+  section?: string
+) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
     isClick,
+    type,
     section,
   });
 

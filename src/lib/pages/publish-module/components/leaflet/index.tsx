@@ -17,6 +17,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 
 import { metadata } from "./metadata";
@@ -148,6 +149,7 @@ export const Leaflet = () => {
         cursor="pointer"
         _hover={{ textDecoration: "underline" }}
         onClick={(e) => {
+          track(AmpEvent.USE_VIEW_CONDITION);
           e.stopPropagation();
           onOpen();
         }}

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#652](https://github.com/alleslabs/celatone-frontend/pull/652) feat: amp publish module and deploy script
 - [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
 - [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
 - [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1

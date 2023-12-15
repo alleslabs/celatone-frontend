@@ -266,7 +266,7 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
-      trackUseMainSearch(isClick);
+      trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
         const queryValues =
