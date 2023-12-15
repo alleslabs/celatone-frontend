@@ -97,7 +97,8 @@ export const TxsTable = ({
       Object.keys(filters).filter(
         (key) => filters[key as keyof typeof filters]
       ),
-    [filters]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(filters)]
   );
 
   useEffect(() => {
