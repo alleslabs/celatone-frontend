@@ -47,8 +47,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "https://app.initia.xyz/validators",
-      proposal: "https://app.initia.xyz/proposals",
+      validator: "https://app.initia.xyz/validator",
+      proposal: "https://app.initia.xyz/proposal",
     },
     extra: {},
   },
