@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
 - [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
 - [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item
 - [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
