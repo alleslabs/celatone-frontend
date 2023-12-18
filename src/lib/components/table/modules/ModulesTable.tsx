@@ -18,7 +18,7 @@ export const ModulesTable = ({
   modules,
   isLoading,
   emptyState,
-  isPublishedModules = false,
+  isPublishedModules,
 }: ModulesTableProps) => {
   const isMobile = useMobile();
 
