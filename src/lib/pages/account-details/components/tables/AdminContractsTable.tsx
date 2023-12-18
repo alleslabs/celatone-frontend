@@ -2,11 +2,10 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import {
   ContractsTable,
   MobileTitle,
@@ -94,16 +93,14 @@ export const AdminContractsTable = observer(
               contracts={contracts}
               isLoading={isLoading}
               emptyState={
-                <EmptyState
-                  message={
-                    !contracts ? (
-                      <ErrorFetching />
-                    ) : (
-                      "This account does not have any admin access for any contracts."
-                    )
-                  }
-                  withBorder
-                />
+                !contracts ? (
+                  <ErrorFetching message="There is an error during fetching contracts." />
+                ) : (
+                  <EmptyState
+                    message="This account does not have any admin access for any contracts."
+                    withBorder
+                  />
+                )
               }
               onRowSelect={onRowSelect}
             />

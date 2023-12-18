@@ -22,7 +22,7 @@ export const ModulesTable = ({
 }: ModulesTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!modules?.length) return emptyState;
 
   const templateColumns = isPublishedModules

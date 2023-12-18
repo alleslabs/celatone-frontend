@@ -1,11 +1,10 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import type { MoveAccountAddr, Option, ResourceGroup } from "lib/types";
 import { scrollToTop } from "lib/utils";
@@ -44,7 +43,10 @@ export const ResourceOverviewBody = ({
   );
 
   if (isLoading) return <Loading />;
-  if (!resourcesByName) return <ErrorFetching />;
+  if (!resourcesByName)
+    return (
+      <ErrorFetching message="There is an error during fetching resources." />
+    );
   if (!resourcesByName.length)
     return (
       <EmptyState

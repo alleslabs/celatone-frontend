@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import {
   MobileTableContainer,
   TableContainer,
@@ -29,8 +29,12 @@ const UnbondingsTableBody = ({
 }: UnbondingsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
-  if (!unbondings?.length)
+  if (isLoading) return <Loading />;
+  if (!unbondings)
+    return (
+      <ErrorFetching message="There is an error during fetching undelegations." />
+    );
+  if (!unbondings.length)
     return (
       <EmptyState
         message="This account does not have any assets that is currently unbonding."

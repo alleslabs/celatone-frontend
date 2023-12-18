@@ -4,7 +4,7 @@ import big from "big.js";
 import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
-import { useBalances } from "lib/services/balanceService";
+import { useBalanceInfos } from "lib/services/balanceService";
 import { useCodesByAddress } from "lib/services/codeService";
 import {
   useAdminContractsByAddress,
@@ -28,7 +28,6 @@ import {
   coinToTokenWithValue,
   totalValueTokenWithValue,
   compareTokenWithValues,
-  filterSupportedTokens,
 } from "lib/utils";
 
 import type { UserDelegationsData } from "./types";
@@ -41,15 +40,6 @@ interface AccountContracts {
 interface AccountCodes {
   codes: Option<CodeInfo[]>;
   isLoading: boolean;
-}
-
-interface AccountAssetInfos {
-  supportedAssets: TokenWithValue[];
-  totalSupportedAssetsValue: Option<USD<Big>>;
-  unsupportedAssets: TokenWithValue[];
-  isLoading: boolean;
-  totalData: Option<number>;
-  error: Error;
 }
 
 export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
@@ -154,43 +144,6 @@ export const useAccountCodes = (
   return {
     codes: data,
     isLoading,
-  };
-};
-
-export const useUserAssetInfos = (address: Addr): AccountAssetInfos => {
-  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
-    withPrices: true,
-  });
-  const { data: movePoolInfos } = useMovePoolInfos();
-  const { data: accountBalances, isLoading, error } = useBalances(address);
-
-  const balances = accountBalances
-    ?.map<TokenWithValue>((balance) =>
-      coinToTokenWithValue(
-        balance.denom,
-        balance.amount,
-        assetInfos,
-        movePoolInfos
-      )
-    )
-    .sort(compareTokenWithValues);
-
-  // Supported assets should order by descending value
-  const {
-    supportedTokens: supportedAssets,
-    unsupportedTokens: unsupportedAssets,
-  } = filterSupportedTokens(balances);
-  const totalSupportedAssetsValue = balances
-    ? totalValueTokenWithValue(supportedAssets, big(0) as USD<Big>)
-    : undefined;
-
-  return {
-    supportedAssets,
-    totalSupportedAssetsValue,
-    unsupportedAssets,
-    isLoading: isLoading || isAssetInfosLoading,
-    totalData: balances?.length,
-    error: error as Error,
   };
 };
 
@@ -369,7 +322,7 @@ export const useAccountTotalValue = (address: Addr) => {
   const {
     totalSupportedAssetsValue = defaultValue,
     isLoading: isLoadingTotalSupportedAssetsValue,
-  } = useUserAssetInfos(address);
+  } = useBalanceInfos(address);
   const {
     isLoading,
     stakingParams,

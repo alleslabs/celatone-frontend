@@ -1,5 +1,6 @@
 import { Grid, Text } from "@chakra-ui/react";
 
+import { ErrorFetching } from "lib/components/state";
 import { TokenCard } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
 
@@ -14,9 +15,7 @@ export const AssetSectionContent = ({
 }: AssetSectionContentProps) => {
   if (error)
     return (
-      <Text variant="body2" color="text.dark">
-        Error fetching assets data.
-      </Text>
+      <ErrorFetching message="There is an error during fetching balances." />
     );
 
   return supportedAssets.length ? (

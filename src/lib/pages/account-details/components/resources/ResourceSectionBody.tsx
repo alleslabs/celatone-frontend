@@ -2,11 +2,10 @@ import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import type { HumanAddr, Option, ResourceGroupByAccount } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -43,7 +42,10 @@ export const ResourceSectionBody = ({
   }, [resourcesByOwner, selectedResource]);
 
   if (isLoading) return <Loading />;
-  if (!resourcesByOwner) return <ErrorFetching />;
+  if (!resourcesByOwner)
+    return (
+      <ErrorFetching message="There is an error during fetching resources." />
+    );
   if (!resourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
 
