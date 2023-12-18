@@ -17,13 +17,13 @@ import { ModulePathLink } from "./ModulePathLink";
 interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;
   templateColumns: string;
-  isPublishedModules?: boolean;
+  isPublishedModules: boolean;
 }
 
 export const ModulesTableRow = ({
   moduleInfo,
   templateColumns,
-  isPublishedModules = false,
+  isPublishedModules,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));

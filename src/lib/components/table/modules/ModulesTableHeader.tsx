@@ -5,11 +5,11 @@ import { TableHeader } from "../tableComponents";
 
 interface ModulesTableHeaderProps {
   templateColumns: GridProps["templateColumns"];
-  isPublishedModules?: boolean;
+  isPublishedModules: boolean;
 }
 export const ModulesTableHeader = ({
   templateColumns,
-  isPublishedModules = false,
+  isPublishedModules,
 }: ModulesTableHeaderProps) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Module Path</TableHeader>
