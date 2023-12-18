@@ -37,6 +37,31 @@ export const MyPublishedModulesTable = () => {
       (module) => module.name?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, mappedModules]);
+
+  const emptyState = () => {
+    if (error)
+      return (
+        <EmptyState
+          withBorder
+          imageVariant="not-found"
+          message="There is an error during fetching recent modules."
+        />
+      );
+    if (!keyword)
+      return (
+        <EmptyState
+          imageVariant="empty"
+          message="There is currently no published modules."
+        />
+      );
+    return (
+      <EmptyState
+        withBorder
+        imageVariant="empty"
+        message="No matching module found. Make sure you are searching with Module Name."
+      />
+    );
+  };
   return (
     <>
       <InputWithIcon
@@ -51,21 +76,7 @@ export const MyPublishedModulesTable = () => {
           isPublishedModules
           modules={filteredPublishedModules}
           isLoading={isModulesLoading}
-          emptyState={
-            error ? (
-              <EmptyState
-                withBorder
-                imageVariant="not-found"
-                message="There is an error during fetching recent modules."
-              />
-            ) : (
-              <EmptyState
-                withBorder
-                imageVariant="empty"
-                message="No matching module found. Make sure you are searching with Module Name."
-              />
-            )
-          }
+          emptyState={emptyState()}
         />
       ) : (
         <DisconnectedState text="to see your published modules" my={16} />
