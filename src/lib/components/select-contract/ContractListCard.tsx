@@ -5,7 +5,6 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  Spacer,
   Badge,
 } from "@chakra-ui/react";
 
@@ -34,68 +33,75 @@ export const ContractListCard = ({
     <Flex
       as={Button}
       variant="gray-solid"
-      gap={4}
       h="75px"
       onClick={() => handleListSelect(item.slug)}
       isDisabled={isDisabled}
     >
-      <CustomIcon
-        name={getListIcon(item.name)}
-        boxSize="24px"
-        color="gray.600"
-      />
-      <Flex flexDirection="column" alignItems="start" gap={1}>
-        <Flex alignItems="center" gap={2}>
-          <Text
-            variant="body1"
-            textColor={isDisabled ? "text.disabled" : "text.main"}
-            fontWeight={700}
-            textOverflow="ellipsis"
-            overflow="hidden"
-          >
-            {item.name}
-          </Text>
-          <Badge>{item.contracts.length}</Badge>
+      <Flex gap={4} w="full" alignItems="center">
+        <CustomIcon
+          name={getListIcon(item.name)}
+          boxSize="24px"
+          color="gray.600"
+        />
+        <Flex
+          flexDirection="column"
+          alignItems="start"
+          gap={1}
+          w="full"
+          maxW="calc(100% - 108px)"
+        >
+          <Flex alignItems="center" gap={2} w="full">
+            <Text
+              variant="body1"
+              textColor={isDisabled ? "text.disabled" : "text.main"}
+              fontWeight={700}
+              textOverflow="ellipsis"
+              overflow="hidden"
+            >
+              {item.name}
+            </Text>
+            <Badge>{item.contracts.length}</Badge>
+          </Flex>
+          {isInstantiatedByMe && (
+            <Text
+              variant="body3"
+              textColor={isDisabled ? "text.disabled" : "text.dark"}
+            >
+              Updated {dateFromNow(item.lastUpdated)}
+            </Text>
+          )}
         </Flex>
-        {isInstantiatedByMe && (
-          <Text
-            variant="body3"
-            textColor={isDisabled ? "text.disabled" : "text.dark"}
-          >
-            Updated {dateFromNow(item.lastUpdated)}
-          </Text>
+        {!isReadOnly && (
+          <Menu>
+            <MenuButton
+              m={0}
+              size="sm"
+              h="full"
+              variant="ghost-gray"
+              as={Button}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CustomIcon name="more" color="gray.600" />
+            </MenuButton>
+            <MenuList onClick={(e) => e.stopPropagation()}>
+              <EditListNameModal
+                list={{ label: item.name, value: item.slug }}
+                menuItemProps={{
+                  icon: <CustomIcon name="edit" color="gray.600" />,
+                  children: "Edit list name",
+                }}
+              />
+              <RemoveListModal
+                list={{ label: item.name, value: item.slug }}
+                menuItemProps={{
+                  icon: <CustomIcon name="delete" color="error.light" />,
+                  children: "Remove list",
+                }}
+              />
+            </MenuList>
+          </Menu>
         )}
       </Flex>
-      <Spacer />
-      {!isReadOnly && (
-        <Menu>
-          <MenuButton
-            m={0}
-            h="full"
-            variant="ghost-gray"
-            as={Button}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <CustomIcon name="more" color="gray.600" />
-          </MenuButton>
-          <MenuList onClick={(e) => e.stopPropagation()}>
-            <EditListNameModal
-              list={{ label: item.name, value: item.slug }}
-              menuItemProps={{
-                icon: <CustomIcon name="edit" color="gray.600" />,
-                children: "Edit list name",
-              }}
-            />
-            <RemoveListModal
-              list={{ label: item.name, value: item.slug }}
-              menuItemProps={{
-                icon: <CustomIcon name="delete" color="error.light" />,
-                children: "Remove list",
-              }}
-            />
-          </MenuList>
-        </Menu>
-      )}
     </Flex>
   );
 };

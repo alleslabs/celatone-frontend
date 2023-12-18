@@ -73,7 +73,7 @@ const SavedAccounts = observer(() => {
           isSearching ? (
             <EmptyState
               imageVariant="not-found"
-              message="No accounts match found. Make sure you are searching with account address, name, or description."
+              message="No matching accounts found. Make sure you are searching with account address, name, or description."
               withBorder
             />
           ) : (
