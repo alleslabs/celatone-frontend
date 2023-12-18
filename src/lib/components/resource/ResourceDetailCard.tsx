@@ -9,6 +9,7 @@ import {
 
 import { Copier, CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
+import { useMobile } from "lib/app-provider";
 import type { InternalResource } from "lib/types";
 import { parseJsonStr } from "lib/utils";
 
@@ -20,6 +21,7 @@ export const ResourceDetailCard = ({
   resourceData,
 }: ResourceDetailCardProps) => {
   const parsedMoveResource = parseJsonStr(resourceData.moveResource);
+  const isMobile = useMobile();
 
   // Handle fallback case where the move resource is invalid
   // TODO: revisit later
@@ -54,15 +56,14 @@ export const ResourceDetailCard = ({
   return (
     <AccordionItem mb={4}>
       <AccordionButton>
-        <Flex p={4} justifyContent="space-between" w="full" align="center">
-          <Flex
-            alignItems="center"
-            transition="all 0.25s ease-in-out"
-            sx={{
-              "& > div": { opacity: 0, transition: "all 0.15s ease-in-out" },
-            }}
-            _hover={{ "& > div": { opacity: 1 } }}
-          >
+        <Flex
+          p={4}
+          justifyContent="space-between"
+          w="full"
+          align="center"
+          className="copier-wrapper"
+        >
+          <Flex alignItems="center">
             <Text
               variant="body1"
               fontWeight={600}
@@ -73,6 +74,7 @@ export const ResourceDetailCard = ({
             </Text>
             <Copier
               type="resource"
+              display={!isMobile ? "none" : "inline"}
               value={resourceData.structTag}
               copyLabel="Copied!"
             />

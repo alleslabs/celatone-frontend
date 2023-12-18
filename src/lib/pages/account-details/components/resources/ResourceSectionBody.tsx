@@ -2,6 +2,7 @@ import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -24,6 +25,8 @@ export const ResourceSectionBody = ({
   isLoading,
 }: ResourceSectionBodyProps) => {
   const router = useRouter();
+  const isMobile = useMobile();
+
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
   const selectedAccountParam = getFirstQueryParam(
@@ -64,13 +67,7 @@ export const ResourceSectionBody = ({
             pb={6}
             gap={12}
           >
-            <Flex
-              alignItems="center"
-              sx={{
-                "& > div": { opacity: 0, transition: "all 0.15s ease-in-out" },
-              }}
-              _hover={{ "& > div": { opacity: 1 } }}
-            >
+            <Flex alignItems="center" w="full" className="copier-wrapper">
               <Heading as="h6" variant="h6" wordBreak="break-word">
                 {selectedResource.account}::{selectedResource.group}
               </Heading>
@@ -78,6 +75,7 @@ export const ResourceSectionBody = ({
                 {selectedResource.items.length}
               </Badge>
               <Copier
+                display={!isMobile ? "none" : "inline"}
                 type="resource"
                 value={`${selectedResource.account}::${selectedResource.group}`}
                 copyLabel="Copied!"
