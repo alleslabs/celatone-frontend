@@ -1,4 +1,4 @@
-import { Heading, Flex, Badge } from "@chakra-ui/react";
+import { Heading, Flex, Badge, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
@@ -10,6 +10,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { SavedCodeZeroState } from "lib/components/state";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 
@@ -56,19 +57,24 @@ const SavedCodes = observer(() => {
   return (
     <PageContainer>
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
-        <Flex align="center">
-          <Heading
-            variant="h5"
-            as="h5"
-            minH="36px"
-            display="flex"
-            alignItems="center"
-          >
-            Saved Codes
-          </Heading>
-          <Badge variant="primary" ml={2}>
-            {savedCodesCount}
-          </Badge>
+        <Flex direction="column">
+          <Flex align="center">
+            <Heading
+              variant="h5"
+              as="h5"
+              minH="36px"
+              display="flex"
+              alignItems="center"
+            >
+              Saved Codes
+            </Heading>
+            <Badge variant="primary" ml={2}>
+              {savedCodesCount}
+            </Badge>
+          </Flex>
+          <Text variant="body2" color="text.dark">
+            Your saved codes will be stored locally
+          </Text>
         </Flex>
         <SaveCodeButton />
       </Flex>
@@ -89,12 +95,16 @@ const SavedCodes = observer(() => {
           }}
         />
       </Flex>
-      <MySavedCodesSection
-        codes={saved}
-        isLoading={isSavedCodesLoading}
-        onRowSelect={onRowSelect}
-        isSearching={isSearching}
-      />
+      {!savedCodesCount ? (
+        <SavedCodeZeroState button={<SaveCodeButton />} />
+      ) : (
+        <MySavedCodesSection
+          codes={saved}
+          isLoading={isSavedCodesLoading}
+          onRowSelect={onRowSelect}
+          isSearching={isSearching}
+        />
+      )}
     </PageContainer>
   );
 });
