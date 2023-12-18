@@ -1,3 +1,3 @@
-import Modules from "lib/pages/modules";
+import RecentModules from "lib/pages/modules";
 
-export default Modules;
+export default RecentModules;
