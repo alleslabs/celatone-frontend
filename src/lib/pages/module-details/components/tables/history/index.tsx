@@ -78,7 +78,7 @@ export const ModuleHistoryTable = ({
         isLoading={isLoading}
         emptyState={
           !moduleId || error ? (
-            <ErrorFetching message="There is an error fetching module published events history." />
+            <ErrorFetching dataName="module published events history" />
           ) : (
             <EmptyState
               imageVariant="empty"
