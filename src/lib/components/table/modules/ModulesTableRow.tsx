@@ -55,7 +55,7 @@ export const ModulesTableRow = ({
         )}
         {isPublishedModules && (
           <TableRow>
-            <Flex gap={1}>
+            <Flex gap={1} justifyContent="center" w="full">
               <CountBadge count={moduleInfo.functions?.view} variant="view" />
               <CountBadge
                 count={moduleInfo.functions?.execute}

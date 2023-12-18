@@ -14,7 +14,11 @@ export const ModulesTableHeader = ({
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Module Path</TableHeader>
     {isPublishedModules && <TableHeader>Module Name</TableHeader>}
-    {isPublishedModules && <TableHeader>View/Execute Functions</TableHeader>}
+    {isPublishedModules && (
+      <TableHeader w="full" textAlign="center">
+        View/Execute Functions
+      </TableHeader>
+    )}
     <TableHeader>Creator</TableHeader>
     {!isPublishedModules && <TableHeader>Timestamp</TableHeader>}
     <TableHeader />
