@@ -90,7 +90,7 @@ const zProposalsResponseItem = z
 
 const zProposalResponse = z.object({
   items: z.array(zProposalsResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 
 export type ProposalResponse = z.infer<typeof zProposalResponse>;
