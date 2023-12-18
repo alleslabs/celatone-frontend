@@ -30,21 +30,6 @@ export const getDevSubmenuMove = (isMove: boolean) =>
       ]
     : [];
 
-export const getWalletSubSectionMove = (isMove: boolean) =>
-  isMove
-    ? [
-        {
-          category: "This Wallet",
-          submenu: [
-            {
-              name: "My Published Modules",
-              slug: "/my-published-modules",
-              icon: "contract-address" as IconKeys,
-            },
-          ],
-        },
-      ]
-    : [];
 export const getDevSubmenuWasm = (isWasm: boolean) =>
   isWasm
     ? [
@@ -73,6 +58,22 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
         //   slug: "/",
         //   icon: "list" as IconKeys,
         // },
+      ]
+    : [];
+
+export const getWalletSubSectionMove = (isMove: boolean) =>
+  isMove
+    ? [
+        {
+          category: "This Wallet",
+          submenu: [
+            {
+              name: "My Published Modules",
+              slug: "/my-published-modules",
+              icon: "contract-address" as IconKeys,
+            },
+          ],
+        },
       ]
     : [];
 

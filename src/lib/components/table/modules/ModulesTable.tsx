@@ -11,7 +11,7 @@ interface ModulesTableProps {
   modules: Option<ModuleInfo[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
-  isPublishedModules?: boolean;
+  isPublishedModules: boolean;
 }
 
 export const ModulesTable = ({

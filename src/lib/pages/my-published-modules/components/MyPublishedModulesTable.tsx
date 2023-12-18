@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 
 import { useCurrentChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { DisconnectedState, EmptyState } from "lib/components/state";
+import {
+  DisconnectedState,
+  EmptyState,
+  ErrorFetching,
+} from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAPIAccountModules } from "lib/services/move/moduleService";
@@ -41,11 +45,7 @@ export const MyPublishedModulesTable = () => {
   const emptyState = () => {
     if (error)
       return (
-        <EmptyState
-          withBorder
-          imageVariant="not-found"
-          message="There is an error during fetching recent modules."
-        />
+        <ErrorFetching message="There is an error during fetching recent modules." />
       );
     if (!keyword)
       return (
@@ -57,7 +57,7 @@ export const MyPublishedModulesTable = () => {
     return (
       <EmptyState
         withBorder
-        imageVariant="empty"
+        imageVariant="not-found"
         message="No matching module found. Make sure you are searching with Module Name."
       />
     );

@@ -27,6 +27,7 @@ export const RecentModulesTable = () => {
   return (
     <>
       <ModulesTable
+        isPublishedModules={false}
         modules={data?.items}
         isLoading={isLoading}
         emptyState={
