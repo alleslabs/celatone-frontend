@@ -4,7 +4,7 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { TableTitle, ViewMore } from "lib/components/table";
-import { useUserAssetInfos } from "lib/pages/account-details/data";
+import { useBalanceInfos } from "lib/services/balanceService";
 import type { Addr } from "lib/types";
 
 import { AssetCta } from "./AssetCta";
@@ -29,9 +29,9 @@ export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
     isLoading,
     totalData = 0,
     error,
-  } = useUserAssetInfos(address);
+  } = useBalanceInfos(address);
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
 
   const tableTitle = <TableTitle title="Assets" count={totalData} mb={0} />;
   const totalAssetValueInfo = (

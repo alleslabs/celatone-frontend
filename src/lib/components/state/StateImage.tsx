@@ -3,11 +3,11 @@ import { Image } from "@chakra-ui/react";
 
 import { CURR_THEME } from "env";
 
-export type ImageVariant = "empty" | "not-found" | "disconnected";
+export type ImageVariant = "not-found" | "empty" | "disconnected";
 
 const imageSourceMap: Record<ImageVariant, string> = {
-  empty: CURR_THEME.illustration.searchEmpty,
   "not-found": CURR_THEME.illustration.searchNotFound,
+  empty: CURR_THEME.illustration.searchEmpty,
   disconnected: CURR_THEME.illustration.disconnected,
 };
 

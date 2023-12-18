@@ -2,7 +2,7 @@ import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolIdPagination } from "lib/services/txService";
 import type { PoolDetail, PoolTxFilter } from "lib/types";
@@ -60,11 +60,7 @@ export const PoolRelatedTxsTable = ({
 
   if (error)
     return (
-      <EmptyState
-        imageVariant="not-found"
-        message="There is an error during fetching transactions."
-        withBorder
-      />
+      <ErrorFetching message="There is an error during fetching transactions." />
     );
   return (
     <>

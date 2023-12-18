@@ -22,7 +22,7 @@ export const PublishedEventsTable = ({
 }: PublishedEventsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!moduleHistories?.length) return emptyState;
 
   const templateColumns = "40px 180px minmax(300px, 1fr) 140px 260px";

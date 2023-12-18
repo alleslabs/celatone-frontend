@@ -21,10 +21,7 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import {
-  useAPITxsCountByAddress,
-  useTxsByAddress,
-} from "lib/services/txService";
+import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
 
 interface PastTxsState {
@@ -53,7 +50,7 @@ const PastTxs = () => {
   });
   const pastTxsState = watch();
 
-  const { data: rawTxCount } = useAPITxsCountByAddress(
+  const { data: rawTxCount, refetch: refetchCount } = useTxsCountByAddress(
     address as HumanAddr,
     pastTxsState.search,
     pastTxsState.isSigner,
@@ -101,7 +98,7 @@ const PastTxs = () => {
     setValue("filters", { ...pastTxsState.filters, [filter]: bool });
   };
 
-  const filterSelected = useMemo(
+  const selectedFilters = useMemo(
     () =>
       Object.keys(pastTxsState.filters).reduce((acc: string[], key: string) => {
         if (pastTxsState.filters[key as keyof typeof pastTxsState.filters]) {
@@ -152,7 +149,7 @@ const PastTxs = () => {
             w="165px"
           />
           <TxFilterSelection
-            result={filterSelected}
+            result={selectedFilters}
             setResult={handleOnFiltersChange}
             boxWidth="285px"
             placeholder="All"
@@ -165,7 +162,7 @@ const PastTxs = () => {
         emptyState={
           pastTxsState.search.trim().length > 0 ||
           pastTxsState.isSigner !== undefined ||
-          filterSelected.length > 0 ? (
+          selectedFilters.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
               message={`No past transaction matches found with your input. You can search with transaction hash${
@@ -189,11 +186,15 @@ const PastTxs = () => {
           offset={offset}
           totalData={txCount}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
+          onPageChange={(nextPage) => {
+            setCurrentPage(nextPage);
+            refetchCount();
+          }}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
+            refetchCount();
           }}
         />
       )}

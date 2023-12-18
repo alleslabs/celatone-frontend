@@ -1,31 +1,30 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { UnsupportedTokensModal } from "lib/components/modal";
-import type { ContractData } from "lib/pages/contract-details/types";
+import { ErrorFetching } from "lib/components/state/ErrorFetching";
+import { useBalanceInfos } from "lib/services/balanceService";
 import type { ContractAddr } from "lib/types";
-import { filterSupportedTokens } from "lib/utils";
 
 import { SupportedTokensSection } from "./SupportedTokensSection";
 
 interface ContractBalancesProps {
   contractAddress: ContractAddr;
-  balances: ContractData["balances"];
-  isBalancesLoading: ContractData["isBalancesLoading"];
   amptrackPage?: string;
   onViewMore?: () => void;
 }
 
 export const ContractBalances = ({
   contractAddress,
-  balances,
-  isBalancesLoading,
   amptrackPage,
   onViewMore,
 }: ContractBalancesProps) => {
-  const {
-    supportedTokens: supportedAssets,
-    unsupportedTokens: unsupportedAssets,
-  } = filterSupportedTokens(balances);
+  const { supportedAssets, unsupportedAssets, isLoading, totalData, error } =
+    useBalanceInfos(contractAddress);
+
+  if (error)
+    return (
+      <ErrorFetching message="There is an error during fetching balances." />
+    );
 
   return (
     <Flex
@@ -47,8 +46,8 @@ export const ContractBalances = ({
         />
       </Flex>
       <SupportedTokensSection
-        total={balances?.length}
-        isBalancesLoading={isBalancesLoading}
+        total={totalData}
+        isBalancesLoading={isLoading}
         supportedAssets={supportedAssets}
       />
     </Flex>
