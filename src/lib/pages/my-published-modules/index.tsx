@@ -10,7 +10,7 @@ export const MyPublishedModules = () => {
   const navigate = useInternalNavigate();
   return (
     <PageContainer>
-      <Flex justifyContent="space-between" alignItems="flex-end" mb={8}>
+      <Flex justifyContent="space-between" alignItems="center" mb={8}>
         <Flex direction="column">
           <Heading as="h5" variant="h5" minH="36px">
             My Published Modules
