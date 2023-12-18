@@ -34,7 +34,10 @@ const ContractListContent = ({
 
   if (!address && isInstantiatedByMe) {
     return (
-      <DisconnectedState text="to see contracts you've previously instantiated." />
+      <DisconnectedState
+        my={16}
+        text="to see contracts you've previously instantiated."
+      />
     );
   }
 
