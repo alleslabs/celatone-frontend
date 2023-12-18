@@ -168,7 +168,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: "https://initia-api-jiod42ec2q-as.a.run.app/decode_module",
+        decodeApi: INITIA_DECODER,
       },
       pool: {
         enabled: false,

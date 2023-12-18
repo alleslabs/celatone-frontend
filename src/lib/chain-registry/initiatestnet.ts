@@ -1,8 +1,11 @@
 import type { AssetList, Chain } from "@chain-registry/types";
 
+const CHAIN_SCHEMA = "../chain.schema.json";
+const NODE_HOME = "$HOME/.init";
+
 export const initiatestnet: Chain[] = [
   {
-    $schema: "../chain.schema.json",
+    $schema: CHAIN_SCHEMA,
     chain_name: "initiadevnet1",
     status: "live",
     network_type: "devnet",
@@ -10,7 +13,7 @@ export const initiatestnet: Chain[] = [
     chain_id: "mahalo-1",
     bech32_prefix: "init",
     daemon_name: "initiad",
-    node_home: "$HOME/.init",
+    node_home: NODE_HOME,
     key_algos: ["secp256k1"],
     slip44: 118,
     fees: {
@@ -49,7 +52,89 @@ export const initiatestnet: Chain[] = [
     },
   },
   {
-    $schema: "../chain.schema.json",
+    $schema: CHAIN_SCHEMA,
+    chain_name: "minitiamovedevnet1",
+    status: "live",
+    network_type: "devnet",
+    pretty_name: "Minitia Move Devnet 1",
+    chain_id: "minimove-1",
+    bech32_prefix: "init",
+    daemon_name: "initiad",
+    node_home: NODE_HOME,
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom: "umin",
+          fixed_min_gas_price: 0,
+          low_gas_price: 0.151,
+          average_gas_price: 0.151,
+          high_gas_price: 0.151,
+        },
+      ],
+    },
+    staking: undefined,
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address: "https://rpc.minimove-1.initia.xyz:443",
+        },
+      ],
+      rest: [
+        {
+          address: "https://lcd.minimove-1.initia.xyz",
+        },
+      ],
+    },
+  },
+  {
+    $schema: CHAIN_SCHEMA,
+    chain_name: "minitiawasmdevnet1",
+    status: "live",
+    network_type: "devnet",
+    pretty_name: "Minitia Wasm Devnet 1",
+    chain_id: "miniwasm-1",
+    bech32_prefix: "init",
+    daemon_name: "initiad",
+    node_home: NODE_HOME,
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom: "umin",
+          fixed_min_gas_price: 0,
+          low_gas_price: 0.151,
+          average_gas_price: 0.151,
+          high_gas_price: 0.151,
+        },
+      ],
+    },
+    staking: undefined,
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address: "https://rpc.mahalo-1.initia.xyz:443",
+        },
+      ],
+      rest: [
+        {
+          address: "https://lcd.mahalo-1.initia.xyz",
+        },
+      ],
+    },
+  },
+  {
+    $schema: CHAIN_SCHEMA,
     chain_name: "initiatestnet12-1",
     status: "live",
     network_type: "testnet",
@@ -57,7 +142,7 @@ export const initiatestnet: Chain[] = [
     chain_id: "stone-12-1",
     bech32_prefix: "init",
     daemon_name: "initiad",
-    node_home: "$HOME/.init",
+    node_home: NODE_HOME,
     key_algos: ["secp256k1"],
     slip44: 118,
     fees: {
