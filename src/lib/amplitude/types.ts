@@ -29,6 +29,7 @@ export enum AmpEvent {
   // NAVIGATE
   TO_OVERVIEW = "To Overview",
   TO_BLOCKS = "To Blocks",
+  TO_NFTS = "To NFTs",
   TO_BLOCK_DETAIL = "To Block Detail",
   TO_TXS = "To Txs",
   TO_PAST_TXS = "To Past Txs",
@@ -52,6 +53,7 @@ export enum AmpEvent {
   TO_ALL_PROJECTS = "To All Public Projects",
   TO_ACCOUNT_DETAIL = "To Account Detail",
   TO_CONTRACT_DETAIL = "To Contract Detail",
+  TO_COLLECTION_DETAIL = "To Collection Detail",
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
   TO_TRANSACTION_DETAIL = "To Transaction Detail",
