@@ -3,6 +3,7 @@ import { Flex, Text, Grid, Box, Button } from "@chakra-ui/react";
 import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CountBadge } from "lib/components/module";
 import type { ModuleInfo } from "lib/types";
 import {
   bech32AddressToHex,
@@ -16,14 +17,15 @@ import { ModulePathLink } from "./ModulePathLink";
 interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;
   templateColumns: string;
+  isPublishedModules: boolean;
 }
 
 export const ModulesTableRow = ({
   moduleInfo,
   templateColumns,
+  isPublishedModules,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
-
   const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));
 
   return (
@@ -47,6 +49,22 @@ export const ModulesTableRow = ({
         <TableRow>
           <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
         </TableRow>
+        {isPublishedModules && (
+          <TableRow>
+            <Text>{moduleInfo.name}</Text>
+          </TableRow>
+        )}
+        {isPublishedModules && (
+          <TableRow>
+            <Flex gap={1} justifyContent="center" w="full">
+              <CountBadge count={moduleInfo.functions?.view} variant="view" />
+              <CountBadge
+                count={moduleInfo.functions?.execute}
+                variant="execute"
+              />
+            </Flex>
+          </TableRow>
+        )}
         <TableRow>
           <ExplorerLink
             value={moduleInfo.address}
@@ -54,14 +72,16 @@ export const ModulesTableRow = ({
             showCopyOnHover
           />
         </TableRow>
-        <TableRow>
-          <Flex direction="column" gap={1}>
-            <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
-            <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(moduleInfo.latestUpdated)})`}
-            </Text>
-          </Flex>
-        </TableRow>
+        {!isPublishedModules && moduleInfo.latestUpdated && (
+          <TableRow>
+            <Flex direction="column" gap={1}>
+              <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(moduleInfo.latestUpdated)})`}
+              </Text>
+            </Flex>
+          </TableRow>
+        )}
         <TableRow>
           <Flex gap="8px" w="full" justifyContent="end">
             <Button
@@ -98,6 +118,20 @@ export const ModulesTableRow = ({
             >
               Execute
             </Button>
+            {isPublishedModules && (
+              <Button
+                variant="outline-white"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate({
+                    pathname: "/publish-module",
+                  });
+                }}
+              >
+                Republish
+              </Button>
+            )}
           </Flex>
         </TableRow>
       </Grid>

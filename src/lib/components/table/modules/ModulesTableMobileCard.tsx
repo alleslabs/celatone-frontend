@@ -71,12 +71,14 @@ export const ModulesTableMobileCard = ({
               showCopyOnHover
             />
           </Flex>
-          <Flex direction="column">
-            <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
-            <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(moduleInfo.latestUpdated)})`}
-            </Text>
-          </Flex>
+          {moduleInfo.latestUpdated && (
+            <Flex direction="column">
+              <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(moduleInfo.latestUpdated)})`}
+              </Text>
+            </Flex>
+          )}
         </Flex>
       }
     />
