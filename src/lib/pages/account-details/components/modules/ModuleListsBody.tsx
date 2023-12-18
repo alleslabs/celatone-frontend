@@ -53,9 +53,12 @@ export const ModuleListsBody = ({
     return (
       <EmptyState
         imageVariant={!keyword ? "empty" : "not-found"}
-        message={!keyword ? "No modules found" : "No matched modules found"}
+        message={
+          !keyword
+            ? "There are no modules on this account."
+            : "No matched modules found"
+        }
         withBorder
-        my={0}
       />
     );
   return (

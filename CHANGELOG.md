@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#675](https://github.com/alleslabs/celatone-frontend/pull/675) Make module links clickable with command/ctrl and add copier for struct names
 - [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
 - [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
 - [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail

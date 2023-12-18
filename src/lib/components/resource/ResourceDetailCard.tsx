@@ -7,7 +7,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { CopyButton } from "../copy";
+import { Copier, CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import type { InternalResource } from "lib/types";
 import { parseJsonStr } from "lib/utils";
@@ -54,22 +54,30 @@ export const ResourceDetailCard = ({
   return (
     <AccordionItem mb={4}>
       <AccordionButton>
-        <Flex
-          p={4}
-          justifyContent="space-between"
-          w="full"
-          align="center"
-          gap={{ base: 4, md: 8 }}
-        >
-          <Text
-            variant="body1"
-            fontWeight={600}
-            textAlign="left"
-            wordBreak="break-word"
+        <Flex p={4} justifyContent="space-between" w="full" align="center">
+          <Flex
+            alignItems="center"
+            transition="all 0.25s ease-in-out"
+            sx={{
+              "& > div": { opacity: 0, transition: "all 0.15s ease-in-out" },
+            }}
+            _hover={{ "& > div": { opacity: 1 } }}
           >
-            {resourceData.structTag}
-          </Text>
-          <Flex alignItems="center" gap={2} minW={{ base: 8, md: 36 }}>
+            <Text
+              variant="body1"
+              fontWeight={600}
+              textAlign="left"
+              wordBreak="break-word"
+            >
+              {resourceData.structTag}
+            </Text>
+            <Copier
+              type="resource"
+              value={resourceData.structTag}
+              copyLabel="Copied!"
+            />
+          </Flex>
+          <Flex alignItems="center" gap={2}>
             <CopyButton
               value={resourceData.moveResource}
               variant="outline-gray"

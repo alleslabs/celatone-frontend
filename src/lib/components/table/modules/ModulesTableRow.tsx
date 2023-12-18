@@ -25,6 +25,7 @@ export const ModulesTableRow = ({
   const navigate = useInternalNavigate();
 
   const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));
+
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -32,15 +33,16 @@ export const ModulesTableRow = ({
         templateColumns={templateColumns}
         _hover={{ background: "gray.900" }}
         transition="all 0.25s ease-in-out"
-        onClick={() =>
+        onClick={(e) => {
+          e.stopPropagation();
           navigate({
             pathname: "/modules/[address]/[moduleName]",
             query: {
               address: hex,
               moduleName: moduleInfo.name,
             },
-          })
-        }
+          });
+        }}
       >
         <TableRow>
           <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />

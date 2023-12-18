@@ -2,6 +2,7 @@ import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
@@ -63,13 +64,24 @@ export const ResourceSectionBody = ({
             pb={6}
             gap={12}
           >
-            <Flex alignItems="center">
+            <Flex
+              alignItems="center"
+              sx={{
+                "& > div": { opacity: 0, transition: "all 0.15s ease-in-out" },
+              }}
+              _hover={{ "& > div": { opacity: 1 } }}
+            >
               <Heading as="h6" variant="h6" wordBreak="break-word">
                 {selectedResource.account}::{selectedResource.group}
               </Heading>
               <Badge variant="primary" ml={2}>
                 {selectedResource.items.length}
               </Badge>
+              <Copier
+                type="resource"
+                value={`${selectedResource.account}::${selectedResource.group}`}
+                copyLabel="Copied!"
+              />
             </Flex>
             <Button
               variant="outline-primary"
