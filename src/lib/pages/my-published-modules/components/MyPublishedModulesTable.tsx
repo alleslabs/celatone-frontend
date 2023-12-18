@@ -73,10 +73,10 @@ export const MyPublishedModulesTable = () => {
       />
       {address ? (
         <ModulesTable
-          isPublishedModules
           modules={filteredPublishedModules}
           isLoading={isModulesLoading}
           emptyState={emptyState()}
+          isPublishedModules
         />
       ) : (
         <DisconnectedState text="to see your published modules" my={16} />

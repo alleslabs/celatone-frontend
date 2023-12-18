@@ -27,7 +27,6 @@ export const RecentModulesTable = () => {
   return (
     <>
       <ModulesTable
-        isPublishedModules={false}
         modules={data?.items}
         isLoading={isLoading}
         emptyState={
@@ -41,6 +40,7 @@ export const RecentModulesTable = () => {
             />
           )
         }
+        isPublishedModules={false}
       />
       {!!data && data.total > 10 && (
         <Pagination

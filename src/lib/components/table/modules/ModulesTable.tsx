@@ -38,15 +38,15 @@ export const ModulesTable = ({
   ) : (
     <TableContainer>
       <ModulesTableHeader
-        isPublishedModules={isPublishedModules}
         templateColumns={templateColumns}
+        isPublishedModules={isPublishedModules}
       />
       {modules.map((module) => (
         <ModulesTableRow
-          isPublishedModules={isPublishedModules}
           key={module.name}
           moduleInfo={module}
           templateColumns={templateColumns}
+          isPublishedModules={isPublishedModules}
         />
       ))}
     </TableContainer>
