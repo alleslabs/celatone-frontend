@@ -12,6 +12,6 @@ export const CountBadge = ({ count, variant }: CountBadgeProps) => (
     textColor="text.main"
     p="2px 8px"
   >
-    {count || "N/A"}
+    {count || "0"}
   </Badge>
 );
