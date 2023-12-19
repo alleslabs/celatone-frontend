@@ -74,7 +74,7 @@ export const ModuleTxsTable = ({
         isLoading={isLoading}
         emptyState={
           error ? (
-            <ErrorFetching message="There is an error during fetching transactions." />
+            <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
               withBorder

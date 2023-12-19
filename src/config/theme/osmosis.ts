@@ -114,8 +114,10 @@ export const OSMOSIS_THEME: ThemeConfig = {
   },
   jsonTheme: "pastel_on_dark",
   illustration: {
-    error:
+    "404":
       "https://assets.alleslabs.dev/integrations/osmosis/illustration/404.svg",
+    error:
+      "https://assets.alleslabs.dev/integrations/osmosis/illustration/error.svg",
     searchNotFound:
       "https://assets.alleslabs.dev/integrations/osmosis/illustration/search-not-found.svg",
     searchEmpty:

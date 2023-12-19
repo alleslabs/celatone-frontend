@@ -125,6 +125,7 @@ export type ThemeConfig = {
     stepper: string;
   };
   illustration: {
+    "404": string;
     error: string;
     searchNotFound: string;
     searchEmpty: string;

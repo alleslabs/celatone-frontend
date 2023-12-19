@@ -40,11 +40,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
   });
 
   if (isLoading) return <Loading />;
-  if (error)
-    return (
-      <ErrorFetching message="There is an error during fetching recent blocks." />
-    );
-
+  if (error) return <ErrorFetching dataName="blocks" />;
   if (!data?.total)
     return (
       <EmptyState

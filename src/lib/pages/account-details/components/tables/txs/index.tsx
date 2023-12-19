@@ -150,7 +150,7 @@ export const TxsTable = ({
           isLoading={isLoading || isTxCountLoading}
           emptyState={
             !transactions ? (
-              <ErrorFetching message="There is an error during fetching transactions." />
+              <ErrorFetching dataName="transactions" />
             ) : (
               <EmptyState withBorder {...getEmptyStateProps(selectedFilters)} />
             )

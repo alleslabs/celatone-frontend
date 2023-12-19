@@ -182,9 +182,11 @@ export const initiatestnet: Chain[] = [
   },
 ];
 
+const ASSETLIST_SCHEMA = "../assetlist.schema.json";
+
 export const initiatestnetAssets: AssetList[] = [
   {
-    $schema: "../assetlist.schema.json",
+    $schema: ASSETLIST_SCHEMA,
     chain_name: "initiadevnet1",
     assets: [
       {
@@ -207,7 +209,53 @@ export const initiatestnetAssets: AssetList[] = [
     ],
   },
   {
-    $schema: "../assetlist.schema.json",
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "minitiamovedevnet1",
+    assets: [
+      {
+        description: "The native staking token of Minitia.",
+        denom_units: [
+          {
+            denom: "umin",
+            exponent: 0,
+          },
+          {
+            denom: "min",
+            exponent: 6,
+          },
+        ],
+        base: "umin",
+        name: "Min",
+        display: "min",
+        symbol: "MIN",
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "minitiawasmdevnet1",
+    assets: [
+      {
+        description: "The native staking token of Minitia.",
+        denom_units: [
+          {
+            denom: "umin",
+            exponent: 0,
+          },
+          {
+            denom: "min",
+            exponent: 6,
+          },
+        ],
+        base: "umin",
+        name: "Min",
+        display: "min",
+        symbol: "MIN",
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
     chain_name: "initiatestnet12-1",
     assets: [
       {
