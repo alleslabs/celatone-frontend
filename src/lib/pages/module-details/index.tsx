@@ -1,21 +1,10 @@
-import {
-  Flex,
-  Text,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Heading,
-} from "@chakra-ui/react";
+import { Flex, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import type { MouseEventHandler } from "react";
 import { useState, useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { IconKeys } from "lib/components/icon";
-import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
@@ -32,30 +21,19 @@ import { useModuleTxsCount } from "lib/services/txService";
 import type { MoveAccountAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
-import { FunctionTypeTabs } from "./components/FunctionTypeSwitch";
-import { ModuleFunction } from "./components/ModuleFunction";
-import { ModuleInfo } from "./components/ModuleInfo";
-import { ModuleStruct } from "./components/ModuleStruct";
-import { ModuleTop } from "./components/ModuleTop";
-import { ModuleTables, ModuleTablesTabIndex } from "./components/tables";
+import {
+  FunctionTypeTabs,
+  ModuleActions,
+  ModuleFunctions,
+  ModuleInfo,
+  ModuleStructs,
+  ModuleTop,
+  ModuleTables,
+  ModuleTablesTabIndex,
+} from "./components";
+import { TabIndex } from "./types";
 
 const mainTabHeaderId = "main-table-header";
-
-enum TabIndex {
-  Overview = "overview",
-  Function = "function",
-  TxsHistories = "txs-histories",
-  Structs = "structs",
-}
-
-interface ActionInfo {
-  icon: IconKeys;
-  iconColor: string;
-  name: string;
-  count: number | string;
-  onClick: MouseEventHandler<HTMLDivElement>;
-  disabled: boolean;
-}
 
 interface ModuleDetailsBodyProps {
   moduleData: IndexedModule;
@@ -122,44 +100,6 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     },
     [moduleData.address, moduleData.moduleName, navigate, tab]
   );
-
-  const handleActionNavigate = useCallback(
-    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
-      track(AmpEvent.USE_NAVIGATING_BUTTON, { label: fnType ?? "History" });
-      handleTabChange(nextTab, fnType)();
-    },
-    [handleTabChange]
-  );
-
-  const actionList: ActionInfo[] = [
-    {
-      icon: "query" as IconKeys,
-      iconColor: "primary.main",
-      name: "View Functions",
-      count: moduleData.viewFunctions.length,
-      onClick: handleActionNavigate(TabIndex.Function, FunctionTypeTabs.VIEW),
-      disabled: moduleData.viewFunctions.length === 0,
-    },
-    {
-      icon: "execute" as IconKeys,
-      iconColor: "accent.main",
-      name: "Execute Functions",
-      count: moduleData.executeFunctions.length,
-      onClick: handleActionNavigate(
-        TabIndex.Function,
-        FunctionTypeTabs.EXECUTE
-      ),
-      disabled: moduleData.executeFunctions.length === 0,
-    },
-    {
-      icon: "list" as IconKeys,
-      iconColor: "gray.600",
-      name: "Transactions",
-      count: Number(moduleTxsCount) + Number(moduleHistoriesCount) || "N/A",
-      onClick: handleActionNavigate(TabIndex.TxsHistories),
-      disabled: Number(moduleTxsCount) + Number(moduleHistoriesCount) === 0,
-    },
-  ];
 
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
@@ -241,56 +181,24 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              <Flex
-                justifyContent="space-between"
-                direction={{ base: "column", md: "row" }}
-                gap={{ base: 2, md: 6 }}
-                mb={{ base: 2, md: 6 }}
-              >
-                {actionList.map((item) => (
-                  <Flex
-                    key={item.name}
-                    p={4}
-                    transition="all .25s ease-in-out"
-                    borderRadius={8}
-                    w="full"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    {...(item.disabled
-                      ? {
-                          bg: "gray.900",
-                          cursor: "not-allowed",
-                        }
-                      : {
-                          bg: "gray.800",
-                          _hover: { bg: "gray.700" },
-                          cursor: "pointer",
-                          onClick: item.onClick,
-                        })}
-                  >
-                    <Flex gap={3} alignItems="center">
-                      <CustomIcon
-                        name={item.icon}
-                        boxSize={6}
-                        color={item.iconColor}
-                      />
-                      <Flex flexDirection="column">
-                        <Text
-                          variant="body1"
-                          color="text.dark"
-                          fontWeight={600}
-                        >
-                          {item.name}
-                        </Text>
-                        <Heading as="h6" variant="h6" fontWeight={600}>
-                          {item.count}
-                        </Heading>
-                      </Flex>
-                    </Flex>
-                    <CustomIcon name="chevron-right" color="gray.600" />
-                  </Flex>
-                ))}
-              </Flex>
+              <ModuleActions
+                viewFns={moduleData.viewFunctions.length}
+                executeFns={moduleData.executeFunctions.length}
+                allTxsCount={
+                  moduleTxsCount && moduleHistoriesCount
+                    ? moduleTxsCount + moduleHistoriesCount
+                    : undefined
+                }
+                onSelectAction={(
+                  nextTab: TabIndex,
+                  fnType?: FunctionTypeTabs
+                ) => {
+                  track(AmpEvent.USE_NAVIGATING_BUTTON, {
+                    label: fnType ?? "History",
+                  });
+                  handleTabChange(nextTab, fnType)();
+                }}
+              />
               <ModuleInfo
                 upgradePolicy={moduleData.upgradePolicy}
                 moduleDetails={moduleDetails}
@@ -315,7 +223,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             </Flex>
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleFunction
+            <ModuleFunctions
               address={moduleData.address}
               moduleName={moduleData.moduleName}
               fns={moduleData.parsedAbi.exposed_functions}
@@ -337,7 +245,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleStruct structs={moduleData.parsedAbi.structs} />
+            <ModuleStructs structs={moduleData.parsedAbi.structs} />
           </TabPanel>
         </TabPanels>
       </Tabs>

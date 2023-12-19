@@ -9,6 +9,7 @@ import {
 import { useCallback } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { HexAddr, Nullish, Option } from "lib/types";
 
@@ -48,6 +49,7 @@ export const ModuleTables = ({
   onViewMore,
 }: ModuleTablesProps) => {
   const tableHeaderId = "moduleDetailsTableHeader";
+  const gov = useGovConfig({ shouldRedirect: false });
 
   const handleOnViewMore = useCallback(
     (nextTab: ModuleTablesTabIndex) =>
@@ -106,6 +108,7 @@ export const ModuleTables = ({
             count={relatedProposalsCount}
             onClick={handleTabChange(ModuleTablesTabIndex.RelatedProposals)}
             isDisabled={relatedProposalsCount === 0}
+            hidden={!gov.enabled}
           >
             Related Proposals
           </CustomTab>
