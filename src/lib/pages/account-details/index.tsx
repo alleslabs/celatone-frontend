@@ -265,7 +265,7 @@ const AccountDetailsBody = ({
                 onViewMore={handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            {disableDelegation ? null : (
+            {!disableDelegation && (
               <Flex
                 borderBottom={{ base: "0px", md: "1px solid" }}
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
@@ -325,13 +325,15 @@ const AccountDetailsBody = ({
                 />
               </>
             )}
-            <OpenedProposalsTable
-              walletAddress={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.proposalsCount ?? undefined}
-              refetchCount={refetchCounts}
-              onViewMore={handleTabChange(TabIndex.Proposals)}
-            />
+            {gov.enabled && (
+              <OpenedProposalsTable
+                walletAddress={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.proposalsCount ?? undefined}
+                refetchCount={refetchCounts}
+                onViewMore={handleTabChange(TabIndex.Proposals)}
+              />
+            )}
           </TabPanel>
           <TabPanel p={0}>
             <AssetsSection address={accountAddress} />

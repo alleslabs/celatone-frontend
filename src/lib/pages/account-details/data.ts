@@ -171,7 +171,7 @@ export const useUserDelegationInfos = (address: Addr) => {
   });
   const { data: lpMap, isLoading: isLpMapLoading } = useMovePoolInfos();
 
-  const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
+  const { data: accountDelegations, isFetching: isLoadingAccountDelegations } =
     useAccountDelegations(address);
 
   const isLoading =

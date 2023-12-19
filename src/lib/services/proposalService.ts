@@ -15,7 +15,9 @@ import {
   getProposalsCountByWalletAddress,
   getProposalTypes,
   getRelatedProposalsByContractAddressPagination,
+  getRelatedProposalsByModuleIdPagination,
   getRelatedProposalsCountByContractAddress,
+  getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
@@ -214,6 +216,78 @@ export const useProposalsCountByWalletAddress = (
     {
       keepPreviousData: true,
       enabled: !!walletAddress,
+    }
+  );
+};
+
+export const useRelatedProposalsByModuleIdPagination = (
+  moduleId: number,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Proposal[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getRelatedProposalsByModuleIdPagination, {
+        moduleId,
+        offset,
+        pageSize,
+      })
+      .then(({ module_proposals }) =>
+        module_proposals.map<Proposal>((proposal) => ({
+          proposalId: proposal.proposal_id,
+          title: proposal.proposal.title,
+          status: parseProposalStatus(proposal.proposal.status),
+          votingEndTime: parseDate(proposal.proposal.voting_end_time),
+          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
+          resolvedHeight: proposal.proposal.resolved_height,
+          type: proposal.proposal.type as ProposalType,
+          proposer: proposal.proposal.account?.address as Addr,
+          isExpedited: Boolean(proposal.proposal.is_expedited),
+        }))
+      );
+  }, [indexerGraphClient, moduleId, offset, pageSize]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_PAGINATION,
+      moduleId,
+      indexerGraphClient,
+      offset,
+      pageSize,
+    ],
+    createQueryFnWithTimeout(queryFn),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useRelatedProposalsCountByModuleId = (
+  moduleId: number
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getRelatedProposalsCountByModuleId, {
+        moduleId,
+      })
+      .then(
+        ({ module_proposals_aggregate }) =>
+          module_proposals_aggregate?.aggregate?.count
+      );
+  }, [indexerGraphClient, moduleId]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_COUNT,
+      moduleId,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      keepPreviousData: true,
     }
   );
 };
