@@ -4,7 +4,7 @@ import { TokenCell } from "../TokenCell";
 import { CustomIcon } from "lib/components/icon";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { Redelegation } from "lib/pages/account-details/data";
+import type { Redelegation } from "lib/pages/account-details/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface RedelegationTableRowProps {

@@ -44,8 +44,7 @@ const zAccountModulesResponse = z.object({
 });
 type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
-// TODO: This function will replace getAccountModules later
-export const getAPIAccountModules = async (
+export const getModulesByAddress = async (
   endpoint: string,
   address: MoveAccountAddr
 ): Promise<AccountModulesResponse> =>

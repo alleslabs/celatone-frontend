@@ -7,17 +7,13 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
-  useWasmConfig,
 } from "lib/app-provider";
 import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
-  getCodeListByWalletAddressPagination,
-  getCodeListCountByWalletAddress,
   getCodeListQueryDocument,
 } from "lib/query";
-import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   CodeInfo,
   CodeData,
@@ -200,90 +196,6 @@ export const useCodesByAddress = (
     [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
     async () => getCodesByAddress(endpoint, address, limit, offset),
     { retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
-export const useCodeListByWalletAddressPagination = (
-  walletAddress: Option<HumanAddr>,
-  offset: number,
-  pageSize: number
-): UseQueryResult<CodeInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useCodeListByWalletAddressPagination)"
-      );
-    return indexerGraphClient
-      .request(getCodeListByWalletAddressPagination, {
-        walletAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ codes }) =>
-        codes.map<CodeInfo>((code) => ({
-          id: code.id,
-          uploader: code.account.uploader as Addr,
-          contractCount: code.contracts_aggregate.aggregate?.count,
-          instantiatePermission:
-            code.access_config_permission as AccessConfigPermission,
-          permissionAddresses:
-            code.access_config_addresses as PermissionAddresses,
-          cw2Contract: code.cw2_contract,
-          cw2Version: code.cw2_version,
-        }))
-      );
-  }, [indexerGraphClient, offset, pageSize, walletAddress]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_PAGINATION,
-      indexerGraphClient,
-      offset,
-      pageSize,
-      walletAddress,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
-      enabled: wasm.enabled && !!walletAddress,
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useCodeListCountByWalletAddress = (
-  walletAddress: Option<HumanAddr>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useCodeListCountByWalletAddress)"
-      );
-
-    return indexerGraphClient
-      .request(getCodeListCountByWalletAddress, {
-        walletAddress,
-      })
-      .then(({ codes_aggregate }) => codes_aggregate?.aggregate?.count);
-  }, [walletAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_COUNT,
-      walletAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: wasm.enabled && !!walletAddress,
-    }
   );
 };
 

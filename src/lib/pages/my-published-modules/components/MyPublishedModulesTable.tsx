@@ -9,7 +9,7 @@ import {
 } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useAPIAccountModules } from "lib/services/move/moduleService";
+import { useModulesByAddress } from "lib/services/move/moduleService";
 import type { HumanAddr } from "lib/types";
 
 export const MyPublishedModulesTable = () => {
@@ -20,7 +20,7 @@ export const MyPublishedModulesTable = () => {
     data: modulesData,
     isFetching: isModulesLoading,
     error,
-  } = useAPIAccountModules(address as HumanAddr);
+  } = useModulesByAddress(address as HumanAddr);
 
   const formatAddresses = useFormatAddresses();
   const mappedModules = modulesData?.map((module) => {

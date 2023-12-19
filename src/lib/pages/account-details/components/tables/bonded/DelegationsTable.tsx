@@ -8,7 +8,7 @@ import {
   TableContainer,
   TableTitle,
 } from "lib/components/table";
-import type { Delegation } from "lib/pages/account-details/data";
+import type { Delegation } from "lib/pages/account-details/types";
 import type { Option, TokenWithValue } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";

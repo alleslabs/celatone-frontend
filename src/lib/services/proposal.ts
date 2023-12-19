@@ -88,19 +88,19 @@ const zProposalsResponseItem = z
     votingEndTime: val.voting_end_time,
   }));
 
-const zProposalResponse = z.object({
+const zProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),
   total: z.number(),
 });
 
-export type ProposalResponse = z.infer<typeof zProposalResponse>;
+export type ProposalsResponse = z.infer<typeof zProposalsResponse>;
 
 export const getProposalsByAddress = async (
   endpoint: string,
   address: Addr,
   limit: number,
   offset: number
-): Promise<ProposalResponse> =>
+): Promise<ProposalsResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/proposals`, {
       params: {
@@ -108,4 +108,4 @@ export const getProposalsByAddress = async (
         offset,
       },
     })
-    .then((res) => zProposalResponse.parse(res.data));
+    .then((res) => zProposalsResponse.parse(res.data));

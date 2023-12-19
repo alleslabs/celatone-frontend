@@ -4,16 +4,14 @@ import { z } from "zod";
 import type {
   Addr,
   ContractAddr,
-  Option,
-  PublicInfo,
   ContractInfo,
   ContractHistoryRemark,
   RemarkType,
 } from "lib/types";
 import { RemarkOperation, zAddr, zContractAddr, zUtcDate } from "lib/types";
-import { encode, libDecode } from "lib/utils";
+import { encode, libDecode, snakeToCamel } from "lib/utils";
 
-export interface ContractCw2InfoRaw {
+interface ContractCw2InfoRaw {
   data: string;
 }
 
@@ -36,14 +34,6 @@ export interface ContractResponse {
     ibc_port_id: string;
     extension?: string;
   };
-}
-
-interface PublicInfoResponse {
-  slug: string;
-  name: string;
-  address: ContractAddr;
-  description: string;
-  github: string;
 }
 
 export const queryData = async (
@@ -76,25 +66,6 @@ export const queryContractCw2Info = async (
     `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
   return JSON.parse(libDecode(data.data)) as ContractCw2Info;
-};
-
-export const queryPublicInfo = async (
-  chainName: string | undefined,
-  chainId: string | undefined,
-  contractAddress: ContractAddr
-): Promise<Option<PublicInfo>> => {
-  if (!chainName || !chainId)
-    throw new Error("Invalid chain (queryPublicInfo)");
-  return axios
-    .get<PublicInfoResponse[]>(
-      `https://cosmos-registry.alleslabs.dev/data/${chainName}/${chainId}/contracts.json`
-    )
-    .then(({ data }) => {
-      const publicInfo = data.find((info) => info.address === contractAddress);
-      return publicInfo
-        ? { ...publicInfo, contractAddress: publicInfo.address }
-        : undefined;
-    });
 };
 
 const zContractsResponseItem = z
@@ -166,3 +137,21 @@ export const getAdminContractsByAddress = async (
       },
     })
     .then(({ data }) => zContractsResponse.parse(data));
+
+const zContractTableCounts = z
+  .object({
+    tx: z.number().nullish(),
+    migration: z.number().nullish(),
+    related_proposal: z.number().nullish(),
+  })
+  .transform(snakeToCamel);
+
+export type ContractTableCounts = z.infer<typeof zContractTableCounts>;
+
+export const getContractTableCounts = async (
+  endpoint: string,
+  address: string
+): Promise<ContractTableCounts> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/table-counts`, {})
+    .then((res) => zContractTableCounts.parse(res.data));

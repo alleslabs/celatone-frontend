@@ -2,6 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { zProjectInfo, zPublicAccountInfo, type Addr } from "lib/types";
+import { snakeToCamel } from "lib/utils";
 
 const zIcns = z.object({
   names: z.array(z.string()),
@@ -38,13 +39,7 @@ const zAccountTableCounts = z
     proposal: z.number().nullish(),
     tx: z.number().nullish(),
   })
-  .transform((tableCount) => ({
-    code: tableCount.code,
-    contractByAdmin: tableCount.contract_by_admin,
-    instantiated: tableCount.instantiated,
-    proposal: tableCount.proposal,
-    tx: tableCount.tx,
-  }));
+  .transform(snakeToCamel);
 
 export type AccountTableCounts = z.infer<typeof zAccountTableCounts>;
 
