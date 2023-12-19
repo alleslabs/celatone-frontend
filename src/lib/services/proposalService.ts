@@ -30,6 +30,7 @@ import type {
   Proposal,
   U,
   Token,
+  Nullish,
 } from "lib/types";
 import {
   deexponentify,
@@ -221,12 +222,13 @@ export const useProposalsCountByWalletAddress = (
 };
 
 export const useRelatedProposalsByModuleIdPagination = (
-  moduleId: number,
+  moduleId: Nullish<number>,
   offset: number,
   pageSize: number
 ): UseQueryResult<Proposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
+    if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
       .request(getRelatedProposalsByModuleIdPagination, {
         moduleId,
@@ -265,10 +267,11 @@ export const useRelatedProposalsByModuleIdPagination = (
 };
 
 export const useRelatedProposalsCountByModuleId = (
-  moduleId: number
+  moduleId: Nullish<number>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
+    if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
       .request(getRelatedProposalsCountByModuleId, {
         moduleId,
