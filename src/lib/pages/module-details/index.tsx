@@ -225,10 +225,10 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             onClick={handleTabChange(TabIndex.Function, FunctionTypeTabs.ALL)}
             isDisabled={!moduleData.parsedAbi.exposed_functions.length}
           >
-            Function
+            Functions
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
-            History
+            Transactions & Histories
           </CustomTab>
           <CustomTab
             count={moduleData.parsedAbi.structs.length}
