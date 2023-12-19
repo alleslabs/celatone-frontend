@@ -20,7 +20,6 @@ type WasmConfig =
 type MoveConfig =
   | {
       enabled: true;
-      hasPools: boolean;
       moduleMaxFileSize: number;
       decodeApi: string;
     }

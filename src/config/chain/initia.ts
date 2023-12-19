@@ -24,7 +24,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
-        hasPools: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
       },
@@ -61,7 +60,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "minitiamovedevnet1",
     prettyName: "Minitia Move Devnet 1",
     lcd: "https://lcd.minimove-1.initia.xyz",
-    rpc: "https://rpc.minimove-1.initia.xyz",
+    rpc: "https://rpc.minimove-1.initia.xyz:443",
     indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
@@ -73,7 +72,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
-        hasPools: false,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
       },
@@ -109,7 +107,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "minitiawasmdevnet1",
     prettyName: "Minitia Wasm Devnet 1",
     lcd: "https://lcd.miniwasm-1.initia.xyz",
-    rpc: "https://rpc.miniwasm-1.initia.xyz",
+    rpc: "https://rpc.miniwasm-1.initia.xyz:443",
     indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
@@ -169,7 +167,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
-        hasPools: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
       },

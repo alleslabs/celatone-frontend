@@ -123,12 +123,12 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://rpc.mahalo-1.initia.xyz:443",
+          address: "https://rpc.miniwasm-1.initia.xyz:443",
         },
       ],
       rest: [
         {
-          address: "https://lcd.mahalo-1.initia.xyz",
+          address: "https://lcd.miniwasm-1.initia.xyz",
         },
       ],
     },

@@ -54,7 +54,7 @@ export const useMovePoolInfos = () => {
     [CELATONE_QUERY_KEYS.MOVE_POOL_INFOS, moveEndpoint],
     async () => getMovePoolInfos(moveEndpoint),
     {
-      enabled: moveConfig.enabled && moveConfig.hasPools,
+      enabled: moveConfig.enabled,
       refetchOnWindowFocus: false,
     }
   );
