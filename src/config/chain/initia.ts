@@ -24,6 +24,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
+        hasPools: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
       },
@@ -72,6 +73,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
+        hasPools: false,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
       },
@@ -100,7 +102,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
-    extra: {},
+    extra: { disableDelegation: true },
   },
   "miniwasm-1": {
     chain: "initia",
@@ -147,7 +149,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
-    extra: {},
+    extra: { disableDelegation: true },
   },
   "stone-12-1": {
     chain: "initia",
@@ -167,6 +169,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       move: {
         enabled: true,
+        hasPools: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
       },
