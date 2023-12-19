@@ -94,7 +94,7 @@ export const AdminContractsTable = observer(
               isLoading={isLoading}
               emptyState={
                 !contracts ? (
-                  <ErrorFetching message="There is an error during fetching contracts." />
+                  <ErrorFetching dataName="contracts" />
                 ) : (
                   <EmptyState
                     message="This account does not have any admin access for any contracts."

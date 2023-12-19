@@ -129,7 +129,9 @@ export const SEI_THEME: ThemeConfig = {
   },
   jsonTheme: "one_dark",
   illustration: {
-    error: "https://assets.alleslabs.dev/integrations/sei/illustration/404.svg",
+    "404": "https://assets.alleslabs.dev/integrations/sei/illustration/404.svg",
+    error:
+      "https://assets.alleslabs.dev/integrations/sei/illustration/error.svg",
     searchNotFound:
       "https://assets.alleslabs.dev/integrations/sei/illustration/search-not-found.svg",
     searchEmpty:

@@ -1,36 +1,17 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
+import { EmptyState } from "./EmptyState";
 
 interface ErrorFetchingProps {
-  message: string;
+  dataName: string;
+  withBorder?: boolean;
 }
 
-// TODO: call EmptyState here instead with a format message
-export const ErrorFetching = ({ message }: ErrorFetchingProps) => (
-  <Flex
-    alignItems="center"
-    flexDir="column"
-    gap={4}
-    width="full"
-    borderY="1px solid"
-    py={8}
-    my={12}
-    borderColor="gray.700"
-  >
-    <CustomIcon
-      name="alert-circle-solid"
-      color="gray.600"
-      boxSize={20}
-      mr={3}
-    />
-    <Text
-      color="text.dark"
-      textAlign="center"
-      whiteSpace="pre-wrap"
-      variant="body1"
-    >
-      {message} Please try again later.
-    </Text>
-  </Flex>
+export const ErrorFetching = ({
+  dataName,
+  withBorder = false,
+}: ErrorFetchingProps) => (
+  <EmptyState
+    imageVariant="error"
+    message={`There is an error during fetching ${dataName}. Please try again later.`}
+    withBorder={withBorder}
+  />
 );

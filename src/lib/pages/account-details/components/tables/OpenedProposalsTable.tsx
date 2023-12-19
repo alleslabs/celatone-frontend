@@ -86,7 +86,7 @@ export const OpenedProposalsTable = ({
             isLoading={isLoading}
             emptyState={
               !proposals ? (
-                <ErrorFetching message="There is an error during fetching proposals." />
+                <ErrorFetching dataName="proposals" />
               ) : (
                 <EmptyState
                   message="This account did not open any proposals before."

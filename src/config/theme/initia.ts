@@ -123,8 +123,10 @@ export const INITIA_THEME: ThemeConfig = {
   },
   jsonTheme: "monokai",
   illustration: {
-    error:
+    "404":
       "https://assets.alleslabs.dev/integrations/initia/illustration/404.svg",
+    error:
+      "https://assets.alleslabs.dev/integrations/initia/illustration/error.svg",
     searchNotFound:
       "https://assets.alleslabs.dev/integrations/initia/illustration/search-not-found.svg",
     searchEmpty:
