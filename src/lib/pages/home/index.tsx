@@ -114,7 +114,7 @@ const Home = () => {
   const navigate = useInternalNavigate();
   const isMobile = useMobile();
   const {
-    chainConfig: { prettyName },
+    chainConfig: { prettyName, chain },
   } = useCelatoneApp();
   const {
     data: latestBlockInfo,
@@ -213,13 +213,23 @@ const Home = () => {
             isLoading={isLoadingLatestBlockInfo}
             navigate={toBlocks}
           />
-          <CardInfo
-            title={blockTimeInfo.title}
-            tooltip={blockTimeInfo.tooltip}
-            value={averageBlockTime}
-            isLoading={isLoadingTxsCount}
-            navigate={toTxs}
-          />
+          {chain === "sei" ? (
+            <CardInfo
+              title={blockTimeInfo.title}
+              tooltip={blockTimeInfo.tooltip}
+              value="N/A"
+              isLoading={isLoadingTxsCount}
+              navigate={toTxs}
+            />
+          ) : (
+            <CardInfo
+              title={blockTimeInfo.title}
+              tooltip={blockTimeInfo.tooltip}
+              value={averageBlockTime}
+              isLoading={isLoadingTxsCount}
+              navigate={toTxs}
+            />
+          )}
         </Flex>
       </Flex>
       {!isMobile && (

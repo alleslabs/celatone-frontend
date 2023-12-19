@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#680](https://github.com/alleslabs/celatone-frontend/pull/680) Temporarily hide sei block time
 - [#679](https://github.com/alleslabs/celatone-frontend/pull/679) Temporarily update sei pacific graphql endpoint
 - [#661](https://github.com/alleslabs/celatone-frontend/pull/661) Add stone-12-1 network
 - [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
