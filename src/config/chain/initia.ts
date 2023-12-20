@@ -97,7 +97,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "",
+      validator:
+        "https://lcd.minimove-1.initia.xyz/opinit/opchild/v1/validator",
       proposal: "",
     },
     extra: { disableDelegation: true },
@@ -144,7 +145,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "",
+      validator:
+        "https://lcd.miniwasm-1.initia.xyz/opinit/opchild/v1/validator",
       proposal: "",
     },
     extra: { disableDelegation: true },
