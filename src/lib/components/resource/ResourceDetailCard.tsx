@@ -9,6 +9,7 @@ import {
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
+import { trackUseExpand } from "lib/amplitude";
 import type { InternalResource } from "lib/types";
 import { parseJsonStr } from "lib/utils";
 
@@ -53,70 +54,91 @@ export const ResourceDetailCard = ({
 
   return (
     <AccordionItem mb={4}>
-      <AccordionButton>
-        <Flex
-          p={4}
-          justifyContent="space-between"
-          w="full"
-          align="center"
-          gap={{ base: 4, md: 8 }}
-        >
-          <Text
-            variant="body1"
-            fontWeight={600}
-            textAlign="left"
-            wordBreak="break-word"
+      {({ isExpanded }) => (
+        <>
+          <AccordionButton
+            onClick={() => {
+              trackUseExpand({
+                action: !isExpanded ? "expand" : "collapse",
+                component: "resources_detail_card",
+                section: "account detail resource tab",
+              });
+            }}
           >
-            {resourceData.structTag}
-          </Text>
-          <Flex alignItems="center" gap={2} minW={{ base: 8, md: 36 }}>
-            <CopyButton
-              value={resourceData.moveResource}
-              variant="outline-gray"
-              size="xs"
-              gap={1}
-              px={2}
-              buttonText="Copy JSON"
-              display={{ base: "none", md: "flex" }}
-            />
-            <AccordionIcon color="gray.600" />
-          </Flex>
-        </Flex>
-      </AccordionButton>
-      <AccordionPanel
-        p={4}
-        borderTop="1px solid"
-        borderColor="gray.700"
-        borderTopRadius={0}
-      >
-        <Flex direction="column" gap={3}>
-          {formattedArray.map((item) => (
             <Flex
-              key={item.key}
-              gap={{ base: 1, md: 4 }}
-              direction={{ base: "column", md: "row" }}
+              p={4}
+              justifyContent="space-between"
+              w="full"
+              align="center"
+              gap={{ base: 4, md: 8 }}
             >
               <Text
-                variant="body2"
-                color="text.dark"
-                fontWeight="600"
-                minW={40}
+                variant="body1"
+                fontWeight={600}
+                textAlign="left"
+                wordBreak="break-word"
               >
-                {item.key}
+                {resourceData.structTag}
               </Text>
-              {typeof item.value === "object" ? (
-                <Text variant="body2" color="text.main" wordBreak="break-all">
-                  {JSON.stringify(item.value)}
-                </Text>
-              ) : (
-                <Text variant="body2" color="text.main" wordBreak="break-word">
-                  {item.value?.toString()}
-                </Text>
-              )}
+              <Flex alignItems="center" gap={2} minW={{ base: 8, md: 36 }}>
+                <CopyButton
+                  amptrackSection="[Account Detail - Module Tab] Copy JSON "
+                  value={resourceData.moveResource}
+                  variant="outline-gray"
+                  size="xs"
+                  gap={1}
+                  px={2}
+                  buttonText="Copy JSON"
+                  display={{ base: "none", md: "flex" }}
+                />
+                <AccordionIcon color="gray.600" />
+              </Flex>
             </Flex>
-          ))}
-        </Flex>
-      </AccordionPanel>
+          </AccordionButton>
+          <AccordionPanel
+            p={4}
+            borderTop="1px solid"
+            borderColor="gray.700"
+            borderTopRadius={0}
+          >
+            <Flex direction="column" gap={3}>
+              {formattedArray.map((item) => (
+                <Flex
+                  key={item.key}
+                  gap={{ base: 1, md: 4 }}
+                  direction={{ base: "column", md: "row" }}
+                >
+                  <Text
+                    variant="body2"
+                    color="text.dark"
+                    fontWeight="600"
+                    minW={40}
+                  >
+                    {item.key}
+                  </Text>
+                  {typeof item.value === "object" ? (
+                    <Text
+                      variant="body2"
+                      color="text.main"
+                      wordBreak="break-all"
+                    >
+                      {JSON.stringify(item.value)}
+                    </Text>
+                  ) : (
+                    <Text
+                      variant="body2"
+                      color="text.main"
+                      wordBreak="break-word"
+                    >
+                      {item.value?.toString()}
+                    </Text>
+                  )}
+                </Flex>
+              ))}
+            </Flex>
+          </AccordionPanel>
+        </>
+      )}
     </AccordionItem>
   );
 };
