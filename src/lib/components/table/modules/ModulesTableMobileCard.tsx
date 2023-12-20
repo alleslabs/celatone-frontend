@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
@@ -36,30 +36,10 @@ export const ModulesTableMobileCard = ({
         })
       }
       topContent={
-        <Flex w="100%" justifyContent="space-between">
-          <Box>
-            <MobileLabel label="Module Path" />
-            <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
-          </Box>
-
-          <Button
-            variant="outline-white"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate({
-                pathname: "/interact",
-                query: {
-                  address: hex,
-                  moduleName: moduleInfo.name,
-                  functionType: "view",
-                },
-              });
-            }}
-          >
-            View
-          </Button>
-        </Flex>
+        <Box>
+          <MobileLabel label="Module Path" />
+          <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
+        </Box>
       }
       middleContent={
         <Flex direction="column" gap={3}>

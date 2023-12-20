@@ -4,16 +4,21 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useMoveConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { AccountZeroState, EmptyState } from "lib/components/state";
 import { SavedAccountsTable } from "lib/components/table";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 
 import { SaveAccountButton } from "./components";
 
 const SavedAccounts = observer(() => {
   const router = useRouter();
+  const move = useMoveConfig({ shouldRedirect: false });
+  const formatAddresses = useFormatAddresses();
+
   const { getSavedAccounts, isHydrated } = useAccountStore();
   const savedAccounts = getSavedAccounts();
   const accountsCount = savedAccounts.length;
@@ -27,10 +32,14 @@ const SavedAccounts = observer(() => {
     return savedAccounts.filter(
       (account) =>
         account.address.includes(keyword.toLowerCase()) ||
+        (move.enabled &&
+          formatAddresses(account.address).hex.includes(
+            keyword.toLowerCase()
+          )) ||
         account.name?.toLowerCase().includes(keyword.toLowerCase()) ||
         account.description?.toLowerCase().includes(keyword.toLowerCase())
     );
-  }, [keyword, savedAccounts]);
+  }, [formatAddresses, keyword, move.enabled, savedAccounts]);
 
   useEffect(() => {
     if (router.isReady && isHydrated)
