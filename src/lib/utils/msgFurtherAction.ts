@@ -11,7 +11,7 @@ export const getMsgFurtherAction = (
   if (
     isSigner &&
     length === 1 &&
-    (filters.isExecute || filters.isInstantiate || filters.isMoveExecute)
+    (filters.isExecute || filters.isInstantiate)
   ) {
     return MsgFurtherAction.REDO;
   }

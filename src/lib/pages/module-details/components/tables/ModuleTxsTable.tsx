@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
 import { useTxsByModule } from "lib/services/txService";
 import type { HexAddr, Option } from "lib/types";
@@ -74,11 +74,7 @@ export const ModuleTxsTable = ({
         isLoading={isLoading}
         emptyState={
           error ? (
-            <EmptyState
-              withBorder
-              imageVariant="not-found"
-              message="There is an error during fetching transactions."
-            />
+            <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
               withBorder

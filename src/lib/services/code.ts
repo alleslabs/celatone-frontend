@@ -54,7 +54,7 @@ const zCodesResponseItem = z
 
 const zCodesResponse = z.object({
   items: z.array(zCodesResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 
 export type CodesResponse = z.infer<typeof zCodesResponse>;

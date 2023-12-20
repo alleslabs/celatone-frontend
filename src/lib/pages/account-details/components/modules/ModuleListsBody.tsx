@@ -1,11 +1,10 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { MoveAccountAddr, Option } from "lib/types";
 
@@ -46,7 +45,7 @@ export const ModuleListsBody = ({
   };
 
   if (isLoading) return <Loading />;
-  if (!modules) return <ErrorFetching />;
+  if (!modules) return <ErrorFetching dataName="modules" />;
   if (!filteredModules?.length)
     return (
       <EmptyState

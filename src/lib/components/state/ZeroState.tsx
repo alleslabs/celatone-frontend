@@ -95,8 +95,6 @@ export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
     direction="column"
     my={12}
     py={8}
-    borderY="1px solid"
-    borderColor="gray.700"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved accounts.</Flex>

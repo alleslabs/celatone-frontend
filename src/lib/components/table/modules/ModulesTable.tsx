@@ -11,19 +11,23 @@ interface ModulesTableProps {
   modules: Option<ModuleInfo[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
+  isPublishedModules: boolean;
 }
 
 export const ModulesTable = ({
   modules,
   isLoading,
   emptyState,
+  isPublishedModules,
 }: ModulesTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!modules?.length) return emptyState;
 
-  const templateColumns = `minmax(190px, 1fr) max(190px) max(230px) 250px`;
+  const templateColumns = isPublishedModules
+    ? `minmax(190px, 1fr) max(190px) max(190px) max(190px) 250px`
+    : `minmax(190px, 1fr) max(190px) max(230px) 250px`;
 
   return isMobile ? (
     <MobileTableContainer>
@@ -33,12 +37,16 @@ export const ModulesTable = ({
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <ModulesTableHeader templateColumns={templateColumns} />
+      <ModulesTableHeader
+        templateColumns={templateColumns}
+        isPublishedModules={isPublishedModules}
+      />
       {modules.map((module) => (
         <ModulesTableRow
           key={module.name}
           moduleInfo={module}
           templateColumns={templateColumns}
+          isPublishedModules={isPublishedModules}
         />
       ))}
     </TableContainer>

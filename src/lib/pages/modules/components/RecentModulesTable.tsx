@@ -1,14 +1,10 @@
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
-import { ModulesTable as ModulesTableComponent } from "lib/components/table";
+import { EmptyState, ErrorFetching } from "lib/components/state";
+import { ModulesTable } from "lib/components/table";
 import { useModules } from "lib/services/move";
 
-interface ModulesTableProps {
-  isViewMore: boolean;
-}
-
-export const ModulesTable = ({ isViewMore }: ModulesTableProps) => {
+export const RecentModulesTable = () => {
   const {
     pagesQuantity,
     setTotalData,
@@ -19,7 +15,7 @@ export const ModulesTable = ({ isViewMore }: ModulesTableProps) => {
     offset,
   } = usePaginator({
     initialState: {
-      pageSize: isViewMore ? 5 : 10,
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
@@ -30,26 +26,23 @@ export const ModulesTable = ({ isViewMore }: ModulesTableProps) => {
 
   return (
     <>
-      <ModulesTableComponent
+      <ModulesTable
         modules={data?.items}
         isLoading={isLoading}
         emptyState={
           error ? (
-            <EmptyState
-              withBorder
-              imageVariant="not-found"
-              message="There is an error during fetching recent modules."
-            />
+            <ErrorFetching dataName="recent modules" />
           ) : (
             <EmptyState
               withBorder
               imageVariant="empty"
-              message="There are no transactions on this network."
+              message="There are no modules on this network yet."
             />
           )
         }
+        isPublishedModules={false}
       />
-      {!isViewMore && data && data.total > 10 && (
+      {!!data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

@@ -373,7 +373,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
   useEffect(() => {
     if (router.isReady) trackToInstantiate(!!msgQuery, !!codeIdQuery);
-  }, [router.isReady, msgQuery, codeIdQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
   return (
     <>
