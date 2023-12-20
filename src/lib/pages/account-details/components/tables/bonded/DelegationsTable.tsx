@@ -32,10 +32,7 @@ const DelegationsTableBody = ({
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
-  if (!delegations || !rewards)
-    return (
-      <ErrorFetching message="There is an error during fetching delegations." />
-    );
+  if (!delegations || !rewards) return <ErrorFetching dataName="delegations" />;
   if (!delegations.length)
     return (
       <EmptyState

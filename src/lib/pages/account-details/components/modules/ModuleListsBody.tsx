@@ -45,10 +45,7 @@ export const ModuleListsBody = ({
   };
 
   if (isLoading) return <Loading />;
-  if (!modules)
-    return (
-      <ErrorFetching message="There is an error during fetching modules." />
-    );
+  if (!modules) return <ErrorFetching dataName="modules" />;
   if (!filteredModules?.length)
     return (
       <EmptyState

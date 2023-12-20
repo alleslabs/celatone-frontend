@@ -58,10 +58,7 @@ export const PoolRelatedTxsTable = ({
     setCurrentPage(1);
   };
 
-  if (error)
-    return (
-      <ErrorFetching message="There is an error during fetching transactions." />
-    );
+  if (error) return <ErrorFetching dataName="transactions" />;
   return (
     <>
       <PoolTxsTable

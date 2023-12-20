@@ -157,7 +157,7 @@ const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>((val) => ({
 
 const zTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 export type TxsResponse = z.infer<typeof zTxsResponse>;
 
@@ -264,7 +264,7 @@ export const getTxsByAddress = async (
 
 const zBlockTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
-  total: z.number().positive(),
+  total: z.number().nonnegative(),
 });
 export type BlockTxsResponse = z.infer<typeof zBlockTxsResponse>;
 

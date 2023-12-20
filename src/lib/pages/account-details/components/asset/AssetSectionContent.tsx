@@ -13,10 +13,7 @@ export const AssetSectionContent = ({
   supportedAssets,
   error,
 }: AssetSectionContentProps) => {
-  if (error)
-    return (
-      <ErrorFetching message="There is an error during fetching balances." />
-    );
+  if (error) return <ErrorFetching dataName="balances" />;
 
   return supportedAssets.length ? (
     <Grid

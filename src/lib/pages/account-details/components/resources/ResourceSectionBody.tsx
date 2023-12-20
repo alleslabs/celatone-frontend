@@ -46,13 +46,9 @@ export const ResourceSectionBody = ({
   }, [resourcesByOwner, selectedResource]);
 
   if (isLoading) return <Loading />;
-  if (!resourcesByOwner)
-    return (
-      <ErrorFetching message="There is an error during fetching resources." />
-    );
+  if (!resourcesByOwner) return <ErrorFetching dataName="resources" />;
   if (!resourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
-
   return (
     <>
       <ResourceLeftPanel

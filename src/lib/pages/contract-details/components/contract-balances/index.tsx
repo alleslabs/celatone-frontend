@@ -21,10 +21,7 @@ export const ContractBalances = ({
   const { supportedAssets, unsupportedAssets, isLoading, totalData, error } =
     useBalanceInfos(contractAddress);
 
-  if (error)
-    return (
-      <ErrorFetching message="There is an error during fetching balances." />
-    );
+  if (error) return <ErrorFetching dataName="balances" />;
 
   return (
     <Flex

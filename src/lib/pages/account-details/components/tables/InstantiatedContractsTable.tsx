@@ -94,7 +94,7 @@ export const InstantiatedContractsTable = observer(
               isLoading={isLoading}
               emptyState={
                 !contracts ? (
-                  <ErrorFetching message="There is an error during fetching contracts." />
+                  <ErrorFetching dataName="contracts" />
                 ) : (
                   <EmptyState
                     message="This account did not instantiate any contracts before."

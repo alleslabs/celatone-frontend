@@ -43,10 +43,7 @@ export const ResourceOverviewBody = ({
   );
 
   if (isLoading) return <Loading />;
-  if (!resourcesByName)
-    return (
-      <ErrorFetching message="There is an error during fetching resources." />
-    );
+  if (!resourcesByName) return <ErrorFetching dataName="resources" />;
   if (!resourcesByName.length)
     return (
       <EmptyState

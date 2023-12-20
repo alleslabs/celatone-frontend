@@ -45,13 +45,9 @@ export const DelegationsSection = ({
   }, [onClose, router.query.accountAddress]);
 
   if (isLoading) return <Loading />;
-  if (!stakingParams)
-    return (
-      <ErrorFetching message="There is an error during fetching delegation data" />
-    );
+  if (!stakingParams) return <ErrorFetching dataName="delegation data" />;
 
   const redelegationCount = redelegations?.length ?? 0;
-
   return (
     <Flex
       mt={{ base: 4, md: 8 }}
