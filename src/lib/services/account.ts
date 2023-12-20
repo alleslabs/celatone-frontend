@@ -51,10 +51,14 @@ export type AccountTableCounts = z.infer<typeof zAccountTableCounts>;
 export const getAccountTableCounts = async (
   endpoint: string,
   address: string,
+  isGov: boolean,
   isWasm: boolean
 ): Promise<AccountTableCounts> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/table-counts`, {
-      params: { is_wasm: isWasm },
+      params: {
+        is_gov: isGov,
+        is_wasm: isWasm,
+      },
     })
     .then((res) => zAccountTableCounts.parse(res.data));

@@ -20,8 +20,8 @@ export interface ModuleInfo {
     view: number;
     execute: number;
   };
-  height: number;
-  latestUpdated: Date;
-  isRepublished: boolean;
-  isVerified: boolean;
+  height?: number;
+  latestUpdated?: Date;
+  isRepublished?: boolean;
+  isVerified?: boolean;
 }

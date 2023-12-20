@@ -129,7 +129,7 @@ const zContractsResponseItem = z
 
 const zContractsResponse = z.object({
   items: z.array(zContractsResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 
 export type ContractsResponse = z.infer<typeof zContractsResponse>;

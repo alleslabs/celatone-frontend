@@ -44,7 +44,7 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
-import { TabIndex, zAccDetailQueryParams } from "./types";
+import { TabIndex, zAccountDetailQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 
@@ -265,7 +265,7 @@ const AccountDetailsBody = ({
                 onViewMore={handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            {disableDelegation ? null : (
+            {!disableDelegation && (
               <Flex
                 borderBottom={{ base: "0px", md: "1px solid" }}
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
@@ -279,6 +279,7 @@ const AccountDetailsBody = ({
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
+              refetchCount={refetchCounts}
               onViewMore={handleTabChange(TabIndex.Txs)}
             />
             {wasm.enabled && (
@@ -324,13 +325,15 @@ const AccountDetailsBody = ({
                 />
               </>
             )}
-            <OpenedProposalsTable
-              walletAddress={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.proposalsCount ?? undefined}
-              refetchCount={refetchCounts}
-              onViewMore={handleTabChange(TabIndex.Proposals)}
-            />
+            {gov.enabled && (
+              <OpenedProposalsTable
+                walletAddress={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.proposalsCount ?? undefined}
+                refetchCount={refetchCounts}
+                onViewMore={handleTabChange(TabIndex.Proposals)}
+              />
+            )}
           </TabPanel>
           <TabPanel p={0}>
             <AssetsSection address={accountAddress} />
@@ -342,6 +345,7 @@ const AccountDetailsBody = ({
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
+              refetchCount={refetchCounts}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -402,7 +406,7 @@ const AccountDetails = () => {
   const router = useRouter();
   const { isSomeValidAddress } = useValidateAddress();
 
-  const validated = zAccDetailQueryParams.safeParse(router.query);
+  const validated = zAccountDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady && validated.success)
@@ -410,18 +414,15 @@ const AccountDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  if (!validated.success) return <InvalidAccount />;
-
-  const { accountAddress, tab } = validated.data;
-
   return (
     <PageContainer>
-      {!isSomeValidAddress(accountAddress) ? (
+      {!validated.success ||
+      !isSomeValidAddress(validated.data.accountAddress) ? (
         <InvalidAccount />
       ) : (
         <AccountDetailsBody
-          accountAddressParam={accountAddress}
-          tabParam={tab}
+          accountAddressParam={validated.data.accountAddress}
+          tabParam={validated.data.tab}
         />
       )}
     </PageContainer>

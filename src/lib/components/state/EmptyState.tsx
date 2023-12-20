@@ -1,6 +1,5 @@
 import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import type { ReactElement } from "react";
 
 import type { ImageVariant } from "./StateImage";
 import { StateImage } from "./StateImage";
@@ -8,7 +7,7 @@ import { StateImage } from "./StateImage";
 export interface EmptyStateProps {
   imageVariant?: ImageVariant;
   imageWidth?: ImageProps["width"];
-  message: string | ReactElement;
+  message: string;
   heading?: string;
   withBorder?: boolean;
   my?: FlexProps["my"];

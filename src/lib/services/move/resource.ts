@@ -19,7 +19,7 @@ const zResourcesResponseItem = z
 
 const zResourcesResponse = z.object({
   items: z.array(zResourcesResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 export type ResourceResponse = z.infer<typeof zResourcesResponse>;
 

@@ -47,7 +47,7 @@ export enum TabIndex {
   Proposals = "proposals",
 }
 
-export const zAccDetailQueryParams = z.object({
+export const zAccountDetailQueryParams = z.object({
   accountAddress: zAddr,
   tab: z.union([
     z.nativeEnum(TabIndex),
