@@ -55,9 +55,10 @@ export const ResourceSectionBody = ({
         <Box w="full">
           <Flex
             justifyContent="space-between"
-            alignItems="center"
-            pb={6}
-            gap={12}
+            alignItems={{ base: "start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+            pb={{ base: 4, md: 6 }}
+            gap={4}
           >
             <Flex alignItems="center">
               <Heading as="h6" variant="h6" wordBreak="break-word">
@@ -68,8 +69,8 @@ export const ResourceSectionBody = ({
               </Badge>
             </Flex>
             <Button
-              variant="outline-primary"
-              minW={32}
+              variant={{ base: "ghost-primary", md: "outline-primary" }}
+              minW={{ base: "auto", md: 32 }}
               size="sm"
               rightIcon={
                 <CustomIcon

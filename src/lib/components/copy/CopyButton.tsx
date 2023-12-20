@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import type { ButtonProps } from "@chakra-ui/react";
+import type { BoxProps, ButtonProps } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
@@ -16,6 +16,7 @@ interface CopyButtonProps extends ButtonProps {
   amptrackSubSection?: string;
   amptrackInfo?: string;
   iconGap?: number;
+  w?: BoxProps["width"];
 }
 
 export const CopyButton = ({
@@ -30,6 +31,7 @@ export const CopyButton = ({
   amptrackSubSection,
   amptrackInfo,
   ml,
+  w,
   iconGap,
   ...buttonProps
 }: CopyButtonProps) => (
@@ -38,8 +40,10 @@ export const CopyButton = ({
     copyLabel={copyLabel}
     isDisabled={isDisable}
     ml={ml}
+    w={w}
     triggerElement={
       <Button
+        w={w}
         isDisabled={isDisable}
         variant={variant}
         size={size}
