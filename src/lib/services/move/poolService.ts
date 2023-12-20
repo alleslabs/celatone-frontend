@@ -29,11 +29,11 @@ const computePricePerPShare = (
       .times(multiplier) as USD<Big>;
 
   const totalWeight = big(weightA).plus(weightB);
-  if (priceA)
+  if (priceA && big(weightA).gt(0))
     return calculateAssetValue(amountAPerShare, priceA as USD<number>)
       .times(totalWeight.div(weightA))
       .times(multiplier) as USD<Big>;
-  if (priceB)
+  if (priceB && big(weightB).gt(0))
     return calculateAssetValue(amountBPerShare, priceB as USD<number>)
       .times(totalWeight.div(weightB))
       .times(multiplier) as USD<Big>;
