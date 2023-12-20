@@ -1,29 +1,26 @@
-import { Grid, Box, Text } from "@chakra-ui/react";
+import { Grid, Box, Text, Flex, Badge } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { Activity } from "lib/services/collection";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface ActivitiesTableRowProps {
-  activity: Activity;
+interface TxsTableRowProps {
+  hash: string;
+  timestamp: string;
   templateColumns: string;
+  isNFTBurn: boolean;
+  isNFTMint: boolean;
+  isNFTTransfer: boolean;
 }
 
-export const ActivitiesTableRow = ({
-  activity,
+export const TxsTableRow = ({
+  hash,
+  timestamp,
   templateColumns,
-}: ActivitiesTableRowProps) => {
-  const { txhash, timestamp, isNFTBurn, isNFTMint, isNFTTransfer, tokenId } =
-    activity;
-
-  const getEventMessage = () => {
-    if (isNFTBurn) return "Burned";
-    if (isNFTMint) return "Minted";
-    if (isNFTTransfer) return "Transferred";
-    return "-";
-  };
-
+  isNFTBurn,
+  isNFTMint,
+  isNFTTransfer,
+}: TxsTableRowProps) => {
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -33,13 +30,16 @@ export const ActivitiesTableRow = ({
         transition="all 0.25s ease-in-out"
       >
         <TableRow pr={1}>
-          <ExplorerLink value={txhash} type="tx_hash" showCopyOnHover />
+          <ExplorerLink value={hash} type="tx_hash" showCopyOnHover />
         </TableRow>
         <TableRow>
-          <Text>{tokenId ?? "-"}</Text>
-        </TableRow>
-        <TableRow>
-          <Text>{getEventMessage()}</Text>
+          <Flex gap="8px">
+            {isNFTBurn && <Badge textTransform="capitalize">Burn</Badge>}
+            {isNFTMint && <Badge textTransform="capitalize">Mint</Badge>}
+            {isNFTTransfer && (
+              <Badge textTransform="capitalize">Transfer</Badge>
+            )}
+          </Flex>
         </TableRow>
         <TableRow>
           <Box>

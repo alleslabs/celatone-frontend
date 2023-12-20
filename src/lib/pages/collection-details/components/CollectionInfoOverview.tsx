@@ -10,8 +10,7 @@ import type { PropsWithChildren } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useCollectionCreator } from "lib/services/nftService";
+import { useCollectionCreator } from "lib/services/collectionService";
 import { formatUTC } from "lib/utils";
 
 import InfoCard from "./InfoCard";
@@ -62,19 +61,11 @@ const CollectionInfoOverview = ({
 
   const { data: collectionCreator, isLoading } =
     useCollectionCreator(collectionAddress);
-  const formatAddress = useFormatAddresses();
 
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;
 
-  const { collectionTransactions, vmAddressByCreator } = collectionCreator;
-  const [createdInfo] = collectionTransactions;
-  const { hash, block } = createdInfo.transaction;
-  const { timestamp, height } = block;
-
-  const { vmAddress: creator } = vmAddressByCreator;
-  const { address: creatorAddress } = formatAddress(creator);
-
+  const { height, txhash, timestamp, creatorAddress } = collectionCreator;
   return (
     <Box>
       <Text fontSize="18px" fontWeight={600} mb="24px">
@@ -103,7 +94,7 @@ const CollectionInfoOverview = ({
           </InfoComponent>
 
           <InfoComponent title="Created Transaction">
-            <ExplorerLink value={hash.replace("\\x", "")} type="tx_hash" />
+            <ExplorerLink value={txhash} type="tx_hash" />
           </InfoComponent>
         </Flex>
 

@@ -43,6 +43,7 @@ const nextConfig = {
       "proposal",
       "project",
       "contract-list",
+      "nft-list",
       "nft",
       "past-tx",
       "pool",

@@ -1,15 +1,20 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
 
-import { TextInput } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useCollectionsPagination } from "lib/services/collectionService";
+import { EmptyState } from "lib/components/state";
+import { useNFTTransactionsPagination } from "lib/services/nftService";
 
-import CollectionList from "./CollectionList";
+import { TxsTable } from "./TxsTable";
 
-const Collections = () => {
+const Txs = ({
+  txCount,
+  nftAddress,
+}: {
+  txCount: number;
+  nftAddress: string;
+}) => {
   const {
     pagesQuantity,
     currentPage,
@@ -18,6 +23,7 @@ const Collections = () => {
     setPageSize,
     offset,
   } = usePaginator({
+    total: txCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -25,13 +31,15 @@ const Collections = () => {
     },
   });
 
-  const [searchKeyword, setSearchKeyword] = useState("");
-
-  const { data: collections, isLoading } = useCollectionsPagination(
+  const { data: transactions, isLoading } = useNFTTransactionsPagination(
     pageSize,
     offset,
-    searchKeyword
+    nftAddress
   );
+
+  const onPageChange = (nextPage: number) => {
+    setCurrentPage(nextPage);
+  };
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const size = Number(e.target.value);
@@ -41,24 +49,21 @@ const Collections = () => {
 
   return (
     <Box>
-      <TextInput
-        variant="fixed-floating"
-        value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search by collection name"
-        size="md"
-        mb="32px"
+      <TxsTable
+        txs={transactions}
+        isLoading={isLoading}
+        emptyState={
+          <EmptyState message="Transactions not found." imageVariant="empty" />
+        }
       />
-
-      <CollectionList collections={collections} isLoading={isLoading} />
-      {!isLoading && collections && (
+      {txCount > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={collections.length}
+          totalData={txCount}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
+          onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />
       )}
@@ -66,4 +71,4 @@ const Collections = () => {
   );
 };
 
-export default Collections;
+export default Txs;

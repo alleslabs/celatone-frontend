@@ -1,20 +1,18 @@
-import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
 
-import { TextInput } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useNFTTokenList } from "lib/services/nftService";
+import { EmptyState } from "lib/components/state";
+import { useNFTMutateEventsPagination } from "lib/services/nftService";
 
-import NFTList from "./NFTList";
+import { MutateEventsTable } from "./MutateEventsTable";
 
-const Supplies = ({
+const MutateEvents = ({
   collectionAddress,
-  totalSupply,
+  totalCount,
 }: {
   collectionAddress: string;
-  totalSupply: number;
+  totalCount: number;
 }) => {
   const {
     pagesQuantity,
@@ -24,6 +22,7 @@ const Supplies = ({
     setPageSize,
     offset,
   } = usePaginator({
+    total: totalCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -31,51 +30,47 @@ const Supplies = ({
     },
   });
 
+  const onPageChange = (nextPage: number) => {
+    setCurrentPage(nextPage);
+  };
+
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const size = Number(e.target.value);
     setPageSize(size);
     setCurrentPage(1);
   };
 
-  const [searchKeyword, setSearchKeyword] = useState("");
-
-  const { data: nfts, isLoading } = useNFTTokenList(
-    collectionAddress,
+  const { data: mutateEvents, isLoading } = useNFTMutateEventsPagination(
     pageSize,
     offset,
-    searchKeyword
+    collectionAddress
   );
 
   return (
-    <Box mt="32px" gap="40px">
-      <TextInput
-        variant="fixed-floating"
-        value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search by name"
-        size="md"
-        mb="32px"
-      />
-
-      <NFTList
-        collectionAddress={collectionAddress}
-        nfts={nfts}
+    <>
+      <MutateEventsTable
+        mutateEvents={mutateEvents}
         isLoading={isLoading}
+        emptyState={
+          <EmptyState
+            message="Mutate events are not found."
+            imageVariant="empty"
+          />
+        }
       />
-
-      {!isLoading && nfts && (
+      {totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={searchKeyword ? nfts.length : totalSupply}
+          totalData={totalCount}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
+          onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Box>
+    </>
   );
 };
 
-export default Supplies;
+export default MutateEvents;

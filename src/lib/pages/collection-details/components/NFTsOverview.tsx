@@ -6,14 +6,24 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import Link from "next/link";
 
+import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
-import type { NFTToken } from "lib/types";
+import { Loading } from "lib/components/Loading";
+import { EmptyState } from "lib/components/state";
+import type { NFTToken } from "lib/services/nft";
 
 import NFTCard from "./NFTCard";
 
-const NFTsOverview = ({ nfts }: { nfts: NFTToken[] }) => {
+const NFTsOverview = ({
+  collectionAddress,
+  nfts,
+  isLoading,
+}: {
+  collectionAddress: string;
+  nfts?: NFTToken[];
+  isLoading?: boolean;
+}) => {
   const displayedNftCount = useBreakpointValue({
     xl: 6,
     lg: 6,
@@ -24,6 +34,10 @@ const NFTsOverview = ({ nfts }: { nfts: NFTToken[] }) => {
 
   const nftsInfo = nfts?.slice(0, displayedNftCount);
 
+  if (isLoading) return <Loading />;
+  if (!nftsInfo || !nftsInfo.length)
+    return <EmptyState message="NFT not found." imageVariant="empty" />;
+
   return (
     <Box p="14px 6px">
       <Text fontSize="18px" fontWeight={600} mb="24px">
@@ -31,20 +45,20 @@ const NFTsOverview = ({ nfts }: { nfts: NFTToken[] }) => {
       </Text>
       <SimpleGrid gap="24px" templateColumns="repeat(auto-fill, 206px)">
         {nftsInfo.map((nft) => (
-          <GridItem>
-            <NFTCard key={nft.tokenId + nft.uri} {...nft} />
+          <GridItem key={nft.tokenId + nft.uri}>
+            <NFTCard collectionAddress={collectionAddress} {...nft} />
           </GridItem>
         ))}
       </SimpleGrid>
 
-      <Link href="/">
+      <AppLink href={`/collections/${collectionAddress}/supplies`}>
         <Flex align="center" justify="center" w="100%" height="64px">
           <Text color="gray.400" fontSize="14px">
             View More
           </Text>{" "}
           <CustomIcon name="chevron-right" boxSize="12px" />
         </Flex>
-      </Link>
+      </AppLink>
     </Box>
   );
 };

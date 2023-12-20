@@ -4,27 +4,31 @@ import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate } from "lib/components/table";
 
-interface ActivitiesTableMobileCardProps {
+interface MutateEventsTableMobileCardProps {
   hash: string;
   timestamp: string;
 }
 
-export const ActivitiesTableMobileCard = ({
+export const MutateEventsTableMobileCard = ({
   timestamp,
   hash,
-}: ActivitiesTableMobileCardProps) => {
+}: MutateEventsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
       onClick={() =>
         navigate({
           pathname: "/txs/[txHash]",
-          query: { txHash: hash },
+          query: { txHash: hash.toLocaleUpperCase() },
         })
       }
       topContent={
         <Flex align="center" gap={2}>
-          <ExplorerLink value={hash} type="tx_hash" showCopyOnHover />
+          <ExplorerLink
+            value={hash.toLocaleUpperCase()}
+            type="tx_hash"
+            showCopyOnHover
+          />
         </Flex>
       }
       middleContent={<Flex />}

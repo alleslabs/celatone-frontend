@@ -29,7 +29,7 @@ export enum AmpEvent {
   // NAVIGATE
   TO_OVERVIEW = "To Overview",
   TO_BLOCKS = "To Blocks",
-  TO_NFTS = "To NFTs",
+  TO_COLLECTIONS = "To NFTs",
   TO_BLOCK_DETAIL = "To Block Detail",
   TO_TXS = "To Txs",
   TO_PAST_TXS = "To Past Txs",
@@ -57,6 +57,7 @@ export enum AmpEvent {
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
   TO_TRANSACTION_DETAIL = "To Transaction Detail",
+  TO_NFT_DETAIL = "To NFT Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
   TO_POOL_LIST = "To Pool List",

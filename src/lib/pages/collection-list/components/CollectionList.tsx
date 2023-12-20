@@ -3,7 +3,7 @@ import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { NFTCollection } from "lib/types";
+import type { Collection } from "lib/services/collection";
 
 import CollectionCard from "./CollectionCard";
 
@@ -11,7 +11,7 @@ const CollectionList = ({
   collections,
   isLoading,
 }: {
-  collections?: NFTCollection[];
+  collections?: Collection[];
   isLoading: boolean;
 }) => {
   const navigate = useInternalNavigate();
@@ -27,24 +27,21 @@ const CollectionList = ({
     );
 
   return (
-    <SimpleGrid templateColumns="1fr 1fr" spacing="32px">
-      {collections.map((collection) => {
-        const { vmAddress } = collection.vmAddress;
-        return (
-          <GridItem
-            key={vmAddress}
-            onClick={() =>
-              navigate({
-                pathname: `/nfts/[collectionAddress]`,
-                query: { collectionAddress: vmAddress },
-              })
-            }
-            cursor="pointer"
-          >
-            <CollectionCard collectionInfo={collection} />
-          </GridItem>
-        );
-      })}
+    <SimpleGrid columns={{ xl: 2, sm: 1 }} spacing="32px">
+      {collections.map((collection) => (
+        <GridItem
+          key={collection.collectionAddress}
+          onClick={() =>
+            navigate({
+              pathname: `/collections/[collectionAddress]`,
+              query: { collectionAddress: collection.collectionAddress },
+            })
+          }
+          cursor="pointer"
+        >
+          <CollectionCard collectionInfo={collection} />
+        </GridItem>
+      ))}
     </SimpleGrid>
   );
 };

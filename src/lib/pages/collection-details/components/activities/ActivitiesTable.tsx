@@ -1,14 +1,14 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { Message, NFTCollectionActivities } from "lib/types";
+import type { Activity } from "lib/services/collection";
 
 import { ActivitiesTableHeader } from "./ActivitiesTableHeader";
 import { ActivitiesTableMobileCard } from "./ActivitiesTableMobileCard";
 import { ActivitiesTableRow } from "./ActivitiesTableRow";
 
 interface ActivitiesTableProps {
-  activities?: NFTCollectionActivities;
+  activities?: Activity[];
   isLoading?: boolean;
   emptyState?: JSX.Element;
 }
@@ -21,34 +21,36 @@ export const ActivitiesTable = ({
   const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;
-  if (!activities || !activities.collectionTransactions.length)
-    return emptyState;
+  if (!activities || !activities.length) return emptyState;
 
-  const { collectionTransactions } = activities;
-  const templateColumns = `190px minmax(360px, 1fr) 280px`;
+  const templateColumns = `190px 200px minmax(360px, 1fr) 280px`;
 
   return isMobile ? (
     <MobileTableContainer>
-      {collectionTransactions.map(({ transaction }) => (
-        <ActivitiesTableMobileCard
-          key={transaction.hash}
-          hash={transaction.hash}
-          timestamp={transaction.block.timestamp}
-        />
-      ))}
+      {activities.map((activity, key) => {
+        const arrayKey = key + activity.txhash;
+        return (
+          <ActivitiesTableMobileCard
+            key={arrayKey}
+            hash={activity.txhash}
+            timestamp={activity.timestamp}
+          />
+        );
+      })}
     </MobileTableContainer>
   ) : (
     <TableContainer>
       <ActivitiesTableHeader templateColumns={templateColumns} />
-      {collectionTransactions.map(({ transaction }) => (
-        <ActivitiesTableRow
-          key={transaction.hash + transaction.messages[0].type}
-          hash={transaction.hash}
-          messages={transaction.messages as Message[]}
-          timestamp={transaction.block.timestamp}
-          templateColumns={templateColumns}
-        />
-      ))}
+      {activities.map((activity, key) => {
+        const arrayKey = key + activity.txhash;
+        return (
+          <ActivitiesTableRow
+            key={arrayKey}
+            activity={activity}
+            templateColumns={templateColumns}
+          />
+        );
+      })}
     </TableContainer>
   );
 };

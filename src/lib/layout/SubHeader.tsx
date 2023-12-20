@@ -54,7 +54,7 @@ const SubHeader = () => {
     subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
 
   if (nftConfig.enabled)
-    subHeaderMenu.push({ name: "NFTs", slug: "/nfts", icon: "file" });
+    subHeaderMenu.push({ name: "NFTs", slug: "/collections", icon: "file" });
 
   const isCurrentPage = useIsCurrentPage();
 

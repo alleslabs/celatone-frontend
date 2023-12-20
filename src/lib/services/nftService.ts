@@ -3,231 +3,35 @@ import axios from "axios";
 
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import {
-  getCollectioUniqueHoldersCount,
-  getCollectionActivities,
-  getCollectionActivitiesCount,
-  getCollectionByCollectionAddress,
-  getCollectionCreator,
-  getCollectionMutateEventsCount,
-  getCollectionNFTSupllies,
-  getCollectionTotalBurnedCount,
-  getCollectionsPagination,
+  getNFTMutateEventsCount,
+  getNFTMutateEventsPagination,
+  getNFTTMintInfo,
+  getNFTToken,
+  getNFTTokenList,
+  getNFTTransactionPagination,
+  getNFTTransactionsCount,
 } from "lib/query";
-import type {
-  CollectionActivities,
-  CollectionActivitiesCount,
-  CollectionMutateEventsCount,
-  CollectionUniqueHoldersCount,
-  NFTCollection,
-  NFTCollectionActivities,
-  NFTCollectionCreator,
-  NFTMetadata,
-  NFTToken,
-  NFTTotalBurn,
-} from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
-export const useCollectionsPagination = (
-  pageSize: number,
-  offset: number,
-  search?: string
-) => {
-  const { chainConfig } = useCelatoneApp();
+import type {
+  Metadata,
+  NFTMintInfo,
+  NFTMintInfoResponse,
+  NFTMutateEventsPagination,
+  NFTMutateEventsPaginationResponse,
+  NFTToken,
+  NFTTokenResponse,
+  NFTTransactionPagination,
+  NFTTransactionPaginationResponse,
+} from "./nft";
+import {
+  zNFTMintInfoResponse,
+  zNFTMutateEventsPaginationResponse,
+  zNFTTokenResponse,
+  zNFTTransactionPaginationResponse,
+} from "./nft";
 
-  const queryFn = async () => {
-    const {
-      data: { data },
-    } = await axios.post(chainConfig.indexer, {
-      query: getCollectionsPagination,
-      variables: { offset, pageSize, search },
-    });
-    return snakeToCamel(data.collections);
-  };
-
-  return useQuery<NFTCollection[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTIONS,
-      chainConfig.indexer,
-      pageSize,
-      offset,
-      search,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionByCollectionAddress = (collectionAddress: string) => {
-  const { chainConfig } = useCelatoneApp();
-
-  const queryFn = async () => {
-    const {
-      data: { data },
-    } = await axios.post(chainConfig.indexer, {
-      query: getCollectionByCollectionAddress,
-      variables: { vmAddress: collectionAddress },
-    });
-    return snakeToCamel(data.collections[0]);
-  };
-
-  return useQuery<NFTCollection>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_ADDRESS,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useMetadata = (uri: string) => {
-  const queryFn = async () => {
-    const { data } = await axios.get(uri);
-    return snakeToCamel(data);
-  };
-
-  return useQuery<NFTMetadata>({
-    queryKey: [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionTotalBurnedCount = (collectionAddress: string) => {
-  const { chainConfig } = useCelatoneApp();
-
-  const queryFn = async () => {
-    const {
-      data: { data },
-    } = await axios.post(chainConfig.indexer, {
-      query: getCollectionTotalBurnedCount,
-      variables: { vmAddress: collectionAddress },
-    });
-    return snakeToCamel(data);
-  };
-
-  return useQuery<NFTTotalBurn>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_TOTAL_BURNED,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionCreator = (collectionAddress: string) => {
-  const { chainConfig } = useCelatoneApp();
-
-  const queryFn = async () => {
-    const {
-      data: { data },
-    } = await axios.post(chainConfig.indexer, {
-      query: getCollectionCreator,
-      variables: { vmAddress: collectionAddress },
-    });
-    return snakeToCamel(data.collections[0]);
-  };
-
-  return useQuery<NFTCollectionCreator>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_CREATOR,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionActivitiesCount = (collectionAddress: string) => {
-  const { chainConfig } = useCelatoneApp();
-
-  const queryFn = async () => {
-    const { count } = await axios
-      .post<{ data: CollectionActivitiesCount }>(chainConfig.indexer, {
-        query: getCollectionActivitiesCount,
-        variables: { vmAddress: collectionAddress },
-      })
-      .then(
-        ({ data }) => data.data.collection_transactions_aggregate.aggregate
-      );
-
-    return count;
-  };
-
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_COUNT,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionMutateEventsCount = (collectionAddress: string) => {
-  const { chainConfig } = useCelatoneApp();
-
-  const queryFn = async () => {
-    const { count } = await axios
-      .post<{ data: CollectionMutateEventsCount }>(chainConfig.indexer, {
-        query: getCollectionMutateEventsCount,
-        variables: { vmAddress: collectionAddress },
-      })
-      .then(
-        ({ data }) => data.data.collection_mutation_events_aggregate.aggregate
-      );
-    return count;
-  };
-
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTES_COUNT,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionUniqueHoldersCount = (collectionAddress: string) => {
-  const { chainConfig } = useCelatoneApp();
-
-  const queryFn = async () => {
-    const { count } = await axios
-      .post<{ data: CollectionUniqueHoldersCount }>(chainConfig.indexer, {
-        query: getCollectioUniqueHoldersCount,
-        variables: { vmAddress: collectionAddress },
-      })
-      .then(({ data }) => data.data.nfts_aggregate.aggregate);
-    return count;
-  };
-
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_UNIQUE_HOLDERS_COUNT,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionNFTSupllies = (
+export const useNFTTokenList = (
   collectionAddress: string,
   pageSize: number,
   offset: number,
@@ -237,21 +41,23 @@ export const useCollectionNFTSupllies = (
 
   const queryFn = async () => {
     return axios
-      .post<{ data: { nfts: NFTToken[] } }>(chainConfig.indexer, {
-        query: getCollectionNFTSupllies,
+      .post<NFTTokenResponse>(chainConfig.indexer, {
+        query: getNFTTokenList,
         variables: {
-          vmAddress: collectionAddress,
-          pageSize,
+          collectionAddress,
+          limit: pageSize,
           offset,
-          search: `%${search}%`,
+          search: `%${search ?? ""}%`,
         },
       })
-      .then(({ data }) => snakeToCamel(data.data.nfts));
+      .then(({ data: res }) =>
+        res.data.nfts.map((nft) => zNFTTokenResponse.parse(nft))
+      );
   };
 
   return useQuery<NFTToken[]>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_SUPPLIES,
+      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST,
       chainConfig.indexer,
       collectionAddress,
       offset,
@@ -264,35 +70,184 @@ export const useCollectionNFTSupllies = (
   });
 };
 
-export const useCollectionActivities = (
-  collectionAddress: string,
-  pageSize: number,
-  offset: number,
-  search?: string
-) => {
+export const useNFTInfo = (collectionAddress: string, nftAddress: string) => {
   const { chainConfig } = useCelatoneApp();
+
   const queryFn = async () => {
-    const data = await axios
-      .post<{ data: CollectionActivities }>(chainConfig.indexer, {
-        query: getCollectionActivities,
-        variables: {
-          vmAddress: collectionAddress,
-          pageSize,
-          offset,
-        },
+    return axios
+      .post(chainConfig.indexer, {
+        query: getNFTToken,
+        variables: { collectionAddress, nftAddress },
       })
-      .then(({ data: res }) => res.data);
-    return snakeToCamel(data);
+      .then(({ data }) => zNFTTokenResponse.parse(data.data.nfts[0]));
   };
 
-  return useQuery<NFTCollectionActivities>({
+  return useQuery<NFTToken>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES,
+      CELATONE_QUERY_KEYS.NFT_TOKEN_INFO,
       chainConfig.indexer,
       collectionAddress,
+      nftAddress,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useNFTMintInfo = (nftAddress: string) => {
+  const { chainConfig } = useCelatoneApp();
+
+  const queryFn = async () => {
+    return axios
+      .post<NFTMintInfoResponse>(chainConfig.indexer, {
+        query: getNFTTMintInfo,
+        variables: { nftAddress },
+      })
+      .then(({ data: res }) =>
+        zNFTMintInfoResponse.parse(res.data.nft_transactions[0].transaction)
+      );
+  };
+
+  return useQuery<NFTMintInfo>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
+      chainConfig.indexer,
+      nftAddress,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useMetadata = (uri: string) => {
+  const queryFn = async () => {
+    const { data: metadata } = await axios.get(uri);
+    return snakeToCamel(metadata);
+  };
+
+  return useQuery<Metadata>({
+    queryKey: [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useNFTTransactionsCount = (nftAddress: string) => {
+  const { chainConfig } = useCelatoneApp();
+
+  const queryFn = async () => {
+    return axios
+      .post(chainConfig.indexer, {
+        query: getNFTTransactionsCount,
+        variables: { nftAddress },
+      })
+      .then(
+        ({ data: res }) => res.data.nft_transactions_aggregate.aggregate.count
+      );
+  };
+
+  return useQuery<number>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_TRANSACTION_COUNT,
+      chainConfig.indexer,
+      nftAddress,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useNFTTransactionsPagination = (
+  limit: number,
+  offset: number,
+  nftAddress: string
+) => {
+  const { chainConfig } = useCelatoneApp();
+
+  const queryFn = async () => {
+    return axios
+      .post<NFTTransactionPaginationResponse>(chainConfig.indexer, {
+        query: getNFTTransactionPagination,
+        variables: { limit, offset, nftAddress },
+      })
+      .then(({ data: res }) =>
+        res.data.nft_transactions.map((tx) =>
+          zNFTTransactionPaginationResponse.parse(tx)
+        )
+      );
+  };
+
+  return useQuery<NFTTransactionPagination[]>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_TRANSACTION_PAGINATION,
+      chainConfig.indexer,
+      nftAddress,
+      limit,
       offset,
-      pageSize,
-      search,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useNFTMutateEventsPagination = (
+  limit: number,
+  offset: number,
+  nftAddress: string
+) => {
+  const { chainConfig } = useCelatoneApp();
+
+  const queryFn = async () => {
+    return axios
+      .post<NFTMutateEventsPaginationResponse>(chainConfig.indexer, {
+        query: getNFTMutateEventsPagination,
+        variables: { limit, offset, nftAddress },
+      })
+      .then(({ data: res }) =>
+        res.data.nft_mutation_events.map((event) =>
+          zNFTMutateEventsPaginationResponse.parse(event)
+        )
+      );
+  };
+
+  return useQuery<NFTMutateEventsPagination[]>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_MUTATE_EVENTS,
+      chainConfig.indexer,
+      nftAddress,
+      limit,
+      offset,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useNFTMutateEventsCount = (nftAddress: string) => {
+  const { chainConfig } = useCelatoneApp();
+
+  const queryFn = async () => {
+    return axios
+      .post(chainConfig.indexer, {
+        query: getNFTMutateEventsCount,
+        variables: { nftAddress },
+      })
+      .then(
+        ({ data }) => data.data.nft_mutation_events_aggregate.aggregate.count
+      );
+  };
+
+  return useQuery<number>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_MUTATE_EVENTS_COUNT,
+      chainConfig.indexer,
+      nftAddress,
     ],
     queryFn,
     retry: 1,

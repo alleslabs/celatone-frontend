@@ -5,7 +5,7 @@ import { useState } from "react";
 import { TextInput } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useCollectionActivities } from "lib/services/nftService";
+import { useCollectionActivities } from "lib/services/collectionService";
 
 import { ActivitiesTable } from "./ActivitiesTable";
 

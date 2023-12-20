@@ -29,7 +29,8 @@ import {
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
   useCollectionTotalBurnedCount,
-} from "lib/services/nftService";
+} from "lib/services/collectionService";
+import { useNFTTokenList } from "lib/services/nftService";
 
 import Activities from "./components/activities";
 import CollectionInfoOverview from "./components/CollectionInfoOverview";
@@ -37,6 +38,7 @@ import CollectionSupplyOverview from "./components/CollectionSupplyOverview";
 import NFTsOverview from "./components/NFTsOverview";
 import Supplies from "./components/supplies";
 import { useCollectionSupplies } from "./data";
+import MutateEvents from "./mutate-events";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
 
 const tabHeaderId = "collectionDetailTab";
@@ -51,25 +53,31 @@ const CollectionDetailsBody = ({
   const { data: collection, isLoading } =
     useCollectionByCollectionAddress(collectionAddress);
 
-  const { data: totalBurned, isLoading: totalBurnLoading } =
+  const { data: totalBurnedCount = 0 } =
     useCollectionTotalBurnedCount(collectionAddress);
 
+  const { data: nfts, isLoading: nftLoading } = useNFTTokenList(
+    collectionAddress,
+    6,
+    0
+  );
+
   const collectionInfo = useCollectionSupplies(collectionAddress);
-  const { data: activitiesCount } =
+  const { data: activitiesCount = 0 } =
     useCollectionActivitiesCount(collectionAddress);
-  const { data: mutateEventsCount } =
+  const { data: mutateEventsCount = 0 } =
     useCollectionMutateEventsCount(collectionAddress);
-  const { data: uniqueHoldersCount } =
+  const { data: uniqueHoldersCount = 0 } =
     useCollectionUniqueHoldersCount(collectionAddress);
 
   const navigate = useInternalNavigate();
 
   const handleTabChange = useCallback(
-    (nextTab: TabIndex) => () => {
-      if (nextTab === tabParam) return;
+    (nextTab: TabIndex, disabled?: boolean) => () => {
+      if (nextTab === tabParam || disabled) return;
       trackUseTab(nextTab);
       navigate({
-        pathname: "/nfts/[collectionAddress]/[tab]",
+        pathname: "/collections/[collectionAddress]/[tab]",
         query: {
           collectionAddress,
           tab: nextTab,
@@ -82,20 +90,19 @@ const CollectionDetailsBody = ({
     [collectionAddress, navigate, tabParam]
   );
 
-  if (isLoading || totalBurnLoading || !collectionInfo)
-    return <Loading withBorder />;
-  if (!collection || !totalBurned)
-    return <EmptyState message="Not found collection" />;
+  if (isLoading || !collectionInfo) return <Loading withBorder />;
+  if (!collection) return <EmptyState message="Not found collection" />;
 
-  const { name, nfts, description, uri } = collection;
-  const { count: totalBurnedCount } = totalBurned.nftsAggregate.aggregate;
+  const { name, description, uri } = collection;
 
   const { supplies, isUnlimited, royalty } = collectionInfo;
   const { maxSupply, totalMinted, currentSupply } = supplies;
 
   return (
     <Box>
-      <Breadcrumb items={[{ text: "NFTs", href: "/nfts" }, { text: name }]} />
+      <Breadcrumb
+        items={[{ text: "NFTs", href: "/collections" }, { text: name }]}
+      />
       <Stack my="24px" spacing="4px">
         <Heading as="h5" variant="h5">
           {name}
@@ -129,41 +136,43 @@ const CollectionDetailsBody = ({
             Overview
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.Supplies)}>
-            Supplies
+            Supplies <Badge ml="6px">{currentSupply}</Badge>
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.Activities)}>
-            Activities
+            Activities <Badge ml="6px">{activitiesCount}</Badge>
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.RelatedProposals)}>
-            Related Proposals
+          <CustomTab onClick={handleTabChange(TabIndex.RelatedProposals, true)}>
+            Related Proposals <Badge ml="6px">{0}</Badge>
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.MutateEvents)}>
-            Mutate Events
-          </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.UniqueHolders)}>
-            Unique Holders
+          <CustomTab
+            onClick={handleTabChange(TabIndex.MutateEvents, !mutateEventsCount)}
+          >
+            Mutate Events <Badge ml="6px">{mutateEventsCount}</Badge>
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Stack gap="40px">
               <CollectionSupplyOverview
-                totalBurnedCount={totalBurnedCount}
+                totalBurned={totalBurnedCount}
                 currentSupply={currentSupply}
                 totlaMinted={totalMinted}
                 maxSupply={maxSupply}
               />
-
               <Divider width="100%" color="gray.700" />
-              <NFTsOverview nfts={nfts} />
+              <NFTsOverview
+                nfts={nfts}
+                collectionAddress={collectionAddress}
+                isLoading={nftLoading}
+              />
               <CollectionInfoOverview
                 collectionAddress={collectionAddress}
                 collectionName={name}
                 desc={description}
                 uri={uri}
-                activities={activitiesCount ?? 0}
-                mutateEventes={mutateEventsCount ?? 0}
-                uniqueHolders={uniqueHoldersCount ?? 0}
+                activities={activitiesCount}
+                mutateEventes={mutateEventsCount}
+                uniqueHolders={uniqueHoldersCount}
                 royalty={royalty}
               />
             </Stack>
@@ -184,10 +193,10 @@ const CollectionDetailsBody = ({
             <div>Related Proposals</div>
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <div>Mutate Events</div>
-          </TabPanel>
-          <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <div>Unique Holders</div>
+            <MutateEvents
+              totalCount={mutateEventsCount}
+              collectionAddress={collectionAddress}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -205,7 +214,10 @@ const CollectionDetails = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  if (!validated.success) return null;
+  if (!validated.success)
+    return (
+      <EmptyState message="Collection not found." imageVariant="not-found" />
+    );
   const { collectionAddress, tab } = validated.data;
 
   return (
