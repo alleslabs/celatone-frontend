@@ -16,7 +16,6 @@ import {
   coinToTokenWithValue,
   filterSupportedTokens,
 } from "./assetValue";
-import { formatUTokenWithPrecision } from "./formatter";
 
 describe("filterSupportedTokens", () => {
   const token1: TokenWithValue = {
@@ -53,12 +52,14 @@ describe("filterSupportedTokens", () => {
     poolInfo: {
       coinA: {
         denom: "",
-        amount: "",
+        amount: big(0) as U<Token<Big>>,
+        precision: undefined,
         symbol: undefined,
       },
       coinB: {
         denom: "",
-        amount: "",
+        amount: big(0) as U<Token<Big>>,
+        precision: undefined,
         symbol: undefined,
       },
     },
@@ -106,17 +107,17 @@ describe("coinToTokenWithValue", () => {
         metadata: zHexAddr.parse("0x1"),
         denom: "denom1",
         precision: 6,
-        amountAPerShare: big(1),
+        amountAPerShare: big(1) as U<Token<Big>>,
         symbol: undefined,
       },
       coinB: {
         metadata: zHexAddr.parse("0x2"),
         denom: "denom2",
         precision: 6,
-        amountBPerShare: big(1),
+        amountBPerShare: big(1) as U<Token<Big>>,
         symbol: "DENOM_2",
       },
-      lpPricePerShare: big(1) as USD<Big>,
+      lpPricePerPShare: big(0.000001) as USD<Big>,
       precision: 6,
       logo: ["denom1_logo", "denom2_logo"],
     },
@@ -144,28 +145,24 @@ describe("coinToTokenWithValue", () => {
     amount: big(coin.amount) as U<Token<Big>>,
     symbol: `${movePoolInfo.coinA.denom}-${movePoolInfo.coinB.symbol}`,
     precision: movePoolInfo.precision,
-    price: movePoolInfo.lpPricePerShare,
+    price: movePoolInfo.lpPricePerPShare,
     value: big(coin.amount)
-      .mul(movePoolInfo.lpPricePerShare ?? big(0))
+      .mul(movePoolInfo.lpPricePerPShare ?? big(0))
       .div(10 ** movePoolInfo.precision) as USD<Big>,
     poolInfo: {
       coinA: {
-        amount: formatUTokenWithPrecision(
-          big(coin.amount).times(movePoolInfo.coinA.amountAPerShare) as U<
-            Token<Big>
-          >,
-          movePoolInfo.precision
-        ),
+        amount: movePoolInfo.coinA.amountAPerShare.times(coin.amount) as U<
+          Token<Big>
+        >,
+        precision: 6,
         denom: movePoolInfo.coinA.denom,
         symbol: movePoolInfo.coinA.symbol,
       },
       coinB: {
-        amount: formatUTokenWithPrecision(
-          big(coin.amount).times(movePoolInfo.coinB.amountBPerShare) as U<
-            Token<Big>
-          >,
-          movePoolInfo.precision
-        ),
+        amount: movePoolInfo.coinB.amountBPerShare.times(coin.amount) as U<
+          Token<Big>
+        >,
+        precision: 6,
         denom: movePoolInfo.coinB.denom,
         symbol: movePoolInfo.coinB.symbol,
       },
