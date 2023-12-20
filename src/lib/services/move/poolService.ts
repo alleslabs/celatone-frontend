@@ -8,30 +8,35 @@ import {
   useBaseApiRoute,
   useMoveConfig,
 } from "lib/app-provider";
-import type { MovePoolInfos, Option, USD } from "lib/types";
+import type { MovePoolInfos, Option, Token, U, USD } from "lib/types";
+import { calculateAssetValue, toToken } from "lib/utils";
 
 import { getMovePoolInfos } from "./pool";
 
-const computePricePerShare = (
-  amountAPerShare: Big,
+const computePricePerPShare = (
+  amountAPerShare: Token<Big>,
   weightA: string,
   priceA: Option<number>,
-  amountBPerShare: Big,
+  amountBPerShare: Token<Big>,
   weightB: string,
-  priceB: Option<number>
+  priceB: Option<number>,
+  poolPrecision: number
 ): Option<USD<Big>> => {
+  const multiplier = big(10).pow(poolPrecision);
   if (priceA && priceB)
-    return big(priceA)
-      .times(amountAPerShare)
-      .plus(big(priceB).times(amountBPerShare)) as USD<Big>;
+    return calculateAssetValue(amountAPerShare, priceA as USD<number>)
+      .plus(calculateAssetValue(amountBPerShare, priceB as USD<number>))
+      .times(multiplier) as USD<Big>;
+
+  const totalWeight = big(weightA).plus(weightB);
   if (priceA)
-    return big(priceA)
-      .times(amountAPerShare)
-      .times(big(weightA).plus(weightB).div(weightA)) as USD<Big>;
+    return calculateAssetValue(amountAPerShare, priceA as USD<number>)
+      .times(totalWeight.div(weightA))
+      .times(multiplier) as USD<Big>;
   if (priceB)
-    return big(priceB)
-      .times(amountBPerShare)
-      .times(big(weightA).plus(weightB).div(weightB)) as USD<Big>;
+    return calculateAssetValue(amountBPerShare, priceB as USD<number>)
+      .times(totalWeight.div(weightB))
+      .times(multiplier) as USD<Big>;
   return undefined;
 };
 
@@ -61,29 +66,28 @@ export const useMovePoolInfos = () => {
 
   const data = pools?.reduce<MovePoolInfos>((acc, curr) => {
     const coinAInfo = assetInfos?.[curr.coin_a.denom];
-    const coinAprecision = coinAInfo?.precision ?? 0;
     const coinBInfo = assetInfos?.[curr.coin_b.denom];
-    const coinBprecision = coinBInfo?.precision ?? 0;
 
-    const totalShares = big(curr.total_share).div(big(10).pow(curr.precision));
-    const [amountAPerShare, amountBPerShare] = totalShares.eq(0)
+    const totalShares = big(curr.total_share);
+    const [tempA, tempB] = totalShares.eq(0)
       ? [big(0), big(0)]
       : [
-          big(curr.coin_a.amount)
-            .div(big(10).pow(coinAprecision))
-            .div(totalShares),
-          big(curr.coin_b.amount)
-            .div(big(10).pow(coinBprecision))
-            .div(totalShares),
+          big(curr.coin_a.amount).div(totalShares),
+          big(curr.coin_b.amount).div(totalShares),
         ];
+    const [amountAPerShare, amountBPerShare] = [tempA, tempB] as [
+      U<Token<Big>>,
+      U<Token<Big>>,
+    ];
 
-    const lpPricePerShare = computePricePerShare(
-      amountAPerShare,
+    const lpPricePerPShare = computePricePerPShare(
+      toToken(amountAPerShare, coinAInfo?.precision ?? 0),
       curr.coin_a.weight,
       coinAInfo?.price,
-      amountBPerShare,
+      toToken(amountBPerShare, coinBInfo?.precision ?? 0),
       curr.coin_b.weight,
-      coinBInfo?.price
+      coinBInfo?.price,
+      curr.precision
     );
 
     return {
@@ -91,18 +95,18 @@ export const useMovePoolInfos = () => {
       [curr.lp_denom]: {
         coinA: {
           ...curr.coin_a,
-          precision: coinAprecision,
           amountAPerShare,
+          precision: coinAInfo?.precision,
           symbol: coinAInfo?.symbol,
         },
         coinB: {
           ...curr.coin_b,
-          precision: coinBprecision,
           amountBPerShare,
+          precision: coinBInfo?.precision,
           symbol: coinBInfo?.symbol,
         },
         precision: curr.precision,
-        lpPricePerShare,
+        lpPricePerPShare,
         logo: [coinAInfo?.logo, coinBInfo?.logo],
       },
     };

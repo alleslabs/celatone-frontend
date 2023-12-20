@@ -58,6 +58,7 @@ export const toToken = (
   }
 };
 
+const LOWEST_THRESHOLD = 0.000001;
 /**
  * @remarks
  * If token is more than or equal to 1 billion, should add suffix B and format to 2 decimal point
@@ -75,6 +76,10 @@ export const formatUTokenWithPrecision = (
     if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
+  if (token.lt(LOWEST_THRESHOLD)) {
+    return `<${LOWEST_THRESHOLD}`;
+  }
+
   return formatDecimal({
     decimalPoints: decimalPoints ?? precision,
     delimiter: true,
@@ -91,7 +96,6 @@ export const formatUTokenWithPrecision = (
 export const formatPrice = (value: USD<BigSource>): string => {
   try {
     const price = big(value);
-    const lowestThreshold = 0.000001;
 
     const d2 = d2Formatter(price, "0.00");
     const d6 = d6Formatter(price, "0.00");
@@ -102,8 +106,8 @@ export const formatPrice = (value: USD<BigSource>): string => {
       return `$${d2}`;
     }
 
-    if (price.lt(lowestThreshold)) {
-      return `<$${lowestThreshold}`;
+    if (price.lt(LOWEST_THRESHOLD)) {
+      return `<$${LOWEST_THRESHOLD}`;
     }
     return `$${d6}`;
   } catch {
