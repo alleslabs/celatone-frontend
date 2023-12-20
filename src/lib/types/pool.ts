@@ -6,7 +6,9 @@ import type {
   ContractAddr,
   Nullable,
   Option,
+  Token,
   TokenWithValue,
+  U,
 } from "lib/types";
 
 export enum PoolType {
@@ -57,12 +59,14 @@ export interface PoolDetail<
 
 export interface PoolInfo {
   coinA: {
-    amount: string;
+    amount: U<Token<Big>>;
+    precision: Option<number>;
     denom: string;
     symbol: Option<string>;
   };
   coinB: {
-    amount: string;
+    amount: U<Token<Big>>;
+    precision: Option<number>;
     denom: string;
     symbol: Option<string>;
   };

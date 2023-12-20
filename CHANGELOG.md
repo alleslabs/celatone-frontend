@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#682](https://github.com/alleslabs/celatone-frontend/pull/682) Render token amount < 0.000001 properly
 - [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
 - [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
 - [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
