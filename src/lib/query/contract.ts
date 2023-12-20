@@ -17,7 +17,10 @@ export const getContractByContractAddressQueryDocument = graphql(`
 `);
 
 export const getInstantiateDetailByContractQueryDocument = graphql(`
-  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {
+  query getInstantiateDetailByContractQueryDocument(
+    $contractAddress: String!
+    $isGov: Boolean!
+  ) {
     contracts_by_pk(address: $contractAddress) {
       init_msg
       transaction {
@@ -37,7 +40,7 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
         }
         order_by: { proposal: { id: asc } }
         limit: 1
-      ) {
+      ) @include(if: $isGov) {
         proposal {
           id
           title

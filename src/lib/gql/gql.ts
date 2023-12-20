@@ -13,14 +13,8 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-  "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n":
-    types.GetAccountIdByAddressQueryDocumentDocument,
   "\n  query getAccountTypeByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      type\n    }\n  }\n":
     types.GetAccountTypeByAddressQueryDocumentDocument,
-  "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n":
-    types.GetBlockTimestampByHeightQueryDocument,
-  "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n      validator {\n        moniker\n        operator_address\n        identity\n      }\n    }\n  }\n":
-    types.GetBlockListQueryDocument,
   "\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n      validator {\n        moniker\n        operator_address\n        identity\n      }\n    }\n  }\n":
     types.GetBlockDetailsByHeightDocument,
   "\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n":
@@ -33,7 +27,7 @@ const documents = {
     types.GetCodeListByUserQueryDocument,
   "\n  query getCodeListByIDsQuery($ids: [Int!]!) {\n    codes(where: { id: { _in: $ids } }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
     types.GetCodeListByIDsQueryDocument,
-  "\n  query getCodeDataByCodeId($codeId: Int!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      # Can only have 1 store code proposal\n      code_proposals(limit: 1) {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
+  "\n  query getCodeDataByCodeId($codeId: Int!, $isGov: Boolean!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      # Can only have 1 store code proposal\n      code_proposals(limit: 1) @include(if: $isGov) {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
     types.GetCodeDataByCodeIdDocument,
   "\n  query getCodeListByWalletAddressPagination(\n    $walletAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    codes(\n      where: { account: { address: { _eq: $walletAddress } } }\n      limit: $pageSize\n      offset: $offset\n      order_by: { id: desc }\n    ) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
     types.GetCodeListByWalletAddressPaginationDocument,
@@ -41,7 +35,7 @@ const documents = {
     types.GetCodeListCountByWalletAddressDocument,
   "\n  query getContractByContractAddressQueryDocument($contractAddress: String!) {\n    contracts_by_pk(address: $contractAddress) {\n      address\n      code_id\n      label\n      accountByInitBy {\n        address\n      }\n      admin: account {\n        address\n      }\n    }\n  }\n":
     types.GetContractByContractAddressQueryDocumentDocument,
-  '\n  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {\n    contracts_by_pk(address: $contractAddress) {\n      init_msg\n      transaction {\n        hash\n      }\n      contract_proposals(\n        where: {\n          proposal: {\n            type: {\n              _in: [\n                "InstantiateContract"\n                "InstantiateContract2"\n                "SoftwareUpgrade"\n              ]\n            }\n          }\n        }\n        order_by: { proposal: { id: asc } }\n        limit: 1\n      ) {\n        proposal {\n          id\n          title\n        }\n      }\n      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n':
+  '\n  query getInstantiateDetailByContractQueryDocument(\n    $contractAddress: String!\n    $isGov: Boolean!\n  ) {\n    contracts_by_pk(address: $contractAddress) {\n      init_msg\n      transaction {\n        hash\n      }\n      contract_proposals(\n        where: {\n          proposal: {\n            type: {\n              _in: [\n                "InstantiateContract"\n                "InstantiateContract2"\n                "SoftwareUpgrade"\n              ]\n            }\n          }\n        }\n        order_by: { proposal: { id: asc } }\n        limit: 1\n      ) @include(if: $isGov) {\n        proposal {\n          id\n          title\n        }\n      }\n      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n':
     types.GetInstantiateDetailByContractQueryDocumentDocument,
   "\n  query getContractListQuery {\n    contracts(limit: 100, offset: 0, order_by: { id: desc }) {\n      address\n      label\n      admin: account {\n        address\n      }\n      init_by: contract_histories(\n        order_by: { block: { timestamp: asc } }\n        limit: 1\n      ) {\n        block {\n          timestamp\n        }\n        account {\n          address\n        }\n      }\n    }\n  }\n":
     types.GetContractListQueryDocument,
@@ -73,7 +67,7 @@ const documents = {
     types.GetModuleHistoriesQueryDocument,
   "\n  query getModuleHistoriesCountQuery($moduleId: Int!) {\n    module_histories_aggregate(where: { module_id: { _eq: $moduleId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetModuleHistoriesCountQueryDocument,
-  '\n  query getModuleInitialPublishInfoQuery($moduleId: Int!) {\n    modules(where: { id: { _eq: $moduleId } }) {\n      publisher_vm_address: vm_address {\n        vm_address\n      }\n      publish_transaction: transaction {\n        hash\n      }\n      module_proposals(\n        where: {\n          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }\n        }\n        order_by: { proposal_id: asc }\n        limit: 1\n      ) {\n        proposal {\n          id\n          title\n        }\n      }\n      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n':
+  '\n  query getModuleInitialPublishInfoQuery($moduleId: Int!, $isGov: Boolean!) {\n    modules(where: { id: { _eq: $moduleId } }) {\n      publisher_vm_address: vm_address {\n        vm_address\n      }\n      publish_transaction: transaction {\n        hash\n      }\n      module_proposals(\n        where: {\n          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }\n        }\n        order_by: { proposal_id: asc }\n        limit: 1\n      ) @include(if: $isGov) {\n        proposal {\n          id\n          title\n        }\n      }\n      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n':
     types.GetModuleInitialPublishInfoQueryDocument,
   "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n      contract_address\n    }\n  }\n":
     types.GetPoolListDocument,
@@ -95,30 +89,26 @@ const documents = {
     types.GetProposalsByWalletAddressPaginationDocument,
   "\n  query getProposalsCountByWalletAddress($walletAddress: String!) {\n    proposals_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetProposalsCountByWalletAddressDocument,
+  "\n  query getRelatedProposalsByModuleIdPagination(\n    $moduleId: Int!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    module_proposals(\n      where: { module_id: { _eq: $moduleId } }\n      order_by: { proposal_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      proposal {\n        title\n        status\n        voting_end_time\n        deposit_end_time\n        type\n        account {\n          address\n        }\n        is_expedited\n        resolved_height\n      }\n      proposal_id\n    }\n  }\n":
+    types.GetRelatedProposalsByModuleIdPaginationDocument,
+  "\n  query getRelatedProposalsCountByModuleId($moduleId: Int!) {\n    module_proposals_aggregate(where: { module_id: { _eq: $moduleId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
+    types.GetRelatedProposalsCountByModuleIdDocument,
   "\n  query getProposalList(\n    $expression: proposals_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    proposals(\n      where: $expression\n      order_by: { id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      type\n      id\n      title\n      voting_end_time\n      deposit_end_time\n      resolved_height\n      status\n      is_expedited\n      account {\n        address\n      }\n    }\n  }\n":
     types.GetProposalListDocument,
   "\n  query getProposalListCount($expression: proposals_bool_exp) {\n    proposals_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetProposalListCountDocument,
   "\n  query getProposalTypes {\n    proposals(distinct_on: type) {\n      type\n    }\n  }\n":
     types.GetProposalTypesDocument,
-  "\n  query getTxsByAddressPagination(\n    $expression: account_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    account_transactions(\n      where: $expression\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_send\n        is_ibc\n        is_clear_admin @include(if: $isWasm)\n        is_execute @include(if: $isWasm)\n        is_instantiate @include(if: $isWasm)\n        is_migrate @include(if: $isWasm)\n        is_store_code @include(if: $isWasm)\n        is_update_admin @include(if: $isWasm)\n        is_move_publish @include(if: $isMove)\n        is_move_upgrade @include(if: $isMove)\n        is_move_execute @include(if: $isMove)\n        is_move_script @include(if: $isMove)\n      }\n      is_signer\n    }\n  }\n":
-    types.GetTxsByAddressPaginationDocument,
-  "\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
-    types.GetTxsCountByAddressDocument,
   "\n  query getTxsByPoolIdPagination(\n    $expression: pool_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pool_transactions(\n      where: $expression\n      order_by: { block_height: desc, transaction_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_ibc\n      }\n    }\n  }\n":
     types.GetTxsByPoolIdPaginationDocument,
   "\n  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {\n    pool_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetTxsCountByPoolIdDocument,
-  "\n  query getTxs(\n    $offset: Int!\n    $pageSize: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_send\n      is_ibc\n      is_clear_admin @include(if: $isWasm)\n      is_execute @include(if: $isWasm)\n      is_instantiate @include(if: $isWasm)\n      is_migrate @include(if: $isWasm)\n      is_store_code @include(if: $isWasm)\n      is_update_admin @include(if: $isWasm)\n      is_move_publish @include(if: $isMove)\n      is_move_upgrade @include(if: $isMove)\n      is_move_execute @include(if: $isMove)\n      is_move_script @include(if: $isMove)\n    }\n  }\n":
-    types.GetTxsDocument,
   "\n  query getTxsCount {\n    transactions(limit: 1, order_by: { id: desc }) {\n      id\n    }\n  }\n":
     types.GetTxsCountDocument,
   "\n  query getBlockTransactionsByHeightQuery(\n    $limit: Int!\n    $offset: Int!\n    $height: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    transactions(\n      limit: $limit\n      offset: $offset\n      where: { block_height: { _eq: $height } }\n      order_by: { id: asc }\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_send\n      is_ibc\n      is_clear_admin @include(if: $isWasm)\n      is_execute @include(if: $isWasm)\n      is_instantiate @include(if: $isWasm)\n      is_migrate @include(if: $isWasm)\n      is_store_code @include(if: $isWasm)\n      is_update_admin @include(if: $isWasm)\n      is_move_publish @include(if: $isMove)\n      is_move_upgrade @include(if: $isMove)\n      is_move_execute @include(if: $isMove)\n      is_move_script @include(if: $isMove)\n    }\n  }\n":
     types.GetBlockTransactionsByHeightQueryDocument,
   "\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetBlockTransactionCountByHeightQueryDocument,
-  "\n  query getModuleTransactionsQuery(\n    $moduleId: Int!\n    $pageSize: Int!\n    $offset: Int!\n  ) {\n    module_transactions(\n      where: { module_id: { _eq: $moduleId } }\n      limit: $pageSize\n      offset: $offset\n      order_by: { block_height: desc }\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_send\n        is_ibc\n        is_move_execute\n        is_move_execute_event\n        is_move_publish\n        is_move_script\n        is_move_upgrade\n      }\n    }\n  }\n":
-    types.GetModuleTransactionsQueryDocument,
   "\n  query getModuleTransactionsCountQuery($moduleId: Int!) {\n    module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetModuleTransactionsCountQueryDocument,
   "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      moniker\n      operator_address\n      website\n    }\n  }\n":
@@ -143,26 +133,8 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"
-): (typeof documents)["\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
   source: "\n  query getAccountTypeByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      type\n    }\n  }\n"
 ): (typeof documents)["\n  query getAccountTypeByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      type\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n"
-): (typeof documents)["\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n      validator {\n        moniker\n        operator_address\n        identity\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n      validator {\n        moniker\n        operator_address\n        identity\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -203,8 +175,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query getCodeDataByCodeId($codeId: Int!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      # Can only have 1 store code proposal\n      code_proposals(limit: 1) {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"
-): (typeof documents)["\n  query getCodeDataByCodeId($codeId: Int!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      # Can only have 1 store code proposal\n      code_proposals(limit: 1) {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"];
+  source: "\n  query getCodeDataByCodeId($codeId: Int!, $isGov: Boolean!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      # Can only have 1 store code proposal\n      code_proposals(limit: 1) @include(if: $isGov) {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"
+): (typeof documents)["\n  query getCodeDataByCodeId($codeId: Int!, $isGov: Boolean!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      # Can only have 1 store code proposal\n      code_proposals(limit: 1) @include(if: $isGov) {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -227,8 +199,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {\n    contracts_by_pk(address: $contractAddress) {\n      init_msg\n      transaction {\n        hash\n      }\n      contract_proposals(\n        where: {\n          proposal: {\n            type: {\n              _in: [\n                "InstantiateContract"\n                "InstantiateContract2"\n                "SoftwareUpgrade"\n              ]\n            }\n          }\n        }\n        order_by: { proposal: { id: asc } }\n        limit: 1\n      ) {\n        proposal {\n          id\n          title\n        }\n      }\n      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'
-): (typeof documents)['\n  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {\n    contracts_by_pk(address: $contractAddress) {\n      init_msg\n      transaction {\n        hash\n      }\n      contract_proposals(\n        where: {\n          proposal: {\n            type: {\n              _in: [\n                "InstantiateContract"\n                "InstantiateContract2"\n                "SoftwareUpgrade"\n              ]\n            }\n          }\n        }\n        order_by: { proposal: { id: asc } }\n        limit: 1\n      ) {\n        proposal {\n          id\n          title\n        }\n      }\n      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'];
+  source: '\n  query getInstantiateDetailByContractQueryDocument(\n    $contractAddress: String!\n    $isGov: Boolean!\n  ) {\n    contracts_by_pk(address: $contractAddress) {\n      init_msg\n      transaction {\n        hash\n      }\n      contract_proposals(\n        where: {\n          proposal: {\n            type: {\n              _in: [\n                "InstantiateContract"\n                "InstantiateContract2"\n                "SoftwareUpgrade"\n              ]\n            }\n          }\n        }\n        order_by: { proposal: { id: asc } }\n        limit: 1\n      ) @include(if: $isGov) {\n        proposal {\n          id\n          title\n        }\n      }\n      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query getInstantiateDetailByContractQueryDocument(\n    $contractAddress: String!\n    $isGov: Boolean!\n  ) {\n    contracts_by_pk(address: $contractAddress) {\n      init_msg\n      transaction {\n        hash\n      }\n      contract_proposals(\n        where: {\n          proposal: {\n            type: {\n              _in: [\n                "InstantiateContract"\n                "InstantiateContract2"\n                "SoftwareUpgrade"\n              ]\n            }\n          }\n        }\n        order_by: { proposal: { id: asc } }\n        limit: 1\n      ) @include(if: $isGov) {\n        proposal {\n          id\n          title\n        }\n      }\n      contract_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -323,8 +295,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query getModuleInitialPublishInfoQuery($moduleId: Int!) {\n    modules(where: { id: { _eq: $moduleId } }) {\n      publisher_vm_address: vm_address {\n        vm_address\n      }\n      publish_transaction: transaction {\n        hash\n      }\n      module_proposals(\n        where: {\n          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }\n        }\n        order_by: { proposal_id: asc }\n        limit: 1\n      ) {\n        proposal {\n          id\n          title\n        }\n      }\n      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'
-): (typeof documents)['\n  query getModuleInitialPublishInfoQuery($moduleId: Int!) {\n    modules(where: { id: { _eq: $moduleId } }) {\n      publisher_vm_address: vm_address {\n        vm_address\n      }\n      publish_transaction: transaction {\n        hash\n      }\n      module_proposals(\n        where: {\n          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }\n        }\n        order_by: { proposal_id: asc }\n        limit: 1\n      ) {\n        proposal {\n          id\n          title\n        }\n      }\n      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'];
+  source: '\n  query getModuleInitialPublishInfoQuery($moduleId: Int!, $isGov: Boolean!) {\n    modules(where: { id: { _eq: $moduleId } }) {\n      publisher_vm_address: vm_address {\n        vm_address\n      }\n      publish_transaction: transaction {\n        hash\n      }\n      module_proposals(\n        where: {\n          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }\n        }\n        order_by: { proposal_id: asc }\n        limit: 1\n      ) @include(if: $isGov) {\n        proposal {\n          id\n          title\n        }\n      }\n      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'
+): (typeof documents)['\n  query getModuleInitialPublishInfoQuery($moduleId: Int!, $isGov: Boolean!) {\n    modules(where: { id: { _eq: $moduleId } }) {\n      publisher_vm_address: vm_address {\n        vm_address\n      }\n      publish_transaction: transaction {\n        hash\n      }\n      module_proposals(\n        where: {\n          proposal: { type: { _in: ["/initia.move.v1.MsgGovPublish"] } }\n        }\n        order_by: { proposal_id: asc }\n        limit: 1\n      ) @include(if: $isGov) {\n        proposal {\n          id\n          title\n        }\n      }\n      module_histories(order_by: { block: { timestamp: asc } }, limit: 1) {\n        block {\n          height\n          timestamp\n        }\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -389,6 +361,18 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "\n  query getRelatedProposalsByModuleIdPagination(\n    $moduleId: Int!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    module_proposals(\n      where: { module_id: { _eq: $moduleId } }\n      order_by: { proposal_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      proposal {\n        title\n        status\n        voting_end_time\n        deposit_end_time\n        type\n        account {\n          address\n        }\n        is_expedited\n        resolved_height\n      }\n      proposal_id\n    }\n  }\n"
+): (typeof documents)["\n  query getRelatedProposalsByModuleIdPagination(\n    $moduleId: Int!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    module_proposals(\n      where: { module_id: { _eq: $moduleId } }\n      order_by: { proposal_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      proposal {\n        title\n        status\n        voting_end_time\n        deposit_end_time\n        type\n        account {\n          address\n        }\n        is_expedited\n        resolved_height\n      }\n      proposal_id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query getRelatedProposalsCountByModuleId($moduleId: Int!) {\n    module_proposals_aggregate(where: { module_id: { _eq: $moduleId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query getRelatedProposalsCountByModuleId($moduleId: Int!) {\n    module_proposals_aggregate(where: { module_id: { _eq: $moduleId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "\n  query getProposalList(\n    $expression: proposals_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    proposals(\n      where: $expression\n      order_by: { id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      type\n      id\n      title\n      voting_end_time\n      deposit_end_time\n      resolved_height\n      status\n      is_expedited\n      account {\n        address\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query getProposalList(\n    $expression: proposals_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    proposals(\n      where: $expression\n      order_by: { id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      type\n      id\n      title\n      voting_end_time\n      deposit_end_time\n      resolved_height\n      status\n      is_expedited\n      account {\n        address\n      }\n    }\n  }\n"];
 /**
@@ -407,18 +391,6 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query getTxsByAddressPagination(\n    $expression: account_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    account_transactions(\n      where: $expression\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_send\n        is_ibc\n        is_clear_admin @include(if: $isWasm)\n        is_execute @include(if: $isWasm)\n        is_instantiate @include(if: $isWasm)\n        is_migrate @include(if: $isWasm)\n        is_store_code @include(if: $isWasm)\n        is_update_admin @include(if: $isWasm)\n        is_move_publish @include(if: $isMove)\n        is_move_upgrade @include(if: $isMove)\n        is_move_execute @include(if: $isMove)\n        is_move_script @include(if: $isMove)\n      }\n      is_signer\n    }\n  }\n"
-): (typeof documents)["\n  query getTxsByAddressPagination(\n    $expression: account_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    account_transactions(\n      where: $expression\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_send\n        is_ibc\n        is_clear_admin @include(if: $isWasm)\n        is_execute @include(if: $isWasm)\n        is_instantiate @include(if: $isWasm)\n        is_migrate @include(if: $isWasm)\n        is_store_code @include(if: $isWasm)\n        is_update_admin @include(if: $isWasm)\n        is_move_publish @include(if: $isMove)\n        is_move_upgrade @include(if: $isMove)\n        is_move_execute @include(if: $isMove)\n        is_move_script @include(if: $isMove)\n      }\n      is_signer\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
   source: "\n  query getTxsByPoolIdPagination(\n    $expression: pool_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pool_transactions(\n      where: $expression\n      order_by: { block_height: desc, transaction_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_ibc\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query getTxsByPoolIdPagination(\n    $expression: pool_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pool_transactions(\n      where: $expression\n      order_by: { block_height: desc, transaction_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_ibc\n      }\n    }\n  }\n"];
 /**
@@ -427,12 +399,6 @@ export function graphql(
 export function graphql(
   source: "\n  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {\n    pool_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {\n    pool_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query getTxs(\n    $offset: Int!\n    $pageSize: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_send\n      is_ibc\n      is_clear_admin @include(if: $isWasm)\n      is_execute @include(if: $isWasm)\n      is_instantiate @include(if: $isWasm)\n      is_migrate @include(if: $isWasm)\n      is_store_code @include(if: $isWasm)\n      is_update_admin @include(if: $isWasm)\n      is_move_publish @include(if: $isMove)\n      is_move_upgrade @include(if: $isMove)\n      is_move_execute @include(if: $isMove)\n      is_move_script @include(if: $isMove)\n    }\n  }\n"
-): (typeof documents)["\n  query getTxs(\n    $offset: Int!\n    $pageSize: Int!\n    $isWasm: Boolean!\n    $isMove: Boolean!\n  ) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_send\n      is_ibc\n      is_clear_admin @include(if: $isWasm)\n      is_execute @include(if: $isWasm)\n      is_instantiate @include(if: $isWasm)\n      is_migrate @include(if: $isWasm)\n      is_store_code @include(if: $isWasm)\n      is_update_admin @include(if: $isWasm)\n      is_move_publish @include(if: $isMove)\n      is_move_upgrade @include(if: $isMove)\n      is_move_execute @include(if: $isMove)\n      is_move_script @include(if: $isMove)\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -451,12 +417,6 @@ export function graphql(
 export function graphql(
   source: "\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query getModuleTransactionsQuery(\n    $moduleId: Int!\n    $pageSize: Int!\n    $offset: Int!\n  ) {\n    module_transactions(\n      where: { module_id: { _eq: $moduleId } }\n      limit: $pageSize\n      offset: $offset\n      order_by: { block_height: desc }\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_send\n        is_ibc\n        is_move_execute\n        is_move_execute_event\n        is_move_publish\n        is_move_script\n        is_move_upgrade\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query getModuleTransactionsQuery(\n    $moduleId: Int!\n    $pageSize: Int!\n    $offset: Int!\n  ) {\n    module_transactions(\n      where: { module_id: { _eq: $moduleId } }\n      limit: $pageSize\n      offset: $offset\n      order_by: { block_height: desc }\n    ) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_send\n        is_ibc\n        is_move_execute\n        is_move_execute_event\n        is_move_publish\n        is_move_script\n        is_move_upgrade\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

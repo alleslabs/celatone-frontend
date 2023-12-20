@@ -2,7 +2,11 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+} from "lib/app-provider";
 import type { Addr, ValidatorAddr } from "lib/types";
 
 import type {
@@ -133,11 +137,17 @@ export const useCommission = (
 
 export const useAccountDelegations = (address: Addr) => {
   const endpoint = useBaseApiRoute("accounts");
+  const {
+    chainConfig: {
+      extra: { disableDelegation },
+    },
+  } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_DELEGATIONS, endpoint, address],
     () => getAccountDelegations(endpoint, address),
     {
+      enabled: !disableDelegation,
       refetchOnWindowFocus: false,
     }
   );

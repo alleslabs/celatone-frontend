@@ -97,6 +97,7 @@ export const InstantiatedContractsTable = observer(
                   <ErrorFetching dataName="contracts" />
                 ) : (
                   <EmptyState
+                    imageVariant="empty"
                     message="This account did not instantiate any contracts before."
                     withBorder
                   />

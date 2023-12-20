@@ -1,33 +1,27 @@
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { ViewMore } from "lib/components/table";
-import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
+import { ProposalsTable, ViewMore } from "lib/components/table";
+import { useRelatedProposalsByModuleIdPagination } from "lib/services/proposalService";
 import type { Nullish, Option } from "lib/types";
 
-import { PublishedEventsTable } from "./PublishedEventsTable";
-
-interface ModuleHistoryTableProps {
+interface ModuleRelatedProposalsTableProps {
   moduleId: Nullish<number>;
-  historyCount: Option<number>;
-  scrollComponentId?: string;
+  scrollComponentId: string;
+  relatedProposalsCount: Option<number>;
   refetchCount: () => void;
   onViewMore?: () => void;
 }
 
-export const ModuleHistoryTable = ({
+export const ModuleRelatedProposalsTable = ({
   moduleId,
-  historyCount,
   scrollComponentId,
+  relatedProposalsCount,
   refetchCount,
   onViewMore,
-}: ModuleHistoryTableProps) => {
-  const { currentChainId } = useCelatoneApp();
-
+}: ModuleRelatedProposalsTableProps) => {
   const {
     pagesQuantity,
     currentPage,
@@ -36,23 +30,19 @@ export const ModuleHistoryTable = ({
     setPageSize,
     offset,
   } = usePaginator({
-    total: historyCount,
+    total: relatedProposalsCount,
     initialState: {
-      pageSize: onViewMore ? 5 : 10,
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
 
   const {
-    data: moduleHistories,
+    data: relatedProposals,
     isLoading,
     error,
-  } = useModuleHistoriesByPagination({
-    moduleId,
-    pageSize,
-    offset,
-  });
+  } = useRelatedProposalsByModuleIdPagination(moduleId, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -66,41 +56,35 @@ export const ModuleHistoryTable = ({
     setCurrentPage(1);
   };
 
-  useEffect(() => {
-    if (!onViewMore) setPageSize(10);
-    setCurrentPage(1);
-  }, [currentChainId, onViewMore, setCurrentPage, setPageSize]);
-
   return (
     <>
-      <PublishedEventsTable
-        moduleHistories={moduleHistories}
+      <ProposalsTable
+        proposals={relatedProposals}
         isLoading={isLoading}
         emptyState={
-          !moduleId || error ? (
-            <ErrorFetching dataName="module published events history" />
+          error ? (
+            <ErrorFetching dataName="related proposals" />
           ) : (
             <EmptyState
               imageVariant="empty"
-              message="This module does not have any published events yet."
-              withBorder
+              message="This contract does not have related proposals yet."
             />
           )
         }
       />
-      {!!historyCount &&
+      {!!relatedProposalsCount &&
         (onViewMore
-          ? historyCount > 5 && <ViewMore onClick={onViewMore} />
-          : historyCount > 10 && (
+          ? relatedProposalsCount > 5 && <ViewMore onClick={onViewMore} />
+          : relatedProposalsCount > 10 && (
               <Pagination
                 currentPage={currentPage}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={historyCount}
+                totalData={relatedProposalsCount}
+                scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
                 onPageChange={onPageChange}
                 onPageSizeChange={onPageSizeChange}
-                scrollComponentId={scrollComponentId}
               />
             ))}
     </>

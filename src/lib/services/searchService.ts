@@ -170,7 +170,7 @@ export const useSearchHandler = (
   return {
     results: [
       addressResult,
-      moduleName && moduleData && "Module Path",
+      moduleName && enableModuleFetching && moduleData && "Module Path",
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
