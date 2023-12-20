@@ -1,7 +1,6 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { ErrorFetching, EmptyState } from "lib/components/state";
@@ -23,8 +22,6 @@ export const ModuleListsBody = ({
   isLoading,
   onViewMore,
 }: ModuleListsBodyProps) => {
-  const navigate = useInternalNavigate();
-
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
@@ -33,16 +30,6 @@ export const ModuleListsBody = ({
         module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, modules]);
-
-  const handleOnSelect = (module: IndexedModule) => {
-    navigate({
-      pathname: `/modules/[address]/[moduleName]`,
-      query: {
-        address: selectedAddress,
-        moduleName: module.moduleName,
-      },
-    });
-  };
 
   if (isLoading) return <Loading />;
   if (!modules) return <ErrorFetching dataName="modules" />;
@@ -67,7 +54,6 @@ export const ModuleListsBody = ({
             selectedAddress={selectedAddress}
             module={item}
             selectedModule={undefined}
-            setSelectedModule={handleOnSelect}
           />
         )
       )}
