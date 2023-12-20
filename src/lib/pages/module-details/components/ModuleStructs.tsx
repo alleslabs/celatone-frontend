@@ -7,10 +7,11 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { StructCard } from "lib/components/module/StructCard";
 import type { IndexedModule } from "lib/services/move/moduleService";
 
-interface ModuleStructProps {
+interface ModuleStructsProps {
   structs: IndexedModule["parsedAbi"]["structs"];
 }
-export const ModuleStruct = ({ structs }: ModuleStructProps) => {
+
+export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
   const [keyword, setKeyword] = useState("");
 

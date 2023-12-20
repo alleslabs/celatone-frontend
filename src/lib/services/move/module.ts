@@ -40,7 +40,7 @@ const zAccountModulesResponseItem = z
 
 const zAccountModulesResponse = z.object({
   items: z.array(zAccountModulesResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
@@ -181,7 +181,7 @@ const zModulesResponseItem = z
 
 const zModulesResponse = z.object({
   items: z.array(zModulesResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 export type ModulesResponse = z.infer<typeof zModulesResponse>;
 

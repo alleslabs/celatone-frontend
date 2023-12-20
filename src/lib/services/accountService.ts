@@ -7,6 +7,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useWasmConfig,
+  useGovConfig,
 } from "lib/app-provider";
 import { getAccountTypeByAddressQueryDocument } from "lib/query";
 import type { AccountType, Addr, Option } from "lib/types";
@@ -67,11 +68,18 @@ export const useAccountTableCounts = (
   address: Addr
 ): UseQueryResult<AccountTableCounts> => {
   const endpoint = useBaseApiRoute("accounts");
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_TABLE_COUNTS, endpoint, address, isWasm],
-    async () => getAccountTableCounts(endpoint, address, isWasm),
+    [
+      CELATONE_QUERY_KEYS.ACCOUNT_TABLE_COUNTS,
+      endpoint,
+      address,
+      isGov,
+      isWasm,
+    ],
+    async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

@@ -43,25 +43,24 @@ export const MyPublishedModulesTable = () => {
   }, [keyword, mappedModules]);
 
   const emptyState = () => {
-    if (error)
-      return (
-        <ErrorFetching message="There is an error during fetching recent modules." />
-      );
+    if (error) return <ErrorFetching dataName="published modules" />;
     if (!keyword)
       return (
         <EmptyState
           imageVariant="empty"
           message="There is currently no published modules."
+          withBorder
         />
       );
     return (
       <EmptyState
-        withBorder
         imageVariant="not-found"
         message="No matching module found. Make sure you are searching with Module Name."
+        withBorder
       />
     );
   };
+
   return (
     <>
       <InputWithIcon

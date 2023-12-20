@@ -30,10 +30,7 @@ const UnbondingsTableBody = ({
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
-  if (!unbondings)
-    return (
-      <ErrorFetching message="There is an error during fetching undelegations." />
-    );
+  if (!unbondings) return <ErrorFetching dataName="undelegations" />;
   if (!unbondings.length)
     return (
       <EmptyState

@@ -10,6 +10,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
   useMoveConfig,
 } from "lib/app-provider";
 import {
@@ -348,11 +349,12 @@ export const useModuleDetailsQuery = (
   moduleId: Option<Nullable<number>>
 ): UseQueryResult<ModuleInitialPublishInfo> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   const queryFn = async () => {
     if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
-      .request(getModuleInitialPublishInfoQueryDocument, { moduleId })
+      .request(getModuleInitialPublishInfoQueryDocument, { moduleId, isGov })
       .then<ModuleInitialPublishInfo>(({ modules }) => {
         const target = modules[0];
         if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
@@ -363,8 +365,8 @@ export const useModuleDetailsQuery = (
             target.module_histories?.[0]?.block.timestamp
           ),
           initTxHash: parseTxHashOpt(target.publish_transaction?.hash),
-          initProposalId: target.module_proposals[0]?.proposal.id,
-          initProposalTitle: target.module_proposals[0]?.proposal.title,
+          initProposalId: target.module_proposals?.[0]?.proposal.id,
+          initProposalTitle: target.module_proposals?.[0]?.proposal.title,
         };
       });
   };

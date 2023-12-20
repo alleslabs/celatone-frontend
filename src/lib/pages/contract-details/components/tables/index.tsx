@@ -7,6 +7,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 
+import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { useContractTableCounts } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
@@ -21,6 +22,8 @@ interface ContractTablesProps {
 
 export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
   const tableHeaderId = "contractDetailsTableHeader";
+
+  const gov = useGovConfig({ shouldRedirect: false });
   const { data, refetch: refetchCount } =
     useContractTableCounts(contractAddress);
 
@@ -46,6 +49,7 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
             count={data?.relatedProposal}
             isDisabled={data?.relatedProposal === 0}
             whiteSpace="nowrap"
+            hidden={!gov.enabled}
           >
             Related Proposals
           </CustomTab>

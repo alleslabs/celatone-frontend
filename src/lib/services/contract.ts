@@ -100,7 +100,7 @@ const zContractsResponseItem = z
 
 const zContractsResponse = z.object({
   items: z.array(zContractsResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 
 export type ContractsResponse = z.infer<typeof zContractsResponse>;
@@ -150,8 +150,13 @@ export type ContractTableCounts = z.infer<typeof zContractTableCounts>;
 
 export const getContractTableCounts = async (
   endpoint: string,
-  address: string
+  address: string,
+  isGov: boolean
 ): Promise<ContractTableCounts> =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/table-counts`, {})
+    .get(`${endpoint}/${encodeURIComponent(address)}/table-counts`, {
+      params: {
+        is_gov: isGov,
+      },
+    })
     .then((res) => zContractTableCounts.parse(res.data));

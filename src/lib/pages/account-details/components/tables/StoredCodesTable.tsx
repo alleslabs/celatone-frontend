@@ -94,7 +94,7 @@ export const StoredCodesTable = observer(
               isLoading={isLoading}
               emptyState={
                 !codes ? (
-                  <ErrorFetching message="There is an error during fetching codes." />
+                  <ErrorFetching dataName="codes" />
                 ) : (
                   <EmptyState
                     withBorder

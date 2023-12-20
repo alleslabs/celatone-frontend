@@ -7,6 +7,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
 } from "lib/app-provider";
 import {
   getCodeDataByCodeId,
@@ -142,6 +143,7 @@ export const useCodeDataByCodeId = ({
   Nullable<Omit<CodeData, "chainId">>
 > => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useCodeDataByCodeId)");
@@ -149,6 +151,7 @@ export const useCodeDataByCodeId = ({
     return indexerGraphClient
       .request(getCodeDataByCodeId, {
         codeId: Number(codeId),
+        isGov,
       })
       .then(({ codes_by_pk }) => {
         if (!codes_by_pk) return null;
@@ -159,7 +162,7 @@ export const useCodeDataByCodeId = ({
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
           created: parseDateOpt(codes_by_pk.transaction?.block?.timestamp),
-          proposal: codes_by_pk.code_proposals[0]
+          proposal: codes_by_pk.code_proposals?.[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
                 height: codes_by_pk.code_proposals[0].block?.height,
@@ -175,9 +178,9 @@ export const useCodeDataByCodeId = ({
           cw2Version: codes_by_pk.cw2_version,
         };
       });
-  }, [codeId, indexerGraphClient]);
+  }, [codeId, indexerGraphClient, isGov]);
   return useQuery(
-    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient, isGov],
     queryFn,
     {
       enabled: enabled && isCodeId(codeId),

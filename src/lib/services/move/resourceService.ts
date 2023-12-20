@@ -60,13 +60,15 @@ export const useResourcesByAddress = (
         Record<string, ResourceGroup>
       >((acc, resource) => {
         const [accountName, groupName] = resource.structTag.split("::");
-        const groupResources = acc[groupName] ?? {};
+        const resourceKey = `${accountName}::${groupName}`;
+
+        const groupResources = acc[resourceKey] ?? {};
         const items = groupResources?.items ?? [];
         items.push(resource);
 
         return {
           ...acc,
-          [groupName]: {
+          [resourceKey]: {
             displayName: `${truncate(accountName)}::${groupName}`,
             account: accountName as MoveAccountAddr,
             group: groupName,
