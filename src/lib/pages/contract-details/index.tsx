@@ -96,7 +96,11 @@ const ContractDetailsBody = observer(
     return (
       <>
         <ContractTop contractAddress={contractAddress} {...contractData} />
-        <Tabs index={Object.values(TabIndex).indexOf(tab)} isLazy>
+        <Tabs
+          index={Object.values(TabIndex).indexOf(tab)}
+          isLazy
+          lazyBehavior="keepMounted"
+        >
           <TabList
             mt={6}
             mb={8}

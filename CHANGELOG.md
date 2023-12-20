@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#677](https://github.com/alleslabs/celatone-frontend/pull/677) Add minimove-1 and miniwasm-1
 - [#676](https://github.com/alleslabs/celatone-frontend/pull/676) New error fetching image & refactor empty states
 - [#666](https://github.com/alleslabs/celatone-frontend/pull/666) Add my published modules page
 - [#671](https://github.com/alleslabs/celatone-frontend/pull/671) Add mahalo-1
@@ -72,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#683](https://github.com/alleslabs/celatone-frontend/pull/683) Fix save account hex duplicate and search with hex
 - [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
 - [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
 - [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item

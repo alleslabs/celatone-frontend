@@ -18,7 +18,7 @@ import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
 
-interface ModuleFunctionProps {
+interface ModuleFunctionsProps {
   address: IndexedModule["address"];
   moduleName: IndexedModule["moduleName"];
   fns: IndexedModule["parsedAbi"]["exposed_functions"];
@@ -61,13 +61,13 @@ const FunctionAccordions = ({
   </Accordion>
 );
 
-export const ModuleFunction = ({
+export const ModuleFunctions = ({
   address,
   moduleName,
   fns,
   viewFns,
   executeFns,
-}: ModuleFunctionProps) => {
+}: ModuleFunctionsProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
