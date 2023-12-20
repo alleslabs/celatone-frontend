@@ -138,6 +138,7 @@ export const useInstantiateDetailByContractQuery = (
       CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL,
       contractAddress,
       indexerGraphClient,
+      isGov,
     ],
     queryFn,
     {
