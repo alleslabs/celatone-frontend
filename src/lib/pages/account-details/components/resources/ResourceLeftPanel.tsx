@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 
+import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { ResourceCard } from "lib/components/resource";
@@ -101,7 +102,7 @@ export const ResourceLeftPanel = ({
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="md"
-        amptrackSection="execute-message-search"
+        amptrackSection="resource-search-with-module-name"
       />
       <Accordion
         allowMultiple
@@ -111,47 +112,63 @@ export const ResourceLeftPanel = ({
       >
         {filteredResourcesByOwner.map((item) => (
           <AccordionItem mb={4} key={item.owner}>
-            <AccordionButton>
-              <Flex p={4} justifyContent="space-between" w="full">
-                <Text variant="body1" fontWeight={600}>
-                  {truncate(item.owner)}
-                </Text>
-                <AccordionIcon color="gray.600" />
-              </Flex>
-            </AccordionButton>
-            <AccordionPanel>
-              {item.resources.length ? (
-                <Flex direction="column" gap={3}>
-                  {Object.values(item.resources).map((subitem) => (
-                    <ResourceCard
-                      key={subitem.displayName}
-                      name={subitem.group}
-                      amount={subitem.items.length}
-                      isSelected={
-                        selectedResources?.account === subitem.account &&
-                        selectedResources?.group === subitem.group
-                      }
-                      onClick={() =>
-                        handleSelectResource(item.owner, subitem.group)
-                      }
-                      hasBorder
-                    />
-                  ))}
-                </Flex>
-              ) : (
-                <Text
-                  variant="body2"
-                  color="text.dark"
-                  textAlign="center"
-                  p={4}
-                  border="1px solid"
-                  borderRadius="8px"
-                  borderColor="gray.700"
+            {({ isExpanded }) => (
+              <>
+                <AccordionButton
+                  onClick={() => {
+                    trackUseExpand({
+                      action: !isExpanded ? "expand" : "collapse",
+                      component: "resources_by_account_card",
+                      info: { resoucesGroupItemCount: item.resources.length },
+                      section: "account detail resources tab",
+                    });
+                  }}
                 >
-                  No matching resource found
-                </Text>
-              )}
-            </AccordionPanel>
+                  <Flex p={4} justifyContent="space-between" w="full">
+                    <Text variant="body1" fontWeight={600}>
+                      {truncate(item.owner)}
+                    </Text>
+                    <AccordionIcon color="gray.600" />
+                  </Flex>
+                </AccordionButton>
+                <AccordionPanel>
+                  {item.resources.length ? (
+                    <Flex direction="column" gap={3}>
+                      {Object.values(item.resources).map((subitem) => (
+                        <ResourceCard
+                          key={subitem.displayName}
+                          name={subitem.group}
+                          amount={subitem.items.length}
+                          isSelected={
+                            selectedResources?.account === subitem.account &&
+                            selectedResources?.group === subitem.group
+                          }
+                          onClick={() => {
+                            track(AmpEvent.USE_SELECT_RESOURCE_GROUP, {
+                              resourcesByModuleCount: subitem.items.length,
+                            });
+                            handleSelectResource(item.owner, subitem.group);
+                          }}
+                          hasBorder
+                        />
+                      ))}
+                    </Flex>
+                  ) : (
+                    <Text
+                      variant="body2"
+                      color="text.dark"
+                      textAlign="center"
+                      p={4}
+                      border="1px solid"
+                      borderRadius="8px"
+                      borderColor="gray.700"
+                    >
+                      No matching resource found
+                    </Text>
+                  )}
+                </AccordionPanel>
+              </>
+            )}
           </AccordionItem>
         ))}
       </Accordion>

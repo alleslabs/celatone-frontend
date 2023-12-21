@@ -17,10 +17,11 @@ export const trackUseMainSearch = (
     section,
   });
 
-export const trackUseTab = (tab: string, section?: string) =>
+export const trackUseTab = (tab: string, section?: string, info?: string) =>
   amp.track(AmpEvent.USE_TAB, {
     tab,
     section,
+    info,
   });
 
 export const trackUseRadio = (radio: string, section?: string) =>
@@ -75,7 +76,9 @@ export const trackUseExpand = ({
     | "module_struct_accordion"
     | "module_interaction_function_accordion"
     | "module_interaction_selected_function_card"
-    | "pool_tx_msg";
+    | "pool_tx_msg"
+    | "resources_detail_card"
+    | "resources_by_account_card";
   info?: object;
   section?: string;
 }) =>

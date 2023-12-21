@@ -2,6 +2,7 @@ import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { trackUseExpandAll } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -89,6 +90,10 @@ export const ResourceSectionBody = ({
                 />
               }
               onClick={() => {
+                trackUseExpandAll(
+                  expandedIndexes.length ? "collapse" : "expand",
+                  "account detail resources Tab"
+                );
                 setExpandedIndexes((prev) =>
                   !prev.length
                     ? Array.from(Array(selectedResource.items.length).keys())

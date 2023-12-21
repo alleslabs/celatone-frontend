@@ -202,7 +202,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                 leftIcon={<CustomIcon name="query" mr={0} />}
                 size={{ base: "sm", md: "md" }}
                 onClick={() => {
-                  track(AmpEvent.USE_MAIN_CTA, { label: "View" });
+                  track(AmpEvent.USE_MODULE_DETAIL_MAIN_CTA, { label: "view" });
                   navigate({
                     pathname: "/interact",
                     query: {
@@ -221,7 +221,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                 leftIcon={<CustomIcon name="execute" mr={0} />}
                 size={{ base: "sm", md: "md" }}
                 onClick={() => {
-                  track(AmpEvent.USE_MAIN_CTA, { label: "Execute" });
+                  track(AmpEvent.USE_MODULE_DETAIL_MAIN_CTA, {
+                    label: "execute",
+                  });
                   navigate({
                     pathname: "/interact",
                     query: {
@@ -246,7 +248,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                   leftIcon={<CustomIcon name="migrate" mr={0} />}
                   size={{ base: "sm", md: "md" }}
                   onClick={() => {
-                    track(AmpEvent.USE_MAIN_CTA, { label: "View" });
+                    track(AmpEvent.USE_MODULE_DETAIL_MAIN_CTA, {
+                      label: "republish",
+                    });
                     navigate({
                       pathname: "/publish-module",
                     });
