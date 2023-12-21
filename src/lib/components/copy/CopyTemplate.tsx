@@ -1,5 +1,5 @@
 import type { BoxProps } from "@chakra-ui/react";
-import { Box, useClipboard } from "@chakra-ui/react";
+import { Flex, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { Tooltip } from "../Tooltip";
@@ -26,7 +26,8 @@ export const CopyTemplate = ({
 
   return (
     <Tooltip isOpen={!isDisabled && hasCopied} label={copyLabel}>
-      <Box
+      <Flex
+        direction="column"
         onClick={(e) => {
           onCopy();
           e.stopPropagation();
@@ -35,7 +36,7 @@ export const CopyTemplate = ({
         ml={ml}
       >
         {triggerElement}
-      </Box>
+      </Flex>
     </Tooltip>
   );
 };

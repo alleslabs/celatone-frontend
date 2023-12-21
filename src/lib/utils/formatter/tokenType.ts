@@ -1,6 +1,7 @@
 import { capitalize } from "lodash";
 
 import { truncate } from "../truncate";
+import type { Option } from "lib/types";
 
 export const getTokenType = (type: string) => {
   switch (type.toLowerCase()) {
@@ -12,12 +13,16 @@ export const getTokenType = (type: string) => {
   }
 };
 
-export const getTokenLabel = (denom: string, symbol?: string) => {
+export const getTokenLabel = (
+  denom: string,
+  symbol: Option<string>,
+  isTruncate = true
+) => {
   if (symbol) return symbol;
 
   const splitId = denom.split("/");
   if (splitId.length === 1) return denom;
 
-  splitId[1] = truncate(splitId[1]);
+  splitId[1] = isTruncate ? truncate(splitId[1]) : splitId[1];
   return splitId.join("/");
 };
