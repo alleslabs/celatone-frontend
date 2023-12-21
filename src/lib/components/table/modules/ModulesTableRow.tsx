@@ -35,6 +35,7 @@ export const ModulesTableRow = ({
         templateColumns={templateColumns}
         cursor="pointer"
         _hover={{ background: "gray.900" }}
+        cursor="pointer"
         transition="all 0.25s ease-in-out"
         onClick={() =>
           navigate({
