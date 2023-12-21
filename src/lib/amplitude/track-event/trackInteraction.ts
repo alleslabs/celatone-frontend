@@ -17,10 +17,11 @@ export const trackUseMainSearch = (
     section,
   });
 
-export const trackUseTab = (tab: string, section?: string) =>
+export const trackUseTab = (tab: string, section?: string, info?: string) =>
   amp.track(AmpEvent.USE_TAB, {
     tab,
     section,
+    info,
   });
 
 export const trackUseRadio = (radio: string, section?: string) =>
