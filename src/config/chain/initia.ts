@@ -9,7 +9,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Initia Testnet 12-1",
     lcd: "https://next-stone-rest.initia.tech",
     rpc: "https://next-stone-rpc.initia.tech:443",
-    indexer: "https://stone-12-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://stone-12-1-nft-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
