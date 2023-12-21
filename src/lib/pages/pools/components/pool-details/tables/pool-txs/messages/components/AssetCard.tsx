@@ -10,6 +10,7 @@ import {
   calculateAssetValue,
   formatPrice,
   formatUTokenWithPrecision,
+  getTokenLabel,
   toToken,
 } from "lib/utils";
 
@@ -27,7 +28,7 @@ export const AssetCard = ({
   ampCopierSection,
   ...cardProps
 }: AssetCardProps) => {
-  const symbol = assetInfo?.symbol ?? denom;
+  const symbol = getTokenLabel(denom, assetInfo?.symbol, false);
   return (
     <Tooltip label={`Token ID: ${denom}`} maxW="240px" textAlign="center">
       <Flex

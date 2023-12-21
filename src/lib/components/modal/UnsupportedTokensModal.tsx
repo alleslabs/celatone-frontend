@@ -73,9 +73,7 @@ const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
             className={isMobile ? "" : "ellipsis"}
             wordBreak="break-all"
           >
-            {isMobile
-              ? token.symbol ?? token.denom
-              : getTokenLabel(token.denom, token.symbol)}
+            {getTokenLabel(token.denom, token.symbol, !isMobile)}
           </Text>
           {!isMobile && (
             <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
