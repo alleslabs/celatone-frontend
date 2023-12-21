@@ -77,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#694](https://github.com/alleslabs/celatone-frontend/pull/694) Reroute cosmwasm pool back to pool detail page
 - [#691](https://github.com/alleslabs/celatone-frontend/pull/691) Fix unsupported token card
 - [#693](https://github.com/alleslabs/celatone-frontend/pull/693) Fix ui styling for contract card and states
 - [#687](https://github.com/alleslabs/celatone-frontend/pull/687) Fix resource and module related bugs
