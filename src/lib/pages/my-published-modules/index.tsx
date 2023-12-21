@@ -3,8 +3,7 @@ import router from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
-import { useIsConnected } from "lib/app-provider/hooks/useIsConnected";
+import { useInternalNavigate, useIsConnected } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 
