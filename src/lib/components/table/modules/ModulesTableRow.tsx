@@ -36,15 +36,15 @@ export const ModulesTableRow = ({
         _hover={{ background: "gray.900" }}
         cursor="pointer"
         transition="all 0.25s ease-in-out"
-        onClick={() => {
+        onClick={() =>
           navigate({
             pathname: "/modules/[address]/[moduleName]",
             query: {
               address: hex,
               moduleName: moduleInfo.name,
             },
-          });
-        }}
+          })
+        }
       >
         <TableRow>
           <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
