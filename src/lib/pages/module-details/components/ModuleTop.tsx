@@ -18,7 +18,7 @@ import { Tooltip } from "lib/components/Tooltip";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { UpgradePolicy } from "lib/types";
 import type { HexAddr } from "lib/types";
-import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
+import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
@@ -77,7 +77,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
       <Breadcrumb
         items={[
           {
-            text: moduleData.parsedAbi.address,
+            text: truncate(moduleData.parsedAbi.address),
             href: `/accounts/${moduleData.parsedAbi.address}`,
           },
           {
@@ -189,81 +189,84 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             </Flex>
           </Flex>
         </Flex>
-        {!isMobile && (
-          <Flex
-            gap={{ base: 2, md: 4 }}
-            mt={{ base: 8, md: 0 }}
-            w={{ base: "full", md: "auto" }}
-          >
-            <Button
-              variant="outline-white"
-              w={{ base: "full", md: "auto" }}
-              leftIcon={<CustomIcon name="query" mr={0} />}
-              size={{ base: "sm", md: "md" }}
-              onClick={() => {
-                track(AmpEvent.USE_MAIN_CTA, { label: "View" });
-                navigate({
-                  pathname: "/interact",
-                  query: {
-                    address: moduleData.address,
-                    moduleName: moduleData.moduleName,
-                    functionType: "view",
-                  },
-                });
-              }}
-            >
-              View
-            </Button>
-            <Button
-              variant="outline-white"
-              w={{ base: "full", md: "auto" }}
-              leftIcon={<CustomIcon name="execute" mr={0} />}
-              size={{ base: "sm", md: "md" }}
-              onClick={() => {
-                track(AmpEvent.USE_MAIN_CTA, { label: "Execute" });
-                navigate({
-                  pathname: "/interact",
-                  query: {
-                    address: moduleData.address,
-                    moduleName: moduleData.moduleName,
-                    functionType: "execute",
-                  },
-                });
-              }}
-            >
-              Execute
-            </Button>
-            <Tooltip
-              variant="primary-light"
-              label={republishRemark}
-              closeOnClick={false}
-            >
+        <Flex
+          gap={{ base: 2, md: 4 }}
+          mt={{ base: 8, md: 0 }}
+          w={{ base: "full", md: "auto" }}
+        >
+          {!isMobile && (
+            <>
               <Button
-                disabled={!canRepublish}
                 variant="outline-white"
                 w={{ base: "full", md: "auto" }}
-                leftIcon={<CustomIcon name="migrate" mr={0} />}
+                leftIcon={<CustomIcon name="query" mr={0} />}
                 size={{ base: "sm", md: "md" }}
                 onClick={() => {
                   track(AmpEvent.USE_MAIN_CTA, { label: "View" });
                   navigate({
-                    pathname: "/publish-module",
+                    pathname: "/interact",
+                    query: {
+                      address: moduleData.address,
+                      moduleName: moduleData.moduleName,
+                      functionType: "view",
+                    },
                   });
                 }}
               >
-                Republish
+                View
               </Button>
-            </Tooltip>
-            <CopyButton
-              amptrackSection="[Module Detail CTA] Copy ABI "
-              value={moduleData.abi}
-              variant="outline-primary"
-              size={{ base: "sm", md: "md" }}
-              buttonText="Copy ABI"
-              iconGap={2}
-            />
-          </Flex>
-        )}
+              <Button
+                variant="outline-white"
+                w={{ base: "full", md: "auto" }}
+                leftIcon={<CustomIcon name="execute" mr={0} />}
+                size={{ base: "sm", md: "md" }}
+                onClick={() => {
+                  track(AmpEvent.USE_MAIN_CTA, { label: "Execute" });
+                  navigate({
+                    pathname: "/interact",
+                    query: {
+                      address: moduleData.address,
+                      moduleName: moduleData.moduleName,
+                      functionType: "execute",
+                    },
+                  });
+                }}
+              >
+                Execute
+              </Button>
+              <Tooltip
+                variant="primary-light"
+                label={republishRemark}
+                closeOnClick={false}
+              >
+                <Button
+                  disabled={!canRepublish}
+                  variant="outline-white"
+                  w={{ base: "full", md: "auto" }}
+                  leftIcon={<CustomIcon name="migrate" mr={0} />}
+                  size={{ base: "sm", md: "md" }}
+                  onClick={() => {
+                    track(AmpEvent.USE_MAIN_CTA, { label: "View" });
+                    navigate({
+                      pathname: "/publish-module",
+                    });
+                  }}
+                >
+                  Republish
+                </Button>
+              </Tooltip>
+            </>
+          )}
+          <CopyButton
+            amptrackSection="[Module Detail CTA] Copy ABI "
+            value={moduleData.abi}
+            variant="outline-primary"
+            size={{ base: "sm", md: "md" }}
+            buttonText="Copy ABI"
+            iconGap={2}
+            w={{ base: "full", md: "auto" }}
+          />
+        </Flex>
       </Flex>
     </Flex>
   );

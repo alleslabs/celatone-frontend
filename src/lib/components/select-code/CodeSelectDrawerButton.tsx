@@ -138,7 +138,6 @@ export const CodeSelectDrawerButton = ({
                     codes={saved}
                     isLoading={isSavedCodesLoading}
                     onRowSelect={handleSelect}
-                    emptyMessage="You don’t have any saved codes in this device."
                     isSearching={isSearching}
                     isReadOnly
                   />

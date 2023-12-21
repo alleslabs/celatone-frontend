@@ -28,7 +28,7 @@ export const ModuleLists = ({
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
   return (
-    <Box mt={{ base: 4, md: 16 }}>
+    <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
           title="Modules"

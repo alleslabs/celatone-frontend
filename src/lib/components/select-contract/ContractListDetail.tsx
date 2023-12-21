@@ -54,8 +54,8 @@ const ContractListContent = ({
         ) : (
           <EmptyState
             imageVariant="not-found"
-            message="No contracts match found. 
-  Make sure you are searching with contract address, name, or description."
+            message="No matching contracts found.
+  Make sure you are searching with a contract address, name, or description."
           />
         )
       }

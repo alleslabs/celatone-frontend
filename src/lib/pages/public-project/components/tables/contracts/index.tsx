@@ -117,7 +117,7 @@ export const PublicProjectContractTable = observer(
             message={
               contracts.length
                 ? "No matching contract found for this project. Make sure you are searching with Contract Address or Contract Name"
-                : "There is currently no contracts related to this project."
+                : "There are currently no contracts related to this project."
             }
             imageVariant={onViewMore && "empty"}
             withBorder

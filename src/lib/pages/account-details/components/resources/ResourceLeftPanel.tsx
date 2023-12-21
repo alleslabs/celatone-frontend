@@ -105,7 +105,7 @@ export const ResourceLeftPanel = ({
       />
       <Accordion
         allowMultiple
-        defaultIndex={[selectedIndex]}
+        defaultIndex={Array.from(Array(filteredResourcesByOwner.length).keys())}
         width="full"
         mt={4}
       >

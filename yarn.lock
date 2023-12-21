@@ -4481,6 +4481,18 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/recipes/-/recipes-0.4.0.tgz#7bb2edb0757b6f40c244d72569da7f74d6afa427"
   integrity sha512-gFgB7BofUYbtbxINHK6DhMv1JDFDXp/YI/Xm+cqKar+1I/2dfxPepeDxSexL6YB4ftfeaDw8Kn5zydMvHcGOEQ==
 
+"@vercel/analytics@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.1.1.tgz#2a712378a95014a548b4f9d2ae1ea0721433908d"
+  integrity sha512-+NqgNmSabg3IFfxYhrWCfB/H+RCUOCR5ExRudNG2+pcRehq628DJB5e1u1xqwpLtn4pAYii4D98w7kofORAGQA==
+  dependencies:
+    server-only "^0.0.1"
+
+"@vercel/speed-insights@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vercel/speed-insights/-/speed-insights-1.0.1.tgz#ea801f639594cbd5121d80a0ea1103e08ac5edc9"
+  integrity sha512-cm8KTTsDgS1AbWsgIEZuMoyPUjclzeqJihyLp0tnA21B/x9iTE8hu2S5zM+/DBzihuHxWL1dx9pCWk22ctMFWQ==
+
 "@walletconnect/core@2.10.4":
   version "2.10.4"
   resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-2.10.4.tgz#da9396b56f63806c165389cbf98d2373d36854df"
@@ -11161,6 +11173,11 @@ sentence-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
     upper-case-first "^2.0.2"
+
+server-only@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/server-only/-/server-only-0.0.1.tgz#0f366bb6afb618c37c9255a314535dc412cd1c9e"
+  integrity sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==
 
 set-blocking@^2.0.0:
   version "2.0.0"

@@ -36,7 +36,7 @@ export const useQueryCmds = (contractAddress: ContractAddr) => {
 
         // Check if Sylvia framework
         const sylviaRegex =
-          /Messages supported by this contract: (.*?): query wasm contract failed: invalid request/;
+          /Messages supported by this contract: (.*?)(: query wasm contract failed: invalid request)?$/;
         const contentMatch = resMsg?.match(sylviaRegex);
 
         if (contentMatch && contentMatch[1]) {
