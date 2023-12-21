@@ -18,7 +18,6 @@ export const MySavedCodesSection = ({
     codes={codes}
     isLoading={isLoading}
     onRowSelect={onRowSelect}
-    emptyMessage="Codes saved using Celatone will display here. Saved codes are stored locally on your device."
     isSearching={isSearching}
   />
 );
