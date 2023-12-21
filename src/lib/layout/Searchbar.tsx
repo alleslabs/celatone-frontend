@@ -1,6 +1,4 @@
 import {
-  Input,
-  InputGroup,
   ListItem,
   List,
   FormControl,
@@ -16,7 +14,6 @@ import {
   DrawerBody,
   IconButton,
   Flex,
-  InputLeftElement,
 } from "@chakra-ui/react";
 import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
@@ -29,6 +26,7 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type {
   ResultMetadata,
@@ -329,7 +327,7 @@ const Searchbar = () => {
         <DrawerContent>
           <DrawerBody overflowY="scroll" p={2} m={2}>
             <FormControl ref={boxRef}>
-              <Flex>
+              <Flex mb={4}>
                 <IconButton
                   fontSize="24px"
                   variant="gray"
@@ -338,23 +336,16 @@ const Searchbar = () => {
                   color="gray.600"
                   icon={<CustomIcon name="chevron-left" />}
                 />
-                <InputGroup mb={4} alignItems="center">
-                  <InputLeftElement pointerEvents="none" h="full">
-                    <CustomIcon name="search" color="gray.600" />
-                  </InputLeftElement>
-                  <Input
-                    value={keyword}
-                    pl={9}
-                    h={9}
-                    onChange={handleSearchChange}
-                    placeholder="Type your keyword ..."
-                    focusBorderColor="secondary.main"
-                    autoFocus
-                    onFocus={() => setDisplayResults(keyword.length > 0)}
-                    onKeyDown={(e) => handleOnKeyEnter(e, onClose)}
-                    autoComplete="off"
-                  />
-                </InputGroup>
+                <InputWithIcon
+                  h={9}
+                  value={keyword}
+                  onChange={handleSearchChange}
+                  placeholder="Type your keyword ..."
+                  autoFocus
+                  onFocus={() => setDisplayResults(keyword.length > 0)}
+                  onKeyDown={(e) => handleOnKeyEnter(e, onClose)}
+                  autoComplete="off"
+                />
               </Flex>
               {displayResults ? (
                 <List borderRadius="8px" bg="gray.900" w="full">
@@ -408,22 +399,15 @@ const Searchbar = () => {
     </>
   ) : (
     <FormControl ref={boxRef} zIndex={3}>
-      <InputGroup>
-        <InputLeftElement pointerEvents="none" h="full">
-          <CustomIcon name="search" color="gray.600" />
-        </InputLeftElement>
-        <Input
-          pl={9}
-          h={9}
-          value={keyword}
-          onChange={handleSearchChange}
-          placeholder={getPlaceholder({ isWasm, isPool, isMove })}
-          focusBorderColor="secondary.main"
-          onFocus={() => setDisplayResults(keyword.length > 0)}
-          onKeyDown={handleOnKeyEnter}
-          autoComplete="off"
-        />
-      </InputGroup>
+      <InputWithIcon
+        h={9}
+        value={keyword}
+        onChange={handleSearchChange}
+        placeholder={getPlaceholder({ isWasm, isPool, isMove })}
+        onFocus={() => setDisplayResults(keyword.length > 0)}
+        onKeyDown={handleOnKeyEnter}
+        autoComplete="off"
+      />
       {displayResults && (
         <List
           borderRadius="8px"
