@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#685](https://github.com/alleslabs/celatone-frontend/pull/685) Disable save account in mobile
 - [#683](https://github.com/alleslabs/celatone-frontend/pull/683) Fix save account hex duplicate and search with hex
 - [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
 - [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
