@@ -4,6 +4,7 @@ import { useMemo } from "react";
 
 import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
+import { AmpEvent, track } from "lib/amplitude";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useVerifyModule } from "lib/services/move/moduleService";
 import type { MoveAccountAddr, Option } from "lib/types";
@@ -40,7 +41,13 @@ export const ModuleCard = ({
         p={4}
         alignItems="center"
         cursor="pointer"
-        onClick={() => setSelectedModule?.(module)}
+        onClick={() => {
+          track(AmpEvent.USE_MODULE_CARD, {
+            viewCount: module.viewFunctions.length,
+            executeCount: module.executeFunctions.length,
+          });
+          setSelectedModule?.(module);
+        }}
         gap={1}
         templateColumns="20px 1fr auto"
         _hover={{

@@ -1,6 +1,9 @@
 import { Text, Flex, Heading, Button } from "@chakra-ui/react";
+import router from "next/router";
+import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { AmpEvent, track } from "lib/amplitude";
+import { useInternalNavigate, useIsConnected } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 
@@ -8,6 +11,14 @@ import { MyPublishedModulesTable } from "./components/MyPublishedModulesTable";
 
 export const MyPublishedModules = () => {
   const navigate = useInternalNavigate();
+  const isConnected = useIsConnected();
+
+  useEffect(() => {
+    if (router.isReady)
+      track(AmpEvent.TO_MY_PUBLISHED_MODULES, { connected: isConnected });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
   return (
     <PageContainer>
       <Flex justifyContent="space-between" alignItems="center" mb={8}>
@@ -21,6 +32,9 @@ export const MyPublishedModules = () => {
         </Flex>
         <Button
           onClick={() => {
+            track(AmpEvent.USE_MY_PUBLISHED_MODULES_CTA, {
+              label: "publish new modules",
+            });
             navigate({
               pathname: "/publish-module",
             });

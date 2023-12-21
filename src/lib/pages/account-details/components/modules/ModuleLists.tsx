@@ -47,7 +47,7 @@ export const ModuleLists = ({
               placeholder="Search with Module Name..."
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              action="execute-message-search"
+              action="account-detail-module-name-search"
               my={4}
             />
           )}
