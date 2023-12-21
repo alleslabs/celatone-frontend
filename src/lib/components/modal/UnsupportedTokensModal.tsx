@@ -67,19 +67,15 @@ const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
         justifyContent="space-between"
         alignItems={{ base: "flex-start", md: "center" }}
       >
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          gap={1}
-          minH={6}
-          // order={{ base: 2, md: 1 }}
-        >
+        <Flex alignItems="center" justifyContent="center" gap={1} minH={6}>
           <Text
             variant="body2"
             className={isMobile ? "" : "ellipsis"}
             wordBreak="break-all"
           >
-            {isMobile ? token.denom : getTokenLabel(token.denom, token.symbol)}
+            {isMobile
+              ? token.symbol ?? token.denom
+              : getTokenLabel(token.denom, token.symbol)}
           </Text>
           {!isMobile && (
             <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
