@@ -58,8 +58,8 @@ export const ContractsTableMobileCard = ({
       </Flex>
     }
     middleContent={
-      <Flex gap={3} direction="column" maxW="full">
-        <Flex direction="column">
+      <Flex gap={3} direction="column" w="full">
+        <div>
           <MobileLabel label="Contract Name" />
           <Text
             variant="body2"
@@ -69,24 +69,24 @@ export const ContractsTableMobileCard = ({
           >
             {contractInfo.name ?? contractInfo.label}
           </Text>
-        </Flex>
-        <Flex direction="column">
+        </div>
+        <div>
           <InstantiatorRemark remark={contractInfo.remark} />
           <ContractInstantiatorCell
             contractInfo={contractInfo}
             isReadOnly={false}
           />
-        </Flex>
+        </div>
       </Flex>
     }
     bottomContent={
       contractInfo.latestUpdated ? (
-        <Flex direction="column">
+        <div>
           <Text variant="body3">{formatUTC(contractInfo.latestUpdated)}</Text>
           <Text variant="body3" color="text.dark">
             {`(${dateFromNow(contractInfo.latestUpdated)})`}
           </Text>
-        </Flex>
+        </div>
       ) : null
     }
   />
