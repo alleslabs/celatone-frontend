@@ -184,7 +184,7 @@ export const useCodeDataByCodeId = ({
       });
   }, [codeId, indexerGraphClient, isGov]);
   return useQuery(
-    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient, isGov],
     queryFn,
     {
       enabled: enabled && isCodeId(codeId),

@@ -1,6 +1,8 @@
+import type Big from "big.js";
+
 import type { HexAddr } from "../addrs";
 import type { Option } from "../common";
-import type { USD } from "../currency";
+import type { Token, U, USD } from "../currency";
 
 export type MovePoolInfos = Record<
   string,
@@ -8,18 +10,18 @@ export type MovePoolInfos = Record<
     coinA: {
       metadata: HexAddr;
       denom: string;
-      precision: number;
-      amountAPerShare: Big;
+      amountAPerShare: U<Token<Big>>;
+      precision: Option<number>;
       symbol: Option<string>;
     };
     coinB: {
       metadata: HexAddr;
       denom: string;
-      precision: number;
-      amountBPerShare: Big;
+      amountBPerShare: U<Token<Big>>;
+      precision: Option<number>;
       symbol: Option<string>;
     };
-    lpPricePerShare: Option<USD<Big>>;
+    lpPricePerPShare: Option<USD<Big>>;
     precision: number;
     logo: Option<string>[];
   }

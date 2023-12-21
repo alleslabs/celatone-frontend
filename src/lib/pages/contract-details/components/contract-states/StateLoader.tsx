@@ -26,8 +26,9 @@ export const StateLoader = ({
       borderRadius={8}
       bgColor="gray.900"
       p={3}
-      alignItems="center"
+      alignItems={{ base: "flex-start", md: "center" }}
       justifyContent="space-between"
+      direction={{ base: "column", md: "row" }}
     >
       {isLoading ? (
         <Flex gap={4} alignItems="center">
@@ -59,6 +60,8 @@ export const StateLoader = ({
       )}
       <Button
         size="sm"
+        mt={{ base: 3, md: 0 }}
+        w={{ base: "full", md: "auto" }}
         variant="outline-primary"
         disabled={isLoading}
         onClick={onDownload}

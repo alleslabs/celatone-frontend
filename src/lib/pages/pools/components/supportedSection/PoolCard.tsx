@@ -10,7 +10,6 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import type { USD, Pool, Token, U } from "lib/types";
-import { PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";
@@ -23,22 +22,10 @@ interface PoolCardProps {
 }
 
 export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
+  const navigate = useInternalNavigate();
   const poolConfig = usePoolConfig({ shouldRedirect: true });
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
-
-  const navigate = useInternalNavigate();
-  const handleOnClick = () => {
-    // First version, navigate to contract details page if pool type is CosmWasm
-    if (item?.type === PoolType.COSMWASM && item.contractAddress)
-      navigate({
-        pathname: `/contracts/[contractAddress]`,
-        query: { contractAddress: item.contractAddress },
-      });
-    else {
-      navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
-    }
-  };
 
   const liquidity = item.poolLiquidity.reduce(
     (total, asset) => total.add(asset.value ?? big(0)) as USD<Big>,
@@ -52,7 +39,9 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       justifyContent="space-between"
       gap={4}
       flexDirection="column"
-      onClick={handleOnClick}
+      onClick={() =>
+        navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } })
+      }
       bg="gray.900"
       borderRadius="8px"
       p={4}
@@ -100,9 +89,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         <LabelText
           label="Liquidity"
           tooltipText="The total amount of asset liquidity provided in the pool."
-        >
-          {" "}
-        </LabelText>
+        />
 
         <Text variant="body2" color="text.main">
           {item.poolLiquidity.some((coin) => !coin.amount)

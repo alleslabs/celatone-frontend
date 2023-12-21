@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { Copier } from "lib/components/copy";
 import type { HexAddr } from "lib/types";
 import { truncate } from "lib/utils";
@@ -23,16 +24,22 @@ export const ModulePathLink = ({
       align="center"
       h="24px"
     >
-      <Text
-        variant="body2"
-        color="secondary.main"
-        transition="all 0.25s ease-in-out"
-        _hover={{ color: "secondary.light", textDecoration: "underline" }}
-        wordBreak={{ base: "break-all", md: "inherit" }}
-        cursor="pointer"
+      <AppLink
+        href={`/modules/${hexAddr}/${moduleName}`}
+        passHref
+        onClick={(e) => e.stopPropagation()}
       >
-        {`${truncate(hexAddr)} :: ${moduleName}`}
-      </Text>
+        <Text
+          variant="body2"
+          color="secondary.main"
+          transition="all 0.25s ease-in-out"
+          _hover={{ color: "secondary.light", textDecoration: "underline" }}
+          wordBreak={{ base: "break-all", md: "inherit" }}
+          cursor="pointer"
+        >
+          {`${truncate(hexAddr)} :: ${moduleName}`}
+        </Text>
+      </AppLink>
       <Copier
         type="module_path"
         value={`${hexAddr}::${moduleName}`}

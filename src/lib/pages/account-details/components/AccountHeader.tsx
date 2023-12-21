@@ -1,7 +1,7 @@
 import { Flex, Heading, IconButton, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { useMoveConfig } from "lib/app-provider";
+import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -34,6 +34,8 @@ export const AccountHeader = observer(
       accountInfo?.publicInfo?.name ??
       (accountInfo?.icns?.primary_name || "Account Details");
 
+    const isMobile = useMobile();
+
     return (
       <Flex
         justifyContent="space-between"
@@ -65,46 +67,54 @@ export const AccountHeader = observer(
                 {displayName}
               </Heading>
             </Flex>
-            {isSaved && accountLocalInfo ? (
-              <Flex gap={2}>
-                <EditSavedAccountModal
-                  accountLocalInfo={accountLocalInfo}
-                  triggerElement={
-                    <IconButton
-                      variant="ghost-gray-icon"
-                      size="sm"
-                      icon={<CustomIcon name="edit" boxSize={4} />}
-                      aria-label="edit account"
+            {!isMobile && (
+              <>
+                {isSaved && accountLocalInfo ? (
+                  <Flex gap={2}>
+                    <EditSavedAccountModal
+                      accountLocalInfo={accountLocalInfo}
+                      triggerElement={
+                        <IconButton
+                          variant="ghost-gray-icon"
+                          size="sm"
+                          icon={<CustomIcon name="edit" boxSize={4} />}
+                          aria-label="edit account"
+                        />
+                      }
                     />
-                  }
-                />
-                <RemoveSavedAccountModal
-                  accountLocalInfo={accountLocalInfo}
-                  trigger={
-                    <IconButton
-                      variant="ghost-gray-icon"
-                      size="sm"
-                      icon={<CustomIcon name="bookmark-solid" boxSize={4} />}
-                      aria-label="remove account"
+                    <RemoveSavedAccountModal
+                      accountLocalInfo={accountLocalInfo}
+                      trigger={
+                        <IconButton
+                          variant="ghost-gray-icon"
+                          size="sm"
+                          icon={
+                            <CustomIcon name="bookmark-solid" boxSize={4} />
+                          }
+                          aria-label="remove account"
+                        />
+                      }
                     />
-                  }
-                />
-              </Flex>
-            ) : (
-              <SaveNewAccountModal
-                accountAddress={accountAddress}
-                publicName={
-                  accountInfo?.publicInfo?.name ??
-                  accountInfo?.icns?.primary_name
-                }
-                publicDescription={accountInfo?.publicInfo?.description}
-                buttonProps={{
-                  size: "sm",
-                  variant: "outline-gray",
-                  leftIcon: <CustomIcon name="bookmark" boxSize={3} mr={0} />,
-                  children: "Save Account",
-                }}
-              />
+                  </Flex>
+                ) : (
+                  <SaveNewAccountModal
+                    accountAddress={accountAddress}
+                    publicName={
+                      accountInfo?.publicInfo?.name ??
+                      accountInfo?.icns?.primary_name
+                    }
+                    publicDescription={accountInfo?.publicInfo?.description}
+                    buttonProps={{
+                      size: "sm",
+                      variant: "outline-gray",
+                      leftIcon: (
+                        <CustomIcon name="bookmark" boxSize={3} mr={0} />
+                      ),
+                      children: "Save Account",
+                    }}
+                  />
+                )}
+              </>
             )}
           </Flex>
           <Flex direction="column" gap={1}>

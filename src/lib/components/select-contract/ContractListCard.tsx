@@ -5,7 +5,6 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  Spacer,
   Badge,
 } from "@chakra-ui/react";
 
@@ -34,18 +33,27 @@ export const ContractListCard = ({
     <Flex
       as={Button}
       variant="gray-solid"
-      gap={4}
       h="75px"
       onClick={() => handleListSelect(item.slug)}
       isDisabled={isDisabled}
+      gap={4}
+      w="full"
+      alignItems="center"
+      justifyContent="flex-start"
     >
       <CustomIcon
         name={getListIcon(item.name)}
         boxSize="24px"
         color="gray.600"
       />
-      <Flex flexDirection="column" alignItems="start" gap={1}>
-        <Flex alignItems="center" gap={2}>
+      <Flex
+        flexDirection="column"
+        alignItems="start"
+        gap={1}
+        w="full"
+        maxW="calc(100% - 108px)"
+      >
+        <Flex alignItems="center" gap={2} w="full">
           <Text
             variant="body1"
             textColor={isDisabled ? "text.disabled" : "text.main"}
@@ -66,11 +74,11 @@ export const ContractListCard = ({
           </Text>
         )}
       </Flex>
-      <Spacer />
       {!isReadOnly && (
         <Menu>
           <MenuButton
             m={0}
+            size="sm"
             h="full"
             variant="ghost-gray"
             as={Button}

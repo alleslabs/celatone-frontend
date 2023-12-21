@@ -97,7 +97,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "",
+      validator:
+        "https://lcd.minimove-1.initia.xyz/opinit/opchild/v1/validator",
       proposal: "",
     },
     extra: { disableDelegation: true },
@@ -144,7 +145,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "",
+      validator:
+        "https://lcd.miniwasm-1.initia.xyz/opinit/opchild/v1/validator",
       proposal: "",
     },
     extra: { disableDelegation: true },
@@ -155,7 +157,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Initia Testnet 12-1",
     lcd: "https://next-stone-rest.initia.tech",
     rpc: "https://next-stone-rpc.initia.tech:443",
-    indexer: "https://stone-12-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://stone-12-1-nft-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {

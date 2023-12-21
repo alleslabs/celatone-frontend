@@ -106,9 +106,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         </Flex>
       )}
       <Button
-        rightIcon={
-          <CustomIcon name="chevron-right" boxSize={4} color="text.dark" />
-        }
+        rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
         w="full"
         mt={attached ? 8 : 0}
         mb={4}

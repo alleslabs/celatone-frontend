@@ -11,7 +11,7 @@ interface ActionInfo {
   icon: IconKeys;
   iconColor: string;
   name: string;
-  count: number | string;
+  count: Option<number>;
   onClick: MouseEventHandler<HTMLDivElement>;
   disabled: boolean;
 }
@@ -51,7 +51,7 @@ export const ModuleActions = ({
       icon: "list" as IconKeys,
       iconColor: "gray.600",
       name: "Transactions",
-      count: allTxsCount ?? "N/A",
+      count: allTxsCount,
       onClick: () => onSelectAction(TabIndex.TxsHistories),
       disabled: allTxsCount === 0,
     },
@@ -92,7 +92,7 @@ export const ModuleActions = ({
                 {item.name}
               </Text>
               <Heading as="h6" variant="h6" fontWeight={600}>
-                {item.count}
+                {item.count ?? "N/A"}
               </Heading>
             </Flex>
           </Flex>

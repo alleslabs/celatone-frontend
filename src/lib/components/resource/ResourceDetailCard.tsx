@@ -7,9 +7,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { CopyButton } from "../copy";
+import { Copier, CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { trackUseExpand } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import type { InternalResource } from "lib/types";
 import { parseJsonStr } from "lib/utils";
 
@@ -21,6 +22,7 @@ export const ResourceDetailCard = ({
   resourceData,
 }: ResourceDetailCardProps) => {
   const parsedMoveResource = parseJsonStr(resourceData.moveResource);
+  const isMobile = useMobile();
 
   // Handle fallback case where the move resource is invalid
   // TODO: revisit later
@@ -57,32 +59,39 @@ export const ResourceDetailCard = ({
       {({ isExpanded }) => (
         <>
           <AccordionButton
-            onClick={() => {
+            onClick={() =>
               trackUseExpand({
                 action: !isExpanded ? "expand" : "collapse",
                 component: "resources_detail_card",
                 section: "account detail resource tab",
-              });
-            }}
+              })
+            }
           >
             <Flex
               p={4}
               justifyContent="space-between"
               w="full"
               align="center"
-              gap={{ base: 4, md: 8 }}
+              className="copier-wrapper"
             >
-              <Text
-                variant="body1"
-                fontWeight={600}
-                textAlign="left"
-                wordBreak="break-word"
-              >
-                {resourceData.structTag}
-              </Text>
-              <Flex alignItems="center" gap={2} minW={{ base: 8, md: 36 }}>
+              <Flex alignItems="center">
+                <Text
+                  variant="body1"
+                  fontWeight={600}
+                  textAlign="left"
+                  wordBreak="break-word"
+                >
+                  {resourceData.structTag}
+                </Text>
+                <Copier
+                  type="resource"
+                  display={!isMobile ? "none" : "inline"}
+                  value={resourceData.structTag}
+                  copyLabel="Copied!"
+                />
+              </Flex>
+              <Flex alignItems="center" gap={2}>
                 <CopyButton
-                  amptrackSection="[Account Detail - Module Tab] Copy JSON "
                   value={resourceData.moveResource}
                   variant="outline-gray"
                   size="xs"
