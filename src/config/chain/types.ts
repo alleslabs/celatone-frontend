@@ -22,6 +22,7 @@ type MoveConfig =
       enabled: true;
       moduleMaxFileSize: number;
       decodeApi: string;
+      verify: string;
     }
   | { enabled: false };
 
