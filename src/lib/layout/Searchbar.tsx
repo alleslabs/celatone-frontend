@@ -337,7 +337,6 @@ const Searchbar = () => {
                   icon={<CustomIcon name="chevron-left" />}
                 />
                 <InputWithIcon
-                  h={9}
                   value={keyword}
                   onChange={handleSearchChange}
                   placeholder="Type your keyword ..."
@@ -400,7 +399,6 @@ const Searchbar = () => {
   ) : (
     <FormControl ref={boxRef} zIndex={3}>
       <InputWithIcon
-        h={9}
         value={keyword}
         onChange={handleSearchChange}
         placeholder={getPlaceholder({ isWasm, isPool, isMove })}
