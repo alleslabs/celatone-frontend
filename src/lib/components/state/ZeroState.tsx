@@ -65,14 +65,7 @@ const renderText = (listSlug: string) => {
 export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   const navigate = useInternalNavigate();
   return (
-    <Flex
-      borderY="1px solid"
-      borderColor="gray.700"
-      width="full"
-      py={12}
-      direction="column"
-      alignContent="center"
-    >
+    <Flex width="full" py={12} direction="column" alignContent="center">
       <Flex alignItems="center" flexDir="column" gap={4}>
         <StateImage imageVariant="empty" />
         <Text color="text.dark">{renderText(list.value)}</Text>
@@ -99,11 +92,30 @@ export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved accounts.</Flex>
     <Flex align="center" gap={4}>
-      Save an account and access the account address through
+      Save existing accounts to the list with
       {button}
     </Flex>
     <Flex align="center">
       Saved accounts are stored locally on your device.
     </Flex>
+  </Flex>
+);
+
+export const SavedCodeZeroState = ({ button }: { button: JSX.Element }) => (
+  <Flex
+    alignItems="center"
+    gap={4}
+    color="text.dark"
+    direction="column"
+    my={4}
+    py={8}
+  >
+    <StateImage imageVariant="empty" />
+    <Flex align="center">You don’t have any saved codes.</Flex>
+    <Flex align="center" gap={4}>
+      Save existing codes to the list with
+      {button}
+    </Flex>
+    <Flex align="center">Saved codes are stored locally on your device.</Flex>
   </Flex>
 );

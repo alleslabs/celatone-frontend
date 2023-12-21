@@ -53,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#675](https://github.com/alleslabs/celatone-frontend/pull/675) Make module links clickable with command/ctrl and add copier for struct names
+- [#674](https://github.com/alleslabs/celatone-frontend/pull/674) Adjust contract list card and microcopies
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) Refactor balances
 - [#682](https://github.com/alleslabs/celatone-frontend/pull/682) Render token amount < 0.000001 properly
 - [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
 - [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
@@ -74,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#685](https://github.com/alleslabs/celatone-frontend/pull/685) Disable save account in mobile
 - [#683](https://github.com/alleslabs/celatone-frontend/pull/683) Fix save account hex duplicate and search with hex
 - [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
 - [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
