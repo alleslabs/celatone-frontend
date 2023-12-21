@@ -9,7 +9,7 @@ interface LabelTextProps extends FlexProps {
   labelColor?: string;
   isSmall?: boolean;
   tooltipText?: string;
-  children: string | JSX.Element;
+  children?: string | JSX.Element;
   helperText1?: string;
   helperText2?: string;
 }
