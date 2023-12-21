@@ -6,6 +6,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import {
@@ -111,10 +112,14 @@ export const useInstantiateDetailByContractQuery = (
   contractAddress: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
-      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
+      .request(getInstantiateDetailByContractQueryDocument, {
+        contractAddress,
+        isGov,
+      })
       .then<InstantiateDetail>(({ contracts_by_pk }) => ({
         createdHeight: contracts_by_pk?.contract_histories?.[0]?.block.height,
         createdTime: parseDateOpt(
@@ -122,17 +127,18 @@ export const useInstantiateDetailByContractQuery = (
         ),
         initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-        initProposalId: contracts_by_pk?.contract_proposals[0]?.proposal.id,
+        initProposalId: contracts_by_pk?.contract_proposals?.[0]?.proposal.id,
         initProposalTitle:
-          contracts_by_pk?.contract_proposals[0]?.proposal.title,
+          contracts_by_pk?.contract_proposals?.[0]?.proposal.title,
       }));
-  }, [contractAddress, indexerGraphClient]);
+  }, [contractAddress, indexerGraphClient, isGov]);
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL,
       contractAddress,
       indexerGraphClient,
+      isGov,
     ],
     queryFn,
     {

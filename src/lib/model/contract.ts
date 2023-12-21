@@ -17,7 +17,6 @@ import type {
   HumanAddr,
   ContractInfo,
   Option,
-  Nullable,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
@@ -75,25 +74,24 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
  *
  */
 export const useContractDetailsTableCounts = (
-  contractAddress: ContractAddr,
-  contractAccountId: Option<Nullable<number>>
+  contractAddress: ContractAddr
 ) => {
   const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount, refetch: refetchTransactions } =
-    useTxsCountByAddress({
-      accountId: contractAccountId,
-      search: "",
-      filters: DEFAULT_TX_FILTERS,
-      isSigner: undefined,
-    });
+    useTxsCountByAddress(
+      contractAddress,
+      undefined,
+      undefined,
+      DEFAULT_TX_FILTERS
+    );
   const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 
   return {
     tableCounts: {
       migrationCount,
-      transactionsCount,
+      transactionsCount: transactionsCount ?? undefined,
       relatedProposalsCount,
     },
     refetchMigration,

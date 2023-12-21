@@ -2,11 +2,10 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import {
   CodesTable,
   MobileTitle,
@@ -94,16 +93,15 @@ export const StoredCodesTable = observer(
               codes={codes}
               isLoading={isLoading}
               emptyState={
-                <EmptyState
-                  message={
-                    !codes ? (
-                      <ErrorFetching />
-                    ) : (
-                      "This account did not stored any codes before."
-                    )
-                  }
-                  withBorder
-                />
+                !codes ? (
+                  <ErrorFetching dataName="codes" />
+                ) : (
+                  <EmptyState
+                    withBorder
+                    imageVariant="empty"
+                    message="This account did not stored any codes before."
+                  />
+                )
               }
               onRowSelect={onRowSelect}
             />

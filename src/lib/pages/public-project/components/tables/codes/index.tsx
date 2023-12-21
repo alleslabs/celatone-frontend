@@ -126,7 +126,7 @@ export const PublicProjectCodeTable = observer(
             message={
               codes.length
                 ? "No matching code found for this project. Make sure you are searching with Code ID or Code Name"
-                : "There is currently no code related to this project."
+                : "There are currently no codes related to this project."
             }
             imageVariant={onViewMore && "empty"}
             withBorder

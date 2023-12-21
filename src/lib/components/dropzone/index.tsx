@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 
 import type { DropzoneFileType } from "./config";
@@ -26,9 +27,10 @@ export function DropZone({
   const move = useMoveConfig({ shouldRedirect: false });
   const onDrop = useCallback(
     (file: File[]) => {
+      track(AmpEvent.USE_UPLOAD_FILE, { fileType });
       setFile(file[0]);
     },
-    [setFile]
+    [fileType, setFile]
   );
 
   const config = DROPZONE_CONFIG[fileType];

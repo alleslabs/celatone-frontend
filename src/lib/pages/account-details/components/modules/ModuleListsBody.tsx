@@ -1,11 +1,9 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
-import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { MoveAccountAddr, Option } from "lib/types";
 
@@ -24,8 +22,6 @@ export const ModuleListsBody = ({
   isLoading,
   onViewMore,
 }: ModuleListsBodyProps) => {
-  const navigate = useInternalNavigate();
-
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
@@ -35,25 +31,18 @@ export const ModuleListsBody = ({
     );
   }, [keyword, modules]);
 
-  const handleOnSelect = (module: IndexedModule) => {
-    navigate({
-      pathname: `/modules/[address]/[moduleName]`,
-      query: {
-        address: selectedAddress,
-        moduleName: module.moduleName,
-      },
-    });
-  };
-
   if (isLoading) return <Loading />;
-  if (!modules) return <ErrorFetching />;
+  if (!modules) return <ErrorFetching dataName="modules" />;
   if (!filteredModules?.length)
     return (
       <EmptyState
         imageVariant={!keyword ? "empty" : "not-found"}
-        message={!keyword ? "No modules found" : "No matched modules found"}
+        message={
+          !keyword
+            ? "There are no modules on this account."
+            : "No matched modules found"
+        }
         withBorder
-        my={0}
       />
     );
   return (
@@ -65,7 +54,6 @@ export const ModuleListsBody = ({
             selectedAddress={selectedAddress}
             module={item}
             selectedModule={undefined}
-            setSelectedModule={handleOnSelect}
           />
         )
       )}

@@ -36,7 +36,7 @@ const zBlocksResponseItem = z
 
 const zBlocksResponse = z.object({
   items: z.array(zBlocksResponseItem),
-  total: z.number(),
+  total: z.number().nonnegative(),
 });
 export type BlocksResponse = z.infer<typeof zBlocksResponse>;
 

@@ -6,7 +6,6 @@ export const useBaseApiRoute = (
   type:
     | "overviews"
     | "txs"
-    | "balances"
     | "assets"
     | "blocks"
     | "projects"
@@ -21,6 +20,7 @@ export const useBaseApiRoute = (
     | "move_modules"
     | "staking"
     | "move"
+    | "modules"
 ): string => {
   const {
     chainConfig: { chain },
@@ -37,8 +37,6 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/overviews`;
     case "txs":
       return `${api}/v1/${chain}/${currentChainId}/txs`;
-    case "balances":
-      return `${api}/v1/${chain}/${currentChainId}/balances`;
     case "accounts":
       return `${api}/v1/${chain}/${currentChainId}/accounts`;
     case "assets":
@@ -67,6 +65,8 @@ export const useBaseApiRoute = (
       return `${api}/${chain}/${currentChainId}/staking`;
     case "move":
       return `${api}/v1/${chain}/${currentChainId}/move`;
+    case "modules":
+      return `${api}/v1/${chain}/${currentChainId}/move/modules`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

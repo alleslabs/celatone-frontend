@@ -98,7 +98,7 @@ export const PublicProjectModuleTable = ({
           message={
             modules.length
               ? "No matching module found for this project. Make sure you are searching with Module Address or Module Name"
-              : "There is currently no modules related to this project."
+              : "There are currently no modules related to this project."
           }
           imageVariant={onViewMore && "empty"}
           withBorder

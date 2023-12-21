@@ -75,6 +75,12 @@ export const formatUTokenWithPrecision = (
     if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
+
+  const lowestThreshold = big(10).pow(-(decimalPoints ?? precision));
+  if (!token.eq(0) && token.lt(lowestThreshold)) {
+    return `<${lowestThreshold.toFixed()}`;
+  }
+
   return formatDecimal({
     decimalPoints: decimalPoints ?? precision,
     delimiter: true,

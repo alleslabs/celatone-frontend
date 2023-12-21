@@ -104,7 +104,7 @@ export const ResourceLeftPanel = ({
       />
       <Accordion
         allowMultiple
-        defaultIndex={[selectedIndex]}
+        defaultIndex={Array.from(Array(filteredResourcesByOwner.length).keys())}
         width="full"
         mt={4}
       >
@@ -126,7 +126,10 @@ export const ResourceLeftPanel = ({
                       key={subitem.displayName}
                       name={subitem.group}
                       amount={subitem.items.length}
-                      isSelected={selectedResources?.group === subitem.group}
+                      isSelected={
+                        selectedResources?.account === subitem.account &&
+                        selectedResources?.group === subitem.group
+                      }
                       onClick={() =>
                         handleSelectResource(item.owner, subitem.group)
                       }

@@ -2,11 +2,12 @@ import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
+import { useMobile } from "lib/app-provider";
+import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import type { HumanAddr, Option, ResourceGroupByAccount } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -24,6 +25,8 @@ export const ResourceSectionBody = ({
   isLoading,
 }: ResourceSectionBodyProps) => {
   const router = useRouter();
+  const isMobile = useMobile();
+
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
   const selectedAccountParam = getFirstQueryParam(
@@ -43,10 +46,9 @@ export const ResourceSectionBody = ({
   }, [resourcesByOwner, selectedResource]);
 
   if (isLoading) return <Loading />;
-  if (!resourcesByOwner) return <ErrorFetching />;
+  if (!resourcesByOwner) return <ErrorFetching dataName="resources" />;
   if (!resourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
-
   return (
     <>
       <ResourceLeftPanel
@@ -57,21 +59,28 @@ export const ResourceSectionBody = ({
         <Box w="full">
           <Flex
             justifyContent="space-between"
-            alignItems="center"
-            pb={6}
-            gap={12}
+            alignItems={{ base: "start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+            pb={{ base: 4, md: 6 }}
+            gap={4}
           >
-            <Flex alignItems="center">
+            <Flex alignItems="center" w="full" className="copier-wrapper">
               <Heading as="h6" variant="h6" wordBreak="break-word">
                 {selectedResource.account}::{selectedResource.group}
               </Heading>
               <Badge variant="primary" ml={2}>
                 {selectedResource.items.length}
               </Badge>
+              <Copier
+                display={!isMobile ? "none" : "inline"}
+                type="resource"
+                value={`${selectedResource.account}::${selectedResource.group}`}
+                copyLabel="Copied!"
+              />
             </Flex>
             <Button
-              variant="outline-primary"
-              minW={32}
+              variant={{ base: "ghost-primary", md: "outline-primary" }}
+              minW={{ base: "auto", md: 32 }}
               size="sm"
               rightIcon={
                 <CustomIcon

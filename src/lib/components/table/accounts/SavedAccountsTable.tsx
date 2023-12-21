@@ -21,7 +21,7 @@ export const SavedAccountsTable = ({
 }: SavedAccountsTableProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!accounts?.length) return emptyState;
 
   const templateColumns = move.enabled

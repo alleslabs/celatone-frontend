@@ -24,7 +24,7 @@ export const CodesTable = ({
 }: CodesTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!codes?.length) return emptyState;
 
   const templateColumns = isReadOnly

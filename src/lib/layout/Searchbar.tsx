@@ -225,14 +225,17 @@ const getNextCursor = (
 const getPlaceholder = ({
   isWasm,
   isPool,
+  isMove,
 }: {
   isWasm: boolean;
   isPool: boolean;
+  isMove: boolean;
 }) => {
-  const wasmText = isWasm ? "/ Code ID / Contract Address" : "";
-  const poolText = isPool ? "/ Pool ID" : "";
+  const wasmText = isWasm ? "/ Code ID / Contract Address " : "";
+  const poolText = isPool ? "/ Pool ID " : "";
+  const moveText = isMove ? "/ Module Path " : "";
 
-  return `Search by Account Address / Tx Hash / Block ${wasmText} ${poolText}`;
+  return `Search by Account Address / Tx Hash / Block${wasmText}${poolText}${moveText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -247,6 +250,7 @@ const Searchbar = () => {
       features: {
         wasm: { enabled: isWasm },
         pool: { enabled: isPool },
+        move: { enabled: isMove },
       },
     },
   } = useCelatoneApp();
@@ -266,7 +270,7 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
-      trackUseMainSearch(isClick);
+      trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
         const queryValues =
@@ -393,7 +397,7 @@ const Searchbar = () => {
               )}
             </FormControl>
             <Text variant="body3" color="text.dark" textAlign="center" mt={2}>
-              {getPlaceholder({ isWasm, isPool })}
+              {getPlaceholder({ isWasm, isPool, isMove })}
             </Text>
           </DrawerBody>
         </DrawerContent>
@@ -406,7 +410,7 @@ const Searchbar = () => {
           value={keyword}
           h="36px"
           onChange={handleSearchChange}
-          placeholder={getPlaceholder({ isWasm, isPool })}
+          placeholder={getPlaceholder({ isWasm, isPool, isMove })}
           focusBorderColor="secondary.main"
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}

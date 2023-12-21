@@ -34,7 +34,10 @@ const ContractListContent = ({
 
   if (!address && isInstantiatedByMe) {
     return (
-      <DisconnectedState text="to see contracts you've previously instantiated." />
+      <DisconnectedState
+        my={16}
+        text="to see contracts you've previously instantiated."
+      />
     );
   }
 
@@ -54,8 +57,8 @@ const ContractListContent = ({
         ) : (
           <EmptyState
             imageVariant="not-found"
-            message="No contracts match found. 
-  Make sure you are searching with contract address, name, or description."
+            message="No matching contracts found.
+  Make sure you are searching with a contract address, name, or description."
           />
         )
       }

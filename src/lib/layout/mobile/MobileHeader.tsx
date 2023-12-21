@@ -6,7 +6,7 @@ import { AppLink } from "lib/components/AppLink";
 
 import { NavDrawer } from "./NavDrawer";
 
-const Header = () => {
+const MobileHeader = () => {
   return (
     <Flex
       as="header"
@@ -38,4 +38,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default MobileHeader;

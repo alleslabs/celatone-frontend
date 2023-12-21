@@ -40,12 +40,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#664](https://github.com/alleslabs/celatone-frontend/pull/664) Add Vercel speed insights and analytics
+- [#677](https://github.com/alleslabs/celatone-frontend/pull/677) Add minimove-1 and miniwasm-1
+- [#676](https://github.com/alleslabs/celatone-frontend/pull/676) New error fetching image & refactor empty states
+- [#666](https://github.com/alleslabs/celatone-frontend/pull/666) Add my published modules page
+- [#671](https://github.com/alleslabs/celatone-frontend/pull/671) Add mahalo-1
+- [#652](https://github.com/alleslabs/celatone-frontend/pull/652) Add amp publish module and deploy script
+- [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
+- [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
 - [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
 - [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Add amp module interaction and code snippet property
 - [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add amp module detail and breadcrumb
 
 ### Improvements
 
+- [#675](https://github.com/alleslabs/celatone-frontend/pull/675) Make module links clickable with command/ctrl and add copier for struct names
+- [#674](https://github.com/alleslabs/celatone-frontend/pull/674) Adjust contract list card and microcopies
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) Refactor balances
+- [#682](https://github.com/alleslabs/celatone-frontend/pull/682) Render token amount < 0.000001 properly
+- [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
+- [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
+- [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
 - [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
 - [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
 - [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
@@ -62,6 +77,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#687](https://github.com/alleslabs/celatone-frontend/pull/687) Fix resource and module related bugs
+- [#690](https://github.com/alleslabs/celatone-frontend/pull/690) Fix query msg regex for Sylvia contract
+- [#689](https://github.com/alleslabs/celatone-frontend/pull/689) Fix execute msg regex for Sylvia contract
+- [#685](https://github.com/alleslabs/celatone-frontend/pull/685) Disable save account in mobile
+- [#683](https://github.com/alleslabs/celatone-frontend/pull/683) Fix save account hex duplicate and search with hex
+- [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
+- [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
 - [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item
 - [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
 - [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile
