@@ -141,12 +141,15 @@ export const useVerifyModule = ({
 }: {
   address: Option<MoveAccountAddr>;
   moduleName: Option<string>;
-}): UseQueryResult<Nullable<ModuleVerificationInternal>> =>
-  useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
+}): UseQueryResult<Nullable<ModuleVerificationInternal>> => {
+  const move = useMoveConfig({ shouldRedirect: false });
+  const endpoint = move.enabled ? move.verify : "";
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, endpoint, address, moduleName],
     () => {
       if (!address || !moduleName) return null;
-      return getModuleVerificationStatus(address, moduleName);
+      return getModuleVerificationStatus(endpoint, address, moduleName);
     },
     {
       enabled: Boolean(address && moduleName),
@@ -155,6 +158,7 @@ export const useVerifyModule = ({
       keepPreviousData: true,
     }
   );
+};
 
 export const useFunctionView = ({
   moduleAddress,

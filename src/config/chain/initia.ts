@@ -26,6 +26,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
+        verify: "https://compiler.mahalo-1.initia.xyz/contracts/verify",
       },
       pool: {
         enabled: false,
@@ -74,6 +75,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
+        verify: "",
       },
       pool: {
         enabled: false,
@@ -171,6 +173,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
+        verify: "https://stone-compiler.initia.tech/contracts/verify",
       },
       pool: {
         enabled: false,
