@@ -67,7 +67,7 @@ export const ContractsTableMobileCard = ({
             color="text.main"
             wordBreak="break-all"
           >
-            {contractInfo.name || contractInfo.label}
+            {contractInfo.name ?? contractInfo.label}
           </Text>
         </Flex>
         <Flex direction="column">
