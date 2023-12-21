@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#687](https://github.com/alleslabs/celatone-frontend/pull/687) Fix resource and module related bugs
 - [#690](https://github.com/alleslabs/celatone-frontend/pull/690) Fix query msg regex for Sylvia contract
 - [#689](https://github.com/alleslabs/celatone-frontend/pull/689) Fix execute msg regex for Sylvia contract
 - [#685](https://github.com/alleslabs/celatone-frontend/pull/685) Disable save account in mobile
