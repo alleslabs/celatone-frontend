@@ -148,7 +148,7 @@ export const useVerifyModule = ({
   return useQuery(
     [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, endpoint, address, moduleName],
     () => {
-      if (!address || !moduleName) return null;
+      if (!endpoint || !address || !moduleName) return null;
       return getModuleVerificationStatus(endpoint, address, moduleName);
     },
     {
