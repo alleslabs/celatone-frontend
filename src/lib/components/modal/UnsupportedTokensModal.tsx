@@ -18,7 +18,7 @@ import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 import { trackUseUnsupportedToken } from "lib/amplitude";
-import { useGetAddressType } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import type { Addr, TokenWithValue } from "lib/types";
@@ -35,7 +35,6 @@ interface UnsupportedTokensModalProps {
   buttonProps?: ButtonProps;
   amptrackSection?: string;
 }
-
 const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
   addrType === "contract_address"
     ? getTokenType("cw20")
@@ -47,6 +46,7 @@ const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
     ? getTokenTypeWithAddress(getAddressType(token.denom))
     : getTokenType(token.denom.split("/")[0]);
 
+  const isMobile = useMobile();
   return (
     <Flex
       className="copier-wrapper"
@@ -58,35 +58,46 @@ const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
       role="group"
       _hover={{
         "& .info": {
-          visibility: "visible",
+          display: "flex",
         },
       }}
     >
       <Flex
-        direction="row"
+        direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
-        w="full"
-        alignItems="center"
+        alignItems={{ base: "flex-start", md: "center" }}
       >
-        <Flex gap={1} alignItems="center">
-          <Text variant="body2" className="ellipsis">
-            {getTokenLabel(token.denom, token.symbol)}
+        <Flex alignItems="center" justifyContent="center" gap={1} minH={6}>
+          <Text
+            variant="body2"
+            className={isMobile ? "" : "ellipsis"}
+            wordBreak="break-all"
+          >
+            {getTokenLabel(token.denom, token.symbol, !isMobile)}
           </Text>
-          <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
-            <Flex cursor="pointer" className="info" visibility="hidden">
-              <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
-            </Flex>
-          </Tooltip>
+          {!isMobile && (
+            <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
+              <Flex
+                cursor="pointer"
+                className="info"
+                display={{ base: "flex", md: "none" }}
+                h={6}
+                alignItems="center"
+              >
+                <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
+              </Flex>
+            </Tooltip>
+          )}
           <Copier
+            display={{ base: "flex", md: "none" }}
             type="unsupported_asset"
             value={token.denom}
             copyLabel="Token ID Copied!"
-            ml={0}
-            display="none"
+            ml={{ base: 1, md: 0 }}
             amptrackSection="unsupported_token_copy"
           />
         </Flex>
-        <Text variant="body3" color="text.dark">
+        <Text variant="body3" color="text.dark" my={{ base: 1, md: 0 }}>
           {`${tokenType} Token`}
         </Text>
       </Flex>

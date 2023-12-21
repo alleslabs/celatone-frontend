@@ -5,6 +5,7 @@ import type {
   Addr,
   ContractAddr,
   Nullable,
+  Nullish,
   Option,
   Token,
   TokenWithValue,
@@ -34,7 +35,8 @@ export interface Pool<
   type: PoolType;
   isSuperfluid: boolean;
   poolLiquidity: TLiquidity[];
-  contractAddress: Option<Nullable<ContractAddr>>;
+  // NOTE: not used any more
+  contractAddress: Nullish<ContractAddr>;
 }
 
 export interface PoolDetail<
@@ -54,7 +56,7 @@ export interface PoolDetail<
   scalingFactorController: Nullable<string>;
   spreadFactor: Nullable<string>;
   tickSpacing: Nullable<number>;
-  contractAddress: Nullable<ContractAddr>;
+  contractAddress: Nullish<ContractAddr>;
 }
 
 export interface PoolInfo {

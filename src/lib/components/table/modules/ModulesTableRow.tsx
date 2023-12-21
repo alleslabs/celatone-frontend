@@ -33,6 +33,7 @@ export const ModulesTableRow = ({
       <Grid
         className="copier-wrapper"
         templateColumns={templateColumns}
+        cursor="pointer"
         _hover={{ background: "gray.900" }}
         transition="all 0.25s ease-in-out"
         onClick={() =>

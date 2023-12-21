@@ -13,7 +13,6 @@ import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
-import { ContractNameCell } from "./ContractNameCell";
 
 interface ContractsTableMobileCardProps {
   contractInfo: ContractInfo;
@@ -59,28 +58,35 @@ export const ContractsTableMobileCard = ({
       </Flex>
     }
     middleContent={
-      <Flex gap={3} direction="column">
-        <Flex direction="column">
+      <Flex gap={3} direction="column" w="full">
+        <div>
           <MobileLabel label="Contract Name" />
-          <ContractNameCell contractLocalInfo={contractInfo} isReadOnly />
-        </Flex>
-        <Flex direction="column">
+          <Text
+            variant="body2"
+            maxW="full"
+            color="text.main"
+            wordBreak="break-all"
+          >
+            {contractInfo.name ?? contractInfo.label}
+          </Text>
+        </div>
+        <div>
           <InstantiatorRemark remark={contractInfo.remark} />
           <ContractInstantiatorCell
             contractInfo={contractInfo}
             isReadOnly={false}
           />
-        </Flex>
+        </div>
       </Flex>
     }
     bottomContent={
       contractInfo.latestUpdated ? (
-        <Flex direction="column">
+        <div>
           <Text variant="body3">{formatUTC(contractInfo.latestUpdated)}</Text>
           <Text variant="body3" color="text.dark">
             {`(${dateFromNow(contractInfo.latestUpdated)})`}
           </Text>
-        </Flex>
+        </div>
       ) : null
     }
   />
