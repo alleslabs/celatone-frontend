@@ -10,6 +10,7 @@ interface CopyTemplateProps {
   triggerElement: JSX.Element;
   isDisabled?: boolean;
   ml?: BoxProps["ml"];
+  w?: BoxProps["width"];
 }
 
 export const CopyTemplate = ({
@@ -18,6 +19,7 @@ export const CopyTemplate = ({
   triggerElement,
   isDisabled = false,
   ml,
+  w = "auto",
 }: CopyTemplateProps) => {
   const { onCopy, hasCopied, setValue } = useClipboard(value);
   useEffect(() => setValue(value), [value, setValue]);
@@ -30,6 +32,7 @@ export const CopyTemplate = ({
           onCopy();
           e.stopPropagation();
         }}
+        w={w}
         ml={ml}
       >
         {triggerElement}
