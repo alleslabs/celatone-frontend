@@ -183,6 +183,17 @@ describe("formatUTokenWithPrecision", () => {
       ).toEqual("0.000");
     });
   });
+  test("too small", () => {
+    expect(formatUTokenWithPrecision("0.1" as U<Token>, 6, false)).toEqual(
+      "<0.000001"
+    );
+    expect(formatUTokenWithPrecision("0.1" as U<Token>, 7, false)).toEqual(
+      "<0.0000001"
+    );
+    expect(formatUTokenWithPrecision("0.1" as U<Token>, 6, false, 2)).toEqual(
+      "<0.01"
+    );
+  });
   test("no suffix", () => {
     expect(
       formatUTokenWithPrecision("12345678901234567890" as U<Token>, 6, false)

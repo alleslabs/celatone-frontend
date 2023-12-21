@@ -49,7 +49,7 @@ const SavedAccounts = observer(() => {
 
   return (
     <PageContainer>
-      <Flex alignItems="center" justifyContent="space-between" mb={4}>
+      <Flex alignItems="center" justifyContent="space-between" mb={8}>
         <Flex direction="column">
           <Flex alignItems="center">
             <Heading
@@ -65,7 +65,9 @@ const SavedAccounts = observer(() => {
               {accountsCount}
             </Badge>
           </Flex>
-          <Text>Your saved accounts will be stored locally</Text>
+          <Text variant="body2" color="text.dark">
+            Your saved accounts will be stored locally
+          </Text>
         </Flex>
         <SaveAccountButton />
       </Flex>
@@ -82,7 +84,7 @@ const SavedAccounts = observer(() => {
           isSearching ? (
             <EmptyState
               imageVariant="not-found"
-              message="No accounts match found. Make sure you are searching with account address, name, or description."
+              message="No matching accounts found. Make sure you are searching with account address, name, or description."
               withBorder
             />
           ) : (
