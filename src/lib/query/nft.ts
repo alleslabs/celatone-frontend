@@ -41,8 +41,8 @@ export const getNFTTMintInfo = gql`
   }
 `;
 
-export const getNFTTokenList = gql`
-  query getNFTTokenList(
+export const getNFTTokenListPagination = gql`
+  query getNFTTokenListPagination(
     $limit: Int!
     $offset: Int!
     $collectionAddress: String!
@@ -51,6 +51,7 @@ export const getNFTTokenList = gql`
     nfts(
       limit: $limit
       offset: $offset
+      order_by: { token_id: asc }
       where: {
         collectionByCollection: {
           vm_address: { vm_address: { _eq: $collectionAddress } }
@@ -94,6 +95,7 @@ export const getNFTTransactionPagination = gql`
       offset: $offset
       limit: $limit
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+      order_by: { block_height: desc }
     ) {
       transaction {
         hash
@@ -119,6 +121,7 @@ export const getNFTMutateEventsPagination = gql`
       limit: $limit
       offset: $offset
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+      order_by: { block_height: desc }
     ) {
       old_value
       remark

@@ -7,7 +7,7 @@ import {
   getNFTMutateEventsPagination,
   getNFTTMintInfo,
   getNFTToken,
-  getNFTTokenList,
+  getNFTTokenListPagination,
   getNFTTransactionPagination,
   getNFTTransactionsCount,
 } from "lib/query";
@@ -31,7 +31,7 @@ import {
   zNFTTransactionPaginationResponse,
 } from "./nft";
 
-export const useNFTTokenList = (
+export const useNFTTokenListPagination = (
   collectionAddress: string,
   pageSize: number,
   offset: number,
@@ -42,7 +42,7 @@ export const useNFTTokenList = (
   const queryFn = async () => {
     return axios
       .post<NFTTokenResponse>(chainConfig.indexer, {
-        query: getNFTTokenList,
+        query: getNFTTokenListPagination,
         variables: {
           collectionAddress,
           limit: pageSize,
@@ -57,7 +57,7 @@ export const useNFTTokenList = (
 
   return useQuery<NFTToken[]>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST,
+      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_PAGINATION,
       chainConfig.indexer,
       collectionAddress,
       offset,
@@ -217,7 +217,7 @@ export const useNFTMutateEventsPagination = (
 
   return useQuery<NFTMutateEventsPagination[]>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_MUTATE_EVENTS,
+      CELATONE_QUERY_KEYS.NFT_TOKEN_MUTATE_EVENTS_PAGINATION,
       chainConfig.indexer,
       nftAddress,
       limit,

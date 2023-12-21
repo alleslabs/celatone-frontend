@@ -3,7 +3,7 @@ import type { ChangeEvent } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useNFTMutateEventsPagination } from "lib/services/nftService";
+import { useCollectionMutateEventsPagination } from "lib/services/collectionService";
 
 import { MutateEventsTable } from "./MutateEventsTable";
 
@@ -40,10 +40,10 @@ const MutateEvents = ({
     setCurrentPage(1);
   };
 
-  const { data: mutateEvents, isLoading } = useNFTMutateEventsPagination(
+  const { data: mutateEvents, isLoading } = useCollectionMutateEventsPagination(
+    collectionAddress,
     pageSize,
-    offset,
-    collectionAddress
+    offset
   );
 
   return (

@@ -10,6 +10,7 @@ export const getCollectionsPagination = gql`
       limit: $pageSize
       offset: $offset
       where: { name: { _iregex: $search } }
+      order_by: { name: asc }
     ) {
       name
       uri
@@ -120,8 +121,8 @@ export const getCollectioUniqueHoldersCount = gql`
   }
 `;
 
-export const getCollectionActivities = gql`
-  query getCollectionActivities(
+export const getCollectionActivitiesPagination = gql`
+  query getCollectionActivitiesPagination(
     $collectionAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -132,6 +133,7 @@ export const getCollectionActivities = gql`
       where: {
         collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
       }
+      order_by: { block_height: desc }
     ) {
       transaction {
         hash
@@ -149,8 +151,8 @@ export const getCollectionActivities = gql`
   }
 `;
 
-export const getCollectionMutateEvents = gql`
-  query getCollectionMutateEvents(
+export const getCollectionMutateEventsPagination = gql`
+  query getCollectionMutateEventsPagination(
     $collectionAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -159,14 +161,9 @@ export const getCollectionMutateEvents = gql`
       limit: $pageSize
       offset: $offset
       where: {
-        collection: {
-          vm_address: {
-            vm_address: {
-              _eq: "0x9f04bea097c6c1600ace384f9fcab15c129cbce81a49eb91308e3ce82d73e215"
-            }
-          }
-        }
+        collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
       }
+      order_by: { block_height: desc }
     ) {
       mutated_field_name
       new_value

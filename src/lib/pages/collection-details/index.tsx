@@ -30,7 +30,7 @@ import {
   useCollectionMutateEventsCount,
   useCollectionTotalBurnedCount,
 } from "lib/services/collectionService";
-import { useNFTTokenList } from "lib/services/nftService";
+import { useNFTTokenListPagination } from "lib/services/nftService";
 
 import Activities from "./components/activities";
 import CollectionInfoOverview from "./components/CollectionInfoOverview";
@@ -56,7 +56,7 @@ const CollectionDetailsBody = ({
   const { data: totalBurnedCount = 0 } =
     useCollectionTotalBurnedCount(collectionAddress);
 
-  const { data: nfts, isLoading: nftLoading } = useNFTTokenList(
+  const { data: nfts, isLoading: nftLoading } = useNFTTokenListPagination(
     collectionAddress,
     6,
     0

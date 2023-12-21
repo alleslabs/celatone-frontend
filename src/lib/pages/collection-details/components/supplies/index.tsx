@@ -5,7 +5,7 @@ import { useState } from "react";
 import { TextInput } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useNFTTokenList } from "lib/services/nftService";
+import { useNFTTokenListPagination } from "lib/services/nftService";
 
 import NFTList from "./NFTList";
 
@@ -39,7 +39,7 @@ const Supplies = ({
 
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  const { data: nfts, isLoading } = useNFTTokenList(
+  const { data: nfts, isLoading } = useNFTTokenListPagination(
     collectionAddress,
     pageSize,
     offset,

@@ -4,11 +4,12 @@ import axios from "axios";
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import {
   getCollectioUniqueHoldersCount,
-  getCollectionActivities,
   getCollectionActivitiesCount,
+  getCollectionActivitiesPagination,
   getCollectionByCollectionAddress,
   getCollectionCreator,
   getCollectionMutateEventsCount,
+  getCollectionMutateEventsPagination,
   getCollectionTotalBurnedCount,
   getCollectionsPagination,
 } from "lib/query";
@@ -63,7 +64,7 @@ export const useCollectionsPagination = (
 
   return useQuery<Collection[]>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTIONS,
+      CELATONE_QUERY_KEYS.NFT_COLLECTIONS_PAGINATION,
       chainConfig.indexer,
       pageSize,
       offset,
@@ -231,7 +232,7 @@ export const useCollectionActivities = (
   const queryFn = async () => {
     return axios
       .post<ActivitiesResponse>(chainConfig.indexer, {
-        query: getCollectionActivities,
+        query: getCollectionActivitiesPagination,
         variables: {
           collectionAddress,
           pageSize,
@@ -247,7 +248,7 @@ export const useCollectionActivities = (
 
   return useQuery<Activity[]>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES,
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_PAGINATION,
       chainConfig.indexer,
       collectionAddress,
       offset,
@@ -269,7 +270,7 @@ export const useCollectionMutateEventsPagination = (
   const queryFn = async () => {
     return axios
       .post<CollectionMutateEventsResponse>(chainConfig.indexer, {
-        query: getCollectionActivities,
+        query: getCollectionMutateEventsPagination,
         variables: {
           collectionAddress,
           pageSize,
@@ -285,7 +286,7 @@ export const useCollectionMutateEventsPagination = (
 
   return useQuery<CollectionMutateEvent[]>({
     queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTES,
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTES_PAGINATION,
       chainConfig.indexer,
       collectionAddress,
       offset,
