@@ -231,11 +231,11 @@ const getPlaceholder = ({
   isPool: boolean;
   isMove: boolean;
 }) => {
-  const wasmText = isWasm ? "/ Code ID / Contract Address" : "";
-  const poolText = isPool ? "/ Pool ID" : "";
-  const moveText = isMove ? "/ Module" : "";
+  const wasmText = isWasm ? "/ Code ID / Contract Address " : "";
+  const poolText = isPool ? "/ Pool ID " : "";
+  const moveText = isMove ? "/ Module Path " : "";
 
-  return `Search by Account Address / Tx Hash / Block ${wasmText} ${poolText} ${moveText}`;
+  return `Search by Account Address / Tx Hash / Block${wasmText}${poolText}${moveText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity

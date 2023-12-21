@@ -196,7 +196,6 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
         >
           {!isMobile && (
             <>
-              {" "}
               <Button
                 variant="outline-white"
                 w={{ base: "full", md: "auto" }}
