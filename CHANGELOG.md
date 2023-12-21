@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#692](https://github.com/alleslabs/celatone-frontend/pull/692) Add verify link for mahalo
 - [#674](https://github.com/alleslabs/celatone-frontend/pull/674) Adjust contract list card and microcopies
 - [#672](https://github.com/alleslabs/celatone-frontend/pull/672) Refactor balances
 - [#682](https://github.com/alleslabs/celatone-frontend/pull/682) Render token amount < 0.000001 properly
