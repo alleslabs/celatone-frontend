@@ -34,9 +34,9 @@ export const ModulesTableRow = ({
         className="copier-wrapper"
         templateColumns={templateColumns}
         _hover={{ background: "gray.900" }}
+        cursor="pointer"
         transition="all 0.25s ease-in-out"
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={() => {
           navigate({
             pathname: "/modules/[address]/[moduleName]",
             query: {
