@@ -85,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#688](https://github.com/alleslabs/celatone-frontend/pull/688) Update stone-12-1 graphql
 - [#627](https://github.com/alleslabs/celatone-frontend/pull/627) Add responsive for published event in module detail
 - [#625](https://github.com/alleslabs/celatone-frontend/pull/625) Fix abi empty vector serialization
 - [#605](https://github.com/alleslabs/celatone-frontend/pull/605) Apply singleton class style to Amplitude structure
