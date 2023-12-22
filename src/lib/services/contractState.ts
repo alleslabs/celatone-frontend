@@ -1,11 +1,21 @@
 import axios from "axios";
+import { z } from "zod";
 
-import type {
-  ContractAddr,
-  ContractState,
-  ResponseContractStates,
-} from "lib/types";
+import type { ContractAddr, ContractState } from "lib/types";
+import { zPagination } from "lib/types/rest";
 import { libDecode, parseJsonStr, parseStateKey } from "lib/utils";
+
+const zResponseContractState = z.object({
+  key: z.string(),
+  value: z.string(),
+});
+
+const zResponseContractStates = z.object({
+  models: zResponseContractState.array(),
+  pagination: zPagination,
+});
+
+type ResponseContractStates = z.infer<typeof zResponseContractStates>;
 
 export const getContractStates = async (
   baseEndpoint: string,
@@ -14,9 +24,13 @@ export const getContractStates = async (
   paginationKey: string | null
 ) => {
   const { data } = await axios.get<ResponseContractStates>(
-    `${baseEndpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/state?pagination.limit=${numStatesToLoad}${
-      paginationKey ? `&pagination.key=${paginationKey}` : ""
-    }`
+    `${baseEndpoint}/${contractAddress}/states`,
+    {
+      params: {
+        limit: numStatesToLoad,
+        pagination_key: paginationKey,
+      },
+    }
   );
 
   const parsedStates = data.models.map<ContractState>((model) => ({
