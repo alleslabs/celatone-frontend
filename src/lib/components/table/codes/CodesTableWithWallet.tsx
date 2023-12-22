@@ -24,7 +24,7 @@ export const CodesTableWithWallet = ({
   const { address } = useCurrentChain();
 
   return !address ? (
-    <DisconnectedState my={12} text={disconnectedMessage} />
+    <DisconnectedState text={disconnectedMessage} />
   ) : (
     <CodesTable
       codes={codes}

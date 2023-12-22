@@ -3,7 +3,7 @@ import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import {
   MobileTableContainer,
@@ -82,13 +82,13 @@ export const PublicProjectModuleTable = ({
     <Box mt={{ base: 8, md: 12 }} mb={4}>
       <TableTitle title="Modules" count={modules.length} />
       {!onViewMore && (
-        <TextInput
-          variant="fixed-floating"
+        <InputWithIcon
+          placeholder="Search with Module Address or Module Name"
           value={searchKeyword}
-          setInputState={setSearchKeyword}
-          placeholder="Search with Module address or Module name"
+          onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
-          mb={6}
+          my={2}
+          amptrackSection="public-project-module-search"
         />
       )}
       {filteredModules.length ? (

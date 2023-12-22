@@ -96,7 +96,7 @@ export const CodeSelectDrawerButton = ({
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
           <DrawerBody px={0} overflow="scroll" py={4}>
-            <Flex gap={2} px={6} py={2}>
+            <Flex gap={4} px={6} py={2} mb={4}>
               <InputWithIcon
                 placeholder="Search with Code ID or Code Name"
                 value={keyword}
@@ -104,7 +104,8 @@ export const CodeSelectDrawerButton = ({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
                 }
-                size="lg"
+                size={{ base: "md", md: "lg" }}
+                amptrackSection="code-drawer-search"
               />
               <FilterByPermission
                 initialSelected="all"

@@ -64,11 +64,12 @@ export const MyPublishedModulesTable = () => {
   return (
     <>
       <InputWithIcon
-        placeholder="Search with Module Name..."
+        placeholder="Search with Module Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="my-published-modules-search"
-        my={4}
+        amptrackSection="my-published-modules-search"
+        size="lg"
+        my={8}
       />
       {address ? (
         <ModulesTable
@@ -78,7 +79,7 @@ export const MyPublishedModulesTable = () => {
           isPublishedModules
         />
       ) : (
-        <DisconnectedState text="to see your published modules" my={16} />
+        <DisconnectedState text="to see your published modules" />
       )}
     </>
   );

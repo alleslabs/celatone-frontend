@@ -99,12 +99,12 @@ export const ModuleFunctionBody = ({
             {module.moduleName}
           </Heading>
           <InputWithIcon
-            action="Module Selection Drawer Function Search"
-            iconPosition="start"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Search functions ..."
+            placeholder="Search with Function Name"
+            size="md"
             my={4}
+            amptrackSection="module-select-drawer-function-search"
           />
           <Flex gap={6} h={maxHeight}>
             <Flex flex={0.5} gap={3} {...functionGridBaseStyle}>

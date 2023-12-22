@@ -1,7 +1,4 @@
 import {
-  Input,
-  InputGroup,
-  InputRightElement,
   ListItem,
   List,
   FormControl,
@@ -29,6 +26,7 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type {
   ResultMetadata,
@@ -329,7 +327,7 @@ const Searchbar = () => {
         <DrawerContent>
           <DrawerBody overflowY="scroll" p={2} m={2}>
             <FormControl ref={boxRef}>
-              <InputGroup mb={4} alignItems="center">
+              <Flex mb={4}>
                 <IconButton
                   fontSize="24px"
                   variant="gray"
@@ -338,21 +336,16 @@ const Searchbar = () => {
                   color="gray.600"
                   icon={<CustomIcon name="chevron-left" />}
                 />
-                <Input
+                <InputWithIcon
                   value={keyword}
-                  h="36px"
                   onChange={handleSearchChange}
                   placeholder="Type your keyword ..."
-                  focusBorderColor="secondary.main"
                   autoFocus
                   onFocus={() => setDisplayResults(keyword.length > 0)}
                   onKeyDown={(e) => handleOnKeyEnter(e, onClose)}
                   autoComplete="off"
                 />
-                <InputRightElement pointerEvents="none" h="full">
-                  <CustomIcon name="search" color="gray.600" />
-                </InputRightElement>
-              </InputGroup>
+              </Flex>
               {displayResults ? (
                 <List borderRadius="8px" bg="gray.900" w="full">
                   {isLoading || isTyping ? (
@@ -405,21 +398,14 @@ const Searchbar = () => {
     </>
   ) : (
     <FormControl ref={boxRef} zIndex={3}>
-      <InputGroup>
-        <Input
-          value={keyword}
-          h="36px"
-          onChange={handleSearchChange}
-          placeholder={getPlaceholder({ isWasm, isPool, isMove })}
-          focusBorderColor="secondary.main"
-          onFocus={() => setDisplayResults(keyword.length > 0)}
-          onKeyDown={handleOnKeyEnter}
-          autoComplete="off"
-        />
-        <InputRightElement pointerEvents="none" h="full">
-          <CustomIcon name="search" color="gray.600" />
-        </InputRightElement>
-      </InputGroup>
+      <InputWithIcon
+        value={keyword}
+        onChange={handleSearchChange}
+        placeholder={getPlaceholder({ isWasm, isPool, isMove })}
+        onFocus={() => setDisplayResults(keyword.length > 0)}
+        onKeyDown={handleOnKeyEnter}
+        autoComplete="off"
+      />
       {displayResults && (
         <List
           borderRadius="8px"

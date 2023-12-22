@@ -72,10 +72,11 @@ const SavedAccounts = observer(() => {
         <SaveAccountButton />
       </Flex>
       <InputWithIcon
-        placeholder="Search with account name, address, or description ..."
+        placeholder="Search with Account Name, Address, or Description"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"
+        amptrackSection="saved-account-search"
       />
       <SavedAccountsTable
         accounts={filteredsavedAccounts}

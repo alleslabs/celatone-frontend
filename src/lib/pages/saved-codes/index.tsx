@@ -78,7 +78,7 @@ const SavedCodes = observer(() => {
         </Flex>
         <SaveCodeButton />
       </Flex>
-      <Flex gap={3} pb={4} mt={8}>
+      <Flex gap={3} my={8}>
         <InputWithIcon
           placeholder="Search with Code ID or Code Name"
           value={keyword}
@@ -86,6 +86,7 @@ const SavedCodes = observer(() => {
             setValue("keyword", e.target.value)
           }
           size="lg"
+          amptrackSection="saved-code-search"
         />
         <FilterByPermission
           initialSelected="all"

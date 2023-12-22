@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#667](https://github.com/alleslabs/celatone-frontend/pull/667) Adjust for search bar consistency
 - [#692](https://github.com/alleslabs/celatone-frontend/pull/692) Add verify link for mahalo
 - [#675](https://github.com/alleslabs/celatone-frontend/pull/675) Make module links clickable with command/ctrl and add copier for struct names
 - [#674](https://github.com/alleslabs/celatone-frontend/pull/674) Adjust contract list card and microcopies

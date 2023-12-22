@@ -44,11 +44,12 @@ export const ModuleLists = ({
           />
           {!onViewMore && (
             <InputWithIcon
-              placeholder="Search with Module Name..."
+              placeholder="Search with Module Name"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              action="account-detail-module-name-search"
+              size={{ base: "md", md: "lg" }}
               my={4}
+              amptrackSection="account-detail-module-name-search"
             />
           )}
           <ModuleListsBody
