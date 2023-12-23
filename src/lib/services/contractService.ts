@@ -316,7 +316,7 @@ export const useMigrationHistoriesByContractAddress = (
 
   return useQuery<MigrationHistoriesResponse>(
     [
-      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES,
+      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS,
       endpoint,
       contractAddress,
       limit,
