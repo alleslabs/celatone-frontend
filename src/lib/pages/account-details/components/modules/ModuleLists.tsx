@@ -28,7 +28,7 @@ export const ModuleLists = ({
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
   return (
-    <Box mt={{ base: 4, md: 16 }}>
+    <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
           title="Modules"
@@ -44,11 +44,12 @@ export const ModuleLists = ({
           />
           {!onViewMore && (
             <InputWithIcon
-              placeholder="Search with Module Name..."
+              placeholder="Search with Module Name"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              action="execute-message-search"
+              size={{ base: "md", md: "lg" }}
               my={4}
+              amptrackSection="account-detail-module-name-search"
             />
           )}
           <ModuleListsBody

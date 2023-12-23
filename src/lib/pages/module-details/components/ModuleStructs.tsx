@@ -26,7 +26,7 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
     setExpandedIndexes(indexes);
 
   return (
-    <Flex direction="column" gap={8}>
+    <Flex direction="column" gap={4}>
       <Flex
         maxH={{ md: "24px" }}
         justifyContent="space-between"
@@ -95,12 +95,14 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
         </Flex>
       </Flex>
       <InputWithIcon
-        placeholder="Search structs..."
+        placeholder="Search with Struct Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="module-struct-search"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="module-struct-search"
       />
       <Accordion
+        mt={4}
         allowMultiple
         index={expandedIndexes}
         onChange={updateExpandedIndexes}

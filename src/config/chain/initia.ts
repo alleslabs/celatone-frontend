@@ -26,6 +26,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
+        verify: "https://compiler.mahalo-1.initia.xyz/contracts/verify",
       },
       pool: {
         enabled: false,
@@ -74,6 +75,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
+        verify: "",
       },
       pool: {
         enabled: false,
@@ -157,7 +159,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Initia Testnet 12-1",
     lcd: "https://next-stone-rest.initia.tech",
     rpc: "https://next-stone-rpc.initia.tech:443",
-    indexer: "https://stone-12-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://stone-12-1-nft-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -171,6 +173,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
+        verify: "https://stone-compiler.initia.tech/contracts/verify",
       },
       pool: {
         enabled: false,

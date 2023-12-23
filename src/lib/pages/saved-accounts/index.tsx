@@ -4,16 +4,21 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useMoveConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { AccountZeroState, EmptyState } from "lib/components/state";
 import { SavedAccountsTable } from "lib/components/table";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 
 import { SaveAccountButton } from "./components";
 
 const SavedAccounts = observer(() => {
   const router = useRouter();
+  const move = useMoveConfig({ shouldRedirect: false });
+  const formatAddresses = useFormatAddresses();
+
   const { getSavedAccounts, isHydrated } = useAccountStore();
   const savedAccounts = getSavedAccounts();
   const accountsCount = savedAccounts.length;
@@ -27,10 +32,14 @@ const SavedAccounts = observer(() => {
     return savedAccounts.filter(
       (account) =>
         account.address.includes(keyword.toLowerCase()) ||
+        (move.enabled &&
+          formatAddresses(account.address).hex.includes(
+            keyword.toLowerCase()
+          )) ||
         account.name?.toLowerCase().includes(keyword.toLowerCase()) ||
         account.description?.toLowerCase().includes(keyword.toLowerCase())
     );
-  }, [keyword, savedAccounts]);
+  }, [formatAddresses, keyword, move.enabled, savedAccounts]);
 
   useEffect(() => {
     if (router.isReady && isHydrated)
@@ -40,7 +49,7 @@ const SavedAccounts = observer(() => {
 
   return (
     <PageContainer>
-      <Flex alignItems="center" justifyContent="space-between" mb={4}>
+      <Flex alignItems="center" justifyContent="space-between" mb={8}>
         <Flex direction="column">
           <Flex alignItems="center">
             <Heading
@@ -56,15 +65,18 @@ const SavedAccounts = observer(() => {
               {accountsCount}
             </Badge>
           </Flex>
-          <Text>Your saved accounts will be stored locally</Text>
+          <Text variant="body2" color="text.dark">
+            Your saved accounts will be stored locally
+          </Text>
         </Flex>
         <SaveAccountButton />
       </Flex>
       <InputWithIcon
-        placeholder="Search with account name, address, or description ..."
+        placeholder="Search with Account Name, Address, or Description"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"
+        amptrackSection="saved-account-search"
       />
       <SavedAccountsTable
         accounts={filteredsavedAccounts}
@@ -73,7 +85,7 @@ const SavedAccounts = observer(() => {
           isSearching ? (
             <EmptyState
               imageVariant="not-found"
-              message="No accounts match found. Make sure you are searching with account address, name, or description."
+              message="No matching accounts found. Make sure you are searching with account address, name, or description."
               withBorder
             />
           ) : (

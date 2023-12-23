@@ -3,7 +3,7 @@ import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import {
   MobileTableContainer,
@@ -81,13 +81,13 @@ export const PublicProjectAccountTable = ({
     <Box mt={{ base: 8, md: 12 }} mb={4}>
       <TableTitle title="Accounts" count={accounts.length} />
       {!onViewMore && (
-        <TextInput
-          variant="fixed-floating"
-          value={searchKeyword}
-          setInputState={setSearchKeyword}
+        <InputWithIcon
           placeholder="Search with Account Address, Name, or Description"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
-          mb={6}
+          my={2}
+          amptrackSection="public-project-account-search"
         />
       )}
       {filteredAccounts.length ? (
@@ -100,7 +100,7 @@ export const PublicProjectAccountTable = ({
           message={
             accounts.length
               ? "No matching account found for this project. Make sure you are searching with Account Address or Account Name"
-              : "There is currently no accounts related to this project."
+              : "There are currently no accounts related to this project."
           }
           imageVariant={onViewMore && "empty"}
           withBorder

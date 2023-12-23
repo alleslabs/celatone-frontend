@@ -156,6 +156,7 @@ export const ContractTop = ({
               ml={{ base: 1, md: 0 }}
               variant={{ base: "h6", md: "h5" }}
               className={!isMobile ? "ellipsis" : ""}
+              wordBreak="break-word"
             >
               {displayName}
             </Heading>

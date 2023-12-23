@@ -66,6 +66,7 @@ export enum AmpEvent {
   TO_MODULE_INTERACTION = "To Module Interaction",
   TO_PUBLISH_MODULE = "To Publish Module",
   TO_DEPLOY_SCRIPT = "To Deploy Script",
+  TO_MY_PUBLISHED_MODULES = "To My Published Modules",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -148,7 +149,7 @@ export enum AmpEvent {
   USE_CONTRACT_STATES_DOWNLOAD = "Use Contract States Download",
   USE_NAMESPACE_TAB = "Use Namespace Tab",
   USE_NAVIGATING_BUTTON = "Use Navigating Button",
-  USE_MAIN_CTA = "Use Main CTA",
+  USE_MODULE_DETAIL_MAIN_CTA = "Use Module Detail Main CTA",
   USE_MODULE_FUNCTION_CTA = "Use Module Function CTA",
   USE_BREADCRUMB = "Use Breadcrumb",
   USE_MODULE_SELECTION_DRAWER = "Use Module Selection Drawer",
@@ -167,6 +168,10 @@ export enum AmpEvent {
   USE_UPLOAD_CARD_MOVE_DOWN = "Use Upload Card Move Down",
   USE_PUBLISH_MORE_MODULE_BUTTON = "Use Publish More Module Button",
   USE_PUBLISHED_MODULE_ACTION = "Use Published Module Action",
+  USE_MODULE_TABLE_CTA = "Use Module Table CTA",
+  USE_MY_PUBLISHED_MODULES_CTA = "Use My Publised Modules CTA",
+  USE_SELECT_RESOURCE_GROUP = "Use Select Resource Group",
+  USE_MODULE_CARD = "Use Module Card",
 
   // TX
   TX_SUCCEED = "Tx Succeed",

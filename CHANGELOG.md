@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#678](https://github.com/alleslabs/celatone-frontend/pull/678) api v1 - contract table counts
+- [#686](https://github.com/alleslabs/celatone-frontend/pull/686) Add amp module list, my published module, and resources/module tab
+- [#664](https://github.com/alleslabs/celatone-frontend/pull/664) Add Vercel speed insights and analytics
 - [#677](https://github.com/alleslabs/celatone-frontend/pull/677) Add minimove-1 and miniwasm-1
 - [#676](https://github.com/alleslabs/celatone-frontend/pull/676) New error fetching image & refactor empty states
 - [#666](https://github.com/alleslabs/celatone-frontend/pull/666) Add my published modules page
@@ -53,6 +55,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#667](https://github.com/alleslabs/celatone-frontend/pull/667) Adjust for search bar consistency
+- [#692](https://github.com/alleslabs/celatone-frontend/pull/692) Add verify link for mahalo
+- [#675](https://github.com/alleslabs/celatone-frontend/pull/675) Make module links clickable with command/ctrl and add copier for struct names
+- [#674](https://github.com/alleslabs/celatone-frontend/pull/674) Adjust contract list card and microcopies
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) Refactor balances
+- [#682](https://github.com/alleslabs/celatone-frontend/pull/682) Render token amount < 0.000001 properly
 - [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
 - [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
 - [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
@@ -73,6 +81,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#694](https://github.com/alleslabs/celatone-frontend/pull/694) Reroute cosmwasm pool back to pool detail page
+- [#691](https://github.com/alleslabs/celatone-frontend/pull/691) Fix unsupported token card
+- [#693](https://github.com/alleslabs/celatone-frontend/pull/693) Fix ui styling for contract card and states
+- [#687](https://github.com/alleslabs/celatone-frontend/pull/687) Fix resource and module related bugs
+- [#690](https://github.com/alleslabs/celatone-frontend/pull/690) Fix query msg regex for Sylvia contract
+- [#689](https://github.com/alleslabs/celatone-frontend/pull/689) Fix execute msg regex for Sylvia contract
+- [#685](https://github.com/alleslabs/celatone-frontend/pull/685) Disable save account in mobile
+- [#683](https://github.com/alleslabs/celatone-frontend/pull/683) Fix save account hex duplicate and search with hex
 - [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
 - [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
 - [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item

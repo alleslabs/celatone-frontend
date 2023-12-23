@@ -1,6 +1,7 @@
 import { Flex, Text, Grid, Box, Button } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CountBadge } from "lib/components/module";
@@ -33,6 +34,7 @@ export const ModulesTableRow = ({
       <Grid
         className="copier-wrapper"
         templateColumns={templateColumns}
+        cursor="pointer"
         _hover={{ background: "gray.900" }}
         transition="all 0.25s ease-in-out"
         onClick={() =>
@@ -87,6 +89,7 @@ export const ModulesTableRow = ({
               variant="outline-white"
               size="sm"
               onClick={(e) => {
+                track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "view" });
                 e.stopPropagation();
                 navigate({
                   pathname: "/interact",
@@ -104,6 +107,7 @@ export const ModulesTableRow = ({
               variant="outline-white"
               size="sm"
               onClick={(e) => {
+                track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "execute" });
                 e.stopPropagation();
                 navigate({
                   pathname: "/interact",
@@ -122,6 +126,7 @@ export const ModulesTableRow = ({
                 variant="outline-white"
                 size="sm"
                 onClick={(e) => {
+                  track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "republish" });
                   e.stopPropagation();
                   navigate({
                     pathname: "/publish-module",

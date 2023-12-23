@@ -113,17 +113,18 @@ export const ModuleFunctions = ({
   return (
     <Flex
       direction="column"
-      gap={{ base: 4, md: 8 }}
+      gap={4}
       sx={{ [`& #${tab}`]: { display: "block" } }}
     >
       <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
         Exposed Functions
       </Heading>
       <InputWithIcon
-        placeholder="Search functions..."
+        placeholder="Search with Function Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="exposed-function-search"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="exposed-function-search"
       />
       <Flex
         justifyContent="space-between"

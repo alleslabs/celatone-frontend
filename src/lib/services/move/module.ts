@@ -109,14 +109,12 @@ export interface ModuleVerificationInternal
 }
 
 export const getModuleVerificationStatus = async (
+  endpoint: string,
   address: MoveAccountAddr,
   moduleName: string
 ): Promise<Nullable<ModuleVerificationInternal>> =>
-  // TODO: move url to base api route? wait for celatone api implementation?
   axios
-    .get<ModuleVerificationReturn>(
-      `https://stone-compiler.initia.tech/contracts/verify/${address}/${moduleName}`
-    )
+    .get<ModuleVerificationReturn>(`${endpoint}/${address}/${moduleName}`)
     .then(({ data }) => ({
       ...snakeToCamel(data),
       moduleAddress: data.module_address,

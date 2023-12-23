@@ -1,4 +1,5 @@
 import { Flex, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect } from "react";
 
@@ -185,7 +186,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 viewFns={moduleData.viewFunctions.length}
                 executeFns={moduleData.executeFunctions.length}
                 allTxsCount={
-                  moduleTxsCount && moduleHistoriesCount
+                  !isUndefined(moduleTxsCount) &&
+                  !isUndefined(moduleHistoriesCount)
                     ? moduleTxsCount + moduleHistoriesCount
                     : undefined
                 }

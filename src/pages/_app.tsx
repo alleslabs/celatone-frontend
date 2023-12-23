@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import localforage from "localforage";
 import { configurePersistable } from "mobx-persist-store";
 import { enableStaticRendering } from "mobx-react-lite";
@@ -39,6 +41,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     <Layout>
       <MobileGuard>
         <Component {...pageProps} />
+        <SpeedInsights />
+        <Analytics />
       </MobileGuard>
     </Layout>
   </Providers>

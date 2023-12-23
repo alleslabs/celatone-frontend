@@ -5,8 +5,11 @@ import type {
   Addr,
   ContractAddr,
   Nullable,
+  Nullish,
   Option,
+  Token,
   TokenWithValue,
+  U,
 } from "lib/types";
 
 export enum PoolType {
@@ -32,7 +35,8 @@ export interface Pool<
   type: PoolType;
   isSuperfluid: boolean;
   poolLiquidity: TLiquidity[];
-  contractAddress: Option<Nullable<ContractAddr>>;
+  // NOTE: not used any more
+  contractAddress: Nullish<ContractAddr>;
 }
 
 export interface PoolDetail<
@@ -52,17 +56,19 @@ export interface PoolDetail<
   scalingFactorController: Nullable<string>;
   spreadFactor: Nullable<string>;
   tickSpacing: Nullable<number>;
-  contractAddress: Nullable<ContractAddr>;
+  contractAddress: Nullish<ContractAddr>;
 }
 
 export interface PoolInfo {
   coinA: {
-    amount: string;
+    amount: U<Token<Big>>;
+    precision: Option<number>;
     denom: string;
     symbol: Option<string>;
   };
   coinB: {
-    amount: string;
+    amount: U<Token<Big>>;
+    precision: Option<number>;
     denom: string;
     symbol: Option<string>;
   };

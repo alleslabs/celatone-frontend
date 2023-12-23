@@ -30,7 +30,7 @@ export const useExecuteCmds = (contractAddress: ContractAddr) => {
 
       // Check if Sylvia framework
       const sylviaRegex =
-        /Messages supported by this contract: (.*?): execute wasm contract failed: invalid request/;
+        /Messages supported by this contract: (.*?): execute wasm contract failed/;
       const contentMatch = e.message?.match(sylviaRegex);
 
       if (contentMatch && contentMatch[1]) {
