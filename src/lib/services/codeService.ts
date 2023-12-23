@@ -29,7 +29,7 @@ import type {
   HumanAddr,
   Nullable,
 } from "lib/types";
-import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { isId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 import type { CodeIdInfoResponse, CodesResponse } from "./code";
 import { getCodeIdInfo, getCodesByAddress } from "./code";
@@ -187,7 +187,7 @@ export const useCodeDataByCodeId = ({
     [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient, isGov],
     queryFn,
     {
-      enabled: enabled && isCodeId(codeId),
+      enabled: enabled && isId(codeId),
     }
   );
 };

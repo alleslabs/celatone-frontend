@@ -11,11 +11,11 @@ import {
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
 import {
-  isCodeId,
   isHexWalletAddress,
   isHexModuleAddress,
   splitModule,
   isPosDecimal,
+  isId,
 } from "lib/utils";
 
 import { useBlockData } from "./blockService";
@@ -115,7 +115,7 @@ export const useSearchHandler = (
   // Code
   const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
     codeId: debouncedKeyword,
-    enabled: isWasm && isCodeId(debouncedKeyword),
+    enabled: isWasm && isId(debouncedKeyword),
   });
 
   // Tx
@@ -130,7 +130,7 @@ export const useSearchHandler = (
   // Pool
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
-    isPool && isPosDecimal(debouncedKeyword)
+    isPool && isId(debouncedKeyword)
   );
 
   // Move

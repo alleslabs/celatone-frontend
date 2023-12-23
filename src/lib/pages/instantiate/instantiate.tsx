@@ -52,7 +52,7 @@ import type { ComposedMsg, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
-  isCodeId,
+  isId,
   jsonPrettify,
   jsonValidate,
   libDecode,
@@ -151,7 +151,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     const generalChecks =
       Boolean(address) &&
       Boolean(label) &&
-      isCodeId(codeId) &&
+      isId(codeId) &&
       status.state === "success";
 
     switch (tab) {
