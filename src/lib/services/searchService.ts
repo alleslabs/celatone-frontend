@@ -7,6 +7,7 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
+  useValidateAddress,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
 import {
@@ -14,9 +15,10 @@ import {
   isHexWalletAddress,
   isHexModuleAddress,
   splitModule,
+  isPosDecimal,
 } from "lib/utils";
 
-import { useBlockInfoQuery } from "./blockService";
+import { useBlockData } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
 import { useAccountModules } from "./move/moduleService";
@@ -69,6 +71,7 @@ export const useSearchHandler = (
     chain: { bech32_prefix: bech32Prefix },
   } = useCurrentChain();
   const getAddressType = useGetAddressType();
+  const { isSomeValidAddress } = useValidateAddress();
   const addressType = getAddressType(debouncedKeyword);
 
   // Contract
@@ -119,16 +122,15 @@ export const useSearchHandler = (
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
 
   // Block
-  const { data: blockData, isFetching: blockFetching } =
-    useBlockInfoQuery(debouncedKeyword);
+  const { data: blockData, isFetching: blockFetching } = useBlockData(
+    Number(debouncedKeyword),
+    isPosDecimal(debouncedKeyword)
+  );
 
   // Pool
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
-    isPool &&
-      !debouncedKeyword.startsWith("0x") &&
-      Number.isInteger(Number(debouncedKeyword)) &&
-      Number(debouncedKeyword) > 0
+    isPool && isPosDecimal(debouncedKeyword)
   );
 
   // Move
@@ -138,12 +140,11 @@ export const useSearchHandler = (
     () =>
       Boolean(
         isMove &&
-          (getAddressType(addr) === "user_address" ||
-            isHexWalletAddress(addr)) &&
+          isSomeValidAddress(addr) &&
           moduleName &&
           functionName === undefined
       ),
-    [functionName, getAddressType, addr, isMove, moduleName]
+    [addr, functionName, isMove, isSomeValidAddress, moduleName]
   );
 
   const { data: moduleData, isFetching: moduleFetching } = useAccountModules({

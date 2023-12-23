@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { isCodeId, isTxHash, isBlock } from "./validate";
+import { isCodeId, isTxHash, isPosDecimal } from "./validate";
 
 describe("isCodeId", () => {
   test("valid", () => {
@@ -49,22 +49,22 @@ describe("isTxHash", () => {
   });
 });
 
-describe("isBlock", () => {
+describe("isPosDecimal", () => {
   test("valid", () => {
-    expect(isBlock("12345678")).toBeTruthy();
+    expect(isPosDecimal("12345678")).toBeTruthy();
   });
   describe("invalid", () => {
     test("empty string", () => {
-      expect(isBlock("")).toBeFalsy();
+      expect(isPosDecimal("")).toBeFalsy();
     });
     test("non-number string", () => {
-      expect(isBlock("1234ABCD")).toBeFalsy();
+      expect(isPosDecimal("1234ABCD")).toBeFalsy();
     });
     test("negative number", () => {
-      expect(isBlock("-1234")).toBeFalsy();
+      expect(isPosDecimal("-1234")).toBeFalsy();
     });
     test("hexstring", () => {
-      expect(isBlock("0x1234")).toBeFalsy();
+      expect(isPosDecimal("0x1234")).toBeFalsy();
     });
   });
 });

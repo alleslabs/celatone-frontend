@@ -1,12 +1,6 @@
 import { z } from "zod";
 
-import { type ValidatorAddr, zValidatorAddr } from "./addrs";
-
-export interface Validator {
-  validatorAddress: ValidatorAddr;
-  moniker?: string;
-  identity?: string;
-}
+import { zValidatorAddr } from "./addrs";
 
 export const zValidator = z
   .object({
@@ -14,8 +8,10 @@ export const zValidator = z
     identity: z.string().nullable(),
     moniker: z.string().nullable(),
   })
-  .transform<Validator>((val) => ({
+  .transform((val) => ({
     validatorAddress: val.validator_address,
-    identity: val.identity ? val.identity : undefined,
-    moniker: val.moniker ? val.moniker : undefined,
+    identity: val.identity ?? undefined,
+    moniker: val.moniker ?? undefined,
   }));
+
+export type Validator = z.infer<typeof zValidator>;

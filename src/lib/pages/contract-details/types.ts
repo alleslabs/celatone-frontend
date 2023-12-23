@@ -45,7 +45,7 @@ export enum TabIndex {
   States = "states",
 }
 
-export const zContractDetailQueryParams = z.object({
+export const zContractDetailsQueryParams = z.object({
   contractAddress: zContractAddr,
   tab: z.union([
     z.nativeEnum(TabIndex),

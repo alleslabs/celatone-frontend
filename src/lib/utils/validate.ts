@@ -21,7 +21,7 @@ export const isTxHash = (input: string): boolean => {
   return input.length === 64;
 };
 
-export const isBlock = (input: string): boolean => {
+export const isPosDecimal = (input: string): boolean => {
   // TODO: refactor this to isHex later
   if (input.startsWith("0x")) return false;
   const numberValue = Number(input);

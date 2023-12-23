@@ -35,7 +35,7 @@ import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { ContractTables } from "./components/tables";
 import { useContractData } from "./data";
-import { TabIndex, zContractDetailQueryParams } from "./types";
+import { TabIndex, zContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -227,7 +227,7 @@ const ContractDetails = observer(() => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
 
-  const validated = zContractDetailQueryParams.safeParse(router.query);
+  const validated = zContractDetailsQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady && validated.success)
