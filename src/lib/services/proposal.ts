@@ -108,7 +108,7 @@ export const getProposalsByAddress = async (
         offset,
       },
     })
-    .then((res) => zProposalsResponse.parse(res.data));
+    .then(({ data }) => zProposalsResponse.parse(data));
 
 const zRelatedProposalsResponseItem = z
   .object({
@@ -158,4 +158,4 @@ export const getRelatedProposalsByContractAddress = async (
         },
       }
     )
-    .then((res) => zRelatedProposalsResponse.parse(res.data));
+    .then(({ data }) => zRelatedProposalsResponse.parse(data));

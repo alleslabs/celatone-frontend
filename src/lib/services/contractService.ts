@@ -22,14 +22,12 @@ import {
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
   getInstantiatedListByUserQueryDocument,
-  getMigrationHistoriesByContractAddressPagination,
   getMigrationHistoriesCountByContractAddress,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
-  ContractMigrationHistory,
   HumanAddr,
   Option,
   Dict,
@@ -37,13 +35,14 @@ import type {
   ContractInfo,
   Nullable,
 } from "lib/types";
-import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
+import { parseTxHashOpt, parseDateOpt } from "lib/utils";
 
 import { getCodeIdInfo } from "./code";
+import type { ContractsResponse, MigrationHistoriesResponse } from "./contract";
 import {
-  type ContractsResponse,
   getAdminContractsByAddress,
   getInstantiatedContractsByAddress,
+  getMigrationHistoriesByContractAddress,
 } from "./contract";
 
 export interface ContractDetail extends ContractLocalInfo {
@@ -308,48 +307,31 @@ export const useAdminByContractAddresses = (
   );
 };
 
-export const useMigrationHistoriesByContractAddressPagination = (
+export const useMigrationHistoriesByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
-  pageSize: number
-): UseQueryResult<Omit<ContractMigrationHistory, "codeName">[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  limit: number
+) => {
+  const endpoint = useBaseApiRoute("contracts");
 
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getMigrationHistoriesByContractAddressPagination, {
-        contractAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ contract_histories }) =>
-        contract_histories.map<Omit<ContractMigrationHistory, "codeName">>(
-          (history) => ({
-            codeId: history.code_id,
-            sender: history.account.address as Addr,
-            height: history.block.height,
-            timestamp: parseDate(history.block.timestamp),
-            remark: history.remark,
-            uploader: history.code.account.address as Addr,
-            cw2Contract: history.code.cw2_contract,
-            cw2Version: history.code.cw2_version,
-          })
-        )
-      );
-  }, [contractAddress, offset, pageSize, indexerGraphClient]);
-
-  return useQuery(
+  return useQuery<MigrationHistoriesResponse>(
     [
-      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_PAGINATION,
+      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES,
+      endpoint,
       contractAddress,
+      limit,
       offset,
-      pageSize,
-      indexerGraphClient,
     ],
-    queryFn,
+    async () =>
+      getMigrationHistoriesByContractAddress(
+        endpoint,
+        contractAddress,
+        limit,
+        offset
+      ),
     {
       keepPreviousData: true,
-      enabled: Boolean(contractAddress),
+      retry: 1,
     }
   );
 };

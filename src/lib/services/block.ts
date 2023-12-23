@@ -54,7 +54,7 @@ export const getBlocks = async (
         offset,
       },
     })
-    .then((res) => zBlocksResponse.parse(res.data));
+    .then(({ data }) => zBlocksResponse.parse(data));
 
 const zBlockDataResponse = z
   .object({
@@ -77,4 +77,4 @@ const zBlockDataResponse = z
 export const getBlockData = async (endpoint: string, height: number) =>
   axios
     .get(`${endpoint}/${height}/info`)
-    .then((res) => zBlockDataResponse.parse(res.data));
+    .then(({ data }) => zBlockDataResponse.parse(data));

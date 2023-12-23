@@ -184,38 +184,6 @@ export const getContractListCountByCodeId = graphql(`
   }
 `);
 
-export const getMigrationHistoriesByContractAddressPagination = graphql(`
-  query getMigrationHistoriesByContractAddress(
-    $contractAddress: String!
-    $offset: Int!
-    $pageSize: Int!
-  ) {
-    contract_histories(
-      where: { contract: { address: { _eq: $contractAddress } } }
-      order_by: { block: { timestamp: desc } }
-      limit: $pageSize
-      offset: $offset
-    ) {
-      code_id
-      account {
-        address
-      }
-      block {
-        height
-        timestamp
-      }
-      remark
-      code {
-        account {
-          address
-        }
-        cw2_contract
-        cw2_version
-      }
-    }
-  }
-`);
-
 export const getMigrationHistoriesCountByContractAddress = graphql(`
   query getMigrationHistoriesCountByContractAddress($contractAddress: String!) {
     contract_histories_aggregate(

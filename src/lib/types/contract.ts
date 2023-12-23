@@ -1,5 +1,10 @@
+import { z } from "zod";
+
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { Addr, Nullable, Option, RemarkType } from "lib/types";
+
+import type { Addr } from "./addrs";
+import type { Nullable, Option } from "./common";
+import { zRemarkType } from "./tx";
 
 export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT",
@@ -7,11 +12,13 @@ export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS",
 }
 
-export interface ContractHistoryRemark {
-  operation: RemarkOperation;
-  type: RemarkType;
-  value: string | number;
-}
+export const zContractHistoryRemark = z.object({
+  operation: z.nativeEnum(RemarkOperation),
+  type: zRemarkType,
+  value: z.union([z.string(), z.number()]),
+});
+
+export type ContractHistoryRemark = z.infer<typeof zContractHistoryRemark>;
 
 export interface ContractInfo extends ContractLocalInfo {
   admin: Option<Addr>;
@@ -28,6 +35,6 @@ export interface ContractMigrationHistory {
   timestamp: Date;
   remark: ContractHistoryRemark;
   uploader: Addr;
-  cw2Contract: Option<Nullable<string>>;
-  cw2Version: Option<Nullable<string>>;
+  cw2Contract: Nullable<string>;
+  cw2Version: Nullable<string>;
 }

@@ -51,7 +51,7 @@ export const getAPIAccountModules = async (
 ): Promise<AccountModulesResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
-    .then((res) => zAccountModulesResponse.parse(res.data));
+    .then(({ data }) => zAccountModulesResponse.parse(data));
 
 export const getAccountModules = async (
   baseEndpoint: string,
@@ -196,4 +196,4 @@ export const getModules = async (
         offset,
       },
     })
-    .then((res) => zModulesResponse.parse(res.data));
+    .then(({ data }) => zModulesResponse.parse(data));
