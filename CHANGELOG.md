@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#697](https://github.com/alleslabs/celatone-frontend/pull/697) api v1 - contract tables (migrations and related proposals)
 - [#696](https://github.com/alleslabs/celatone-frontend/pull/696) api v1 - block details
 - [#667](https://github.com/alleslabs/celatone-frontend/pull/667) Adjust for search bar consistency
 - [#692](https://github.com/alleslabs/celatone-frontend/pull/692) Add verify link for mahalo
