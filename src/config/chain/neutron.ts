@@ -38,7 +38,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
+        tokenPerGas: 0.56,
         denom: "untrn",
       },
       gasAdjustment: 1.5,
