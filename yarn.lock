@@ -1699,9 +1699,9 @@
     protobufjs "^6.8.8"
 
 "@corex/deepmerge@^4.0.29":
-  version "4.0.43"
-  resolved "https://registry.yarnpkg.com/@corex/deepmerge/-/deepmerge-4.0.43.tgz#9bd42559ebb41cc5a7fb7cfeea5f231c20977dca"
-  integrity sha512-N8uEMrMPL0cu/bdboEWpQYb/0i2K5Qn8eCsxzOmxSggJbbQte7ljMRoXm917AbntqTGOzdTu+vP3KOOzoC70HQ==
+  version "4.0.29"
+  resolved "https://registry.npmjs.org/@corex/deepmerge/-/deepmerge-4.0.29.tgz"
+  integrity sha512-q/yVUnqckA8Do+EvAfpy7RLdumnBy9ZsducMUtZTvpdbJC7azEf1hGtnYYxm0QfphYxjwggv6XtH64prvS1W+A==
 
 "@cosmjs/amino@^0.31.3":
   version "0.31.3"
