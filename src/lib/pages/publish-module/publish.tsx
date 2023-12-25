@@ -1,9 +1,11 @@
 import { Text, Grid, Heading, Flex, Button, Box } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
+import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -49,6 +51,7 @@ export const PublishModule = ({
   const {
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
+  const router = useRouter();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const postPublishTx = usePublishModuleTx();
@@ -190,7 +193,7 @@ export const PublishModule = ({
 
   const publishModuleText = useMemo(
     () => ({
-      header: "Publish new module",
+      header: "Publish / Republish modules",
       description: `Upload .mv files to publish new module to ${chainPrettyName}. You can
       upload multiple .mv files to publish many modules within a
       transaction.`,
@@ -198,6 +201,10 @@ export const PublishModule = ({
     }),
     [chainPrettyName]
   );
+
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_PUBLISH_MODULE);
+  }, [router.isReady]);
 
   return (
     <>
@@ -210,7 +217,7 @@ export const PublishModule = ({
             p={{ base: "16px", md: "48px" }}
           >
             <Box gridArea="1 / 2">
-              <Heading as="h5" variant="h5" textAlign="center">
+              <Heading as="h4" variant="h4" textAlign="center">
                 {publishModuleText.header}
               </Heading>
               <Text color="text.dark" pt={4} textAlign="center">
@@ -244,7 +251,12 @@ export const PublishModule = ({
                 ))}
               </Flex>
               <Button
-                onClick={() => append(emptyModule)}
+                onClick={() => {
+                  track(AmpEvent.USE_ADD_MODULE_UPLOAD_BOX, {
+                    currentBoxAmount: modules.length + 1,
+                  });
+                  append(emptyModule);
+                }}
                 leftIcon={<CustomIcon name="add-new" />}
                 variant="ghost-primary"
                 p="0 4px"
@@ -308,7 +320,18 @@ export const PublishModule = ({
         </Box>
       </PageContainer>
       <Footer
-        publishModule={proceed}
+        publishModule={() => {
+          const republishModules = modules.filter((ampTrackRepublish) =>
+            ampTrackRepublish.publishStatus.text.includes("republish")
+          );
+
+          track(AmpEvent.ACTION_MOVE_PUBLISH, {
+            numberOfModule: modules.length,
+            numberOfRepublishModules: republishModules.length,
+            numberOfNewPublishModules: modules.length - republishModules.length,
+          });
+          proceed();
+        }}
         isLoading={processing}
         disabled={!enablePublish || Boolean(simulateError) || isSimulating}
         fieldAmount={modules.length}

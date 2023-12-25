@@ -2,18 +2,26 @@ import big from "big.js";
 
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
-import type { Option, Token } from "lib/types";
+import type { SearchResultType } from "lib/services/searchService";
+import type { MoveAccountAddr, Option, Token } from "lib/types";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
-export const trackUseMainSearch = (isClick: boolean, section?: string) =>
+export const trackUseMainSearch = (
+  isClick: boolean,
+  type?: SearchResultType,
+  section?: string
+) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
     isClick,
+    type,
     section,
   });
 
-export const trackUseTab = (tab: string, section?: string) =>
+export const trackUseTab = (tab: string, section?: string, info?: string) =>
   amp.track(AmpEvent.USE_TAB, {
     tab,
     section,
+    info,
   });
 
 export const trackUseRadio = (radio: string, section?: string) =>
@@ -38,10 +46,17 @@ export const trackUseUnsupportedToken = (section?: string) =>
     section,
   });
 
-export const trackUseCopier = (type: string, section?: string) =>
+export const trackUseCopier = (
+  type: string,
+  section?: string,
+  subSection?: string,
+  info?: string
+) =>
   amp.track(AmpEvent.USE_COPIER, {
     type,
     section,
+    subSection,
+    info,
   });
 
 export const trackUseExpand = ({
@@ -57,7 +72,13 @@ export const trackUseExpand = ({
     | "permission_address"
     | "event_box"
     | "unsupported_pool"
-    | "pool_tx_msg";
+    | "module_function_accordion"
+    | "module_struct_accordion"
+    | "module_interaction_function_accordion"
+    | "module_interaction_selected_function_card"
+    | "pool_tx_msg"
+    | "resources_detail_card"
+    | "resources_by_account_card";
   info?: object;
   section?: string;
 }) =>
@@ -72,7 +93,7 @@ export const trackUseExpandAll = (
   action: "expand" | "collapse",
   section?: string
 ) =>
-  amp.track(AmpEvent.USE_EXPAND, {
+  amp.track(AmpEvent.USE_EXPAND_ALL, {
     action,
     section,
   });
@@ -174,3 +195,15 @@ export const trackUseView = (view: string) =>
 
 export const trackUseToggle = (name: string, isActive: boolean) =>
   amp.track(AmpEvent.USE_TOGGLE, { name, isActive });
+
+export const trackUseModuleSelectionInputFill = (
+  address: MoveAccountAddr,
+  manualModuleName: boolean,
+  manualFunctionName: boolean
+) =>
+  amp.track(AmpEvent.USE_MODULE_SELECTION_INPUT_FILL, {
+    address: !!address,
+    isHex: isHexWalletAddress(address) || isHexModuleAddress(address),
+    manualModuleName,
+    manualFunctionName,
+  });

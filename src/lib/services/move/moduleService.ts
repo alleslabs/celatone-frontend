@@ -10,6 +10,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
   useMoveConfig,
 } from "lib/app-provider";
 import {
@@ -19,6 +20,7 @@ import {
   getModuleIdByNameAndVmAddressQueryDocument,
 } from "lib/query";
 import type {
+  ModuleHistory,
   MoveAccountAddr,
   ExposedFunction,
   InternalModule,
@@ -30,7 +32,6 @@ import type {
   HexAddr,
   Nullable,
 } from "lib/types";
-import type { ModuleHistory } from "lib/types/move/module";
 import {
   parseDate,
   parseDateOpt,
@@ -40,14 +41,16 @@ import {
   truncate,
 } from "lib/utils";
 
-import type { ModuleVerificationInternal } from "./module";
+import type { ModuleVerificationInternal, ModulesResponse } from "./module";
 import {
   decodeModule,
   decodeScript,
+  getAPIAccountModules,
   getAccountModule,
   getAccountModules,
   getFunctionView,
   getModuleVerificationStatus,
+  getModules,
 } from "./module";
 
 export interface IndexedModule extends InternalModule {
@@ -114,18 +117,39 @@ export const useAccountModules = ({
   );
 };
 
+export const useAPIAccountModules = (address: MoveAccountAddr) => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled } = useMoveConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.API_ACCOUNT_MODULES, endpoint, address],
+    () =>
+      getAPIAccountModules(endpoint, address).then((modules) =>
+        modules.items.map((module) => indexModuleResponse(module))
+      ),
+    {
+      enabled,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
+};
+
 export const useVerifyModule = ({
   address,
   moduleName,
 }: {
   address: Option<MoveAccountAddr>;
   moduleName: Option<string>;
-}): UseQueryResult<Nullable<ModuleVerificationInternal>> =>
-  useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
+}): UseQueryResult<Nullable<ModuleVerificationInternal>> => {
+  const move = useMoveConfig({ shouldRedirect: false });
+  const endpoint = move.enabled ? move.verify : "";
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, endpoint, address, moduleName],
     () => {
-      if (!address || !moduleName) return null;
-      return getModuleVerificationStatus(address, moduleName);
+      if (!endpoint || !address || !moduleName) return null;
+      return getModuleVerificationStatus(endpoint, address, moduleName);
     },
     {
       enabled: Boolean(address && moduleName),
@@ -134,6 +158,7 @@ export const useVerifyModule = ({
       keepPreviousData: true,
     }
   );
+};
 
 export const useFunctionView = ({
   moduleAddress,
@@ -328,11 +353,12 @@ export const useModuleDetailsQuery = (
   moduleId: Option<Nullable<number>>
 ): UseQueryResult<ModuleInitialPublishInfo> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   const queryFn = async () => {
     if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
-      .request(getModuleInitialPublishInfoQueryDocument, { moduleId })
+      .request(getModuleInitialPublishInfoQueryDocument, { moduleId, isGov })
       .then<ModuleInitialPublishInfo>(({ modules }) => {
         const target = modules[0];
         if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
@@ -343,8 +369,8 @@ export const useModuleDetailsQuery = (
             target.module_histories?.[0]?.block.timestamp
           ),
           initTxHash: parseTxHashOpt(target.publish_transaction?.hash),
-          initProposalId: target.module_proposals[0]?.proposal.id,
-          initProposalTitle: target.module_proposals[0]?.proposal.title,
+          initProposalId: target.module_proposals?.[0]?.proposal.id,
+          initProposalTitle: target.module_proposals?.[0]?.proposal.title,
         };
       });
   };
@@ -386,5 +412,19 @@ export const useDecodeScript = ({
     [CELATONE_QUERY_KEYS.SCRIPT_DECODE, lcd, base64EncodedFile],
     queryFn,
     options
+  );
+};
+
+export const useModules = (
+  limit: number,
+  offset: number,
+  options: Pick<UseQueryOptions<ModulesResponse>, "onSuccess"> = {}
+) => {
+  const endpoint = useBaseApiRoute("modules");
+
+  return useQuery<ModulesResponse>(
+    [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
+    async () => getModules(endpoint, limit, offset),
+    { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };

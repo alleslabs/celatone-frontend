@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
@@ -12,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain, useWasmConfig } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -21,11 +15,7 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useAccountId } from "lib/services/accountService";
-import {
-  useTxsByAddressPagination,
-  useTxsCountByAddress,
-} from "lib/services/txService";
+import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
 
 interface PastTxsState {
@@ -52,16 +42,15 @@ const PastTxs = () => {
     defaultValues,
     mode: "all",
   });
-
   const pastTxsState = watch();
 
-  const { data: accountId } = useAccountId(address as HumanAddr);
-  const { data: countTxs = 0 } = useTxsCountByAddress({
-    accountId,
-    search: pastTxsState.search,
-    filters: pastTxsState.filters,
-    isSigner: pastTxsState.isSigner,
-  });
+  const { data: rawTxCount, refetch: refetchCount } = useTxsCountByAddress(
+    address as HumanAddr,
+    pastTxsState.search,
+    pastTxsState.isSigner,
+    pastTxsState.filters
+  );
+  const txCount = rawTxCount ?? undefined;
 
   const {
     pagesQuantity,
@@ -71,7 +60,7 @@ const PastTxs = () => {
     setPageSize,
     offset,
   } = usePaginator({
-    total: countTxs,
+    total: txCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -79,62 +68,44 @@ const PastTxs = () => {
     },
   });
 
-  const { data: txs, isLoading } = useTxsByAddressPagination(
-    accountId,
+  const { data: txs, isLoading } = useTxsByAddress(
+    address as HumanAddr,
     pastTxsState.search,
-    pastTxsState.filters,
     pastTxsState.isSigner,
+    pastTxsState.filters,
     offset,
     pageSize
   );
 
-  const resetPagination = () => {
-    setPageSize(10);
+  const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(1);
+    setValue("search", e.target.value);
   };
 
-  const setFilter = (filter: string, bool: boolean) => {
-    resetPagination();
+  const handleOnIsSignerChange = (value: Option<boolean>) => {
+    setCurrentPage(1);
+    setValue("isSigner", value);
+  };
+
+  const handleOnFiltersChange = (filter: string, bool: boolean) => {
+    setCurrentPage(1);
     setValue("filters", { ...pastTxsState.filters, [filter]: bool });
   };
 
-  const onPageChange = (nextPage: number) => {
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
-  const filterSelected = useMemo(() => {
-    return Object.keys(pastTxsState.filters).reduce(
-      (acc: string[], key: string) => {
+  const selectedFilters = useMemo(
+    () =>
+      Object.keys(pastTxsState.filters).reduce((acc: string[], key: string) => {
         if (pastTxsState.filters[key as keyof typeof pastTxsState.filters]) {
           acc.push(key);
         }
         return acc;
-      },
-      []
-    );
-  }, [pastTxsState]);
+      }, []),
+    [pastTxsState]
+  );
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PAST_TXS);
   }, [router.isReady]);
-
-  useEffect(() => {
-    setPageSize(10);
-    setCurrentPage(1);
-  }, [
-    chainId,
-    setCurrentPage,
-    setPageSize,
-    pastTxsState.search,
-    pastTxsState.isSigner,
-    pastTxsState.filters,
-  ]);
 
   useEffect(() => {
     reset();
@@ -152,49 +123,41 @@ const PastTxs = () => {
         Past Transactions
       </Heading>
       <Flex my={8} gap={3}>
-        <InputGroup>
-          <Input
-            value={pastTxsState.search}
-            onChange={(e) => {
-              setCurrentPage(1);
-              setValue("search", e.target.value);
-            }}
-            placeholder={`Search with Transaction Hash${
-              wasm.enabled ? " or Contract Address" : ""
-            }`}
-            h="full"
-          />
-          <InputRightElement pointerEvents="none" h="full" mr={1}>
-            <CustomIcon name="search" color="gray.600" />
-          </InputRightElement>
-        </InputGroup>
+        <InputWithIcon
+          placeholder={`Search with Transaction Hash${
+            wasm.enabled ? " or Contract Address" : ""
+          }`}
+          value={pastTxsState.search}
+          onChange={handleOnSearchChange}
+          size={{ base: "md", md: "lg" }}
+          amptrackSection="past-txs-search"
+        />
         <Flex gap={3}>
           <TxRelationSelection
             value={pastTxsState.isSigner}
-            setValue={(value) => {
-              resetPagination();
-              setValue("isSigner", value);
-            }}
+            setValue={handleOnIsSignerChange}
             w="165px"
           />
           <TxFilterSelection
-            result={filterSelected}
-            setResult={setFilter}
+            result={selectedFilters}
+            setResult={handleOnFiltersChange}
             boxWidth="285px"
             placeholder="All"
           />
         </Flex>
       </Flex>
       <TransactionsTableWithWallet
-        transactions={txs}
+        transactions={txs?.items}
         isLoading={isLoading}
         emptyState={
           pastTxsState.search.trim().length > 0 ||
           pastTxsState.isSigner !== undefined ||
-          filterSelected.length > 0 ? (
+          selectedFilters.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
-              message="No past transaction matches found with your input. You can search with transaction hash, and contract address."
+              message={`No past transaction matches found with your input. You can search with transaction hash${
+                wasm.enabled ? ", and contract address" : ""
+              }.`}
               withBorder
             />
           ) : (
@@ -206,15 +169,23 @@ const PastTxs = () => {
           )
         }
       />
-      {countTxs > 10 && (
+      {!!txCount && txCount > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={countTxs}
+          totalData={txCount}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={(nextPage) => {
+            setCurrentPage(nextPage);
+            refetchCount();
+          }}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+            refetchCount();
+          }}
         />
       )}
     </PageContainer>

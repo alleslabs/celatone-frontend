@@ -26,7 +26,7 @@ export const TransactionsTable = ({
 }: TransactionsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
   const templateColumns = `40px 190px 48px minmax(360px, 1fr) ${
@@ -41,6 +41,8 @@ export const TransactionsTable = ({
         <TransactionsTableMobileCard
           key={transaction.hash}
           transaction={transaction}
+          showRelations={showRelations}
+          showTimestamp={showTimestamp}
         />
       ))}
     </MobileTableContainer>

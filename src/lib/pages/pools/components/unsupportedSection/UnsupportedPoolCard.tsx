@@ -20,7 +20,11 @@ import { TokenImageRender } from "lib/components/token";
 import { Tooltip } from "lib/components/Tooltip";
 import type { Pool } from "lib/types";
 import { PoolType } from "lib/types";
-import { formatUTokenWithPrecision, openNewTab } from "lib/utils";
+import {
+  formatUTokenWithPrecision,
+  getTokenLabel,
+  openNewTab,
+} from "lib/utils";
 
 interface UnsupportedPoolCardProps {
   item: Pool;
@@ -146,7 +150,9 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                           asset.precision ?? 0
                         )}
                       </Text>
-                      <Flex>{asset.symbol ?? asset.denom}</Flex>
+                      <Flex>
+                        {getTokenLabel(asset.denom, asset.symbol, false)}
+                      </Flex>
                       <Copier
                         type={
                           asset.symbol ? "supported_asset" : "unsupported_asset"

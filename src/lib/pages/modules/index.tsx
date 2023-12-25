@@ -1,14 +1,30 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-export const Modules = () => {
+import { AmpEvent, track } from "lib/amplitude";
+import PageContainer from "lib/components/PageContainer";
+
+import { RecentModulesTable } from "./components/RecentModulesTable";
+
+const RecentModules = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_MODULES);
+  }, [router.isReady]);
+
   return (
-    <Flex>
-      <Text>
-        Modules: Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Aliquam voluptas hic aperiam ad sint unde sapiente cupiditate! Quo et
-        cupiditate iure, sequi deserunt tempora corrupti eum. Error facere
-        placeat repellendus?
+    <PageContainer>
+      <Heading variant="h5" as="h5" minH="36px">
+        Recent Modules
+      </Heading>
+      <Text variant="body2" color="text.dark" mb={8}>
+        These modules are the most recently published on this network
       </Text>
-    </Flex>
+      <RecentModulesTable />
+    </PageContainer>
   );
 };
+
+export default RecentModules;

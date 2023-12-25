@@ -1,52 +1,43 @@
 import { Box } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { ErrorFetching } from "../../ErrorFetching";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { EmptyStateProps } from "lib/components/state";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import {
-  useTxsByAddressPagination,
-  useTxsCountByAddress,
-} from "lib/services/txService";
-import type { Nullable, Option, Transaction, TxFilters } from "lib/types";
+import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
+import type { Addr, Option, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  accountId: Option<Nullable<number>>;
+  address: Addr;
   scrollComponentId: string;
+  refetchCount: () => void;
   onViewMore?: () => void;
 }
 
-const getEmptyStateProps = (
-  filterSelected: string[],
-  transactions: Option<Transaction[]>
-): EmptyStateProps => {
-  if (filterSelected.length) {
-    return { message: "No past transaction matches found with your input." };
-  }
-  if (!transactions) {
-    return {
-      message: <ErrorFetching />,
-    };
-  }
-  return {
-    message: "This account did not submit any transactions before.",
-  };
-};
+const getEmptyStateProps = (selectedFilters: string[]): EmptyStateProps =>
+  selectedFilters.length
+    ? {
+        imageVariant: "not-found",
+        message: "No past transaction matches found with your input.",
+      }
+    : {
+        imageVariant: "empty",
+        message: "This account did not submit any transactions before.",
+      };
 
 export const TxsTable = ({
-  accountId,
+  address,
   scrollComponentId,
+  refetchCount,
   onViewMore,
 }: TxsTableProps) => {
   const {
@@ -57,16 +48,12 @@ export const TxsTable = ({
   const isMobile = useMobile();
 
   const {
-    data: txsCount,
+    data: rawTxCount,
+    isLoading: isTxCountLoading,
     refetch: refetchTxsCount,
-    isLoading: txsCountLoading,
-    failureReason,
-  } = useTxsCountByAddress({
-    accountId,
-    search: "",
-    filters,
-    isSigner,
-  });
+  } = useTxsCountByAddress(address, undefined, isSigner, filters);
+  const txsCount = rawTxCount ?? undefined;
+  const isTxsCountTimeout = rawTxCount === null;
 
   const {
     pagesQuantity,
@@ -84,44 +71,39 @@ export const TxsTable = ({
     },
   });
 
-  const resetPagination = () => {
-    setPageSize(10);
-    setCurrentPage(1);
-  };
-
-  const handleSetFilters = (filter: string, bool: boolean) => {
-    resetPagination();
-    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
-  };
-
-  const filterSelected = Object.keys(filters).filter(
-    (key) => filters[key as keyof typeof filters]
-  );
-
-  const { data: transactions, isLoading } = useTxsByAddressPagination(
-    accountId,
-    "",
-    filters,
+  const { data: transactions, isLoading } = useTxsByAddress(
+    address,
+    undefined,
     isSigner,
+    filters,
     offset,
     onViewMore ? 5 : pageSize
   );
 
-  const onPageChange = (nextPage: number) => {
-    refetchTxsCount();
-    setCurrentPage(nextPage);
+  const handleOnIsSignerChange = (value: Option<boolean>) => {
+    setCurrentPage(1);
+    setIsSigner(value);
+    refetchCount();
   };
 
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchTxsCount();
-    setPageSize(size);
+  const handleOnFiltersChange = (filter: string, bool: boolean) => {
     setCurrentPage(1);
+    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
+    refetchCount();
   };
+
+  const selectedFilters = useMemo(
+    () =>
+      Object.keys(filters).filter(
+        (key) => filters[key as keyof typeof filters]
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(filters)]
+  );
 
   useEffect(() => {
-    if (failureReason) setPageSize(50);
-  }, [failureReason, setPageSize]);
+    if (isTxsCountTimeout) setPageSize(50);
+  }, [isTxsCountTimeout, setPageSize]);
 
   useEffect(() => {
     setIsSigner(undefined);
@@ -129,8 +111,6 @@ export const TxsTable = ({
   }, [chainId]);
 
   const isMobileOverview = isMobile && !!onViewMore;
-  const showErrorAlert =
-    Boolean(failureReason) && Number(transactions?.length) > 0;
   return (
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
@@ -146,18 +126,15 @@ export const TxsTable = ({
           relationSelection={
             <TxRelationSelection
               value={isSigner}
-              setValue={(value: Option<boolean>) => {
-                resetPagination();
-                setIsSigner(value);
-              }}
+              setValue={handleOnIsSignerChange}
               w={{ base: "full", md: "200px" }}
               size="lg"
             />
           }
           txTypeSelection={
             <TxFilterSelection
-              result={filterSelected}
-              setResult={handleSetFilters}
+              result={selectedFilters}
+              setResult={handleOnFiltersChange}
               boxWidth={{ base: "full", md: "285px" }}
               placeholder="All"
               size="lg"
@@ -166,23 +143,24 @@ export const TxsTable = ({
           }
         />
       )}
-      {showErrorAlert && <TxsAlert />}
+      {isTxsCountTimeout && <TxsAlert />}
       {!isMobileOverview && (
         <TransactionsTable
-          transactions={transactions}
-          isLoading={isLoading || txsCountLoading}
+          transactions={transactions?.items}
+          isLoading={isLoading || isTxCountLoading}
           emptyState={
-            <EmptyState
-              withBorder
-              {...getEmptyStateProps(filterSelected, transactions)}
-            />
+            !transactions ? (
+              <ErrorFetching dataName="transactions" />
+            ) : (
+              <EmptyState withBorder {...getEmptyStateProps(selectedFilters)} />
+            )
           }
           showRelations
         />
       )}
-      {Boolean(transactions?.length) &&
+      {Boolean(transactions?.items?.length) &&
         (onViewMore
-          ? !txsCountLoading &&
+          ? !isTxCountLoading &&
             (txsCount === undefined || txsCount > 5) &&
             !isMobile && <ViewMore onClick={onViewMore} />
           : txsCount &&
@@ -194,8 +172,18 @@ export const TxsTable = ({
                 totalData={txsCount}
                 scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
+                onPageChange={(nextPage) => {
+                  setCurrentPage(nextPage);
+                  refetchTxsCount();
+                  refetchCount();
+                }}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                  refetchTxsCount();
+                  refetchCount();
+                }}
               />
             ))}
     </Box>

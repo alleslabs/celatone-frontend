@@ -16,7 +16,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://sei-api.polkachu.com",
     rpc: "https://sei-rpc.polkachu.com:443",
     indexer: "https://pacific-1-test-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...compassWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -66,7 +65,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://rest.atlantic-2.seinetwork.io",
     rpc: "https://rpc.atlantic-2.seinetwork.io:443",
     indexer: "https://atlantic-2-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...compassWallets, ...keplrWallets],
     features: {
       faucet: {

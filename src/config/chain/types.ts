@@ -18,7 +18,12 @@ type WasmConfig =
     };
 
 type MoveConfig =
-  | { enabled: true; moduleMaxFileSize: number; decodeApi: string }
+  | {
+      enabled: true;
+      moduleMaxFileSize: number;
+      decodeApi: string;
+      verify: string;
+    }
   | { enabled: false };
 
 type PoolConfig =
@@ -55,7 +60,6 @@ export interface ChainConfig {
   lcd: string;
   rpc: string;
   indexer: string;
-  api: string;
   wallets: MainWalletBase[];
   features: {
     faucet: FaucetConfig;

@@ -57,7 +57,7 @@ export const DevShortcut = () => {
       ...(move.enabled
         ? [
             {
-              title: "Publish Module",
+              title: "Publish / Republish",
               subtitle: "Upload .mv files to publish new module",
               slug: "publish-module",
               icon: "add-new" as const,

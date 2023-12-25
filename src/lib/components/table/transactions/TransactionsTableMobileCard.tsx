@@ -13,13 +13,13 @@ import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableMobileCardProps {
   transaction: Transaction;
-  showRelations?: boolean;
-  showTimestamp?: boolean;
+  showRelations: boolean;
+  showTimestamp: boolean;
 }
 export const TransactionsTableMobileCard = ({
   transaction,
-  showRelations = true,
-  showTimestamp = true,
+  showRelations,
+  showTimestamp,
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
@@ -51,8 +51,13 @@ export const TransactionsTableMobileCard = ({
         <Flex>
           <RenderActionMessages transaction={transaction} />
           {transaction.isIbc && (
-            <Tag variant="accent-dark" size="sm" w={8} justifyContent="center">
+            <Tag variant="accent-dark" size="sm">
               IBC
+            </Tag>
+          )}
+          {transaction.isOpinit && (
+            <Tag variant="teal" size="sm">
+              OPInit
             </Tag>
           )}
         </Flex>

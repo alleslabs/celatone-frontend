@@ -1,32 +1,32 @@
 import axios from "axios";
+import { z } from "zod";
 
-import type { MoveAccountAddr, Nullable } from "lib/types";
-import type {
-  InternalResource,
-  ResponseResource,
-  ResponseResources,
-} from "lib/types/move/resource";
-import { snakeToCamel } from "lib/utils";
+import { type MoveAccountAddr, zMoveAccountAddr } from "lib/types";
+
+const zResourcesResponseItem = z
+  .object({
+    address: zMoveAccountAddr,
+    move_resource: z.string(),
+    raw_bytes: z.string(),
+    struct_tag: z.string(),
+  })
+  .transform((val) => ({
+    address: val.address,
+    moveResource: val.move_resource,
+    rawBytes: val.raw_bytes,
+    structTag: val.struct_tag,
+  }));
+
+const zResourcesResponse = z.object({
+  items: z.array(zResourcesResponseItem),
+  total: z.number().nonnegative(),
+});
+export type ResourceResponse = z.infer<typeof zResourcesResponse>;
 
 export const getAccountResources = async (
-  baseEndpoint: string,
+  endpoint: string,
   address: MoveAccountAddr
-): Promise<InternalResource[]> => {
-  const result: ResponseResource[] = [];
-
-  const fetchFn = async (paginationKey: Nullable<string>) => {
-    const { data } = await axios.get<ResponseResources>(
-      `${baseEndpoint}/initia/move/v1/accounts/${address}/resources${
-        paginationKey ? `?pagination.key=${paginationKey}` : ""
-      }`
-    );
-    result.push(...data.resources);
-    if (data.pagination.next_key) await fetchFn(data.pagination.next_key);
-  };
-
-  await fetchFn(null);
-
-  return snakeToCamel(result).sort((a, b) =>
-    a.structTag.localeCompare(b.structTag)
-  );
-};
+): Promise<ResourceResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/move/resources`)
+    .then((res) => zResourcesResponse.parse(res.data));

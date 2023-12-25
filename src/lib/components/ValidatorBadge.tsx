@@ -6,10 +6,10 @@ import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileLabel } from "lib/components/table";
 import { useValidatorImage } from "lib/services/validatorService";
-import type { Nullable, ValidatorInfo } from "lib/types";
+import type { Nullable, Validator } from "lib/types";
 
 interface ValidatorBadgeProps {
-  validator: Nullable<ValidatorInfo>;
+  validator: Nullable<Validator>;
   badgeSize?: ImageProps["boxSize"];
   ampCopierSection?: string;
   maxWidth?: string;

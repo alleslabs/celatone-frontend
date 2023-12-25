@@ -28,7 +28,7 @@ const NotFoundPage = () => {
         mt={6}
       >
         <Image
-          src={CURR_THEME.illustration.error}
+          src={CURR_THEME.illustration["404"]}
           alt="page not found"
           width="404px"
         />

@@ -10,21 +10,15 @@ import {
   Flex,
   Box,
   DrawerHeader,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   IconButton,
 } from "@chakra-ui/react";
 
 import type { MenuInfo } from "../navbar/types";
-import { CHAIN_CONFIGS } from "config/chain";
+import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  useCelatoneApp,
   useMoveConfig,
   usePublicProjectConfig,
-  useSelectChain,
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -35,10 +29,8 @@ import { usePublicProjectStore } from "lib/providers/store";
 
 export const NavDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currentChainId, availableChainIds } = useCelatoneApp();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const selectChain = useSelectChain();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
@@ -81,6 +73,11 @@ export const NavDrawer = () => {
         ...(move.enabled
           ? [
               {
+                name: "Modules",
+                slug: "/modules",
+                icon: "contract-address" as IconKeys,
+              },
+              {
                 name: "0x1 Page",
                 slug: "/account/0x1",
                 icon: "hex" as IconKeys,
@@ -121,75 +118,7 @@ export const NavDrawer = () => {
         <DrawerContent w="90%">
           <DrawerHeader alignItems="center" px={4}>
             <Flex align="center" justify="space-between" w="full">
-              <Menu onOpen={() => track(AmpEvent.USE_SELECT_NETWORK)}>
-                <MenuButton
-                  pl={4}
-                  pr={2}
-                  py={1}
-                  borderRadius="8px"
-                  borderWidth="1px"
-                  borderColor="gray.600"
-                  _hover={{ bg: "gray.700" }}
-                  transition="all 0.25s ease-in-out"
-                  w="220px"
-                >
-                  <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    display="flex"
-                  >
-                    <Text
-                      textOverflow="ellipsis"
-                      variant="body2"
-                      overflow="hidden"
-                      whiteSpace="nowrap"
-                      maxW="220px"
-                    >
-                      {currentChainId}
-                    </Text>
-                    <CustomIcon name="chevron-down" color="gray.600" />
-                  </Flex>
-                </MenuButton>
-                <MenuList zIndex="dropdown">
-                  {availableChainIds.map((chainId) => {
-                    const noConfig = !(chainId in CHAIN_CONFIGS);
-                    return (
-                      <MenuItem
-                        key={chainId}
-                        onClick={() => {
-                          selectChain(chainId);
-                          onClose();
-                        }}
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        _hover={{
-                          backgroundColor: "gray.800",
-                        }}
-                        transition="all 0.25s ease-in-out"
-                        isDisabled={noConfig}
-                      >
-                        <Flex justify="space-between" align="center" w="full">
-                          <Flex direction="column">
-                            <Text variant="body2">
-                              {CHAIN_CONFIGS[chainId]?.prettyName || chainId}
-                            </Text>
-                            <Text color="text.dark" variant="body3">
-                              {chainId}
-                            </Text>
-                          </Flex>
-                          {chainId === currentChainId && (
-                            <CustomIcon
-                              name="check"
-                              boxSize={3}
-                              color="gray.600"
-                            />
-                          )}
-                        </Flex>
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </Menu>
+              <NetworkMenu />
               <IconButton
                 variant="gray"
                 aria-label="close"
@@ -199,85 +128,77 @@ export const NavDrawer = () => {
               />
             </Flex>
           </DrawerHeader>
-          <DrawerBody overflowY="scroll" px={4} pb={4}>
-            <Box overflowY="auto">
-              {mobileMenu.map((item) => (
-                <Box
-                  pb={4}
-                  mb={4}
-                  key={item.category}
-                  borderBottom="1px solid"
-                  borderColor="gray.700"
-                  sx={{
-                    "&:last-of-type": {
-                      borderBottom: "none",
-                      paddingBottom: "0px",
-                      marginBottom: "0px",
-                    },
-                  }}
-                >
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text py={2} variant="body3" fontWeight={700}>
-                      {item.category}
-                    </Text>
-                  </Flex>
-                  {item.submenu.map((submenu) => (
-                    <AppLink
-                      href={submenu.slug}
-                      key={submenu.slug}
-                      onClick={() => {
-                        track(AmpEvent.USE_SIDEBAR);
-                        onClose();
-                      }}
+          <DrawerBody overflowY="scroll" px={4}>
+            {mobileMenu.map((item) => (
+              <Box
+                pb={4}
+                mb={4}
+                key={item.category}
+                borderBottom="1px solid"
+                borderColor="gray.700"
+                sx={{
+                  "&:last-of-type": {
+                    borderBottom: "none",
+                    paddingBottom: "0px",
+                    marginBottom: "0px",
+                  },
+                }}
+              >
+                <Text py={2} variant="body3" fontWeight={700}>
+                  {item.category}
+                </Text>
+                {item.submenu.map((submenu) => (
+                  <AppLink
+                    href={submenu.slug}
+                    key={submenu.slug}
+                    onClick={() => {
+                      track(AmpEvent.USE_SIDEBAR);
+                      onClose();
+                    }}
+                  >
+                    <Flex
+                      gap={2}
+                      p={2}
+                      cursor="pointer"
+                      _hover={{ bg: "gray.700", borderRadius: "8px" }}
+                      my="1px"
+                      transition="all 0.25s ease-in-out"
+                      alignItems="center"
+                      position="relative"
+                      bgColor={
+                        isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
+                      }
+                      borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                     >
                       <Flex
-                        gap={2}
-                        p={2}
-                        cursor="pointer"
-                        _hover={{ bg: "gray.700", borderRadius: "8px" }}
-                        my="1px"
-                        transition="all 0.25s ease-in-out"
-                        alignItems="center"
-                        position="relative"
-                        bgColor={
-                          isCurrentPage(submenu.slug)
-                            ? "gray.800"
-                            : "transparent"
-                        }
-                        borderRadius={
-                          isCurrentPage(submenu.slug) ? "8px" : "0px"
-                        }
-                      >
-                        <Flex
-                          opacity={isCurrentPage(submenu.slug) ? 1 : 0}
-                          width="3px"
-                          height="20px"
-                          bgColor="primary.light"
-                          position="absolute"
-                          top="10px"
-                          borderRadius="2px"
-                          left="0px"
+                        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
+                        width="3px"
+                        height="20px"
+                        bgColor="primary.light"
+                        position="absolute"
+                        top="10px"
+                        borderRadius="2px"
+                        left="0px"
+                      />
+                      {submenu.icon && (
+                        <CustomIcon name={submenu.icon} color="gray.600" />
+                      )}
+                      {submenu.logo && (
+                        <Image
+                          src={submenu.logo}
+                          borderRadius="full"
+                          alt={submenu.slug}
+                          boxSize={5}
                         />
-                        {submenu.icon && (
-                          <CustomIcon name={submenu.icon} color="gray.600" />
-                        )}
-                        {submenu.logo && (
-                          <Image
-                            src={submenu.logo}
-                            borderRadius="full"
-                            alt={submenu.slug}
-                            boxSize={5}
-                          />
-                        )}
-                        <Text variant="body2" className="ellipsis">
-                          {submenu.name}
-                        </Text>
-                      </Flex>
-                    </AppLink>
-                  ))}
-                </Box>
-              ))}
-            </Box>
+                      )}
+                      <Text variant="body2" className="ellipsis">
+                        {submenu.name}
+                      </Text>
+                    </Flex>
+                  </AppLink>
+                ))}
+              </Box>
+            ))}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

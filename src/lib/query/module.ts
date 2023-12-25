@@ -49,7 +49,7 @@ export const getModuleHistoriesCountQueryDocument = graphql(`
 `);
 
 export const getModuleInitialPublishInfoQueryDocument = graphql(`
-  query getModuleInitialPublishInfoQuery($moduleId: Int!) {
+  query getModuleInitialPublishInfoQuery($moduleId: Int!, $isGov: Boolean!) {
     modules(where: { id: { _eq: $moduleId } }) {
       publisher_vm_address: vm_address {
         vm_address
@@ -63,7 +63,7 @@ export const getModuleInitialPublishInfoQueryDocument = graphql(`
         }
         order_by: { proposal_id: asc }
         limit: 1
-      ) {
+      ) @include(if: $isGov) {
         proposal {
           id
           title

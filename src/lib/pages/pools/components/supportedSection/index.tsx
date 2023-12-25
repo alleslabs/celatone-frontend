@@ -51,7 +51,7 @@ interface SupportedSectionProp {
 export const SupportedSection = ({
   scrollComponentId,
 }: SupportedSectionProp) => {
-  const { assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: assetInfos } = useAssetInfos({ withPrices: true });
 
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
@@ -133,8 +133,8 @@ export const SupportedSection = ({
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            size="lg"
-            action="supported-pool-list-search"
+            size={{ base: "md", md: "lg" }}
+            amptrackSection="supported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"

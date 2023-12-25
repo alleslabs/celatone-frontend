@@ -10,6 +10,7 @@ import {
   calculateAssetValue,
   formatPrice,
   formatUTokenWithPrecision,
+  getTokenLabel,
   toToken,
 } from "lib/utils";
 
@@ -27,7 +28,7 @@ export const AssetCard = ({
   ampCopierSection,
   ...cardProps
 }: AssetCardProps) => {
-  const symbol = assetInfo?.symbol ?? denom;
+  const symbol = getTokenLabel(denom, assetInfo?.symbol, false);
   return (
     <Tooltip label={`Token ID: ${denom}`} maxW="240px" textAlign="center">
       <Flex
@@ -52,7 +53,7 @@ export const AssetCard = ({
             src={assetInfo?.logo ?? getUndefinedTokenIcon(denom)}
             alt={symbol}
             fallback={<NAToken />}
-            fallbackStrategy="onError"
+            fallbackStrategy="beforeLoadOrError"
           />
           <Text variant="body2" className="ellipsis" fontWeight="bold">
             {symbol}

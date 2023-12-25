@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { ModuleEmptyState, NoImageEmptyState } from "../../common";
 import type { ModuleSelectFunction } from "../types";
+import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { FunctionCard } from "lib/components/module/FunctionCard";
@@ -73,6 +74,9 @@ export const ModuleFunctionBody = ({
   const onFunctionSelect = useCallback(
     (fn: ExposedFunction) => {
       if (module) {
+        track(AmpEvent.USE_MODULE_SELECTION_FUNCTION, {
+          functionType: fn.is_view ? "view" : "Execute",
+        });
         handleModuleSelect(module, fn);
         closeModal();
       }
@@ -95,11 +99,12 @@ export const ModuleFunctionBody = ({
             {module.moduleName}
           </Heading>
           <InputWithIcon
-            iconPosition="start"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Search functions ..."
+            placeholder="Search with Function Name"
+            size="md"
             my={4}
+            amptrackSection="module-select-drawer-function-search"
           />
           <Flex gap={6} h={maxHeight}>
             <Flex flex={0.5} gap={3} {...functionGridBaseStyle}>

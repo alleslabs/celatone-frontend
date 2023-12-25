@@ -1,7 +1,9 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
   useFabricateFee,
@@ -38,6 +40,7 @@ const DEFAULT_FILE_STATE: FileState = {
 };
 
 export const DeployScript = () => {
+  const router = useRouter();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const deployScriptTx = useDeployScriptTx();
@@ -130,6 +133,10 @@ export const DeployScript = () => {
     inputData,
   ]);
 
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_DEPLOY_SCRIPT);
+  }, [router.isReady]);
+
   return (
     <>
       <WasmPageContainer>
@@ -199,7 +206,10 @@ export const DeployScript = () => {
       <Footer
         isLoading={processing}
         disabled={!enableDeploy || Boolean(simulateError) || isSimulating}
-        executeScript={proceed}
+        executeScript={() => {
+          track(AmpEvent.ACTION_EXECUTE_SCRIPT);
+          proceed();
+        }}
       />
     </>
   );

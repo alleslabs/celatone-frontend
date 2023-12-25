@@ -1,55 +1,41 @@
-// TODO - Refactor Past txs query
-import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useUserAssetInfos } from "lib/pages/account-details/data";
-import { useCodeListCountByWalletAddress } from "lib/services/codeService";
-import {
-  useContractListCountByAdmin,
-  useInstantiatedCountByUserQuery,
-} from "lib/services/contractService";
-import { useProposalsCountByWalletAddress } from "lib/services/proposalService";
-import { useTxsCountByAddress } from "lib/services/txService";
-import type { HumanAddr, Nullable, Option } from "lib/types";
+import { useAccountTableCounts } from "lib/services/accountService";
+import { useBalanceInfos } from "lib/services/balanceService";
+import type { HumanAddr, Option, Nullish } from "lib/types";
 
-/**
- * @remark
- * Counts for stored codes, contract admin, contract instances, transactions, and opened proposals tables
- */
+interface AccountDetailsTableCounts {
+  tableCounts: {
+    codesCount: Nullish<number>;
+    contractsAdminCount: Nullish<number>;
+    contractsCount: Nullish<number>;
+    txsCount: Nullish<number>;
+    proposalsCount: Nullish<number>;
+    assetsCount: Option<number>;
+  };
+  isLoading: boolean;
+  refetchCounts: () => void;
+}
+
 export const useAccountDetailsTableCounts = (
-  walletAddress: HumanAddr,
-  accountId: Option<Nullable<number>>
-) => {
-  const { data: codesCount, refetch: refetchCodesCount } =
-    useCodeListCountByWalletAddress(walletAddress);
-  const { data: contractsAdminCount, refetch: refetchContractsAdminCount } =
-    useContractListCountByAdmin(walletAddress);
-  const { data: contractsCount, refetch: refetchContractsCount } =
-    useInstantiatedCountByUserQuery(walletAddress);
-  const { data: proposalsCount, refetch: refetchProposalsCount } =
-    useProposalsCountByWalletAddress(walletAddress);
-  const { data: txsCount, isFetching: txCountFetching } = useTxsCountByAddress({
-    accountId,
-    search: "",
-    filters: DEFAULT_TX_FILTERS,
-    isSigner: undefined,
-  });
-
-  const { totalData: assetsCount } = useUserAssetInfos(walletAddress);
+  walletAddress: HumanAddr
+): AccountDetailsTableCounts => {
+  const {
+    data,
+    refetch,
+    isLoading: isLoadingAccountTableCounts,
+  } = useAccountTableCounts(walletAddress);
+  const { totalData: assetsCount, isLoading: isLoadingAssetCount } =
+    useBalanceInfos(walletAddress);
 
   return {
     tableCounts: {
-      codesCount,
-      contractsAdminCount,
-      contractsCount,
-      txsCount,
-      proposalsCount,
+      codesCount: data?.code,
+      contractsAdminCount: data?.contractByAdmin,
+      contractsCount: data?.instantiated,
+      txsCount: data?.tx,
+      proposalsCount: data?.proposal,
       assetsCount,
     },
-    loadingState: {
-      txCountLoading: txCountFetching,
-    },
-    refetchCodesCount,
-    refetchContractsAdminCount,
-    refetchContractsCount,
-    refetchProposalsCount,
+    isLoading: isLoadingAssetCount || isLoadingAccountTableCounts,
+    refetchCounts: refetch,
   };
 };

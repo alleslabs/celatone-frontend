@@ -37,6 +37,12 @@ export interface Transaction {
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
   isInstantiate: boolean;
+  isOpinit: boolean;
+}
+
+/* Filter for INITIA */
+export interface InitiaTxFilters {
+  isOpinit: boolean;
 }
 
 export interface BaseTxFilters {
@@ -44,7 +50,7 @@ export interface BaseTxFilters {
   isIbc: boolean;
 }
 export interface WasmTxFilters {
-  isUpload: boolean;
+  isStoreCode: boolean;
   isInstantiate: boolean;
   isExecute: boolean;
   isMigrate: boolean;
@@ -62,7 +68,8 @@ export interface MoveTxFilters {
 export interface TxFilters
   extends BaseTxFilters,
     WasmTxFilters,
-    MoveTxFilters {}
+    MoveTxFilters,
+    InitiaTxFilters {}
 
 export type PoolTxFilter =
   | "is_all"

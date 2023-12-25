@@ -13,7 +13,14 @@ export const DisconnectedState = ({
   text,
   helperText,
 }: DisconnectedStateProps) => (
-  <Flex direction="column" alignItems="center" gap={4}>
+  <Flex
+    direction="column"
+    alignItems="center"
+    gap={4}
+    borderY="1px solid"
+    borderColor="gray.700"
+    py={12}
+  >
     <StateImage imageVariant="disconnected" />
     <Flex align="center" justify="center">
       <ConnectWalletBtn />

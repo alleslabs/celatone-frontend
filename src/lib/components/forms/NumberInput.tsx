@@ -65,7 +65,6 @@ export const NumberInput = ({
       <FormLabel className={`${size}-label`} backgroundColor={labelBgColor}>
         {label}
       </FormLabel>
-
       <InputGroup>
         <Input
           size={size}

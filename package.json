@@ -1,7 +1,25 @@
 {
   "name": "celatone",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Alles Labs",
+  "contributors": [
+    {
+      "name": "Kanisorn",
+      "email": "kanisorn@alleslabs.com"
+    },
+    {
+      "name": "Beeb",
+      "email": "beeb@alleslabs.com"
+    },
+    {
+      "name": "Pakin",
+      "email": "pakin@alleslabs.com"
+    },
+    {
+      "name": "Songwong",
+      "email": "songwong@alleslabs.com"
+    }
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -55,11 +73,14 @@
     "@rjsf/utils": "v5.0.0-beta.10",
     "@rjsf/validator-ajv8": "v5.0.0-beta.10",
     "@rx-stream/pipe": "^0.7.1",
-    "@sentry/nextjs": "7.37.0",
+    "@sentry/integrations": "7.81.1",
+    "@sentry/nextjs": "7.81.1",
     "@tanstack/react-query": "^4.16.1",
     "@types/big.js": "^6.1.6",
     "@types/numeral": "^2.0.2",
     "@types/react-dom": "^18.0.8",
+    "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^1.0.1",
     "ace-builds": "^1.12.5",
     "axios": "^1.1.3",
     "big.js": "^6.2.1",
@@ -97,7 +118,8 @@
     "rxjs": "^7.5.7",
     "snake-case": "^3.0.4",
     "use-clamp-text": "^1.1.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^18.1.0",

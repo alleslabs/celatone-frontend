@@ -2,9 +2,9 @@ import { Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
+import InputWithIcon from "../InputWithIcon";
 import { ContractsTable } from "../table";
 import { useCurrentChain } from "lib/app-provider";
-import { TextInput } from "lib/components/forms";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
@@ -54,8 +54,8 @@ const ContractListContent = ({
         ) : (
           <EmptyState
             imageVariant="not-found"
-            message="No contracts match found. 
-  Make sure you are searching with contract address, name, or description."
+            message="No matching contracts found.
+  Make sure you are searching with a contract address, name, or description."
           />
         )
       }
@@ -117,14 +117,13 @@ export const ContractListDetail = ({
 
   return (
     <Box minH="xs">
-      <Flex gap={3} w="full" my={isReadOnly ? "24px" : "48px"}>
-        <TextInput
-          variant="fixed-floating"
-          value={searchKeyword}
-          setInputState={setSearchKeyword}
+      <Flex gap={3} w="full" my={isReadOnly ? 6 : 8}>
+        <InputWithIcon
           placeholder="Search with Contract Address, Name, or Description"
-          autoFocus
-          size={!isReadOnly ? "lg" : "md"}
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          size={{ base: "md", md: "lg" }}
+          amptrackSection="contract-list-item-search"
         />
         {!isReadOnly && (
           <TagSelection

@@ -7,6 +7,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import {
@@ -30,8 +31,8 @@ import type {
 } from "lib/types";
 import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
-import type { CodeIdInfoResponse } from "./code";
-import { getCodeIdInfo } from "./code";
+import type { CodeIdInfoResponse, CodesResponse } from "./code";
+import { getCodeIdInfo, getCodesByAddress } from "./code";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -146,6 +147,7 @@ export const useCodeDataByCodeId = ({
   Nullable<Omit<CodeData, "chainId">>
 > => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useCodeDataByCodeId)");
@@ -153,6 +155,7 @@ export const useCodeDataByCodeId = ({
     return indexerGraphClient
       .request(getCodeDataByCodeId, {
         codeId: Number(codeId),
+        isGov,
       })
       .then(({ codes_by_pk }) => {
         if (!codes_by_pk) return null;
@@ -163,7 +166,7 @@ export const useCodeDataByCodeId = ({
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
           created: parseDateOpt(codes_by_pk.transaction?.block?.timestamp),
-          proposal: codes_by_pk.code_proposals[0]
+          proposal: codes_by_pk.code_proposals?.[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
                 height: codes_by_pk.code_proposals[0].block?.height,
@@ -179,13 +182,27 @@ export const useCodeDataByCodeId = ({
           cw2Version: codes_by_pk.cw2_version,
         };
       });
-  }, [codeId, indexerGraphClient]);
+  }, [codeId, indexerGraphClient, isGov]);
   return useQuery(
-    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient, isGov],
     queryFn,
     {
       enabled: enabled && isCodeId(codeId),
     }
+  );
+};
+
+export const useCodesByAddress = (
+  address: Addr,
+  limit: number,
+  offset: number
+): UseQueryResult<CodesResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
+    async () => getCodesByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

@@ -4,54 +4,20 @@ import { useCallback } from "react";
 
 import {
   useCelatoneApp,
-  useBaseApiRoute,
   CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useWasmConfig,
+  useGovConfig,
 } from "lib/app-provider";
+import { getAccountTypeByAddressQueryDocument } from "lib/query";
+import type { AccountType, Addr, Option } from "lib/types";
+
 import {
-  getAccountIdByAddressQueryDocument,
-  getAccountTypeByAddressQueryDocument,
-} from "lib/query";
-import type { AccountType, Addr, Balance, Nullable, Option } from "lib/types";
-
-import { getAccountBalanceInfo } from "./account";
-
-export const useAccountBalances = (
-  address: Addr
-): UseQueryResult<Balance[]> => {
-  const balancesApiRoute = useBaseApiRoute("balances");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_BALANCES_INFO, address, balancesApiRoute],
-    async () => getAccountBalanceInfo(balancesApiRoute, address as Addr),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
-export const useAccountId = (
-  walletAddress: Option<Addr>
-): UseQueryResult<Nullable<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error("Error fetching account id: failed to retrieve address.");
-    return indexerGraphClient
-      .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
-      .then<Nullable<number>>(
-        ({ accounts_by_pk }) => accounts_by_pk?.id ?? null
-      );
-  }, [indexerGraphClient, walletAddress]);
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, walletAddress],
-    queryFn,
-    {
-      enabled: Boolean(walletAddress),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
+  getAccountInfo,
+  type AccountInfo,
+  getAccountTableCounts,
+  type AccountTableCounts,
+} from "./account";
 
 export const useAccountType = (
   walletAddress: Option<Addr>,
@@ -85,5 +51,29 @@ export const useAccountType = (
       retry: 1,
       refetchOnWindowFocus: false,
     }
+  );
+};
+
+export const useAccountInfo = (address: Addr): UseQueryResult<AccountInfo> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
+    async () => getAccountInfo(endpoint, address),
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useAccountTableCounts = (
+  address: Addr
+): UseQueryResult<AccountTableCounts> => {
+  const endpoint = useBaseApiRoute("accounts");
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.TABLE_COUNTS, endpoint, address, isGov, isWasm],
+    async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

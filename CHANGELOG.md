@@ -43,6 +43,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.4.0
+
+### Features
+
+- [#686](https://github.com/alleslabs/celatone-frontend/pull/686) Add amp module list, my published module, and resources/module tab
+- [#664](https://github.com/alleslabs/celatone-frontend/pull/664) Add Vercel speed insights and analytics
+- [#677](https://github.com/alleslabs/celatone-frontend/pull/677) Add minimove-1 and miniwasm-1
+- [#676](https://github.com/alleslabs/celatone-frontend/pull/676) New error fetching image & refactor empty states
+- [#666](https://github.com/alleslabs/celatone-frontend/pull/666) Add my published modules page
+- [#671](https://github.com/alleslabs/celatone-frontend/pull/671) Add mahalo-1
+- [#652](https://github.com/alleslabs/celatone-frontend/pull/652) Add amp publish module and deploy script
+- [#648](https://github.com/alleslabs/celatone-frontend/pull/648) Support OPInit transaction in initia
+- [#654](https://github.com/alleslabs/celatone-frontend/pull/654) Add recent modules page
+- [#653](https://github.com/alleslabs/celatone-frontend/pull/653) Migrate from stone-12 to stone-12-1
+- [#637](https://github.com/alleslabs/celatone-frontend/pull/637) Add amp module interaction and code snippet property
+- [#633](https://github.com/alleslabs/celatone-frontend/pull/633) Add amp module detail and breadcrumb
+
+### Improvements
+
+- [#667](https://github.com/alleslabs/celatone-frontend/pull/667) Adjust for search bar consistency
+- [#692](https://github.com/alleslabs/celatone-frontend/pull/692) Add verify link for mahalo
+- [#675](https://github.com/alleslabs/celatone-frontend/pull/675) Make module links clickable with command/ctrl and add copier for struct names
+- [#674](https://github.com/alleslabs/celatone-frontend/pull/674) Adjust contract list card and microcopies
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) Refactor balances
+- [#682](https://github.com/alleslabs/celatone-frontend/pull/682) Render token amount < 0.000001 properly
+- [#669](https://github.com/alleslabs/celatone-frontend/pull/669) api v1 - contract transaction
+- [#672](https://github.com/alleslabs/celatone-frontend/pull/672) refactor balances
+- [#662](https://github.com/alleslabs/celatone-frontend/pull/662) Add republish button in module detail
+- [#665](https://github.com/alleslabs/celatone-frontend/pull/665) Revise mobile guard text
+- [#659](https://github.com/alleslabs/celatone-frontend/pull/659) api v1 - move modules, resources on account detail page
+- [#658](https://github.com/alleslabs/celatone-frontend/pull/658) api v1 - delegations info, total value on account detail page
+- [#656](https://github.com/alleslabs/celatone-frontend/pull/656) api v1 - tables on account details page
+- [#645](https://github.com/alleslabs/celatone-frontend/pull/645) Add search for resource in account detail
+- [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
+- [#657](https://github.com/alleslabs/celatone-frontend/pull/657) api v1 - overview stats
+- [#650](https://github.com/alleslabs/celatone-frontend/pull/650) api v1 - account info on account detail page
+- [#655](https://github.com/alleslabs/celatone-frontend/pull/655) Change title of publish new module page
+- [#636](https://github.com/alleslabs/celatone-frontend/pull/636) api v1 - balances
+- [#641](https://github.com/alleslabs/celatone-frontend/pull/641) api v1 - recent txs list
+- [#640](https://github.com/alleslabs/celatone-frontend/pull/640) api v1 - recent blocks list
+- [#634](https://github.com/alleslabs/celatone-frontend/pull/634) api v1 - move pool info
+- [#632](https://github.com/alleslabs/celatone-frontend/pull/632) api v1 - assets info
+
+### Bug fixes
+
+- [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Update Neutron gas price
+- [#694](https://github.com/alleslabs/celatone-frontend/pull/694) Reroute cosmwasm pool back to pool detail page
+- [#691](https://github.com/alleslabs/celatone-frontend/pull/691) Fix unsupported token card
+- [#693](https://github.com/alleslabs/celatone-frontend/pull/693) Fix ui styling for contract card and states
+- [#687](https://github.com/alleslabs/celatone-frontend/pull/687) Fix resource and module related bugs
+- [#690](https://github.com/alleslabs/celatone-frontend/pull/690) Fix query msg regex for Sylvia contract
+- [#689](https://github.com/alleslabs/celatone-frontend/pull/689) Fix execute msg regex for Sylvia contract
+- [#685](https://github.com/alleslabs/celatone-frontend/pull/685) Disable save account in mobile
+- [#683](https://github.com/alleslabs/celatone-frontend/pull/683) Fix save account hex duplicate and search with hex
+- [#673](https://github.com/alleslabs/celatone-frontend/pull/673) Fix total share is zero
+- [#668](https://github.com/alleslabs/celatone-frontend/pull/668) Support object key in contract state
+- [#647](https://github.com/alleslabs/celatone-frontend/pull/647) Remove Select network auto select first item
+- [#646](https://github.com/alleslabs/celatone-frontend/pull/646) Fix UTC timestamp on block, tx query
+- [#644](https://github.com/alleslabs/celatone-frontend/pull/644) Remove relation badge from transaction card in mobile
+
 ## v1.3.0
 
 ### Features
@@ -113,7 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#617](https://github.com/alleslabs/celatone-frontend/pull/617) Fix textwrap module path on module detail, framer motion incorrect transition prop, loadingoverlay not centered
 - [#610](https://github.com/alleslabs/celatone-frontend/pull/610) Remove `.at()` from code
 - [#615](https://github.com/alleslabs/celatone-frontend/pull/615) Fix useEffect on pool page
-- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Add saved accounts page
+- [#612](https://github.com/alleslabs/celatone-frontend/pull/612) Fix transaction detail ui
 - [#614](https://github.com/alleslabs/celatone-frontend/pull/614) Disabled saved account for now
 - [#607](https://github.com/alleslabs/celatone-frontend/pull/607) Fix mintscan tracking in internal
 - [#604](https://github.com/alleslabs/celatone-frontend/pull/604) Fix single delegation total card zero state

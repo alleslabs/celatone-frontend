@@ -2,6 +2,12 @@ import { Flex, Heading, Button, Accordion } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 
+import {
+  AmpEvent,
+  track,
+  trackUseExpandAll,
+  trackUseViewJSON,
+} from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -12,7 +18,7 @@ import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
 
-interface ModuleFunctionProps {
+interface ModuleFunctionsProps {
   address: IndexedModule["address"];
   moduleName: IndexedModule["moduleName"];
   fns: IndexedModule["parsedAbi"]["exposed_functions"];
@@ -55,13 +61,13 @@ const FunctionAccordions = ({
   </Accordion>
 );
 
-export const ModuleFunction = ({
+export const ModuleFunctions = ({
   address,
   moduleName,
   fns,
   viewFns,
   executeFns,
-}: ModuleFunctionProps) => {
+}: ModuleFunctionsProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
@@ -107,17 +113,18 @@ export const ModuleFunction = ({
   return (
     <Flex
       direction="column"
-      gap={{ base: 4, md: 8 }}
+      gap={4}
       sx={{ [`& #${tab}`]: { display: "block" } }}
     >
       <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
         Exposed Functions
       </Heading>
       <InputWithIcon
-        placeholder="Search functions..."
+        placeholder="Search with Function Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="exposed-function-search"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="exposed-function-search"
       />
       <Flex
         justifyContent="space-between"
@@ -126,7 +133,10 @@ export const ModuleFunction = ({
       >
         <FunctionTypeSwitch
           currentTab={tab}
-          onTabChange={handleTabChange}
+          onTabChange={(nextTab) => {
+            track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
+            handleTabChange(nextTab);
+          }}
           my={3}
           counts={[
             filteredFns.length,
@@ -151,6 +161,10 @@ export const ModuleFunction = ({
               />
             }
             onClick={() => {
+              trackUseExpandAll(
+                expandedIndexes.length ? "collapse" : "expand",
+                "Module Function Tab"
+              );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(fns.length).keys()) : []
               );
@@ -164,6 +178,7 @@ export const ModuleFunction = ({
             size="sm"
             rightIcon={<CustomIcon name="launch" boxSize={3} />}
             onClick={() => {
+              trackUseViewJSON("Module Functions");
               const jsonString = JSON.stringify(fns, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {

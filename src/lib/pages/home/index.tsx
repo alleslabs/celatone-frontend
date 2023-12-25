@@ -1,5 +1,4 @@
-import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -11,32 +10,14 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
-import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
-import { Tooltip } from "lib/components/Tooltip";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
-import {
-  useAverageBlockTime,
-  useLatestBlockInfo,
-} from "lib/services/blockService";
-import { useTxsCount } from "lib/services/txService";
-import { type Option } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { useOverviewsStats } from "lib/services/overviewService";
 
 import { DevShortcut, TopDecorations } from "./components";
-
-const cardProps: SystemStyleObject = {
-  width: "100%",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
-  alignItems: "center",
-  height: "100%",
-  cursor: "pointer",
-  boxShadow: "0px 4px 1px 0px var(--chakra-colors-gray-700)",
-};
+import { CardInfo } from "./components/CardInfo";
 
 const txInfo = {
   title: "Total Transactions",
@@ -44,89 +25,25 @@ const txInfo = {
     "Verified transactions track network activity and growth, indicating ecosystem health.",
 };
 
-const blockTimeInfo = {
-  title: "Average Block Time",
-  tooltip: "Average time to finality between the last 100 indexed blocks.",
-};
-
 const blockInfo = {
   title: "Latest Indexed Block Height",
   tooltip: "The latest block height indexed by the indexer.",
 };
 
-interface CardInfoProps {
-  title: string;
-  tooltip: string;
-  value: string;
-  isLoading: boolean;
-  navigate: () => void;
-}
-const CardInfo = ({
-  title,
-  tooltip,
-  value,
-  isLoading,
-  navigate,
-}: CardInfoProps) => (
-  <Flex
-    sx={cardProps}
-    _hover={{ bg: "gray.700" }}
-    transition="all 0.25s ease-in-out"
-    bg="gray.800"
-    onClick={navigate}
-    cursor="pointer"
-  >
-    <Box>
-      <Flex alignItems="center" gap={1} mb={2}>
-        <Text variant="body2" color="text.dark">
-          {title}
-        </Text>
-        <Tooltip label={tooltip}>
-          <Flex cursor="pointer">
-            <CustomIcon name="info-circle-solid" boxSize={3} color="gray.600" />
-          </Flex>
-        </Tooltip>
-      </Flex>
-      {isLoading ? (
-        <Spinner size="md" />
-      ) : (
-        <Heading as="h5" variant="h5">
-          {value}
-        </Heading>
-      )}
-    </Box>
-    <CustomIcon name="chevron-right" boxSize={5} color="gray.600" />
-  </Flex>
-);
-
-const calculateAverageBlockTime = (
-  latest: Option<Date>,
-  hundred: Option<Date>
-) => {
-  if (!latest || !hundred) return "N/A";
-  return `${((latest.getTime() - hundred.getTime()) / 100 / 1000)
-    .toFixed(3)
-    .toString()}s`;
+const blockTimeInfo = {
+  title: "Block Time",
+  tooltip: "Median time to finality of the last 100 indexed blocks.",
 };
 
 const Home = () => {
+  const isMobile = useMobile();
+
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const isMobile = useMobile();
   const {
-    chainConfig: { prettyName, chain },
+    chainConfig: { prettyName },
   } = useCelatoneApp();
-  const {
-    data: latestBlockInfo,
-    isLoading: isLoadingLatestBlockInfo,
-    error: latestBlockInfoError,
-  } = useLatestBlockInfo();
-  const { data } = useAverageBlockTime();
-  const averageBlockTime = calculateAverageBlockTime(
-    data?.latest,
-    data?.hundred
-  );
-  const { data: txsCount, isLoading: isLoadingTxsCount } = useTxsCount();
+  const { data: overviewsStats, isLoading } = useOverviewsStats();
 
   const toTxs = () =>
     navigate({
@@ -158,78 +75,34 @@ const Home = () => {
         sx={{ "& > div": { zIndex: 1 } }}
       >
         <TopDecorations />
-        <Flex
-          justifyContent={{ base: "start", md: "space-between" }}
-          align={{ base: "start", md: "start" }}
-          mb={5}
-          direction={{ base: "column", md: "row" }}
-          zIndex={1}
-        >
-          <Heading
-            as="h4"
-            variant={{ base: "h5", md: "h4" }}
-            mb={{ base: 4, md: 0 }}
-          >
-            <Text as="span" color="accent.main">
-              {prettyName}
-            </Text>{" "}
-            Overview
-          </Heading>
-          {isLoadingLatestBlockInfo ? (
-            <Flex>
-              <Spinner size="md" />
-              <Text variant="body2" color="text.dark" ml={2}>
-                Loading latest data for you ...
-              </Text>
-            </Flex>
-          ) : (
-            <Text
-              variant="body2"
-              color="text.dark"
-              textAlign={{ base: "left", md: "right" }}
-              whiteSpace="pre-line"
-              lineHeight={3}
-            >
-              {latestBlockInfoError
-                ? "Error updating ..."
-                : latestBlockInfo?.timestamp &&
-                  `Updated ${dateFromNow(latestBlockInfo.timestamp)} \n
-            ${formatUTC(latestBlockInfo.timestamp)}`}
-            </Text>
-          )}
-        </Flex>
+        <Heading as="h4" variant={{ base: "h5", md: "h4" }} mb={5} zIndex={1}>
+          <Text as="span" color="accent.main">
+            {prettyName}
+          </Text>{" "}
+          Overview
+        </Heading>
         <Flex gap={4} direction={{ base: "column", md: "row" }}>
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={txsCount?.toLocaleString() ?? "N/A"}
-            isLoading={isLoadingTxsCount}
+            value={overviewsStats?.txCount.toLocaleString()}
+            isLoading={isLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={latestBlockInfo?.height?.toString() ?? "N/A"}
-            isLoading={isLoadingLatestBlockInfo}
+            value={overviewsStats?.latestBlock.toString()}
+            isLoading={isLoading}
             navigate={toBlocks}
           />
-          {chain === "sei" ? (
-            <CardInfo
-              title={blockTimeInfo.title}
-              tooltip={blockTimeInfo.tooltip}
-              value="N/A"
-              isLoading={isLoadingTxsCount}
-              navigate={toTxs}
-            />
-          ) : (
-            <CardInfo
-              title={blockTimeInfo.title}
-              tooltip={blockTimeInfo.tooltip}
-              value={averageBlockTime}
-              isLoading={isLoadingTxsCount}
-              navigate={toTxs}
-            />
-          )}
+          <CardInfo
+            title={blockTimeInfo.title}
+            tooltip={blockTimeInfo.tooltip}
+            value={overviewsStats?.blockTime.toFixed(3).concat("s")}
+            isLoading={isLoading}
+            navigate={toTxs}
+          />
         </Flex>
       </Flex>
       {!isMobile && (
@@ -248,7 +121,9 @@ const Home = () => {
           Recent Transactions
         </Heading>
         <TxsTable isViewMore />
-        {txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
+        {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
+          <ViewMore onClick={toTxs} />
+        )}
       </section>
 
       <section>
@@ -256,7 +131,7 @@ const Home = () => {
           Recent Blocks
         </Heading>
         <BlocksTable isViewMore />
-        {latestBlockInfo?.height && latestBlockInfo.height > 5 && (
+        {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}
       </section>

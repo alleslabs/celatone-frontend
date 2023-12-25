@@ -11,6 +11,7 @@ import {
 
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
+import { trackUseExpand } from "lib/amplitude";
 import type { Struct } from "lib/types";
 
 interface StructCardProps {
@@ -45,11 +46,13 @@ export const StructCard = ({ struct }: StructCardProps) => (
           flexDirection="column"
           alignItems="flex-start"
           _hover={{ bg: "transparent" }}
-          onClick={() => ({
-            action: !isExpanded ? "expand" : "collapse",
-            component: "unsupported_pool",
-            section: "pool-list-page",
-          })}
+          onClick={() =>
+            trackUseExpand({
+              action: !isExpanded ? "expand" : "collapse",
+              component: "module_struct_accordion",
+              info: { structAbilities: struct.abilities },
+            })
+          }
         >
           <Flex
             justifyContent="space-between"

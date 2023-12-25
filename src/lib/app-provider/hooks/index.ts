@@ -14,3 +14,5 @@ export * from "./useConfig";
 export * from "./useCurrentChain";
 export * from "./useConvertHexAddress";
 export * from "./usePlatform";
+export * from "./useInitia";
+export * from "./useIsConnected";

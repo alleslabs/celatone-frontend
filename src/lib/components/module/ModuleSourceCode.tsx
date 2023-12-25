@@ -38,7 +38,12 @@ export const ModuleSourceCode = ({ sourceCode }: ModuleSourceCodeProps) => {
               <Text fontWeight={600} variant="body1" color="text.main">
                 Module Source Code
               </Text>
-              <Text fontWeight={600} variant="body2" color="text.dark">
+              <Text
+                fontWeight={600}
+                variant="body2"
+                color="text.dark"
+                textAlign="start"
+              >
                 The source code is uploaded by the deployer and pulled from
                 Initia API
               </Text>

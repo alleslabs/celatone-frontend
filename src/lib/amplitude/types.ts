@@ -31,6 +31,7 @@ export enum AmpEvent {
   TO_BLOCKS = "To Blocks",
   TO_BLOCK_DETAIL = "To Block Detail",
   TO_TXS = "To Txs",
+  TO_MODULES = "To Modules",
   TO_PAST_TXS = "To Past Txs",
   TO_DEPLOY = "To Deploy",
   TO_UPLOAD = "To Upload",
@@ -61,6 +62,11 @@ export enum AmpEvent {
   TO_POOL_DETAIL = "To Pool Detail",
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
+  TO_MODULE_DETAIL = "To Module Detail",
+  TO_MODULE_INTERACTION = "To Module Interaction",
+  TO_PUBLISH_MODULE = "To Publish Module",
+  TO_DEPLOY_SCRIPT = "To Deploy Script",
+  TO_MY_PUBLISHED_MODULES = "To My Published Modules",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -72,6 +78,10 @@ export enum AmpEvent {
   ACTION_RESEND = "Action Resend",
   ACTION_FAUCET = "Action Faucet",
   ACTION_ATTACH_JSON = "Action Attach Json",
+  ACTION_MOVE_VIEW = "Action Move View",
+  ACTION_MOVE_EXECUTE = "Action Move Execute",
+  ACTION_MOVE_PUBLISH = "Action Move Publish",
+  ACTION_EXECUTE_SCRIPT = "Action Execute Script",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",
@@ -79,6 +89,7 @@ export enum AmpEvent {
   USE_SIDEBAR = "Use Sidebar",
   USE_TOPBAR = "Use Topbar",
   USE_TAB = "Use Tab",
+  USE_SUBTAB = "Use Subtab",
   USE_RADIO = "Use Radio",
   USE_VIEW_MORE = "Use View More",
   USE_CODE_SELECT = "Use Code Select",
@@ -133,9 +144,35 @@ export enum AmpEvent {
   USE_SCHEMA_TOGGLE = "Use Schema Toggle",
   USE_JSON_QUERY_AGAIN = "Use Json Query Again",
   USE_TO_YOUR_ACCOUNT = "Use To Your Account",
+  USE_TO_0X1_PAGE = "Use To 0x1 Page",
   USE_CONTRACT_STATES_LOAD_MORE = "Use Contract States Load More",
   USE_CONTRACT_STATES_DOWNLOAD = "Use Contract States Download",
   USE_NAMESPACE_TAB = "Use Namespace Tab",
+  USE_NAVIGATING_BUTTON = "Use Navigating Button",
+  USE_MODULE_DETAIL_MAIN_CTA = "Use Module Detail Main CTA",
+  USE_MODULE_FUNCTION_CTA = "Use Module Function CTA",
+  USE_BREADCRUMB = "Use Breadcrumb",
+  USE_MODULE_SELECTION_DRAWER = "Use Module Selection Drawer",
+  USE_MODULE_SELECTION_INPUT_FILL = "Use Module Selection Input Fill",
+  USE_SEE_MODULE_BUTTON = "Use See Module Button",
+  USE_MODULE_SELECTION_FUNCTION = "Use Module Selection Function",
+  USE_MODULE_SELECTION_MODULE = "Use Module Selection Module",
+  USE_FUNCTION_SELECTION = "Use Function Selection",
+  USE_PUBLISH_POLICY_SELECTION = "Use Publish Policy Selection",
+  USE_ADD_MODULE_UPLOAD_BOX = "Use Add Module Upload Box",
+  USE_REMOVE_MODULE_UPLOAD_BOX = "Use Remove Module Upload Box",
+  USE_UPLOAD_FILE = "Use Upload File",
+  USE_REMOVE_UPLOAD_FILE = "Use Remove Upload File",
+  USE_VIEW_CONDITION = "Use View Condition",
+  USE_UPLOAD_CARD_MOVE_UP = "Use Upload Card Move Up",
+  USE_UPLOAD_CARD_MOVE_DOWN = "Use Upload Card Move Down",
+  USE_PUBLISH_MORE_MODULE_BUTTON = "Use Publish More Module Button",
+  USE_PUBLISHED_MODULE_ACTION = "Use Published Module Action",
+  USE_MODULE_TABLE_CTA = "Use Module Table CTA",
+  USE_MY_PUBLISHED_MODULES_CTA = "Use My Publised Modules CTA",
+  USE_SELECT_RESOURCE_GROUP = "Use Select Resource Group",
+  USE_MODULE_CARD = "Use Module Card",
+
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -161,6 +198,7 @@ export type SpecialAmpEvent =
   | AmpEvent.TO_INSTANTIATE
   | AmpEvent.TO_MIGRATE
   | AmpEvent.TO_ADMIN_UPDATE
+  | AmpEvent.TO_MODULE_INTERACTION
   | AmpEvent.USE_MAIN_SEARCH
   | AmpEvent.USE_TAB
   | AmpEvent.USE_RADIO
@@ -186,4 +224,5 @@ export type SpecialAmpEvent =
   | AmpEvent.USE_VIEW
   | AmpEvent.USE_TOGGLE
   | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
-  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD;
+  | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD
+  | AmpEvent.USE_MODULE_SELECTION_INPUT_FILL;

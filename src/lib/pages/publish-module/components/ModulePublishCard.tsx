@@ -1,6 +1,7 @@
 import { Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
 import type { Module } from "../formConstants";
+import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
@@ -78,19 +79,29 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
         <Button
           rightIcon={<CustomIcon name="launch" boxSize={3} color="text.main" />}
           variant="outline-white"
-          onClick={() =>
+          onClick={() => {
+            track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
+              label: "See Module",
+            });
             openNewTab({
               pathname: `/modules/${decodeRes?.abi.address}/${decodeRes?.abi.name}`,
               query: {},
-            })
-          }
+            });
+          }}
         >
           See Module
         </Button>
         <Button
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
           variant="outline-white"
-          onClick={() =>
+          onClick={() => {
+            track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
+              label: "View",
+              viewCount:
+                module.decodeRes?.abi.exposed_functions.filter(
+                  (fn) => fn.is_view
+                ).length ?? 0,
+            });
             openNewTab({
               pathname: "/interact",
               query: {
@@ -98,15 +109,22 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
                 moduleName: decodeRes?.abi.name,
                 functionType: "view",
               },
-            })
-          }
+            });
+          }}
         >
           View
         </Button>
         <Button
           leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
           variant="outline-white"
-          onClick={() =>
+          onClick={() => {
+            track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
+              label: "Execute",
+              executeCount:
+                module.decodeRes?.abi.exposed_functions.filter(
+                  (fn) => !fn.is_view
+                ).length ?? 0,
+            });
             openNewTab({
               pathname: "/interact",
               query: {
@@ -114,8 +132,8 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
                 moduleName: decodeRes?.abi.name,
                 functionType: "execute",
               },
-            })
-          }
+            });
+          }}
         >
           Execute
         </Button>

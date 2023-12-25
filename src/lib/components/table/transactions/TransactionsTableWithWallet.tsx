@@ -1,5 +1,3 @@
-import { Flex } from "@chakra-ui/react";
-
 import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState } from "lib/components/state";
 import type { Option, Transaction } from "lib/types";
@@ -19,12 +17,10 @@ export const TransactionsTableWithWallet = ({
 }: TransactionsTableWithWalletProps) => {
   const { address } = useCurrentChain();
   return !address ? (
-    <Flex direction="column" py={12} borderColor="gray.700">
-      <DisconnectedState
-        text="to see your past transactions."
-        helperText="Past transactions will display here."
-      />
-    </Flex>
+    <DisconnectedState
+      text="to see your past transactions."
+      helperText="Past transactions will display here."
+    />
   ) : (
     <TransactionsTable
       transactions={transactions}

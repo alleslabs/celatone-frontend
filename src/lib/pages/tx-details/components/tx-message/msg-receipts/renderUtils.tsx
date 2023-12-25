@@ -5,9 +5,9 @@ import type { AddressReturnType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
   Addr,
-  AssetInfo,
   Nullable,
   Option,
   TxReceipt,
@@ -79,7 +79,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
 
 export const getCoinComponent = (
   amount: Coin | Coin[],
-  assetInfos: Option<{ [key: string]: AssetInfo }>
+  assetInfos: AssetInfosOpt
 ) => <CoinComponent amount={amount} assetInfos={assetInfos} />;
 
 export const getGenericValueEntry = (
@@ -116,7 +116,7 @@ export const getGenericValueEntry = (
 
 export const attachFundsReceipt = (
   value: Option<Coin[]>,
-  assetInfos: Option<{ [key: string]: AssetInfo }>
+  assetInfos: AssetInfosOpt
 ): TxReceipt => ({
   title: "Attached Funds",
   html: value?.length ? (

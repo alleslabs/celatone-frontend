@@ -10,7 +10,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://rest-kralum.neutron-1.neutron.org",
     rpc: "https://rpc-kralum.neutron-1.neutron.org:443",
     indexer: "https://neutron-1-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -39,7 +38,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
+        tokenPerGas: 0.56,
         denom: "untrn",
       },
       gasAdjustment: 1.5,
@@ -58,7 +57,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://rest-palvus.pion-1.ntrn.tech:443",
     rpc: "https://rpc-palvus.pion-1.ntrn.tech:443",
     indexer: "https://pion-1-graphql.alleslabs.dev/v1/graphql",
-    api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
       faucet: {

@@ -20,11 +20,14 @@ export const TokenComposition = ({
       <Flex wrap="wrap">
         <Text variant="body2">
           <Text as="span" mr={1} fontWeight={700}>
-            {token.lpDetails.coinA.amount}
+            {formatUTokenWithPrecision(
+              token.poolInfo.coinA.amount,
+              token.poolInfo.coinA.precision ?? 0
+            )}
           </Text>
           {getTokenLabel(
-            token.lpDetails.coinA.denom,
-            token.lpDetails.coinA.symbol
+            token.poolInfo.coinA.denom,
+            token.poolInfo.coinA.symbol
           )}
         </Text>
         <Text variant="body2" mx={1}>
@@ -32,11 +35,14 @@ export const TokenComposition = ({
         </Text>
         <Text variant="body2">
           <Text as="span" mr={1} fontWeight={700}>
-            {token.lpDetails.coinB.amount}
+            {formatUTokenWithPrecision(
+              token.poolInfo.coinB.amount,
+              token.poolInfo.coinB.precision ?? 0
+            )}
           </Text>
           {getTokenLabel(
-            token.lpDetails.coinB.denom,
-            token.lpDetails.coinB.symbol
+            token.poolInfo.coinB.denom,
+            token.poolInfo.coinB.symbol
           )}
         </Text>
       </Flex>

@@ -119,7 +119,8 @@ export const SchemaExecute = ({
           placeholder="Search with Execute Message"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          action="execute-message-search"
+          size={{ base: "md", md: "lg" }}
+          amptrackSection="execute-message-search"
         />
         <Button
           variant="outline-gray"

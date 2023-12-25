@@ -1,9 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
-import { ErrorFetching } from "../../ErrorFetching";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state";
+import { ErrorFetching, EmptyState } from "lib/components/state";
 import {
   MobileTableContainer,
   TableContainer,
@@ -32,9 +31,8 @@ const DelegationsTableBody = ({
 }: DelegationsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
-  if (!delegations || !rewards)
-    return <EmptyState message={<ErrorFetching />} withBorder />;
+  if (isLoading) return <Loading />;
+  if (!delegations || !rewards) return <ErrorFetching dataName="delegations" />;
   if (!delegations.length)
     return (
       <EmptyState

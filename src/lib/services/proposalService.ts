@@ -15,7 +15,9 @@ import {
   getProposalsCountByWalletAddress,
   getProposalTypes,
   getRelatedProposalsByContractAddressPagination,
+  getRelatedProposalsByModuleIdPagination,
   getRelatedProposalsCountByContractAddress,
+  getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
@@ -28,6 +30,7 @@ import type {
   Proposal,
   U,
   Token,
+  Nullish,
 } from "lib/types";
 import {
   deexponentify,
@@ -41,6 +44,7 @@ import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
+  ProposalResponse,
   UploadAccess,
   VotingParamsInternal,
 } from "./proposal";
@@ -48,6 +52,7 @@ import {
   fetchGovVotingParams,
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
+  getProposalsByAddress,
 } from "./proposal";
 
 export const useRelatedProposalsByContractAddressPagination = (
@@ -125,6 +130,26 @@ export const useRelatedProposalsCountByContractAddress = (
   );
 };
 
+export const useProposalsByAddress = (
+  address: Addr,
+  offset: number,
+  limit: number
+): UseQueryResult<ProposalResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_ADDRESS,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    async () => getProposalsByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
 export const useProposalsByWalletAddressPagination = (
   walletAddress: HumanAddr,
   offset: number,
@@ -192,6 +217,80 @@ export const useProposalsCountByWalletAddress = (
     {
       keepPreviousData: true,
       enabled: !!walletAddress,
+    }
+  );
+};
+
+export const useRelatedProposalsByModuleIdPagination = (
+  moduleId: Nullish<number>,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Proposal[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getRelatedProposalsByModuleIdPagination, {
+        moduleId,
+        offset,
+        pageSize,
+      })
+      .then(({ module_proposals }) =>
+        module_proposals.map<Proposal>((proposal) => ({
+          proposalId: proposal.proposal_id,
+          title: proposal.proposal.title,
+          status: parseProposalStatus(proposal.proposal.status),
+          votingEndTime: parseDate(proposal.proposal.voting_end_time),
+          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
+          resolvedHeight: proposal.proposal.resolved_height,
+          type: proposal.proposal.type as ProposalType,
+          proposer: proposal.proposal.account?.address as Addr,
+          isExpedited: Boolean(proposal.proposal.is_expedited),
+        }))
+      );
+  }, [indexerGraphClient, moduleId, offset, pageSize]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_PAGINATION,
+      moduleId,
+      indexerGraphClient,
+      offset,
+      pageSize,
+    ],
+    createQueryFnWithTimeout(queryFn),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useRelatedProposalsCountByModuleId = (
+  moduleId: Nullish<number>
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    if (!moduleId) throw new Error("Module id not found");
+    return indexerGraphClient
+      .request(getRelatedProposalsCountByModuleId, {
+        moduleId,
+      })
+      .then(
+        ({ module_proposals_aggregate }) =>
+          module_proposals_aggregate?.aggregate?.count
+      );
+  }, [indexerGraphClient, moduleId]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_COUNT,
+      moduleId,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      keepPreviousData: true,
     }
   );
 };
@@ -317,7 +416,7 @@ export interface GovParams {
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
-  const { assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const queryFn = useCallback(
     () =>
       Promise.all([

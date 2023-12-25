@@ -1,15 +1,9 @@
 import type { Coin } from "@cosmjs/stargate";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import type { Big } from "big.js";
-import big from "big.js";
 import { useCallback } from "react";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useCelatoneApp,
-  useLCDEndpoint,
-} from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { Order_By } from "lib/gql/graphql";
 import {
   getPoolByPoolId,
@@ -19,20 +13,10 @@ import {
   getPoolListCount,
   getPoolsByPoolIds,
 } from "lib/query";
-import type {
-  ContractAddr,
-  HexAddr,
-  Option,
-  Pool,
-  PoolDetail,
-  PoolTypeFilter,
-} from "lib/types";
-import { isPositiveInt, parseJsonStr } from "lib/utils";
+import type { ContractAddr, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
+import { isPositiveInt } from "lib/utils";
 
-import { useAssetInfos } from "./assetService";
 import { usePoolExpression } from "./expression/poolExpression";
-import type { IndexedModule } from "./move";
-import { useAccountModules, getFunctionView } from "./move";
 
 export const usePoolListQuery = ({
   isSupported,
@@ -227,196 +211,6 @@ export const usePoolAssetsbyPoolIds = (
     queryFn,
     {
       enabled,
-    }
-  );
-};
-
-interface PairRaw {
-  coin_a: {
-    metadata: string;
-    denom: string;
-    decimals: number;
-  };
-  coin_b: {
-    metadata: string;
-    denom: string;
-    decimals: number;
-  };
-  liquidity_token: {
-    metadata: string;
-    denom: string;
-    decimals: number;
-  };
-  coin_a_weight: string;
-  coin_b_weight: string;
-  coin_a_amount: string;
-  coin_b_amount: string;
-  total_share: string;
-}
-
-interface PairResponse {
-  coin_a: {
-    denom: string;
-    tag: HexAddr;
-    weight: string;
-    amount: string;
-  };
-  coin_b: {
-    denom: string;
-    tag: HexAddr;
-    weight: string;
-    amount: string;
-  };
-  lp_denom: string;
-  lp_tag: HexAddr;
-  decimals: number;
-  total_share: string;
-}
-
-export type LPShareInfoMap = Record<
-  string,
-  {
-    coinA: {
-      symbol: string;
-      denom: string;
-      precision: number;
-      tag: HexAddr;
-      amountAPerShare: Big;
-    };
-    coinB: {
-      symbol: string;
-      denom: string;
-      precision: number;
-      tag: HexAddr;
-      amountBPerShare: Big;
-    };
-    lpPricePerShare: Big;
-    precision: number;
-    image: [string, string];
-    symbol: string;
-  }
->;
-
-const indexPairResponse = (res: string): PairResponse[] => {
-  const parsed = parseJsonStr<PairRaw[]>(res);
-  return parsed.map((raw) => ({
-    coin_a: {
-      denom: raw.coin_a.denom,
-      tag: raw.coin_a.metadata as HexAddr,
-      weight: raw.coin_a_weight,
-      amount: raw.coin_a_amount,
-    },
-    coin_b: {
-      denom: raw.coin_b.denom,
-      tag: raw.coin_b.metadata as HexAddr,
-      weight: raw.coin_b_weight,
-      amount: raw.coin_b_amount,
-    },
-    lp_denom: raw.liquidity_token.denom,
-    lp_tag: raw.liquidity_token.metadata as HexAddr,
-    decimals: raw.liquidity_token.decimals,
-    total_share: raw.total_share,
-  }));
-};
-
-export const useLPShareInfo = () => {
-  const { data: moduleData } = useAccountModules({
-    address: "0x38d2a65b2be5d2c1b9f329f5b45f708c7b7d9cf5" as HexAddr,
-    moduleName: "PoolInfo",
-    functionName: "get_all_pair_infos",
-    options: { refetchOnWindowFocus: false, staleTime: Infinity },
-  });
-  const { assetInfos } = useAssetInfos({ withPrices: true });
-  const lcdEndpoint = useLCDEndpoint();
-
-  const poolInfoModule = moduleData as Option<IndexedModule>;
-
-  const queryFn = async () => {
-    if (!poolInfoModule?.searchedFn || !assetInfos)
-      throw new Error(
-        "Error fetching module, asset infos or dex functions not found."
-      );
-    const pairs = await getFunctionView(
-      lcdEndpoint,
-      poolInfoModule.address,
-      poolInfoModule.moduleName,
-      poolInfoModule.searchedFn,
-      {
-        typeArgs: {},
-        args: {},
-      }
-    ).then((res) => indexPairResponse(res));
-
-    return pairs.reduce<LPShareInfoMap>((acc, curr) => {
-      const [coinA, coinB] = [curr.coin_a.denom, curr.coin_b.denom].map(
-        (denom, idx) => ({
-          ...(idx === 0 ? curr.coin_a : curr.coin_b),
-          ...assetInfos[denom],
-        })
-      );
-
-      const totalShares = big(curr.total_share).div(big(10).pow(curr.decimals));
-      const amountAPerShare = big(curr.coin_a.amount)
-        .div(big(10).pow(coinA.precision))
-        .div(totalShares);
-      const amountBPerShare = big(curr.coin_b.amount)
-        .div(big(10).pow(coinB.precision))
-        .div(totalShares);
-
-      const lpPricePerShare = (() => {
-        if (coinA.price && coinB.price) {
-          return big(coinA.price)
-            .times(amountAPerShare)
-            .plus(big(coinB.price).times(amountBPerShare));
-        }
-        if (coinA.price) {
-          return big(coinA.price)
-            .times(amountAPerShare)
-            .times(big(coinA.weight).plus(coinB.weight).div(coinA.weight));
-        }
-        if (coinB.price) {
-          return big(coinB.price)
-            .times(amountBPerShare)
-            .times(big(coinA.weight).plus(coinB.weight).div(coinB.weight));
-        }
-        return big(0);
-      })();
-      return {
-        ...acc,
-        [curr.lp_denom]: {
-          coinA: {
-            symbol: coinA.symbol,
-            denom: coinA.denom,
-            precision: coinA.precision,
-            tag: coinA.tag,
-            amountAPerShare,
-          },
-          coinB: {
-            symbol: coinB.symbol,
-            denom: coinB.denom,
-            precision: coinB.precision,
-            tag: coinA.tag,
-            amountBPerShare,
-          },
-          lpPricePerShare,
-          precision: curr.decimals,
-          image: [coinA.logo, coinB.logo],
-          symbol: `${coinA.symbol}-${coinB.symbol}`,
-        },
-      };
-    }, {});
-  };
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.POOL_MOVE_LP_SHARE_INFO,
-      poolInfoModule,
-      assetInfos,
-      lcdEndpoint,
-    ],
-    queryFn,
-    {
-      enabled: Boolean(poolInfoModule?.searchedFn && assetInfos),
-      refetchOnWindowFocus: false,
     }
   );
 };
