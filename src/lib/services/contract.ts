@@ -176,6 +176,7 @@ export const getMigrationHistoriesByContractAddress = async (
       },
     })
     .then(({ data }) => zMigrationHistoriesResponse.parse(data));
+
 const zContractTableCounts = z
   .object({
     tx: z.number().nullish(),

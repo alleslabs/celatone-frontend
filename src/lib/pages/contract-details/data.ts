@@ -102,12 +102,12 @@ export const useMigrationHistories = (
   offset: number,
   pageSize: number
 ) => {
-  const { getCodeLocalInfo } = useCodeStore();
   const { data, ...res } = useMigrationHistoriesByContractAddress(
     contractAddress,
     offset,
     pageSize
   );
+  const { getCodeLocalInfo } = useCodeStore();
 
   return {
     data: data
