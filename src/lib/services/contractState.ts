@@ -15,25 +15,22 @@ const zResponseContractStates = z.object({
   pagination: zPagination,
 });
 
-type ResponseContractStates = z.infer<typeof zResponseContractStates>;
-
 export const getContractStates = async (
   baseEndpoint: string,
   contractAddress: ContractAddr,
   numStatesToLoad: number,
   paginationKey: string | null
 ) => {
-  const { data } = await axios.get<ResponseContractStates>(
-    `${baseEndpoint}/${contractAddress}/states`,
-    {
+  const states = await axios
+    .get(`${baseEndpoint}/${contractAddress}/states`, {
       params: {
         limit: numStatesToLoad,
         pagination_key: paginationKey,
       },
-    }
-  );
+    })
+    .then(({ data }) => zResponseContractStates.parse(data));
 
-  const parsedStates = data.models.map<ContractState>((model) => ({
+  const parsedStates = states.models.map<ContractState>((model) => ({
     rawKey: model.key,
     key: parseStateKey(model.key),
     value: parseJsonStr(libDecode(model.value)),
@@ -41,7 +38,7 @@ export const getContractStates = async (
 
   return {
     states: parsedStates,
-    rawStates: data.models,
-    nextKey: data.pagination.next_key,
+    rawStates: states.models,
+    nextKey: states.pagination.next_key,
   };
 };
