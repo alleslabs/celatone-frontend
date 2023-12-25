@@ -1,7 +1,25 @@
 {
   "name": "celatone",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Alles Labs",
+  "contributors": [
+    {
+      "name": "Kanisorn",
+      "email": "kanisorn@alleslabs.com"
+    },
+    {
+      "name": "Beeb",
+      "email": "beeb@alleslabs.com"
+    },
+    {
+      "name": "Pakin",
+      "email": "pakin@alleslabs.com"
+    },
+    {
+      "name": "Songwong",
+      "email": "songwong@alleslabs.com"
+    }
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

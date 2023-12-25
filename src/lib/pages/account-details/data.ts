@@ -3,25 +3,25 @@ import big from "big.js";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
+import { useAccountTableCounts } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
-import { useBalanceInfos } from "lib/services/balanceService";
+import { useBalanceInfos, useBalances } from "lib/services/balanceService";
 import { useCodesByAddress } from "lib/services/codeService";
 import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,
 } from "lib/services/contractService";
-import type { RawStakingParams } from "lib/services/delegation";
-import { useAccountDelegations } from "lib/services/delegationService";
+import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
 import type {
   Addr,
   CodeInfo,
   ContractInfo,
   HumanAddr,
+  Nullish,
   Option,
   TokenWithValue,
   USD,
-  Validator,
 } from "lib/types";
 import {
   addTokenWithValue,
@@ -30,38 +30,61 @@ import {
   compareTokenWithValues,
 } from "lib/utils";
 
-import type { UserDelegationsData } from "./types";
+import type {
+  Delegation,
+  Redelegation,
+  StakingParams,
+  Unbonding,
+} from "./types";
+
+// ------------------------------------------//
+// ---------------TABLE COUNTS---------------//
+// ------------------------------------------//
+
+interface AccountDetailsTableCounts {
+  tableCounts: {
+    codesCount: Nullish<number>;
+    contractsAdminCount: Nullish<number>;
+    contractsCount: Nullish<number>;
+    txsCount: Nullish<number>;
+    proposalsCount: Nullish<number>;
+    assetsCount: Option<number>;
+  };
+  isLoading: boolean;
+  refetchCounts: () => void;
+}
+
+export const useAccountDetailsTableCounts = (
+  address: HumanAddr
+): AccountDetailsTableCounts => {
+  const {
+    data,
+    refetch,
+    isLoading: isLoadingAccountTableCounts,
+  } = useAccountTableCounts(address);
+  const { data: balances, isLoading: isBalancesLoading } = useBalances(address);
+
+  return {
+    tableCounts: {
+      codesCount: data?.code,
+      contractsAdminCount: data?.contractByAdmin,
+      contractsCount: data?.instantiated,
+      txsCount: data?.tx,
+      proposalsCount: data?.proposal,
+      assetsCount: balances?.length,
+    },
+    isLoading: isLoadingAccountTableCounts || isBalancesLoading,
+    refetchCounts: refetch,
+  };
+};
+
+// ------------------------------------------//
+// -----------------CONTRACTS----------------//
+// ------------------------------------------//
 
 interface AccountContracts {
   contracts: Option<ContractInfo[]>;
   isLoading: boolean;
-}
-
-interface AccountCodes {
-  codes: Option<CodeInfo[]>;
-  isLoading: boolean;
-}
-
-export interface StakingParams extends Omit<RawStakingParams, "bondDenoms"> {
-  bondDenoms: TokenWithValue[];
-}
-
-export interface Delegation {
-  validator: Validator;
-  balances: TokenWithValue[];
-}
-
-export interface Unbonding {
-  validator: Validator;
-  completionTime: Date;
-  balances: TokenWithValue[];
-}
-
-export interface Redelegation {
-  srcValidator: Validator;
-  dstValidator: Validator;
-  completionTime: Date;
-  balances: TokenWithValue[];
 }
 
 export const useAccountContracts = (
@@ -122,6 +145,15 @@ export const useAccountAdminContracts = (
   };
 };
 
+// ------------------------------------------//
+// -------------------CODES------------------//
+// ------------------------------------------//
+
+interface AccountCodes {
+  codes: Option<CodeInfo[]>;
+  isLoading: boolean;
+}
+
 export const useAccountCodes = (
   walletAddress: HumanAddr,
   offset: number,
@@ -147,6 +179,25 @@ export const useAccountCodes = (
   };
 };
 
+// ------------------------------------------//
+// ----------------DELEGATIONS---------------//
+// ------------------------------------------//
+
+interface UserDelegationsData {
+  isLoading: boolean;
+  stakingParams: Option<StakingParams>;
+  isValidator: Option<boolean>;
+  totalBonded: Option<Record<string, TokenWithValue>>;
+  totalDelegations: Option<Record<string, TokenWithValue>>;
+  delegations: Option<Delegation[]>;
+  totalUnbondings: Option<Record<string, TokenWithValue>>;
+  unbondings: Option<Unbonding[]>;
+  totalRewards: Option<Record<string, TokenWithValue>>;
+  rewards: Option<Record<string, TokenWithValue[]>>;
+  redelegations: Option<Redelegation[]>;
+  totalCommission: Option<Record<string, TokenWithValue>>;
+}
+
 const calBonded = (
   totalDelegations: Option<Record<string, TokenWithValue>>,
   totalUnbondings: Option<Record<string, TokenWithValue>>
@@ -171,8 +222,8 @@ export const useUserDelegationInfos = (address: Addr) => {
   });
   const { data: lpMap, isLoading: isLpMapLoading } = useMovePoolInfos();
 
-  const { data: accountDelegations, isFetching: isLoadingAccountDelegations } =
-    useAccountDelegations(address);
+  const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
+    useDelegationsByAddress(address);
 
   const isLoading =
     isLoadingAccountDelegations || isLoadingAssetInfos || isLpMapLoading;

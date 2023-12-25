@@ -9,13 +9,10 @@ import { getBlocks, type BlocksResponse, getBlockData } from "./block";
 export const useBlocks = (
   limit: number,
   offset: number,
-  options: Pick<
-    UseQueryOptions<BlocksResponse, Error>,
-    "onSuccess" | "onError"
-  > = {}
+  options: Pick<UseQueryOptions<BlocksResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("blocks");
-  return useQuery<BlocksResponse, Error>(
+  return useQuery<BlocksResponse>(
     [CELATONE_QUERY_KEYS.BLOCKS, endpoint, limit, offset],
     async () => getBlocks(endpoint, limit, offset),
     { ...options, retry: 1, refetchOnWindowFocus: false }

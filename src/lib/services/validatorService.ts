@@ -3,15 +3,12 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
   useCurrentChain,
 } from "lib/app-provider";
-import { getValidators } from "lib/query/validator";
 import type { Validator, ValidatorAddr, Nullable } from "lib/types";
 
 import { resolveValIdentity, getValidator } from "./validator";
@@ -34,36 +31,6 @@ export const useValidator = (
     {
       enabled: enabled && Boolean(validatorAddr),
       retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useValidators = (): UseQueryResult<
-  Record<ValidatorAddr, Validator>
-> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient.request(getValidators).then(({ validators }) =>
-      validators.reduce<Record<ValidatorAddr, Validator>>(
-        (all, validator) => ({
-          ...all,
-          [validator.operator_address]: {
-            validatorAddress: validator.operator_address,
-            moniker: validator.moniker,
-            identity: validator.identity,
-          } as Validator,
-        }),
-        {}
-      )
-    );
-  }, [indexerGraphClient]);
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.VALIDATORS, indexerGraphClient],
-    queryFn,
-    {
       refetchOnWindowFocus: false,
     }
   );

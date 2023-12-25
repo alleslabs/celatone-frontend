@@ -8,7 +8,7 @@ import { TableTitle } from "lib/components/table";
 import type {
   Redelegation,
   StakingParams,
-} from "lib/pages/account-details/data";
+} from "lib/pages/account-details/types";
 
 import { NonRedelegatableSection } from "./NonRedelegatableSection";
 

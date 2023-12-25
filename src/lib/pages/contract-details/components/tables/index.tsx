@@ -9,7 +9,7 @@ import {
 
 import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { useContractDetailsTableCounts } from "lib/model/contract";
+import { useContractTableCounts } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
 import { MigrationTable } from "./migration";
@@ -22,14 +22,10 @@ interface ContractTablesProps {
 
 export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
   const tableHeaderId = "contractDetailsTableHeader";
-  const gov = useGovConfig({ shouldRedirect: false });
 
-  const {
-    tableCounts,
-    refetchMigration,
-    refetchTransactions,
-    refetchRelatedProposals,
-  } = useContractDetailsTableCounts(contractAddress);
+  const gov = useGovConfig({ shouldRedirect: false });
+  const { data, refetch: refetchCount } =
+    useContractTableCounts(contractAddress);
 
   return (
     <Flex direction="column" gap={6}>
@@ -43,12 +39,15 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
           borderColor="gray.700"
           overflowX={{ base: "scroll", md: "auto" }}
         >
-          <CustomTab count={tableCounts.transactionsCount}>
+          <CustomTab count={data?.tx} isDisabled={data?.tx === 0}>
             Transactions
           </CustomTab>
-          <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
+          <CustomTab count={data?.migration} isDisabled={data?.migration === 0}>
+            Migrations
+          </CustomTab>
           <CustomTab
-            count={tableCounts.relatedProposalsCount}
+            count={data?.relatedProposal}
+            isDisabled={data?.relatedProposal === 0}
             whiteSpace="nowrap"
             hidden={!gov.enabled}
           >
@@ -60,24 +59,24 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
             <TxsTable
               contractAddress={contractAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.transactionsCount}
-              refetchCount={refetchTransactions}
+              totalData={data?.tx ?? undefined}
+              refetchCount={refetchCount}
             />
           </TabPanel>
           <TabPanel p={0}>
             <MigrationTable
               contractAddress={contractAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.migrationCount}
-              refetchCount={refetchMigration}
+              totalData={data?.migration ?? undefined}
+              refetchCount={refetchCount}
             />
           </TabPanel>
           <TabPanel p={0}>
             <RelatedProposalsTable
               contractAddress={contractAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.relatedProposalsCount}
-              refetchCount={refetchRelatedProposals}
+              totalData={data?.relatedProposal ?? undefined}
+              refetchCount={refetchCount}
             />
           </TabPanel>
         </TabPanels>
