@@ -6,7 +6,6 @@ import { useCallback } from "react";
 import { useWalletClient } from "@cosmos-kit/react";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useRPCEndpoint } from "./useRPCEndpoint";
-import { Option } from "lib/types";
 
 type MergedWalletClient =
   | WalletClient
@@ -14,11 +13,7 @@ type MergedWalletClient =
   | import("@cosmos-kit/keplr-extension/cjs/extension/client").KeplrClient
   | import("@cosmos-kit/station-extension/cjs/extension/client").StationClient;
 
-export const isLedger = async <
-  T extends
-    | WalletClient
-    | import("@cosmos-kit/keplr-extension/cjs/extension/client").KeplrClient,
->(
+export const isLedger = async <T extends MergedWalletClient>(
   walletClient: T,
   chainID: string
 ) => {
