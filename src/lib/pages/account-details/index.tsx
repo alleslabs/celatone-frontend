@@ -25,10 +25,9 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountInfo } from "lib/services/accountService";
-import { useAPIAccountModules } from "lib/services/move/moduleService";
-import { useAccountResources } from "lib/services/move/resourceService";
+import { useModulesByAddress } from "lib/services/move/moduleService";
+import { useResourcesByAddress } from "lib/services/move/resourceService";
 import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -45,6 +44,7 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
+import { useAccountDetailsTableCounts } from "./data";
 import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
@@ -91,9 +91,9 @@ const AccountDetailsBody = ({
   } = useAccountDetailsTableCounts(accountAddress);
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
-    useAPIAccountModules(accountAddress);
+    useModulesByAddress(accountAddress);
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useAccountResources(accountAddress);
+    useResourcesByAddress(accountAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
