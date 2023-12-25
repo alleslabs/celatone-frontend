@@ -13,19 +13,14 @@ import {
   getAdminByContractAddressesQueryDocument,
   getContractByContractAddressQueryDocument,
   getContractListByAdmin,
-  getContractListByAdminPagination,
   getContractListByCodeIdPagination,
-  getContractListByWalletAddressPagination,
-  getContractListCountByAdmin,
   getContractListCountByCodeId,
   getContractListQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
   getInstantiatedListByUserQueryDocument,
   getMigrationHistoriesByContractAddressPagination,
-  getMigrationHistoriesCountByContractAddress,
 } from "lib/query";
-import { createQueryFnWithTimeout } from "lib/query-utils";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -41,10 +36,11 @@ import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
 import { getCodeIdInfo } from "./code";
 import {
-  type ContractsResponse,
   getAdminContractsByAddress,
+  getContractTableCounts,
   getInstantiatedContractsByAddress,
 } from "./contract";
+import type { ContractTableCounts, ContractsResponse } from "./contract";
 
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
@@ -354,36 +350,6 @@ export const useMigrationHistoriesByContractAddressPagination = (
   );
 };
 
-export const useMigrationHistoriesCountByContractAddress = (
-  contractAddress: ContractAddr
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getMigrationHistoriesCountByContractAddress, {
-        contractAddress,
-      })
-      .then(
-        ({ contract_histories_aggregate }) =>
-          contract_histories_aggregate.aggregate?.count
-      );
-  }, [contractAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_COUNT,
-      contractAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: Boolean(contractAddress),
-    }
-  );
-};
-
 export const useContractListByCodeIdPagination = (
   codeId: Option<number>,
   offset: number,
@@ -478,58 +444,6 @@ export const useInstantiatedContractsByAddress = (
   );
 };
 
-export const useContractListByWalletAddressPagination = (
-  walletAddress: Option<HumanAddr>,
-  offset: number,
-  pageSize: number
-): UseQueryResult<ContractInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useContractListByWalletAddressPagination)"
-      );
-    return indexerGraphClient
-      .request(getContractListByWalletAddressPagination, {
-        walletAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ contracts }) =>
-        contracts.map<ContractInfo>((contractFromWallet) => ({
-          contractAddress: contractFromWallet.address as ContractAddr,
-          instantiator: contractFromWallet.init_by[0]?.account.address as Addr,
-          label: contractFromWallet.label,
-          admin: contractFromWallet.admin?.address as Addr,
-          latestUpdater: contractFromWallet.contract_histories[0]?.account
-            .address as Addr,
-          latestUpdated: parseDateOpt(
-            contractFromWallet.contract_histories[0]?.block.timestamp
-          ),
-          remark: contractFromWallet.contract_histories[0]?.remark,
-        }))
-      );
-  }, [indexerGraphClient, offset, pageSize, walletAddress]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACTS_BY_INIT_WALLET_ADDRESS,
-      indexerGraphClient,
-      offset,
-      pageSize,
-      walletAddress,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
-      enabled: wasm.enabled && Boolean(walletAddress),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
 export const useAdminContractsByAddress = (
   address: Addr,
   limit: number,
@@ -538,91 +452,21 @@ export const useAdminContractsByAddress = (
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ADMIN_CONTRACTS_BY_ADDRESS, address, limit, offset],
+    [CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN, address, limit, offset],
     async () => getAdminContractsByAddress(endpoint, address, limit, offset),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
-export const useContractListByAdminPagination = (
-  walletAddress: Option<HumanAddr>,
-  offset: number,
-  pageSize: number
-): UseQueryResult<ContractInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useContractListByAdminPagination)"
-      );
-    return indexerGraphClient
-      .request(getContractListByAdminPagination, {
-        walletAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ contracts }) =>
-        contracts.map<ContractInfo>((contractAdmin) => ({
-          contractAddress: contractAdmin.address as ContractAddr,
-          instantiator: contractAdmin.init_by[0]?.account.address as Addr,
-          label: contractAdmin.label,
-          admin: contractAdmin.admin?.address as Addr,
-          latestUpdater: contractAdmin.contract_histories[0]?.account
-            .address as Addr,
-          latestUpdated: parseDateOpt(
-            contractAdmin.contract_histories[0]?.block.timestamp
-          ),
-          remark: contractAdmin.contract_histories[0]?.remark,
-        }))
-      );
-  }, [indexerGraphClient, offset, pageSize, walletAddress]);
+export const useContractTableCounts = (
+  address: Addr
+): UseQueryResult<ContractTableCounts> => {
+  const endpoint = useBaseApiRoute("contracts");
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN_PAGINATION,
-      indexerGraphClient,
-      offset,
-      pageSize,
-      walletAddress,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
-      enabled: wasm.enabled && Boolean(walletAddress),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useContractListCountByAdmin = (
-  walletAddress: Option<HumanAddr>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error("Wallet address not found (useContractListCountByAdmin)");
-
-    return indexerGraphClient
-      .request(getContractListCountByAdmin, {
-        walletAddress,
-      })
-      .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [walletAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN_COUNT,
-      walletAddress,
-      indexerGraphClient,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
-      keepPreviousData: true,
-      enabled: wasm.enabled && Boolean(walletAddress),
-    }
+    [CELATONE_QUERY_KEYS.CONTRACT_TABLE_COUNTS, endpoint, address, isGov],
+    async () => getContractTableCounts(endpoint, address, isGov),
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

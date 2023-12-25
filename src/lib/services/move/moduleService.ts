@@ -45,12 +45,12 @@ import type { ModuleVerificationInternal, ModulesResponse } from "./module";
 import {
   decodeModule,
   decodeScript,
-  getAPIAccountModules,
   getAccountModule,
   getAccountModules,
   getFunctionView,
   getModuleVerificationStatus,
   getModules,
+  getModulesByAddress,
 } from "./module";
 
 export interface IndexedModule extends InternalModule {
@@ -117,14 +117,14 @@ export const useAccountModules = ({
   );
 };
 
-export const useAPIAccountModules = (address: MoveAccountAddr) => {
+export const useModulesByAddress = (address: MoveAccountAddr) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.API_ACCOUNT_MODULES, endpoint, address],
+    [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, endpoint, address],
     () =>
-      getAPIAccountModules(endpoint, address).then((modules) =>
+      getModulesByAddress(endpoint, address).then((modules) =>
         modules.items.map((module) => indexModuleResponse(module))
       ),
     {

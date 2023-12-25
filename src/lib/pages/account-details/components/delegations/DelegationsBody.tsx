@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { DelegationsTable, UnbondingsTable } from "../tables";
 import { trackUseRadio } from "lib/amplitude";
-import type { Delegation, Unbonding } from "lib/pages/account-details/data";
+import type { Delegation, Unbonding } from "lib/pages/account-details/types";
 import type { Option, TokenWithValue } from "lib/types";
 
 import { RadioCard } from "./radio-card";
