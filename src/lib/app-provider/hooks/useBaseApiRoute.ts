@@ -6,13 +6,14 @@ export const useBaseApiRoute = (
   type:
     | "overviews"
     | "txs"
+    | "accounts"
     | "assets"
     | "blocks"
-    | "projects"
     | "contracts"
+    | "projects"
+    | "project_contracts"
     | "codes"
     | "legacy.accounts"
-    | "accounts"
     | "rest"
     | "icns_names"
     | "icns_address"
@@ -43,9 +44,11 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/assets`;
     case "blocks":
       return `${api}/v1/${chain}/${currentChainId}/blocks`;
+    case "contracts":
+      return `${api}/v1/${chain}/${currentChainId}/contracts`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
-    case "contracts":
+    case "project_contracts":
       return `${api}/contracts/${chain}/${currentChainId}`;
     case "codes":
       return `${api}/codes/${chain}/${currentChainId}`;

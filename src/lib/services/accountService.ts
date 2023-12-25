@@ -72,7 +72,13 @@ export const useAccountTableCounts = (
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TABLE_COUNTS, endpoint, address, isGov, isWasm],
+    [
+      CELATONE_QUERY_KEYS.ACCOUNT_TABLE_COUNTS,
+      endpoint,
+      address,
+      isGov,
+      isWasm,
+    ],
     async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );

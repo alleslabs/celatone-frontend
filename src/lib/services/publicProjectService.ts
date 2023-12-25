@@ -92,7 +92,7 @@ export const usePublicProjectBySlug = (
 export const usePublicProjectByContractAddress = (
   contractAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
-  const projectsApiRoute = useBaseApiRoute("contracts");
+  const projectsApiRoute = useBaseApiRoute("project_contracts");
   const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
 

@@ -39,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#678](https://github.com/alleslabs/celatone-frontend/pull/678) api v1 - contract table counts
+
+### Improvements
+
+### Bug fixes
+
+## v1.4.0
+
+### Features
+
 - [#686](https://github.com/alleslabs/celatone-frontend/pull/686) Add amp module list, my published module, and resources/module tab
 - [#664](https://github.com/alleslabs/celatone-frontend/pull/664) Add Vercel speed insights and analytics
 - [#677](https://github.com/alleslabs/celatone-frontend/pull/677) Add minimove-1 and miniwasm-1
@@ -81,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Update Neutron gas price
 - [#694](https://github.com/alleslabs/celatone-frontend/pull/694) Reroute cosmwasm pool back to pool detail page
 - [#691](https://github.com/alleslabs/celatone-frontend/pull/691) Fix unsupported token card
 - [#693](https://github.com/alleslabs/celatone-frontend/pull/693) Fix ui styling for contract card and states
