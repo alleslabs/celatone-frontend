@@ -9,7 +9,7 @@ export const useContractStates = (
   contractAddress: ContractAddr,
   numStatesToLoad: number
 ) => {
-  const baseEndpoint = useBaseApiRoute("rest");
+  const baseEndpoint = useBaseApiRoute("contracts");
 
   return useInfiniteQuery(
     [
