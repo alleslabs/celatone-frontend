@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#697](https://github.com/alleslabs/celatone-frontend/pull/697) api v1 - contract tables (migrations and related proposals)
 - [#696](https://github.com/alleslabs/celatone-frontend/pull/696) api v1 - block details
+- [#695](https://github.com/alleslabs/celatone-frontend/pull/695) api v1 - contract states
 - [#678](https://github.com/alleslabs/celatone-frontend/pull/678) api v1 - contract table counts
 
 ### Bug fixes
