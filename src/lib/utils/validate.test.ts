@@ -1,25 +1,25 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { isCodeId, isTxHash, isBlock } from "./validate";
+import { isId, isTxHash, isPosDecimal } from "./validate";
 
-describe("isCodeId", () => {
+describe("isId", () => {
   test("valid", () => {
-    expect(isCodeId("1234")).toBeTruthy();
+    expect(isId("1234")).toBeTruthy();
   });
   describe("invalid", () => {
     test("empty string", () => {
-      expect(isCodeId("")).toBeFalsy();
+      expect(isId("")).toBeFalsy();
     });
     test("non-number string", () => {
-      expect(isCodeId("123E")).toBeFalsy();
+      expect(isId("123E")).toBeFalsy();
     });
     test("length too long", () => {
-      expect(isCodeId("12345678")).toBeFalsy();
+      expect(isId("12345678")).toBeFalsy();
     });
     test("negative number", () => {
-      expect(isCodeId("-1234")).toBeFalsy();
+      expect(isId("-1234")).toBeFalsy();
     });
     test("hexstring", () => {
-      expect(isCodeId("0x1234")).toBeFalsy();
+      expect(isId("0x1234")).toBeFalsy();
     });
   });
 });
@@ -49,22 +49,22 @@ describe("isTxHash", () => {
   });
 });
 
-describe("isBlock", () => {
+describe("isPosDecimal", () => {
   test("valid", () => {
-    expect(isBlock("12345678")).toBeTruthy();
+    expect(isPosDecimal("12345678")).toBeTruthy();
   });
   describe("invalid", () => {
     test("empty string", () => {
-      expect(isBlock("")).toBeFalsy();
+      expect(isPosDecimal("")).toBeFalsy();
     });
     test("non-number string", () => {
-      expect(isBlock("1234ABCD")).toBeFalsy();
+      expect(isPosDecimal("1234ABCD")).toBeFalsy();
     });
     test("negative number", () => {
-      expect(isBlock("-1234")).toBeFalsy();
+      expect(isPosDecimal("-1234")).toBeFalsy();
     });
     test("hexstring", () => {
-      expect(isBlock("0x1234")).toBeFalsy();
+      expect(isPosDecimal("0x1234")).toBeFalsy();
     });
   });
 });

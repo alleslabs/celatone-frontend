@@ -1,3 +1,3 @@
-import BlockDetail from "lib/pages/block-details";
+import BlockDetails from "lib/pages/block-details";
 
-export default BlockDetail;
+export default BlockDetails;

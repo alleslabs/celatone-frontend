@@ -45,7 +45,7 @@ import {
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
 import { useAccountDetailsTableCounts } from "./data";
-import { TabIndex, zAccountDetailQueryParams } from "./types";
+import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 
@@ -443,7 +443,7 @@ const AccountDetails = () => {
   const router = useRouter();
   const { isSomeValidAddress } = useValidateAddress();
 
-  const validated = zAccountDetailQueryParams.safeParse(router.query);
+  const validated = zAccountDetailsQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady && validated.success)

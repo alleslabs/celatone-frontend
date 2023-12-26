@@ -3,11 +3,11 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useCelatoneApp } from "lib/app-provider";
 import { LabelText } from "lib/components/LabelText";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { BlockDetails } from "lib/types";
+import type { BlockData } from "lib/types";
 import { formatInteger } from "lib/utils";
 
 interface BlockInfoProps {
-  blockData: BlockDetails;
+  blockData: BlockData;
 }
 
 export const BlockInfo = ({ blockData }: BlockInfoProps) => {

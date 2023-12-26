@@ -5,12 +5,14 @@ import type { HexAddr } from "lib/types";
 
 import { padHexAddress } from "./address";
 
-export const isCodeId = (input: string): boolean => {
-  // TODO: refactor this to isHex later
+export const isPosDecimal = (input: string): boolean => {
   if (input.startsWith("0x")) return false;
   const numberValue = Number(input);
-  return input.length <= 7 && Number.isInteger(numberValue) && numberValue > 0;
+  return Number.isInteger(numberValue) && numberValue > 0;
 };
+
+export const isId = (input: string): boolean =>
+  input.length <= 7 && isPosDecimal(input);
 
 export const isTxHash = (input: string): boolean => {
   try {
@@ -19,13 +21,6 @@ export const isTxHash = (input: string): boolean => {
     return false;
   }
   return input.length === 64;
-};
-
-export const isBlock = (input: string): boolean => {
-  // TODO: refactor this to isHex later
-  if (input.startsWith("0x")) return false;
-  const numberValue = Number(input);
-  return Number.isInteger(numberValue) && numberValue > 0;
 };
 
 const isHexAddress = (address: string, length: number): boolean => {
