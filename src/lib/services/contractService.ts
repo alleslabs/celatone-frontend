@@ -17,7 +17,6 @@ import {
   getContractListCountByCodeId,
   getContractListQueryDocument,
   getInstantiatedCountByUserQueryDocument,
-  getInstantiateDetailByContractQueryDocument,
   getInstantiatedListByUserQueryDocument,
 } from "lib/query";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -28,18 +27,19 @@ import type {
   Dict,
   Addr,
   ContractInfo,
-  Nullable,
 } from "lib/types";
-import { parseTxHashOpt, parseDateOpt } from "lib/utils";
+import { parseDateOpt } from "lib/utils";
 
 import { getCodeIdInfo } from "./code";
 import {
   getAdminContractsByAddress,
+  getContractDataByContractAddress,
   getContractTableCounts,
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
 } from "./contract";
 import type {
+  ContractData,
   ContractTableCounts,
   ContractsResponse,
   MigrationHistoriesResponse,
@@ -49,15 +49,6 @@ export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
   codeHash: string;
   admin: Option<Addr>;
-}
-
-interface InstantiateDetail {
-  createdHeight: Option<number>;
-  createdTime: Option<Date>;
-  initMsg: Option<Nullable<string>>;
-  initTxHash: Option<string>;
-  initProposalId: Option<number>;
-  initProposalTitle: Option<string>;
 }
 
 export const useContractDetailByContractAddress = (
@@ -76,7 +67,7 @@ export const useContractDetailByContractAddress = (
         // TODO: retrieve code hash from gql instead when available
         const codeHash = await getCodeIdInfo(
           lcdEndpoint,
-          String(contracts_by_pk.code_id)
+          contracts_by_pk.code_id
         ).then((data) => data.code_info.data_hash);
         return {
           contractAddress,
@@ -103,45 +94,6 @@ export const useContractDetailByContractAddress = (
       enabled: Boolean(contractAddress),
       onSuccess,
       onError,
-    }
-  );
-};
-
-export const useInstantiateDetailByContractQuery = (
-  contractAddress: ContractAddr
-): UseQueryResult<InstantiateDetail> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getInstantiateDetailByContractQueryDocument, {
-        contractAddress,
-        isGov,
-      })
-      .then<InstantiateDetail>(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.contract_histories?.[0]?.block.height,
-        createdTime: parseDateOpt(
-          contracts_by_pk?.contract_histories?.[0]?.block.timestamp
-        ),
-        initMsg: contracts_by_pk?.init_msg,
-        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-        initProposalId: contracts_by_pk?.contract_proposals?.[0]?.proposal.id,
-        initProposalTitle:
-          contracts_by_pk?.contract_proposals?.[0]?.proposal.title,
-      }));
-  }, [contractAddress, indexerGraphClient, isGov]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL,
-      contractAddress,
-      indexerGraphClient,
-      isGov,
-    ],
-    queryFn,
-    {
-      enabled: Boolean(contractAddress),
     }
   );
 };
@@ -444,15 +396,32 @@ export const useAdminContractsByAddress = (
   );
 };
 
-export const useContractTableCounts = (
-  address: Addr
-): UseQueryResult<ContractTableCounts> => {
+export const useContractDataByContractAddress = (
+  contractAddress: ContractAddr
+) => {
   const endpoint = useBaseApiRoute("contracts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_TABLE_COUNTS, endpoint, address, isGov],
-    async () => getContractTableCounts(endpoint, address, isGov),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+  return useQuery<ContractData>(
+    [CELATONE_QUERY_KEYS.CONTRACT_DATA, endpoint, contractAddress, isGov],
+    async () =>
+      getContractDataByContractAddress(endpoint, contractAddress, isGov),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useContractTableCounts = (contractAddress: ContractAddr) => {
+  const endpoint = useBaseApiRoute("contracts");
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+
+  return useQuery<ContractTableCounts>(
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_TABLE_COUNTS,
+      endpoint,
+      contractAddress,
+      isGov,
+    ],
+    async () => getContractTableCounts(endpoint, contractAddress, isGov),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };

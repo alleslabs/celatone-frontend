@@ -13,8 +13,8 @@ import { getAccountTypeByAddressQueryDocument } from "lib/query";
 import type { AccountType, Addr, Option } from "lib/types";
 
 import {
-  getAccountInfo,
-  type AccountInfo,
+  getAccountData,
+  type AccountData,
   getAccountTableCounts,
   type AccountTableCounts,
 } from "./account";
@@ -54,12 +54,12 @@ export const useAccountType = (
   );
 };
 
-export const useAccountInfo = (address: Addr): UseQueryResult<AccountInfo> => {
+export const useAccountData = (address: Addr): UseQueryResult<AccountData> => {
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_DATA, endpoint, address],
-    async () => getAccountInfo(endpoint, address),
+    async () => getAccountData(endpoint, address),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };

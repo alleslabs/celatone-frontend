@@ -9,27 +9,27 @@ const zIcns = z.object({
   primary_name: z.string(),
 });
 
-const zAccountInfo = z
+const zAccountData = z
   .object({
     icns: zIcns.nullable(),
     project_info: zProjectInfo.nullable(),
     public_info: zPublicAccountInfo.nullable(),
   })
-  .transform((accountInfo) => ({
-    icns: accountInfo.icns,
-    projectInfo: accountInfo.project_info,
-    publicInfo: accountInfo.public_info,
+  .transform((accountData) => ({
+    icns: accountData.icns,
+    projectInfo: accountData.project_info,
+    publicInfo: accountData.public_info,
   }));
 
-export type AccountInfo = z.infer<typeof zAccountInfo>;
+export type AccountData = z.infer<typeof zAccountData>;
 
-export const getAccountInfo = async (
+export const getAccountData = async (
   endpoint: string,
   address: Addr
-): Promise<AccountInfo> =>
+): Promise<AccountData> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
-    .then(({ data }) => zAccountInfo.parse(data));
+    .then(({ data }) => zAccountData.parse(data));
 
 const zAccountTableCounts = z
   .object({

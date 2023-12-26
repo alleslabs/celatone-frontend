@@ -34,7 +34,7 @@ interface RenderCmdsProps {
 interface CommandSectionProps {
   contractAddress: ContractAddr;
   codeHash: string;
-  codeId: string;
+  codeId: number;
 }
 
 const RenderCmds = ({
@@ -187,11 +187,11 @@ export const CommandSection = observer(
           </Flex>
         </Flex>
         <JsonSchemaModal
-          isOpen={isOpen}
-          onClose={onClose}
           codeId={codeId}
           codeHash={codeHash}
+          isOpen={isOpen}
           isReattach={attached}
+          onClose={onClose}
         />
       </Flex>
     );

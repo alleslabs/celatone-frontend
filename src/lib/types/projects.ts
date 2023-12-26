@@ -12,7 +12,7 @@ import type {
   MoveAccountAddr,
 } from "lib/types";
 
-import { zAddr } from "./addrs";
+import { zAddr, zContractAddr } from "./addrs";
 
 export interface PublicAccount {
   address: HumanAddr;
@@ -133,3 +133,17 @@ export const zPublicAccountInfo = z.object({
 });
 
 export type PublicAccountInfo = z.infer<typeof zPublicAccountInfo>;
+
+export const zPublicContractInfo = z.object({
+  address: zContractAddr,
+  admin: zAddr,
+  code: z.number(),
+  description: z.string(),
+  github: z.string(),
+  instantiator: zAddr,
+  label: z.string(),
+  name: z.string(),
+  slug: z.string(),
+});
+
+export type PublicContractInfo = z.infer<typeof zPublicContractInfo>;

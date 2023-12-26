@@ -30,7 +30,7 @@ const Query = observer(() => {
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [codeHash, setCodeHash] = useState("");
-  const [codeId, setCodeId] = useState("");
+  const [codeId, setCodeId] = useState<number>();
   const [initialMsg, setInitialMsg] = useState("");
   const isMobile = useMobile();
 
@@ -101,7 +101,7 @@ const Query = observer(() => {
         onContractSelect={onContractSelect}
         successCallback={(data: ContractDetail) => {
           setCodeHash(data.codeHash);
-          setCodeId(String(data.codeId));
+          setCodeId(data.codeId);
         }}
       />
 

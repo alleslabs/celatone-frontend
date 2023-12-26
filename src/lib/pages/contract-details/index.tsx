@@ -47,13 +47,17 @@ interface ContractDetailsBodyProps {
 const ContractDetailsBody = observer(
   ({ contractAddress, tab }: ContractDetailsBodyProps) => {
     const isMobile = useMobile();
-    const router = useRouter();
     const navigate = useInternalNavigate();
 
     // ------------------------------------------//
     // ------------------QUERIES-----------------//
     // ------------------------------------------//
-    const contractData = useContractData(contractAddress);
+    const {
+      codeLocalInfo,
+      contractLocalInfo,
+      data: contractData,
+      isLoading,
+    } = useContractData(contractAddress);
 
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
@@ -75,27 +79,20 @@ const ContractDetailsBody = observer(
       },
       [contractAddress, tab, navigate]
     );
-    useEffect(() => {
-      if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
-        navigate({
-          replace: true,
-          pathname: "/contracts/[contractAddress]/[tab]",
-          query: {
-            contractAddress,
-            tab: TabIndex.Overview,
-          },
-          options: {
-            shallow: true,
-          },
-        });
-      }
-    }, [router.isReady, tab, contractAddress, navigate]);
 
-    if (contractData.isContractDetailLoading) return <Loading withBorder />;
-    if (!contractData.contractDetail) return <InvalidContract />;
+    if (isLoading) return <Loading withBorder />;
+    if (!contractData?.contract) return <InvalidContract />;
+
+    const { projectInfo, publicInfo, contract, contractRest } = contractData;
     return (
       <>
-        <ContractTop contractAddress={contractAddress} {...contractData} />
+        <ContractTop
+          contractAddress={contractAddress}
+          projectInfo={projectInfo}
+          publicInfo={publicInfo}
+          contract={contract}
+          contractLocalInfo={contractLocalInfo}
+        />
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
           isLazy
@@ -125,7 +122,11 @@ const ContractDetailsBody = observer(
             <TabPanel p={0}>
               <Flex flexDirection="column" gap={8}>
                 {/* Contract Description Section */}
-                <ContractDesc {...contractData} />
+                <ContractDesc
+                  publicInfo={publicInfo}
+                  contract={contract}
+                  contractLocalInfo={contractLocalInfo}
+                />
                 {/* Tokens Section */}
                 <ContractBalances
                   contractAddress={contractAddress}
@@ -134,8 +135,8 @@ const ContractDetailsBody = observer(
                 {/* Query/Execute commands section */}
                 <CommandSection
                   contractAddress={contractAddress}
-                  codeHash={contractData.contractDetail.codeHash}
-                  codeId={contractData.contractDetail.codeId.toString()}
+                  codeHash="" // TODO: fix
+                  codeId={contract.codeId}
                 />
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
@@ -157,12 +158,9 @@ const ContractDetailsBody = observer(
                         </Heading>
                       )}
                       <InstantiateInfo
-                        isLoading={
-                          contractData.isContractDetailLoading ||
-                          contractData.isContractCw2InfoLoading ||
-                          contractData.isInstantiateDetailLoading
-                        }
-                        {...contractData}
+                        contract={contract}
+                        contractRest={contractRest}
+                        codeLocalInfo={codeLocalInfo}
                       />
                       <Button
                         size="sm"
@@ -184,17 +182,12 @@ const ContractDetailsBody = observer(
                       <JsonInfo
                         header="Contract Info"
                         jsonString={jsonPrettify(
-                          JSON.stringify(
-                            contractData.rawContractResponse?.contract_info ??
-                              {}
-                          )
+                          JSON.stringify(contractRest?.contract_info ?? {})
                         )}
-                        isLoading={contractData.isRawContractResponseLoading}
                       />
                       <JsonInfo
                         header="Instantiate Message"
-                        jsonString={jsonPrettify(contractData.initMsg ?? "")}
-                        isLoading={contractData.isInstantiateDetailLoading}
+                        jsonString={jsonPrettify(contract.initMsg)}
                         defaultExpand
                       />
                     </Flex>
@@ -204,10 +197,7 @@ const ContractDetailsBody = observer(
               </Flex>
             </TabPanel>
             <TabPanel p={0}>
-              <ContractBalances
-                contractAddress={contractAddress}
-                {...contractData}
-              />
+              <ContractBalances contractAddress={contractAddress} />
             </TabPanel>
             <TabPanel p={0}>
               <ContractTables contractAddress={contractAddress} />
