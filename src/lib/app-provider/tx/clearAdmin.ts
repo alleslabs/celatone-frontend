@@ -56,12 +56,12 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
       });
     },
     [
-      getSigningClient,
       address,
-      wasm,
-      fabricateFee,
       contractAddress,
+      fabricateFee,
+      getSigningClient,
       queryClient,
+      wasm,
     ]
   );
 };
