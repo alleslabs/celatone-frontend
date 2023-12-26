@@ -126,6 +126,7 @@ export const zContract = z
     address: zContractAddr,
     admin: zAddr.nullable(),
     code_id: z.number(),
+    code_hash: z.string().transform((value) => parseTxHash(value)),
     created_height: z.number(),
     created_timestamp: zUtcDate,
     cw2_contract: z.string(),
