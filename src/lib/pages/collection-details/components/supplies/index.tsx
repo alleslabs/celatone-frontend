@@ -57,11 +57,7 @@ const Supplies = ({
         mb="32px"
       />
 
-      <NFTList
-        collectionAddress={collectionAddress}
-        nfts={nfts}
-        isLoading={isLoading}
-      />
+      <NFTList nfts={nfts} isLoading={isLoading} />
 
       {!isLoading && nfts && (
         <Pagination

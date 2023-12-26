@@ -24,7 +24,6 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import {
-  useCollectionUniqueHoldersCount,
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
@@ -36,6 +35,7 @@ import Activities from "./components/activities";
 import CollectionInfoOverview from "./components/CollectionInfoOverview";
 import CollectionSupplyOverview from "./components/CollectionSupplyOverview";
 import NFTsOverview from "./components/NFTsOverview";
+import RelatedProposals from "./components/related-proposals";
 import Supplies from "./components/supplies";
 import { useCollectionSupplies } from "./data";
 import MutateEvents from "./mutate-events";
@@ -67,14 +67,12 @@ const CollectionDetailsBody = ({
     useCollectionActivitiesCount(collectionAddress);
   const { data: mutateEventsCount = 0 } =
     useCollectionMutateEventsCount(collectionAddress);
-  const { data: uniqueHoldersCount = 0 } =
-    useCollectionUniqueHoldersCount(collectionAddress);
 
   const navigate = useInternalNavigate();
 
   const handleTabChange = useCallback(
-    (nextTab: TabIndex, disabled?: boolean) => () => {
-      if (nextTab === tabParam || disabled) return;
+    (nextTab: TabIndex) => () => {
+      if (nextTab === tabParam) return;
       trackUseTab(nextTab);
       navigate({
         pathname: "/collections/[collectionAddress]/[tab]",
@@ -135,17 +133,24 @@ const CollectionDetailsBody = ({
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.Supplies)}>
+          <CustomTab
+            onClick={handleTabChange(TabIndex.Supplies)}
+            isDisabled={!currentSupply}
+          >
             Supplies <Badge ml="6px">{currentSupply}</Badge>
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.Activities)}>
+          <CustomTab
+            onClick={handleTabChange(TabIndex.Activities)}
+            isDisabled={!activitiesCount}
+          >
             Activities <Badge ml="6px">{activitiesCount}</Badge>
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.RelatedProposals, true)}>
+          <CustomTab onClick={handleTabChange(TabIndex.RelatedProposals)}>
             Related Proposals <Badge ml="6px">{0}</Badge>
           </CustomTab>
           <CustomTab
-            onClick={handleTabChange(TabIndex.MutateEvents, !mutateEventsCount)}
+            onClick={handleTabChange(TabIndex.MutateEvents)}
+            isDisabled={!mutateEventsCount}
           >
             Mutate Events <Badge ml="6px">{mutateEventsCount}</Badge>
           </CustomTab>
@@ -172,7 +177,6 @@ const CollectionDetailsBody = ({
                 uri={uri}
                 activities={activitiesCount}
                 mutateEventes={mutateEventsCount}
-                uniqueHolders={uniqueHoldersCount}
                 royalty={royalty}
               />
             </Stack>
@@ -190,7 +194,7 @@ const CollectionDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <div>Related Proposals</div>
+            <RelatedProposals />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <MutateEvents

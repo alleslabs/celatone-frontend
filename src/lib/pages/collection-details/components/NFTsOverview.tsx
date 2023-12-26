@@ -7,13 +7,13 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
+import NFTCard from "lib/components/NFTCard";
 import { EmptyState } from "lib/components/state";
 import type { NFTToken } from "lib/services/nft";
-
-import NFTCard from "./NFTCard";
 
 const NFTsOverview = ({
   collectionAddress,
@@ -33,6 +33,7 @@ const NFTsOverview = ({
   });
 
   const nftsInfo = nfts?.slice(0, displayedNftCount);
+  const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
   if (!nftsInfo || !nftsInfo.length)
@@ -43,10 +44,13 @@ const NFTsOverview = ({
       <Text fontSize="18px" fontWeight={600} mb="24px">
         NFTs in this collection
       </Text>
-      <SimpleGrid gap="24px" templateColumns="repeat(auto-fill, 206px)">
+      <SimpleGrid
+        gap="24px"
+        templateColumns={`repeat(auto-fill, ${isMobile ? "150px" : "206px"})`}
+      >
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
-            <NFTCard collectionAddress={collectionAddress} {...nft} />
+            <NFTCard {...nft} />
           </GridItem>
         ))}
       </SimpleGrid>

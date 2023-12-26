@@ -68,6 +68,11 @@ export const getNFTTokenListPagination = gql`
       vm_address {
         vm_address
       }
+      collectionByCollection {
+        vm_address {
+          vm_address
+        }
+      }
     }
   }
 `;
@@ -138,6 +143,43 @@ export const getNFTMutateEventsCount = gql`
   query getNFTMutateEventsCount($nftAddress: String!) {
     nft_mutation_events_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
+export const getNFTTokenListByAddress = gql`
+  query getNFTTokenListByAddress($hexAddress: String!) {
+    nfts(
+      where: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
+      order_by: { token_id: asc }
+      offset: 0
+      limit: 5
+    ) {
+      token_id
+      uri
+      collectionByCollection {
+        vm_address {
+          vm_address
+        }
+      }
+      vmAddressByOwner {
+        vm_address
+      }
+      vm_address {
+        vm_address
+      }
+    }
+  }
+`;
+
+export const getNFTTokenCountByAddress = gql`
+  query getNFTTokenCountByAddress($hexAddress: String!) {
+    nfts_aggregate(
+      where: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
     ) {
       aggregate {
         count

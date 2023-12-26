@@ -1,14 +1,16 @@
 import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import type { Collection } from "lib/services/collection";
 import { useMetadata } from "lib/services/nftService";
 
 const CollectionCard = ({ collectionInfo }: { collectionInfo: Collection }) => {
   const { uri, description, name } = collectionInfo;
   const { data: metadata } = useMetadata(uri);
+  const isMobile = useMobile();
 
   return (
-    <Box p="16px 24px" bg="gray.900" borderRadius="8px">
+    <Box p={isMobile ? "12px" : "16px 24px"} bg="gray.900" borderRadius="8px">
       <Flex gap="24px" alignItems="center">
         {metadata?.image ? (
           <Box w="150px" h="150px">
@@ -26,7 +28,7 @@ const CollectionCard = ({ collectionInfo }: { collectionInfo: Collection }) => {
         <Stack spacing="16px">
           <Text
             fontSize="18px"
-            maxW="200px"
+            maxW={isMobile ? "100px" : "200px"}
             fontWeight={600}
             className="ellipsis"
           >

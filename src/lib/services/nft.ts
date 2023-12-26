@@ -10,6 +10,11 @@ export interface NFTTokenResponse {
       description: string;
       vmAddressByOwner: { vm_address: string };
       vm_address: { vm_address: string };
+      collectionByCollection: {
+        vm_address: {
+          vm_address: string;
+        };
+      };
     }[];
   };
 }
@@ -18,9 +23,14 @@ export const zNFTTokenResponse = z
   .object({
     uri: z.string(),
     token_id: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
     vmAddressByOwner: z.object({ vm_address: z.string() }),
     vm_address: z.object({ vm_address: z.string() }).optional(),
+    collectionByCollection: z
+      .object({
+        vm_address: z.object({ vm_address: z.string() }),
+      })
+      .optional(),
   })
   .transform((val) => ({
     description: val.description,
@@ -28,6 +38,7 @@ export const zNFTTokenResponse = z
     tokenId: val.token_id,
     ownerAddress: val.vmAddressByOwner.vm_address,
     nftAddress: val.vm_address?.vm_address,
+    collectionAddress: val.collectionByCollection?.vm_address.vm_address,
   }));
 
 export type NFTToken = z.infer<typeof zNFTTokenResponse>;
@@ -142,3 +153,13 @@ export const zNFTMutateEventsPaginationResponse = z
 export type NFTMutateEventsPagination = z.infer<
   typeof zNFTMutateEventsPaginationResponse
 >;
+
+export interface NFTTokenCountByAddressResponse {
+  data: {
+    nfts_aggregate: {
+      aggregate: {
+        count: number;
+      };
+    };
+  };
+}

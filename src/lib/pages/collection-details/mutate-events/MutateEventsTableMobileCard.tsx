@@ -1,41 +1,51 @@
-import { Flex } from "@chakra-ui/react";
+import { Badge, Stack, Text } from "@chakra-ui/react";
+import { Box } from "@interchain-ui/react";
 
-import { useInternalNavigate } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { MobileCardTemplate } from "lib/components/table";
-
-interface MutateEventsTableMobileCardProps {
-  hash: string;
-  timestamp: string;
-}
+import type { CollectionMutateEvent } from "lib/services/collection";
+import { dateFromNow, formatUTC } from "lib/utils";
 
 export const MutateEventsTableMobileCard = ({
   timestamp,
-  hash,
-}: MutateEventsTableMobileCardProps) => {
-  const navigate = useInternalNavigate();
+  mutatedFieldName,
+  oldValue,
+  newValue,
+}: CollectionMutateEvent) => {
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/txs/[txHash]",
-          query: { txHash: hash.toLocaleUpperCase() },
-        })
-      }
       topContent={
-        <Flex align="center" gap={2}>
-          <ExplorerLink
-            value={hash.toLocaleUpperCase()}
-            type="tx_hash"
-            showCopyOnHover
-          />
-        </Flex>
+        <Box>
+          <Text fontSize="12px" color="gray.400">
+            Field Name
+          </Text>
+          <Badge width="fit-content" size="sm" textTransform="capitalize">
+            {mutatedFieldName}
+          </Badge>
+        </Box>
       }
-      middleContent={<Flex />}
+      middleContent={
+        <Stack spacing="12px">
+          <Box>
+            <Text fontSize="12px" color="gray.400">
+              Old Value
+            </Text>
+            <Text fontSize="14px">{oldValue}</Text>
+          </Box>
+          <CustomIcon name="arrow-down" />
+          <Box>
+            <Text fontSize="12px" color="gray.400">
+              New Value
+            </Text>
+            <Text fontSize="14px">{newValue}</Text>
+          </Box>
+        </Stack>
+      }
       bottomContent={
-        <Flex direction="column" gap={3}>
-          <Flex direction="column">{timestamp}</Flex>
-        </Flex>
+        <Box fontSize="12px">
+          <Text color="gray.400">{formatUTC(new Date(timestamp))}</Text>
+          <Text color="gray.500">({dateFromNow(new Date(timestamp))})</Text>
+        </Box>
       }
     />
   );

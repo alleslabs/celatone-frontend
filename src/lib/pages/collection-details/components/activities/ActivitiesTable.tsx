@@ -29,13 +29,7 @@ export const ActivitiesTable = ({
     <MobileTableContainer>
       {activities.map((activity, key) => {
         const arrayKey = key + activity.txhash;
-        return (
-          <ActivitiesTableMobileCard
-            key={arrayKey}
-            hash={activity.txhash}
-            timestamp={activity.timestamp}
-          />
-        );
+        return <ActivitiesTableMobileCard key={arrayKey} activity={activity} />;
       })}
     </MobileTableContainer>
   ) : (

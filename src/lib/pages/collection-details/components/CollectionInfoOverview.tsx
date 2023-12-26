@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import type { PropsWithChildren } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useCollectionCreator } from "lib/services/collectionService";
@@ -36,7 +37,6 @@ interface Props {
   uri: string;
   activities: number;
   mutateEventes: number;
-  uniqueHolders: number;
   royalty: number;
 }
 
@@ -47,7 +47,6 @@ const CollectionInfoOverview = ({
   uri,
   activities,
   mutateEventes,
-  uniqueHolders,
   royalty,
 }: Props) => {
   const styles = useBreakpointValue({
@@ -62,10 +61,14 @@ const CollectionInfoOverview = ({
   const { data: collectionCreator, isLoading } =
     useCollectionCreator(collectionAddress);
 
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;
 
   const { height, txhash, timestamp, creatorAddress } = collectionCreator;
+  const mobileInfoDirection = isMobile ? "column" : "row";
+  const mobileInfoGap = isMobile ? "4px" : "16px";
   return (
     <Box>
       <Text fontSize="18px" fontWeight={600} mb="24px">
@@ -77,7 +80,7 @@ const CollectionInfoOverview = ({
           justify="space-between"
           fontFamily="Manrope"
           gap="24px"
-          direction={styles.direction}
+          flexDir={isMobile ? "column" : styles.direction}
         >
           <InfoComponent title="Created Block Height">
             <ExplorerLink value={String(height)} type="block_height" />
@@ -101,45 +104,68 @@ const CollectionInfoOverview = ({
         <Stack
           bg="gray.900"
           borderRadius="8px"
-          p="24px"
+          p={isMobile ? "16px" : "24px"}
           w="100%"
           spacing="24px"
           fontFamily="Manrope"
           overflow="auto"
         >
-          <Flex gap="16px" fontSize="14px" align="center">
+          <Flex
+            fontSize="14px"
+            gap={mobileInfoGap}
+            flexDir={mobileInfoDirection}
+          >
             <Text minW="100px">Collection</Text>
             <ExplorerLink value={collectionAddress} type="user_address" />
           </Flex>
 
-          <Flex gap="16px" fontSize="14px">
+          <Flex
+            fontSize="14px"
+            gap={mobileInfoGap}
+            flexDir={mobileInfoDirection}
+          >
             <Text minW="100px">Name</Text>
             <Text textOverflow="ellipsis">{collectionName}</Text>
           </Flex>
 
-          <Flex gap="16px" fontSize="14px">
+          <Flex
+            fontSize="14px"
+            gap={mobileInfoGap}
+            flexDir={mobileInfoDirection}
+          >
             <Text minW="100px">Description</Text>
             <Text color="gray.400">{desc}</Text>
           </Flex>
 
-          <Flex gap="16px" fontSize="14px">
+          <Flex
+            fontSize="14px"
+            gap={mobileInfoGap}
+            flexDir={mobileInfoDirection}
+          >
             <Text minW="100px">Uri</Text>
             <Link href={uri} target="_blank">
               {uri}
             </Link>
           </Flex>
 
-          <Flex gap="16px" fontSize="14px">
+          <Flex
+            fontSize="14px"
+            gap={mobileInfoGap}
+            flexDir={mobileInfoDirection}
+          >
             <Text minW="100px">Royalty</Text>
             <Text>{royalty}%</Text>
           </Flex>
         </Stack>
       </Flex>
 
-      <Flex gap="32px" mt="40px">
+      <Flex
+        mt="40px"
+        gap={isMobile ? "16px" : "32px"}
+        flexDir={mobileInfoDirection}
+      >
         <InfoCard title="Activities" content={activities} />
         <InfoCard title="Mutate Events" content={mutateEventes} />
-        <InfoCard title="Unique Holders" content={uniqueHolders} />
       </Flex>
     </Box>
   );

@@ -1,12 +1,12 @@
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { useMetadata } from "lib/services/nftService";
 
 interface Props {
   uri: string;
   tokenId: string;
-  collectionAddress: string;
+  collectionAddress?: string;
   nftAddress?: string;
 }
 
@@ -14,10 +14,12 @@ const NFTCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
   const { data: metadata } = useMetadata(uri);
   const navigate = useInternalNavigate();
 
+  const isMobile = useMobile();
+  const size = isMobile ? "150px" : "206px";
   return (
     <Stack
       gap="8px"
-      maxWidth="206px"
+      maxWidth={size}
       w="100%"
       cursor="pointer"
       onClick={() =>
@@ -28,9 +30,9 @@ const NFTCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
       }
     >
       {metadata ? (
-        <Image minW="206px" h="206px" borderRadius="8px" src={metadata.image} />
+        <Image minW={size} h={size} borderRadius="8px" src={metadata.image} />
       ) : (
-        <Box minW="206px" h="206px" borderRadius="8px" bg="gray.800" />
+        <Box minW={size} h={size} borderRadius="8px" bg="gray.800" />
       )}
       <Text fontSize="18px" fontWeight={600}>
         {metadata?.name ?? tokenId}

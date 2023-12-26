@@ -15,6 +15,7 @@ import {
   useGovConfig,
   useInternalNavigate,
   useMoveConfig,
+  useNftConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -28,6 +29,7 @@ import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountInfo } from "lib/services/accountService";
 import { useAPIAccountModules } from "lib/services/move/moduleService";
 import { useAccountResources } from "lib/services/move/resourceService";
+import { useNFTTokenCountByAddress } from "lib/services/nftService";
 import type { Addr, HexAddr, HumanAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -35,6 +37,7 @@ import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import { ModuleLists } from "./components/modules";
+import { NFTSection, NFTsOverview } from "./components/nfts";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
@@ -74,6 +77,7 @@ const AccountDetailsBody = ({
   const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
+  const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
@@ -93,6 +97,8 @@ const AccountDetailsBody = ({
     useAPIAccountModules(accountAddress);
   const { data: resourcesData, isFetching: isResourceLoading } =
     useAccountResources(accountAddress);
+  // nft
+  const { data: nftCount } = useNFTTokenCountByAddress(hexAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -164,6 +170,14 @@ const AccountDetailsBody = ({
             hidden={disableDelegation}
           >
             Delegations
+          </CustomTab>
+          <CustomTab
+            count={nftCount}
+            onClick={handleTabChange(TabIndex.Nfts)}
+            hidden={!nft.enabled}
+            isDisabled={nftCount === 0}
+          >
+            NFTs
           </CustomTab>
           <CustomTab
             count={tableCounts.txsCount}
@@ -276,6 +290,13 @@ const AccountDetailsBody = ({
                 />
               </Flex>
             )}
+            {nft.enabled && (
+              <NFTsOverview
+                totalCount={nftCount}
+                hexAddress={hexAddress}
+                onViewMore={handleTabChange(TabIndex.Nfts)}
+              />
+            )}
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -337,6 +358,9 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <DelegationsSection walletAddress={accountAddress} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <NFTSection />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

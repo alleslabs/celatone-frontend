@@ -1,5 +1,6 @@
-import { Divider, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Stack, Text } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { TooltipInfo } from "lib/components/Tooltip";
 
 const InfoComponent = ({
@@ -50,7 +51,33 @@ const CollectionSupplyOverview = ({
   const maxSupplyTooltip =
     "The maximum number of NFTs that can ever be minted in this collection.";
 
-  return (
+  const isMobile = useMobile();
+  return isMobile ? (
+    <Stack p="16px" spacing="16px" borderRadius="8px" bg="gray.900">
+      <Box>
+        <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
+          <Text color="gray.400">Current Supply (Minted - Burned)</Text>
+          <TooltipInfo label={currentSupplyTooltip} iconVariant="solid" />
+        </Flex>
+        <Flex fontWeight={600} align="end" gap="8px">
+          <Text fontSize="16px">{currentSupply}</Text>
+          <Text fontSize="12px" color="gray.400">
+            ({totlaMinted} - {totalBurned})
+          </Text>
+        </Flex>
+      </Box>
+      <Divider opacity={1} borderColor="gray.700" />
+      <Box>
+        <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
+          <Text color="gray.400">Max Supply</Text>
+          <TooltipInfo label={maxSupplyTooltip} iconVariant="solid" />
+        </Flex>
+        <Text fontSize="18px" fontWeight={600}>
+          {maxSupply ?? "∞"}
+        </Text>
+      </Box>
+    </Stack>
+  ) : (
     <Flex
       align="center"
       mt="24px"
