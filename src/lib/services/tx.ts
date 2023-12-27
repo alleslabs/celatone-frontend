@@ -179,7 +179,7 @@ export const getTxs = async (
         is_initia: isInitia,
       },
     })
-    .then((res) => zTxsResponse.parse(res.data));
+    .then(({ data }) => zTxsResponse.parse(data));
 
 const zAccountTxsResponseItem = zBaseTxsResponseItem
   .extend({
@@ -259,7 +259,7 @@ export const getTxsByAddress = async (
         ...(search !== undefined && { search }),
       },
     })
-    .then((res) => zAccountTxsResponse.parse(res.data));
+    .then(({ data }) => zAccountTxsResponse.parse(data));
 };
 
 const zBlockTxsResponse = z.object({
@@ -287,7 +287,7 @@ export const getTxsByBlockHeight = async (
         is_initia: isInitia,
       },
     })
-    .then((res) => zBlockTxsResponse.parse(res.data));
+    .then(({ data }) => zBlockTxsResponse.parse(data));
 
 const zModuleTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
@@ -317,7 +317,7 @@ export const getTxsByModule = async (
         },
       }
     )
-    .then((res) => zModuleTxsResponse.parse(res.data));
+    .then(({ data }) => zModuleTxsResponse.parse(data));
 
 const zTxsCountResponse = z
   .object({
@@ -344,5 +344,5 @@ export const getAPITxsCountByAddress = async (
         ...(search !== undefined && { search }),
       },
     })
-    .then((res) => zTxsCountResponse.parse(res.data));
+    .then(({ data }) => zTxsCountResponse.parse(data));
 };

@@ -29,4 +29,4 @@ export const getAccountResources = async (
 ): Promise<ResourceResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/resources`)
-    .then((res) => zResourcesResponse.parse(res.data));
+    .then(({ data }) => zResourcesResponse.parse(data));

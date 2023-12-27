@@ -12,13 +12,13 @@ import { queryContract, queryContractCw2Info } from "lib/services/contract";
 import {
   useContractDetailByContractAddress,
   useInstantiateDetailByContractQuery,
-  useMigrationHistoriesByContractAddressPagination,
+  useMigrationHistoriesByContractAddress,
 } from "lib/services/contractService";
 import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { ContractAddr, ContractMigrationHistory, Option } from "lib/types";
+import type { ContractAddr, ContractMigrationHistory } from "lib/types";
 import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
 
 import type { ContractData } from "./types";
@@ -101,22 +101,23 @@ export const useMigrationHistories = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): Option<ContractMigrationHistory[]> => {
-  const { data: migrationData } =
-    useMigrationHistoriesByContractAddressPagination(
-      contractAddress,
-      offset,
-      pageSize
-    );
+) => {
+  const { data, ...res } = useMigrationHistoriesByContractAddress(
+    contractAddress,
+    offset,
+    pageSize
+  );
   const { getCodeLocalInfo } = useCodeStore();
 
-  if (!migrationData) return undefined;
-
-  return migrationData.map<ContractMigrationHistory>((data) => {
-    const localInfo = getCodeLocalInfo(data.codeId);
-    return {
-      ...data,
-      codeName: localInfo?.name,
-    };
-  });
+  return {
+    data: data
+      ? {
+          items: data.items.map<ContractMigrationHistory>((migration) => ({
+            ...migration,
+            codeName: getCodeLocalInfo(migration.codeId)?.name,
+          })),
+        }
+      : undefined,
+    ...res,
+  };
 };

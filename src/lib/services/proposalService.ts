@@ -12,7 +12,6 @@ import {
   getProposalList,
   getProposalListCount,
   getProposalTypes,
-  getRelatedProposalsByContractAddressPagination,
   getRelatedProposalsByModuleIdPagination,
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
@@ -41,6 +40,7 @@ import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
   ProposalsResponse,
+  RelatedProposalsResponse,
   UploadAccess,
   VotingParamsInternal,
 } from "./proposal";
@@ -49,49 +49,34 @@ import {
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
   getProposalsByAddress,
+  getRelatedProposalsByContractAddress,
 } from "./proposal";
 
-export const useRelatedProposalsByContractAddressPagination = (
+export const useRelatedProposalsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
-  pageSize: number
-): UseQueryResult<Proposal[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  limit: number
+) => {
+  const endpoint = useBaseApiRoute("contracts");
 
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getRelatedProposalsByContractAddressPagination, {
-        contractAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ contract_proposals }) =>
-        contract_proposals.map<Proposal>((proposal) => ({
-          proposalId: proposal.proposal_id,
-          title: proposal.proposal.title,
-          status: parseProposalStatus(proposal.proposal.status),
-          votingEndTime: parseDate(proposal.proposal.voting_end_time),
-          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
-          resolvedHeight: proposal.resolved_height,
-          type: proposal.proposal.type as ProposalType,
-          proposer: proposal.proposal.account?.address as Addr,
-          isExpedited: Boolean(proposal.proposal.is_expedited),
-        }))
-      );
-  }, [contractAddress, offset, pageSize, indexerGraphClient]);
-
-  return useQuery(
+  return useQuery<RelatedProposalsResponse>(
     [
-      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_PAGINATION,
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS,
+      endpoint,
       contractAddress,
+      limit,
       offset,
-      pageSize,
-      indexerGraphClient,
     ],
-    queryFn,
+    async () =>
+      getRelatedProposalsByContractAddress(
+        endpoint,
+        contractAddress,
+        limit,
+        offset
+      ),
     {
+      retry: 1,
       keepPreviousData: true,
-      enabled: !!contractAddress,
     }
   );
 };

@@ -1,4 +1,5 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
+import { z } from "zod";
 
 import type { Addr, Option } from "lib/types";
 
@@ -81,4 +82,5 @@ export type PoolTxFilter =
   | "is_collect"
   | "is_migrate";
 
-export type RemarkType = "genesis" | "governance" | "transaction";
+export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
+export type RemarkType = z.infer<typeof zRemarkType>;

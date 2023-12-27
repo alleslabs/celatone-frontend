@@ -1,7 +1,7 @@
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
-import { useCurrentChain } from "../hooks";
+import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
 import type { Addr, ContractAddr, HumanAddr, Option } from "lib/types";
@@ -15,7 +15,8 @@ export interface UpdateAdminStreamParams {
 }
 
 export const useUpdateAdminTx = () => {
-  const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { address } = useCurrentChain();
+  const getSigningClient = useGetSigningClient();
 
   return useCallback(
     async ({
@@ -25,7 +26,7 @@ export const useUpdateAdminTx = () => {
       onTxSucceed,
       onTxFailed,
     }: UpdateAdminStreamParams) => {
-      const client = await getSigningCosmWasmClient();
+      const client = await getSigningClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
@@ -43,6 +44,6 @@ export const useUpdateAdminTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningClient]
   );
 };

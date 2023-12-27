@@ -14,4 +14,4 @@ export const getAssetInfos = async (
         with_prices: withPrices,
       },
     })
-    .then((res) => z.array(zAssetInfo).parse(res.data));
+    .then(({ data }) => z.array(zAssetInfo).parse(data));
