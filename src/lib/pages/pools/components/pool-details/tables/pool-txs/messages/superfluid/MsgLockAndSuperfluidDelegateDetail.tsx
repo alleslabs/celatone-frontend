@@ -78,6 +78,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
             validator={{
               validatorAddress: msg.val_addr,
               moniker: validator?.moniker,
+              identity: undefined,
             }}
             badgeSize={6}
             ampCopierSection={ampCopierSection}

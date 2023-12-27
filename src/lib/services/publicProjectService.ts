@@ -21,7 +21,7 @@ import type {
   RawPublicCode,
   PublicModule,
 } from "lib/types";
-import { isCodeId } from "lib/utils";
+import { isId } from "lib/utils";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
@@ -92,7 +92,7 @@ export const usePublicProjectBySlug = (
 export const usePublicProjectByContractAddress = (
   contractAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
-  const projectsApiRoute = useBaseApiRoute("contracts");
+  const projectsApiRoute = useBaseApiRoute("project_contracts");
   const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
 
@@ -142,7 +142,7 @@ export const usePublicProjectByCodeId = (
     [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CODE_ID, projectsApiRoute, codeId],
     queryFn,
     {
-      enabled: isCodeId(codeId) && projectConfig.enabled && wasmConfig.enabled,
+      enabled: isId(codeId) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }

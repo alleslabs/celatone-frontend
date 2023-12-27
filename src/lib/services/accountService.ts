@@ -58,7 +58,7 @@ export const useAccountInfo = (address: Addr): UseQueryResult<AccountInfo> => {
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
+    [CELATONE_QUERY_KEYS.ACCOUNT_DATA, endpoint, address],
     async () => getAccountInfo(endpoint, address),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
@@ -72,7 +72,13 @@ export const useAccountTableCounts = (
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TABLE_COUNTS, endpoint, address, isGov, isWasm],
+    [
+      CELATONE_QUERY_KEYS.ACCOUNT_TABLE_COUNTS,
+      endpoint,
+      address,
+      isGov,
+      isWasm,
+    ],
     async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
