@@ -476,7 +476,7 @@ export const useContractQueryMsgs = (contractAddress: ContractAddr) => {
   const endpoint = useBaseApiRoute("contracts");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, contractAddress],
+    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, endpoint, contractAddress],
     async () => getContractQueryMsgs(endpoint, contractAddress),
     { retry: false, cacheTime: 0, refetchOnWindowFocus: false }
   );
