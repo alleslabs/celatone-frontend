@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { useWalletClient } from "@cosmos-kit/react";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useRPCEndpoint } from "./useRPCEndpoint";
+import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
 
 type MergedWalletClient =
   | WalletClient
@@ -51,7 +52,11 @@ export const useGetSigningClient = () => {
 
       if (!signer || !("signAmino" in signer)) return undefined;
 
-      return SigningCosmWasmClient.connectWithSigner(rpcEndpoint, signer);
+      return SigningCosmWasmClient.connectWithSigner(
+        rpcEndpoint,
+        signer,
+        getCustomedSigningCosmwasm()
+      );
     }
     return await getSigningCosmWasmClient();
   }, [chainId, rpcEndpoint, JSON.stringify(walletClient)]);
