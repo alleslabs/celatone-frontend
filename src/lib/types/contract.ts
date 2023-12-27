@@ -15,7 +15,7 @@ export enum RemarkOperation {
 export const zContractHistoryRemark = z.object({
   operation: z.nativeEnum(RemarkOperation),
   type: zRemarkType,
-  value: z.union([z.string(), z.number()]),
+  value: z.union([z.string(), z.number()]).optional(),
 });
 
 export type ContractHistoryRemark = z.infer<typeof zContractHistoryRemark>;

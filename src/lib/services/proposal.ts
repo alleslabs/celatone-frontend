@@ -2,14 +2,13 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import { zAddr, zUtcDate } from "lib/types";
+import { zAddr, zUtcDate, zProposalType } from "lib/types";
 import type {
   ContractAddr,
   AccessConfigPermission,
   Addr,
   SnakeToCamelCaseNested,
   Proposal,
-  ProposalType,
 } from "lib/types";
 import { parseProposalStatus, snakeToCamel } from "lib/utils";
 
@@ -73,7 +72,7 @@ const zProposalsResponseItem = z
     resolved_height: z.number().nullish(),
     status: z.string().transform(parseProposalStatus),
     title: z.string(),
-    type: z.string(),
+    type: zProposalType,
     voting_end_time: zUtcDate,
   })
   .transform<Proposal>((val) => ({
@@ -84,7 +83,7 @@ const zProposalsResponseItem = z
     resolvedHeight: val.resolved_height,
     status: val.status,
     title: val.title,
-    type: val.type as ProposalType, // TODO: remove type assertion
+    type: val.type,
     votingEndTime: val.voting_end_time,
   }));
 
@@ -119,7 +118,7 @@ const zRelatedProposalsResponseItem = z
     resolved_height: z.number().nullish(),
     status: z.string().transform(parseProposalStatus),
     title: z.string(),
-    type: z.string(),
+    type: zProposalType,
     voting_end_time: zUtcDate,
   })
   .transform<Proposal>((val) => ({
@@ -130,7 +129,7 @@ const zRelatedProposalsResponseItem = z
     resolvedHeight: val.resolved_height,
     status: val.status,
     title: val.title,
-    type: val.type as ProposalType, // TODO: remove type assertion
+    type: val.type,
     votingEndTime: val.voting_end_time,
   }));
 
