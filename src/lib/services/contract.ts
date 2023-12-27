@@ -145,6 +145,7 @@ export const zContract = z
     address: value.address,
     admin: value.admin,
     codeId: value.code_id,
+    codeHash: value.code_hash,
     createdHeight: value.created_height,
     createdTimestamp: value.created_timestamp,
     cw2Contract: value.cw2_contract,

@@ -135,7 +135,7 @@ const ContractDetailsBody = observer(
                 {/* Query/Execute commands section */}
                 <CommandSection
                   contractAddress={contractAddress}
-                  codeHash="" // TODO: fix
+                  codeHash={contract.codeHash}
                   codeId={contract.codeId}
                 />
                 {/* Instantiate/Contract Info Section */}
