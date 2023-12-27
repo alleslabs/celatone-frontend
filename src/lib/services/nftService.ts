@@ -8,10 +8,11 @@ import {
   getNFTTMintInfo,
   getNFTToken,
   getNFTTokenCountByAddress,
-  getNFTTokenListByAddress,
+  getNFTTokenListByAddressPagination,
   getNFTTokenListPagination,
   getNFTTransactionPagination,
   getNFTTransactionsCount,
+  getUserNFTListByCollectionPagination,
 } from "lib/query";
 import { snakeToCamel } from "lib/utils";
 
@@ -258,14 +259,19 @@ export const useNFTMutateEventsCount = (nftAddress: string) => {
   });
 };
 
-export const useNFTTokenListByAddress = (hexAddress: string) => {
+export const useNFTTokenListByAddressPagination = (
+  hexAddress: string,
+  pageSize: number,
+  offset: number,
+  search?: string
+) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
     return axios
       .post<NFTTokenResponse>(chainConfig.indexer, {
-        query: getNFTTokenListByAddress,
-        variables: { hexAddress },
+        query: getNFTTokenListByAddressPagination,
+        variables: { hexAddress, pageSize, offset, search },
       })
       .then(({ data: res }) =>
         res.data.nfts.map((nft) => zNFTTokenResponse.parse(nft))
@@ -277,6 +283,7 @@ export const useNFTTokenListByAddress = (hexAddress: string) => {
       CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_BY_ADDRESS,
       chainConfig.indexer,
       hexAddress,
+      search,
     ],
     queryFn,
     retry: 1,
@@ -305,5 +312,42 @@ export const useNFTTokenCountByAddress = (hexAddress: string) => {
     queryFn,
     retry: 1,
     refetchOnWindowFocus: false,
+  });
+};
+
+export const useUserNFTListByCollectionPagination = (
+  hexAddress: string,
+  pageSize: number,
+  offset: number,
+  collectionAddress?: string,
+  search?: string
+) => {
+  const { chainConfig } = useCelatoneApp();
+
+  const queryFn = async () => {
+    return axios
+      .post<NFTTokenResponse>(chainConfig.indexer, {
+        query: getUserNFTListByCollectionPagination,
+        variables: { hexAddress, collectionAddress, pageSize, offset, search },
+      })
+      .then(({ data: res }) =>
+        res.data.nfts.map((nft) => zNFTTokenResponse.parse(nft))
+      );
+  };
+
+  return useQuery<NFTToken[]>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_BY_COLLECTION_BY_ADDRESS_PAGINATION,
+      chainConfig.indexer,
+      hexAddress,
+      collectionAddress,
+      pageSize,
+      offset,
+      search,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+    enabled: !!collectionAddress,
   });
 };

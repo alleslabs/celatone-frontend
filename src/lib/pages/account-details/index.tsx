@@ -360,7 +360,7 @@ const AccountDetailsBody = ({
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <NFTSection />
+            <NFTSection totalCount={nftCount ?? 0} address={hexAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

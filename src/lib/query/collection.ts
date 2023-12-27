@@ -175,3 +175,27 @@ export const getCollectionMutateEventsPagination = gql`
     }
   }
 `;
+
+export const getCollectionListByAddress = gql`
+  query getCollectionListByAddress($hexAddress: String!) {
+    collections(
+      where: {
+        nfts: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
+      }
+      order_by: { name: asc }
+    ) {
+      name
+      uri
+      vm_address {
+        vm_address
+      }
+      nfts_aggregate(
+        where: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
+      ) {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`;

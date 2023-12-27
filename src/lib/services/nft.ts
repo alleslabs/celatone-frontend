@@ -36,7 +36,7 @@ export const zNFTTokenResponse = z
     description: val.description,
     uri: val.uri,
     tokenId: val.token_id,
-    ownerAddress: val.vmAddressByOwner.vm_address,
+    ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address,
     collectionAddress: val.collectionByCollection?.vm_address.vm_address,
   }));

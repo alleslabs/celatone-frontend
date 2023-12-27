@@ -8,11 +8,13 @@ import {
   getCollectionActivitiesPagination,
   getCollectionByCollectionAddress,
   getCollectionCreator,
+  getCollectionListByAddress,
   getCollectionMutateEventsCount,
   getCollectionMutateEventsPagination,
   getCollectionTotalBurnedCount,
   getCollectionsPagination,
 } from "lib/query";
+import type { HexAddr } from "lib/types";
 
 import type {
   ActivitiesCountResponse,
@@ -29,6 +31,8 @@ import type {
   Collection,
   CollectionMutateEventsResponse,
   CollectionMutateEvent,
+  CollectionListByAddressResponse,
+  CollectionByAddress,
 } from "./collection";
 import {
   zActivitiesCountResponseItem,
@@ -40,6 +44,7 @@ import {
   zActivitiesResponseItem,
   zMutationEventsCountResponseItem,
   zCollectionMutateEventsResponse,
+  zCollectionListByAddressResponse,
 } from "./collection";
 
 export const useCollectionsPagination = (
@@ -291,6 +296,33 @@ export const useCollectionMutateEventsPagination = (
       collectionAddress,
       offset,
       pageSize,
+    ],
+    queryFn,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useCollectionListByAddress = (hexAddress: HexAddr) => {
+  const { chainConfig } = useCelatoneApp();
+  const queryFn = async () => {
+    return axios
+      .post<CollectionListByAddressResponse>(chainConfig.indexer, {
+        query: getCollectionListByAddress,
+        variables: { hexAddress },
+      })
+      .then(({ data: res }) =>
+        res.data.collections.map((collection) =>
+          zCollectionListByAddressResponse.parse(collection)
+        )
+      );
+  };
+
+  return useQuery<CollectionByAddress[]>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_LIST_BY_ADDRESS,
+      chainConfig.indexer,
+      hexAddress,
     ],
     queryFn,
     retry: 1,

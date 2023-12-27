@@ -275,3 +275,38 @@ export const zCollectionMutateEventsResponse = z
 export type CollectionMutateEvent = z.infer<
   typeof zCollectionMutateEventsResponse
 >;
+
+export interface CollectionListByAddressResponse {
+  data: {
+    collections: {
+      name: string;
+      uri: string;
+      vm_address: {
+        vm_address: string;
+      };
+      nfts_aggregate: {
+        aggregate: {
+          count: number;
+        };
+      };
+    }[];
+  };
+}
+
+export const zCollectionListByAddressResponse = z
+  .object({
+    name: z.string(),
+    uri: z.string(),
+    vm_address: z.object({ vm_address: z.string() }),
+    nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
+  })
+  .transform((val) => ({
+    collectionName: val.name,
+    collectionAddress: val.vm_address.vm_address,
+    uri: val.uri,
+    hold: val.nfts_aggregate.aggregate.count,
+  }));
+
+export type CollectionByAddress = z.infer<
+  typeof zCollectionListByAddressResponse
+>;

@@ -1,5 +1,5 @@
 import { SimpleGrid } from "@chakra-ui/react";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { Loading } from "lib/components/Loading";
 import NFTCard from "lib/components/NFTCard";

@@ -145,7 +145,10 @@ const CollectionDetailsBody = ({
           >
             Activities <Badge ml="6px">{activitiesCount}</Badge>
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.RelatedProposals)}>
+          <CustomTab
+            onClick={handleTabChange(TabIndex.RelatedProposals)}
+            isDisabled
+          >
             Related Proposals <Badge ml="6px">{0}</Badge>
           </CustomTab>
           <CustomTab
