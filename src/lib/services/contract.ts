@@ -199,3 +199,19 @@ export const getContractTableCounts = async (
       },
     })
     .then((res) => zContractTableCounts.parse(res.data));
+
+const zContractQueryMsgs = z
+  .object({
+    query: z.array(z.string()),
+  })
+  .transform((val) =>
+    val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
+  );
+
+export const getContractQueryMsgs = async (
+  endpoint: string,
+  contractAddress: ContractAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
+    .then(({ data }) => zContractQueryMsgs.parse(data));
