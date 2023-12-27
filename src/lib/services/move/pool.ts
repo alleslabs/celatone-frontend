@@ -43,4 +43,4 @@ const zPairResponse = z
 export const getMovePoolInfos = async (endpoint: string) =>
   axios
     .get(`${endpoint}/pools`)
-    .then((res) => z.array(zPairResponse).parse(res.data));
+    .then(({ data }) => z.array(zPairResponse).parse(data));

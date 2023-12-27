@@ -29,7 +29,7 @@ export const getAccountInfo = async (
 ): Promise<AccountInfo> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
-    .then((res) => zAccountInfo.parse(res.data));
+    .then(({ data }) => zAccountInfo.parse(data));
 
 const zAccountTableCounts = z
   .object({
@@ -56,4 +56,4 @@ export const getAccountTableCounts = async (
         is_wasm: isWasm,
       },
     })
-    .then((res) => zAccountTableCounts.parse(res.data));
+    .then(({ data }) => zAccountTableCounts.parse(data));

@@ -20,4 +20,4 @@ export const getOverviewsStats = async (
 ): Promise<OverviewsStats> =>
   axios
     .get(`${endpoint}/stats`)
-    .then((res) => zOverviewsStatsResponse.parse(res.data));
+    .then(({ data }) => zOverviewsStatsResponse.parse(data));
