@@ -15,11 +15,7 @@ const zAccountData = z
     project_info: zProjectInfo.nullable(),
     public_info: zPublicAccountInfo.nullable(),
   })
-  .transform((accountData) => ({
-    icns: accountData.icns,
-    projectInfo: accountData.project_info,
-    publicInfo: accountData.public_info,
-  }));
+  .transform(snakeToCamel);
 
 export type AccountData = z.infer<typeof zAccountData>;
 

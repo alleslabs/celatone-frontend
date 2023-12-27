@@ -32,7 +32,7 @@ export const AccountHeader = observer(
     const displayName =
       accountLocalInfo?.name ??
       accountData?.publicInfo?.name ??
-      (accountData?.icns?.primary_name || "Account Details");
+      (accountData?.icns?.primaryName || "Account Details");
 
     const isMobile = useMobile();
 
@@ -46,7 +46,7 @@ export const AccountHeader = observer(
           <Flex gap={4} align="center" minH="36px">
             <Flex gap={1} align="center">
               {accountData?.projectInfo?.logo ||
-              accountData?.icns?.primary_name ? (
+              accountData?.icns?.primaryName ? (
                 <Image
                   src={
                     accountData?.projectInfo?.logo ??
@@ -55,7 +55,7 @@ export const AccountHeader = observer(
                   borderRadius="full"
                   alt={
                     accountData?.projectInfo?.name ??
-                    accountData?.icns?.primary_name
+                    accountData?.icns?.primaryName
                   }
                   width={7}
                   height={7}
@@ -101,7 +101,7 @@ export const AccountHeader = observer(
                     accountAddress={accountAddress}
                     publicName={
                       accountData?.publicInfo?.name ??
-                      accountData?.icns?.primary_name
+                      accountData?.icns?.primaryName
                     }
                     publicDescription={accountData?.publicInfo?.description}
                     buttonProps={{
@@ -171,7 +171,7 @@ export const AccountHeader = observer(
                     }}
                     gap={1}
                   >
-                    {name === accountData.icns?.primary_name && (
+                    {name === accountData.icns?.primaryName && (
                       <PrimaryNameMark />
                     )}
                     <CopyLink value={name} type="icns_names" withoutIcon />

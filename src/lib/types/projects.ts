@@ -137,7 +137,7 @@ export type PublicAccountInfo = z.infer<typeof zPublicAccountInfo>;
 export const zPublicContractInfo = z.object({
   address: zContractAddr,
   admin: zAddr,
-  code: z.number(),
+  code: z.number().positive(),
   description: z.string(),
   github: z.string(),
   instantiator: zAddr,

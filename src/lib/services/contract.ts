@@ -125,8 +125,8 @@ export const zContract = z
   .object({
     address: zContractAddr,
     admin: zAddr.nullable(),
-    code_id: z.number(),
-    code_hash: z.string().transform((value) => parseTxHash(value)),
+    code_id: z.number().positive(),
+    code_hash: z.string().transform(parseTxHash),
     created_height: z.number(),
     created_timestamp: zUtcDate,
     cw2_contract: z.string(),
@@ -134,29 +134,11 @@ export const zContract = z
     init_msg: z.string(),
     init_proposal_id: z.number().nullish(),
     init_proposal_title: z.string().nullish(),
-    init_tx_hash: z
-      .string()
-      .transform((value) => parseTxHash(value))
-      .nullable(),
+    init_tx_hash: z.string().transform(parseTxHash).nullable(),
     instantiator: zAddr,
     label: z.string(),
   })
-  .transform((value) => ({
-    address: value.address,
-    admin: value.admin,
-    codeId: value.code_id,
-    codeHash: value.code_hash,
-    createdHeight: value.created_height,
-    createdTimestamp: value.created_timestamp,
-    cw2Contract: value.cw2_contract,
-    cw2Version: value.cw2_version,
-    initMsg: value.init_msg,
-    initProposalId: value.init_proposal_id,
-    initProposalTitle: value.init_proposal_title,
-    initTxHash: value.init_tx_hash,
-    instantiator: value.instantiator,
-    label: value.label,
-  }));
+  .transform(snakeToCamel);
 export type Contract = z.infer<typeof zContract>;
 
 const zContractData = z

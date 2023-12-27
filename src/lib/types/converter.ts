@@ -8,13 +8,15 @@ export type SnakeToCamelCaseNested<T> = T extends (...args: any[]) => any
   ? T
   : T extends Array<infer R>
   ? Array<SnakeToCamelCaseNested<R>>
+  : T extends string
+  ? T
+  : T extends Date
+  ? T
   : T extends Record<string, any>
   ? {
-      [K in keyof T as SnakeToCamelCase<K & string>]: T[K] extends Array<
-        infer R
-      >
-        ? Array<SnakeToCamelCaseNested<R>>
-        : SnakeToCamelCaseNested<T[K]>;
+      [K in keyof T as SnakeToCamelCase<K & string>]: SnakeToCamelCaseNested<
+        T[K]
+      >;
     }
   : T;
 
@@ -29,12 +31,14 @@ export type CamelToSnakeCaseNested<T> = T extends (...args: any[]) => any
   ? T
   : T extends Array<infer R>
   ? Array<CamelToSnakeCaseNested<R>>
+  : T extends string
+  ? T
+  : T extends Date
+  ? T
   : T extends Record<string, any>
   ? {
-      [K in keyof T as CamelToSnakeCase<K & string>]: T[K] extends Array<
-        infer R
-      >
-        ? Array<CamelToSnakeCaseNested<R>>
-        : CamelToSnakeCaseNested<T[K]>;
+      [K in keyof T as CamelToSnakeCase<K & string>]: CamelToSnakeCaseNested<
+        T[K]
+      >;
     }
   : T;
