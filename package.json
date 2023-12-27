@@ -1,7 +1,25 @@
 {
   "name": "celatone",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Alles Labs",
+  "contributors": [
+    {
+      "name": "Kanisorn",
+      "email": "kanisorn@alleslabs.com"
+    },
+    {
+      "name": "Beeb",
+      "email": "beeb@alleslabs.com"
+    },
+    {
+      "name": "Pakin",
+      "email": "pakin@alleslabs.com"
+    },
+    {
+      "name": "Songwong",
+      "email": "songwong@alleslabs.com"
+    }
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -37,11 +55,11 @@
     "@cosmjs/encoding": "0.31.3",
     "@cosmjs/proto-signing": "0.31.3",
     "@cosmjs/stargate": "0.31.3",
-    "@cosmos-kit/compass": "2.5.1",
-    "@cosmos-kit/core": "2.7.11",
-    "@cosmos-kit/keplr": "2.5.1",
-    "@cosmos-kit/react": "2.9.15",
-    "@cosmos-kit/station": "2.4.11",
+    "@cosmos-kit/compass": "2.4.5",
+    "@cosmos-kit/core": "2.7.4",
+    "@cosmos-kit/keplr": "2.4.6",
+    "@cosmos-kit/react": "2.9.5",
+    "@cosmos-kit/station": "2.4.4",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@graphql-codegen/cli": "^2.13.12",
