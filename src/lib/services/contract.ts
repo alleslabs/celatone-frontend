@@ -134,7 +134,7 @@ export const getAdminContractsByAddress = async (
 
 const zMigrationHistoriesResponseItem = z
   .object({
-    code_id: z.number(),
+    code_id: z.number().positive(),
     cw2_contract: z.string().nullable(),
     cw2_version: z.string().nullable(),
     height: z.number(),
