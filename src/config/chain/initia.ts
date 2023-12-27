@@ -64,7 +64,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz:443",
     indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...keplrWallets],
+    wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -113,7 +113,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://lcd.miniwasm-1.initia.xyz",
     rpc: "https://rpc.miniwasm-1.initia.xyz:443",
     indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...keplrWallets],
+    wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -161,7 +161,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://next-stone-rest.initia.tech",
     rpc: "https://next-stone-rpc.initia.tech:443",
     indexer: "https://stone-12-1-nft-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...keplrWallets],
+    wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: true,
