@@ -2,7 +2,7 @@ import type { StdFee } from "@cosmjs/stargate";
 import { gzip } from "node-gzip";
 import { useCallback } from "react";
 
-import { useCurrentChain } from "../hooks";
+import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { uploadContractTx } from "lib/app-fns/tx/upload";
 import type { AccessType, Addr, HumanAddr, Option } from "lib/types";
@@ -29,7 +29,8 @@ export interface UploadStreamParams {
 }
 
 export const useUploadContractTx = (isMigrate: boolean) => {
-  const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { address } = useCurrentChain();
+  const getSigningClient = useGetSigningClient();
 
   return useCallback(
     async ({
@@ -41,7 +42,7 @@ export const useUploadContractTx = (isMigrate: boolean) => {
       estimatedFee,
       onTxSucceed,
     }: UploadStreamParams) => {
-      const client = await getSigningCosmWasmClient();
+      const client = await getSigningClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!wasmFileName || !wasmCode || !estimatedFee) return null;
@@ -67,6 +68,6 @@ export const useUploadContractTx = (isMigrate: boolean) => {
         },
       });
     },
-    [address, getSigningCosmWasmClient, isMigrate]
+    [address, getSigningClient, isMigrate]
   );
 };

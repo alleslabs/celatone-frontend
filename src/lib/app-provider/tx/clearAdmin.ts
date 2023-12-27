@@ -2,7 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { CELATONE_QUERY_KEYS } from "../env";
-import { useCurrentChain, useFabricateFee, useWasmConfig } from "../hooks";
+import {
+  useCurrentChain,
+  useFabricateFee,
+  useGetSigningClient,
+  useWasmConfig,
+} from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import type { ContractAddr, HumanAddr } from "lib/types";
@@ -12,14 +17,15 @@ export interface ClearAdminStreamParams {
 }
 
 export const useClearAdminTx = (contractAddress: ContractAddr) => {
-  const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { address } = useCurrentChain();
+  const getSigningClient = useGetSigningClient();
   const queryClient = useQueryClient();
   const fabricateFee = useFabricateFee();
   const wasm = useWasmConfig({ shouldRedirect: false });
 
   return useCallback(
     async ({ onTxSucceed }: ClearAdminStreamParams) => {
-      const client = await getSigningCosmWasmClient();
+      const client = await getSigningClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
 
@@ -50,12 +56,12 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
       });
     },
     [
-      getSigningCosmWasmClient,
       address,
-      wasm,
-      fabricateFee,
       contractAddress,
+      fabricateFee,
+      getSigningClient,
       queryClient,
+      wasm,
     ]
   );
 };

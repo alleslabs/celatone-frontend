@@ -34,6 +34,7 @@ import { getCodeIdInfo } from "./code";
 import {
   getAdminContractsByAddress,
   getContractDataByContractAddress,
+  getContractQueryMsgs,
   getContractTableCounts,
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
@@ -423,5 +424,15 @@ export const useContractTableCounts = (contractAddress: ContractAddr) => {
     ],
     async () => getContractTableCounts(endpoint, contractAddress, isGov),
     { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useContractQueryMsgs = (contractAddress: ContractAddr) => {
+  const endpoint = useBaseApiRoute("contracts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, endpoint, contractAddress],
+    async () => getContractQueryMsgs(endpoint, contractAddress),
+    { retry: false, cacheTime: 0, refetchOnWindowFocus: false }
   );
 };
