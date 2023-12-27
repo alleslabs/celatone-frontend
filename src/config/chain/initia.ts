@@ -1,3 +1,4 @@
+import { wallets as initiaWallets } from "@cosmos-kit/initia";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
 import type { ChainConfigs } from "./types";
@@ -13,7 +14,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     lcd: "https://lcd.mahalo-1.initia.xyz",
     rpc: "https://rpc.mahalo-1.initia.xyz:443",
     indexer: "https://mahalo-1-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...keplrWallets],
+    wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: true,
