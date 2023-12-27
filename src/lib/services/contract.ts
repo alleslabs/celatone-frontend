@@ -5,10 +5,14 @@ import type {
   Addr,
   ContractAddr,
   ContractInfo,
-  ContractHistoryRemark,
-  RemarkType,
+  ContractMigrationHistory,
 } from "lib/types";
-import { RemarkOperation, zAddr, zContractAddr, zUtcDate } from "lib/types";
+import {
+  zAddr,
+  zContractAddr,
+  zContractHistoryRemark,
+  zUtcDate,
+} from "lib/types";
 import { encode, libDecode, snakeToCamel } from "lib/utils";
 
 interface ContractCw2InfoRaw {
@@ -76,17 +80,7 @@ const zContractsResponseItem = z
     instantiator: zAddr,
     latest_updated: zUtcDate,
     latest_updater: zAddr,
-    remark: z
-      .object({
-        operation: z.nativeEnum(RemarkOperation),
-        type: z.string(),
-        value: z.string(),
-      })
-      .transform<ContractHistoryRemark>((val) => ({
-        operation: val.operation,
-        type: val.type as RemarkType, // TODO: remove type assertion,
-        value: val.value,
-      })),
+    remark: zContractHistoryRemark,
   })
   .transform<ContractInfo>((val) => ({
     contractAddress: val.contract_address,
@@ -138,6 +132,51 @@ export const getAdminContractsByAddress = async (
     })
     .then(({ data }) => zContractsResponse.parse(data));
 
+const zMigrationHistoriesResponseItem = z
+  .object({
+    code_id: z.number().positive(),
+    cw2_contract: z.string().nullable(),
+    cw2_version: z.string().nullable(),
+    height: z.number(),
+    remark: zContractHistoryRemark,
+    sender: zAddr,
+    timestamp: zUtcDate,
+    uploader: zAddr,
+  })
+  .transform<ContractMigrationHistory>((val) => ({
+    codeId: val.code_id,
+    cw2Contract: val.cw2_contract,
+    cw2Version: val.cw2_version,
+    height: val.height,
+    remark: val.remark,
+    sender: val.sender,
+    timestamp: val.timestamp,
+    uploader: val.uploader,
+  }));
+
+const zMigrationHistoriesResponse = z.object({
+  items: z.array(zMigrationHistoriesResponseItem),
+});
+
+export type MigrationHistoriesResponse = z.infer<
+  typeof zMigrationHistoriesResponse
+>;
+
+export const getMigrationHistoriesByContractAddress = async (
+  endpoint: string,
+  contractAddress: ContractAddr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/migrations`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => zMigrationHistoriesResponse.parse(data));
+
 const zContractTableCounts = z
   .object({
     tx: z.number().nullish(),
@@ -160,3 +199,19 @@ export const getContractTableCounts = async (
       },
     })
     .then((res) => zContractTableCounts.parse(res.data));
+
+const zContractQueryMsgs = z
+  .object({
+    query: z.array(z.string()),
+  })
+  .transform((val) =>
+    val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
+  );
+
+export const getContractQueryMsgs = async (
+  endpoint: string,
+  contractAddress: ContractAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
+    .then(({ data }) => zContractQueryMsgs.parse(data));

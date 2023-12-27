@@ -132,4 +132,4 @@ export const getDelegationsByAddress = async (
 ): Promise<Delegations> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/delegations`)
-    .then((res) => zDelegations.parse(res.data));
+    .then(({ data }) => zDelegations.parse(data));

@@ -1,9 +1,8 @@
-import type { ChangeEvent } from "react";
-
 import { useMobile } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/data";
 import type { ContractAddr, Option } from "lib/types";
@@ -42,26 +41,15 @@ export const MigrationTable = ({
     },
   });
 
-  // TODO: loading state
-  const migrationHistories = useMigrationHistories(
+  const { data, isLoading, error } = useMigrationHistories(
     contractAddress,
     offset,
     pageSize
   );
 
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
-  if (!migrationHistories?.length)
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorFetching dataName="related proposals" />;
+  if (!data?.items.length)
     return (
       <EmptyState
         imageVariant="empty"
@@ -77,7 +65,7 @@ export const MigrationTable = ({
     <>
       {isMobile ? (
         <MobileTableContainer>
-          {migrationHistories.map((history, idx) => (
+          {data.items.map((history, idx) => (
             <MigrationMobileCard
               key={
                 history.codeId +
@@ -93,7 +81,7 @@ export const MigrationTable = ({
       ) : (
         <TableContainer>
           <MigrationHeader templateColumns={templateColumns} />
-          {migrationHistories.map((history, idx) => (
+          {data.items.map((history, idx) => (
             <MigrationRow
               key={
                 history.codeId +
@@ -117,8 +105,16 @@ export const MigrationTable = ({
           totalData={totalData}
           scrollComponentId={scrollComponentId}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={(nextPage) => {
+            refetchCount();
+            setCurrentPage(nextPage);
+          }}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            refetchCount();
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
         />
       )}
     </>

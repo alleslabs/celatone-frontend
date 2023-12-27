@@ -5,7 +5,12 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
 import { CELATONE_QUERY_KEYS } from "../env";
-import { useCurrentChain, useDummyWallet, useRPCEndpoint } from "../hooks";
+import {
+  useCurrentChain,
+  useDummyWallet,
+  useGetSigningClient,
+  useRPCEndpoint,
+} from "../hooks";
 import type {
   AccessType,
   Addr,
@@ -33,7 +38,8 @@ export const useSimulateFeeQuery = ({
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
+  const { address, chain } = useCurrentChain();
+  const getSigningClient = useGetSigningClient();
   const { dummyWallet, dummyAddress } = useDummyWallet();
   const rpcEndpoint = useRPCEndpoint();
   const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
@@ -50,7 +56,7 @@ export const useSimulateFeeQuery = ({
             rpcEndpoint,
             dummyWallet
           )
-        : await getSigningCosmWasmClient();
+        : await getSigningClient();
 
     if (!client) {
       throw new Error("Fail to get SigningCosmWasmClient");

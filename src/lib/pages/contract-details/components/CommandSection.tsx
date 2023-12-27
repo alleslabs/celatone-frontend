@@ -19,8 +19,9 @@ import {
   ViewSchemaModal,
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
-import { useExecuteCmds, useQueryCmds } from "lib/hooks";
+import { useExecuteCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
+import { useContractQueryMsgs } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 
@@ -94,8 +95,8 @@ export const CommandSection = observer(
     const jsonSchema = getSchemaByCodeHash(codeHash);
     const attached = Boolean(jsonSchema);
 
-    const { isFetching: isQueryCmdsFetching, queryCmds } =
-      useQueryCmds(contractAddress);
+    const { isFetching: isQueryCmdsFetching, data: queryCmds = [] } =
+      useContractQueryMsgs(contractAddress);
     const { isFetching: isExecuteCmdsFetching, execCmds } =
       useExecuteCmds(contractAddress);
 

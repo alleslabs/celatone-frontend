@@ -2,14 +2,13 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import {
-  type AccessConfigPermission,
-  type Addr,
-  type SnakeToCamelCaseNested,
-  type Proposal,
-  type ProposalType,
-  zAddr,
-  zUtcDate,
+import { zAddr, zUtcDate, zProposalType } from "lib/types";
+import type {
+  ContractAddr,
+  AccessConfigPermission,
+  Addr,
+  SnakeToCamelCaseNested,
+  Proposal,
 } from "lib/types";
 import { parseProposalStatus, snakeToCamel } from "lib/utils";
 
@@ -73,7 +72,7 @@ const zProposalsResponseItem = z
     resolved_height: z.number().nullish(),
     status: z.string().transform(parseProposalStatus),
     title: z.string(),
-    type: z.string(),
+    type: zProposalType,
     voting_end_time: zUtcDate,
   })
   .transform<Proposal>((val) => ({
@@ -84,7 +83,7 @@ const zProposalsResponseItem = z
     resolvedHeight: val.resolved_height,
     status: val.status,
     title: val.title,
-    type: val.type as ProposalType, // TODO: remove type assertion
+    type: val.type,
     votingEndTime: val.voting_end_time,
   }));
 
@@ -108,4 +107,54 @@ export const getProposalsByAddress = async (
         offset,
       },
     })
-    .then((res) => zProposalsResponse.parse(res.data));
+    .then(({ data }) => zProposalsResponse.parse(data));
+
+const zRelatedProposalsResponseItem = z
+  .object({
+    deposit_end_time: zUtcDate,
+    proposal_id: z.number().nonnegative(),
+    is_expedited: z.boolean(),
+    proposer: zAddr,
+    resolved_height: z.number().nullish(),
+    status: z.string().transform(parseProposalStatus),
+    title: z.string(),
+    type: zProposalType,
+    voting_end_time: zUtcDate,
+  })
+  .transform<Proposal>((val) => ({
+    depositEndTime: val.deposit_end_time,
+    proposalId: val.proposal_id,
+    isExpedited: val.is_expedited,
+    proposer: val.proposer,
+    resolvedHeight: val.resolved_height,
+    status: val.status,
+    title: val.title,
+    type: val.type,
+    votingEndTime: val.voting_end_time,
+  }));
+
+const zRelatedProposalsResponse = z.object({
+  items: z.array(zRelatedProposalsResponseItem),
+});
+
+export type RelatedProposalsResponse = z.infer<
+  typeof zRelatedProposalsResponse
+>;
+
+export const getRelatedProposalsByContractAddress = async (
+  endpoint: string,
+  contractAddress: ContractAddr,
+  limit: number,
+  offset: number
+): Promise<RelatedProposalsResponse> =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(contractAddress)}/related-proposals`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) => zRelatedProposalsResponse.parse(data));

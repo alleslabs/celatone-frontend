@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { capitalize } from "lodash";
+import { capitalize, isUndefined } from "lodash";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractMigrationHistory } from "lib/types";
@@ -10,7 +10,8 @@ export const RemarkRender = ({
   remark: ContractMigrationHistory["remark"];
 }) => {
   const { operation, type, value } = remark;
-  if (type === "genesis") return <Text variant="body2">Genesis</Text>;
+  if (type === "genesis" || isUndefined(value))
+    return <Text variant="body2">Genesis</Text>;
 
   const isGovernance = type === "governance";
   const prefix = capitalize(operation.split("_").pop());

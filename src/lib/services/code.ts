@@ -72,4 +72,4 @@ export const getCodesByAddress = async (
         offset,
       },
     })
-    .then((res) => zCodesResponse.parse(res.data));
+    .then(({ data }) => zCodesResponse.parse(data));
