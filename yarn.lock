@@ -1872,7 +1872,7 @@
     "@initia/initia.proto" "^0.1.20"
     "@initia/shared" "^0.6.0"
 
-"@cosmos-kit/initia@^0.1.0":
+"@cosmos-kit/initia@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@cosmos-kit/initia/-/initia-0.1.0.tgz#89df2da569dca4a7a2e187a5d1309839d238d25a"
   integrity sha512-bK2ppQ/Jg/4PCU+w2CK3fzIytyQ7+GBbb7ts+4QsEEAS7HAz7oqTU0mwxORK/wmh+umBUJahN8iH+C+5BQ1Zlw==
