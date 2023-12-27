@@ -1,12 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useCurrentChain,
-} from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
   useUserKey,
@@ -14,11 +8,11 @@ import {
   useCodeSearchFilter,
 } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { getCodeIdInfo } from "lib/services/code";
 import {
   useCodeDataByCodeId,
   useCodeListByCodeIds,
   useCodeListByWalletAddress,
+  useLCDCodeInfo,
 } from "lib/services/codeService";
 import {
   usePublicProjectByCodeId,
@@ -51,7 +45,6 @@ export interface CodeDataState {
 
 export const useCodeData = (codeId: string): CodeDataState => {
   const { currentChainId } = useCelatoneApp();
-  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { data: codeInfo, isLoading } = useCodeDataByCodeId({ codeId });
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
@@ -62,11 +55,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
     data: lcdCode,
     isLoading: isLcdCodeLoading,
     error: isLcdCodeError,
-  } = useQuery(
-    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, codeId),
-    { enabled: Boolean(lcdEndpoint) && Boolean(codeId), retry: false }
-  );
+  } = useLCDCodeInfo(codeId);
 
   return {
     isLoading,

@@ -8,7 +8,7 @@ import type { Option } from "lib/types";
 interface UploadSchemaContentInterface {
   attached: boolean;
   schema: Option<CodeSchema>;
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 

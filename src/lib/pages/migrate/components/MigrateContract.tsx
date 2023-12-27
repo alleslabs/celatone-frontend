@@ -279,14 +279,16 @@ export const MigrateContract = ({
           />
         }
         schemaContent={
-          <SchemaInputSection
-            type="migrate"
-            codeHash={codeHash}
-            codeId={codeId}
-            jsonSchema={jsonSchema}
-            handleChange={handleChange}
-            onSchemaSave={resetMsgInputSchema}
-          />
+          isId(codeId) && (
+            <SchemaInputSection
+              type="migrate"
+              codeHash={codeHash}
+              codeId={Number(codeId)}
+              jsonSchema={jsonSchema}
+              handleChange={handleChange}
+              onSchemaSave={resetMsgInputSchema}
+            />
+          )
         }
       />
       {simulateError && (

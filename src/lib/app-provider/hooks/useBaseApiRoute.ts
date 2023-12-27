@@ -11,7 +11,6 @@ export const useBaseApiRoute = (
     | "blocks"
     | "contracts"
     | "projects"
-    | "project_contracts"
     | "codes"
     | "legacy.accounts"
     | "rest"
@@ -48,8 +47,6 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/contracts`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
-    case "project_contracts":
-      return `${api}/contracts/${chain}/${currentChainId}`;
     case "codes":
       return `${api}/codes/${chain}/${currentChainId}`;
     case "legacy.accounts":

@@ -8,7 +8,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { ActionModal } from "./ActionModal";
 
 interface RemoveSchemaModalProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   trigger: ReactNode;
 }

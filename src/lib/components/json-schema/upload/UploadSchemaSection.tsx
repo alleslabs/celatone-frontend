@@ -9,7 +9,7 @@ import { UploadSchema } from "./UploadSchema";
 
 interface UploadSchemaSectionProps {
   schema?: Option<CodeSchema>;
-  codeId: string;
+  codeId: number;
   codeHash: string;
   title?: string | JSX.Element;
 }

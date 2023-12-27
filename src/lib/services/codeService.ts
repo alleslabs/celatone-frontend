@@ -207,10 +207,13 @@ export type LCDCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
 export const useLCDCodeInfo = (
   codeId: string,
   options?: Omit<UseQueryOptions<CodeIdInfoResponse>, "queryKey">
-): UseQueryResult<CodeIdInfoResponse> => {
+) => {
   const lcdEndpoint = useBaseApiRoute("rest");
-  const queryFn = async () => getCodeIdInfo(lcdEndpoint, codeId);
-  return useQuery(
+  const queryFn = async () => {
+    if (!isId(codeId)) throw new Error("Invalid code ID");
+    return getCodeIdInfo(lcdEndpoint, Number(codeId));
+  };
+  return useQuery<CodeIdInfoResponse>(
     [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     queryFn,
     options

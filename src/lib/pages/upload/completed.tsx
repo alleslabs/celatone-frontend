@@ -91,7 +91,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         <UploadSchema
           attached={attached}
           schema={schema}
-          codeId={txResult.codeId}
+          codeId={Number(txResult.codeId)}
           codeHash={txResult.codeHash}
         />
       </Flex>

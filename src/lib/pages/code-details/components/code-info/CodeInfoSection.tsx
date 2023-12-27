@@ -215,7 +215,7 @@ export const CodeInfoSection = ({
                     <JsonSchemaModal
                       isOpen={isOpen}
                       onClose={onClose}
-                      codeId={String(codeData.codeId)}
+                      codeId={codeData.codeId}
                       codeHash={codeHash}
                     />
                   </>

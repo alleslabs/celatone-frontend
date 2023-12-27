@@ -3,19 +3,16 @@ import { useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
-import { Loading } from "lib/components/Loading";
 
 interface JsonInfoProps {
   header: string;
   jsonString: string;
-  isLoading: boolean;
   defaultExpand?: boolean;
 }
 
 export const JsonInfo = ({
   header,
   jsonString,
-  isLoading,
   defaultExpand = false,
 }: JsonInfoProps) => {
   const [expand, setExpand] = useState(defaultExpand);
@@ -45,11 +42,7 @@ export const JsonInfo = ({
       <div
         style={expand ? { display: "block" } : { height: 0, display: "none" }}
       >
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <JsonReadOnly text={jsonString} canCopy isExpandable />
-        )}
+        <JsonReadOnly text={jsonString} canCopy isExpandable />
       </div>
     </>
   );

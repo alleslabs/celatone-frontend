@@ -11,19 +11,19 @@ import {
 } from "lib/components/modal";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { useAccountStore } from "lib/providers/store";
-import type { AccountInfo } from "lib/services/account";
+import type { AccountData } from "lib/services/account";
 import type { HexAddr, HumanAddr, Option } from "lib/types";
 
 import { TotalAccountValue } from "./TotalAccountValue";
 
 interface AccounHeaderProps {
-  accountInfo: Option<AccountInfo>;
+  accountData: Option<AccountData>;
   accountAddress: HumanAddr;
   hexAddress: HexAddr;
 }
 
 export const AccountHeader = observer(
-  ({ accountInfo, accountAddress, hexAddress }: AccounHeaderProps) => {
+  ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
     const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
 
@@ -31,8 +31,8 @@ export const AccountHeader = observer(
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
     const displayName =
       accountLocalInfo?.name ??
-      accountInfo?.publicInfo?.name ??
-      (accountInfo?.icns?.primary_name || "Account Details");
+      accountData?.publicInfo?.name ??
+      (accountData?.icns?.primaryName || "Account Details");
 
     const isMobile = useMobile();
 
@@ -45,17 +45,17 @@ export const AccountHeader = observer(
         <Flex direction="column" gap={2} w={{ base: "full", lg: "auto" }}>
           <Flex gap={4} align="center" minH="36px">
             <Flex gap={1} align="center">
-              {accountInfo?.projectInfo?.logo ||
-              accountInfo?.icns?.primary_name ? (
+              {accountData?.projectInfo?.logo ||
+              accountData?.icns?.primaryName ? (
                 <Image
                   src={
-                    accountInfo?.projectInfo?.logo ??
+                    accountData?.projectInfo?.logo ??
                     "https://celatone-api.alleslabs.dev/images/entities/icns"
                   }
                   borderRadius="full"
                   alt={
-                    accountInfo?.projectInfo?.name ??
-                    accountInfo?.icns?.primary_name
+                    accountData?.projectInfo?.name ??
+                    accountData?.icns?.primaryName
                   }
                   width={7}
                   height={7}
@@ -100,10 +100,10 @@ export const AccountHeader = observer(
                   <SaveNewAccountModal
                     accountAddress={accountAddress}
                     publicName={
-                      accountInfo?.publicInfo?.name ??
-                      accountInfo?.icns?.primary_name
+                      accountData?.publicInfo?.name ??
+                      accountData?.icns?.primaryName
                     }
-                    publicDescription={accountInfo?.publicInfo?.description}
+                    publicDescription={accountData?.publicInfo?.description}
                     buttonProps={{
                       size: "sm",
                       variant: "outline-gray",
@@ -149,13 +149,13 @@ export const AccountHeader = observer(
               </Flex>
             )}
           </Flex>
-          {accountInfo?.icns && (
+          {accountData?.icns && (
             <Flex gap={2} align="center">
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Registered ICNS names:
               </Text>
               <Flex gap={1} align="center">
-                {accountInfo.icns.names.map((name) => (
+                {accountData.icns.names.map((name) => (
                   <Flex
                     key={name}
                     align="center"
@@ -171,7 +171,7 @@ export const AccountHeader = observer(
                     }}
                     gap={1}
                   >
-                    {name === accountInfo.icns?.primary_name && (
+                    {name === accountData.icns?.primaryName && (
                       <PrimaryNameMark />
                     )}
                     <CopyLink value={name} type="icns_names" withoutIcon />

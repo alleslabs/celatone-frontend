@@ -30,13 +30,7 @@ const zAccountModulesResponseItem = z
     raw_bytes: z.string(),
     upgrade_policy: z.nativeEnum(UpgradePolicy),
   })
-  .transform((val) => ({
-    abi: val.abi,
-    address: val.address,
-    moduleName: val.module_name,
-    rawBytes: val.raw_bytes,
-    upgradePolicy: val.upgrade_policy,
-  }));
+  .transform(snakeToCamel);
 
 const zAccountModulesResponse = z.object({
   items: z.array(zAccountModulesResponseItem),

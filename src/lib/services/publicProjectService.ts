@@ -89,39 +89,6 @@ export const usePublicProjectBySlug = (
   );
 };
 
-export const usePublicProjectByContractAddress = (
-  contractAddress: Option<string>
-): UseQueryResult<PublicInfo> => {
-  const projectsApiRoute = useBaseApiRoute("project_contracts");
-  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
-  const wasmConfig = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!contractAddress)
-      throw new Error(
-        "Contract address not found (usePublicProjectByContractAddress)"
-      );
-    return axios
-      .get<PublicInfo>(`${projectsApiRoute}/${contractAddress}`)
-      .then(({ data: projectInfo }) => projectInfo);
-  }, [projectsApiRoute, contractAddress]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CONTRACT_ADDRESS,
-      projectsApiRoute,
-      contractAddress,
-    ],
-    queryFn,
-    {
-      enabled:
-        Boolean(contractAddress) && projectConfig.enabled && wasmConfig.enabled,
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
 export const usePublicProjectByCodeId = (
   codeId: string
 ): UseQueryResult<PublicCode> => {

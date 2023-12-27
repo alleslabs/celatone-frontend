@@ -229,9 +229,9 @@ const getPlaceholder = ({
   isPool: boolean;
   isMove: boolean;
 }) => {
-  const wasmText = isWasm ? "/ Code ID / Contract Address " : "";
-  const poolText = isPool ? "/ Pool ID " : "";
-  const moveText = isMove ? "/ Module Path " : "";
+  const wasmText = isWasm ? " / Code ID / Contract Address" : "";
+  const poolText = isPool ? " / Pool ID" : "";
+  const moveText = isMove ? " / Module Path" : "";
 
   return `Search by Account Address / Tx Hash / Block${wasmText}${poolText}${moveText}`;
 };
