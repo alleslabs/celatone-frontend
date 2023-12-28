@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import type { UploadTxInternalResult } from "lib/app-provider";
 import { useInternalNavigate } from "lib/app-provider";
 import { ConnectingLine } from "lib/components/ConnectingLine";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
@@ -11,6 +12,7 @@ import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
+import { feeFromStr } from "lib/utils";
 
 interface UploadCompleteProps {
   txResult: UploadTxInternalResult;
@@ -60,7 +62,12 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             },
             {
               title: "Tx Fee",
-              value: txResult.formattedFee,
+              html: (
+                <EstimatedFeeRender
+                  estimatedFee={feeFromStr(txResult.txFee)}
+                  loading={false}
+                />
+              ),
             },
           ]}
           variant="full"

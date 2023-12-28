@@ -6,7 +6,6 @@ import type { Observable } from "rxjs";
 
 import type { PublishSucceedCallback } from "lib/app-provider/tx/publish";
 import type { HumanAddr, TxResultRendering } from "lib/types";
-import { formatUFee } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -35,8 +34,7 @@ export const publishModuleTx = ({
     ({ value: txInfo }) => {
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
-      const formattedFee = txFee ? formatUFee(txFee) : "N/A";
-      onTxSucceed?.({ txHash: txInfo.transactionHash, formattedFee });
+      onTxSucceed?.({ txHash: txInfo.transactionHash, txFee });
       return null as unknown as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

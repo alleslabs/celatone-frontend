@@ -5,11 +5,11 @@ import { useCallback } from "react";
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { publishModuleTx } from "lib/app-fns/tx/publish";
-import type { HumanAddr } from "lib/types";
+import type { HumanAddr, Option } from "lib/types";
 
 export interface PublishTxInternalResult {
   txHash: string;
-  formattedFee: string;
+  txFee: Option<string>;
 }
 
 export type PublishSucceedCallback = (

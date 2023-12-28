@@ -1,12 +1,13 @@
 import { Flex, Heading, Button } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import type { ContractAddr } from "lib/types";
-import { formatUFee } from "lib/utils";
+import { feeFromStr } from "lib/utils";
 
 import type { InstantiateTxInfo } from ".";
 import { InstantiateOffChainForm } from "./component";
@@ -43,8 +44,12 @@ const Completed = ({ txInfo }: CompletedProps) => {
           },
           {
             title: "Tx Fee",
-            // TODO: Implement event/rawlog attribute picker
-            value: txFee ? formatUFee(txFee) : "N/A",
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
           },
         ]}
         variant="full"

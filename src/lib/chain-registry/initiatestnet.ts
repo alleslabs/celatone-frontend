@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { AssetList, Chain } from "@chain-registry/types";
 
 const CHAIN_SCHEMA = "../chain.schema.json";
@@ -66,7 +67,8 @@ export const initiatestnet: Chain[] = [
     fees: {
       fee_tokens: [
         {
-          denom: "umin",
+          denom:
+            "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
           fixed_min_gas_price: 0,
           low_gas_price: 0.151,
           average_gas_price: 0.151,
@@ -107,7 +109,8 @@ export const initiatestnet: Chain[] = [
     fees: {
       fee_tokens: [
         {
-          denom: "umin",
+          denom:
+            "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
           fixed_min_gas_price: 0,
           low_gas_price: 0.151,
           average_gas_price: 0.151,
@@ -213,21 +216,22 @@ export const initiatestnetAssets: AssetList[] = [
     chain_name: "minitiamovedevnet1",
     assets: [
       {
-        description: "The native staking token of Minitia.",
+        description: "The native staking token of Initia.",
         denom_units: [
           {
-            denom: "umin",
+            denom:
+              "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
             exponent: 0,
           },
           {
-            denom: "min",
+            denom: "init",
             exponent: 6,
           },
         ],
-        base: "umin",
-        name: "Min",
-        display: "min",
-        symbol: "MIN",
+        base: "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
       },
     ],
   },
@@ -236,21 +240,22 @@ export const initiatestnetAssets: AssetList[] = [
     chain_name: "minitiawasmdevnet1",
     assets: [
       {
-        description: "The native staking token of Minitia.",
+        description: "The native staking token of Initia.",
         denom_units: [
           {
-            denom: "umin",
+            denom:
+              "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
             exponent: 0,
           },
           {
-            denom: "min",
+            denom: "init",
             exponent: 6,
           },
         ],
-        base: "umin",
-        name: "Min",
-        display: "min",
-        symbol: "MIN",
+        base: "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
       },
     ],
   },
