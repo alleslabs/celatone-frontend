@@ -22,7 +22,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
+import { ErrorFetching, InvalidState } from "lib/components/state";
 import type { ContractAddr } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
@@ -81,7 +81,8 @@ const ContractDetailsBody = observer(
     );
 
     if (isLoading) return <Loading withBorder />;
-    if (!contractData?.contract) return <InvalidContract />;
+    if (!contractData) return <ErrorFetching dataName="contract information" />;
+    if (contractData.contract === null) return <InvalidContract />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
     return (

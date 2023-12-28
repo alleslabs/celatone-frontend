@@ -42,7 +42,11 @@ export const ModuleRelatedProposalsTable = ({
     data: relatedProposals,
     isLoading,
     error,
-  } = useRelatedProposalsByModuleIdPagination(moduleId, offset, pageSize);
+  } = useRelatedProposalsByModuleIdPagination(
+    moduleId,
+    offset,
+    onViewMore ? 5 : pageSize
+  );
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
