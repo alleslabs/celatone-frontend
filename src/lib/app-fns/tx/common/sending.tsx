@@ -1,9 +1,9 @@
 import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { formatStdFee } from "lib/utils/formatter/denom";
 
 export const sendingTx = (fee: StdFee) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,7 +14,7 @@ export const sendingTx = (fee: StdFee) => {
       receipts: [
         {
           title: "Estimated Tx Fee",
-          value: formatStdFee(fee),
+          html: <EstimatedFeeRender estimatedFee={fee} loading={false} />,
         },
       ],
       receiptInfo: {

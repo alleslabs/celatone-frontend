@@ -1,7 +1,5 @@
-import type { StdFee } from "@cosmjs/stargate";
-
 import { truncate } from "../truncate";
-import type { Fee, Token, U } from "lib/types";
+import type { Token, U } from "lib/types";
 
 import { formatToken } from "./currency.format";
 
@@ -23,11 +21,4 @@ export const formatUFee = (uFee: string) => {
   return `${formatToken(fee as U<Token>, denom)} ${getTokenLabelByDenom(
     denom
   )}`;
-};
-
-export const formatStdFee = (fee: StdFee | Fee) => {
-  return `${formatToken(
-    fee.amount[0].amount as U<Token>,
-    fee.amount[0].denom
-  )} ${getTokenLabelByDenom(fee.amount[0].denom)}`;
 };
