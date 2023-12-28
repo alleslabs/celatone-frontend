@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#704](https://github.com/alleslabs/celatone-frontend/pull/704) Fix client undefined after disconnected
 - [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Add ledger
 
 ### Improvements
