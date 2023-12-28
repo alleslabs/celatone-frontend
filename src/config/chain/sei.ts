@@ -15,7 +15,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Sei",
     lcd: "https://sei-api.polkachu.com",
     rpc: "https://sei-rpc.polkachu.com:443",
-    indexer: "https://pacific-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://pacific-1-test-graphql.alleslabs.dev/v1/graphql",
     wallets: [...compassWallets, ...keplrWallets],
     features: {
       faucet: {
