@@ -4,11 +4,12 @@ import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import type { UploadSucceedCallback } from "lib/app-provider";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import type { HumanAddr, TxResultRendering, ComposedMsg } from "lib/types";
-import { findAttr, formatUFee } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
 import { postTx } from "./common/post";
@@ -53,14 +54,13 @@ export const uploadContractTx = ({
       const codeHash = findAttr(mimicLog, "store_code", "code_checksum") ?? "";
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
-      const formattedFee = txFee ? formatUFee(txFee) : "N/A";
 
       onTxSucceed({
         codeId: parseInt(codeId, 10).toString(),
         codeHash,
         codeDisplayName: codeName || `${wasmFileName}(${codeId})`,
         txHash: txInfo.transactionHash,
-        formattedFee,
+        txFee,
       });
 
       return isMigrate
@@ -90,7 +90,12 @@ export const uploadContractTx = ({
               },
               {
                 title: "Tx Fee",
-                value: formattedFee,
+                html: (
+                  <EstimatedFeeRender
+                    estimatedFee={feeFromStr(txFee)}
+                    loading={false}
+                  />
+                ),
               },
             ],
             receiptInfo: {

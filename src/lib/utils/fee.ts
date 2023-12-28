@@ -4,7 +4,7 @@ import type { Option } from "lib/types";
 
 import { coinsFromStr } from "./funds";
 
-export const feeFromStr = (uFee: Option<string>) => {
+export const feeFromStr = (uFee: Option<string>): Option<StdFee> => {
   if (!uFee) return undefined;
 
   const fee: StdFee = {

@@ -13,7 +13,7 @@ export interface UploadTxInternalResult {
   codeId: string;
   codeHash: string;
   txHash: string;
-  formattedFee: string;
+  txFee: Option<string>;
 }
 
 export type UploadSucceedCallback = (txResult: UploadTxInternalResult) => void;
