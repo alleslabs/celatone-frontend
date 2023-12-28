@@ -38,7 +38,7 @@ export const ModuleHistoryTable = ({
   } = usePaginator({
     total: historyCount,
     initialState: {
-      pageSize: onViewMore ? 5 : 10,
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
@@ -50,8 +50,8 @@ export const ModuleHistoryTable = ({
     error,
   } = useModuleHistoriesByPagination({
     moduleId,
-    pageSize,
     offset,
+    pageSize: onViewMore ? 5 : pageSize,
   });
 
   const onPageChange = (nextPage: number) => {
