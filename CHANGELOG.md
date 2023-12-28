@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.4.1
+
+### Features
+
 - [#681](https://github.com/alleslabs/celatone-frontend/pull/681) Add Initia wallet
 - [#704](https://github.com/alleslabs/celatone-frontend/pull/704) Fix client undefined after disconnected
 - [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Add ledger
