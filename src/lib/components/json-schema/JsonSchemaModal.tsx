@@ -14,7 +14,7 @@ import { AttachStatus } from "./AttachStatus";
 import { UploadTemplate } from "./UploadTemplate";
 
 interface JsonSchemaModalProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   isOpen: boolean;
   isReattach?: boolean;

@@ -19,7 +19,7 @@ interface SchemaExecuteProps {
   contractAddress: ContractAddr;
   initialMsg: string;
   initialFunds: Coin[];
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 

@@ -7,7 +7,7 @@ import { Tooltip } from "../Tooltip";
 import { AmpEvent, track } from "lib/amplitude";
 
 interface EditSchemaButtonsProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   openModal: () => void;
 }

@@ -462,15 +462,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               />
             }
             schemaContent={
-              <SchemaInputSection
-                type="instantiate"
-                codeHash={codeHash}
-                codeId={codeId}
-                jsonSchema={jsonSchema}
-                initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
-                handleChange={handleChange}
-                onSchemaSave={resetMsgInputSchema}
-              />
+              isId(codeId) && (
+                <SchemaInputSection
+                  type="instantiate"
+                  codeHash={codeHash}
+                  codeId={Number(codeId)}
+                  jsonSchema={jsonSchema}
+                  initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
+                  handleChange={handleChange}
+                  onSchemaSave={resetMsgInputSchema}
+                />
+              )
             }
           />
           <Heading variant="h6" as="h6" mt={12} mb={6} alignSelf="flex-start">

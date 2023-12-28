@@ -1,22 +1,16 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, useToast, FormControl } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useCurrentChain,
-} from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { getCodeIdInfo } from "lib/services/code";
+import { useLCDCodeInfo } from "lib/services/codeService";
 import type { Addr, HumanAddr } from "lib/types";
 import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
 
@@ -60,38 +54,33 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const toast = useToast();
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
-  const lcdEndpoint = useBaseApiRoute("rest");
 
-  const { refetch, isFetching, isRefetching } = useQuery(
-    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, codeId),
-    {
-      enabled: false,
-      retry: false,
-      cacheTime: 0,
-      onSuccess(data) {
-        const { message, messageColor } = getPermissionHelper(
-          address as HumanAddr,
-          data.code_info.instantiate_permission.permission,
-          data.code_info.instantiate_permission.address
-            ? [data.code_info.instantiate_permission.address]
-            : data.code_info.instantiate_permission.addresses
-        );
-        setCodeIdStatus({
-          state: "success",
-          message: `${message} (${data.code_info.instantiate_permission.permission})`,
-          messageColor,
-        });
-        setUploader(data.code_info.creator);
-        setUploaderStatus({ state: "success" });
-      },
-      onError() {
-        setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
-        setUploader("Not Found");
-        setUploaderStatus({ state: "error" });
-      },
-    }
-  );
+  const { refetch, isFetching, isRefetching } = useLCDCodeInfo(codeId, {
+    enabled: false,
+    retry: false,
+    cacheTime: 0,
+    onSuccess(data) {
+      const { message, messageColor } = getPermissionHelper(
+        address as HumanAddr,
+        data.code_info.instantiate_permission.permission,
+        data.code_info.instantiate_permission.address
+          ? [data.code_info.instantiate_permission.address]
+          : data.code_info.instantiate_permission.addresses
+      );
+      setCodeIdStatus({
+        state: "success",
+        message: `${message} (${data.code_info.instantiate_permission.permission})`,
+        messageColor,
+      });
+      setUploader(data.code_info.creator);
+      setUploaderStatus({ state: "success" });
+    },
+    onError() {
+      setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+      setUploader("Not Found");
+      setUploaderStatus({ state: "error" });
+    },
+  });
 
   /* CALLBACK */
   const reset = () => {

@@ -13,7 +13,7 @@ import {
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
 import { useSchemaStore } from "lib/providers/store";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { JsonExecute } from "./JsonExecute";
 import { SchemaExecute } from "./schema-execute";
@@ -22,7 +22,7 @@ interface ExecuteAreaProps {
   contractAddress: ContractAddr;
   initialMsg: string;
   initialFunds: Coin[];
-  codeId: string;
+  codeId: Option<number>;
   codeHash: string;
 }
 
@@ -88,32 +88,36 @@ export const ExecuteArea = observer(
             />
           }
           schemaContent={
-            codeHash && attached ? (
-              <SchemaExecute
-                codeId={codeId}
-                codeHash={codeHash}
-                schema={schema}
-                contractAddress={contractAddress}
-                initialFunds={initialFunds}
-                initialMsg={initialMsg}
-              />
-            ) : (
-              <UploadSchemaSection
-                codeId={codeId}
-                codeHash={codeHash}
-                title={
-                  <Flex flexDirection="column" alignItems="center">
-                    <Flex display="inline" textAlign="center">
-                      You haven&#39;t attached the JSON Schema for
-                      <CustomIcon name="code" mx={1} color="gray.400" />
-                      code {codeId}
-                    </Flex>
-                    <Flex textAlign="center">
-                      from which this contract is instantiated yet.
-                    </Flex>
-                  </Flex>
-                }
-              />
+            codeId && (
+              <>
+                {codeHash && attached ? (
+                  <SchemaExecute
+                    codeId={codeId}
+                    codeHash={codeHash}
+                    schema={schema}
+                    contractAddress={contractAddress}
+                    initialFunds={initialFunds}
+                    initialMsg={initialMsg}
+                  />
+                ) : (
+                  <UploadSchemaSection
+                    codeId={codeId}
+                    codeHash={codeHash}
+                    title={
+                      <Flex flexDirection="column" alignItems="center">
+                        <Flex display="inline" textAlign="center">
+                          You haven&#39;t attached the JSON Schema for
+                          <CustomIcon name="code" mx={1} color="gray.400" />
+                          code {codeId}
+                        </Flex>
+                        <Flex textAlign="center">
+                          from which this contract is instantiated yet.
+                        </Flex>
+                      </Flex>
+                    }
+                  />
+                )}
+              </>
             )
           }
         />

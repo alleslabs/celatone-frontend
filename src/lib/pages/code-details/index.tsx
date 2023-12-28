@@ -128,7 +128,7 @@ const CodeDetailsBody = observer(
             </TabPanel>
             <TabPanel p={0}>
               <CodeSchemaSection
-                codeId={String(codeId)}
+                codeId={codeId}
                 codeHash={codeHash}
                 isCodeHashLoading={isLcdCodeLoading}
                 jsonSchema={jsonSchema}

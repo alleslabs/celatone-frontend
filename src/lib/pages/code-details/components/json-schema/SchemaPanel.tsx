@@ -4,7 +4,7 @@ import type { Nullable, Option } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 interface SchemaPanelProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   schema: Option<Nullable<object>>;
 }

@@ -49,7 +49,7 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
               queryKey: [CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS],
             }),
             queryClient.invalidateQueries({
-              queryKey: [CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL],
+              queryKey: [CELATONE_QUERY_KEYS.CONTRACT_DATA],
             }),
           ]);
         },

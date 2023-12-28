@@ -16,7 +16,7 @@ import type { Option } from "lib/types";
 interface SchemaSectionProps {
   type: "migrate" | "instantiate";
   codeHash: string;
-  codeId: string;
+  codeId: number;
   jsonSchema: Option<CodeSchema>;
   initialFormData?: Record<string, unknown>;
   handleChange: (data: unknown, errors: RJSFValidationError[]) => void;

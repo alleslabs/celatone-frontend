@@ -44,7 +44,7 @@ export const useGetSigningClient = () => {
   } = useCurrentChain();
   const rpcEndpoint = useRPCEndpoint();
 
-  return useCallback(async () => {
+  return async () => {
     if (walletClient && (await isLedger(walletClient, chainId))) {
       const signer =
         walletClient.getOfflineSignerAmino?.(chainId) ??
@@ -59,5 +59,5 @@ export const useGetSigningClient = () => {
       );
     }
     return await getSigningCosmWasmClient();
-  }, [chainId, rpcEndpoint, JSON.stringify(walletClient)]);
+  };
 };
