@@ -142,7 +142,7 @@ export const ModuleTables = ({
               refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               onViewMore={handleOnViewMore(
-                ModuleTablesTabIndex.PublishedEvents
+                ModuleTablesTabIndex.RelatedProposals
               )}
             />
           </TabPanel>

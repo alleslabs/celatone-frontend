@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#707](https://github.com/alleslabs/celatone-frontend/pull/707) contract info api fetching error and module proposal on viewmore
+
 ## v1.4.0
 
 ### Features

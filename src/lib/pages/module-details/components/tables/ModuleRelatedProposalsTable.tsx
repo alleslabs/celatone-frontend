@@ -32,7 +32,7 @@ export const ModuleRelatedProposalsTable = ({
   } = usePaginator({
     total: relatedProposalsCount,
     initialState: {
-      pageSize: 10,
+      pageSize: onViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
     },
