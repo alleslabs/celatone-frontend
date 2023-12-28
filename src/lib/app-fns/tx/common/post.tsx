@@ -39,6 +39,8 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
         if ("code" in txResult && isDeliverTxFailure(txResult)) {
           throw new Error(createDeliverTxResponseErrorMessage(txResult));
         }
+        const txFee = txResult.events.find((e) => e.type === "tx")
+          ?.attributes[0].value;
 
         return {
           value: txResult,
@@ -59,10 +61,7 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
               // TODO: Implement event/rawlog attribute picker
               html: (
                 <EstimatedFeeRender
-                  estimatedFee={feeFromStr(
-                    txResult.events.find((e) => e.type === "tx")?.attributes[0]
-                      .value ?? "0"
-                  )}
+                  estimatedFee={feeFromStr(txFee)}
                   loading={false}
                 />
               ),
