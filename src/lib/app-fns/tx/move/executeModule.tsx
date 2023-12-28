@@ -7,11 +7,12 @@ import type { Observable } from "rxjs";
 import { catchTxError } from "../common";
 import { postTx } from "../common/post";
 import { sendingTx } from "../common/sending";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import type { HumanAddr, TxResultRendering } from "lib/types";
-import { formatUFee } from "lib/utils/formatter/denom";
+import { feeFromStr } from "lib/utils";
 
 interface ExecuteModuleTxParams {
   address: HumanAddr;
@@ -56,7 +57,12 @@ export const executeModuleTx = ({
           },
           {
             title: "Tx Fee",
-            value: txFee ? formatUFee(txFee) : "N/A",
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
           },
         ],
         receiptInfo: {

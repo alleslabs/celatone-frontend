@@ -6,12 +6,13 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Activity } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { encode, formatUFee, getCurrentDate } from "lib/utils";
+import { encode, feeFromStr, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -75,7 +76,12 @@ export const executeContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: txFee ? formatUFee(txFee) : "N/A",
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
           },
         ],
         receiptInfo: {

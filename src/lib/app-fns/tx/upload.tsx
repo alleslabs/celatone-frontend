@@ -8,8 +8,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import type { HumanAddr, TxResultRendering, ComposedMsg } from "lib/types";
-import { findAttr } from "lib/utils";
-import { formatUFee } from "lib/utils/formatter/denom";
+import { findAttr, formatUFee } from "lib/utils";
 
 import { catchTxError } from "./common";
 import { postTx } from "./common/post";
