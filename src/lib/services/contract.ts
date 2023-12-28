@@ -4,47 +4,42 @@ import { z } from "zod";
 import type {
   Addr,
   ContractAddr,
-  Option,
-  PublicInfo,
   ContractInfo,
-  ContractHistoryRemark,
-  RemarkType,
+  ContractMigrationHistory,
 } from "lib/types";
-import { RemarkOperation, zAddr, zContractAddr, zUtcDate } from "lib/types";
-import { encode, libDecode } from "lib/utils";
-
-export interface ContractCw2InfoRaw {
-  data: string;
-}
+import {
+  zAddr,
+  zContractAddr,
+  zContractHistoryRemark,
+  zProjectInfo,
+  zPublicContractInfo,
+  zUtcDate,
+} from "lib/types";
+import { encode, parseTxHash, snakeToCamel } from "lib/utils";
 
 export interface ContractCw2Info {
   contract: string;
   version: string;
 }
 
-export interface ContractResponse {
-  address: ContractAddr;
-  contract_info: {
-    code_id: string;
-    creator: Addr;
-    admin?: Addr;
-    label: string;
-    created?: {
-      block_height: string;
-      tx_index: string;
-    };
-    ibc_port_id: string;
-    extension?: string;
-  };
-}
-
-interface PublicInfoResponse {
-  slug: string;
-  name: string;
-  address: ContractAddr;
-  description: string;
-  github: string;
-}
+const zContractRest = z.object({
+  address: zContractAddr,
+  contract_info: z.object({
+    code_id: z.string(),
+    creator: zAddr,
+    admin: zAddr.optional(),
+    label: z.string(),
+    created: z
+      .object({
+        block_height: z.string(),
+        tx_index: z.string(),
+      })
+      .optional(),
+    ibc_port_id: z.string(),
+    extension: z.string().nullable(),
+  }),
+});
+export type ContractRest = z.infer<typeof zContractRest>;
 
 export const queryData = async (
   endpoint: string,
@@ -61,41 +56,10 @@ export const queryData = async (
 export const queryContract = async (
   endpoint: string,
   contractAddress: ContractAddr
-) => {
-  const { data } = await axios.get<ContractResponse>(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`
+) =>
+  axios(`${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`).then(
+    ({ data }) => zContractRest.parse(data)
   );
-  return data;
-};
-
-export const queryContractCw2Info = async (
-  endpoint: string,
-  contractAddress: ContractAddr
-) => {
-  const { data } = await axios.get<ContractCw2InfoRaw>(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
-  );
-  return JSON.parse(libDecode(data.data)) as ContractCw2Info;
-};
-
-export const queryPublicInfo = async (
-  chainName: string | undefined,
-  chainId: string | undefined,
-  contractAddress: ContractAddr
-): Promise<Option<PublicInfo>> => {
-  if (!chainName || !chainId)
-    throw new Error("Invalid chain (queryPublicInfo)");
-  return axios
-    .get<PublicInfoResponse[]>(
-      `https://cosmos-registry.alleslabs.dev/data/${chainName}/${chainId}/contracts.json`
-    )
-    .then(({ data }) => {
-      const publicInfo = data.find((info) => info.address === contractAddress);
-      return publicInfo
-        ? { ...publicInfo, contractAddress: publicInfo.address }
-        : undefined;
-    });
-};
 
 const zContractsResponseItem = z
   .object({
@@ -105,17 +69,7 @@ const zContractsResponseItem = z
     instantiator: zAddr,
     latest_updated: zUtcDate,
     latest_updater: zAddr,
-    remark: z
-      .object({
-        operation: z.nativeEnum(RemarkOperation),
-        type: z.string(),
-        value: z.string(),
-      })
-      .transform<ContractHistoryRemark>((val) => ({
-        operation: val.operation,
-        type: val.type as RemarkType, // TODO: remove type assertion,
-        value: val.value,
-      })),
+    remark: zContractHistoryRemark,
   })
   .transform<ContractInfo>((val) => ({
     contractAddress: val.contract_address,
@@ -166,3 +120,133 @@ export const getAdminContractsByAddress = async (
       },
     })
     .then(({ data }) => zContractsResponse.parse(data));
+
+export const zContract = z
+  .object({
+    address: zContractAddr,
+    admin: zAddr.nullable(),
+    code_id: z.number().positive(),
+    code_hash: z.string().transform(parseTxHash),
+    created_height: z.number(),
+    created_timestamp: zUtcDate,
+    cw2_contract: z.string(),
+    cw2_version: z.string(),
+    init_msg: z.string(),
+    init_proposal_id: z.number().nullish(),
+    init_proposal_title: z.string().nullish(),
+    init_tx_hash: z.string().transform(parseTxHash).nullable(),
+    instantiator: zAddr,
+    label: z.string(),
+  })
+  .transform(snakeToCamel);
+export type Contract = z.infer<typeof zContract>;
+
+const zContractData = z
+  .object({
+    project_info: zProjectInfo.nullable(),
+    public_info: zPublicContractInfo.nullable(),
+    contract: zContract.nullable(),
+    contract_rest: zContractRest.nullable(),
+  })
+  .transform((value) => ({
+    projectInfo: value.project_info,
+    publicInfo: value.public_info,
+    contract: value.contract,
+    contractRest: value.contract_rest,
+  }));
+export type ContractData = z.infer<typeof zContractData>;
+
+export const getContractDataByContractAddress = async (
+  endpoint: string,
+  contractAddress: ContractAddr,
+  isGov: boolean
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/info`, {
+      params: {
+        is_gov: isGov,
+      },
+    })
+    .then(({ data }) => zContractData.parse(data));
+
+const zContractTableCounts = z
+  .object({
+    tx: z.number().nullish(),
+    migration: z.number().nullish(),
+    related_proposal: z.number().nullish(),
+  })
+  .transform(snakeToCamel);
+export type ContractTableCounts = z.infer<typeof zContractTableCounts>;
+
+export const getContractTableCounts = async (
+  endpoint: string,
+  contractAddress: ContractAddr,
+  isGov: boolean
+): Promise<ContractTableCounts> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/table-counts`, {
+      params: {
+        is_gov: isGov,
+      },
+    })
+    .then(({ data }) => zContractTableCounts.parse(data));
+
+const zMigrationHistoriesResponseItem = z
+  .object({
+    code_id: z.number().positive(),
+    cw2_contract: z.string().nullable(),
+    cw2_version: z.string().nullable(),
+    height: z.number(),
+    remark: zContractHistoryRemark,
+    sender: zAddr,
+    timestamp: zUtcDate,
+    uploader: zAddr,
+  })
+  .transform<ContractMigrationHistory>((val) => ({
+    codeId: val.code_id,
+    cw2Contract: val.cw2_contract,
+    cw2Version: val.cw2_version,
+    height: val.height,
+    remark: val.remark,
+    sender: val.sender,
+    timestamp: val.timestamp,
+    uploader: val.uploader,
+  }));
+const zMigrationHistoriesResponse = z.object({
+  items: z.array(zMigrationHistoriesResponseItem),
+});
+
+export type MigrationHistoriesResponse = z.infer<
+  typeof zMigrationHistoriesResponse
+>;
+
+export const getMigrationHistoriesByContractAddress = async (
+  endpoint: string,
+  contractAddress: ContractAddr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/migrations`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => zMigrationHistoriesResponse.parse(data));
+
+const zContractQueryMsgs = z
+  .object({
+    query: z.array(z.string()),
+  })
+  .transform((val) =>
+    val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
+  );
+
+export const getContractQueryMsgs = async (
+  endpoint: string,
+  contractAddress: ContractAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
+    .then(({ data }) => zContractQueryMsgs.parse(data));

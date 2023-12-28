@@ -43,6 +43,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.4.1
+
+### Features
+
+- [#681](https://github.com/alleslabs/celatone-frontend/pull/681) Add Initia wallet
+- [#704](https://github.com/alleslabs/celatone-frontend/pull/704) Fix client undefined after disconnected
+- [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Add ledger
+
+### Improvements
+
+- [#702](https://github.com/alleslabs/celatone-frontend/pull/702) api v1 - contract info
+- [#703](https://github.com/alleslabs/celatone-frontend/pull/703) api v1 - contract's query msgs
+- [#697](https://github.com/alleslabs/celatone-frontend/pull/697) api v1 - contract tables (migrations and related proposals)
+- [#696](https://github.com/alleslabs/celatone-frontend/pull/696) api v1 - block details
+- [#695](https://github.com/alleslabs/celatone-frontend/pull/695) api v1 - contract states
+- [#678](https://github.com/alleslabs/celatone-frontend/pull/678) api v1 - contract table counts
+
+### Bug fixes
+
+- [#707](https://github.com/alleslabs/celatone-frontend/pull/707) contract info api fetching error and module proposal on viewmore
+
 ## v1.4.0
 
 ### Features

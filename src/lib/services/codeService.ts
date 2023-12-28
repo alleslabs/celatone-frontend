@@ -8,17 +8,13 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useGovConfig,
-  useWasmConfig,
 } from "lib/app-provider";
 import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
-  getCodeListByWalletAddressPagination,
-  getCodeListCountByWalletAddress,
   getCodeListQueryDocument,
 } from "lib/query";
-import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   CodeInfo,
   CodeData,
@@ -29,7 +25,7 @@ import type {
   HumanAddr,
   Nullable,
 } from "lib/types";
-import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { isId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 import type { CodeIdInfoResponse, CodesResponse } from "./code";
 import { getCodeIdInfo, getCodesByAddress } from "./code";
@@ -187,7 +183,7 @@ export const useCodeDataByCodeId = ({
     [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient, isGov],
     queryFn,
     {
-      enabled: enabled && isCodeId(codeId),
+      enabled: enabled && isId(codeId),
     }
   );
 };
@@ -206,99 +202,18 @@ export const useCodesByAddress = (
   );
 };
 
-export const useCodeListByWalletAddressPagination = (
-  walletAddress: Option<HumanAddr>,
-  offset: number,
-  pageSize: number
-): UseQueryResult<CodeInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useCodeListByWalletAddressPagination)"
-      );
-    return indexerGraphClient
-      .request(getCodeListByWalletAddressPagination, {
-        walletAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ codes }) =>
-        codes.map<CodeInfo>((code) => ({
-          id: code.id,
-          uploader: code.account.uploader as Addr,
-          contractCount: code.contracts_aggregate.aggregate?.count,
-          instantiatePermission:
-            code.access_config_permission as AccessConfigPermission,
-          permissionAddresses:
-            code.access_config_addresses as PermissionAddresses,
-          cw2Contract: code.cw2_contract,
-          cw2Version: code.cw2_version,
-        }))
-      );
-  }, [indexerGraphClient, offset, pageSize, walletAddress]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_PAGINATION,
-      indexerGraphClient,
-      offset,
-      pageSize,
-      walletAddress,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
-      enabled: wasm.enabled && !!walletAddress,
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useCodeListCountByWalletAddress = (
-  walletAddress: Option<HumanAddr>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useCodeListCountByWalletAddress)"
-      );
-
-    return indexerGraphClient
-      .request(getCodeListCountByWalletAddress, {
-        walletAddress,
-      })
-      .then(({ codes_aggregate }) => codes_aggregate?.aggregate?.count);
-  }, [walletAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_COUNT,
-      walletAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: wasm.enabled && !!walletAddress,
-    }
-  );
-};
-
 export type LCDCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
 
 export const useLCDCodeInfo = (
   codeId: string,
   options?: Omit<UseQueryOptions<CodeIdInfoResponse>, "queryKey">
-): UseQueryResult<CodeIdInfoResponse> => {
+) => {
   const lcdEndpoint = useBaseApiRoute("rest");
-  const queryFn = async () => getCodeIdInfo(lcdEndpoint, codeId);
-  return useQuery(
+  const queryFn = async () => {
+    if (!isId(codeId)) throw new Error("Invalid code ID");
+    return getCodeIdInfo(lcdEndpoint, Number(codeId));
+  };
+  return useQuery<CodeIdInfoResponse>(
     [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     queryFn,
     options

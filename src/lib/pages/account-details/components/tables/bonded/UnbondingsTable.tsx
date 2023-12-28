@@ -8,7 +8,7 @@ import {
   TableContainer,
   TableTitle,
 } from "lib/components/table";
-import type { Unbonding } from "lib/pages/account-details/data";
+import type { Unbonding } from "lib/pages/account-details/types";
 import type { Option } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";

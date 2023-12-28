@@ -30,13 +30,7 @@ const zAccountModulesResponseItem = z
     raw_bytes: z.string(),
     upgrade_policy: z.nativeEnum(UpgradePolicy),
   })
-  .transform((val) => ({
-    abi: val.abi,
-    address: val.address,
-    moduleName: val.module_name,
-    rawBytes: val.raw_bytes,
-    upgradePolicy: val.upgrade_policy,
-  }));
+  .transform(snakeToCamel);
 
 const zAccountModulesResponse = z.object({
   items: z.array(zAccountModulesResponseItem),
@@ -44,14 +38,13 @@ const zAccountModulesResponse = z.object({
 });
 type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
-// TODO: This function will replace getAccountModules later
-export const getAPIAccountModules = async (
+export const getModulesByAddress = async (
   endpoint: string,
   address: MoveAccountAddr
 ): Promise<AccountModulesResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
-    .then((res) => zAccountModulesResponse.parse(res.data));
+    .then(({ data }) => zAccountModulesResponse.parse(data));
 
 export const getAccountModules = async (
   baseEndpoint: string,
@@ -196,4 +189,4 @@ export const getModules = async (
         offset,
       },
     })
-    .then((res) => zModulesResponse.parse(res.data));
+    .then(({ data }) => zModulesResponse.parse(data));

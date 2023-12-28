@@ -10,7 +10,7 @@ import { PublishModule } from "./publish";
 
 const DEFAULT_STATE: PublishCompleteState = {
   txHash: "",
-  formattedFee: "",
+  txFee: undefined,
   upgradePolicy: UpgradePolicy.ARBITRARY,
   modules: [],
 };

@@ -14,7 +14,7 @@ const UploadIndex = () => {
     codeId: "",
     codeHash: "",
     txHash: "",
-    formattedFee: "",
+    txFee: undefined,
   });
 
   const [completed, setCompleted] = useState(false);

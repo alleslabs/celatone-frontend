@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import type { Addr, Nullable, Option } from "lib/types";
 
 export enum ProposalStatus {
@@ -44,10 +46,12 @@ enum ProposalTypeOsmosis {
   SET_PROTOREV_ADMIN_ACCOUNT = "SetProtoRevAdminAccount",
 }
 
-export type ProposalType =
-  | ProposalTypeCosmos
-  | ProposalTypeCosmWasm
-  | ProposalTypeOsmosis;
+export const zProposalType = z.union([
+  z.nativeEnum(ProposalTypeCosmos),
+  z.nativeEnum(ProposalTypeCosmWasm),
+  z.nativeEnum(ProposalTypeOsmosis),
+]);
+export type ProposalType = z.infer<typeof zProposalType>;
 
 export interface Proposal {
   proposalId: number;

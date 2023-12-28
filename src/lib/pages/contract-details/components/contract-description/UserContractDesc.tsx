@@ -1,22 +1,24 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
-import type { ContractData } from "../../types";
 import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditContractDetailsModal } from "lib/components/modal";
+import type { Contract } from "lib/services/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { Nullable, Option, PublicContractInfo } from "lib/types";
 
 interface UserContractDescProps {
-  contractDetail: ContractData["contractDetail"];
-  contractLocalInfo: ContractData["contractLocalInfo"];
-  publicProject: ContractData["publicProject"];
+  publicInfo: Nullable<PublicContractInfo>;
+  contract: Contract;
+  contractLocalInfo: Option<ContractLocalInfo>;
 }
 export const UserContractDesc = ({
-  contractDetail,
+  publicInfo,
+  contract,
   contractLocalInfo,
-  publicProject,
 }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
@@ -25,35 +27,8 @@ export const UserContractDesc = ({
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "No Contract description",
     ellipsis: "...",
-    lines: publicProject.publicInfo?.description ? 4 : 2,
+    lines: publicInfo?.description ? 4 : 2,
   });
-
-  const renderEditContractButton = () => {
-    if (!contractDetail) return null;
-    return (
-      <EditContractDetailsModal
-        contractLocalInfo={{
-          contractAddress: contractDetail.contractAddress,
-          instantiator: contractDetail.instantiator,
-          label: contractDetail.label,
-          name: contractLocalInfo?.name,
-          description,
-          tags: contractLocalInfo?.tags,
-          lists: contractLocalInfo?.lists,
-        }}
-        triggerElement={
-          <Button
-            size="xs"
-            color="secondary.main"
-            variant="ghost-secondary"
-            leftIcon={<CustomIcon name="edit" boxSize={3} />}
-          >
-            {description ? "Edit" : "Add Description"}
-          </Button>
-        }
-      />
-    );
-  };
 
   const displayDescription = useMemo(() => {
     if (!description) {
@@ -76,9 +51,29 @@ export const UserContractDesc = ({
         <Text variant="body2" fontWeight={500} color="text.dark">
           Your Contract Description
         </Text>
-        <Box display="none" _groupHover={{ display: "flex" }}>
-          {renderEditContractButton()}
-        </Box>
+        <EditContractDetailsModal
+          contractLocalInfo={{
+            contractAddress: contract.address,
+            instantiator: contract.instantiator,
+            label: contract.label,
+            name: contractLocalInfo?.name,
+            description,
+            tags: contractLocalInfo?.tags,
+            lists: contractLocalInfo?.lists,
+          }}
+          triggerElement={
+            <Button
+              size="xs"
+              color="secondary.main"
+              variant="ghost-secondary"
+              leftIcon={<CustomIcon name="edit" boxSize={3} />}
+              display="none"
+              _groupHover={{ display: "flex" }}
+            >
+              {description ? "Edit" : "Add Description"}
+            </Button>
+          }
+        />
       </Flex>
       <Text
         variant="body2"

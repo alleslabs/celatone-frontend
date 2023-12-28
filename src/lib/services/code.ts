@@ -1,12 +1,8 @@
 import axios from "axios";
 import { z } from "zod";
 
-import {
-  type Addr,
-  AccessConfigPermission,
-  type CodeInfo,
-  zAddr,
-} from "lib/types";
+import { AccessConfigPermission, zAddr } from "lib/types";
+import type { Addr, CodeInfo } from "lib/types";
 
 export interface CodeIdInfoResponse {
   code_info: {
@@ -24,7 +20,7 @@ export interface CodeIdInfoResponse {
 
 export const getCodeIdInfo = async (
   endpoint: string,
-  id: string
+  id: number
 ): Promise<CodeIdInfoResponse> => {
   const { data } = await axios.get<CodeIdInfoResponse>(
     `${endpoint}/cosmwasm/wasm/v1/code/${id}`
@@ -72,4 +68,4 @@ export const getCodesByAddress = async (
         offset,
       },
     })
-    .then((res) => zCodesResponse.parse(res.data));
+    .then(({ data }) => zCodesResponse.parse(data));

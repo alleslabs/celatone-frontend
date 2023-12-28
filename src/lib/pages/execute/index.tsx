@@ -36,7 +36,7 @@ const Execute = () => {
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeHash, setCodeHash] = useState("");
-  const [codeId, setCodeId] = useState("");
+  const [codeId, setCodeId] = useState<number>();
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
@@ -122,7 +122,7 @@ const Execute = () => {
         onContractSelect={onContractSelect}
         successCallback={(data: ContractDetail) => {
           setCodeHash(data.codeHash);
-          setCodeId(String(data.codeId));
+          setCodeId(data.codeId);
         }}
       />
 

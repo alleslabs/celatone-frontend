@@ -5,47 +5,55 @@ import { AmpEvent, track } from "lib/amplitude";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
-import { useBlockInfoQuery } from "lib/services/blockService";
-import { getFirstQueryParam } from "lib/utils";
+import { InvalidState } from "lib/components/state";
+import { useBlockData } from "lib/services/blockService";
 
 import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
+import { zBlockDetailQueryParams } from "./types";
 
-const BlockDetail = () => {
+const InvalidBlock = () => <InvalidState title="Block does not exist" />;
+
+interface BlockDetailsBodyProps {
+  height: number;
+}
+
+const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
+  const { data: blockData, isLoading } = useBlockData(height);
+
+  if (isLoading) return <Loading withBorder />;
+  if (!blockData) return <InvalidBlock />;
+  return (
+    <>
+      <Breadcrumb
+        items={[
+          { text: "Blocks", href: "/blocks" },
+          { text: blockData.height.toString() },
+        ]}
+      />
+      <BlockDetailsTop blockData={blockData} />
+      <BlockInfo blockData={blockData} />
+      <BlockTxsTable height={height} />
+    </>
+  );
+};
+
+const BlockDetails = () => {
   const router = useRouter();
-  const heightParam = getFirstQueryParam(router.query.height);
-  const { data: blockData, isLoading } = useBlockInfoQuery(heightParam);
+  const validated = zBlockDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_BLOCK_DETAIL);
   }, [router.isReady]);
 
-  if (isLoading) return <Loading withBorder />;
-
   return (
     <PageContainer>
-      <Breadcrumb
-        items={[
-          { text: "Blocks", href: "/blocks" },
-          { text: blockData?.height.toString() },
-        ]}
-      />
-      {blockData ? (
-        <>
-          <BlockDetailsTop blockData={blockData} />
-          <BlockInfo blockData={blockData} />
-          <BlockTxsTable height={Number(heightParam)} />
-        </>
+      {!validated.success ? (
+        <InvalidBlock />
       ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Block does not exist"
-          message="Please check your input or make sure you have selected the correct network."
-          withBorder
-        />
+        <BlockDetailsBody height={validated.data.height} />
       )}
     </PageContainer>
   );
 };
 
-export default BlockDetail;
+export default BlockDetails;

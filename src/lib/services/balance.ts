@@ -19,4 +19,4 @@ export const getBalances = async (
 ): Promise<Coin[]> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/balances`)
-    .then((res) => zBalancesResponse.parse(res.data));
+    .then(({ data }) => zBalancesResponse.parse(data));

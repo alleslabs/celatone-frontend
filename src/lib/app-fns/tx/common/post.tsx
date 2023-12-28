@@ -6,10 +6,11 @@ import type {
 } from "@cosmjs/cosmwasm-stargate";
 import { isDeliverTxFailure } from "@cosmjs/stargate";
 
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { formatUFee } from "lib/utils/formatter/denom";
+import { feeFromStr } from "lib/utils";
 
 // TODO: We'll use only DeliverTxResponse later.
 type TxResult =
@@ -38,6 +39,8 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
         if ("code" in txResult && isDeliverTxFailure(txResult)) {
           throw new Error(createDeliverTxResponseErrorMessage(txResult));
         }
+        const txFee = txResult.events.find((e) => e.type === "tx")
+          ?.attributes[0].value;
 
         return {
           value: txResult,
@@ -56,10 +59,12 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
             {
               title: "Tx Fee",
               // TODO: Implement event/rawlog attribute picker
-              value: `${formatUFee(
-                txResult.events.find((e) => e.type === "tx")?.attributes[0]
-                  .value ?? "0"
-              )}`,
+              html: (
+                <EstimatedFeeRender
+                  estimatedFee={feeFromStr(txFee)}
+                  loading={false}
+                />
+              ),
             },
           ],
           receiptInfo: {

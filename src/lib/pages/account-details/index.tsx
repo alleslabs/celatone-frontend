@@ -25,10 +25,9 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useAccountDetailsTableCounts } from "lib/model/account";
-import { useAccountInfo } from "lib/services/accountService";
-import { useAPIAccountModules } from "lib/services/move/moduleService";
-import { useAccountResources } from "lib/services/move/resourceService";
+import { useAccountData } from "lib/services/accountService";
+import { useModulesByAddress } from "lib/services/move/moduleService";
+import { useResourcesByAddress } from "lib/services/move/resourceService";
 import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -45,7 +44,8 @@ import {
   TxsTable,
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
-import { TabIndex, zAccountDetailQueryParams } from "./types";
+import { useAccountDetailsTableCounts } from "./data";
+import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 
@@ -82,7 +82,7 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
   // ------------------------------------------//
-  const { data: accountInfo } = useAccountInfo(accountAddress);
+  const { data: accountData } = useAccountData(accountAddress);
 
   const {
     tableCounts,
@@ -91,9 +91,9 @@ const AccountDetailsBody = ({
   } = useAccountDetailsTableCounts(accountAddress);
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
-    useAPIAccountModules(accountAddress);
+    useModulesByAddress(accountAddress);
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useAccountResources(accountAddress);
+    useResourcesByAddress(accountAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -119,13 +119,13 @@ const AccountDetailsBody = ({
   return (
     <>
       <Flex direction="column" mb={6}>
-        {accountInfo?.projectInfo && accountInfo?.publicInfo && (
+        {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
             items={[
               { text: "Public Projects", href: "/projects" },
               {
-                text: accountInfo.projectInfo.name,
-                href: `/projects/${accountInfo.publicInfo.slug}`,
+                text: accountData.projectInfo.name,
+                href: `/projects/${accountData.publicInfo.slug}`,
               },
               { text: truncate(accountAddress) },
             ]}
@@ -133,7 +133,7 @@ const AccountDetailsBody = ({
           />
         )}
         <AccountHeader
-          accountInfo={accountInfo}
+          accountData={accountData}
           accountAddress={accountAddress}
           hexAddress={hexAddress}
         />
@@ -252,7 +252,7 @@ const AccountDetailsBody = ({
               gap={{ base: 4, md: 6 }}
               mt={{ base: 0, md: 8 }}
             >
-              {accountInfo?.publicInfo?.description && (
+              {accountData?.publicInfo?.description && (
                 <Flex
                   direction="column"
                   bg="gray.900"
@@ -269,7 +269,7 @@ const AccountDetailsBody = ({
                     </Text>
                   </Flex>
                   <Text variant="body2" color="text.main" mb={1}>
-                    {accountInfo.publicInfo.description}
+                    {accountData.publicInfo.description}
                   </Text>
                 </Flex>
               )}
@@ -443,7 +443,7 @@ const AccountDetails = () => {
   const router = useRouter();
   const { isSomeValidAddress } = useValidateAddress();
 
-  const validated = zAccountDetailQueryParams.safeParse(router.query);
+  const validated = zAccountDetailsQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady && validated.success)

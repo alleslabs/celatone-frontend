@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
+import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { getAssetInfos } from "lib/services/asset";
 import type { AssetInfo, Option } from "lib/types";
 

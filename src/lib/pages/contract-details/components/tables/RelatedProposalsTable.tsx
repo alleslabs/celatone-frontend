@@ -4,7 +4,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
-import { useRelatedProposalsByContractAddressPagination } from "lib/services/proposalService";
+import { useRelatedProposalsByContractAddress } from "lib/services/proposalService";
 import type { ContractAddr, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {
@@ -40,11 +40,7 @@ export const RelatedProposalsTable = ({
     data: relatedProposals,
     isLoading,
     error,
-  } = useRelatedProposalsByContractAddressPagination(
-    contractAddress,
-    offset,
-    pageSize
-  );
+  } = useRelatedProposalsByContractAddress(contractAddress, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -61,7 +57,7 @@ export const RelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
-        proposals={relatedProposals}
+        proposals={relatedProposals?.items}
         isLoading={isLoading}
         emptyState={
           error ? (

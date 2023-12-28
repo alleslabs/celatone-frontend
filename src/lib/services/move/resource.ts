@@ -2,6 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { type MoveAccountAddr, zMoveAccountAddr } from "lib/types";
+import { snakeToCamel } from "lib/utils";
 
 const zResourcesResponseItem = z
   .object({
@@ -10,12 +11,7 @@ const zResourcesResponseItem = z
     raw_bytes: z.string(),
     struct_tag: z.string(),
   })
-  .transform((val) => ({
-    address: val.address,
-    moveResource: val.move_resource,
-    rawBytes: val.raw_bytes,
-    structTag: val.struct_tag,
-  }));
+  .transform(snakeToCamel);
 
 const zResourcesResponse = z.object({
   items: z.array(zResourcesResponseItem),
@@ -29,4 +25,4 @@ export const getAccountResources = async (
 ): Promise<ResourceResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/resources`)
-    .then((res) => zResourcesResponse.parse(res.data));
+    .then(({ data }) => zResourcesResponse.parse(data));

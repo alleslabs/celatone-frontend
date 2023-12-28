@@ -1,33 +1,21 @@
-interface Singleton {
-  type: "singleton";
-  value: string;
-}
+import { z } from "zod";
 
-interface Bucket {
-  type: "bucket";
-  values: string[];
-}
+const zSingleton = z.object({
+  type: z.literal("singleton"),
+  value: z.string(),
+});
 
-export type DecodedKey = Singleton | Bucket;
+const zBucket = z.object({
+  type: z.literal("bucket"),
+  values: z.string().array(),
+});
 
-// TODO: Refactor later
-interface ResponseContractState {
-  key: string;
-  value: string;
-}
+const zDecodedKey = z.union([zSingleton, zBucket]);
+export type DecodedKey = z.infer<typeof zDecodedKey>;
 
-interface Pagination {
-  next_key?: string;
-  total: number;
-}
-
-export interface ResponseContractStates {
-  models: ResponseContractState[];
-  pagination: Pagination;
-}
-
-export interface ContractState {
-  rawKey: string;
-  key: DecodedKey;
-  value: unknown;
-}
+const zContractState = z.object({
+  rawKey: z.string(),
+  key: zDecodedKey,
+  value: z.unknown(),
+});
+export type ContractState = z.infer<typeof zContractState>;

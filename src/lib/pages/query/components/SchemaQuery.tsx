@@ -18,7 +18,7 @@ interface SchemaQueryProps {
   schema: Option<QuerySchema>;
   contractAddress: ContractAddr;
   initialMsg: string;
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 
