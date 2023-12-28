@@ -264,12 +264,12 @@ export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
 
 export const useModuleHistoriesByPagination = ({
   moduleId,
-  pageSize,
   offset,
+  pageSize,
 }: {
   moduleId: Option<Nullable<number>>;
-  pageSize: number;
   offset: number;
+  pageSize: number;
 }): UseQueryResult<ModuleHistory[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 

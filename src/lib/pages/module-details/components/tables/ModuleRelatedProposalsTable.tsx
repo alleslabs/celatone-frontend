@@ -32,7 +32,7 @@ export const ModuleRelatedProposalsTable = ({
   } = usePaginator({
     total: relatedProposalsCount,
     initialState: {
-      pageSize: onViewMore ? 5 : 10,
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
@@ -42,7 +42,11 @@ export const ModuleRelatedProposalsTable = ({
     data: relatedProposals,
     isLoading,
     error,
-  } = useRelatedProposalsByModuleIdPagination(moduleId, offset, pageSize);
+  } = useRelatedProposalsByModuleIdPagination(
+    moduleId,
+    offset,
+    onViewMore ? 5 : pageSize
+  );
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
