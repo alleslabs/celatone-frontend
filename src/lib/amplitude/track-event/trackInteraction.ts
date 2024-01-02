@@ -2,19 +2,26 @@ import big from "big.js";
 
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
+import type { SearchResultType } from "lib/services/searchService";
 import type { MoveAccountAddr, Option, Token } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
-export const trackUseMainSearch = (isClick: boolean, section?: string) =>
+export const trackUseMainSearch = (
+  isClick: boolean,
+  type?: SearchResultType,
+  section?: string
+) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
     isClick,
+    type,
     section,
   });
 
-export const trackUseTab = (tab: string, section?: string) =>
+export const trackUseTab = (tab: string, section?: string, info?: string) =>
   amp.track(AmpEvent.USE_TAB, {
     tab,
     section,
+    info,
   });
 
 export const trackUseRadio = (radio: string, section?: string) =>
@@ -69,7 +76,9 @@ export const trackUseExpand = ({
     | "module_struct_accordion"
     | "module_interaction_function_accordion"
     | "module_interaction_selected_function_card"
-    | "pool_tx_msg";
+    | "pool_tx_msg"
+    | "resources_detail_card"
+    | "resources_by_account_card";
   info?: object;
   section?: string;
 }) =>

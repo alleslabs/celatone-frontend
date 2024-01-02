@@ -4,11 +4,12 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { formatUFee } from "lib/utils";
+import { feeFromStr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -55,7 +56,12 @@ export const deployScriptTx = ({
           },
           {
             title: "Tx Fee",
-            value: txFee ? formatUFee(txFee) : "N/A",
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
           },
         ],
         receiptInfo: {

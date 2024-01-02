@@ -2,33 +2,30 @@ import axios from "axios";
 import { z } from "zod";
 
 import { zProjectInfo, zPublicAccountInfo, type Addr } from "lib/types";
+import { snakeToCamel } from "lib/utils";
 
 const zIcns = z.object({
   names: z.array(z.string()),
   primary_name: z.string(),
 });
 
-const zAccountInfo = z
+const zAccountData = z
   .object({
     icns: zIcns.nullable(),
     project_info: zProjectInfo.nullable(),
     public_info: zPublicAccountInfo.nullable(),
   })
-  .transform((accountInfo) => ({
-    icns: accountInfo.icns,
-    projectInfo: accountInfo.project_info,
-    publicInfo: accountInfo.public_info,
-  }));
+  .transform(snakeToCamel);
 
-export type AccountInfo = z.infer<typeof zAccountInfo>;
+export type AccountData = z.infer<typeof zAccountData>;
 
-export const getAccountInfo = async (
+export const getAccountData = async (
   endpoint: string,
   address: Addr
-): Promise<AccountInfo> =>
+): Promise<AccountData> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
-    .then((res) => zAccountInfo.parse(res.data));
+    .then(({ data }) => zAccountData.parse(data));
 
 const zAccountTableCounts = z
   .object({
@@ -38,23 +35,21 @@ const zAccountTableCounts = z
     proposal: z.number().nullish(),
     tx: z.number().nullish(),
   })
-  .transform((tableCount) => ({
-    code: tableCount.code,
-    contractByAdmin: tableCount.contract_by_admin,
-    instantiated: tableCount.instantiated,
-    proposal: tableCount.proposal,
-    tx: tableCount.tx,
-  }));
+  .transform(snakeToCamel);
 
 export type AccountTableCounts = z.infer<typeof zAccountTableCounts>;
 
 export const getAccountTableCounts = async (
   endpoint: string,
   address: string,
+  isGov: boolean,
   isWasm: boolean
 ): Promise<AccountTableCounts> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/table-counts`, {
-      params: { is_wasm: isWasm },
+      params: {
+        is_gov: isGov,
+        is_wasm: isWasm,
+      },
     })
-    .then((res) => zAccountTableCounts.parse(res.data));
+    .then(({ data }) => zAccountTableCounts.parse(data));

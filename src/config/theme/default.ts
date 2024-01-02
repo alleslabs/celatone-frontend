@@ -112,7 +112,8 @@ export const DEFAULT_THEME: ThemeConfig = {
   },
   jsonTheme: "monokai",
   illustration: {
-    error: "https://assets.alleslabs.dev/illustration/404.svg",
+    "404": "https://assets.alleslabs.dev/illustration/404.svg",
+    error: "https://assets.alleslabs.dev/illustration/error.svg",
     searchNotFound:
       "https://assets.alleslabs.dev/illustration/search-not-found.svg",
     searchEmpty: "https://assets.alleslabs.dev/illustration/search-empty.svg",

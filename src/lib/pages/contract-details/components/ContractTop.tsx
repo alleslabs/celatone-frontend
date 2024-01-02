@@ -7,7 +7,6 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-import type { ContractData } from "../types";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { AdminButton } from "lib/components/button";
@@ -19,38 +18,45 @@ import {
   EditContractDetailsModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import type { ContractAddr } from "lib/types";
+import type { Contract } from "lib/services/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type {
+  ContractAddr,
+  Nullable,
+  Option,
+  ProjectInfo,
+  PublicContractInfo,
+} from "lib/types";
 import { truncate } from "lib/utils";
 
 interface ContractTopProps {
   contractAddress: ContractAddr;
-  contractLocalInfo: ContractData["contractLocalInfo"];
-  publicProject: ContractData["publicProject"];
-  contractDetail: ContractData["contractDetail"];
-  rawContractResponse: ContractData["rawContractResponse"];
+
+  projectInfo: Nullable<ProjectInfo>;
+  publicInfo: Nullable<PublicContractInfo>;
+  contract: Contract;
+  contractLocalInfo: Option<ContractLocalInfo>;
 }
 export const ContractTop = ({
   contractAddress,
+  projectInfo,
+  publicInfo,
+  contract,
   contractLocalInfo,
-  publicProject,
-  contractDetail,
-  rawContractResponse,
 }: ContractTopProps) => {
-  const navigate = useInternalNavigate();
   const isMobile = useMobile();
-  const displayName =
-    contractLocalInfo?.name ||
-    publicProject.publicInfo?.name ||
-    contractDetail?.label;
+  const navigate = useInternalNavigate();
 
-  const publicName = publicProject.publicDetail?.name;
+  const displayName =
+    contractLocalInfo?.name || publicInfo?.name || contract.label;
+  const projectName = projectInfo?.name;
+
   const goToQuery = () => {
     navigate({
       pathname: "/query",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
-
   const goToExecute = () => {
     navigate({
       pathname: "/execute",
@@ -81,27 +87,25 @@ export const ContractTop = ({
         />
       );
     }
-    if (contractDetail) {
-      return (
-        <SaveContractDetailsModal
-          contractLocalInfo={{
-            contractAddress: contractAddress as ContractAddr,
-            instantiator: contractDetail.instantiator,
-            label: contractDetail.label,
-          }}
-          triggerElement={
-            <IconButton
-              fontSize="24px"
-              variant="none"
-              aria-label="save"
-              color="gray.600"
-              icon={<CustomIcon name="bookmark" />}
-            />
-          }
-        />
-      );
-    }
-    return null;
+
+    return (
+      <SaveContractDetailsModal
+        contractLocalInfo={{
+          contractAddress: contractAddress as ContractAddr,
+          instantiator: contract.instantiator,
+          label: contract.label,
+        }}
+        triggerElement={
+          <IconButton
+            fontSize="24px"
+            variant="none"
+            aria-label="save"
+            color="gray.600"
+            icon={<CustomIcon name="bookmark" />}
+          />
+        }
+      />
+    );
   };
 
   return (
@@ -109,12 +113,12 @@ export const ContractTop = ({
       <Breadcrumb
         items={[
           {
-            text: publicName ? "Public Projects" : "Contracts",
-            href: publicName ? "/projects" : "/contracts",
+            text: projectName ? "Public Projects" : "Contracts",
+            href: projectName ? "/projects" : "/contracts",
           },
           {
-            text: publicName,
-            href: `/projects/${publicProject.publicInfo?.slug}`,
+            text: projectName,
+            href: `/projects/${publicInfo?.slug}`,
           },
           { text: truncate(contractAddress) },
         ]}
@@ -141,11 +145,11 @@ export const ContractTop = ({
               boxSize={5}
               color="secondary.main"
             />
-            {publicProject.publicDetail?.logo && (
+            {projectInfo && (
               <Image
-                src={publicProject.publicDetail.logo}
+                src={projectInfo.logo}
                 borderRadius="full"
-                alt={publicProject.publicDetail.name}
+                alt={projectInfo.name}
                 width={7}
                 height={7}
               />
@@ -156,6 +160,7 @@ export const ContractTop = ({
               ml={{ base: 1, md: 0 }}
               variant={{ base: "h6", md: "h5" }}
               className={!isMobile ? "ellipsis" : ""}
+              wordBreak="break-word"
             >
               {displayName}
             </Heading>
@@ -187,11 +192,10 @@ export const ContractTop = ({
               Label:
             </Text>
             <Text variant="body2" className="ellipsis">
-              {contractDetail?.label ??
-                rawContractResponse?.contract_info.label}
+              {contract.label}
             </Text>
           </Flex>
-          {publicProject.publicInfo?.name && (
+          {publicInfo?.name && (
             <Flex
               direction={{ base: "column", md: "row" }}
               gap={{ base: 0, md: 2 }}
@@ -200,13 +204,11 @@ export const ContractTop = ({
                 Public Contract Name:
               </Text>
               <Text variant="body2" className="ellipsis">
-                {publicProject.publicInfo?.name}
+                {publicInfo.name}
               </Text>
             </Flex>
           )}
-          {publicProject.publicInfo?.github && (
-            <GitHubLink github={publicProject.publicInfo?.github} />
-          )}
+          {publicInfo?.github && <GitHubLink github={publicInfo?.github} />}
         </Flex>
         <Flex
           gap={{ base: 2, md: 4 }}
@@ -216,7 +218,7 @@ export const ContractTop = ({
           {!isMobile && (
             <AdminButton
               contractAddress={contractAddress as ContractAddr}
-              admin={contractDetail?.admin}
+              admin={contract.admin}
             />
           )}
 

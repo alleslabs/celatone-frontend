@@ -1,13 +1,13 @@
 import { graphql } from "lib/gql";
 
-export const getRelatedProposalsByContractAddressPagination = graphql(`
-  query getRelatedProposalsByContractAddressPagination(
-    $contractAddress: String!
+export const getRelatedProposalsByModuleIdPagination = graphql(`
+  query getRelatedProposalsByModuleIdPagination(
+    $moduleId: Int!
     $offset: Int!
     $pageSize: Int!
   ) {
-    contract_proposals(
-      where: { contract: { address: { _eq: $contractAddress } } }
+    module_proposals(
+      where: { module_id: { _eq: $moduleId } }
       order_by: { proposal_id: desc }
       offset: $offset
       limit: $pageSize
@@ -22,54 +22,16 @@ export const getRelatedProposalsByContractAddressPagination = graphql(`
           address
         }
         is_expedited
+        resolved_height
       }
       proposal_id
-      resolved_height
     }
   }
 `);
 
-export const getRelatedProposalsCountByContractAddress = graphql(`
-  query getRelatedProposalsCountByContractAddress($contractAddress: String!) {
-    contract_proposals_aggregate(
-      where: { contract: { address: { _eq: $contractAddress } } }
-    ) {
-      aggregate {
-        count
-      }
-    }
-  }
-`);
-
-export const getProposalsByWalletAddressPagination = graphql(`
-  query getProposalsByWalletAddressPagination(
-    $walletAddress: String!
-    $offset: Int!
-    $pageSize: Int!
-  ) {
-    proposals(
-      where: { account: { address: { _eq: $walletAddress } } }
-      order_by: { id: desc }
-      offset: $offset
-      limit: $pageSize
-    ) {
-      title
-      status
-      voting_end_time
-      deposit_end_time
-      type
-      id
-      is_expedited
-      resolved_height
-    }
-  }
-`);
-
-export const getProposalsCountByWalletAddress = graphql(`
-  query getProposalsCountByWalletAddress($walletAddress: String!) {
-    proposals_aggregate(
-      where: { account: { address: { _eq: $walletAddress } } }
-    ) {
+export const getRelatedProposalsCountByModuleId = graphql(`
+  query getRelatedProposalsCountByModuleId($moduleId: Int!) {
+    module_proposals_aggregate(where: { module_id: { _eq: $moduleId } }) {
       aggregate {
         count
       }

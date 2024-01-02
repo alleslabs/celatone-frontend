@@ -14825,15 +14825,6 @@ export type Vm_Addresses_Variance_Fields = {
   id?: Maybe<Scalars["Float"]>;
 };
 
-export type GetAccountIdByAddressQueryDocumentQueryVariables = Exact<{
-  address: Scalars["String"];
-}>;
-
-export type GetAccountIdByAddressQueryDocumentQuery = {
-  __typename?: "query_root";
-  accounts_by_pk?: { __typename?: "accounts"; id: number } | null;
-};
-
 export type GetAccountTypeByAddressQueryDocumentQueryVariables = Exact<{
   address: Scalars["String"];
 }>;
@@ -14841,43 +14832,6 @@ export type GetAccountTypeByAddressQueryDocumentQueryVariables = Exact<{
 export type GetAccountTypeByAddressQueryDocumentQuery = {
   __typename?: "query_root";
   accounts_by_pk?: { __typename?: "accounts"; type?: any | null } | null;
-};
-
-export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
-  height: Scalars["Int"];
-}>;
-
-export type GetBlockTimestampByHeightQueryQuery = {
-  __typename?: "query_root";
-  blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
-};
-
-export type GetBlockListQueryQueryVariables = Exact<{
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
-}>;
-
-export type GetBlockListQueryQuery = {
-  __typename?: "query_root";
-  blocks: Array<{
-    __typename?: "blocks";
-    hash: any;
-    height: number;
-    timestamp: any;
-    transactions_aggregate: {
-      __typename?: "transactions_aggregate";
-      aggregate?: {
-        __typename?: "transactions_aggregate_fields";
-        count: number;
-      } | null;
-    };
-    validator?: {
-      __typename?: "validators";
-      moniker: string;
-      operator_address: string;
-      identity: string;
-    } | null;
-  }>;
 };
 
 export type GetBlockDetailsByHeightQueryVariables = Exact<{
@@ -14998,6 +14952,7 @@ export type GetCodeListByIDsQueryQuery = {
 
 export type GetCodeDataByCodeIdQueryVariables = Exact<{
   codeId: Scalars["Int"];
+  isGov: Scalars["Boolean"];
 }>;
 
 export type GetCodeDataByCodeIdQuery = {
@@ -15015,7 +14970,7 @@ export type GetCodeDataByCodeIdQuery = {
       hash: any;
       block: { __typename?: "blocks"; height: number; timestamp: any };
     } | null;
-    code_proposals: Array<{
+    code_proposals?: Array<{
       __typename?: "code_proposals";
       proposal_id: number;
       block?: { __typename?: "blocks"; height: number; timestamp: any } | null;
@@ -15079,6 +15034,7 @@ export type GetContractByContractAddressQueryDocumentQuery = {
 
 export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
   contractAddress: Scalars["String"];
+  isGov: Scalars["Boolean"];
 }>;
 
 export type GetInstantiateDetailByContractQueryDocumentQuery = {
@@ -15087,7 +15043,7 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
     __typename?: "contracts";
     init_msg?: string | null;
     transaction?: { __typename?: "transactions"; hash: any } | null;
-    contract_proposals: Array<{
+    contract_proposals?: Array<{
       __typename?: "contract_proposals";
       proposal: { __typename?: "proposals"; id: number; title: string };
     }>;
@@ -15362,6 +15318,7 @@ export type GetModuleHistoriesCountQueryQuery = {
 
 export type GetModuleInitialPublishInfoQueryQueryVariables = Exact<{
   moduleId: Scalars["Int"];
+  isGov: Scalars["Boolean"];
 }>;
 
 export type GetModuleInitialPublishInfoQueryQuery = {
@@ -15370,7 +15327,7 @@ export type GetModuleInitialPublishInfoQueryQuery = {
     __typename?: "modules";
     publisher_vm_address: { __typename?: "vm_addresses"; vm_address: string };
     publish_transaction?: { __typename?: "transactions"; hash: any } | null;
-    module_proposals: Array<{
+    module_proposals?: Array<{
       __typename?: "module_proposals";
       proposal: { __typename?: "proposals"; id: number; title: string };
     }>;
@@ -15560,6 +15517,46 @@ export type GetProposalsCountByWalletAddressQuery = {
   };
 };
 
+export type GetRelatedProposalsByModuleIdPaginationQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetRelatedProposalsByModuleIdPaginationQuery = {
+  __typename?: "query_root";
+  module_proposals: Array<{
+    __typename?: "module_proposals";
+    proposal_id: number;
+    proposal: {
+      __typename?: "proposals";
+      title: string;
+      status: any;
+      voting_end_time?: any | null;
+      deposit_end_time: any;
+      type: string;
+      is_expedited: boolean;
+      resolved_height?: number | null;
+      account?: { __typename?: "accounts"; address: string } | null;
+    };
+  }>;
+};
+
+export type GetRelatedProposalsCountByModuleIdQueryVariables = Exact<{
+  moduleId: Scalars["Int"];
+}>;
+
+export type GetRelatedProposalsCountByModuleIdQuery = {
+  __typename?: "query_root";
+  module_proposals_aggregate: {
+    __typename?: "module_proposals_aggregate";
+    aggregate?: {
+      __typename?: "module_proposals_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
 export type GetProposalListQueryVariables = Exact<{
   expression?: InputMaybe<Proposals_Bool_Exp>;
   offset: Scalars["Int"];
@@ -15604,57 +15601,6 @@ export type GetProposalTypesQuery = {
   proposals: Array<{ __typename?: "proposals"; type: string }>;
 };
 
-export type GetTxsByAddressPaginationQueryVariables = Exact<{
-  expression?: InputMaybe<Account_Transactions_Bool_Exp>;
-  offset: Scalars["Int"];
-  pageSize: Scalars["Int"];
-  isWasm: Scalars["Boolean"];
-  isMove: Scalars["Boolean"];
-}>;
-
-export type GetTxsByAddressPaginationQuery = {
-  __typename?: "query_root";
-  account_transactions: Array<{
-    __typename?: "account_transactions";
-    is_signer: boolean;
-    block: { __typename?: "blocks"; height: number; timestamp: any };
-    transaction: {
-      __typename?: "transactions";
-      hash: any;
-      success: boolean;
-      messages: any;
-      is_send: boolean;
-      is_ibc: boolean;
-      is_clear_admin?: boolean;
-      is_execute?: boolean;
-      is_instantiate?: boolean;
-      is_migrate?: boolean;
-      is_store_code?: boolean;
-      is_update_admin?: boolean;
-      is_move_publish?: boolean;
-      is_move_upgrade?: boolean;
-      is_move_execute?: boolean;
-      is_move_script?: boolean;
-      account: { __typename?: "accounts"; address: string };
-    };
-  }>;
-};
-
-export type GetTxsCountByAddressQueryVariables = Exact<{
-  expression?: InputMaybe<Account_Transactions_Bool_Exp>;
-}>;
-
-export type GetTxsCountByAddressQuery = {
-  __typename?: "query_root";
-  account_transactions_aggregate: {
-    __typename?: "account_transactions_aggregate";
-    aggregate?: {
-      __typename?: "account_transactions_aggregate_fields";
-      count: number;
-    } | null;
-  };
-};
-
 export type GetTxsByPoolIdPaginationQueryVariables = Exact<{
   expression?: InputMaybe<Pool_Transactions_Bool_Exp>;
   offset: Scalars["Int"];
@@ -15690,37 +15636,6 @@ export type GetTxsCountByPoolIdQuery = {
       count: number;
     } | null;
   };
-};
-
-export type GetTxsQueryVariables = Exact<{
-  offset: Scalars["Int"];
-  pageSize: Scalars["Int"];
-  isWasm: Scalars["Boolean"];
-  isMove: Scalars["Boolean"];
-}>;
-
-export type GetTxsQuery = {
-  __typename?: "query_root";
-  transactions: Array<{
-    __typename?: "transactions";
-    hash: any;
-    success: boolean;
-    messages: any;
-    is_send: boolean;
-    is_ibc: boolean;
-    is_clear_admin?: boolean;
-    is_execute?: boolean;
-    is_instantiate?: boolean;
-    is_migrate?: boolean;
-    is_store_code?: boolean;
-    is_update_admin?: boolean;
-    is_move_publish?: boolean;
-    is_move_upgrade?: boolean;
-    is_move_execute?: boolean;
-    is_move_script?: boolean;
-    block: { __typename?: "blocks"; height: number; timestamp: any };
-    account: { __typename?: "accounts"; address: string };
-  }>;
 };
 
 export type GetTxsCountQueryVariables = Exact<{ [key: string]: never }>;
@@ -15777,34 +15692,6 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
   };
 };
 
-export type GetModuleTransactionsQueryQueryVariables = Exact<{
-  moduleId: Scalars["Int"];
-  pageSize: Scalars["Int"];
-  offset: Scalars["Int"];
-}>;
-
-export type GetModuleTransactionsQueryQuery = {
-  __typename?: "query_root";
-  module_transactions: Array<{
-    __typename?: "module_transactions";
-    block: { __typename?: "blocks"; height: number; timestamp: any };
-    transaction: {
-      __typename?: "transactions";
-      hash: any;
-      success: boolean;
-      messages: any;
-      is_send: boolean;
-      is_ibc: boolean;
-      is_move_execute: boolean;
-      is_move_execute_event: boolean;
-      is_move_publish: boolean;
-      is_move_script: boolean;
-      is_move_upgrade: boolean;
-      account: { __typename?: "accounts"; address: string };
-    };
-  }>;
-};
-
 export type GetModuleTransactionsCountQueryQueryVariables = Exact<{
   moduleId: Scalars["Int"];
 }>;
@@ -15839,60 +15726,6 @@ export type GetValidatorsQuery = {
   }>;
 };
 
-export const GetAccountIdByAddressQueryDocumentDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getAccountIdByAddressQueryDocument" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "address" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "accounts_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "address" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "address" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetAccountIdByAddressQueryDocumentQuery,
-  GetAccountIdByAddressQueryDocumentQueryVariables
->;
 export const GetAccountTypeByAddressQueryDocumentDocument = {
   kind: "Document",
   definitions: [
@@ -15946,186 +15779,6 @@ export const GetAccountTypeByAddressQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetAccountTypeByAddressQueryDocumentQuery,
   GetAccountTypeByAddressQueryDocumentQueryVariables
->;
-export const GetBlockTimestampByHeightQueryDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getBlockTimestampByHeightQuery" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "height" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "blocks_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "height" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "height" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetBlockTimestampByHeightQueryQuery,
-  GetBlockTimestampByHeightQueryQueryVariables
->;
-export const GetBlockListQueryDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getBlockListQuery" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "limit" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "blocks" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "limit" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "height" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "hash" } },
-                { kind: "Field", name: { kind: "Name", value: "height" } },
-                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transactions_aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "aggregate" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "count" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "validator" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "moniker" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "operator_address" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "identity" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetBlockListQueryQuery,
-  GetBlockListQueryQueryVariables
 >;
 export const GetBlockDetailsByHeightDocument = {
   kind: "Document",
@@ -16772,6 +16425,20 @@ export const GetCodeDataByCodeIdDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isGov" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -16841,6 +16508,22 @@ export const GetCodeDataByCodeIdDocument = {
                       kind: "Argument",
                       name: { kind: "Name", value: "limit" },
                       value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isGov" },
+                          },
+                        },
+                      ],
                     },
                   ],
                   selectionSet: {
@@ -17283,6 +16966,20 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isGov" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -17396,6 +17093,22 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                       kind: "Argument",
                       name: { kind: "Name", value: "limit" },
                       value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isGov" },
+                          },
+                        },
+                      ],
                     },
                   ],
                   selectionSet: {
@@ -19763,6 +19476,20 @@ export const GetModuleInitialPublishInfoQueryDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isGov" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -19890,6 +19617,22 @@ export const GetModuleInitialPublishInfoQueryDocument = {
                       kind: "Argument",
                       name: { kind: "Name", value: "limit" },
                       value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  directives: [
+                    {
+                      kind: "Directive",
+                      name: { kind: "Name", value: "include" },
+                      arguments: [
+                        {
+                          kind: "Argument",
+                          name: { kind: "Name", value: "if" },
+                          value: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "isGov" },
+                          },
+                        },
+                      ],
                     },
                   ],
                   selectionSet: {
@@ -21136,6 +20879,249 @@ export const GetProposalsCountByWalletAddressDocument = {
   GetProposalsCountByWalletAddressQuery,
   GetProposalsCountByWalletAddressQueryVariables
 >;
+export const GetRelatedProposalsByModuleIdPaginationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getRelatedProposalsByModuleIdPagination" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_proposals" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "proposal_id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "proposal" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "voting_end_time" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "deposit_end_time" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "type" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_expedited" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "resolved_height" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "proposal_id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetRelatedProposalsByModuleIdPaginationQuery,
+  GetRelatedProposalsByModuleIdPaginationQueryVariables
+>;
+export const GetRelatedProposalsCountByModuleIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getRelatedProposalsCountByModuleId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "moduleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "module_proposals_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "module_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "moduleId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetRelatedProposalsCountByModuleIdQuery,
+  GetRelatedProposalsCountByModuleIdQueryVariables
+>;
 export const GetProposalListDocument = {
   kind: "Document",
   definitions: [
@@ -21366,453 +21352,6 @@ export const GetProposalTypesDocument = {
   GetProposalTypesQuery,
   GetProposalTypesQueryVariables
 >;
-export const GetTxsByAddressPaginationDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getTxsByAddressPagination" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "expression" },
-          },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "account_transactions_bool_exp" },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "pageSize" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "isWasm" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "isMove" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "account_transactions" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "expression" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "block_height" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "pageSize" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "block" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "height" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "timestamp" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "account" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "address" },
-                            },
-                          ],
-                        },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "success" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "messages" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_send" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_ibc" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_clear_admin" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isWasm" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_execute" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isWasm" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_instantiate" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isWasm" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_migrate" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isWasm" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_store_code" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isWasm" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_update_admin" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isWasm" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_publish" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isMove" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_upgrade" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isMove" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_execute" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isMove" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_script" },
-                        directives: [
-                          {
-                            kind: "Directive",
-                            name: { kind: "Name", value: "include" },
-                            arguments: [
-                              {
-                                kind: "Argument",
-                                name: { kind: "Name", value: "if" },
-                                value: {
-                                  kind: "Variable",
-                                  name: { kind: "Name", value: "isMove" },
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "is_signer" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTxsByAddressPaginationQuery,
-  GetTxsByAddressPaginationQueryVariables
->;
-export const GetTxsCountByAddressDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getTxsCountByAddress" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "expression" },
-          },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "account_transactions_bool_exp" },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "account_transactions_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "expression" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "count" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTxsCountByAddressQuery,
-  GetTxsCountByAddressQueryVariables
->;
 export const GetTxsByPoolIdPaginationDocument = {
   kind: "Document",
   definitions: [
@@ -22032,349 +21571,6 @@ export const GetTxsCountByPoolIdDocument = {
   GetTxsCountByPoolIdQuery,
   GetTxsCountByPoolIdQueryVariables
 >;
-export const GetTxsDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getTxs" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "pageSize" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "isWasm" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "isMove" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "transactions" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "block_height" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "pageSize" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "block" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "height" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "timestamp" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "account" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "address" },
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "hash" } },
-                { kind: "Field", name: { kind: "Name", value: "success" } },
-                { kind: "Field", name: { kind: "Name", value: "messages" } },
-                { kind: "Field", name: { kind: "Name", value: "is_send" } },
-                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_clear_admin" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isWasm" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_execute" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isWasm" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_instantiate" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isWasm" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_migrate" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isWasm" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_store_code" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isWasm" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_update_admin" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isWasm" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_move_publish" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isMove" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_move_upgrade" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isMove" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_move_execute" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isMove" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_move_script" },
-                  directives: [
-                    {
-                      kind: "Directive",
-                      name: { kind: "Name", value: "include" },
-                      arguments: [
-                        {
-                          kind: "Argument",
-                          name: { kind: "Name", value: "if" },
-                          value: {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "isMove" },
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetTxsQuery, GetTxsQueryVariables>;
 export const GetTxsCountDocument = {
   kind: "Document",
   definitions: [
@@ -22881,202 +22077,6 @@ export const GetBlockTransactionCountByHeightQueryDocument = {
 } as unknown as DocumentNode<
   GetBlockTransactionCountByHeightQueryQuery,
   GetBlockTransactionCountByHeightQueryQueryVariables
->;
-export const GetModuleTransactionsQueryDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getModuleTransactionsQuery" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "moduleId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "pageSize" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "module_transactions" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "module_id" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "moduleId" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "pageSize" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "block_height" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "block" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "height" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "timestamp" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "account" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "address" },
-                            },
-                          ],
-                        },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "success" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "messages" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_send" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_ibc" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_execute" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_execute_event" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_publish" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_script" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_move_upgrade" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetModuleTransactionsQueryQuery,
-  GetModuleTransactionsQueryQueryVariables
 >;
 export const GetModuleTransactionsCountQueryDocument = {
   kind: "Document",

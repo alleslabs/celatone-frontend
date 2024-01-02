@@ -2,9 +2,9 @@ import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
-import { useRelatedProposalsByContractAddressPagination } from "lib/services/proposalService";
+import { useRelatedProposalsByContractAddress } from "lib/services/proposalService";
 import type { ContractAddr, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {
@@ -36,12 +36,11 @@ export const RelatedProposalsTable = ({
     },
   });
 
-  const { data: relatedProposals, isLoading } =
-    useRelatedProposalsByContractAddressPagination(
-      contractAddress,
-      offset,
-      pageSize
-    );
+  const {
+    data: relatedProposals,
+    isLoading,
+    error,
+  } = useRelatedProposalsByContractAddress(contractAddress, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -58,13 +57,17 @@ export const RelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
-        proposals={relatedProposals}
+        proposals={relatedProposals?.items}
         isLoading={isLoading}
         emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="This contract does not have related proposals yet."
-          />
+          error ? (
+            <ErrorFetching dataName="related proposals" />
+          ) : (
+            <EmptyState
+              imageVariant="empty"
+              message="This contract does not have related proposals yet."
+            />
+          )
         }
       />
       {!!totalData && totalData > 10 && (

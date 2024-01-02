@@ -1,6 +1,5 @@
 export * from "./currency";
 export * from "./currency.format";
-export * from "./denom";
 export * from "./convertTitle";
 export * from "./camelToSnake";
 export * from "./snakeToCamel";

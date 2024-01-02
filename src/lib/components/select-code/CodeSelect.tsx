@@ -9,7 +9,7 @@ import { useCodeStore } from "lib/providers/store";
 import type { LCDCodeInfoSuccessCallback } from "lib/services/codeService";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import { AccessConfigPermission } from "lib/types";
-import { isCodeId } from "lib/utils";
+import { isId } from "lib/utils";
 
 import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
@@ -31,7 +31,7 @@ export const CodeSelect = ({
   const name = getCodeLocalInfo(Number(codeId))?.name;
   const { data: codeInfo } = useLCDCodeInfo(codeId, {
     onSuccess: setCodeHash,
-    enabled: isCodeId(codeId),
+    enabled: isId(codeId),
   });
 
   const isError = status.state === "error";

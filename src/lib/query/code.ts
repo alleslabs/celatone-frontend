@@ -66,7 +66,7 @@ export const getCodeListByIDsQueryDocument = graphql(`
 `);
 
 export const getCodeDataByCodeId = graphql(`
-  query getCodeDataByCodeId($codeId: Int!) {
+  query getCodeDataByCodeId($codeId: Int!, $isGov: Boolean!) {
     codes_by_pk(id: $codeId) {
       id
       account {
@@ -80,7 +80,7 @@ export const getCodeDataByCodeId = graphql(`
         }
       }
       # Can only have 1 store code proposal
-      code_proposals(limit: 1) {
+      code_proposals(limit: 1) @include(if: $isGov) {
         proposal_id
         block {
           height

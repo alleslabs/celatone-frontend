@@ -5,11 +5,12 @@ import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";
 
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { HumanAddr, Nullable, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { findAttr, formatUFee } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -73,7 +74,12 @@ export const submitWhitelistProposalTx = ({
           },
           {
             title: "Tx Fee",
-            value: txFee ? formatUFee(txFee) : "N/A",
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
           },
         ],
         receiptInfo: {
@@ -155,7 +161,12 @@ export const submitStoreCodeProposalTx = ({
           },
           {
             title: "Tx Fee",
-            value: txFee ? formatUFee(txFee) : "N/A",
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
           },
         ],
         receiptInfo: {

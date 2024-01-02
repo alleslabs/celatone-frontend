@@ -4,27 +4,27 @@ import { useEffect } from "react";
 import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
-import type { Nullable, Option } from "lib/types";
+import type { Nullish, Option } from "lib/types";
 
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
 interface ModuleHistoryTableProps {
-  moduleId: Option<Nullable<number>>;
+  moduleId: Nullish<number>;
   historyCount: Option<number>;
   scrollComponentId?: string;
-  onViewMore?: () => void;
   refetchCount: () => void;
+  onViewMore?: () => void;
 }
 
 export const ModuleHistoryTable = ({
   moduleId,
   historyCount,
-  onViewMore,
   scrollComponentId,
   refetchCount,
+  onViewMore,
 }: ModuleHistoryTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
@@ -38,7 +38,7 @@ export const ModuleHistoryTable = ({
   } = usePaginator({
     total: historyCount,
     initialState: {
-      pageSize: onViewMore ? 5 : 10,
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
@@ -50,8 +50,8 @@ export const ModuleHistoryTable = ({
     error,
   } = useModuleHistoriesByPagination({
     moduleId,
-    pageSize,
     offset,
+    pageSize: onViewMore ? 5 : pageSize,
   });
 
   const onPageChange = (nextPage: number) => {
@@ -78,11 +78,7 @@ export const ModuleHistoryTable = ({
         isLoading={isLoading}
         emptyState={
           !moduleId || error ? (
-            <EmptyState
-              withBorder
-              imageVariant="not-found"
-              message="There is an error fetching module published events history."
-            />
+            <ErrorFetching dataName="module published events history" />
           ) : (
             <EmptyState
               imageVariant="empty"

@@ -11,16 +11,13 @@ import {
 import {
   getProposalList,
   getProposalListCount,
-  getProposalsByWalletAddressPagination,
-  getProposalsCountByWalletAddress,
   getProposalTypes,
-  getRelatedProposalsByContractAddressPagination,
-  getRelatedProposalsCountByContractAddress,
+  getRelatedProposalsByModuleIdPagination,
+  getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   ContractAddr,
-  HumanAddr,
   Option,
   ProposalStatus,
   ProposalType,
@@ -28,6 +25,7 @@ import type {
   Proposal,
   U,
   Token,
+  Nullish,
 } from "lib/types";
 import {
   deexponentify,
@@ -41,7 +39,8 @@ import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
-  ProposalResponse,
+  ProposalsResponse,
+  RelatedProposalsResponse,
   UploadAccess,
   VotingParamsInternal,
 } from "./proposal";
@@ -50,79 +49,34 @@ import {
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
   getProposalsByAddress,
+  getRelatedProposalsByContractAddress,
 } from "./proposal";
 
-export const useRelatedProposalsByContractAddressPagination = (
+export const useRelatedProposalsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
-  pageSize: number
-): UseQueryResult<Proposal[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  limit: number
+) => {
+  const endpoint = useBaseApiRoute("contracts");
 
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getRelatedProposalsByContractAddressPagination, {
-        contractAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ contract_proposals }) =>
-        contract_proposals.map<Proposal>((proposal) => ({
-          proposalId: proposal.proposal_id,
-          title: proposal.proposal.title,
-          status: parseProposalStatus(proposal.proposal.status),
-          votingEndTime: parseDate(proposal.proposal.voting_end_time),
-          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
-          resolvedHeight: proposal.resolved_height,
-          type: proposal.proposal.type as ProposalType,
-          proposer: proposal.proposal.account?.address as Addr,
-          isExpedited: Boolean(proposal.proposal.is_expedited),
-        }))
-      );
-  }, [contractAddress, offset, pageSize, indexerGraphClient]);
-
-  return useQuery(
+  return useQuery<RelatedProposalsResponse>(
     [
-      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_PAGINATION,
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS,
+      endpoint,
       contractAddress,
+      limit,
       offset,
-      pageSize,
-      indexerGraphClient,
     ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
-    }
-  );
-};
-
-export const useRelatedProposalsCountByContractAddress = (
-  contractAddress: ContractAddr
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getRelatedProposalsCountByContractAddress, {
+    async () =>
+      getRelatedProposalsByContractAddress(
+        endpoint,
         contractAddress,
-      })
-      .then(
-        ({ contract_proposals_aggregate }) =>
-          contract_proposals_aggregate.aggregate?.count
-      );
-  }, [contractAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_COUNT,
-      contractAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
+        limit,
+        offset
+      ),
     {
+      retry: 1,
       keepPreviousData: true,
-      enabled: !!contractAddress,
     }
   );
 };
@@ -131,7 +85,7 @@ export const useProposalsByAddress = (
   address: Addr,
   offset: number,
   limit: number
-): UseQueryResult<ProposalResponse> => {
+): UseQueryResult<ProposalsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
@@ -147,73 +101,76 @@ export const useProposalsByAddress = (
   );
 };
 
-export const useProposalsByWalletAddressPagination = (
-  walletAddress: HumanAddr,
+export const useRelatedProposalsByModuleIdPagination = (
+  moduleId: Nullish<number>,
   offset: number,
   pageSize: number
 ): UseQueryResult<Proposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
+    if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
-      .request(getProposalsByWalletAddressPagination, {
-        walletAddress: walletAddress as HumanAddr,
+      .request(getRelatedProposalsByModuleIdPagination, {
+        moduleId,
         offset,
         pageSize,
       })
-      .then(({ proposals }) =>
-        proposals.map<Proposal>((proposal) => ({
-          proposalId: proposal.id,
-          title: proposal.title,
-          status: parseProposalStatus(proposal.status),
-          votingEndTime: parseDate(proposal.voting_end_time),
-          depositEndTime: parseDate(proposal.deposit_end_time),
-          resolvedHeight: proposal.resolved_height,
-          type: proposal.type as ProposalType,
-          proposer: walletAddress,
-          isExpedited: Boolean(proposal.is_expedited),
+      .then(({ module_proposals }) =>
+        module_proposals.map<Proposal>((proposal) => ({
+          proposalId: proposal.proposal_id,
+          title: proposal.proposal.title,
+          status: parseProposalStatus(proposal.proposal.status),
+          votingEndTime: parseDate(proposal.proposal.voting_end_time),
+          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
+          resolvedHeight: proposal.proposal.resolved_height,
+          type: proposal.proposal.type as ProposalType,
+          proposer: proposal.proposal.account?.address as Addr,
+          isExpedited: Boolean(proposal.proposal.is_expedited),
         }))
       );
-  }, [indexerGraphClient, offset, pageSize, walletAddress]);
+  }, [indexerGraphClient, moduleId, offset, pageSize]);
 
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_PAGINATION,
-      walletAddress,
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_MODULE_ID,
+      moduleId,
       indexerGraphClient,
       offset,
       pageSize,
     ],
-    createQueryFnWithTimeout(queryFn),
+    queryFn,
     {
-      enabled: !!walletAddress,
       retry: 1,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useProposalsCountByWalletAddress = (
-  walletAddress: HumanAddr
+export const useRelatedProposalsCountByModuleId = (
+  moduleId: Nullish<number>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
+    if (!moduleId) throw new Error("Module id not found");
     return indexerGraphClient
-      .request(getProposalsCountByWalletAddress, {
-        walletAddress,
+      .request(getRelatedProposalsCountByModuleId, {
+        moduleId,
       })
-      .then(({ proposals_aggregate }) => proposals_aggregate?.aggregate?.count);
-  }, [walletAddress, indexerGraphClient]);
+      .then(
+        ({ module_proposals_aggregate }) =>
+          module_proposals_aggregate?.aggregate?.count
+      );
+  }, [indexerGraphClient, moduleId]);
 
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_COUNT,
-      walletAddress,
+      CELATONE_QUERY_KEYS.PROPOSALS_COUNT_BY_MODULE_ID,
+      moduleId,
       indexerGraphClient,
     ],
-    queryFn,
+    createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,
-      enabled: !!walletAddress,
     }
   );
 };

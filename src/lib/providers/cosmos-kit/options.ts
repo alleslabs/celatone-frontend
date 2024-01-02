@@ -10,7 +10,7 @@ import {
   defaultRegistryTypes as defaultStargateTypes,
 } from "@cosmjs/stargate";
 
-import { moveTypes } from "./move";
+import { createMoveAminoConverters, moveTypes } from "./move";
 
 /**
  * Remark: This is the custom signerOptions for the SigningCosmWasmClient.
@@ -20,7 +20,7 @@ export const getCustomedSigningCosmwasm = (): SigningCosmWasmClientOptions => {
   const aminoTypes = {
     ...createDefaultAminoConverters(),
     ...createWasmAminoConverters(),
-    // TODO: move amino converters to be implemented
+    ...createMoveAminoConverters(),
   };
 
   return {

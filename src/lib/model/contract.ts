@@ -1,15 +1,12 @@
 import { useCurrentChain } from "lib/app-provider";
-import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {} from "lib/services/contract";
 import {
   useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
   useInstantiatedListByUserQuery,
-  useMigrationHistoriesCountByContractAddress,
 } from "lib/services/contractService";
-import { useRelatedProposalsCountByContractAddress } from "lib/services/proposalService";
-import { useTxsCountByAddress } from "lib/services/txService";
 import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,
@@ -17,7 +14,6 @@ import type {
   HumanAddr,
   ContractInfo,
   Option,
-  Nullable,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
@@ -66,39 +62,6 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
     lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
-  };
-};
-
-/**
- * @remark
- * Remove execute table for now
- *
- */
-export const useContractDetailsTableCounts = (
-  contractAddress: ContractAddr,
-  contractAccountId: Option<Nullable<number>>
-) => {
-  const { data: migrationCount, refetch: refetchMigration } =
-    useMigrationHistoriesCountByContractAddress(contractAddress);
-  const { data: transactionsCount, refetch: refetchTransactions } =
-    useTxsCountByAddress({
-      accountId: contractAccountId,
-      search: "",
-      filters: DEFAULT_TX_FILTERS,
-      isSigner: undefined,
-    });
-  const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
-    useRelatedProposalsCountByContractAddress(contractAddress);
-
-  return {
-    tableCounts: {
-      migrationCount,
-      transactionsCount,
-      relatedProposalsCount,
-    },
-    refetchMigration,
-    refetchTransactions,
-    refetchRelatedProposals,
   };
 };
 

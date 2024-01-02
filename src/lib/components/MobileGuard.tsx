@@ -14,7 +14,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
   const isMobile = useMobile();
   const { currentChainId } = useCelatoneApp();
   const isResponsive =
-    pathName.includes(`account`) ||
+    pathName.includes(`/account`) ||
     pathName.includes(`/txs`) ||
     pathName.includes(`/blocks`) ||
     pathName.includes(`/projects`) ||

@@ -2,10 +2,13 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import plur from "plur";
 
+import { AmpEvent, track } from "lib/amplitude";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { feeFromStr } from "lib/utils";
 
 import type { PublishCompleteState } from ".";
 import { ModulePublishCard } from "./components/ModulePublishCard";
@@ -16,7 +19,7 @@ interface PublishCompletedProps {
 }
 
 export const PublishCompleted = ({
-  publishTxInfo: { txHash, formattedFee, upgradePolicy, modules },
+  publishTxInfo: { txHash, txFee, upgradePolicy, modules },
   resetState,
 }: PublishCompletedProps) => (
   <WasmPageContainer>
@@ -35,7 +38,12 @@ export const PublishCompleted = ({
         },
         {
           title: "Tx Fee",
-          value: formattedFee,
+          html: (
+            <EstimatedFeeRender
+              estimatedFee={feeFromStr(txFee)}
+              loading={false}
+            />
+          ),
         },
         {
           title: "Upgrade Policy",
@@ -61,7 +69,10 @@ export const PublishCompleted = ({
       mt={6}
       rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
       w="full"
-      onClick={resetState}
+      onClick={() => {
+        track(AmpEvent.USE_PUBLISH_MORE_MODULE_BUTTON);
+        resetState();
+      }}
     >
       Publish more modules
     </Button>

@@ -4,7 +4,7 @@ import { ConnectingLine } from "../ConnectingLine";
 import { CustomIcon } from "../icon";
 
 interface AttachStatusProps {
-  codeId: string;
+  codeId: number;
   isReattach?: boolean;
 }
 export const AttachStatus = ({

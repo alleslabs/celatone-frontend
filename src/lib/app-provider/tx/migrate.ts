@@ -1,7 +1,7 @@
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
-import { useCurrentChain } from "../hooks";
+import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
@@ -16,7 +16,8 @@ export interface MigrateStreamParams {
 }
 
 export const useMigrateTx = () => {
-  const { address, getSigningCosmWasmClient } = useCurrentChain();
+  const { address } = useCurrentChain();
+  const getSigningClient = useGetSigningClient();
 
   return useCallback(
     async ({
@@ -27,7 +28,7 @@ export const useMigrateTx = () => {
       onTxSucceed,
       onTxFailed,
     }: MigrateStreamParams) => {
-      const client = await getSigningCosmWasmClient();
+      const client = await getSigningClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
@@ -46,6 +47,6 @@ export const useMigrateTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningCosmWasmClient]
+    [address, getSigningClient]
   );
 };

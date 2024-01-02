@@ -7,10 +7,11 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { StructCard } from "lib/components/module/StructCard";
 import type { IndexedModule } from "lib/services/move/moduleService";
 
-interface ModuleStructProps {
+interface ModuleStructsProps {
   structs: IndexedModule["parsedAbi"]["structs"];
 }
-export const ModuleStruct = ({ structs }: ModuleStructProps) => {
+
+export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
   const [keyword, setKeyword] = useState("");
 
@@ -25,7 +26,7 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
     setExpandedIndexes(indexes);
 
   return (
-    <Flex direction="column" gap={8}>
+    <Flex direction="column" gap={4}>
       <Flex
         maxH={{ md: "24px" }}
         justifyContent="space-between"
@@ -94,12 +95,14 @@ export const ModuleStruct = ({ structs }: ModuleStructProps) => {
         </Flex>
       </Flex>
       <InputWithIcon
-        placeholder="Search structs..."
+        placeholder="Search with Struct Name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        action="module-struct-search"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="module-struct-search"
       />
       <Accordion
+        mt={4}
         allowMultiple
         index={expandedIndexes}
         onChange={updateExpandedIndexes}

@@ -16,7 +16,7 @@ import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
-import { getFirstQueryParam, isCodeId } from "lib/utils";
+import { getFirstQueryParam, isId } from "lib/utils";
 
 import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
@@ -128,7 +128,7 @@ const CodeDetailsBody = observer(
             </TabPanel>
             <TabPanel p={0}>
               <CodeSchemaSection
-                codeId={String(codeId)}
+                codeId={codeId}
                 codeHash={codeHash}
                 isCodeHashLoading={isLcdCodeLoading}
                 jsonSchema={jsonSchema}
@@ -150,7 +150,7 @@ const CodeDetails = observer(() => {
   if (data.isLoading) return <Loading withBorder />;
   return (
     <PageContainer>
-      {!isCodeId(codeIdParam) ? (
+      {!isId(codeIdParam) ? (
         <InvalidCode />
       ) : (
         <CodeDetailsBody codeDataState={data} codeId={Number(codeIdParam)} />

@@ -85,7 +85,7 @@ const InitRender = ({
   );
 };
 
-const ModuleDetailsBody = ({
+const ModuleInfoBody = ({
   moduleDetails,
   isLoading,
   upgradePolicy,
@@ -173,7 +173,7 @@ export const ModuleInfo = ({
         </Flex>
       )}
     </Flex>
-    <ModuleDetailsBody {...details} />
+    <ModuleInfoBody {...details} />
     <ModuleSourceCode sourceCode={verificationData?.source} />
   </Flex>
 );

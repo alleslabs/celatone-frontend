@@ -9,7 +9,7 @@ export const useContractStates = (
   contractAddress: ContractAddr,
   numStatesToLoad: number
 ) => {
-  const baseEndpoint = useBaseApiRoute("rest");
+  const baseEndpoint = useBaseApiRoute("contracts");
 
   return useInfiniteQuery(
     [
@@ -26,13 +26,7 @@ export const useContractStates = (
         pageParam
       ),
     {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.nextKey) {
-          return lastPage.nextKey;
-        }
-
-        return false; // No more pages
-      },
+      getNextPageParam: (lastPage) => lastPage.nextKey,
       refetchOnWindowFocus: false,
     }
   );

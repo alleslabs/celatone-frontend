@@ -17,9 +17,9 @@ import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useQueryCmds } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { queryData } from "lib/services/contract";
+import { useContractQueryMsgs } from "lib/services/contractService";
 import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
 import {
   jsonPrettify,
@@ -42,7 +42,8 @@ interface JsonQueryProps {
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
-  const { isFetching: cmdsFetching, queryCmds } = useQueryCmds(contractAddress);
+  const { isFetching: cmdsFetching, data: queryCmds = [] } =
+    useContractQueryMsgs(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();

@@ -133,8 +133,8 @@ export const SupportedSection = ({
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            size="lg"
-            action="supported-pool-list-search"
+            size={{ base: "md", md: "lg" }}
+            amptrackSection="supported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"

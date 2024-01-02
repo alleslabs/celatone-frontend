@@ -15,19 +15,19 @@ import { truncate } from "lib/utils";
 
 import { getAccountResources } from "./resource";
 
-export interface AccountResourcesReturn {
+export interface ResourcesByAddressReturn {
   groupedByOwner: ResourceGroupByAccount[];
   groupedByName: ResourceGroup[];
   totalCount: number;
 }
 
-export const useAccountResources = (
+export const useResourcesByAddress = (
   address: MoveAccountAddr
-): UseQueryResult<AccountResourcesReturn> => {
+): UseQueryResult<ResourcesByAddressReturn> => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
-  const queryFn: QueryFunction<AccountResourcesReturn> = () =>
+  const queryFn: QueryFunction<ResourcesByAddressReturn> = () =>
     getAccountResources(endpoint, address).then((resources) => {
       const groupedByOwner = resources.items.reduce<
         Record<string, ResourceGroupByAccount>
@@ -60,13 +60,15 @@ export const useAccountResources = (
         Record<string, ResourceGroup>
       >((acc, resource) => {
         const [accountName, groupName] = resource.structTag.split("::");
-        const groupResources = acc[groupName] ?? {};
+        const resourceKey = `${accountName}::${groupName}`;
+
+        const groupResources = acc[resourceKey] ?? {};
         const items = groupResources?.items ?? [];
         items.push(resource);
 
         return {
           ...acc,
-          [groupName]: {
+          [resourceKey]: {
             displayName: `${truncate(accountName)}::${groupName}`,
             account: accountName as MoveAccountAddr,
             group: groupName,
@@ -82,7 +84,7 @@ export const useAccountResources = (
       };
     });
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_RESOURCES, endpoint, address],
+    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, endpoint, address],
     queryFn,
     { enabled, refetchOnWindowFocus: false, retry: 1 }
   );

@@ -29,7 +29,7 @@ export const ContractsTable = ({
 }: ContractsTableProps) => {
   const isMobile = useMobile();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
   if (!contracts?.length) return emptyState;
 
   let templateColumns: string;

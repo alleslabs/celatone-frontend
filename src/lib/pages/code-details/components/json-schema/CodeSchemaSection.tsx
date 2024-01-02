@@ -36,7 +36,7 @@ const StyledTabPanel = chakra(TabPanel, {
 });
 
 interface CodeSchemaSectionProps {
-  codeId: string;
+  codeId: number;
   codeHash: Option<string>;
   isCodeHashLoading: boolean;
   jsonSchema: Option<CodeSchema>;

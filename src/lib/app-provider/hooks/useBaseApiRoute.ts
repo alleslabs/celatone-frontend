@@ -6,14 +6,13 @@ export const useBaseApiRoute = (
   type:
     | "overviews"
     | "txs"
-    | "balances"
+    | "accounts"
     | "assets"
     | "blocks"
-    | "projects"
     | "contracts"
+    | "projects"
     | "codes"
     | "legacy.accounts"
-    | "accounts"
     | "rest"
     | "icns_names"
     | "icns_address"
@@ -21,6 +20,7 @@ export const useBaseApiRoute = (
     | "move_modules"
     | "staking"
     | "move"
+    | "modules"
 ): string => {
   const {
     chainConfig: { chain },
@@ -37,18 +37,16 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/overviews`;
     case "txs":
       return `${api}/v1/${chain}/${currentChainId}/txs`;
-    case "balances":
-      return `${api}/v1/${chain}/${currentChainId}/balances`;
     case "accounts":
       return `${api}/v1/${chain}/${currentChainId}/accounts`;
     case "assets":
       return `${api}/v1/${chain}/${currentChainId}/assets`;
     case "blocks":
       return `${api}/v1/${chain}/${currentChainId}/blocks`;
+    case "contracts":
+      return `${api}/v1/${chain}/${currentChainId}/contracts`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
-    case "contracts":
-      return `${api}/contracts/${chain}/${currentChainId}`;
     case "codes":
       return `${api}/codes/${chain}/${currentChainId}`;
     case "legacy.accounts":
@@ -67,6 +65,8 @@ export const useBaseApiRoute = (
       return `${api}/${chain}/${currentChainId}/staking`;
     case "move":
       return `${api}/v1/${chain}/${currentChainId}/move`;
+    case "modules":
+      return `${api}/v1/${chain}/${currentChainId}/move/modules`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

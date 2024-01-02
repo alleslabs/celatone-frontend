@@ -21,7 +21,7 @@ import type {
   RawPublicCode,
   PublicModule,
 } from "lib/types";
-import { isCodeId } from "lib/utils";
+import { isId } from "lib/utils";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
@@ -89,39 +89,6 @@ export const usePublicProjectBySlug = (
   );
 };
 
-export const usePublicProjectByContractAddress = (
-  contractAddress: Option<string>
-): UseQueryResult<PublicInfo> => {
-  const projectsApiRoute = useBaseApiRoute("contracts");
-  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
-  const wasmConfig = useWasmConfig({ shouldRedirect: false });
-
-  const queryFn = useCallback(async () => {
-    if (!contractAddress)
-      throw new Error(
-        "Contract address not found (usePublicProjectByContractAddress)"
-      );
-    return axios
-      .get<PublicInfo>(`${projectsApiRoute}/${contractAddress}`)
-      .then(({ data: projectInfo }) => projectInfo);
-  }, [projectsApiRoute, contractAddress]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CONTRACT_ADDRESS,
-      projectsApiRoute,
-      contractAddress,
-    ],
-    queryFn,
-    {
-      enabled:
-        Boolean(contractAddress) && projectConfig.enabled && wasmConfig.enabled,
-      retry: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
 export const usePublicProjectByCodeId = (
   codeId: string
 ): UseQueryResult<PublicCode> => {
@@ -142,7 +109,7 @@ export const usePublicProjectByCodeId = (
     [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CODE_ID, projectsApiRoute, codeId],
     queryFn,
     {
-      enabled: isCodeId(codeId) && projectConfig.enabled && wasmConfig.enabled,
+      enabled: isId(codeId) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }

@@ -1,27 +1,19 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
-import type { ContractData } from "../types";
-import { useGetAddressType } from "lib/app-provider";
+import { useCurrentChain, useGetAddressType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { Loading } from "lib/components/Loading";
-import type { Option } from "lib/types";
-import { formatUTC, dateFromNow } from "lib/utils";
+import type { Contract, ContractRest } from "lib/services/contract";
+import type { CodeLocalInfo } from "lib/stores/code";
+import type { Nullable, Option } from "lib/types";
+import { formatUTC, dateFromNow, getCw2Info } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
-  chainId: ContractData["chainId"];
-  codeLocalInfo: ContractData["codeLocalInfo"];
-  contractDetail: ContractData["contractDetail"];
-  contractCw2Info: ContractData["contractCw2Info"];
-  initTxHash: ContractData["initTxHash"];
-  initProposalId: ContractData["initProposalId"];
-  initProposalTitle: ContractData["initProposalTitle"];
-  createdHeight: ContractData["createdHeight"];
-  createdTime: ContractData["createdTime"];
-  rawContractResponse: ContractData["rawContractResponse"];
-  isLoading: boolean;
+  contract: Contract;
+  contractRest: Nullable<ContractRest>;
+  codeLocalInfo: Option<CodeLocalInfo>;
 }
 
 const Container = chakra(Flex, {
@@ -60,12 +52,7 @@ const InitRender = ({
   initProposalTitle,
   initProposalId,
   createdHeight,
-}: {
-  initTxHash: ContractData["initTxHash"];
-  initProposalTitle: ContractData["initProposalTitle"];
-  initProposalId: ContractData["initProposalId"];
-  createdHeight: Option<number>;
-}) => {
+}: Contract) => {
   if (initTxHash) {
     return (
       <LabelText label="Instantiate Transaction">
@@ -107,39 +94,18 @@ const InitRender = ({
 };
 
 export const InstantiateInfo = ({
-  chainId,
+  contract,
+  contractRest,
   codeLocalInfo,
-  contractDetail,
-  contractCw2Info,
-  initTxHash,
-  initProposalId,
-  initProposalTitle,
-  createdHeight,
-  createdTime,
-  rawContractResponse,
-  isLoading,
 }: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
 
-  if (isLoading)
-    return (
-      <Container>
-        <Loading />
-      </Container>
-    );
-
-  if (!contractDetail) {
-    return (
-      <Container>
-        <Text variant="body2" color="text.dark">
-          Error fetching data
-        </Text>
-      </Container>
-    );
-  }
-
-  const instantiatorType = getAddressType(contractDetail.instantiator);
-  const adminType = getAddressType(contractDetail.admin);
+  const instantiatorType = getAddressType(contract.instantiator);
+  const adminType = getAddressType(contract.admin ?? undefined);
+  const cw2 = getCw2Info(contract.cw2Contract, contract.cw2Version);
 
   return (
     <Container w={{ base: "full", md: "auto" }} h="fit-content">
@@ -150,7 +116,7 @@ export const InstantiateInfo = ({
         <LabelText flex="1" label="From Code" helperText1={codeLocalInfo?.name}>
           <ExplorerLink
             type="code_id"
-            value={contractDetail.codeId.toString()}
+            value={contract.codeId.toString()}
             showCopyOnHover
             fixedHeight
           />
@@ -158,9 +124,9 @@ export const InstantiateInfo = ({
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
         <LabelText flex="1" label="CW2 Info">
-          {contractCw2Info ? (
+          {cw2 ? (
             <Text variant="body2" wordBreak="break-all">
-              {contractCw2Info.contract} ({contractCw2Info.version})
+              {cw2}
             </Text>
           ) : (
             <Text variant="body2" color="text.dark">
@@ -168,7 +134,7 @@ export const InstantiateInfo = ({
             </Text>
           )}
         </LabelText>
-        {contractDetail.admin ? (
+        {contract.admin ? (
           <LabelText
             flex="1"
             label="Admin Address"
@@ -176,7 +142,7 @@ export const InstantiateInfo = ({
           >
             <ExplorerLink
               type={adminType}
-              value={contractDetail.admin}
+              value={contract.admin}
               showCopyOnHover
               fixedHeight
             />
@@ -190,23 +156,19 @@ export const InstantiateInfo = ({
         )}
       </Flex>
       <Divider border="1px solid" borderColor="gray.700" />
-      {createdHeight !== undefined ? (
-        <LabelText
-          flex="1"
-          label="Instantiated Block Height"
-          helperText1={createdTime ? formatUTC(createdTime) : undefined}
-          helperText2={createdTime ? dateFromNow(createdTime) : undefined}
-        >
-          <ExplorerLink
-            type="block_height"
-            value={createdHeight.toString()}
-            showCopyOnHover
-            fixedHeight
-          />
-        </LabelText>
-      ) : (
-        <LabelText label="Instantiated Block Height">N/A</LabelText>
-      )}
+      <LabelText
+        flex="1"
+        label="Instantiated Block Height"
+        helperText1={formatUTC(contract.createdTimestamp)}
+        helperText2={dateFromNow(contract.createdTimestamp)}
+      >
+        <ExplorerLink
+          type="block_height"
+          value={contract.createdHeight.toString()}
+          showCopyOnHover
+          fixedHeight
+        />
+      </LabelText>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         <LabelText
           flex="1"
@@ -215,26 +177,19 @@ export const InstantiateInfo = ({
         >
           <ExplorerLink
             type={instantiatorType}
-            value={contractDetail.instantiator ?? "N/A"}
+            value={contract.instantiator}
             showCopyOnHover
             fixedHeight
           />
         </LabelText>
         <Flex flex="1">
-          <InitRender
-            initTxHash={initTxHash}
-            initProposalId={initProposalId}
-            initProposalTitle={initProposalTitle}
-            createdHeight={createdHeight}
-          />
+          <InitRender {...contract} />
         </Flex>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
-        {rawContractResponse?.contract_info.ibc_port_id && (
+        {contractRest?.contract_info.ibc_port_id && (
           <LabelText label="IBC Port ID">
-            <PortIdRender
-              portId={rawContractResponse.contract_info.ibc_port_id}
-            />
+            <PortIdRender portId={contractRest.contract_info.ibc_port_id} />
           </LabelText>
         )}
       </Flex>

@@ -40,6 +40,7 @@ const nextConfig = {
       "block",
       "code",
       "contract",
+      "module",
       "proposal",
       "project",
       "contract-list",

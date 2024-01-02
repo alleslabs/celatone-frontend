@@ -18,7 +18,7 @@ interface SchemaQueryProps {
   schema: Option<QuerySchema>;
   contractAddress: ContractAddr;
   initialMsg: string;
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 
@@ -105,10 +105,11 @@ export const SchemaQuery = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
-          placeholder="Search by command"
+          placeholder="Search by Command"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          action="query-message-search"
+          size={{ base: "md", md: "lg" }}
+          amptrackSection="query-message-search"
         />
         <Button
           variant="outline-gray"

@@ -73,6 +73,11 @@ export const NavDrawer = () => {
         ...(move.enabled
           ? [
               {
+                name: "Modules",
+                slug: "/modules",
+                icon: "contract-address" as IconKeys,
+              },
+              {
                 name: "0x1 Page",
                 slug: "/account/0x1",
                 icon: "hex" as IconKeys,

@@ -1,38 +1,7 @@
 import { z } from "zod";
 
-import {
-  type Option,
-  type TokenWithValue,
-  type Validator,
-  zAddr,
-} from "lib/types";
-
-import type {
-  Delegation,
-  Redelegation,
-  StakingParams,
-  Unbonding,
-} from "./data";
-
-export interface NonRedelegatable {
-  dstValidator: Validator;
-  completionTime: Date;
-}
-
-export interface UserDelegationsData {
-  isLoading: boolean;
-  stakingParams: Option<StakingParams>;
-  isValidator: Option<boolean>;
-  totalBonded: Option<Record<string, TokenWithValue>>;
-  totalDelegations: Option<Record<string, TokenWithValue>>;
-  delegations: Option<Delegation[]>;
-  totalUnbondings: Option<Record<string, TokenWithValue>>;
-  unbondings: Option<Unbonding[]>;
-  totalRewards: Option<Record<string, TokenWithValue>>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
-  redelegations: Option<Redelegation[]>;
-  totalCommission: Option<Record<string, TokenWithValue>>;
-}
+import { zAddr } from "lib/types";
+import type { TokenWithValue, Validator } from "lib/types";
 
 export enum TabIndex {
   Overview = "overview",
@@ -48,7 +17,7 @@ export enum TabIndex {
   Proposals = "proposals",
 }
 
-export const zAccDetailQueryParams = z.object({
+export const zAccountDetailsQueryParams = z.object({
   accountAddress: zAddr,
   tab: z.union([
     z.nativeEnum(TabIndex),
@@ -58,3 +27,32 @@ export const zAccDetailQueryParams = z.object({
       .transform(() => TabIndex.Overview),
   ]),
 });
+
+export interface StakingParams {
+  unbondingTime: string; // e.g. "14 days"
+  maxEntries: number;
+  bondDenoms: TokenWithValue[];
+}
+
+export interface Delegation {
+  validator: Validator;
+  balances: TokenWithValue[];
+}
+
+export interface Unbonding {
+  validator: Validator;
+  completionTime: Date;
+  balances: TokenWithValue[];
+}
+
+export interface Redelegation {
+  srcValidator: Validator;
+  dstValidator: Validator;
+  completionTime: Date;
+  balances: TokenWithValue[];
+}
+
+export interface NonRedelegatable {
+  dstValidator: Validator;
+  completionTime: Date;
+}

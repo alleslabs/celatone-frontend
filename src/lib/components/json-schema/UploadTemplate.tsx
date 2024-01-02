@@ -187,7 +187,7 @@ const MethodRender = ({
 
 interface UploadTemplateInterface {
   codeHash: string;
-  codeId: string;
+  codeId: number;
   isReattach: boolean;
   closeDrawer: () => void;
   onSchemaSave?: () => void;
@@ -249,7 +249,7 @@ export const UploadTemplate = ({
         error: schemaValidateError,
       });
     }
-    saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
+    saveNewSchema(codeHash, codeId.toString(), JSON.parse(schemaString));
     track(AmpEvent.ACTION_ATTACH_JSON, { method, isReattach });
     toast({
       title: `Attached JSON Schema`,

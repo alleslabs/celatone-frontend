@@ -31,12 +31,7 @@ import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import {
-  composeMsg,
-  isCodeId,
-  jsonValidate,
-  resolvePermission,
-} from "lib/utils";
+import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
 
 interface MigrateContractProps {
   contractAddress: ContractAddr;
@@ -97,7 +92,7 @@ export const MigrateContract = ({
   const jsonSchema = getSchemaByCodeHash(codeHash);
   const enableMigrate = useMemo(() => {
     const generalChecks =
-      Boolean(address) && isCodeId(codeId) && status.state === "success";
+      Boolean(address) && isId(codeId) && status.state === "success";
 
     switch (tab) {
       case MessageTabs.JSON_INPUT:
@@ -284,14 +279,16 @@ export const MigrateContract = ({
           />
         }
         schemaContent={
-          <SchemaInputSection
-            type="migrate"
-            codeHash={codeHash}
-            codeId={codeId}
-            jsonSchema={jsonSchema}
-            handleChange={handleChange}
-            onSchemaSave={resetMsgInputSchema}
-          />
+          isId(codeId) && (
+            <SchemaInputSection
+              type="migrate"
+              codeHash={codeHash}
+              codeId={Number(codeId)}
+              jsonSchema={jsonSchema}
+              handleChange={handleChange}
+              onSchemaSave={resetMsgInputSchema}
+            />
+          )
         }
       />
       {simulateError && (

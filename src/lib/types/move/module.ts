@@ -1,4 +1,4 @@
-import type { Option, RemarkType, UpgradePolicy } from "lib/types";
+import type { HumanAddr, Option, RemarkType, UpgradePolicy } from "lib/types";
 
 interface Remark {
   type: RemarkType;
@@ -11,4 +11,17 @@ export interface ModuleHistory {
   height: number;
   timestamp: Date;
   previousPolicy: Option<UpgradePolicy>;
+}
+
+export interface ModuleInfo {
+  address: HumanAddr;
+  name: string;
+  functions?: {
+    view: number;
+    execute: number;
+  };
+  height?: number;
+  latestUpdated?: Date;
+  isRepublished?: boolean;
+  isVerified?: boolean;
 }

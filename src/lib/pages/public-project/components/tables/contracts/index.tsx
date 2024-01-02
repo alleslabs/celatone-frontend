@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import {
   MobileTableContainer,
@@ -100,13 +100,13 @@ export const PublicProjectContractTable = observer(
       <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
-          <TextInput
-            variant="fixed-floating"
-            value={searchKeyword}
-            setInputState={setSearchKeyword}
+          <InputWithIcon
             placeholder="Search with Contract Address or Contract Name"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}
-            mb={6}
+            my={2}
+            amptrackSection="public-project-contract-search"
           />
         )}
         {publicContracts.length ? (
@@ -117,7 +117,7 @@ export const PublicProjectContractTable = observer(
             message={
               contracts.length
                 ? "No matching contract found for this project. Make sure you are searching with Contract Address or Contract Name"
-                : "There is currently no contracts related to this project."
+                : "There are currently no contracts related to this project."
             }
             imageVariant={onViewMore && "empty"}
             withBorder

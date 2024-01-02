@@ -15,6 +15,7 @@ import {
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 import { useAccountType } from "lib/services/accountService";
 import { AccountType, type Addr } from "lib/types";
@@ -48,6 +49,7 @@ export function SaveNewAccountModal({
   const { constants } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
   const { isSomeValidAddress } = useValidateAddress();
+  const formatAddresses = useFormatAddresses();
   const move = useMoveConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
 
@@ -116,25 +118,34 @@ export function SaveNewAccountModal({
         state: "loading",
       });
       setIsContract(false);
-      if (isAccountSaved(addressState)) {
-        setErrorStatus("You already saved this address");
-      } else {
-        const timeoutId = setTimeout(() => {
-          if (!isSomeValidAddress(addressState))
-            setErrorStatus("Invalid Address");
-          else if (wasm.enabled) refetch();
-          else setStatus(statusSuccess);
-        }, 1000);
-        return () => clearTimeout(timeoutId);
-      }
+      const timeoutId = setTimeout(() => {
+        if (!isSomeValidAddress(addressState)) {
+          setErrorStatus("Invalid Address");
+          return;
+        }
+
+        if (
+          isAccountSaved(addressState) ||
+          (move.enabled &&
+            isAccountSaved(formatAddresses(addressState).address))
+        ) {
+          setErrorStatus("You already saved this address");
+          return;
+        }
+
+        if (wasm.enabled) refetch();
+        else setStatus(statusSuccess);
+      }, 500);
+      return () => clearTimeout(timeoutId);
     }
     return () => {};
   }, [
     addressState,
+    formatAddresses,
     isAccountSaved,
     isSomeValidAddress,
-    refetch,
     move.enabled,
+    refetch,
     wasm.enabled,
   ]);
 

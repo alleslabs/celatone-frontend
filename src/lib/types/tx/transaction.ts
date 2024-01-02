@@ -1,4 +1,5 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
+import { z } from "zod";
 
 import type { Addr, Option } from "lib/types";
 
@@ -37,6 +38,12 @@ export interface Transaction {
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
   isInstantiate: boolean;
+  isOpinit: boolean;
+}
+
+/* Filter for INITIA */
+export interface InitiaTxFilters {
+  isOpinit: boolean;
 }
 
 export interface BaseTxFilters {
@@ -62,7 +69,8 @@ export interface MoveTxFilters {
 export interface TxFilters
   extends BaseTxFilters,
     WasmTxFilters,
-    MoveTxFilters {}
+    MoveTxFilters,
+    InitiaTxFilters {}
 
 export type PoolTxFilter =
   | "is_all"
@@ -74,4 +82,5 @@ export type PoolTxFilter =
   | "is_collect"
   | "is_migrate";
 
-export type RemarkType = "genesis" | "governance" | "transaction";
+export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
+export type RemarkType = z.infer<typeof zRemarkType>;

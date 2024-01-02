@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
-import { useModuleTxsByPagination } from "lib/services/txService";
-import type { Nullable, Option } from "lib/types";
+import { useTxsByModule } from "lib/services/txService";
+import type { HexAddr, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
-  moduleId: Option<Nullable<number>>;
+  address: HexAddr;
+  moduleName: string;
   txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
@@ -18,7 +19,8 @@ interface ModuleTxsTableProps {
 }
 
 export const ModuleTxsTable = ({
-  moduleId,
+  address,
+  moduleName,
   txCount,
   onViewMore,
   scrollComponentId,
@@ -46,11 +48,7 @@ export const ModuleTxsTable = ({
     data: moduleTxs,
     isLoading,
     error,
-  } = useModuleTxsByPagination({
-    moduleId,
-    pageSize,
-    offset,
-  });
+  } = useTxsByModule(address, moduleName, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -72,15 +70,11 @@ export const ModuleTxsTable = ({
   return (
     <>
       <TransactionsTable
-        transactions={moduleTxs}
+        transactions={moduleTxs?.items}
         isLoading={isLoading}
         emptyState={
-          !moduleId || error ? (
-            <EmptyState
-              withBorder
-              imageVariant="not-found"
-              message="There is an error during fetching transactions."
-            />
+          error ? (
+            <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
               withBorder
