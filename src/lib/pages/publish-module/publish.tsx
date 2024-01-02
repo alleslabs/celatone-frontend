@@ -21,7 +21,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
-import type { BechAddr20, Option } from "lib/types";
+import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
 
 import type { PublishCompleteState } from ".";
@@ -185,7 +185,7 @@ export const PublishModule = ({
           modules,
           index,
           policy: upgradePolicy,
-          address: address as Option<BechAddr20>,
+          address,
         })
       );
     });
