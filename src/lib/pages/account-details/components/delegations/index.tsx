@@ -15,16 +15,16 @@ import { RedelegationsSection } from "./RedelegationsSection";
 import { TotalCard } from "./total-card";
 
 interface DelegationsSectionProps {
-  walletAddress: BechAddr;
+  address: BechAddr;
   onViewMore?: () => void;
 }
 
 export const DelegationsSection = ({
-  walletAddress,
+  address,
   onViewMore,
 }: DelegationsSectionProps) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
   const router = useRouter();
+  const { isOpen, onToggle, onClose } = useDisclosure();
   const {
     isLoading,
     stakingParams,
@@ -38,7 +38,7 @@ export const DelegationsSection = ({
     rewards,
     redelegations,
     totalCommission,
-  } = useUserDelegationInfos(walletAddress);
+  } = useUserDelegationInfos(address);
 
   useEffect(() => {
     onClose();
@@ -77,7 +77,7 @@ export const DelegationsSection = ({
                     )
                   : "tokens"
               }, including those delegated through vesting`}
-              address={walletAddress}
+              address={address}
               bondDenoms={stakingParams.bondDenoms}
               tokens={totalBonded}
               isLoading={isLoading}
@@ -96,7 +96,7 @@ export const DelegationsSection = ({
                       )
                     : "tokens"
                 } across all validators`}
-                address={walletAddress}
+                address={address}
                 bondDenoms={stakingParams.bondDenoms}
                 tokens={totalRewards}
                 isLoading={isLoading}
@@ -106,7 +106,7 @@ export const DelegationsSection = ({
                 <TotalCard
                   title="Commission"
                   message="Total commission reward earned by validator"
-                  address={walletAddress}
+                  address={address}
                   bondDenoms={stakingParams.bondDenoms}
                   tokens={totalCommission}
                   isLoading={isLoading}

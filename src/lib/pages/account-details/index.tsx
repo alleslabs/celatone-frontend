@@ -290,7 +290,7 @@ const AccountDetailsBody = ({
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
               >
                 <DelegationsSection
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   onViewMore={handleTabChange(TabIndex.Delegations, undefined)}
                 />
               </Flex>
@@ -376,7 +376,7 @@ const AccountDetailsBody = ({
             <AssetsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <DelegationsSection walletAddress={accountAddress} />
+            <DelegationsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

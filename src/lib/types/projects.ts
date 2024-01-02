@@ -23,7 +23,7 @@ export interface PublicAccount {
 }
 
 export interface PublicModule {
-  address: HexAddr; // TODO: confirm
+  address: HexAddr;
   description: string;
   github: string;
   name: string;
