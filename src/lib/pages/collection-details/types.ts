@@ -4,7 +4,6 @@ export enum TabIndex {
   Overview = "overview",
   Supplies = "supplies",
   Activities = "activities",
-  RelatedProposals = "related_proposals",
   MutateEvents = "mutate_events",
 }
 

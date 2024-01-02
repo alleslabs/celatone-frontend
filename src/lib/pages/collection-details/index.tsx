@@ -35,7 +35,6 @@ import Activities from "./components/activities";
 import CollectionInfoOverview from "./components/CollectionInfoOverview";
 import CollectionSupplyOverview from "./components/CollectionSupplyOverview";
 import NFTsOverview from "./components/NFTsOverview";
-import RelatedProposals from "./components/related-proposals";
 import Supplies from "./components/supplies";
 import { useCollectionSupplies } from "./data";
 import MutateEvents from "./mutate-events";
@@ -146,12 +145,6 @@ const CollectionDetailsBody = ({
             Activities <Badge ml="6px">{activitiesCount}</Badge>
           </CustomTab>
           <CustomTab
-            onClick={handleTabChange(TabIndex.RelatedProposals)}
-            isDisabled
-          >
-            Related Proposals <Badge ml="6px">{0}</Badge>
-          </CustomTab>
-          <CustomTab
             onClick={handleTabChange(TabIndex.MutateEvents)}
             isDisabled={!mutateEventsCount}
           >
@@ -195,9 +188,6 @@ const CollectionDetailsBody = ({
               collectionAddress={collectionAddress}
               totalActivitiesCount={activitiesCount ?? 0}
             />
-          </TabPanel>
-          <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <RelatedProposals />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <MutateEvents
