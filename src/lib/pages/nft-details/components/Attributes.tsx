@@ -16,6 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Trait } from "lib/types";
@@ -105,7 +106,8 @@ const Attributes = ({
   nftName: string;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const displayedCount = 6;
+  const isMobile = useMobile();
+  const displayedCount = isMobile ? 4 : 6;
 
   return (
     <Stack w="100%" spacing="16px">
@@ -119,7 +121,7 @@ const Attributes = ({
       </Flex>
 
       <SimpleGrid
-        templateColumns="1fr 1fr 1fr"
+        templateColumns={isMobile ? "1fr 1fr" : "1fr 1fr 1fr"}
         minChildWidth="172px"
         spacing="16px"
       >

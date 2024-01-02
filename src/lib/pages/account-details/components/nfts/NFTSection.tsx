@@ -1,6 +1,7 @@
 import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useCollectionListByAddress } from "lib/services/collectionService";
@@ -22,6 +23,8 @@ export const NFTSection = ({
   const [collection, setCollection] = useState<string>();
   const [nftCount, setNFTCount] = useState<number>(totalCount);
 
+  const isMobile = useMobile();
+
   if (isLoading) return <Loading />;
   if (!collectionList || !collectionList.length)
     return (
@@ -42,7 +45,7 @@ export const NFTSection = ({
         <Heading variant="h6">NFTs</Heading>
         <Badge>{totalCount}</Badge>
       </Flex>
-      <Flex gap="40px" mt="32px">
+      <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
         <Stack w="300px" spacing="8px">
           <FilterItem
             collectionName="All Collections"

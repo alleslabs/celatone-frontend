@@ -1,5 +1,6 @@
 import { Text, Box, Stack, SimpleGrid, GridItem } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useNFTMintInfo } from "lib/services/nftService";
@@ -14,6 +15,7 @@ const MintInfo = ({
 }) => {
   const { data: mintInfo, isLoading } = useNFTMintInfo(nftAddress);
 
+  const isMobile = useMobile();
   if (isLoading) return <Loading />;
   if (!mintInfo) return null;
 
@@ -28,7 +30,10 @@ const MintInfo = ({
         borderColor="gray.700"
         borderRadius="8px"
       >
-        <SimpleGrid templateColumns="1fr 1fr 1fr" spacing="24px">
+        <SimpleGrid
+          templateColumns={isMobile ? "1fr" : "1fr 1fr 1fr"}
+          spacing="24px"
+        >
           <GridItem>
             <Stack spacing="4px">
               <Text color="gray.400" fontWeight={700} fontSize="14px">

@@ -4,9 +4,8 @@ export enum TabIndex {
   Overview = "overview",
   Supplies = "supplies",
   Activities = "activities",
-  RelatedProposals = "related proposals",
-  MutateEvents = "mutate events",
-  UniqueHolders = "unique holders",
+  RelatedProposals = "related_proposals",
+  MutateEvents = "mutate_events",
 }
 
 export const zCollectionDetailQueryParams = z.object({

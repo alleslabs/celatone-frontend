@@ -29,7 +29,7 @@ export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
           <TxsTableMobileCard
             key={arrayKey}
             hash={transaction.txhash}
-            timestamp={transaction.timestamp}
+            {...transaction}
           />
         );
       })}

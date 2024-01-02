@@ -9,6 +9,7 @@ import {
 import type { PropsWithChildren } from "react";
 
 import { useMobile } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useCollectionCreator } from "lib/services/collectionService";
@@ -164,8 +165,18 @@ const CollectionInfoOverview = ({
         gap={isMobile ? "16px" : "32px"}
         flexDir={mobileInfoDirection}
       >
-        <InfoCard title="Activities" content={activities} />
-        <InfoCard title="Mutate Events" content={mutateEventes} />
+        <AppLink
+          href={`/collections/${collectionAddress}/activities`}
+          style={{ flex: 1 }}
+        >
+          <InfoCard title="Activities" content={activities} />
+        </AppLink>
+        <AppLink
+          href={`/collections/${collectionAddress}/mutate_events`}
+          style={{ flex: 1 }}
+        >
+          <InfoCard title="Mutate Events" content={mutateEventes} />
+        </AppLink>
       </Flex>
     </Box>
   );
