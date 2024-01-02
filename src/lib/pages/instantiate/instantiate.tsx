@@ -48,7 +48,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { BechAddr, ComposedMsg } from "lib/types";
+import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -77,7 +77,7 @@ interface InstantiatePageProps {
   onComplete: (
     txResult: InstantiateResult,
     contractLabel: string,
-    instantiator: string
+    instantiator: BechAddr20
   ) => void;
 }
 
@@ -261,7 +261,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       estimatedFee,
       onTxSucceed: (txResult, contractLabel) => {
         setProcessing(false);
-        onComplete(txResult, contractLabel, address ?? "");
+        onComplete(txResult, contractLabel, address ?? ("" as BechAddr20));
       },
       onTxFailed: () => setProcessing(false),
     });

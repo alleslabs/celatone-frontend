@@ -2,6 +2,7 @@ import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
 import { useWasmConfig } from "lib/app-provider";
+import type { BechAddr20 } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
 import CompletedPage from "./completed";
@@ -9,7 +10,7 @@ import InstantiatePage from "./instantiate";
 
 export interface InstantiateTxInfo extends InstantiateResult {
   contractLabel: string;
-  instantiator: string;
+  instantiator: BechAddr20;
 }
 
 const Index = () => {
@@ -24,7 +25,7 @@ const Index = () => {
     gasWanted: 0,
     gasUsed: 0,
     contractLabel: "",
-    instantiator: "",
+    instantiator: "" as BechAddr20,
   });
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const Index = () => {
       onComplete={(
         txResult: InstantiateResult,
         contractLabel: string,
-        instantiator: string
+        instantiator: BechAddr20
       ) => {
         setTxInfo({ ...txResult, contractLabel, instantiator });
         setCompleted(true);

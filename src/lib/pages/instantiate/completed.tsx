@@ -6,7 +6,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import type { BechAddr20, BechAddr32 } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
 import type { InstantiateTxInfo } from ".";
@@ -102,7 +102,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         subtitle="Filled information below will be saved on Celatone only and able to edit later."
         contractAddress={txInfo.contractAddress as BechAddr32}
         contractLabel={txInfo.contractLabel}
-        instantiator={txInfo.instantiator as BechAddr20}
+        instantiator={txInfo.instantiator}
       />
     </WasmPageContainer>
   );
