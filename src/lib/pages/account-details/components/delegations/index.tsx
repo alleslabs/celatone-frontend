@@ -6,7 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
-import type { HumanAddr } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
 import { DelegationInfo } from "./DelegationInfo";
@@ -15,7 +15,7 @@ import { RedelegationsSection } from "./RedelegationsSection";
 import { TotalCard } from "./total-card";
 
 interface DelegationsSectionProps {
-  walletAddress: HumanAddr;
+  walletAddress: BechAddr;
   onViewMore?: () => void;
 }
 

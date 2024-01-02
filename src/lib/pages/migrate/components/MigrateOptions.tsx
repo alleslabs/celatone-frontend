@@ -4,7 +4,7 @@ import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import type { UploadAccess } from "lib/services/proposal";
-import type { HumanAddr, Option } from "lib/types";
+import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
@@ -28,7 +28,7 @@ export const MigrateOptions = ({
   const isPermissionedNetwork =
     uploadAccess?.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = resolvePermission(
-    address as HumanAddr,
+    address,
     uploadAccess?.permission,
     uploadAccess?.addresses
   );

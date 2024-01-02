@@ -3,12 +3,12 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { ErrorFetching } from "lib/components/state/ErrorFetching";
 import { useBalanceInfos } from "lib/services/balanceService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 import { SupportedTokensSection } from "./SupportedTokensSection";
 
 interface ContractBalancesProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   amptrackPage?: string;
   onViewMore?: () => void;
 }

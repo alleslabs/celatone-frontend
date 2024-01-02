@@ -5,14 +5,14 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/data";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
 import { MigrationMobileCard } from "./MigrationMobileCard";
 import { MigrationRow } from "./MigrationRow";
 
 interface MigrationTableProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;

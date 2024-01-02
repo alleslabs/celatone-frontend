@@ -28,7 +28,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
-import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
+import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -54,7 +54,7 @@ export interface AccountDetailsBodyProps {
   tabParam: TabIndex;
 }
 
-const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
+const getAddressOnPath = (hexAddress: HexAddr, accountAddress: BechAddr) =>
   hexAddress === "0x1" ? hexAddress : accountAddress;
 
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;

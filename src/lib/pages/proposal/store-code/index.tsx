@@ -56,12 +56,7 @@ import { UploadCard } from "lib/components/upload/UploadCard";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { useGovParams } from "lib/services/proposalService";
-import type {
-  Addr,
-  HumanAddr,
-  SimulateStatus,
-  UploadSectionState,
-} from "lib/types";
+import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
 import { AccessType, AccessConfigPermission } from "lib/types";
 import {
   composeStoreCodeProposalMsg,
@@ -72,7 +67,7 @@ import {
 interface StoreCodeProposalState {
   title: string;
   proposalDesc: string;
-  runAs: Addr;
+  runAs: BechAddr;
   initialDeposit: Coin;
   unpinCode: boolean;
   builder: string;
@@ -83,7 +78,7 @@ interface StoreCodeProposalState {
 const defaultValues: StoreCodeProposalState = {
   title: "",
   proposalDesc: "",
-  runAs: "" as Addr,
+  runAs: "" as BechAddr,
   initialDeposit: { denom: "", amount: "" } as Coin,
   unpinCode: false,
   builder: "",
@@ -99,7 +94,7 @@ const StoreCodeProposal = () => {
   } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
   const getMaxLengthError = useGetMaxLengthError();
-  const { address: walletAddress = "" } = useCurrentChain();
+  const { address: walletAddress } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
   const minDeposit = govParams?.depositParams.minDeposit;
@@ -138,7 +133,7 @@ const StoreCodeProposal = () => {
       wasmFile: undefined,
       codeName: "",
       permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as Addr }],
+      addresses: [{ address: "" as BechAddr }],
     },
     mode: "all",
   });
@@ -286,28 +281,32 @@ const StoreCodeProposal = () => {
     });
 
     const submitStoreCodeProposalMsg = async () => {
-      return composeStoreCodeProposalMsg({
-        proposer: walletAddress as HumanAddr,
-        title,
-        description: proposalDesc,
-        runAs: runAs as Addr,
-        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
-        permission,
-        addresses: addresses.map((addr) => addr.address),
-        unpinCode,
-        source,
-        builder,
-        codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
-        initialDeposit,
-        precision: minDeposit?.precision,
-      });
+      if (!walletAddress) return [];
+      return [
+        composeStoreCodeProposalMsg({
+          proposer: walletAddress,
+          title,
+          description: proposalDesc,
+          runAs,
+          wasmByteCode: await gzip(
+            new Uint8Array(await wasmFile.arrayBuffer())
+          ),
+          permission,
+          addresses: addresses.map((addr) => addr.address),
+          unpinCode,
+          source,
+          builder,
+          codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
+          initialDeposit,
+          precision: minDeposit?.precision,
+        }),
+      ];
     };
-
     const craftMsg = await submitStoreCodeProposalMsg();
 
     const stream = await submitStoreCodeProposalTx({
       estimatedFee,
-      messages: [craftMsg],
+      messages: craftMsg,
       wasmFileName: wasmFile.name,
       amountToVote: getAmountToVote(initialDeposit, minDeposit),
       onTxSucceed: () => setProcessing(false),
@@ -414,7 +413,7 @@ const StoreCodeProposal = () => {
                         walletAddress
                           ? () => {
                               track(AmpEvent.USE_ASSIGN_ME);
-                              setValue("runAs", walletAddress as HumanAddr);
+                              setValue("runAs", walletAddress);
                               trigger("runAs");
                             }
                           : undefined

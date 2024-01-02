@@ -15,14 +15,14 @@ import { useInternalNavigate } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { ResourceCard } from "lib/components/resource";
 import type {
-  HumanAddr,
+  BechAddr,
   ResourceGroup,
   ResourceGroupByAccount,
 } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 interface ResourceSectionBodyProps {
-  address: HumanAddr;
+  address: BechAddr;
   resourcesByOwner: ResourceGroupByAccount[];
 }
 

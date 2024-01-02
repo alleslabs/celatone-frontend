@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import type { UploadTxInternalResult } from "lib/app-provider";
+import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useWasmConfig } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
@@ -9,7 +9,7 @@ import { Upload } from "./upload";
 
 const UploadIndex = () => {
   useWasmConfig({ shouldRedirect: true });
-  const [txInfo, setTxInfo] = useState<UploadTxInternalResult>({
+  const [txInfo, setTxInfo] = useState<StoreCodeTxInternalResult>({
     codeDisplayName: "",
     codeId: "",
     codeHash: "",
@@ -23,7 +23,7 @@ const UploadIndex = () => {
     <UploadComplete txResult={txInfo} />
   ) : (
     <Upload
-      onComplete={(txResult: UploadTxInternalResult) => {
+      onComplete={(txResult) => {
         setTxInfo(txResult);
         setCompleted(true);
         scrollToTop();

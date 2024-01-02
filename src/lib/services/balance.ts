@@ -2,7 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 
 const zBalancesResponse = z
   .array(
@@ -15,7 +15,7 @@ const zBalancesResponse = z
 
 export const getBalances = async (
   endpoint: string,
-  address: Addr
+  address: BechAddr
 ): Promise<Coin[]> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/balances`)

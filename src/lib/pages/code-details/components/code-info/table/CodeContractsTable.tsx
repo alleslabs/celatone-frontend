@@ -8,7 +8,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
 import { useContractsByCodeId } from "lib/model/contract";
 import { useContractListCountByCodeId } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 import { NoContracts } from "./NoContracts";
 
@@ -19,7 +19,7 @@ interface CodeContractsTableProps {
 export const CodeContractsTable = observer(
   ({ codeId }: CodeContractsTableProps) => {
     const navigate = useInternalNavigate();
-    const onRowSelect = (contract: ContractAddr) =>
+    const onRowSelect = (contract: BechAddr32) =>
       navigate({
         pathname: "/contracts/[contract]",
         query: { contract },

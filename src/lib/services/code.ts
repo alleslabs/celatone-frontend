@@ -1,18 +1,18 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { AccessConfigPermission, zAddr } from "lib/types";
-import type { Addr, CodeInfo } from "lib/types";
+import { AccessConfigPermission, zBechAddr } from "lib/types";
+import type { BechAddr, CodeInfo } from "lib/types";
 
 export interface CodeIdInfoResponse {
   code_info: {
     code_id: string;
-    creator: Addr;
+    creator: BechAddr;
     data_hash: string;
     instantiate_permission: {
       permission: AccessConfigPermission;
-      address: Addr;
-      addresses: Addr[];
+      address: BechAddr;
+      addresses: BechAddr[];
     };
   };
   data: string;
@@ -33,10 +33,10 @@ const zCodesResponseItem = z
     id: z.number().nonnegative(),
     cw2_contract: z.string().nullable(),
     cw2_version: z.string().nullable(),
-    uploader: zAddr,
+    uploader: zBechAddr,
     contract_count: z.number().nonnegative(),
     instantiate_permission: z.nativeEnum(AccessConfigPermission),
-    permission_addresses: z.array(zAddr),
+    permission_addresses: z.array(zBechAddr),
   })
   .transform<CodeInfo>((val) => ({
     id: val.id,
@@ -57,7 +57,7 @@ export type CodesResponse = z.infer<typeof zCodesResponse>;
 
 export const getCodesByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ): Promise<CodesResponse> =>

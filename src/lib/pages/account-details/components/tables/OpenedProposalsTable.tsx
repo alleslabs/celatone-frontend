@@ -12,10 +12,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useProposalsByAddress } from "lib/services/proposalService";
-import type { HumanAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 interface OpenedProposalsTableProps {
-  walletAddress: HumanAddr;
+  walletAddress: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;

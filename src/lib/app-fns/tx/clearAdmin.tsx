@@ -10,7 +10,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
-import type { TxResultRendering, ContractAddr, HumanAddr } from "lib/types";
+import type { TxResultRendering, BechAddr20, BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
 import { catchTxError } from "./common";
@@ -18,8 +18,8 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface ClearAdminTxParams {
-  address: HumanAddr;
-  contractAddress: ContractAddr;
+  address: BechAddr20;
+  contractAddress: BechAddr32;
   fee: StdFee;
   memo?: string;
   client: SigningCosmWasmClient;

@@ -20,7 +20,7 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import { queryData } from "lib/services/contract";
 import { useContractQueryMsgs } from "lib/services/contractService";
-import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
+import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
   jsonPrettify,
   jsonValidate,
@@ -37,7 +37,7 @@ const WasmCodeSnippet = dynamic(
 );
 
 interface JsonQueryProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: string;
 }
 
@@ -72,7 +72,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
         addActivity({
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address as HumanAddr,
+          sender: address,
           contractAddress,
           msg: encode(msg),
           timestamp: getCurrentDate(),

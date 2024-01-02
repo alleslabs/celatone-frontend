@@ -14,10 +14,9 @@ import {
 import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
 import type {
-  Addr,
+  BechAddr,
   CodeInfo,
   ContractInfo,
-  HumanAddr,
   Nullish,
   Option,
   TokenWithValue,
@@ -55,7 +54,7 @@ interface AccountDetailsTableCounts {
 }
 
 export const useAccountDetailsTableCounts = (
-  address: HumanAddr
+  address: BechAddr
 ): AccountDetailsTableCounts => {
   const {
     data,
@@ -88,7 +87,7 @@ interface AccountContracts {
 }
 
 export const useAccountContracts = (
-  walletAddress: HumanAddr,
+  walletAddress: BechAddr,
   offset: number,
   limit: number
 ): AccountContracts => {
@@ -116,12 +115,12 @@ export const useAccountContracts = (
 };
 
 export const useAccountAdminContracts = (
-  walletAddress: HumanAddr,
+  walletAddress: BechAddr,
   offset: number,
   pageSize: number
 ): AccountContracts => {
   const { data: contractsAdmin, isLoading } = useAdminContractsByAddress(
-    walletAddress as HumanAddr,
+    walletAddress,
     pageSize,
     offset
   );
@@ -155,12 +154,12 @@ interface AccountCodes {
 }
 
 export const useAccountCodes = (
-  walletAddress: HumanAddr,
+  walletAddress: BechAddr,
   offset: number,
   limit: number
 ): AccountCodes => {
   const { data: codes, isLoading } = useCodesByAddress(
-    walletAddress as HumanAddr,
+    walletAddress,
     limit,
     offset
   );
@@ -216,7 +215,7 @@ const calBonded = (
   );
 };
 
-export const useUserDelegationInfos = (address: Addr) => {
+export const useUserDelegationInfos = (address: BechAddr) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -362,7 +361,7 @@ export const useUserDelegationInfos = (address: Addr) => {
   return data;
 };
 
-export const useAccountTotalValue = (address: Addr) => {
+export const useAccountTotalValue = (address: BechAddr) => {
   const defaultValue = big(0) as USD<Big>;
 
   const {

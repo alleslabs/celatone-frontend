@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zProjectInfo, zPublicAccountInfo, type Addr } from "lib/types";
+import { zProjectInfo, zPublicAccountInfo, type BechAddr } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 const zIcns = z.object({
@@ -21,7 +21,7 @@ export type AccountData = z.infer<typeof zAccountData>;
 
 export const getAccountData = async (
   endpoint: string,
-  address: Addr
+  address: BechAddr
 ): Promise<AccountData> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)

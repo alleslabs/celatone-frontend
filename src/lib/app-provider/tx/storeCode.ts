@@ -4,31 +4,22 @@ import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
-import { uploadContractTx } from "lib/app-fns/tx/upload";
-import type { AccessType, Addr, HumanAddr, Option } from "lib/types";
+import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
+import { storeCodeTx } from "lib/app-fns/tx/storeCode";
+import type { AccessType, BechAddr, Option } from "lib/types";
 import { composeStoreCodeMsg } from "lib/utils";
 
-export interface UploadTxInternalResult {
-  codeDisplayName: string;
-  codeId: string;
-  codeHash: string;
-  txHash: string;
-  txFee: Option<string>;
-}
-
-export type UploadSucceedCallback = (txResult: UploadTxInternalResult) => void;
-
-export interface UploadStreamParams {
+export interface StoreCodeStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
-  addresses?: Addr[];
+  addresses?: BechAddr[];
   permission: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;
-  onTxSucceed: UploadSucceedCallback;
+  onTxSucceed: StoreCodeSucceedCallback;
 }
 
-export const useUploadContractTx = (isMigrate: boolean) => {
+export const useStoreCodeTx = (isMigrate: boolean) => {
   const { address } = useCurrentChain();
   const getSigningClient = useGetSigningClient();
 
@@ -41,21 +32,21 @@ export const useUploadContractTx = (isMigrate: boolean) => {
       codeName,
       estimatedFee,
       onTxSucceed,
-    }: UploadStreamParams) => {
+    }: StoreCodeStreamParams) => {
       const client = await getSigningClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!wasmFileName || !wasmCode || !estimatedFee) return null;
 
       const message = composeStoreCodeMsg({
-        sender: address as Addr,
+        sender: address,
         wasmByteCode: await gzip(new Uint8Array(await wasmCode)),
         permission,
         addresses,
       });
 
-      return uploadContractTx({
-        address: address as HumanAddr,
+      return storeCodeTx({
+        address,
         messages: [message],
         codeName,
         wasmFileName,

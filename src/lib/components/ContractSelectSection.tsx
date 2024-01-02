@@ -8,7 +8,7 @@ import { useContractStore } from "lib/providers/store";
 import type { ContractDetail } from "lib/services/contractService";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { Addr, ContractAddr, Option } from "lib/types";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
@@ -27,16 +27,16 @@ interface DisplayNameProps {
 }
 
 interface ContractDetailsButtonProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   contractLocalInfo: Option<ContractLocalInfo>;
-  instantiator: Addr;
+  instantiator: BechAddr;
   label: string;
 }
 
 interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
-  contractAddress: ContractAddr;
-  onContractSelect: (contract: ContractAddr) => void;
+  contractAddress: BechAddr32;
+  onContractSelect: (contract: BechAddr32) => void;
   successCallback?: (data: ContractDetail) => void;
 }
 
@@ -244,7 +244,7 @@ export const ContractSelectSection = observer(
                 <ContractDetailsButton
                   contractAddress={contractAddress}
                   contractLocalInfo={contractLocalInfo}
-                  instantiator={contractState.instantiator as Addr}
+                  instantiator={contractState.instantiator as BechAddr}
                   label={contractState.label}
                 />
               )}

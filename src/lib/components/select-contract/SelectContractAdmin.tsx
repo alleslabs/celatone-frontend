@@ -17,14 +17,14 @@ import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import { useContractListByAdmin } from "lib/services/contractService";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { getCurrentDate } from "lib/utils";
 
 import { ContractListDetail } from "./ContractListDetail";
 
 interface SelectContractAdminProps {
   notSelected: boolean;
-  onContractSelect: (contract: ContractAddr) => void;
+  onContractSelect: (contract: BechAddr32) => void;
 }
 
 export const SelectContractAdmin = ({
@@ -35,9 +35,7 @@ export const SelectContractAdmin = ({
   const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
 
-  const { data: contracts = [], isLoading } = useContractListByAdmin(
-    address as HumanAddr
-  );
+  const { data: contracts = [], isLoading } = useContractListByAdmin(address);
   const contractList: ContractListInfo = {
     name: ADMIN_SPECIAL_SLUG,
     slug: ADMIN_SPECIAL_SLUG,
@@ -50,7 +48,7 @@ export const SelectContractAdmin = ({
     isContractRemovable: false,
   };
 
-  const onSelectThenClose = (contract: ContractAddr) => {
+  const onSelectThenClose = (contract: BechAddr32) => {
     onContractSelect(contract);
     onClose();
   };

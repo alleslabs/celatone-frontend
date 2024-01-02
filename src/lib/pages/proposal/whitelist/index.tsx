@@ -45,21 +45,21 @@ import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { useGovParams } from "lib/services/proposalService";
+import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
-import type { Addr } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
 
 interface WhiteListState {
   title: string;
   description: string;
-  addresses: { address: Addr }[];
+  addresses: { address: BechAddr }[];
   initialDeposit: Coin;
 }
 
 const defaultValues: WhiteListState = {
   title: "",
   description: "",
-  addresses: [{ address: "" as Addr }],
+  addresses: [{ address: "" as BechAddr }],
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
@@ -68,7 +68,7 @@ const ProposalToWhitelist = () => {
   const router = useRouter();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const { address: walletAddress = "" } = useCurrentChain();
+  const { address: walletAddress } = useCurrentChain();
   const {
     chainConfig: { prettyName },
   } = useCelatoneApp();
@@ -122,8 +122,9 @@ const ProposalToWhitelist = () => {
     ]
   );
 
-  const submitWhitelistProposalMsg = useMemo(
-    () =>
+  const submitWhitelistProposalMsg = useMemo(() => {
+    if (!walletAddress) return [];
+    return [
       composeSubmitWhitelistProposalMsg({
         title,
         description,
@@ -135,24 +136,24 @@ const ProposalToWhitelist = () => {
           addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
         }),
         initialDeposit,
-        proposer: walletAddress as Addr,
+        proposer: walletAddress,
         precision: minDeposit?.precision,
       }),
-    [
-      addressesArray,
-      description,
-      govParams?.uploadAccess,
-      initialDeposit,
-      minDeposit,
-      title,
-      walletAddress,
-      isPermissionless,
-    ]
-  );
+    ];
+  }, [
+    addressesArray,
+    description,
+    govParams?.uploadAccess,
+    initialDeposit,
+    minDeposit,
+    title,
+    walletAddress,
+    isPermissionless,
+  ]);
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enabledTx,
-    messages: [submitWhitelistProposalMsg],
+    messages: submitWhitelistProposalMsg,
     onSuccess: (fee) => {
       if (fee) {
         setSimulateError(undefined);
@@ -179,7 +180,7 @@ const ProposalToWhitelist = () => {
   const proceed = useCallback(async () => {
     const stream = await submitProposalTx({
       estimatedFee,
-      messages: [submitWhitelistProposalMsg],
+      messages: submitWhitelistProposalMsg,
       whitelistNumber: addressesArray.length,
       amountToVote: getAmountToVote(initialDeposit, minDeposit),
 
@@ -348,7 +349,7 @@ const ProposalToWhitelist = () => {
                           track(AmpEvent.USE_ASSIGN_ME);
                           setValue(
                             `addresses.${idx}.address`,
-                            walletAddress as Addr
+                            walletAddress ?? ("" as BechAddr)
                           );
                           trigger(`addresses.${idx}.address`);
                         }}
@@ -376,7 +377,7 @@ const ProposalToWhitelist = () => {
               <Button
                 variant="outline-primary"
                 mt={3}
-                onClick={() => append({ address: "" as Addr })}
+                onClick={() => append({ address: "" as BechAddr })}
                 leftIcon={<CustomIcon name="plus" />}
               >
                 Add More Address

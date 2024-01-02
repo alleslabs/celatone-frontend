@@ -3,21 +3,22 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import type { ContractAddr, HumanAddr, LVPair } from "lib/types";
+import type { BechAddr20, BechAddr32, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface InstantiateOffChainFormProps {
   title?: string;
   subtitle?: string;
   cta?: boolean;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   contractLabel: string;
+  instantiator: BechAddr20;
 }
 
 export const InstantiateOffChainForm = observer(
@@ -27,8 +28,8 @@ export const InstantiateOffChainForm = observer(
     cta = true,
     contractAddress,
     contractLabel,
+    instantiator,
   }: InstantiateOffChainFormProps) => {
-    const { address = "" } = useCurrentChain();
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
     const userKey = useUserKey();
@@ -69,7 +70,7 @@ export const InstantiateOffChainForm = observer(
         updateContractLocalInfo(
           userKey,
           contractAddress,
-          address as HumanAddr,
+          instantiator,
           contractLabel,
           data.name,
           data.description,

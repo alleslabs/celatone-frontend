@@ -1,12 +1,12 @@
 import { Flex } from "@chakra-ui/react";
 
 import { TableTitle } from "lib/components/table";
-import type { HumanAddr, ResourceGroupByAccount, Option } from "lib/types";
+import type { BechAddr, ResourceGroupByAccount, Option } from "lib/types";
 
 import { ResourceSectionBody } from "./ResourceSectionBody";
 
 interface ResourceSectionProps {
-  address: HumanAddr;
+  address: BechAddr;
   totalCount: Option<number>;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;

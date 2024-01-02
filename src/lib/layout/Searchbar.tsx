@@ -33,7 +33,7 @@ import type {
   SearchResultType,
 } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { MoveAccountAddr, Nullable, Option } from "lib/types";
+import type { Addr, Nullable, Option } from "lib/types";
 import { splitModule } from "lib/utils";
 
 const NOT_FOUND_MSG =
@@ -273,7 +273,7 @@ const Searchbar = () => {
       if (routeOptions) {
         const queryValues =
           type === "Module Path"
-            ? (splitModule(keyword) as [MoveAccountAddr, string])
+            ? (splitModule(keyword) as [Addr, string])
             : metadata.icns.address || keyword;
         navigate({
           pathname: routeOptions.pathname,

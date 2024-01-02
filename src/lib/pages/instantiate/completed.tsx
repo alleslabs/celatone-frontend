@@ -6,7 +6,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr20, BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
 import type { InstantiateTxInfo } from ".";
@@ -100,8 +100,9 @@ const Completed = ({ txInfo }: CompletedProps) => {
       <InstantiateOffChainForm
         title="Contract Off-Chain Detail"
         subtitle="Filled information below will be saved on Celatone only and able to edit later."
-        contractAddress={txInfo.contractAddress as ContractAddr}
+        contractAddress={txInfo.contractAddress as BechAddr32}
         contractLabel={txInfo.contractLabel}
+        instantiator={txInfo.instantiator as BechAddr20}
       />
     </WasmPageContainer>
   );

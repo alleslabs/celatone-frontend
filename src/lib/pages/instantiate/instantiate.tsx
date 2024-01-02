@@ -48,7 +48,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { ComposedMsg, HumanAddr } from "lib/types";
+import type { BechAddr, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -74,7 +74,11 @@ interface InstantiatePageState {
   simulateError: string;
 }
 interface InstantiatePageProps {
-  onComplete: (txResult: InstantiateResult, contractLabel: string) => void;
+  onComplete: (
+    txResult: InstantiateResult,
+    contractLabel: string,
+    instantiator: string
+  ) => void;
 }
 
 const Instantiate = ({ onComplete }: InstantiatePageProps) => {
@@ -85,7 +89,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
   const { user: exampleUserAddress } = useExampleAddresses();
-  const { address = "" } = useCurrentChain();
+  const { address } = useCurrentChain();
   const postInstantiateTx = useInstantiateTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
@@ -197,7 +201,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       setValue("codeHash", data.code_info.data_hash.toLowerCase());
       if (
         resolvePermission(
-          address as HumanAddr,
+          address,
           permission.permission,
           permission.addresses,
           permission.address
@@ -257,7 +261,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       estimatedFee,
       onTxSucceed: (txResult, contractLabel) => {
         setProcessing(false);
-        onComplete(txResult, contractLabel);
+        onComplete(txResult, contractLabel, address ?? "");
       },
       onTxFailed: () => setProcessing(false),
     });
@@ -267,17 +271,18 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       broadcast(stream);
     }
   }, [
-    funds,
-    tab,
+    address,
+    adminAddress,
     attachFundsOption,
-    postInstantiateTx,
+    broadcast,
     codeId,
     currentInput,
-    label,
-    adminAddress,
     estimatedFee,
+    funds,
+    label,
     onComplete,
-    broadcast,
+    postInstantiateTx,
+    tab,
   ]);
 
   // ------------------------------------------//
@@ -334,16 +339,20 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   useEffect(() => {
     if (enableInstantiate) {
       setSimulateError("");
-      const composedMsg = composeMsg(MsgType.INSTANTIATE, {
-        sender: address as HumanAddr,
-        admin: adminAddress as HumanAddr,
-        codeId: Long.fromString(codeId),
-        label,
-        msg: Buffer.from(currentInput),
-        funds,
-      });
+      const composedMsg = address
+        ? [
+            composeMsg(MsgType.INSTANTIATE, {
+              sender: address,
+              admin: adminAddress as BechAddr,
+              codeId: Long.fromString(codeId),
+              label,
+              msg: Buffer.from(currentInput),
+              funds,
+            }),
+          ]
+        : [];
       const timeoutId = setTimeout(() => {
-        setComposedTxMsg([composedMsg]);
+        setComposedTxMsg(composedMsg);
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
@@ -434,7 +443,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               <AssignMe
                 onClick={() => {
                   track(AmpEvent.USE_ASSIGN_ME);
-                  setValue("adminAddress", address);
+                  setValue("adminAddress", address ?? "");
                 }}
                 isDisable={adminAddress === address}
               />

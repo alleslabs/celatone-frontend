@@ -9,7 +9,7 @@ import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import { extractMsgType, formatBalanceWithDenom, voteOption } from "lib/utils";
 
@@ -195,7 +195,7 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.to_address as Addr;
+        const toAddress = body.to_address as BechAddr;
         const singleCoin = body.amount[0] as Coin;
         const assetInfo = assetInfos?.[singleCoin.denom];
         const assetText =

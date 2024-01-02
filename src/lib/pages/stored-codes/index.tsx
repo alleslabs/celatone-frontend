@@ -17,7 +17,6 @@ import PageContainer from "lib/components/PageContainer";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { useUploadAccessParams } from "lib/services/proposalService";
-import type { Addr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 import { MyStoredCodesSection } from "./components/MyStoredCodesSection";
@@ -60,7 +59,7 @@ const StoredCodes = observer(() => {
   }, [router.isReady]);
   const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
   const { address } = useCurrentChain();
-  const isAllowed = Boolean(data?.addresses?.includes(address as Addr));
+  const isAllowed = Boolean(address && data?.addresses?.includes(address));
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;

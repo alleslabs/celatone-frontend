@@ -13,10 +13,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useAccountContracts } from "lib/pages/account-details/data";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 interface InstantiatedContractsTableProps {
-  walletAddress: HumanAddr;
+  walletAddress: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -33,7 +33,7 @@ export const InstantiatedContractsTable = observer(
   }: InstantiatedContractsTableProps) => {
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
-    const onRowSelect = (contract: ContractAddr) =>
+    const onRowSelect = (contract: BechAddr32) =>
       navigate({
         pathname: "/contracts/[contract]",
         query: { contract },

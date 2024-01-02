@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import type { ContractLocalInfo } from "lib/stores/contract";
 
-import type { Addr } from "./addrs";
+import type { BechAddr } from "./addrs";
 import type { Nullable, Option } from "./common";
 import { zRemarkType } from "./tx";
 
@@ -21,8 +21,8 @@ export const zContractHistoryRemark = z.object({
 export type ContractHistoryRemark = z.infer<typeof zContractHistoryRemark>;
 
 export interface ContractInfo extends ContractLocalInfo {
-  admin: Option<Addr>;
-  latestUpdater: Option<Addr>;
+  admin: Option<BechAddr>;
+  latestUpdater: Option<BechAddr>;
   latestUpdated: Option<Date>;
   remark: Option<ContractHistoryRemark>;
 }
@@ -30,11 +30,11 @@ export interface ContractInfo extends ContractLocalInfo {
 export interface ContractMigrationHistory {
   codeId: number;
   codeName?: string;
-  sender: Addr;
+  sender: BechAddr;
   height: number;
   timestamp: Date;
   remark: ContractHistoryRemark;
-  uploader: Addr;
+  uploader: BechAddr;
   cw2Contract: Nullable<string>;
   cw2Version: Nullable<string>;
 }

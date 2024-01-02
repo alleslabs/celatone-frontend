@@ -17,7 +17,7 @@ import {
   useAccountModules,
   type IndexedModule,
 } from "lib/services/move/moduleService";
-import type { HexAddr, HumanAddr, MoveAccountAddr, Option } from "lib/types";
+import type { BechAddr, HexAddr, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
 import { ModuleSelectMainBody } from "./body";
@@ -46,13 +46,13 @@ export const ModuleSelectDrawer = ({
 
   const [mode, setMode] = useState<DisplayMode>("input");
   const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>({
-    address: "" as HumanAddr,
+    address: "" as BechAddr,
     hex: "" as HexAddr,
   });
   const [modules, setModules] = useState<IndexedModule[]>();
 
   const { refetch } = useAccountModules({
-    address: selectedAddress.hex as MoveAccountAddr,
+    address: selectedAddress.hex,
     moduleName: undefined,
     functionName: undefined,
     options: {
@@ -77,7 +77,7 @@ export const ModuleSelectDrawer = ({
     } else {
       setMode("input");
       setSelectedAddress({
-        address: "" as HumanAddr,
+        address: "" as BechAddr,
         hex: "" as HexAddr,
       });
       setModules(undefined);

@@ -21,7 +21,12 @@ import {
   useProposalList,
   useProposalListCount,
 } from "lib/services/proposalService";
-import type { ProposalStatus, ProposalType, Addr, Option } from "lib/types";
+import type {
+  BechAddr20,
+  ProposalStatus,
+  ProposalType,
+  Option,
+} from "lib/types";
 
 import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
 import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
@@ -35,7 +40,7 @@ const Proposals = () => {
 
   const { address } = useCurrentChain();
   const [search, setSearch] = useState("");
-  const [proposer, setProposer] = useState<Option<Addr>>();
+  const [proposer, setProposer] = useState<Option<BechAddr20>>();
   const [isSelected, setIsSelected] = useState(false);
 
   const { data: countProposals = 0 } = useProposalListCount(
@@ -136,7 +141,7 @@ const Proposals = () => {
                     track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
                       toggle: "on",
                     });
-                    setProposer(address as Addr);
+                    setProposer(address);
                   } else {
                     track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
                       toggle: "off",

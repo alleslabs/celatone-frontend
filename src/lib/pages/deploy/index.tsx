@@ -24,7 +24,6 @@ import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadAccessParams } from "lib/services/proposalService";
-import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 const getAlertContent = (
@@ -73,7 +72,7 @@ const Deploy = () => {
 
   const enableUpload =
     !isPermissionedNetwork ||
-    Boolean(data?.addresses?.includes(address as HumanAddr));
+    Boolean(address && data?.addresses?.includes(address));
 
   useWasmConfig({ shouldRedirect: true });
 

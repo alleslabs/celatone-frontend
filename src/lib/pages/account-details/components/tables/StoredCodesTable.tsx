@@ -13,10 +13,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
-import type { HumanAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 interface StoredCodesTableProps {
-  walletAddress: HumanAddr;
+  walletAddress: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;

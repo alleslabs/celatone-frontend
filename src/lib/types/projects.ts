@@ -1,21 +1,21 @@
 import { z } from "zod";
 
 import type {
-  Addr,
   AssetInfo,
-  ContractAddr,
-  HumanAddr,
   AccessConfigPermission,
   PermissionAddresses,
   Option,
   Nullable,
-  MoveAccountAddr,
+  BechAddr,
+  BechAddr32,
+  HexAddr,
 } from "lib/types";
 
-import { zAddr, zContractAddr } from "./addrs";
+import { zBechAddr, zBechAddr32 } from "./addrs";
 
 export interface PublicAccount {
-  address: HumanAddr;
+  // NOTE: multisig is considered a public account
+  address: BechAddr;
   description: string;
   name: string;
   slug: string;
@@ -23,7 +23,7 @@ export interface PublicAccount {
 }
 
 export interface PublicModule {
-  address: MoveAccountAddr;
+  address: HexAddr; // TODO: confirm
   description: string;
   github: string;
   name: string;
@@ -36,7 +36,7 @@ export interface RawPublicCode {
   name: string;
   slug: string;
   contracts: number;
-  uploader: Addr;
+  uploader: BechAddr;
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
   github: string;
@@ -50,13 +50,17 @@ export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
 }
 
 export interface RawPublicContract {
-  address: ContractAddr;
+  address: BechAddr32;
   description: string;
   name: string;
   slug: string;
-  instantiator: Addr;
-  admin: Addr;
+  instantiator: BechAddr;
+  admin: BechAddr;
   label: string;
+}
+
+export interface PublicContract extends Omit<RawPublicContract, "address"> {
+  contractAddress: BechAddr32;
 }
 
 export interface Social {
@@ -83,10 +87,6 @@ export interface RawPublicProjectInfo {
   slug: string;
 }
 
-export interface PublicContract extends Omit<RawPublicContract, "address"> {
-  contractAddress: ContractAddr;
-}
-
 export interface PublicProjectInfo {
   accounts: PublicAccount[];
   assets: AssetInfo;
@@ -100,7 +100,7 @@ export interface PublicProjectInfo {
 export interface PublicInfo {
   slug: string;
   name: string;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   description: string;
   github: string;
 }
@@ -121,29 +121,27 @@ export const zProjectInfo = z.object({
   ),
   website: z.string(),
 });
-
 export type ProjectInfo = z.infer<typeof zProjectInfo>;
 
 export const zPublicAccountInfo = z.object({
-  address: zAddr,
+  // NOTE: multisig is considered a public account
+  address: zBechAddr,
   description: z.string(),
   name: z.string(),
   slug: z.string(),
   type: z.string(),
 });
-
 export type PublicAccountInfo = z.infer<typeof zPublicAccountInfo>;
 
 export const zPublicContractInfo = z.object({
-  address: zContractAddr,
-  admin: zAddr,
+  address: zBechAddr32,
+  admin: zBechAddr,
   code: z.number().positive(),
   description: z.string(),
   github: z.string(),
-  instantiator: zAddr,
+  instantiator: zBechAddr,
   label: z.string(),
   name: z.string(),
   slug: z.string(),
 });
-
 export type PublicContractInfo = z.infer<typeof zPublicContractInfo>;

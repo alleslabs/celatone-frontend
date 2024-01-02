@@ -5,13 +5,13 @@ import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
 import { type IndexedModule } from "lib/services/move/moduleService";
-import type { MoveAccountAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
   totalCount: Option<number>;
-  selectedAddress: MoveAccountAddr;
+  selectedAddress: BechAddr;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
   onViewMore?: () => void;

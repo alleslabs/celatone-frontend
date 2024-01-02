@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Addr, Nullable, Option } from "lib/types";
+import type { BechAddr, Nullable, Option } from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -61,6 +61,6 @@ export interface Proposal {
   depositEndTime: Date;
   resolvedHeight: Option<Nullable<number>>;
   type: ProposalType;
-  proposer: Option<Addr>;
+  proposer: Option<BechAddr>;
   isExpedited: boolean;
 }

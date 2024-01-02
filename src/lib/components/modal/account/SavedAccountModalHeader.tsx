@@ -2,11 +2,11 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { useMoveConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { Addr, HumanAddr } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { bech32AddressToHex, unpadHexAddress } from "lib/utils";
 
 interface SavedAccountModalHeaderProps {
-  address: Addr;
+  address: BechAddr;
 }
 
 export const SavedAccountModalHeader = ({
@@ -27,7 +27,7 @@ export const SavedAccountModalHeader = ({
             Hex Address
           </Text>
           <ExplorerLink
-            value={unpadHexAddress(bech32AddressToHex(address as HumanAddr))}
+            value={unpadHexAddress(bech32AddressToHex(address))}
             type="user_address"
           />
         </Flex>

@@ -9,6 +9,7 @@ import InstantiatePage from "./instantiate";
 
 export interface InstantiateTxInfo extends InstantiateResult {
   contractLabel: string;
+  instantiator: string;
 }
 
 const Index = () => {
@@ -23,6 +24,7 @@ const Index = () => {
     gasWanted: 0,
     gasUsed: 0,
     contractLabel: "",
+    instantiator: "",
   });
 
   useEffect(() => {
@@ -33,8 +35,12 @@ const Index = () => {
     <CompletedPage txInfo={txInfo} />
   ) : (
     <InstantiatePage
-      onComplete={(txResult: InstantiateResult, contractLabel: string) => {
-        setTxInfo({ ...txResult, contractLabel });
+      onComplete={(
+        txResult: InstantiateResult,
+        contractLabel: string,
+        instantiator: string
+      ) => {
+        setTxInfo({ ...txResult, contractLabel, instantiator });
         setCompleted(true);
       }}
     />

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { type Addr, zUtcDate, zValidator } from "lib/types";
+import { type BechAddr, zUtcDate, zValidator } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 const zDelegations = z
@@ -128,7 +128,7 @@ export type Delegations = z.infer<typeof zDelegations>;
 
 export const getDelegationsByAddress = async (
   endpoint: string,
-  address: Addr
+  address: BechAddr
 ): Promise<Delegations> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/delegations`)

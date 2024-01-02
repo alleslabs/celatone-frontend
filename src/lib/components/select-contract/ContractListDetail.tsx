@@ -10,13 +10,13 @@ import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useAdminByContractAddresses } from "lib/services/contractService";
 import type { ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, ContractInfo } from "lib/types";
+import type { BechAddr32, ContractInfo } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface ContractListContentProps {
   contractListInfo: ContractListInfo;
   filteredContracts: ContractInfo[];
-  onContractSelect: (addr: ContractAddr) => void;
+  onContractSelect: (addr: BechAddr32) => void;
   isLoading: boolean;
   isReadOnly: boolean;
 }
@@ -78,7 +78,7 @@ interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
   isLoading: boolean;
   isReadOnly?: boolean;
-  onContractSelect: (addr: ContractAddr) => void;
+  onContractSelect: (addr: BechAddr32) => void;
 }
 
 export const ContractListDetail = ({

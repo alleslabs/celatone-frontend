@@ -2,7 +2,7 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ContractAddr, ContractInfo } from "lib/types";
+import type { BechAddr32, ContractInfo } from "lib/types";
 
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 import { ContractNameCell } from "./ContractNameCell";
@@ -13,7 +13,7 @@ import { TagsCell } from "./TagsCell";
 interface ContractsTableRowProps {
   contractInfo: ContractInfo;
   templateColumns: string;
-  onRowSelect: (contract: ContractAddr) => void;
+  onRowSelect: (contract: BechAddr32) => void;
   isReadOnly: boolean;
   withCTA?: CTAInfo;
   withoutTag?: boolean;

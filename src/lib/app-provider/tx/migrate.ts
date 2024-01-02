@@ -4,10 +4,10 @@ import { useCallback } from "react";
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 
 export interface MigrateStreamParams {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   codeId: number;
   migrateMsg: object;
   estimatedFee: Option<StdFee>;
@@ -34,7 +34,7 @@ export const useMigrateTx = () => {
       if (!estimatedFee) return null;
 
       return migrateContractTx({
-        sender: address as HumanAddr,
+        sender: address,
         contractAddress,
         codeId,
         migrateMsg,

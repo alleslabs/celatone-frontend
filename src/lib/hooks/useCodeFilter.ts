@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useCurrentChain } from "lib/app-provider";
-import type { CodeInfo, HumanAddr } from "lib/types";
+import type { CodeInfo } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
 export type PermissionFilterValue =
@@ -14,7 +14,7 @@ export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
   return useCallback(
     ({ instantiatePermission, permissionAddresses }: CodeInfo) => {
       const isAllowed = resolvePermission(
-        address as HumanAddr,
+        address,
         instantiatePermission,
         permissionAddresses
       );
