@@ -87,12 +87,12 @@ interface AccountContracts {
 }
 
 export const useAccountContracts = (
-  walletAddress: BechAddr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): AccountContracts => {
   const { data: contracts, isLoading } = useInstantiatedContractsByAddress(
-    walletAddress,
+    address,
     limit,
     offset
   );
@@ -115,12 +115,12 @@ export const useAccountContracts = (
 };
 
 export const useAccountAdminContracts = (
-  walletAddress: BechAddr,
+  address: BechAddr,
   offset: number,
   pageSize: number
 ): AccountContracts => {
   const { data: contractsAdmin, isLoading } = useAdminContractsByAddress(
-    walletAddress,
+    address,
     pageSize,
     offset
   );
@@ -154,15 +154,11 @@ interface AccountCodes {
 }
 
 export const useAccountCodes = (
-  walletAddress: BechAddr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): AccountCodes => {
-  const { data: codes, isLoading } = useCodesByAddress(
-    walletAddress,
-    limit,
-    offset
-  );
+  const { data: codes, isLoading } = useCodesByAddress(address, limit, offset);
 
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 

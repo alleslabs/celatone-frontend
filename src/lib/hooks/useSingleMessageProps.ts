@@ -396,6 +396,7 @@ const updateAdminSingleMsgProps = (
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
+  // TODO: need to also handle getAccountLocalInfo
   const adminLocalInfo = getContractLocalInfo(detail.newAdmin as BechAddr32);
 
   if (messages.length > 1) {

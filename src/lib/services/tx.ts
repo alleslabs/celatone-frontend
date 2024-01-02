@@ -325,7 +325,7 @@ const zTxsCountResponse = z
   })
   .transform((val) => val.count);
 
-export const getAPITxsCountByAddress = async (
+export const getTxsCountByAddress = async (
   endpoint: string,
   address: BechAddr,
   search: Option<string>,

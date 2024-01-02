@@ -45,7 +45,7 @@ import {
   getTxs,
   getTxsByAddress,
   queryTxData,
-  getAPITxsCountByAddress,
+  getTxsCountByAddress,
   getTxsByModule,
   getTxsByBlockHeight,
 } from "./tx";
@@ -147,7 +147,7 @@ export const useTxsCountByAddress = (
     ],
     async () => {
       if (!address) throw new Error("address is undefined");
-      return getAPITxsCountByAddress(
+      return getTxsCountByAddress(
         endpoint,
         address,
         search,
