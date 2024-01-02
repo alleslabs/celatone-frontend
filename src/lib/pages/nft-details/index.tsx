@@ -157,10 +157,7 @@ const NFTDetail = () => {
                     <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
                       NFT Address:
                     </Text>
-                    <ExplorerLink
-                      value={encodeURIComponent(nftAddress)}
-                      type="user_address"
-                    />
+                    <ExplorerLink value={nftAddress} type="user_address" />
                   </Flex>
                   <Flex gap="8px">
                     <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">

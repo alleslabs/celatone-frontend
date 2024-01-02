@@ -87,7 +87,7 @@ export const getNavigationUrl = ({
     default:
       break;
   }
-  return `${url}/${encodeURIComponent(value)}`;
+  return `${url}/${value}`;
 };
 
 const getValueText = (
