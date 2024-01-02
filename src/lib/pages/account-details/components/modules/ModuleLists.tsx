@@ -10,16 +10,16 @@ import type { BechAddr, Option } from "lib/types";
 import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
+  address: BechAddr;
   totalCount: Option<number>;
-  selectedAddress: BechAddr;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
   onViewMore?: () => void;
 }
 
 export const ModuleLists = ({
+  address,
   totalCount,
-  selectedAddress,
   modules,
   isLoading,
   onViewMore,
@@ -53,7 +53,7 @@ export const ModuleLists = ({
             />
           )}
           <ModuleListsBody
-            selectedAddress={selectedAddress}
+            address={address}
             keyword={keyword}
             modules={modules}
             isLoading={isLoading}

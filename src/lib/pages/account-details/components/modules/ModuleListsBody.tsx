@@ -8,7 +8,7 @@ import type { IndexedModule } from "lib/services/move/moduleService";
 import type { BechAddr, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
-  selectedAddress: BechAddr;
+  address: BechAddr;
   keyword: string;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
@@ -16,7 +16,7 @@ interface ModuleListsBodyProps {
 }
 
 export const ModuleListsBody = ({
-  selectedAddress,
+  address,
   keyword,
   modules,
   isLoading,
@@ -51,7 +51,7 @@ export const ModuleListsBody = ({
         (item) => (
           <ModuleCard
             key={item.moduleName}
-            selectedAddress={selectedAddress}
+            selectedAddress={address}
             module={item}
             selectedModule={undefined}
           />

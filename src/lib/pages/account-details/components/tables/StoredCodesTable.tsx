@@ -16,7 +16,7 @@ import { useAccountCodes } from "lib/pages/account-details/data";
 import type { BechAddr, Option } from "lib/types";
 
 interface StoredCodesTableProps {
-  walletAddress: BechAddr;
+  address: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -25,7 +25,7 @@ interface StoredCodesTableProps {
 
 export const StoredCodesTable = observer(
   ({
-    walletAddress,
+    address,
     scrollComponentId,
     totalData,
     refetchCount,
@@ -55,7 +55,7 @@ export const StoredCodesTable = observer(
       },
     });
     const { codes, isLoading } = useAccountCodes(
-      walletAddress,
+      address,
       offset,
       onViewMore ? 5 : pageSize
     );

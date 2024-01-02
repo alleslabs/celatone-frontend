@@ -16,7 +16,7 @@ import { useAccountContracts } from "lib/pages/account-details/data";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 interface InstantiatedContractsTableProps {
-  walletAddress: BechAddr;
+  address: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -25,7 +25,7 @@ interface InstantiatedContractsTableProps {
 
 export const InstantiatedContractsTable = observer(
   ({
-    walletAddress,
+    address,
     scrollComponentId,
     totalData,
     refetchCount,
@@ -55,7 +55,7 @@ export const InstantiatedContractsTable = observer(
       },
     });
     const { contracts, isLoading } = useAccountContracts(
-      walletAddress,
+      address,
       offset,
       onViewMore ? 5 : pageSize
     );

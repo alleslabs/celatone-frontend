@@ -307,7 +307,7 @@ const AccountDetailsBody = ({
             {wasm.enabled && (
               <>
                 <StoredCodesTable
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.codesCount ?? undefined}
                   refetchCount={refetchCounts}
@@ -317,7 +317,7 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <InstantiatedContractsTable
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.contractsCount ?? undefined}
                   refetchCount={refetchCounts}
@@ -327,7 +327,7 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <AdminContractsTable
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.contractsAdminCount ?? undefined}
                   refetchCount={refetchCounts}
@@ -351,8 +351,8 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <ModuleLists
+                  address={accountAddress}
                   totalCount={modulesData?.length}
-                  selectedAddress={accountAddress}
                   modules={modulesData}
                   isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules, undefined)}
@@ -361,7 +361,7 @@ const AccountDetailsBody = ({
             )}
             {gov.enabled && (
               <OpenedProposalsTable
-                walletAddress={accountAddress}
+                address={accountAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.proposalsCount ?? undefined}
                 refetchCount={refetchCounts}
@@ -387,7 +387,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount ?? undefined}
               refetchCount={refetchCounts}
@@ -395,7 +395,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <InstantiatedContractsTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount ?? undefined}
               refetchCount={refetchCounts}
@@ -403,7 +403,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <AdminContractsTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount ?? undefined}
               refetchCount={refetchCounts}
@@ -419,15 +419,15 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
+              address={accountAddress}
               totalCount={modulesData?.length}
-              selectedAddress={accountAddress}
               modules={modulesData}
               isLoading={isModulesLoading}
             />
           </TabPanel>
           <TabPanel p={0}>
             <OpenedProposalsTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount ?? undefined}
               refetchCount={refetchCounts}

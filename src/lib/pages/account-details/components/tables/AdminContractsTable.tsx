@@ -16,7 +16,7 @@ import { useAccountAdminContracts } from "lib/pages/account-details/data";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 interface AdminContractsTableProps {
-  walletAddress: BechAddr;
+  address: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -25,7 +25,7 @@ interface AdminContractsTableProps {
 
 export const AdminContractsTable = observer(
   ({
-    walletAddress,
+    address,
     scrollComponentId,
     totalData,
     refetchCount,
@@ -55,7 +55,7 @@ export const AdminContractsTable = observer(
       },
     });
     const { contracts, isLoading } = useAccountAdminContracts(
-      walletAddress,
+      address,
       offset,
       onViewMore ? 5 : pageSize
     );
