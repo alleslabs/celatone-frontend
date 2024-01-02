@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
+
 ### Improvements
 
 ### Bug fixes
