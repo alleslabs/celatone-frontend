@@ -126,12 +126,14 @@ export const getCollectionActivitiesPagination = gql`
     $collectionAddress: String!
     $offset: Int!
     $pageSize: Int!
+    $search: String
   ) {
     collection_transactions(
       limit: $pageSize
       offset: $offset
       where: {
         collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
+        _and: { nft: { token_id: { _iregex: $search } } }
       }
       order_by: { block_height: desc }
     ) {
@@ -177,10 +179,10 @@ export const getCollectionMutateEventsPagination = gql`
 `;
 
 export const getCollectionListByAddress = gql`
-  query getCollectionListByAddress($hexAddress: String!) {
+  query getCollectionListByAddress($accountAddress: String!) {
     collections(
       where: {
-        nfts: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
+        nfts: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }
       }
       order_by: { name: asc }
     ) {
@@ -190,7 +192,7 @@ export const getCollectionListByAddress = gql`
         vm_address
       }
       nfts_aggregate(
-        where: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
+        where: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }
       ) {
         aggregate {
           count

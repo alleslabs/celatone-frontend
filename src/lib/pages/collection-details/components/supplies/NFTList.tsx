@@ -16,7 +16,14 @@ const NFTList = ({
   const isMobile = useMobile();
   const size = isMobile ? "150px" : "206px";
   if (isLoading) return <Loading />;
-  if (!nfts || !nfts.length) return <EmptyState message="Not found" />;
+  if (!nfts || !nfts.length)
+    return (
+      <EmptyState
+        message="There are no nfts matches your keyword."
+        imageVariant="not-found"
+      />
+    );
+
   return (
     <SimpleGrid templateColumns={`repeat(auto-fill, ${size})`} spacing="24px">
       {nfts.map((nft) => (

@@ -102,15 +102,15 @@ export const getNFTTransactionPagination = gql`
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
       order_by: { block_height: desc }
     ) {
+      is_nft_burn
+      is_nft_mint
+      is_nft_transfer
       transaction {
         hash
         block {
           timestamp
           height
         }
-        is_nft_burn
-        is_nft_mint
-        is_nft_transfer
       }
     }
   }

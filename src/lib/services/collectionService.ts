@@ -242,6 +242,7 @@ export const useCollectionActivities = (
           collectionAddress,
           pageSize,
           offset,
+          search,
         },
       })
       .then(({ data: res }) =>
@@ -303,13 +304,13 @@ export const useCollectionMutateEventsPagination = (
   });
 };
 
-export const useCollectionListByAddress = (hexAddress: HexAddr) => {
+export const useCollectionListByAddress = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
   const queryFn = async () => {
     return axios
       .post<CollectionListByAddressResponse>(chainConfig.indexer, {
         query: getCollectionListByAddress,
-        variables: { hexAddress },
+        variables: { accountAddress },
       })
       .then(({ data: res }) =>
         res.data.collections.map((collection) =>
@@ -322,7 +323,7 @@ export const useCollectionListByAddress = (hexAddress: HexAddr) => {
     queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_LIST_BY_ADDRESS,
       chainConfig.indexer,
-      hexAddress,
+      accountAddress,
     ],
     queryFn,
     retry: 1,

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { TextInput } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
 import { useCollectionActivities } from "lib/services/collectionService";
 
 import { ActivitiesTable } from "./ActivitiesTable";
@@ -55,11 +56,20 @@ const Activities = ({
         variant="fixed-floating"
         value={searchKeyword}
         setInputState={setSearchKeyword}
-        placeholder="Search by Tx Hash"
+        placeholder="Search by Token Id"
         size="md"
       />
-      <ActivitiesTable activities={activities} isLoading={isLoading} />
-      {totalActivitiesCount > 10 && (
+      <ActivitiesTable
+        activities={activities}
+        isLoading={isLoading}
+        emptyState={
+          <EmptyState
+            message="There are no activities matches your keyword."
+            imageVariant="not-found"
+          />
+        }
+      />
+      {totalActivitiesCount > 10 && !searchKeyword && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

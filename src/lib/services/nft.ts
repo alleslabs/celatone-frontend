@@ -81,15 +81,15 @@ export interface Metadata {
 export interface NFTTransactionPaginationResponse {
   data: {
     nft_transactions: {
+      is_nft_burn: boolean;
+      is_nft_mint: boolean;
+      is_nft_transfer: boolean;
       transaction: {
         hash: string;
         block: {
           timestamp: string;
           height: number;
         };
-        is_nft_burn: boolean;
-        is_nft_mint: boolean;
-        is_nft_transfer: boolean;
       };
     }[];
   };
@@ -100,17 +100,17 @@ export const zNFTTransactionPaginationResponse = z
     transaction: z.object({
       hash: z.string(),
       block: z.object({ timestamp: z.string(), height: z.number() }),
-      is_nft_burn: z.boolean(),
-      is_nft_mint: z.boolean(),
-      is_nft_transfer: z.boolean(),
     }),
+    is_nft_burn: z.boolean(),
+    is_nft_mint: z.boolean(),
+    is_nft_transfer: z.boolean(),
   })
   .transform((val) => ({
     txhash: val.transaction.hash.replace("\\x", ""),
     timestamp: val.transaction.block.timestamp,
-    isNFTBurn: val.transaction.is_nft_burn,
-    isNFTMint: val.transaction.is_nft_mint,
-    isNFTTransfer: val.transaction.is_nft_transfer,
+    isNFTBurn: val.is_nft_burn,
+    isNFTMint: val.is_nft_mint,
+    isNFTTransfer: val.is_nft_transfer,
   }));
 
 export type NFTTransactionPagination = z.infer<
