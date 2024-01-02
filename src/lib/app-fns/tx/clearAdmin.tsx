@@ -10,7 +10,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
-import type { TxResultRendering, BechAddr20, BechAddr32 } from "lib/types";
+import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
 import { catchTxError } from "./common";
