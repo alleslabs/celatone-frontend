@@ -27,14 +27,14 @@ const zContractRest = z.object({
   contract_info: z.object({
     code_id: z.string(),
     creator: zAddr,
-    admin: zAddr.optional(),
+    admin: zAddr,
     label: z.string(),
     created: z
       .object({
         block_height: z.string(),
         tx_index: z.string(),
       })
-      .optional(),
+      .nullable(),
     ibc_port_id: z.string(),
     extension: z.string().nullable(),
   }),
