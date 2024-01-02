@@ -27,14 +27,14 @@ const zContractRest = z.object({
   contract_info: z.object({
     code_id: z.string(),
     creator: zAddr,
-    admin: zAddr.optional(),
+    admin: zAddr,
     label: z.string(),
     created: z
       .object({
         block_height: z.string(),
         tx_index: z.string(),
       })
-      .optional(),
+      .nullable(),
     ibc_port_id: z.string(),
     extension: z.string().nullable(),
   }),
@@ -129,8 +129,8 @@ export const zContract = z
     code_hash: z.string().transform(parseTxHash),
     created_height: z.number(),
     created_timestamp: zUtcDate,
-    cw2_contract: z.string(),
-    cw2_version: z.string(),
+    cw2_contract: z.string().nullable(),
+    cw2_version: z.string().nullable(),
     init_msg: z.string(),
     init_proposal_id: z.number().nullish(),
     init_proposal_title: z.string().nullish(),
