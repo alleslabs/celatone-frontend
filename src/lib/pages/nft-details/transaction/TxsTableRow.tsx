@@ -6,7 +6,7 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxsTableRowProps {
   hash: string;
-  timestamp: string;
+  timestamp: Date;
   templateColumns: string;
   isNFTBurn: boolean;
   isNFTMint: boolean;
@@ -43,8 +43,8 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Box>
-            <Text>{formatUTC(new Date(timestamp))}</Text>
-            <Text>{dateFromNow(new Date(timestamp))}</Text>
+            <Text>{formatUTC(timestamp)}</Text>
+            <Text>{dateFromNow(timestamp)}</Text>
           </Box>
         </TableRow>
       </Grid>

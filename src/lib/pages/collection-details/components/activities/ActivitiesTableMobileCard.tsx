@@ -57,8 +57,8 @@ export const ActivitiesTableMobileCard = ({
       }
       bottomContent={
         <Box fontSize="12px" fontWeight={400}>
-          <Text color="gray.400">{formatUTC(new Date(timestamp))}</Text>
-          <Text color="gray.400">({dateFromNow(new Date(timestamp))})</Text>
+          <Text color="gray.400">{formatUTC(timestamp)}</Text>
+          <Text color="gray.400">({dateFromNow(timestamp)})</Text>
         </Box>
       }
     />

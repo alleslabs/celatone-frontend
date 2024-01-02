@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Trait } from "lib/types";
+import { zUtcDate, type Trait } from "lib/types";
 
 export interface NFTTokenResponse {
   data: {
@@ -57,7 +57,7 @@ export interface NFTMintInfoResponse {
 export const zNFTMintInfoResponse = z
   .object({
     block: z.object({
-      timestamp: z.string(),
+      timestamp: zUtcDate,
       height: z.number(),
     }),
     hash: z.string(),
@@ -99,7 +99,7 @@ export const zNFTTransactionPaginationResponse = z
   .object({
     transaction: z.object({
       hash: z.string(),
-      block: z.object({ timestamp: z.string(), height: z.number() }),
+      block: z.object({ timestamp: zUtcDate, height: z.number() }),
     }),
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
@@ -140,7 +140,7 @@ export const zNFTMutateEventsPaginationResponse = z
     new_value: z.string(),
     mutated_field_name: z.string(),
     remark: z.object({ type: z.string(), value: z.string() }),
-    block: z.object({ timestamp: z.string() }),
+    block: z.object({ timestamp: zUtcDate }),
   })
   .transform((val) => ({
     oldValue: val.old_value,

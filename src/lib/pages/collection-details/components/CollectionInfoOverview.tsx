@@ -86,7 +86,7 @@ const CollectionInfoOverview = ({
           <InfoComponent title="Created Block Height">
             <ExplorerLink value={String(height)} type="block_height" />
             <Text fontSize="12px" color="gray.400">
-              {formatUTC(new Date(timestamp))}
+              {formatUTC(timestamp)}
             </Text>
           </InfoComponent>
 

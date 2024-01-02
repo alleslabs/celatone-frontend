@@ -7,7 +7,7 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxsTableMobileCardProps {
   hash: string;
-  timestamp: string;
+  timestamp: Date;
   isNFTBurn: boolean;
   isNFTMint: boolean;
   isNFTTransfer: boolean;
@@ -53,10 +53,10 @@ export const TxsTableMobileCard = ({
       bottomContent={
         <Flex direction="column" gap={0}>
           <Text fontSize="12px" color="gray.400">
-            {formatUTC(new Date(timestamp))}
+            {formatUTC(timestamp)}
           </Text>
           <Text fontSize="12px" color="gray.500">
-            ({dateFromNow(new Date(timestamp))})
+            ({dateFromNow(timestamp)})
           </Text>
         </Flex>
       }

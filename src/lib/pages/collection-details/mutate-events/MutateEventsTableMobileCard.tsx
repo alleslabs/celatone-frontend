@@ -43,8 +43,8 @@ export const MutateEventsTableMobileCard = ({
       }
       bottomContent={
         <Box fontSize="12px">
-          <Text color="gray.400">{formatUTC(new Date(timestamp))}</Text>
-          <Text color="gray.500">({dateFromNow(new Date(timestamp))})</Text>
+          <Text color="gray.400">{formatUTC(timestamp)}</Text>
+          <Text color="gray.500">({dateFromNow(timestamp)})</Text>
         </Box>
       }
     />

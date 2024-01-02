@@ -4,7 +4,6 @@ import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { CollectionMutateEvent } from "lib/services/collection";
 
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
-// import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 

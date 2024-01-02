@@ -4,7 +4,7 @@ import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { NFTMutateEventsPagination } from "lib/services/nft";
 
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
-// import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
+import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 
 interface MutateEventsTableProps {
@@ -27,15 +27,9 @@ export const MutateEventsTable = ({
 
   return isMobile ? (
     <MobileTableContainer>
-      {mutateEvents.map(() => {
-        return (
-          <div>TODO</div>
-          // <MutateEventsTableMobileCard
-          //   key={arrayKey}
-          //   hash={transaction.txhash}
-          //   timestamp={transaction.timestamp}
-          // />
-        );
+      {mutateEvents.map((event) => {
+        const arrayKey = event.newValue + event.oldValue;
+        return <MutateEventsTableMobileCard key={arrayKey} {...event} />;
       })}
     </MobileTableContainer>
   ) : (

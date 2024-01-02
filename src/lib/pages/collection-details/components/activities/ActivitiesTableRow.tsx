@@ -43,8 +43,8 @@ export const ActivitiesTableRow = ({
         </TableRow>
         <TableRow>
           <Box>
-            <Text>{formatUTC(new Date(timestamp))}</Text>
-            <Text>{dateFromNow(new Date(timestamp))}</Text>
+            <Text>{formatUTC(timestamp)}</Text>
+            <Text>{dateFromNow(timestamp)}</Text>
           </Box>
         </TableRow>
       </Grid>

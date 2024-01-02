@@ -45,10 +45,10 @@ const MintInfo = ({
                 type="block_height"
               />
               <Text fontSize="12px" color="gray.400">
-                {formatUTC(new Date(mintInfo.timestamp))}
+                {formatUTC(mintInfo.timestamp)}
               </Text>
               <Text fontSize="12px" color="gray.400">
-                {dateFromNow(new Date(mintInfo.timestamp))}
+                {dateFromNow(mintInfo.timestamp)}
               </Text>
             </Stack>
           </GridItem>

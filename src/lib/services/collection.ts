@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { zUtcDate } from "lib/types";
+
 export interface CollectionResponse {
   data: {
     collections: {
@@ -111,7 +113,7 @@ export const zCollectionCreatorResponseItem = z
         collection_transactions: z
           .object({
             transaction: z.object({
-              block: z.object({ height: z.number(), timestamp: z.string() }),
+              block: z.object({ height: z.number(), timestamp: zUtcDate }),
               hash: z.string(),
             }),
           })
@@ -215,7 +217,7 @@ export interface ActivitiesResponse {
 export const zActivitiesResponseItem = z
   .object({
     transaction: z.object({
-      block: z.object({ timestamp: z.string() }),
+      block: z.object({ timestamp: zUtcDate }),
       hash: z.string(),
     }),
     is_nft_burn: z.boolean(),
@@ -262,7 +264,7 @@ export const zCollectionMutateEventsResponse = z
     new_value: z.string(),
     mutated_field_name: z.string(),
     remark: z.object({ type: z.string(), value: z.string() }),
-    block: z.object({ timestamp: z.string() }),
+    block: z.object({ timestamp: zUtcDate }),
   })
   .transform((val) => ({
     oldValue: val.old_value,
