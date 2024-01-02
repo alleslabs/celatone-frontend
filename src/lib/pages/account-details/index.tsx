@@ -26,12 +26,11 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
 import { useNFTTokenCountByAddress } from "lib/services/nftService";
-import type { Addr, HexAddr, HumanAddr,Option } from "lib/types";
+import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -101,7 +100,6 @@ const AccountDetailsBody = ({
     useResourcesByAddress(accountAddress);
   // nft
   const { data: nftCount } = useNFTTokenCountByAddress(hexAddress);
-    
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -176,7 +174,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={nftCount}
-            onClick={handleTabChange(TabIndex.Nfts)}
+            onClick={handleTabChange(TabIndex.Nfts, nftCount)}
             hidden={!nft.enabled}
             isDisabled={nftCount === 0}
           >
@@ -315,7 +313,7 @@ const AccountDetailsBody = ({
               <NFTsOverview
                 totalCount={nftCount}
                 hexAddress={hexAddress}
-                onViewMore={handleTabChange(TabIndex.Nfts)}
+                onViewMore={handleTabChange(TabIndex.Nfts, nftCount)}
               />
             )}
             <TxsTable

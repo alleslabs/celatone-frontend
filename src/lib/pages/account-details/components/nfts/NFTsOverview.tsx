@@ -22,6 +22,7 @@ export const NFTsOverview = ({
     5,
     0
   );
+
   const isMobile = useMobile();
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>

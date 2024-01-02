@@ -271,7 +271,7 @@ export const useNFTTokenListByAddressPagination = (
     return axios
       .post<NFTTokenResponse>(chainConfig.indexer, {
         query: getNFTTokenListByAddressPagination,
-        variables: { hexAddress, pageSize, offset, search },
+        variables: { hexAddress, pageSize, offset, search: search ?? "" },
       })
       .then(({ data: res }) =>
         res.data.nfts.map((nft) => zNFTTokenResponse.parse(nft))

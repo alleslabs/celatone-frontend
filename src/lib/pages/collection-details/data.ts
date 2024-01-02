@@ -1,5 +1,5 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useAccountResources } from "lib/services/move";
+import { useResourcesByAddress } from "lib/services/move";
 import { snakeToCamel } from "lib/utils";
 
 interface CollectinSupplies {
@@ -13,7 +13,7 @@ export const useCollectionSupplies = (
 ): CollectinSupplies | undefined => {
   const formatAddress = useFormatAddresses();
   const { address } = formatAddress(collectionAddress);
-  const { data: resourcesData } = useAccountResources(address);
+  const { data: resourcesData } = useResourcesByAddress(address);
 
   if (!resourcesData) return undefined;
 
