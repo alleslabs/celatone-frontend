@@ -1,5 +1,6 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddress } from "lib/services/move";
+import type { HexAddr } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 interface CollectinSupplies {
@@ -9,7 +10,7 @@ interface CollectinSupplies {
 }
 
 export const useCollectionSupplies = (
-  collectionAddress: string
+  collectionAddress: HexAddr
 ): CollectinSupplies | undefined => {
   const formatAddress = useFormatAddresses();
   const { address } = formatAddress(collectionAddress);

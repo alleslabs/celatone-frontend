@@ -14,13 +14,14 @@ import { Loading } from "lib/components/Loading";
 import NFTCard from "lib/components/NFTCard";
 import { EmptyState } from "lib/components/state";
 import type { NFTToken } from "lib/services/nft";
+import type { HexAddr } from "lib/types";
 
 const NFTsOverview = ({
   collectionAddress,
   nfts,
   isLoading,
 }: {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   nfts?: NFTToken[];
   isLoading?: boolean;
 }) => {

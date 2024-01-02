@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { zUtcDate, type Trait } from "lib/types";
+import { zUtcDate, type Trait, zHexAddr } from "lib/types";
 
 export interface NFTTokenResponse {
   data: {
@@ -24,11 +24,11 @@ export const zNFTTokenResponse = z
     uri: z.string(),
     token_id: z.string(),
     description: z.string().optional(),
-    vmAddressByOwner: z.object({ vm_address: z.string() }),
-    vm_address: z.object({ vm_address: z.string() }).optional(),
+    vmAddressByOwner: z.object({ vm_address: zHexAddr }),
+    vm_address: z.object({ vm_address: zHexAddr }).optional(),
     collectionByCollection: z
       .object({
-        vm_address: z.object({ vm_address: z.string() }),
+        vm_address: z.object({ vm_address: zHexAddr }),
       })
       .optional(),
   })

@@ -20,6 +20,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Metadata } from "lib/services/nft";
+import type { HexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import Attributes from "./components/Attributes";
@@ -29,7 +30,7 @@ import MutateEvents from "./mutate-events";
 import Txs from "./transaction";
 
 interface MobileContainerProps {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   collectionName: string;
   collectionDesc: string;
   nftAddress: string;

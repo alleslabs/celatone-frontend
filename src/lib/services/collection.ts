@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { zUtcDate } from "lib/types";
+import { zHexAddr, zUtcDate } from "lib/types";
 
 export interface CollectionResponse {
   data: {
@@ -18,7 +18,7 @@ export const zCollectionResponseItem = z
     uri: z.string(),
     name: z.string(),
     description: z.string(),
-    vm_address: z.object({ vm_address: z.string() }),
+    vm_address: z.object({ vm_address: zHexAddr }),
   })
   .transform((val) => ({
     description: val.description,
@@ -56,7 +56,7 @@ export const zCollectionInfoResponseItem = z
         .object({
           block_height: z.number(),
           name: z.string(),
-          vmAddressByCreator: z.object({ vm_address: z.string() }),
+          vmAddressByCreator: z.object({ vm_address: zHexAddr }),
         })
         .array(),
     }),
@@ -118,7 +118,7 @@ export const zCollectionCreatorResponseItem = z
             }),
           })
           .array(),
-        vmAddressByCreator: z.object({ vm_address: z.string() }),
+        vmAddressByCreator: z.object({ vm_address: zHexAddr }),
       })
       .array(),
   })
@@ -299,7 +299,7 @@ export const zCollectionListByAddressResponse = z
   .object({
     name: z.string(),
     uri: z.string(),
-    vm_address: z.object({ vm_address: z.string() }),
+    vm_address: z.object({ vm_address: zHexAddr }),
     nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
   })
   .transform((val) => ({

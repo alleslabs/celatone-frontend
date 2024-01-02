@@ -2,12 +2,13 @@ import { Box, Image, Stack, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { useMetadata } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 
 interface Props {
   uri: string;
   tokenId: string;
-  collectionAddress?: string;
-  nftAddress?: string;
+  collectionAddress?: HexAddr;
+  nftAddress?: HexAddr;
 }
 
 const NFTCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {

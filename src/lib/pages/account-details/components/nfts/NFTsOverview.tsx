@@ -9,16 +9,16 @@ import type { HexAddr } from "lib/types";
 import { NFTList } from "./NFTList";
 
 export const NFTsOverview = ({
-  hexAddress,
+  userAddress,
   totalCount,
   onViewMore,
 }: {
-  hexAddress: HexAddr;
+  userAddress: HexAddr;
   totalCount?: number;
   onViewMore?: () => void;
 }) => {
   const { data: nfts, isFetching } = useNFTTokenListByAddressPagination(
-    hexAddress,
+    userAddress,
     5,
     0
   );

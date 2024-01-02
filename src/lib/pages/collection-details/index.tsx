@@ -30,6 +30,7 @@ import {
   useCollectionTotalBurnedCount,
 } from "lib/services/collectionService";
 import { useNFTTokenListPagination } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 
 import Activities from "./components/activities";
 import CollectionInfoOverview from "./components/CollectionInfoOverview";
@@ -46,7 +47,7 @@ const CollectionDetailsBody = ({
   collectionAddress,
   tabParam,
 }: {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   tabParam: TabIndex;
 }) => {
   const { data: collection, isLoading } =
@@ -221,7 +222,7 @@ const CollectionDetails = observer(() => {
     <PageContainer>
       <CollectionDetailsBody
         tabParam={tab}
-        collectionAddress={collectionAddress}
+        collectionAddress={collectionAddress as HexAddr}
       />
     </PageContainer>
   );

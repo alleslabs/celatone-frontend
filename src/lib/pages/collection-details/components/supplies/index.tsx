@@ -6,6 +6,7 @@ import { TextInput } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useNFTTokenListPagination } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 
 import NFTList from "./NFTList";
 
@@ -13,7 +14,7 @@ const Supplies = ({
   collectionAddress,
   totalSupply,
 }: {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   totalSupply: number;
 }) => {
   const {

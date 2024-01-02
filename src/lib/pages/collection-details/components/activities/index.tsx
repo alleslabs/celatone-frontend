@@ -7,6 +7,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useCollectionActivities } from "lib/services/collectionService";
+import type { HexAddr } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";
 
@@ -14,7 +15,7 @@ const Activities = ({
   collectionAddress,
   totalActivitiesCount,
 }: {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   totalActivitiesCount: number;
 }) => {
   const {

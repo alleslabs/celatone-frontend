@@ -34,6 +34,7 @@ import {
   useNFTMutateEventsCount,
   useNFTTransactionsCount,
 } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import Attributes from "./components/Attributes";
@@ -50,8 +51,10 @@ const NFTDetail = () => {
     if (router.isReady) track(AmpEvent.TO_NFT_DETAIL);
   }, [router.isReady]);
 
-  const collectionAddress = getFirstQueryParam(router.query.collectionAddress);
-  const nftAddress = getFirstQueryParam(router.query.nftAddress);
+  const collectionAddress = getFirstQueryParam(
+    router.query.collectionAddress
+  ) as HexAddr;
+  const nftAddress = getFirstQueryParam(router.query.nftAddress) as HexAddr;
 
   const { data: collection, isLoading: collectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);

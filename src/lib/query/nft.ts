@@ -153,14 +153,14 @@ export const getNFTMutateEventsCount = gql`
 
 export const getNFTTokenListByAddressPagination = gql`
   query getNFTTokenListByAddressPagination(
-    $hexAddress: String!
+    $userAddress: String!
     $pageSize: Int!
     $offset: Int!
     $search: String
   ) {
     nfts(
       where: {
-        vmAddressByOwner: { vm_address: { _eq: $hexAddress } }
+        vmAddressByOwner: { vm_address: { _eq: $userAddress } }
         _and: { token_id: { _iregex: $search } }
       }
       order_by: { token_id: asc }
@@ -185,9 +185,9 @@ export const getNFTTokenListByAddressPagination = gql`
 `;
 
 export const getNFTTokenCountByAddress = gql`
-  query getNFTTokenCountByAddress($hexAddress: String!) {
+  query getNFTTokenCountByAddress($userAddress: String!) {
     nfts_aggregate(
-      where: { vmAddressByOwner: { vm_address: { _eq: $hexAddress } } }
+      where: { vmAddressByOwner: { vm_address: { _eq: $userAddress } } }
     ) {
       aggregate {
         count
@@ -199,7 +199,7 @@ export const getNFTTokenCountByAddress = gql`
 export const getUserNFTListByCollectionPagination = gql`
   query getUserNFTListByCollectionPagination(
     $collectionAddress: String!
-    $hexAddress: String!
+    $userAddress: String!
     $pageSize: Int!
     $offset: Int!
     $search: String
@@ -212,7 +212,7 @@ export const getUserNFTListByCollectionPagination = gql`
         collectionByCollection: {
           vm_address: { vm_address: { _eq: $collectionAddress } }
         }
-        vmAddressByOwner: { vm_address: { _eq: $hexAddress } }
+        vmAddressByOwner: { vm_address: { _eq: $userAddress } }
         _and: { token_id: { _iregex: $search } }
       }
     ) {

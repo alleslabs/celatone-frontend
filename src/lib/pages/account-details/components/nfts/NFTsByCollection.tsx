@@ -10,16 +10,17 @@ import {
   useNFTTokenListByAddressPagination,
   useUserNFTListByCollectionPagination,
 } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 
 import { NFTList } from "./NFTList";
 
 export const NFTsByCollection = ({
   collectionAddress,
-  hexAddress,
+  userAddress,
   totalCount,
 }: {
-  collectionAddress?: string;
-  hexAddress: string;
+  collectionAddress?: HexAddr;
+  userAddress: HexAddr;
   totalCount: number;
 }) => {
   const {
@@ -51,7 +52,7 @@ export const NFTsByCollection = ({
 
   const { data: nftsByCollection, isFetching: nftsByCollectionLoading } =
     useUserNFTListByCollectionPagination(
-      hexAddress,
+      userAddress,
       pageSize,
       offset,
       collectionAddress,
@@ -60,7 +61,7 @@ export const NFTsByCollection = ({
 
   const { data: addNFTs, isFetching: allNFTsLoading } =
     useNFTTokenListByAddressPagination(
-      hexAddress,
+      userAddress,
       pageSize,
       offset,
       searchKeyword

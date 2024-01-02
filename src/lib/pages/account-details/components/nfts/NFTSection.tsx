@@ -20,7 +20,7 @@ export const NFTSection = ({
   const { data: collectionList, isLoading } =
     useCollectionListByAddress(address);
 
-  const [collection, setCollection] = useState<string>();
+  const [collection, setCollection] = useState<HexAddr>();
   const [nftCount, setNFTCount] = useState<number>(totalCount);
 
   const isMobile = useMobile();
@@ -34,7 +34,7 @@ export const NFTSection = ({
       />
     );
 
-  const onClick = (count: number, collectionAddress?: string) => {
+  const onClick = (count: number, collectionAddress?: HexAddr) => {
     setCollection(collectionAddress);
     setNFTCount(count);
   };
@@ -57,7 +57,9 @@ export const NFTSection = ({
             <FilterItem
               key={item.collectionAddress}
               collectionName={item.collectionName}
-              onClick={() => onClick(item.hold, item.collectionAddress)}
+              onClick={() =>
+                onClick(item.hold, item.collectionAddress as HexAddr)
+              }
               uri={item.uri}
               isActive={collection === item.collectionAddress}
               count={item.hold}
@@ -67,7 +69,7 @@ export const NFTSection = ({
         <Box w="100%">
           <NFTsByCollection
             collectionAddress={collection}
-            hexAddress={address}
+            userAddress={address}
             totalCount={nftCount}
           />
         </Box>

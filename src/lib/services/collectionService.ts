@@ -81,7 +81,9 @@ export const useCollectionsPagination = (
   });
 };
 
-export const useCollectionByCollectionAddress = (collectionAddress: string) => {
+export const useCollectionByCollectionAddress = (
+  collectionAddress: HexAddr
+) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
@@ -107,7 +109,7 @@ export const useCollectionByCollectionAddress = (collectionAddress: string) => {
   });
 };
 
-export const useCollectionTotalBurnedCount = (collectionAddress: string) => {
+export const useCollectionTotalBurnedCount = (collectionAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
@@ -131,7 +133,7 @@ export const useCollectionTotalBurnedCount = (collectionAddress: string) => {
   });
 };
 
-export const useCollectionCreator = (collectionAddress: string) => {
+export const useCollectionCreator = (collectionAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
@@ -155,7 +157,7 @@ export const useCollectionCreator = (collectionAddress: string) => {
   });
 };
 
-export const useCollectionActivitiesCount = (collectionAddress: string) => {
+export const useCollectionActivitiesCount = (collectionAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
@@ -179,7 +181,7 @@ export const useCollectionActivitiesCount = (collectionAddress: string) => {
   });
 };
 
-export const useCollectionMutateEventsCount = (collectionAddress: string) => {
+export const useCollectionMutateEventsCount = (collectionAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
@@ -203,7 +205,7 @@ export const useCollectionMutateEventsCount = (collectionAddress: string) => {
   });
 };
 
-export const useCollectionUniqueHoldersCount = (collectionAddress: string) => {
+export const useCollectionUniqueHoldersCount = (collectionAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
 
   const queryFn = async () => {
@@ -228,7 +230,7 @@ export const useCollectionUniqueHoldersCount = (collectionAddress: string) => {
 };
 
 export const useCollectionActivities = (
-  collectionAddress: string,
+  collectionAddress: HexAddr,
   pageSize: number,
   offset: number,
   search?: string
@@ -268,7 +270,7 @@ export const useCollectionActivities = (
 };
 
 export const useCollectionMutateEventsPagination = (
-  collectionAddress: string,
+  collectionAddress: HexAddr,
   pageSize: number,
   offset: number
 ) => {

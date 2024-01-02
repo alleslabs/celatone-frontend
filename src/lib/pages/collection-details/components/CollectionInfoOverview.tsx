@@ -13,6 +13,7 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useCollectionCreator } from "lib/services/collectionService";
+import type { HexAddr } from "lib/types";
 import { formatUTC } from "lib/utils";
 
 import InfoCard from "./InfoCard";
@@ -32,7 +33,7 @@ const InfoComponent = ({
 );
 
 interface Props {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   collectionName: string;
   desc: string;
   uri: string;

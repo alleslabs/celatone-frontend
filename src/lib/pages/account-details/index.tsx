@@ -312,7 +312,7 @@ const AccountDetailsBody = ({
             {nft.enabled && (
               <NFTsOverview
                 totalCount={nftCount}
-                hexAddress={hexAddress}
+                userAddress={hexAddress}
                 onViewMore={handleTabChange(TabIndex.Nfts, nftCount)}
               />
             )}

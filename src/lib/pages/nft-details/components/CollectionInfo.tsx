@@ -1,13 +1,14 @@
 import { Box, Stack, Text } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
+import type { HexAddr } from "lib/types";
 
 const CollectionInfo = ({
   collectionAddress,
   collectionName,
   description,
 }: {
-  collectionAddress: string;
+  collectionAddress: HexAddr;
   collectionName: string;
   description: string;
 }) => {
