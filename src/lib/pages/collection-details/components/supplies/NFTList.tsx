@@ -25,7 +25,11 @@ const NFTList = ({
     );
 
   return (
-    <SimpleGrid templateColumns={`repeat(auto-fill, ${size})`} spacing="24px">
+    <SimpleGrid
+      templateColumns={`repeat(auto-fill, ${size})`}
+      spacing="24px"
+      mt={8}
+    >
       {nfts.map((nft) => (
         <NFTCard key={nft.tokenId + nft.uri} {...nft} />
       ))}
