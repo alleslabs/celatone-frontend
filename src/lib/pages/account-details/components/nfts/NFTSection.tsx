@@ -57,9 +57,7 @@ export const NFTSection = ({
             <FilterItem
               key={item.collectionAddress}
               collectionName={item.collectionName}
-              onClick={() =>
-                onClick(item.hold, item.collectionAddress as HexAddr)
-              }
+              onClick={() => onClick(item.hold, item.collectionAddress)}
               uri={item.uri}
               isActive={collection === item.collectionAddress}
               count={item.hold}

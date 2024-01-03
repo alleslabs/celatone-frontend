@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { zHexAddr } from "lib/types";
+
 export enum TabIndex {
   Overview = "overview",
   Supplies = "supplies",
@@ -8,7 +10,7 @@ export enum TabIndex {
 }
 
 export const zCollectionDetailQueryParams = z.object({
-  collectionAddress: z.string(),
+  collectionAddress: zHexAddr,
   tab: z.union([
     z.nativeEnum(TabIndex),
     z

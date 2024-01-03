@@ -222,7 +222,7 @@ const CollectionDetails = observer(() => {
     <PageContainer>
       <CollectionDetailsBody
         tabParam={tab}
-        collectionAddress={collectionAddress as HexAddr}
+        collectionAddress={collectionAddress}
       />
     </PageContainer>
   );

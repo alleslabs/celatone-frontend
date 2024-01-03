@@ -13,6 +13,7 @@ import {
   TabPanel,
   Divider,
 } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -35,7 +36,7 @@ import {
   useNFTTransactionsCount,
 } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import { truncate } from "lib/utils";
 
 import Attributes from "./components/Attributes";
 import CollectionInfo from "./components/CollectionInfo";
@@ -43,19 +44,15 @@ import MintInfo from "./components/MintInfo";
 import MobileContainer from "./MobileContainer";
 import MutateEvents from "./mutate-events";
 import Txs from "./transaction";
+import { zNFTDetailQueryParams } from "./types";
 
-const NFTDetail = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_NFT_DETAIL);
-  }, [router.isReady]);
-
-  const collectionAddress = getFirstQueryParam(
-    router.query.collectionAddress
-  ) as HexAddr;
-  const nftAddress = getFirstQueryParam(router.query.nftAddress) as HexAddr;
-
+const NFTDetailsBody = ({
+  collectionAddress,
+  nftAddress,
+}: {
+  collectionAddress: HexAddr;
+  nftAddress: HexAddr;
+}) => {
   const { data: collection, isLoading: collectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
   const { data: nft, isLoading: nftLoading } = useNFTInfo(
@@ -76,7 +73,7 @@ const NFTDetail = () => {
   const nftName = metadata?.name ?? tokenId;
 
   return (
-    <PageContainer>
+    <>
       <Breadcrumb
         items={[
           { text: "NFTs", href: "/collections" },
@@ -227,8 +224,31 @@ const NFTDetail = () => {
           </Tabs>
         </Stack>
       )}
-    </PageContainer>
+    </>
   );
 };
 
-export default NFTDetail;
+const NFTDetails = observer(() => {
+  const router = useRouter();
+  const validated = zNFTDetailQueryParams.safeParse(router.query);
+
+  useEffect(() => {
+    if (router.isReady && validated.success) track(AmpEvent.TO_NFT_DETAIL);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  if (!validated.success)
+    return <EmptyState message="NFT not found." imageVariant="not-found" />;
+
+  const { collectionAddress, nftAddress } = validated.data;
+  return (
+    <PageContainer>
+      <NFTDetailsBody
+        collectionAddress={collectionAddress}
+        nftAddress={nftAddress}
+      />
+    </PageContainer>
+  );
+});
+
+export default NFTDetails;
