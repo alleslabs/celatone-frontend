@@ -4,7 +4,6 @@ import {
   Stack,
   Text,
   Box,
-  Button,
   Heading,
   Tabs,
   TabList,
@@ -24,7 +23,6 @@ import { AppLink } from "lib/components/AppLink";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -140,17 +138,6 @@ const NFTDetailsBody = ({
                       {nftName}
                     </Heading>
                   </Box>
-                  <Button
-                    backgroundColor="transparent"
-                    textColor="primary.main"
-                    border="1px solid"
-                    borderColor="primary.main"
-                    _hover={{ background: "transparent" }}
-                  >
-                    <Flex gap="8px" align="center">
-                      <CustomIcon name="download" /> Download NFT
-                    </Flex>
-                  </Button>
                 </Flex>
                 <Box fontSize="14px">
                   <Flex gap="8px">

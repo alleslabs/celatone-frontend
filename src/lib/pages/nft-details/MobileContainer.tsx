@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Button,
   Divider,
   Flex,
   Heading,
@@ -18,7 +17,6 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import type { Metadata } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 import { truncate } from "lib/utils";
@@ -70,15 +68,6 @@ const MobileContainer = ({
               {nftName}
             </Heading>
           </Box>
-          <Button
-            backgroundColor="transparent"
-            textColor="primary.main"
-            border="1px solid"
-            borderColor="primary.main"
-            _hover={{ background: "transparent" }}
-          >
-            <CustomIcon name="download" />
-          </Button>
         </Flex>
 
         <Image src={metadata?.image} borderRadius="8px" />
