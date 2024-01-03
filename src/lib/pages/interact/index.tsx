@@ -22,12 +22,7 @@ import {
   useAccountModules,
   useVerifyModule,
 } from "lib/services/move/moduleService";
-import type {
-  ExposedFunction,
-  HexAddr,
-  MoveAccountAddr,
-  Option,
-} from "lib/types";
+import type { Addr, ExposedFunction } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -92,7 +87,7 @@ export const Interact = () => {
   );
 
   const { data: verificationData } = useVerifyModule({
-    address: module?.address as Option<HexAddr>,
+    address: module?.address,
     moduleName: module?.moduleName,
   });
 
@@ -101,7 +96,7 @@ export const Interact = () => {
   const functionNameParam = getFirstQueryParam(router.query.functionName);
   const functionTypeParam = getFirstQueryParam(router.query.functionType);
   const { refetch } = useAccountModules({
-    address: addressParam as MoveAccountAddr,
+    address: addressParam as Addr,
     moduleName: moduleNameParam,
     functionName: functionNameParam,
     options: {

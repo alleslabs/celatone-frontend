@@ -10,15 +10,15 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Activity } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
+import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { encode, feeFromStr, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
-  address: HumanAddr;
-  contractAddress: ContractAddr;
+  address: BechAddr20;
+  contractAddress: BechAddr32;
   fee: StdFee;
   msg: object;
   funds: Coin[];

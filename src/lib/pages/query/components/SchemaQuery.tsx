@@ -9,14 +9,14 @@ import { UploadSchema } from "lib/components/json-schema";
 import { EmptyState, StateImage } from "lib/components/state";
 import { useContractStore, useSchemaStore } from "lib/providers/store";
 import type { QuerySchema } from "lib/stores/schema";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 import { resolveInitialMsg } from "lib/utils";
 
 import { SchemaQueryComponent } from "./SchemaQueryComponent";
 
 interface SchemaQueryProps {
   schema: Option<QuerySchema>;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: string;
   codeId: number;
   codeHash: string;

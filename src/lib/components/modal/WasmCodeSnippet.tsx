@@ -29,7 +29,7 @@ import {
   useRPCEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
@@ -41,7 +41,7 @@ import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface WasmCodeSnippetProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   message: string;
   type: "query" | "execute";
   ml?: ButtonProps["ml"];

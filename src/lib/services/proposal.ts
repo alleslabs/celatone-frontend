@@ -2,11 +2,11 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import { zAddr, zUtcDate, zProposalType } from "lib/types";
+import { zUtcDate, zProposalType, zBechAddr } from "lib/types";
 import type {
-  ContractAddr,
   AccessConfigPermission,
-  Addr,
+  BechAddr,
+  BechAddr32,
   SnakeToCamelCaseNested,
   Proposal,
 } from "lib/types";
@@ -54,8 +54,8 @@ export const fetchGovVotingParams = (
 
 export interface UploadAccess {
   permission: AccessConfigPermission;
-  address: Addr;
-  addresses?: Addr[];
+  address: BechAddr;
+  addresses?: BechAddr[];
 }
 
 export const fetchGovUploadAccessParams = async (
@@ -68,7 +68,7 @@ const zProposalsResponseItem = z
     deposit_end_time: zUtcDate,
     id: z.number().nonnegative(),
     is_expedited: z.boolean(),
-    proposer: zAddr,
+    proposer: zBechAddr,
     resolved_height: z.number().nullish(),
     status: z.string().transform(parseProposalStatus),
     title: z.string(),
@@ -96,7 +96,7 @@ export type ProposalsResponse = z.infer<typeof zProposalsResponse>;
 
 export const getProposalsByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ): Promise<ProposalsResponse> =>
@@ -114,7 +114,7 @@ const zRelatedProposalsResponseItem = z
     deposit_end_time: zUtcDate,
     proposal_id: z.number().nonnegative(),
     is_expedited: z.boolean(),
-    proposer: zAddr,
+    proposer: zBechAddr,
     resolved_height: z.number().nullish(),
     status: z.string().transform(parseProposalStatus),
     title: z.string(),
@@ -143,7 +143,7 @@ export type RelatedProposalsResponse = z.infer<
 
 export const getRelatedProposalsByContractAddress = async (
   endpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   limit: number,
   offset: number
 ): Promise<RelatedProposalsResponse> =>

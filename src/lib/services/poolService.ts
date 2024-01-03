@@ -13,7 +13,7 @@ import {
   getPoolListCount,
   getPoolsByPoolIds,
 } from "lib/query";
-import type { ContractAddr, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
+import type { BechAddr32, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 import { usePoolExpression } from "./expression/poolExpression";
@@ -65,7 +65,7 @@ export const usePoolListQuery = ({
         type: pool.type,
         isSuperfluid: pool.is_superfluid,
         poolLiquidity: pool.liquidity,
-        contractAddress: pool.contract_address as ContractAddr,
+        contractAddress: pool.contract_address as BechAddr32,
       }))
     );
   }, [expression, indexerGraphClient, offset, order, pageSize, search]);

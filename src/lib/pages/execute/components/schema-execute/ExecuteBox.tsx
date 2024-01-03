@@ -43,12 +43,7 @@ import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
-import type {
-  ComposedMsg,
-  ContractAddr,
-  HumanAddr,
-  JsonDataType,
-} from "lib/types";
+import type { BechAddr32, ComposedMsg, JsonDataType } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -67,7 +62,7 @@ const WasmCodeSnippet = dynamic(
 
 interface ExecuteBoxProps {
   msgSchema: SchemaInfo;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: JsonDataType;
   initialFunds: Coin[];
   opened: boolean;
@@ -255,15 +250,19 @@ export const ExecuteBox = ({
 
   useEffect(() => {
     if (enableExecute) {
-      const composedMsg = composeMsg(MsgType.EXECUTE, {
-        sender: address as HumanAddr,
-        contract: contractAddress as ContractAddr,
-        msg: Buffer.from(msg),
-        funds,
-      });
+      const composedMsg = address
+        ? [
+            composeMsg(MsgType.EXECUTE, {
+              sender: address,
+              contract: contractAddress,
+              msg: Buffer.from(msg),
+              funds,
+            }),
+          ]
+        : [];
 
       const timeoutId = setTimeout(() => {
-        setComposedTxMsg([composedMsg]);
+        setComposedTxMsg(composedMsg);
       }, 1000);
       return () => clearTimeout(timeoutId);
     }

@@ -1,4 +1,4 @@
-import type { AccessType, Addr } from "lib/types";
+import type { AccessType, BechAddr } from "lib/types";
 
 export type SimulateStatus =
   | {
@@ -18,5 +18,5 @@ export interface UploadSectionState {
   wasmFile?: File;
   codeName: string;
   permission: AccessType;
-  addresses: Record<"address", Addr>[];
+  addresses: Record<"address", BechAddr>[];
 }

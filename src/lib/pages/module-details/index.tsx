@@ -19,7 +19,7 @@ import {
 } from "lib/services/move/moduleService";
 import { useRelatedProposalsCountByModuleId } from "lib/services/proposalService";
 import { useModuleTxsCount } from "lib/services/txService";
-import type { MoveAccountAddr } from "lib/types";
+import type { Addr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -262,7 +262,7 @@ export const ModuleDetails = () => {
   const moduleName = getFirstQueryParam(router.query.moduleName);
 
   const { data, isLoading } = useAccountModules({
-    address: addr as MoveAccountAddr,
+    address: addr as Addr,
     moduleName,
   });
 

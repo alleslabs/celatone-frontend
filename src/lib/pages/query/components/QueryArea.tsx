@@ -13,13 +13,13 @@ import {
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
 import { useSchemaStore } from "lib/providers/store";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 
 import { JsonQuery } from "./JsonQuery";
 import { SchemaQuery } from "./SchemaQuery";
 
 interface QueryAreaProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   codeId: Option<number>;
   codeHash: string;
   initialMsg: string;

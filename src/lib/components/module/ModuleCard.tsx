@@ -7,12 +7,12 @@ import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useVerifyModule } from "lib/services/move/moduleService";
-import type { MoveAccountAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
-  selectedAddress: MoveAccountAddr;
+  selectedAddress: BechAddr;
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;

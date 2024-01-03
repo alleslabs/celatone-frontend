@@ -5,12 +5,12 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
 } from "lib/app-provider";
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 
 import type {} from "./delegation";
 import { getDelegationsByAddress } from "./delegation";
 
-export const useDelegationsByAddress = (address: Addr) => {
+export const useDelegationsByAddress = (address: BechAddr) => {
   const endpoint = useBaseApiRoute("accounts");
   const {
     chainConfig: {

@@ -1,7 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import { z } from "zod";
 
-import type { Addr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
@@ -29,7 +29,7 @@ export interface Msg {
 export interface Transaction {
   hash: string;
   messages: Message[];
-  sender: Addr;
+  sender: BechAddr;
   isSigner: boolean;
   height: number;
   created: Date;

@@ -22,18 +22,18 @@ import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import { useContractQueryMsgs } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 
 interface RenderCmdsProps {
   isFetching: boolean;
   cmds: [string, string][];
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   type: string;
 }
 
 interface CommandSectionProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   codeHash: string;
   codeId: number;
 }

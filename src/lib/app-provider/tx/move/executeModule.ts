@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeModuleTx } from "lib/app-fns/tx/move/executeModule";
 import { useCurrentChain, useGetSigningClient } from "lib/app-provider/hooks";
-import type { HexAddr, HumanAddr } from "lib/types";
+import type { HexAddr } from "lib/types";
 import { toEncodeObject } from "lib/utils";
 
 export interface ExecuteModuleStreamParams {
@@ -51,7 +51,7 @@ export const useExecuteModuleTx = () => {
 
       if (!estimatedFee) return null;
       return executeModuleTx({
-        address: address as HumanAddr,
+        address,
         messages,
         fee: estimatedFee,
         client,

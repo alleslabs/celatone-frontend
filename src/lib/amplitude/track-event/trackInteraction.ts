@@ -3,7 +3,7 @@ import big from "big.js";
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
 import type { SearchResultType } from "lib/services/searchService";
-import type { MoveAccountAddr, Option, Token } from "lib/types";
+import type { Addr, Option, Token } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 export const trackUseMainSearch = (
@@ -197,7 +197,7 @@ export const trackUseToggle = (name: string, isActive: boolean) =>
   amp.track(AmpEvent.USE_TOGGLE, { name, isActive });
 
 export const trackUseModuleSelectionInputFill = (
-  address: MoveAccountAddr,
+  address: Addr,
   manualModuleName: boolean,
   manualFunctionName: boolean
 ) =>

@@ -5,10 +5,10 @@ import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { ErrorFetching, EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
-import type { MoveAccountAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
-  selectedAddress: MoveAccountAddr;
+  address: BechAddr;
   keyword: string;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
@@ -16,7 +16,7 @@ interface ModuleListsBodyProps {
 }
 
 export const ModuleListsBody = ({
-  selectedAddress,
+  address,
   keyword,
   modules,
   isLoading,
@@ -51,7 +51,7 @@ export const ModuleListsBody = ({
         (item) => (
           <ModuleCard
             key={item.moduleName}
-            selectedAddress={selectedAddress}
+            selectedAddress={address}
             module={item}
             selectedModule={undefined}
           />

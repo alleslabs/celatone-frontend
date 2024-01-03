@@ -1,11 +1,11 @@
 import { Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 
 import { useAccountTotalValue } from "../data";
-import type { HumanAddr } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 interface TotalAccountValueProps {
-  accountAddress: HumanAddr;
+  accountAddress: BechAddr;
 }
 export const TotalAccountValue = ({
   accountAddress,

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 
 export interface ICNSNamesResponse {
   names: string[];
@@ -9,7 +9,7 @@ export interface ICNSNamesResponse {
 
 export const queryICNSNamesByAddress = async (
   baseEndpoint: string,
-  address: Addr
+  address: BechAddr
 ) => {
   const { data } = await axios.get<ICNSNamesResponse>(
     `${baseEndpoint}/${address}`
@@ -21,7 +21,7 @@ export const queryAddressByICNSName = async (
   baseEndpoint: string,
   name: string,
   bech32Prefix: string
-): Promise<Addr> => {
+): Promise<BechAddr> => {
   const { data } = await axios.get(`${baseEndpoint}/${name}/${bech32Prefix}`);
   return data.address;
 };

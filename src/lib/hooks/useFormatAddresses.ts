@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useConvertHexAddress } from "lib/app-provider";
-import type { HexAddr, HumanAddr } from "lib/types";
+import type { BechAddr, HexAddr } from "lib/types";
 import {
   bech32AddressToHex,
   isHexModuleAddress,
@@ -26,8 +26,8 @@ export const useFormatAddresses = () => {
           hex: unpadHexAddress(address as HexAddr),
         };
       return {
-        address: address as HumanAddr,
-        hex: unpadHexAddress(bech32AddressToHex(address as HumanAddr)),
+        address: address as BechAddr,
+        hex: unpadHexAddress(bech32AddressToHex(address as BechAddr)),
       };
     },
     [convertHexModuleAddress, convertHexWalletAddress]

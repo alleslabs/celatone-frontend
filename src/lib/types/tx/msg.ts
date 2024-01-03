@@ -1,7 +1,7 @@
 import type { Coin } from "@cosmjs/stargate";
 import type { MsgSubmitProposal } from "cosmjs-types/cosmos/gov/v1beta1/tx";
 
-import type { Addr, ContractAddr } from "../addrs";
+import type { BechAddr, BechAddr32 } from "../addrs";
 
 export enum MsgType {
   STORE_CODE = "STORE_CODE",
@@ -23,19 +23,19 @@ export enum AccessType {
 
 export interface AccessConfig {
   permission: AccessType;
-  address: Addr;
-  addresses?: Addr[];
+  address: BechAddr;
+  addresses?: BechAddr[];
 }
 
 export interface MsgStoreCode {
-  sender: Addr;
+  sender: BechAddr;
   wasmByteCode: Uint8Array;
   instantiatePermission?: AccessConfig;
 }
 
 export interface MsgInstantiateContract {
-  sender: Addr;
-  admin: Addr;
+  sender: BechAddr;
+  admin: BechAddr;
   codeId: Long;
   label: string;
   msg: Uint8Array;
@@ -43,22 +43,22 @@ export interface MsgInstantiateContract {
 }
 
 export interface MsgExecuteContract {
-  sender: Addr;
-  contract: ContractAddr;
+  sender: BechAddr;
+  contract: BechAddr32;
   msg: Uint8Array;
   funds: Coin[];
 }
 
 export interface MsgMigrateContract {
-  sender: Addr;
-  contract: ContractAddr;
+  sender: BechAddr;
+  contract: BechAddr32;
   codeId: Long;
   msg: Uint8Array;
 }
 export interface MsgUpdateAdmin {
-  sender: Addr;
-  newAdmin: Addr;
-  contract: ContractAddr;
+  sender: BechAddr;
+  newAdmin: BechAddr;
+  contract: BechAddr32;
 }
 
 export type TxMessage =
@@ -79,33 +79,33 @@ export interface DetailExecute extends MsgExecuteContract {
 }
 
 export interface DetailInstantiate extends MsgInstantiateContract {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
 }
 
 export interface DetailSend {
   amount: Coin[];
-  fromAddress: Addr;
-  toAddress: Addr;
+  fromAddress: BechAddr;
+  toAddress: BechAddr;
 }
-export interface DetailUpload {
+export interface DetailStoreCode {
   id: number;
-  sender: Addr;
+  sender: BechAddr;
 }
 
 export interface DetailClearAdmin {
-  contract: ContractAddr;
-  sender: Addr;
+  contract: BechAddr32;
+  sender: BechAddr;
 }
 
 export interface DetailUpdateAdmin {
-  contract: ContractAddr;
-  newAdmin: Addr;
-  sender: Addr;
+  contract: BechAddr32;
+  newAdmin: BechAddr;
+  sender: BechAddr;
 }
 
 export interface DetailMigrate {
   codeId: number;
-  contract: ContractAddr;
+  contract: BechAddr32;
   msg: object;
-  sender: Addr;
+  sender: BechAddr;
 }

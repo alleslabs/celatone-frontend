@@ -29,12 +29,12 @@ import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
 
 interface MigrateContractProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   codeIdParam: string;
   handleBack: () => void;
 }
@@ -129,7 +129,7 @@ export const MigrateContract = ({
       setValue("codeHash", data.code_info.data_hash.toLowerCase());
       if (
         resolvePermission(
-          address as HumanAddr,
+          address,
           permission.permission,
           permission.addresses,
           permission.address
@@ -216,14 +216,18 @@ export const MigrateContract = ({
   useEffect(() => {
     if (enableMigrate) {
       setSimulateError("");
-      const composedMsg = composeMsg(MsgType.MIGRATE, {
-        sender: address as HumanAddr,
-        contract: contractAddress as ContractAddr,
-        codeId: Long.fromString(codeId),
-        msg: Buffer.from(currentInput),
-      });
+      const composedMsg = address
+        ? [
+            composeMsg(MsgType.MIGRATE, {
+              sender: address,
+              contract: contractAddress,
+              codeId: Long.fromString(codeId),
+              msg: Buffer.from(currentInput),
+            }),
+          ]
+        : [];
       const timeoutId = setTimeout(() => {
-        setComposedTxMsg([composedMsg]);
+        setComposedTxMsg(composedMsg);
       }, 1000);
       return () => clearTimeout(timeoutId);
     }

@@ -31,14 +31,14 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 import { queryContract } from "lib/services/contract";
-import type { ContractAddr, RpcQueryError } from "lib/types";
+import type { BechAddr32, RpcQueryError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
 import { ContractListDetail } from "./ContractListDetail";
 
 interface SelectContractInstantiatorProps {
   notSelected: boolean;
-  onContractSelect: (contract: ContractAddr) => void;
+  onContractSelect: (contract: BechAddr32) => void;
 }
 
 export const SelectContractInstantiator = ({
@@ -50,8 +50,8 @@ export const SelectContractInstantiator = ({
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
 
-  const [searchContract, setSearchContract] = useState<ContractAddr>(
-    "" as ContractAddr
+  const [searchContract, setSearchContract] = useState<BechAddr32>(
+    "" as BechAddr32
   );
   const [invalid, setInvalid] = useState("");
 
@@ -68,12 +68,12 @@ export const SelectContractInstantiator = ({
 
   const resetOnClose = () => {
     setListSlug("");
-    setSearchContract("" as ContractAddr);
+    setSearchContract("" as BechAddr32);
     setInvalid("");
     onClose();
   };
 
-  const onSelectThenClose = (contract: ContractAddr) => {
+  const onSelectThenClose = (contract: BechAddr32) => {
     track(AmpEvent.USE_CONTRACT_MODAL_LISTS);
     onContractSelect(contract);
     resetOnClose();
@@ -82,7 +82,7 @@ export const SelectContractInstantiator = ({
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, searchContract],
-    async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
+    async () => queryContract(lcdEndpoint, searchContract),
     {
       enabled: false,
       retry: false,
@@ -164,7 +164,7 @@ export const SelectContractInstantiator = ({
                     value={searchContract}
                     onChange={(e) => {
                       const inputValue = e.target.value;
-                      setSearchContract(inputValue as ContractAddr);
+                      setSearchContract(inputValue as BechAddr32);
                     }}
                     placeholder={`ex. ${exampleContractAddress}`}
                     size="lg"

@@ -28,7 +28,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
-import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
+import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
@@ -54,7 +54,7 @@ export interface AccountDetailsBodyProps {
   tabParam: TabIndex;
 }
 
-const getAddressOnPath = (hexAddress: HexAddr, accountAddress: HumanAddr) =>
+const getAddressOnPath = (hexAddress: HexAddr, accountAddress: BechAddr) =>
   hexAddress === "0x1" ? hexAddress : accountAddress;
 
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
@@ -290,7 +290,7 @@ const AccountDetailsBody = ({
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
               >
                 <DelegationsSection
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   onViewMore={handleTabChange(TabIndex.Delegations, undefined)}
                 />
               </Flex>
@@ -307,7 +307,7 @@ const AccountDetailsBody = ({
             {wasm.enabled && (
               <>
                 <StoredCodesTable
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.codesCount ?? undefined}
                   refetchCount={refetchCounts}
@@ -317,7 +317,7 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <InstantiatedContractsTable
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.contractsCount ?? undefined}
                   refetchCount={refetchCounts}
@@ -327,7 +327,7 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <AdminContractsTable
-                  walletAddress={accountAddress}
+                  address={accountAddress}
                   scrollComponentId={tableHeaderId}
                   totalData={tableCounts.contractsAdminCount ?? undefined}
                   refetchCount={refetchCounts}
@@ -351,8 +351,8 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <ModuleLists
+                  address={accountAddress}
                   totalCount={modulesData?.length}
-                  selectedAddress={accountAddress}
                   modules={modulesData}
                   isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules, undefined)}
@@ -361,7 +361,7 @@ const AccountDetailsBody = ({
             )}
             {gov.enabled && (
               <OpenedProposalsTable
-                walletAddress={accountAddress}
+                address={accountAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.proposalsCount ?? undefined}
                 refetchCount={refetchCounts}
@@ -376,7 +376,7 @@ const AccountDetailsBody = ({
             <AssetsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <DelegationsSection walletAddress={accountAddress} />
+            <DelegationsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable
@@ -387,7 +387,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount ?? undefined}
               refetchCount={refetchCounts}
@@ -395,7 +395,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <InstantiatedContractsTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount ?? undefined}
               refetchCount={refetchCounts}
@@ -403,7 +403,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <AdminContractsTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount ?? undefined}
               refetchCount={refetchCounts}
@@ -419,15 +419,15 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
+              address={accountAddress}
               totalCount={modulesData?.length}
-              selectedAddress={accountAddress}
               modules={modulesData}
               isLoading={isModulesLoading}
             />
           </TabPanel>
           <TabPanel p={0}>
             <OpenedProposalsTable
-              walletAddress={accountAddress}
+              address={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount ?? undefined}
               refetchCount={refetchCounts}

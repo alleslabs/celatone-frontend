@@ -16,7 +16,7 @@ import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import { useUploadAccessParams } from "lib/services/proposalService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { MigrateContract } from "./components/MigrateContract";
@@ -26,7 +26,7 @@ import type { MigratePageState } from "./types";
 
 const defaultValues: MigratePageState = {
   migrateStep: "migrate_options",
-  contractAddress: "" as ContractAddr,
+  contractAddress: "" as BechAddr32,
   admin: undefined,
   codeId: "",
 };
@@ -51,11 +51,11 @@ const Migrate = () => {
 
   const contractAddressParam = getFirstQueryParam(
     router.query.contract
-  ) as ContractAddr;
+  ) as BechAddr32;
   const codeIdParam = getFirstQueryParam(router.query["code-id"]);
 
   const onContractSelect = useCallback(
-    (contract: ContractAddr) => {
+    (contract: BechAddr32) => {
       navigate({
         pathname: "/migrate",
         query: {

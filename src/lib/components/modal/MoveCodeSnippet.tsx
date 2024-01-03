@@ -29,7 +29,7 @@ import {
   useRPCEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { AbiFormData, ExposedFunction, MoveAccountAddr } from "lib/types";
+import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getArgType, serializeAbiData } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
@@ -41,7 +41,7 @@ import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface MoveCodeSnippetProps {
-  moduleAddress: MoveAccountAddr;
+  moduleAddress: HexAddr;
   moduleName: string;
   fn: ExposedFunction;
   abiData: AbiFormData;

@@ -11,26 +11,22 @@ import {
   useCurrentChain,
   useGetAddressType,
 } from "lib/app-provider";
-import type { Addr, ContractAddr } from "lib/types";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 import { queryContract } from "./contract";
 import type { ICNSNamesResponse } from "./ns";
 import { queryAddressByICNSName, queryICNSNamesByAddress } from "./ns";
 
 export const useICNSNamesByAddress = (
-  address: Addr
+  address: Option<BechAddr>
 ): UseQueryResult<ICNSNamesResponse> => {
   const resolverEndpoint = useBaseApiRoute("icns_names");
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(address);
 
-  const queryFn = async ({
-    queryKey,
-  }: QueryFunctionContext<string[]>): Promise<ICNSNamesResponse> => {
-    const icnsNames = await queryICNSNamesByAddress(
-      queryKey[1],
-      queryKey[2] as Addr
-    );
+  const queryFn = async (): Promise<ICNSNamesResponse> => {
+    if (!address) throw new Error("address is undefined");
+    const icnsNames = await queryICNSNamesByAddress(resolverEndpoint, address);
     const primaryIndex = icnsNames.names.indexOf(icnsNames.primary_name);
     if (primaryIndex > -1) {
       icnsNames.names.splice(primaryIndex, 1);
@@ -39,22 +35,20 @@ export const useICNSNamesByAddress = (
     return icnsNames;
   };
 
-  return useQuery({
-    queryKey: [
-      CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS,
-      resolverEndpoint,
-      address,
-    ],
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS, resolverEndpoint, address],
     queryFn,
-    refetchOnWindowFocus: false,
-    enabled:
-      addressType === "contract_address" || addressType === "user_address",
-    retry: 1,
-  });
+    {
+      refetchOnWindowFocus: false,
+      enabled:
+        addressType === "contract_address" || addressType === "user_address",
+      retry: 1,
+    }
+  );
 };
 
 interface AddressByICNSInternal {
-  address: Addr;
+  address: BechAddr;
   addressType: AddressReturnType;
 }
 
@@ -82,7 +76,7 @@ export const useAddressByICNSName = (
     if (addressType === "contract_address") {
       const contractData = await queryContract(
         lcdEndpoint,
-        icnsAddress as ContractAddr
+        icnsAddress as BechAddr32
       );
       if (!contractData) addressType = "user_address";
     }

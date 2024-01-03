@@ -10,7 +10,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import type { ContractDetail } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import {
   getFirstQueryParam,
   jsonPrettify,
@@ -33,7 +33,7 @@ const Execute = () => {
   // ------------------STATES------------------//
   // ------------------------------------------//
   const [initialMsg, setInitialMsg] = useState("");
-  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
+  const [contractAddress, setContractAddress] = useState("" as BechAddr32);
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState<number>();
@@ -51,7 +51,7 @@ const Execute = () => {
   };
 
   const onContractSelect = useCallback(
-    (contract: ContractAddr) => {
+    (contract: BechAddr32) => {
       navigate({
         pathname: "/execute",
         query: { ...(contract && { contract }) },
@@ -68,7 +68,7 @@ const Execute = () => {
     if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
-      ) as ContractAddr;
+      ) as BechAddr32;
       const msgParam = getFirstQueryParam(router.query.msg);
       if (!msgParam.length) {
         setInitialMsg("");

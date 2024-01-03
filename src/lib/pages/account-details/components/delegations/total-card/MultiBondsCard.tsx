@@ -4,7 +4,7 @@ import big from "big.js";
 import plur from "plur";
 
 import { CustomIcon } from "lib/components/icon";
-import type { Addr, Option, TokenWithValue, USD } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 import { TotalCardModal } from "./TotalCardModal";
@@ -13,7 +13,7 @@ import { TotalCardTop } from "./TotalCardTop";
 interface MultiBondsCardProps {
   title: string;
   message: string;
-  address: Addr;
+  address: BechAddr;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 

@@ -1,5 +1,5 @@
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { Option, Addr, Nullable } from "lib/types";
+import type { BechAddr, Option, Nullable } from "lib/types";
 
 export enum AccessConfigPermission {
   EVERYBODY = "Everybody",
@@ -10,7 +10,7 @@ export enum AccessConfigPermission {
   UNKNOWN = "Unknown",
 }
 
-export type PermissionAddresses = Addr[];
+export type PermissionAddresses = BechAddr[];
 
 export interface CodeInfo extends CodeLocalInfo {
   contractCount: Option<number>;
@@ -29,7 +29,7 @@ interface CodeProposal {
 
 export interface CodeData {
   codeId: number;
-  uploader: Addr;
+  uploader: BechAddr;
   hash: Option<string>;
   height: Option<number>;
   created: Option<Date>;

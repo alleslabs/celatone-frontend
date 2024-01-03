@@ -9,7 +9,7 @@ import type { Observable } from "rxjs";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
+import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -18,8 +18,8 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface MigrateTxParams {
-  sender: HumanAddr;
-  contractAddress: ContractAddr;
+  sender: BechAddr20;
+  contractAddress: BechAddr32;
   codeId: number;
   migrateMsg: object;
   fee: StdFee;

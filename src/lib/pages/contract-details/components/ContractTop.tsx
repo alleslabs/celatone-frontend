@@ -21,7 +21,7 @@ import {
 import type { Contract } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
-  ContractAddr,
+  BechAddr32,
   Nullable,
   Option,
   ProjectInfo,
@@ -30,7 +30,7 @@ import type {
 import { truncate } from "lib/utils";
 
 interface ContractTopProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
 
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicContractInfo>;
@@ -91,7 +91,7 @@ export const ContractTop = ({
     return (
       <SaveContractDetailsModal
         contractLocalInfo={{
-          contractAddress: contractAddress as ContractAddr,
+          contractAddress,
           instantiator: contract.instantiator,
           label: contract.label,
         }}
@@ -217,7 +217,7 @@ export const ContractTop = ({
         >
           {!isMobile && (
             <AdminButton
-              contractAddress={contractAddress as ContractAddr}
+              contractAddress={contractAddress}
               admin={contract.admin}
             />
           )}

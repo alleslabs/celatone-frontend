@@ -5,13 +5,13 @@ import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import type { Activity } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 export interface ExecuteStreamParams {
   onTxSucceed?: (activity: Activity) => void;
   onTxFailed?: () => void;
   estimatedFee: StdFee | undefined;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   msg: object;
   funds: Coin[];
 }
@@ -35,7 +35,7 @@ export const useExecuteContractTx = () => {
       if (!estimatedFee) return null;
 
       return executeContractTx({
-        address: address as HumanAddr,
+        address,
         contractAddress,
         fee: estimatedFee,
         msg,

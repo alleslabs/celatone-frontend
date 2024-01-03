@@ -1,11 +1,7 @@
 import { Flex, Tag } from "@chakra-ui/react";
 
 import { useCurrentChain } from "lib/app-provider";
-import type {
-  HumanAddr,
-  PermissionAddresses,
-  AccessConfigPermission,
-} from "lib/types";
+import type { PermissionAddresses, AccessConfigPermission } from "lib/types";
 import { getPermissionHelper, resolvePermission } from "lib/utils";
 
 import { Tooltip } from "./Tooltip";
@@ -24,13 +20,13 @@ export const PermissionChip = ({
   const { address } = useCurrentChain();
 
   const isAllowed = resolvePermission(
-    address as HumanAddr,
+    address,
     instantiatePermission,
     permissionAddresses
   );
 
   const { message } = getPermissionHelper(
-    address as HumanAddr,
+    address,
     instantiatePermission,
     permissionAddresses
   );

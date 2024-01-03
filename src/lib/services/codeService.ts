@@ -21,9 +21,9 @@ import type {
   Option,
   AccessConfigPermission,
   PermissionAddresses,
-  Addr,
-  HumanAddr,
   Nullable,
+  BechAddr,
+  BechAddr20,
 } from "lib/types";
 import { isId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
@@ -39,7 +39,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader as Addr,
+          uploader: code.account.uploader as BechAddr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
             code.access_config_permission as AccessConfigPermission,
@@ -55,7 +55,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
 };
 
 export const useCodeListByWalletAddress = (
-  walletAddr: Option<HumanAddr>
+  walletAddr: Option<BechAddr20>
 ): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
@@ -69,7 +69,7 @@ export const useCodeListByWalletAddress = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader as Addr,
+          uploader: code.account.uploader as BechAddr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
             code.access_config_permission as AccessConfigPermission,
@@ -109,7 +109,7 @@ export const useCodeListByCodeIds = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader as Addr,
+          uploader: code.account.uploader as BechAddr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
             code.access_config_permission as AccessConfigPermission,
@@ -158,7 +158,7 @@ export const useCodeDataByCodeId = ({
 
         return {
           codeId: codes_by_pk.id,
-          uploader: codes_by_pk.account.address as Addr,
+          uploader: codes_by_pk.account.address as BechAddr,
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
           created: parseDateOpt(codes_by_pk.transaction?.block?.timestamp),
@@ -189,7 +189,7 @@ export const useCodeDataByCodeId = ({
 };
 
 export const useCodesByAddress = (
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ): UseQueryResult<CodesResponse> => {

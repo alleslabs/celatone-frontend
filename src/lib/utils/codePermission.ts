@@ -1,10 +1,10 @@
-import type { Addr, PermissionAddresses, Option } from "lib/types";
+import type { PermissionAddresses, Option, BechAddr20 } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 import { truncate } from "./truncate";
 
 export const resolvePermission = (
-  address: Option<Addr>,
+  address: Option<BechAddr20>,
   permission: AccessConfigPermission = AccessConfigPermission.UNKNOWN,
   permissionAddresses: PermissionAddresses = [],
   permissionAddress = ""
@@ -15,7 +15,7 @@ export const resolvePermission = (
     : false);
 
 export const getPermissionHelper = (
-  address: Option<Addr>,
+  address: Option<BechAddr20>,
   instantiatePermission: AccessConfigPermission,
   permissionAddresses: PermissionAddresses
 ) => {

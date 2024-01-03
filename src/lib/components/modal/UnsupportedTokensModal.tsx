@@ -21,7 +21,7 @@ import { trackUseUnsupportedToken } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
-import type { Addr, TokenWithValue } from "lib/types";
+import type { BechAddr, TokenWithValue } from "lib/types";
 import {
   getTokenType,
   getTokenLabel,
@@ -30,7 +30,7 @@ import {
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: TokenWithValue[];
-  address?: Addr;
+  address?: BechAddr;
   addressType?: AddressReturnType;
   buttonProps?: ButtonProps;
   amptrackSection?: string;

@@ -9,13 +9,13 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
 import { ErrorFetching, EmptyState } from "lib/components/state";
-import type { HumanAddr, Option, ResourceGroupByAccount } from "lib/types";
+import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { ResourceLeftPanel } from "./ResourceLeftPanel";
 
 interface ResourceSectionBodyProps {
-  address: HumanAddr;
+  address: BechAddr;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
 }

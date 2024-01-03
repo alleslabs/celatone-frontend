@@ -4,17 +4,8 @@ import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
+import type { PublishSucceedCallback } from "lib/app-fns/tx/publish";
 import { publishModuleTx } from "lib/app-fns/tx/publish";
-import type { HumanAddr, Option } from "lib/types";
-
-export interface PublishTxInternalResult {
-  txHash: string;
-  txFee: Option<string>;
-}
-
-export type PublishSucceedCallback = (
-  txResult: PublishTxInternalResult
-) => void;
 
 export interface PublishModuleStreamParams {
   onTxSucceed?: PublishSucceedCallback;
@@ -39,7 +30,7 @@ export const usePublishModuleTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return publishModuleTx({
-        address: address as HumanAddr,
+        address,
         client,
         onTxSucceed: (txResult) => {
           trackTxSucceed();
