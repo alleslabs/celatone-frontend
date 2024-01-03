@@ -4,14 +4,14 @@ import { AssetCard } from "../../components";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
+import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
 
 interface PoolSwapInterface {
   txHash: string;
   msgIndex: number;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }

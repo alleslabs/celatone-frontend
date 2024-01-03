@@ -39,7 +39,9 @@ export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
-  const { data: movePoolInfos } = useMovePoolInfos();
+  const { data: movePoolInfos } = useMovePoolInfos({
+    withPrices: true,
+  });
   const { data: accountBalances, isLoading, error } = useBalances(address);
 
   const balances = accountBalances

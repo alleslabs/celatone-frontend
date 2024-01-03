@@ -4,14 +4,14 @@ import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { PoolDetail } from "lib/types";
+import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import { coinToTokenWithValue } from "lib/utils";
 import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
 
 interface MsgJoinSwapShareAmountOutActionProps {
   msg: MsgJoinSwapShareAmountOutDetails;
   pool: PoolDetail;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }
 
@@ -21,16 +21,22 @@ export const MsgJoinSwapShareAmountOutAction = ({
   assetInfos,
   ampCopierSection,
 }: MsgJoinSwapShareAmountOutActionProps) => {
-  const inAssetInfo = assetInfos?.[msg.token_in_denom];
   const poolDenom = getPoolDenom(msg.pool_id);
-  const poolAssetInfo = assetInfos?.[poolDenom];
+  const inToken = coinToTokenWithValue(
+    msg.token_in_denom,
+    msg.token_in_max_amount,
+    assetInfos
+  );
+  const poolToken = coinToTokenWithValue(
+    poolDenom,
+    msg.share_out_amount,
+    assetInfos
+  );
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       Provided at most
       <MsgToken
-        coin={{ amount: msg.token_in_max_amount, denom: msg.token_in_denom }}
-        symbol={inAssetInfo?.symbol}
-        precision={inAssetInfo?.precision}
+        token={inToken}
         fontWeight={400}
         ampCopierSection={ampCopierSection}
       />
@@ -38,9 +44,7 @@ export const MsgJoinSwapShareAmountOutAction = ({
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       <MsgToken
-        coin={{ amount: msg.share_out_amount, denom: poolDenom }}
-        symbol={poolAssetInfo?.symbol}
-        precision={poolAssetInfo?.precision}
+        token={poolToken}
         fontWeight={700}
         ampCopierSection={ampCopierSection}
       />

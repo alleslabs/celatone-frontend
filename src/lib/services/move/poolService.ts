@@ -37,11 +37,11 @@ const computePricePerPShare = (
     return calculateAssetValue(amountBPerShare, priceB as USD<number>)
       .times(totalWeight.div(weightB))
       .times(multiplier) as USD<Big>;
+
   return undefined;
 };
 
-// TODO: add withPrices option
-export const useMovePoolInfos = () => {
+export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const moveEndpoint = useBaseApiRoute("move");
 
@@ -49,7 +49,7 @@ export const useMovePoolInfos = () => {
     data: assetInfos,
     isLoading: isAssetsLoading,
     error: assetsErrors,
-  } = useAssetInfos({ withPrices: true });
+  } = useAssetInfos({ withPrices });
   const {
     data: pools,
     isFetching: isPoolsFetching,

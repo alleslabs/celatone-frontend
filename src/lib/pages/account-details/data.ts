@@ -215,13 +215,18 @@ export const useUserDelegationInfos = (address: BechAddr) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
-  const { data: lpMap, isLoading: isLpMapLoading } = useMovePoolInfos();
+  const { data: movePoolInfos, isLoading: isLoadingMovePoolInfos } =
+    useMovePoolInfos({
+      withPrices: true,
+    });
 
   const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
     useDelegationsByAddress(address);
 
   const isLoading =
-    isLoadingAccountDelegations || isLoadingAssetInfos || isLpMapLoading;
+    isLoadingAccountDelegations ||
+    isLoadingAssetInfos ||
+    isLoadingMovePoolInfos;
 
   const data: UserDelegationsData = {
     isLoading,
@@ -242,7 +247,7 @@ export const useUserDelegationInfos = (address: BechAddr) => {
     data.stakingParams = {
       ...accountDelegations.stakingParams,
       bondDenoms: accountDelegations.stakingParams.bondDenoms.map((denom) =>
-        coinToTokenWithValue(denom, "0", assetInfos, lpMap)
+        coinToTokenWithValue(denom, "0", assetInfos, movePoolInfos)
       ),
     };
 
@@ -253,7 +258,12 @@ export const useUserDelegationInfos = (address: BechAddr) => {
         validator: raw.validator,
         balances: raw.balance
           .map((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos,
+              movePoolInfos
+            )
           )
           .sort(compareTokenWithValues),
       })
@@ -277,7 +287,12 @@ export const useUserDelegationInfos = (address: BechAddr) => {
       completionTime: raw.completionTime,
       balances: raw.balance
         .map((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+          coinToTokenWithValue(
+            coin.denom,
+            coin.amount,
+            assetInfos,
+            movePoolInfos
+          )
         )
         .sort(compareTokenWithValues),
     }));
@@ -302,7 +317,12 @@ export const useUserDelegationInfos = (address: BechAddr) => {
         ...prev,
         [raw.validator.validatorAddress]: raw.reward
           .map<TokenWithValue>((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos,
+              movePoolInfos
+            )
           )
           .sort(compareTokenWithValues),
       }),
@@ -317,7 +337,7 @@ export const useUserDelegationInfos = (address: BechAddr) => {
           raw.denom,
           raw.amount,
           assetInfos,
-          lpMap
+          movePoolInfos
         ),
       }),
       {}
@@ -330,7 +350,12 @@ export const useUserDelegationInfos = (address: BechAddr) => {
         completionTime: raw.completionTime,
         balances: raw.balance
           .map((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos,
+              movePoolInfos
+            )
           )
           .sort(compareTokenWithValues),
       })
@@ -345,7 +370,7 @@ export const useUserDelegationInfos = (address: BechAddr) => {
           raw.denom,
           raw.amount,
           assetInfos,
-          lpMap
+          movePoolInfos
         ),
       }),
       {}

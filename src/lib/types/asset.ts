@@ -16,6 +16,7 @@ export const zAssetInfo = z.object({
   type: z.string(),
 });
 export type AssetInfo = z.infer<typeof zAssetInfo>;
+export type AssetInfos = Record<string, AssetInfo>;
 
 interface BaseTokenWithValue {
   denom: string;

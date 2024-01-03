@@ -5,7 +5,6 @@ import type { AddressReturnType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
   BechAddr,
   Nullable,
@@ -15,7 +14,7 @@ import type {
 } from "lib/types";
 import { convertToTitle } from "lib/utils";
 
-import { CoinComponent } from "./CoinComponent";
+import { CoinsComponent } from "./CoinsComponent";
 
 type HtmlType = "json" | "explorer";
 
@@ -77,11 +76,6 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   }
 };
 
-export const getCoinComponent = (
-  amount: Coin | Coin[],
-  assetInfos: AssetInfosOpt
-) => <CoinComponent amount={amount} assetInfos={assetInfos} />;
-
 export const getGenericValueEntry = (
   [title, value]: [string, string | object],
   getAddressType: (address: string) => AddressReturnType
@@ -114,13 +108,10 @@ export const getGenericValueEntry = (
   return { title: convertToTitle(title), ...valueObj };
 };
 
-export const attachFundsReceipt = (
-  value: Option<Coin[]>,
-  assetInfos: AssetInfosOpt
-): TxReceipt => ({
+export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
   title: "Attached Funds",
   html: value?.length ? (
-    getCoinComponent(value, assetInfos)
+    <CoinsComponent coins={value} />
   ) : (
     <Text variant="body2" color="text.dark">
       No Attached Funds

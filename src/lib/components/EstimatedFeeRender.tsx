@@ -2,7 +2,7 @@ import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 
 import { useAssetInfos } from "lib/services/assetService";
-import { formatBalanceWithDenom } from "lib/utils";
+import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 
 export const EstimatedFeeRender = ({
   estimatedFee,
@@ -23,17 +23,9 @@ export const EstimatedFeeRender = ({
       </>
     );
 
-  const coin = estimatedFee?.amount[0];
-  if (!coin) return <>--</>;
+  const fee = estimatedFee?.amount[0];
+  if (!fee) return <>--</>;
 
-  const chainAssetInfo = assetInfos?.[coin.denom];
-  return (
-    <>
-      {formatBalanceWithDenom({
-        coin,
-        precision: chainAssetInfo?.precision,
-        symbol: chainAssetInfo?.symbol,
-      })}
-    </>
-  );
+  const feeToken = coinToTokenWithValue(fee.denom, fee.amount, assetInfos);
+  return <>{formatTokenWithValue(feeToken)}</>;
 };

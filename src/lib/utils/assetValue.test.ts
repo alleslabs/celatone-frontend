@@ -1,14 +1,14 @@
 import big from "big.js";
 import type Big from "big.js";
 
-import {
-  zHexAddr,
-  type AssetInfo,
-  type MovePoolInfos,
-  type Token,
-  type TokenWithValue,
-  type U,
-  type USD,
+import { zHexAddr } from "lib/types";
+import type {
+  AssetInfos,
+  MovePoolInfos,
+  Token,
+  TokenWithValue,
+  U,
+  USD,
 } from "lib/types";
 
 import {
@@ -86,7 +86,7 @@ describe("coinToTokenWithValue", () => {
     amount: "100",
   };
 
-  const assetInfos: Record<string, AssetInfo> = {
+  const assetInfos: AssetInfos = {
     uadenom: {
       coingecko: "",
       description: "",

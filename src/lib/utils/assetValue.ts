@@ -2,8 +2,8 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 import { isUndefined } from "lodash";
 
-import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
+  AssetInfos,
   MovePoolInfos,
   Option,
   Token,
@@ -39,7 +39,7 @@ export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) =>
 export const coinToTokenWithValue = (
   denom: string,
   amount: string,
-  assetInfos: AssetInfosOpt,
+  assetInfos: Option<AssetInfos>,
   poolInfos?: MovePoolInfos
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;

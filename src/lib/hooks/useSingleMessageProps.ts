@@ -6,6 +6,7 @@ import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   DetailExecute,
@@ -17,10 +18,15 @@ import type {
   Option,
   DetailMigrate,
   DetailClearAdmin,
-  AssetInfo,
   BechAddr32,
+  AssetInfos,
+  MovePoolInfos,
 } from "lib/types";
-import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
+import {
+  getFirstQueryParam,
+  getExecuteMsgTags,
+  coinToTokenWithValue,
+} from "lib/utils";
 
 /**
  * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.
@@ -222,7 +228,8 @@ const executeSingleMsgProps = (
 const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  assetInfos: Option<Record<string, AssetInfo>>,
+  assetInfos: Option<AssetInfos>,
+  movePoolInfos: Option<MovePoolInfos>,
   getContractLocalInfo: (
     contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
@@ -233,12 +240,9 @@ const sendSingleMsgProps = (
     detail.toAddress as BechAddr32
   );
 
-  const tokens = detail.amount.map((coin) => ({
-    symbol: assetInfos?.[coin.denom]?.symbol,
-    amount: coin.amount,
-    id: coin.denom,
-    precision: assetInfos?.[coin.denom]?.precision,
-  }));
+  const tokens = detail.amount.map((coin) =>
+    coinToTokenWithValue(coin.denom, coin.amount, assetInfos, movePoolInfos)
+  );
 
   const uniqueAddressLength = new Set(
     messages.map((msg) => {
@@ -594,6 +598,7 @@ export const useSingleActionMsgProps = (
 ): SingleMsgProps => {
   const { getContractLocalInfo } = useContractStore();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
   switch (type) {
@@ -610,6 +615,7 @@ export const useSingleActionMsgProps = (
         isSuccess,
         messages,
         assetInfos,
+        movePoolInfos,
         getContractLocalInfo,
         getAddressTypeByLength
       );
