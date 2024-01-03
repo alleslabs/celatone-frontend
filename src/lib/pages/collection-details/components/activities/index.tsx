@@ -2,7 +2,7 @@ import { Stack, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -53,12 +53,12 @@ const Activities = ({
       <Text fontSize="18px" fontWeight={600} fontFamily="Pilat Wide">
         Activities
       </Text>
-      <TextInput
-        variant="fixed-floating"
+      <InputWithIcon
+        placeholder="Search by Token ID"
         value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search by Token Id"
-        size="md"
+        autoFocus
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
       />
       <ActivitiesTable
         activities={activities}

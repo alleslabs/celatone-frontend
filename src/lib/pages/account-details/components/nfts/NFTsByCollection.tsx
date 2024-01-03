@@ -2,7 +2,7 @@ import { Stack } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -75,12 +75,12 @@ export const NFTsByCollection = ({
 
   return (
     <Stack spacing="24px">
-      <TextInput
-        variant="fixed-floating"
+      <InputWithIcon
+        placeholder="Search with NFT Name"
         value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search by name"
-        size="md"
+        autoFocus
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
       />
       <NFTList
         nfts={collectionAddress ? nftsByCollection : addNFTs}

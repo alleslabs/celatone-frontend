@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useNFTTokenListPagination } from "lib/services/nftService";
@@ -49,13 +49,12 @@ const Supplies = ({
 
   return (
     <Box mt="32px" gap="40px">
-      <TextInput
-        variant="fixed-floating"
+      <InputWithIcon
+        placeholder="Search with NFT Name"
         value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search by name"
-        size="md"
-        mb="32px"
+        autoFocus
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
       />
 
       <NFTList nfts={nfts} isLoading={isLoading} />

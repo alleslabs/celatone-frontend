@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
-import { TextInput } from "lib/components/forms";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useCollectionsPagination } from "lib/services/collectionService";
@@ -41,13 +41,12 @@ const Collections = () => {
 
   return (
     <Box>
-      <TextInput
-        variant="fixed-floating"
+      <InputWithIcon
+        placeholder="Search with Collection Name"
         value={searchKeyword}
-        setInputState={setSearchKeyword}
-        placeholder="Search by collection name"
-        size="md"
-        mb="32px"
+        autoFocus
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
       />
 
       <CollectionList collections={collections} isLoading={isLoading} />
