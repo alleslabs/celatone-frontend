@@ -29,13 +29,13 @@ import {
   useCollectionMutateEventsCount,
   useCollectionTotalBurnedCount,
 } from "lib/services/collectionService";
-import { useNFTTokenListPagination } from "lib/services/nftService";
+import { useNftTokenListPagination } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
 
 import Activities from "./components/activities";
 import CollectionInfoOverview from "./components/CollectionInfoOverview";
 import CollectionSupplyOverview from "./components/CollectionSupplyOverview";
-import NFTsOverview from "./components/NFTsOverview";
+import NftsOverview from "./components/NftsOverview";
 import Supplies from "./components/supplies";
 import { useCollectionSupplies } from "./data";
 import MutateEvents from "./mutate-events";
@@ -56,7 +56,7 @@ const CollectionDetailsBody = ({
   const { data: totalBurnedCount = 0 } =
     useCollectionTotalBurnedCount(collectionAddress);
 
-  const { data: nfts, isLoading: nftLoading } = useNFTTokenListPagination(
+  const { data: nfts, isLoading: nftLoading } = useNftTokenListPagination(
     collectionAddress,
     6,
     0
@@ -75,7 +75,7 @@ const CollectionDetailsBody = ({
       if (nextTab === tabParam) return;
       trackUseTab(nextTab);
       navigate({
-        pathname: "/collections/[collectionAddress]/[tab]",
+        pathname: "/nft-collections/[collectionAddress]/[tab]",
         query: {
           collectionAddress,
           tab: nextTab,
@@ -99,7 +99,7 @@ const CollectionDetailsBody = ({
   return (
     <Box>
       <Breadcrumb
-        items={[{ text: "NFTs", href: "/collections" }, { text: name }]}
+        items={[{ text: "NFTs", href: "/nft-collections" }, { text: name }]}
       />
       <Stack my="24px" spacing="4px">
         <Heading as="h5" variant="h5">
@@ -162,7 +162,7 @@ const CollectionDetailsBody = ({
                 maxSupply={maxSupply}
               />
               <Divider width="100%" color="gray.700" />
-              <NFTsOverview
+              <NftsOverview
                 nfts={nfts}
                 collectionAddress={collectionAddress}
                 isLoading={nftLoading}
@@ -208,7 +208,7 @@ const CollectionDetails = observer(() => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_COLLECTION_DETAIL, { tab: validated.data.tab });
+      track(AmpEvent.TO_NFT_COLLECTION_DETAIL, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 

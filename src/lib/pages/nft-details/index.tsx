@@ -29,9 +29,9 @@ import { EmptyState } from "lib/components/state";
 import { useCollectionByCollectionAddress } from "lib/services/collectionService";
 import {
   useMetadata,
-  useNFTInfo,
-  useNFTMutateEventsCount,
-  useNFTTransactionsCount,
+  useNftInfo,
+  useNftMutateEventsCount,
+  useNftTransactionsCount,
 } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
 import { truncate } from "lib/utils";
@@ -42,9 +42,9 @@ import MintInfo from "./components/MintInfo";
 import MobileContainer from "./MobileContainer";
 import MutateEvents from "./mutate-events";
 import Txs from "./transaction";
-import { zNFTDetailQueryParams } from "./types";
+import { zNftDetailQueryParams } from "./types";
 
-const NFTDetailsBody = ({
+const NftDetailsBody = ({
   collectionAddress,
   nftAddress,
 }: {
@@ -53,12 +53,12 @@ const NFTDetailsBody = ({
 }) => {
   const { data: collection, isLoading: collectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: nft, isLoading: nftLoading } = useNFTInfo(
+  const { data: nft, isLoading: nftLoading } = useNftInfo(
     collectionAddress,
     nftAddress
   );
-  const { data: txCount = 0 } = useNFTTransactionsCount(nftAddress);
-  const { data: mutateEventsCount = 0 } = useNFTMutateEventsCount(nftAddress);
+  const { data: txCount = 0 } = useNftTransactionsCount(nftAddress);
+  const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(nftAddress);
   const { data: metadata } = useMetadata(nft?.uri ?? "");
   const isMobile = useMobile();
 
@@ -74,8 +74,11 @@ const NFTDetailsBody = ({
     <>
       <Breadcrumb
         items={[
-          { text: "NFTs", href: "/collections" },
-          { text: collectionName, href: `/collections/${collectionAddress}` },
+          { text: "NFTs", href: "/nft-collections" },
+          {
+            text: collectionName,
+            href: `/nft-collections/${collectionAddress}`,
+          },
           { text: nftName },
         ]}
       />
@@ -125,7 +128,7 @@ const NFTDetailsBody = ({
               <Stack spacing="16px">
                 <Flex justify="space-between">
                   <Box>
-                    <AppLink href={`/collections/${collectionAddress}`}>
+                    <AppLink href={`/nft-collections/${collectionAddress}`}>
                       <Text
                         color="primary.main"
                         fontSize="16px"
@@ -215,9 +218,9 @@ const NFTDetailsBody = ({
   );
 };
 
-const NFTDetails = observer(() => {
+const NftDetails = observer(() => {
   const router = useRouter();
-  const validated = zNFTDetailQueryParams.safeParse(router.query);
+  const validated = zNftDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
     if (router.isReady && validated.success) track(AmpEvent.TO_NFT_DETAIL);
@@ -230,7 +233,7 @@ const NFTDetails = observer(() => {
   const { collectionAddress, nftAddress } = validated.data;
   return (
     <PageContainer>
-      <NFTDetailsBody
+      <NftDetailsBody
         collectionAddress={collectionAddress}
         nftAddress={nftAddress}
       />
@@ -238,4 +241,4 @@ const NFTDetails = observer(() => {
   );
 });
 
-export default NFTDetails;
+export default NftDetails;

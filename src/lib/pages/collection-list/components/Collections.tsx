@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
@@ -41,15 +41,16 @@ const Collections = () => {
 
   return (
     <Box>
-      <InputWithIcon
-        placeholder="Search with Collection Name"
-        value={searchKeyword}
-        autoFocus
-        onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
-      />
-
-      <CollectionList collections={collections} isLoading={isLoading} />
+      <Stack spacing={8}>
+        <InputWithIcon
+          placeholder="Search with Collection Name"
+          value={searchKeyword}
+          autoFocus
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          size={{ base: "md", md: "lg" }}
+        />
+        <CollectionList collections={collections} isLoading={isLoading} />
+      </Stack>
       {!isLoading && collections && (
         <Pagination
           currentPage={currentPage}

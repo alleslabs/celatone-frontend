@@ -4,7 +4,7 @@ import PageContainer from "lib/components/PageContainer";
 
 import Collections from "./components/Collections";
 
-const NFTCollectionPage = () => {
+const NftCollectionPage = () => {
   return (
     <PageContainer>
       <Heading as="h5" variant="h5" minH="36px">
@@ -18,4 +18,4 @@ const NFTCollectionPage = () => {
   );
 };
 
-export default NFTCollectionPage;
+export default NftCollectionPage;

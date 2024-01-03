@@ -3,12 +3,12 @@ import { Box, Divider } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { EmptyState } from "lib/components/state";
 import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
-import { useNFTTokenListByAddressPagination } from "lib/services/nftService";
+import { useNftTokenListByAddressPagination } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
 
-import { NFTList } from "./NFTList";
+import { NftList } from "./NftList";
 
-export const NFTsOverview = ({
+export const NftsOverview = ({
   userAddress,
   totalCount,
   onViewMore,
@@ -17,7 +17,7 @@ export const NFTsOverview = ({
   totalCount?: number;
   onViewMore?: () => void;
 }) => {
-  const { data: nfts, isFetching } = useNFTTokenListByAddressPagination(
+  const { data: nfts, isFetching } = useNftTokenListByAddressPagination(
     userAddress,
     5,
     0
@@ -31,7 +31,7 @@ export const NFTsOverview = ({
       ) : (
         <>
           <TableTitle title="NFTs" showCount count={totalCount} />
-          <NFTList
+          <NftList
             nfts={nfts}
             isLoading={isFetching}
             emptyState={

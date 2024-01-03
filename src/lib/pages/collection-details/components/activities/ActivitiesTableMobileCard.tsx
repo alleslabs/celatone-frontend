@@ -12,13 +12,13 @@ export const ActivitiesTableMobileCard = ({
   activity: Activity;
 }) => {
   const navigate = useInternalNavigate();
-  const { txhash, timestamp, isNFTBurn, isNFTMint, isNFTTransfer, tokenId } =
+  const { txhash, timestamp, isNftBurn, isNftMint, isNftTransfer, tokenId } =
     activity;
 
   const getEventMessage = () => {
-    if (isNFTBurn) return "Burned";
-    if (isNFTMint) return "Minted";
-    if (isNFTTransfer) return "Transferred";
+    if (isNftBurn) return "Burned";
+    if (isNftMint) return "Minted";
+    if (isNftTransfer) return "Transferred";
     return "-";
   };
 

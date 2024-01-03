@@ -8,9 +8,9 @@ import { useCollectionListByAddress } from "lib/services/collectionService";
 import type { HexAddr } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
-import { NFTsByCollection } from "./NFTsByCollection";
+import { NftsByCollection } from "./NftsByCollection";
 
-export const NFTSection = ({
+export const NftSection = ({
   address,
   totalCount,
 }: {
@@ -21,7 +21,7 @@ export const NFTSection = ({
     useCollectionListByAddress(address);
 
   const [collection, setCollection] = useState<HexAddr>();
-  const [nftCount, setNFTCount] = useState<number>(totalCount);
+  const [nftCount, setNftCount] = useState<number>(totalCount);
 
   const isMobile = useMobile();
 
@@ -36,7 +36,7 @@ export const NFTSection = ({
 
   const onClick = (count: number, collectionAddress?: HexAddr) => {
     setCollection(collectionAddress);
-    setNFTCount(count);
+    setNftCount(count);
   };
 
   return (
@@ -65,7 +65,7 @@ export const NFTSection = ({
           ))}
         </Stack>
         <Box w="100%">
-          <NFTsByCollection
+          <NftsByCollection
             collectionAddress={collection}
             userAddress={address}
             totalCount={nftCount}

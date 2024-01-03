@@ -3,7 +3,8 @@ import { Text, Box, Stack, SimpleGrid, GridItem } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import { useNFTMintInfo } from "lib/services/nftService";
+import { useNftMintInfo } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const MintInfo = ({
@@ -11,9 +12,9 @@ const MintInfo = ({
   nftAddress,
 }: {
   holderAddress: string;
-  nftAddress: string;
+  nftAddress: HexAddr;
 }) => {
-  const { data: mintInfo, isLoading } = useNFTMintInfo(nftAddress);
+  const { data: mintInfo, isLoading } = useNftMintInfo(nftAddress);
 
   const isMobile = useMobile();
   if (isLoading) return <Loading />;

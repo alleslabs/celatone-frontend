@@ -61,9 +61,7 @@ export const useCollectionsPagination = (
         variables: { offset, pageSize, search },
       })
       .then(({ data: res }) =>
-        res.data.collections.map((collection) =>
-          zCollectionResponseItem.parse(collection)
-        )
+        zCollectionResponseItem.array().parse(res.data.collections)
       );
   };
 
@@ -248,9 +246,7 @@ export const useCollectionActivities = (
         },
       })
       .then(({ data: res }) =>
-        res.data.collection_transactions.map((tx) =>
-          zActivitiesResponseItem.parse(tx)
-        )
+        zActivitiesResponseItem.array().parse(res.data.collection_transactions)
       );
   };
 
@@ -286,9 +282,9 @@ export const useCollectionMutateEventsPagination = (
         },
       })
       .then(({ data: res }) =>
-        res.data.collection_mutation_events.map((event) =>
-          zCollectionMutateEventsResponse.parse(event)
-        )
+        zCollectionMutateEventsResponse
+          .array()
+          .parse(res.data.collection_mutation_events)
       );
   };
 
@@ -315,9 +311,7 @@ export const useCollectionListByAddress = (accountAddress: HexAddr) => {
         variables: { accountAddress },
       })
       .then(({ data: res }) =>
-        res.data.collections.map((collection) =>
-          zCollectionListByAddressResponse.parse(collection)
-        )
+        zCollectionListByAddressResponse.array().parse(res.data.collections)
       );
   };
 

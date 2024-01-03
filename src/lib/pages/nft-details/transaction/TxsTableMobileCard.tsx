@@ -8,17 +8,17 @@ import { dateFromNow, formatUTC } from "lib/utils";
 interface TxsTableMobileCardProps {
   hash: string;
   timestamp: Date;
-  isNFTBurn: boolean;
-  isNFTMint: boolean;
-  isNFTTransfer: boolean;
+  isNftBurn: boolean;
+  isNftMint: boolean;
+  isNftTransfer: boolean;
 }
 
 export const TxsTableMobileCard = ({
   timestamp,
   hash,
-  isNFTBurn,
-  isNFTMint,
-  isNFTTransfer,
+  isNftBurn,
+  isNftMint,
+  isNftTransfer,
 }: TxsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
@@ -42,9 +42,9 @@ export const TxsTableMobileCard = ({
         <Flex gap="8px" align="center">
           <Text fontSize="14px">Event</Text>
           <Flex gap="8px">
-            {isNFTBurn && <Badge textTransform="capitalize">Burn</Badge>}
-            {isNFTMint && <Badge textTransform="capitalize">Mint</Badge>}
-            {isNFTTransfer && (
+            {isNftBurn && <Badge textTransform="capitalize">Burn</Badge>}
+            {isNftMint && <Badge textTransform="capitalize">Mint</Badge>}
+            {isNftTransfer && (
               <Badge textTransform="capitalize">Transfer</Badge>
             )}
           </Flex>

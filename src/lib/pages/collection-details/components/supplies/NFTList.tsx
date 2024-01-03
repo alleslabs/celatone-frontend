@@ -2,15 +2,15 @@ import { SimpleGrid } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import NFTCard from "lib/components/NFTCard";
+import NftCard from "lib/components/NftCard";
 import { EmptyState } from "lib/components/state";
-import type { NFTToken } from "lib/services/nft";
+import type { NftToken } from "lib/services/nft";
 
-const NFTList = ({
+const NftList = ({
   nfts,
   isLoading,
 }: {
-  nfts?: NFTToken[];
+  nfts?: NftToken[];
   isLoading?: boolean;
 }) => {
   const isMobile = useMobile();
@@ -31,10 +31,10 @@ const NFTList = ({
       mt={8}
     >
       {nfts.map((nft) => (
-        <NFTCard key={nft.tokenId + nft.uri} {...nft} />
+        <NftCard key={nft.tokenId + nft.uri} {...nft} />
       ))}
     </SimpleGrid>
   );
 };
 
-export default NFTList;
+export default NftList;

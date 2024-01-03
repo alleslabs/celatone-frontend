@@ -11,7 +11,7 @@ interface Props {
   nftAddress?: HexAddr;
 }
 
-const NFTCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
+const NftCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
   const { data: metadata } = useMetadata(uri);
   const navigate = useInternalNavigate();
 
@@ -25,7 +25,7 @@ const NFTCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
       cursor="pointer"
       onClick={() =>
         navigate({
-          pathname: "/nft/[collectionAddress]/[nftAddress]",
+          pathname: "/nft-collections/[collectionAddress]/nft/[nftAddress]",
           query: { collectionAddress, nftAddress },
         })
       }
@@ -42,4 +42,4 @@ const NFTCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
   );
 };
 
-export default NFTCard;
+export default NftCard;

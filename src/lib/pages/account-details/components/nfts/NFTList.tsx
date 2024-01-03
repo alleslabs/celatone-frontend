@@ -3,15 +3,15 @@ import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import NFTCard from "lib/components/NFTCard";
-import type { NFTToken } from "lib/services/nft";
+import NftCard from "lib/components/NftCard";
+import type { NftToken } from "lib/services/nft";
 
-export const NFTList = ({
+export const NftList = ({
   nfts,
   isLoading,
   emptyState,
 }: {
-  nfts?: NFTToken[];
+  nfts?: NftToken[];
   isLoading?: boolean;
   emptyState?: ReactNode;
 }) => {
@@ -24,7 +24,7 @@ export const NFTList = ({
   return (
     <SimpleGrid templateColumns={`repeat(auto-fill, ${size})`} spacing="24px">
       {nfts.map((nft) => (
-        <NFTCard key={nft.tokenId + nft.uri} {...nft} />
+        <NftCard key={nft.tokenId + nft.uri} {...nft} />
       ))}
     </SimpleGrid>
   );

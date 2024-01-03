@@ -1,14 +1,14 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { NFTTransactionPagination } from "lib/services/nft";
+import type { NftTransactionPagination } from "lib/services/nft";
 
 import { TxsTableHeader } from "./TxsTableHeader";
 import { TxsTableMobileCard } from "./TxsTableMobileCard";
 import { TxsTableRow } from "./TxsTableRow";
 
 interface TxsTableProps {
-  txs?: NFTTransactionPagination[];
+  txs?: NftTransactionPagination[];
   isLoading?: boolean;
   emptyState?: JSX.Element;
 }

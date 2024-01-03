@@ -8,18 +8,18 @@ interface TxsTableRowProps {
   hash: string;
   timestamp: Date;
   templateColumns: string;
-  isNFTBurn: boolean;
-  isNFTMint: boolean;
-  isNFTTransfer: boolean;
+  isNftBurn: boolean;
+  isNftMint: boolean;
+  isNftTransfer: boolean;
 }
 
 export const TxsTableRow = ({
   hash,
   timestamp,
   templateColumns,
-  isNFTBurn,
-  isNFTMint,
-  isNFTTransfer,
+  isNftBurn,
+  isNftMint,
+  isNftTransfer,
 }: TxsTableRowProps) => {
   return (
     <Box w="full" minW="min-content">
@@ -34,9 +34,9 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap="8px">
-            {isNFTBurn && <Badge textTransform="capitalize">Burn</Badge>}
-            {isNFTMint && <Badge textTransform="capitalize">Mint</Badge>}
-            {isNFTTransfer && (
+            {isNftBurn && <Badge textTransform="capitalize">Burn</Badge>}
+            {isNftMint && <Badge textTransform="capitalize">Mint</Badge>}
+            {isNftTransfer && (
               <Badge textTransform="capitalize">Transfer</Badge>
             )}
           </Flex>

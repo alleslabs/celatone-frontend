@@ -1,14 +1,14 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { NFTMutateEventsPagination } from "lib/services/nft";
+import type { NftMutateEventsPagination } from "lib/services/nft";
 
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
 import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 
 interface MutateEventsTableProps {
-  mutateEvents?: NFTMutateEventsPagination[];
+  mutateEvents?: NftMutateEventsPagination[];
   isLoading?: boolean;
   emptyState?: JSX.Element;
 }

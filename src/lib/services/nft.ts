@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { zUtcDate, type Trait, zHexAddr } from "lib/types";
 
-export interface NFTTokenResponse {
+export interface NftTokenResponse {
   data: {
     nfts: {
       token_id: string;
@@ -19,7 +19,7 @@ export interface NFTTokenResponse {
   };
 }
 
-export const zNFTTokenResponse = z
+export const zNftTokenResponse = z
   .object({
     uri: z.string(),
     token_id: z.string(),
@@ -41,9 +41,9 @@ export const zNFTTokenResponse = z
     collectionAddress: val.collectionByCollection?.vm_address.vm_address,
   }));
 
-export type NFTToken = z.infer<typeof zNFTTokenResponse>;
+export type NftToken = z.infer<typeof zNftTokenResponse>;
 
-export interface NFTMintInfoResponse {
+export interface NftMintInfoResponse {
   data: {
     nft_transactions: {
       transaction: {
@@ -54,7 +54,7 @@ export interface NFTMintInfoResponse {
   };
 }
 
-export const zNFTMintInfoResponse = z
+export const zNftMintInfoResponse = z
   .object({
     block: z.object({
       timestamp: zUtcDate,
@@ -68,7 +68,7 @@ export const zNFTMintInfoResponse = z
     timestamp: val.block.timestamp,
   }));
 
-export type NFTMintInfo = z.infer<typeof zNFTMintInfoResponse>;
+export type NftMintInfo = z.infer<typeof zNftMintInfoResponse>;
 
 export interface Metadata {
   description: string;
@@ -78,7 +78,7 @@ export interface Metadata {
   attributes?: Trait[];
 }
 
-export interface NFTTransactionPaginationResponse {
+export interface NftTransactionPaginationResponse {
   data: {
     nft_transactions: {
       is_nft_burn: boolean;
@@ -95,7 +95,7 @@ export interface NFTTransactionPaginationResponse {
   };
 }
 
-export const zNFTTransactionPaginationResponse = z
+export const zNftTransactionPaginationResponse = z
   .object({
     transaction: z.object({
       hash: z.string(),
@@ -108,16 +108,16 @@ export const zNFTTransactionPaginationResponse = z
   .transform((val) => ({
     txhash: val.transaction.hash.replace("\\x", ""),
     timestamp: val.transaction.block.timestamp,
-    isNFTBurn: val.is_nft_burn,
-    isNFTMint: val.is_nft_mint,
-    isNFTTransfer: val.is_nft_transfer,
+    isNftBurn: val.is_nft_burn,
+    isNftMint: val.is_nft_mint,
+    isNftTransfer: val.is_nft_transfer,
   }));
 
-export type NFTTransactionPagination = z.infer<
-  typeof zNFTTransactionPaginationResponse
+export type NftTransactionPagination = z.infer<
+  typeof zNftTransactionPaginationResponse
 >;
 
-export interface NFTMutateEventsPaginationResponse {
+export interface NftMutateEventsPaginationResponse {
   data: {
     nft_mutation_events: {
       old_value: string;
@@ -134,7 +134,7 @@ export interface NFTMutateEventsPaginationResponse {
   };
 }
 
-export const zNFTMutateEventsPaginationResponse = z
+export const zNftMutateEventsPaginationResponse = z
   .object({
     old_value: z.string(),
     new_value: z.string(),
@@ -150,11 +150,11 @@ export const zNFTMutateEventsPaginationResponse = z
     timestamp: val.block.timestamp,
   }));
 
-export type NFTMutateEventsPagination = z.infer<
-  typeof zNFTMutateEventsPaginationResponse
+export type NftMutateEventsPagination = z.infer<
+  typeof zNftMutateEventsPaginationResponse
 >;
 
-export interface NFTTokenCountByAddressResponse {
+export interface NftTokenCountByAddressResponse {
   data: {
     nfts_aggregate: {
       aggregate: {

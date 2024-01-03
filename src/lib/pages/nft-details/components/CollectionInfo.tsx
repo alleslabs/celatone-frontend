@@ -21,7 +21,7 @@ const CollectionInfo = ({
         <Text display="inline" color="gray.400">
           {description}
         </Text>{" "}
-        <AppLink href={`/collections/${collectionAddress}`}>
+        <AppLink href={`/nft-collections/${collectionAddress}`}>
           <Text
             display="inline"
             fontSize="14px"

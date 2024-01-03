@@ -5,10 +5,10 @@ import { useState } from "react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useNFTTokenListPagination } from "lib/services/nftService";
+import { useNftTokenListPagination } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
 
-import NFTList from "./NFTList";
+import NftList from "./NftList";
 
 const Supplies = ({
   collectionAddress,
@@ -40,7 +40,7 @@ const Supplies = ({
 
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  const { data: nfts, isLoading } = useNFTTokenListPagination(
+  const { data: nfts, isLoading } = useNftTokenListPagination(
     collectionAddress,
     pageSize,
     offset,
@@ -57,7 +57,7 @@ const Supplies = ({
         size={{ base: "md", md: "lg" }}
       />
 
-      <NFTList nfts={nfts} isLoading={isLoading} />
+      <NftList nfts={nfts} isLoading={isLoading} />
 
       {!isLoading && nfts && (
         <Pagination

@@ -167,13 +167,13 @@ const CollectionInfoOverview = ({
         flexDir={mobileInfoDirection}
       >
         <AppLink
-          href={`/collections/${collectionAddress}/activities`}
+          href={`/nft-collections/${collectionAddress}/activities`}
           style={{ flex: 1 }}
         >
           <InfoCard title="Activities" content={activities} />
         </AppLink>
         <AppLink
-          href={`/collections/${collectionAddress}/mutate_events`}
+          href={`/nft-collections/${collectionAddress}/mutate_events`}
           style={{ flex: 1 }}
         >
           <InfoCard title="Mutate Events" content={mutateEventes} />

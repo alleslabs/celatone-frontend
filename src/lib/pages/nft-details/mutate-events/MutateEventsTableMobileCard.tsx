@@ -2,7 +2,7 @@ import { Badge, Box, Stack, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { MobileCardTemplate } from "lib/components/table";
-import type { NFTMutateEventsPagination } from "lib/services/nft";
+import type { NftMutateEventsPagination } from "lib/services/nft";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export const MutateEventsTableMobileCard = ({
@@ -10,7 +10,7 @@ export const MutateEventsTableMobileCard = ({
   mutatedFieldName,
   oldValue,
   newValue,
-}: NFTMutateEventsPagination) => {
+}: NftMutateEventsPagination) => {
   return (
     <MobileCardTemplate
       topContent={

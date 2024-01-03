@@ -3,7 +3,7 @@ import { Grid, Box, Text, Badge, Flex } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableRow } from "lib/components/table";
-import type { NFTMutateEventsPagination } from "lib/services/nft";
+import type { NftMutateEventsPagination } from "lib/services/nft";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const RemarkRender = ({
@@ -38,7 +38,7 @@ const RemarkRender = ({
   );
 };
 
-interface MutateEventsTableRowProps extends NFTMutateEventsPagination {
+interface MutateEventsTableRowProps extends NftMutateEventsPagination {
   templateColumns: string;
 }
 

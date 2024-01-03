@@ -11,18 +11,18 @@ import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import NFTCard from "lib/components/NFTCard";
+import NftCard from "lib/components/NftCard";
 import { EmptyState } from "lib/components/state";
-import type { NFTToken } from "lib/services/nft";
+import type { NftToken } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
-const NFTsOverview = ({
+const NftsOverview = ({
   collectionAddress,
   nfts,
   isLoading,
 }: {
   collectionAddress: HexAddr;
-  nfts?: NFTToken[];
+  nfts?: NftToken[];
   isLoading?: boolean;
 }) => {
   const displayedNftCount = useBreakpointValue({
@@ -51,12 +51,12 @@ const NFTsOverview = ({
       >
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
-            <NFTCard {...nft} />
+            <NftCard {...nft} />
           </GridItem>
         ))}
       </SimpleGrid>
 
-      <AppLink href={`/collections/${collectionAddress}/supplies`}>
+      <AppLink href={`/nft-collections/${collectionAddress}/supplies`}>
         <Flex align="center" justify="center" w="100%" height="64px">
           <Text color="gray.400" fontSize="14px">
             View More
@@ -68,4 +68,4 @@ const NFTsOverview = ({
   );
 };
 
-export default NFTsOverview;
+export default NftsOverview;

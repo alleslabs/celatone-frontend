@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 
-export const getNFTToken = gql`
-  query getNFTToken($collectionAddress: String!, $nftAddress: String!) {
+export const getNftToken = gql`
+  query getNftToken($collectionAddress: String!, $nftAddress: String!) {
     nfts(
       where: {
         collectionByCollection: {
@@ -20,8 +20,8 @@ export const getNFTToken = gql`
   }
 `;
 
-export const getNFTTMintInfo = gql`
-  query getNFTTMintInfo($nftAddress: String!) {
+export const getNftMintInfo = gql`
+  query getNftMintInfo($nftAddress: String!) {
     nft_transactions(
       where: {
         is_nft_mint: { _eq: true }
@@ -41,8 +41,8 @@ export const getNFTTMintInfo = gql`
   }
 `;
 
-export const getNFTTokenListPagination = gql`
-  query getNFTTokenListPagination(
+export const getNftTokenListPagination = gql`
+  query getNftTokenListPagination(
     $limit: Int!
     $offset: Int!
     $collectionAddress: String!
@@ -77,8 +77,8 @@ export const getNFTTokenListPagination = gql`
   }
 `;
 
-export const getNFTTransactionsCount = gql`
-  query getNFTTransactionsCount($nftAddress: String!) {
+export const getNftTransactionsCount = gql`
+  query getNftTransactionsCount($nftAddress: String!) {
     nft_transactions_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
     ) {
@@ -89,8 +89,8 @@ export const getNFTTransactionsCount = gql`
   }
 `;
 
-export const getNFTTransactionPagination = gql`
-  query getNFTTransactionPagination(
+export const getNftTransactionPagination = gql`
+  query getNftTransactionPagination(
     $limit: Int!
     $offset: Int!
     $nftAddress: String!
@@ -116,8 +116,8 @@ export const getNFTTransactionPagination = gql`
   }
 `;
 
-export const getNFTMutateEventsPagination = gql`
-  query getNFTMutateEventsPagination(
+export const getNftMutateEventsPagination = gql`
+  query getNftMutateEventsPagination(
     $limit: Int!
     $offset: Int!
     $nftAddress: String!
@@ -139,8 +139,8 @@ export const getNFTMutateEventsPagination = gql`
   }
 `;
 
-export const getNFTMutateEventsCount = gql`
-  query getNFTMutateEventsCount($nftAddress: String!) {
+export const getNftMutateEventsCount = gql`
+  query getNftMutateEventsCount($nftAddress: String!) {
     nft_mutation_events_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
     ) {
@@ -151,8 +151,8 @@ export const getNFTMutateEventsCount = gql`
   }
 `;
 
-export const getNFTTokenListByAddressPagination = gql`
-  query getNFTTokenListByAddressPagination(
+export const getNftTokenListByAddressPagination = gql`
+  query getNftTokenListByAddressPagination(
     $userAddress: String!
     $pageSize: Int!
     $offset: Int!
@@ -184,8 +184,8 @@ export const getNFTTokenListByAddressPagination = gql`
   }
 `;
 
-export const getNFTTokenCountByAddress = gql`
-  query getNFTTokenCountByAddress($userAddress: String!) {
+export const getNftTokenCountByAddress = gql`
+  query getNftTokenCountByAddress($userAddress: String!) {
     nfts_aggregate(
       where: { vmAddressByOwner: { vm_address: { _eq: $userAddress } } }
     ) {
@@ -196,8 +196,8 @@ export const getNFTTokenCountByAddress = gql`
   }
 `;
 
-export const getUserNFTListByCollectionPagination = gql`
-  query getUserNFTListByCollectionPagination(
+export const getUserNftListByCollectionPagination = gql`
+  query getUserNftListByCollectionPagination(
     $collectionAddress: String!
     $userAddress: String!
     $pageSize: Int!

@@ -7,14 +7,14 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import {
-  useNFTTokenListByAddressPagination,
-  useUserNFTListByCollectionPagination,
+  useNftTokenListByAddressPagination,
+  useUserNftListByCollectionPagination,
 } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
 
-import { NFTList } from "./NFTList";
+import { NftList } from "./NftList";
 
-export const NFTsByCollection = ({
+export const NftsByCollection = ({
   collectionAddress,
   userAddress,
   totalCount,
@@ -51,7 +51,7 @@ export const NFTsByCollection = ({
   };
 
   const { data: nftsByCollection, isFetching: nftsByCollectionLoading } =
-    useUserNFTListByCollectionPagination(
+    useUserNftListByCollectionPagination(
       userAddress,
       pageSize,
       offset,
@@ -59,8 +59,8 @@ export const NFTsByCollection = ({
       searchKeyword
     );
 
-  const { data: addNFTs, isFetching: allNFTsLoading } =
-    useNFTTokenListByAddressPagination(
+  const { data: addNfts, isFetching: allNftsLoading } =
+    useNftTokenListByAddressPagination(
       userAddress,
       pageSize,
       offset,
@@ -82,9 +82,9 @@ export const NFTsByCollection = ({
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
       />
-      <NFTList
-        nfts={collectionAddress ? nftsByCollection : addNFTs}
-        isLoading={nftsByCollectionLoading || allNFTsLoading}
+      <NftList
+        nfts={collectionAddress ? nftsByCollection : addNfts}
+        isLoading={nftsByCollectionLoading || allNftsLoading}
         emptyState={
           <EmptyState
             message={

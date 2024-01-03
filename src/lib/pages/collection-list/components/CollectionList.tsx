@@ -33,7 +33,7 @@ const CollectionList = ({
           key={collection.collectionAddress}
           onClick={() =>
             navigate({
-              pathname: `/collections/[collectionAddress]`,
+              pathname: `/nft-collections/[collectionAddress]`,
               query: { collectionAddress: collection.collectionAddress },
             })
           }

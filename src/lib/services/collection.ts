@@ -233,9 +233,9 @@ export const zActivitiesResponseItem = z
   .transform((data) => ({
     timestamp: data.transaction.block.timestamp,
     txhash: data.transaction.hash.replace("\\x", ""),
-    isNFTBurn: data.is_nft_burn,
-    isNFTMint: data.is_nft_mint,
-    isNFTTransfer: data.is_nft_transfer,
+    isNftBurn: data.is_nft_burn,
+    isNftMint: data.is_nft_mint,
+    isNftTransfer: data.is_nft_transfer,
     tokenId: data.nft?.token_id,
   }));
 

@@ -29,7 +29,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
-import { useNFTTokenCountByAddress } from "lib/services/nftService";
+import { useNftTokenCountByAddress } from "lib/services/nftService";
 import type { Addr, HexAddr, HumanAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -37,7 +37,7 @@ import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import { ModuleLists } from "./components/modules";
-import { NFTSection, NFTsOverview } from "./components/nfts";
+import { NftSection, NftsOverview } from "./components/nfts";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
@@ -99,7 +99,7 @@ const AccountDetailsBody = ({
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddress(accountAddress);
   // nft
-  const { data: nftCount } = useNFTTokenCountByAddress(hexAddress);
+  const { data: nftCount } = useNftTokenCountByAddress(hexAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -310,7 +310,7 @@ const AccountDetailsBody = ({
               </Flex>
             )}
             {nft.enabled && (
-              <NFTsOverview
+              <NftsOverview
                 totalCount={nftCount}
                 userAddress={hexAddress}
                 onViewMore={handleTabChange(TabIndex.Nfts, nftCount)}
@@ -400,7 +400,7 @@ const AccountDetailsBody = ({
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <NFTSection totalCount={nftCount ?? 0} address={hexAddress} />
+            <NftSection totalCount={nftCount ?? 0} address={hexAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

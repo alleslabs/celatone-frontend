@@ -3,7 +3,8 @@ import type { ChangeEvent } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useNFTMutateEventsPagination } from "lib/services/nftService";
+import { useNftMutateEventsPagination } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 
 import { MutateEventsTable } from "./MutateEventsTable";
 
@@ -11,7 +12,7 @@ const MutateEvents = ({
   nftAddress,
   totalCount,
 }: {
-  nftAddress: string;
+  nftAddress: HexAddr;
   totalCount: number;
 }) => {
   const {
@@ -40,7 +41,7 @@ const MutateEvents = ({
     setCurrentPage(1);
   };
 
-  const { data: mutateEvents, isLoading } = useNFTMutateEventsPagination(
+  const { data: mutateEvents, isLoading } = useNftMutateEventsPagination(
     pageSize,
     offset,
     nftAddress

@@ -31,7 +31,7 @@ interface MobileContainerProps {
   collectionAddress: HexAddr;
   collectionName: string;
   collectionDesc: string;
-  nftAddress: string;
+  nftAddress: HexAddr;
   nftName: string;
   description: string;
   ownerAddress: string;
@@ -59,7 +59,7 @@ const MobileContainer = ({
       <Stack spacing="24px" w="100%">
         <Flex justify="space-between">
           <Box>
-            <AppLink href={`/collections/${collectionAddress}`}>
+            <AppLink href={`/nft-collections/${collectionAddress}`}>
               <Text color="primary.main" fontSize="16px" fontWeight={700}>
                 {collectionName}
               </Text>

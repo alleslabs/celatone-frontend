@@ -1,2 +1,2 @@
-export * from "./NFTsOverview";
-export * from "./NFTSection";
+export * from "./NftsOverview";
+export * from "./NftSection";

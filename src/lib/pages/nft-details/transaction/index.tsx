@@ -4,7 +4,8 @@ import type { ChangeEvent } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useNFTTransactionsPagination } from "lib/services/nftService";
+import { useNftTransactionsPagination } from "lib/services/nftService";
+import type { HexAddr } from "lib/types";
 
 import { TxsTable } from "./TxsTable";
 
@@ -13,7 +14,7 @@ const Txs = ({
   nftAddress,
 }: {
   txCount: number;
-  nftAddress: string;
+  nftAddress: HexAddr;
 }) => {
   const {
     pagesQuantity,
@@ -31,7 +32,7 @@ const Txs = ({
     },
   });
 
-  const { data: transactions, isLoading } = useNFTTransactionsPagination(
+  const { data: transactions, isLoading } = useNftTransactionsPagination(
     pageSize,
     offset,
     nftAddress

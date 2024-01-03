@@ -19,7 +19,7 @@ import {
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { Trait } from "lib/types";
+import type { HexAddr, Trait } from "lib/types";
 
 interface AttributesModalProps {
   title: string;
@@ -102,7 +102,7 @@ const Attributes = ({
   nftName,
 }: {
   attributes: Trait[];
-  nftAddress: string;
+  nftAddress: HexAddr;
   nftName: string;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
