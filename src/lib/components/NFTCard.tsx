@@ -11,7 +11,12 @@ interface Props {
   nftAddress?: HexAddr;
 }
 
-const NftCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
+export const NftCard = ({
+  uri,
+  tokenId,
+  nftAddress,
+  collectionAddress,
+}: Props) => {
   const { data: metadata } = useMetadata(uri);
   const navigate = useInternalNavigate();
 
@@ -41,5 +46,3 @@ const NftCard = ({ uri, tokenId, nftAddress, collectionAddress }: Props) => {
     </Stack>
   );
 };
-
-export default NftCard;

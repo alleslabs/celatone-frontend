@@ -11,7 +11,7 @@ import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import NftCard from "lib/components/NftCard";
+import { NftCard } from "lib/components/NftCard";
 import { EmptyState } from "lib/components/state";
 import type { NftToken } from "lib/services/nft";
 import type { HexAddr } from "lib/types";

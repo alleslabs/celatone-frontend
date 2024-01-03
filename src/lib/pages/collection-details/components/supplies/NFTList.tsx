@@ -2,7 +2,7 @@ import { SimpleGrid } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import NftCard from "lib/components/NftCard";
+import { NftCard } from "lib/components/NftCard";
 import { EmptyState } from "lib/components/state";
 import type { NftToken } from "lib/services/nft";
 
