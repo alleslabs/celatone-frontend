@@ -1,8 +1,8 @@
 import type { NavigationArgs } from "lib/app-provider";
-import type { PublicAccount } from "lib/types";
+import type { PublicAccountInfo } from "lib/types";
 
 export const getNavigationArgs = (
-  accountInfo: PublicAccount
+  accountInfo: PublicAccountInfo
 ): NavigationArgs => {
   switch (accountInfo.type) {
     case "account":

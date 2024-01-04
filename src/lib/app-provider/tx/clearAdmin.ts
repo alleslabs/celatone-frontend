@@ -10,13 +10,13 @@ import {
 } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: () => void;
 }
 
-export const useClearAdminTx = (contractAddress: ContractAddr) => {
+export const useClearAdminTx = (contractAddress: BechAddr32) => {
   const { address } = useCurrentChain();
   const getSigningClient = useGetSigningClient();
   const queryClient = useQueryClient();
@@ -37,7 +37,7 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
       const clearAdminFee = fabricateFee(wasm.clearAdminGas);
 
       return clearAdminTx({
-        address: address as HumanAddr,
+        address,
         contractAddress,
         fee: clearAdminFee,
         client,

@@ -5,7 +5,6 @@ import { useCallback } from "react";
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { resendTx } from "lib/app-fns/tx/resend";
-import type { HumanAddr } from "lib/types";
 
 export interface ResendStreamParams {
   onTxSucceed?: (txHash: string) => void;
@@ -30,7 +29,7 @@ export const useResendTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return resendTx({
-        address: address as HumanAddr,
+        address,
         client,
         fee: estimatedFee,
         messages,

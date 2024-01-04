@@ -7,7 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
-  Addr,
+  BechAddr,
   Nullable,
   Option,
   TxReceipt,
@@ -129,7 +129,7 @@ export const attachFundsReceipt = (
 });
 
 export const delegatorAddrReceipt = (
-  value: Addr,
+  value: BechAddr,
   addrType: LinkType
 ): TxReceipt => ({
   title: "Delegator Address",

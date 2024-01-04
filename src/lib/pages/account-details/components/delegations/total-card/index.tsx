@@ -1,6 +1,6 @@
 import { Box, Spinner } from "@chakra-ui/react";
 
-import type { Addr, Option, TokenWithValue } from "lib/types";
+import type { BechAddr, Option, TokenWithValue } from "lib/types";
 
 import { MultiBondsCard } from "./MultiBondsCard";
 import { OverviewCard } from "./OverviewCard";
@@ -9,7 +9,7 @@ import { SingleBondCard } from "./single-bond-card";
 export interface TotalCardProps {
   title: string;
   message: string;
-  address: Addr;
+  address: BechAddr;
   bondDenoms: TokenWithValue[];
   tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;

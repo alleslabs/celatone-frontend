@@ -15,12 +15,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type {
-  ExposedFunction,
-  HumanAddr,
-  Option,
-  AbiFormData,
-} from "lib/types";
+import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
 
 import { Footer } from "./components/Footer";
@@ -90,7 +85,7 @@ export const DeployScript = () => {
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enableDeploy,
     messages: composeScriptMsg(
-      address as HumanAddr,
+      address,
       fileState.base64File,
       fileState.decodeRes,
       inputData
@@ -113,7 +108,7 @@ export const DeployScript = () => {
       onTxFailed: () => setProcessing(false),
       estimatedFee,
       messages: composeScriptMsg(
-        address as HumanAddr,
+        address,
         fileState.base64File,
         fileState.decodeRes,
         inputData

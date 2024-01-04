@@ -31,11 +31,11 @@ import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
 import type {
-  ContractAddr,
-  HumanAddr,
   RpcQueryError,
   Option,
   JsonDataType,
+  BechAddr20,
+  BechAddr32,
 } from "lib/types";
 import {
   encode,
@@ -57,9 +57,9 @@ const WasmCodeSnippet = dynamic(
 interface SchemaQueryComponentProps {
   msgSchema: SchemaInfo;
   resSchema: SchemaInfo;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   lcdEndpoint: string;
-  walletAddress: Option<string>;
+  walletAddress: Option<BechAddr20>;
   initialMsg: JsonDataType;
   opened: boolean;
   addActivity: (activity: Activity) => void;
@@ -109,7 +109,7 @@ export const SchemaQueryComponent = ({
         addActivity({
           type: "query",
           action: msgSchema.title ?? "Unknown",
-          sender: walletAddress as HumanAddr,
+          sender: walletAddress,
           contractAddress,
           msg: encode(msg),
           timestamp: currentDate,

@@ -12,13 +12,13 @@ import {
   TableTitle,
   ViewMore,
 } from "lib/components/table";
-import type { PublicAccount } from "lib/types";
+import type { PublicAccountInfo } from "lib/types";
 
 import { PublicProjectAccountMobileCard } from "./PublicProjectAccountMobileCard";
 import { PublicProjectAccountRow } from "./PublicProjectAccountRow";
 
 interface PublicProjectAccountTableProps {
-  accounts: PublicAccount[];
+  accounts: PublicAccountInfo[];
   onViewMore?: () => void;
 }
 
@@ -36,7 +36,7 @@ const ContentRender = ({
   filteredAccounts,
   isMobile,
 }: {
-  filteredAccounts: PublicAccount[];
+  filteredAccounts: PublicAccountInfo[];
   isMobile: boolean;
 }) =>
   isMobile ? (

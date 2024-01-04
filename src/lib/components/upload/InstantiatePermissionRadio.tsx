@@ -8,7 +8,7 @@ import { AssignMe } from "../AssignMe";
 import { AmpEvent, trackUseInstantiatePermission, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { Addr, UploadSectionState } from "lib/types";
+import type { BechAddr, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
 
 interface InstantiatePermissionRadioProps {
@@ -124,7 +124,7 @@ export const InstantiatePermissionRadio = ({
                             track(AmpEvent.USE_ASSIGN_ME);
                             setValue(
                               `addresses.${idx}.address`,
-                              walletAddress as Addr
+                              walletAddress ?? ("" as BechAddr)
                             );
                             trigger(`addresses.${idx}.address`);
                           }}
@@ -157,9 +157,7 @@ export const InstantiatePermissionRadio = ({
                   variant="outline-primary"
                   mt={3}
                   mx="auto"
-                  onClick={() => {
-                    append({ address: "" as Addr });
-                  }}
+                  onClick={() => append({ address: "" as BechAddr })}
                   leftIcon={<CustomIcon name="plus" color="primary.light" />}
                 >
                   Add More Address

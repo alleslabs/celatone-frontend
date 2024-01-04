@@ -25,12 +25,12 @@ export const ModuleSelector = ({
     />
   ) : (
     <ModuleSelectorInput
-      setModules={setModules}
-      closeModal={closeModal}
       selectedAddress={selectedAddress}
       setSelectedAddress={setSelectedAddress}
-      setMode={setMode}
       handleModuleSelect={handleModuleSelect}
+      setModules={setModules}
+      setMode={setMode}
+      closeModal={closeModal}
     />
   );
 };

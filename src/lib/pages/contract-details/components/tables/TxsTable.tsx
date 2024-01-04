@@ -4,10 +4,10 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddress } from "lib/services/txService";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 
 interface TxsTableProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;

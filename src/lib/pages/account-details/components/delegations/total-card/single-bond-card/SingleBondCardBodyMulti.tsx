@@ -3,13 +3,13 @@ import big, { type Big } from "big.js";
 
 import { TotalCardModal } from "../TotalCardModal";
 import { CustomIcon } from "lib/components/icon";
-import type { Addr, TokenWithValue, USD } from "lib/types";
+import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 interface SingleBondCardBodyMultiProps {
   title: string;
   message: string;
-  address: Addr;
+  address: BechAddr;
   tokens: Record<string, TokenWithValue>;
 }
 

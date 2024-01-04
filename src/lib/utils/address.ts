@@ -1,7 +1,7 @@
 import { fromBech32, fromHex, toBech32, toHex } from "@cosmjs/encoding";
 
 import type { AddressReturnType } from "lib/app-provider";
-import type { HexAddr, HumanAddr, Option } from "lib/types";
+import type { BechAddr, HexAddr, Option } from "lib/types";
 
 import { sha256Hex } from "./sha256";
 
@@ -24,7 +24,7 @@ export const getAddressTypeText = (addressType: AddressReturnType) => {
   }
 };
 
-export const bech32AddressToHex = (addr: HumanAddr): HexAddr =>
+export const bech32AddressToHex = (addr: BechAddr): HexAddr =>
   "0x".concat(toHex(fromBech32(addr).data)) as HexAddr;
 
 export const padHexAddress = (hexAddr: HexAddr, length: number): HexAddr =>
@@ -37,7 +37,7 @@ export const hexToBech32Address = (
   prefix: string,
   hexAddr: HexAddr,
   length: number
-): HumanAddr => {
+): BechAddr => {
   const strip = padHexAddress(hexAddr, length).slice(2);
-  return toBech32(prefix, fromHex(strip)) as HumanAddr;
+  return toBech32(prefix, fromHex(strip)) as BechAddr;
 };

@@ -18,12 +18,13 @@ import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 import { useAccountType } from "lib/services/accountService";
-import { AccountType, type Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
+import { AccountType } from "lib/types";
 
 import { ToContractButton } from "./ToContractButton";
 
 export interface SaveAccountDetail {
-  address: Addr;
+  address: BechAddr;
   name: string;
   description: string;
 }
@@ -35,7 +36,7 @@ const statusSuccess: FormStatus = {
 
 interface SaveNewAccountModalProps {
   buttonProps: ButtonProps;
-  accountAddress?: Addr;
+  accountAddress?: BechAddr;
   publicName?: string;
   publicDescription?: string;
 }
@@ -56,7 +57,7 @@ export function SaveNewAccountModal({
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
 
-  const defaultAddress = accountAddress ?? ("" as Addr);
+  const defaultAddress = accountAddress ?? ("" as BechAddr);
   const defaultValues: SaveAccountDetail = useMemo(() => {
     return {
       address: defaultAddress,

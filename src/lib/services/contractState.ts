@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import type { ContractAddr, ContractState } from "lib/types";
+import type { BechAddr32, ContractState } from "lib/types";
 import { zPagination } from "lib/types/rest";
 import { libDecode, parseJsonStr, parseStateKey } from "lib/utils";
 
@@ -17,7 +17,7 @@ const zResponseContractStates = z.object({
 
 export const getContractStates = async (
   baseEndpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   numStatesToLoad: number,
   paginationKey: string | null
 ) => {

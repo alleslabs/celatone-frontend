@@ -12,12 +12,12 @@ import type {
   ComposedMsg,
   TxMessage,
   AccessType,
-  Addr,
   Token,
-  HumanAddr,
   Option,
   ExposedFunction,
   AbiFormData,
+  BechAddr20,
+  BechAddr,
 } from "lib/types";
 import { UpgradePolicy, MsgType } from "lib/types";
 
@@ -38,10 +38,10 @@ export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
 };
 
 interface StoreCodeMsgArgs {
-  sender: Addr;
+  sender: BechAddr20;
   wasmByteCode: Uint8Array;
   permission: AccessType;
-  addresses?: Addr[];
+  addresses?: BechAddr[];
 }
 
 export const composeStoreCodeMsg = ({
@@ -56,7 +56,7 @@ export const composeStoreCodeMsg = ({
     instantiatePermission: {
       permission,
       addresses,
-      address: "" as Addr,
+      address: "" as BechAddr,
     },
   });
 
@@ -65,7 +65,7 @@ interface WhitelistProposalMsgArgs {
   description: string;
   changesValue: string;
   initialDeposit: Coin;
-  proposer: Addr;
+  proposer: BechAddr20;
   precision: Option<number>;
 }
 
@@ -107,13 +107,13 @@ export const composeSubmitWhitelistProposalMsg = ({
   });
 
 interface StoreCodeProposalMsgArgs {
-  proposer: HumanAddr;
+  proposer: BechAddr20;
   title: string;
   description: string;
-  runAs: Addr;
+  runAs: BechAddr;
   wasmByteCode: Uint8Array;
   permission: AccessType;
-  addresses: Addr[];
+  addresses: BechAddr[];
   unpinCode: boolean;
   source: string;
   builder: string;
@@ -149,7 +149,7 @@ export const composeStoreCodeProposalMsg = ({
           instantiatePermission: {
             permission,
             addresses,
-            address: "" as Addr,
+            address: "" as BechAddr,
           },
           unpinCode,
           source,
@@ -171,25 +171,29 @@ export const composeStoreCodeProposalMsg = ({
   });
 
 export const composePublishMsg = (
-  address: HumanAddr,
+  address: Option<BechAddr20>,
   codeBytesArr: string[],
   upgradePolicy: UpgradePolicy
 ) =>
-  toEncodeObject([
-    new MsgPublish(
-      address as HumanAddr,
-      codeBytesArr,
-      Object.keys(UpgradePolicy).findIndex((policy) => policy === upgradePolicy)
-    ),
-  ]);
+  address
+    ? toEncodeObject([
+        new MsgPublish(
+          address,
+          codeBytesArr,
+          Object.keys(UpgradePolicy).findIndex(
+            (policy) => policy === upgradePolicy
+          )
+        ),
+      ])
+    : [];
 
 export const composeScriptMsg = (
-  address: HumanAddr,
+  address: Option<BechAddr20>,
   scriptBytes: string,
   fn: Option<ExposedFunction>,
   data: AbiFormData
 ) => {
-  if (!fn) return [];
+  if (!address || !fn) return [];
   const { typeArgs, args } = serializeAbiData(fn, data);
   return toEncodeObject([new MsgScript(address, scriptBytes, typeArgs, args)]);
 };

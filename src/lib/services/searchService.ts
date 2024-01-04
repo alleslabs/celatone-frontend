@@ -9,7 +9,7 @@ import {
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, ContractAddr, Option } from "lib/types";
+import { zBechAddr32, type BechAddr, type Option } from "lib/types";
 import {
   isHexWalletAddress,
   isHexModuleAddress,
@@ -40,7 +40,7 @@ export type SearchResultType =
 export interface ResultMetadata {
   icns: {
     icnsNames: Option<ICNSNamesResponse>;
-    address: Option<Addr>;
+    address: Option<BechAddr>;
     bech32Prefix: string;
   };
 }
@@ -77,7 +77,10 @@ export const useSearchHandler = (
   // Contract
   const { data: contractData, isFetching: contractFetching } = useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
-    async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
+    async () => {
+      const contractAddr = zBechAddr32.parse(debouncedKeyword);
+      return queryContract(lcdEndpoint, contractAddr);
+    },
     {
       enabled: isWasm && Boolean(debouncedKeyword),
       refetchOnWindowFocus: false,
@@ -97,7 +100,7 @@ export const useSearchHandler = (
     useAddressByICNSName(debouncedKeyword);
   // provide ICNS metadata result
   const { data: icnsNames } = useICNSNamesByAddress(
-    (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr
+    isAddr ? (debouncedKeyword as BechAddr) : icnsAddressData?.address
   );
 
   const addressResult = useMemo(() => {
@@ -188,7 +191,9 @@ export const useSearchHandler = (
     metadata: {
       icns: {
         icnsNames,
-        address: (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr,
+        address: isAddr
+          ? (debouncedKeyword as BechAddr)
+          : icnsAddressData?.address,
         bech32Prefix,
       },
     },

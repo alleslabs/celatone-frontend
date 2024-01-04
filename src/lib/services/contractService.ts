@@ -21,12 +21,12 @@ import {
 } from "lib/query";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
-  ContractAddr,
-  HumanAddr,
   Option,
   Dict,
-  Addr,
   ContractInfo,
+  BechAddr20,
+  BechAddr32,
+  BechAddr,
 } from "lib/types";
 import { parseDateOpt } from "lib/utils";
 
@@ -49,11 +49,11 @@ import type {
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
   codeHash: string;
-  admin: Option<Addr>;
+  admin: Option<BechAddr>;
 }
 
 export const useContractDetailByContractAddress = (
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   onSuccess?: (data: ContractDetail) => void,
   onError?: (err: Error) => void
 ): UseQueryResult<ContractDetail> => {
@@ -75,9 +75,9 @@ export const useContractDetailByContractAddress = (
           codeId: contracts_by_pk.code_id,
           codeHash,
           label: contracts_by_pk.label,
-          instantiator: contracts_by_pk.accountByInitBy?.address as Addr,
+          instantiator: contracts_by_pk.accountByInitBy?.address as BechAddr,
           admin: contracts_by_pk.admin
-            ? (contracts_by_pk.admin.address as Addr)
+            ? (contracts_by_pk.admin.address as BechAddr)
             : undefined,
         };
       });
@@ -108,10 +108,10 @@ export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
         .request(getContractListQueryDocument)
         .then(({ contracts }) =>
           contracts.map<ContractInfo>((contract) => ({
-            contractAddress: contract.address as ContractAddr,
-            instantiator: contract.init_by[0]?.account.address as Addr,
+            contractAddress: contract.address as BechAddr32,
+            instantiator: contract.init_by[0]?.account.address as BechAddr,
             label: contract.label,
-            admin: contract.admin?.address as Addr,
+            admin: contract.admin?.address as BechAddr,
             latestUpdater: undefined,
             latestUpdated: parseDateOpt(contract.init_by[0]?.block.timestamp),
             remark: undefined,
@@ -124,7 +124,7 @@ export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
 };
 
 export const useInstantiatedCountByUserQuery = (
-  walletAddr: Option<HumanAddr>
+  walletAddr: Option<BechAddr20>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -157,7 +157,7 @@ export const useInstantiatedCountByUserQuery = (
 };
 
 export const useInstantiatedListByUserQuery = (
-  walletAddr: Option<HumanAddr>
+  walletAddr: Option<BechAddr20>
 ): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
@@ -172,8 +172,8 @@ export const useInstantiatedListByUserQuery = (
       })
       .then(({ contracts }) =>
         contracts.map<ContractLocalInfo>((contractInst) => ({
-          contractAddress: contractInst.address as ContractAddr,
-          instantiator: contractInst.accountByInitBy?.address as Addr,
+          contractAddress: contractInst.address as BechAddr32,
+          instantiator: contractInst.accountByInitBy?.address as BechAddr,
           label: contractInst.label,
         }))
       );
@@ -191,7 +191,7 @@ export const useInstantiatedListByUserQuery = (
 };
 
 export const useContractListByAdmin = (
-  adminAddress: Addr
+  adminAddress: Option<BechAddr>
 ): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -205,8 +205,8 @@ export const useContractListByAdmin = (
       })
       .then(({ contracts }) =>
         contracts.map<ContractLocalInfo>((contractAdmin) => ({
-          contractAddress: contractAdmin.address as ContractAddr,
-          instantiator: contractAdmin.accountByInitBy?.address as Addr,
+          contractAddress: contractAdmin.address as BechAddr32,
+          instantiator: contractAdmin.accountByInitBy?.address as BechAddr,
           label: contractAdmin.label,
         }))
       );
@@ -223,8 +223,8 @@ export const useContractListByAdmin = (
 };
 
 export const useAdminByContractAddresses = (
-  contractAddresses: ContractAddr[]
-): UseQueryResult<Dict<ContractAddr, Addr>> => {
+  contractAddresses: BechAddr32[]
+): UseQueryResult<Dict<BechAddr32, BechAddr>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(
@@ -234,11 +234,11 @@ export const useAdminByContractAddresses = (
           contractAddresses,
         })
         .then(({ contracts }) =>
-          contracts.reduce<Dict<ContractAddr, Addr>>(
+          contracts.reduce<Dict<BechAddr32, BechAddr>>(
             (prev, contract) => ({
               ...prev,
-              [contract.address as ContractAddr]: contract.admin
-                ?.address as Addr,
+              [contract.address as BechAddr32]: contract.admin
+                ?.address as BechAddr,
             }),
             {}
           )
@@ -261,7 +261,7 @@ export const useAdminByContractAddresses = (
 };
 
 export const useMigrationHistoriesByContractAddress = (
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   offset: number,
   limit: number
 ) => {
@@ -303,12 +303,12 @@ export const useContractListByCodeIdPagination = (
       .request(getContractListByCodeIdPagination, { codeId, offset, pageSize })
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: contract.init_by[0]?.account.address as Addr,
+          contractAddress: contract.address as BechAddr32,
+          instantiator: contract.init_by[0]?.account.address as BechAddr,
           label: contract.label,
-          admin: contract.admin?.address as Addr,
+          admin: contract.admin?.address as BechAddr,
           latestUpdater: contract.contract_histories[0]?.account
-            .address as Addr,
+            .address as BechAddr,
           latestUpdated: parseDateOpt(
             contract.contract_histories[0]?.block.timestamp
           ),
@@ -364,7 +364,7 @@ export const useContractListCountByCodeId = (
 };
 
 export const useInstantiatedContractsByAddress = (
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ): UseQueryResult<ContractsResponse> => {
@@ -384,7 +384,7 @@ export const useInstantiatedContractsByAddress = (
 };
 
 export const useAdminContractsByAddress = (
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ): UseQueryResult<ContractsResponse> => {
@@ -398,7 +398,7 @@ export const useAdminContractsByAddress = (
 };
 
 export const useContractDataByContractAddress = (
-  contractAddress: ContractAddr
+  contractAddress: BechAddr32
 ) => {
   const endpoint = useBaseApiRoute("contracts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
@@ -411,7 +411,7 @@ export const useContractDataByContractAddress = (
   );
 };
 
-export const useContractTableCounts = (contractAddress: ContractAddr) => {
+export const useContractTableCounts = (contractAddress: BechAddr32) => {
   const endpoint = useBaseApiRoute("contracts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
@@ -427,7 +427,7 @@ export const useContractTableCounts = (contractAddress: ContractAddr) => {
   );
 };
 
-export const useContractQueryMsgs = (contractAddress: ContractAddr) => {
+export const useContractQueryMsgs = (contractAddress: BechAddr32) => {
   const endpoint = useBaseApiRoute("contracts");
 
   return useQuery(

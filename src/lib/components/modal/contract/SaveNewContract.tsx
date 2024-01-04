@@ -14,7 +14,7 @@ import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
-import type { Addr, ContractAddr, LVPair } from "lib/types";
+import type { BechAddr, BechAddr32, LVPair } from "lib/types";
 import {
   formatSlugName,
   getNameAndDescriptionDefault,
@@ -89,7 +89,7 @@ export function SaveNewContractModal({
   };
 
   const { refetch } = useContractDetailByContractAddress(
-    contractAddressState as ContractAddr,
+    contractAddressState as BechAddr32,
     (data) => {
       const contractLocalInfo = getContractLocalInfo(contractAddressState);
       reset({
@@ -149,8 +149,8 @@ export function SaveNewContractModal({
     title: `Saved ${
       offchainState.name.trim().length ? offchainState.name : labelState
     }`,
-    contractAddress: contractAddressState as ContractAddr,
-    instantiator: instantiatorState as Addr,
+    contractAddress: contractAddressState as BechAddr32,
+    instantiator: instantiatorState as BechAddr,
     label: labelState,
     name: offchainState.name,
     description: offchainState.description,

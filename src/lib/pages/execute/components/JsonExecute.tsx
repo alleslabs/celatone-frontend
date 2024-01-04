@@ -31,14 +31,14 @@ import { useExecuteCmds } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
-import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 import { MsgSuggestion } from "./MsgSuggestion";
 
 interface JsonExecuteProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: string;
   initialFunds: Coin[];
 }
@@ -132,9 +132,8 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // -----------------REACT QUERY--------------//
   // ------------------------------------------//
-  const { isFetching: cmdsFetching, execCmds } = useExecuteCmds(
-    contractAddress as ContractAddr
-  );
+  const { isFetching: cmdsFetching, execCmds } =
+    useExecuteCmds(contractAddress);
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
@@ -210,15 +209,19 @@ export const JsonExecute = ({
 
   useEffect(() => {
     if (enableExecute) {
-      const composedMsg = composeMsg(MsgType.EXECUTE, {
-        sender: address as HumanAddr,
-        contract: contractAddress as ContractAddr,
-        msg: Buffer.from(msg),
-        funds,
-      });
+      const composedMsg = address
+        ? [
+            composeMsg(MsgType.EXECUTE, {
+              sender: address,
+              contract: contractAddress,
+              msg: Buffer.from(msg),
+              funds,
+            }),
+          ]
+        : [];
 
       const timeoutId = setTimeout(() => {
-        setComposedTxMsg([composedMsg]);
+        setComposedTxMsg(composedMsg);
       }, 1000);
       return () => clearTimeout(timeoutId);
     }

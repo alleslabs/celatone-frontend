@@ -6,11 +6,11 @@ import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource";
 import { ErrorFetching, EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import type { MoveAccountAddr, Option, ResourceGroup } from "lib/types";
+import type { BechAddr, Option, ResourceGroup } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
 interface ResourceOverviewBodyProps {
-  address: MoveAccountAddr;
+  address: BechAddr;
   resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;

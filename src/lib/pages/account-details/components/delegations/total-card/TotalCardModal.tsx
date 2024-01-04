@@ -17,7 +17,7 @@ import big from "big.js";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { TokenImageRender, TokenComposition } from "lib/components/token";
-import type { Addr, TokenWithValue, USD } from "lib/types";
+import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import {
   compareTokenWithValues,
   formatPrice,
@@ -30,7 +30,7 @@ import { TotalCardTop } from "./TotalCardTop";
 interface TotalCardModel {
   title: string;
   message: string;
-  address: Addr;
+  address: BechAddr;
   tokens: Record<string, TokenWithValue>;
   isOpen: boolean;
   onClose: () => void;

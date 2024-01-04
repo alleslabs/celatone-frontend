@@ -2,7 +2,6 @@ import axios from "axios";
 import { z } from "zod";
 
 import type {
-  MoveAccountAddr,
   ResponseModule,
   ResponseModules,
   InternalModule,
@@ -13,8 +12,9 @@ import type {
   AbiFormData,
   Nullable,
   ModuleInfo,
+  Addr,
 } from "lib/types";
-import { zHexAddr, UpgradePolicy, zHumanAddr, zUtcDate } from "lib/types";
+import { zHexAddr, UpgradePolicy, zUtcDate, zBechAddr } from "lib/types";
 import {
   libDecode,
   parseJsonABI,
@@ -40,7 +40,7 @@ type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
 export const getModulesByAddress = async (
   endpoint: string,
-  address: MoveAccountAddr
+  address: Addr
 ): Promise<AccountModulesResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
@@ -48,7 +48,7 @@ export const getModulesByAddress = async (
 
 export const getAccountModules = async (
   baseEndpoint: string,
-  address: MoveAccountAddr
+  address: Addr
 ): Promise<InternalModule[]> => {
   const result: ResponseModule[] = [];
 
@@ -73,7 +73,7 @@ interface ModuleReturn {
 
 export const getAccountModule = async (
   baseEndpoint: string,
-  address: MoveAccountAddr,
+  address: Addr,
   moduleName: string
 ): Promise<InternalModule> => {
   const { data } = await axios.get<ModuleReturn>(
@@ -104,7 +104,7 @@ export interface ModuleVerificationInternal
 
 export const getModuleVerificationStatus = async (
   endpoint: string,
-  address: MoveAccountAddr,
+  address: Addr,
   moduleName: string
 ): Promise<Nullable<ModuleVerificationInternal>> =>
   axios
@@ -117,7 +117,7 @@ export const getModuleVerificationStatus = async (
 
 export const getFunctionView = async (
   baseEndpoint: string,
-  address: MoveAccountAddr,
+  address: HexAddr,
   moduleName: string,
   fn: ExposedFunction,
   abiData: AbiFormData
@@ -155,7 +155,7 @@ export const decodeScript = async (
 
 const zModulesResponseItem = z
   .object({
-    address: zHumanAddr,
+    address: zBechAddr,
     name: z.string(),
     height: z.number(),
     latest_updated: zUtcDate,

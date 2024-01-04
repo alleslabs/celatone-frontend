@@ -5,7 +5,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useBalanceInfos } from "lib/services/balanceService";
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 
 import { AssetCta } from "./AssetCta";
 import { AssetSectionContent } from "./AssetSectionContent";
@@ -14,7 +14,7 @@ import { UserAssetInfoCard } from "./UserAssetInfoCard";
 const MAX_ASSETS_SHOW = 8;
 
 interface AssetsSectionProps {
-  address: Addr;
+  address: BechAddr;
   onViewMore?: () => void;
 }
 

@@ -10,7 +10,7 @@ import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useCodeStore } from "lib/providers/store";
-import type { Addr, CodeInfo } from "lib/types";
+import type { CodeInfo } from "lib/types";
 
 interface CodeDetailsTemplateModalProps {
   title: string;
@@ -48,7 +48,7 @@ export const CodeDetailsTemplateModal = ({
       track(AmpEvent.CODE_EDIT);
     }
 
-    updateCodeInfo(codeInfo.id, codeInfo.uploader as Addr, name);
+    updateCodeInfo(codeInfo.id, codeInfo.uploader, name);
 
     // TODO: abstract toast to template later
     toast({

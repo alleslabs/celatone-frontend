@@ -11,11 +11,11 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
-import type { HumanAddr, TxResultRendering } from "lib/types";
+import type { BechAddr20, TxResultRendering } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
 interface ExecuteModuleTxParams {
-  address: HumanAddr;
+  address: BechAddr20;
   messages: EncodeObject[];
   fee: StdFee;
   client: SigningCosmWasmClient;

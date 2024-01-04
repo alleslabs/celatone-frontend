@@ -1,4 +1,4 @@
-import type { Addr, TokenWithValue } from "lib/types";
+import type { BechAddr, TokenWithValue } from "lib/types";
 
 import { SingleBondCardBodyMulti } from "./SingleBondCardBodyMulti";
 import { SingleBondCardBodySingle } from "./SingleBondCardBodySingle";
@@ -6,7 +6,7 @@ import { SingleBondCardBodySingle } from "./SingleBondCardBodySingle";
 interface SingleBondCardBodyProps {
   title: string;
   message: string;
-  address: Addr;
+  address: BechAddr;
   bondDenom: TokenWithValue;
   tokens: Record<string, TokenWithValue>;
 }

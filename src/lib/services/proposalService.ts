@@ -17,15 +17,15 @@ import {
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
-  ContractAddr,
   Option,
   ProposalStatus,
   ProposalType,
-  Addr,
   Proposal,
   U,
   Token,
   Nullish,
+  BechAddr32,
+  BechAddr,
 } from "lib/types";
 import {
   deexponentify,
@@ -53,7 +53,7 @@ import {
 } from "./proposal";
 
 export const useRelatedProposalsByContractAddress = (
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   offset: number,
   limit: number
 ) => {
@@ -82,7 +82,7 @@ export const useRelatedProposalsByContractAddress = (
 };
 
 export const useProposalsByAddress = (
-  address: Addr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): UseQueryResult<ProposalsResponse> => {
@@ -124,7 +124,7 @@ export const useRelatedProposalsByModuleIdPagination = (
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
-          proposer: proposal.proposal.account?.address as Addr,
+          proposer: proposal.proposal.account?.address as BechAddr,
           isExpedited: Boolean(proposal.proposal.is_expedited),
         }))
       );
@@ -181,7 +181,7 @@ export const useProposalList = (
   statuses: ProposalStatus[],
   types: ProposalType[],
   search: string,
-  proposer: Option<Addr>
+  proposer: Option<BechAddr>
 ): UseQueryResult<Proposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useProposalListExpression(
@@ -208,7 +208,7 @@ export const useProposalList = (
             depositEndTime: parseDate(proposal.deposit_end_time),
             resolvedHeight: proposal.resolved_height,
             type: proposal.type as ProposalType,
-            proposer: proposal.account?.address as Addr,
+            proposer: proposal.account?.address as BechAddr,
             isExpedited: Boolean(proposal.is_expedited),
           }))
         ),
@@ -230,7 +230,7 @@ export const useProposalListCount = (
   statuses: ProposalStatus[],
   types: ProposalType[],
   search: string,
-  proposer: Option<Addr>
+  proposer: Option<BechAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useProposalListExpression(

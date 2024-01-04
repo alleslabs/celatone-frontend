@@ -6,16 +6,13 @@ import { useForm } from "react-hook-form";
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
 import { AmpEvent, track } from "lib/amplitude";
-import type {
-  UploadSucceedCallback,
-  UploadTxInternalResult,
-} from "lib/app-provider";
+import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
   useSimulateFeeForStoreCode,
-  useUploadContractTx,
+  useStoreCodeTx,
   useValidateAddress,
 } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -23,12 +20,7 @@ import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type {
-  Addr,
-  HumanAddr,
-  SimulateStatus,
-  UploadSectionState,
-} from "lib/types";
+import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
 import { getCodeHash } from "lib/utils";
 
@@ -39,7 +31,7 @@ import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
   handleBack: () => void;
-  onComplete?: UploadSucceedCallback;
+  onComplete?: StoreCodeSucceedCallback;
   isMigrate?: boolean;
 }
 
@@ -59,7 +51,7 @@ export const UploadSection = ({
   const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
-  const postUploadTx = useUploadContractTx(isMigrate);
+  const storeCodeTx = useStoreCodeTx(isMigrate);
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   const [codeHash, setCodeHash] = useState<string>();
@@ -80,7 +72,7 @@ export const UploadSection = ({
       wasmFile: undefined,
       codeName: "",
       permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as Addr }],
+      addresses: [{ address: "" as BechAddr }],
     },
     mode: "all",
   });
@@ -149,7 +141,7 @@ export const UploadSection = ({
   const proceed = useCallback(async () => {
     if (address) {
       track(AmpEvent.ACTION_UPLOAD);
-      const stream = await postUploadTx({
+      const stream = await storeCodeTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
         // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
@@ -159,11 +151,11 @@ export const UploadSection = ({
         permission,
         codeName,
         estimatedFee,
-        onTxSucceed: (txResult: UploadTxInternalResult) => {
+        onTxSucceed: (txResult) => {
           onComplete?.(txResult);
           updateCodeInfo(
             Number(txResult.codeId),
-            address as HumanAddr,
+            address,
             codeName || `${wasmFile?.name}(${txResult.codeId})`
           );
         },
@@ -173,7 +165,7 @@ export const UploadSection = ({
     }
   }, [
     address,
-    postUploadTx,
+    storeCodeTx,
     wasmFile,
     addresses,
     permission,
@@ -199,7 +191,7 @@ export const UploadSection = ({
   useEffect(() => {
     if (!wasmFile) {
       setDefaultBehavior();
-      setValue("addresses", [{ address: "" as Addr }]);
+      setValue("addresses", [{ address: "" as BechAddr }]);
     }
   }, [setValue, wasmFile]);
 

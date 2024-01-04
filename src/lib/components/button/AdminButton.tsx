@@ -4,11 +4,11 @@ import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { Tooltip } from "../Tooltip";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
-import type { Addr, ContractAddr, Nullable } from "lib/types";
+import type { BechAddr, BechAddr32, Nullable } from "lib/types";
 
 interface AdminButtonProps {
-  contractAddress: ContractAddr;
-  admin: Nullable<Addr>;
+  contractAddress: BechAddr32;
+  admin: Nullable<BechAddr>;
 }
 
 export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {

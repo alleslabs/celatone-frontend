@@ -4,7 +4,7 @@ import { Button } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
-import type { HumanAddr, PermissionAddresses } from "lib/types";
+import type { PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
@@ -65,7 +65,7 @@ export const InstantiateButton = ({
     navigate({ pathname: "/instantiate", query: { "code-id": codeId } });
 
   const isAllowed = resolvePermission(
-    address as HumanAddr,
+    address,
     instantiatePermission,
     permissionAddresses
   );

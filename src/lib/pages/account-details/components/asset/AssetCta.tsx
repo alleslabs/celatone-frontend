@@ -4,12 +4,12 @@ import { trackUseViewJSON } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { useOpenAssetTab } from "lib/hooks";
-import type { Addr, TokenWithValue } from "lib/types";
+import type { BechAddr, TokenWithValue } from "lib/types";
 
 interface AssetCtaProps {
   unsupportedAssets: TokenWithValue[];
   totalAsset: number;
-  address: Addr;
+  address: BechAddr;
 }
 
 export const AssetCta = ({

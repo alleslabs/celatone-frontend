@@ -10,14 +10,14 @@ import {
 import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { useContractTableCounts } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 import { MigrationTable } from "./migration";
 import { RelatedProposalsTable } from "./RelatedProposalsTable";
 import { TxsTable } from "./TxsTable";
 
 interface ContractTablesProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
 }
 
 export const ContractTables = ({ contractAddress }: ContractTablesProps) => {

@@ -2,14 +2,14 @@ import axios from "axios";
 import { z } from "zod";
 
 import type {
-  Addr,
-  ContractAddr,
+  BechAddr,
+  BechAddr32,
   ContractInfo,
   ContractMigrationHistory,
 } from "lib/types";
 import {
-  zAddr,
-  zContractAddr,
+  zBechAddr,
+  zBechAddr32,
   zContractHistoryRemark,
   zProjectInfo,
   zPublicContractInfo,
@@ -23,11 +23,11 @@ export interface ContractCw2Info {
 }
 
 const zContractRest = z.object({
-  address: zContractAddr,
+  address: zBechAddr32,
   contract_info: z.object({
     code_id: z.string(),
-    creator: zAddr,
-    admin: zAddr,
+    creator: zBechAddr,
+    admin: zBechAddr,
     label: z.string(),
     created: z
       .object({
@@ -43,7 +43,7 @@ export type ContractRest = z.infer<typeof zContractRest>;
 
 export const queryData = async (
   endpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   msg: string
 ) => {
   const b64 = encode(msg);
@@ -55,7 +55,7 @@ export const queryData = async (
 
 export const queryContract = async (
   endpoint: string,
-  contractAddress: ContractAddr
+  contractAddress: BechAddr32
 ) =>
   axios(`${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`).then(
     ({ data }) => zContractRest.parse(data)
@@ -63,12 +63,12 @@ export const queryContract = async (
 
 const zContractsResponseItem = z
   .object({
-    contract_address: zContractAddr,
+    contract_address: zBechAddr32,
     label: z.string(),
-    admin: zAddr.nullable(),
-    instantiator: zAddr,
+    admin: zBechAddr.nullable(),
+    instantiator: zBechAddr,
     latest_updated: zUtcDate,
-    latest_updater: zAddr,
+    latest_updater: zBechAddr,
     remark: zContractHistoryRemark,
   })
   .transform<ContractInfo>((val) => ({
@@ -90,7 +90,7 @@ export type ContractsResponse = z.infer<typeof zContractsResponse>;
 
 export const getInstantiatedContractsByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ) =>
@@ -108,7 +108,7 @@ export const getInstantiatedContractsByAddress = async (
 
 export const getAdminContractsByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ) =>
@@ -123,8 +123,8 @@ export const getAdminContractsByAddress = async (
 
 export const zContract = z
   .object({
-    address: zContractAddr,
-    admin: zAddr.nullable(),
+    address: zBechAddr32,
+    admin: zBechAddr.nullable(),
     code_id: z.number().positive(),
     code_hash: z.string().transform(parseTxHash),
     created_height: z.number(),
@@ -135,7 +135,7 @@ export const zContract = z
     init_proposal_id: z.number().nullish(),
     init_proposal_title: z.string().nullish(),
     init_tx_hash: z.string().transform(parseTxHash).nullable(),
-    instantiator: zAddr,
+    instantiator: zBechAddr,
     label: z.string(),
   })
   .transform(snakeToCamel);
@@ -158,7 +158,7 @@ export type ContractData = z.infer<typeof zContractData>;
 
 export const getContractDataByContractAddress = async (
   endpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   isGov: boolean
 ) =>
   axios
@@ -180,7 +180,7 @@ export type ContractTableCounts = z.infer<typeof zContractTableCounts>;
 
 export const getContractTableCounts = async (
   endpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   isGov: boolean
 ): Promise<ContractTableCounts> =>
   axios
@@ -198,9 +198,9 @@ const zMigrationHistoriesResponseItem = z
     cw2_version: z.string().nullable(),
     height: z.number(),
     remark: zContractHistoryRemark,
-    sender: zAddr,
+    sender: zBechAddr,
     timestamp: zUtcDate,
-    uploader: zAddr,
+    uploader: zBechAddr,
   })
   .transform<ContractMigrationHistory>((val) => ({
     codeId: val.code_id,
@@ -222,7 +222,7 @@ export type MigrationHistoriesResponse = z.infer<
 
 export const getMigrationHistoriesByContractAddress = async (
   endpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   limit: number,
   offset: number
 ) =>
@@ -245,7 +245,7 @@ const zContractQueryMsgs = z
 
 export const getContractQueryMsgs = async (
   endpoint: string,
-  contractAddress: ContractAddr
+  contractAddress: BechAddr32
 ) =>
   axios
     .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)

@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#709](https://github.com/alleslabs/celatone-frontend/pull/709) refactor all address types
+
 ### Bug fixes
 
 ## v1.4.1

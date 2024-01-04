@@ -8,14 +8,14 @@ import type { Observable } from "rxjs";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { HumanAddr, Nullable, TxResultRendering } from "lib/types";
+import type { BechAddr20, Nullable, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface SubmitWhitelistProposalTxParams {
-  address: HumanAddr;
+  address: BechAddr20;
   client: SigningCosmWasmClient;
   fee: StdFee;
   messages: EncodeObject[];
@@ -106,7 +106,7 @@ export const submitWhitelistProposalTx = ({
 };
 
 interface SubmitStoreCodeProposalTxParams {
-  address: HumanAddr;
+  address: BechAddr20;
   client: SigningCosmWasmClient;
   fee: StdFee;
   chainName: string;

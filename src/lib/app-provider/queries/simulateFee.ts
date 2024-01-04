@@ -11,14 +11,7 @@ import {
   useGetSigningClient,
   useRPCEndpoint,
 } from "../hooks";
-import type {
-  AccessType,
-  Addr,
-  ComposedMsg,
-  Gas,
-  HumanAddr,
-  Option,
-} from "lib/types";
+import type { AccessType, BechAddr, ComposedMsg, Gas, Option } from "lib/types";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
 
 interface SimulateQueryParams {
@@ -87,7 +80,7 @@ interface SimulateQueryParamsForStoreCode {
   enabled: boolean;
   wasmFile: Option<File>;
   permission: AccessType;
-  addresses?: Addr[];
+  addresses?: BechAddr[];
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -110,7 +103,7 @@ export const useSimulateFeeForStoreCode = ({
 
     const submitStoreCodeMsg = async () => {
       return composeStoreCodeMsg({
-        sender: address as HumanAddr,
+        sender: address,
         wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses,
@@ -141,7 +134,7 @@ interface SimulateQueryParamsForProposalStoreCode {
   enabled: boolean;
   title: string;
   description: string;
-  runAs: Addr;
+  runAs: BechAddr;
   initialDeposit: Coin;
   unpinCode: boolean;
   builder: string;
@@ -149,7 +142,7 @@ interface SimulateQueryParamsForProposalStoreCode {
   codeHash: string;
   wasmFile: Option<File>;
   permission: AccessType;
-  addresses: Addr[];
+  addresses: BechAddr[];
   precision: Option<number>;
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
@@ -182,10 +175,10 @@ export const useSimulateFeeForProposalStoreCode = ({
 
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({
-        proposer: address as HumanAddr,
+        proposer: address,
         title,
         description,
-        runAs: runAs as Addr,
+        runAs,
         wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses,

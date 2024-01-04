@@ -4,7 +4,7 @@ import type Big from "big.js";
 import big from "big.js";
 
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
-import type { Addr, Option, TokenWithValue, USD } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,
@@ -25,7 +25,7 @@ interface BalanceInfos {
   error: Error;
 }
 
-export const useBalances = (address: Addr): UseQueryResult<Coin[]> => {
+export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
@@ -35,7 +35,7 @@ export const useBalances = (address: Addr): UseQueryResult<Coin[]> => {
   );
 };
 
-export const useBalanceInfos = (address: Addr): BalanceInfos => {
+export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
