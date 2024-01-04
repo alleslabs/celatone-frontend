@@ -326,6 +326,7 @@ const zActivitiesResponseItem = z
       })
       .optional()
       .nullable(),
+    is_collection_create: z.boolean(),
   })
   .transform((data) => ({
     timestamp: data.transaction.block.timestamp,
@@ -334,6 +335,7 @@ const zActivitiesResponseItem = z
     isNftMint: data.is_nft_mint,
     isNftTransfer: data.is_nft_transfer,
     tokenId: data.nft?.token_id,
+    isCollectionCreate: data.is_collection_create,
   }));
 
 export const queryCollectionActivities = async (

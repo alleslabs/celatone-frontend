@@ -100,7 +100,13 @@ export const getNftTransactionPagination = gql`
       offset: $offset
       limit: $limit
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
-      order_by: { block_height: desc }
+      order_by: [
+        { block_height: desc }
+        { nft: { token_id: desc } }
+        { is_nft_burn: desc }
+        { is_nft_transfer: desc }
+        { is_nft_mint: desc }
+      ]
     ) {
       is_nft_burn
       is_nft_mint

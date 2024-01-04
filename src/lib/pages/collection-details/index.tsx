@@ -18,8 +18,8 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -108,7 +108,11 @@ const CollectionDetailsBody = ({
 
         <Flex gap="8px" fontSize="14px" align="center">
           <Text color="gray.400">Collection:</Text>
-          <ExplorerLink type="user_address" value={collectionAddress} />
+          <CopyLink
+            value={collectionAddress}
+            amptrackSection="account_top"
+            type="user_address"
+          />
         </Flex>
 
         <Flex gap="8px" fontSize="14px">
@@ -134,22 +138,25 @@ const CollectionDetailsBody = ({
             Overview
           </CustomTab>
           <CustomTab
+            count={currentSupply}
             onClick={handleTabChange(TabIndex.Supplies)}
             isDisabled={!currentSupply}
           >
-            Supplies <Badge ml="6px">{currentSupply}</Badge>
+            Supplies
           </CustomTab>
           <CustomTab
+            count={activitiesCount}
             onClick={handleTabChange(TabIndex.Activities)}
             isDisabled={!activitiesCount}
           >
-            Activities <Badge ml="6px">{activitiesCount}</Badge>
+            Activities
           </CustomTab>
           <CustomTab
+            count={mutateEventsCount}
             onClick={handleTabChange(TabIndex.MutateEvents)}
             isDisabled={!mutateEventsCount}
           >
-            Mutate Events <Badge ml="6px">{mutateEventsCount}</Badge>
+            Mutate Events
           </CustomTab>
         </TabList>
         <TabPanels>
@@ -164,6 +171,7 @@ const CollectionDetailsBody = ({
               <Divider width="100%" color="gray.700" />
               <NftsOverview
                 nfts={nfts}
+                totalCount={currentSupply}
                 collectionAddress={collectionAddress}
                 isLoading={nftLoading}
               />

@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Flex,
   GridItem,
@@ -18,10 +19,12 @@ import type { HexAddr } from "lib/types";
 
 const NftsOverview = ({
   collectionAddress,
+  totalCount,
   nfts,
   isLoading,
 }: {
   collectionAddress: HexAddr;
+  totalCount: number;
   nfts?: NftToken[];
   isLoading?: boolean;
 }) => {
@@ -42,9 +45,12 @@ const NftsOverview = ({
 
   return (
     <Box p="14px 6px">
-      <Text fontSize="18px" fontWeight={600} mb="24px">
-        NFTs in this collection
-      </Text>
+      <Flex align="center" mb="24px" gap="8px">
+        <Text fontSize="18px" fontWeight={600}>
+          NFTs in this collection
+        </Text>
+        <Badge>{totalCount}</Badge>
+      </Flex>
       <SimpleGrid
         gap="24px"
         templateColumns={`repeat(auto-fill, ${isMobile ? "150px" : "206px"})`}

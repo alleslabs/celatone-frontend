@@ -15,11 +15,11 @@ const CollectionInfo = ({
   return (
     <Stack spacing="8px">
       <Text fontSize="14px" fontWeight={700}>
-        {collectionName}
+        About {collectionName} Collection
       </Text>
       <Box>
         <Text display="inline" color="gray.400">
-          {description}
+          {description ?? "No description was provided by the creator."}
         </Text>{" "}
         <AppLink href={`/nft-collections/${collectionAddress}`}>
           <Text

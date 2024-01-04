@@ -14,8 +14,15 @@ export const ActivitiesTableRow = ({
   activity,
   templateColumns,
 }: ActivitiesTableRowProps) => {
-  const { txhash, timestamp, isNftBurn, isNftMint, isNftTransfer, tokenId } =
-    activity;
+  const {
+    txhash,
+    timestamp,
+    isNftBurn,
+    isNftMint,
+    isNftTransfer,
+    isCollectionCreate,
+    tokenId,
+  } = activity;
 
   const getEventMessage = () => {
     if (isNftBurn) return "Burned";
@@ -33,13 +40,18 @@ export const ActivitiesTableRow = ({
         transition="all 0.25s ease-in-out"
       >
         <TableRow pr={1}>
-          <ExplorerLink value={txhash} type="tx_hash" showCopyOnHover />
+          <ExplorerLink
+            value={txhash.toUpperCase()}
+            type="tx_hash"
+            showCopyOnHover
+          />
         </TableRow>
         <TableRow>
           <Text>{tokenId ?? "-"}</Text>
         </TableRow>
         <TableRow>
           <Text>{getEventMessage()}</Text>
+          <Text>{isCollectionCreate ? "Created collection" : ""}</Text>
         </TableRow>
         <TableRow>
           <Box>

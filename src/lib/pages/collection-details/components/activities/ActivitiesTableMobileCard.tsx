@@ -27,7 +27,7 @@ export const ActivitiesTableMobileCard = ({
       onClick={() =>
         navigate({
           pathname: "/txs/[txHash]",
-          query: { txHash: txhash },
+          query: { txHash: txhash.toUpperCase() },
         })
       }
       topContent={

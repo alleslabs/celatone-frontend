@@ -15,11 +15,10 @@ import {
 } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Metadata } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
-import { truncate } from "lib/utils";
 
 import Attributes from "./components/Attributes";
 import CollectionInfo from "./components/CollectionInfo";
@@ -80,21 +79,29 @@ const MobileContainer = ({
               <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
                 NFT Address:
               </Text>
-              <ExplorerLink value={nftAddress} type="user_address" />
+              <CopyLink
+                value={nftAddress}
+                type="user_address"
+                showCopyOnHover
+              />
             </Box>
             <Box>
               <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
                 Token URI:
               </Text>
               <Link href={uri} target="_blank">
-                <Text color="primary.main">{truncate(uri, [20, 20])}</Text>
+                <Text color="primary.main">{uri}</Text>
               </Link>
             </Box>
             <Box>
               <Text color="gray.400" fontWeight={500}>
                 Holder:
               </Text>
-              <ExplorerLink value={ownerAddress} type="user_address" />
+              <CopyLink
+                value={ownerAddress}
+                type="user_address"
+                showCopyOnHover
+              />
             </Box>
           </Stack>
 

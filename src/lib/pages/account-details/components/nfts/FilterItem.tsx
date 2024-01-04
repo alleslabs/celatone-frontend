@@ -43,7 +43,9 @@ export const FilterItem = ({
             <CustomIcon name="group" />
           </Box>
         )}
-        <Text fontSize="14px">{collectionName}</Text>
+        <Text fontSize="14px" width="150px" className="ellipsis">
+          {collectionName}
+        </Text>
       </Flex>
       <Badge>{count}</Badge>
     </Flex>

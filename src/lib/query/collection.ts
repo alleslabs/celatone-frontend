@@ -135,7 +135,14 @@ export const getCollectionActivitiesPagination = gql`
         collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
         _and: { nft: { token_id: { _iregex: $search } } }
       }
-      order_by: { block_height: desc }
+      order_by: [
+        { block_height: desc }
+        { nft: { token_id: desc } }
+        { is_nft_burn: desc }
+        { is_nft_transfer: desc }
+        { is_nft_mint: desc }
+        { is_collection_create: desc }
+      ]
     ) {
       transaction {
         hash
@@ -149,6 +156,7 @@ export const getCollectionActivitiesPagination = gql`
       nft {
         token_id
       }
+      is_collection_create
     }
   }
 `;
