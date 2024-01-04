@@ -27,7 +27,7 @@ export const MsgToken = ({
       textAlign="center"
     />
     <Copier
-      type={isUndefined(token.price) ? "supported_asset" : "unsupported_asset"}
+      type={!isUndefined(token.price) ? "supported_asset" : "unsupported_asset"}
       value={token.denom}
       copyLabel="Token ID Copied!"
       display="none"
