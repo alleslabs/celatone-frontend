@@ -5,8 +5,13 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Message, Option, PoolDetail, Transaction } from "lib/types";
+import type {
+  AssetInfos,
+  Message,
+  Option,
+  PoolDetail,
+  Transaction,
+} from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
 import { PoolMsgAction, PoolMsgDetail } from "./messages";
@@ -19,7 +24,7 @@ interface PoolTxsMsgProps {
   otherMsgs: { [key: string]: number };
   pool: PoolDetail;
   transaction: Transaction;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   templateColumns: string;
 }
 

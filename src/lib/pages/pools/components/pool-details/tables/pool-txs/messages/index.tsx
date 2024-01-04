@@ -1,7 +1,6 @@
 import { Text } from "@chakra-ui/react";
 
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Message, PoolDetail } from "lib/types";
+import type { AssetInfos, Message, Option, PoolDetail } from "lib/types";
 import { extractTxDetails } from "lib/utils";
 
 import { MsgLockTokensAction, MsgLockTokensDetail } from "./lockup";
@@ -38,7 +37,7 @@ export const PoolMsgAction = ({
 }: {
   msg: Message;
   pool: PoolDetail;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }) => {
   const { type, detail, log } = msg;
@@ -174,7 +173,7 @@ export const PoolMsgDetail = ({
   msgIndex: number;
   msg: Message;
   pool: PoolDetail;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }) => {

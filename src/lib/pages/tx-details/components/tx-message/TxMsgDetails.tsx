@@ -13,13 +13,9 @@ interface TxMsgDetailsProps extends TxMsgData {
   isExpand: boolean;
 }
 
-export const TxMsgDetails = ({
-  isExpand,
-  assetInfos,
-  ...txMsgData
-}: TxMsgDetailsProps) => {
+export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
   const getAddressType = useGetAddressType();
-  const receipts = generateReceipts(txMsgData, getAddressType, assetInfos)
+  const receipts = generateReceipts(txMsgData, getAddressType)
     .concat(
       txMsgData.log && {
         title: plur("Event Log", txMsgData.log.events.length),

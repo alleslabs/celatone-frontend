@@ -2,8 +2,8 @@ import type { BigSource } from "big.js";
 import big, { Big } from "big.js";
 import { isUndefined } from "lodash";
 
-import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
+  AssetInfos,
   MovePoolInfos,
   Option,
   Token,
@@ -19,13 +19,16 @@ export const calculateAssetValue = (
   price: USD<BigSource>
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
 
+export const isSupportedToken = (token: TokenWithValue) =>
+  !isUndefined(token.price);
+
 export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) =>
   (tokens ?? []).reduce<{
     supportedTokens: TokenWithValue[];
     unsupportedTokens: TokenWithValue[];
   }>(
     ({ supportedTokens, unsupportedTokens }, token) => {
-      if (!isUndefined(token.price)) supportedTokens.push(token);
+      if (isSupportedToken(token)) supportedTokens.push(token);
       else unsupportedTokens.push(token);
 
       return { supportedTokens, unsupportedTokens };
@@ -39,7 +42,7 @@ export const filterSupportedTokens = (tokens: Option<TokenWithValue[]>) =>
 export const coinToTokenWithValue = (
   denom: string,
   amount: string,
-  assetInfos: AssetInfosOpt,
+  assetInfos: Option<AssetInfos>,
   poolInfos?: MovePoolInfos
 ): TokenWithValue => {
   const tokenAmount = big(amount) as U<Token<Big>>;

@@ -4,14 +4,14 @@ import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { PoolDetail } from "lib/types";
+import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import { coinToTokenWithValue } from "lib/utils";
 import type { MsgExitSwapExternAmountOutDetails } from "lib/utils/tx/types";
 
 interface MsgExitSwapExternAmountOutActionProps {
   msg: MsgExitSwapExternAmountOutDetails;
   pool: PoolDetail;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }
 
@@ -21,16 +21,22 @@ export const MsgExitSwapExternAmountOutAction = ({
   assetInfos,
   ampCopierSection,
 }: MsgExitSwapExternAmountOutActionProps) => {
-  const outAssetInfo = assetInfos?.[msg.token_out.denom];
   const poolDenom = getPoolDenom(msg.pool_id);
-  const poolAssetInfo = assetInfos?.[poolDenom];
+  const poolToken = coinToTokenWithValue(
+    poolDenom,
+    msg.share_in_max_amount,
+    assetInfos
+  );
+  const outToken = coinToTokenWithValue(
+    msg.token_out.denom,
+    msg.token_out.amount,
+    assetInfos
+  );
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       Burned at most
       <MsgToken
-        coin={{ amount: msg.share_in_max_amount, denom: poolDenom }}
-        symbol={poolAssetInfo?.symbol}
-        precision={poolAssetInfo?.precision}
+        token={poolToken}
         fontWeight={400}
         ampCopierSection={ampCopierSection}
       />
@@ -38,9 +44,7 @@ export const MsgExitSwapExternAmountOutAction = ({
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       <MsgToken
-        coin={msg.token_out}
-        symbol={outAssetInfo?.symbol}
-        precision={outAssetInfo?.precision}
+        token={outToken}
         fontWeight={700}
         ampCopierSection={ampCopierSection}
       />

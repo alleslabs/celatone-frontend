@@ -1,5 +1,4 @@
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { PoolDetail, Transaction } from "lib/types";
+import type { AssetInfos, Option, PoolDetail, Transaction } from "lib/types";
 
 import { extractPoolMsgs } from "./messages/utils";
 import { PoolTxsMsg } from "./PoolTxsMsg";
@@ -7,7 +6,7 @@ import { PoolTxsMsg } from "./PoolTxsMsg";
 interface PoolTxsTableRowProps {
   pool: PoolDetail;
   transaction: Transaction;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   templateColumns: string;
 }
 
