@@ -30,7 +30,11 @@ export const TxsTableRow = ({
         transition="all 0.25s ease-in-out"
       >
         <TableRow pr={1}>
-          <ExplorerLink value={hash} type="tx_hash" showCopyOnHover />
+          <ExplorerLink
+            value={hash.toUpperCase()}
+            type="tx_hash"
+            showCopyOnHover
+          />
         </TableRow>
         <TableRow>
           <Flex gap="8px">

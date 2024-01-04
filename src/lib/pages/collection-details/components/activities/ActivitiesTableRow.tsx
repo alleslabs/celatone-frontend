@@ -1,18 +1,22 @@
 import { Grid, Box, Text } from "@chakra-ui/react";
 
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import type { Activity } from "lib/services/collection";
+import type { HexAddr } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface ActivitiesTableRowProps {
   activity: Activity;
   templateColumns: string;
+  collectionAddress: HexAddr;
 }
 
 export const ActivitiesTableRow = ({
   activity,
   templateColumns,
+  collectionAddress,
 }: ActivitiesTableRowProps) => {
   const {
     txhash,
@@ -22,12 +26,14 @@ export const ActivitiesTableRow = ({
     isNftTransfer,
     isCollectionCreate,
     tokenId,
+    nftAddress,
   } = activity;
 
   const getEventMessage = () => {
     if (isNftBurn) return "Burned";
     if (isNftMint) return "Minted";
     if (isNftTransfer) return "Transferred";
+    if (isCollectionCreate) return "Collection created";
     return "-";
   };
 
@@ -47,16 +53,32 @@ export const ActivitiesTableRow = ({
           />
         </TableRow>
         <TableRow>
-          <Text>{tokenId ?? "-"}</Text>
+          {tokenId ? (
+            <AppLink
+              href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
+            >
+              <Text
+                color="primary.dark"
+                _hover={{ textDecoration: "underline", color: "primary.light" }}
+              >
+                {tokenId}
+              </Text>
+            </AppLink>
+          ) : (
+            "-"
+          )}
         </TableRow>
         <TableRow>
           <Text>{getEventMessage()}</Text>
-          <Text>{isCollectionCreate ? "Created collection" : ""}</Text>
         </TableRow>
         <TableRow>
           <Box>
-            <Text>{formatUTC(timestamp)}</Text>
-            <Text>{dateFromNow(timestamp)}</Text>
+            <Text fontSize="14px" color="gray.400">
+              {formatUTC(timestamp)}
+            </Text>
+            <Text fontSize="12px" color="gray.500">
+              ({dateFromNow(timestamp)})
+            </Text>
           </Box>
         </TableRow>
       </Grid>

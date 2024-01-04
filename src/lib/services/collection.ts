@@ -1,6 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
+import type { InputMaybe } from "lib/gql/graphql";
 import {
   getCollectioUniqueHoldersCount,
   getCollectionActivitiesCount,
@@ -323,6 +324,7 @@ const zActivitiesResponseItem = z
     nft: z
       .object({
         token_id: z.string(),
+        vm_address: z.object({ vm_address: zHexAddr }),
       })
       .optional()
       .nullable(),
@@ -335,29 +337,29 @@ const zActivitiesResponseItem = z
     isNftMint: data.is_nft_mint,
     isNftTransfer: data.is_nft_transfer,
     tokenId: data.nft?.token_id,
+    nftAddress: data.nft?.vm_address.vm_address,
     isCollectionCreate: data.is_collection_create,
   }));
 
 export const queryCollectionActivities = async (
   indexer: string,
-  collectionAddress: HexAddr,
   pageSize: number,
   offset: number,
-  search?: string
-) =>
-  axios
+  expression?: InputMaybe<object>
+) => {
+  return axios
     .post<ActivitiesResponse>(indexer, {
       query: getCollectionActivitiesPagination,
       variables: {
-        collectionAddress,
         pageSize,
         offset,
-        search,
+        expression,
       },
     })
     .then(({ data: res }) =>
       zActivitiesResponseItem.array().parse(res.data.collection_transactions)
     );
+};
 
 export type Activity = z.infer<typeof zActivitiesResponseItem>;
 

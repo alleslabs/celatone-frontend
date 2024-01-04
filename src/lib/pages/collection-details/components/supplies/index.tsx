@@ -50,7 +50,7 @@ const Supplies = ({
   return (
     <Box mt="32px" gap="40px">
       <InputWithIcon
-        placeholder="Search with NFT Name"
+        placeholder="Search with Token ID"
         value={searchKeyword}
         autoFocus
         onChange={(e) => setSearchKeyword(e.target.value)}

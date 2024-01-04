@@ -22,6 +22,7 @@ import { AppLink } from "lib/components/AppLink";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -72,7 +73,7 @@ const NftDetailsBody = ({
     <>
       <Breadcrumb
         items={[
-          { text: "NFTs", href: "/nft-collections" },
+          { text: "NFT Collections", href: "/nft-collections" },
           {
             text: collectionName,
             href: `/nft-collections/${collectionAddress}`,
@@ -141,6 +142,20 @@ const NftDetailsBody = ({
                   </Box>
                 </Flex>
                 <Box fontSize="14px">
+                  {metadata?.name && (
+                    <Flex gap="8px" align="center">
+                      <Text
+                        color="gray.400"
+                        fontWeight={500}
+                        whiteSpace="nowrap"
+                      >
+                        NFT Name:
+                      </Text>
+                      <Text variant="body3" color="text.dark">
+                        {metadata.name}
+                      </Text>
+                    </Flex>
+                  )}
                   <Flex gap="8px">
                     <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
                       NFT Address:
@@ -159,7 +174,7 @@ const NftDetailsBody = ({
                     <Text color="gray.400" fontWeight={500}>
                       Holder:
                     </Text>
-                    <CopyLink value={ownerAddress} type="user_address" />
+                    <ExplorerLink value={ownerAddress} type="user_address" />
                   </Flex>
                 </Box>
               </Stack>

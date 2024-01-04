@@ -54,15 +54,19 @@ const Activities = ({
         Activities
       </Text>
       <InputWithIcon
-        placeholder="Search by Token ID"
+        placeholder="Search by Tx Hash / Token Id / NFT Address"
         value={searchKeyword}
         autoFocus
-        onChange={(e) => setSearchKeyword(e.target.value)}
+        onChange={(e) => {
+          setSearchKeyword(e.target.value);
+          setCurrentPage(1);
+        }}
         size={{ base: "md", md: "lg" }}
       />
       <ActivitiesTable
         activities={activities}
         isLoading={isLoading}
+        collectionAddress={collectionAddress}
         emptyState={
           <EmptyState
             message="There are no activities matches your keyword."

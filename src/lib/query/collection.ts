@@ -123,18 +123,14 @@ export const getCollectioUniqueHoldersCount = gql`
 
 export const getCollectionActivitiesPagination = gql`
   query getCollectionActivitiesPagination(
-    $collectionAddress: String!
+    $expression: collection_transactions_bool_exp
     $offset: Int!
     $pageSize: Int!
-    $search: String
   ) {
     collection_transactions(
       limit: $pageSize
       offset: $offset
-      where: {
-        collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
-        _and: { nft: { token_id: { _iregex: $search } } }
-      }
+      where: $expression
       order_by: [
         { block_height: desc }
         { nft: { token_id: desc } }
@@ -155,6 +151,9 @@ export const getCollectionActivitiesPagination = gql`
       is_nft_transfer
       nft {
         token_id
+        vm_address {
+          vm_address
+        }
       }
       is_collection_create
     }

@@ -40,9 +40,16 @@ export const NftCard = ({
       ) : (
         <Box minW={size} h={size} borderRadius="8px" bg="gray.800" />
       )}
-      <Text fontSize="18px" fontWeight={600}>
-        {metadata?.name ?? tokenId}
-      </Text>
+      <Box>
+        <Text fontSize="18px" fontWeight={600}>
+          {tokenId}
+        </Text>
+        {metadata?.name && (
+          <Text variant="body3" color="text.dark">
+            Name: {metadata.name}
+          </Text>
+        )}
+      </Box>
     </Stack>
   );
 };

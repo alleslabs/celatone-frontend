@@ -76,7 +76,7 @@ export const NftsByCollection = ({
   return (
     <Stack spacing="24px">
       <InputWithIcon
-        placeholder="Search with NFT Name"
+        placeholder="Search with Token ID"
         value={searchKeyword}
         autoFocus
         onChange={(e) => setSearchKeyword(e.target.value)}

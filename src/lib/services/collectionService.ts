@@ -23,6 +23,7 @@ import {
   queryCollectionMutateEventsPagination,
   queryCollectionListByAddress,
 } from "./collection";
+import { useCollectionActivitiesExpression } from "./expression/collectionExpression";
 
 export const useCollectionsPagination = (
   pageSize: number,
@@ -143,6 +144,10 @@ export const useCollectionActivities = (
   search?: string
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const expression = useCollectionActivitiesExpression(
+    collectionAddress,
+    search
+  );
   return useQuery<Activity[]>({
     queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_PAGINATION,
@@ -150,15 +155,14 @@ export const useCollectionActivities = (
       collectionAddress,
       offset,
       pageSize,
-      search,
+      expression,
     ],
     queryFn: () =>
       queryCollectionActivities(
         chainConfig.indexer,
-        collectionAddress,
         pageSize,
         offset,
-        search
+        expression
       ),
     retry: 1,
     refetchOnWindowFocus: false,

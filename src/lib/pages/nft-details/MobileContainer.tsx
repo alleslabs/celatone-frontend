@@ -17,6 +17,7 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Metadata } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
@@ -97,7 +98,7 @@ const MobileContainer = ({
               <Text color="gray.400" fontWeight={500}>
                 Holder:
               </Text>
-              <CopyLink
+              <ExplorerLink
                 value={ownerAddress}
                 type="user_address"
                 showCopyOnHover

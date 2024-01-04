@@ -17,7 +17,7 @@ const CollectionList = ({
   const navigate = useInternalNavigate();
 
   if (isLoading) return <Loading />;
-  if (!collections)
+  if (!collections || !collections.length)
     return (
       <EmptyState
         imageVariant="empty"

@@ -1,24 +1,37 @@
 import { Flex, Text, Box, Stack } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate } from "lib/components/table";
 import type { Activity } from "lib/services/collection";
+import type { HexAddr } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export const ActivitiesTableMobileCard = ({
   activity,
+  collectionAddress,
 }: {
   activity: Activity;
+  collectionAddress: HexAddr;
 }) => {
   const navigate = useInternalNavigate();
-  const { txhash, timestamp, isNftBurn, isNftMint, isNftTransfer, tokenId } =
-    activity;
+  const {
+    txhash,
+    timestamp,
+    isNftBurn,
+    isNftMint,
+    isNftTransfer,
+    isCollectionCreate,
+    tokenId,
+    nftAddress,
+  } = activity;
 
   const getEventMessage = () => {
     if (isNftBurn) return "Burned";
     if (isNftMint) return "Minted";
     if (isNftTransfer) return "Transferred";
+    if (isCollectionCreate) return "Collection created";
     return "-";
   };
 
@@ -41,9 +54,13 @@ export const ActivitiesTableMobileCard = ({
             <Text fontSize="12px" fontWeight={600} color="gray.400">
               Token Id
             </Text>
-            <Text fontSize="14px" fontWeight={400}>
-              {tokenId}
-            </Text>
+            <AppLink
+              href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
+            >
+              <Text fontSize="14px" fontWeight={400} color="primary.dark">
+                {tokenId}
+              </Text>
+            </AppLink>
           </Box>
           <Box>
             <Text fontSize="12px" fontWeight={600} color="gray.400">
