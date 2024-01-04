@@ -9,6 +9,7 @@ import {
   formatPrice,
   formatUTokenWithPrecision,
   getTokenLabel,
+  isSupportedToken,
 } from "lib/utils";
 
 import { TokenImageRender } from "./TokenImageRender";
@@ -54,7 +55,7 @@ export const TokenCard = ({
         </Badge>
         <Copier
           type={
-            !isUndefined(token.price) ? "supported_asset" : "unsupported_asset"
+            isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
           }
           value={token.denom}
           copyLabel="Token ID Copied!"

@@ -1,5 +1,6 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { Big } from "big.js";
 import big from "big.js";
 import { useCallback } from "react";
 
@@ -28,8 +29,9 @@ import type {
   BechAddr,
 } from "lib/types";
 import {
+  coinToTokenWithValue,
   deexponentify,
-  formatBalanceWithDenom,
+  formatTokenWithValue,
   getTokenLabel,
   parseDate,
   parseProposalStatus,
@@ -37,6 +39,7 @@ import {
 
 import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
+import { useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
   ProposalsResponse,
@@ -273,7 +276,7 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
 };
 
 export interface MinDeposit {
-  amount: U<Token>;
+  amount: U<Token<Big>>;
   denom: string;
   formattedAmount: Token;
   formattedDenom: string;
@@ -297,6 +300,8 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
+
   const queryFn = useCallback(
     () =>
       Promise.all([
@@ -305,28 +310,30 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
-        const assetInfo = assetInfos?.[minDepositParam.denom];
-        const [minDepositAmount, minDepositDenom] = [
-          deexponentify(
-            minDepositParam.amount as U<Token>,
-            assetInfo?.precision
-          ).toFixed(),
-          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
-        ];
+        const minDepositToken = coinToTokenWithValue(
+          minDepositParam.denom,
+          minDepositParam.amount,
+          assetInfos,
+          movePoolInfos
+        );
+        const minDepositAmount = deexponentify(
+          minDepositToken.amount,
+          minDepositToken.precision
+        ).toFixed() as Token;
+
         return {
           depositParams: {
             ...params[0],
             minDeposit: {
               ...minDepositParam,
-              amount: minDepositParam.amount as U<Token>,
-              formattedAmount: minDepositAmount as Token,
-              formattedDenom: minDepositDenom,
-              formattedToken: formatBalanceWithDenom({
-                coin: minDepositParam,
-                precision: assetInfo?.precision,
-                symbol: assetInfo?.symbol,
-              }),
-              precision: assetInfo?.precision ?? 0,
+              amount: minDepositToken.amount,
+              formattedAmount: minDepositAmount,
+              formattedDenom: getTokenLabel(
+                minDepositToken.denom,
+                minDepositToken.symbol
+              ),
+              formattedToken: formatTokenWithValue(minDepositToken),
+              precision: minDepositToken.precision ?? 0,
             },
             minInitialDeposit: big(params[0].minInitialDepositRatio)
               .times(minDepositAmount)
@@ -336,7 +343,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint, cosmwasmEndpoint, assetInfos]
+    [assetInfos, cosmwasmEndpoint, lcdEndpoint, movePoolInfos]
   );
 
   return useQuery(

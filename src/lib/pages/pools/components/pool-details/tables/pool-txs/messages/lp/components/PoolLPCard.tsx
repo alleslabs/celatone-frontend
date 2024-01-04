@@ -4,15 +4,16 @@ import { PoolAssetCard } from "../../components";
 import { getPoolDenom } from "../../utils";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
+import type { AssetInfos, Option } from "lib/types";
+import { coinToTokenWithValue } from "lib/utils";
 
 interface PoolLPCardProps {
   txHash?: string;
   msgIndex: number;
   poolId: string;
   msgShareAmount?: string;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isJoin: boolean;
   isOpened: boolean;
   ampCopierSection?: string;
@@ -42,6 +43,7 @@ export const PoolLPCard = ({
     return (
       <EmptyState message="There is an error during fetching transaction detail." />
     );
+  const poolToken = coinToTokenWithValue(poolDenom, shareAmount, assetInfos);
 
   return (
     <Flex
@@ -58,8 +60,7 @@ export const PoolLPCard = ({
         poolId={Number(poolId)}
         description={isJoin ? "Provided to" : "Removed from"}
         assetText={isJoin ? "Received" : "Burn"}
-        poolAsset={{ amount: shareAmount, denom: poolDenom }}
-        poolAssetInfo={assetInfos?.[poolDenom]}
+        poolToken={poolToken}
         assetInfos={assetInfos}
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
