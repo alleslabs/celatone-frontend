@@ -1,8 +1,22 @@
+import axios from "axios";
 import { z } from "zod";
 
+import {
+  getCollectioUniqueHoldersCount,
+  getCollectionActivitiesCount,
+  getCollectionActivitiesPagination,
+  getCollectionByCollectionAddress,
+  getCollectionCreator,
+  getCollectionListByAddress,
+  getCollectionMutateEventsCount,
+  getCollectionMutateEventsPagination,
+  getCollectionTotalBurnedCount,
+  getCollectionsPagination,
+} from "lib/query";
+import type { HexAddr } from "lib/types";
 import { zHexAddr, zUtcDate } from "lib/types";
 
-export interface CollectionResponse {
+interface CollectionResponse {
   data: {
     collections: {
       name: string;
@@ -13,7 +27,7 @@ export interface CollectionResponse {
   };
 }
 
-export const zCollectionResponseItem = z
+const zCollectionResponseItem = z
   .object({
     uri: z.string(),
     name: z.string(),
@@ -27,9 +41,24 @@ export const zCollectionResponseItem = z
     collectionAddress: val.vm_address.vm_address,
   }));
 
+export const queryCollectionsPagination = async (
+  indexer: string,
+  offset: number,
+  pageSize: number,
+  search?: string
+) =>
+  axios
+    .post<CollectionResponse>(indexer, {
+      query: getCollectionsPagination,
+      variables: { offset, pageSize, search },
+    })
+    .then(({ data: res }) =>
+      zCollectionResponseItem.array().parse(res.data.collections)
+    );
+
 export type Collection = z.infer<typeof zCollectionResponseItem>;
 
-export interface CollectionInfoResponse {
+interface CollectionInfoResponse {
   data: {
     collections: {
       name: string;
@@ -46,7 +75,7 @@ export interface CollectionInfoResponse {
   };
 }
 
-export const zCollectionInfoResponseItem = z
+const zCollectionInfoResponseItem = z
   .object({
     name: z.string(),
     description: z.string(),
@@ -71,9 +100,22 @@ export const zCollectionInfoResponseItem = z
         .vm_address,
   }));
 
+export const queryCollectionInfo = async (
+  indexer: string,
+  collectionAddress: HexAddr
+) =>
+  axios
+    .post<CollectionInfoResponse>(indexer, {
+      query: getCollectionByCollectionAddress,
+      variables: { vmAddress: collectionAddress },
+    })
+    .then(({ data: res }) =>
+      zCollectionInfoResponseItem.parse(res.data.collections[0])
+    );
+
 export type CollectionInfo = z.infer<typeof zCollectionInfoResponseItem>;
 
-export interface TotalBurnedCountResponse {
+interface TotalBurnedCountResponse {
   data: {
     nfts_aggregate: {
       aggregate: {
@@ -83,13 +125,24 @@ export interface TotalBurnedCountResponse {
   };
 }
 
-export const zTotalBurnedResponseItem = z
+const zTotalBurnedResponseItem = z
   .object({
     nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
   })
   .transform<number>((val) => val.nfts_aggregate.aggregate.count);
 
-export interface CollectionCreatorResponse {
+export const queryTotalBurnedCount = async (
+  indexer: string,
+  collectionAddress: HexAddr
+) =>
+  axios
+    .post<TotalBurnedCountResponse>(indexer, {
+      query: getCollectionTotalBurnedCount,
+      variables: { vmAddress: collectionAddress },
+    })
+    .then(({ data }) => zTotalBurnedResponseItem.parse(data.data));
+
+interface CollectionCreatorResponse {
   data: {
     collections: {
       collection_transactions: {
@@ -106,7 +159,7 @@ export interface CollectionCreatorResponse {
   };
 }
 
-export const zCollectionCreatorResponseItem = z
+const zCollectionCreatorResponseItem = z
   .object({
     collections: z
       .object({
@@ -135,9 +188,20 @@ export const zCollectionCreatorResponseItem = z
       ),
   }));
 
+export const queryCollectionCreator = async (
+  indexer: string,
+  collectionAddress: HexAddr
+) =>
+  axios
+    .post<CollectionCreatorResponse>(indexer, {
+      query: getCollectionCreator,
+      variables: { vmAddress: collectionAddress },
+    })
+    .then(({ data: res }) => zCollectionCreatorResponseItem.parse(res.data));
+
 export type CollectionCreator = z.infer<typeof zCollectionCreatorResponseItem>;
 
-export interface ActivitiesCountResponse {
+interface ActivitiesCountResponse {
   data: {
     collection_transactions_aggregate: {
       aggregate: {
@@ -147,7 +211,7 @@ export interface ActivitiesCountResponse {
   };
 }
 
-export const zActivitiesCountResponseItem = z
+const zActivitiesCountResponseItem = z
   .object({
     collection_transactions_aggregate: z.object({
       aggregate: z.object({ count: z.number() }),
@@ -157,7 +221,18 @@ export const zActivitiesCountResponseItem = z
     (val) => val.collection_transactions_aggregate.aggregate.count
   );
 
-export interface MutationEventsCountResponse {
+export const queryCollectionActivitiesCount = async (
+  indexer: string,
+  collectionAddress: HexAddr
+) =>
+  axios
+    .post<ActivitiesCountResponse>(indexer, {
+      query: getCollectionActivitiesCount,
+      variables: { vmAddress: collectionAddress },
+    })
+    .then(({ data }) => zActivitiesCountResponseItem.parse(data.data));
+
+interface MutationEventsCountResponse {
   data: {
     collection_mutation_events_aggregate: {
       aggregate: {
@@ -167,7 +242,7 @@ export interface MutationEventsCountResponse {
   };
 }
 
-export const zMutationEventsCountResponseItem = z
+const zMutationEventsCountResponseItem = z
   .object({
     collection_mutation_events_aggregate: z.object({
       aggregate: z.object({ count: z.number() }),
@@ -177,7 +252,18 @@ export const zMutationEventsCountResponseItem = z
     (val) => val.collection_mutation_events_aggregate.aggregate.count
   );
 
-export interface UniqueHoldersCountResponse {
+export const queryCollectionMutateEventsCount = async (
+  indexer: string,
+  collectionAddress: HexAddr
+) =>
+  axios
+    .post<MutationEventsCountResponse>(indexer, {
+      query: getCollectionMutateEventsCount,
+      variables: { vmAddress: collectionAddress },
+    })
+    .then(({ data }) => zMutationEventsCountResponseItem.parse(data.data));
+
+interface UniqueHoldersCountResponse {
   data: {
     nfts_aggregate: {
       aggregate: {
@@ -187,7 +273,7 @@ export interface UniqueHoldersCountResponse {
   };
 }
 
-export const zUniqueHoldersCountResponseItem = z
+const zUniqueHoldersCountResponseItem = z
   .object({
     nfts_aggregate: z.object({
       aggregate: z.object({ count: z.number() }),
@@ -195,7 +281,18 @@ export const zUniqueHoldersCountResponseItem = z
   })
   .transform<number>((val) => val.nfts_aggregate.aggregate.count);
 
-export interface ActivitiesResponse {
+export const queryCollectionUniqueHoldersCount = async (
+  indexer: string,
+  collectionAddress: HexAddr
+) =>
+  axios
+    .post<UniqueHoldersCountResponse>(indexer, {
+      query: getCollectioUniqueHoldersCount,
+      variables: { vmAddress: collectionAddress },
+    })
+    .then(({ data }) => zUniqueHoldersCountResponseItem.parse(data.data));
+
+interface ActivitiesResponse {
   data: {
     collection_transactions: {
       transaction: {
@@ -214,7 +311,7 @@ export interface ActivitiesResponse {
   };
 }
 
-export const zActivitiesResponseItem = z
+const zActivitiesResponseItem = z
   .object({
     transaction: z.object({
       block: z.object({ timestamp: zUtcDate }),
@@ -239,9 +336,30 @@ export const zActivitiesResponseItem = z
     tokenId: data.nft?.token_id,
   }));
 
+export const queryCollectionActivities = async (
+  indexer: string,
+  collectionAddress: HexAddr,
+  pageSize: number,
+  offset: number,
+  search?: string
+) =>
+  axios
+    .post<ActivitiesResponse>(indexer, {
+      query: getCollectionActivitiesPagination,
+      variables: {
+        collectionAddress,
+        pageSize,
+        offset,
+        search,
+      },
+    })
+    .then(({ data: res }) =>
+      zActivitiesResponseItem.array().parse(res.data.collection_transactions)
+    );
+
 export type Activity = z.infer<typeof zActivitiesResponseItem>;
 
-export interface CollectionMutateEventsResponse {
+interface CollectionMutateEventsResponse {
   data: {
     collection_mutation_events: {
       mutated_field_name: string;
@@ -258,7 +376,7 @@ export interface CollectionMutateEventsResponse {
   };
 }
 
-export const zCollectionMutateEventsResponse = z
+const zCollectionMutateEventsResponse = z
   .object({
     old_value: z.string(),
     new_value: z.string(),
@@ -274,11 +392,32 @@ export const zCollectionMutateEventsResponse = z
     timestamp: val.block.timestamp,
   }));
 
+export const queryCollectionMutateEventsPagination = async (
+  indexer: string,
+  collectionAddress: HexAddr,
+  pageSize: number,
+  offset: number
+) =>
+  axios
+    .post<CollectionMutateEventsResponse>(indexer, {
+      query: getCollectionMutateEventsPagination,
+      variables: {
+        collectionAddress,
+        pageSize,
+        offset,
+      },
+    })
+    .then(({ data: res }) =>
+      zCollectionMutateEventsResponse
+        .array()
+        .parse(res.data.collection_mutation_events)
+    );
+
 export type CollectionMutateEvent = z.infer<
   typeof zCollectionMutateEventsResponse
 >;
 
-export interface CollectionListByAddressResponse {
+interface CollectionListByAddressResponse {
   data: {
     collections: {
       name: string;
@@ -295,7 +434,7 @@ export interface CollectionListByAddressResponse {
   };
 }
 
-export const zCollectionListByAddressResponse = z
+const zCollectionListByAddressResponse = z
   .object({
     name: z.string(),
     uri: z.string(),
@@ -308,6 +447,19 @@ export const zCollectionListByAddressResponse = z
     uri: val.uri,
     hold: val.nfts_aggregate.aggregate.count,
   }));
+
+export const queryCollectionListByAddress = async (
+  indexer: string,
+  accountAddress: HexAddr
+) =>
+  axios
+    .post<CollectionListByAddressResponse>(indexer, {
+      query: getCollectionListByAddress,
+      variables: { accountAddress },
+    })
+    .then(({ data: res }) =>
+      zCollectionListByAddressResponse.array().parse(res.data.collections)
+    );
 
 export type CollectionByAddress = z.infer<
   typeof zCollectionListByAddressResponse
