@@ -10,11 +10,10 @@ import { useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
-import { SavedCodeZeroState } from "lib/components/state";
+import { MySavedCodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 
-import { MySavedCodesSection } from "./components/MySavedCodesSection";
 import { SaveCodeButton } from "./components/SaveCodeButton";
 
 interface CodeFilterState {
@@ -44,8 +43,6 @@ const SavedCodes = observer(() => {
     savedCodes: saved,
     isSavedCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
-
-  const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
     if (router.isReady && isSavedCodesLoading) {
@@ -96,16 +93,12 @@ const SavedCodes = observer(() => {
           }}
         />
       </Flex>
-      {!savedCodesCount ? (
-        <SavedCodeZeroState button={<SaveCodeButton />} />
-      ) : (
-        <MySavedCodesSection
-          codes={saved}
-          isLoading={isSavedCodesLoading}
-          onRowSelect={onRowSelect}
-          isSearching={isSearching}
-        />
-      )}
+      <MySavedCodesTable
+        codes={saved}
+        totalData={savedCodesCount}
+        isLoading={isSavedCodesLoading}
+        onRowSelect={onRowSelect}
+      />
     </PageContainer>
   );
 });

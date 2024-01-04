@@ -99,10 +99,10 @@ export const PublicProjectAccountTable = ({
         <EmptyState
           message={
             accounts.length
-              ? "No matching account found for this project. Make sure you are searching with Account Address or Account Name"
+              ? "No matching accounts found for this project. Make sure you are searching with Account Address or Account Name"
               : "There are currently no accounts related to this project."
           }
-          imageVariant={onViewMore && "empty"}
+          imageVariant={onViewMore ? "empty" : "not-found"}
           withBorder
         />
       )}

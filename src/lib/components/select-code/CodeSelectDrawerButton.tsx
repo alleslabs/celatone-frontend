@@ -69,8 +69,6 @@ export const CodeSelectDrawerButton = ({
     onClose();
   };
 
-  const isSearching = !!keyword || permissionValue !== "all";
-
   return (
     <>
       <Button
@@ -125,20 +123,20 @@ export const CodeSelectDrawerButton = ({
                 <TabPanel p={0}>
                   <MyStoredCodesTable
                     codes={stored}
+                    totalData={storedCodesCount}
                     isLoading={isStoredCodesLoading}
                     onRowSelect={handleSelect}
                     emptyMessage="You don’t have any stored codes in this device."
                     disconnectedMessage="to see your stored code."
-                    isSearching={isSearching}
                     isReadOnly
                   />
                 </TabPanel>
                 <TabPanel p={0}>
                   <MySavedCodesTable
                     codes={saved}
+                    totalData={savedCodesCount}
                     isLoading={isSavedCodesLoading}
                     onRowSelect={handleSelect}
-                    isSearching={isSearching}
                     isReadOnly
                   />
                 </TabPanel>

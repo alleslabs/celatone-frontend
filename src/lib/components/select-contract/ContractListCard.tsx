@@ -74,7 +74,7 @@ export const ContractListCard = ({
           </Text>
         )}
       </Flex>
-      {!isReadOnly && (
+      {!isReadOnly && item.isInfoEditable && (
         <Menu>
           <MenuButton
             m={0}

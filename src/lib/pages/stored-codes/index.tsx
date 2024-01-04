@@ -14,13 +14,13 @@ import {
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { MyStoredCodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
-import { MyStoredCodesSection } from "./components/MyStoredCodesSection";
 import { ProposalButton } from "./components/ProposalButton";
 import { UploadButton } from "./components/UploadButton";
 
@@ -52,8 +52,6 @@ const StoredCodes = observer(() => {
     storedCodes: stored,
     isStoredCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
-
-  const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);
@@ -121,12 +119,13 @@ const StoredCodes = observer(() => {
         />
       </Flex>
 
-      <MyStoredCodesSection
+      <MyStoredCodesTable
         codes={stored}
+        totalData={storedCodesCount}
         isLoading={isStoredCodesLoading}
         onRowSelect={onRowSelect}
+        emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
         disconnectedMessage="to see your previously uploaded and stored codes."
-        isSearching={isSearching}
       />
     </PageContainer>
   );
