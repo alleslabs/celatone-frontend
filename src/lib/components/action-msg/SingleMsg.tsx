@@ -44,7 +44,7 @@ export const SingleMsg = ({
       </Text>
       {tokens?.map((token: TokenWithValue, index: number) => (
         <MsgToken
-          key={index.toString() + token}
+          key={index.toString() + token.denom}
           token={token}
           // TODO: add `ampCopierSection` later
         />

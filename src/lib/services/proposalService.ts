@@ -319,7 +319,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
         const minDepositAmount = deexponentify(
           minDepositToken.amount,
           minDepositToken.precision
-        ).toFixed(0) as Token;
+        ).toFixed() as Token;
 
         return {
           depositParams: {

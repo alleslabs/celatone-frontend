@@ -15,7 +15,40 @@ import {
   addTokenWithValue,
   coinToTokenWithValue,
   filterSupportedTokens,
+  isSupportedToken,
 } from "./assetValue";
+
+describe("isSupportedToken", () => {
+  test("supported token", () => {
+    expect(
+      isSupportedToken({
+        isLPToken: false,
+        denom: "denom",
+        amount: big(100) as U<Token<Big>>,
+        symbol: "",
+        logo: "",
+        precision: 6,
+        price: big(0) as USD<Big>,
+        value: big(0) as USD<Big>,
+      })
+    ).toEqual(true);
+  });
+
+  test("unsupported token", () => {
+    expect(
+      isSupportedToken({
+        isLPToken: false,
+        denom: "denom",
+        amount: big(100) as U<Token<Big>>,
+        symbol: "",
+        logo: "",
+        precision: 6,
+        price: undefined,
+        value: undefined,
+      })
+    ).toEqual(false);
+  });
+});
 
 describe("filterSupportedTokens", () => {
   const token1: TokenWithValue = {

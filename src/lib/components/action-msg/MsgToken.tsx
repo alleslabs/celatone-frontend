@@ -1,10 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
 
 import { Copier } from "../copy";
 import { TooltipInfo } from "../Tooltip";
 import type { TokenWithValue } from "lib/types";
-import { formatTokenWithValue } from "lib/utils";
+import { formatTokenWithValue, isSupportedToken } from "lib/utils";
 
 interface MsgTokenProps {
   token: TokenWithValue;
@@ -27,7 +26,7 @@ export const MsgToken = ({
       textAlign="center"
     />
     <Copier
-      type={!isUndefined(token.price) ? "supported_asset" : "unsupported_asset"}
+      type={isSupportedToken(token) ? "supported_asset" : "unsupported_asset"}
       value={token.denom}
       copyLabel="Token ID Copied!"
       display="none"

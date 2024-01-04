@@ -25,7 +25,8 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
   });
   const [showMore, setShowMore] = useState(false);
 
-  if (!assetInfos || !coins.length) return <>{JSON.stringify(coins)}</>;
+  if (!coins.length) return <>No assets</>;
+  if (!assetInfos) return <>{JSON.stringify(coins)}</>;
 
   const tokens = coins.map((coin) =>
     coinToTokenWithValue(coin.denom, coin.amount, assetInfos, movePoolInfos)

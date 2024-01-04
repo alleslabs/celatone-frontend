@@ -1496,7 +1496,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In Maxs",
-          html: <CoinsComponent coins={details.token_in_maxs} />,
+          html: <CoinsComponent coins={details.token_in_maxs ?? []} />,
         },
       ];
     }
@@ -1521,7 +1521,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out Mins",
-          html: <CoinsComponent coins={details.token_out_mins} />,
+          html: <CoinsComponent coins={details.token_out_mins ?? []} />,
         },
       ];
     }

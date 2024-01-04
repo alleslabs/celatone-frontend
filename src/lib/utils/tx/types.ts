@@ -389,13 +389,13 @@ export interface MsgJoinPoolDetails extends MsgBaseDetails {
   sender: BechAddr;
   pool_id: string;
   share_out_amount: string;
-  token_in_maxs: Coin[];
+  token_in_maxs: Option<Coin[]>;
 }
 export interface MsgExitPoolDetails extends MsgBaseDetails {
   sender: BechAddr;
   pool_id: string;
   share_in_amount: string;
-  token_out_mins: Coin[];
+  token_out_mins: Option<Coin[]>;
 }
 export interface MsgSwapExactAmountInDetails extends MsgBaseDetails {
   sender: BechAddr;
