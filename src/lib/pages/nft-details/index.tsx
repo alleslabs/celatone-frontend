@@ -26,6 +26,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
 import { useCollectionByCollectionAddress } from "lib/services/collectionService";
 import {
   useMetadata,
@@ -69,6 +70,8 @@ const NftDetailsBody = ({
   const { tokenId, description, uri, ownerAddress } = nft;
   const nftName = metadata?.name ?? tokenId;
 
+  const imageSize = "360px";
+
   return (
     <>
       <Breadcrumb
@@ -99,12 +102,21 @@ const NftDetailsBody = ({
         <Stack spacing="32px">
           <Flex mt="24px" gap="32px">
             <Stack spacing="24px" maxW="360px">
-              <Image
-                src={metadata?.image}
-                minW="360px"
-                h="360px"
-                borderRadius="8px"
-              />
+              {metadata?.image ? (
+                <Image
+                  minW={imageSize}
+                  h={imageSize}
+                  borderRadius="8px"
+                  src={metadata.image}
+                />
+              ) : (
+                <Image
+                  minW={imageSize}
+                  h={imageSize}
+                  borderRadius="8px"
+                  src={NFT_IMAGE_PLACEHOLDER}
+                />
+              )}
               <Box
                 fontSize="14px"
                 p="16px"

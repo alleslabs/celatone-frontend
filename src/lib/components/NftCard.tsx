@@ -1,6 +1,7 @@
 import { Box, Image, Stack, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
 import { useMetadata } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
 
@@ -35,10 +36,15 @@ export const NftCard = ({
         })
       }
     >
-      {metadata ? (
+      {metadata?.image ? (
         <Image minW={size} h={size} borderRadius="8px" src={metadata.image} />
       ) : (
-        <Box minW={size} h={size} borderRadius="8px" bg="gray.800" />
+        <Image
+          minW={size}
+          h={size}
+          borderRadius="8px"
+          src={NFT_IMAGE_PLACEHOLDER}
+        />
       )}
       <Box>
         <Text fontSize="18px" fontWeight={600}>
