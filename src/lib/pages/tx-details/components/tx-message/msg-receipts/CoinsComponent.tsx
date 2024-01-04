@@ -1,6 +1,5 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-import { isUndefined } from "lodash";
 import { useState } from "react";
 
 import { trackUseExpand } from "lib/amplitude";
@@ -8,28 +7,29 @@ import { useMobile } from "lib/app-provider";
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { TokenCard } from "lib/components/token/TokenCard";
-import type { AssetInfo, Option } from "lib/types";
+import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
 import { coinToTokenWithValue, filterSupportedTokens } from "lib/utils";
 
-type AssetObject = { [key: string]: AssetInfo };
-
-interface CoinComponentProps<
-  T extends Coin | Coin[],
-  A extends Option<AssetObject> | AssetObject,
-> {
-  amount: T;
-  assetInfos: A;
+interface CoinsComponentProps {
+  coins: Coin[];
 }
 
-const MultiCoin = ({
-  amount,
-  assetInfos,
-}: CoinComponentProps<Coin[], AssetObject>) => {
+export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
   const isMobile = useMobile();
+  const { data: assetInfos } = useAssetInfos({
+    withPrices: true,
+  });
+  const { data: movePoolInfos } = useMovePoolInfos({
+    withPrices: true,
+  });
   const [showMore, setShowMore] = useState(false);
 
-  const tokens = amount.map((coin) =>
-    coinToTokenWithValue(coin.denom, coin.amount, assetInfos)
+  if (!coins.length) return <>No assets</>;
+  if (!assetInfos) return <>{JSON.stringify(coins)}</>;
+
+  const tokens = coins.map((coin) =>
+    coinToTokenWithValue(coin.denom, coin.amount, assetInfos, movePoolInfos)
   );
   const { supportedTokens, unsupportedTokens } = filterSupportedTokens(tokens);
   const hasSupportedTokens = supportedTokens.length > 0;
@@ -70,38 +70,5 @@ const MultiCoin = ({
         />
       </Flex>
     </Flex>
-  );
-};
-
-const SingleCoin = ({
-  amount,
-  assetInfos,
-}: CoinComponentProps<Coin, AssetObject>) => {
-  const token = coinToTokenWithValue(amount.denom, amount.amount, assetInfos);
-  return !isUndefined(token.price) ? (
-    <TokenCard
-      token={token}
-      amptrackSection="tx_msg_receipts_assets"
-      w={{ base: "100%", md: "50%" }}
-      mt={{ base: 2, md: 0 }}
-    />
-  ) : (
-    <UnsupportedTokensModal
-      unsupportedAssets={[token]}
-      amptrackSection="tx_msg_receipts_unsupported_assets"
-    />
-  );
-};
-
-export const CoinComponent = ({
-  amount,
-  assetInfos,
-}: CoinComponentProps<Coin | Coin[], Option<AssetObject>>) => {
-  if (!assetInfos || (Array.isArray(amount) && !amount.length))
-    return <>{JSON.stringify(amount)}</>;
-  return Array.isArray(amount) ? (
-    <MultiCoin amount={amount} assetInfos={assetInfos} />
-  ) : (
-    <SingleCoin amount={amount} assetInfos={assetInfos} />
   );
 };

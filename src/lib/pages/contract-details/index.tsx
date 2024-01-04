@@ -23,7 +23,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -40,7 +40,7 @@ import { TabIndex, zContractDetailsQueryParams } from "./types";
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 interface ContractDetailsBodyProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   tab: TabIndex;
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import type { PublishTxInternalResult } from "lib/app-provider/tx/publish";
+import type { PublishTxInternalResult } from "lib/app-fns/tx/publish";
 import { UpgradePolicy } from "lib/types";
 import { scrollToTop } from "lib/utils";
 

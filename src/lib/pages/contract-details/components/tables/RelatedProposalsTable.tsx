@@ -5,10 +5,10 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useRelatedProposalsByContractAddress } from "lib/services/proposalService";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;

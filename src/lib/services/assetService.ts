@@ -3,13 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { getAssetInfos } from "lib/services/asset";
-import type { AssetInfo, Option } from "lib/types";
-
-export type AssetInfosOpt = Option<Record<string, AssetInfo>>;
+import type { AssetInfos } from "lib/types";
 
 export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   const assetsApiRoute = useBaseApiRoute("assets");
-  return useQuery<AssetInfosOpt>(
+  return useQuery<AssetInfos>(
     [CELATONE_QUERY_KEYS.ASSET_INFOS, assetsApiRoute, withPrices],
     async () =>
       getAssetInfos(assetsApiRoute, withPrices).then((assets) =>

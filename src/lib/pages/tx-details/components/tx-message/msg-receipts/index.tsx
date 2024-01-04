@@ -9,7 +9,6 @@ import type { AddressReturnType } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import type { TxReceipt, Option } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import {
@@ -20,6 +19,7 @@ import {
   extractMsgType,
 } from "lib/utils";
 
+import { CoinsComponent } from "./CoinsComponent";
 import {
   attachFundsReceipt,
   channelIdReceipt,
@@ -31,13 +31,11 @@ import {
   proposalIdReceipt,
   validatorAddrReceipt,
   getGenericValueEntry,
-  getCoinComponent,
 } from "./renderUtils";
 
 export const generateReceipts = (
   { msgBody, log }: Omit<TxMsgData, "assetInfos">,
-  getAddressType: (address: string) => AddressReturnType,
-  assetInfos: AssetInfosOpt
+  getAddressType: (address: string) => AddressReturnType
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Option<TxReceipt | null | false>[] => {
   const { "@type": type, ...body } = msgBody;
@@ -151,7 +149,7 @@ export const generateReceipts = (
           title: "Label",
           value: details.label,
         },
-        attachFundsReceipt(details.funds, assetInfos),
+        attachFundsReceipt(details.funds),
         {
           title: "Instantiate Message",
           html: getCommonReceiptHtml({
@@ -201,7 +199,7 @@ export const generateReceipts = (
           title: "Label",
           value: details.label,
         },
-        attachFundsReceipt(details.funds, assetInfos),
+        attachFundsReceipt(details.funds),
         {
           title: "Instantiate Message",
           html: getCommonReceiptHtml({
@@ -238,7 +236,7 @@ export const generateReceipts = (
             linkType: "contract_address",
           }),
         },
-        attachFundsReceipt(details.funds, assetInfos),
+        attachFundsReceipt(details.funds),
         {
           title: "Execute Message",
           html: getCommonReceiptHtml({
@@ -356,7 +354,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          html: getCoinComponent(details.amount, assetInfos),
+          html: <CoinsComponent coins={details.amount} />,
         },
       ];
     }
@@ -509,7 +507,7 @@ export const generateReceipts = (
       return [
         {
           title: "Amount",
-          html: getCoinComponent(details.amount, assetInfos),
+          html: <CoinsComponent coins={details.amount} />,
         },
         {
           title: "Depositor",
@@ -598,7 +596,7 @@ export const generateReceipts = (
       return [
         {
           title: "Initial Deposit",
-          html: getCoinComponent(details.initial_deposit, assetInfos),
+          html: <CoinsComponent coins={details.initial_deposit} />,
         },
         {
           title: "Proposer",
@@ -678,7 +676,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          html: getCoinComponent(details.amount, assetInfos),
+          html: <CoinsComponent coins={details.amount} />,
         },
       ];
     }
@@ -723,7 +721,7 @@ export const generateReceipts = (
         },
         {
           title: "Value",
-          html: getCoinComponent(details.value, assetInfos),
+          html: <CoinsComponent coins={[details.value]} />,
         },
       ];
     }
@@ -759,7 +757,7 @@ export const generateReceipts = (
         validatorAddrReceipt(details.validator_address),
         {
           title: "Amount",
-          html: getCoinComponent(details.amount, assetInfos),
+          html: <CoinsComponent coins={[details.amount]} />,
         },
       ];
     }
@@ -788,7 +786,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          html: getCoinComponent(details.amount, assetInfos),
+          html: <CoinsComponent coins={[details.amount]} />,
         },
       ];
     }
@@ -806,7 +804,7 @@ export const generateReceipts = (
         },
         {
           title: "Token",
-          html: getCoinComponent(details.token, assetInfos),
+          html: <CoinsComponent coins={[details.token]} />,
         },
         {
           title: "Sender",
@@ -1434,7 +1432,7 @@ export const generateReceipts = (
         },
         {
           title: "Initial Pool Liquidity",
-          html: getCoinComponent(details.initial_pool_liquidity, assetInfos),
+          html: <CoinsComponent coins={details.initial_pool_liquidity} />,
         },
         {
           title: "Scaling Factors",
@@ -1498,7 +1496,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In Maxs",
-          html: getCoinComponent(details.token_in_maxs, assetInfos),
+          html: <CoinsComponent coins={details.token_in_maxs ?? []} />,
         },
       ];
     }
@@ -1523,7 +1521,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out Mins",
-          html: getCoinComponent(details.token_out_mins, assetInfos),
+          html: <CoinsComponent coins={details.token_out_mins ?? []} />,
         },
       ];
     }
@@ -1548,7 +1546,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In",
-          html: getCoinComponent(details.token_in, assetInfos),
+          html: <CoinsComponent coins={[details.token_in]} />,
         },
         {
           title: "Token Out Min Amount",
@@ -1581,7 +1579,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out",
-          html: getCoinComponent(details.token_out, assetInfos),
+          html: <CoinsComponent coins={[details.token_out]} />,
         },
       ];
     }
@@ -1602,7 +1600,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In",
-          html: getCoinComponent(details.token_in, assetInfos),
+          html: <CoinsComponent coins={[details.token_in]} />,
         },
         {
           title: "Share Out Min Amount",
@@ -1685,7 +1683,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out",
-          html: getCoinComponent(details.token_out, assetInfos),
+          html: <CoinsComponent coins={[details.token_out]} />,
         },
         {
           title: "Share In Max Amount",
@@ -1718,7 +1716,7 @@ export const generateReceipts = (
         },
         {
           title: "Coins",
-          html: getCoinComponent(details.coins, assetInfos),
+          html: <CoinsComponent coins={details.coins} />,
         },
         {
           title: "Start Time",
@@ -1747,7 +1745,7 @@ export const generateReceipts = (
         },
         {
           title: "Rewards",
-          html: getCoinComponent(details.rewards, assetInfos),
+          html: <CoinsComponent coins={details.rewards} />,
         },
       ];
     }
@@ -1769,7 +1767,7 @@ export const generateReceipts = (
         },
         {
           title: "Coin",
-          html: getCoinComponent(details.coins, assetInfos),
+          html: <CoinsComponent coins={details.coins} />,
         },
       ];
     }
@@ -1804,7 +1802,7 @@ export const generateReceipts = (
         },
         details.coins && {
           title: "Coins",
-          html: getCoinComponent(details.coins, assetInfos),
+          html: <CoinsComponent coins={details.coins} />,
         },
       ];
     }
@@ -1880,7 +1878,7 @@ export const generateReceipts = (
         },
         {
           title: "Coins",
-          html: getCoinComponent(details.coins, assetInfos),
+          html: <CoinsComponent coins={details.coins} />,
         },
         validatorAddrReceipt(details.val_addr),
       ];
@@ -1919,7 +1917,7 @@ export const generateReceipts = (
         },
         {
           title: "Coin",
-          html: getCoinComponent(details.coin, assetInfos),
+          html: <CoinsComponent coins={[details.coin]} />,
         },
       ];
     }
@@ -1955,7 +1953,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          html: getCoinComponent(details.amount, assetInfos),
+          html: <CoinsComponent coins={[details.amount]} />,
         },
       ];
     }
@@ -2136,7 +2134,7 @@ export const generateReceipts = (
         },
         {
           title: "Coin",
-          html: getCoinComponent(details.coin, assetInfos),
+          html: <CoinsComponent coins={[details.coin]} />,
         },
       ];
     }

@@ -2,11 +2,11 @@ import { Box, Text, ButtonGroup } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 interface MsgSuggestionProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   cmds: [string, string][];
   setMsg: (msg: string) => void;
 }

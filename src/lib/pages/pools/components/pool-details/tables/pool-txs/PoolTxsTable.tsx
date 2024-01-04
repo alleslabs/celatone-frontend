@@ -1,8 +1,7 @@
 import { TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Option, PoolDetail, Transaction } from "lib/types";
+import type { AssetInfos, Option, PoolDetail, Transaction } from "lib/types";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
@@ -13,7 +12,7 @@ const TEMPLATE_COLUMNS =
 interface PoolTxsTableProps {
   pool: PoolDetail;
   transactions: Option<Transaction[]>;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isLoading: boolean;
   emptyState: JSX.Element;
 }

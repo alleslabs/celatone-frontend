@@ -3,12 +3,12 @@ import { Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { PublicAccount } from "lib/types";
+import type { PublicAccountInfo } from "lib/types";
 
 import { getNavigationArgs } from "./utils";
 
 interface AccountTableRowProps {
-  accountInfo: PublicAccount;
+  accountInfo: PublicAccountInfo;
   templateColumns: string;
 }
 

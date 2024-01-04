@@ -6,11 +6,10 @@ import { getPoolDenom } from "../utils";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
 import { useValidator } from "lib/services/validatorService";
-import type { PoolDetail } from "lib/types";
-import { extractMsgType } from "lib/utils";
+import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
 interface MsgLockAndSuperfluidDelegateDetailProps {
@@ -19,7 +18,7 @@ interface MsgLockAndSuperfluidDelegateDetailProps {
   msgIndex: number;
   msg: MsgLockAndSuperfluidDelegateDetails;
   pool: PoolDetail;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }
@@ -39,7 +38,11 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     amount: "0",
     denom: poolDenom,
   };
-  const poolAssetInfo = assetInfos?.[poolDenom];
+  const poolToken = coinToTokenWithValue(
+    poolAsset.denom,
+    poolAsset.amount,
+    assetInfos
+  );
 
   const { data: txData, isLoading: isTxDataLoading } = useTxData(
     txHash,
@@ -91,8 +94,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
           poolId={pool.id}
           description="Bonded to"
           assetText="Bonded"
-          poolAsset={poolAsset}
-          poolAssetInfo={poolAssetInfo}
+          poolToken={poolToken}
           assetInfos={assetInfos}
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}

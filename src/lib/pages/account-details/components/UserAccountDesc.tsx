@@ -8,10 +8,10 @@ import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditSavedAccountModal } from "lib/components/modal";
 import { useAccountStore } from "lib/providers/store";
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 
 interface UserAccountDescProps {
-  address: Addr;
+  address: BechAddr;
   publicAccount?: boolean;
 }
 

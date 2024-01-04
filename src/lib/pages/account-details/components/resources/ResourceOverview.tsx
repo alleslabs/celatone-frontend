@@ -2,12 +2,12 @@ import { Box } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { MobileTitle, TableTitle } from "lib/components/table";
-import type { MoveAccountAddr, Option, ResourceGroup } from "lib/types";
+import type { BechAddr, Option, ResourceGroup } from "lib/types";
 
 import { ResourceOverviewBody } from "./ResourceOverviewBody";
 
 interface ResourceOverviewProps {
-  address: MoveAccountAddr;
+  address: BechAddr;
   totalCount: Option<number>;
   resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;

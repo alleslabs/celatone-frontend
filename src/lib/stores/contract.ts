@@ -5,16 +5,16 @@ import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type {
   LVPair,
   Dict,
-  ContractAddr,
   Option,
-  Addr,
-  HumanAddr,
+  BechAddr20,
+  BechAddr32,
+  BechAddr,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 
 export interface ContractLocalInfo {
-  contractAddress: ContractAddr;
-  instantiator: Option<Addr>;
+  contractAddress: BechAddr32;
+  instantiator: Option<BechAddr>;
   label: string;
   name?: string;
   description?: string;
@@ -24,7 +24,7 @@ export interface ContractLocalInfo {
 interface ContractList {
   name: string;
   slug: string;
-  contracts: ContractAddr[];
+  contracts: BechAddr32[];
   lastUpdated: Date;
   isInfoEditable: boolean;
   isContractRemovable: boolean;
@@ -46,8 +46,8 @@ export const cmpContractListInfo = (
 export interface Activity {
   type: "query" | "execute";
   action: string;
-  sender: Option<HumanAddr>;
-  contractAddress: ContractAddr;
+  sender: Option<BechAddr20>;
+  contractAddress: BechAddr32;
   msg: string; // base64
   timestamp: Date;
 }
@@ -227,8 +227,8 @@ export class ContractStore {
 
   updateContractLocalInfo(
     userKey: string,
-    contractAddress: ContractAddr,
-    instantiator: Option<Addr>,
+    contractAddress: BechAddr32,
+    instantiator: Option<BechAddr>,
     label: string,
     name?: string,
     description?: string,
@@ -307,7 +307,7 @@ export class ContractStore {
 
   private updateContractInAllLists(
     userKey: string,
-    contractAddress: ContractAddr,
+    contractAddress: BechAddr32,
     oldLists: LVPair[],
     newLists: LVPair[]
   ) {
@@ -329,7 +329,7 @@ export class ContractStore {
   private addContractToList(
     userKey: string,
     slug: string,
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) {
     const list = this.getContractList(userKey).find(
       (each) => each.slug === slug

@@ -14,10 +14,9 @@ import {
 import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
 import type {
-  Addr,
+  BechAddr,
   CodeInfo,
   ContractInfo,
-  HumanAddr,
   Nullish,
   Option,
   TokenWithValue,
@@ -55,7 +54,7 @@ interface AccountDetailsTableCounts {
 }
 
 export const useAccountDetailsTableCounts = (
-  address: HumanAddr
+  address: BechAddr
 ): AccountDetailsTableCounts => {
   const {
     data,
@@ -88,12 +87,12 @@ interface AccountContracts {
 }
 
 export const useAccountContracts = (
-  walletAddress: HumanAddr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): AccountContracts => {
   const { data: contracts, isLoading } = useInstantiatedContractsByAddress(
-    walletAddress,
+    address,
     limit,
     offset
   );
@@ -116,12 +115,12 @@ export const useAccountContracts = (
 };
 
 export const useAccountAdminContracts = (
-  walletAddress: HumanAddr,
+  address: BechAddr,
   offset: number,
   pageSize: number
 ): AccountContracts => {
   const { data: contractsAdmin, isLoading } = useAdminContractsByAddress(
-    walletAddress as HumanAddr,
+    address,
     pageSize,
     offset
   );
@@ -155,15 +154,11 @@ interface AccountCodes {
 }
 
 export const useAccountCodes = (
-  walletAddress: HumanAddr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): AccountCodes => {
-  const { data: codes, isLoading } = useCodesByAddress(
-    walletAddress as HumanAddr,
-    limit,
-    offset
-  );
+  const { data: codes, isLoading } = useCodesByAddress(address, limit, offset);
 
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
@@ -216,17 +211,22 @@ const calBonded = (
   );
 };
 
-export const useUserDelegationInfos = (address: Addr) => {
+export const useUserDelegationInfos = (address: BechAddr) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
-  const { data: lpMap, isLoading: isLpMapLoading } = useMovePoolInfos();
+  const { data: movePoolInfos, isLoading: isLoadingMovePoolInfos } =
+    useMovePoolInfos({
+      withPrices: true,
+    });
 
   const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
     useDelegationsByAddress(address);
 
   const isLoading =
-    isLoadingAccountDelegations || isLoadingAssetInfos || isLpMapLoading;
+    isLoadingAccountDelegations ||
+    isLoadingAssetInfos ||
+    isLoadingMovePoolInfos;
 
   const data: UserDelegationsData = {
     isLoading,
@@ -247,7 +247,7 @@ export const useUserDelegationInfos = (address: Addr) => {
     data.stakingParams = {
       ...accountDelegations.stakingParams,
       bondDenoms: accountDelegations.stakingParams.bondDenoms.map((denom) =>
-        coinToTokenWithValue(denom, "0", assetInfos, lpMap)
+        coinToTokenWithValue(denom, "0", assetInfos, movePoolInfos)
       ),
     };
 
@@ -258,7 +258,12 @@ export const useUserDelegationInfos = (address: Addr) => {
         validator: raw.validator,
         balances: raw.balance
           .map((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos,
+              movePoolInfos
+            )
           )
           .sort(compareTokenWithValues),
       })
@@ -282,7 +287,12 @@ export const useUserDelegationInfos = (address: Addr) => {
       completionTime: raw.completionTime,
       balances: raw.balance
         .map((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+          coinToTokenWithValue(
+            coin.denom,
+            coin.amount,
+            assetInfos,
+            movePoolInfos
+          )
         )
         .sort(compareTokenWithValues),
     }));
@@ -307,7 +317,12 @@ export const useUserDelegationInfos = (address: Addr) => {
         ...prev,
         [raw.validator.validatorAddress]: raw.reward
           .map<TokenWithValue>((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos,
+              movePoolInfos
+            )
           )
           .sort(compareTokenWithValues),
       }),
@@ -322,7 +337,7 @@ export const useUserDelegationInfos = (address: Addr) => {
           raw.denom,
           raw.amount,
           assetInfos,
-          lpMap
+          movePoolInfos
         ),
       }),
       {}
@@ -335,7 +350,12 @@ export const useUserDelegationInfos = (address: Addr) => {
         completionTime: raw.completionTime,
         balances: raw.balance
           .map((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos,
+              movePoolInfos
+            )
           )
           .sort(compareTokenWithValues),
       })
@@ -350,7 +370,7 @@ export const useUserDelegationInfos = (address: Addr) => {
           raw.denom,
           raw.amount,
           assetInfos,
-          lpMap
+          movePoolInfos
         ),
       }),
       {}
@@ -362,7 +382,7 @@ export const useUserDelegationInfos = (address: Addr) => {
   return data;
 };
 
-export const useAccountTotalValue = (address: Addr) => {
+export const useAccountTotalValue = (address: BechAddr) => {
   const defaultValue = big(0) as USD<Big>;
 
   const {

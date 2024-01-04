@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { useSimulateFeeQuery, useDummyWallet } from "lib/app-provider";
-import type { HumanAddr, ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
 
-export const useExecuteCmds = (contractAddress: ContractAddr) => {
+export const useExecuteCmds = (contractAddress: BechAddr32) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { dummyAddress } = useDummyWallet();
 
@@ -16,14 +16,16 @@ export const useExecuteCmds = (contractAddress: ContractAddr) => {
   const { isFetching } = useSimulateFeeQuery({
     isDummyUser: true,
     enabled: !!contractAddress && !!dummyAddress,
-    messages: [
-      composeMsg(MsgType.EXECUTE, {
-        sender: dummyAddress as HumanAddr,
-        contract: contractAddress as ContractAddr,
-        msg: Buffer.from('{"": {}}'),
-        funds: [],
-      }),
-    ],
+    messages: dummyAddress
+      ? [
+          composeMsg(MsgType.EXECUTE, {
+            sender: dummyAddress,
+            contract: contractAddress,
+            msg: Buffer.from('{"": {}}'),
+            funds: [],
+          }),
+        ]
+      : [],
     retry: false,
     onError: (e) => {
       const executeCmds: string[] = [];

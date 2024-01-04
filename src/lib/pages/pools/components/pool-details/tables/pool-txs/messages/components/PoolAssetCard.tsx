@@ -1,16 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
-import type { AssetInfo, Option, TokenWithValue } from "lib/types";
+import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 import {
   coinToTokenWithValue,
-  formatBalanceWithDenom,
+  formatTokenWithValue,
   getTokenLabel,
 } from "lib/utils";
 
@@ -18,9 +16,8 @@ interface PoolAssetCardProps {
   poolId: number;
   description: string;
   assetText: string;
-  poolAsset: Coin;
-  poolAssetInfo: Option<AssetInfo>;
-  assetInfos: AssetInfosOpt;
+  poolToken: TokenWithValue;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }
@@ -29,8 +26,7 @@ export const PoolAssetCard = ({
   poolId,
   description,
   assetText,
-  poolAsset,
-  poolAssetInfo,
+  poolToken,
   assetInfos,
   isOpened,
   ampCopierSection,
@@ -58,11 +54,7 @@ export const PoolAssetCard = ({
         <Text>
           {assetText}{" "}
           <span style={{ fontWeight: 700 }}>
-            {formatBalanceWithDenom({
-              coin: poolAsset,
-              symbol: poolAssetInfo?.symbol,
-              precision: poolAssetInfo?.precision,
-            })}
+            {formatTokenWithValue(poolToken)}
           </span>
         </Text>
       </Flex>

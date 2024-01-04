@@ -14,7 +14,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { useAccountModules } from "lib/services/move/moduleService";
-import type { MoveAccountAddr, Option } from "lib/types";
+import type { Option } from "lib/types";
 import { splitModule } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
@@ -45,7 +45,7 @@ export const ModuleSelectorInput = ({
   const validateModuleInput = useValidateModuleInput();
   const { user } = useExampleAddresses();
   const { refetch, isFetching } = useAccountModules({
-    address: addr as MoveAccountAddr,
+    address: addr,
     moduleName,
     functionName,
     options: {

@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 
-import type { Addr, ProposalType, Option } from "lib/types";
+import type { BechAddr, ProposalType, Option } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 export const useProposalListExpression = (
   statuses: ProposalStatus[],
   types: ProposalType[],
   search: string,
-  proposer: Option<Addr>
+  proposer: Option<BechAddr>
 ) => {
   const parseSearch = parseInt(search, 10);
   const parseStatuses = statuses.map((status) =>

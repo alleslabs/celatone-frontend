@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import type { UploadTxInternalResult } from "lib/app-provider";
+import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useInternalNavigate } from "lib/app-provider";
 import { ConnectingLine } from "lib/components/ConnectingLine";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -15,7 +15,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { feeFromStr } from "lib/utils";
 
 interface UploadCompleteProps {
-  txResult: UploadTxInternalResult;
+  txResult: StoreCodeTxInternalResult;
 }
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {

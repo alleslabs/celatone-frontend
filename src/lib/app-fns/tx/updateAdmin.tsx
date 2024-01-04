@@ -10,9 +10,9 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type {
-  Addr,
-  ContractAddr,
-  HumanAddr,
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
   TxResultRendering,
 } from "lib/types";
 import { TxStreamPhase } from "lib/types";
@@ -21,9 +21,9 @@ import { feeFromStr } from "lib/utils";
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface UpdateAdminTxParams {
-  address: HumanAddr;
-  contractAddress: ContractAddr;
-  newAdmin: Addr;
+  address: BechAddr20;
+  contractAddress: BechAddr32;
+  newAdmin: BechAddr;
   fee: StdFee;
   client: SigningCosmWasmClient;
   onTxSucceed?: () => void;

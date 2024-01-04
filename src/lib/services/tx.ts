@@ -11,10 +11,10 @@ import type {
   Option,
   Fee,
   TxFilters,
-  Addr,
   HexAddr,
+  BechAddr,
 } from "lib/types";
-import { zAddr, MsgFurtherAction, zUtcDate } from "lib/types";
+import { MsgFurtherAction, zUtcDate, zBechAddr } from "lib/types";
 import {
   getActionMsgType,
   parseDateOpt,
@@ -111,7 +111,7 @@ const zBaseTxsResponseItem = z.object({
   created: zUtcDate,
   hash: z.string(),
   messages: z.any().array(),
-  sender: zAddr,
+  sender: zBechAddr,
   success: z.boolean(),
   is_ibc: z.boolean(),
   is_send: z.boolean(),
@@ -234,7 +234,7 @@ export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 
 export const getTxsByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
@@ -325,9 +325,9 @@ const zTxsCountResponse = z
   })
   .transform((val) => val.count);
 
-export const getAPITxsCountByAddress = async (
+export const getTxsCountByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,

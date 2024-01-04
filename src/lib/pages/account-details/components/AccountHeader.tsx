@@ -12,13 +12,13 @@ import {
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/account";
-import type { HexAddr, HumanAddr, Option } from "lib/types";
+import type { HexAddr, BechAddr, Option } from "lib/types";
 
 import { TotalAccountValue } from "./TotalAccountValue";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
-  accountAddress: HumanAddr;
+  accountAddress: BechAddr;
   hexAddress: HexAddr;
 }
 

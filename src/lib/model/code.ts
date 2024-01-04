@@ -20,11 +20,10 @@ import {
 } from "lib/services/publicProjectService";
 import type {
   CodeData,
-  PublicDetail,
-  Option,
-  HumanAddr,
   CodeInfo,
+  Option,
   PublicCode,
+  PublicDetail,
 } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
@@ -77,9 +76,8 @@ const useStoredCodes = () => {
   const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved, isHydrated } = useCodeStore();
 
-  const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(
-    address as HumanAddr
-  );
+  const { data: rawStoredCodes, isLoading } =
+    useCodeListByWalletAddress(address);
 
   const storedCodes =
     rawStoredCodes?.map<CodeInfo>((code) => ({

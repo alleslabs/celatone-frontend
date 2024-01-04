@@ -13,7 +13,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import type { ContractDetail } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import {
   jsonPrettify,
   getFirstQueryParam,
@@ -28,7 +28,7 @@ const Query = observer(() => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
-  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
+  const [contractAddress, setContractAddress] = useState("" as BechAddr32);
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState<number>();
   const [initialMsg, setInitialMsg] = useState("");
@@ -42,7 +42,7 @@ const Query = observer(() => {
   };
 
   const onContractSelect = useCallback(
-    (contract: ContractAddr) => {
+    (contract: BechAddr32) => {
       navigate({
         pathname: "/query",
         query: { ...(contract && { contract }) },
@@ -56,7 +56,7 @@ const Query = observer(() => {
     if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
-      ) as ContractAddr;
+      ) as BechAddr32;
 
       const msgParam = getFirstQueryParam(router.query.msg);
       let decodeMsg = decode(msgParam);

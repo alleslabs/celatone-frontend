@@ -11,13 +11,13 @@ import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
-import type { Addr, Option, TxFilters } from "lib/types";
+import type { BechAddr, Option, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  address: Addr;
+  address: BechAddr;
   scrollComponentId: string;
   refetchCount: () => void;
   onViewMore?: () => void;

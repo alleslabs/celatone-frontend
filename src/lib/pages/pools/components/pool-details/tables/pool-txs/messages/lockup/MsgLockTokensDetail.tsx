@@ -6,10 +6,9 @@ import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
-import type { PoolDetail } from "lib/types";
-import { extractMsgType } from "lib/utils";
+import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
 
 interface MsgLockTokensDetailProps {
@@ -18,7 +17,7 @@ interface MsgLockTokensDetailProps {
   msgIndex: number;
   msg: MsgLockTokensDetails;
   pool: PoolDetail;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }
@@ -38,7 +37,11 @@ export const MsgLockTokensDetail = ({
     amount: "0",
     denom: poolDenom,
   };
-  const poolAssetInfo = assetInfos?.[poolDenom];
+  const poolToken = coinToTokenWithValue(
+    poolAsset.denom,
+    poolAsset.amount,
+    assetInfos
+  );
 
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;
@@ -65,9 +68,7 @@ export const MsgLockTokensDetail = ({
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
         <PoolInfoText title="Bonded LP">
           <MsgToken
-            coin={poolAsset}
-            symbol={poolAssetInfo?.symbol}
-            precision={poolAssetInfo?.precision}
+            token={poolToken}
             fontWeight={700}
             ampCopierSection={ampCopierSection}
           />
@@ -80,8 +81,7 @@ export const MsgLockTokensDetail = ({
           poolId={pool.id}
           description="Bonded to"
           assetText="Bonded"
-          poolAsset={poolAsset}
-          poolAssetInfo={poolAssetInfo}
+          poolToken={poolToken}
           assetInfos={assetInfos}
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}

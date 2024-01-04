@@ -3,7 +3,7 @@ import { Select } from "chakra-react-select";
 import type { ControllerRenderProps } from "react-hook-form";
 
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
-import type { HumanAddr, Nullable } from "lib/types";
+import type { BechAddr20, Nullable } from "lib/types";
 
 import {
   UINT_TYPES,
@@ -27,14 +27,14 @@ const getInputPlaceholder = (
 const getVectorPlaceholder = (
   type: string,
   isNull: boolean,
-  sampleAddresses: HumanAddr
+  sampleAddress: BechAddr20
 ) => {
   if (isNull) return " ";
   const [, elementType] = type.split(/<(.*)>/);
 
   if (UINT_TYPES.includes(elementType)) return "[1, 2, 3]";
   if (elementType === "address" || elementType.startsWith(OBJECT_TYPE))
-    return `[0x1, ${sampleAddresses}]`;
+    return `[0x1, ${sampleAddress}]`;
   if (elementType === STRING_TYPE)
     return "[some first string, some second string]";
   if (elementType === "bool") return "[true, false]";

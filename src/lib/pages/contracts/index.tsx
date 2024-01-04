@@ -8,7 +8,7 @@ import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { ContractsTable } from "lib/components/table";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 import { useRecentContractsData } from "./data";
 
@@ -16,7 +16,7 @@ const RecentContracts = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const onRowSelect = (contract: ContractAddr) =>
+  const onRowSelect = (contract: BechAddr32) =>
     navigate({
       pathname: "/contracts/[contract]",
       query: { contract },

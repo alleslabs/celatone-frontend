@@ -4,7 +4,7 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type {
-  ContractAddr,
+  BechAddr32,
   ContractHistoryRemark,
   ContractInfo,
   Option,
@@ -16,7 +16,7 @@ import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 
 interface ContractsTableMobileCardProps {
   contractInfo: ContractInfo;
-  onRowSelect: (contract: ContractAddr) => void;
+  onRowSelect: (contract: BechAddr32) => void;
 }
 
 const InstantiatorRemark = ({

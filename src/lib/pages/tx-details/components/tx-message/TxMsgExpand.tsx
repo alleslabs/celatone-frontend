@@ -9,9 +9,16 @@ import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import type { Addr } from "lib/types";
+import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
+import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import { extractMsgType, formatBalanceWithDenom, voteOption } from "lib/utils";
+import {
+  coinToTokenWithValue,
+  extractMsgType,
+  formatTokenWithValue,
+  voteOption,
+} from "lib/utils";
 
 import type { TxMsgData } from ".";
 
@@ -25,11 +32,12 @@ export const TxMsgExpand = ({
   log,
   isExpand,
   isSingleMsg,
-  assetInfos,
   onClick,
 }: TxMsgExpandProps) => {
   const isMobile = useMobile();
   const getAddressType = useGetAddressType();
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const { "@type": type, ...body } = msgBody;
   const isIBC =
@@ -195,17 +203,16 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.to_address as Addr;
+        const toAddress = body.to_address as BechAddr;
         const singleCoin = body.amount[0] as Coin;
-        const assetInfo = assetInfos?.[singleCoin.denom];
+        const singleToken = coinToTokenWithValue(
+          singleCoin.denom,
+          singleCoin.amount,
+          assetInfos,
+          movePoolInfos
+        );
         const assetText =
-          body.amount.length > 1
-            ? "assets"
-            : formatBalanceWithDenom({
-                coin: singleCoin,
-                symbol: assetInfo?.symbol,
-                precision: assetInfo?.precision,
-              });
+          body.amount.length > 1 ? "assets" : formatTokenWithValue(singleToken);
         msgIcon = "send";
         content = (
           <Flex display="inline">

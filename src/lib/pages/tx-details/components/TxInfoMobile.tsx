@@ -3,13 +3,17 @@ import { Text, chakra, Flex } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { AssetInfosOpt } from "lib/services/assetService";
+import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
 import type { TxData } from "lib/services/txService";
-import { formatBalanceWithDenom, formatInteger } from "lib/utils";
+import {
+  coinToTokenWithValue,
+  formatInteger,
+  formatTokenWithValue,
+} from "lib/utils";
 
 interface TxInfoMobileProps extends FlexProps {
   txData: TxData;
-  assetInfos: AssetInfosOpt;
 }
 
 const Container = chakra(Flex, {
@@ -23,13 +27,23 @@ const Container = chakra(Flex, {
   },
 });
 
-export const TxInfoMobile = ({
-  txData,
-  assetInfos,
-  ...flexProps
-}: TxInfoMobileProps) => {
+export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
+  const { data: assetInfos } = useAssetInfos({
+    withPrices: true,
+  });
+  const { data: movePoolInfos } = useMovePoolInfos({
+    withPrices: true,
+  });
+
   const feeCoin = txData.tx.auth_info.fee?.amount[0];
-  const assetInfo = feeCoin ? assetInfos?.[feeCoin.denom] : undefined;
+  const feeToken = feeCoin
+    ? coinToTokenWithValue(
+        feeCoin.denom,
+        feeCoin.amount,
+        assetInfos,
+        movePoolInfos
+      )
+    : undefined;
   return (
     <Container {...flexProps}>
       <Flex>
@@ -47,12 +61,8 @@ export const TxInfoMobile = ({
       </Flex>
       <Flex>
         <LabelText flex="1" label="Transaction Fee">
-          {feeCoin ? (
-            formatBalanceWithDenom({
-              coin: feeCoin,
-              symbol: assetInfo?.symbol,
-              precision: assetInfo?.precision,
-            })
+          {feeToken ? (
+            formatTokenWithValue(feeToken)
           ) : (
             <Text variant="body2" color="text.dark">
               No Fee

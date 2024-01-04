@@ -21,7 +21,6 @@ import {
 } from "lib/query";
 import type {
   ModuleHistory,
-  MoveAccountAddr,
   ExposedFunction,
   InternalModule,
   ResponseABI,
@@ -31,6 +30,7 @@ import type {
   UpgradePolicy,
   HexAddr,
   Nullable,
+  Addr,
 } from "lib/types";
 import {
   parseDate,
@@ -87,7 +87,7 @@ export const useAccountModules = ({
   functionName,
   options = {},
 }: {
-  address: MoveAccountAddr;
+  address: Addr;
   moduleName: Option<string>;
   functionName?: Option<string>;
   options?: Omit<UseQueryOptions<IndexedModule | IndexedModule[]>, "queryKey">;
@@ -117,16 +117,18 @@ export const useAccountModules = ({
   );
 };
 
-export const useModulesByAddress = (address: MoveAccountAddr) => {
+export const useModulesByAddress = (address: Option<Addr>) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, endpoint, address],
-    () =>
-      getModulesByAddress(endpoint, address).then((modules) =>
+    async () => {
+      if (!address) throw new Error("address is undefined");
+      return getModulesByAddress(endpoint, address).then((modules) =>
         modules.items.map((module) => indexModuleResponse(module))
-      ),
+      );
+    },
     {
       enabled,
       refetchOnWindowFocus: false,
@@ -139,7 +141,7 @@ export const useVerifyModule = ({
   address,
   moduleName,
 }: {
-  address: Option<MoveAccountAddr>;
+  address: Option<Addr>;
   moduleName: Option<string>;
 }): UseQueryResult<Nullable<ModuleVerificationInternal>> => {
   const move = useMoveConfig({ shouldRedirect: false });
@@ -168,7 +170,7 @@ export const useFunctionView = ({
   onSuccess,
   onError,
 }: {
-  moduleAddress: MoveAccountAddr;
+  moduleAddress: HexAddr;
   moduleName: string;
   fn: ExposedFunction;
   abiData: AbiFormData;

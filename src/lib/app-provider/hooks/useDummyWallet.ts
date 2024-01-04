@@ -2,14 +2,14 @@ import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { useEffect, useState } from "react";
 
 import { DUMMY_MNEMONIC } from "env";
-import type { HumanAddr } from "lib/types";
+import type { BechAddr20 } from "lib/types";
 
 import { useCurrentChain } from "./useCurrentChain";
 
 export const useDummyWallet = () => {
   const { chain } = useCurrentChain();
   const [dummyWallet, setDummyWallet] = useState<DirectSecp256k1HdWallet>();
-  const [dummyAddress, setDummyAddress] = useState<HumanAddr>();
+  const [dummyAddress, setDummyAddress] = useState<BechAddr20>();
   useEffect(() => {
     (async () => {
       if (DUMMY_MNEMONIC) {
@@ -23,7 +23,7 @@ export const useDummyWallet = () => {
         setDummyWallet(wallet);
 
         const { address } = (await wallet.getAccounts())[0];
-        setDummyAddress(address as HumanAddr);
+        setDummyAddress(address as BechAddr20);
       }
     })();
   }, [chain.bech32_prefix]);

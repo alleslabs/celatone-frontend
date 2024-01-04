@@ -1,7 +1,7 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import type { ContractAddr, ContractInfo, Option } from "lib/types";
+import type { BechAddr32, ContractInfo, Option } from "lib/types";
 
 import { ContractsTableHeader } from "./ContractsTableHeader";
 import { ContractsTableMobileCard } from "./ContractsTableMobileCard";
@@ -12,7 +12,7 @@ interface ContractsTableProps {
   contracts: Option<ContractInfo[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
-  onRowSelect: (contract: ContractAddr) => void;
+  onRowSelect: (contract: BechAddr32) => void;
   isReadOnly?: boolean;
   withCTA?: CTAInfo;
   withoutTag?: boolean;

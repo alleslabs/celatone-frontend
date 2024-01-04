@@ -21,7 +21,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
-import type { HumanAddr, Option } from "lib/types";
+import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
 
 import type { PublishCompleteState } from ".";
@@ -116,7 +116,7 @@ export const PublishModule = ({
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enablePublish,
     messages: composePublishMsg(
-      address as HumanAddr,
+      address,
       modules.map((file) => file.base64EncodedFile),
       upgradePolicy
     ),
@@ -142,7 +142,7 @@ export const PublishModule = ({
       onTxFailed: () => setProcessing(false),
       estimatedFee,
       messages: composePublishMsg(
-        address as HumanAddr,
+        address,
         modules.map((file) => file.base64EncodedFile),
         upgradePolicy
       ),
@@ -185,7 +185,7 @@ export const PublishModule = ({
           modules,
           index,
           policy: upgradePolicy,
-          address: address as Option<HumanAddr>,
+          address,
         })
       );
     });
