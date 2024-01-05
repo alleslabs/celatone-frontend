@@ -199,7 +199,8 @@ export const useNftTokenListByAddressPagination = (
         chainConfig.indexer,
         userAddress,
         pageSize,
-        offset
+        offset,
+        search
       ),
     retry: 1,
     refetchOnWindowFocus: false,
