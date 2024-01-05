@@ -9,6 +9,7 @@ import {
 import type { PropsWithChildren } from "react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useCollectionCreator } from "lib/services/collectionService";
@@ -119,7 +120,7 @@ const CollectionInfoOverview = ({
             flexDir={mobileInfoDirection}
           >
             <Text minW="100px">Collection</Text>
-            <ExplorerLink value={collectionAddress} type="user_address" />
+            <CopyLink value={collectionAddress} type="user_address" />
           </Flex>
 
           <Flex
