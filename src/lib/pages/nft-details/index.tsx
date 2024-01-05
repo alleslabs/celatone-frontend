@@ -64,11 +64,17 @@ const NftDetailsBody = ({
 
   if (collectionLoading || nftLoading) return <Loading />;
   if (!collection || !nft)
-    return <EmptyState message="NFT not found" imageVariant="not-found" />;
+    return (
+      <EmptyState
+        heading="NFT does not exist"
+        message="Please double-check your input and make sure you have selected the correct network."
+        imageVariant="not-found"
+        withBorder
+      />
+    );
 
   const { name: collectionName, description: collectionDesc } = collection;
   const { tokenId, description, uri, ownerAddress } = nft;
-  const nftName = metadata?.name ?? tokenId;
 
   const imageSize = "360px";
 
@@ -81,7 +87,7 @@ const NftDetailsBody = ({
             text: collectionName,
             href: `/nft-collections/${collectionAddress}`,
           },
-          { text: nftName },
+          { text: tokenId },
         ]}
       />
       {isMobile ? (
@@ -93,7 +99,7 @@ const NftDetailsBody = ({
           txCount={txCount}
           mutateEventsCount={mutateEventsCount}
           nftAddress={nftAddress}
-          nftName={nftName}
+          tokenId={tokenId}
           ownerAddress={ownerAddress}
           uri={uri}
           metadata={metadata}
@@ -126,7 +132,13 @@ const NftDetailsBody = ({
                 <Text mb="8px" fontWeight={700}>
                   Description
                 </Text>
-                <Text>{description}</Text>
+                {description ? (
+                  <Text>{description}</Text>
+                ) : (
+                  <Text color="text.dark">
+                    No description was provided by the creator.
+                  </Text>
+                )}
               </Box>
 
               <CollectionInfo
@@ -149,7 +161,7 @@ const NftDetailsBody = ({
                       </Text>
                     </AppLink>
                     <Heading variant="h5" as="h5">
-                      {nftName}
+                      {tokenId}
                     </Heading>
                   </Box>
                 </Flex>
@@ -195,7 +207,7 @@ const NftDetailsBody = ({
                 <Attributes
                   attributes={metadata.attributes}
                   nftAddress={nftAddress}
-                  nftName={nftName}
+                  tokenId={tokenId}
                 />
               )}
             </Stack>

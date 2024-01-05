@@ -19,8 +19,9 @@ const NftList = ({
   if (!nfts || !nfts.length)
     return (
       <EmptyState
-        message="There are no nfts matches your keyword."
+        message="There are no NFTs matches your keyword."
         imageVariant="not-found"
+        withBorder
       />
     );
 

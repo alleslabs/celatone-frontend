@@ -8,8 +8,7 @@ import {
 } from "@chakra-ui/react";
 import type { PropsWithChildren } from "react";
 
-import { useMobile } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useCollectionCreator } from "lib/services/collectionService";
@@ -64,6 +63,8 @@ const CollectionInfoOverview = ({
     useCollectionCreator(collectionAddress);
 
   const isMobile = useMobile();
+
+  const navigate = useInternalNavigate();
 
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;
@@ -136,7 +137,9 @@ const CollectionInfoOverview = ({
             flexDir={mobileInfoDirection}
           >
             <Text minW="100px">Description</Text>
-            <Text color="gray.400">{desc}</Text>
+            <Text color="gray.400">
+              {desc || "No description was provided by the creator."}
+            </Text>
           </Flex>
 
           <Flex
@@ -166,18 +169,28 @@ const CollectionInfoOverview = ({
         gap={isMobile ? "16px" : "32px"}
         flexDir={mobileInfoDirection}
       >
-        <AppLink
-          href={`/nft-collections/${collectionAddress}/activities`}
-          style={{ flex: 1 }}
-        >
-          <InfoCard title="Activities" content={activities} />
-        </AppLink>
-        <AppLink
-          href={`/nft-collections/${collectionAddress}/mutate_events`}
-          style={{ flex: 1 }}
-        >
-          <InfoCard title="Mutate Events" content={mutateEventes} />
-        </AppLink>
+        <InfoCard
+          title="Activities"
+          content={activities}
+          onClick={() =>
+            navigate({
+              pathname: `/nft-collections/[collectionAddress]/activities`,
+              query: { collectionAddress },
+            })
+          }
+          isDisabled={!activities}
+        />
+        <InfoCard
+          title="Mutate Events"
+          content={mutateEventes}
+          onClick={() =>
+            navigate({
+              pathname: `/nft-collections/[collectionAddress]/mutate_events`,
+              query: { collectionAddress },
+            })
+          }
+          isDisabled={!mutateEventes}
+        />
       </Flex>
     </Box>
   );

@@ -40,11 +40,10 @@ const zNftTokenResponse = z
     description: z.string().optional(),
     vmAddressByOwner: z.object({ vm_address: zHexAddr }),
     vm_address: z.object({ vm_address: zHexAddr }).optional(),
-    collectionByCollection: z
-      .object({
-        vm_address: z.object({ vm_address: zHexAddr }),
-      })
-      .optional(),
+    collectionByCollection: z.object({
+      vm_address: z.object({ vm_address: zHexAddr }),
+      name: z.string(),
+    }),
   })
   .transform((val) => ({
     description: val.description,
@@ -52,7 +51,8 @@ const zNftTokenResponse = z
     tokenId: val.token_id,
     ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address,
-    collectionAddress: val.collectionByCollection?.vm_address.vm_address,
+    collectionAddress: val.collectionByCollection.vm_address.vm_address,
+    collectionName: val.collectionByCollection.name,
   }));
 
 export const queryNftTokenListPagination = async (

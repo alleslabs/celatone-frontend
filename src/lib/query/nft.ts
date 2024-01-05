@@ -16,6 +16,12 @@ export const getNftToken = gql`
       vmAddressByOwner {
         vm_address
       }
+      collectionByCollection {
+        vm_address {
+          vm_address
+        }
+        name
+      }
     }
   }
 `;
@@ -56,7 +62,7 @@ export const getNftTokenListPagination = gql`
         collectionByCollection: {
           vm_address: { vm_address: { _eq: $collectionAddress } }
         }
-        _and: { token_id: { _like: $search } }
+        _and: { token_id: { _ilike: $search } }
       }
     ) {
       token_id
@@ -72,6 +78,7 @@ export const getNftTokenListPagination = gql`
         vm_address {
           vm_address
         }
+        name
       }
     }
   }
@@ -179,6 +186,7 @@ export const getNftTokenListByAddressPagination = gql`
         vm_address {
           vm_address
         }
+        name
       }
       vmAddressByOwner {
         vm_address
@@ -230,6 +238,12 @@ export const getUserNftListByCollectionPagination = gql`
       }
       vm_address {
         vm_address
+      }
+      collectionByCollection {
+        vm_address {
+          vm_address
+        }
+        name
       }
     }
   }

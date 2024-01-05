@@ -71,6 +71,7 @@ const Activities = ({
           <EmptyState
             message="There are no activities matches your keyword."
             imageVariant="not-found"
+            withBorder
           />
         }
       />

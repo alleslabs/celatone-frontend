@@ -59,7 +59,7 @@ export const NftsByCollection = ({
       searchKeyword
     );
 
-  const { data: addNfts, isFetching: allNftsLoading } =
+  const { data: allNfts, isFetching: allNftsLoading } =
     useNftTokenListByAddressPagination(
       userAddress,
       pageSize,
@@ -83,7 +83,7 @@ export const NftsByCollection = ({
         size={{ base: "md", md: "lg" }}
       />
       <NftList
-        nfts={collectionAddress ? nftsByCollection : addNfts}
+        nfts={collectionAddress ? nftsByCollection : allNfts}
         isLoading={nftsByCollectionLoading || allNftsLoading}
         emptyState={
           <EmptyState

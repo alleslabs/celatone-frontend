@@ -25,7 +25,7 @@ export const useCollectionSupplies = (
     .flat();
 
   const collectionSupplies = resources.filter(
-    (resource) => !resource.structTag.includes("0x1::collection::Collection")
+    (resource) => !resource.structTag?.includes("0x1::collection::Collection")
   );
 
   const royalty = groupedByName.find((group) => group.group === "royalty");
@@ -44,7 +44,7 @@ export const useCollectionSupplies = (
     .map((data) => data?.data);
 
   const [type] = collectionSupplies;
-  const isUnlimited = type.structTag === "0x1::collection::UnlimitedSupply";
+  const isUnlimited = type?.structTag === "0x1::collection::UnlimitedSupply";
 
   const [supplyData] = parsed;
   const supplies = snakeToCamel(supplyData);

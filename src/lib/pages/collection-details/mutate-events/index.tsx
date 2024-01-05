@@ -56,6 +56,7 @@ const MutateEvents = ({
           <EmptyState
             message="Mutate events are not found."
             imageVariant="empty"
+            withBorder
           />
         }
       />

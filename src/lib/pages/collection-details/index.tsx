@@ -89,7 +89,15 @@ const CollectionDetailsBody = ({
   );
 
   if (isLoading || !collectionInfo) return <Loading withBorder />;
-  if (!collection) return <EmptyState message="Not found collection" />;
+  if (!collection)
+    return (
+      <EmptyState
+        heading="Collection does not exist"
+        message="Please double-check your input and make sure you have selected the correct network."
+        imageVariant="not-found"
+        withBorder
+      />
+    );
 
   const { name, description, uri } = collection;
 
@@ -99,7 +107,10 @@ const CollectionDetailsBody = ({
   return (
     <Box>
       <Breadcrumb
-        items={[{ text: "NFTs", href: "/nft-collections" }, { text: name }]}
+        items={[
+          { text: "NFT Collections", href: "/nft-collections" },
+          { text: name },
+        ]}
       />
       <Stack my="24px" spacing="4px">
         <Heading as="h5" variant="h5">
@@ -222,7 +233,11 @@ const CollectionDetails = observer(() => {
 
   if (!validated.success)
     return (
-      <EmptyState message="Collection not found." imageVariant="not-found" />
+      <EmptyState
+        message="Collection not found."
+        imageVariant="not-found"
+        withBorder
+      />
     );
   const { collectionAddress, tab } = validated.data;
 

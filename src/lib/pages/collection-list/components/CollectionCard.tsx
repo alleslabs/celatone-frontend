@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
 import type { Collection } from "lib/services/collection";
 import { useMetadata } from "lib/services/nftService";
 
@@ -13,16 +14,19 @@ const CollectionCard = ({ collectionInfo }: { collectionInfo: Collection }) => {
     <Box p={isMobile ? "12px" : "16px 24px"} bg="gray.900" borderRadius="8px">
       <Flex gap="24px" alignItems="center">
         {metadata?.image ? (
-          <Box w="150px" h="150px">
-            <Image
-              minW="150px"
-              minH="150px"
-              borderRadius="8px"
-              src={metadata?.image}
-            />
-          </Box>
+          <Image
+            minW="150px"
+            h="150px"
+            borderRadius="8px"
+            src={metadata?.image}
+          />
         ) : (
-          <Box minW="150px" minH="150px" borderRadius="8px" bg="gray.800" />
+          <Image
+            minW="150px"
+            h="150px"
+            borderRadius="8px"
+            src={NFT_IMAGE_PLACEHOLDER}
+          />
         )}
 
         <Stack spacing="16px">

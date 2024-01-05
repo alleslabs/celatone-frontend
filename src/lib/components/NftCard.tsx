@@ -8,7 +8,8 @@ import type { HexAddr } from "lib/types";
 interface Props {
   uri: string;
   tokenId: string;
-  collectionAddress?: HexAddr;
+  collectionName: string;
+  collectionAddress: HexAddr;
   nftAddress?: HexAddr;
 }
 
@@ -16,6 +17,7 @@ export const NftCard = ({
   uri,
   tokenId,
   nftAddress,
+  collectionName,
   collectionAddress,
 }: Props) => {
   const { data: metadata } = useMetadata(uri);
@@ -47,6 +49,9 @@ export const NftCard = ({
         />
       )}
       <Box>
+        <Text fontSize="14px" color="primary.main" fontWeight={600}>
+          {collectionName}
+        </Text>
         <Text fontSize="18px" fontWeight={600}>
           {tokenId}
         </Text>

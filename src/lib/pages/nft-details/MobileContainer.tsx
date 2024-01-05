@@ -32,7 +32,7 @@ interface MobileContainerProps {
   collectionName: string;
   collectionDesc: string;
   nftAddress: HexAddr;
-  nftName: string;
+  tokenId: string;
   description: string;
   ownerAddress: string;
   uri: string;
@@ -46,7 +46,7 @@ const MobileContainer = ({
   collectionName,
   collectionDesc,
   nftAddress,
-  nftName,
+  tokenId,
   uri,
   ownerAddress,
   description,
@@ -65,7 +65,7 @@ const MobileContainer = ({
               </Text>
             </AppLink>
             <Heading variant="h5" as="h5">
-              {nftName}
+              {tokenId}
             </Heading>
           </Box>
         </Flex>
@@ -76,6 +76,16 @@ const MobileContainer = ({
       <Stack spacing="32px" w="100%" mt="24px">
         <Stack spacing="16px">
           <Stack fontSize="14px">
+            {metadata?.name && (
+              <Box>
+                <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
+                  NFT Name:
+                </Text>
+                <Text variant="body3" color="text.dark">
+                  {metadata.name}
+                </Text>
+              </Box>
+            )}
             <Box>
               <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
                 NFT Address:
@@ -122,7 +132,7 @@ const MobileContainer = ({
           <Attributes
             attributes={metadata.attributes}
             nftAddress={nftAddress}
-            nftName={nftName}
+            tokenId={tokenId}
           />
         )}
         <MintInfo nftAddress={nftAddress} holderAddress={ownerAddress} />

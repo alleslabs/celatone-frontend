@@ -24,7 +24,7 @@ import type { HexAddr, Trait } from "lib/types";
 interface AttributesModalProps {
   title: string;
   address: string;
-  nftName: string;
+  tokenId: string;
   attributes: Trait[];
   isOpen: boolean;
   onClose: () => void;
@@ -33,7 +33,7 @@ interface AttributesModalProps {
 const AttributesModal = ({
   title,
   address,
-  nftName,
+  tokenId,
   attributes,
   isOpen,
   onClose,
@@ -60,9 +60,9 @@ const AttributesModal = ({
           <Stack spacing="8px">
             <Flex gap="12px" fontSize="14px">
               <Text fontWeight={700} w="100px">
-                NFT Name:
+                Token ID:
               </Text>
-              <Text>{nftName}</Text>
+              <Text>{tokenId}</Text>
             </Flex>
             <Flex gap="12px" fontSize="14px">
               <Text fontWeight={700} w="100px">
@@ -99,11 +99,11 @@ const AttributesModal = ({
 const Attributes = ({
   attributes,
   nftAddress,
-  nftName,
+  tokenId,
 }: {
   attributes: Trait[];
   nftAddress: HexAddr;
-  nftName: string;
+  tokenId: string;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useMobile();
@@ -161,7 +161,7 @@ const Attributes = ({
         title="Attributes"
         attributes={attributes}
         address={nftAddress}
-        nftName={nftName}
+        tokenId={tokenId}
         isOpen={isOpen}
         onClose={onClose}
       />

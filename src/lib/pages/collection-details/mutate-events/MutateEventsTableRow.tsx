@@ -68,8 +68,12 @@ export const MutateEventsTableRow = ({
         <TableRow>{newValue}</TableRow>
         <TableRow>
           <Box>
-            <Text>{formatUTC(timestamp)}</Text>
-            <Text>{dateFromNow(timestamp)}</Text>
+            <Text fontSize="14px" color="gray.400">
+              {formatUTC(timestamp)}
+            </Text>
+            <Text fontSize="12px" color="gray.500">
+              ({dateFromNow(timestamp)})
+            </Text>
           </Box>
         </TableRow>
         <TableRow>
