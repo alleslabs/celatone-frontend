@@ -1,2 +1,2 @@
-export * from "./proposalExpression";
+export * from "./poolExpression";
 export * from "./txExpression";

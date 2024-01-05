@@ -31,7 +31,10 @@ export const StatusChip = ({
   status: Proposal["status"];
   hasCloseBtn?: boolean;
 }) => {
-  const formatStatus = status.replace(/([A-Z])/g, " $1").trim();
+  const formatStatus =
+    status === ProposalStatus.DEPOSIT_FAILED
+      ? "Deposit Failed"
+      : status.replace(/([A-Z])/g, " $1").trim();
   return (
     <Tag bgColor={getBgColor(status)}>
       {formatStatus}

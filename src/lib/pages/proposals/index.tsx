@@ -1,6 +1,5 @@
 import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
@@ -14,13 +13,10 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import {
-  useProposalList,
-  useProposalListCount,
-} from "lib/services/proposalService";
+import { useProposals } from "lib/services/proposalService";
 import type {
   BechAddr20,
   ProposalStatus,
@@ -35,20 +31,13 @@ const Proposals = () => {
   const { currentChainId } = useCelatoneApp();
   useGovConfig({ shouldRedirect: true });
   const router = useRouter();
+  const { address } = useCurrentChain();
+
+  const [proposer, setProposer] = useState<Option<BechAddr20>>();
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);
-
-  const { address } = useCurrentChain();
   const [search, setSearch] = useState("");
-  const [proposer, setProposer] = useState<Option<BechAddr20>>();
-  const [isSelected, setIsSelected] = useState(false);
 
-  const { data: countProposals = 0 } = useProposalListCount(
-    statuses,
-    types,
-    search,
-    proposer
-  );
   const {
     pagesQuantity,
     currentPage,
@@ -57,51 +46,28 @@ const Proposals = () => {
     setPageSize,
     offset,
   } = usePaginator({
-    total: countProposals,
     initialState: {
       pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
+  const {
+    data: proposals,
+    isLoading,
+    error,
+  } = useProposals(pageSize, offset, proposer, statuses, types, search);
 
-  const { data: proposals, isLoading } = useProposalList(
-    offset,
-    pageSize,
-    statuses,
-    types,
-    search,
-    proposer
-  );
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
   }, [router.isReady]);
 
   useEffect(() => {
-    setPageSize(10);
-    setCurrentPage(1);
-  }, [
-    currentChainId,
-    setCurrentPage,
-    setPageSize,
-    statuses,
-    types,
-    search,
-    proposer,
-  ]);
-
-  useEffect(() => {
-    setIsSelected(false);
     setProposer(undefined);
+    setStatuses([]);
+    setTypes([]);
+    setSearch("");
   }, [currentChainId, address]);
-
-  const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    setPageSize(size);
-    setCurrentPage(1);
-  };
 
   return (
     <PageContainer>
@@ -134,7 +100,7 @@ const Proposals = () => {
                 minW="200px"
                 display="flex"
                 size="md"
-                isChecked={isSelected}
+                isChecked={!!proposer}
                 disabled={!address}
                 onChange={(e) => {
                   if (e.target.checked && address) {
@@ -148,7 +114,6 @@ const Proposals = () => {
                     });
                     setProposer(undefined);
                   }
-                  setIsSelected(e.target.checked);
                 }}
               >
                 <Text cursor={address ? "pointer" : "default"}>
@@ -174,36 +139,46 @@ const Proposals = () => {
         </Flex>
       </Flex>
       <ProposalsTable
-        proposals={proposals}
+        proposals={proposals?.items}
         isLoading={isLoading}
         emptyState={
-          statuses.length > 0 ||
-          types.length > 0 ||
-          search.trim().length > 0 ||
-          proposer !== undefined ? (
-            <EmptyState
-              imageVariant="not-found"
-              message="No matches found. Please double-check your input and select correct network."
-              withBorder
-            />
+          error ? (
+            <ErrorFetching dataName="proposals" />
           ) : (
-            <EmptyState
-              imageVariant="empty"
-              message="There are no proposals on this network."
-              withBorder
-            />
+            <>
+              {!!proposer ||
+              statuses.length > 0 ||
+              types.length > 0 ||
+              search.trim().length > 0 ? (
+                <EmptyState
+                  imageVariant="not-found"
+                  message="No matches found. Please double-check your input and select correct network."
+                  withBorder
+                />
+              ) : (
+                <EmptyState
+                  imageVariant="empty"
+                  message="There are no proposals on this network."
+                  withBorder
+                />
+              )}
+            </>
           )
         }
       />
-      {countProposals > 10 && (
+      {proposals && proposals.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={countProposals}
+          totalData={proposals.total}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={(nextPage) => setCurrentPage(nextPage)}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
         />
       )}
     </PageContainer>
