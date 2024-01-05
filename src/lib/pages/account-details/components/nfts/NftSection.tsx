@@ -46,7 +46,11 @@ export const NftSection = ({
         <Badge>{totalCount}</Badge>
       </Flex>
       <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
-        <Stack w="300px" spacing="8px">
+        <Stack
+          w={{ base: "100%", md: "35%", lg: "25%" }}
+          minW={64}
+          spacing="8px"
+        >
           <FilterItem
             collectionName="All Collections"
             onClick={() => onClick(totalCount, undefined)}

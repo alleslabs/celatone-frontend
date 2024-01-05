@@ -1,6 +1,6 @@
-import { Box, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, Image, Flex, Text } from "@chakra-ui/react";
 
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
 import { useMetadata } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
@@ -8,6 +8,7 @@ import type { HexAddr } from "lib/types";
 interface Props {
   uri: string;
   tokenId: string;
+  showCollection?: boolean;
   collectionName: string;
   collectionAddress: HexAddr;
   nftAddress?: HexAddr;
@@ -17,19 +18,18 @@ export const NftCard = ({
   uri,
   tokenId,
   nftAddress,
+  showCollection = false,
   collectionName,
   collectionAddress,
 }: Props) => {
   const { data: metadata } = useMetadata(uri);
   const navigate = useInternalNavigate();
 
-  const isMobile = useMobile();
-  const size = isMobile ? "150px" : "206px";
   return (
-    <Stack
-      gap="8px"
-      maxWidth={size}
-      w="100%"
+    <Flex
+      direction="column"
+      gap={2}
+      minW="full"
       cursor="pointer"
       onClick={() =>
         navigate({
@@ -38,20 +38,24 @@ export const NftCard = ({
         })
       }
     >
-      {metadata?.image ? (
-        <Image minW={size} h={size} borderRadius="8px" src={metadata.image} />
-      ) : (
+      <Box position="relative" width="100%" paddingBottom="100%">
         <Image
-          minW={size}
-          h={size}
+          position="absolute"
+          top={0}
+          left={0}
+          width="100%"
+          height="100%"
+          objectFit="cover"
           borderRadius="8px"
-          src={NFT_IMAGE_PLACEHOLDER}
+          src={metadata?.image ? metadata.image : NFT_IMAGE_PLACEHOLDER}
         />
-      )}
+      </Box>
       <Box>
-        <Text fontSize="14px" color="primary.main" fontWeight={600}>
-          {collectionName}
-        </Text>
+        {showCollection && (
+          <Text fontSize="14px" color="primary.main" fontWeight={600}>
+            {collectionName}
+          </Text>
+        )}
         <Text fontSize="18px" fontWeight={600}>
           {tokenId}
         </Text>
@@ -61,6 +65,6 @@ export const NftCard = ({
           </Text>
         )}
       </Box>
-    </Stack>
+    </Flex>
   );
 };

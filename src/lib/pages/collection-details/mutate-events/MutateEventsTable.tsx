@@ -1,10 +1,10 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import { MutateEventsTableMobileCard } from "lib/components/nft/MutateEventsTableCard";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { CollectionMutateEvent } from "lib/services/collection";
 
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
-import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 
 interface MutateEventsTableProps {
@@ -23,7 +23,7 @@ export const MutateEventsTable = ({
   if (isLoading) return <Loading withBorder />;
   if (!mutateEvents || !mutateEvents.length) return emptyState;
 
-  const templateColumns = `130px minmax(250px, 1fr) 50px minmax(250px, 1fr) 280px 180px`;
+  const templateColumns = `130px minmax(250px, 1fr) 64px minmax(250px, 1fr) 240px 180px`;
 
   return isMobile ? (
     <MobileTableContainer>

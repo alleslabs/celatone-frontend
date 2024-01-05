@@ -51,7 +51,7 @@ const Activities = ({
   return (
     <Stack spacing="32px" mt="32px">
       <Text fontSize="18px" fontWeight={600} fontFamily="Pilat Wide">
-        Activities
+        Activities in this collection
       </Text>
       <InputWithIcon
         placeholder="Search by Tx Hash / Token Id / NFT Address"

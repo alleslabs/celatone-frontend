@@ -1,4 +1,4 @@
-import { Grid, Box, Text, Flex, Badge } from "@chakra-ui/react";
+import { Grid, Box, Text, Flex } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
@@ -21,6 +21,17 @@ export const TxsTableRow = ({
   isNftMint,
   isNftTransfer,
 }: TxsTableRowProps) => {
+  let eventType;
+  if (isNftBurn) {
+    eventType = "Burned";
+  }
+  if (isNftMint) {
+    eventType = "Minted";
+  }
+  if (isNftTransfer) {
+    eventType = "Transferred";
+  }
+
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -37,23 +48,17 @@ export const TxsTableRow = ({
           />
         </TableRow>
         <TableRow>
-          <Flex gap="8px">
-            {isNftBurn && <Badge textTransform="capitalize">Burn</Badge>}
-            {isNftMint && <Badge textTransform="capitalize">Mint</Badge>}
-            {isNftTransfer && (
-              <Badge textTransform="capitalize">Transfer</Badge>
-            )}
-          </Flex>
+          <Text variant="body2" color="text.main">
+            {eventType}
+          </Text>
         </TableRow>
         <TableRow>
-          <Box>
-            <Text fontSize="14px" color="gray.400">
-              {formatUTC(timestamp)}
+          <Flex direction="column" gap={1}>
+            <Text variant="body3">{formatUTC(timestamp)}</Text>
+            <Text variant="body3" color="text.dark">
+              {`(${dateFromNow(timestamp)})`}
             </Text>
-            <Text fontSize="12px" color="gray.500">
-              ({dateFromNow(timestamp)})
-            </Text>
-          </Box>
+          </Flex>
         </TableRow>
       </Grid>
     </Box>

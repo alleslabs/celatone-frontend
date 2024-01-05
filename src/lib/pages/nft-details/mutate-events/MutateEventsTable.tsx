@@ -1,10 +1,10 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import { MutateEventsTableMobileCard } from "lib/components/nft/MutateEventsTableCard";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { NftMutateEventsPagination } from "lib/services/nft";
 
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
-import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 
 interface MutateEventsTableProps {

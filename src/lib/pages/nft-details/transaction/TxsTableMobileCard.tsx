@@ -1,4 +1,4 @@
-import { Badge, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -21,6 +21,16 @@ export const TxsTableMobileCard = ({
   isNftTransfer,
 }: TxsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
+  let eventType;
+  if (isNftBurn) {
+    eventType = "Burned";
+  }
+  if (isNftMint) {
+    eventType = "Minted";
+  }
+  if (isNftTransfer) {
+    eventType = "Transferred";
+  }
   return (
     <MobileCardTemplate
       onClick={() =>
@@ -40,14 +50,9 @@ export const TxsTableMobileCard = ({
       }
       middleContent={
         <Flex gap="8px" align="center">
-          <Text fontSize="14px">Event</Text>
-          <Flex gap="8px">
-            {isNftBurn && <Badge textTransform="capitalize">Burn</Badge>}
-            {isNftMint && <Badge textTransform="capitalize">Mint</Badge>}
-            {isNftTransfer && (
-              <Badge textTransform="capitalize">Transfer</Badge>
-            )}
-          </Flex>
+          <Text variant="body2" color="text.main">
+            {eventType}
+          </Text>
         </Flex>
       }
       bottomContent={

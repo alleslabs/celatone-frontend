@@ -1,4 +1,4 @@
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import type { HexAddr } from "lib/types";
@@ -13,26 +13,28 @@ const CollectionInfo = ({
   description: string;
 }) => {
   return (
-    <Stack spacing="8px">
-      <Text fontSize="14px" fontWeight={700}>
+    <Flex direction="column">
+      <Text variant="body2" fontWeight={700} wordBreak="break-word">
         About {collectionName} Collection
       </Text>
-      <Box>
-        <Text display="inline" color="gray.400">
-          {description ?? "No description was provided by the creator."}
-        </Text>{" "}
-        <AppLink href={`/nft-collections/${collectionAddress}`}>
-          <Text
-            display="inline"
-            fontSize="14px"
-            color="primary.main"
-            borderColor="primary.main"
-          >
-            View Collection
-          </Text>
-        </AppLink>
-      </Box>
-    </Stack>
+      <Text display="inline" color="gray.400" variant="body2" mt={2} mb={1}>
+        {description ?? "No description was provided by the creator."}
+      </Text>
+      <AppLink href={`/nft-collections/${collectionAddress}`}>
+        <Text
+          variant="body2"
+          color="primary.main"
+          mt={1}
+          _hover={{
+            textDecoration: "underline",
+            textDecorationColor: "secondary.light",
+            "& > p": { color: "secondary.light" },
+          }}
+        >
+          View Collection
+        </Text>
+      </AppLink>
+    </Flex>
   );
 };
 

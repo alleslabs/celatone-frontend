@@ -1,7 +1,8 @@
-import { Text, Box, Stack, SimpleGrid, GridItem } from "@chakra-ui/react";
+import { Box, Stack, SimpleGrid, Heading } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
 import { useNftMintInfo } from "lib/services/nftService";
 import type { HexAddr } from "lib/types";
@@ -21,10 +22,10 @@ const MintInfo = ({
   if (!mintInfo) return null;
 
   return (
-    <Stack spacing="16px">
-      <Text fontSize="18px" fontWeight={600}>
+    <Stack spacing="16px" order={{ base: "1", md: "-1" }}>
+      <Heading as="h6" variant="h6" fontWeight={600}>
         Mint Information
-      </Text>
+      </Heading>
       <Box
         p="16px"
         border="1px solid"
@@ -35,53 +36,31 @@ const MintInfo = ({
           templateColumns={isMobile ? "1fr" : "1fr 1fr 1fr"}
           spacing="24px"
         >
-          <GridItem>
-            <Stack spacing="4px">
-              <Text color="gray.400" fontWeight={700} fontSize="14px">
-                Mint Block Height
-              </Text>
-              <ExplorerLink
-                fontSize="14px"
-                value={String(mintInfo.height)}
-                type="block_height"
-              />
-              <Text fontSize="12px" color="gray.400">
-                {formatUTC(mintInfo.timestamp)}
-              </Text>
-              <Text fontSize="12px" color="gray.400">
-                {dateFromNow(mintInfo.timestamp)}
-              </Text>
-            </Stack>
-          </GridItem>
-
-          <GridItem>
-            <Stack spacing="4px">
-              <Text color="gray.400" fontWeight={700} fontSize="14px">
-                Mint by
-              </Text>
-              <ExplorerLink
-                fontSize="14px"
-                value={holderAddress}
-                type="user_address"
-              />
-              <Text fontSize="12px" color="gray.400">
-                (Wallet Address)
-              </Text>
-            </Stack>
-          </GridItem>
-
-          <GridItem>
-            <Stack spacing="4px">
-              <Text color="gray.400" fontWeight={700} fontSize="14px">
-                Mint Transaction
-              </Text>
-              <ExplorerLink
-                fontSize="14px"
-                value={mintInfo.txhash}
-                type="tx_hash"
-              />
-            </Stack>
-          </GridItem>
+          <LabelText
+            label="Minted Block Height"
+            helperText1={formatUTC(mintInfo.timestamp)}
+            helperText2={dateFromNow(mintInfo.timestamp)}
+          >
+            <ExplorerLink
+              value={String(mintInfo.height)}
+              type="block_height"
+              showCopyOnHover
+            />
+          </LabelText>
+          <LabelText label="Minted by" helperText1="(VM Address)">
+            <ExplorerLink
+              value={holderAddress}
+              type="user_address"
+              showCopyOnHover
+            />
+          </LabelText>
+          <LabelText label="Minted Transaction">
+            <ExplorerLink
+              value={mintInfo.txhash}
+              type="tx_hash"
+              showCopyOnHover
+            />
+          </LabelText>
         </SimpleGrid>
       </Box>
     </Stack>

@@ -1,42 +1,53 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 
 const InfoCard = ({
   title,
+  icon,
   content,
   onClick,
   isDisabled,
 }: {
   title: string;
+  icon: IconKeys;
   content: number;
   onClick: () => void;
   isDisabled: boolean;
 }) => {
   return (
     <Flex
-      p="16px"
-      borderRadius="8px"
-      bg="gray.800"
-      justify="space-between"
-      align="center"
-      flex={1}
-      onClick={isDisabled ? undefined : onClick}
-      cursor={isDisabled ? "not-allowed" : "pointer"}
+      p={4}
+      transition="all .25s ease-in-out"
+      borderRadius={8}
+      w="full"
+      alignItems="center"
+      justifyContent="space-between"
+      {...(isDisabled
+        ? {
+            bg: "gray.900",
+            cursor: "not-allowed",
+          }
+        : {
+            bg: "gray.800",
+            _hover: { bg: "gray.700" },
+            cursor: "pointer",
+            onClick,
+          })}
     >
-      <Box fontWeight={600}>
-        <Text fontSize="14px" color="gray.400">
-          {title}
-        </Text>
-        <Text fontSize="24px" color={isDisabled ? "gray.600" : undefined}>
-          {content}
-        </Text>
-      </Box>
-      <CustomIcon
-        name="chevron-right"
-        boxSize="20px"
-        color={isDisabled ? "gray.600" : undefined}
-      />
+      <Flex gap={3} alignItems="center">
+        <CustomIcon name={icon} boxSize={6} color="gray.600" />
+        <Flex flexDirection="column">
+          <Text variant="body1" color="text.dark" fontWeight={600}>
+            {title}
+          </Text>
+          <Heading as="h6" variant="h6" fontWeight={600}>
+            {content}
+          </Heading>
+        </Flex>
+      </Flex>
+      <CustomIcon name="chevron-right" color="gray.600" />
     </Flex>
   );
 };

@@ -1,9 +1,9 @@
-import { Flex, Text, Box, Stack } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { MobileCardTemplate } from "lib/components/table";
+import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import type { Activity } from "lib/services/collection";
 import type { HexAddr } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -49,34 +49,30 @@ export const ActivitiesTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        <Stack spacing="12px">
-          <Box>
-            <Text fontSize="12px" fontWeight={600} color="gray.400">
-              Token Id
-            </Text>
+        <Flex direction="column" gap={3}>
+          <Flex direction="column">
+            <MobileLabel label="Token ID" />
             <AppLink
               href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
             >
-              <Text fontSize="14px" fontWeight={400} color="primary.dark">
+              <Text variant="body2" color="primary.dark">
                 {tokenId}
               </Text>
             </AppLink>
-          </Box>
-          <Box>
-            <Text fontSize="12px" fontWeight={600} color="gray.400">
-              Event
-            </Text>
-            <Text fontSize="14px" fontWeight={400}>
-              {getEventMessage()}
-            </Text>
-          </Box>
-        </Stack>
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel label="Event" />
+            <Text variant="body2">{getEventMessage()}</Text>
+          </Flex>
+        </Flex>
       }
       bottomContent={
-        <Box fontSize="12px" fontWeight={400}>
-          <Text color="gray.400">{formatUTC(timestamp)}</Text>
-          <Text color="gray.400">({dateFromNow(timestamp)})</Text>
-        </Box>
+        <Flex direction="column" gap={1}>
+          <Text variant="body3">{formatUTC(timestamp)}</Text>
+          <Text variant="body3" color="text.dark">
+            {`(${dateFromNow(timestamp)})`}
+          </Text>
+        </Flex>
       }
     />
   );

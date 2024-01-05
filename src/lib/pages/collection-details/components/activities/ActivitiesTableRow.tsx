@@ -1,4 +1,4 @@
-import { Grid, Box, Text } from "@chakra-ui/react";
+import { Grid, Box, Text, Flex } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -72,14 +72,12 @@ export const ActivitiesTableRow = ({
           <Text>{getEventMessage()}</Text>
         </TableRow>
         <TableRow>
-          <Box>
-            <Text fontSize="14px" color="gray.400">
-              {formatUTC(timestamp)}
+          <Flex direction="column" gap={1}>
+            <Text variant="body3">{formatUTC(timestamp)}</Text>
+            <Text variant="body3" color="text.dark">
+              {`(${dateFromNow(timestamp)})`}
             </Text>
-            <Text fontSize="12px" color="gray.500">
-              ({dateFromNow(timestamp)})
-            </Text>
-          </Box>
+          </Flex>
         </TableRow>
       </Grid>
     </Box>

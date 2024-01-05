@@ -1,36 +1,15 @@
-import {
-  Box,
-  Flex,
-  Link,
-  Stack,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import type { PropsWithChildren } from "react";
+import { Flex, Heading, Link, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
 import { useCollectionCreator } from "lib/services/collectionService";
 import type { HexAddr } from "lib/types";
-import { formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC } from "lib/utils";
 
 import InfoCard from "./InfoCard";
-
-const InfoComponent = ({
-  title,
-  children,
-}: PropsWithChildren<{ title: string }>) => (
-  <Stack spacing="24px">
-    <Stack spacing="4px">
-      <Text fontSize="12px" fontWeight={600} color="gray.400">
-        {title}
-      </Text>
-      {children}
-    </Stack>
-  </Stack>
-);
 
 interface Props {
   collectionAddress: HexAddr;
@@ -51,15 +30,6 @@ const CollectionInfoOverview = ({
   mutateEventes,
   royalty,
 }: Props) => {
-  const styles = useBreakpointValue({
-    xl: { wrap: "nowrap", gap: 100, direction: "column" },
-    lg: { wrap: "wrap", gap: 32, direction: "row" },
-    base: { wrap: "wrap", gap: 32, direction: "row" },
-    md: { wrap: "wrap", gap: 32, direction: "row" },
-    xs: { wrap: "wrap", gap: 32, direction: "row" },
-    fallback: { wrap: "wrap", gap: 32, direction: "row" },
-  }) as { wrap: "wrap" | "nowrap"; gap: number; direction: "row" | "column" };
-
   const { data: collectionCreator, isLoading } =
     useCollectionCreator(collectionAddress);
 
@@ -72,106 +42,108 @@ const CollectionInfoOverview = ({
 
   const { height, txhash, timestamp, creatorAddress } = collectionCreator;
   const mobileInfoDirection = isMobile ? "column" : "row";
-  const mobileInfoGap = isMobile ? "4px" : "16px";
+  const mobileInfoGap = isMobile ? 1 : 4;
   return (
-    <Box>
-      <Text fontSize="18px" fontWeight={600} mb="24px">
-        Collection Infomation
-      </Text>
-
-      <Flex gap={`${styles.gap}px`} flexWrap={styles.wrap}>
+    <Flex direction="column">
+      <Heading as="h6" variant="h6" fontWeight={600} mb={6}>
+        Collection Information
+      </Heading>
+      <Flex direction={{ base: "column", md: "row" }} mb={{ base: 4, md: 10 }}>
         <Flex
+          direction="column"
           justify="space-between"
-          fontFamily="Manrope"
-          gap="24px"
-          flexDir={isMobile ? "column" : styles.direction}
+          gap={6}
+          minW={60}
+          mb={{ base: 4, md: 0 }}
         >
-          <InfoComponent title="Created Block Height">
-            <ExplorerLink value={String(height)} type="block_height" />
-            <Text fontSize="12px" color="gray.400">
-              {formatUTC(timestamp)}
-            </Text>
-          </InfoComponent>
-
-          <InfoComponent title="Created by">
-            <ExplorerLink value={creatorAddress} type="user_address" />
-            <Text fontSize="12px" color="gray.400">
-              (Wallet Address)
-            </Text>
-          </InfoComponent>
-
-          <InfoComponent title="Created Transaction">
-            <ExplorerLink value={txhash} type="tx_hash" />
-          </InfoComponent>
+          <LabelText
+            label="Created Block Height"
+            helperText1={formatUTC(timestamp)}
+            helperText2={dateFromNow(timestamp)}
+          >
+            <ExplorerLink
+              value={String(height)}
+              type="block_height"
+              showCopyOnHover
+              fixedHeight
+            />
+          </LabelText>
+          <LabelText label="Created by" helperText1="(VM Address)">
+            <ExplorerLink
+              value={creatorAddress}
+              type="user_address"
+              showCopyOnHover
+              fixedHeight
+            />
+          </LabelText>
+          <LabelText label="Created Transaction">
+            <ExplorerLink value={txhash} type="tx_hash" showCopyOnHover />
+          </LabelText>
         </Flex>
-
-        <Stack
+        <Flex
+          direction="column"
+          gap={4}
+          p={{ base: 4, md: 6 }}
           bg="gray.900"
           borderRadius="8px"
-          p={isMobile ? "16px" : "24px"}
-          w="100%"
-          spacing="24px"
-          fontFamily="Manrope"
-          overflow="auto"
+          w="full"
         >
-          <Flex
-            fontSize="14px"
-            gap={mobileInfoGap}
-            flexDir={mobileInfoDirection}
-          >
-            <Text minW="100px">Collection</Text>
-            <CopyLink value={collectionAddress} type="user_address" />
+          <Flex gap={mobileInfoGap} flexDir={mobileInfoDirection}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Collection
+            </Text>
+            <CopyLink
+              value={collectionAddress}
+              type="user_address"
+              showCopyOnHover
+            />
           </Flex>
-
-          <Flex
-            fontSize="14px"
-            gap={mobileInfoGap}
-            flexDir={mobileInfoDirection}
-          >
-            <Text minW="100px">Name</Text>
-            <Text textOverflow="ellipsis">{collectionName}</Text>
+          <Flex gap={mobileInfoGap} flexDir={mobileInfoDirection}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Name
+            </Text>
+            <Text
+              textOverflow="ellipsis"
+              variant="body2"
+              wordBreak="break-word"
+            >
+              {collectionName}
+            </Text>
           </Flex>
-
-          <Flex
-            fontSize="14px"
-            gap={mobileInfoGap}
-            flexDir={mobileInfoDirection}
-          >
-            <Text minW="100px">Description</Text>
-            <Text color="gray.400">
+          <Flex gap={mobileInfoGap} flexDir={mobileInfoDirection}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Description
+            </Text>
+            <Text color="text.dark" variant="body2" wordBreak="break-word">
               {desc || "No description was provided by the creator."}
             </Text>
           </Flex>
-
-          <Flex
-            fontSize="14px"
-            gap={mobileInfoGap}
-            flexDir={mobileInfoDirection}
-          >
-            <Text minW="100px">Uri</Text>
-            <Link href={uri} target="_blank">
+          <Flex gap={mobileInfoGap} flexDir={mobileInfoDirection}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Uri
+            </Text>
+            <Link
+              href={uri}
+              target="_blank"
+              variant="body2"
+              wordBreak="break-all"
+            >
               {uri}
             </Link>
           </Flex>
 
-          <Flex
-            fontSize="14px"
-            gap={mobileInfoGap}
-            flexDir={mobileInfoDirection}
-          >
-            <Text minW="100px">Royalty</Text>
-            <Text>{royalty}%</Text>
+          <Flex gap={mobileInfoGap} flexDir={mobileInfoDirection}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Royalty
+            </Text>
+            <Text variant="body2">{royalty}%</Text>
           </Flex>
-        </Stack>
+        </Flex>
       </Flex>
-
-      <Flex
-        mt="40px"
-        gap={isMobile ? "16px" : "32px"}
-        flexDir={mobileInfoDirection}
-      >
+      <Flex gap={{ base: 4, md: 8 }} flexDir={mobileInfoDirection}>
         <InfoCard
           title="Activities"
+          icon="list"
           content={activities}
           onClick={() =>
             navigate({
@@ -183,6 +155,7 @@ const CollectionInfoOverview = ({
         />
         <InfoCard
           title="Mutate Events"
+          icon="migrate"
           content={mutateEventes}
           onClick={() =>
             navigate({
@@ -193,7 +166,7 @@ const CollectionInfoOverview = ({
           isDisabled={!mutateEventes}
         />
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 

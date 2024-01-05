@@ -1,10 +1,9 @@
 import {
   Badge,
   Box,
-  Divider,
+  Button,
   Flex,
   Heading,
-  Stack,
   TabList,
   TabPanel,
   TabPanels,
@@ -18,11 +17,12 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, InvalidState } from "lib/components/state";
+import { Tooltip } from "lib/components/Tooltip";
 import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
@@ -89,15 +89,7 @@ const CollectionDetailsBody = ({
   );
 
   if (isLoading || !collectionInfo) return <Loading withBorder />;
-  if (!collection)
-    return (
-      <EmptyState
-        heading="Collection does not exist"
-        message="Please double-check your input and make sure you have selected the correct network."
-        imageVariant="not-found"
-        withBorder
-      />
-    );
+  if (!collection) return <InvalidState title="Collection does not exist" />;
 
   const { name, description, uri } = collection;
 
@@ -112,28 +104,59 @@ const CollectionDetailsBody = ({
           { text: name },
         ]}
       />
-      <Stack my="24px" spacing="4px">
-        <Heading as="h5" variant="h5">
-          {name}
-        </Heading>
-
-        <Flex gap="8px" fontSize="14px" align="center">
-          <Text color="gray.400">Collection:</Text>
-          <CopyLink
-            value={collectionAddress}
-            amptrackSection="account_top"
-            type="user_address"
-          />
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Flex direction="column" my={6} gap={1}>
+          <Heading as="h5" variant="h5" mb={1}>
+            {name}
+          </Heading>
+          <Flex
+            mt={{ base: 2, md: 0 }}
+            gap={{ base: 0, md: 2 }}
+            direction={{ base: "column", md: "row" }}
+            alignItems="center"
+          >
+            <Text color="text.dark" variant="body2">
+              Collection:
+            </Text>
+            <Tooltip label="View as Account Address">
+              <Flex>
+                <ExplorerLink
+                  value={collectionAddress}
+                  type="user_address"
+                  textFormat="normal"
+                  maxWidth="full"
+                />
+              </Flex>
+            </Tooltip>
+          </Flex>
+          <Flex gap={1} align="center">
+            <Text color="text.dark" variant="body2">
+              Type:
+            </Text>
+            <Badge textTransform="capitalize">
+              {isUnlimited ? "Unlimited Supply" : "Fixed Supply"}
+            </Badge>
+          </Flex>
         </Flex>
-
-        <Flex gap="8px" fontSize="14px">
-          <Text color="gray.400">Type:</Text>
-          <Badge textTransform="capitalize">
-            {isUnlimited ? "Unlimited Supply" : "Fixed Supply"}
-          </Badge>
-        </Flex>
-      </Stack>
-
+        <Button
+          variant="outline-primary"
+          w={{ base: "full", md: "auto" }}
+          size={{ base: "sm", md: "md" }}
+          mb={{ base: 4, md: 0 }}
+          onClick={() => {
+            navigate({
+              pathname: "/accounts/[accountAddress]/[tab]",
+              query: { accountAddress: collectionAddress, tab: "resources" },
+            });
+          }}
+        >
+          View Resource
+        </Button>
+      </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tabParam)}
         isLazy
@@ -172,14 +195,13 @@ const CollectionDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Stack gap="40px">
+            <Flex direction="column" gap={10}>
               <CollectionSupplyOverview
                 totalBurned={totalBurnedCount}
                 currentSupply={currentSupply}
                 totlaMinted={totalMinted}
                 maxSupply={maxSupply}
               />
-              <Divider width="100%" color="gray.700" />
               <NftsOverview
                 nfts={nfts}
                 totalCount={currentSupply}
@@ -195,7 +217,7 @@ const CollectionDetailsBody = ({
                 mutateEventes={mutateEventsCount}
                 royalty={royalty}
               />
-            </Stack>
+            </Flex>
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Supplies

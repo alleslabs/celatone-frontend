@@ -21,7 +21,7 @@ const CollectionList = ({
     return (
       <EmptyState
         imageVariant="empty"
-        message="There is no collections"
+        message="There are currently no NFT collections on this network."
         withBorder
       />
     );

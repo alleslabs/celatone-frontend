@@ -1,7 +1,6 @@
 import {
   Flex,
   Image,
-  Stack,
   Text,
   Box,
   Heading,
@@ -10,22 +9,24 @@ import {
   TabPanels,
   TabPanel,
   Divider,
+  Button,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, InvalidState } from "lib/components/state";
+import { Tooltip } from "lib/components/Tooltip";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
 import { useCollectionByCollectionAddress } from "lib/services/collectionService";
 import {
@@ -34,15 +35,71 @@ import {
   useNftMutateEventsCount,
   useNftTransactionsCount,
 } from "lib/services/nftService";
-import type { HexAddr } from "lib/types";
+import type { HexAddr, Option } from "lib/types";
 
 import Attributes from "./components/Attributes";
 import CollectionInfo from "./components/CollectionInfo";
 import MintInfo from "./components/MintInfo";
-import MobileContainer from "./MobileContainer";
 import MutateEvents from "./mutate-events";
 import Txs from "./transaction";
 import { zNftDetailQueryParams } from "./types";
+
+const NftTitle = ({
+  collectionAddress,
+  displayCollectionName,
+  tokenId,
+}: {
+  collectionAddress: HexAddr;
+  displayCollectionName: string;
+  tokenId: string;
+}) => (
+  <Flex direction="column">
+    <AppLink href={`/nft-collections/${collectionAddress}`}>
+      <Text color="primary.main" fontSize="16px" fontWeight={700}>
+        {displayCollectionName}
+      </Text>
+    </AppLink>
+    <Heading variant="h5" as="h5">
+      {tokenId}
+    </Heading>
+  </Flex>
+);
+
+const NftInfoItem = ({
+  children,
+  label,
+  isCentered = true,
+}: {
+  children: ReactNode;
+  label: string;
+  isCentered?: boolean;
+}) => (
+  <Flex
+    gap={{ base: 1, md: 2 }}
+    mb={{ base: 2, md: 0 }}
+    direction={{ base: "column", md: "row" }}
+    align={{ base: "start", md: isCentered ? "center" : "start" }}
+    height={{ md: 6 }}
+  >
+    <Text variant="body2" color="gray.400" fontWeight={500} whiteSpace="nowrap">
+      {label}:
+    </Text>
+    {children}
+  </Flex>
+);
+
+const DescriptionBox = ({ description }: { description: Option<string> }) => (
+  <Box fontSize="14px" p="16px" borderRadius="8px" backgroundColor="gray.900">
+    <Text mb="8px" fontWeight={700}>
+      Description
+    </Text>
+    {description ? (
+      <Text>{description}</Text>
+    ) : (
+      <Text color="text.dark">No description was provided by the creator.</Text>
+    )}
+  </Box>
+);
 
 const NftDetailsBody = ({
   collectionAddress,
@@ -51,6 +108,7 @@ const NftDetailsBody = ({
   collectionAddress: HexAddr;
   nftAddress: HexAddr;
 }) => {
+  const navigate = useInternalNavigate();
   const { data: collection, isLoading: collectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
   const { data: nft, isLoading: nftLoading } = useNftInfo(
@@ -63,145 +121,173 @@ const NftDetailsBody = ({
   const isMobile = useMobile();
 
   if (collectionLoading || nftLoading) return <Loading />;
-  if (!collection || !nft)
-    return (
-      <EmptyState
-        heading="NFT does not exist"
-        message="Please double-check your input and make sure you have selected the correct network."
-        imageVariant="not-found"
-        withBorder
-      />
-    );
+  if (!collection || !nft) return <InvalidState title="NFT does not exist" />;
 
   const { name: collectionName, description: collectionDesc } = collection;
   const { tokenId, description, uri, ownerAddress } = nft;
 
   const imageSize = "360px";
 
+  let displayCollectionName = "";
+  if (collectionName.length > 20) {
+    displayCollectionName = `${collectionName.slice(0, 20)}...`;
+  } else displayCollectionName = collectionName;
   return (
     <>
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
           {
-            text: collectionName,
+            text: displayCollectionName,
             href: `/nft-collections/${collectionAddress}`,
           },
           { text: tokenId },
         ]}
       />
-      {isMobile ? (
-        <MobileContainer
-          collectionAddress={collectionAddress}
-          collectionName={collectionName}
-          collectionDesc={collectionDesc}
-          description={description ?? ""}
-          txCount={txCount}
-          mutateEventsCount={mutateEventsCount}
-          nftAddress={nftAddress}
-          tokenId={tokenId}
-          ownerAddress={ownerAddress}
-          uri={uri}
-          metadata={metadata}
-        />
-      ) : (
-        <Stack spacing="32px">
-          <Flex mt="24px" gap="32px">
-            <Stack spacing="24px" maxW="360px">
-              {metadata?.image ? (
-                <Image
-                  minW={imageSize}
-                  h={imageSize}
-                  borderRadius="8px"
-                  src={metadata.image}
-                />
-              ) : (
-                <Image
-                  minW={imageSize}
-                  h={imageSize}
-                  borderRadius="8px"
-                  src={NFT_IMAGE_PLACEHOLDER}
-                />
-              )}
-              <Box
-                fontSize="14px"
-                p="16px"
-                borderRadius="8px"
-                backgroundColor="gray.900"
-              >
-                <Text mb="8px" fontWeight={700}>
-                  Description
-                </Text>
-                {description ? (
-                  <Text>{description}</Text>
-                ) : (
-                  <Text color="text.dark">
-                    No description was provided by the creator.
-                  </Text>
-                )}
-              </Box>
-
-              <CollectionInfo
+      <Flex direction="column" gap={8}>
+        <Flex
+          mt={6}
+          gap={{ base: 2, md: 8 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Flex direction="column" gap={6} maxW={{ md: "360px" }}>
+            {isMobile && (
+              <NftTitle
                 collectionAddress={collectionAddress}
-                collectionName={collectionName}
-                description={collectionDesc}
+                displayCollectionName={displayCollectionName}
+                tokenId={tokenId}
               />
-            </Stack>
-            <Stack spacing="32px" w="100%">
-              <Stack spacing="16px">
-                <Flex justify="space-between">
-                  <Box>
-                    <AppLink href={`/nft-collections/${collectionAddress}`}>
-                      <Text
-                        color="primary.main"
-                        fontSize="16px"
-                        fontWeight={700}
-                      >
-                        {collectionName}
-                      </Text>
-                    </AppLink>
-                    <Heading variant="h5" as="h5">
-                      {tokenId}
-                    </Heading>
-                  </Box>
-                </Flex>
-                <Box fontSize="14px">
-                  {metadata?.name && (
-                    <Flex gap="8px" align="center">
-                      <Text
-                        color="gray.400"
-                        fontWeight={500}
-                        whiteSpace="nowrap"
-                      >
-                        NFT Name:
-                      </Text>
-                      <Text variant="body3" color="text.dark">
-                        {metadata.name}
-                      </Text>
+            )}
+            {metadata?.image ? (
+              <Image
+                minW={imageSize}
+                minH={imageSize}
+                borderRadius="8px"
+                src={metadata.image}
+              />
+            ) : (
+              <Image
+                minW={imageSize}
+                minH={imageSize}
+                borderRadius="8px"
+                src={NFT_IMAGE_PLACEHOLDER}
+              />
+            )}
+            {!isMobile && (
+              <>
+                <DescriptionBox description={description} />
+                <CollectionInfo
+                  collectionAddress={collectionAddress}
+                  collectionName={collectionName}
+                  description={collectionDesc}
+                />
+              </>
+            )}
+          </Flex>
+          <Flex direction="column" gap={{ base: 6, md: 12 }} w="full">
+            <Flex direction="column" gap={4}>
+              <Flex
+                justifyContent="space-between"
+                align="center"
+                direction={{ base: "column", md: "row" }}
+              >
+                {!isMobile && (
+                  <>
+                    <NftTitle
+                      collectionAddress={collectionAddress}
+                      displayCollectionName={displayCollectionName}
+                      tokenId={tokenId}
+                    />
+                    <Button
+                      variant="outline-primary"
+                      w={{ base: "full", md: "auto" }}
+                      size={{ base: "sm", md: "md" }}
+                      mb={{ base: 4, md: 0 }}
+                      onClick={() => {
+                        navigate({
+                          pathname: "/accounts/[accountAddress]/[tab]",
+                          query: {
+                            accountAddress: nftAddress,
+                            tab: "resources",
+                          },
+                        });
+                      }}
+                    >
+                      View Resource
+                    </Button>
+                  </>
+                )}
+              </Flex>
+              <Flex direction="column" gap={1} w="full">
+                {metadata?.name && (
+                  <NftInfoItem label="NFT Name">
+                    <Text variant="body2" color="text.main">
+                      {metadata.name}
+                    </Text>
+                  </NftInfoItem>
+                )}
+                <NftInfoItem label="NFT Address">
+                  <Tooltip label="View as Account Address">
+                    <Flex>
+                      <ExplorerLink
+                        value={nftAddress}
+                        type="user_address"
+                        textFormat="normal"
+                        maxWidth="full"
+                      />
                     </Flex>
-                  )}
-                  <Flex gap="8px">
-                    <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
-                      NFT Address:
+                  </Tooltip>
+                </NftInfoItem>
+                <NftInfoItem label="Holder">
+                  <ExplorerLink
+                    value={ownerAddress}
+                    type="user_address"
+                    textFormat="normal"
+                    maxWidth="full"
+                  />
+                </NftInfoItem>
+                <NftInfoItem label="Token URI" isCentered={false}>
+                  <Link href={uri} target="_blank">
+                    <Text
+                      color="primary.dark"
+                      variant="body2"
+                      fontWeight={500}
+                      wordBreak="break-all"
+                      _hover={{
+                        textDecoration: "underline",
+                        textDecorationColor: "secondary.light",
+                        "& > p": { color: "secondary.light" },
+                      }}
+                    >
+                      {uri}
                     </Text>
-                    <CopyLink value={nftAddress} type="user_address" />
-                  </Flex>
-                  <Flex gap="8px">
-                    <Text color="gray.400" fontWeight={500} whiteSpace="nowrap">
-                      Token URI:
-                    </Text>
-                    <Link href={uri} target="_blank">
-                      <Text color="primary.main">{uri}</Text>
-                    </Link>
-                  </Flex>
-                  <Flex gap="8px">
-                    <Text color="gray.400" fontWeight={500}>
-                      Holder:
-                    </Text>
-                    <ExplorerLink value={ownerAddress} type="user_address" />
-                  </Flex>
-                </Box>
-              </Stack>
+                  </Link>
+                </NftInfoItem>
+              </Flex>
+            </Flex>
+            {isMobile && (
+              <>
+                <DescriptionBox description={description} />
+                <Button
+                  variant="outline-primary"
+                  w={{ base: "full", md: "auto" }}
+                  size={{ base: "sm", md: "md" }}
+                  mb={{ base: 4, md: 0 }}
+                  onClick={() => {
+                    navigate({
+                      pathname: "/accounts/[accountAddress]/[tab]",
+                      query: {
+                        accountAddress: nftAddress,
+                        tab: "resources",
+                      },
+                    });
+                  }}
+                >
+                  View Resource
+                </Button>
+              </>
+            )}
+            <Flex direction="column" gap={{ base: 8, md: 12 }}>
               <MintInfo nftAddress={nftAddress} holderAddress={ownerAddress} />
               {metadata?.attributes && (
                 <Attributes
@@ -210,40 +296,48 @@ const NftDetailsBody = ({
                   tokenId={tokenId}
                 />
               )}
-            </Stack>
-          </Flex>
-
-          <Divider width="100%" color="gray.700" />
-
-          <Tabs isLazy lazyBehavior="keepMounted">
-            <TabList
-              marginBottom="32px"
-              borderBottom="1px solid"
-              borderColor="gray.700"
-              overflowX="scroll"
-            >
-              <CustomTab count={txCount}>Transactions</CustomTab>
-              <CustomTab
-                count={mutateEventsCount}
-                isDisabled={!mutateEventsCount}
-              >
-                Mutate Events
-              </CustomTab>
-            </TabList>
-            <TabPanels>
-              <TabPanel p={0}>
-                <Txs txCount={txCount} nftAddress={nftAddress} />
-              </TabPanel>
-              <TabPanel p={0}>
-                <MutateEvents
-                  totalCount={mutateEventsCount}
-                  nftAddress={nftAddress}
+            </Flex>
+            {isMobile && (
+              <>
+                <Divider width="100%" color="gray.700" />
+                <CollectionInfo
+                  collectionAddress={collectionAddress}
+                  collectionName={collectionName}
+                  description={collectionDesc}
                 />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Stack>
-      )}
+              </>
+            )}
+          </Flex>
+        </Flex>
+        <Divider width="100%" color="gray.700" />
+        <Tabs isLazy lazyBehavior="keepMounted">
+          <TabList
+            marginBottom="32px"
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX="scroll"
+          >
+            <CustomTab count={txCount}>Transactions</CustomTab>
+            <CustomTab
+              count={mutateEventsCount}
+              isDisabled={!mutateEventsCount}
+            >
+              Mutate Events
+            </CustomTab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p={0}>
+              <Txs txCount={txCount} nftAddress={nftAddress} />
+            </TabPanel>
+            <TabPanel p={0}>
+              <MutateEvents
+                totalCount={mutateEventsCount}
+                nftAddress={nftAddress}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Flex>
     </>
   );
 };

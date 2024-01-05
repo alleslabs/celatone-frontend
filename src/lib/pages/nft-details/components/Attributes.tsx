@@ -54,18 +54,18 @@ const AttributesModal = ({
           </Heading>
         </Flex>
       </ModalHeader>
-      <ModalCloseButton color="gray.400" />
+      <ModalCloseButton color="text.dark" />
       <ModalBody maxH="550px" overflow="overlay" p="16px 24px">
         <Stack spacing="16px">
           <Stack spacing="8px">
-            <Flex gap="12px" fontSize="14px">
-              <Text fontWeight={700} w="100px">
+            <Flex gap="12px">
+              <Text fontWeight={700} w="100px" variant="body2">
                 Token ID:
               </Text>
               <Text>{tokenId}</Text>
             </Flex>
-            <Flex gap="12px" fontSize="14px">
-              <Text fontWeight={700} w="100px">
+            <Flex gap="12px">
+              <Text fontWeight={700} w="100px" variant="body2">
                 NFT Address:
               </Text>
               <ExplorerLink value={address} type="user_address" />
@@ -78,13 +78,13 @@ const AttributesModal = ({
                 bg="gray.900"
                 borderRadius="8px"
                 p="8px 12px"
-                spacing="4px"
+                gap={1}
                 key={traitType}
               >
-                <Text color="gray.400" fontSize="12px" fontWeight={700}>
+                <Text color="text.dark" fontWeight={700}>
                   {traitType}
                 </Text>
-                <Text fontSize="14px" fontWeight={700}>
+                <Text variant="body2" fontWeight={700}>
                   {value}
                 </Text>
               </Stack>
@@ -110,11 +110,11 @@ const Attributes = ({
   const displayedCount = isMobile ? 4 : 6;
 
   return (
-    <Stack w="100%" spacing="16px">
-      <Flex align="center" gap="4px">
-        <Text fontSize="14px" fontWeight={700}>
+    <Stack w="100%" spacing={4} order={{ base: "-1", md: "1" }}>
+      <Flex align="center" gap={1}>
+        <Heading as="h6" variant="h6" fontWeight={600}>
           Attributes
-        </Text>
+        </Heading>
         <Badge bg="primary.main" color="gray.900">
           {attributes.length}
         </Badge>
@@ -123,7 +123,7 @@ const Attributes = ({
       <SimpleGrid
         templateColumns={isMobile ? "1fr 1fr" : "1fr 1fr 1fr"}
         minChildWidth="172px"
-        spacing="16px"
+        gap={4}
       >
         {attributes.slice(0, displayedCount).map(({ traitType, value }) => (
           <GridItem
@@ -133,17 +133,21 @@ const Attributes = ({
             key={traitType}
           >
             <Stack spacing="4px">
-              <Text fontSize="12px" fontWeight={700} color="gray.400">
+              <Text
+                variant="body3"
+                textTransform="capitalize"
+                fontWeight={700}
+                color="text.dark"
+              >
                 {traitType}
               </Text>
-              <Text fontSize="14px" fontWeight={700}>
+              <Text variant="body2" textTransform="capitalize" fontWeight={700}>
                 {value}
               </Text>
             </Stack>
           </GridItem>
         ))}
       </SimpleGrid>
-
       {attributes.length > displayedCount && (
         <Button
           bg="transparent"
@@ -151,12 +155,11 @@ const Attributes = ({
           onClick={onOpen}
         >
           <Flex align="center" gap="7px">
-            <Text color="gray.400">View More</Text>
-            <CustomIcon name="chevron-down" color="gray.400" />
+            <Text color="text.dark">View More</Text>
+            <CustomIcon name="chevron-down" color="text.dark" />
           </Flex>
         </Button>
       )}
-
       <AttributesModal
         title="Attributes"
         attributes={attributes}

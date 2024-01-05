@@ -63,18 +63,16 @@ export const MutateEventsTableRow = ({
         </TableRow>
         <TableRow>{oldValue}</TableRow>
         <TableRow px={10}>
-          <CustomIcon name="arrow-right" />
+          <CustomIcon name="arrow-right" color="gray.600" />
         </TableRow>
         <TableRow>{newValue}</TableRow>
         <TableRow>
-          <Box>
-            <Text fontSize="14px" color="gray.400">
-              {formatUTC(timestamp)}
+          <Flex direction="column" gap={1}>
+            <Text variant="body3">{formatUTC(timestamp)}</Text>
+            <Text variant="body3" color="text.dark">
+              {`(${dateFromNow(timestamp)})`}
             </Text>
-            <Text fontSize="12px" color="gray.500">
-              ({dateFromNow(timestamp)})
-            </Text>
-          </Box>
+          </Flex>
         </TableRow>
         <TableRow>
           <RemarkRender remark={remark} />
