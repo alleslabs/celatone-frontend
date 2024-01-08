@@ -1,6 +1,6 @@
 import { GridItem, SimpleGrid } from "@chakra-ui/react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import type { Collection } from "lib/services/collection";
@@ -14,8 +14,6 @@ const CollectionList = ({
   collections?: Collection[];
   isLoading: boolean;
 }) => {
-  const navigate = useInternalNavigate();
-
   if (isLoading) return <Loading />;
   if (!collections || !collections.length)
     return (
@@ -27,19 +25,12 @@ const CollectionList = ({
     );
 
   return (
-    <SimpleGrid columns={{ xl: 2, sm: 1 }} spacing="32px">
+    <SimpleGrid columns={{ xl: 2, sm: 1 }} spacing={8}>
       {collections.map((collection) => (
-        <GridItem
-          key={collection.collectionAddress}
-          onClick={() =>
-            navigate({
-              pathname: `/nft-collections/[collectionAddress]`,
-              query: { collectionAddress: collection.collectionAddress },
-            })
-          }
-          cursor="pointer"
-        >
-          <CollectionCard collectionInfo={collection} />
+        <GridItem key={collection.collectionAddress}>
+          <AppLink href={`/nft-collections/${collection.collectionAddress}`}>
+            <CollectionCard collectionInfo={collection} />
+          </AppLink>
         </GridItem>
       ))}
     </SimpleGrid>

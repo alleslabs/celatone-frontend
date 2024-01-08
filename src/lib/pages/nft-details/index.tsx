@@ -202,23 +202,16 @@ const NftDetailsBody = ({
                       displayCollectionName={getDisplayCollectionName()}
                       tokenId={tokenId}
                     />
-                    <Button
-                      variant="outline-primary"
-                      w={{ base: "full", md: "auto" }}
-                      size={{ base: "sm", md: "md" }}
-                      mb={{ base: 4, md: 0 }}
-                      onClick={() => {
-                        navigate({
-                          pathname: "/accounts/[accountAddress]/[tab]",
-                          query: {
-                            accountAddress: nftAddress,
-                            tab: "resources",
-                          },
-                        });
-                      }}
-                    >
-                      View Resource
-                    </Button>
+                    <AppLink href={`/accounts/${nftAddress}/resources`}>
+                      <Button
+                        variant="outline-primary"
+                        w={{ base: "full", md: "auto" }}
+                        size={{ base: "sm", md: "md" }}
+                        mb={{ base: 4, md: 0 }}
+                      >
+                        View Resource
+                      </Button>
+                    </AppLink>
                   </>
                 )}
               </Flex>

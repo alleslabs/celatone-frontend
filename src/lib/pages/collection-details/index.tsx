@@ -16,6 +16,7 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -156,21 +157,17 @@ const CollectionDetailsBody = ({
             </Badge>
           </Flex>
         </Flex>
-        <Button
-          variant="outline-primary"
-          minW="140px !important"
-          w={{ base: "full", md: "auto" }}
-          size={{ base: "sm", md: "md" }}
-          mb={{ base: 4, md: 0 }}
-          onClick={() => {
-            navigate({
-              pathname: "/accounts/[accountAddress]/[tab]",
-              query: { accountAddress: collectionAddress, tab: "resources" },
-            });
-          }}
-        >
-          View Resource
-        </Button>
+        <AppLink href={`/accounts/${collectionAddress}/resources`}>
+          <Button
+            variant="outline-primary"
+            minW="140px !important"
+            w={{ base: "full", md: "auto" }}
+            size={{ base: "sm", md: "md" }}
+            mb={{ base: 4, md: 0 }}
+          >
+            View Resource
+          </Button>
+        </AppLink>
       </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tabParam)}
