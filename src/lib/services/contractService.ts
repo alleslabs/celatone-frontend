@@ -106,7 +106,7 @@ export const useContracts = (
 ) => {
   const endpoint = useBaseApiRoute("contracts");
 
-  return useQuery(
+  return useQuery<ContractsResponse>(
     [CELATONE_QUERY_KEYS.CONTRACTS, endpoint, limit, offset],
     async () => getContracts(endpoint, limit, offset),
     {
