@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { MobileCardTemplate } from "lib/components/table";
+import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxsTableMobileCardProps {
@@ -21,16 +21,13 @@ export const TxsTableMobileCard = ({
   isNftTransfer,
 }: TxsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
-  let eventType;
-  if (isNftBurn) {
-    eventType = "Burned";
-  }
-  if (isNftMint) {
-    eventType = "Minted";
-  }
-  if (isNftTransfer) {
-    eventType = "Transferred";
-  }
+  const getEventMessage = () => {
+    if (isNftBurn) return "Burned";
+    if (isNftMint) return "Minted";
+    if (isNftTransfer) return "Transferred";
+    return "-";
+  };
+
   return (
     <MobileCardTemplate
       onClick={() =>
@@ -49,10 +46,9 @@ export const TxsTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        <Flex gap="8px" align="center">
-          <Text variant="body2" color="text.main">
-            {eventType}
-          </Text>
+        <Flex direction="column">
+          <MobileLabel label="Event" />
+          <Text variant="body2">{getEventMessage()}</Text>
         </Flex>
       }
       bottomContent={

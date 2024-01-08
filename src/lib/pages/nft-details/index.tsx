@@ -21,6 +21,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { Copier } from "lib/components/copy";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
@@ -247,21 +248,31 @@ const NftDetailsBody = ({
                   />
                 </NftInfoItem>
                 <NftInfoItem label="Token URI" isCentered={false}>
-                  <Link href={uri} target="_blank">
-                    <Text
-                      color="primary.dark"
-                      variant="body2"
-                      fontWeight={500}
-                      wordBreak="break-all"
-                      _hover={{
-                        textDecoration: "underline",
-                        textDecorationColor: "secondary.light",
-                        "& > p": { color: "secondary.light" },
-                      }}
-                    >
-                      {uri}
-                    </Text>
-                  </Link>
+                  <Flex display="inline">
+                    <Link href={uri} target="_blank">
+                      <Text
+                        display="inline-flex"
+                        color="primary.dark"
+                        variant="body2"
+                        fontWeight={500}
+                        wordBreak="break-all"
+                        _hover={{
+                          textDecoration: "underline",
+                          textDecorationColor: "secondary.light",
+                          "& > p": { color: "secondary.light" },
+                        }}
+                      >
+                        {uri}
+                      </Text>
+                      <Copier
+                        display={{ base: "none", md: "inline-flex" }}
+                        type="token_uri"
+                        value={uri}
+                        copyLabel="Token URI Copied!"
+                        ml={{ base: 1, md: 2 }}
+                      />
+                    </Link>
+                  </Flex>
                 </NftInfoItem>
               </Flex>
             </Flex>

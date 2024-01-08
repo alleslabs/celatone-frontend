@@ -21,16 +21,12 @@ export const TxsTableRow = ({
   isNftMint,
   isNftTransfer,
 }: TxsTableRowProps) => {
-  let eventType;
-  if (isNftBurn) {
-    eventType = "Burned";
-  }
-  if (isNftMint) {
-    eventType = "Minted";
-  }
-  if (isNftTransfer) {
-    eventType = "Transferred";
-  }
+  const getEventMessage = () => {
+    if (isNftBurn) return "Burned";
+    if (isNftMint) return "Minted";
+    if (isNftTransfer) return "Transferred";
+    return "-";
+  };
 
   return (
     <Box w="full" minW="min-content">
@@ -49,7 +45,7 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Text variant="body2" color="text.main">
-            {eventType}
+            {getEventMessage()}
           </Text>
         </TableRow>
         <TableRow>
