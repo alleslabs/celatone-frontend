@@ -3,7 +3,7 @@ import { Box, Divider } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { EmptyState } from "lib/components/state";
 import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
-import { useNftTokenListByAddressPagination } from "lib/services/nftService";
+import { useNftTokenListByAddressPagination } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 import { NftList } from "./NftList";

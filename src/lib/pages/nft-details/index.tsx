@@ -29,13 +29,13 @@ import PageContainer from "lib/components/PageContainer";
 import { EmptyState, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
-import { useCollectionByCollectionAddress } from "lib/services/collectionService";
 import {
+  useCollectionByCollectionAddress,
   useMetadata,
   useNftInfo,
   useNftMutateEventsCount,
   useNftTransactionsCount,
-} from "lib/services/nftService";
+} from "lib/services/nft";
 import type { HexAddr, Option } from "lib/types";
 
 import Attributes from "./components/Attributes";

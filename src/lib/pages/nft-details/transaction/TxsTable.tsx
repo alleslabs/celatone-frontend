@@ -1,7 +1,7 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { NftTransactionPagination } from "lib/services/nft";
+import type { NftTransactionPagination } from "lib/services/nft/nft";
 
 import { TxsTableHeader } from "./TxsTableHeader";
 import { TxsTableMobileCard } from "./TxsTableMobileCard";

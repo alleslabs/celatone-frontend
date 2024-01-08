@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { useCollectionActivitiesExpression } from "../expression";
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { HexAddr } from "lib/types";
 
@@ -23,7 +24,6 @@ import {
   queryCollectionMutateEventsPagination,
   queryCollectionListByAddress,
 } from "./collection";
-import { useCollectionActivitiesExpression } from "./expression/collectionExpression";
 
 export const useCollectionsPagination = (
   pageSize: number,

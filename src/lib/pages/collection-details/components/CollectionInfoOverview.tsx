@@ -5,13 +5,13 @@ import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
-import { useCollectionCreator } from "lib/services/collectionService";
+import { useCollectionCreator } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-import InfoCard from "./InfoCard";
+import { InfoCard } from "./InfoCard";
 
-interface Props {
+interface CollectionInfoOverviewProps {
   collectionAddress: HexAddr;
   collectionName: string;
   desc: string;
@@ -29,7 +29,7 @@ const CollectionInfoOverview = ({
   activities,
   mutateEventes,
   royalty,
-}: Props) => {
+}: CollectionInfoOverviewProps) => {
   const { data: collectionCreator, isLoading } =
     useCollectionCreator(collectionAddress);
 

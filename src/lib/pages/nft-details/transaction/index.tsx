@@ -4,7 +4,7 @@ import type { ChangeEvent } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useNftTransactionsPagination } from "lib/services/nftService";
+import { useNftTransactionsPagination } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 import { TxsTable } from "./TxsTable";

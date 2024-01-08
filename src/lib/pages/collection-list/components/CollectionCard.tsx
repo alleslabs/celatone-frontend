@@ -1,8 +1,8 @@
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
-import type { Collection } from "lib/services/collection";
-import { useMetadata } from "lib/services/nftService";
+import { useMetadata } from "lib/services/nft";
+import type { Collection } from "lib/services/nft/collection";
 
 const CollectionCard = ({ collectionInfo }: { collectionInfo: Collection }) => {
   const { uri, description, name } = collectionInfo;

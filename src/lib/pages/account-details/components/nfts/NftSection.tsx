@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { useCollectionListByAddress } from "lib/services/collectionService";
+import { useCollectionListByAddress } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 import { FilterItem } from "./FilterItem";

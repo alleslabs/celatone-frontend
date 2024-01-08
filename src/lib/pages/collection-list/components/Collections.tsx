@@ -5,7 +5,7 @@ import { useState } from "react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useCollectionsPagination } from "lib/services/collectionService";
+import { useCollectionsPagination } from "lib/services/nft";
 
 import CollectionList from "./CollectionList";
 

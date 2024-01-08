@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import { useMetadata } from "lib/services/nftService";
+import { useMetadata } from "lib/services/nft";
 
 interface Props {
   collectionName: string;

@@ -3,7 +3,7 @@ import { Grid, Box, Text, Badge, Flex } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableRow } from "lib/components/table";
-import type { CollectionMutateEvent } from "lib/services/collection";
+import type { CollectionMutateEvent } from "lib/services/nft/collection";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const RemarkRender = ({

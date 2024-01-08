@@ -9,9 +9,9 @@ interface CopyTemplateProps {
   copyLabel?: string;
   triggerElement: JSX.Element;
   isDisabled?: boolean;
-  display?: LayoutProps["display"];
   ml?: BoxProps["ml"];
   w?: BoxProps["width"];
+  display?: LayoutProps["display"];
 }
 
 export const CopyTemplate = ({

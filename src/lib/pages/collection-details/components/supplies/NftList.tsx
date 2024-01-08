@@ -3,7 +3,7 @@ import { SimpleGrid } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { NftCard } from "lib/components/NftCard";
 import { EmptyState } from "lib/components/state";
-import type { NftToken } from "lib/services/nft";
+import type { NftToken } from "lib/services/nft/nft";
 
 const NftList = ({
   nfts,

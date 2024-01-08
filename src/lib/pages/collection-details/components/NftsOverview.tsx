@@ -12,7 +12,7 @@ import { Loading } from "lib/components/Loading";
 import { NftCard } from "lib/components/NftCard";
 import { EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import type { NftToken } from "lib/services/nft";
+import type { NftToken } from "lib/services/nft/nft";
 import type { HexAddr } from "lib/types";
 
 const NftsOverview = ({

@@ -10,7 +10,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -29,8 +28,8 @@ import {
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
   useCollectionTotalBurnedCount,
-} from "lib/services/collectionService";
-import { useNftTokenListPagination } from "lib/services/nftService";
+  useNftTokenListPagination,
+} from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 import Activities from "./components/activities";
@@ -255,7 +254,7 @@ const CollectionDetailsBody = ({
   );
 };
 
-const CollectionDetails = observer(() => {
+const CollectionDetails = () => {
   const router = useRouter();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 
@@ -283,6 +282,6 @@ const CollectionDetails = observer(() => {
       />
     </PageContainer>
   );
-});
+};
 
 export default CollectionDetails;

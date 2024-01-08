@@ -3,7 +3,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 
-const InfoCard = ({
+export const InfoCard = ({
   title,
   icon,
   content,
@@ -15,41 +15,37 @@ const InfoCard = ({
   content: number;
   onClick: () => void;
   isDisabled: boolean;
-}) => {
-  return (
-    <Flex
-      p={4}
-      transition="all .25s ease-in-out"
-      borderRadius={8}
-      w="full"
-      alignItems="center"
-      justifyContent="space-between"
-      {...(isDisabled
-        ? {
-            bg: "gray.900",
-            cursor: "not-allowed",
-          }
-        : {
-            bg: "gray.800",
-            _hover: { bg: "gray.700" },
-            cursor: "pointer",
-            onClick,
-          })}
-    >
-      <Flex gap={3} alignItems="center">
-        <CustomIcon name={icon} boxSize={6} color="gray.600" />
-        <Flex flexDirection="column">
-          <Text variant="body1" color="text.dark" fontWeight={600}>
-            {title}
-          </Text>
-          <Heading as="h6" variant="h6" fontWeight={600}>
-            {content}
-          </Heading>
-        </Flex>
+}) => (
+  <Flex
+    p={4}
+    transition="all .25s ease-in-out"
+    borderRadius={8}
+    w="full"
+    alignItems="center"
+    justifyContent="space-between"
+    {...(isDisabled
+      ? {
+          bg: "gray.900",
+          cursor: "not-allowed",
+        }
+      : {
+          bg: "gray.800",
+          _hover: { bg: "gray.700" },
+          cursor: "pointer",
+          onClick,
+        })}
+  >
+    <Flex gap={3} alignItems="center">
+      <CustomIcon name={icon} boxSize={6} color="gray.600" />
+      <Flex flexDirection="column">
+        <Text variant="body1" color="text.dark" fontWeight={600}>
+          {title}
+        </Text>
+        <Heading as="h6" variant="h6" fontWeight={600}>
+          {content}
+        </Heading>
       </Flex>
-      <CustomIcon name="chevron-right" color="gray.600" />
     </Flex>
-  );
-};
-
-export default InfoCard;
+    <CustomIcon name="chevron-right" color="gray.600" />
+  </Flex>
+);

@@ -1,3 +1,3 @@
-import Collection from "lib/pages/collection-details";
+import CollectionDetails from "lib/pages/collection-details";
 
-export default Collection;
+export default CollectionDetails;

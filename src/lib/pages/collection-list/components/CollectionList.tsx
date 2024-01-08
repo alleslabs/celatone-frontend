@@ -3,7 +3,7 @@ import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import { AppLink } from "lib/components/AppLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { Collection } from "lib/services/collection";
+import type { Collection } from "lib/services/nft/collection";
 
 import CollectionCard from "./CollectionCard";
 

@@ -1,3 +1,3 @@
-import NftDetail from "lib/pages/nft-details";
+import NftDetails from "lib/pages/nft-details";
 
-export default NftDetail;
+export default NftDetails;

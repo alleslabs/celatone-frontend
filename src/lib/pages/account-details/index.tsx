@@ -29,7 +29,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
-import { useNftTokenCountByAddress } from "lib/services/nftService";
+import { useNftTokenCountByAddress } from "lib/services/nft";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 

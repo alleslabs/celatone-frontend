@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { Loading } from "lib/components/Loading";
 import { NftCard } from "lib/components/NftCard";
-import type { NftToken } from "lib/services/nft";
+import type { NftToken } from "lib/services/nft/nft";
 
 export const NftList = ({
   nfts,

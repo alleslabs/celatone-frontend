@@ -9,7 +9,7 @@ import { EmptyState } from "lib/components/state";
 import {
   useNftTokenListByAddressPagination,
   useUserNftListByCollectionPagination,
-} from "lib/services/nftService";
+} from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 import { NftList } from "./NftList";

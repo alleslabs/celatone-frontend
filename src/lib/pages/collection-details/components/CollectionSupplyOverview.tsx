@@ -42,6 +42,8 @@ const CollectionSupplyOverview = ({
   currentSupply: number;
   maxSupply?: number;
 }) => {
+  const isMobile = useMobile();
+
   const currentSupplyTooltip =
     "Number of NFTs currently available in the market. Calculated by subtracting total burned NFTs from the total minted.";
   const totalMintedTooltip =
@@ -51,7 +53,6 @@ const CollectionSupplyOverview = ({
   const maxSupplyTooltip =
     "The maximum number of NFTs that can ever be minted in this collection.";
 
-  const isMobile = useMobile();
   return isMobile ? (
     <Stack p="16px" spacing="16px" borderRadius="8px" bg="gray.900">
       <Box>

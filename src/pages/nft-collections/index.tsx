@@ -1,3 +1,3 @@
-import NftCollectionPage from "lib/pages/collection-list";
+import NftCollections from "lib/pages/collection-list";
 
-export default NftCollectionPage;
+export default NftCollections;

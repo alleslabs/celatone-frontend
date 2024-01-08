@@ -5,7 +5,7 @@ import { useState } from "react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useNftTokenListPagination } from "lib/services/nftService";
+import { useNftTokenListPagination } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 import NftList from "./NftList";
