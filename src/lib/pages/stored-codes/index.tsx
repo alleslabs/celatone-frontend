@@ -30,13 +30,10 @@ interface CodeFilterState {
 
 const StoredCodes = observer(() => {
   const router = useRouter();
-  const govConfig = useGovConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
-  const onRowSelect = (codeId: number) =>
-    navigate({
-      pathname: "/codes/[codeId]",
-      query: { codeId },
-    });
+  const { address } = useCurrentChain();
+  const govConfig = useGovConfig({ shouldRedirect: false });
+
   // TODO refactor to useState
   const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
@@ -51,16 +48,21 @@ const StoredCodes = observer(() => {
     storedCodes: stored,
     isStoredCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
+  const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
+
+  const isPermissionedNetwork =
+    data?.permission !== AccessConfigPermission.EVERYBODY;
+  const isAllowed = Boolean(address && data?.addresses?.includes(address));
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);
   }, [router.isReady]);
-  const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
-  const { address } = useCurrentChain();
-  const isAllowed = Boolean(address && data?.addresses?.includes(address));
 
-  const isPermissionedNetwork =
-    data?.permission !== AccessConfigPermission.EVERYBODY;
+  const onRowSelect = (codeId: number) =>
+    navigate({
+      pathname: "/codes/[codeId]",
+      query: { codeId },
+    });
 
   return (
     <PageContainer>
@@ -117,7 +119,6 @@ const StoredCodes = observer(() => {
           }}
         />
       </Flex>
-
       <MyStoredCodesTable
         codes={stored}
         totalData={storedCodesCount}

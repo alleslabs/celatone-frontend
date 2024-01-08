@@ -117,7 +117,7 @@ export const CodeSelectDrawerButton = ({
             <Tabs px={6}>
               <TabList borderBottom="1px" borderColor="gray.800">
                 <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
-                <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
+                <CustomTab count={savedCodesCount}>My Saved Codes</CustomTab>
               </TabList>
               <TabPanels>
                 <TabPanel p={0}>

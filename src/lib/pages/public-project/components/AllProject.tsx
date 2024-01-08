@@ -54,42 +54,39 @@ export const AllProject = observer(() => {
   if (isLoading) return <Loading withBorder />;
   if (!publicProjectInfo)
     return (
-      <Flex flexDirection="column" alignItems="center" minW="full">
-        <Flex
-          bg="gray.900"
-          borderRadius={8}
-          p={12}
-          w="full"
-          flexDirection="column"
-          alignItems="center"
+      <Flex
+        flexDirection="column"
+        alignItems="center"
+        w="full"
+        bg="gray.900"
+        borderRadius={8}
+        p={12}
+      >
+        <StateImage imageVariant="empty" />
+        <Heading as="h6" variant="h6" mt={2}>
+          Gathering Public Projects...
+        </Heading>
+        <Text
+          mt={4}
+          mb={8}
+          color="text.dark"
+          textAlign="center"
+          whiteSpace="pre-wrap"
         >
-          <StateImage imageVariant="empty" />
-          <Heading as="h6" variant="h6" mt={2}>
-            Gathering Public Projects...
-          </Heading>
-          <Text
-            mt={4}
-            mb={8}
-            color="text.dark"
-            textAlign="center"
-            whiteSpace="pre-wrap"
-          >
-            We are currently gathering public projects to feature here.
-            <br /> To share yours with the community, please submit your
-            request.
-          </Text>
-          <Link
-            href="https://github.com/alleslabs/celatone-api"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
-          >
-            <Button gap={2} variant="outline-primary">
-              <CustomIcon name="github" />
-              Submit on Github
-            </Button>
-          </Link>
-        </Flex>
+          We are currently gathering public projects to feature here.
+          <br /> To share yours with the community, please submit your request.
+        </Text>
+        <Link
+          href="https://github.com/alleslabs/celatone-api"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
+        >
+          <Button gap={2} variant="outline-primary">
+            <CustomIcon name="github" />
+            Submit on Github
+          </Button>
+        </Link>
       </Flex>
     );
 
