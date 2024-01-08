@@ -129,17 +129,20 @@ const NftDetailsBody = ({
 
   const imageSize = "360px";
 
-  let displayCollectionName = "";
-  if (collectionName.length > 20) {
-    displayCollectionName = `${collectionName.slice(0, 20)}...`;
-  } else displayCollectionName = collectionName;
+  const getDisplayCollectionName = () => {
+    if (collectionName.length > 20) {
+      return `${collectionName.slice(0, 20)}...`;
+    }
+    return collectionName;
+  };
+
   return (
     <>
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
           {
-            text: displayCollectionName,
+            text: getDisplayCollectionName(),
             href: `/nft-collections/${collectionAddress}`,
           },
           { text: tokenId },
@@ -155,7 +158,7 @@ const NftDetailsBody = ({
             {isMobile && (
               <NftTitle
                 collectionAddress={collectionAddress}
-                displayCollectionName={displayCollectionName}
+                displayCollectionName={getDisplayCollectionName()}
                 tokenId={tokenId}
               />
             )}
@@ -196,7 +199,7 @@ const NftDetailsBody = ({
                   <>
                     <NftTitle
                       collectionAddress={collectionAddress}
-                      displayCollectionName={displayCollectionName}
+                      displayCollectionName={getDisplayCollectionName()}
                       tokenId={tokenId}
                     />
                     <Button
@@ -251,7 +254,7 @@ const NftDetailsBody = ({
                   <Flex display="inline">
                     <Link href={uri} target="_blank">
                       <Text
-                        display="inline-flex"
+                        display="inline"
                         color="primary.dark"
                         variant="body2"
                         fontWeight={500}
@@ -264,14 +267,14 @@ const NftDetailsBody = ({
                       >
                         {uri}
                       </Text>
-                      <Copier
-                        display={{ base: "none", md: "inline-flex" }}
-                        type="token_uri"
-                        value={uri}
-                        copyLabel="Token URI Copied!"
-                        ml={{ base: 1, md: 2 }}
-                      />
                     </Link>
+                    <Copier
+                      display="inline-block"
+                      type="token_uri"
+                      value={uri}
+                      copyLabel="Copied!"
+                      ml={{ base: 1, md: 2 }}
+                    />
                   </Flex>
                 </NftInfoItem>
               </Flex>

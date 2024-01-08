@@ -23,7 +23,7 @@ export const MutateEventsTable = ({
   if (isLoading) return <Loading withBorder />;
   if (!mutateEvents || !mutateEvents.length) return emptyState;
 
-  const templateColumns = `130px minmax(250px, 1fr) 50px minmax(250px, 1fr) 280px 180px`;
+  const templateColumns = `130px minmax(250px, 1fr) 64px minmax(250px, 1fr) 240px 180px`;
 
   return isMobile ? (
     <MobileTableContainer>

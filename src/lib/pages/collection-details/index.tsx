@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -50,6 +50,7 @@ const CollectionDetailsBody = ({
   collectionAddress: HexAddr;
   tabParam: TabIndex;
 }) => {
+  const isMobile = useMobile();
   const { data: collection, isLoading } =
     useCollectionByCollectionAddress(collectionAddress);
 
@@ -95,29 +96,41 @@ const CollectionDetailsBody = ({
 
   const { supplies, isUnlimited, royalty } = collectionInfo;
   const { maxSupply, totalMinted, currentSupply } = supplies;
+  const getDisplayCollectionName = () => {
+    if (name.length > 20) {
+      return `${name.slice(0, 20)}...`;
+    }
+    return name;
+  };
 
   return (
     <Box>
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
-          { text: name },
+          { text: isMobile ? getDisplayCollectionName() : name },
         ]}
       />
       <Flex
         direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
-        alignItems="center"
+        alignItems={{ base: "start", md: "center" }}
+        w="full"
       >
-        <Flex direction="column" my={6} gap={1}>
-          <Heading as="h5" variant="h5" mb={1}>
+        <Flex
+          direction="column"
+          my={6}
+          gap={1}
+          maxW={{ base: "full", md: "800px" }}
+        >
+          <Heading as="h5" variant="h5" mb={1} className="ellipsis">
             {name}
           </Heading>
           <Flex
             mt={{ base: 2, md: 0 }}
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
-            alignItems="center"
+            alignItems={{ base: "start", md: "center" }}
           >
             <Text color="text.dark" variant="body2">
               Collection:
@@ -129,6 +142,7 @@ const CollectionDetailsBody = ({
                   type="user_address"
                   textFormat="normal"
                   maxWidth="full"
+                  fixedHeight={false}
                 />
               </Flex>
             </Tooltip>
@@ -144,6 +158,7 @@ const CollectionDetailsBody = ({
         </Flex>
         <Button
           variant="outline-primary"
+          minW="140px !important"
           w={{ base: "full", md: "auto" }}
           size={{ base: "sm", md: "md" }}
           mb={{ base: 4, md: 0 }}
