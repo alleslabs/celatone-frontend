@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#713](https://github.com/alleslabs/celatone-frontend/pull/713) Adjust search state consistency
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 
 ### Improvements
@@ -57,7 +58,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#713](https://github.com/alleslabs/celatone-frontend/pull/713) Adjust search state consistency
 - [#702](https://github.com/alleslabs/celatone-frontend/pull/702) api v1 - contract info
 - [#703](https://github.com/alleslabs/celatone-frontend/pull/703) api v1 - contract's query msgs
 - [#697](https://github.com/alleslabs/celatone-frontend/pull/697) api v1 - contract tables (migrations and related proposals)
