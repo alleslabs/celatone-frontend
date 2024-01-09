@@ -25,8 +25,6 @@ const SavedAccounts = observer(() => {
 
   const [keyword, setKeyword] = useState("");
 
-  const isSearching = !!keyword;
-
   const filteredsavedAccounts = useMemo(() => {
     if (!keyword) return savedAccounts;
     return savedAccounts.filter(
@@ -78,21 +76,21 @@ const SavedAccounts = observer(() => {
         size="lg"
         amptrackSection="saved-account-search"
       />
-      <SavedAccountsTable
-        accounts={filteredsavedAccounts}
-        isLoading={!isHydrated}
-        emptyState={
-          isSearching ? (
+      {savedAccounts.length ? (
+        <SavedAccountsTable
+          accounts={filteredsavedAccounts}
+          isLoading={!isHydrated}
+          emptyState={
             <EmptyState
               imageVariant="not-found"
               message="No matching accounts found. Make sure you are searching with account address, name, or description."
               withBorder
             />
-          ) : (
-            <AccountZeroState button={<SaveAccountButton />} />
-          )
-        }
-      />
+          }
+        />
+      ) : (
+        <AccountZeroState button={<SaveAccountButton />} />
+      )}
     </PageContainer>
   );
 });

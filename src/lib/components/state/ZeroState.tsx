@@ -65,29 +65,38 @@ const renderText = (listSlug: string) => {
 export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   const navigate = useInternalNavigate();
   return (
-    <Flex width="full" py={12} direction="column" alignContent="center">
-      <Flex alignItems="center" flexDir="column" gap={4}>
-        <StateImage imageVariant="empty" />
-        <Text color="text.dark">{renderText(list.value)}</Text>
-        {!isReadOnly && (
-          <ActionSection
-            list={list}
-            handleAction={() => navigate({ pathname: "/deploy" })}
-          />
-        )}
-      </Flex>
+    <Flex
+      width="full"
+      py={12}
+      gap={4}
+      direction="column"
+      alignItems="center"
+      borderY="1px solid"
+      borderColor="gray.700"
+    >
+      <StateImage imageVariant="empty" />
+      <Text color="text.dark">{renderText(list.value)}</Text>
+      {!isReadOnly && (
+        <ActionSection
+          list={list}
+          handleAction={() => navigate({ pathname: "/deploy" })}
+        />
+      )}
     </Flex>
   );
 };
 
 export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
-    alignItems="center"
+    width="full"
+    py={12}
     gap={4}
-    color="text.dark"
+    my={8}
     direction="column"
-    my={12}
-    py={8}
+    alignItems="center"
+    borderY="1px solid"
+    color="text.dark"
+    borderColor="gray.700"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved accounts.</Flex>
@@ -103,12 +112,15 @@ export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
 
 export const SavedCodeZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
-    alignItems="center"
+    width="full"
+    py={12}
     gap={4}
-    color="text.dark"
+    my={8}
     direction="column"
-    my={4}
-    py={8}
+    alignItems="center"
+    borderY="1px solid"
+    borderColor="gray.700"
+    color="text.dark"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved codes.</Flex>

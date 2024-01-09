@@ -1,4 +1,12 @@
-import { Box, SimpleGrid, Flex, Button, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  SimpleGrid,
+  Flex,
+  Button,
+  Link,
+  Text,
+  Heading,
+} from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
@@ -7,7 +15,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, StateImage } from "lib/components/state";
 import { usePublicProjectStore } from "lib/providers/store";
 import { usePublicProjects } from "lib/services/publicProjectService";
 import type { PublicProjectInfo } from "lib/types";
@@ -46,18 +54,35 @@ export const AllProject = observer(() => {
   if (isLoading) return <Loading withBorder />;
   if (!publicProjectInfo)
     return (
-      <Flex flexDirection="column" alignItems="center">
-        <EmptyState
-          imageVariant="empty"
-          message="We are currently gathering public projects to feature here. If you would like to share your project with the community, please submit your request."
-        />
+      <Flex
+        flexDirection="column"
+        alignItems="center"
+        w="full"
+        bg="gray.900"
+        borderRadius={8}
+        p={12}
+      >
+        <StateImage imageVariant="empty" />
+        <Heading as="h6" variant="h6" mt={2}>
+          Gathering Public Projects...
+        </Heading>
+        <Text
+          mt={4}
+          mb={8}
+          color="text.dark"
+          textAlign="center"
+          whiteSpace="pre-wrap"
+        >
+          We are currently gathering public projects to feature here.
+          <br /> To share yours with the community, please submit your request.
+        </Text>
         <Link
           href="https://github.com/alleslabs/celatone-api"
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
         >
-          <Button gap={2} mt={8} variant="outline-primary">
+          <Button gap={2} variant="outline-primary">
             <CustomIcon name="github" />
             Submit on Github
           </Button>
@@ -77,8 +102,10 @@ export const AllProject = observer(() => {
       />
       {!filteredPublicProjects.length ? (
         <EmptyState
-          message="None of your lists matches this search."
+          message="No matching projects found.
+        Make sure you are searching with Project Name."
           imageVariant="not-found"
+          withBorder
         />
       ) : (
         <SimpleGrid

@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#713](https://github.com/alleslabs/celatone-frontend/pull/713) Adjust search state consistency
 - [#712](https://github.com/alleslabs/celatone-frontend/pull/712) api v1 - proposal list
 - [#714](https://github.com/alleslabs/celatone-frontend/pull/714) api v1 - recent contracts list
 - [#710](https://github.com/alleslabs/celatone-frontend/pull/710) Refactor all address types

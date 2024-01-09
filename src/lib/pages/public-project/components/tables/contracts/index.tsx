@@ -113,13 +113,12 @@ export const PublicProjectContractTable = observer(
           <ContentRender publicContracts={publicContracts} />
         ) : (
           <EmptyState
-            my={4}
             message={
               contracts.length
-                ? "No matching contract found for this project. Make sure you are searching with Contract Address or Contract Name"
+                ? "No matching contracts found for this project. Make sure you are searching with Contract Address or Contract Name"
                 : "There are currently no contracts related to this project."
             }
-            imageVariant={onViewMore && "empty"}
+            imageVariant={contracts.length ? "not-found" : "empty"}
             withBorder
           />
         )}
