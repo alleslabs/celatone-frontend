@@ -1,15 +1,9 @@
 name: Playwright Tests
 on:
-  push:
-    branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
-      - develop
+  deployment_status:
 jobs:
-  test:
+  run-e2es:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +17,8 @@ jobs:
         run: yarn playwright install --with-deps
       - name: Run Playwright tests
         run: yarn playwright test
+        env:
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
