@@ -54,7 +54,7 @@ export const getNfts = async (
         collectionAddress,
         limit: pageSize,
         offset,
-        search,
+        search: `%${search}%`,
       },
     })
     .then(({ data: res }) => zNft.array().parse(res.data.nfts));
@@ -133,7 +133,7 @@ export const zMetadata = z
     name: z.string(),
     description: z.string(),
     image: z.string(),
-    image_url: z.string(),
+    image_url: z.string().optional(),
     attributes: z
       .object({
         trait_type: z.string().optional(),

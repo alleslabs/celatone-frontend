@@ -11,7 +11,7 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 import { InfoCard } from "./InfoCard";
 
-interface CollectionInfoOverviewProps {
+interface CollectionInfoSectionProps {
   collectionAddress: HexAddr32;
   collectionName: string;
   desc: string;
@@ -21,7 +21,7 @@ interface CollectionInfoOverviewProps {
   royalty: number;
 }
 
-export const CollectionInfoOverview = ({
+export const CollectionInfoSection = ({
   collectionAddress,
   collectionName,
   desc,
@@ -29,7 +29,7 @@ export const CollectionInfoOverview = ({
   activities,
   mutateEventes,
   royalty,
-}: CollectionInfoOverviewProps) => {
+}: CollectionInfoSectionProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
 

@@ -184,9 +184,9 @@ export const useNftsByAccount = (
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT,
       chainConfig.indexer,
       accountAddress,
-      search,
       pageSize,
       offset,
+      search,
     ],
     async () =>
       getNftsByAccount(

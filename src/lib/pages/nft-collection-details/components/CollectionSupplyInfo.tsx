@@ -31,19 +31,19 @@ const InfoComponent = ({
   </div>
 );
 
-interface CollectionSupplyOverviewProps {
+interface CollectionSupplyInfoProps {
   totalBurned: number;
   totlaMinted: number;
   currentSupply: number;
   maxSupply?: number;
 }
 
-export const CollectionSupplyOverview = ({
+export const CollectionSupplyInfo = ({
   totalBurned,
   totlaMinted,
   currentSupply,
   maxSupply,
-}: CollectionSupplyOverviewProps) => {
+}: CollectionSupplyInfoProps) => {
   const isMobile = useMobile();
 
   const currentSupplyTooltip =

@@ -5,22 +5,27 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useCollectionsByAccount } from "lib/services/nft";
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
 import { NftsByCollection } from "./NftsByCollection";
 
-interface NftsSectionProps {
-  address: HexAddr;
-  totalCount: number;
+interface SelectedCollection {
+  collectionAddress: HexAddr32;
+  nftsCount: number;
 }
 
-export const NftsSection = ({ address, totalCount }: NftsSectionProps) => {
+interface NftsSectionProps {
+  address: HexAddr;
+  totalData: Option<number>;
+}
+
+export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
   const isMobile = useMobile();
   const { data: collections, isLoading } = useCollectionsByAccount(address);
 
-  const [collection, setCollection] = useState<HexAddr32>();
-  const [nftCount, setNftCount] = useState<number>(totalCount);
+  const [selectedCollection, setCselectedCollection] =
+    useState<SelectedCollection>();
 
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
@@ -32,16 +37,14 @@ export const NftsSection = ({ address, totalCount }: NftsSectionProps) => {
       />
     );
 
-  const onClick = (count: number, collectionAddress?: HexAddr32) => {
-    setCollection(collectionAddress);
-    setNftCount(count);
-  };
+  const handleOnClick = (collection?: SelectedCollection) =>
+    setCselectedCollection(collection);
 
   return (
     <Box mt={{ base: 4, md: 8 }}>
       <Flex gap="8px" align="center">
         <Heading variant="h6">NFTs</Heading>
-        <Badge>{totalCount}</Badge>
+        <Badge>{totalData}</Badge>
       </Flex>
       <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
         <Stack
@@ -51,28 +54,33 @@ export const NftsSection = ({ address, totalCount }: NftsSectionProps) => {
         >
           <FilterItem
             collectionName="All Collections"
-            onClick={() => onClick(totalCount, undefined)}
-            isActive={collection === undefined}
-            count={totalCount}
+            onClick={() => handleOnClick(undefined)}
+            isActive={selectedCollection === undefined}
+            count={totalData}
           />
           {collections.map((item) => (
             <FilterItem
               key={item.collectionAddress}
               collectionName={item.collectionName}
-              onClick={() => onClick(item.hold, item.collectionAddress)}
+              onClick={() =>
+                handleOnClick({
+                  collectionAddress: item.collectionAddress,
+                  nftsCount: item.hold,
+                })
+              }
               uri={item.uri}
-              isActive={collection === item.collectionAddress}
+              isActive={
+                selectedCollection?.collectionAddress === item.collectionAddress
+              }
               count={item.hold}
             />
           ))}
         </Stack>
-        <Box w="100%">
-          <NftsByCollection
-            accountAddress={address}
-            totalData={nftCount}
-            collectionAddress={collection}
-          />
-        </Box>
+        <NftsByCollection
+          accountAddress={address}
+          totalData={selectedCollection?.nftsCount ?? totalData}
+          collectionAddress={selectedCollection?.collectionAddress}
+        />
       </Flex>
     </Box>
   );

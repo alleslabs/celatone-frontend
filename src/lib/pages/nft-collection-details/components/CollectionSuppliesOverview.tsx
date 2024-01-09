@@ -7,6 +7,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import { TabIndex } from "../types";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { NftCard } from "lib/components/nft";
@@ -15,19 +16,19 @@ import { ViewMore } from "lib/components/table";
 import type { Nft } from "lib/services/nft";
 import type { HexAddr32, Option } from "lib/types";
 
-interface NftsOverviewProps {
+interface CollectionSuppliesOverviewProps {
   collectionAddress: HexAddr32;
   totalCount: number;
   nfts: Option<Nft[]>;
   isLoading: boolean;
 }
 
-export const NftsOverview = ({
+export const CollectionSuppliesOverview = ({
   collectionAddress,
   totalCount,
   nfts,
   isLoading,
-}: NftsOverviewProps) => {
+}: CollectionSuppliesOverviewProps) => {
   const navigate = useInternalNavigate();
   const displayedNftCount = useBreakpointValue({
     "2xl": 6,
@@ -40,7 +41,7 @@ export const NftsOverview = ({
   if (isLoading) return <Loading />;
   if (!nftsInfo || !nftsInfo.length)
     return (
-      <EmptyState message="NFT not found." imageVariant="empty" withBorder />
+      <EmptyState message="NFTs not found." imageVariant="empty" withBorder />
     );
 
   return (
@@ -62,8 +63,8 @@ export const NftsOverview = ({
         <ViewMore
           onClick={() =>
             navigate({
-              pathname: "/nft-collections/[collectionAddress]/supplies",
-              query: { collectionAddress },
+              pathname: "/nft-collections/[collectionAddress]/[tab]",
+              query: { collectionAddress, tab: TabIndex.Supplies },
             })
           }
         />

@@ -1,12 +1,12 @@
 import { Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import { useAccountNfts } from "../../data";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useNftsByAccount, useAccountNftsByCollection } from "lib/services/nft";
 import type { HexAddr, HexAddr32 } from "lib/types";
 
 interface NftsByCollectionProps {
@@ -30,27 +30,20 @@ export const NftsByCollection = ({
     setPageSize,
     offset,
   } = usePaginator({
+    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
-
-  const { data: allNfts, isFetching: isAllNftsLoading } = useNftsByAccount(
+  const { data: nfts, isLoading } = useAccountNfts(
     accountAddress,
     pageSize,
     offset,
-    searchKeyword
+    searchKeyword,
+    collectionAddress
   );
-  const { data: nftsByCollection, isFetching: isNftsByCollectionLoading } =
-    useAccountNftsByCollection(
-      accountAddress,
-      pageSize,
-      offset,
-      searchKeyword,
-      collectionAddress
-    );
 
   useEffect(() => {
     setPageSize(10);
@@ -59,7 +52,7 @@ export const NftsByCollection = ({
   }, [collectionAddress, setPageSize, setCurrentPage]);
 
   return (
-    <Stack spacing="24px">
+    <Stack spacing="24px" w="full">
       <InputWithIcon
         placeholder="Search with Token ID"
         value={searchKeyword}
@@ -68,12 +61,12 @@ export const NftsByCollection = ({
         size={{ base: "md", md: "lg" }}
       />
       <NftList
-        nfts={collectionAddress ? nftsByCollection : allNfts}
-        isLoading={isNftsByCollectionLoading || isAllNftsLoading}
+        nfts={nfts}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
             message={
-              collectionAddress
+              searchKeyword
                 ? "There are no NFTs matches your keyword."
                 : "There are currently no NFTs held by this account."
             }

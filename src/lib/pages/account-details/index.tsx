@@ -400,7 +400,7 @@ const AccountDetailsBody = ({
             <DelegationsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <NftsSection totalCount={nftCount ?? 0} address={hexAddress} />
+            <NftsSection address={hexAddress} totalData={nftCount} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

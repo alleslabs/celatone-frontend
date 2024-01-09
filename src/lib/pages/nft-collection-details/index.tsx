@@ -32,10 +32,10 @@ import {
 } from "lib/services/nft";
 import { isHex32Address } from "lib/utils";
 
-import { CollectionInfoOverview } from "./components/CollectionInfoOverview";
-import { CollectionSupply } from "./components/CollectionSupply";
-import { CollectionSupplyOverview } from "./components/CollectionSupplyOverview";
-import { NftsOverview } from "./components/NftsOverview";
+import { CollectionInfoSection } from "./components/CollectionInfoSection";
+import { CollectionSupplies } from "./components/CollectionSupplies";
+import { CollectionSuppliesOverview } from "./components/CollectionSuppliesOverview";
+import { CollectionSupplyInfo } from "./components/CollectionSupplyInfo";
 import { Activities } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
 import { useCollectionInfos } from "./data";
@@ -210,19 +210,19 @@ const CollectionDetailsBody = ({
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Flex direction="column" gap={10}>
-              <CollectionSupplyOverview
+              <CollectionSupplyInfo
                 totalBurned={totalBurnedCount}
                 currentSupply={currentSupply}
                 totlaMinted={totalMinted}
                 maxSupply={maxSupply}
               />
-              <NftsOverview
+              <CollectionSuppliesOverview
                 nfts={nfts}
                 totalCount={currentSupply}
                 collectionAddress={collectionAddress}
                 isLoading={isNftLoading}
               />
-              <CollectionInfoOverview
+              <CollectionInfoSection
                 collectionAddress={collectionAddress}
                 collectionName={name}
                 desc={description}
@@ -234,7 +234,7 @@ const CollectionDetailsBody = ({
             </Flex>
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <CollectionSupply
+            <CollectionSupplies
               collectionAddress={collectionAddress}
               totalSupply={currentSupply}
             />

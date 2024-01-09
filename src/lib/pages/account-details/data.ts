@@ -13,10 +13,13 @@ import {
 } from "lib/services/contractService";
 import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
+import { useAccountNftsByCollection, useNftsByAccount } from "lib/services/nft";
 import type {
   BechAddr,
   CodeInfo,
   ContractInfo,
+  HexAddr,
+  HexAddr32,
   Nullish,
   Option,
   TokenWithValue,
@@ -421,4 +424,28 @@ export const useAccountTotalValue = (address: BechAddr) => {
       .add(totalValueTokenWithValue(totalCommission, defaultValue)) as USD<Big>,
     isLoading: false,
   };
+};
+
+export const useAccountNfts = (
+  accountAddress: HexAddr,
+  pageSize: number,
+  offset: number,
+  search: string,
+  collectionAddress?: HexAddr32
+) => {
+  const allNftsResult = useNftsByAccount(
+    accountAddress,
+    pageSize,
+    offset,
+    search
+  );
+  const collectionNftsResult = useAccountNftsByCollection(
+    accountAddress,
+    pageSize,
+    offset,
+    search,
+    collectionAddress
+  );
+
+  return collectionAddress ? collectionNftsResult : allNftsResult;
 };

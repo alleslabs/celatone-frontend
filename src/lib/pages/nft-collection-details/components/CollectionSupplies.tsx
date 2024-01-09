@@ -9,15 +9,15 @@ import { EmptyState } from "lib/components/state";
 import { useNfts } from "lib/services/nft";
 import type { HexAddr32 } from "lib/types";
 
-interface CollectionSupplyProps {
+interface CollectionSuppliesProps {
   collectionAddress: HexAddr32;
   totalSupply: number;
 }
 
-export const CollectionSupply = ({
+export const CollectionSupplies = ({
   collectionAddress,
   totalSupply,
-}: CollectionSupplyProps) => {
+}: CollectionSuppliesProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
 
   const {
