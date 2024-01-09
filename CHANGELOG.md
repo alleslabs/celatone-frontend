@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#715](https://github.com/alleslabs/celatone-frontend/pull/715) Setup Playwright, blocks page test case
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 
 ### Improvements
