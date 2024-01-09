@@ -54,3 +54,7 @@ next.config.wizardcopy.js
 # yarn 
 /.yarn
 .yarnrc.yml
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

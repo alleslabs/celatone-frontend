@@ -23,7 +23,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "jest --coverage",
+    "test:unit": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "lint": "next lint",
@@ -125,8 +127,10 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^18.1.0",
     "@commitlint/cz-commitlint": "^18.2.0",
+    "@playwright/test": "^1.40.1",
     "@types/file-saver": "^2.0.5",
     "@types/jest": "^29.4.0",
+    "@types/node": "^20.10.6",
     "@types/node-gzip": "^1.1.0",
     "@types/react": "^18.0.21",
     "@types/react-linkify": "^1.0.1",
