@@ -39,43 +39,6 @@ export const getRelatedProposalsCountByModuleId = graphql(`
   }
 `);
 
-export const getProposalList = graphql(`
-  query getProposalList(
-    $expression: proposals_bool_exp
-    $offset: Int!
-    $pageSize: Int!
-  ) {
-    proposals(
-      where: $expression
-      order_by: { id: desc }
-      offset: $offset
-      limit: $pageSize
-    ) {
-      type
-      id
-      title
-      voting_end_time
-      deposit_end_time
-      resolved_height
-      status
-      is_expedited
-      account {
-        address
-      }
-    }
-  }
-`);
-
-export const getProposalListCount = graphql(`
-  query getProposalListCount($expression: proposals_bool_exp) {
-    proposals_aggregate(where: $expression) {
-      aggregate {
-        count
-      }
-    }
-  }
-`);
-
 export const getProposalTypes = graphql(`
   query getProposalTypes {
     proposals(distinct_on: type) {

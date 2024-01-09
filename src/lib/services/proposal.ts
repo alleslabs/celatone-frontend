@@ -2,15 +2,19 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import { zUtcDate, zProposalType, zBechAddr } from "lib/types";
+import { zUtcDate, zProposalType, zBechAddr, zProposalStatus } from "lib/types";
 import type {
   AccessConfigPermission,
   BechAddr,
   BechAddr32,
   SnakeToCamelCaseNested,
   Proposal,
+  Option,
+  BechAddr20,
+  ProposalStatus,
+  ProposalType,
 } from "lib/types";
-import { parseProposalStatus, snakeToCamel } from "lib/utils";
+import { snakeToCamel } from "lib/utils";
 
 interface DepositParams {
   min_deposit: Coin[];
@@ -69,11 +73,11 @@ const zProposalsResponseItem = z
     id: z.number().nonnegative(),
     is_expedited: z.boolean(),
     proposer: zBechAddr,
-    resolved_height: z.number().nullish(),
-    status: z.string().transform(parseProposalStatus),
+    resolved_height: z.number().nullable(),
+    status: zProposalStatus,
     title: z.string(),
     type: zProposalType,
-    voting_end_time: zUtcDate,
+    voting_end_time: zUtcDate.nullable(),
   })
   .transform<Proposal>((val) => ({
     depositEndTime: val.deposit_end_time,
@@ -93,6 +97,28 @@ const zProposalsResponse = z.object({
 });
 
 export type ProposalsResponse = z.infer<typeof zProposalsResponse>;
+
+export const getProposals = async (
+  endpoint: string,
+  limit: number,
+  offset: number,
+  proposer: Option<BechAddr20>,
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string
+): Promise<ProposalsResponse> =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+        proposer,
+        statuses: statuses.join(","),
+        types: types.join(","),
+        search,
+      },
+    })
+    .then(({ data }) => zProposalsResponse.parse(data));
 
 export const getProposalsByAddress = async (
   endpoint: string,
@@ -115,8 +141,8 @@ const zRelatedProposalsResponseItem = z
     proposal_id: z.number().nonnegative(),
     is_expedited: z.boolean(),
     proposer: zBechAddr,
-    resolved_height: z.number().nullish(),
-    status: z.string().transform(parseProposalStatus),
+    resolved_height: z.number().nullable(),
+    status: zProposalStatus,
     title: z.string(),
     type: zProposalType,
     voting_end_time: zUtcDate,

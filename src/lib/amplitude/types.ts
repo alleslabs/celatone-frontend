@@ -45,7 +45,7 @@ export enum AmpEvent {
   TO_MY_STORED_CODES = "To My Stored Codes",
   TO_MY_SAVED_ACCOUNTS = "To My Saved Accounts",
   TO_RECENT_CODES = "To Recent Codes",
-  TO_RECENT_CONTRACT = "To Recent Contract",
+  TO_CONTRACTS = "To Contracts",
   TO_INSTANTIATED_BY_ME = "To Instantiated By Me",
   TO_SAVED_CONTRACT = "To Saved Contract",
   TO_LIST_OTHERS = "To List Others",

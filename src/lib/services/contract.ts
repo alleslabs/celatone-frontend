@@ -68,8 +68,8 @@ const zContractsResponseItem = z
     admin: zBechAddr.nullable(),
     instantiator: zBechAddr,
     latest_updated: zUtcDate,
-    latest_updater: zBechAddr,
-    remark: zContractHistoryRemark,
+    latest_updater: zBechAddr.optional(),
+    remark: zContractHistoryRemark.optional(),
   })
   .transform<ContractInfo>((val) => ({
     contractAddress: val.contract_address,
@@ -87,6 +87,20 @@ const zContractsResponse = z.object({
 });
 
 export type ContractsResponse = z.infer<typeof zContractsResponse>;
+
+export const getContracts = async (
+  endpoint: string,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => zContractsResponse.parse(data));
 
 export const getInstantiatedContractsByAddress = async (
   endpoint: string,
