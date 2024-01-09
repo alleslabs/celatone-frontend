@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 
-export const getNftToken = gql`
-  query getNftToken($collectionAddress: String!, $nftAddress: String!) {
+export const getNftQuery = gql`
+  query getNftQuery($collectionAddress: String!, $nftAddress: String!) {
     nfts(
       where: {
         collectionByCollection: {
@@ -26,8 +26,8 @@ export const getNftToken = gql`
   }
 `;
 
-export const getNftMintInfo = gql`
-  query getNftMintInfo($nftAddress: String!) {
+export const getNftMintInfoQuery = gql`
+  query getNftMintInfoQuery($nftAddress: String!) {
     nft_transactions(
       where: {
         is_nft_mint: { _eq: true }
@@ -47,8 +47,8 @@ export const getNftMintInfo = gql`
   }
 `;
 
-export const getNftTokenListPagination = gql`
-  query getNftTokenListPagination(
+export const getNftsQuery = gql`
+  query getNftsQuery(
     $limit: Int!
     $offset: Int!
     $collectionAddress: String!
@@ -84,8 +84,8 @@ export const getNftTokenListPagination = gql`
   }
 `;
 
-export const getNftTransactionsCount = gql`
-  query getNftTransactionsCount($nftAddress: String!) {
+export const getNftTransactionsCountQuery = gql`
+  query getNftTransactionsCountQuery($nftAddress: String!) {
     nft_transactions_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
     ) {
@@ -96,8 +96,8 @@ export const getNftTransactionsCount = gql`
   }
 `;
 
-export const getNftTransactionPagination = gql`
-  query getNftTransactionPagination(
+export const getNftTransactionsQuery = gql`
+  query getNftTransactionsQuery(
     $limit: Int!
     $offset: Int!
     $nftAddress: String!
@@ -129,8 +129,8 @@ export const getNftTransactionPagination = gql`
   }
 `;
 
-export const getNftMutateEventsPagination = gql`
-  query getNftMutateEventsPagination(
+export const getNftMutateEventsQuery = gql`
+  query getNftMutateEventsQuery(
     $limit: Int!
     $offset: Int!
     $nftAddress: String!
@@ -152,8 +152,8 @@ export const getNftMutateEventsPagination = gql`
   }
 `;
 
-export const getNftMutateEventsCount = gql`
-  query getNftMutateEventsCount($nftAddress: String!) {
+export const getNftMutateEventsCountQuery = gql`
+  query getNftMutateEventsCountQuery($nftAddress: String!) {
     nft_mutation_events_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
     ) {
@@ -164,16 +164,16 @@ export const getNftMutateEventsCount = gql`
   }
 `;
 
-export const getNftTokenListByAddressPagination = gql`
-  query getNftTokenListByAddressPagination(
-    $userAddress: String!
+export const getNftsByAccountQuery = gql`
+  query getNftsByAccountQuery(
+    $accountAddress: String!
     $pageSize: Int!
     $offset: Int!
     $search: String
   ) {
     nfts(
       where: {
-        vmAddressByOwner: { vm_address: { _eq: $userAddress } }
+        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
         _and: { token_id: { _iregex: $search } }
       }
       order_by: { token_id: asc }
@@ -198,10 +198,10 @@ export const getNftTokenListByAddressPagination = gql`
   }
 `;
 
-export const getNftTokenCountByAddress = gql`
-  query getNftTokenCountByAddress($userAddress: String!) {
+export const getNftsCountByAccountQuery = gql`
+  query getNftsCountByAccountQuery($accountAddress: String!) {
     nfts_aggregate(
-      where: { vmAddressByOwner: { vm_address: { _eq: $userAddress } } }
+      where: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }
     ) {
       aggregate {
         count
@@ -210,10 +210,10 @@ export const getNftTokenCountByAddress = gql`
   }
 `;
 
-export const getUserNftListByCollectionPagination = gql`
-  query getUserNftListByCollectionPagination(
+export const getAccountNftListByCollectionQuery = gql`
+  query getAccountNftListByCollectionQuery(
     $collectionAddress: String!
-    $userAddress: String!
+    $accountAddress: String!
     $pageSize: Int!
     $offset: Int!
     $search: String
@@ -226,7 +226,7 @@ export const getUserNftListByCollectionPagination = gql`
         collectionByCollection: {
           vm_address: { vm_address: { _eq: $collectionAddress } }
         }
-        vmAddressByOwner: { vm_address: { _eq: $userAddress } }
+        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
         _and: { token_id: { _iregex: $search } }
       }
     ) {

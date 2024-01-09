@@ -1,144 +1,108 @@
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCollectionActivitiesExpression } from "../expression";
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
-import type { HexAddr } from "lib/types";
+import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
 import type {
-  CollectionCreator,
-  CollectionInfo,
   Activity,
-  Collection,
-  CollectionMutateEvent,
-  CollectionByAddress,
+  CollectionByCollectionAddressResponse,
+  CollectionCreatorResponse,
+  CollectionsByAccountResponse,
+  CollectionsResponse,
 } from "./collection";
 import {
-  queryCollectionsPagination,
-  queryCollectionInfo,
-  queryTotalBurnedCount,
-  queryCollectionCreator,
-  queryCollectionActivitiesCount,
-  queryCollectionMutateEventsCount,
-  queryCollectionUniqueHoldersCount,
-  queryCollectionActivities,
-  queryCollectionMutateEventsPagination,
-  queryCollectionListByAddress,
+  getCollectionMutateEvents,
+  getCollectionByCollectionAddress,
+  getCollectionTotalBurnedCount,
+  getCollectionCreator,
+  getCollectionActivitiesCount,
+  getCollectionActivities,
+  getCollectionMutateEventsCount,
+  getCollectionUniqueHoldersCount,
+  getCollectionsByAccount,
+  getCollections,
 } from "./collection";
 
-export const useCollectionsPagination = (
+export const useCollections = (
   pageSize: number,
   offset: number,
-  search?: string
+  search?: string,
+  options?: Pick<UseQueryOptions<CollectionsResponse>, "onSuccess">
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<Collection[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTIONS_PAGINATION,
+  return useQuery<CollectionsResponse>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTIONS,
       chainConfig.indexer,
       pageSize,
       offset,
       search,
     ],
-    queryFn: () =>
-      queryCollectionsPagination(chainConfig.indexer, offset, pageSize, search),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () => getCollections(chainConfig.indexer, offset, pageSize, search),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      ...options,
+    }
+  );
 };
 
 export const useCollectionByCollectionAddress = (
-  collectionAddress: HexAddr
+  collectionAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<CollectionInfo>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_ADDRESS,
+  return useQuery<CollectionByCollectionAddressResponse>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
       chainConfig.indexer,
       collectionAddress,
     ],
-    queryFn: () => queryCollectionInfo(chainConfig.indexer, collectionAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () =>
+      getCollectionByCollectionAddress(chainConfig.indexer, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useCollectionTotalBurnedCount = (collectionAddress: HexAddr) => {
+export const useCollectionTotalBurnedCount = (collectionAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
+  return useQuery<number>(
+    [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_TOTAL_BURNED,
       chainConfig.indexer,
       collectionAddress,
     ],
-    queryFn: () =>
-      queryTotalBurnedCount(chainConfig.indexer, collectionAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () =>
+      getCollectionTotalBurnedCount(chainConfig.indexer, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useCollectionCreator = (collectionAddress: HexAddr) => {
+export const useCollectionCreator = (collectionAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<CollectionCreator>({
-    queryKey: [
+  return useQuery<CollectionCreatorResponse>(
+    [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_CREATOR,
       chainConfig.indexer,
       collectionAddress,
     ],
-    queryFn: () =>
-      queryCollectionCreator(chainConfig.indexer, collectionAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionActivitiesCount = (collectionAddress: HexAddr) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_COUNT,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn: () =>
-      queryCollectionActivitiesCount(chainConfig.indexer, collectionAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionMutateEventsCount = (collectionAddress: HexAddr) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTES_COUNT,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn: () =>
-      queryCollectionMutateEventsCount(chainConfig.indexer, collectionAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useCollectionUniqueHoldersCount = (collectionAddress: HexAddr) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_UNIQUE_HOLDERS_COUNT,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    queryFn: () =>
-      queryCollectionUniqueHoldersCount(chainConfig.indexer, collectionAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () => getCollectionCreator(chainConfig.indexer, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useCollectionActivities = (
-  collectionAddress: HexAddr,
+  collectionAddress: HexAddr32,
   pageSize: number,
   offset: number,
   search?: string
@@ -148,64 +112,124 @@ export const useCollectionActivities = (
     collectionAddress,
     search
   );
-  return useQuery<Activity[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_PAGINATION,
+  return useQuery<Activity[]>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES,
       chainConfig.indexer,
       collectionAddress,
       offset,
       pageSize,
       expression,
     ],
-    queryFn: () =>
-      queryCollectionActivities(
+    async () =>
+      getCollectionActivities(
         chainConfig.indexer,
         pageSize,
         offset,
         expression
       ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useCollectionMutateEventsPagination = (
-  collectionAddress: HexAddr,
+export const useCollectionActivitiesCount = (collectionAddress: HexAddr32) => {
+  const { chainConfig } = useCelatoneApp();
+  return useQuery<number>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_COUNT,
+      chainConfig.indexer,
+      collectionAddress,
+    ],
+    async () =>
+      getCollectionActivitiesCount(chainConfig.indexer, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useCollectionMutateEvents = (
+  collectionAddress: HexAddr32,
   pageSize: number,
   offset: number
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<CollectionMutateEvent[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTES_PAGINATION,
+  return useQuery<MutateEvent[]>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS,
       chainConfig.indexer,
       collectionAddress,
       offset,
       pageSize,
     ],
-    queryFn: () =>
-      queryCollectionMutateEventsPagination(
+    async () =>
+      getCollectionMutateEvents(
         chainConfig.indexer,
         collectionAddress,
         pageSize,
         offset
       ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useCollectionListByAddress = (accountAddress: HexAddr) => {
+export const useCollectionMutateEventsCount = (
+  collectionAddress: HexAddr32
+) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<CollectionByAddress[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_LIST_BY_ADDRESS,
+  return useQuery<number>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS_COUNT,
+      chainConfig.indexer,
+      collectionAddress,
+    ],
+    async () =>
+      getCollectionMutateEventsCount(chainConfig.indexer, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useCollectionUniqueHoldersCount = (
+  collectionAddress: HexAddr32
+) => {
+  const { chainConfig } = useCelatoneApp();
+  return useQuery<number>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_UNIQUE_HOLDERS_COUNT,
+      chainConfig.indexer,
+      collectionAddress,
+    ],
+    async () =>
+      getCollectionUniqueHoldersCount(chainConfig.indexer, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useCollectionsByAccount = (accountAddress: HexAddr) => {
+  const { chainConfig } = useCelatoneApp();
+  return useQuery<CollectionsByAccountResponse>(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
       chainConfig.indexer,
       accountAddress,
     ],
-    queryFn: () =>
-      queryCollectionListByAddress(chainConfig.indexer, accountAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () => getCollectionsByAccount(chainConfig.indexer, accountAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };

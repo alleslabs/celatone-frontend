@@ -1,3 +1,3 @@
-import CollectionDetails from "lib/pages/collection-details";
+import NftCollectionDetails from "lib/pages/nft-collection-details";
 
-export default CollectionDetails;
+export default NftCollectionDetails;

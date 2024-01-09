@@ -4,7 +4,7 @@ import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
 import type { SearchResultType } from "lib/services/searchService";
 import type { Addr, Option, Token } from "lib/types";
-import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
+import { isHex32Address, isHex20Address } from "lib/utils";
 
 export const trackUseMainSearch = (
   isClick: boolean,
@@ -203,7 +203,7 @@ export const trackUseModuleSelectionInputFill = (
 ) =>
   amp.track(AmpEvent.USE_MODULE_SELECTION_INPUT_FILL, {
     address: !!address,
-    isHex: isHexWalletAddress(address) || isHexModuleAddress(address),
+    isHex: isHex20Address(address) || isHex32Address(address),
     manualModuleName,
     manualFunctionName,
   });

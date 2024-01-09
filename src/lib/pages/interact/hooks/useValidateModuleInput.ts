@@ -7,8 +7,8 @@ import {
 } from "lib/app-provider";
 import type { Nullable } from "lib/types";
 import {
-  isHexModuleAddress,
-  isHexWalletAddress,
+  isHex32Address,
+  isHex20Address,
   splitModule,
   truncate,
 } from "lib/utils";
@@ -33,7 +33,7 @@ export const useValidateModuleInput = () => {
       const [address, module, functionName] = inputArr;
       const invalidAddress = address.startsWith(prefix)
         ? !!validateUserAddress(address) && !!validateContractAddress(address)
-        : !isHexWalletAddress(address) && !isHexModuleAddress(address);
+        : !isHex20Address(address) && !isHex32Address(address);
 
       if (invalidAddress || module === "" || functionName === "")
         return errText;

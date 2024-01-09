@@ -13,7 +13,7 @@ import { type Control, useController } from "react-hook-form";
 
 import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";
-import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
+import { isHex32Address, isHex20Address } from "lib/utils";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
 import { OBJECT_TYPE, STRING_TYPE } from "./constants";
@@ -37,13 +37,13 @@ export const ArgFieldTemplate = ({
     (input: string) =>
       validateUserAddress(input) === null ||
       validateContractAddress(input) === null ||
-      isHexWalletAddress(input) ||
-      isHexModuleAddress(input),
+      isHex20Address(input) ||
+      isHex32Address(input),
     [validateContractAddress, validateUserAddress]
   );
   const isValidArgObject = useCallback(
     (input: string) =>
-      validateContractAddress(input) === null || isHexModuleAddress(input),
+      validateContractAddress(input) === null || isHex32Address(input),
     [validateContractAddress]
   );
 

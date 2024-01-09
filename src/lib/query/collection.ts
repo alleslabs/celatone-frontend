@@ -1,11 +1,7 @@
 import { gql } from "graphql-request";
 
-export const getCollectionsPagination = gql`
-  query getCollectionsPagination(
-    $offset: Int!
-    $pageSize: Int!
-    $search: String
-  ) {
+export const getCollectionsQuery = gql`
+  query getCollectionsQuery($offset: Int!, $pageSize: Int!, $search: String) {
     collections(
       limit: $pageSize
       offset: $offset
@@ -19,11 +15,16 @@ export const getCollectionsPagination = gql`
         vm_address
       }
     }
+    collections_aggregate(where: { name: { _iregex: $search } }) {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 
-export const getCollectionByCollectionAddress = gql`
-  query getCollectionByCollectionAddress($vmAddress: String!) {
+export const getCollectionByCollectionAddressQuery = gql`
+  query getCollectionByCollectionAddressQuery($vmAddress: String!) {
     collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
       name
       uri
@@ -41,8 +42,8 @@ export const getCollectionByCollectionAddress = gql`
   }
 `;
 
-export const getCollectionTotalBurnedCount = gql`
-  query getCollectionByCollectionAddress($vmAddress: String!) {
+export const getCollectionTotalBurnedCountQuery = gql`
+  query getCollectionTotalBurnedCountQuery($vmAddress: String!) {
     nfts_aggregate(
       where: {
         collectionByCollection: {
@@ -58,8 +59,8 @@ export const getCollectionTotalBurnedCount = gql`
   }
 `;
 
-export const getCollectionCreator = gql`
-  query getCollectionCreator($vmAddress: String!) {
+export const getCollectionCreatorQuery = gql`
+  query getCollectionCreatorQuery($vmAddress: String!) {
     collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
       vmAddressByCreator {
         vm_address
@@ -80,8 +81,8 @@ export const getCollectionCreator = gql`
   }
 `;
 
-export const getCollectionActivitiesCount = gql`
-  query getCollectionActivitiesCount($vmAddress: String!) {
+export const getCollectionActivitiesCountQuery = gql`
+  query getCollectionActivitiesCountQuery($vmAddress: String!) {
     collection_transactions_aggregate(
       where: { collection: { vm_address: { vm_address: { _eq: $vmAddress } } } }
     ) {
@@ -92,8 +93,8 @@ export const getCollectionActivitiesCount = gql`
   }
 `;
 
-export const getCollectionMutateEventsCount = gql`
-  query getCollectionMutateEventsCount($vmAddress: String!) {
+export const getCollectionMutateEventsCountQuery = gql`
+  query getCollectionMutateEventsCountQuery($vmAddress: String!) {
     collection_mutation_events_aggregate(
       where: { collection: { vm_address: { vm_address: { _eq: $vmAddress } } } }
     ) {
@@ -104,8 +105,8 @@ export const getCollectionMutateEventsCount = gql`
   }
 `;
 
-export const getCollectioUniqueHoldersCount = gql`
-  query getCollectioUniqueHoldersCount($vmAddress: String!) {
+export const getCollectionUniqueHoldersCountQuery = gql`
+  query getCollectionUniqueHoldersCountQuery($vmAddress: String!) {
     nfts_aggregate(
       where: {
         collectionByCollection: {
@@ -121,8 +122,8 @@ export const getCollectioUniqueHoldersCount = gql`
   }
 `;
 
-export const getCollectionActivitiesPagination = gql`
-  query getCollectionActivitiesPagination(
+export const getCollectionActivitiesQuery = gql`
+  query getCollectionActivitiesQuery(
     $expression: collection_transactions_bool_exp
     $offset: Int!
     $pageSize: Int!
@@ -160,8 +161,8 @@ export const getCollectionActivitiesPagination = gql`
   }
 `;
 
-export const getCollectionMutateEventsPagination = gql`
-  query getCollectionMutateEventsPagination(
+export const getCollectionMutateEventsQuery = gql`
+  query getCollectionMutateEventsQuery(
     $collectionAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -185,8 +186,8 @@ export const getCollectionMutateEventsPagination = gql`
   }
 `;
 
-export const getCollectionListByAddress = gql`
-  query getCollectionListByAddress($accountAddress: String!) {
+export const getCollectionsByAccountQuery = gql`
+  query getCollectionsByAccountQuery($accountAddress: String!) {
     collections(
       where: {
         nfts: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }

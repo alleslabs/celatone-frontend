@@ -1,6 +1,6 @@
 import { fromHex } from "@cosmjs/encoding";
 
-import { HEX_MODULE_ADDRESS_LENGTH, HEX_WALLET_ADDRESS_LENGTH } from "lib/data";
+import { HEX_20_ADDRESS_LENGTH, HEX_32_ADDRESS_LENGTH } from "lib/data";
 import type { HexAddr } from "lib/types";
 
 import { padHexAddress } from "./address";
@@ -38,8 +38,8 @@ const isHexAddress = (address: string, length: number): boolean => {
   return true;
 };
 
-export const isHexWalletAddress = (address: string) =>
-  isHexAddress(address, HEX_WALLET_ADDRESS_LENGTH);
+export const isHex20Address = (address: string) =>
+  isHexAddress(address, HEX_20_ADDRESS_LENGTH);
 
-export const isHexModuleAddress = (address: string) =>
-  isHexAddress(address, HEX_MODULE_ADDRESS_LENGTH);
+export const isHex32Address = (address: string) =>
+  isHexAddress(address, HEX_32_ADDRESS_LENGTH);

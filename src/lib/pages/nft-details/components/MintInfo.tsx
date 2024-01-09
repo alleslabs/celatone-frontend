@@ -5,22 +5,20 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
 import { useNftMintInfo } from "lib/services/nft";
-import type { HexAddr } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-const MintInfo = ({
-  holderAddress,
-  nftAddress,
-}: {
+interface MintInfoProps {
   holderAddress: string;
-  nftAddress: HexAddr;
-}) => {
+  nftAddress: HexAddr32;
+}
+
+export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
+  const isMobile = useMobile();
   const { data: mintInfo, isLoading } = useNftMintInfo(nftAddress);
 
-  const isMobile = useMobile();
   if (isLoading) return <Loading />;
   if (!mintInfo) return null;
-
   return (
     <Stack spacing="16px" order={{ base: "1", md: "-1" }}>
       <Heading as="h6" variant="h6" fontWeight={600}>
@@ -66,5 +64,3 @@ const MintInfo = ({
     </Stack>
   );
 };
-
-export default MintInfo;

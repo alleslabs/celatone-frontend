@@ -4,8 +4,8 @@ import { useConvertHexAddress } from "lib/app-provider";
 import type { BechAddr, HexAddr } from "lib/types";
 import {
   bech32AddressToHex,
-  isHexModuleAddress,
-  isHexWalletAddress,
+  isHex32Address,
+  isHex20Address,
   unpadHexAddress,
 } from "lib/utils";
 
@@ -15,12 +15,12 @@ export const useFormatAddresses = () => {
 
   return useCallback(
     (address: string) => {
-      if (isHexWalletAddress(address))
+      if (isHex20Address(address))
         return {
           address: convertHexWalletAddress(address as HexAddr),
           hex: unpadHexAddress(address as HexAddr),
         };
-      if (isHexModuleAddress(address))
+      if (isHex32Address(address))
         return {
           address: convertHexModuleAddress(address as HexAddr),
           hex: unpadHexAddress(address as HexAddr),

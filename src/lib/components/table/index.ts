@@ -2,6 +2,7 @@ export * from "./AccordionTx";
 export * from "./accounts";
 export * from "./codes";
 export * from "./contracts";
+export * from "./mutate-events";
 export * from "./proposals";
 export * from "./transactions";
 export * from "./modules";

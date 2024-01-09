@@ -3,7 +3,7 @@ import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { useMetadata } from "lib/services/nft";
 
-interface Props {
+interface FilterItemProps {
   collectionName: string;
   count: number;
   onClick: () => void;
@@ -17,8 +17,9 @@ export const FilterItem = ({
   onClick,
   uri,
   isActive,
-}: Props) => {
+}: FilterItemProps) => {
   const { data: metadata } = useMetadata(uri ?? "");
+
   return (
     <Flex
       p="12px"

@@ -1,28 +1,27 @@
 import { Stack } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
+import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import {
-  useNftTokenListByAddressPagination,
-  useUserNftListByCollectionPagination,
-} from "lib/services/nft";
-import type { HexAddr } from "lib/types";
+import { useNftsByAccount, useAccountNftsByCollection } from "lib/services/nft";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
-import { NftList } from "./NftList";
+interface NftsByCollectionProps {
+  accountAddress: HexAddr;
+  totalData: number;
+  collectionAddress?: HexAddr32;
+}
 
 export const NftsByCollection = ({
+  accountAddress,
+  totalData,
   collectionAddress,
-  userAddress,
-  totalCount,
-}: {
-  collectionAddress?: HexAddr;
-  userAddress: HexAddr;
-  totalCount: number;
-}) => {
+}: NftsByCollectionProps) => {
+  const [searchKeyword, setSearchKeyword] = useState("");
+
   const {
     pagesQuantity,
     currentPage,
@@ -38,33 +37,19 @@ export const NftsByCollection = ({
     },
   });
 
-  const [searchKeyword, setSearchKeyword] = useState("");
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
-  const onPageChange = (nextPage: number) => {
-    setCurrentPage(nextPage);
-  };
-
-  const { data: nftsByCollection, isFetching: nftsByCollectionLoading } =
-    useUserNftListByCollectionPagination(
-      userAddress,
+  const { data: allNfts, isFetching: isAllNftsLoading } = useNftsByAccount(
+    accountAddress,
+    pageSize,
+    offset,
+    searchKeyword
+  );
+  const { data: nftsByCollection, isFetching: isNftsByCollectionLoading } =
+    useAccountNftsByCollection(
+      accountAddress,
       pageSize,
       offset,
-      collectionAddress,
-      searchKeyword
-    );
-
-  const { data: allNfts, isFetching: allNftsLoading } =
-    useNftTokenListByAddressPagination(
-      userAddress,
-      pageSize,
-      offset,
-      searchKeyword
+      searchKeyword,
+      collectionAddress
     );
 
   useEffect(() => {
@@ -84,7 +69,7 @@ export const NftsByCollection = ({
       />
       <NftList
         nfts={collectionAddress ? nftsByCollection : allNfts}
-        isLoading={nftsByCollectionLoading || allNftsLoading}
+        isLoading={isNftsByCollectionLoading || isAllNftsLoading}
         emptyState={
           <EmptyState
             message={
@@ -96,16 +81,21 @@ export const NftsByCollection = ({
             withBorder
           />
         }
+        showCollection
       />
-      {totalCount > 10 && (
+      {totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
+          totalData={totalData}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
         />
       )}
     </Stack>

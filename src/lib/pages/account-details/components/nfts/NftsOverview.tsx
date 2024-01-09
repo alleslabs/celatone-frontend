@@ -1,29 +1,26 @@
 import { Box, Divider } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
+import { NftList } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
 import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
-import { useNftTokenListByAddressPagination } from "lib/services/nft";
+import { useNftsByAccount } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
-import { NftList } from "./NftList";
+interface NftsOverviewProps {
+  userAddress: HexAddr;
+  totalCount?: number;
+  onViewMore?: () => void;
+}
 
 export const NftsOverview = ({
   userAddress,
   totalCount,
   onViewMore,
-}: {
-  userAddress: HexAddr;
-  totalCount?: number;
-  onViewMore?: () => void;
-}) => {
-  const { data: nfts, isFetching } = useNftTokenListByAddressPagination(
-    userAddress,
-    5,
-    0
-  );
-
+}: NftsOverviewProps) => {
   const isMobile = useMobile();
+  const { data: nfts, isFetching } = useNftsByAccount(userAddress, 5, 0);
+
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
       {isMobile ? (
@@ -40,6 +37,7 @@ export const NftsOverview = ({
                 imageVariant="empty"
               />
             }
+            showCollection
           />
           {onViewMore && !!totalCount && totalCount > 5 && (
             <ViewMore onClick={onViewMore} />

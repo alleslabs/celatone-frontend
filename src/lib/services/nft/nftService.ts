@@ -1,256 +1,258 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
-import type { HexAddr } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
 import type {
+  NftTransactions,
   Metadata,
   NftMintInfo,
-  NftMutateEventsPagination,
-  NftToken,
-  NftTransactionPagination,
+  Nft,
+  NftByNftAddressResponse,
 } from "./nft";
 import {
-  queryNftMintInfo,
-  queryNftMutateEventsCount,
-  queryNftMutateEventsPagination,
-  queryNftToken,
-  queryNftTokenCountByAddress,
-  queryNftTokenListByAddressPagination,
-  queryNftTokenListPagination,
-  queryNftTransactionPagination,
-  queryNftTransactionsCount,
-  queryUserNftListByCollectionPagination,
+  getNfts,
+  getNftByNftAddress,
+  getNftMintInfo,
+  getMetadata,
+  getNftTransactionsCount,
+  getNftTransactions,
+  getNftMutateEvents,
+  getNftMutateEventsCount,
+  getNftsByAccount,
+  getNftsCountByAccount,
+  getAccountNftsByCollection,
 } from "./nft";
 
-export const useNftTokenListPagination = (
-  collectionAddress: HexAddr,
+export const useNfts = (
+  collectionAddress: HexAddr32,
   pageSize: number,
   offset: number,
-  search?: string
+  search = ""
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftToken[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_PAGINATION,
+  return useQuery<Nft[]>(
+    [
+      CELATONE_QUERY_KEYS.NFTS,
       chainConfig.indexer,
       collectionAddress,
       offset,
       pageSize,
       search,
     ],
-    queryFn: () =>
-      queryNftTokenListPagination(
-        chainConfig.indexer,
-        collectionAddress,
-        pageSize,
-        offset,
-        search
-      ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () =>
+      getNfts(chainConfig.indexer, collectionAddress, pageSize, offset, search),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftInfo = (collectionAddress: HexAddr, nftAddress: HexAddr) => {
+export const useNftByNftAddress = (
+  collectionAddress: HexAddr32,
+  nftAddress: HexAddr32
+) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftToken>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_INFO,
+  return useQuery<NftByNftAddressResponse>(
+    [
+      CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
       chainConfig.indexer,
       collectionAddress,
       nftAddress,
     ],
-    queryFn: () =>
-      queryNftToken(chainConfig.indexer, collectionAddress, nftAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () =>
+      getNftByNftAddress(chainConfig.indexer, collectionAddress, nftAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftMintInfo = (nftAddress: HexAddr) => {
+export const useNftMintInfo = (nftAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftMintInfo>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
-      chainConfig.indexer,
-      nftAddress,
-    ],
-    queryFn: () => queryNftMintInfo(chainConfig.indexer, nftAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery<NftMintInfo>(
+    [CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO, chainConfig.indexer, nftAddress],
+    async () => getNftMintInfo(chainConfig.indexer, nftAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useMetadata = (uri: string) => {
-  const queryFn = async () => {
-    const { data: metadata } = await axios.get(uri);
-    return snakeToCamel(metadata);
-  };
-
-  return useQuery<Metadata>({
-    queryKey: [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
-    queryFn,
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery<Metadata>(
+    [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
+    async () => getMetadata(uri),
+    {
+      enabled: !!uri,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftTransactionsCount = (nftAddress: HexAddr) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_TRANSACTION_COUNT,
-      chainConfig.indexer,
-      nftAddress,
-    ],
-    queryFn: () => queryNftTransactionsCount(chainConfig.indexer, nftAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
-};
-
-export const useNftTransactionsPagination = (
+export const useNftTransactions = (
   limit: number,
   offset: number,
-  nftAddress: HexAddr
+  nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftTransactionPagination[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_TRANSACTION_PAGINATION,
+  return useQuery<NftTransactions[]>(
+    [
+      CELATONE_QUERY_KEYS.NFT_TRANSACTIONS,
       chainConfig.indexer,
       nftAddress,
       limit,
       offset,
     ],
-    queryFn: () =>
-      queryNftTransactionPagination(
-        chainConfig.indexer,
-        nftAddress,
-        offset,
-        limit
-      ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () =>
+      getNftTransactions(chainConfig.indexer, nftAddress, offset, limit),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftMutateEventsPagination = (
+export const useNftTransactionsCount = (nftAddress: HexAddr32) => {
+  const { chainConfig } = useCelatoneApp();
+  return useQuery<number>(
+    [
+      CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_COUNT,
+      chainConfig.indexer,
+      nftAddress,
+    ],
+    async () => getNftTransactionsCount(chainConfig.indexer, nftAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useNftMutateEvents = (
   limit: number,
   offset: number,
-  nftAddress: HexAddr
+  nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftMutateEventsPagination[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_MUTATE_EVENTS_PAGINATION,
+  return useQuery<MutateEvent[]>(
+    [
+      CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS,
       chainConfig.indexer,
       nftAddress,
       limit,
       offset,
     ],
-    queryFn: () =>
-      queryNftMutateEventsPagination(
-        chainConfig.indexer,
-        nftAddress,
-        offset,
-        limit
-      ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () =>
+      getNftMutateEvents(chainConfig.indexer, nftAddress, offset, limit),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftMutateEventsCount = (nftAddress: HexAddr) => {
+export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_MUTATE_EVENTS_COUNT,
+  return useQuery<number>(
+    [
+      CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS_COUNT,
       chainConfig.indexer,
       nftAddress,
     ],
-    queryFn: () => queryNftMutateEventsCount(chainConfig.indexer, nftAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () => getNftMutateEventsCount(chainConfig.indexer, nftAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftTokenListByAddressPagination = (
-  userAddress: HexAddr,
+export const useNftsByAccount = (
+  accountAddress: HexAddr,
   pageSize: number,
   offset: number,
-  search?: string
+  search = ""
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftToken[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_BY_ADDRESS,
+  return useQuery<Nft[]>(
+    [
+      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT,
       chainConfig.indexer,
-      userAddress,
+      accountAddress,
       search,
       pageSize,
       offset,
     ],
-    queryFn: () =>
-      queryNftTokenListByAddressPagination(
+    async () =>
+      getNftsByAccount(
         chainConfig.indexer,
-        userAddress,
+        accountAddress,
         pageSize,
         offset,
         search
       ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useNftTokenCountByAddress = (userAddress: HexAddr) => {
+export const useNftsCountByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<number>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_PAGINATION,
+  return useQuery<number>(
+    [
+      CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT,
       chainConfig.indexer,
-      userAddress,
+      accountAddress,
     ],
-    queryFn: () =>
-      queryNftTokenCountByAddress(chainConfig.indexer, userAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+    async () => getNftsCountByAccount(chainConfig.indexer, accountAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
-export const useUserNftListByCollectionPagination = (
-  userAddress: HexAddr,
+export const useAccountNftsByCollection = (
+  accountAddress: HexAddr,
   pageSize: number,
   offset: number,
-  collectionAddress?: HexAddr,
-  search?: string
+  search: string,
+  collectionAddress?: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<NftToken[]>({
-    queryKey: [
-      CELATONE_QUERY_KEYS.NFT_TOKEN_LIST_BY_COLLECTION_BY_ADDRESS_PAGINATION,
+  return useQuery<Nft[]>(
+    [
+      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
       chainConfig.indexer,
-      userAddress,
+      accountAddress,
+      pageSize,
+      offset,
+      search,
       collectionAddress,
-      pageSize,
-      offset,
-      search,
     ],
-    queryFn: () =>
-      queryUserNftListByCollectionPagination(
+    async () => {
+      if (!collectionAddress)
+        throw new Error("collection address is undefined");
+      return getAccountNftsByCollection(
         chainConfig.indexer,
-        userAddress,
+        accountAddress,
         pageSize,
         offset,
-        collectionAddress,
-        search
-      ),
-    retry: 1,
-    refetchOnWindowFocus: false,
-    enabled: !!collectionAddress,
-  });
+        search,
+        collectionAddress
+      );
+    },
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled: !!collectionAddress,
+    }
+  );
 };

@@ -29,7 +29,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
-import { useNftTokenCountByAddress } from "lib/services/nft";
+import { useNftsCountByAccount } from "lib/services/nft";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -37,7 +37,7 @@ import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import { ModuleLists } from "./components/modules";
-import { NftSection, NftsOverview } from "./components/nfts";
+import { NftsOverview, NftsSection } from "./components/nfts";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
@@ -99,7 +99,7 @@ const AccountDetailsBody = ({
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddress(accountAddress);
   // nft
-  const { data: nftCount } = useNftTokenCountByAddress(hexAddress);
+  const { data: nftCount } = useNftsCountByAccount(hexAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -400,7 +400,7 @@ const AccountDetailsBody = ({
             <DelegationsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <NftSection totalCount={nftCount ?? 0} address={hexAddress} />
+            <NftsSection totalCount={nftCount ?? 0} address={hexAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable
