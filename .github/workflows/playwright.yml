@@ -3,7 +3,10 @@ on:
   deployment_status:
 jobs:
   run-e2es:
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    if: >-
+      github.event_name == 'deployment_status' && 
+      github.event.deployment_status.state == 'success' && 
+      contains(github.event.deployment_status.environment_url, 'celatone-frontend-staging')
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
