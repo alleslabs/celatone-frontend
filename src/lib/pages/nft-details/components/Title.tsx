@@ -16,7 +16,7 @@ export const Title = ({
 }: TitleProps) => (
   <Flex direction="column">
     <AppLink href={`/nft-collections/${collectionAddress}`}>
-      <Text color="primary.main" fontSize="16px" fontWeight={700}>
+      <Text color="secondary.main" fontSize="16px" fontWeight={700}>
         {displayCollectionName}
       </Text>
     </AppLink>

@@ -12,7 +12,7 @@ export const JsonLink = ({ uri, type }: JsonLinkProps) => (
     <a href={uri} target="_blank" rel="noopener noreferrer" data-peer>
       <Text
         display="inline"
-        color="primary.dark"
+        color="secondary.main"
         variant="body2"
         fontWeight={500}
         wordBreak="break-all"
