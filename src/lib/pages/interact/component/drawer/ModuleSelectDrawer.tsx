@@ -18,7 +18,7 @@ import {
   type IndexedModule,
 } from "lib/services/move/moduleService";
 import type { BechAddr, HexAddr, Option } from "lib/types";
-import { isHex20Address } from "lib/utils";
+import { isHexWalletAddress } from "lib/utils";
 
 import { ModuleSelectMainBody } from "./body";
 import { ModuleSelector } from "./selector";
@@ -69,7 +69,7 @@ export const ModuleSelectDrawer = ({
     if (hexAddress) {
       setMode("display");
       setSelectedAddress({
-        address: isHex20Address(hexAddress)
+        address: isHexWalletAddress(hexAddress)
           ? convertHexWalletAddress(hexAddress)
           : convertHexModuleAddress(hexAddress),
         hex: hexAddress,

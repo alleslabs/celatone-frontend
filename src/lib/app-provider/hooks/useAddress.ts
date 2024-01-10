@@ -2,7 +2,7 @@ import { fromBech32 } from "@cosmjs/encoding";
 import { useCallback, useMemo } from "react";
 
 import type { Option } from "lib/types";
-import { isHex32Address, isHex20Address } from "lib/utils";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 import { useMoveConfig } from "./useConfig";
 import { useCurrentChain } from "./useCurrentChain";
@@ -144,8 +144,8 @@ export const useValidateAddress = () => {
       (address: string) => {
         const errUser = validateUserAddress(address);
         const errContract = validateContractAddress(address);
-        const isHex20 = isHex20Address(address);
-        const isHex32 = isHex32Address(address);
+        const isHex20 = isHexWalletAddress(address);
+        const isHex32 = isHexModuleAddress(address);
 
         return (
           !errUser || !errContract || (move.enabled && (isHex20 || isHex32))

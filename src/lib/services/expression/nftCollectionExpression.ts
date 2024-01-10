@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
-import { isHex32Address, isTxHash } from "lib/utils";
+import { isHexModuleAddress, isTxHash } from "lib/utils";
 
 export const useCollectionActivitiesExpression = (
   collectionAddress: string,
   search = ""
 ) => {
-  const isNftAddress = isHex32Address(search);
+  const isNftAddress = isHexModuleAddress(search);
   const isHash = isTxHash(search);
 
   const tokenIdSearch = {

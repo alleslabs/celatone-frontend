@@ -38,8 +38,8 @@ const isHexAddress = (address: string, length: number): boolean => {
   return true;
 };
 
-export const isHex20Address = (address: string) =>
+export const isHexWalletAddress = (address: string) =>
   isHexAddress(address, HEX_20_ADDRESS_LENGTH);
 
-export const isHex32Address = (address: string) =>
+export const isHexModuleAddress = (address: string) =>
   isHexAddress(address, HEX_32_ADDRESS_LENGTH);

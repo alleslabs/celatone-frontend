@@ -18,7 +18,7 @@ import { Tooltip } from "lib/components/Tooltip";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import { UpgradePolicy } from "lib/types";
 import type { HexAddr } from "lib/types";
-import { isHex32Address, isHex20Address, truncate } from "lib/utils";
+import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
@@ -40,9 +40,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
     useConvertHexAddress();
 
   const moduleAddress = useMemo(() => {
-    if (isHex20Address(moduleData.address))
+    if (isHexWalletAddress(moduleData.address))
       return convertHexWalletAddress(moduleData.address as HexAddr);
-    if (isHex32Address(moduleData.address))
+    if (isHexModuleAddress(moduleData.address))
       return convertHexModuleAddress(moduleData.address as HexAddr);
     return moduleData.address;
   }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);

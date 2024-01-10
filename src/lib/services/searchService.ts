@@ -11,8 +11,8 @@ import {
 } from "lib/app-provider";
 import { zBechAddr32, type BechAddr, type Option } from "lib/types";
 import {
-  isHex20Address,
-  isHex32Address,
+  isHexWalletAddress,
+  isHexModuleAddress,
   splitModule,
   isPosDecimal,
   isId,
@@ -92,7 +92,8 @@ export const useSearchHandler = (
     addressType === "user_address" ||
     addressType === "contract_address" ||
     (isMove &&
-      (isHex20Address(debouncedKeyword) || isHex32Address(debouncedKeyword)));
+      (isHexWalletAddress(debouncedKeyword) ||
+        isHexModuleAddress(debouncedKeyword)));
 
   // ICNS
   const { data: icnsAddressData, isFetching: icnsAddressFetching } =

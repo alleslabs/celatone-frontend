@@ -30,7 +30,7 @@ import {
   useCollectionTotalBurnedCount,
   useNfts,
 } from "lib/services/nft";
-import { isHex32Address } from "lib/utils";
+import { isHexModuleAddress } from "lib/utils";
 
 import { CollectionInfoSection } from "./components/CollectionInfoSection";
 import { CollectionSupplies } from "./components/CollectionSupplies";
@@ -267,7 +267,10 @@ const CollectionDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  if (!validated.success || !isHex32Address(validated.data.collectionAddress))
+  if (
+    !validated.success ||
+    !isHexModuleAddress(validated.data.collectionAddress)
+  )
     return <InvalidCollection />;
 
   return (
