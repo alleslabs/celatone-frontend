@@ -17,9 +17,8 @@ const InfoComponent = ({
       <Text
         whiteSpace="nowrap"
         color="gray.400"
-        fontSize="14px"
+        variant="body2"
         fontWeight={600}
-        fontFamily="Manrope"
       >
         {title}
       </Text>

@@ -59,7 +59,7 @@ const SubHeader = () => {
     subHeaderMenu.push({
       name: "NFTs",
       slug: "/nft-collections",
-      icon: "file",
+      icon: "group",
     });
 
   const isCurrentPage = useIsCurrentPage();
