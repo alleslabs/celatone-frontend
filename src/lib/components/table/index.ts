@@ -10,6 +10,7 @@ export * from "./EditableCell";
 export * from "./MobileCardTemplate";
 export * from "./MobileLabel";
 export * from "./MobileTitle";
+export * from "./RemarkRender";
 export * from "./tableComponents";
 export * from "./TableTitle";
 export * from "./ViewMore";

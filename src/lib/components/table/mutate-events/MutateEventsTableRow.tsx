@@ -1,42 +1,10 @@
 import { Grid, Box, Text, Badge, Flex } from "@chakra-ui/react";
 
+import { RemarkRender } from "../RemarkRender";
 import { TableRow } from "../tableComponents";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { MutateEvent } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
-
-const RemarkRender = ({
-  remark,
-}: {
-  remark: { type: string; value: string };
-}) => {
-  const { type, value } = remark;
-  if (type === "genesis") return <Text variant="body2">Genesis</Text>;
-
-  const isGovernance = type === "governance";
-  const textFormat = isGovernance ? "normal" : "truncate";
-  return (
-    <Flex
-      direction="column"
-      sx={{
-        "& > p:first-of-type": {
-          color: "text.dark",
-          fontSize: "12px",
-        },
-      }}
-      mb={{ base: 0, md: "2px" }}
-    >
-      <p>{isGovernance ? "Through Proposal ID" : "Tx Hash"}</p>
-      <ExplorerLink
-        type={isGovernance ? "proposal_id" : "tx_hash"}
-        value={value.toString()}
-        showCopyOnHover
-        textFormat={textFormat}
-      />
-    </Flex>
-  );
-};
 
 interface MutateEventsTableRowProps extends MutateEvent {
   templateColumns: string;
@@ -75,7 +43,7 @@ export const MutateEventsTableRow = ({
           </Flex>
         </TableRow>
         <TableRow>
-          <RemarkRender remark={remark} />
+          <RemarkRender {...remark} />
         </TableRow>
       </Grid>
     </Box>

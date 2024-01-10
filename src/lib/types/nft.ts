@@ -1,12 +1,11 @@
+import type { Remark } from "./tx";
+
 // NOTE: on MOVE, the same for both collection and nft
 export interface MutateEvent {
   oldValue: string;
   newValue: string;
   mutatedFieldName: string;
-  remark: {
-    type: string;
-    value: string;
-  };
+  remark: Remark;
   timestamp: Date;
 }
 

@@ -13,7 +13,7 @@ import {
   getNftTransactionsCountQuery,
   getNftTransactionsQuery,
 } from "lib/query";
-import { zHexAddr, zHexAddr32, zUtcDate } from "lib/types";
+import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
@@ -201,7 +201,7 @@ const zNftMutateEventsResponseItem = z
     old_value: z.string(),
     new_value: z.string(),
     mutated_field_name: z.string(),
-    remark: z.object({ type: z.string(), value: z.string() }),
+    remark: zRemark,
     block: z.object({ timestamp: zUtcDate }),
   })
   .transform<MutateEvent>((val) => ({

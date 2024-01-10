@@ -4,7 +4,7 @@ import { capitalize } from "lodash";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { TableRow } from "lib/components/table";
+import { RemarkRender, TableRow } from "lib/components/table";
 import type { ModuleHistory } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -12,38 +12,6 @@ interface PublishedEventsTableRowProps {
   templateColumns: GridProps["templateColumns"];
   history: ModuleHistory;
 }
-
-export const RemarkRender = ({
-  remark,
-}: {
-  remark: ModuleHistory["remark"];
-}) => {
-  const { type, value } = remark;
-  if (type === "genesis") return <Text variant="body2">Genesis</Text>;
-
-  const isGovernance = type === "governance";
-  const textFormat = isGovernance ? "normal" : "truncate";
-  return (
-    <Flex
-      direction="column"
-      sx={{
-        "& > p:first-of-type": {
-          color: "text.dark",
-          fontSize: "12px",
-        },
-      }}
-      mb={{ base: 0, md: "2px" }}
-    >
-      <p>{isGovernance ? "Through Proposal ID" : "Tx Hash"}</p>
-      <ExplorerLink
-        type={isGovernance ? "proposal_id" : "tx_hash"}
-        value={value.toString()}
-        showCopyOnHover
-        textFormat={textFormat}
-      />
-    </Flex>
-  );
-};
 
 export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
   switch (history.previousPolicy) {
@@ -95,7 +63,7 @@ export const PublishedEventsTableRow = ({
   <Grid templateColumns={templateColumns}>
     <TableRow />
     <TableRow>
-      <RemarkRender remark={history.remark} />
+      <RemarkRender {...history.remark} />
     </TableRow>
     <TableRow>
       <PolicyChanges history={history} />
