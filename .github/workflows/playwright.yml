@@ -1,12 +1,15 @@
 name: Playwright Tests
 on:
-  deployment_status:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 jobs:
-  run-e2es:
-    if: >-
-      github.event_name == 'deployment_status' && 
-      github.event.deployment_status.state == 'success' && 
-      contains(github.event.deployment_status.environment_url, 'celatone-frontend-staging')
+  test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +24,8 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
         env:
-          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          NEXT_PUBLIC_DUMMY_MNEMONIC: ${{ secrets.DUMMY_MNEMONIC }}
+          NEXT_PUBLIC_SUPPORTED_CHAIN_IDS: ${{ vars.SUPPORTED_CHAIN_IDS }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
