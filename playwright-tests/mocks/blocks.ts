@@ -51,7 +51,7 @@ const mockBlocksResponse = {
       transaction_count: 4,
       validator: {
         identity: "",
-        moniker: "Astroquirks | Profit Sharing \ud83e\udd11 \ud83d\udcb0",
+        moniker: "Astroquirks | Profit Sharing",
         operator_address: "mock",
       },
     },

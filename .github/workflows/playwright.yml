@@ -26,6 +26,7 @@ jobs:
         env:
           NEXT_PUBLIC_DUMMY_MNEMONIC: ${{ secrets.DUMMY_MNEMONIC }}
           NEXT_PUBLIC_SUPPORTED_CHAIN_IDS: ${{ vars.SUPPORTED_CHAIN_IDS }}
+          NEXT_PUBLIC_CELATONE_API_OVERRIDE: ${{ vars.CELATONE_API_OVERRIDE }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
