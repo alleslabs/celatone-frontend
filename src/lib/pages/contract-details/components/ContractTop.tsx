@@ -128,19 +128,15 @@ export const ContractTop = ({
         justify="space-between"
         mt={{ base: 3, md: 6 }}
         direction={{ base: "column", md: "row" }}
-        gap={{ md: 4 }}
+        gap={{ md: 8 }}
       >
         <Flex
           direction="column"
-          textOverflow="ellipsis"
           gap={{ base: 2, md: 1 }}
+          overflow="hidden"
+          minW={{ md: "680px" }}
         >
-          <Flex
-            gap={1}
-            align={{ base: "start", md: "center" }}
-            maxW={{ md: "670px" }}
-            minH="36px"
-          >
+          <Flex gap={1} align={{ base: "start", md: "center" }} minH="36px">
             <CustomIcon
               name="contract-address"
               boxSize={5}
