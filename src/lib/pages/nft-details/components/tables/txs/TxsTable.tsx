@@ -2,15 +2,16 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { NftTransactions } from "lib/services/nft";
+import type { Option } from "lib/types";
 
 import { TxsTableHeader } from "./TxsTableHeader";
 import { TxsTableMobileCard } from "./TxsTableMobileCard";
 import { TxsTableRow } from "./TxsTableRow";
 
 interface TxsTableProps {
-  txs?: NftTransactions[];
-  isLoading?: boolean;
-  emptyState?: JSX.Element;
+  txs: Option<NftTransactions[]>;
+  isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
@@ -23,31 +24,25 @@ export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
 
   return isMobile ? (
     <MobileTableContainer>
-      {txs.map((transaction, key) => {
-        const arrayKey = transaction.txhash + key;
-        return (
-          <TxsTableMobileCard
-            key={arrayKey}
-            hash={transaction.txhash}
-            {...transaction}
-          />
-        );
-      })}
+      {txs.map((transaction, index) => (
+        <TxsTableMobileCard
+          key={transaction.txhash + index.toString()}
+          hash={transaction.txhash}
+          {...transaction}
+        />
+      ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
       <TxsTableHeader templateColumns={templateColumns} />
-      {txs.map((transaction, key) => {
-        const arrayKey = transaction.txhash + key;
-        return (
-          <TxsTableRow
-            key={arrayKey}
-            hash={transaction.txhash}
-            templateColumns={templateColumns}
-            {...transaction}
-          />
-        );
-      })}
+      {txs.map((transaction, index) => (
+        <TxsTableRow
+          key={transaction.txhash + index.toString()}
+          templateColumns={templateColumns}
+          hash={transaction.txhash}
+          {...transaction}
+        />
+      ))}
     </TableContainer>
   );
 };

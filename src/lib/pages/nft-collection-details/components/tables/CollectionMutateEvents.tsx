@@ -43,9 +43,8 @@ export const CollectionMutateEvents = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
-            message="Mutate events are not found."
             imageVariant="empty"
-            withBorder
+            message="Mutate events are not found."
           />
         }
       />

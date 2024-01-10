@@ -109,10 +109,10 @@ const zNftMintInfoResponse = z
       timestamp: zUtcDate,
       height: z.number(),
     }),
-    hash: z.string(),
+    hash: z.string().transform(parseTxHash),
   })
   .transform((val) => ({
-    txhash: val.hash.replace("\\x", ""),
+    txhash: val.hash,
     height: val.block.height,
     timestamp: val.block.timestamp,
   }));
@@ -160,7 +160,7 @@ const zNftTransactionsResponse = z
     is_nft_transfer: z.boolean(),
   })
   .transform((val) => ({
-    txhash: val.transaction.hash.replace("\\x", ""),
+    txhash: val.transaction.hash,
     timestamp: val.transaction.block.timestamp,
     isNftBurn: val.is_nft_burn,
     isNftMint: val.is_nft_mint,

@@ -4,15 +4,6 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface TxsTableRowProps {
-  hash: string;
-  timestamp: Date;
-  templateColumns: string;
-  isNftBurn: boolean;
-  isNftMint: boolean;
-  isNftTransfer: boolean;
-}
-
 export const getEventMessage = (
   isNftBurn: boolean,
   isNftMint: boolean,
@@ -24,10 +15,19 @@ export const getEventMessage = (
   return "-";
 };
 
+interface TxsTableRowProps {
+  templateColumns: string;
+  hash: string;
+  timestamp: Date;
+  isNftBurn: boolean;
+  isNftMint: boolean;
+  isNftTransfer: boolean;
+}
+
 export const TxsTableRow = ({
+  templateColumns,
   hash,
   timestamp,
-  templateColumns,
   isNftBurn,
   isNftMint,
   isNftTransfer,

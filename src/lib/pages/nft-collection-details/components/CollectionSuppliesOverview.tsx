@@ -41,7 +41,7 @@ export const CollectionSuppliesOverview = ({
   if (isLoading) return <Loading />;
   if (!nftsInfo || !nftsInfo.length)
     return (
-      <EmptyState message="NFTs not found." imageVariant="empty" withBorder />
+      <EmptyState imageVariant="empty" message="NFTs not found." withBorder />
     );
 
   return (

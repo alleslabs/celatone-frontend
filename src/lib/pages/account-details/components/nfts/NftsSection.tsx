@@ -24,7 +24,7 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
   const isMobile = useMobile();
   const { data: collections, isLoading } = useCollectionsByAccount(address);
 
-  const [selectedCollection, setCselectedCollection] =
+  const [selectedCollection, setSelectedCollection] =
     useState<SelectedCollection>();
 
   if (isLoading) return <Loading />;
@@ -38,7 +38,7 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
     );
 
   const handleOnClick = (collection?: SelectedCollection) =>
-    setCselectedCollection(collection);
+    setSelectedCollection(collection);
 
   return (
     <Box mt={{ base: 4, md: 8 }}>

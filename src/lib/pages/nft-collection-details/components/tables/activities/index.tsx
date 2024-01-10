@@ -58,9 +58,9 @@ export const Activities = ({
         size={{ base: "md", md: "lg" }}
       />
       <ActivitiesTable
+        collectionAddress={collectionAddress}
         activities={activities}
         isLoading={isLoading}
-        collectionAddress={collectionAddress}
         emptyState={
           <EmptyState
             message="There are no activities matches your keyword."

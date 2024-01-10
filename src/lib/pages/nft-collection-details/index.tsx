@@ -212,8 +212,8 @@ const CollectionDetailsBody = ({
             <Flex direction="column" gap={10}>
               <CollectionSupplyInfo
                 totalBurned={totalBurnedCount}
+                totalMinted={totalMinted}
                 currentSupply={currentSupply}
-                totlaMinted={totalMinted}
                 maxSupply={maxSupply}
               />
               <CollectionSuppliesOverview

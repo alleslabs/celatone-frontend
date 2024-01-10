@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useCelatoneApp,
+  useNftConfig,
+} from "lib/app-provider";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
 import type {
@@ -205,6 +209,8 @@ export const useNftsByAccount = (
 
 export const useNftsCountByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
+  const { enabled } = useNftConfig({ shouldRedirect: false });
+
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT,
@@ -215,6 +221,7 @@ export const useNftsCountByAccount = (accountAddress: HexAddr) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

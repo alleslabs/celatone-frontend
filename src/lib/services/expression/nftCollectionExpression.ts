@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 
+import type { HexAddr32 } from "lib/types";
 import { isHexModuleAddress, isTxHash } from "lib/utils";
 
 export const useCollectionActivitiesExpression = (
-  collectionAddress: string,
+  collectionAddress: HexAddr32,
   search = ""
 ) => {
   const isNftAddress = isHexModuleAddress(search);

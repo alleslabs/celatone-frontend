@@ -4,13 +4,26 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import type { Activity } from "lib/services/nft/collection";
-import type { HexAddr } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+
+export const getEventMessage = (
+  isNftBurn: boolean,
+  isNftMint: boolean,
+  isNftTransfer: boolean,
+  isCollectionCreate: boolean
+) => {
+  if (isNftBurn) return "Burned";
+  if (isNftMint) return "Minted";
+  if (isNftTransfer) return "Transferred";
+  if (isCollectionCreate) return "Collection created";
+  return "-";
+};
 
 interface ActivitiesTableRowProps {
   activity: Activity;
   templateColumns: string;
-  collectionAddress: HexAddr;
+  collectionAddress: HexAddr32;
 }
 
 export const ActivitiesTableRow = ({
@@ -28,14 +41,6 @@ export const ActivitiesTableRow = ({
     tokenId,
     nftAddress,
   } = activity;
-
-  const getEventMessage = () => {
-    if (isNftBurn) return "Burned";
-    if (isNftMint) return "Minted";
-    if (isNftTransfer) return "Transferred";
-    if (isCollectionCreate) return "Collection created";
-    return "-";
-  };
 
   return (
     <Box w="full" minW="min-content">
@@ -69,7 +74,14 @@ export const ActivitiesTableRow = ({
           )}
         </TableRow>
         <TableRow>
-          <Text>{getEventMessage()}</Text>
+          <Text>
+            {getEventMessage(
+              isNftBurn,
+              isNftMint,
+              isNftTransfer,
+              isCollectionCreate
+            )}
+          </Text>
         </TableRow>
         <TableRow>
           <Flex direction="column" gap={1}>

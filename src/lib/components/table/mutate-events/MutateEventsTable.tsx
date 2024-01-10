@@ -1,16 +1,16 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import type { MutateEvent } from "lib/types";
+import type { MutateEvent, Option } from "lib/types";
 
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
 import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 
 interface MutateEventsTableProps {
-  mutateEvents?: MutateEvent[];
-  isLoading?: boolean;
-  emptyState?: JSX.Element;
+  mutateEvents: Option<MutateEvent[]>;
+  isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const MutateEventsTable = ({
@@ -27,24 +27,23 @@ export const MutateEventsTable = ({
 
   return isMobile ? (
     <MobileTableContainer>
-      {mutateEvents.map((event) => {
-        const arrayKey = event.newValue + event.oldValue;
-        return <MutateEventsTableMobileCard key={arrayKey} {...event} />;
-      })}
+      {mutateEvents.map((event) => (
+        <MutateEventsTableMobileCard
+          key={event.mutatedFieldName + event.newValue + event.oldValue}
+          {...event}
+        />
+      ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
       <MutateEventsTableHeader templateColumns={templateColumns} />
-      {mutateEvents.map((event) => {
-        const arrayKey = event.newValue + event.oldValue;
-        return (
-          <MutateEventsTableRow
-            key={arrayKey}
-            templateColumns={templateColumns}
-            {...event}
-          />
-        );
-      })}
+      {mutateEvents.map((event) => (
+        <MutateEventsTableRow
+          key={event.mutatedFieldName + event.newValue + event.oldValue}
+          templateColumns={templateColumns}
+          {...event}
+        />
+      ))}
     </TableContainer>
   );
 };

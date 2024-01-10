@@ -99,7 +99,8 @@ const AccountDetailsBody = ({
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddress(accountAddress);
   // nft
-  const { data: nftCount } = useNftsCountByAccount(hexAddress);
+  const { data: nftsCount, isFetching: isNftsCountLoading } =
+    useNftsCountByAccount(hexAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -173,10 +174,11 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
-            count={nftCount}
-            onClick={handleTabChange(TabIndex.Nfts, nftCount)}
+            count={nftsCount}
+            isDisabled={nftsCount === 0}
+            onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
+            isLoading={isNftsCountLoading}
             hidden={!nft.enabled}
-            isDisabled={nftCount === 0}
           >
             NFTs
           </CustomTab>
@@ -234,6 +236,7 @@ const AccountDetailsBody = ({
               TabIndex.Resources,
               resourcesData?.groupedByOwner.length
             )}
+            isLoading={isResourceLoading}
             hidden={!move.enabled}
           >
             Resources
@@ -242,6 +245,7 @@ const AccountDetailsBody = ({
             count={modulesData?.length}
             isDisabled={modulesData?.length === 0}
             onClick={handleTabChange(TabIndex.Modules, undefined)}
+            isLoading={isModulesLoading}
             hidden={!move.enabled}
           >
             Modules
@@ -249,11 +253,11 @@ const AccountDetailsBody = ({
           <CustomTab
             count={tableCounts.proposalsCount}
             isDisabled={tableCounts.proposalsCount === 0}
-            isLoading={isLoadingAccountTableCounts}
             onClick={handleTabChange(
               TabIndex.Proposals,
               tableCounts.proposalsCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
             hidden={!gov.enabled}
           >
             Proposals
@@ -311,9 +315,9 @@ const AccountDetailsBody = ({
             )}
             {nft.enabled && (
               <NftsOverview
-                totalCount={nftCount}
+                totalCount={nftsCount}
                 userAddress={hexAddress}
-                onViewMore={handleTabChange(TabIndex.Nfts, nftCount)}
+                onViewMore={handleTabChange(TabIndex.Nfts, nftsCount)}
               />
             )}
             <TxsTable
@@ -400,7 +404,7 @@ const AccountDetailsBody = ({
             <DelegationsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <NftsSection address={hexAddress} totalData={nftCount} />
+            <NftsSection address={hexAddress} totalData={nftsCount} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

@@ -41,7 +41,9 @@ export const NftMutateEvents = ({
       <MutateEventsTable
         mutateEvents={mutateEvents}
         isLoading={isLoading}
-        emptyState={<EmptyState message="Mutate events not found." />}
+        emptyState={
+          <EmptyState imageVariant="empty" message="Mutate events not found." />
+        }
       />
       {totalData > 10 && (
         <Pagination

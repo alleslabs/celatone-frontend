@@ -32,14 +32,14 @@ const InfoComponent = ({
 
 interface CollectionSupplyInfoProps {
   totalBurned: number;
-  totlaMinted: number;
+  totalMinted: number;
   currentSupply: number;
   maxSupply?: number;
 }
 
 export const CollectionSupplyInfo = ({
   totalBurned,
-  totlaMinted,
+  totalMinted,
   currentSupply,
   maxSupply,
 }: CollectionSupplyInfoProps) => {
@@ -64,7 +64,7 @@ export const CollectionSupplyInfo = ({
         <Flex fontWeight={600} align="end" gap="8px">
           <Text fontSize="16px">{currentSupply}</Text>
           <Text fontSize="12px" color="gray.400">
-            ({totlaMinted} - {totalBurned})
+            ({totalMinted} - {totalBurned})
           </Text>
         </Flex>
       </div>
@@ -100,7 +100,7 @@ export const CollectionSupplyInfo = ({
         </Text>
         <InfoComponent
           title="Total Minted"
-          content={totlaMinted}
+          content={totalMinted}
           tooltip={totalMintedTooltip}
         />
         <Text fontSize="24px" fontWeight={600} color="gray.100">

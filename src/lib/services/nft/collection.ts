@@ -15,6 +15,7 @@ import {
 } from "lib/query";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
+import { parseTxHash } from "lib/utils";
 
 const zCollection = z
   .object({
@@ -170,7 +171,7 @@ const zActivity = z
   .object({
     transaction: z.object({
       block: z.object({ timestamp: zUtcDate }),
-      hash: z.string(),
+      hash: z.string().transform(parseTxHash),
     }),
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
@@ -186,7 +187,7 @@ const zActivity = z
   })
   .transform((data) => ({
     timestamp: data.transaction.block.timestamp,
-    txhash: data.transaction.hash.replace("\\x", ""),
+    txhash: data.transaction.hash,
     isNftBurn: data.is_nft_burn,
     isNftMint: data.is_nft_mint,
     isNftTransfer: data.is_nft_transfer,

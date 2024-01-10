@@ -42,7 +42,7 @@ export const Txs = ({ nftAddress, totalData }: TxsProps) => {
         txs={transactions}
         isLoading={isLoading}
         emptyState={
-          <EmptyState message="Transactions not found." imageVariant="empty" />
+          <EmptyState imageVariant="empty" message="Transactions not found." />
         }
       />
       {totalData > 10 && (

@@ -1,17 +1,17 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddress } from "lib/services/move";
-import type { HexAddr, Option } from "lib/types";
+import type { HexAddr32, Option } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
-interface CollectinInfos {
+interface CollectionInfos {
   isUnlimited: boolean;
   supplies: { currentSupply: number; totalMinted: number; maxSupply?: number };
   royalty: number;
 }
 
 export const useCollectionInfos = (
-  collectionAddress: HexAddr
-): { collectionInfos: Option<CollectinInfos>; isLoading: boolean } => {
+  collectionAddress: HexAddr32
+): { collectionInfos: Option<CollectionInfos>; isLoading: boolean } => {
   const formatAddress = useFormatAddresses();
   const { address } = formatAddress(collectionAddress);
   const { data: resourcesData, isFetching } = useResourcesByAddress(address);

@@ -22,7 +22,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useCollectionByCollectionAddress,
   useMetadata,

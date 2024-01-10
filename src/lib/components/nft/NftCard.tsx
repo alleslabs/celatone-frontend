@@ -1,7 +1,7 @@
 import { Box, Image, Flex, Text } from "@chakra-ui/react";
 
 import { AppLink } from "../AppLink";
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
 import type { HexAddr32, Option } from "lib/types";
 

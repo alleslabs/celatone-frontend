@@ -5,15 +5,17 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import type { Activity } from "lib/services/nft/collection";
-import type { HexAddr } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+
+import { getEventMessage } from "./ActivitiesTableRow";
 
 export const ActivitiesTableMobileCard = ({
   activity,
   collectionAddress,
 }: {
   activity: Activity;
-  collectionAddress: HexAddr;
+  collectionAddress: HexAddr32;
 }) => {
   const navigate = useInternalNavigate();
   const {
@@ -26,14 +28,6 @@ export const ActivitiesTableMobileCard = ({
     tokenId,
     nftAddress,
   } = activity;
-
-  const getEventMessage = () => {
-    if (isNftBurn) return "Burned";
-    if (isNftMint) return "Minted";
-    if (isNftTransfer) return "Transferred";
-    if (isCollectionCreate) return "Collection created";
-    return "-";
-  };
 
   return (
     <MobileCardTemplate
@@ -62,7 +56,14 @@ export const ActivitiesTableMobileCard = ({
           </Flex>
           <Flex direction="column">
             <MobileLabel label="Event" />
-            <Text variant="body2">{getEventMessage()}</Text>
+            <Text variant="body2">
+              {getEventMessage(
+                isNftBurn,
+                isNftMint,
+                isNftTransfer,
+                isCollectionCreate
+              )}
+            </Text>
           </Flex>
         </Flex>
       }

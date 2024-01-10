@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data/image";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
 import type { Collection } from "lib/services/nft";
 
