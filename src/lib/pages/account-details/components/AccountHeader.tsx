@@ -1,6 +1,7 @@
 import { Flex, Heading, IconButton, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
+import { TotalValue } from "../../../components/TotalValue";
 import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -13,8 +14,6 @@ import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/account";
 import type { HexAddr, BechAddr, Option } from "lib/types";
-
-import { TotalAccountValue } from "./TotalAccountValue";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
@@ -182,7 +181,7 @@ export const AccountHeader = observer(
           )}
         </Flex>
         <Flex mt={{ base: 4, lg: 0 }} w={{ base: "full", lg: "auto" }}>
-          <TotalAccountValue accountAddress={accountAddress} />
+          <TotalValue address={accountAddress} />
         </Flex>
       </Flex>
     );

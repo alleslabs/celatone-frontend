@@ -1,32 +1,35 @@
 import { Flex, Heading, Skeleton, Text } from "@chakra-ui/react";
 
-import { useAccountTotalValue } from "../data";
+import { useAccountTotalValue } from "lib/model/account";
 import type { BechAddr } from "lib/types";
 import { formatPrice } from "lib/utils";
 
-interface TotalAccountValueProps {
-  accountAddress: BechAddr;
+interface TotalValueProps {
+  address: BechAddr;
+  label?: string;
+  isCompact?: boolean;
 }
-export const TotalAccountValue = ({
-  accountAddress,
-}: TotalAccountValueProps) => {
-  const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
+export const TotalValue = ({
+  address,
+  label = "Total Account Value",
+  isCompact = false,
+}: TotalValueProps) => {
+  const { totalAccountValue, isLoading } = useAccountTotalValue(address);
   return (
     <Flex
-      p={4}
+      p={isCompact ? 3 : 4}
       direction="column"
       border="2px solid"
       borderColor="gray.700"
       borderRadius={4}
     >
       <Text variant="body2" fontWeight={500} color="text.dark">
-        Total Account Value
+        {label}
       </Text>
       {isLoading ? (
         <Skeleton
           mt={1}
-          h={8}
-          w="full"
+          h={5}
           borderRadius={2}
           startColor="gray.500"
           endColor="gray.700"
@@ -37,7 +40,7 @@ export const TotalAccountValue = ({
           variant="h6"
           color={
             !totalAccountValue || totalAccountValue.eq(0)
-              ? "text.dark"
+              ? "text.disabled"
               : "text.main"
           }
         >
