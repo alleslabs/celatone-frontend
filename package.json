@@ -147,5 +147,5 @@
     "ts-jest": "^29.0.5",
     "typescript": "^5.1.6"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@4.0.2"
 }
