@@ -23,7 +23,9 @@ export const DelegationInfo = ({
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
-  const tableTitle = <TableTitle title="Delegations" mb={0} />;
+  const tableTitle = (
+    <TableTitle title="Delegations" mb={0} showCount={false} />
+  );
 
   return (
     <>
