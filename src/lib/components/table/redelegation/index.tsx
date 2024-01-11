@@ -1,8 +1,8 @@
 import { TableContainer } from "@chakra-ui/react";
 
+import { MobileTableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
-import { MobileTableContainer } from "lib/components/table";
-import type { Redelegation } from "lib/pages/account-details/types";
+import type { Redelegation } from "lib/types";
 
 import { RedelegationTableHeader } from "./RedelegationTableHeader";
 import { RedelegationTableMobileCard } from "./RedelegationTableMobileCard";

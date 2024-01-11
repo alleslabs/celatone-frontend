@@ -2,10 +2,9 @@ import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { DelegationsTable, UnbondingsTable } from "../tables";
+import { DelegationsTable, UnbondingsTable } from "../table";
 import { trackUseRadio } from "lib/amplitude";
-import type { Delegation, Unbonding } from "lib/pages/account-details/types";
-import type { Option, TokenWithValue } from "lib/types";
+import type { Delegation, Option, TokenWithValue, Unbonding } from "lib/types";
 
 import { RadioCard } from "./radio-card";
 

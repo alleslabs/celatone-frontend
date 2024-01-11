@@ -48,9 +48,9 @@ export const DelegationsSection = ({
   if (!stakingParams) return <ErrorFetching dataName="delegation data" />;
 
   const redelegationCount = redelegations?.length ?? 0;
+
   return (
     <Flex
-      mt={{ base: 4, md: 8 }}
       mb={{ base: 0, md: 8 }}
       position="relative"
       overflow="hidden"

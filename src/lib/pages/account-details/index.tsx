@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
+import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -33,7 +34,6 @@ import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
-import { DelegationsSection } from "./components/delegations";
 import { ModuleLists } from "./components/modules";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
@@ -138,7 +138,6 @@ const AccountDetailsBody = ({
           hexAddress={hexAddress}
         />
       </Flex>
-
       <Tabs
         index={Object.values(TabIndex).indexOf(tabParam)}
         isLazy
@@ -247,54 +246,65 @@ const AccountDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Flex
-              direction={{ base: "column", md: "row" }}
-              gap={{ base: 4, md: 6 }}
-              mt={{ base: 0, md: 8 }}
-            >
-              {accountData?.publicInfo?.description && (
-                <Flex
-                  direction="column"
-                  bg="gray.900"
-                  maxW="100%"
-                  borderRadius="8px"
-                  py={4}
-                  px={4}
-                  flex="1"
-                >
-                  <Flex alignItems="center" gap={1} minH="32px">
-                    <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
-                    <Text variant="body2" fontWeight={500} color="text.dark">
-                      Public Account Description
+            <Flex direction="column" gap={{ base: 4, md: 4 }}>
+              <Flex
+                direction={{ base: "column", md: "row" }}
+                gap={{ base: 4, md: 6 }}
+                mt={{ base: 0, md: 8 }}
+              >
+                {accountData?.publicInfo?.description && (
+                  <Flex
+                    direction="column"
+                    bg="gray.900"
+                    maxW="100%"
+                    borderRadius="8px"
+                    py={4}
+                    px={4}
+                    flex="1"
+                  >
+                    <Flex alignItems="center" gap={1} minH="32px">
+                      <CustomIcon
+                        name="website"
+                        ml={0}
+                        mb={2}
+                        color="gray.600"
+                      />
+                      <Text variant="body2" fontWeight={500} color="text.dark">
+                        Public Account Description
+                      </Text>
+                    </Flex>
+                    <Text variant="body2" color="text.main" mb={1}>
+                      {accountData.publicInfo.description}
                     </Text>
                   </Flex>
-                  <Text variant="body2" color="text.main" mb={1}>
-                    {accountData.publicInfo.description}
-                  </Text>
-                </Flex>
-              )}
-              <UserAccountDesc address={accountAddress} />
-            </Flex>
-            <Flex
-              borderBottom={{ base: "0px", md: "1px solid" }}
-              borderBottomColor={{ base: "transparent", md: "gray.700" }}
-            >
-              <AssetsSection
-                address={accountAddress}
-                onViewMore={handleTabChange(TabIndex.Assets, undefined)}
-              />
-            </Flex>
-            {!disableDelegation && (
+                )}
+                <UserAccountDesc address={accountAddress} />
+              </Flex>
               <Flex
                 borderBottom={{ base: "0px", md: "1px solid" }}
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
               >
-                <DelegationsSection
+                <AssetsSection
+                  isAccount
                   address={accountAddress}
-                  onViewMore={handleTabChange(TabIndex.Delegations, undefined)}
+                  onViewMore={handleTabChange(TabIndex.Assets, undefined)}
                 />
               </Flex>
-            )}
+              {!disableDelegation && (
+                <Flex
+                  borderBottom={{ base: "0px", md: "1px solid" }}
+                  borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                >
+                  <DelegationsSection
+                    address={accountAddress}
+                    onViewMore={handleTabChange(
+                      TabIndex.Delegations,
+                      undefined
+                    )}
+                  />
+                </Flex>
+              )}{" "}
+            </Flex>
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -372,10 +382,10 @@ const AccountDetailsBody = ({
               />
             )}
           </TabPanel>
-          <TabPanel p={0}>
-            <AssetsSection address={accountAddress} />
+          <TabPanel p={0} mt={{ base: 0, md: 8 }}>
+            <AssetsSection isAccount address={accountAddress} />
           </TabPanel>
-          <TabPanel p={0}>
+          <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <DelegationsSection address={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>

@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
 - [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
 - [#681](https://github.com/alleslabs/celatone-frontend/pull/681) Add Initia wallet
 - [#704](https://github.com/alleslabs/celatone-frontend/pull/704) Fix client undefined after disconnected

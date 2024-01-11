@@ -7,11 +7,13 @@ import type { TokenWithValue } from "lib/types";
 interface AssetSectionContentProps {
   supportedAssets: TokenWithValue[];
   error: Error;
+  isAccount?: boolean;
 }
 
 export const AssetSectionContent = ({
   supportedAssets,
   error,
+  isAccount = false,
 }: AssetSectionContentProps) => {
   if (error) return <ErrorFetching dataName="balances" />;
 
@@ -26,7 +28,8 @@ export const AssetSectionContent = ({
     </Grid>
   ) : (
     <Text variant="body2" color="text.dark">
-      This address does not hold any supported assets
+      This {isAccount ? "address" : "contract"} does not hold any supported
+      assets
     </Text>
   );
 };

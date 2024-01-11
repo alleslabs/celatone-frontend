@@ -1,15 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { TableTitle } from "../TableTitle";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching, EmptyState } from "lib/components/state";
-import {
-  MobileTableContainer,
-  TableContainer,
-  TableTitle,
-} from "lib/components/table";
-import type { Delegation } from "lib/pages/account-details/types";
-import type { Option, TokenWithValue } from "lib/types";
+import type { Delegation, Option, TokenWithValue } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";
 import { BondedTableMobileCard } from "./BondedTableMobileCard";
