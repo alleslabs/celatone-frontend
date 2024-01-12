@@ -17,6 +17,8 @@ import {
 
 interface UnsupportedAssetSectionContentProps {
   unsupportedAssets: TokenWithValue[];
+  isAccount?: boolean;
+  onViewMore?: () => void;
 }
 
 const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
@@ -108,19 +110,29 @@ const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
 
 export const UnsupportedAssetSectionContent = ({
   unsupportedAssets,
+  onViewMore,
+  isAccount = false,
 }: UnsupportedAssetSectionContentProps) => {
-  if (unsupportedAssets.length === 0) return null;
-
-  return (
-    <Flex direction="column" gap={5}>
+  return unsupportedAssets.length ? (
+    <Flex direction="column" gap={5} p={4}>
       <Grid
         gridGap={4}
-        gridTemplateColumns={{ base: "1 fr", md: "repeat(2, 1fr)" }}
+        gridTemplateColumns={{
+          base: "1 fr",
+          md: onViewMore ? "1fr" : "repeat(2, 1fr)",
+        }}
       >
         {unsupportedAssets.map((asset) => (
           <UnsupportedToken key={asset.denom} token={asset} />
         ))}
       </Grid>
+    </Flex>
+  ) : (
+    <Flex p={12} alignItems="center" justifyContent="center">
+      <Text variant="body2" color="text.dark">
+        This {isAccount ? "address" : "contract"} does not hold any unsupported
+        assets
+      </Text>
     </Flex>
   );
 };

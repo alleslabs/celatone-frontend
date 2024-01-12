@@ -110,7 +110,7 @@ export const ContractTop = ({
   };
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" mb={6}>
       <Breadcrumb
         items={[
           {

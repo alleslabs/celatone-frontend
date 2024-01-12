@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { DelegationsSection } from "../../components/delegations";
-import { AssetsSection } from "../account-details/components/asset";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useValidateAddress,
@@ -20,6 +19,7 @@ import {
   useMobile,
   useInternalNavigate,
 } from "lib/app-provider";
+import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -40,6 +40,8 @@ import { useContractData } from "./data";
 import { TabIndex, zContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
+
+const tableHeaderId = "contractDetailsTab";
 
 interface ContractDetailsBodyProps {
   contractAddress: BechAddr32;
@@ -106,11 +108,10 @@ const ContractDetailsBody = observer(
           lazyBehavior="keepMounted"
         >
           <TabList
-            mt={6}
-            mb={{ base: 0, md: 8 }}
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
+            id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
@@ -134,13 +135,9 @@ const ContractDetailsBody = observer(
             </CustomTab>
           </TabList>
           <TabPanels>
-            <TabPanel p={0}>
+            <TabPanel p={0} pt={{ base: 4, md: 8 }}>
               <Flex flexDirection="column" gap={8}>
-                <Flex
-                  direction="column"
-                  gap={{ base: 4, md: 4 }}
-                  mt={{ base: 4, md: 0 }}
-                >
+                <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
                   <ContractDesc
                     publicInfo={publicInfo}
                     contract={contract}

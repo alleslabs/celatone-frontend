@@ -23,7 +23,9 @@ export const DelegationInfo = ({
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
-  const tableTitle = <TableTitle title="Delegations" mb={0} />;
+  const tableTitle = (
+    <TableTitle title="Delegations" mb={0} showCount={false} />
+  );
 
   return (
     <>
@@ -52,6 +54,7 @@ export const DelegationInfo = ({
             alignItems={{ base: "start", md: "center" }}
             justify="space-between"
             overflowX="scroll"
+            overflowY="hidden"
           >
             <Flex
               gap={{ base: 4, md: 8 }}
