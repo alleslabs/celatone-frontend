@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
+- [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
 
 ### Improvements
 
@@ -49,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#710](https://github.com/alleslabs/celatone-frontend/pull/710) Refactor all address types
 
 ### Bug fixes
+
+- [#722](https://github.com/alleslabs/celatone-frontend/pull/722) Fix flicker query page
 
 ## v1.4.1
 
