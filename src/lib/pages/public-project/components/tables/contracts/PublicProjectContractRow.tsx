@@ -116,6 +116,7 @@ export const PublicProjectContractRow = ({
                 contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
+                    aria-label="button"
                     icon={<CustomIcon name="bookmark-solid" />}
                     variant="ghost-primary"
                   />
@@ -126,6 +127,7 @@ export const PublicProjectContractRow = ({
                 contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
+                    aria-label="button"
                     icon={<CustomIcon name="bookmark" />}
                     variant="ghost-gray"
                   />
