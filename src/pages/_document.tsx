@@ -5,7 +5,7 @@ import Script from "next/script";
 
 import { CURR_THEME } from "env";
 import Meta from "lib/components/Meta";
-import customTheme from "lib/styles/theme";
+import { customTheme } from "lib/styles/theme";
 
 class MyDocument extends Document {
   static getInitialProps(ctx: DocumentContext) {
