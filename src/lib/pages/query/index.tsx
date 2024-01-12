@@ -17,8 +17,8 @@ import type { BechAddr32 } from "lib/types";
 import {
   jsonPrettify,
   getFirstQueryParam,
-  decode,
   jsonValidate,
+  libDecode,
 } from "lib/utils";
 
 import { QueryArea } from "./components/QueryArea";
@@ -57,18 +57,18 @@ const Query = observer(() => {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as BechAddr32;
-
       const msgParam = getFirstQueryParam(router.query.msg);
-      let decodeMsg = decode(msgParam);
-      if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddressParam);
-        decodeMsg = "";
+      if (!msgParam.length) {
+        setInitialMsg("");
       }
-      const jsonMsg = jsonPrettify(decodeMsg);
+
+      const decodeMsg = libDecode(msgParam);
+
+      if (decodeMsg && !jsonValidate(decodeMsg)) {
+        setInitialMsg(jsonPrettify(decodeMsg));
+      }
 
       setContractAddress(contractAddressParam);
-      setInitialMsg(jsonMsg);
-
       trackToQuery(!!contractAddressParam, !!msgParam);
     }
   }, [router, onContractSelect]);
