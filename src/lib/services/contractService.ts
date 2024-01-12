@@ -426,6 +426,11 @@ export const useContractQueryMsgs = (contractAddress: BechAddr32) => {
   return useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, endpoint, contractAddress],
     async () => getContractQueryMsgs(endpoint, contractAddress),
-    { retry: false, cacheTime: 0, refetchOnWindowFocus: false }
+    {
+      enabled: !!contractAddress,
+      retry: false,
+      cacheTime: 0,
+      refetchOnWindowFocus: false,
+    }
   );
 };

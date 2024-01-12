@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#722](https://github.com/alleslabs/celatone-frontend/pull/722) Fix flicker query page
+
 ## v1.4.1
 
 ### Features
