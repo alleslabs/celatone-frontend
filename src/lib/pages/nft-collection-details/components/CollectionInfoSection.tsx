@@ -1,7 +1,6 @@
 import { Flex, Heading, Link, Text } from "@chakra-ui/react";
 
-import { useInternalNavigate, useMobile } from "lib/app-provider";
-import { CopyLink } from "lib/components/CopyLink";
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
@@ -19,6 +18,8 @@ interface CollectionInfoSectionProps {
   activities: number;
   mutateEventes: number;
   royalty: number;
+  onClickActivities: () => void;
+  onClickMutateEvents: () => void;
 }
 
 export const CollectionInfoSection = ({
@@ -29,10 +30,10 @@ export const CollectionInfoSection = ({
   activities,
   mutateEventes,
   royalty,
+  onClickActivities,
+  onClickMutateEvents,
 }: CollectionInfoSectionProps) => {
   const isMobile = useMobile();
-  const navigate = useInternalNavigate();
-
   const { data: collectionCreator, isLoading } =
     useCollectionCreator(collectionAddress);
 
@@ -65,6 +66,7 @@ export const CollectionInfoSection = ({
               type="block_height"
               showCopyOnHover
               fixedHeight
+              ampCopierSection="collection-creation-information"
             />
           </LabelText>
           <LabelText label="Created by" helperText1="(VM Address)">
@@ -73,10 +75,16 @@ export const CollectionInfoSection = ({
               type="user_address"
               showCopyOnHover
               fixedHeight
+              ampCopierSection="collection-creation-information"
             />
           </LabelText>
           <LabelText label="Created Transaction">
-            <ExplorerLink value={txhash} type="tx_hash" showCopyOnHover />
+            <ExplorerLink
+              value={txhash}
+              type="tx_hash"
+              showCopyOnHover
+              ampCopierSection="collection-creation-information"
+            />
           </LabelText>
         </Flex>
         <Flex
@@ -91,10 +99,13 @@ export const CollectionInfoSection = ({
             <Text fontWeight={600} minW={24} variant="body2">
               Collection
             </Text>
-            <CopyLink
+            <ExplorerLink
               value={collectionAddress}
               type="user_address"
+              textFormat="normal"
+              maxWidth="full"
               showCopyOnHover
+              ampCopierSection="collection-information"
             />
           </Flex>
           <Flex gap={infoGap} flexDir={infoDirection}>
@@ -144,24 +155,14 @@ export const CollectionInfoSection = ({
           title="Activities"
           icon="list"
           content={activities}
-          onClick={() =>
-            navigate({
-              pathname: `/nft-collections/[collectionAddress]/activities`,
-              query: { collectionAddress },
-            })
-          }
+          onClick={onClickActivities}
           isDisabled={!activities}
         />
         <InfoCard
           title="Mutate Events"
           icon="migrate"
           content={mutateEventes}
-          onClick={() =>
-            navigate({
-              pathname: `/nft-collections/[collectionAddress]/mutate_events`,
-              query: { collectionAddress },
-            })
-          }
+          onClick={onClickMutateEvents}
           isDisabled={!mutateEventes}
         />
       </Flex>

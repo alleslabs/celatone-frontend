@@ -56,6 +56,7 @@ export const Activities = ({
           setCurrentPage(1);
         }}
         size={{ base: "md", md: "lg" }}
+        amptrackSection="activities-in-this-collection-search"
       />
       <ActivitiesTable
         collectionAddress={collectionAddress}

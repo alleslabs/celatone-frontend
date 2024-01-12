@@ -156,6 +156,7 @@ const NftDetailsBody = ({
                         type="user_address"
                         textFormat="normal"
                         maxWidth="full"
+                        ampCopierSection="nft-address-nft-detail-top"
                       />
                     </Flex>
                   </Tooltip>
@@ -166,6 +167,7 @@ const NftDetailsBody = ({
                     type="user_address"
                     textFormat="normal"
                     maxWidth="full"
+                    ampCopierSection="holder-address-nft-detail-top"
                   />
                 </NftInfoItem>
                 <NftInfoItem label="Token URI" isCentered={false}>
@@ -202,7 +204,15 @@ const NftDetailsBody = ({
           </Flex>
         </Flex>
         <Divider width="100%" color="gray.700" />
-        <Tabs isLazy lazyBehavior="keepMounted">
+        <Tabs
+          isLazy
+          lazyBehavior="keepMounted"
+          onChange={(tab) =>
+            track(AmpEvent.USE_SUBTAB, {
+              currentTab: !tab ? "transactions" : "mutate-events",
+            })
+          }
+        >
           <TabList
             marginBottom="32px"
             borderBottom="1px solid"

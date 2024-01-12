@@ -67,7 +67,7 @@ export enum AmpEvent {
   TO_PUBLISH_MODULE = "To Publish Module",
   TO_DEPLOY_SCRIPT = "To Deploy Script",
   TO_MY_PUBLISHED_MODULES = "To My Published Modules",
-  TO_NFT_COLLECTIONS = "To NFT Collections",
+  TO_NFT_COLLECTIONS_LIST = "To NFT Collections List",
   TO_NFT_COLLECTION_DETAIL = "To NFT Collection Detail",
   TO_NFT_DETAIL = "To NFT Detail",
   // ACTIONS
@@ -175,6 +175,10 @@ export enum AmpEvent {
   USE_MY_PUBLISHED_MODULES_CTA = "Use My Publised Modules CTA",
   USE_SELECT_RESOURCE_GROUP = "Use Select Resource Group",
   USE_MODULE_CARD = "Use Module Card",
+  USE_NFT_COLLECTION_INFO_CARD = "Use NFT Collection Info Card",
+  USE_NFT_VIEW_RESOURCE_CTA = "Use NFT View Resource CTA",
+  USE_NFT_CARD = "Use NFT Card",
+  USE_SELECT_NFT_COLLECTION_GROUP = "Use Select NFT Selection Group",
 
   // TX
   TX_SUCCEED = "Tx Succeed",

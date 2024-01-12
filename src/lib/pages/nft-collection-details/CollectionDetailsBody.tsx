@@ -10,8 +10,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
@@ -20,8 +19,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import PageContainer from "lib/components/PageContainer";
-import { ErrorFetching, InvalidState } from "lib/components/state";
+import { ErrorFetching } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import {
   useCollectionActivitiesCount,
@@ -30,8 +28,8 @@ import {
   useCollectionTotalBurnedCount,
   useNfts,
 } from "lib/services/nft";
-import { isHexModuleAddress } from "lib/utils";
 
+import { InvalidCollection, tabHeaderId } from ".";
 import { CollectionInfoSection } from "./components/CollectionInfoSection";
 import { CollectionSupplies } from "./components/CollectionSupplies";
 import { CollectionSuppliesOverview } from "./components/CollectionSuppliesOverview";
@@ -40,15 +38,9 @@ import { Activities } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
 import { useCollectionInfos } from "./data";
 import type { CollectionDetailQueryParams } from "./types";
-import { TabIndex, zCollectionDetailQueryParams } from "./types";
+import { TabIndex } from "./types";
 
-export const InvalidCollection = () => (
-  <InvalidState title="Collection does not exist" />
-);
-
-export const tabHeaderId = "collectionDetailTab";
-
-const CollectionDetailsBody = ({
+export const CollectionDetailsBody = ({
   collectionAddress,
   tab,
 }: CollectionDetailQueryParams) => {
@@ -146,7 +138,7 @@ const CollectionDetailsBody = ({
                   textFormat="normal"
                   maxWidth="full"
                   fixedHeight={false}
-                  ampCopierSection="collection-addresss-top"
+                  ampCopierSection="nft-collection-address-top"
                 />
               </Flex>
             </Tooltip>
@@ -264,28 +256,3 @@ const CollectionDetailsBody = ({
     </Box>
   );
 };
-
-const CollectionDetails = () => {
-  const router = useRouter();
-  const validated = zCollectionDetailQueryParams.safeParse(router.query);
-
-  useEffect(() => {
-    if (router.isReady && validated.success)
-      track(AmpEvent.TO_NFT_COLLECTION_DETAIL, { tab: validated.data.tab });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
-
-  if (
-    !validated.success ||
-    !isHexModuleAddress(validated.data.collectionAddress)
-  )
-    return <InvalidCollection />;
-
-  return (
-    <PageContainer>
-      <CollectionDetailsBody {...validated.data} />
-    </PageContainer>
-  );
-};
-
-export default CollectionDetails;

@@ -39,7 +39,12 @@ export const ActivitiesTableMobileCard = ({
       }
       topContent={
         <Flex align="center" gap={2}>
-          <ExplorerLink value={txhash} type="tx_hash" showCopyOnHover />
+          <ExplorerLink
+            value={txhash}
+            type="tx_hash"
+            showCopyOnHover
+            ampCopierSection="nft-collection-activities-table"
+          />
         </Flex>
       }
       middleContent={

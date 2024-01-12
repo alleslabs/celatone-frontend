@@ -1,6 +1,8 @@
 import { Box, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import router from "next/router";
+import { useEffect, useState } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -35,6 +37,11 @@ export const Collections = () => {
     }
   );
 
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_NFT_COLLECTIONS_LIST);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
   return (
     <Box>
       <Stack spacing={8}>
@@ -44,6 +51,7 @@ export const Collections = () => {
           autoFocus
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}
+          amptrackSection="nft-collections-list-search"
         />
         <CollectionList
           collections={collections?.items}

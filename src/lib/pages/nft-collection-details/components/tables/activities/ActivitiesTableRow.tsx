@@ -55,6 +55,7 @@ export const ActivitiesTableRow = ({
             value={txhash.toUpperCase()}
             type="tx_hash"
             showCopyOnHover
+            ampCopierSection="nft-collection-activities-table"
           />
         </TableRow>
         <TableRow>

@@ -43,6 +43,7 @@ export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
               value={String(mintInfo.height)}
               type="block_height"
               showCopyOnHover
+              ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
           <LabelText label="Minted by" helperText1="(VM Address)">
@@ -50,6 +51,7 @@ export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
               value={holderAddress}
               type="user_address"
               showCopyOnHover
+              ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
           <LabelText label="Minted Transaction">
@@ -57,6 +59,7 @@ export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
               value={mintInfo.txhash}
               type="tx_hash"
               showCopyOnHover
+              ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
         </SimpleGrid>
