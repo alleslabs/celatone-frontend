@@ -4,17 +4,17 @@ import { ErrorFetching } from "lib/components/state";
 import { TokenCard } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
 
-interface AssetSectionContentProps {
+interface SupportedAssetSectionContentProps {
   supportedAssets: TokenWithValue[];
   error: Error;
   isAccount?: boolean;
 }
 
-export const AssetSectionContent = ({
+export const SupportedAssetSectionContent = ({
   supportedAssets,
   error,
   isAccount = false,
-}: AssetSectionContentProps) => {
+}: SupportedAssetSectionContentProps) => {
   if (error) return <ErrorFetching dataName="balances" />;
 
   return supportedAssets.length ? (

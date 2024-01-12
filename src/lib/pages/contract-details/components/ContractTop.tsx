@@ -132,7 +132,7 @@ export const ContractTop = ({
       >
         <Flex
           direction="column"
-          gap={3}
+          gap={{ base: 1, md: 3 }}
           overflow="hidden"
           minW={{ md: "680px" }}
         >
@@ -162,7 +162,7 @@ export const ContractTop = ({
               {displayName}
             </Heading>
           </Flex>
-          <Flex gap={1} direction="column">
+          <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex
               mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
