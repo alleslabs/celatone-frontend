@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 - [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
 
@@ -57,7 +58,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
 - [#681](https://github.com/alleslabs/celatone-frontend/pull/681) Add Initia wallet
 - [#704](https://github.com/alleslabs/celatone-frontend/pull/704) Fix client undefined after disconnected
 - [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Add ledger
