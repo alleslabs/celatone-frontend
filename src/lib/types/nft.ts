@@ -10,7 +10,7 @@ export interface MutateEvent {
 }
 
 export interface Trait {
-  traitType?: string;
+  traitType: string;
   displayType?: string;
-  value?: string | number;
+  value: string | number;
 }

@@ -136,9 +136,9 @@ export const zMetadata = z
     image_url: z.string().optional(),
     attributes: z
       .object({
-        trait_type: z.string().optional(),
+        trait_type: z.string(),
         display_type: z.string().optional(),
-        value: z.union([z.string(), z.number()]).optional(),
+        value: z.union([z.string(), z.number()]),
       })
       .array()
       .optional(),
