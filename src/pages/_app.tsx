@@ -13,16 +13,6 @@ import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import Providers from "lib/providers";
 
-export async function getStaticPaths() {
-  // When this is true (in preview environments) don't
-  // prerender any static pages
-  // (faster builds, but slower initial page load)
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-}
-
 enableStaticRendering(typeof window === "undefined");
 
 localforage.config({
@@ -57,5 +47,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     </Layout>
   </Providers>
 );
+
+MyApp.getInitialProps = async () => ({});
 
 export default MyApp;

@@ -1,4 +1,4 @@
-const { withSentryConfig } = require("@sentry/nextjs");
+import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import('next').NextConfig} */
 const SENTRY_DSN =
@@ -76,6 +76,9 @@ const nextConfig = {
       return acc;
     }, []);
   },
+  experimental: {
+    webpackBuildWorker: true,
+  },
 };
 
 const moduleExports = {
@@ -87,6 +90,6 @@ const moduleExports = {
   },
 };
 
-module.exports = withSentryConfig(moduleExports, {
+export default withSentryConfig(moduleExports, {
   dryRun: process.env.VERCEL_ENV !== "production",
 });
