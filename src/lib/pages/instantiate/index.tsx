@@ -22,8 +22,8 @@ const Index = () => {
     height: 0,
     transactionHash: "",
     events: [],
-    gasWanted: BigInt(0),
-    gasUsed: BigInt(0),
+    gasWanted: 0,
+    gasUsed: 0,
     contractLabel: "",
     instantiator: "" as BechAddr20,
   });
