@@ -76,9 +76,6 @@ const nextConfig = {
       return acc;
     }, []);
   },
-  experimental: {
-    webpackBuildWorker: true,
-  },
 };
 
 const moduleExports = {
