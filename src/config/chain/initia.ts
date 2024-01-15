@@ -206,4 +206,54 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
+  "stone-13": {
+    chain: "initia",
+    registryChainName: "initiatestnet13",
+    prettyName: "Initia Testnet 13",
+    lcd: "https://lcd.stone-13.initia.xyz",
+    rpc: "https://rpc.stone-13.initia.xyz:443",
+    indexer: "https://stone-13-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: true,
+        url: process.env.NEXT_PUBLIC_INITIA_TESTNET_FAUCET_URL ?? "",
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "https://stone-compiler.initia.tech/contracts/verify",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: true,
+        hideOpenProposal: true,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom: "uinit",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    explorerLink: {
+      validator: "https://app.stone-13.initia.xyz/validator",
+      proposal: "https://app.stone-13.initia.xyz/proposal",
+    },
+    extra: {},
+  },
 };

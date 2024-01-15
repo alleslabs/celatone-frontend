@@ -10,11 +10,10 @@ import {
   RemoveSavedAccountModal,
 } from "lib/components/modal";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/account";
 import type { HexAddr, BechAddr, Option } from "lib/types";
-
-import { TotalAccountValue } from "./TotalAccountValue";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
@@ -182,7 +181,7 @@ export const AccountHeader = observer(
           )}
         </Flex>
         <Flex mt={{ base: 4, lg: 0 }} w={{ base: "full", lg: "auto" }}>
-          <TotalAccountValue accountAddress={accountAddress} />
+          <TotalValue address={accountAddress} />
         </Flex>
       </Flex>
     );

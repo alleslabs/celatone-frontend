@@ -122,13 +122,12 @@ export const PublicProjectCodeTable = observer(
           <ContentRender publicCodes={publicCodes} isMobile={isMobile} />
         ) : (
           <EmptyState
-            my={4}
             message={
               codes.length
-                ? "No matching code found for this project. Make sure you are searching with Code ID or Code Name"
+                ? "No matching codes found for this project. Make sure you are searching with Code ID or Code Name"
                 : "There are currently no codes related to this project."
             }
-            imageVariant={onViewMore && "empty"}
+            imageVariant={codes.length ? "not-found" : "empty"}
             withBorder
           />
         )}

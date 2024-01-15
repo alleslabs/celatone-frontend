@@ -42,7 +42,7 @@ interface JsonQueryProps {
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
-  const { isFetching: cmdsFetching, data: queryCmds = [] } =
+  const { data: queryCmds = [], isFetching: isCmdsFetching } =
     useContractQueryMsgs(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
@@ -92,7 +92,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const isButtonDisabled = jsonValidate(msg) !== null;
   return (
     <>
-      {cmdsFetching && <LoadingOverlay />}
+      {isCmdsFetching && <LoadingOverlay />}
       <Box width="full" mb={8} alignItems="center">
         {contractAddress && (
           <Text variant="body3" mb={2}>

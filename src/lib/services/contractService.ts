@@ -1,4 +1,4 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -15,7 +15,6 @@ import {
   getContractListByAdmin,
   getContractListByCodeIdPagination,
   getContractListCountByCodeId,
-  getContractListQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiatedListByUserQueryDocument,
 } from "lib/query";
@@ -36,6 +35,7 @@ import {
   getContractDataByContractAddress,
   getContractQueryMsgs,
   getContractTableCounts,
+  getContracts,
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
 } from "./contract";
@@ -99,28 +99,21 @@ export const useContractDetailByContractAddress = (
   );
 };
 
-export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+export const useContracts = (
+  limit: number,
+  offset: number,
+  options?: Pick<UseQueryOptions<ContractsResponse>, "onSuccess">
+) => {
+  const endpoint = useBaseApiRoute("contracts");
 
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getContractListQueryDocument)
-        .then(({ contracts }) =>
-          contracts.map<ContractInfo>((contract) => ({
-            contractAddress: contract.address as BechAddr32,
-            instantiator: contract.init_by[0]?.account.address as BechAddr,
-            label: contract.label,
-            admin: contract.admin?.address as BechAddr,
-            latestUpdater: undefined,
-            latestUpdated: parseDateOpt(contract.init_by[0]?.block.timestamp),
-            remark: undefined,
-          }))
-        ),
-    [indexerGraphClient]
+  return useQuery<ContractsResponse>(
+    [CELATONE_QUERY_KEYS.CONTRACTS, endpoint, limit, offset],
+    async () => getContracts(endpoint, limit, offset),
+    {
+      retry: 1,
+      ...options,
+    }
   );
-
-  return useQuery([CELATONE_QUERY_KEYS.CONTRACTS, indexerGraphClient], queryFn);
 };
 
 export const useInstantiatedCountByUserQuery = (
@@ -433,6 +426,11 @@ export const useContractQueryMsgs = (contractAddress: BechAddr32) => {
   return useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, endpoint, contractAddress],
     async () => getContractQueryMsgs(endpoint, contractAddress),
-    { retry: false, cacheTime: 0, refetchOnWindowFocus: false }
+    {
+      enabled: !!contractAddress,
+      retry: false,
+      cacheTime: 0,
+      refetchOnWindowFocus: false,
+    }
   );
 };
