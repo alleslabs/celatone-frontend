@@ -222,7 +222,7 @@ const ContractDetails = observer(() => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_CONTRACT_DETAIL, { tab: validated.data.tab });
+      track(AmpEvent.TO_CONTRACT_DETAILS, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 

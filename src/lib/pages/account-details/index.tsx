@@ -475,7 +475,7 @@ const AccountDetails = () => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_ACCOUNT_DETAIL, { tab: validated.data.tab });
+      track(AmpEvent.TO_ACCOUNT_DETAILS, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 

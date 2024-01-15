@@ -42,7 +42,7 @@ const BlockDetails = () => {
   const validated = zBlockDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_BLOCK_DETAIL);
+    if (router.isReady) track(AmpEvent.TO_BLOCK_DETAILS);
   }, [router.isReady]);
 
   return (

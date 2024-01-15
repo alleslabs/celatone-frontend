@@ -249,7 +249,7 @@ const NftDetails = observer(() => {
   const validated = zNftDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
-    if (router.isReady && validated.success) track(AmpEvent.TO_NFT_DETAIL);
+    if (router.isReady && validated.success) track(AmpEvent.TO_NFT_DETAILS);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
