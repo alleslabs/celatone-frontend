@@ -144,11 +144,11 @@ export const useValidateAddress = () => {
       (address: string) => {
         const errUser = validateUserAddress(address);
         const errContract = validateContractAddress(address);
-        const isHex = isHexWalletAddress(address);
-        const isHexModule = isHexModuleAddress(address);
+        const isHex20 = isHexWalletAddress(address);
+        const isHex32 = isHexModuleAddress(address);
 
         return (
-          !errUser || !errContract || (move.enabled && (isHex || isHexModule))
+          !errUser || !errContract || (move.enabled && (isHex20 || isHex32))
         );
       },
       [move.enabled, validateContractAddress, validateUserAddress]

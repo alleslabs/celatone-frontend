@@ -1,6 +1,6 @@
 import { fromHex } from "@cosmjs/encoding";
 
-import { HEX_MODULE_ADDRESS_LENGTH, HEX_WALLET_ADDRESS_LENGTH } from "lib/data";
+import { HEX_WALLET_ADDRESS_LENGTH, HEX_MODULE_ADDRESS_LENGTH } from "lib/data";
 import type { HexAddr } from "lib/types";
 
 import { padHexAddress } from "./address";

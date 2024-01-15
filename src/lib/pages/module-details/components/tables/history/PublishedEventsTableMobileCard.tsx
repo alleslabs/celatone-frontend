@@ -1,11 +1,15 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { MobileCardTemplate, MobileLabel } from "lib/components/table";
+import {
+  MobileCardTemplate,
+  MobileLabel,
+  RemarkRender,
+} from "lib/components/table";
 import type { ModuleHistory } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-import { PolicyChanges, RemarkRender } from "./PublishedEventsTableRow";
+import { PolicyChanges } from "./PublishedEventsTableRow";
 
 interface PublishedEventsTableMobileCardProps {
   history: ModuleHistory;
@@ -23,7 +27,7 @@ export const PublishedEventsTableMobileCard = ({
         </Flex>
         <Flex direction="column">
           <MobileLabel label="Remark" />
-          <RemarkRender remark={history.remark} />
+          <RemarkRender {...history.remark} />
         </Flex>
       </Flex>
     }
