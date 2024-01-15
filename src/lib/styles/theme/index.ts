@@ -5,9 +5,11 @@ import { components } from "./components";
 import { config } from "./config";
 import { fonts } from "./fonts";
 
-export const customTheme = extendTheme({
+const customTheme = extendTheme({
   fonts,
   colors,
   config,
   components,
 });
+
+export default customTheme;
