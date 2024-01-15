@@ -36,16 +36,17 @@ const nextConfig = {
   async redirects() {
     const routes = [
       "account",
-      "tx",
       "block",
       "code",
       "contract",
+      "contract-list",
       "module",
+      "nft-collection",
       "proposal",
       "project",
-      "contract-list",
       "past-tx",
       "pool",
+      "tx",
     ];
 
     return routes.reduce((acc, route) => {

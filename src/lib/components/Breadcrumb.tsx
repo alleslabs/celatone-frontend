@@ -52,7 +52,7 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
             variant={{ base: "body3", md: "body2" }}
             className="ellipsis"
             fontWeight={600}
-            color="text.dark"
+            color="text.main"
           >
             {item.text}
           </Text>

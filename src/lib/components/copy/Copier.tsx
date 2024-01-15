@@ -25,6 +25,7 @@ export const Copier = ({
   <CopyTemplate
     value={value}
     copyLabel={copyLabel}
+    display={display}
     triggerElement={
       <CustomIcon
         id={type}

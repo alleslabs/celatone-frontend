@@ -3,11 +3,9 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TableRow, CodeNameCell } from "lib/components/table";
+import { TableRow, CodeNameCell, RemarkRender } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
-
-import { RemarkRender } from "./RemarkRender";
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
@@ -73,7 +71,7 @@ export const MigrationRow = ({
         </Flex>
       </TableRow>
       <TableRow>
-        <RemarkRender remark={history.remark} />
+        <RemarkRender {...history.remark} />
       </TableRow>
     </Grid>
   );

@@ -510,20 +510,20 @@ const StoreCodeProposal = () => {
                       : errors.source?.message
                   }
                 />
-
                 {/* Instantiate permission  */}
-                <Heading as="h6" variant="h6" pt={12}>
-                  {PROPOSAL_STORE_CODE_TEXT.permissionTitle}
-                </Heading>
-                <Text color="text.dark" pb={2}>
-                  {PROPOSAL_STORE_CODE_TEXT.permissionDescription}
-                </Text>
-                <InstantiatePermissionRadio
-                  control={uploadSectionControl}
-                  setValue={uploadSectionSetValue}
-                  trigger={uploadSectionTrigger}
-                />
-
+                <Flex direction="column" pt={12}>
+                  <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+                    {PROPOSAL_STORE_CODE_TEXT.permissionTitle}
+                  </Heading>
+                  <Text color="text.dark" variant="body2" mb={4}>
+                    {PROPOSAL_STORE_CODE_TEXT.permissionDescription}
+                  </Text>
+                  <InstantiatePermissionRadio
+                    control={uploadSectionControl}
+                    setValue={uploadSectionSetValue}
+                    trigger={uploadSectionTrigger}
+                  />
+                </Flex>
                 {/* Deposit  */}
                 <InitialDeposit govParams={govParams} />
                 <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
