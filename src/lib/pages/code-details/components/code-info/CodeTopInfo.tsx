@@ -72,7 +72,7 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
       />
       <Flex
         justify="space-between"
-        mt={{ base: 3, md: 6 }}
+        my={{ base: 3, md: 6 }}
         direction={{ base: "column", md: "row" }}
       >
         <Flex direction="column" gap={{ base: 2, md: 1 }}>
