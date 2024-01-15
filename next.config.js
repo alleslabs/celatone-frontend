@@ -21,18 +21,7 @@ const nextConfig = {
     return config;
   },
   async rewrites() {
-    const uploadSourceMap =
-      process.env.VERCEL_ENV === "production"
-        ? []
-        : [
-            {
-              source: "/:path*.map",
-              destination: "/404",
-            },
-          ];
-
     return [
-      ...uploadSourceMap,
       {
         source: "/sentry/:path*",
         // https://abcdefghijklmnopqrstquwxyzabcdef@o123456.ingest.sentry.io/1234567
