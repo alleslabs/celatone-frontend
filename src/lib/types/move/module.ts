@@ -1,9 +1,4 @@
-import type { BechAddr, Option, RemarkType, UpgradePolicy } from "lib/types";
-
-interface Remark {
-  type: RemarkType;
-  value: string;
-}
+import type { BechAddr, Option, Remark, UpgradePolicy } from "lib/types";
 
 export interface ModuleHistory {
   remark: Remark;

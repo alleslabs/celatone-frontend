@@ -6,6 +6,7 @@ export enum TabIndex {
   Overview = "overview",
   Assets = "assets",
   Delegations = "delegations",
+  Nfts = "nfts",
   Txs = "txs",
   Codes = "codes",
   Contracts = "contracts",

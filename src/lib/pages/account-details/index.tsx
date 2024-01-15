@@ -17,6 +17,7 @@ import {
   useGovConfig,
   useInternalNavigate,
   useMoveConfig,
+  useNftConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -29,12 +30,14 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
+import { useNftsCountByAccount } from "lib/services/nft";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { ModuleLists } from "./components/modules";
+import { NftsOverview, NftsSection } from "./components/nfts";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
@@ -75,6 +78,7 @@ const AccountDetailsBody = ({
   const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
+  const nft = useNftConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
@@ -94,6 +98,9 @@ const AccountDetailsBody = ({
     useModulesByAddress(accountAddress);
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddress(accountAddress);
+  // nft
+  const { data: nftsCount, isFetching: isNftsCountLoading } =
+    useNftsCountByAccount(hexAddress);
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -166,6 +173,15 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
+            count={nftsCount}
+            isDisabled={nftsCount === 0}
+            onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
+            isLoading={isNftsCountLoading}
+            hidden={!nft.enabled}
+          >
+            NFTs
+          </CustomTab>
+          <CustomTab
             count={tableCounts.txsCount}
             isDisabled={tableCounts.txsCount === 0}
             onClick={handleTabChange(
@@ -219,6 +235,7 @@ const AccountDetailsBody = ({
               TabIndex.Resources,
               resourcesData?.groupedByOwner.length
             )}
+            isLoading={isResourceLoading}
             hidden={!move.enabled}
           >
             Resources
@@ -227,6 +244,7 @@ const AccountDetailsBody = ({
             count={modulesData?.length}
             isDisabled={modulesData?.length === 0}
             onClick={handleTabChange(TabIndex.Modules, undefined)}
+            isLoading={isModulesLoading}
             hidden={!move.enabled}
           >
             Modules
@@ -234,11 +252,11 @@ const AccountDetailsBody = ({
           <CustomTab
             count={tableCounts.proposalsCount}
             isDisabled={tableCounts.proposalsCount === 0}
-            isLoading={isLoadingAccountTableCounts}
             onClick={handleTabChange(
               TabIndex.Proposals,
               tableCounts.proposalsCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
             hidden={!gov.enabled}
           >
             Proposals
@@ -303,8 +321,15 @@ const AccountDetailsBody = ({
                     )}
                   />
                 </Flex>
-              )}{" "}
+              )}
             </Flex>
+            {nft.enabled && (
+              <NftsOverview
+                totalCount={nftsCount}
+                userAddress={hexAddress}
+                onViewMore={handleTabChange(TabIndex.Nfts, nftsCount)}
+              />
+            )}
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -387,6 +412,9 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <DelegationsSection address={accountAddress} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <NftsSection address={hexAddress} totalData={nftsCount} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable

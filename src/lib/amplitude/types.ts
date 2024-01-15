@@ -67,6 +67,9 @@ export enum AmpEvent {
   TO_PUBLISH_MODULE = "To Publish Module",
   TO_DEPLOY_SCRIPT = "To Deploy Script",
   TO_MY_PUBLISHED_MODULES = "To My Published Modules",
+  TO_NFT_COLLECTIONS = "To NFT Collections",
+  TO_NFT_COLLECTION_DETAIL = "To NFT Collection Detail",
+  TO_NFT_DETAIL = "To NFT Detail",
   // ACTIONS
   ACTION_UPLOAD = "Action Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
