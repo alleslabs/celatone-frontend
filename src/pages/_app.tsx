@@ -48,6 +48,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
   </Providers>
 );
 
-MyApp.getInitialProps = async () => ({});
-
 export default MyApp;
