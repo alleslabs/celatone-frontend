@@ -66,6 +66,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             {!disablePrevious && (
               <AppLink href={`/blocks/${block - 1}`}>
                 <StyledIconButton
+                  aria-label="button"
                   icon={<CustomIcon name="chevron-left" />}
                   variant="ghost-gray"
                 />
@@ -73,6 +74,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             )}
             <AppLink href={`/blocks/${block + 1}`}>
               <StyledIconButton
+                aria-label="button"
                 icon={<CustomIcon name="chevron-right" />}
                 variant="ghost-gray"
               />

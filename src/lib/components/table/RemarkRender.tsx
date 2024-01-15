@@ -2,19 +2,20 @@ import { Flex, Text } from "@chakra-ui/react";
 import { capitalize, isUndefined } from "lodash";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ContractMigrationHistory } from "lib/types";
+import type { Remark, RemarkOperation } from "lib/types";
 
-export const RemarkRender = ({
-  remark,
-}: {
-  remark: ContractMigrationHistory["remark"];
-}) => {
-  const { operation, type, value } = remark;
+// NOTE: change operation to prefix?
+interface RemarkRenderProps extends Remark {
+  operation?: RemarkOperation;
+}
+
+export const RemarkRender = ({ operation, type, value }: RemarkRenderProps) => {
   if (type === "genesis" || isUndefined(value))
     return <Text variant="body2">Genesis</Text>;
 
+  const prefix = operation ? capitalize(operation.split("_").pop()) : "Through";
+
   const isGovernance = type === "governance";
-  const prefix = capitalize(operation.split("_").pop());
   const textFormat = isGovernance ? "normal" : "truncate";
   return (
     <Flex

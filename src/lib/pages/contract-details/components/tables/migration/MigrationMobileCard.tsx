@@ -6,11 +6,10 @@ import {
   CodeNameCell,
   MobileCardTemplate,
   MobileLabel,
+  RemarkRender,
 } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
-
-import { RemarkRender } from "./RemarkRender";
 
 interface MigrationMobileCardProps {
   history: ContractMigrationHistory;
@@ -63,7 +62,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
           </Flex>
           <Flex direction="column">
             <MobileLabel variant="body3" label="Remark" />
-            <RemarkRender remark={history.remark} />
+            <RemarkRender {...history.remark} />
           </Flex>
         </Flex>
       }

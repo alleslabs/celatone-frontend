@@ -18,6 +18,7 @@ import {
   EditContractDetailsModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
+import { TotalValue } from "lib/components/TotalValue";
 import type { Contract } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
@@ -127,19 +128,15 @@ export const ContractTop = ({
         justify="space-between"
         mt={{ base: 3, md: 6 }}
         direction={{ base: "column", md: "row" }}
-        gap={{ md: 4 }}
+        gap={{ md: 8 }}
       >
         <Flex
           direction="column"
-          textOverflow="ellipsis"
           gap={{ base: 2, md: 1 }}
+          overflow="hidden"
+          minW={{ md: "680px" }}
         >
-          <Flex
-            gap={1}
-            align={{ base: "start", md: "center" }}
-            maxW={{ md: "670px" }}
-            minH="36px"
-          >
+          <Flex gap={1} align={{ base: "start", md: "center" }} minH="36px">
             <CustomIcon
               name="contract-address"
               boxSize={5}
@@ -172,11 +169,12 @@ export const ContractTop = ({
           >
             <Text
               color="text.dark"
+              minW={32}
               variant="body2"
               fontWeight={500}
               whiteSpace="nowrap"
             >
-              Contract Address:
+              Contract Address
             </Text>
             <CopyLink
               value={contractAddress}
@@ -188,8 +186,8 @@ export const ContractTop = ({
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
           >
-            <Text color="text.dark" variant="body2" fontWeight={500}>
-              Label:
+            <Text color="text.dark" minW={32} variant="body2" fontWeight={500}>
+              Label
             </Text>
             <Text variant="body2" className="ellipsis">
               {contract.label}
@@ -200,65 +198,74 @@ export const ContractTop = ({
               direction={{ base: "column", md: "row" }}
               gap={{ base: 0, md: 2 }}
             >
-              <Text color="text.dark" variant="body2" fontWeight={500}>
-                Public Contract Name:
+              <Text
+                color="text.dark"
+                minW={32}
+                variant="body2"
+                fontWeight={500}
+              >
+                Public Name
               </Text>
               <Text variant="body2" className="ellipsis">
                 {publicInfo.name}
               </Text>
             </Flex>
           )}
-          {publicInfo?.github && <GitHubLink github={publicInfo?.github} />}
+          {publicInfo?.github && (
+            <GitHubLink github={publicInfo?.github} hasMinW />
+          )}
         </Flex>
-        <Flex
-          gap={{ base: 2, md: 4 }}
-          mt={{ base: 8, md: 0 }}
-          w={{ base: "full", md: "auto" }}
-        >
-          {!isMobile && (
-            <AdminButton
-              contractAddress={contractAddress}
-              admin={contract.admin}
-            />
-          )}
-
-          <Button
-            variant="outline-primary"
+        <Flex direction="column" gap={4}>
+          <Flex
+            gap={{ base: 2, md: 4 }}
+            mt={{ base: 8, md: 0 }}
             w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="query" />}
-            onClick={goToQuery}
-            size={{ base: "sm", md: "md" }}
           >
-            Query
-          </Button>
-          <Button
-            variant="outline-primary"
-            w={{ base: "full", md: "auto" }}
-            leftIcon={<CustomIcon name="execute" />}
-            onClick={goToExecute}
-            size={{ base: "sm", md: "md" }}
-          >
-            Execute
-          </Button>
-          {!isMobile && (
-            <Flex>
-              {contractLocalInfo && (
-                <EditContractDetailsModal
-                  contractLocalInfo={contractLocalInfo}
-                  triggerElement={
-                    <IconButton
-                      fontSize="24px"
-                      variant="none"
-                      aria-label="edit"
-                      color="gray.600"
-                      icon={<CustomIcon name="edit" />}
-                    />
-                  }
-                />
-              )}
-              {renderSaveButton()}
-            </Flex>
-          )}
+            {!isMobile && (
+              <AdminButton
+                contractAddress={contractAddress}
+                admin={contract.admin}
+              />
+            )}
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="query" />}
+              onClick={goToQuery}
+              size={{ base: "sm", md: "md" }}
+            >
+              Query
+            </Button>
+            <Button
+              variant="outline-primary"
+              w={{ base: "full", md: "auto" }}
+              leftIcon={<CustomIcon name="execute" />}
+              onClick={goToExecute}
+              size={{ base: "sm", md: "md" }}
+            >
+              Execute
+            </Button>
+            {!isMobile && (
+              <Flex>
+                {contractLocalInfo && (
+                  <EditContractDetailsModal
+                    contractLocalInfo={contractLocalInfo}
+                    triggerElement={
+                      <IconButton
+                        fontSize="24px"
+                        variant="none"
+                        aria-label="edit"
+                        color="gray.600"
+                        icon={<CustomIcon name="edit" />}
+                      />
+                    }
+                  />
+                )}
+                {renderSaveButton()}
+              </Flex>
+            )}
+          </Flex>
+          <TotalValue address={contractAddress} label="Total Value" isCompact />
         </Flex>
       </Flex>
     </Flex>

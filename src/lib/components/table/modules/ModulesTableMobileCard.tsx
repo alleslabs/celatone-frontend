@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
@@ -36,10 +36,10 @@ export const ModulesTableMobileCard = ({
         })
       }
       topContent={
-        <Box>
+        <Flex direction="column">
           <MobileLabel label="Module Path" />
           <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
-        </Box>
+        </Flex>
       }
       middleContent={
         <Flex direction="column" gap={3}>
