@@ -14,7 +14,13 @@ const meta: Meta<typeof StatusChip> = {
 export default meta;
 type Story = StoryObj<typeof StatusChip>;
 
-export const DepositPeriod: Story = {
+export const NormalChip: Story = {
+  args: {
+    status: ProposalStatus.DEPOSIT_PERIOD,
+  },
+};
+
+export const FilterChip: Story = {
   args: {
     status: ProposalStatus.DEPOSIT_PERIOD,
     hasCloseBtn: true,
