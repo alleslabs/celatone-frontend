@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#728](https://github.com/alleslabs/celatone-frontend/pull/728) Support tx events for cosmos sdk 0.50
 - [#726](https://github.com/alleslabs/celatone-frontend/pull/726) Add missing title for instantiate permission and adjust contract menu in nav bar
 - [#713](https://github.com/alleslabs/celatone-frontend/pull/713) Adjust search state consistency
 - [#712](https://github.com/alleslabs/celatone-frontend/pull/712) api v1 - proposal list
