@@ -39,12 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
+- [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
+- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 - [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
 
 ### Improvements
 
 - [#725](https://github.com/alleslabs/celatone-frontend/pull/725) Adjust unsupported asset display in account and contract detail
+- [#726](https://github.com/alleslabs/celatone-frontend/pull/726) Add missing title for instantiate permission and adjust contract menu in nav bar
 - [#713](https://github.com/alleslabs/celatone-frontend/pull/713) Adjust search state consistency
 - [#712](https://github.com/alleslabs/celatone-frontend/pull/712) api v1 - proposal list
 - [#714](https://github.com/alleslabs/celatone-frontend/pull/714) api v1 - recent contracts list
@@ -58,8 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
-- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
 - [#681](https://github.com/alleslabs/celatone-frontend/pull/681) Add Initia wallet
 - [#704](https://github.com/alleslabs/celatone-frontend/pull/704) Fix client undefined after disconnected
 - [#698](https://github.com/alleslabs/celatone-frontend/pull/698) Add ledger

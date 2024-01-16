@@ -23,9 +23,6 @@ export const DelegationInfo = ({
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
-  const tableTitle = (
-    <TableTitle title="Delegations" mb={0} showCount={false} />
-  );
 
   return (
     <>
@@ -48,7 +45,7 @@ export const DelegationInfo = ({
         </Flex>
       ) : (
         <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
-          {tableTitle}
+          <TableTitle title="Delegations" mb={0} showCount={false} />
           <Flex
             direction={{ base: "column", md: "row" }}
             alignItems={{ base: "start", md: "center" }}

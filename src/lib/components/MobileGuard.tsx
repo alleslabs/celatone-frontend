@@ -19,6 +19,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/blocks`) ||
     pathName.includes(`/projects`) ||
     pathName.includes(`/code`) ||
+    pathName.includes(`/nft-collections`) ||
     pathName.includes(`/query`) ||
     pathName.includes(`/network-overview`) ||
     pathName.includes(`/dev-home`) ||

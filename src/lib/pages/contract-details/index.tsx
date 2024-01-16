@@ -63,7 +63,6 @@ const ContractDetailsBody = observer(
       isLoading,
     } = useContractData(contractAddress);
 
-    // const { totalData } = useBalanceInfos(contractAddress);
     const { data: balances, isLoading: isBalancesLoading } =
       useBalances(contractAddress);
 

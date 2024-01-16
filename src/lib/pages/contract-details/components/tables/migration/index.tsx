@@ -106,8 +106,8 @@ export const MigrationTable = ({
           scrollComponentId={scrollComponentId}
           pageSize={pageSize}
           onPageChange={(nextPage) => {
-            refetchCount();
             setCurrentPage(nextPage);
+            refetchCount();
           }}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
