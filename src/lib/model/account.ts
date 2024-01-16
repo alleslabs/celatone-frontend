@@ -2,17 +2,20 @@ import type { Big } from "big.js";
 import big from "big.js";
 
 import { useCelatoneApp } from "lib/app-provider";
-import type {
-  Delegation,
-  Redelegation,
-  StakingParams,
-  Unbonding,
-} from "lib/pages/account-details/types";
 import { useAssetInfos } from "lib/services/assetService";
 import { useBalanceInfos } from "lib/services/balanceService";
 import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
-import type { Option, BechAddr, USD, TokenWithValue } from "lib/types";
+import type {
+  Option,
+  BechAddr,
+  USD,
+  TokenWithValue,
+  StakingParams,
+  Delegation,
+  Unbonding,
+  Redelegation,
+} from "lib/types";
 import {
   addTokenWithValue,
   coinToTokenWithValue,

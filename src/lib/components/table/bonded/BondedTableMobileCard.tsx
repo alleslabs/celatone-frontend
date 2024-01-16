@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { MobileLabel } from "lib/components/table";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
+import { ValidatorBadge } from "../../ValidatorBadge";
+import { MobileLabel } from "../MobileLabel";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import type { BondedInfo } from "./BondedTableRow";

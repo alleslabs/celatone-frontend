@@ -19,9 +19,9 @@ export const TotalValue = ({
     <Flex
       p={isCompact ? 3 : 4}
       direction="column"
-      border="2px solid"
+      border="1px solid"
       borderColor="gray.700"
-      borderRadius={4}
+      borderRadius={8}
     >
       <Text variant="body2" fontWeight={500} color="text.dark">
         {label}
@@ -36,8 +36,8 @@ export const TotalValue = ({
         />
       ) : (
         <Heading
-          as="h6"
-          variant="h6"
+          as="h5"
+          variant="h5"
           color={
             !totalAccountValue || totalAccountValue.eq(0)
               ? "text.disabled"

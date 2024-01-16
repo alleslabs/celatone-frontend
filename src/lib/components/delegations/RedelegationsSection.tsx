@@ -1,14 +1,10 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
 
-import { RedelegationsTable } from "../tables";
+import { RedelegationsTable, TableTitle } from "../table";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { TableTitle } from "lib/components/table";
-import type {
-  Redelegation,
-  StakingParams,
-} from "lib/pages/account-details/types";
+import type { Redelegation, StakingParams } from "lib/types";
 
 import { NonRedelegatableSection } from "./NonRedelegatableSection";
 

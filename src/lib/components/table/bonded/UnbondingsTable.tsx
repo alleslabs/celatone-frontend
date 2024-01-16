@@ -1,15 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { TableTitle } from "../TableTitle";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import {
-  MobileTableContainer,
-  TableContainer,
-  TableTitle,
-} from "lib/components/table";
-import type { Unbonding } from "lib/pages/account-details/types";
-import type { Option } from "lib/types";
+import type { Option, Unbonding } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";
 import { BondedTableMobileCard } from "./BondedTableMobileCard";
