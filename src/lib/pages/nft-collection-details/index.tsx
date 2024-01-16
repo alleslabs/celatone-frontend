@@ -166,11 +166,11 @@ const CollectionDetailsBody = ({
             w={{ base: "full", md: "auto" }}
             size={{ base: "sm", md: "md" }}
             mb={{ base: 4, md: 0 }}
-            onClick={() => {
+            onClick={() =>
               track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
                 amptrackSection: "nft-collection-details",
-              });
-            }}
+              })
+            }
           >
             View Resource
           </Button>
