@@ -134,7 +134,7 @@ const ContractDetailsBody = observer(
             </CustomTab>
           </TabList>
           <TabPanels>
-            <TabPanel p={0} pt={{ base: 4, md: 8 }}>
+            <TabPanel p={0} pt={{ base: 0, md: 8 }}>
               <Flex flexDirection="column" gap={8}>
                 <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
                   <ContractDesc
@@ -228,13 +228,13 @@ const ContractDetailsBody = observer(
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
             </TabPanel>
-            <TabPanel p={0}>
+            <TabPanel px={0} pt={{ base: 0, md: 5 }}>
               <DelegationsSection address={contractAddress} />
             </TabPanel>
-            <TabPanel px={0} pt={{ base: 5, md: 0 }}>
+            <TabPanel px={0} pt={5}>
               <ContractTables contractAddress={contractAddress} />
             </TabPanel>
-            <TabPanel px={0} pt={{ base: 5, md: 0 }}>
+            <TabPanel px={0} pt={5}>
               <ContractStates contractAddress={contractAddress} />
             </TabPanel>
           </TabPanels>

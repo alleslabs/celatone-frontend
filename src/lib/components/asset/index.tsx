@@ -55,7 +55,7 @@ const MainTitle = ({
 const SupportedAssetTitle = ({ address }: { address: BechAddr }) => {
   const { supportedAssets, totalSupportedAssetsValue } =
     useBalanceInfos(address);
-
+  const isMobile = useMobile();
   const isZeroValue =
     !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
   const totalSupportedAssets = supportedAssets.length;
@@ -73,16 +73,18 @@ const SupportedAssetTitle = ({ address }: { address: BechAddr }) => {
         count={totalSupportedAssets}
         mb={0}
       />
-      <Heading
-        mt={1}
-        as="h6"
-        variant="h6"
-        color={isZeroValue ? "text.dark" : "text.main"}
-      >
-        {totalSupportedAssetsValue
-          ? formatPrice(totalSupportedAssetsValue)
-          : "N/A"}
-      </Heading>
+      {!isMobile && (
+        <Heading
+          mt={1}
+          as="h6"
+          variant="h6"
+          color={isZeroValue ? "text.dark" : "text.main"}
+        >
+          {totalSupportedAssetsValue
+            ? formatPrice(totalSupportedAssetsValue)
+            : "N/A"}
+        </Heading>
+      )}
     </Flex>
   );
 };
@@ -271,6 +273,18 @@ export const AssetsSection = ({
                 direction="column"
               >
                 <SupportedAssetTitle address={address} />
+                {isMobile && (
+                  <Flex pt={4} px={4} direction="column">
+                    <Text variant="body2" color="text.dark">
+                      Total Asset Value
+                    </Text>
+                    <Heading as="h6" variant="h6" color="text.main">
+                      {totalSupportedAssetsValue
+                        ? formatPrice(totalSupportedAssetsValue)
+                        : "N/A"}
+                    </Heading>
+                  </Flex>
+                )}
                 <SupportedAssetSectionContent
                   isAccount={isAccount}
                   supportedAssets={supportedAssets}
