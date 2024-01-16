@@ -43,10 +43,10 @@ export const TxMsgExpand = ({
   const isIBC =
     Boolean(log.events.find((event) => event.type === "send_packet")) ||
     type.startsWith("/ibc");
-  let msgIcon: IconKeys = "info-circle";
-  let content: ReactNode;
   const isOpinit = Boolean(type.startsWith("/opinit"));
 
+  let msgIcon: IconKeys = "info-circle";
+  let content: ReactNode;
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":
       msgIcon = "upload";
