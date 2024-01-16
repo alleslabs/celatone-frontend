@@ -29,9 +29,7 @@ export const NftCard = ({
     <Flex direction="column" minW="full">
       <AppLink
         href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
-        onClick={() => {
-          track(AmpEvent.USE_NFT_CARD, { showCollection });
-        }}
+        onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
       >
         <Box position="relative" width="100%" paddingBottom="100%" mb={2}>
           <Image
