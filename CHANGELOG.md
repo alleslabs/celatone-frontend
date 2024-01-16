@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
 - [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 
