@@ -11,7 +11,7 @@ export const extractTxLogs = (txData: TxData): logs.Log[] => {
 
   if (txData.logs.length > 0)
     txData.logs.forEach((log) =>
-      msgLogs[log.msg_index].events.concat(...log.events)
+      msgLogs[log.msg_index].events.push(...log.events)
     );
   else
     txData.events.forEach((event) => {
