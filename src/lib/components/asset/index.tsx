@@ -14,7 +14,7 @@ import { SupportedAssetSectionContent } from "./SupportedAssetSectionContent";
 import { UnsupportedAssetSectionContent } from "./UnsupportedAssetSectionContent";
 import { UserAssetInfoCard } from "./UserAssetInfoCard";
 
-const MAX_SUPPORTED_ASSETS_SHOW = 4;
+const MAX_SUPPORTED_ASSETS_SHOW = 6;
 const MAX_UNSUPPORTED_ASSETS_SHOW = 3;
 
 interface AssetsSectionProps {
@@ -115,38 +115,50 @@ const OverviewSection = ({
     useBalanceInfos(address);
 
   return supportedAssets.length || unsupportedAssets.length ? (
-    <Grid gridTemplateColumns={{ base: "1fr", xl: "1fr 1fr" }} gridGap={4}>
+    <Grid gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }} gridGap={4}>
       <GridItem border="1px solid" borderColor="gray.700" borderRadius="8px">
-        <SupportedAssetTitle address={address} />
-        {supportedAssets.length ? (
-          <SupportedAssetSectionContent
-            isAccount={isAccount}
-            supportedAssets={supportedAssets.slice(
-              0,
-              MAX_SUPPORTED_ASSETS_SHOW
+        <Flex direction="column" justifyContent="space-between" h="full">
+          <Flex direction="column">
+            <SupportedAssetTitle address={address} />
+            {supportedAssets.length ? (
+              <SupportedAssetSectionContent
+                isAccount={isAccount}
+                supportedAssets={supportedAssets.slice(
+                  0,
+                  MAX_SUPPORTED_ASSETS_SHOW
+                )}
+                error={error}
+                onViewMore={onViewMore}
+              />
+            ) : (
+              <Flex
+                w="full"
+                alignItems="center"
+                justifyContent="center"
+                h="calc(100% - 45px)"
+                minH={20}
+              >
+                <Text variant="body2" color="text.dark">
+                  This {isAccount ? "address" : "contract"} does not hold any
+                  supported assets
+                </Text>
+              </Flex>
             )}
-            error={error}
-            onViewMore={onViewMore}
-          />
-        ) : (
-          <Flex
-            w="full"
-            alignItems="center"
-            justifyContent="center"
-            h="calc(100% - 45px)"
-            minH={20}
-          >
-            <Text variant="body2" color="text.dark">
-              This {isAccount ? "address" : "contract"} does not hold any
-              supported assets
-            </Text>
           </Flex>
-        )}
+          {onViewMore && supportedAssets.length > MAX_SUPPORTED_ASSETS_SHOW && (
+            <ViewMore
+              onClick={onViewMore}
+              borderRadius="0px 0px 8px 8px"
+              minH="48px"
+            />
+          )}
+        </Flex>
       </GridItem>
       <GridItem border="1px solid" borderColor="gray.700" borderRadius="8px">
         <UnsupportedAssetTitle address={address} />
         {unsupportedAssets.length ? (
           <UnsupportedAssetSectionContent
+            isAccount={isAccount}
             unsupportedAssets={unsupportedAssets.slice(
               0,
               MAX_UNSUPPORTED_ASSETS_SHOW
@@ -167,6 +179,14 @@ const OverviewSection = ({
             </Text>
           </Flex>
         )}
+        {onViewMore &&
+          unsupportedAssets.length > MAX_UNSUPPORTED_ASSETS_SHOW && (
+            <ViewMore
+              onClick={onViewMore}
+              borderRadius="0px 0px 8px 8px"
+              minH="48px"
+            />
+          )}
       </GridItem>
     </Grid>
   ) : (
@@ -266,16 +286,12 @@ export const AssetsSection = ({
               >
                 <UnsupportedAssetTitle address={address} />
                 <UnsupportedAssetSectionContent
+                  isAccount={isAccount}
                   unsupportedAssets={unsupportedAssets}
                 />
               </Flex>
             </>
           )}
-          {onViewMore &&
-            (supportedAssets.length > MAX_SUPPORTED_ASSETS_SHOW ||
-              unsupportedAssets.length > MAX_UNSUPPORTED_ASSETS_SHOW) && (
-              <ViewMore onClick={onViewMore} />
-            )}
         </>
       )}
     </Flex>

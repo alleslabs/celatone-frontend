@@ -1,3 +1,4 @@
+import type { BorderProps, LayoutProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
@@ -5,14 +6,20 @@ import { AmpEvent, track } from "lib/amplitude";
 
 interface ViewMoreProps {
   onClick: () => void;
+  borderRadius?: BorderProps["borderRadius"];
+  minH?: LayoutProps["minH"];
 }
 
-export const ViewMore = ({ onClick }: ViewMoreProps) => (
+export const ViewMore = ({
+  onClick,
+  borderRadius = "0",
+  minH = "64px",
+}: ViewMoreProps) => (
   <Flex w="full" justifyContent="center" textAlign="center">
     <Button
       w="full"
-      borderRadius="0"
-      minH="64px"
+      borderRadius={borderRadius}
+      minH={minH}
       variant="ghost-gray"
       gap={2}
       onClick={() => {

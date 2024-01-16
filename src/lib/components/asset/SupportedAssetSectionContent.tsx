@@ -25,7 +25,7 @@ export const SupportedAssetSectionContent = ({
       gridGap={4}
       gridTemplateColumns={{
         base: "1 fr",
-        md: onViewMore ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+        md: onViewMore ? "repeat(3, 1fr)" : "repeat(4, 1fr)",
       }}
     >
       {supportedAssets.map((asset) => (
