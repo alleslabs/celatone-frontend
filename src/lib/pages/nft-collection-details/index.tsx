@@ -1,6 +1,5 @@
 import {
   Badge,
-  Box,
   Button,
   Flex,
   Heading,
@@ -42,11 +41,11 @@ import { useCollectionInfos } from "./data";
 import type { CollectionDetailQueryParams } from "./types";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
 
-export const InvalidCollection = () => (
+const InvalidCollection = () => (
   <InvalidState title="Collection does not exist" />
 );
 
-export const tabHeaderId = "collectionDetailTab";
+const tabHeaderId = "collectionDetailTab";
 
 const CollectionDetailsBody = ({
   collectionAddress,
@@ -107,7 +106,7 @@ const CollectionDetailsBody = ({
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
   return (
-    <Box>
+    <>
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
@@ -261,7 +260,7 @@ const CollectionDetailsBody = ({
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Box>
+    </>
   );
 };
 

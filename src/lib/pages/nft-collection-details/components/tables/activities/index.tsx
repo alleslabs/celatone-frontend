@@ -1,4 +1,4 @@
-import { Stack, Text } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -44,9 +44,9 @@ export const Activities = ({
 
   return (
     <Stack spacing="32px" mt="32px">
-      <Text fontSize="18px" fontWeight={600} fontFamily="Pilat Wide">
+      <Heading as="h6" variant="h6" fontWeight={600}>
         Activities in this collection
-      </Text>
+      </Heading>
       <InputWithIcon
         placeholder="Search by Tx Hash / Token Id / NFT Address"
         value={searchKeyword}

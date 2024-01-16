@@ -1,4 +1,4 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import router from "next/router";
 import { useEffect, useState } from "react";
 
@@ -43,7 +43,7 @@ export const Collections = () => {
   }, [router.isReady]);
 
   return (
-    <Box>
+    <>
       <Stack spacing={8}>
         <InputWithIcon
           placeholder="Search with Collection Name"
@@ -73,6 +73,6 @@ export const Collections = () => {
           }}
         />
       )}
-    </Box>
+    </>
   );
 };
