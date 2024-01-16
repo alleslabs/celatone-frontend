@@ -8,16 +8,16 @@
       "email": "kanisorn@alleslabs.com"
     },
     {
+      "name": "Songwong",
+      "email": "songwong@alleslabs.com"
+    },
+    {
       "name": "Beeb",
       "email": "beeb@alleslabs.com"
     },
     {
       "name": "Pakin",
       "email": "pakin@alleslabs.com"
-    },
-    {
-      "name": "Songwong",
-      "email": "songwong@alleslabs.com"
     }
   ],
   "scripts": {

@@ -29,9 +29,9 @@ export const fetchGovDepositParams = (
   lcdEndpoint: string
 ): Promise<DepositParamsInternal> =>
   axios
-    .get<{ deposit_params: DepositParams }>(
-      `${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`
-    )
+    .get<{
+      deposit_params: DepositParams;
+    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
     .then(({ data }) => snakeToCamel(data.deposit_params));
 
 interface ProposalVotingPeriod {
@@ -51,9 +51,9 @@ export const fetchGovVotingParams = (
   lcdEndpoint: string
 ): Promise<VotingParamsInternal> =>
   axios
-    .get<{ voting_params: VotingParams }>(
-      `${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`
-    )
+    .get<{
+      voting_params: VotingParams;
+    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
     .then(({ data }) => snakeToCamel(data.voting_params));
 
 export interface UploadAccess {
