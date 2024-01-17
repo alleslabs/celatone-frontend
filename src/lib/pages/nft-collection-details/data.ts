@@ -29,9 +29,7 @@ export const useCollectionInfos = (
   if (!resourcesData)
     return { collectionInfos: undefined, isLoading: isFetching };
 
-  const { groupedByName } = resourcesData;
-
-  const collectionSupplyResource = groupedByName
+  const collectionSupplyResource = resourcesData.groupedByName
     .find((group) => group.group === "collection")
     ?.items.find(
       (resource) =>
@@ -44,7 +42,7 @@ export const useCollectionInfos = (
     ? JSON.parse(collectionSupplyResource.moveResource).data
     : undefined;
 
-  const collectionRoyaltyResource = groupedByName
+  const collectionRoyaltyResource = resourcesData.groupedByName
     .find((group) => group.group === "royalty")
     ?.items.find((resource) => resource.structTag === "0x1::royalty::Royalty");
   const royaltyData: Option<RoyaltyData> = collectionRoyaltyResource
