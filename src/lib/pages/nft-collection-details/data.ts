@@ -1,6 +1,17 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddress } from "lib/services/move";
-import type { HexAddr32, Option } from "lib/types";
+import type { HexAddr, HexAddr32, Option } from "lib/types";
+
+interface SupplyData {
+  current_supply: string;
+  total_minted: string;
+  max_supply?: string;
+}
+
+interface RoyaltyData {
+  payee_address: HexAddr;
+  royalty: string;
+}
 
 interface CollectionInfos {
   isUnlimited: boolean;
@@ -19,10 +30,6 @@ export const useCollectionInfos = (
     return { collectionInfos: undefined, isLoading: isFetching };
 
   const { groupedByName } = resourcesData;
-  const royalty = groupedByName.find((group) => group.group === "royalty");
-  const collectionRoyalty = royalty
-    ? JSON.parse(royalty.items[0].moveResource)
-    : undefined;
 
   const collectionSupplyResource = groupedByName
     .find((group) => group.group === "collection")
@@ -31,12 +38,19 @@ export const useCollectionInfos = (
         resource.structTag === "0x1::collection::FixedSupply" ||
         resource.structTag === "0x1::collection::UnlimitedSupply"
     );
-
   const isUnlimited =
     collectionSupplyResource?.structTag === "0x1::collection::UnlimitedSupply";
   const supplyData = collectionSupplyResource
-    ? JSON.parse(collectionSupplyResource.moveResource).data
+    ? (JSON.parse(collectionSupplyResource.moveResource).data as SupplyData)
     : undefined;
+
+  const collectionRoyaltyResource = groupedByName
+    .find((group) => group.group === "royalty")
+    ?.items.find((resource) => resource.structTag === "0x1::royalty::Royalty");
+  const royaltyData = collectionRoyaltyResource
+    ? (JSON.parse(collectionRoyaltyResource.moveResource).data as RoyaltyData)
+    : undefined;
+
   return {
     collectionInfos: {
       isUnlimited,
@@ -47,7 +61,7 @@ export const useCollectionInfos = (
           ? Number(supplyData.max_supply)
           : undefined,
       },
-      royalty: collectionRoyalty?.data?.royalty ?? 0,
+      royalty: Number(royaltyData?.royalty ?? 0),
     },
     isLoading: isFetching,
   };
