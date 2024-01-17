@@ -1,7 +1,6 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddress } from "lib/services/move";
 import type { HexAddr32, Option } from "lib/types";
-import { snakeToCamel } from "lib/utils";
 
 interface CollectionInfos {
   isUnlimited: boolean;
@@ -20,39 +19,34 @@ export const useCollectionInfos = (
     return { collectionInfos: undefined, isLoading: isFetching };
 
   const { groupedByName } = resourcesData;
-  const resources = groupedByName
-    .filter((resource) => resource.group === "collection")
-    .map((resource) => resource.items)
-    .flat();
-
-  const collectionSupplies = resources.filter(
-    (resource) => !resource.structTag?.includes("0x1::collection::Collection")
-  );
-
   const royalty = groupedByName.find((group) => group.group === "royalty");
+  const collectionRoyalty = royalty
+    ? JSON.parse(royalty.items[0].moveResource)
+    : undefined;
 
-  const collectionRoyalty =
-    royalty && JSON.parse(royalty.items[0].moveResource);
+  const collectionSupplyResource = groupedByName
+    .find((group) => group.group === "collection")
+    ?.items.find(
+      (resource) =>
+        resource.structTag === "0x1::collection::FixedSupply" ||
+        resource.structTag === "0x1::collection::UnlimitedSupply"
+    );
 
-  const parsed = collectionSupplies
-    .map((resource) => {
-      try {
-        return JSON.parse(resource.moveResource);
-      } catch {
-        return {};
-      }
-    })
-    .map((data) => data?.data);
-
-  const [type] = collectionSupplies;
-  const isUnlimited = type?.structTag === "0x1::collection::UnlimitedSupply";
-
-  const [supplyData] = parsed;
-  const supplies = snakeToCamel(supplyData);
+  const isUnlimited =
+    collectionSupplyResource?.structTag === "0x1::collection::UnlimitedSupply";
+  const supplyData = collectionSupplyResource
+    ? JSON.parse(collectionSupplyResource.moveResource).data
+    : undefined;
   return {
     collectionInfos: {
       isUnlimited,
-      supplies,
+      supplies: {
+        currentSupply: Number(supplyData?.current_supply ?? 0),
+        totalMinted: Number(supplyData?.total_minted ?? 0),
+        maxSupply: supplyData?.max_supply
+          ? Number(supplyData.max_supply)
+          : undefined,
+      },
       royalty: collectionRoyalty?.data?.royalty ?? 0,
     },
     isLoading: isFetching,
