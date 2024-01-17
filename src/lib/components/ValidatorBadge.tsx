@@ -1,12 +1,12 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
 
-import validatorDefaultImg from "../../../public/validator.svg";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { MobileLabel } from "lib/components/table";
 import { useValidatorImage } from "lib/services/validatorService";
 import type { Nullable, Validator } from "lib/types";
+
+import { MobileLabel } from "./table/MobileLabel";
 
 interface ValidatorBadgeProps {
   validator: Nullable<Validator>;
@@ -55,7 +55,7 @@ export const ValidatorBadge = ({
               src={valImgSrc}
               alt={validator.moniker}
               borderRadius="50%"
-              fallbackSrc={validatorDefaultImg.src}
+              fallbackSrc="https://assets.alleslabs.dev/webapp-assets/placeholder/validator.svg"
               fallbackStrategy="beforeLoadOrError"
             />
           )}

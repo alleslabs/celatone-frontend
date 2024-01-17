@@ -16,9 +16,14 @@ const MAX_ASSETS_SHOW = 8;
 interface AssetsSectionProps {
   address: BechAddr;
   onViewMore?: () => void;
+  isAccount?: boolean;
 }
 
-export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
+export const AssetsSection = ({
+  address,
+  onViewMore,
+  isAccount = false,
+}: AssetsSectionProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
 
@@ -44,7 +49,7 @@ export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
     <Flex
       direction="column"
       gap={4}
-      mt={{ base: 4, md: 8 }}
+      mt={{ base: isMobileOverview ? 0 : 4, md: 4 }}
       mb={{ base: 0, md: 8 }}
       width="full"
     >
@@ -65,7 +70,7 @@ export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
         </Flex>
       ) : (
         <>
-          {isMobile && tableTitle}
+          {tableTitle}
           <Flex
             justify={{ base: "flex-start", md: "space-between" }}
             width="full"
@@ -82,6 +87,7 @@ export const AssetsSection = ({ address, onViewMore }: AssetsSectionProps) => {
             )}
           </Flex>
           <AssetSectionContent
+            isAccount={isAccount}
             supportedAssets={
               onViewMore
                 ? supportedAssets.slice(0, MAX_ASSETS_SHOW)
