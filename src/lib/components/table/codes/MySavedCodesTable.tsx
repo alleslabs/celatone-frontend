@@ -6,38 +6,45 @@ import { CodesTable } from "./CodesTable";
 
 interface MySavedCodesTableProps {
   codes: CodeInfo[];
+  totalData: number;
   isLoading: boolean;
   onRowSelect: (codeId: number) => void;
-  isSearching: boolean;
   isReadOnly?: boolean;
 }
 
 export const MySavedCodesTable = ({
   codes,
+  totalData,
   isLoading,
   onRowSelect,
-  isSearching,
   isReadOnly = false,
-}: MySavedCodesTableProps) => (
-  <CodesTable
-    codes={codes}
-    isLoading={isLoading}
-    emptyState={
-      isSearching || isReadOnly ? (
+}: MySavedCodesTableProps) =>
+  totalData ? (
+    <CodesTable
+      codes={codes}
+      isLoading={isLoading}
+      emptyState={
         <EmptyState
-          imageVariant={isSearching ? "not-found" : "empty"}
-          message={
-            isReadOnly && !isSearching
-              ? "You don’t have any saved codes."
-              : "No matching code found. Make sure you are searching with code id or code name"
-          }
-          withBorder={!isReadOnly}
+          my={0}
+          imageVariant="not-found"
+          message="No matching codes found. Make sure you are searching with Code ID or Code Name"
+          withBorder
+        />
+      }
+      onRowSelect={onRowSelect}
+      isReadOnly={isReadOnly}
+    />
+  ) : (
+    <>
+      {isReadOnly ? (
+        <EmptyState
+          my={0}
+          imageVariant="empty"
+          message="You don’t have any saved codes."
+          withBorder
         />
       ) : (
         <SavedCodeZeroState button={<SaveCodeButton />} />
-      )
-    }
-    onRowSelect={onRowSelect}
-    isReadOnly={isReadOnly}
-  />
-);
+      )}
+    </>
+  );

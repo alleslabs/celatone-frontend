@@ -16,7 +16,7 @@ import {
 import type { BechAddr32, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
-import { usePoolExpression } from "./expression/poolExpression";
+import { usePoolExpression } from "./expression";
 
 export const usePoolListQuery = ({
   isSupported,

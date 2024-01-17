@@ -17,7 +17,8 @@ export const VotingEndTime = ({
     return <Text color="text.dark">N/A</Text>;
   }
 
-  const isDepositPeriod = status === ProposalStatus.DEPOSIT_PERIOD;
+  const isDepositPeriod =
+    status === ProposalStatus.DEPOSIT_PERIOD || votingEndTime === null;
   return (
     <Flex
       direction="column"

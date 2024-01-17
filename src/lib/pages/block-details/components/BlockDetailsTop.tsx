@@ -39,8 +39,8 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   return (
     <Flex
       justify="space-between"
-      mb={{ base: 8, md: 12 }}
-      pb={{ base: 8, md: 12 }}
+      mb={8}
+      pb={8}
       borderBottomColor="gray.700"
       borderBottomWidth="1px"
     >

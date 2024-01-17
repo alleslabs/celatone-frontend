@@ -10,14 +10,13 @@ import { ContractListCard } from "./ContractListCard";
 interface AllContractListsProps {
   contractLists: ContractListInfo[];
   handleListSelect: (value: string) => void;
-  isReadOnly?: boolean;
+  isReadOnly: boolean;
 }
 
 export const AllContractLists = ({
   contractLists,
-  isReadOnly,
-
   handleListSelect,
+  isReadOnly,
 }: AllContractListsProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -41,8 +40,10 @@ export const AllContractLists = ({
       />
       {filteredContractLists.length === 0 ? (
         <EmptyState
-          message="None of your lists matches this search."
+          message="No matching lists found.
+        Make sure you are searching with list name."
           imageVariant="not-found"
+          withBorder
         />
       ) : (
         <SimpleGrid
@@ -56,7 +57,7 @@ export const AllContractLists = ({
               key={item.slug}
               item={item}
               handleListSelect={handleListSelect}
-              isReadOnly={isReadOnly || !item.isInfoEditable}
+              isReadOnly={isReadOnly}
             />
           ))}
         </SimpleGrid>

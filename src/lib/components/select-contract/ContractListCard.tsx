@@ -26,8 +26,9 @@ export const ContractListCard = ({
   isReadOnly,
 }: ContractListCardProps) => {
   const isInstantiatedByMe =
-    item.slug !== formatSlugName(INSTANTIATED_LIST_NAME);
-  const isDisabled = isReadOnly && isInstantiatedByMe && !item.contracts.length;
+    item.slug === formatSlugName(INSTANTIATED_LIST_NAME);
+  const isDisabled =
+    isReadOnly && !isInstantiatedByMe && !item.contracts.length;
 
   return (
     <Flex
@@ -65,7 +66,7 @@ export const ContractListCard = ({
           </Text>
           <Badge>{item.contracts.length}</Badge>
         </Flex>
-        {isInstantiatedByMe && (
+        {!isInstantiatedByMe && (
           <Text
             variant="body3"
             textColor={isDisabled ? "text.disabled" : "text.dark"}
@@ -74,7 +75,7 @@ export const ContractListCard = ({
           </Text>
         )}
       </Flex>
-      {!isReadOnly && (
+      {!isReadOnly && item.isInfoEditable && (
         <Menu>
           <MenuButton
             m={0}

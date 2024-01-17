@@ -5,21 +5,21 @@ import { CodesTableWithWallet } from "./CodesTableWithWallet";
 
 interface MyStoredCodesTableProps {
   codes: CodeInfo[];
+  totalData: number;
   isLoading: boolean;
   onRowSelect: (codeId: number) => void;
   emptyMessage: string;
   disconnectedMessage: string;
-  isSearching: boolean;
   isReadOnly?: boolean;
 }
 
 export const MyStoredCodesTable = ({
   codes,
+  totalData,
   isLoading,
   onRowSelect,
   emptyMessage,
   disconnectedMessage,
-  isSearching,
   isReadOnly = false,
 }: MyStoredCodesTableProps) => (
   <CodesTableWithWallet
@@ -28,8 +28,12 @@ export const MyStoredCodesTable = ({
     emptyState={
       <EmptyState
         my={0}
-        imageVariant={isSearching ? "not-found" : "empty"}
-        message={isSearching ? "No matched codes found" : emptyMessage}
+        imageVariant={totalData ? "not-found" : "empty"}
+        message={
+          totalData
+            ? "No matched codes found. Make sure you are searching with Code ID or Code Name"
+            : emptyMessage
+        }
         withBorder
       />
     }

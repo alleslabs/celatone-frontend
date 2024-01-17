@@ -1,10 +1,10 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
+import { ValidatorBadge } from "../../ValidatorBadge";
+import { TableRow } from "../tableComponents";
 import { TokenCell } from "../TokenCell";
 import { CustomIcon } from "lib/components/icon";
-import { TableRow } from "lib/components/table";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { Redelegation } from "lib/pages/account-details/types";
+import type { Redelegation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface RedelegationTableRowProps {

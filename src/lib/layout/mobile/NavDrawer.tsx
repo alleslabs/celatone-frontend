@@ -59,7 +59,7 @@ export const NavDrawer = () => {
                 icon: "code" as IconKeys,
               },
               {
-                name: "Recent Contracts",
+                name: "Contracts",
                 slug: "/contracts",
                 icon: "contract-address" as IconKeys,
               },

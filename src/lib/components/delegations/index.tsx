@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
-import { useUserDelegationInfos } from "lib/pages/account-details/data";
+import { useAccountDelegationInfos } from "lib/model/account";
 import type { BechAddr } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
@@ -38,7 +38,7 @@ export const DelegationsSection = ({
     rewards,
     redelegations,
     totalCommission,
-  } = useUserDelegationInfos(address);
+  } = useAccountDelegationInfos(address);
 
   useEffect(() => {
     onClose();
@@ -48,9 +48,9 @@ export const DelegationsSection = ({
   if (!stakingParams) return <ErrorFetching dataName="delegation data" />;
 
   const redelegationCount = redelegations?.length ?? 0;
+
   return (
     <Flex
-      mt={{ base: 4, md: 8 }}
       mb={{ base: 0, md: 8 }}
       position="relative"
       overflow="hidden"

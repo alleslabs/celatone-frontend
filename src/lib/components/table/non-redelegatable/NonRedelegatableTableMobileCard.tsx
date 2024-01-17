@@ -1,8 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { MobileLabel } from "lib/components/table";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { NonRedelegatable } from "lib/pages/account-details/types";
+import { ValidatorBadge } from "../../ValidatorBadge";
+import { MobileLabel } from "../MobileLabel";
+import type { NonRedelegatable } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface NonRedelegatablesTableMobileCardProps {

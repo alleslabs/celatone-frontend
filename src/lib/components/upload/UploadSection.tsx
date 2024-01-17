@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -230,12 +230,20 @@ export const UploadSection = ({
         }
         variant="fixed-floating"
       />
-      <InstantiatePermissionRadio
-        control={control}
-        setValue={setValue}
-        trigger={trigger}
-      />
-
+      <Flex direction="column">
+        <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+          Instantiate Permission
+        </Heading>
+        <Text color="text.dark" variant="body2" mb={4}>
+          Specify who has the authority to instantiate the contract using this
+          code
+        </Text>
+        <InstantiatePermissionRadio
+          control={control}
+          setValue={setValue}
+          trigger={trigger}
+        />
+      </Flex>
       <Box width="full">
         {(simulateStatus.status !== "default" || isSimulating) && (
           <SimulateMessageRender
@@ -265,7 +273,6 @@ export const UploadSection = ({
           />
         </Flex>
       </Box>
-
       <Flex justify="space-between" w="100%" mt="32px">
         <Button
           variant="outline-gray"

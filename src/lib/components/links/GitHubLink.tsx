@@ -5,14 +5,20 @@ import { trackSocial } from "lib/amplitude";
 
 interface GitHubLinkProps {
   github: string;
+  hasMinW?: boolean;
 }
 
-export const GitHubLink = ({ github }: GitHubLinkProps) => {
+export const GitHubLink = ({ github, hasMinW = false }: GitHubLinkProps) => {
   const [, , , org, repo] = github.split("/");
   return (
     <Flex gap={{ base: 0, md: 2 }} direction={{ base: "column", md: "row" }}>
-      <Text fontWeight={500} color="text.dark" variant="body2">
-        GitHub:
+      <Text
+        fontWeight={500}
+        color="text.dark"
+        variant="body2"
+        minW={hasMinW ? 32 : "auto"}
+      >
+        GitHub{!hasMinW && ":"}
       </Text>
       <a
         href={github}

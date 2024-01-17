@@ -1,4 +1,5 @@
 export * from "./composeMsg";
-export * from "./findAttr";
 export * from "./extractTxDetails";
+export * from "./extractTxLogs";
+export * from "./findAttr";
 export * from "./mapping";

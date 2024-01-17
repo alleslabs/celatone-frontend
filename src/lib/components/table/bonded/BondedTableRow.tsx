@@ -1,7 +1,7 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { TableRow } from "lib/components/table";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
+import { ValidatorBadge } from "../../ValidatorBadge";
+import { TableRow } from "../tableComponents";
 import type { TokenWithValue, Validator } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 

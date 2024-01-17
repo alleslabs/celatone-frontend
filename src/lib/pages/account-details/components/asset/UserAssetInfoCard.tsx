@@ -22,6 +22,7 @@ export const UserAssetInfoCard = ({
         {helperText}
       </Text>
       <Heading
+        mt={1}
         as="h6"
         variant="h6"
         color={isZeroValue ? "text.dark" : "text.main"}
