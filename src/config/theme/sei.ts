@@ -106,14 +106,16 @@ export const SEI_THEME: ThemeConfig = {
       color: "#0C1C23",
       disabledBackground: "#787971",
       disabledColor: "#0C1C23",
-      hoverBackground: "FAF6EF",
-      activeBackground: "FAF6EF",
+      hoverBackground: "#C0B8A9",
+      activeBackground: "#FAF6EF",
     },
     outlinePrimary: {
       borderColor: "#787971",
       color: "#F0E3CF",
       disabledBorderColor: "#1D343F",
       disabledColor: "#40566A",
+      hoverBackground: "#C0B8A9",
+      activeBackground: "#FAF6EF",
     },
   },
   borderRadius: {

@@ -130,6 +130,7 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
+      fontFamily="PP Neue Montreal Mono Regular"
       color="secondary.main"
       transition="all 0.25s ease-in-out"
       _hover={{ color: "secondary.light" }}

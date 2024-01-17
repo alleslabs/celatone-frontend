@@ -22,6 +22,10 @@ export type ThemeConfig = {
       url: string;
       name: string;
     };
+    link?: {
+      url: string;
+      name: string;
+    };
   };
   colors: {
     gradient?: {
@@ -111,6 +115,8 @@ export type ThemeConfig = {
       color: string;
       disabledBorderColor: string;
       disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
     };
   };
   borderRadius: {
