@@ -8,7 +8,7 @@ export const TEST_THEME: ThemeConfig = {
       appName: "Celatone",
       title: "Celatone Explorer for Cosmos chain",
       description: "A smart contract powered explorer for the Cosmos.",
-      image: "https://assets.alleslabs.dev/branding/celatone-cover.jpg",
+      image: "https://assets.alleslabs.dev/celatone-brand/socials/ogimage.jpg",
       twitter: {
         handle: "@celatone_",
         cardType: "summary_large_image",
@@ -30,70 +30,64 @@ export const TEST_THEME: ThemeConfig = {
     },
   },
   colors: {
-    error: {
-      main: "#FF666E",
-      light: "#FF8086",
-      dark: "#B43E44",
-      background: "#4C1A1D",
-    },
-    warning: {
-      main: "#FFBB33",
-      light: "#FFCC66",
-      dark: "#CC8800",
-      background: "#523600",
-    },
-    success: {
-      main: "#9FF59A",
-      light: "#D6FFD4",
-      dark: "#477145",
-      background: "#1A3919",
-      //   main: "#9FF59A",
-      //   light: "#D6FFD4",
-      //   lighter: "#E7FFE6",
-      //   dark: "#8DEF88",
-      //   darker: "#69CC64",
-      //   background: "#1C491A",
-    },
-    background: {
-      main: "#020617",
-      overlay: "rgba(17, 17, 23, 0.7)",
-    },
-    text: {
-      main: "#F8FAFC",
-      dark: "#CBD5E1",
-      disabled: "#94A3B8",
-    },
     primary: {
-      main: "#89D1F6",
-      light: "#C2EAFF",
       lighter: "#E0F1FB",
+      light: "#C2EAFF",
+      main: "#89D1F6",
       dark: "#5ABAEC",
       darker: "#2B8BBD",
       background: "#335068",
     },
     secondary: {
-      main: "#89D1F6",
       light: "#C2EAFF",
+      main: "#89D1F6",
       dark: "#5ABAEC",
       darker: "#2B8BBD",
       background: "#335068",
     },
     accent: {
-      main: "#89D1F6",
-      light: "#C2EAFF",
       lighter: "#E0F1FB",
+      light: "#C2EAFF",
+      main: "#89D1F6",
       dark: "#5ABAEC",
       darker: "#2B8BBD",
       background: "#335068",
     },
     gray: {
       100: "#F8FAFC",
-      400: "#CBD5E1",
-      500: "#94A3B8",
-      600: "#798495",
+      400: "#B7C1CD",
+      500: "#8A99AE",
+      600: "#707E94",
       700: "#334155",
-      800: "#1E2432",
+      800: "#1E2535",
       900: "#0A101E",
+    },
+    text: {
+      main: "#F8FAFC",
+      dark: "#CBD5E1",
+      disabled: "#94A3B8",
+    },
+    background: {
+      main: "#020617",
+      overlay: "rgba(2, 6, 23, 0.7)",
+    },
+    success: {
+      light: "#D6FFD4",
+      main: "#9FF59A",
+      dark: "#497252",
+      background: "#213631",
+    },
+    error: {
+      light: "#FF8086",
+      main: "#FF666E",
+      dark: "#B43E44",
+      background: "#4C1A1D",
+    },
+    warning: {
+      light: "#FFCC66",
+      main: "#FFBB33",
+      dark: "#CC8800",
+      background: "#523600",
     },
   },
   button: {
@@ -137,15 +131,20 @@ export const TEST_THEME: ThemeConfig = {
   },
   jsonTheme: "monokai",
   illustration: {
-    "404": "https://assets.alleslabs.dev/illustration/404.svg",
-    error: "https://assets.alleslabs.dev/illustration/error.svg",
+    "404":
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/404.svg",
+    error:
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/error.svg",
     searchNotFound:
-      "https://assets.alleslabs.dev/illustration/search-not-found.svg",
-    searchEmpty: "https://assets.alleslabs.dev/illustration/search-empty.svg",
-    disconnected: "https://assets.alleslabs.dev/illustration/disconnected.svg",
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/search-not-found.svg",
+    searchEmpty:
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/search-empty.svg",
+    disconnected:
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/disconnected.svg",
     overview: {
-      main: "https://assets.alleslabs.dev/illustration/left.svg",
-      secondary: "https://assets.alleslabs.dev/illustration/right.svg",
+      main: "https://assets.alleslabs.dev/celatone-brand/illustration/left.svg",
+      secondary:
+        "https://assets.alleslabs.dev/celatone-brand/illustration/right.svg",
     },
   },
   socialMedia: {

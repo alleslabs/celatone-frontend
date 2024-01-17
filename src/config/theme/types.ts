@@ -31,33 +31,6 @@ export type ThemeConfig = {
     gradient?: {
       main: string;
     };
-    error: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    warning: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    success: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    background: {
-      main: string;
-      overlay: string;
-    };
-    text: {
-      main: string;
-      dark: string;
-      disabled: string;
-    };
     primary: {
       main: string;
       light: string;
@@ -89,6 +62,33 @@ export type ThemeConfig = {
       700: string;
       800: string;
       900: string;
+    };
+    text: {
+      main: string;
+      dark: string;
+      disabled: string;
+    };
+    background: {
+      main: string;
+      overlay: string;
+    };
+    success: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
+    error: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
+    warning: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
     };
   };
   tag: {

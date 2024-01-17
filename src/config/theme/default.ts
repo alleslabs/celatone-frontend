@@ -2,13 +2,13 @@ import type { ThemeConfig } from "./types";
 
 export const DEFAULT_THEME: ThemeConfig = {
   branding: {
-    logo: "https://assets.alleslabs.dev/branding/logo/logo.svg",
-    favicon: "https://assets.alleslabs.dev/branding/favicon.ico",
+    logo: "https://assets.alleslabs.dev/celatone-brand/logo/full-white.svg",
+    favicon: "https://assets.alleslabs.dev/celatone-brand/favicon.ico",
     seo: {
       appName: "Celatone",
       title: "Celatone Explorer for Cosmos chain",
       description: "A smart contract powered explorer for the Cosmos.",
-      image: "https://assets.alleslabs.dev/branding/celatone-cover.jpg",
+      image: "https://assets.alleslabs.dev/celatone-brand/socials/ogimage.jpg",
       twitter: {
         handle: "@celatone_",
         cardType: "summary_large_image",
@@ -24,69 +24,88 @@ export const DEFAULT_THEME: ThemeConfig = {
       url: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
       name: "Space Grotesk, sans-serif",
     },
+    link: {
+      url: "/font/main.css",
+      name: "PP Neue Montreal Regular, serif",
+    },
   },
   colors: {
-    gradient: {
-      main: "linear(to-tr, #5942F3, #9793F3)",
+    primary: {
+      lighter: "#E0F1FB",
+      light: "#C2EAFF",
+      main: "#89D1F6",
+      dark: "#5ABAEC",
+      darker: "#2B8BBD",
+      background: "#335068",
+    },
+    secondary: {
+      light: "#C2EAFF",
+      main: "#89D1F6",
+      dark: "#5ABAEC",
+      darker: "#2B8BBD",
+      background: "#335068",
+    },
+    accent: {
+      lighter: "#E0F1FB",
+      light: "#C2EAFF",
+      main: "#89D1F6",
+      dark: "#5ABAEC",
+      darker: "#2B8BBD",
+      background: "#335068",
+    },
+    gray: {
+      100: "#F8FAFC",
+      400: "#B7C1CD",
+      500: "#8A99AE",
+      600: "#707E94",
+      700: "#334155",
+      800: "#1E2535",
+      900: "#0A101E",
+    },
+    text: {
+      main: "#F8FAFC",
+      dark: "#CBD5E1",
+      disabled: "#94A3B8",
+    },
+    background: {
+      main: "#020617",
+      overlay: "rgba(2, 6, 23, 0.7)",
+    },
+    success: {
+      light: "#D6FFD4",
+      main: "#9FF59A",
+      dark: "#497252",
+      background: "#213631",
     },
     error: {
-      main: "#FF666E",
       light: "#FF8086",
+      main: "#FF666E",
       dark: "#B43E44",
       background: "#4C1A1D",
     },
     warning: {
-      main: "#FFBB33",
       light: "#FFCC66",
+      main: "#FFBB33",
       dark: "#CC8800",
       background: "#523600",
     },
-    success: {
-      main: "#42BEA6",
-      light: "#67CBB7",
-      dark: "#207966",
-      background: "#102E28",
-    },
-    background: {
-      main: "#111117",
-      overlay: "rgba(17, 17, 23, 0.7)",
-    },
-    text: {
-      main: "#F7F2FE",
-      dark: "#ADADC2",
-      disabled: "#8A8AA5",
-    },
+  },
+  button: {
     primary: {
-      main: "#5942F3",
-      light: "#9793F3",
-      lighter: "#DCDBFB",
-      dark: "#3E38B0",
-      darker: "#292676",
-      background: "#181733",
+      background: "#89D1F6",
+      color: "#272D3C",
+      disabledBackground: "#335068",
+      disabledColor: "#0A101E",
+      hoverBackground: "#5ABAEC",
+      activeBackground: "#2B8BBD",
     },
-    secondary: {
-      main: "#D8BEFC",
-      light: "#E8D8FD",
-      dark: "#A28FBD",
-      darker: "#6C5F7E",
-      background: "#36303F",
-    },
-    accent: {
-      main: "#C6E141",
-      light: "#DDED8D",
-      lighter: "#E8F3B3",
-      dark: "#95A931",
-      darker: "#637121",
-      background: "#3D470B",
-    },
-    gray: {
-      100: "#F7F2FE",
-      400: "#ADADC2",
-      500: "#8A8AA5",
-      600: "#68688A",
-      700: "#343445",
-      800: "#272734",
-      900: "#1A1A22",
+    outlinePrimary: {
+      borderColor: "#89D1F6",
+      color: "#89D1F6",
+      disabledBorderColor: "#335068",
+      disabledColor: "#2B8BBD",
+      hoverBackground: "#335068",
+      activeBackground: "#335068",
     },
   },
   tag: {
@@ -95,7 +114,7 @@ export const DEFAULT_THEME: ThemeConfig = {
       color: "inherit",
     },
     related: {
-      bg: "primary.dark",
+      bg: "gray.700",
       color: "text.main",
     },
   },
@@ -112,15 +131,20 @@ export const DEFAULT_THEME: ThemeConfig = {
   },
   jsonTheme: "monokai",
   illustration: {
-    "404": "https://assets.alleslabs.dev/illustration/404.svg",
-    error: "https://assets.alleslabs.dev/illustration/error.svg",
+    "404":
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/404.svg",
+    error:
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/error.svg",
     searchNotFound:
-      "https://assets.alleslabs.dev/illustration/search-not-found.svg",
-    searchEmpty: "https://assets.alleslabs.dev/illustration/search-empty.svg",
-    disconnected: "https://assets.alleslabs.dev/illustration/disconnected.svg",
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/search-not-found.svg",
+    searchEmpty:
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/search-empty.svg",
+    disconnected:
+      "https://assets.alleslabs.dev/celatone-brand/illustration/states/disconnected.svg",
     overview: {
-      main: "https://assets.alleslabs.dev/illustration/bg-left.svg",
-      secondary: "https://assets.alleslabs.dev/illustration/bg-right.svg",
+      main: "https://assets.alleslabs.dev/celatone-brand/illustration/left.svg",
+      secondary:
+        "https://assets.alleslabs.dev/celatone-brand/illustration/right.svg",
     },
   },
   socialMedia: {
