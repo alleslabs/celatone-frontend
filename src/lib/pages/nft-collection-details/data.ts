@@ -40,15 +40,15 @@ export const useCollectionInfos = (
     );
   const isUnlimited =
     collectionSupplyResource?.structTag === "0x1::collection::UnlimitedSupply";
-  const supplyData = collectionSupplyResource
-    ? (JSON.parse(collectionSupplyResource.moveResource).data as SupplyData)
+  const supplyData: Option<SupplyData> = collectionSupplyResource
+    ? JSON.parse(collectionSupplyResource.moveResource).data
     : undefined;
 
   const collectionRoyaltyResource = groupedByName
     .find((group) => group.group === "royalty")
     ?.items.find((resource) => resource.structTag === "0x1::royalty::Royalty");
-  const royaltyData = collectionRoyaltyResource
-    ? (JSON.parse(collectionRoyaltyResource.moveResource).data as RoyaltyData)
+  const royaltyData: Option<RoyaltyData> = collectionRoyaltyResource
+    ? JSON.parse(collectionRoyaltyResource.moveResource).data
     : undefined;
 
   return {
