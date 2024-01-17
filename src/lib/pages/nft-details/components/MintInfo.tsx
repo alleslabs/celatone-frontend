@@ -56,7 +56,7 @@ export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
           </LabelText>
           <LabelText label="Minted Transaction">
             <ExplorerLink
-              value={mintInfo.txhash}
+              value={mintInfo.txhash.toUpperCase()}
               type="tx_hash"
               showCopyOnHover
               ampCopierSection="nft-detail-mint-information"

@@ -80,7 +80,7 @@ export const CollectionInfoSection = ({
           </LabelText>
           <LabelText label="Created Transaction">
             <ExplorerLink
-              value={txhash}
+              value={txhash.toUpperCase()}
               type="tx_hash"
               showCopyOnHover
               ampCopierSection="collection-creation-information"
