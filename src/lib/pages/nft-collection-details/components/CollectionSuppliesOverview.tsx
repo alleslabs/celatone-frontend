@@ -27,11 +27,12 @@ export const CollectionSuppliesOverview = ({
   isLoading,
   onViewMore,
 }: CollectionSuppliesOverviewProps) => {
-  const displayedNftCount = useBreakpointValue({
-    "2xl": 6,
-    xl: 5,
-    sm: 4,
-  });
+  const displayedNftCount =
+    useBreakpointValue({
+      "2xl": 6,
+      xl: 5,
+      sm: 4,
+    }) ?? 4;
 
   const nftsInfo = nfts?.slice(0, displayedNftCount);
 
@@ -56,9 +57,7 @@ export const CollectionSuppliesOverview = ({
           </GridItem>
         ))}
       </SimpleGrid>
-      {(displayedNftCount ?? 0) <= totalCount && (
-        <ViewMore onClick={onViewMore} />
-      )}
+      {totalCount > displayedNftCount && <ViewMore onClick={onViewMore} />}
     </Flex>
   );
 };
