@@ -11,7 +11,6 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useValidateAddress,
@@ -21,6 +20,7 @@ import {
 } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";
+import { DelegationsSection } from "lib/components/delegations";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";

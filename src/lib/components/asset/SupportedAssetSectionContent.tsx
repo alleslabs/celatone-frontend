@@ -18,7 +18,6 @@ export const SupportedAssetSectionContent = ({
   onViewMore,
 }: SupportedAssetSectionContentProps) => {
   if (error) return <ErrorFetching dataName="balances" />;
-
   return supportedAssets.length ? (
     <Grid
       p={4}
