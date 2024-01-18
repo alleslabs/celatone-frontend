@@ -47,10 +47,8 @@ export const ResourceOverviewBody = ({
   if (!resourcesByName.length)
     return (
       <EmptyState
-        imageVariant="empty"
-        message="No resources found"
+        message="No resources are stored on this account."
         withBorder
-        my={6}
       />
     );
 

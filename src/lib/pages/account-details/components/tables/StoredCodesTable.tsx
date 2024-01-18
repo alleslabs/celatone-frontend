@@ -98,8 +98,7 @@ export const StoredCodesTable = observer(
                 ) : (
                   <EmptyState
                     withBorder
-                    imageVariant="empty"
-                    message="This account did not stored any codes before."
+                    message="No codes have been stored by this account before."
                   />
                 )
               }

@@ -24,6 +24,42 @@ interface AssetsSectionProps {
   isAccount?: boolean;
 }
 
+const MobileOverview = ({
+  hasNoAsset,
+  onViewMore,
+  address,
+}: {
+  address: BechAddr;
+  onViewMore: () => void;
+  hasNoAsset: boolean;
+}) => {
+  const { supportedAssets, unsupportedAssets, totalSupportedAssetsValue } =
+    useBalanceInfos(address);
+  return (
+    <Flex
+      justify="space-between"
+      w="full"
+      bg="gray.900"
+      borderRadius="8px"
+      p={4}
+      opacity={hasNoAsset ? 0.5 : 1}
+      onClick={hasNoAsset ? undefined : onViewMore}
+    >
+      <Flex direction="column" gap={2}>
+        <TableTitle
+          title="Assets"
+          count={supportedAssets.length + unsupportedAssets.length}
+          mb={0}
+        />
+        <UserAssetInfoCard
+          totalSupportedAssetsValue={totalSupportedAssetsValue}
+          helperText="Total Asset Value"
+        />
+      </Flex>
+      <CustomIcon name="chevron-right" color="gray.600" />
+    </Flex>
+  );
+};
 export const AssetsSection = ({
   address,
   onViewMore,
@@ -42,6 +78,10 @@ export const AssetsSection = ({
     error,
   } = useBalanceInfos(address);
 
+  const isZeroValue =
+    !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
+
+  const hasNoAsset = !supportedAssets.length && !unsupportedAssets.length;
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="balances" />;
 
@@ -54,33 +94,17 @@ export const AssetsSection = ({
       width="full"
     >
       {isMobileOverview ? (
-        <Flex
-          justify="space-between"
-          w="full"
-          bg="gray.900"
-          borderRadius="8px"
-          p={4}
-          onClick={onViewMore}
-        >
-          <Flex direction="column" gap={2}>
-            <TableTitle
-              title="Supported Assets"
-              count={supportedAssets.length}
-              mb={0}
-            />
-            <UserAssetInfoCard
-              totalSupportedAssetsValue={totalSupportedAssetsValue}
-              helperText="Total Asset Value"
-            />
-          </Flex>
-          <CustomIcon name="chevron-right" color="gray.600" />
-        </Flex>
+        <MobileOverview
+          address={address}
+          onViewMore={onViewMore}
+          hasNoAsset={hasNoAsset}
+        />
       ) : (
         <>
           <Flex w="full" justifyContent="space-between">
             <TableTitle title="Assets" count={totalData} mb={0} />
             <Button
-              disabled={!supportedAssets.length && !unsupportedAssets.length}
+              isDisabled={hasNoAsset}
               variant="ghost-gray"
               size="sm"
               rightIcon={
@@ -119,7 +143,11 @@ export const AssetsSection = ({
                     <Text variant="body2" color="text.dark">
                       Total Asset Value
                     </Text>
-                    <Heading as="h6" variant="h6" color="text.main">
+                    <Heading
+                      as="h6"
+                      variant="h6"
+                      color={isZeroValue ? "text.dark" : "text.main"}
+                    >
                       {totalSupportedAssetsValue
                         ? formatPrice(totalSupportedAssetsValue)
                         : "N/A"}
