@@ -21,6 +21,7 @@ import {
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
+import { AssetsSection } from "lib/components/asset";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -35,7 +36,6 @@ import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
-import { AssetsSection } from "./components/asset";
 import { ModuleLists } from "./components/modules";
 import { NftsOverview, NftsSection } from "./components/nfts";
 import { ResourceOverview, ResourceSection } from "./components/resources";
@@ -264,7 +264,7 @@ const AccountDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Flex direction="column" gap={{ base: 4, md: 4 }}>
+            <Flex direction="column" gap={4}>
               <Flex
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 4, md: 6 }}

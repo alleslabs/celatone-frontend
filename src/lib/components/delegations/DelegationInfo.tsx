@@ -51,6 +51,7 @@ export const DelegationInfo = ({
             alignItems={{ base: "start", md: "center" }}
             justify="space-between"
             overflowX="scroll"
+            overflowY="hidden"
           >
             <Flex
               gap={{ base: 4, md: 8 }}

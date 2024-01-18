@@ -110,7 +110,7 @@ export const ContractTop = ({
   };
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" mb={6}>
       <Breadcrumb
         items={[
           {
@@ -128,11 +128,11 @@ export const ContractTop = ({
         justify="space-between"
         mt={{ base: 3, md: 6 }}
         direction={{ base: "column", md: "row" }}
-        gap={{ md: 8 }}
+        gap={{ md: 4 }}
       >
         <Flex
           direction="column"
-          gap={3}
+          gap={{ base: 1, md: 3 }}
           overflow="hidden"
           minW={{ md: "680px" }}
         >
@@ -162,7 +162,7 @@ export const ContractTop = ({
               {displayName}
             </Heading>
           </Flex>
-          <Flex gap={1} direction="column">
+          <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex
               mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
@@ -224,7 +224,7 @@ export const ContractTop = ({
         </Flex>
         <Flex direction="column" gap={4}>
           <Flex
-            gap={{ base: 2, md: 4 }}
+            gap={2}
             mt={{ base: 8, md: 0 }}
             w={{ base: "full", md: "auto" }}
           >

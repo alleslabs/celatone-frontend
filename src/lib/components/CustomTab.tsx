@@ -33,6 +33,7 @@ export const CustomTab = ({
       lineHeight="24px"
       letterSpacing="0.4px"
       variant="ghost-gray"
+      minW="fit-content"
       mb={0}
       sx={{
         "&[aria-selected=true]": {
