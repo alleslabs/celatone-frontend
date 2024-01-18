@@ -19,7 +19,7 @@ export const NftsOverview = ({
   onViewMore,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
-  const { data: nfts, isFetching } = useNftsByAccount(userAddress, 5, 0);
+  const { data, isFetching } = useNftsByAccount(userAddress, 5, 0);
 
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
@@ -29,7 +29,7 @@ export const NftsOverview = ({
         <>
           <TableTitle title="NFTs" showCount count={totalCount} />
           <NftList
-            nfts={nfts}
+            nfts={data?.nfts}
             isLoading={isFetching}
             emptyState={
               <EmptyState

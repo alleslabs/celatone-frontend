@@ -13,6 +13,7 @@ import type {
   NftMintInfo,
   Nft,
   NftByNftAddressResponse,
+  NftsByAccountResponse,
 } from "./nft";
 import {
   getNfts,
@@ -183,7 +184,7 @@ export const useNftsByAccount = (
   search = ""
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<Nft[]>(
+  return useQuery<NftsByAccountResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT,
       chainConfig.indexer,
@@ -234,7 +235,7 @@ export const useAccountNftsByCollection = (
   collectionAddress?: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
-  return useQuery<Nft[]>(
+  return useQuery<NftsByAccountResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
       chainConfig.indexer,
