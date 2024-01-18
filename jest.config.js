@@ -11,5 +11,7 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/"],
   testRegex: ".test.(tsx?)$",
 
-  transformIgnorePatterns: [`/node_modules/(?!(map-obj|camelcase|plur))`],
+  transformIgnorePatterns: [
+    `/node_modules/(?!.pnpm/)(?!(map-obj|camelcase|plur))`,
+  ],
 };
