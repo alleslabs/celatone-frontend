@@ -1,5 +1,6 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { ErrorFetching } from "../state";
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -42,6 +43,7 @@ export const AssetsSection = ({
   } = useBalanceInfos(address);
 
   if (isLoading) return <Loading />;
+  if (error) return <ErrorFetching dataName="balances" />;
 
   return (
     <Flex
@@ -98,7 +100,6 @@ export const AssetsSection = ({
               supportedAssets={supportedAssets}
               totalSupportedAssetsValue={totalSupportedAssetsValue}
               unsupportedAssets={unsupportedAssets}
-              error={error}
               onViewMore={onViewMore}
             />
           ) : (
@@ -128,7 +129,6 @@ export const AssetsSection = ({
                 <SupportedAssetSectionContent
                   isAccount={isAccount}
                   supportedAssets={supportedAssets}
-                  error={error}
                 />
               </Flex>
               <Flex

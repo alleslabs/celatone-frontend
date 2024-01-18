@@ -16,7 +16,6 @@ interface AssetSectionOverviewProps {
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
-  error: Error;
   onViewMore: () => void;
 }
 
@@ -25,10 +24,16 @@ export const AssetSectionOverview = ({
   supportedAssets,
   totalSupportedAssetsValue,
   unsupportedAssets,
-  error,
   onViewMore,
-}: AssetSectionOverviewProps) =>
-  supportedAssets.length || unsupportedAssets.length ? (
+}: AssetSectionOverviewProps) => {
+  if (!supportedAssets.length && !unsupportedAssets.length)
+    return (
+      <Text variant="body2" color="text.dark">
+        This {isAccount ? "address" : "contract"} does not hold any assets
+      </Text>
+    );
+
+  return (
     <Grid gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }} gridGap={4}>
       <GridItem border="1px solid" borderColor="gray.700" borderRadius="8px">
         <Flex direction="column" justifyContent="space-between" h="full">
@@ -37,30 +42,14 @@ export const AssetSectionOverview = ({
               supportedAssets={supportedAssets}
               totalSupportedAssetsValue={totalSupportedAssetsValue}
             />
-            {supportedAssets.length ? (
-              <SupportedAssetSectionContent
-                isAccount={isAccount}
-                supportedAssets={supportedAssets.slice(
-                  0,
-                  MAX_SUPPORTED_ASSETS_SHOW
-                )}
-                error={error}
-                onViewMore={onViewMore}
-              />
-            ) : (
-              <Flex
-                w="full"
-                alignItems="center"
-                justifyContent="center"
-                h="calc(100% - 45px)"
-                minH={20}
-              >
-                <Text variant="body2" color="text.dark">
-                  This {isAccount ? "address" : "contract"} does not hold any
-                  supported assets
-                </Text>
-              </Flex>
-            )}
+            <SupportedAssetSectionContent
+              isAccount={isAccount}
+              supportedAssets={supportedAssets.slice(
+                0,
+                MAX_SUPPORTED_ASSETS_SHOW
+              )}
+              onViewMore={onViewMore}
+            />
           </Flex>
           {onViewMore && supportedAssets.length > MAX_SUPPORTED_ASSETS_SHOW && (
             <ViewMore
@@ -73,29 +62,14 @@ export const AssetSectionOverview = ({
       </GridItem>
       <GridItem border="1px solid" borderColor="gray.700" borderRadius="8px">
         <UnsupportedAssetTitle unsupportedAssets={unsupportedAssets} />
-        {unsupportedAssets.length ? (
-          <UnsupportedAssetSectionContent
-            isAccount={isAccount}
-            unsupportedAssets={unsupportedAssets.slice(
-              0,
-              MAX_UNSUPPORTED_ASSETS_SHOW
-            )}
-            onViewMore={onViewMore}
-          />
-        ) : (
-          <Flex
-            w="full"
-            alignItems="center"
-            justifyContent="center"
-            h="calc(100% - 45px)"
-            minH={20}
-          >
-            <Text variant="body2" color="text.dark">
-              This {isAccount ? "address" : "contract"} does not hold any
-              unsupported assets
-            </Text>
-          </Flex>
-        )}
+        <UnsupportedAssetSectionContent
+          isAccount={isAccount}
+          unsupportedAssets={unsupportedAssets.slice(
+            0,
+            MAX_UNSUPPORTED_ASSETS_SHOW
+          )}
+          onViewMore={onViewMore}
+        />
         {onViewMore &&
           unsupportedAssets.length > MAX_UNSUPPORTED_ASSETS_SHOW && (
             <ViewMore
@@ -106,8 +80,5 @@ export const AssetSectionOverview = ({
           )}
       </GridItem>
     </Grid>
-  ) : (
-    <Text variant="body2" color="text.dark">
-      This {isAccount ? "address" : "contract"} does not hold any assets
-    </Text>
   );
+};

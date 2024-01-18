@@ -13,8 +13,24 @@ export const UnsupportedAssetSectionContent = ({
   unsupportedAssets,
   onViewMore,
   isAccount = false,
-}: UnsupportedAssetSectionContentProps) =>
-  unsupportedAssets.length ? (
+}: UnsupportedAssetSectionContentProps) => {
+  if (!unsupportedAssets.length)
+    return (
+      <Flex
+        w="full"
+        alignItems="center"
+        justifyContent="center"
+        h="calc(100% - 45px)"
+        minH={20}
+      >
+        <Text variant="body2" color="text.dark">
+          This {isAccount ? "address" : "contract"} does not hold any
+          unsupported assets
+        </Text>
+      </Flex>
+    );
+
+  return (
     <Flex direction="column" gap={5} p={4}>
       <Grid
         gridGap={4}
@@ -28,11 +44,5 @@ export const UnsupportedAssetSectionContent = ({
         ))}
       </Grid>
     </Flex>
-  ) : (
-    <Flex p={12} alignItems="center" justifyContent="center">
-      <Text variant="body2" color="text.dark">
-        This {isAccount ? "address" : "contract"} does not hold any unsupported
-        assets
-      </Text>
-    </Flex>
   );
+};
