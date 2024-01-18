@@ -1,12 +1,12 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
+import { CustomIcon } from "../icon";
+import { Loading } from "../Loading";
 import { ErrorFetching } from "../state";
+import { TableTitle } from "../table";
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
-import { TableTitle } from "lib/components/table";
 import { useOpenAssetTab } from "lib/hooks";
 import { useBalanceInfos } from "lib/services/balanceService";
 import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
