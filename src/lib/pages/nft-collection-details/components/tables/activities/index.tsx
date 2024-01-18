@@ -5,6 +5,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
+import { useDebounce } from "lib/hooks";
 import { useCollectionActivities } from "lib/services/nft";
 import type { HexAddr32 } from "lib/types";
 
@@ -20,6 +21,7 @@ export const Activities = ({
   totalCount,
 }: ActivitiesProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const debouncedSearch = useDebounce(searchKeyword);
 
   const {
     pagesQuantity,
@@ -39,7 +41,7 @@ export const Activities = ({
     collectionAddress,
     pageSize,
     offset,
-    searchKeyword
+    debouncedSearch
   );
 
   return (
