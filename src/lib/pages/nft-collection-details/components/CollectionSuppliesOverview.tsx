@@ -21,7 +21,7 @@ interface CollectionSuppliesOverviewProps {
   onViewMore: () => void;
 }
 
-export const CollectionSuppliesOverview = ({
+export const CollectionSuppliesOverviewBody = ({
   totalCount,
   nfts,
   isLoading,
@@ -41,16 +41,9 @@ export const CollectionSuppliesOverview = ({
     return (
       <EmptyState imageVariant="empty" message="NFTs not found." withBorder />
     );
-
   return (
-    <Flex direction="column" gap={8}>
-      <Flex align="center" gap={2}>
-        <Heading as="h6" variant="h6" fontWeight={600}>
-          NFTs in this collection
-        </Heading>
-        <Badge>{totalCount}</Badge>
-      </Flex>
-      <SimpleGrid gap={6} columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }}>
+    <>
+      <SimpleGrid gap={6} columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }} my={8}>
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
             <NftCard {...nft} />
@@ -58,6 +51,30 @@ export const CollectionSuppliesOverview = ({
         ))}
       </SimpleGrid>
       {totalCount > displayedNftCount && <ViewMore onClick={onViewMore} />}
+    </>
+  );
+};
+
+export const CollectionSuppliesOverview = ({
+  totalCount,
+  nfts,
+  isLoading,
+  onViewMore,
+}: CollectionSuppliesOverviewProps) => {
+  return (
+    <Flex direction="column">
+      <Flex align="center" gap={2}>
+        <Heading as="h6" variant="h6" fontWeight={600}>
+          NFTs in this collection
+        </Heading>
+        <Badge>{totalCount}</Badge>
+      </Flex>
+      <CollectionSuppliesOverviewBody
+        totalCount={totalCount}
+        nfts={nfts}
+        isLoading={isLoading}
+        onViewMore={onViewMore}
+      />
     </Flex>
   );
 };

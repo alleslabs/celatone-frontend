@@ -228,8 +228,8 @@ const CollectionDetailsBody = ({
                 maxSupply={maxSupply}
               />
               <CollectionSuppliesOverview
-                nfts={nfts}
                 totalCount={currentSupply}
+                nfts={nfts}
                 isLoading={isNftLoading}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />

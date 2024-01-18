@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#735](https://github.com/alleslabs/celatone-frontend/pull/735) Fix nfts related bugs
 - [#732](https://github.com/alleslabs/celatone-frontend/pull/732) Fix custom tab incorrect variant and recent modules text
 - [#722](https://github.com/alleslabs/celatone-frontend/pull/722) Fix flicker query page
 

@@ -15,6 +15,7 @@ export const ViewResourceButton = ({ nftAddress }: ViewResourceButtonProps) => {
     <Button
       variant="outline-primary"
       w={{ base: "full", md: "auto" }}
+      minW="140px !important"
       size={{ base: "sm", md: "md" }}
       mb={{ base: 4, md: 0 }}
       onClick={() => {

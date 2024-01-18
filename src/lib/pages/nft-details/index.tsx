@@ -68,7 +68,7 @@ const NftDetailsBody = ({
   if (!collection.data || !nft.data) return <InvalidNft />;
 
   const { name: collectionName, description: collectionDesc } = collection.data;
-  const { tokenId, description, uri, ownerAddress } = nft.data;
+  const { tokenId, description, uri, ownerAddress, isBurned } = nft.data;
 
   const displayCollectionName =
     collectionName.length > 20
@@ -99,6 +99,8 @@ const NftDetailsBody = ({
                 collectionAddress={collectionAddress}
                 displayCollectionName={displayCollectionName}
                 tokenId={tokenId}
+                nftAddress={nftAddress}
+                isBurned={isBurned}
               />
             )}
             <div
@@ -137,7 +139,12 @@ const NftDetailsBody = ({
               </>
             )}
           </Flex>
-          <Flex direction="column" gap={{ base: 6, md: 12 }} w="full">
+          <Flex
+            direction="column"
+            gap={{ base: 6, md: 12 }}
+            w="full"
+            overflow="hidden"
+          >
             <Flex direction="column" gap={4}>
               <Flex
                 justifyContent="space-between"
@@ -145,14 +152,13 @@ const NftDetailsBody = ({
                 direction={{ base: "column", md: "row" }}
               >
                 {!isMobile && (
-                  <>
-                    <Title
-                      collectionAddress={collectionAddress}
-                      displayCollectionName={displayCollectionName}
-                      tokenId={tokenId}
-                    />
-                    <ViewResourceButton nftAddress={nftAddress} />
-                  </>
+                  <Title
+                    collectionAddress={collectionAddress}
+                    displayCollectionName={displayCollectionName}
+                    tokenId={tokenId}
+                    nftAddress={nftAddress}
+                    isBurned={isBurned}
+                  />
                 )}
               </Flex>
               <Flex direction="column" gap={1} w="full">
@@ -177,16 +183,18 @@ const NftDetailsBody = ({
                     </Flex>
                   </Tooltip>
                 </NftInfoItem>
-                <NftInfoItem label="Holder">
-                  <ExplorerLink
-                    value={ownerAddress}
-                    type="user_address"
-                    textFormat="normal"
-                    maxWidth="full"
-                    ampCopierSection="holder-address-nft-detail-top"
-                    fixedHeight={false}
-                  />
-                </NftInfoItem>
+                {!isBurned && (
+                  <NftInfoItem label="Holder">
+                    <ExplorerLink
+                      value={ownerAddress}
+                      type="user_address"
+                      textFormat="normal"
+                      maxWidth="full"
+                      ampCopierSection="holder-address-nft-detail-top"
+                      fixedHeight={false}
+                    />
+                  </NftInfoItem>
+                )}
                 <NftInfoItem label="Token URI" isCentered={false}>
                   <JsonLink uri={uri} type="token_uri" />
                 </NftInfoItem>

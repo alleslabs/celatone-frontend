@@ -22,6 +22,7 @@ const zNft = z
     uri: z.string(),
     token_id: z.string(),
     description: z.string().optional(),
+    is_burned: z.boolean(),
     vmAddressByOwner: z.object({ vm_address: zHexAddr }),
     vm_address: z.object({ vm_address: zHexAddr32 }).optional(),
     collectionByCollection: z.object({
@@ -30,9 +31,10 @@ const zNft = z
     }),
   })
   .transform((val) => ({
-    description: val.description,
     uri: val.uri,
     tokenId: val.token_id,
+    description: val.description,
+    isBurned: val.is_burned,
     ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address,
     collectionAddress: val.collectionByCollection.vm_address.vm_address,
