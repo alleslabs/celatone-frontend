@@ -21,7 +21,7 @@ export const PoolId = () => {
   const { pool, isLoading } = usePool(poolId);
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_POOL_DETAIL);
+    if (router.isReady) track(AmpEvent.TO_POOL_DETAILS);
   }, [router.isReady]);
 
   if (isLoading) return <Loading />;

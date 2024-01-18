@@ -37,9 +37,7 @@ export const Attributes = ({
         <Heading as="h6" variant="h6" fontWeight={600}>
           Attributes
         </Heading>
-        <Badge bg="primary.main" color="gray.900">
-          {attributes.length}
-        </Badge>
+        <Badge variant="primary">{attributes.length}</Badge>
       </Flex>
 
       <SimpleGrid

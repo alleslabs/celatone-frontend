@@ -110,7 +110,7 @@ export const ContractTop = ({
   };
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" mb={6}>
       <Breadcrumb
         items={[
           {
@@ -128,11 +128,11 @@ export const ContractTop = ({
         justify="space-between"
         mt={{ base: 3, md: 6 }}
         direction={{ base: "column", md: "row" }}
-        gap={{ md: 8 }}
+        gap={{ md: 4 }}
       >
         <Flex
           direction="column"
-          gap={{ base: 2, md: 1 }}
+          gap={{ base: 1, md: 3 }}
           overflow="hidden"
           minW={{ md: "680px" }}
         >
@@ -162,41 +162,30 @@ export const ContractTop = ({
               {displayName}
             </Heading>
           </Flex>
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text
-              color="text.dark"
-              minW={32}
-              variant="body2"
-              fontWeight={500}
-              whiteSpace="nowrap"
-            >
-              Contract Address
-            </Text>
-            <CopyLink
-              value={contractAddress}
-              amptrackSection="contract_top"
-              type="contract_address"
-            />
-          </Flex>
-          <Flex
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text color="text.dark" minW={32} variant="body2" fontWeight={500}>
-              Label
-            </Text>
-            <Text variant="body2" className="ellipsis">
-              {contract.label}
-            </Text>
-          </Flex>
-          {publicInfo?.name && (
+          <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex
-              direction={{ base: "column", md: "row" }}
+              mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
+              direction={{ base: "column", md: "row" }}
+            >
+              <Text
+                color="text.dark"
+                minW={32}
+                variant="body2"
+                fontWeight={500}
+                whiteSpace="nowrap"
+              >
+                Contract Address
+              </Text>
+              <CopyLink
+                value={contractAddress}
+                amptrackSection="contract_top"
+                type="contract_address"
+              />
+            </Flex>
+            <Flex
+              gap={{ base: 0, md: 2 }}
+              direction={{ base: "column", md: "row" }}
             >
               <Text
                 color="text.dark"
@@ -204,20 +193,38 @@ export const ContractTop = ({
                 variant="body2"
                 fontWeight={500}
               >
-                Public Name
+                Label
               </Text>
               <Text variant="body2" className="ellipsis">
-                {publicInfo.name}
+                {contract.label}
               </Text>
             </Flex>
-          )}
-          {publicInfo?.github && (
-            <GitHubLink github={publicInfo?.github} hasMinW />
-          )}
+            {publicInfo?.name && (
+              <Flex
+                direction={{ base: "column", md: "row" }}
+                gap={{ base: 0, md: 2 }}
+              >
+                <Text
+                  color="text.dark"
+                  minW={32}
+                  variant="body2"
+                  fontWeight={500}
+                >
+                  Public Name
+                </Text>
+                <Text variant="body2" className="ellipsis">
+                  {publicInfo.name}
+                </Text>
+              </Flex>
+            )}
+            {publicInfo?.github && (
+              <GitHubLink github={publicInfo?.github} hasMinW />
+            )}
+          </Flex>
         </Flex>
         <Flex direction="column" gap={4}>
           <Flex
-            gap={{ base: 2, md: 4 }}
+            gap={2}
             mt={{ base: 8, md: 0 }}
             w={{ base: "full", md: "auto" }}
           >

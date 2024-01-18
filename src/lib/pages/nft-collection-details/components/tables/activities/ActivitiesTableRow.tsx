@@ -55,6 +55,7 @@ export const ActivitiesTableRow = ({
             value={txhash.toUpperCase()}
             type="tx_hash"
             showCopyOnHover
+            ampCopierSection="nft-collection-activities-table"
           />
         </TableRow>
         <TableRow>
@@ -63,8 +64,11 @@ export const ActivitiesTableRow = ({
               href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
             >
               <Text
-                color="primary.dark"
-                _hover={{ textDecoration: "underline", color: "primary.light" }}
+                color="secondary.main"
+                _hover={{
+                  textDecoration: "underline",
+                  color: "secondary.light",
+                }}
               >
                 {tokenId}
               </Text>

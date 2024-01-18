@@ -22,13 +22,7 @@ export const ContractDesc = ({
   const isMobile = useMobile();
 
   return (
-    <Flex
-      direction={{ base: "column", md: "row" }}
-      gap={{ base: 4, md: 6 }}
-      pb={{ base: 0, md: 8 }}
-      borderBottom={{ base: "0px", md: "1px solid" }}
-      borderBottomColor={{ base: "transparent", md: "gray.700" }}
-    >
+    <Flex direction={{ base: "column", md: "row" }} gap={{ base: 4, md: 6 }}>
       {publicInfo?.description && (
         <PublicDescription
           title="Public Contract Description"

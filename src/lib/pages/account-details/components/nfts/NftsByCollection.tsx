@@ -59,6 +59,7 @@ export const NftsByCollection = ({
         autoFocus
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
+        amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
         nfts={nfts}
