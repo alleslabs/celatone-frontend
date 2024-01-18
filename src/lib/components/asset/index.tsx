@@ -1,4 +1,5 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { ErrorFetching } from "../state";
 import { trackUseViewJSON } from "lib/amplitude";
@@ -8,7 +9,7 @@ import { Loading } from "lib/components/Loading";
 import { TableTitle } from "lib/components/table";
 import { useOpenAssetTab } from "lib/hooks";
 import { useBalanceInfos } from "lib/services/balanceService";
-import type { BechAddr } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AssetSectionOverview } from "./AssetSectionOverview";
@@ -25,41 +26,42 @@ interface AssetsSectionProps {
 }
 
 const MobileOverview = ({
+  supportedAssets,
+  totalSupportedAssetsValue,
+  unsupportedAssets,
   hasNoAsset,
   onViewMore,
-  address,
 }: {
-  address: BechAddr;
-  onViewMore: () => void;
+  supportedAssets: TokenWithValue[];
+  totalSupportedAssetsValue: Option<USD<Big>>;
+  unsupportedAssets: TokenWithValue[];
   hasNoAsset: boolean;
-}) => {
-  const { supportedAssets, unsupportedAssets, totalSupportedAssetsValue } =
-    useBalanceInfos(address);
-  return (
-    <Flex
-      justify="space-between"
-      w="full"
-      bg="gray.900"
-      borderRadius="8px"
-      p={4}
-      opacity={hasNoAsset ? 0.5 : 1}
-      onClick={hasNoAsset ? undefined : onViewMore}
-    >
-      <Flex direction="column" gap={2}>
-        <TableTitle
-          title="Assets"
-          count={supportedAssets.length + unsupportedAssets.length}
-          mb={0}
-        />
-        <UserAssetInfoCard
-          totalSupportedAssetsValue={totalSupportedAssetsValue}
-          helperText="Total Asset Value"
-        />
-      </Flex>
-      <CustomIcon name="chevron-right" color="gray.600" />
+  onViewMore: () => void;
+}) => (
+  <Flex
+    justify="space-between"
+    w="full"
+    bg="gray.900"
+    borderRadius="8px"
+    p={4}
+    opacity={hasNoAsset ? 0.5 : 1}
+    onClick={hasNoAsset ? undefined : onViewMore}
+  >
+    <Flex direction="column" gap={2}>
+      <TableTitle
+        title="Assets"
+        count={supportedAssets.length + unsupportedAssets.length}
+        mb={0}
+      />
+      <UserAssetInfoCard
+        totalSupportedAssetsValue={totalSupportedAssetsValue}
+        helperText="Total Asset Value"
+      />
     </Flex>
-  );
-};
+    <CustomIcon name="chevron-right" color="gray.600" />
+  </Flex>
+);
+
 export const AssetsSection = ({
   address,
   onViewMore,
@@ -95,9 +97,11 @@ export const AssetsSection = ({
     >
       {isMobileOverview ? (
         <MobileOverview
-          address={address}
-          onViewMore={onViewMore}
+          supportedAssets={supportedAssets}
+          totalSupportedAssetsValue={totalSupportedAssetsValue}
+          unsupportedAssets={unsupportedAssets}
           hasNoAsset={hasNoAsset}
+          onViewMore={onViewMore}
         />
       ) : (
         <>
