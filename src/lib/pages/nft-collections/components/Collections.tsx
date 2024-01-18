@@ -6,12 +6,14 @@ import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { useDebounce } from "lib/hooks";
 import { useCollections } from "lib/services/nft";
 
 import { CollectionList } from "./CollectionList";
 
 export const Collections = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const debouncedSearch = useDebounce(searchKeyword);
 
   const {
     pagesQuantity,
@@ -31,7 +33,7 @@ export const Collections = () => {
   const { data: collections, isLoading } = useCollections(
     pageSize,
     offset,
-    searchKeyword,
+    debouncedSearch,
     {
       onSuccess: (data) => setTotalData(data.total),
     }
