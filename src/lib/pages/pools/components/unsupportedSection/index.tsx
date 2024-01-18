@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SUPERFLUID_ICON } from "../../constant";
@@ -23,6 +23,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { Order_By } from "lib/gql/graphql";
+import { useDebounce } from "lib/hooks";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
@@ -44,14 +45,17 @@ export const UnsupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
-  const search =
-    !keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`;
+  const search = useMemo(
+    () => (!keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`),
+    [keyword]
+  );
+  const debouncedSearch = useDebounce(search);
 
   const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
     isSupported: false,
     poolType: poolTypeValue,
     isSuperfluidOnly,
-    search,
+    search: debouncedSearch,
   });
 
   const [showNewest, setShowNewest] = useState(true);
@@ -95,7 +99,7 @@ export const UnsupportedSection = ({
     false,
     poolTypeValue,
     isSuperfluidOnly,
-    search,
+    debouncedSearch,
     showNewest ? Order_By.Desc : Order_By.Asc,
     offset,
     pageSize
