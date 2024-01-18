@@ -17,7 +17,7 @@ const RecentModules = () => {
   return (
     <PageContainer>
       <Heading variant="h5" as="h5" minH="36px">
-        Recent Modules
+        Modules
       </Heading>
       <Text variant="body2" color="text.dark" mb={8}>
         These modules are the most recently published on this network
