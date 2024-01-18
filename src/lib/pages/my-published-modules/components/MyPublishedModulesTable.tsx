@@ -36,8 +36,8 @@ export const MyPublishedModulesTable = () => {
   const filteredPublishedModules = useMemo(() => {
     if (!keyword) return mappedModules;
 
-    return mappedModules?.filter(
-      (module) => module.name?.toLowerCase().includes(keyword.toLowerCase())
+    return mappedModules?.filter((module) =>
+      module.name?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, mappedModules]);
 

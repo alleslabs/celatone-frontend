@@ -50,6 +50,13 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
         ...initiatestnetAssets,
       ]}
       wallets={wallets}
+      // TODO
+      walletConnectOptions={{
+        signClient: {
+          projectId: "89b53d909ae6d042df584d8fb0491a77",
+          relayUrl: "wss://relay.walletconnect.org",
+        },
+      }}
       endpointOptions={{
         isLazy: true,
         endpoints: availableChainsEndpoints,

@@ -702,8 +702,8 @@ class ArrayField<T = any, F = any> extends Component<
         const itemUiSchema = additional
           ? uiSchema.additionalItems || {}
           : Array.isArray(uiSchema.items)
-          ? uiSchema.items[index]
-          : uiSchema.items || {};
+            ? uiSchema.items[index]
+            : uiSchema.items || {};
         const itemErrorSchema = errorSchema
           ? (errorSchema[index] as ErrorSchema<T[]>)
           : undefined;

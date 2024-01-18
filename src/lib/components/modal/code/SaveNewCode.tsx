@@ -184,8 +184,8 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           onInputChange={setCodeId}
           label="Code ID"
           labelBgColor="gray.900"
-          status={codeIdStatus}
           placeholder="ex. 1234"
+          status={codeIdStatus}
         />
         <TextInput
           variant="fixed-floating"

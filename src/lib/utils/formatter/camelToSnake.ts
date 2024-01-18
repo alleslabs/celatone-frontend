@@ -2,12 +2,13 @@ import { snakeCase } from "snake-case";
 
 import type { CamelToSnakeCaseNested } from "lib/types";
 
-type Resolver<T> = T extends Array<infer U>
-  ? CamelToSnakeCaseNested<U>[]
-  : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends Record<string, any>
-  ? CamelToSnakeCaseNested<T>
-  : T;
+type Resolver<T> =
+  T extends Array<infer U>
+    ? CamelToSnakeCaseNested<U>[]
+    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      T extends Record<string, any>
+      ? CamelToSnakeCaseNested<T>
+      : T;
 
 // Convert camel case to snake case of an object
 export const camelToSnake = <T>(obj: T): Resolver<T> => {

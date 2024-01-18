@@ -26,6 +26,7 @@ export interface TextInputProps extends FormControlProps {
   label?: string;
   labelBgColor?: string;
   helperText?: string;
+  placeholder?: string;
   error?: string;
   type?: HTMLInputTypeAttribute;
   status?: FormStatus;
@@ -40,8 +41,8 @@ export const TextInput = ({
   label = "",
   labelBgColor = "background.main",
   helperText,
+  placeholder = " ",
   error,
-  placeholder = "",
   size = "lg",
   type = "text",
   status,
