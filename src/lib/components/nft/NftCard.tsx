@@ -39,6 +39,7 @@ export const NftCard = ({
             width="100%"
             height="100%"
             objectFit="cover"
+            backgroundPosition="center"
             borderRadius="8px"
             src={metadata?.image ? metadata.image : NFT_IMAGE_PLACEHOLDER}
           />

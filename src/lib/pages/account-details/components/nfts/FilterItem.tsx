@@ -1,7 +1,8 @@
-import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Badge, Flex, Image, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
 
 interface FilterItemProps {
@@ -10,6 +11,7 @@ interface FilterItemProps {
   onClick: () => void;
   uri?: string;
   isActive?: boolean;
+  isDefault?: boolean;
 }
 
 export const FilterItem = ({
@@ -18,6 +20,7 @@ export const FilterItem = ({
   onClick,
   uri,
   isActive,
+  isDefault = false,
 }: FilterItemProps) => {
   const { data: metadata } = useMetadata(uri ?? "");
 
@@ -39,17 +42,23 @@ export const FilterItem = ({
       justify="space-between"
     >
       <Flex gap="8px" align="center">
-        {metadata && uri ? (
+        {isDefault ? (
+          <Flex
+            width="32px"
+            height="32px"
+            p={1}
+            background="gray.800"
+            borderRadius="4px"
+          >
+            <CustomIcon name="group" />
+          </Flex>
+        ) : (
           <Image
             width="32px"
             height="32px"
-            borderRadius="8px"
-            src={metadata?.image}
+            borderRadius="4px"
+            src={metadata?.image ? metadata?.image : NFT_IMAGE_PLACEHOLDER}
           />
-        ) : (
-          <Box width="32px">
-            <CustomIcon name="group" />
-          </Box>
         )}
         <Text fontSize="14px" width="150px" className="ellipsis">
           {collectionName}

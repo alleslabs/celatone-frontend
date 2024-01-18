@@ -45,8 +45,6 @@ import {
 import type { NftDetailQueryParams } from "./types";
 import { zNftDetailQueryParams } from "./types";
 
-const IMAGE_SIZE = "360px";
-
 const InvalidNft = () => <InvalidState title="NFT does not exist" />;
 
 const NftDetailsBody = ({
@@ -103,14 +101,31 @@ const NftDetailsBody = ({
                 tokenId={tokenId}
               />
             )}
-            <Image
-              minW={IMAGE_SIZE}
-              minH={IMAGE_SIZE}
-              borderRadius="8px"
-              src={metadata?.image}
-              fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-              fallbackStrategy="beforeLoadOrError"
-            />
+            <div
+              style={{
+                width: "100%",
+                height: "0",
+                paddingTop: "100%",
+                position: "relative",
+              }}
+            >
+              <Image
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "8px",
+                  objectFit: "cover",
+                  backgroundPosition: "center",
+                }}
+                borderRadius="8px"
+                src={metadata?.image}
+                fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+                fallbackStrategy="beforeLoadOrError"
+              />
+            </div>
             {!isMobile && (
               <>
                 <DescriptionBox description={description} />
@@ -157,6 +172,7 @@ const NftDetailsBody = ({
                         textFormat="normal"
                         maxWidth="full"
                         ampCopierSection="nft-address-nft-detail-top"
+                        fixedHeight={false}
                       />
                     </Flex>
                   </Tooltip>
@@ -168,6 +184,7 @@ const NftDetailsBody = ({
                     textFormat="normal"
                     maxWidth="full"
                     ampCopierSection="holder-address-nft-detail-top"
+                    fixedHeight={false}
                   />
                 </NftInfoItem>
                 <NftInfoItem label="Token URI" isCentered={false}>

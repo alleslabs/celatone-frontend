@@ -63,7 +63,7 @@ export const AllProject = observer(() => {
         p={12}
       >
         <StateImage imageVariant="empty" />
-        <Heading as="h6" variant="h6" mt={2}>
+        <Heading as="h6" variant="h6" mt={2} textAlign="center">
           Gathering Public Projects...
         </Heading>
         <Text
@@ -72,6 +72,7 @@ export const AllProject = observer(() => {
           color="text.dark"
           textAlign="center"
           whiteSpace="pre-wrap"
+          variant="body2"
         >
           We are currently gathering public projects to feature here.
           <br /> To share yours with the community, please submit your request.

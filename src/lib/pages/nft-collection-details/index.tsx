@@ -14,7 +14,6 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -123,7 +122,9 @@ const CollectionDetailsBody = ({
           direction="column"
           my={6}
           gap={1}
-          maxW={{ base: "full", md: "800px" }}
+          overflow="hidden"
+          minW={{ md: "680px" }}
+          maxW="full"
         >
           <Heading as="h5" variant="h5" mb={1} className="ellipsis">
             {name}
@@ -159,22 +160,27 @@ const CollectionDetailsBody = ({
             </Badge>
           </Flex>
         </Flex>
-        <AppLink href={`/accounts/${collectionAddress}/resources`}>
-          <Button
-            variant="outline-primary"
-            minW="140px !important"
-            w={{ base: "full", md: "auto" }}
-            size={{ base: "sm", md: "md" }}
-            mb={{ base: 4, md: 0 }}
-            onClick={() =>
-              track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
-                amptrackSection: "nft-collection-details",
-              })
-            }
-          >
-            View Resource
-          </Button>
-        </AppLink>
+        <Button
+          variant="outline-primary"
+          minW="140px !important"
+          w={{ base: "full", md: "auto" }}
+          size={{ base: "sm", md: "md" }}
+          mb={{ base: 4, md: 0 }}
+          onClick={() => {
+            track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
+              amptrackSection: "nft-collection-details",
+            });
+            navigate({
+              pathname: "/accounts/[accountAddress]/[tab]",
+              query: {
+                accountAddress: collectionAddress,
+                tab: "resources",
+              },
+            });
+          }}
+        >
+          View Resource
+        </Button>
       </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}

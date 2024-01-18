@@ -22,7 +22,7 @@ export const ModulePathLink = ({
       className="copier-wrapper"
       display={{ base: "inline-flex", md: "flex" }}
       align="center"
-      h="24px"
+      h={{ base: "auto", md: "24px" }}
     >
       <AppLink
         href={`/modules/${hexAddr}/${moduleName}`}

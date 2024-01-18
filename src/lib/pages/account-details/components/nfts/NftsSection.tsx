@@ -57,6 +57,7 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
             onClick={() => handleOnClick(undefined)}
             isActive={selectedCollection === undefined}
             count={totalData}
+            isDefault
           />
           {collections.map((item) => (
             <FilterItem
