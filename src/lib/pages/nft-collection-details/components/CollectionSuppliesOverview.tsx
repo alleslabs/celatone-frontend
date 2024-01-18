@@ -60,21 +60,19 @@ export const CollectionSuppliesOverview = ({
   nfts,
   isLoading,
   onViewMore,
-}: CollectionSuppliesOverviewProps) => {
-  return (
-    <Flex direction="column">
-      <Flex align="center" gap={2}>
-        <Heading as="h6" variant="h6" fontWeight={600}>
-          NFTs in this collection
-        </Heading>
-        <Badge>{totalCount}</Badge>
-      </Flex>
-      <CollectionSuppliesOverviewBody
-        totalCount={totalCount}
-        nfts={nfts}
-        isLoading={isLoading}
-        onViewMore={onViewMore}
-      />
+}: CollectionSuppliesOverviewProps) => (
+  <Flex direction="column">
+    <Flex align="center" gap={2}>
+      <Heading as="h6" variant="h6" fontWeight={600}>
+        NFTs in this collection
+      </Heading>
+      <Badge>{totalCount}</Badge>
     </Flex>
-  );
-};
+    <CollectionSuppliesOverviewBody
+      totalCount={totalCount}
+      nfts={nfts}
+      isLoading={isLoading}
+      onViewMore={onViewMore}
+    />
+  </Flex>
+);
