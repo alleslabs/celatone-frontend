@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HexAddr32 } from "lib/types";
 
@@ -16,15 +17,18 @@ export const ViewResourceButton = ({ nftAddress }: ViewResourceButtonProps) => {
       w={{ base: "full", md: "auto" }}
       size={{ base: "sm", md: "md" }}
       mb={{ base: 4, md: 0 }}
-      onClick={() =>
+      onClick={() => {
+        track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
+          amptrackSection: "nft-details",
+        });
         navigate({
           pathname: "/accounts/[accountAddress]/[tab]",
           query: {
             accountAddress: nftAddress,
             tab: "resources",
           },
-        })
-      }
+        });
+      }}
     >
       View Resource
     </Button>

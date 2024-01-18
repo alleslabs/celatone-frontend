@@ -1,6 +1,5 @@
 import {
   Badge,
-  Box,
   Button,
   Flex,
   Heading,
@@ -107,7 +106,7 @@ const CollectionDetailsBody = ({
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
   return (
-    <Box>
+    <>
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
@@ -146,6 +145,7 @@ const CollectionDetailsBody = ({
                   textFormat="normal"
                   maxWidth="full"
                   fixedHeight={false}
+                  ampCopierSection="collection-addresss-top"
                 />
               </Flex>
             </Tooltip>
@@ -166,6 +166,11 @@ const CollectionDetailsBody = ({
             w={{ base: "full", md: "auto" }}
             size={{ base: "sm", md: "md" }}
             mb={{ base: 4, md: 0 }}
+            onClick={() =>
+              track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
+                amptrackSection: "nft-collection-details",
+              })
+            }
           >
             View Resource
           </Button>
@@ -219,8 +224,8 @@ const CollectionDetailsBody = ({
               <CollectionSuppliesOverview
                 nfts={nfts}
                 totalCount={currentSupply}
-                collectionAddress={collectionAddress}
                 isLoading={isNftLoading}
+                onViewMore={handleTabChange(TabIndex.Supplies)}
               />
               <CollectionInfoSection
                 collectionAddress={collectionAddress}
@@ -230,6 +235,8 @@ const CollectionDetailsBody = ({
                 activities={activitiesCount}
                 mutateEventes={mutateEventsCount}
                 royalty={royalty}
+                onClickActivities={handleTabChange(TabIndex.Activities)}
+                onClickMutateEvents={handleTabChange(TabIndex.MutateEvents)}
               />
             </Flex>
           </TabPanel>
@@ -253,7 +260,7 @@ const CollectionDetailsBody = ({
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Box>
+    </>
   );
 };
 
@@ -263,7 +270,7 @@ const CollectionDetails = () => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_NFT_COLLECTION_DETAIL, { tab: validated.data.tab });
+      track(AmpEvent.TO_NFT_COLLECTION_DETAILS, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 

@@ -1,5 +1,6 @@
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useMetadata } from "lib/services/nft";
 
@@ -27,7 +28,13 @@ export const FilterItem = ({
       borderRadius="8px"
       _hover={{ bg: "gray.800" }}
       cursor="pointer"
-      onClick={onClick}
+      onClick={() => {
+        track(AmpEvent.USE_SELECT_NFT_COLLECTION_GROUP, {
+          collectionName,
+          nftsCount: count,
+        });
+        onClick();
+      }}
       align="center"
       justify="space-between"
     >

@@ -1,6 +1,7 @@
 import { Box, Image, Flex, Text } from "@chakra-ui/react";
 
 import { AppLink } from "../AppLink";
+import { AmpEvent, track } from "lib/amplitude";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
 import type { HexAddr32, Option } from "lib/types";
@@ -26,7 +27,10 @@ export const NftCard = ({
 
   return (
     <Flex direction="column" minW="full">
-      <AppLink href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}>
+      <AppLink
+        href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
+        onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
+      >
         <Box position="relative" width="100%" paddingBottom="100%" mb={2}>
           <Image
             position="absolute"
