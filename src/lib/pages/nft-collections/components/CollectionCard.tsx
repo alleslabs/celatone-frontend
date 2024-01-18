@@ -39,7 +39,17 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           src={metadata?.image ? metadata?.image : NFT_IMAGE_PLACEHOLDER}
         />
         <Flex direction="column" gap={2} overflow="hidden" w="full">
-          <Heading as="h6" variant="h6" fontWeight={600}>
+          <Heading
+            as="h6"
+            variant="h6"
+            overflow="hidden"
+            fontWeight={600}
+            sx={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
             {name}
           </Heading>
           <Text

@@ -11,33 +11,31 @@ import type { HexAddr, HexAddr32 } from "lib/types";
 
 interface NftsByCollectionProps {
   accountAddress: HexAddr;
-  totalData: number;
   collectionAddress?: HexAddr32;
 }
 
 export const NftsByCollection = ({
   accountAddress,
-  totalData,
   collectionAddress,
 }: NftsByCollectionProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
-  const { data: nfts, isLoading } = useAccountNfts(
+  const { data, isLoading } = useAccountNfts(
     accountAddress,
     pageSize,
     offset,
@@ -51,6 +49,10 @@ export const NftsByCollection = ({
     setSearchKeyword("");
   }, [collectionAddress, setPageSize, setCurrentPage]);
 
+  useEffect(() => {
+    if (data?.total) setTotalData(data.total);
+  }, [data?.total, setTotalData]);
+
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
@@ -62,7 +64,7 @@ export const NftsByCollection = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={nfts}
+        nfts={data?.nfts}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -77,12 +79,12 @@ export const NftsByCollection = ({
         }
         showCollection
       />
-      {totalData > 10 && (
+      {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
+          totalData={data.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

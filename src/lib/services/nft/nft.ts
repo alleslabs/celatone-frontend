@@ -61,6 +61,21 @@ export const getNfts = async (
     })
     .then(({ data: res }) => zNft.array().parse(res.data.nfts));
 
+const zNftsByAccountResponse = z
+  .object({
+    nfts: zNft.array(),
+    nfts_aggregate: z.object({
+      aggregate: z.object({
+        count: z.number(),
+      }),
+    }),
+  })
+  .transform((val) => ({
+    nfts: val.nfts,
+    total: val.nfts_aggregate.aggregate.count,
+  }));
+export type NftsByAccountResponse = z.infer<typeof zNftsByAccountResponse>;
+
 export const getNftsByAccount = async (
   indexer: string,
   accountAddress: HexAddr,
@@ -73,7 +88,7 @@ export const getNftsByAccount = async (
       query: getNftsByAccountQuery,
       variables: { accountAddress, pageSize, offset, search: search ?? "" },
     })
-    .then(({ data: res }) => zNft.array().parse(res.data.nfts));
+    .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));
 
 export const getNftsCountByAccount = async (
   indexer: string,
@@ -261,4 +276,4 @@ export const getAccountNftsByCollection = async (
         search,
       },
     })
-    .then(({ data: res }) => zNft.array().parse(res.data.nfts));
+    .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));

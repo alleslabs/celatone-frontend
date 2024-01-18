@@ -79,7 +79,6 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
         </Stack>
         <NftsByCollection
           accountAddress={address}
-          totalData={selectedCollection?.nftsCount ?? totalData}
           collectionAddress={selectedCollection?.collectionAddress}
         />
       </Flex>
