@@ -97,8 +97,8 @@ export const StoredCodesTable = observer(
                   <ErrorFetching dataName="codes" />
                 ) : (
                   <EmptyState
-                    withBorder
                     message="No codes have been stored by this account before."
+                    withBorder
                   />
                 )
               }

@@ -33,8 +33,8 @@ export const NftsOverview = ({
             isLoading={isFetching}
             emptyState={
               <EmptyState
-                withBorder
                 message="No NFTs are held by this account."
+                withBorder
               />
             }
             showCollection
