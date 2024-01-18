@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#733](https://github.com/alleslabs/celatone-frontend/pull/733) Fix contract list nullable fields
 - [#722](https://github.com/alleslabs/celatone-frontend/pull/722) Fix flicker query page
 
 ## v1.4.1

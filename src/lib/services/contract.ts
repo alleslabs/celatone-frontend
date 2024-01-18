@@ -66,17 +66,18 @@ const zContractsResponseItem = z
     contract_address: zBechAddr32,
     label: z.string(),
     admin: zBechAddr.nullable(),
-    instantiator: zBechAddr,
-    latest_updated: zUtcDate,
+    instantiator: zBechAddr.nullable(),
+    latest_updated: zUtcDate.nullable(),
     latest_updater: zBechAddr.optional(),
     remark: zContractHistoryRemark.optional(),
   })
   .transform<ContractInfo>((val) => ({
     contractAddress: val.contract_address,
     label: val.label,
-    admin: val.admin ? val.admin : undefined,
-    instantiator: val.instantiator,
-    latestUpdated: val.latest_updated,
+    // TODO: change contract info optional fields to nullable fields
+    admin: val.admin ?? undefined,
+    instantiator: val.instantiator ?? undefined,
+    latestUpdated: val.latest_updated ?? undefined,
     latestUpdater: val.latest_updater,
     remark: val.remark,
   }));
