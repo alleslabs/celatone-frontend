@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 
@@ -34,7 +35,10 @@ export const InfoCard = ({
           bg: "gray.800",
           _hover: { bg: "gray.700" },
           cursor: "pointer",
-          onClick,
+          onClick: () => {
+            track(AmpEvent.USE_NFT_COLLECTION_INFO_CARD, { label: title });
+            onClick();
+          },
         })}
   >
     <Flex gap={3} alignItems="center">

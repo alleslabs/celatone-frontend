@@ -127,7 +127,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
 
   useEffect(() => {
     if (router.isReady && tab && !verificationLoading)
-      track(AmpEvent.TO_MODULE_DETAIL, {
+      track(AmpEvent.TO_MODULE_DETAILS, {
         tab,
         isVerified: Boolean(verificationData),
       });

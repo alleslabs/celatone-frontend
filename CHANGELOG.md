@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
 - [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
 - [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
 - [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail

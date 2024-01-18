@@ -31,7 +31,7 @@ const TxDetails = () => {
         false: "success",
         undefined: "not_found",
       };
-      track(AmpEvent.TO_TRANSACTION_DETAIL, {
+      track(AmpEvent.TO_TRANSACTION_DETAILS, {
         tx_status:
           mapTxFailed[String(txData?.isTxFailed) as keyof typeof mapTxFailed],
       });

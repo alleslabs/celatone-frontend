@@ -1,7 +1,17 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddress } from "lib/services/move";
-import type { HexAddr32, Option } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import type { HexAddr, HexAddr32, Option } from "lib/types";
+
+interface SupplyData {
+  current_supply: string;
+  total_minted: string;
+  max_supply?: string;
+}
+
+interface RoyaltyData {
+  payee_address: HexAddr;
+  royalty: string;
+}
 
 interface CollectionInfos {
   isUnlimited: boolean;
@@ -19,41 +29,37 @@ export const useCollectionInfos = (
   if (!resourcesData)
     return { collectionInfos: undefined, isLoading: isFetching };
 
-  const { groupedByName } = resourcesData;
-  const resources = groupedByName
-    .filter((resource) => resource.group === "collection")
-    .map((resource) => resource.items)
-    .flat();
+  const collectionSupplyResource = resourcesData.groupedByName
+    .find((group) => group.group === "collection")
+    ?.items.find(
+      (resource) =>
+        resource.structTag === "0x1::collection::FixedSupply" ||
+        resource.structTag === "0x1::collection::UnlimitedSupply"
+    );
+  const isUnlimited =
+    collectionSupplyResource?.structTag === "0x1::collection::UnlimitedSupply";
+  const supplyData: Option<SupplyData> = collectionSupplyResource
+    ? JSON.parse(collectionSupplyResource.moveResource).data
+    : undefined;
 
-  const collectionSupplies = resources.filter(
-    (resource) => !resource.structTag?.includes("0x1::collection::Collection")
-  );
+  const collectionRoyaltyResource = resourcesData.groupedByName
+    .find((group) => group.group === "royalty")
+    ?.items.find((resource) => resource.structTag === "0x1::royalty::Royalty");
+  const royaltyData: Option<RoyaltyData> = collectionRoyaltyResource
+    ? JSON.parse(collectionRoyaltyResource.moveResource).data
+    : undefined;
 
-  const royalty = groupedByName.find((group) => group.group === "royalty");
-
-  const collectionRoyalty =
-    royalty && JSON.parse(royalty.items[0].moveResource);
-
-  const parsed = collectionSupplies
-    .map((resource) => {
-      try {
-        return JSON.parse(resource.moveResource);
-      } catch {
-        return {};
-      }
-    })
-    .map((data) => data?.data);
-
-  const [type] = collectionSupplies;
-  const isUnlimited = type?.structTag === "0x1::collection::UnlimitedSupply";
-
-  const [supplyData] = parsed;
-  const supplies = snakeToCamel(supplyData);
   return {
     collectionInfos: {
       isUnlimited,
-      supplies,
-      royalty: collectionRoyalty?.data?.royalty ?? 0,
+      supplies: {
+        currentSupply: Number(supplyData?.current_supply ?? 0),
+        totalMinted: Number(supplyData?.total_minted ?? 0),
+        maxSupply: supplyData?.max_supply
+          ? Number(supplyData.max_supply)
+          : undefined,
+      },
+      royalty: Number(royaltyData?.royalty ?? 0),
     },
     isLoading: isFetching,
   };
