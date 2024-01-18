@@ -3,7 +3,6 @@ import {
   INITIA_THEME,
   OSMOSIS_THEME,
   SEI_THEME,
-  TEST_THEME,
 } from "config/theme";
 
 export const SUPPORTED_CHAIN_IDS: string[] = (() => {
@@ -44,8 +43,6 @@ export const CURR_THEME = (() => {
       return SEI_THEME;
     case "initia":
       return INITIA_THEME;
-    case "test":
-      return TEST_THEME;
     default:
       return DEFAULT_THEME;
   }
