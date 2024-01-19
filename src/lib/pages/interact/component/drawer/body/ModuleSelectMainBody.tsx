@@ -141,7 +141,7 @@ export const ModuleSelectMainBody = ({
               closeModal();
             }
           }}
-          disabled={!selectedModule}
+          isDisabled={!selectedModule}
         >
           Select this module
         </Button>

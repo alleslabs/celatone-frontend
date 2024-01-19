@@ -207,7 +207,11 @@ const UpdateAdmin = () => {
           alignSelf="flex-start"
         />
       )}
-      <Button disabled={!estimatedFee || isFetching} onClick={proceed} mt={12}>
+      <Button
+        isDisabled={!estimatedFee || isFetching}
+        onClick={proceed}
+        mt={12}
+      >
         Update Admin
       </Button>
     </WasmPageContainer>

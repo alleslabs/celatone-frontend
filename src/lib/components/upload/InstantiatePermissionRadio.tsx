@@ -141,7 +141,7 @@ export const InstantiatePermissionRadio = ({
                       h="56px"
                       variant="outline-gray"
                       size="lg"
-                      disabled={fields.length <= 1}
+                      isDisabled={fields.length <= 1}
                       onClick={() => {
                         remove(idx);
                       }}

@@ -67,7 +67,7 @@ export const SelectContractAdmin = ({
         leftIcon={
           !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
         }
-        disabled={!address}
+        isDisabled={!address}
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>

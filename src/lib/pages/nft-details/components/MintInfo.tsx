@@ -9,11 +9,10 @@ import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface MintInfoProps {
-  holderAddress: string;
   nftAddress: HexAddr32;
 }
 
-export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
+export const MintInfo = ({ nftAddress }: MintInfoProps) => {
   const isMobile = useMobile();
   const { data: mintInfo, isLoading } = useNftMintInfo(nftAddress);
 
@@ -48,7 +47,7 @@ export const MintInfo = ({ holderAddress, nftAddress }: MintInfoProps) => {
           </LabelText>
           <LabelText label="Minted by" helperText1="(VM Address)">
             <ExplorerLink
-              value={holderAddress}
+              value={mintInfo.minter}
               type="user_address"
               showCopyOnHover
               ampCopierSection="nft-detail-mint-information"

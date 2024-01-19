@@ -245,7 +245,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                 closeOnClick={false}
               >
                 <Button
-                  disabled={!canRepublish}
+                  isDisabled={!canRepublish}
                   variant="outline-white"
                   w={{ base: "full", md: "auto" }}
                   leftIcon={<CustomIcon name="migrate" mr={0} />}

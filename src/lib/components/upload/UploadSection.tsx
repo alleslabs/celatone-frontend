@@ -285,7 +285,7 @@ export const UploadSection = ({
         <Button
           variant="primary"
           w="128px"
-          disabled={
+          isDisabled={
             isSimulating ||
             shouldNotSimulate ||
             simulateStatus.status !== "succeeded"

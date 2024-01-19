@@ -83,7 +83,7 @@ export const SelectFund = ({
         mb={5}
         mx="auto"
         onClick={() => append({ denom: "", amount: "" })}
-        disabled={assetOptions.length === selectedAssets.length}
+        isDisabled={assetOptions.length === selectedAssets.length}
       >
         Add More Asset
       </Button>

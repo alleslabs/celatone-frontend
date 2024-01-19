@@ -84,8 +84,7 @@ export const InstantiateButton = ({
       <Button
         w={{ base: "full", md: "auto" }}
         // Change to isDisabled when create proposal flow is done
-        disabled={!isAllowed || !isWalletConnected}
-        // disabled={isDisabled}
+        isDisabled={!isAllowed || !isWalletConnected}
         variant={variant}
         leftIcon={icon}
         size="sm"
