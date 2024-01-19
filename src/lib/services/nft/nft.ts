@@ -13,7 +13,7 @@ import {
   getNftTransactionsCountQuery,
   getNftTransactionsQuery,
 } from "lib/query";
-import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
+import { zBechAddr, zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
@@ -93,6 +93,9 @@ export const getNftByNftAddress = async (
 
 const zNftMintInfoResponse = z
   .object({
+    account: z.object({
+      address: zBechAddr,
+    }),
     block: z.object({
       timestamp: zUtcDate,
       height: z.number(),
@@ -100,12 +103,14 @@ const zNftMintInfoResponse = z
     hash: z.string().transform(parseTxHash),
   })
   .transform((val) => ({
+    minter: val.account.address,
     txhash: val.hash,
     height: val.block.height,
     timestamp: val.block.timestamp,
   }));
 export type NftMintInfo = z.infer<typeof zNftMintInfoResponse>;
 
+// TODO: combine with getNftByNftAddress when migrating to API
 export const getNftMintInfo = async (indexer: string, nftAddress: HexAddr32) =>
   axios
     .post(indexer, {
