@@ -236,7 +236,6 @@ export const useNftsByAccountByCollection = (
     {
       retry: 1,
       refetchOnWindowFocus: false,
-      enabled: !!collectionAddress,
       ...options,
     }
   );

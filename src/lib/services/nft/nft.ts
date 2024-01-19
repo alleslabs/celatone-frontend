@@ -253,7 +253,7 @@ export const getNftsByAccount = async (
   axios
     .post(indexer, {
       query: getNftsByAccountQuery,
-      variables: { accountAddress, pageSize, offset, search: search ?? "" },
+      variables: { accountAddress, pageSize, offset, search },
     })
     .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));
 
