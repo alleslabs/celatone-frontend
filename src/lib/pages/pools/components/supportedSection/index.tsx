@@ -62,25 +62,25 @@ export const SupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const debouncedKeyword = useDebounce(keyword);
   const search = useMemo(
     () =>
-      !keyword || isPositiveInt(keyword) || !assetInfos
-        ? keyword
-        : `{${matchSorter(Object.values(assetInfos), keyword, {
+      !debouncedKeyword || isPositiveInt(debouncedKeyword) || !assetInfos
+        ? debouncedKeyword
+        : `{${matchSorter(Object.values(assetInfos), debouncedKeyword, {
             keys: ["id", "symbol"],
             threshold: matchSorter.rankings.CONTAINS,
           })
             .map((assetInfo) => `"${assetInfo.id}"`)
             .join(",")}}`,
-    [assetInfos, keyword]
+    [assetInfos, debouncedKeyword]
   );
-  const debouncedSearch = useDebounce(search);
 
   const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
     isSupported: true,
     poolType: poolTypeValue,
     isSuperfluidOnly,
-    search: debouncedSearch,
+    search,
   });
 
   const [showNewest, setShowNewest] = useState(true);
@@ -118,7 +118,7 @@ export const SupportedSection = ({
     true,
     poolTypeValue,
     isSuperfluidOnly,
-    debouncedSearch,
+    search,
     showNewest ? Order_By.Desc : Order_By.Asc,
     offset,
     pageSize

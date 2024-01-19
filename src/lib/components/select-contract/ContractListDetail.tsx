@@ -118,7 +118,12 @@ export const ContractListDetail = ({
 
   return (
     <Box minH="xs">
-      <Grid w="full" gap={4} templateColumns="3fr 1fr" my={isReadOnly ? 6 : 8}>
+      <Grid
+        w="full"
+        gap={4}
+        templateColumns={isReadOnly ? "1fr" : "3fr 1fr"}
+        my={isReadOnly ? 6 : 8}
+      >
         <GridItem w="full">
           <InputWithIcon
             placeholder="Search with Contract Address, Name, or Description"

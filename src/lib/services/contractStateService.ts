@@ -26,7 +26,7 @@ export const useContractStates = (
         pageParam
       ),
     {
-      getNextPageParam: (lastPage) => lastPage.nextKey,
+      getNextPageParam: (lastPage) => lastPage.nextKey ?? undefined,
       refetchOnWindowFocus: false,
     }
   );

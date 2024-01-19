@@ -321,7 +321,7 @@ export const UploadTemplate = ({
         alignSelf="center"
         mt={6}
         onClick={handleSave}
-        disabled={disabledState}
+        isDisabled={disabledState}
       >
         Save JSON Schema
       </Button>

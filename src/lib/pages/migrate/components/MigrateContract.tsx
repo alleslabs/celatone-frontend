@@ -333,7 +333,7 @@ export const MigrateContract = ({
         <Button
           variant="primary"
           w="128px"
-          disabled={!enableMigrate || !estimatedFee || isSimulating}
+          isDisabled={!enableMigrate || !estimatedFee || isSimulating}
           onClick={proceed}
           isLoading={processing}
           sx={{ pointerEvents: processing && "none" }}

@@ -32,7 +32,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
         <Button
           variant="primary"
           onClick={onInstantiate}
-          disabled={disabled}
+          isDisabled={disabled}
           w="128px"
         >
           {loading ? <Spinner size="md" variant="light" /> : "Instantiate"}
