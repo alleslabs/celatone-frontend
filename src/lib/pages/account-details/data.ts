@@ -6,13 +6,10 @@ import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,
 } from "lib/services/contractService";
-import { useAccountNftsByCollection, useNftsByAccount } from "lib/services/nft";
 import type {
   BechAddr,
   CodeInfo,
   ContractInfo,
-  HexAddr,
-  HexAddr32,
   Nullish,
   Option,
 } from "lib/types";
@@ -153,28 +150,4 @@ export const useAccountCodes = (
     codes: data,
     isLoading,
   };
-};
-
-export const useAccountNfts = (
-  accountAddress: HexAddr,
-  pageSize: number,
-  offset: number,
-  search: string,
-  collectionAddress?: HexAddr32
-) => {
-  const allNftsResult = useNftsByAccount(
-    accountAddress,
-    pageSize,
-    offset,
-    search
-  );
-  const collectionNftsResult = useAccountNftsByCollection(
-    accountAddress,
-    pageSize,
-    offset,
-    search,
-    collectionAddress
-  );
-
-  return collectionAddress ? collectionNftsResult : allNftsResult;
 };

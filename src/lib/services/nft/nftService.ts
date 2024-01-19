@@ -1,3 +1,4 @@
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -26,7 +27,7 @@ import {
   getNftMutateEventsCount,
   getNftsByAccount,
   getNftsCountByAccount,
-  getAccountNftsByCollection,
+  getNftsByAccountByCollection,
 } from "./nft";
 
 export const useNfts = (
@@ -177,37 +178,6 @@ export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
   );
 };
 
-export const useNftsByAccount = (
-  accountAddress: HexAddr,
-  pageSize: number,
-  offset: number,
-  search = ""
-) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<NftsByAccountResponse>(
-    [
-      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT,
-      chainConfig.indexer,
-      accountAddress,
-      pageSize,
-      offset,
-      search,
-    ],
-    async () =>
-      getNftsByAccount(
-        chainConfig.indexer,
-        accountAddress,
-        pageSize,
-        offset,
-        search
-      ),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
 export const useNftsCountByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
   const { enabled } = useNftConfig({ shouldRedirect: false });
@@ -227,12 +197,13 @@ export const useNftsCountByAccount = (accountAddress: HexAddr) => {
   );
 };
 
-export const useAccountNftsByCollection = (
+export const useNftsByAccountByCollection = (
   accountAddress: HexAddr,
   pageSize: number,
   offset: number,
-  search: string,
-  collectionAddress?: HexAddr32
+  search = "",
+  collectionAddress?: HexAddr32,
+  options: Pick<UseQueryOptions<NftsByAccountResponse>, "onSuccess"> = {}
 ) => {
   const { chainConfig } = useCelatoneApp();
   return useQuery<NftsByAccountResponse>(
@@ -245,22 +216,27 @@ export const useAccountNftsByCollection = (
       search,
       collectionAddress,
     ],
-    async () => {
-      if (!collectionAddress)
-        throw new Error("collection address is undefined");
-      return getAccountNftsByCollection(
-        chainConfig.indexer,
-        accountAddress,
-        pageSize,
-        offset,
-        search,
-        collectionAddress
-      );
-    },
+    async () =>
+      !collectionAddress
+        ? getNftsByAccount(
+            chainConfig.indexer,
+            accountAddress,
+            pageSize,
+            offset,
+            search
+          )
+        : getNftsByAccountByCollection(
+            chainConfig.indexer,
+            accountAddress,
+            pageSize,
+            offset,
+            search,
+            collectionAddress
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
-      enabled: !!collectionAddress,
+      ...options,
     }
   );
 };

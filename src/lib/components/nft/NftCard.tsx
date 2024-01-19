@@ -41,7 +41,9 @@ export const NftCard = ({
             objectFit="cover"
             backgroundPosition="center"
             borderRadius="8px"
-            src={metadata?.image ? metadata.image : NFT_IMAGE_PLACEHOLDER}
+            src={metadata?.image}
+            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+            fallbackStrategy="beforeLoadOrError"
           />
         </Box>
         <Box>

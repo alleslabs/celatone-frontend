@@ -57,7 +57,9 @@ export const FilterItem = ({
             width="32px"
             height="32px"
             borderRadius="4px"
-            src={metadata?.image ? metadata?.image : NFT_IMAGE_PLACEHOLDER}
+            src={metadata?.image}
+            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+            fallbackStrategy="beforeLoadOrError"
           />
         )}
         <Text fontSize="14px" width="150px" className="ellipsis">

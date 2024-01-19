@@ -4,7 +4,7 @@ import { useMobile } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
 import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
-import { useNftsByAccount } from "lib/services/nft";
+import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 interface NftsOverviewProps {
@@ -19,7 +19,7 @@ export const NftsOverview = ({
   onViewMore,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
-  const { data, isFetching } = useNftsByAccount(userAddress, 5, 0);
+  const { data, isFetching } = useNftsByAccountByCollection(userAddress, 5, 0);
 
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
