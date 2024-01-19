@@ -6,6 +6,7 @@ import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
+import { useDebounce } from "lib/hooks";
 import { useNfts } from "lib/services/nft";
 import type { HexAddr32 } from "lib/types";
 
@@ -19,6 +20,7 @@ export const CollectionSupplies = ({
   totalSupply,
 }: CollectionSuppliesProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const debouncedSearch = useDebounce(searchKeyword);
 
   const {
     pagesQuantity,
@@ -38,7 +40,7 @@ export const CollectionSupplies = ({
     collectionAddress,
     pageSize,
     offset,
-    searchKeyword
+    debouncedSearch
   );
 
   return (

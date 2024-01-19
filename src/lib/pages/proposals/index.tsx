@@ -16,6 +16,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { useDebounce } from "lib/hooks";
 import { useProposals } from "lib/services/proposalService";
 import type {
   BechAddr20,
@@ -37,6 +38,7 @@ const Proposals = () => {
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search);
 
   const {
     pagesQuantity,
@@ -56,7 +58,14 @@ const Proposals = () => {
     data: proposals,
     isLoading,
     error,
-  } = useProposals(pageSize, offset, proposer, statuses, types, search);
+  } = useProposals(
+    pageSize,
+    offset,
+    proposer,
+    statuses,
+    types,
+    debouncedSearch
+  );
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
