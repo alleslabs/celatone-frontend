@@ -57,6 +57,7 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
             onClick={() => handleOnClick(undefined)}
             isActive={selectedCollection === undefined}
             count={totalData}
+            isDefault
           />
           {collections.map((item) => (
             <FilterItem
@@ -78,7 +79,6 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
         </Stack>
         <NftsByCollection
           accountAddress={address}
-          totalData={selectedCollection?.nftsCount ?? totalData}
           collectionAddress={selectedCollection?.collectionAddress}
         />
       </Flex>

@@ -26,10 +26,9 @@ export const EditSchemaButtons = ({
     <Flex gap={1}>
       <Tooltip label="Reattach JSON schema">
         <IconButton
-          variant="ghost-gray"
+          variant="ghost-gray-icon"
           size="sm"
           onClick={handleReattach}
-          color="gray.600"
           icon={<CustomIcon name="edit" boxSize={4} />}
           aria-label="reattach schema"
         />

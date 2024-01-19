@@ -45,8 +45,6 @@ import {
 import type { NftDetailQueryParams } from "./types";
 import { zNftDetailQueryParams } from "./types";
 
-const IMAGE_SIZE = "360px";
-
 const InvalidNft = () => <InvalidState title="NFT does not exist" />;
 
 const NftDetailsBody = ({
@@ -70,7 +68,7 @@ const NftDetailsBody = ({
   if (!collection.data || !nft.data) return <InvalidNft />;
 
   const { name: collectionName, description: collectionDesc } = collection.data;
-  const { tokenId, description, uri, ownerAddress } = nft.data;
+  const { tokenId, description, uri, ownerAddress, isBurned } = nft.data;
 
   const displayCollectionName =
     collectionName.length > 20
@@ -101,16 +99,35 @@ const NftDetailsBody = ({
                 collectionAddress={collectionAddress}
                 displayCollectionName={displayCollectionName}
                 tokenId={tokenId}
+                nftAddress={nftAddress}
+                isBurned={isBurned}
               />
             )}
-            <Image
-              minW={IMAGE_SIZE}
-              minH={IMAGE_SIZE}
-              borderRadius="8px"
-              src={metadata?.image}
-              fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-              fallbackStrategy="beforeLoadOrError"
-            />
+            <div
+              style={{
+                width: "100%",
+                height: "0",
+                paddingTop: "100%",
+                position: "relative",
+              }}
+            >
+              <Image
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "8px",
+                  objectFit: "cover",
+                  backgroundPosition: "center",
+                }}
+                borderRadius="8px"
+                src={metadata?.image}
+                fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+                fallbackStrategy="beforeLoadOrError"
+              />
+            </div>
             {!isMobile && (
               <>
                 <DescriptionBox description={description} />
@@ -122,7 +139,12 @@ const NftDetailsBody = ({
               </>
             )}
           </Flex>
-          <Flex direction="column" gap={{ base: 6, md: 12 }} w="full">
+          <Flex
+            direction="column"
+            gap={{ base: 6, md: 12 }}
+            w="full"
+            overflow="hidden"
+          >
             <Flex direction="column" gap={4}>
               <Flex
                 justifyContent="space-between"
@@ -130,14 +152,13 @@ const NftDetailsBody = ({
                 direction={{ base: "column", md: "row" }}
               >
                 {!isMobile && (
-                  <>
-                    <Title
-                      collectionAddress={collectionAddress}
-                      displayCollectionName={displayCollectionName}
-                      tokenId={tokenId}
-                    />
-                    <ViewResourceButton nftAddress={nftAddress} />
-                  </>
+                  <Title
+                    collectionAddress={collectionAddress}
+                    displayCollectionName={displayCollectionName}
+                    tokenId={tokenId}
+                    nftAddress={nftAddress}
+                    isBurned={isBurned}
+                  />
                 )}
               </Flex>
               <Flex direction="column" gap={1} w="full">
@@ -157,19 +178,23 @@ const NftDetailsBody = ({
                         textFormat="normal"
                         maxWidth="full"
                         ampCopierSection="nft-address-nft-detail-top"
+                        fixedHeight={false}
                       />
                     </Flex>
                   </Tooltip>
                 </NftInfoItem>
-                <NftInfoItem label="Holder">
-                  <ExplorerLink
-                    value={ownerAddress}
-                    type="user_address"
-                    textFormat="normal"
-                    maxWidth="full"
-                    ampCopierSection="holder-address-nft-detail-top"
-                  />
-                </NftInfoItem>
+                {!isBurned && (
+                  <NftInfoItem label="Holder">
+                    <ExplorerLink
+                      value={ownerAddress}
+                      type="user_address"
+                      textFormat="normal"
+                      maxWidth="full"
+                      ampCopierSection="holder-address-nft-detail-top"
+                      fixedHeight={false}
+                    />
+                  </NftInfoItem>
+                )}
                 <NftInfoItem label="Token URI" isCentered={false}>
                   <JsonLink uri={uri} type="token_uri" />
                 </NftInfoItem>

@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#736](https://github.com/alleslabs/celatone-frontend/pull/736) Fix assets related bugs
+- [#735](https://github.com/alleslabs/celatone-frontend/pull/735) Fix nfts related bugs
 - [#734](https://github.com/alleslabs/celatone-frontend/pull/734) Fix search spamming by using debounce
 - [#733](https://github.com/alleslabs/celatone-frontend/pull/733) Fix contract list nullable fields
 - [#732](https://github.com/alleslabs/celatone-frontend/pull/732) Fix custom tab incorrect variant and recent modules text

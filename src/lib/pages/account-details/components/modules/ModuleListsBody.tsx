@@ -31,16 +31,16 @@ export const ModuleListsBody = ({
   }, [keyword, modules]);
 
   if (isLoading) return <Loading />;
+
   if (!modules) return <ErrorFetching dataName="modules" />;
+  if (!modules.length)
+    return <EmptyState message="No modules are on this account." withBorder />;
+
   if (!filteredModules?.length)
     return (
       <EmptyState
-        imageVariant={!keyword ? "empty" : "not-found"}
-        message={
-          !keyword
-            ? "There are no modules on this account."
-            : "No matched modules found"
-        }
+        imageVariant="not-found"
+        message="No matched modules found"
         withBorder
       />
     );

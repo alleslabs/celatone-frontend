@@ -1539,7 +1539,7 @@ export const ICONS = {
         />
       </>
     ),
-    viewBox: viewboxDefault,
+    viewBox: "0 0 16 14",
   },
 };
 

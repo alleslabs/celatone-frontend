@@ -200,7 +200,10 @@ export const getCollectionsByAccountQuery = gql`
         vm_address
       }
       nfts_aggregate(
-        where: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }
+        where: {
+          vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
+          is_burned: { _eq: false }
+        }
       ) {
         aggregate {
           count

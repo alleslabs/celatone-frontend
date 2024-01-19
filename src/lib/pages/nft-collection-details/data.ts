@@ -59,7 +59,7 @@ export const useCollectionInfos = (
           ? Number(supplyData.max_supply)
           : undefined,
       },
-      royalty: Number(royaltyData?.royalty ?? 0),
+      royalty: Number(royaltyData?.royalty ?? 0) * 100,
     },
     isLoading: isFetching,
   };

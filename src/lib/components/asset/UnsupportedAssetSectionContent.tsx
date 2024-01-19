@@ -19,9 +19,10 @@ export const UnsupportedAssetSectionContent = ({
       <Flex
         w="full"
         alignItems="center"
-        justifyContent="center"
+        justifyContent={{ base: "flex-start", md: "center" }}
         h="calc(100% - 45px)"
         minH={20}
+        px={4}
       >
         <Text variant="body2" color="text.dark">
           This {isAccount ? "address" : "contract"} does not hold any

@@ -13,7 +13,7 @@ export const NftInfoItem = ({
   isCentered = true,
 }: NftInfoItemProps) => (
   <Flex
-    gap={{ base: 1, md: 2 }}
+    gap={{ base: 0, md: 2 }}
     mb={{ base: 2, md: 0 }}
     direction={{ base: "column", md: "row" }}
     align={{ base: "start", md: isCentered ? "center" : "start" }}
@@ -25,8 +25,9 @@ export const NftInfoItem = ({
       fontWeight={500}
       mt={isCentered ? 0 : 0.5}
       whiteSpace="nowrap"
+      minW={24}
     >
-      {label}:
+      {label}
     </Text>
     {children}
   </Flex>

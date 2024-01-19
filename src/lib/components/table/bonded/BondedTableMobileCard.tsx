@@ -23,6 +23,8 @@ export const BondedTableMobileCard = ({
     direction="column"
     gap={3}
     w="full"
+    border="1px solid"
+    borderColor="gray.700"
   >
     <ValidatorBadge validator={bondedInfo.validator} />
     <Flex

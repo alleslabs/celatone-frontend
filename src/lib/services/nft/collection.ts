@@ -343,5 +343,7 @@ export const getCollectionsByAccount = async (
       variables: { accountAddress },
     })
     .then(({ data: res }) =>
-      zCollectionsByAccountResponse.parse(res.data.collections)
+      zCollectionsByAccountResponse
+        .parse(res.data.collections)
+        .filter((collection) => collection.hold > 0)
     );

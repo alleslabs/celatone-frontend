@@ -43,7 +43,7 @@ export const Tag = defineMultiStyleConfig({
   baseStyle: {
     container: {
       px: 2,
-      py: 0,
+      py: 1,
       borderRadius: "full",
       lineHeight: "100%",
       textAlign: "center",
@@ -52,20 +52,17 @@ export const Tag = defineMultiStyleConfig({
   sizes: {
     xs: {
       container: {
-        maxH: "18px",
         height: "18px",
         fontSize: "12px",
       },
     },
     sm: {
       container: {
-        maxH: "20px",
         fontSize: "12px",
       },
     },
     md: {
       container: {
-        maxH: "24px",
         fontSize: "12px",
       },
     },

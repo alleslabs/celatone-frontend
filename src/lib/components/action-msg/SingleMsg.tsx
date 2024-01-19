@@ -54,6 +54,8 @@ export const SingleMsg = ({
         <Tag
           variant="gray"
           size="sm"
+          wordBreak="break-word"
+          textAlign="left"
           key={index.toString() + tag}
           color={tag ? "text.main" : "text.disabled"}
         >
@@ -62,13 +64,13 @@ export const SingleMsg = ({
       ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
-        <Tag variant="gray" size="sm">
+        <Tag variant="gray" size="sm" wordBreak="break-word" textAlign="left">
           +{length - tags.length}
         </Tag>
       )}
       {/* Length  */}
       {!tags && length && (
-        <Tag variant="gray" size="sm">
+        <Tag variant="gray" size="sm" wordBreak="break-word" textAlign="left">
           {length}
         </Tag>
       )}

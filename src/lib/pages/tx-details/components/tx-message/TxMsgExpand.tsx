@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { Flex, Tag } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
@@ -341,7 +341,7 @@ export const TxMsgExpand = ({
           m={0}
           mt={{ base: 1, md: 0 }}
         />
-        {content}
+        <Text wordBreak="break-all">{content}</Text>
         {!isMobile && isIBC && (
           <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
             IBC
