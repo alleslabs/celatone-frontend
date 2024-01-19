@@ -20,7 +20,7 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import { queryData } from "lib/services/contract";
 import { useContractQueryMsgs } from "lib/services/contractService";
-import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
+import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
   jsonPrettify,
   jsonValidate,
@@ -37,12 +37,12 @@ const WasmCodeSnippet = dynamic(
 );
 
 interface JsonQueryProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: string;
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
-  const { isFetching: cmdsFetching, data: queryCmds = [] } =
+  const { data: queryCmds = [], isFetching: isCmdsFetching } =
     useContractQueryMsgs(contractAddress);
   const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
@@ -72,7 +72,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
         addActivity({
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address as HumanAddr,
+          sender: address,
           contractAddress,
           msg: encode(msg),
           timestamp: getCurrentDate(),
@@ -92,7 +92,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const isButtonDisabled = jsonValidate(msg) !== null;
   return (
     <>
-      {cmdsFetching && <LoadingOverlay />}
+      {isCmdsFetching && <LoadingOverlay />}
       <Box width="full" mb={8} alignItems="center">
         {contractAddress && (
           <Text variant="body3" mb={2}>

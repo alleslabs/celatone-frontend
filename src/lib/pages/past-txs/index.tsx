@@ -15,8 +15,9 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
+import { useDebounce } from "lib/hooks";
 import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
-import type { HumanAddr, Option, TxFilters } from "lib/types";
+import type { Option, TxFilters } from "lib/types";
 
 interface PastTxsState {
   search: string;
@@ -43,10 +44,11 @@ const PastTxs = () => {
     mode: "all",
   });
   const pastTxsState = watch();
+  const debouncedSearch = useDebounce(pastTxsState.search);
 
   const { data: rawTxCount, refetch: refetchCount } = useTxsCountByAddress(
-    address as HumanAddr,
-    pastTxsState.search,
+    address,
+    debouncedSearch,
     pastTxsState.isSigner,
     pastTxsState.filters
   );
@@ -69,8 +71,8 @@ const PastTxs = () => {
   });
 
   const { data: txs, isLoading } = useTxsByAddress(
-    address as HumanAddr,
-    pastTxsState.search,
+    address,
+    debouncedSearch,
     pastTxsState.isSigner,
     pastTxsState.filters,
     offset,

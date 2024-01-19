@@ -5,7 +5,6 @@ import { useCallback } from "react";
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { deployScriptTx } from "lib/app-fns/tx/script";
-import type { HumanAddr } from "lib/types";
 
 export interface DeployScriptStreamParams {
   onTxSucceed?: () => void;
@@ -30,7 +29,7 @@ export const useDeployScriptTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return deployScriptTx({
-        address: address as HumanAddr,
+        address,
         client,
         onTxSucceed: () => {
           trackTxSucceed();

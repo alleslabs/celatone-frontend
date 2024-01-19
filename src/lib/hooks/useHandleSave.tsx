@@ -2,15 +2,15 @@ import { useToast } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore, useContractStore } from "lib/providers/store";
-import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
+import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
 
 import { useFormatAddresses } from "./useFormatAddresses";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
   title: string;
-  contractAddress: ContractAddr;
-  instantiator: Option<Addr>;
+  contractAddress: BechAddr32;
+  instantiator: Option<BechAddr>;
   label: string;
   name?: string;
   description?: string;
@@ -21,7 +21,7 @@ interface UseHandleContractSaveProps {
 
 interface UseHandleAccountSaveProps {
   title: string;
-  address: Addr;
+  address: BechAddr;
   name: string;
   description?: string;
   actions?: () => void;

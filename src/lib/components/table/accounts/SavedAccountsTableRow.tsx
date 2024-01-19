@@ -9,7 +9,7 @@ import {
   RemoveSavedAccountModal,
 } from "lib/components/modal";
 import type { AccountLocalInfo } from "lib/stores/account";
-import type { Addr, HumanAddr } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { bech32AddressToHex, unpadHexAddress } from "lib/utils";
 
 import { AccountNameCell } from "./AccountNameCell";
@@ -25,7 +25,7 @@ export const SavedAccountsTableRow = ({
 }: SavedAccountsTableRowProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
-  const onRowSelect = (address: Addr) =>
+  const onRowSelect = (address: BechAddr) =>
     navigate({
       pathname: "/accounts/[accountAddress]",
       query: { accountAddress: address },
@@ -51,9 +51,7 @@ export const SavedAccountsTableRow = ({
         <TableRow>
           <ExplorerLink
             type="user_address"
-            value={unpadHexAddress(
-              bech32AddressToHex(accountInfo.address as HumanAddr)
-            )}
+            value={unpadHexAddress(bech32AddressToHex(accountInfo.address))}
             showCopyOnHover
           />
         </TableRow>

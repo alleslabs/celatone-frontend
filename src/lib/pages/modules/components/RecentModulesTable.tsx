@@ -31,7 +31,7 @@ export const RecentModulesTable = () => {
         isLoading={isLoading}
         emptyState={
           error ? (
-            <ErrorFetching dataName="recent modules" />
+            <ErrorFetching dataName="modules" />
           ) : (
             <EmptyState
               withBorder

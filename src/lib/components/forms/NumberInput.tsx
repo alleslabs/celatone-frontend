@@ -24,6 +24,7 @@ export interface NumberInputProps extends FormControlProps {
   label: string;
   labelBgColor?: string;
   helperText?: string;
+  placeholder?: string;
   error?: string;
   type?: HTMLInputTypeAttribute;
   status?: FormStatus;
@@ -34,8 +35,8 @@ export const NumberInput = ({
   label,
   labelBgColor = "background.main",
   helperText,
-  error,
   placeholder = " ",
+  error,
   size = "lg",
   status,
   onInputChange,

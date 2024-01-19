@@ -4,13 +4,21 @@ import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { PublishSucceedCallback } from "lib/app-provider/tx/publish";
-import type { HumanAddr, TxResultRendering } from "lib/types";
+import type { BechAddr20, Option, TxResultRendering } from "lib/types";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
+export interface PublishTxInternalResult {
+  txHash: string;
+  txFee: Option<string>;
+}
+
+export type PublishSucceedCallback = (
+  txResult: PublishTxInternalResult
+) => void;
+
 interface PublishModuleTxParams {
-  address: HumanAddr;
+  address: BechAddr20;
   client: SigningCosmWasmClient;
   onTxSucceed?: PublishSucceedCallback;
   onTxFailed?: () => void;

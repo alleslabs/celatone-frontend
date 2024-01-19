@@ -15,7 +15,7 @@ import {
 } from "lib/components/table";
 import { useContractStore } from "lib/providers/store";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { PublicContract, Option, ContractAddr } from "lib/types";
+import type { PublicContract, Option } from "lib/types";
 
 import { PublicProjectContractMobileCard } from "./PublicProjectContractMobileCard";
 import { PublicProjectContractRow } from "./PublicProjectContractRow";
@@ -86,7 +86,7 @@ export const PublicProjectContractTable = observer(
     const publicContracts: Option<PublicContractInfo[]> =
       filteredContracts?.map((contract) => ({
         localInfo: {
-          contractAddress: contract.contractAddress as ContractAddr,
+          contractAddress: contract.contractAddress,
           instantiator: contract.instantiator,
           label: contract.label,
           ...getContractLocalInfo(contract.contractAddress),
@@ -113,13 +113,12 @@ export const PublicProjectContractTable = observer(
           <ContentRender publicContracts={publicContracts} />
         ) : (
           <EmptyState
-            my={4}
             message={
               contracts.length
-                ? "No matching contract found for this project. Make sure you are searching with Contract Address or Contract Name"
+                ? "No matching contracts found for this project. Make sure you are searching with Contract Address or Contract Name"
                 : "There are currently no contracts related to this project."
             }
-            imageVariant={onViewMore && "empty"}
+            imageVariant={contracts.length ? "not-found" : "empty"}
             withBorder
           />
         )}

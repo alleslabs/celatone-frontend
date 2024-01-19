@@ -8,13 +8,7 @@ import {
   useInstantiatedListByUserQuery,
 } from "lib/services/contractService";
 import type { ContractListInfo } from "lib/stores/contract";
-import type {
-  Addr,
-  ContractAddr,
-  HumanAddr,
-  ContractInfo,
-  Option,
-} from "lib/types";
+import type { BechAddr, BechAddr32, ContractInfo, Option } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
 interface InstantiatedByMeState {
@@ -25,7 +19,7 @@ interface InstantiatedByMeState {
 export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { address } = useCurrentChain();
   const { data: contracts = [], isLoading } = useInstantiatedListByUserQuery(
-    enable ? (address as HumanAddr) : undefined
+    enable ? address : undefined
   );
 
   const { getContractLocalInfo } = useContractStore();
@@ -48,12 +42,12 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useCurrentChain();
-  const { data: count } = useInstantiatedCountByUserQuery(address as HumanAddr);
+  const { data: count } = useInstantiatedCountByUserQuery(address);
 
   return {
     contracts: Array.from({ length: count ?? 0 }, () => ({
-      contractAddress: "" as ContractAddr,
-      instantiator: "" as Addr,
+      contractAddress: "" as BechAddr32,
+      instantiator: "" as BechAddr,
       label: "",
       created: getDefaultDate(),
     })),

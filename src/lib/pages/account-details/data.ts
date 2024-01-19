@@ -1,41 +1,18 @@
-import type { Big } from "big.js";
-import big from "big.js";
-
-import { useCelatoneApp } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountTableCounts } from "lib/services/accountService";
-import { useAssetInfos } from "lib/services/assetService";
-import { useBalanceInfos, useBalances } from "lib/services/balanceService";
+import { useBalances } from "lib/services/balanceService";
 import { useCodesByAddress } from "lib/services/codeService";
 import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,
 } from "lib/services/contractService";
-import { useDelegationsByAddress } from "lib/services/delegationService";
-import { useMovePoolInfos } from "lib/services/move";
 import type {
-  Addr,
+  BechAddr,
   CodeInfo,
   ContractInfo,
-  HumanAddr,
   Nullish,
   Option,
-  TokenWithValue,
-  USD,
 } from "lib/types";
-import {
-  addTokenWithValue,
-  coinToTokenWithValue,
-  totalValueTokenWithValue,
-  compareTokenWithValues,
-} from "lib/utils";
-
-import type {
-  Delegation,
-  Redelegation,
-  StakingParams,
-  Unbonding,
-} from "./types";
 
 // ------------------------------------------//
 // ---------------TABLE COUNTS---------------//
@@ -55,7 +32,7 @@ interface AccountDetailsTableCounts {
 }
 
 export const useAccountDetailsTableCounts = (
-  address: HumanAddr
+  address: BechAddr
 ): AccountDetailsTableCounts => {
   const {
     data,
@@ -88,12 +65,12 @@ interface AccountContracts {
 }
 
 export const useAccountContracts = (
-  walletAddress: HumanAddr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): AccountContracts => {
   const { data: contracts, isLoading } = useInstantiatedContractsByAddress(
-    walletAddress,
+    address,
     limit,
     offset
   );
@@ -116,12 +93,12 @@ export const useAccountContracts = (
 };
 
 export const useAccountAdminContracts = (
-  walletAddress: HumanAddr,
+  address: BechAddr,
   offset: number,
   pageSize: number
 ): AccountContracts => {
   const { data: contractsAdmin, isLoading } = useAdminContractsByAddress(
-    walletAddress as HumanAddr,
+    address,
     pageSize,
     offset
   );
@@ -155,15 +132,11 @@ interface AccountCodes {
 }
 
 export const useAccountCodes = (
-  walletAddress: HumanAddr,
+  address: BechAddr,
   offset: number,
   limit: number
 ): AccountCodes => {
-  const { data: codes, isLoading } = useCodesByAddress(
-    walletAddress as HumanAddr,
-    limit,
-    offset
-  );
+  const { data: codes, isLoading } = useCodesByAddress(address, limit, offset);
 
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
@@ -176,229 +149,5 @@ export const useAccountCodes = (
   return {
     codes: data,
     isLoading,
-  };
-};
-
-// ------------------------------------------//
-// ----------------DELEGATIONS---------------//
-// ------------------------------------------//
-
-interface UserDelegationsData {
-  isLoading: boolean;
-  stakingParams: Option<StakingParams>;
-  isValidator: Option<boolean>;
-  totalBonded: Option<Record<string, TokenWithValue>>;
-  totalDelegations: Option<Record<string, TokenWithValue>>;
-  delegations: Option<Delegation[]>;
-  totalUnbondings: Option<Record<string, TokenWithValue>>;
-  unbondings: Option<Unbonding[]>;
-  totalRewards: Option<Record<string, TokenWithValue>>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
-  redelegations: Option<Redelegation[]>;
-  totalCommission: Option<Record<string, TokenWithValue>>;
-}
-
-const calBonded = (
-  totalDelegations: Option<Record<string, TokenWithValue>>,
-  totalUnbondings: Option<Record<string, TokenWithValue>>
-) => {
-  if (!totalDelegations || !totalUnbondings) return undefined;
-
-  return Object.keys(totalDelegations).reduce<Record<string, TokenWithValue>>(
-    (total, denom) => ({
-      ...total,
-      [denom]: addTokenWithValue(
-        totalUnbondings[denom],
-        totalDelegations[denom]
-      ),
-    }),
-    {}
-  );
-};
-
-export const useUserDelegationInfos = (address: Addr) => {
-  const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
-    withPrices: true,
-  });
-  const { data: lpMap, isLoading: isLpMapLoading } = useMovePoolInfos();
-
-  const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
-    useDelegationsByAddress(address);
-
-  const isLoading =
-    isLoadingAccountDelegations || isLoadingAssetInfos || isLpMapLoading;
-
-  const data: UserDelegationsData = {
-    isLoading,
-    stakingParams: undefined,
-    isValidator: undefined,
-    totalBonded: undefined,
-    totalDelegations: undefined,
-    delegations: undefined,
-    totalUnbondings: undefined,
-    unbondings: undefined,
-    totalRewards: undefined,
-    rewards: undefined,
-    redelegations: undefined,
-    totalCommission: undefined,
-  };
-
-  if (accountDelegations) {
-    data.stakingParams = {
-      ...accountDelegations.stakingParams,
-      bondDenoms: accountDelegations.stakingParams.bondDenoms.map((denom) =>
-        coinToTokenWithValue(denom, "0", assetInfos, lpMap)
-      ),
-    };
-
-    data.isValidator = accountDelegations.isValidator;
-
-    data.delegations = accountDelegations.delegations.map<Delegation>(
-      (raw) => ({
-        validator: raw.validator,
-        balances: raw.balance
-          .map((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
-          )
-          .sort(compareTokenWithValues),
-      })
-    );
-    data.totalDelegations = data.delegations?.reduce<
-      Record<string, TokenWithValue>
-    >(
-      (total, delegation) =>
-        delegation.balances.reduce(
-          (acc, balance) => ({
-            ...acc,
-            [balance.denom]: addTokenWithValue(acc[balance.denom], balance),
-          }),
-          total
-        ),
-      {}
-    );
-
-    data.unbondings = accountDelegations.unbondings.map<Unbonding>((raw) => ({
-      validator: raw.validator,
-      completionTime: raw.completionTime,
-      balances: raw.balance
-        .map((coin) =>
-          coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
-        )
-        .sort(compareTokenWithValues),
-    }));
-    data.totalUnbondings = data.unbondings?.reduce<
-      Record<string, TokenWithValue>
-    >(
-      (total, unbonding) =>
-        unbonding.balances.reduce(
-          (acc, balance) => ({
-            ...acc,
-            [balance.denom]: addTokenWithValue(acc[balance.denom], balance),
-          }),
-          total
-        ),
-      {}
-    );
-
-    data.rewards = accountDelegations.delegationRewards.rewards.reduce<
-      Record<string, TokenWithValue[]>
-    >(
-      (prev, raw) => ({
-        ...prev,
-        [raw.validator.validatorAddress]: raw.reward
-          .map<TokenWithValue>((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
-          )
-          .sort(compareTokenWithValues),
-      }),
-      {}
-    );
-    data.totalRewards = accountDelegations.delegationRewards.total.reduce<
-      Record<string, TokenWithValue>
-    >(
-      (total, raw) => ({
-        ...total,
-        [raw.denom]: coinToTokenWithValue(
-          raw.denom,
-          raw.amount,
-          assetInfos,
-          lpMap
-        ),
-      }),
-      {}
-    );
-
-    data.redelegations = accountDelegations.redelegations.map<Redelegation>(
-      (raw) => ({
-        srcValidator: raw.srcValidator,
-        dstValidator: raw.dstValidator,
-        completionTime: raw.completionTime,
-        balances: raw.balance
-          .map((coin) =>
-            coinToTokenWithValue(coin.denom, coin.amount, assetInfos, lpMap)
-          )
-          .sort(compareTokenWithValues),
-      })
-    );
-
-    data.totalCommission = accountDelegations.commissions.reduce<
-      Record<string, TokenWithValue>
-    >(
-      (commission, raw) => ({
-        ...commission,
-        [raw.denom]: coinToTokenWithValue(
-          raw.denom,
-          raw.amount,
-          assetInfos,
-          lpMap
-        ),
-      }),
-      {}
-    );
-
-    data.totalBonded = calBonded(data.totalDelegations, data.totalUnbondings);
-  }
-
-  return data;
-};
-
-export const useAccountTotalValue = (address: Addr) => {
-  const defaultValue = big(0) as USD<Big>;
-
-  const {
-    chainConfig: {
-      extra: { disableDelegation },
-    },
-  } = useCelatoneApp();
-  const {
-    totalSupportedAssetsValue = defaultValue,
-    isLoading: isLoadingTotalSupportedAssetsValue,
-  } = useBalanceInfos(address);
-  const {
-    isLoading,
-    stakingParams,
-    totalBonded,
-    totalRewards,
-    totalCommission,
-  } = useUserDelegationInfos(address);
-
-  if (disableDelegation)
-    return {
-      totalAccountValue: totalSupportedAssetsValue,
-      isLoading: false,
-    };
-
-  if (isLoading || isLoadingTotalSupportedAssetsValue)
-    return { totalAccountValue: undefined, isLoading: true };
-
-  if (!stakingParams || !totalBonded || !totalRewards || !totalCommission)
-    return { totalAccountValue: undefined, isLoading: false };
-
-  return {
-    totalAccountValue: totalSupportedAssetsValue
-      .add(totalValueTokenWithValue(totalBonded, defaultValue))
-      .add(totalValueTokenWithValue(totalRewards, defaultValue))
-      .add(totalValueTokenWithValue(totalCommission, defaultValue)) as USD<Big>,
-    isLoading: false,
   };
 };

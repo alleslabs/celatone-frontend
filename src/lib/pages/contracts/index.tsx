@@ -1,58 +1,34 @@
 import { Heading, Box, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import { useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
-import { ContractsTable } from "lib/components/table";
-import type { ContractAddr } from "lib/types";
 
-import { useRecentContractsData } from "./data";
+import { RecentContractsTable } from "./components/RecentContractsTable";
 
-const RecentContracts = observer(() => {
+const RecentContracts = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const navigate = useInternalNavigate();
-  const onRowSelect = (contract: ContractAddr) =>
-    navigate({
-      pathname: "/contracts/[contract]",
-      query: { contract },
-    });
-
-  const { recentContracts, isLoading } = useRecentContractsData("");
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_RECENT_CONTRACT);
+    if (router.isReady) track(AmpEvent.TO_CONTRACTS);
   }, [router.isReady]);
 
   return (
     <PageContainer>
       <Box>
         <Heading variant="h5" as="h5" minH="36px">
-          Recent Contracts
+          Contracts
         </Heading>
         <Text variant="body2" color="text.dark" fontWeight={500} mb={8}>
-          Showing the 100 most recent instantiated contracts on this network
+          This page displays all contracts on this network sorted by recency
         </Text>
       </Box>
-      <ContractsTable
-        contracts={recentContracts}
-        isLoading={isLoading}
-        emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="Most recent 100 contracts will display here."
-            withBorder
-          />
-        }
-        onRowSelect={onRowSelect}
-        withoutTag
-      />
+      <RecentContractsTable />
     </PageContainer>
   );
-});
+};
 
 export default RecentContracts;

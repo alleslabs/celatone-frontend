@@ -28,6 +28,7 @@ export const SaveOrRemoveCodeModal = ({
       name={codeInfo.name}
       trigger={
         <StyledIconButton
+          aria-label="button"
           icon={<CustomIcon name="bookmark-solid" />}
           variant="ghost-primary"
         />
@@ -38,6 +39,7 @@ export const SaveOrRemoveCodeModal = ({
       codeInfo={codeInfo}
       triggerElement={
         <StyledIconButton
+          aria-label="button"
           icon={<CustomIcon name="bookmark" />}
           variant="ghost-gray"
         />

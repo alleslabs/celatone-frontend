@@ -3,14 +3,8 @@ import big from "big.js";
 
 import type { MinDeposit } from "lib/services/proposalService";
 import type { Option } from "lib/types";
-import { ProposalStatus } from "lib/types";
 
 import { d2Formatter } from "./formatter";
-
-export const parseProposalStatus = (status: string): ProposalStatus =>
-  status === "Inactive"
-    ? ProposalStatus.DEPOSIT_FAILED
-    : (status as ProposalStatus);
 
 export const getAmountToVote = (
   initialDeposit: Coin,

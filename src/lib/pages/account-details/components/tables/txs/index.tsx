@@ -11,13 +11,13 @@ import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
-import type { Addr, Option, TxFilters } from "lib/types";
+import type { BechAddr, Option, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  address: Addr;
+  address: BechAddr;
   scrollComponentId: string;
   refetchCount: () => void;
   onViewMore?: () => void;
@@ -30,8 +30,7 @@ const getEmptyStateProps = (selectedFilters: string[]): EmptyStateProps =>
         message: "No past transaction matches found with your input.",
       }
     : {
-        imageVariant: "empty",
-        message: "This account did not submit any transactions before.",
+        message: "No transactions have been submitted by this account before.",
       };
 
 export const TxsTable = ({

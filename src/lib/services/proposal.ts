@@ -2,15 +2,19 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import { zAddr, zUtcDate, zProposalType } from "lib/types";
+import { zUtcDate, zProposalType, zBechAddr, zProposalStatus } from "lib/types";
 import type {
-  ContractAddr,
   AccessConfigPermission,
-  Addr,
+  BechAddr,
+  BechAddr32,
   SnakeToCamelCaseNested,
   Proposal,
+  Option,
+  BechAddr20,
+  ProposalStatus,
+  ProposalType,
 } from "lib/types";
-import { parseProposalStatus, snakeToCamel } from "lib/utils";
+import { snakeToCamel } from "lib/utils";
 
 interface DepositParams {
   min_deposit: Coin[];
@@ -25,9 +29,9 @@ export const fetchGovDepositParams = (
   lcdEndpoint: string
 ): Promise<DepositParamsInternal> =>
   axios
-    .get<{ deposit_params: DepositParams }>(
-      `${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`
-    )
+    .get<{
+      deposit_params: DepositParams;
+    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
     .then(({ data }) => snakeToCamel(data.deposit_params));
 
 interface ProposalVotingPeriod {
@@ -47,15 +51,15 @@ export const fetchGovVotingParams = (
   lcdEndpoint: string
 ): Promise<VotingParamsInternal> =>
   axios
-    .get<{ voting_params: VotingParams }>(
-      `${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`
-    )
+    .get<{
+      voting_params: VotingParams;
+    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
     .then(({ data }) => snakeToCamel(data.voting_params));
 
 export interface UploadAccess {
   permission: AccessConfigPermission;
-  address: Addr;
-  addresses?: Addr[];
+  address: BechAddr;
+  addresses?: BechAddr[];
 }
 
 export const fetchGovUploadAccessParams = async (
@@ -68,12 +72,12 @@ const zProposalsResponseItem = z
     deposit_end_time: zUtcDate,
     id: z.number().nonnegative(),
     is_expedited: z.boolean(),
-    proposer: zAddr,
-    resolved_height: z.number().nullish(),
-    status: z.string().transform(parseProposalStatus),
+    proposer: zBechAddr,
+    resolved_height: z.number().nullable(),
+    status: zProposalStatus,
     title: z.string(),
     type: zProposalType,
-    voting_end_time: zUtcDate,
+    voting_end_time: zUtcDate.nullable(),
   })
   .transform<Proposal>((val) => ({
     depositEndTime: val.deposit_end_time,
@@ -94,9 +98,31 @@ const zProposalsResponse = z.object({
 
 export type ProposalsResponse = z.infer<typeof zProposalsResponse>;
 
+export const getProposals = async (
+  endpoint: string,
+  limit: number,
+  offset: number,
+  proposer: Option<BechAddr20>,
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string
+): Promise<ProposalsResponse> =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+        proposer,
+        statuses: statuses.join(","),
+        types: types.join(","),
+        search,
+      },
+    })
+    .then(({ data }) => zProposalsResponse.parse(data));
+
 export const getProposalsByAddress = async (
   endpoint: string,
-  address: Addr,
+  address: BechAddr,
   limit: number,
   offset: number
 ): Promise<ProposalsResponse> =>
@@ -114,9 +140,9 @@ const zRelatedProposalsResponseItem = z
     deposit_end_time: zUtcDate,
     proposal_id: z.number().nonnegative(),
     is_expedited: z.boolean(),
-    proposer: zAddr,
-    resolved_height: z.number().nullish(),
-    status: z.string().transform(parseProposalStatus),
+    proposer: zBechAddr,
+    resolved_height: z.number().nullable(),
+    status: zProposalStatus,
     title: z.string(),
     type: zProposalType,
     voting_end_time: zUtcDate,
@@ -143,7 +169,7 @@ export type RelatedProposalsResponse = z.infer<
 
 export const getRelatedProposalsByContractAddress = async (
   endpoint: string,
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   limit: number,
   offset: number
 ): Promise<RelatedProposalsResponse> =>

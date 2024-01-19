@@ -10,7 +10,6 @@ import {
 import { ModulesTable } from "lib/components/table";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useModulesByAddress } from "lib/services/move/moduleService";
-import type { HumanAddr } from "lib/types";
 
 export const MyPublishedModulesTable = () => {
   const [keyword, setKeyword] = useState("");
@@ -20,7 +19,7 @@ export const MyPublishedModulesTable = () => {
     data: modulesData,
     isFetching: isModulesLoading,
     error,
-  } = useModulesByAddress(address as HumanAddr);
+  } = useModulesByAddress(address);
 
   const formatAddresses = useFormatAddresses();
   const mappedModules = modulesData?.map((module) => {
@@ -37,8 +36,8 @@ export const MyPublishedModulesTable = () => {
   const filteredPublishedModules = useMemo(() => {
     if (!keyword) return mappedModules;
 
-    return mappedModules?.filter(
-      (module) => module.name?.toLowerCase().includes(keyword.toLowerCase())
+    return mappedModules?.filter((module) =>
+      module.name?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, mappedModules]);
 

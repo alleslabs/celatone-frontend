@@ -14,7 +14,7 @@ import {
   type DecodeModuleQueryResponse,
   useDecodeModule,
 } from "lib/services/move/moduleService";
-import type { HumanAddr, Option, UpgradePolicy } from "lib/types";
+import type { Option, UpgradePolicy } from "lib/types";
 
 const DEFAULT_TEMP_FILE = {
   file: undefined,
@@ -74,7 +74,7 @@ export const UploadModuleCard = ({
             modules,
             index,
             policy,
-            address: address as Option<HumanAddr>,
+            address,
           })
         );
         setDecodeError("");

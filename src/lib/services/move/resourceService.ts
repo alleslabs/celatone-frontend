@@ -7,9 +7,10 @@ import {
   useMoveConfig,
 } from "lib/app-provider";
 import type {
+  Addr,
+  HexAddr,
   ResourceGroup,
   ResourceGroupByAccount,
-  MoveAccountAddr,
 } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -22,7 +23,7 @@ export interface ResourcesByAddressReturn {
 }
 
 export const useResourcesByAddress = (
-  address: MoveAccountAddr
+  address: Addr
 ): UseQueryResult<ResourcesByAddressReturn> => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled } = useMoveConfig({ shouldRedirect: false });
@@ -41,7 +42,7 @@ export const useResourcesByAddress = (
         if (groupResourcesIndex === -1)
           ownerResources.push({
             group: groupName,
-            account: ownerName as MoveAccountAddr,
+            account: ownerName as HexAddr,
             displayName: `${truncate(ownerName)}::${groupName}`,
             items: [resource],
           });
@@ -50,7 +51,7 @@ export const useResourcesByAddress = (
         return {
           ...acc,
           [ownerName]: {
-            owner: ownerName as MoveAccountAddr,
+            owner: ownerName as HexAddr,
             resources: ownerResources,
           },
         };
@@ -70,7 +71,7 @@ export const useResourcesByAddress = (
           ...acc,
           [resourceKey]: {
             displayName: `${truncate(accountName)}::${groupName}`,
-            account: accountName as MoveAccountAddr,
+            account: accountName as HexAddr,
             group: groupName,
             items,
           },

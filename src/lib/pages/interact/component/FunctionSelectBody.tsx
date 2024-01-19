@@ -3,7 +3,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
-import type { ExposedFunction, HexAddr, Option } from "lib/types";
+import type { ExposedFunction, Option } from "lib/types";
 
 import { ModuleContainer } from "./common";
 import { ExecuteArea, ViewArea } from "./form";
@@ -30,13 +30,13 @@ export const FunctionSelectBody = ({
       <SelectedFunctionCard fn={selectedFn} />
       {selectedFn.is_view ? (
         <ViewArea
-          moduleAddress={module.address.toString() as HexAddr}
+          moduleAddress={module.address}
           moduleName={module.moduleName}
           fn={selectedFn}
         />
       ) : (
         <ExecuteArea
-          moduleAddress={module.address.toString() as HexAddr}
+          moduleAddress={module.address}
           moduleName={module.moduleName}
           fn={selectedFn}
         />

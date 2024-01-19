@@ -2,13 +2,13 @@ import { Text } from "@chakra-ui/react";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { Addr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 export const Proposer = ({
   proposer,
   amptrackSection,
 }: {
-  proposer: Option<Addr>;
+  proposer: Option<BechAddr>;
   amptrackSection?: string;
 }) => {
   const getAddressType = useGetAddressType();

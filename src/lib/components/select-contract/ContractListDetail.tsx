@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
@@ -10,13 +10,13 @@ import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useAdminByContractAddresses } from "lib/services/contractService";
 import type { ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, ContractInfo } from "lib/types";
+import type { BechAddr32, ContractInfo } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface ContractListContentProps {
   contractListInfo: ContractListInfo;
   filteredContracts: ContractInfo[];
-  onContractSelect: (addr: ContractAddr) => void;
+  onContractSelect: (addr: BechAddr32) => void;
   isLoading: boolean;
   isReadOnly: boolean;
 }
@@ -55,7 +55,8 @@ const ContractListContent = ({
           <EmptyState
             imageVariant="not-found"
             message="No matching contracts found.
-  Make sure you are searching with a contract address, name, or description."
+          Make sure you are searching with a contract address, name, or description."
+            withBorder
           />
         )
       }
@@ -78,7 +79,7 @@ interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
   isLoading: boolean;
   isReadOnly?: boolean;
-  onContractSelect: (addr: ContractAddr) => void;
+  onContractSelect: (addr: BechAddr32) => void;
 }
 
 export const ContractListDetail = ({
@@ -117,25 +118,29 @@ export const ContractListDetail = ({
 
   return (
     <Box minH="xs">
-      <Flex gap={3} w="full" my={isReadOnly ? 6 : 8}>
-        <InputWithIcon
-          placeholder="Search with Contract Address, Name, or Description"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
-          amptrackSection="contract-list-item-search"
-        />
-        {!isReadOnly && (
-          <TagSelection
-            result={tagFilter}
-            setResult={setTagFilter}
-            placeholder="No tag selected"
-            label="Filter by tag"
-            boxWidth="400px"
-            creatable={false}
+      <Grid w="full" gap={4} templateColumns="3fr 1fr" my={isReadOnly ? 6 : 8}>
+        <GridItem w="full">
+          <InputWithIcon
+            placeholder="Search with Contract Address, Name, or Description"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            size={{ base: "md", md: "lg" }}
+            amptrackSection="contract-list-item-search"
           />
+        </GridItem>
+        {!isReadOnly && (
+          <GridItem w="full">
+            <TagSelection
+              result={tagFilter}
+              setResult={setTagFilter}
+              placeholder="No tag selected"
+              label="Filter by tag"
+              boxWidth="400px"
+              creatable={false}
+            />
+          </GridItem>
         )}
-      </Flex>
+      </Grid>
       <ContractListContent
         contractListInfo={contractListInfo}
         filteredContracts={filteredContracts}

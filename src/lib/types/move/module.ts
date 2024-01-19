@@ -1,9 +1,4 @@
-import type { HumanAddr, Option, RemarkType, UpgradePolicy } from "lib/types";
-
-interface Remark {
-  type: RemarkType;
-  value: string;
-}
+import type { BechAddr, Option, Remark, UpgradePolicy } from "lib/types";
 
 export interface ModuleHistory {
   remark: Remark;
@@ -14,7 +9,8 @@ export interface ModuleHistory {
 }
 
 export interface ModuleInfo {
-  address: HumanAddr;
+  // NOTE: can also be an ica or a contract
+  address: BechAddr;
   name: string;
   functions?: {
     view: number;

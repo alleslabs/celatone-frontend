@@ -14,13 +14,12 @@ import {
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { MyStoredCodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { useUploadAccessParams } from "lib/services/proposalService";
-import type { Addr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
-import { MyStoredCodesSection } from "./components/MyStoredCodesSection";
 import { ProposalButton } from "./components/ProposalButton";
 import { UploadButton } from "./components/UploadButton";
 
@@ -31,13 +30,10 @@ interface CodeFilterState {
 
 const StoredCodes = observer(() => {
   const router = useRouter();
-  const govConfig = useGovConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
-  const onRowSelect = (codeId: number) =>
-    navigate({
-      pathname: "/codes/[codeId]",
-      query: { codeId },
-    });
+  const { address } = useCurrentChain();
+  const govConfig = useGovConfig({ shouldRedirect: false });
+
   // TODO refactor to useState
   const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
@@ -52,18 +48,21 @@ const StoredCodes = observer(() => {
     storedCodes: stored,
     isStoredCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
+  const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
 
-  const isSearching = !!keyword || permissionValue !== "all";
+  const isPermissionedNetwork =
+    data?.permission !== AccessConfigPermission.EVERYBODY;
+  const isAllowed = Boolean(address && data?.addresses?.includes(address));
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);
   }, [router.isReady]);
-  const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
-  const { address } = useCurrentChain();
-  const isAllowed = Boolean(data?.addresses?.includes(address as Addr));
 
-  const isPermissionedNetwork =
-    data?.permission !== AccessConfigPermission.EVERYBODY;
+  const onRowSelect = (codeId: number) =>
+    navigate({
+      pathname: "/codes/[codeId]",
+      query: { codeId },
+    });
 
   return (
     <PageContainer>
@@ -120,13 +119,13 @@ const StoredCodes = observer(() => {
           }}
         />
       </Flex>
-
-      <MyStoredCodesSection
+      <MyStoredCodesTable
         codes={stored}
+        totalData={storedCodesCount}
         isLoading={isStoredCodesLoading}
         onRowSelect={onRowSelect}
+        emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
         disconnectedMessage="to see your previously uploaded and stored codes."
-        isSearching={isSearching}
       />
     </PageContainer>
   );

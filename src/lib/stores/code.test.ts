@@ -1,4 +1,4 @@
-import type { Addr } from "lib/types";
+import type { BechAddr20 } from "lib/types";
 
 import { CodeStore } from "./code";
 
@@ -31,7 +31,7 @@ describe("CodeStore", () => {
     test("add info for code 1 with no code name", () => {
       codeStore.updateCodeInfo(
         1,
-        "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as Addr
+        "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as BechAddr20
       );
       expect(codeStore.getCodeLocalInfo(1)).toStrictEqual({
         id: 1,
@@ -42,7 +42,7 @@ describe("CodeStore", () => {
     test("update name for code 1", () => {
       codeStore.updateCodeInfo(
         1,
-        "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as Addr,
+        "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as BechAddr20,
         "code-name"
       );
       expect(codeStore.getCodeLocalInfo(1)).toStrictEqual({
@@ -89,7 +89,7 @@ describe("CodeStore", () => {
     test("update info for code 2", () => {
       codeStore.updateCodeInfo(
         2,
-        "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as Addr,
+        "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as BechAddr20,
         ""
       );
       expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([

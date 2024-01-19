@@ -3,9 +3,9 @@ import {
   useContractDataByContractAddress,
   useMigrationHistoriesByContractAddress,
 } from "lib/services/contractService";
-import type { ContractAddr, ContractMigrationHistory } from "lib/types";
+import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
-export const useContractData = (contractAddress: ContractAddr) => {
+export const useContractData = (contractAddress: BechAddr32) => {
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
 
@@ -24,7 +24,7 @@ export const useContractData = (contractAddress: ContractAddr) => {
 };
 
 export const useMigrationHistories = (
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   offset: number,
   pageSize: number
 ) => {

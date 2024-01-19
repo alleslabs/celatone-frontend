@@ -19,6 +19,7 @@ export interface TextareaProps extends FormControlProps {
   label?: string;
   labelBgColor?: string;
   helperText?: string;
+  placeholder?: string;
   error?: string;
   status?: FormStatus;
 }

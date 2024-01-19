@@ -18,16 +18,18 @@ import {
   useMobile,
   useInternalNavigate,
 } from "lib/app-provider";
+import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";
+import { DelegationsSection } from "lib/components/delegations";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import type { ContractAddr } from "lib/types";
+import { useBalances } from "lib/services/balanceService";
+import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
-import { ContractBalances } from "./components/contract-balances";
 import { ContractDesc } from "./components/contract-description";
 import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
@@ -39,8 +41,10 @@ import { TabIndex, zContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
+const tableHeaderId = "contractDetailsTab";
+
 interface ContractDetailsBodyProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   tab: TabIndex;
 }
 
@@ -58,6 +62,9 @@ const ContractDetailsBody = observer(
       data: contractData,
       isLoading,
     } = useContractData(contractAddress);
+
+    const { data: balances, isLoading: isBalancesLoading } =
+      useBalances(contractAddress);
 
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
@@ -100,17 +107,24 @@ const ContractDetailsBody = observer(
           lazyBehavior="keepMounted"
         >
           <TabList
-            mt={6}
-            mb={8}
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
+            id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
             </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.Assets)}>
+            <CustomTab
+              onClick={handleTabChange(TabIndex.Assets)}
+              count={balances?.length}
+              isDisabled={balances?.length === 0}
+              isLoading={isBalancesLoading}
+            >
               Assets
+            </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
+              Delegations
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
               Transactions & Histories
@@ -120,19 +134,33 @@ const ContractDetailsBody = observer(
             </CustomTab>
           </TabList>
           <TabPanels>
-            <TabPanel p={0}>
+            <TabPanel p={0} pt={{ base: 0, md: 8 }}>
               <Flex flexDirection="column" gap={8}>
-                {/* Contract Description Section */}
-                <ContractDesc
-                  publicInfo={publicInfo}
-                  contract={contract}
-                  contractLocalInfo={contractLocalInfo}
-                />
-                {/* Tokens Section */}
-                <ContractBalances
-                  contractAddress={contractAddress}
-                  onViewMore={handleTabChange(TabIndex.Assets)}
-                />
+                <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
+                  <ContractDesc
+                    publicInfo={publicInfo}
+                    contract={contract}
+                    contractLocalInfo={contractLocalInfo}
+                  />
+                  <Flex
+                    borderBottom={{ base: "0px", md: "1px solid" }}
+                    borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                  >
+                    <AssetsSection
+                      address={contractAddress}
+                      onViewMore={handleTabChange(TabIndex.Assets)}
+                    />
+                  </Flex>
+                  <Flex
+                    borderBottom={{ base: "0px", md: "1px solid" }}
+                    borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                  >
+                    <DelegationsSection
+                      address={contractAddress}
+                      onViewMore={handleTabChange(TabIndex.Delegations)}
+                    />
+                  </Flex>
+                </Flex>
                 {/* Query/Execute commands section */}
                 <CommandSection
                   contractAddress={contractAddress}
@@ -198,12 +226,15 @@ const ContractDetailsBody = observer(
               </Flex>
             </TabPanel>
             <TabPanel p={0}>
-              <ContractBalances contractAddress={contractAddress} />
+              <AssetsSection address={contractAddress} />
             </TabPanel>
-            <TabPanel p={0}>
+            <TabPanel px={0} pt={{ base: 0, md: 5 }}>
+              <DelegationsSection address={contractAddress} />
+            </TabPanel>
+            <TabPanel px={0} pt={5}>
               <ContractTables contractAddress={contractAddress} />
             </TabPanel>
-            <TabPanel p={0}>
+            <TabPanel px={0} pt={5}>
               <ContractStates contractAddress={contractAddress} />
             </TabPanel>
           </TabPanels>
@@ -222,7 +253,7 @@ const ContractDetails = observer(() => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_CONTRACT_DETAIL, { tab: validated.data.tab });
+      track(AmpEvent.TO_CONTRACT_DETAILS, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 

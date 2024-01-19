@@ -6,21 +6,27 @@ import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   DetailExecute,
   DetailInstantiate,
   DetailSend,
+  DetailStoreCode,
   DetailUpdateAdmin,
-  DetailUpload,
   Message,
   Option,
   DetailMigrate,
   DetailClearAdmin,
-  ContractAddr,
-  AssetInfo,
+  BechAddr32,
+  AssetInfos,
+  MovePoolInfos,
 } from "lib/types";
-import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
+import {
+  getFirstQueryParam,
+  getExecuteMsgTags,
+  coinToTokenWithValue,
+} from "lib/utils";
 
 /**
  * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.
@@ -44,7 +50,7 @@ const instantiateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   getContractLocalInfo: (
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
   isInstantiate2: boolean,
   getAddressTypeByLength: GetAddressTypeByLengthFn
@@ -53,7 +59,7 @@ const instantiateSingleMsgProps = (
   // TODO - revisit, instantiate detail response when query from contract transaction table doesn't contain contract addr
   const contractAddress =
     detail.contractAddress ||
-    (getFirstQueryParam(router.query.contractAddress) as ContractAddr);
+    (getFirstQueryParam(router.query.contractAddress) as BechAddr32);
 
   const contractLocalInfo = getContractLocalInfo(contractAddress);
   const type = isInstantiate2 ? "Instantiate2" : "Instantiate";
@@ -124,7 +130,7 @@ const executeSingleMsgProps = (
   messages: Message[],
   singleMsg: Option<boolean>,
   getContractLocalInfo: (
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
@@ -222,23 +228,21 @@ const executeSingleMsgProps = (
 const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  assetInfos: Option<Record<string, AssetInfo>>,
+  assetInfos: Option<AssetInfos>,
+  movePoolInfos: Option<MovePoolInfos>,
   getContractLocalInfo: (
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailSend;
   const contractLocalInfo = getContractLocalInfo(
-    detail.toAddress as ContractAddr
+    detail.toAddress as BechAddr32
   );
 
-  const tokens = detail.amount.map((coin) => ({
-    symbol: assetInfos?.[coin.denom]?.symbol,
-    amount: coin.amount,
-    id: coin.denom,
-    precision: assetInfos?.[coin.denom]?.precision,
-  }));
+  const tokens = detail.amount.map((coin) =>
+    coinToTokenWithValue(coin.denom, coin.amount, assetInfos, movePoolInfos)
+  );
 
   const uniqueAddressLength = new Set(
     messages.map((msg) => {
@@ -324,7 +328,7 @@ const migrateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   getContractLocalInfo: (
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
@@ -390,13 +394,14 @@ const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   getContractLocalInfo: (
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
-  const adminLocalInfo = getContractLocalInfo(detail.newAdmin as ContractAddr);
+  // TODO: need to also handle getAccountLocalInfo
+  const adminLocalInfo = getContractLocalInfo(detail.newAdmin as BechAddr32);
 
   if (messages.length > 1) {
     return isSuccess
@@ -463,7 +468,7 @@ const clearAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   getContractLocalInfo: (
-    contractAddress: ContractAddr
+    contractAddress: BechAddr32
   ) => Option<ContractLocalInfo>,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
@@ -522,7 +527,7 @@ const clearAdminSingleMsgProps = (
  *
  */
 const storeCodeSingleMsgProps = (isSuccess: boolean, messages: Message[]) => {
-  const detail = messages[0].detail as DetailUpload;
+  const detail = messages[0].detail as DetailStoreCode;
 
   if (messages.length > 1) {
     return isSuccess
@@ -593,6 +598,7 @@ export const useSingleActionMsgProps = (
 ): SingleMsgProps => {
   const { getContractLocalInfo } = useContractStore();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
   switch (type) {
@@ -609,6 +615,7 @@ export const useSingleActionMsgProps = (
         isSuccess,
         messages,
         assetInfos,
+        movePoolInfos,
         getContractLocalInfo,
         getAddressTypeByLength
       );

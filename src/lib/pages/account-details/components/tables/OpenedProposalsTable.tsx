@@ -12,10 +12,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useProposalsByAddress } from "lib/services/proposalService";
-import type { HumanAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 interface OpenedProposalsTableProps {
-  walletAddress: HumanAddr;
+  address: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -23,7 +23,7 @@ interface OpenedProposalsTableProps {
 }
 
 export const OpenedProposalsTable = ({
-  walletAddress,
+  address,
   scrollComponentId,
   totalData,
   refetchCount,
@@ -48,7 +48,7 @@ export const OpenedProposalsTable = ({
   });
 
   const { data: proposals, isLoading } = useProposalsByAddress(
-    walletAddress,
+    address,
     offset,
     onViewMore ? 5 : pageSize
   );
@@ -89,7 +89,7 @@ export const OpenedProposalsTable = ({
                 <ErrorFetching dataName="proposals" />
               ) : (
                 <EmptyState
-                  message="This account did not open any proposals before."
+                  message="No proposals have been opened by this account before."
                   withBorder
                 />
               )

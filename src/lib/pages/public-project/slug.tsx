@@ -66,7 +66,7 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      if (tab) track(AmpEvent.TO_PROJECT_DETAIL, { tab });
+      if (tab) track(AmpEvent.TO_PROJECT_DETAILS, { tab });
 
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({

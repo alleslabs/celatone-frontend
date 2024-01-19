@@ -1,7 +1,7 @@
 import { toBech32 } from "@cosmjs/encoding";
 import { useMemo } from "react";
 
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr20, BechAddr32 } from "lib/types";
 import { addrToValoper } from "lib/utils";
 
 import { useCurrentChain } from "./useCurrentChain";
@@ -16,13 +16,13 @@ export const useExampleAddresses = () => {
     const user = toBech32(
       prefix,
       new Uint8Array(bytes.slice(0, 20))
-    ) as HumanAddr;
+    ) as BechAddr20;
 
     // reverse the bytes so the initial characters are different from the user address
     const contract = toBech32(
       prefix,
       new Uint8Array(bytes.reverse())
-    ) as ContractAddr;
+    ) as BechAddr32;
 
     const validator = addrToValoper(user);
 

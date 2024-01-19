@@ -4,11 +4,11 @@ import { useCallback } from "react";
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
-import type { Addr, ContractAddr, HumanAddr, Option } from "lib/types";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 export interface UpdateAdminStreamParams {
-  contractAddress: ContractAddr;
-  newAdmin: Addr;
+  contractAddress: BechAddr32;
+  newAdmin: BechAddr;
   estimatedFee: Option<StdFee>;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
@@ -32,7 +32,7 @@ export const useUpdateAdminTx = () => {
       if (!estimatedFee) return null;
 
       return updateAdminTx({
-        address: address as HumanAddr,
+        address,
         contractAddress,
         newAdmin,
         fee: estimatedFee,

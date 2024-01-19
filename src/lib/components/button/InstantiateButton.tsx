@@ -4,7 +4,7 @@ import { Button } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
-import type { HumanAddr, PermissionAddresses } from "lib/types";
+import type { PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
@@ -23,10 +23,11 @@ const getInstantiateButtonProps = (
   variant: string;
   icon: JSX.Element | undefined;
 } => {
+  const buttonDisabledState = "outline-gray";
   if (isUnknown) {
     return {
       tooltipLabel: "",
-      variant: "outline-gray",
+      variant: buttonDisabledState,
       icon: undefined,
     };
   }
@@ -35,20 +36,15 @@ const getInstantiateButtonProps = (
       tooltipLabel: isWalletConnected
         ? "You can instantiate without opening proposal"
         : "You need to connect wallet to instantiate contract",
-      variant: "outline-primary",
-      icon: (
-        <CustomIcon
-          name="instantiate"
-          color={isWalletConnected ? "primary.light" : "gray.600"}
-        />
-      ),
+      variant: isWalletConnected ? "outline-primary" : buttonDisabledState,
+      icon: <CustomIcon name="instantiate" />,
     };
   }
   return {
     tooltipLabel: isWalletConnected
       ? "Instantiate through proposal only (Coming Soon)"
       : "You need to connect wallet to open instantiate proposal",
-    variant: "outline-gray",
+    variant: buttonDisabledState,
     icon: <CustomIcon name="vote" />,
   };
 };
@@ -65,7 +61,7 @@ export const InstantiateButton = ({
     navigate({ pathname: "/instantiate", query: { "code-id": codeId } });
 
   const isAllowed = resolvePermission(
-    address as HumanAddr,
+    address,
     instantiatePermission,
     permissionAddresses
   );

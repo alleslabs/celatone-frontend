@@ -1,17 +1,17 @@
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
-import type { Addr, Dict } from "lib/types";
+import type { BechAddr, Dict } from "lib/types";
 
 export interface AccountLocalInfo {
-  address: Addr;
+  address: BechAddr;
   name?: string;
   description?: string;
 }
 export class AccountStore {
   private userKey: string;
 
-  savedAccounts: Dict<string, Addr[]>;
+  savedAccounts: Dict<string, BechAddr[]>;
 
   accountLocalInfo: Dict<
     string, // user key
@@ -43,11 +43,15 @@ export class AccountStore {
     this.userKey = userKey;
   }
 
-  getAccountLocalInfo(address: Addr): AccountLocalInfo | undefined {
+  getAccountLocalInfo(address: BechAddr): AccountLocalInfo | undefined {
     return this.accountLocalInfo[this.userKey]?.[address];
   }
 
-  updateAccountLocalInfo(address: Addr, name?: string, description?: string) {
+  updateAccountLocalInfo(
+    address: BechAddr,
+    name?: string,
+    description?: string
+  ) {
     const savedAccounts = this.savedAccounts[this.userKey];
     if (!savedAccounts) this.savedAccounts[this.userKey] = [address];
     else if (!savedAccounts.includes(address)) savedAccounts.push(address);
@@ -72,11 +76,11 @@ export class AccountStore {
     };
   }
 
-  isAccountSaved(address: Addr): boolean {
+  isAccountSaved(address: BechAddr): boolean {
     return this.savedAccounts[this.userKey]?.includes(address) ?? false;
   }
 
-  removeSavedAccount(address: Addr): void {
+  removeSavedAccount(address: BechAddr): void {
     this.savedAccounts[this.userKey] = this.savedAccounts[this.userKey]?.filter(
       (each) => each !== address
     );

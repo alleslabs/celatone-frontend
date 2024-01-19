@@ -50,7 +50,7 @@ const CodeDetailsBody = observer(
     const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
     useEffect(() => {
-      if (router.isReady) track(AmpEvent.TO_CODE_DETAIL, { tab });
+      if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });
       // Note: we don't want to track when tab changes
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady, track]);

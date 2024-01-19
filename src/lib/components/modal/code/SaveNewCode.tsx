@@ -11,7 +11,7 @@ import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { Addr, HumanAddr } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
 
 interface SaveNewCodeModalProps {
@@ -61,7 +61,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     cacheTime: 0,
     onSuccess(data) {
       const { message, messageColor } = getPermissionHelper(
-        address as HumanAddr,
+        address,
         data.code_info.instantiate_permission.permission,
         data.code_info.instantiate_permission.address
           ? [data.code_info.instantiate_permission.address]
@@ -96,7 +96,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     const id = Number(codeId);
 
     saveNewCode(id);
-    updateCodeInfo(id, uploader as Addr, name);
+    updateCodeInfo(id, uploader as BechAddr, name);
 
     // TODO: abstract toast to template later
     toast({
@@ -184,8 +184,8 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           onInputChange={setCodeId}
           label="Code ID"
           labelBgColor="gray.900"
-          status={codeIdStatus}
           placeholder="ex. 1234"
+          status={codeIdStatus}
         />
         <TextInput
           variant="fixed-floating"

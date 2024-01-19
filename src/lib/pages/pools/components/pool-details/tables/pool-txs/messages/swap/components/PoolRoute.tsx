@@ -5,15 +5,14 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
-import type { TokenWithValue } from "lib/types";
+import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
 import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
 interface PoolRouteProps {
   routes: MsgSwapExactAmountInDetails["routes"];
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }

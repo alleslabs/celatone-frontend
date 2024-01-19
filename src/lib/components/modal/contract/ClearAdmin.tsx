@@ -5,10 +5,10 @@ import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 interface ClearAdminModalProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   triggerElement: JSX.Element;
 }
 

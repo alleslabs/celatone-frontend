@@ -8,14 +8,14 @@ import type { Observable } from "rxjs";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { HumanAddr, TxResultRendering } from "lib/types";
+import type { BechAddr20, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
-  address: HumanAddr;
+  address: BechAddr20;
   client: SigningCosmWasmClient;
   fee: StdFee;
   messages: EncodeObject[];

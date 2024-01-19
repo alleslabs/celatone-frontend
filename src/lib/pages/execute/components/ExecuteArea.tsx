@@ -13,13 +13,13 @@ import {
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
 import { useSchemaStore } from "lib/providers/store";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 
 import { JsonExecute } from "./JsonExecute";
 import { SchemaExecute } from "./schema-execute";
 
 interface ExecuteAreaProps {
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: string;
   initialFunds: Coin[];
   codeId: Option<number>;

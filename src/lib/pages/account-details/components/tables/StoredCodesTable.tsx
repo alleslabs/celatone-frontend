@@ -13,10 +13,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
-import type { HumanAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 interface StoredCodesTableProps {
-  walletAddress: HumanAddr;
+  address: BechAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
@@ -25,7 +25,7 @@ interface StoredCodesTableProps {
 
 export const StoredCodesTable = observer(
   ({
-    walletAddress,
+    address,
     scrollComponentId,
     totalData,
     refetchCount,
@@ -55,7 +55,7 @@ export const StoredCodesTable = observer(
       },
     });
     const { codes, isLoading } = useAccountCodes(
-      walletAddress,
+      address,
       offset,
       onViewMore ? 5 : pageSize
     );
@@ -97,9 +97,8 @@ export const StoredCodesTable = observer(
                   <ErrorFetching dataName="codes" />
                 ) : (
                   <EmptyState
+                    message="No codes have been stored by this account before."
                     withBorder
-                    imageVariant="empty"
-                    message="This account did not stored any codes before."
                   />
                 )
               }

@@ -23,7 +23,7 @@ import { TextInput } from "lib/components/forms";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
-import type { Addr, ContractAddr, HumanAddr } from "lib/types";
+import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
@@ -47,10 +47,10 @@ const UpdateAdmin = () => {
 
   const contractAddressParam = getFirstQueryParam(
     router.query.contract
-  ) as ContractAddr;
+  ) as BechAddr32;
 
   const onContractPathChange = useCallback(
-    (contract?: ContractAddr) => {
+    (contract?: BechAddr32) => {
       navigate({
         pathname: "/admin",
         query: { ...(contract && { contract }) },
@@ -65,13 +65,15 @@ const UpdateAdmin = () => {
       !!address &&
       !!contractAddressParam &&
       adminFormStatus.state === "success",
-    messages: [
-      composeMsg(MsgType.UPDATE_ADMIN, {
-        sender: address as HumanAddr,
-        newAdmin: adminAddress as Addr,
-        contract: contractAddressParam,
-      }),
-    ],
+    messages: address
+      ? [
+          composeMsg(MsgType.UPDATE_ADMIN, {
+            sender: address,
+            newAdmin: adminAddress as BechAddr,
+            contract: contractAddressParam,
+          }),
+        ]
+      : [],
     onSuccess: (fee) => {
       if (fee) {
         setSimulateError(undefined);
@@ -88,7 +90,7 @@ const UpdateAdmin = () => {
     track(AmpEvent.ACTION_ADMIN_UPDATE);
     const stream = await updateAdminTx({
       contractAddress: contractAddressParam,
-      newAdmin: adminAddress as Addr,
+      newAdmin: adminAddress as BechAddr,
       estimatedFee,
     });
 
@@ -105,7 +107,7 @@ const UpdateAdmin = () => {
    * @remarks Contract admin validation
    */
   useContractDetailByContractAddress(
-    contractAddressParam as ContractAddr,
+    contractAddressParam,
     (contractDetail) => {
       if (contractDetail.admin !== address) onContractPathChange();
     },

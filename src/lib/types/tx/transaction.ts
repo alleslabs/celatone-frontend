@@ -1,7 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import { z } from "zod";
 
-import type { Addr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
@@ -29,7 +29,7 @@ export interface Msg {
 export interface Transaction {
   hash: string;
   messages: Message[];
-  sender: Addr;
+  sender: BechAddr;
   isSigner: boolean;
   height: number;
   created: Date;
@@ -84,3 +84,9 @@ export type PoolTxFilter =
 
 export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
 export type RemarkType = z.infer<typeof zRemarkType>;
+
+export const zRemark = z.object({
+  type: zRemarkType,
+  value: z.union([z.string(), z.number()]).optional(),
+});
+export type Remark = z.infer<typeof zRemark>;

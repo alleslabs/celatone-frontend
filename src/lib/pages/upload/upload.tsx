@@ -3,20 +3,19 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import type { UploadSucceedCallback } from "lib/app-provider";
+import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadAccessParams } from "lib/services/proposalService";
-import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 export const Upload = ({
   onComplete,
 }: {
-  onComplete: UploadSucceedCallback;
+  onComplete: StoreCodeSucceedCallback;
 }) => {
   const router = useRouter();
   const { address } = useCurrentChain();
@@ -28,7 +27,7 @@ export const Upload = ({
 
   const enableUpload =
     !isPermissionedNetwork ||
-    Boolean(data?.addresses?.includes(address as HumanAddr));
+    (address && Boolean(data?.addresses?.includes(address)));
 
   useEffect(() => {
     // Redirect back to deploy page

@@ -1,4 +1,4 @@
-import type { MoveAccountAddr } from "../addrs";
+import type { HexAddr } from "../addrs";
 import type { SnakeToCamelCaseNested } from "../converter";
 
 export interface ResponseResource {
@@ -12,12 +12,12 @@ export type InternalResource = SnakeToCamelCaseNested<ResponseResource>;
 
 export interface ResourceGroup {
   group: string;
-  account: MoveAccountAddr;
+  account: HexAddr;
   displayName: string;
   items: InternalResource[];
 }
 
 export interface ResourceGroupByAccount {
-  owner: MoveAccountAddr;
+  owner: HexAddr;
   resources: ResourceGroup[];
 }

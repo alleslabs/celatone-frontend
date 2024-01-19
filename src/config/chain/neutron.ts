@@ -80,7 +80,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       nft: {
-        enabled: true,
+        enabled: false,
       },
     },
     gas: {

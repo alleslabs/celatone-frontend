@@ -9,14 +9,14 @@ import { UploadSchema } from "lib/components/json-schema";
 import { EmptyState, StateImage } from "lib/components/state";
 import { useSchemaStore } from "lib/providers/store";
 import type { ExecuteSchema } from "lib/stores/schema";
-import type { ContractAddr, Option } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 import { getDefaultMsg, resolveInitialMsg } from "lib/utils";
 
 import { ExecuteBox } from "./ExecuteBox";
 
 interface SchemaExecuteProps {
   schema: Option<ExecuteSchema>;
-  contractAddress: ContractAddr;
+  contractAddress: BechAddr32;
   initialMsg: string;
   initialFunds: Coin[];
   codeId: number;

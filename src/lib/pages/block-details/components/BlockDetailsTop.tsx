@@ -39,8 +39,8 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   return (
     <Flex
       justify="space-between"
-      mb={{ base: 8, md: 12 }}
-      pb={{ base: 8, md: 12 }}
+      mb={8}
+      pb={8}
       borderBottomColor="gray.700"
       borderBottomWidth="1px"
     >
@@ -66,6 +66,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             {!disablePrevious && (
               <AppLink href={`/blocks/${block - 1}`}>
                 <StyledIconButton
+                  aria-label="button"
                   icon={<CustomIcon name="chevron-left" />}
                   variant="ghost-gray"
                 />
@@ -73,6 +74,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             )}
             <AppLink href={`/blocks/${block + 1}`}>
               <StyledIconButton
+                aria-label="button"
                 icon={<CustomIcon name="chevron-right" />}
                 variant="ghost-gray"
               />

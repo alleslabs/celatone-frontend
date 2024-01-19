@@ -1,5 +1,6 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { Big } from "big.js";
 import big from "big.js";
 import { useCallback } from "react";
 
@@ -9,34 +10,33 @@ import {
   useCelatoneApp,
 } from "lib/app-provider";
 import {
-  getProposalList,
-  getProposalListCount,
   getProposalTypes,
   getRelatedProposalsByModuleIdPagination,
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
-  ContractAddr,
   Option,
   ProposalStatus,
   ProposalType,
-  Addr,
   Proposal,
   U,
   Token,
   Nullish,
+  BechAddr32,
+  BechAddr,
+  BechAddr20,
 } from "lib/types";
 import {
+  coinToTokenWithValue,
   deexponentify,
-  formatBalanceWithDenom,
+  formatTokenWithValue,
   getTokenLabel,
   parseDate,
-  parseProposalStatus,
 } from "lib/utils";
 
 import { useAssetInfos } from "./assetService";
-import { useProposalListExpression } from "./expression";
+import { useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
   ProposalsResponse,
@@ -50,10 +50,67 @@ import {
   fetchGovUploadAccessParams,
   getProposalsByAddress,
   getRelatedProposalsByContractAddress,
+  getProposals,
 } from "./proposal";
 
+export const useProposals = (
+  limit: number,
+  offset: number,
+  proposer: Option<BechAddr20>,
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string
+) => {
+  const endpoint = useBaseApiRoute("proposals");
+  const trimmedSearch = search.trim();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS,
+      endpoint,
+      limit,
+      offset,
+      proposer,
+      statuses,
+      types,
+      trimmedSearch,
+    ],
+    async () =>
+      getProposals(
+        endpoint,
+        limit,
+        offset,
+        proposer,
+        statuses,
+        types,
+        trimmedSearch
+      ),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalsByAddress = (
+  address: BechAddr,
+  offset: number,
+  limit: number
+): UseQueryResult<ProposalsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_ADDRESS,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    async () => getProposalsByAddress(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
 export const useRelatedProposalsByContractAddress = (
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   offset: number,
   limit: number
 ) => {
@@ -81,26 +138,6 @@ export const useRelatedProposalsByContractAddress = (
   );
 };
 
-export const useProposalsByAddress = (
-  address: Addr,
-  offset: number,
-  limit: number
-): UseQueryResult<ProposalsResponse> => {
-  const endpoint = useBaseApiRoute("accounts");
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.PROPOSALS_BY_ADDRESS,
-      endpoint,
-      address,
-      limit,
-      offset,
-    ],
-    async () => getProposalsByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
 export const useRelatedProposalsByModuleIdPagination = (
   moduleId: Nullish<number>,
   offset: number,
@@ -119,12 +156,12 @@ export const useRelatedProposalsByModuleIdPagination = (
         module_proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.proposal_id,
           title: proposal.proposal.title,
-          status: parseProposalStatus(proposal.proposal.status),
+          status: proposal.proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
-          resolvedHeight: proposal.proposal.resolved_height,
+          resolvedHeight: proposal.proposal.resolved_height ?? null,
           type: proposal.proposal.type as ProposalType,
-          proposer: proposal.proposal.account?.address as Addr,
+          proposer: proposal.proposal.account?.address as BechAddr,
           isExpedited: Boolean(proposal.proposal.is_expedited),
         }))
       );
@@ -175,86 +212,6 @@ export const useRelatedProposalsCountByModuleId = (
   );
 };
 
-export const useProposalList = (
-  offset: number,
-  pageSize: number,
-  statuses: ProposalStatus[],
-  types: ProposalType[],
-  search: string,
-  proposer: Option<Addr>
-): UseQueryResult<Proposal[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const expression = useProposalListExpression(
-    statuses,
-    types,
-    search,
-    proposer
-  );
-
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getProposalList, {
-          expression,
-          offset,
-          pageSize,
-        })
-        .then(({ proposals }) =>
-          proposals.map<Proposal>((proposal) => ({
-            proposalId: proposal.id,
-            title: proposal.title,
-            status: parseProposalStatus(proposal.status),
-            votingEndTime: parseDate(proposal.voting_end_time),
-            depositEndTime: parseDate(proposal.deposit_end_time),
-            resolvedHeight: proposal.resolved_height,
-            type: proposal.type as ProposalType,
-            proposer: proposal.account?.address as Addr,
-            isExpedited: Boolean(proposal.is_expedited),
-          }))
-        ),
-    [indexerGraphClient, offset, pageSize, expression]
-  );
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.PROPOSALS,
-      indexerGraphClient,
-      expression,
-      offset,
-      pageSize,
-    ],
-    queryFn
-  );
-};
-
-export const useProposalListCount = (
-  statuses: ProposalStatus[],
-  types: ProposalType[],
-  search: string,
-  proposer: Option<Addr>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const expression = useProposalListExpression(
-    statuses,
-    types,
-    search,
-    proposer
-  );
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getProposalListCount, { expression })
-        .then(
-          ({ proposals_aggregate }) => proposals_aggregate?.aggregate?.count
-        ),
-    [indexerGraphClient, expression]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PROPOSALS_COUNT, indexerGraphClient, expression],
-    queryFn
-  );
-};
-
 export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(
@@ -273,7 +230,7 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
 };
 
 export interface MinDeposit {
-  amount: U<Token>;
+  amount: U<Token<Big>>;
   denom: string;
   formattedAmount: Token;
   formattedDenom: string;
@@ -297,6 +254,8 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
+
   const queryFn = useCallback(
     () =>
       Promise.all([
@@ -305,28 +264,30 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
-        const assetInfo = assetInfos?.[minDepositParam.denom];
-        const [minDepositAmount, minDepositDenom] = [
-          deexponentify(
-            minDepositParam.amount as U<Token>,
-            assetInfo?.precision
-          ).toFixed(),
-          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
-        ];
+        const minDepositToken = coinToTokenWithValue(
+          minDepositParam.denom,
+          minDepositParam.amount,
+          assetInfos,
+          movePoolInfos
+        );
+        const minDepositAmount = deexponentify(
+          minDepositToken.amount,
+          minDepositToken.precision
+        ).toFixed() as Token;
+
         return {
           depositParams: {
             ...params[0],
             minDeposit: {
               ...minDepositParam,
-              amount: minDepositParam.amount as U<Token>,
-              formattedAmount: minDepositAmount as Token,
-              formattedDenom: minDepositDenom,
-              formattedToken: formatBalanceWithDenom({
-                coin: minDepositParam,
-                precision: assetInfo?.precision,
-                symbol: assetInfo?.symbol,
-              }),
-              precision: assetInfo?.precision ?? 0,
+              amount: minDepositToken.amount,
+              formattedAmount: minDepositAmount,
+              formattedDenom: getTokenLabel(
+                minDepositToken.denom,
+                minDepositToken.symbol
+              ),
+              formattedToken: formatTokenWithValue(minDepositToken),
+              precision: minDepositToken.precision ?? 0,
             },
             minInitialDeposit: big(params[0].minInitialDepositRatio)
               .times(minDepositAmount)
@@ -336,7 +297,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint, cosmwasmEndpoint, assetInfos]
+    [assetInfos, cosmwasmEndpoint, lcdEndpoint, movePoolInfos]
   );
 
   return useQuery(

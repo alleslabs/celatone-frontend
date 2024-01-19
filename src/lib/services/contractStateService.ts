@@ -1,12 +1,12 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 
 import { getContractStates } from "./contractState";
 
 export const useContractStates = (
-  contractAddress: ContractAddr,
+  contractAddress: BechAddr32,
   numStatesToLoad: number
 ) => {
   const baseEndpoint = useBaseApiRoute("contracts");

@@ -157,6 +157,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               textFormat="normal"
               maxWidth="fit-content"
               type="user_address"
+              fixedHeight={false}
             />
           </Flex>
           <Flex
@@ -202,7 +203,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                 leftIcon={<CustomIcon name="query" mr={0} />}
                 size={{ base: "sm", md: "md" }}
                 onClick={() => {
-                  track(AmpEvent.USE_MODULE_DETAIL_MAIN_CTA, { label: "view" });
+                  track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
+                    label: "view",
+                  });
                   navigate({
                     pathname: "/interact",
                     query: {
@@ -221,7 +224,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                 leftIcon={<CustomIcon name="execute" mr={0} />}
                 size={{ base: "sm", md: "md" }}
                 onClick={() => {
-                  track(AmpEvent.USE_MODULE_DETAIL_MAIN_CTA, {
+                  track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
                     label: "execute",
                   });
                   navigate({
@@ -248,7 +251,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                   leftIcon={<CustomIcon name="migrate" mr={0} />}
                   size={{ base: "sm", md: "md" }}
                   onClick={() => {
-                    track(AmpEvent.USE_MODULE_DETAIL_MAIN_CTA, {
+                    track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
                       label: "republish",
                     });
                     navigate({

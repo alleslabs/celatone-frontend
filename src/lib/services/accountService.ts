@@ -10,7 +10,7 @@ import {
   useGovConfig,
 } from "lib/app-provider";
 import { getAccountTypeByAddressQueryDocument } from "lib/query";
-import type { AccountType, Addr, Option } from "lib/types";
+import type { AccountType, BechAddr, Option } from "lib/types";
 
 import {
   getAccountData,
@@ -20,7 +20,7 @@ import {
 } from "./account";
 
 export const useAccountType = (
-  walletAddress: Option<Addr>,
+  address: Option<BechAddr>,
   options: Pick<
     UseQueryOptions<AccountType, Error>,
     "enabled" | "onSuccess" | "onError"
@@ -29,22 +29,22 @@ export const useAccountType = (
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
-    if (!walletAddress)
+    if (!address)
       throw new Error(
         "Error fetching account type: failed to retrieve address."
       );
     return indexerGraphClient
       .request(getAccountTypeByAddressQueryDocument, {
-        address: walletAddress,
+        address,
       })
       .then(
         ({ accounts_by_pk }) =>
           (accounts_by_pk?.type ?? "BaseAccount") as AccountType
       );
-  }, [indexerGraphClient, walletAddress]);
+  }, [indexerGraphClient, address]);
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, indexerGraphClient, walletAddress],
+    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, indexerGraphClient, address],
     queryFn,
     {
       ...options,
@@ -54,7 +54,9 @@ export const useAccountType = (
   );
 };
 
-export const useAccountData = (address: Addr): UseQueryResult<AccountData> => {
+export const useAccountData = (
+  address: BechAddr
+): UseQueryResult<AccountData> => {
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
@@ -65,7 +67,7 @@ export const useAccountData = (address: Addr): UseQueryResult<AccountData> => {
 };
 
 export const useAccountTableCounts = (
-  address: Addr
+  address: BechAddr
 ): UseQueryResult<AccountTableCounts> => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });

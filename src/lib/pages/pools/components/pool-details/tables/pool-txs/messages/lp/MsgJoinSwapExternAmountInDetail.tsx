@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolInfoText } from "../components/PoolInfoText";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { AssetInfosOpt } from "lib/services/assetService";
+import type { AssetInfos, Option } from "lib/types";
 import { extractMsgType } from "lib/utils";
 import type { MsgJoinSwapExternAmountInDetails } from "lib/utils/tx/types";
 
@@ -13,7 +13,7 @@ interface MsgJoinSwapExternAmountInDetailProps {
   blockHeight: number;
   msgIndex: number;
   msg: MsgJoinSwapExternAmountInDetails;
-  assetInfos: AssetInfosOpt;
+  assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }

@@ -1,7 +1,7 @@
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { TransactionsTable } from "lib/components/table";
+import { TableTitle, TransactionsTable } from "lib/components/table";
 import { useTxsByBlockHeight } from "lib/services/txService";
 
 const scrollComponentId = "block_tx_table_header";
@@ -32,6 +32,7 @@ export const BlockTxsTable = ({ height }: BlockTxsTableProps) => {
 
   return (
     <>
+      <TableTitle title="Transactions" count={data?.total} />
       <TransactionsTable
         transactions={data?.items}
         isLoading={isLoading}

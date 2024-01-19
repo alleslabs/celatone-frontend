@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Addr, Nullable, Option } from "lib/types";
+import type { BechAddr, Nullable, Option } from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -8,8 +8,9 @@ export enum ProposalStatus {
   PASSED = "Passed",
   REJECTED = "Rejected",
   FAILED = "Failed",
-  DEPOSIT_FAILED = "DepositFailed",
+  DEPOSIT_FAILED = "Inactive",
 }
+export const zProposalStatus = z.nativeEnum(ProposalStatus);
 
 export enum ProposalTypeCosmos {
   TEXT = "Text",
@@ -50,6 +51,8 @@ export const zProposalType = z.union([
   z.nativeEnum(ProposalTypeCosmos),
   z.nativeEnum(ProposalTypeCosmWasm),
   z.nativeEnum(ProposalTypeOsmosis),
+  // Msg types e.g. /cosmos.distribution.v1beta1.MsgCommunityPoolSpend
+  z.string(),
 ]);
 export type ProposalType = z.infer<typeof zProposalType>;
 
@@ -57,10 +60,10 @@ export interface Proposal {
   proposalId: number;
   title: string;
   status: ProposalStatus;
-  votingEndTime: Date;
+  votingEndTime: Nullable<Date>;
   depositEndTime: Date;
-  resolvedHeight: Option<Nullable<number>>;
+  resolvedHeight: Nullable<number>;
   type: ProposalType;
-  proposer: Option<Addr>;
+  proposer: Option<BechAddr>;
   isExpedited: boolean;
 }

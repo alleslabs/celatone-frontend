@@ -24,7 +24,7 @@ import { ContractListDetail } from "lib/components/select-contract";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import type { ContractAddr } from "lib/types";
+import type { BechAddr32 } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 // TODO: revisit again
@@ -46,7 +46,7 @@ const ContractsByList = observer(() => {
     ? instantiatedListInfo
     : getContractLists().find((item) => item.slug === listSlug);
 
-  const onContractSelect = (contract: ContractAddr) =>
+  const onContractSelect = (contract: BechAddr32) =>
     navigate({
       pathname: "/contracts/[contract]",
       query: { contract },

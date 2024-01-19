@@ -36,7 +36,8 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       gov: {
-        enabled: false,
+        enabled: true,
+        hideOpenProposal: true,
       },
       nft: {
         enabled: false,
@@ -85,7 +86,8 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       gov: {
-        enabled: false,
+        enabled: true,
+        hideOpenProposal: true,
       },
       nft: {
         enabled: false,

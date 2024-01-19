@@ -43,6 +43,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.5.0
+
+### Features
+
+- [#721](https://github.com/alleslabs/celatone-frontend/pull/721) Migrate to pnpm
+- [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
+- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
+- [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
+- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
+- [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
+- [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
+
+### Improvements
+
+- [#725](https://github.com/alleslabs/celatone-frontend/pull/725) Adjust unsupported asset display in account and contract detail
+- [#728](https://github.com/alleslabs/celatone-frontend/pull/728) Support tx events for cosmos sdk 0.50
+- [#729](https://github.com/alleslabs/celatone-frontend/pull/729) Add missing title for block transactions
+- [#726](https://github.com/alleslabs/celatone-frontend/pull/726) Add missing title for instantiate permission and adjust contract menu in nav bar
+- [#713](https://github.com/alleslabs/celatone-frontend/pull/713) Adjust search state consistency
+- [#712](https://github.com/alleslabs/celatone-frontend/pull/712) api v1 - proposal list
+- [#714](https://github.com/alleslabs/celatone-frontend/pull/714) api v1 - recent contracts list
+- [#710](https://github.com/alleslabs/celatone-frontend/pull/710) Refactor all address types
+
+### Bug fixes
+
+- [#736](https://github.com/alleslabs/celatone-frontend/pull/736) Fix assets related bugs
+- [#735](https://github.com/alleslabs/celatone-frontend/pull/735) Fix nfts related bugs
+- [#734](https://github.com/alleslabs/celatone-frontend/pull/734) Fix search spamming by using debounce
+- [#733](https://github.com/alleslabs/celatone-frontend/pull/733) Fix contract list nullable fields
+- [#732](https://github.com/alleslabs/celatone-frontend/pull/732) Fix custom tab incorrect variant and recent modules text
+- [#722](https://github.com/alleslabs/celatone-frontend/pull/722) Fix flicker query page
+
 ## v1.4.1
 
 ### Features

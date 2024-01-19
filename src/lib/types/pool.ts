@@ -2,8 +2,8 @@ import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 
 import type {
-  Addr,
-  ContractAddr,
+  BechAddr,
+  BechAddr32,
   Nullable,
   Nullish,
   Option,
@@ -36,7 +36,7 @@ export interface Pool<
   isSuperfluid: boolean;
   poolLiquidity: TLiquidity[];
   // NOTE: not used any more
-  contractAddress: Nullish<ContractAddr>;
+  contractAddress: Nullish<BechAddr32>;
 }
 
 export interface PoolDetail<
@@ -45,8 +45,8 @@ export interface PoolDetail<
 > extends Pool<TLiquidity> {
   isSupported: boolean;
   blockHeight: Option<number>;
-  creator: Option<Addr>;
-  poolAddress: ContractAddr;
+  creator: Option<BechAddr>;
+  poolAddress: BechAddr32;
   swapFee: string;
   exitFee: string;
   futurePoolGovernor: string;
@@ -56,7 +56,7 @@ export interface PoolDetail<
   scalingFactorController: Nullable<string>;
   spreadFactor: Nullable<string>;
   tickSpacing: Nullable<number>;
-  contractAddress: Nullish<ContractAddr>;
+  contractAddress: Nullish<BechAddr32>;
 }
 
 export interface PoolInfo {

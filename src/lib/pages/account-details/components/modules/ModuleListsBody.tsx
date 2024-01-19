@@ -5,10 +5,10 @@ import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { ErrorFetching, EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
-import type { MoveAccountAddr, Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
-  selectedAddress: MoveAccountAddr;
+  address: BechAddr;
   keyword: string;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
@@ -16,7 +16,7 @@ interface ModuleListsBodyProps {
 }
 
 export const ModuleListsBody = ({
-  selectedAddress,
+  address,
   keyword,
   modules,
   isLoading,
@@ -25,23 +25,22 @@ export const ModuleListsBody = ({
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
-    return modules?.filter(
-      (module) =>
-        module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
+    return modules?.filter((module) =>
+      module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
     );
   }, [keyword, modules]);
 
   if (isLoading) return <Loading />;
+
   if (!modules) return <ErrorFetching dataName="modules" />;
+  if (!modules.length)
+    return <EmptyState message="No modules are on this account." withBorder />;
+
   if (!filteredModules?.length)
     return (
       <EmptyState
-        imageVariant={!keyword ? "empty" : "not-found"}
-        message={
-          !keyword
-            ? "There are no modules on this account."
-            : "No matched modules found"
-        }
+        imageVariant="not-found"
+        message="No matched modules found"
         withBorder
       />
     );
@@ -51,7 +50,7 @@ export const ModuleListsBody = ({
         (item) => (
           <ModuleCard
             key={item.moduleName}
-            selectedAddress={selectedAddress}
+            selectedAddress={address}
             module={item}
             selectedModule={undefined}
           />

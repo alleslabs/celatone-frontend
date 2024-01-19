@@ -8,7 +8,6 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { useAssetInfos } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
@@ -24,9 +23,6 @@ const TxDetails = () => {
     isLoading: txLoading,
     isFetching: txFetching,
   } = useTxData(hashParam);
-  const { data: assetInfos, isLoading: assetLoading } = useAssetInfos({
-    withPrices: true,
-  });
 
   useEffect(() => {
     if (router.isReady && !(txLoading && txFetching)) {
@@ -35,15 +31,14 @@ const TxDetails = () => {
         false: "success",
         undefined: "not_found",
       };
-      track(AmpEvent.TO_TRANSACTION_DETAIL, {
+      track(AmpEvent.TO_TRANSACTION_DETAILS, {
         tx_status:
           mapTxFailed[String(txData?.isTxFailed) as keyof typeof mapTxFailed],
       });
     }
   }, [router.isReady, txData, txLoading, txFetching]);
 
-  if ((txLoading && txFetching) || assetLoading || !hashParam)
-    return <Loading withBorder />;
+  if ((txLoading && txFetching) || !hashParam) return <Loading withBorder />;
 
   return (
     <PageContainer>
@@ -56,10 +51,10 @@ const TxDetails = () => {
       {txData ? (
         <>
           <TxHeader mt={2} txData={txData} />
-          {isMobile && <TxInfoMobile txData={txData} assetInfos={assetInfos} />}
+          {isMobile && <TxInfoMobile txData={txData} />}
           <Flex my={{ base: 0, md: 12 }} justify="space-between">
-            {!isMobile && <TxInfo txData={txData} assetInfos={assetInfos} />}
-            <MessageSection txData={txData} assetInfos={assetInfos} />
+            {!isMobile && <TxInfo txData={txData} />}
+            <MessageSection txData={txData} />
           </Flex>
         </>
       ) : (

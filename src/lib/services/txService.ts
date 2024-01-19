@@ -21,7 +21,6 @@ import {
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
-  Addr,
   Option,
   Transaction,
   TxFilters,
@@ -29,6 +28,7 @@ import type {
   PoolTxFilter,
   Nullable,
   HexAddr,
+  BechAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import { isTxHash, parseDate, parseTxHash, snakeToCamel } from "lib/utils";
@@ -45,7 +45,7 @@ import {
   getTxs,
   getTxsByAddress,
   queryTxData,
-  getAPITxsCountByAddress,
+  getTxsCountByAddress,
   getTxsByModule,
   getTxsByBlockHeight,
 } from "./tx";
@@ -83,7 +83,7 @@ export const useTxData = (
 };
 
 export const useTxsByAddress = (
-  address: Addr,
+  address: Option<BechAddr>,
   search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
@@ -108,8 +108,9 @@ export const useTxsByAddress = (
       isWasm,
       isMove,
     ],
-    async () =>
-      getTxsByAddress(
+    async () => {
+      if (!address) throw new Error("No user address");
+      return getTxsByAddress(
         endpoint,
         address,
         search,
@@ -120,13 +121,14 @@ export const useTxsByAddress = (
         isWasm,
         isMove,
         isInitia
-      ),
+      );
+    },
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
 export const useTxsCountByAddress = (
-  address: Addr,
+  address: Option<BechAddr>,
   search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters
@@ -143,15 +145,17 @@ export const useTxsCountByAddress = (
       isSigner,
       JSON.stringify(txFilters),
     ],
-    async () =>
-      getAPITxsCountByAddress(
+    async () => {
+      if (!address) throw new Error("address is undefined");
+      return getTxsCountByAddress(
         endpoint,
         address,
         search,
         isSigner,
         txFilters,
         wasmEnable
-      ),
+      );
+    },
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -177,7 +181,7 @@ export const useTxsByPoolIdPagination = (
           hash: parseTxHash(transaction.transaction.hash),
           // TODO: revisit this
           messages: snakeToCamel(transaction.transaction.messages) as Message[],
-          sender: transaction.transaction.account.address as Addr,
+          sender: transaction.transaction.account.address as BechAddr,
           isSigner: true,
           height: transaction.block.height,
           created: parseDate(transaction.block.timestamp),

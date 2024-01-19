@@ -32,6 +32,7 @@ export function RemoveSavedAccountModal({
   accountLocalInfo,
   trigger = (
     <StyledIconButton
+      aria-label="button"
       icon={<CustomIcon name="delete" />}
       variant="ghost-gray"
     />

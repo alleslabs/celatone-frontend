@@ -1,5 +1,5 @@
 import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
-import type { HumanAddr, Option } from "lib/types";
+import type { BechAddr20, Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
 import { bech32AddressToHex, truncate, unpadHexAddress } from "lib/utils";
 
@@ -24,14 +24,14 @@ export const statusResolver = ({
   modules: Module[];
   index: number;
   policy: UpgradePolicy;
-  address: Option<HumanAddr>;
+  address: Option<BechAddr20>;
 }): PublishStatus => {
   if (!data) return PUBLISH_STATUS_DEFAULT;
 
   const { abi, currentPolicy, modulePath } = data;
 
   const validPublisher = address
-    ? unpadHexAddress(bech32AddressToHex(address as HumanAddr)) === abi.address
+    ? unpadHexAddress(bech32AddressToHex(address)) === abi.address
     : false;
 
   const priorUpload = modules

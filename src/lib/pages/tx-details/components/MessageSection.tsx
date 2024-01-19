@@ -7,18 +7,18 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import type { TxData } from "lib/services/txService";
+import { extractTxLogs } from "lib/utils";
 
 import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
   txData: TxData;
-  assetInfos: AssetInfosOpt;
 }
 
-export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
+export const MessageSection = ({ txData }: MessageSectionProps) => {
   const msgs = txData.tx.body.messages;
+  const msgLogs = extractTxLogs(txData);
   return (
     <Flex direction="column" flex={1} gap={4} w="full">
       {txData.isTxFailed && (
@@ -41,18 +41,14 @@ export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
         </Heading>
         <Badge>{msgs.length}</Badge>
       </Flex>
-      {msgs.map((msg, idx) => {
-        const msgLog = txData.logs.find((log) => log.msg_index === idx);
-        return (
-          <TxMessage
-            key={msg.type + msg.value + (msgLog?.msg_index?.toString() || "0")}
-            msgBody={msg}
-            log={msgLog}
-            isSingleMsg={msgs.length === 1}
-            assetInfos={assetInfos}
-          />
-        );
-      })}
+      {msgs.map((msg, idx) => (
+        <TxMessage
+          key={msg.type + msg.value + msgLogs[idx].msg_index.toString()}
+          msgBody={msg}
+          log={msgLogs[idx]}
+          isSingleMsg={msgs.length === 1}
+        />
+      ))}
     </Flex>
   );
 };

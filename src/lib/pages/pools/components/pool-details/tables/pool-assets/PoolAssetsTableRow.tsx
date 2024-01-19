@@ -36,8 +36,9 @@ export const PoolAssetsTableRow = ({
   const allocation = token.value
     ? formatRatio(divWithDefault(token.value, totalLiquidity, 0) as Ratio<Big>)
     : undefined;
-  const tokenWeight = weight?.find((w) => w.denom === token.denom)
-    ?.percentWeight;
+  const tokenWeight = weight?.find(
+    (w) => w.denom === token.denom
+  )?.percentWeight;
   const scalingFactor = scalingFactors
     ? formatInteger(scalingFactors[liquidityIndex])
     : undefined;

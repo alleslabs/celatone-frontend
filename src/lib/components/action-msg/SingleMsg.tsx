@@ -1,10 +1,9 @@
 import { Tag, Text, Flex } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 
 import { MsgToken } from "./MsgToken";
 
@@ -14,16 +13,10 @@ interface LinkElement {
   copyValue?: string;
 }
 
-interface Token {
-  id: string;
-  amount: string;
-  symbol: Option<string>;
-  precision: Option<number>;
-}
 export interface SingleMsgProps {
   type: string;
   text1?: string;
-  tokens?: Token[];
+  tokens?: TokenWithValue[];
   tags?: Option<string>[];
   length?: number;
   text2?: string;
@@ -49,17 +42,10 @@ export const SingleMsg = ({
       <Text variant="body2">
         {type} {text1}
       </Text>
-      {tokens?.map((token: Token, index: number) => (
+      {tokens?.map((token: TokenWithValue, index: number) => (
         <MsgToken
-          key={index.toString() + token}
-          coin={
-            {
-              denom: token.id,
-              amount: token.amount,
-            } as Coin
-          }
-          symbol={token.symbol}
-          precision={token.precision}
+          key={index.toString() + token.denom}
+          token={token}
           // TODO: add `ampCopierSection` later
         />
       ))}
@@ -68,6 +54,8 @@ export const SingleMsg = ({
         <Tag
           variant="gray"
           size="sm"
+          wordBreak="break-word"
+          textAlign="left"
           key={index.toString() + tag}
           color={tag ? "text.main" : "text.disabled"}
         >
@@ -76,13 +64,13 @@ export const SingleMsg = ({
       ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
-        <Tag variant="gray" size="sm">
+        <Tag variant="gray" size="sm" wordBreak="break-word" textAlign="left">
           +{length - tags.length}
         </Tag>
       )}
       {/* Length  */}
       {!tags && length && (
-        <Tag variant="gray" size="sm">
+        <Tag variant="gray" size="sm" wordBreak="break-word" textAlign="left">
           {length}
         </Tag>
       )}

@@ -8,7 +8,7 @@ import {
   submitStoreCodeProposalTx,
   submitWhitelistProposalTx,
 } from "lib/app-fns/tx/submitProposal";
-import type { HumanAddr, Nullable } from "lib/types";
+import type { Nullable } from "lib/types";
 
 export interface SubmitWhitelistProposalStreamParams {
   estimatedFee?: StdFee;
@@ -37,7 +37,7 @@ export const useSubmitWhitelistProposalTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return submitWhitelistProposalTx({
-        address: address as HumanAddr,
+        address,
         client,
         fee: estimatedFee,
         messages,
@@ -80,7 +80,7 @@ export const useSubmitStoreCodeProposalTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return submitStoreCodeProposalTx({
-        address: address as HumanAddr,
+        address,
         chainName: chain.chain_name,
         client,
         fee: estimatedFee,

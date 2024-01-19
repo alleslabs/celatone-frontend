@@ -1,5 +1,5 @@
 export * from "./move";
-export * from "./upload";
+export * from "./storeCode";
 export * from "./execute";
 export * from "./instantiate";
 export * from "./resend";

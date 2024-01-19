@@ -5,6 +5,7 @@ import {
   usePoolConfig,
   useGovConfig,
   useWasmConfig,
+  useNftConfig,
   useMoveConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -23,6 +24,7 @@ const SubHeader = () => {
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
   const govConfig = useGovConfig({ shouldRedirect: false });
+  const nftConfig = useNftConfig({ shouldRedirect: false });
 
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
@@ -52,6 +54,13 @@ const SubHeader = () => {
 
   if (poolConfig.enabled)
     subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
+
+  if (nftConfig.enabled)
+    subHeaderMenu.push({
+      name: "NFTs",
+      slug: "/nft-collections",
+      icon: "group",
+    });
 
   const isCurrentPage = useIsCurrentPage();
 
