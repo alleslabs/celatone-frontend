@@ -36,7 +36,9 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           objectFit="cover"
           backgroundPosition="center"
           borderRadius="8px"
-          src={metadata?.image ? metadata?.image : NFT_IMAGE_PLACEHOLDER}
+          src={metadata?.image}
+          fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+          fallbackStrategy="beforeLoadOrError"
         />
         <Flex direction="column" gap={2} overflow="hidden" w="full">
           <Heading
