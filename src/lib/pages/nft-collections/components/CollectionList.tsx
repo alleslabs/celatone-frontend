@@ -29,7 +29,7 @@ export const CollectionList = ({
     );
 
   return (
-    <SimpleGrid columns={{ xl: 2, sm: 1 }} spacing={8}>
+    <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={{ base: 4, xl: 8 }}>
       {collections.map((collection) => (
         <GridItem key={collection.collectionAddress}>
           <AppLink href={`/nft-collections/${collection.collectionAddress}`}>

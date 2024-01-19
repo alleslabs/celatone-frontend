@@ -106,6 +106,7 @@ export const CollectionInfoSection = ({
               maxWidth="full"
               showCopyOnHover
               ampCopierSection="collection-information"
+              fixedHeight={false}
             />
           </Flex>
           <Flex gap={infoGap} flexDir={infoDirection}>

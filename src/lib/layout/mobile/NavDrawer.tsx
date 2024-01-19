@@ -18,6 +18,7 @@ import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useMoveConfig,
+  useNftConfig,
   usePublicProjectConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -33,6 +34,7 @@ export const NavDrawer = () => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
+  const nft = useNftConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
   const mobileMenu: MenuInfo[] = [
@@ -81,6 +83,15 @@ export const NavDrawer = () => {
                 name: "0x1 Page",
                 slug: "/account/0x1",
                 icon: "hex" as IconKeys,
+              },
+            ]
+          : []),
+        ...(nft.enabled
+          ? [
+              {
+                name: "NFT Collections",
+                slug: "/nft-collections",
+                icon: "group" as IconKeys,
               },
             ]
           : []),

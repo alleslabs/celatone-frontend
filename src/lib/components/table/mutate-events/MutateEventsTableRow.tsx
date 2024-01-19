@@ -28,11 +28,19 @@ export const MutateEventsTableRow = ({
       <TableRow pr={1}>
         <Badge>{mutatedFieldName}</Badge>
       </TableRow>
-      <TableRow>{oldValue}</TableRow>
+      <TableRow>
+        <Text display="inline" wordBreak="break-word">
+          {oldValue}
+        </Text>
+      </TableRow>
       <TableRow px={10}>
         <CustomIcon name="arrow-right" color="gray.600" />
       </TableRow>
-      <TableRow>{newValue}</TableRow>
+      <TableRow>
+        <Text display="inline" wordBreak="break-word">
+          {newValue}
+        </Text>
+      </TableRow>
       <TableRow>
         <Flex direction="column" gap={1}>
           <Text variant="body3">{formatUTC(timestamp)}</Text>

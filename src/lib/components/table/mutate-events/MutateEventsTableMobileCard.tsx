@@ -25,12 +25,16 @@ export const MutateEventsTableMobileCard = ({
       <Stack spacing="12px">
         <Flex direction="column">
           <MobileLabel label="Old Value" />
-          <Text variant="body2">{oldValue}</Text>
+          <Text variant="body2" wordBreak="break-word">
+            {oldValue}
+          </Text>
         </Flex>
         <CustomIcon name="arrow-down" color="gray.600" />
         <Flex direction="column">
           <MobileLabel label="New Value" />
-          <Text variant="body2">{newValue}</Text>
+          <Text variant="body2" wordBreak="break-word">
+            {newValue}
+          </Text>
         </Flex>
       </Stack>
     }

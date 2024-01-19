@@ -22,32 +22,46 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
         bg: "gray.800",
       }}
     >
-      <Flex gap="24px" alignItems="center" maxW="full" w="full">
-        {metadata?.image ? (
-          <Image
-            minW="150px"
-            h="150px"
-            borderRadius="8px"
-            src={metadata?.image}
-          />
-        ) : (
-          <Image
-            minW="150px"
-            h="150px"
-            borderRadius="8px"
-            src={NFT_IMAGE_PLACEHOLDER}
-          />
-        )}
-        <Flex direction="column" gap={2} overflowX="hidden">
-          <Heading as="h6" variant="h6" fontWeight={600} className="ellipsis">
+      <Flex
+        gap="24px"
+        alignItems="center"
+        maxW="full"
+        w="full"
+        overflow="hidden"
+      >
+        <Image
+          minW={{ base: 28, md: 40 }}
+          w={{ base: 28, md: 40 }}
+          h={{ base: 28, md: 40 }}
+          objectFit="cover"
+          backgroundPosition="center"
+          borderRadius="8px"
+          src={metadata?.image}
+          fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+          fallbackStrategy="beforeLoadOrError"
+        />
+        <Flex direction="column" gap={2} overflow="hidden" w="full">
+          <Heading
+            as="h6"
+            variant="h6"
+            overflow="hidden"
+            fontWeight={600}
+            sx={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
             {name}
           </Heading>
           <Text
             color="text.dark"
-            variant="body2"
+            variant={{ base: "body3", md: "body2" }}
             fontWeight={400}
             overflow="hidden"
+            wordBreak="break-word"
             textOverflow="ellipsis"
+            lineHeight="125%"
             sx={{
               display: "-webkit-box",
               WebkitLineClamp: 3,

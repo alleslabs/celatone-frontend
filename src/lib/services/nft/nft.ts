@@ -22,6 +22,7 @@ const zNft = z
     uri: z.string(),
     token_id: z.string(),
     description: z.string().optional(),
+    is_burned: z.boolean(),
     vmAddressByOwner: z.object({ vm_address: zHexAddr }),
     vm_address: z.object({ vm_address: zHexAddr32 }).optional(),
     collectionByCollection: z.object({
@@ -30,9 +31,10 @@ const zNft = z
     }),
   })
   .transform((val) => ({
-    description: val.description,
     uri: val.uri,
     tokenId: val.token_id,
+    description: val.description,
+    isBurned: val.is_burned,
     ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address,
     collectionAddress: val.collectionByCollection.vm_address.vm_address,
@@ -56,20 +58,6 @@ export const getNfts = async (
         offset,
         search: `%${search}%`,
       },
-    })
-    .then(({ data: res }) => zNft.array().parse(res.data.nfts));
-
-export const getNftsByAccount = async (
-  indexer: string,
-  accountAddress: HexAddr,
-  pageSize: number,
-  offset: number,
-  search: string
-) =>
-  axios
-    .post(indexer, {
-      query: getNftsByAccountQuery,
-      variables: { accountAddress, pageSize, offset, search: search ?? "" },
     })
     .then(({ data: res }) => zNft.array().parse(res.data.nfts));
 
@@ -240,7 +228,36 @@ export const getNftMutateEventsCount = async (
       ({ data }) => data.data.nft_mutation_events_aggregate.aggregate.count
     );
 
-export const getAccountNftsByCollection = async (
+const zNftsByAccountResponse = z
+  .object({
+    nfts: zNft.array(),
+    nfts_aggregate: z.object({
+      aggregate: z.object({
+        count: z.number(),
+      }),
+    }),
+  })
+  .transform((val) => ({
+    nfts: val.nfts,
+    total: val.nfts_aggregate.aggregate.count,
+  }));
+export type NftsByAccountResponse = z.infer<typeof zNftsByAccountResponse>;
+
+export const getNftsByAccount = async (
+  indexer: string,
+  accountAddress: HexAddr,
+  pageSize: number,
+  offset: number,
+  search: string
+) =>
+  axios
+    .post(indexer, {
+      query: getNftsByAccountQuery,
+      variables: { accountAddress, pageSize, offset, search },
+    })
+    .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));
+
+export const getNftsByAccountByCollection = async (
   indexer: string,
   accountAddress: HexAddr,
   pageSize: number,
@@ -259,4 +276,4 @@ export const getAccountNftsByCollection = async (
         search,
       },
     })
-    .then(({ data: res }) => zNft.array().parse(res.data.nfts));
+    .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));

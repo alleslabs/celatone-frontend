@@ -1,24 +1,22 @@
 import { Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useAccountNfts } from "../../data";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
+import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr, HexAddr32 } from "lib/types";
 
 interface NftsByCollectionProps {
   accountAddress: HexAddr;
-  totalData: number;
   collectionAddress?: HexAddr32;
 }
 
 export const NftsByCollection = ({
   accountAddress,
-  totalData,
   collectionAddress,
 }: NftsByCollectionProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -26,25 +24,28 @@ export const NftsByCollection = ({
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
-  const { data: nfts, isLoading } = useAccountNfts(
+  const { data, isLoading } = useNftsByAccountByCollection(
     accountAddress,
     pageSize,
     offset,
     debouncedSearch,
-    collectionAddress
+    collectionAddress,
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
   );
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export const NftsByCollection = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={nfts}
+        nfts={data?.nfts}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -79,12 +80,12 @@ export const NftsByCollection = ({
         }
         showCollection
       />
-      {totalData > 10 && (
+      {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
+          totalData={data.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

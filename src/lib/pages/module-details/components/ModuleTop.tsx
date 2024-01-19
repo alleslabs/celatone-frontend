@@ -157,6 +157,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               textFormat="normal"
               maxWidth="fit-content"
               type="user_address"
+              fixedHeight={false}
             />
           </Flex>
           <Flex
