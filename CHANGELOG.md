@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#731](https://github.com/alleslabs/celatone-frontend/pull/731) Add proposal detail page structure
+- [#721](https://github.com/alleslabs/celatone-frontend/pull/721) Migrate to pnpm
 - [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
 - [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
 - [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
@@ -49,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#725](https://github.com/alleslabs/celatone-frontend/pull/725) Adjust unsupported asset display in account and contract detail
 - [#728](https://github.com/alleslabs/celatone-frontend/pull/728) Support tx events for cosmos sdk 0.50
 - [#729](https://github.com/alleslabs/celatone-frontend/pull/729) Add missing title for block transactions
 - [#726](https://github.com/alleslabs/celatone-frontend/pull/726) Add missing title for instantiate permission and adjust contract menu in nav bar
@@ -59,6 +61,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#734](https://github.com/alleslabs/celatone-frontend/pull/734) Fix search spamming by using debounce
+- [#733](https://github.com/alleslabs/celatone-frontend/pull/733) Fix contract list nullable fields
+- [#732](https://github.com/alleslabs/celatone-frontend/pull/732) Fix custom tab incorrect variant and recent modules text
 - [#722](https://github.com/alleslabs/celatone-frontend/pull/722) Fix flicker query page
 
 ## v1.4.1

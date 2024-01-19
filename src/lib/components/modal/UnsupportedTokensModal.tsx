@@ -16,17 +16,10 @@ import {
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { Tooltip } from "../Tooltip";
+import { UnsupportedToken } from "../token";
 import { trackUseUnsupportedToken } from "lib/amplitude";
-import { useGetAddressType, useMobile } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
-import { Copier } from "lib/components/copy";
 import type { BechAddr, TokenWithValue } from "lib/types";
-import {
-  getTokenType,
-  getTokenLabel,
-  formatUTokenWithPrecision,
-} from "lib/utils";
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: TokenWithValue[];
@@ -35,78 +28,6 @@ interface UnsupportedTokensModalProps {
   buttonProps?: ButtonProps;
   amptrackSection?: string;
 }
-const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
-  addrType === "contract_address"
-    ? getTokenType("cw20")
-    : getTokenType("native");
-
-const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
-  const getAddressType = useGetAddressType();
-  const tokenType = !token.denom.includes("/")
-    ? getTokenTypeWithAddress(getAddressType(token.denom))
-    : getTokenType(token.denom.split("/")[0]);
-
-  const isMobile = useMobile();
-  return (
-    <Flex
-      className="copier-wrapper"
-      borderRadius="8px"
-      bg="gray.800"
-      direction="column"
-      px={4}
-      py={3}
-      role="group"
-      _hover={{
-        "& .info": {
-          display: "flex",
-        },
-      }}
-    >
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        justifyContent="space-between"
-        alignItems={{ base: "flex-start", md: "center" }}
-      >
-        <Flex alignItems="center" justifyContent="center" gap={1} minH={6}>
-          <Text
-            variant="body2"
-            className={isMobile ? "" : "ellipsis"}
-            wordBreak="break-all"
-          >
-            {getTokenLabel(token.denom, token.symbol, !isMobile)}
-          </Text>
-          {!isMobile && (
-            <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
-              <Flex
-                cursor="pointer"
-                className="info"
-                display={{ base: "flex", md: "none" }}
-                h={6}
-                alignItems="center"
-              >
-                <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
-              </Flex>
-            </Tooltip>
-          )}
-          <Copier
-            display={{ base: "flex", md: "none" }}
-            type="unsupported_asset"
-            value={token.denom}
-            copyLabel="Token ID Copied!"
-            ml={{ base: 1, md: 0 }}
-            amptrackSection="unsupported_token_copy"
-          />
-        </Flex>
-        <Text variant="body3" color="text.dark" my={{ base: 1, md: 0 }}>
-          {`${tokenType} Token`}
-        </Text>
-      </Flex>
-      <Text variant="body2" fontWeight="900">
-        {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
-      </Text>
-    </Flex>
-  );
-};
 
 const unsupportedTokensContent = (
   addressType: AddressReturnType

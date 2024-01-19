@@ -63,8 +63,6 @@ export const ProposalDetailBody = ({ id = 123 }: ProposalDetailBodyProps) => {
         lazyBehavior="keepMounted"
       >
         <TabList
-          mt={6}
-          mb={{ base: 0, md: 8 }}
           borderBottom="1px solid"
           borderColor="gray.700"
           overflowX="scroll"

@@ -24,6 +24,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/network-overview`) ||
     pathName.includes(`/dev-home`) ||
     pathName.includes(`/404`) ||
+    pathName.includes(`/proposals/`) ||
     // wasm
     pathName.includes(`/contracts/`) ||
     pathName === `/${currentChainId}/contracts` ||

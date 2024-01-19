@@ -1,13 +1,9 @@
 import type { TabProps } from "@chakra-ui/react";
-import {
-  Button,
-  useTab,
-  Text,
-  useMultiStyleConfig,
-  Flex,
-} from "@chakra-ui/react";
+import { Button, useTab, useMultiStyleConfig } from "@chakra-ui/react";
 
 import type { Nullish } from "lib/types";
+
+import { ProposalStepper } from "./ProposalStepper";
 
 interface CustomTabProps extends TabProps {
   count?: Nullish<number | string>;
@@ -64,42 +60,12 @@ export const VoteDetailTab = ({
       }}
       {...tabProps}
     >
-      <Flex justifyContent="space-between" w="full" alignItems="flex-start">
-        <Flex gap={2}>
-          <Flex
-            borderRadius="32px"
-            w={6}
-            h={6}
-            alignItems="center"
-            justifyContent="center"
-            background={isSelected ? "primary.main" : "gray.500"}
-            color={isSelected ? "text.main" : "background.main"}
-            fontWeight={isSelected ? 600 : 400}
-          >
-            {step}
-          </Flex>
-          <Flex direction="column" alignItems="flex-start">
-            <Text variant="body1" color="text.main" fontWeight={600}>
-              {title}
-            </Text>
-            <Text variant="body3" color="text.dark">
-              {description}
-            </Text>
-          </Flex>
-        </Flex>
-        <Flex
-          alignItems="center"
-          gap={2}
-          background="gray.900"
-          borderRadius="8px"
-          px={2}
-        >
-          <Flex h={3} w={3} background="gray.600" borderRadius="24px" />
-          <Text variant="body3" color="text.main">
-            Waiting For Deposit
-          </Text>
-        </Flex>
-      </Flex>
+      <ProposalStepper
+        title={title}
+        description={description}
+        step={step}
+        isSelected={isSelected}
+      />
     </Button>
   );
 };

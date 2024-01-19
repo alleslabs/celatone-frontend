@@ -24,7 +24,7 @@ interface PermissionRadioProps {
 }
 
 const PermissionRadio = ({ isSelected, value, text }: PermissionRadioProps) => (
-  <Radio value={value} py={2} width="100%">
+  <Radio value={value.toString()} py={2} width="100%">
     <Text fontWeight={isSelected ? "600" : "400"}>{text} </Text>
   </Radio>
 );
@@ -78,7 +78,7 @@ export const InstantiatePermissionRadio = ({
         const value = parseInt(nextValue, 10);
         setValue("permission", value);
       }}
-      value={permission}
+      value={permission.toString()}
     >
       <Box>
         <PermissionRadio

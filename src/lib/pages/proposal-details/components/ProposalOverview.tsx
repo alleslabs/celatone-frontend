@@ -15,7 +15,11 @@ const ProposalStatus = () => {
 };
 export const ProposalOverview = () => {
   return (
-    <Grid gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }} gridGap={16}>
+    <Grid
+      gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }}
+      gridGap={16}
+      mt={8}
+    >
       <GridItem>
         <Flex direction="column" gap={8}>
           <ProposalStatus />

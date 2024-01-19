@@ -13,6 +13,7 @@ const baseStyle = definePartsStyle({
   },
   item: {
     color: "text.main",
+    bg: "gray.900",
     _hover: {
       bg: "gray.800",
     },

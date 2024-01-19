@@ -1,5 +1,5 @@
-import type { Coin } from "@cosmjs/amino";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import type { Coin } from "@cosmjs/stargate";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
