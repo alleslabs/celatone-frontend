@@ -1,13 +1,13 @@
 import { Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useAccountNfts } from "../../data";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
+import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr, HexAddr32 } from "lib/types";
 
 interface NftsByCollectionProps {
@@ -37,12 +37,15 @@ export const NftsByCollection = ({
       isDisabled: false,
     },
   });
-  const { data, isLoading } = useAccountNfts(
+  const { data, isLoading } = useNftsByAccountByCollection(
     accountAddress,
     pageSize,
     offset,
     debouncedSearch,
-    collectionAddress
+    collectionAddress,
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
   );
 
   useEffect(() => {
@@ -50,10 +53,6 @@ export const NftsByCollection = ({
     setCurrentPage(1);
     setSearchKeyword("");
   }, [collectionAddress, setPageSize, setCurrentPage]);
-
-  useEffect(() => {
-    if (data?.total) setTotalData(data.total);
-  }, [data?.total, setTotalData]);
 
   return (
     <Stack spacing="24px" w="full">
