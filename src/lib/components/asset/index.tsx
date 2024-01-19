@@ -1,14 +1,15 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import type Big from "big.js";
 
+import { CustomIcon } from "../icon";
+import { Loading } from "../Loading";
 import { ErrorFetching } from "../state";
+import { TableTitle } from "../table";
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
-import { TableTitle } from "lib/components/table";
 import { useOpenAssetTab } from "lib/hooks";
 import { useBalanceInfos } from "lib/services/balanceService";
-import type { BechAddr } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AssetSectionOverview } from "./AssetSectionOverview";
@@ -23,6 +24,43 @@ interface AssetsSectionProps {
   onViewMore?: () => void;
   isAccount?: boolean;
 }
+
+const MobileOverview = ({
+  supportedAssets,
+  totalSupportedAssetsValue,
+  unsupportedAssets,
+  hasNoAsset,
+  onViewMore,
+}: {
+  supportedAssets: TokenWithValue[];
+  totalSupportedAssetsValue: Option<USD<Big>>;
+  unsupportedAssets: TokenWithValue[];
+  hasNoAsset: boolean;
+  onViewMore: () => void;
+}) => (
+  <Flex
+    justify="space-between"
+    w="full"
+    bg="gray.900"
+    borderRadius="8px"
+    p={4}
+    opacity={hasNoAsset ? 0.5 : 1}
+    onClick={hasNoAsset ? undefined : onViewMore}
+  >
+    <Flex direction="column" gap={2}>
+      <TableTitle
+        title="Assets"
+        count={supportedAssets.length + unsupportedAssets.length}
+        mb={0}
+      />
+      <UserAssetInfoCard
+        totalSupportedAssetsValue={totalSupportedAssetsValue}
+        helperText="Total Asset Value"
+      />
+    </Flex>
+    <CustomIcon name="chevron-right" color="gray.600" />
+  </Flex>
+);
 
 export const AssetsSection = ({
   address,
@@ -42,6 +80,10 @@ export const AssetsSection = ({
     error,
   } = useBalanceInfos(address);
 
+  const isZeroValue =
+    !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
+
+  const hasNoAsset = !supportedAssets.length && !unsupportedAssets.length;
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="balances" />;
 
@@ -54,33 +96,19 @@ export const AssetsSection = ({
       width="full"
     >
       {isMobileOverview ? (
-        <Flex
-          justify="space-between"
-          w="full"
-          bg="gray.900"
-          borderRadius="8px"
-          p={4}
-          onClick={onViewMore}
-        >
-          <Flex direction="column" gap={2}>
-            <TableTitle
-              title="Supported Assets"
-              count={supportedAssets.length}
-              mb={0}
-            />
-            <UserAssetInfoCard
-              totalSupportedAssetsValue={totalSupportedAssetsValue}
-              helperText="Total Asset Value"
-            />
-          </Flex>
-          <CustomIcon name="chevron-right" color="gray.600" />
-        </Flex>
+        <MobileOverview
+          supportedAssets={supportedAssets}
+          totalSupportedAssetsValue={totalSupportedAssetsValue}
+          unsupportedAssets={unsupportedAssets}
+          hasNoAsset={hasNoAsset}
+          onViewMore={onViewMore}
+        />
       ) : (
         <>
           <Flex w="full" justifyContent="space-between">
             <TableTitle title="Assets" count={totalData} mb={0} />
             <Button
-              disabled={!supportedAssets.length && !unsupportedAssets.length}
+              isDisabled={hasNoAsset}
               variant="ghost-gray"
               size="sm"
               rightIcon={
@@ -119,7 +147,11 @@ export const AssetsSection = ({
                     <Text variant="body2" color="text.dark">
                       Total Asset Value
                     </Text>
-                    <Heading as="h6" variant="h6" color="text.main">
+                    <Heading
+                      as="h6"
+                      variant="h6"
+                      color={isZeroValue ? "text.dark" : "text.main"}
+                    >
                       {totalSupportedAssetsValue
                         ? formatPrice(totalSupportedAssetsValue)
                         : "N/A"}

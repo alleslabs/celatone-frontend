@@ -89,7 +89,7 @@ export const OpenedProposalsTable = ({
                 <ErrorFetching dataName="proposals" />
               ) : (
                 <EmptyState
-                  message="This account did not open any proposals before."
+                  message="No proposals have been opened by this account before."
                   withBorder
                 />
               )

@@ -58,7 +58,7 @@ export const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
           <Text
             variant="body2"
             className={isMobile ? "" : "ellipsis"}
-            wordBreak="break-all"
+            wordBreak="break-word"
             color="text.dark"
           >
             {getTokenLabel(token.denom, token.symbol, !isMobile)}

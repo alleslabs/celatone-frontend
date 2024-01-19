@@ -30,8 +30,7 @@ const getEmptyStateProps = (selectedFilters: string[]): EmptyStateProps =>
         message: "No past transaction matches found with your input.",
       }
     : {
-        imageVariant: "empty",
-        message: "This account did not submit any transactions before.",
+        message: "No transactions have been submitted by this account before.",
       };
 
 export const TxsTable = ({

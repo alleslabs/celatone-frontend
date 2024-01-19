@@ -1,4 +1,4 @@
-import { Box, Divider } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
@@ -33,8 +33,8 @@ export const NftsOverview = ({
             isLoading={isFetching}
             emptyState={
               <EmptyState
-                message="There are currently no NFTs held by this account."
-                imageVariant="empty"
+                message="No NFTs are held by this account."
+                withBorder
               />
             }
             showCollection
@@ -42,7 +42,6 @@ export const NftsOverview = ({
           {onViewMore && !!totalCount && totalCount > 5 && (
             <ViewMore onClick={onViewMore} />
           )}
-          <Divider pt="32px" borderColor="gray.700" opacity={1} />
         </>
       )}
     </Box>

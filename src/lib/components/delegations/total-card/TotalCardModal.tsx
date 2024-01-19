@@ -40,9 +40,11 @@ const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (
   <Flex
     bg="gray.900"
     borderRadius="8px"
-    p="12px 16px"
-    align="center"
-    justify="space-between"
+    p={{ base: 3, md: "12px 16px" }}
+    alignItems={{ base: "flex-start", md: "center" }}
+    justifyContent="space-between"
+    gap={{ base: 1, md: 0 }}
+    direction={{ base: "column", md: "row" }}
   >
     <Flex align="center" gap={2}>
       <TokenImageRender boxSize={6} logo={token.logo} alt={token.denom} />
@@ -50,7 +52,10 @@ const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (
         {getTokenLabel(token.denom, token.symbol)}
       </Text>
     </Flex>
-    <TokenComposition token={token} alignItems="flex-end" />
+    <TokenComposition
+      token={token}
+      alignItems={{ base: "flex-start", md: "flex-end" }}
+    />
   </Flex>
 );
 
@@ -69,7 +74,7 @@ export const TotalCardModal = ({
     returnFocusOnClose={false}
   >
     <ModalOverlay />
-    <ModalContent w="800px" bg="gray.800">
+    <ModalContent w={{ base: "full", md: "800px" }} bg="gray.800" maxW="100vw">
       <ModalHeader>
         <Flex w="full" direction="row" alignItems="center" gap={3}>
           <CustomIcon name="assets-solid" boxSize={5} m={1} color="gray.600" />

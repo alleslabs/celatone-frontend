@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
@@ -118,25 +118,29 @@ export const ContractListDetail = ({
 
   return (
     <Box minH="xs">
-      <Flex gap={3} w="full" my={isReadOnly ? 6 : 8}>
-        <InputWithIcon
-          placeholder="Search with Contract Address, Name, or Description"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
-          amptrackSection="contract-list-item-search"
-        />
-        {!isReadOnly && (
-          <TagSelection
-            result={tagFilter}
-            setResult={setTagFilter}
-            placeholder="No tag selected"
-            label="Filter by tag"
-            boxWidth="400px"
-            creatable={false}
+      <Grid w="full" gap={4} templateColumns="3fr 1fr" my={isReadOnly ? 6 : 8}>
+        <GridItem w="full">
+          <InputWithIcon
+            placeholder="Search with Contract Address, Name, or Description"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            size={{ base: "md", md: "lg" }}
+            amptrackSection="contract-list-item-search"
           />
+        </GridItem>
+        {!isReadOnly && (
+          <GridItem w="full">
+            <TagSelection
+              result={tagFilter}
+              setResult={setTagFilter}
+              placeholder="No tag selected"
+              label="Filter by tag"
+              boxWidth="400px"
+              creatable={false}
+            />
+          </GridItem>
         )}
-      </Flex>
+      </Grid>
       <ContractListContent
         contractListInfo={contractListInfo}
         filteredContracts={filteredContracts}
