@@ -7,6 +7,7 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useGovConfig,
+  useMobile,
 } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -67,6 +68,8 @@ const Proposals = () => {
     debouncedSearch
   );
 
+  const isMobile = useMobile();
+
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
   }, [router.isReady]);
@@ -84,55 +87,61 @@ const Proposals = () => {
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        <NewProposalButton />
+        {!isMobile && <NewProposalButton />}
       </Flex>
-      <Flex direction="column" my={8} gap={8}>
+      <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
         <Flex justify="space-between" align="center">
           <InputWithIcon
             placeholder="Search with Proposal ID or Proposal Title"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            size={{ base: "md", md: "lg" }}
+            size="lg"
             amptrackSection="proposal-list-search"
           />
-          <Tooltip
-            isDisabled={!!address}
-            label="You need to connect your wallet to see your proposals"
-            maxW="240px"
-            textAlign="center"
-          >
-            <div>
-              <Switch
-                alignItems="center"
-                justifyContent="center"
-                h="fit-content"
-                minW="200px"
-                display="flex"
-                size="md"
-                isChecked={!!proposer}
-                disabled={!address}
-                onChange={(e) => {
-                  if (e.target.checked && address) {
-                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                      toggle: "on",
-                    });
-                    setProposer(address);
-                  } else {
-                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                      toggle: "off",
-                    });
-                    setProposer(undefined);
-                  }
-                }}
-              >
-                <Text cursor={address ? "pointer" : "default"}>
-                  My Proposals
-                </Text>
-              </Switch>
-            </div>
-          </Tooltip>
+          {!isMobile && (
+            <Tooltip
+              isDisabled={!!address}
+              label="You need to connect your wallet to see your proposals"
+              maxW="240px"
+              textAlign="center"
+            >
+              <div>
+                <Switch
+                  alignItems="center"
+                  justifyContent="center"
+                  h="fit-content"
+                  minW="200px"
+                  display="flex"
+                  size="md"
+                  isChecked={!!proposer}
+                  disabled={!address}
+                  onChange={(e) => {
+                    if (e.target.checked && address) {
+                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                        toggle: "on",
+                      });
+                      setProposer(address);
+                    } else {
+                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                        toggle: "off",
+                      });
+                      setProposer(undefined);
+                    }
+                  }}
+                >
+                  <Text cursor={address ? "pointer" : "default"}>
+                    My Proposals
+                  </Text>
+                </Switch>
+              </div>
+            </Tooltip>
+          )}
         </Flex>
-        <Flex gap={3} pb={3}>
+        <Flex
+          gap={{ base: 10, md: 3 }}
+          pb={3}
+          direction={{ base: "column", md: "row" }}
+        >
           <ProposalStatusFilter
             label="Filter by Status"
             result={statuses}
