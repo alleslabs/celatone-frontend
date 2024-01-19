@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#739](https://github.com/alleslabs/celatone-frontend/pull/739) Fix nft minter address
+
 ## v1.5.0
 
 ### Features

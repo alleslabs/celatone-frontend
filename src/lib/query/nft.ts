@@ -38,6 +38,9 @@ export const getNftMintInfoQuery = gql`
       limit: 1
     ) {
       transaction {
+        account {
+          address
+        }
         hash
         block {
           timestamp
