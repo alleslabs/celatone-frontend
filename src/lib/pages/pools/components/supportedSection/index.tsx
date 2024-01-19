@@ -25,6 +25,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
 import { Order_By } from "lib/gql/graphql";
+import { useDebounce } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
@@ -73,12 +74,13 @@ export const SupportedSection = ({
             .join(",")}}`,
     [assetInfos, keyword]
   );
+  const debouncedSearch = useDebounce(search);
 
   const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
     isSupported: true,
     poolType: poolTypeValue,
     isSuperfluidOnly,
-    search,
+    search: debouncedSearch,
   });
 
   const [showNewest, setShowNewest] = useState(true);
@@ -116,7 +118,7 @@ export const SupportedSection = ({
     true,
     poolTypeValue,
     isSuperfluidOnly,
-    search,
+    debouncedSearch,
     showNewest ? Order_By.Desc : Order_By.Asc,
     offset,
     pageSize
