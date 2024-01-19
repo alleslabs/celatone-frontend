@@ -17,8 +17,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
-        enabled: true,
-        url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
+        enabled: false,
+        // url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: false,
