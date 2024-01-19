@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#740](https://github.com/alleslabs/celatone-frontend/pull/740) Fix to use isDisabled instead of disabled on button
 - [#739](https://github.com/alleslabs/celatone-frontend/pull/739) Fix nft minter address
 
 ## v1.5.0
