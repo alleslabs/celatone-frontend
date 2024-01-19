@@ -137,7 +137,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       nft: {
-        enabled: true,
+        enabled: false,
       },
     },
     gas: {
