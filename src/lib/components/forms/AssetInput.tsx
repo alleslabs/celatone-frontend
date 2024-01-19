@@ -44,7 +44,7 @@ export const AssetInput = ({
       h="56px"
       variant="outline-gray"
       size="lg"
-      disabled={disableDelete}
+      isDisabled={disableDelete}
       onClick={onDelete}
       p={0}
     >

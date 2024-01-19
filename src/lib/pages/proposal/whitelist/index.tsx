@@ -367,7 +367,7 @@ const ProposalToWhitelist = () => {
                     variant="outline-gray"
                     size="lg"
                     p={0}
-                    disabled={fields.length <= 1}
+                    isDisabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
                     <CustomIcon name="delete" boxSize={4} />
@@ -451,7 +451,7 @@ const ProposalToWhitelist = () => {
         </Grid>
       </PageContainer>
       <Footer
-        disabled={isSimulating || !enabledTx || !estimatedFee}
+        isDisabled={isSimulating || !enabledTx || !estimatedFee}
         onSubmit={proceed}
         isLoading={processing}
       />

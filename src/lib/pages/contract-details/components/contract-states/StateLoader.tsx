@@ -36,7 +36,7 @@ export const StateLoader = ({
           <Text variant="body2" fontWeight={600} color="text.dark">
             Loading {numStatesToLoad} states...
           </Text>
-          <Button size="sm" variant="outline-primary" disabled>
+          <Button size="sm" variant="outline-primary" isDisabled>
             Load More
           </Button>
         </Flex>
@@ -51,7 +51,7 @@ export const StateLoader = ({
           <Button
             size="sm"
             variant="outline-primary"
-            disabled={isCompleted}
+            isDisabled={isCompleted}
             onClick={onLoadMore}
           >
             Load More
@@ -63,7 +63,7 @@ export const StateLoader = ({
         mt={{ base: 3, md: 0 }}
         w={{ base: "full", md: "auto" }}
         variant="outline-primary"
-        disabled={isLoading}
+        isDisabled={isLoading}
         onClick={onDownload}
       >
         <CustomIcon name="download" />

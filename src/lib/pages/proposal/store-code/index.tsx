@@ -612,7 +612,7 @@ const StoreCodeProposal = () => {
       </PageContainer>
 
       <Footer
-        disabled={isSimulating || !estimatedFee || !enabledTx}
+        isDisabled={isSimulating || !estimatedFee || !enabledTx}
         onSubmit={proceed}
         isLoading={processing}
       />

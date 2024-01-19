@@ -160,7 +160,7 @@ const Faucet = () => {
       });
   };
 
-  const disabled = status.state !== "success" || isLoading;
+  const isDisabled = status.state !== "success" || isLoading;
 
   return (
     <WasmPageContainer>
@@ -195,7 +195,7 @@ const Faucet = () => {
         w="full"
         onClick={onSubmit}
         isLoading={isLoading}
-        disabled={disabled}
+        isDisabled={isDisabled}
       >
         Request {faucetAmount} testnet {faucetDenom}
       </Button>
