@@ -207,7 +207,7 @@ const NftDetailsBody = ({
               </>
             )}
             <Flex direction="column" gap={{ base: 8, md: 12 }}>
-              <MintInfo nftAddress={nftAddress} holderAddress={ownerAddress} />
+              <MintInfo nftAddress={nftAddress} />
               {metadata?.attributes && (
                 <Attributes
                   attributes={metadata.attributes}

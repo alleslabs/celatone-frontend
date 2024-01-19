@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 
 interface FooterProps {
   onSubmit: () => void;
-  disabled: boolean;
+  isDisabled: boolean;
   isLoading: boolean;
 }
 
 export const Footer = ({
   onSubmit,
-  disabled,
+  isDisabled,
   isLoading = false,
 }: FooterProps) => {
   const router = useRouter();
@@ -33,8 +33,7 @@ export const Footer = ({
           <Button
             variant="primary"
             onClick={onSubmit}
-            disabled={disabled}
-            isDisabled={isLoading}
+            isDisabled={isLoading || isDisabled}
           >
             {isLoading ? (
               <Spinner size="md" variant="light" />

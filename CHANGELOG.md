@@ -40,6 +40,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#731](https://github.com/alleslabs/celatone-frontend/pull/731) Add proposal detail page structure
+
+### Improvements
+
+### Bug fixes
+
+## v1.5.0
+
+### Features
+
 - [#721](https://github.com/alleslabs/celatone-frontend/pull/721) Migrate to pnpm
 - [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
 - [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
@@ -61,6 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#740](https://github.com/alleslabs/celatone-frontend/pull/740) Fix to use isDisabled instead of disabled on button
+- [#739](https://github.com/alleslabs/celatone-frontend/pull/739) Fix nft minter address
 - [#736](https://github.com/alleslabs/celatone-frontend/pull/736) Fix assets related bugs
 - [#735](https://github.com/alleslabs/celatone-frontend/pull/735) Fix nfts related bugs
 - [#734](https://github.com/alleslabs/celatone-frontend/pull/734) Fix search spamming by using debounce

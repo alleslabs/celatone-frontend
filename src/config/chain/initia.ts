@@ -17,8 +17,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
-        enabled: true,
-        url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
+        enabled: false,
+        // url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: false,
@@ -52,8 +52,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "https://app.initia.xyz/validator",
-      proposal: "https://app.initia.xyz/proposal",
+      validator: "https://app.testnet.initia.xyz/validator",
+      proposal: "https://app.testnet.initia.xyz/proposal",
     },
     extra: {},
   },
@@ -137,7 +137,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       nft: {
-        enabled: true,
+        enabled: false,
       },
     },
     gas: {

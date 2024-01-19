@@ -16,7 +16,7 @@ export const UploadButton = ({ isAllowed }: UploadButtonProps) => {
       isDisabled={isAllowed}
     >
       <Button
-        disabled={!isAllowed}
+        isDisabled={!isAllowed}
         onClick={() => navigate({ pathname: "/upload" })}
         rightIcon={<CustomIcon name="upload" boxSize="12px" />}
       >
