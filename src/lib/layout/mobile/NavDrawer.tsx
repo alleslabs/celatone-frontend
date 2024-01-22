@@ -17,10 +17,11 @@ import type { MenuInfo } from "../navbar/types";
 import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  useMoveConfig,
-  useNftConfig,
-  usePublicProjectConfig,
+  useGovConfig,
   useWasmConfig,
+  useNftConfig,
+  useMoveConfig,
+  usePublicProjectConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
@@ -32,9 +33,10 @@ export const NavDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-  const move = useMoveConfig({ shouldRedirect: false });
-  const nft = useNftConfig({ shouldRedirect: false });
+  const wasmConfig = useWasmConfig({ shouldRedirect: false });
+  const moveConfig = useMoveConfig({ shouldRedirect: false });
+  const nftConfig = useNftConfig({ shouldRedirect: false });
+  const govConfig = useGovConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
   const mobileMenu: MenuInfo[] = [
@@ -53,7 +55,7 @@ export const NavDrawer = () => {
           slug: "/blocks",
           icon: "block",
         },
-        ...(wasm.enabled
+        ...(wasmConfig.enabled
           ? [
               {
                 name: "Recent Codes",
@@ -72,7 +74,16 @@ export const NavDrawer = () => {
               },
             ]
           : []),
-        ...(move.enabled
+        ...(govConfig.enabled
+          ? [
+              {
+                name: "Proposal",
+                slug: "/proposals",
+                icon: "proposal" as IconKeys,
+              },
+            ]
+          : []),
+        ...(moveConfig.enabled
           ? [
               {
                 name: "Modules",
@@ -86,7 +97,7 @@ export const NavDrawer = () => {
               },
             ]
           : []),
-        ...(nft.enabled
+        ...(nftConfig.enabled
           ? [
               {
                 name: "NFT Collections",
