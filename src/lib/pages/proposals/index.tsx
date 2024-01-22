@@ -30,10 +30,11 @@ import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
 import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 
 const Proposals = () => {
-  const { currentChainId } = useCelatoneApp();
   useGovConfig({ shouldRedirect: true });
+  const isMobile = useMobile();
   const router = useRouter();
   const { address } = useCurrentChain();
+  const { currentChainId } = useCelatoneApp();
 
   const [proposer, setProposer] = useState<Option<BechAddr20>>();
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
@@ -67,8 +68,6 @@ const Proposals = () => {
     types,
     debouncedSearch
   );
-
-  const isMobile = useMobile();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
