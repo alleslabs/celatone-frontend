@@ -2,9 +2,12 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { trackMintScan } from "lib/amplitude";
+import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
+import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
+import { openNewTab } from "lib/utils";
 
 import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
@@ -22,6 +25,10 @@ export const ProposalsTableMobileCard = ({
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
+  const {
+    chainConfig: { explorerLink },
+  } = useCelatoneApp();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   return (
     <MobileCardTemplate
@@ -74,6 +81,25 @@ export const ProposalsTableMobileCard = ({
             <Proposer proposer={proposal.proposer} />
           </Flex>
         </>
+      }
+      onClick={
+        !isDepositFailed
+          ? () => {
+              trackMintScan("proposal-detail", {
+                type: proposal.type,
+                status: proposal.status,
+              });
+              // TOOD: revisit retrieving url (make a proper hook)
+              openNewTab(
+                getNavigationUrl({
+                  type: "proposal_id",
+                  explorerConfig: explorerLink,
+                  value: proposal.proposalId.toString(),
+                  lcdEndpoint,
+                })
+              );
+            }
+          : undefined
       }
     />
   );
