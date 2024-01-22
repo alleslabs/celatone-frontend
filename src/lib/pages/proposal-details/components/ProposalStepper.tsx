@@ -4,27 +4,26 @@ interface ProposalStepperProps {
   title: string;
   description: string;
   step: number;
-  isSelected?: boolean;
 }
 
 export const ProposalStepper = ({
   title,
   description,
   step,
-  isSelected,
 }: ProposalStepperProps) => {
   return (
     <Flex justifyContent="space-between" w="full" alignItems="flex-start">
       <Flex gap={2}>
+        {/* TODO: Color changes when state changes */}
         <Flex
           borderRadius="32px"
           w={6}
           h={6}
           alignItems="center"
           justifyContent="center"
-          background={isSelected ? "primary.main" : "gray.500"}
-          color={isSelected ? "text.main" : "background.main"}
-          fontWeight={isSelected ? 600 : 400}
+          background="gray.500"
+          color="background.main"
+          fontWeight={400}
         >
           {step}
         </Flex>

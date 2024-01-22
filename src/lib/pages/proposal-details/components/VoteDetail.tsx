@@ -14,8 +14,10 @@ import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
 
+import { DepositPeriodSection } from "./DepositPeriodSection";
 import { ProposalStepper } from "./ProposalStepper";
 import { VoteDetailTab } from "./VoteDetailTab";
+import { VotingPeriodSection } from "./VotingPeriodSection";
 
 const AccordionItemComponent = ({
   step,
@@ -29,28 +31,19 @@ const AccordionItemComponent = ({
   children: ReactNode;
 }) => (
   <AccordionItem borderTop="1px solid" borderColor="gray.700">
-    {({ isExpanded }) => (
-      <>
-        <AccordionButton py={3} px={0}>
-          <ProposalStepper
-            step={step}
-            title={title}
-            description={description}
-            isSelected={isExpanded}
-          />
-          <AccordionIcon color="gray.600" ml="auto" />
-        </AccordionButton>
-        <AccordionPanel
-          bg="transparent"
-          py={3}
-          px={0}
-          borderTop="1px solid"
-          borderColor="gray.700"
-        >
-          {children}
-        </AccordionPanel>
-      </>
-    )}
+    <AccordionButton py={3} px={0}>
+      <ProposalStepper step={step} title={title} description={description} />
+      <AccordionIcon color="gray.600" ml="auto" />
+    </AccordionButton>
+    <AccordionPanel
+      bg="transparent"
+      py={3}
+      px={0}
+      borderTop="1px solid"
+      borderColor="gray.700"
+    >
+      {children}
+    </AccordionPanel>
   </AccordionItem>
 );
 
@@ -61,13 +54,13 @@ export const VoteDetail = () => {
       step: 1,
       title: "Deposit Period",
       description: "Deposit ends in 4 days 21:00:11",
-      content: <Flex>Deposit Period Content</Flex>,
+      content: <DepositPeriodSection />,
     },
     {
       step: 2,
       title: "Voting Period",
       description: "Voting ends in 3 days 12:00:10",
-      content: <Flex>Voting Period Content</Flex>,
+      content: <VotingPeriodSection />,
     },
   ];
   return isMobile ? (
@@ -96,7 +89,6 @@ export const VoteDetail = () => {
         </TabList>
         <TabPanels
           background="gray.800"
-          p={6}
           border="1px solid"
           borderColor="gray.700"
           borderTopColor="transparent"

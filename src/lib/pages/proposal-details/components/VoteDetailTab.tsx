@@ -22,7 +22,6 @@ export const VoteDetailTab = ({
   ...restProps
 }: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
-  const isSelected = tabProps["aria-selected"];
   const styles = useMultiStyleConfig("Tabs", tabProps);
 
   return (
@@ -60,12 +59,7 @@ export const VoteDetailTab = ({
       }}
       {...tabProps}
     >
-      <ProposalStepper
-        title={title}
-        description={description}
-        step={step}
-        isSelected={isSelected}
-      />
+      <ProposalStepper title={title} description={description} step={step} />
     </Button>
   );
 };

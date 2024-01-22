@@ -8,13 +8,9 @@ import { CustomTab } from "lib/components/CustomTab";
 import { getFirstQueryParam } from "lib/utils";
 
 import { ProposalOverview } from "./ProposalOverview";
-import { ProposalTop } from "./ProposalTop";
 import { VoteDetail } from "./VoteDetail";
 
-interface ProposalDetailBodyProps {
-  id?: number;
-}
-export const ProposalDetailBody = ({ id = 123 }: ProposalDetailBodyProps) => {
+export const ProposalDetailBody = ({ id }: { id: number }) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
@@ -26,7 +22,6 @@ export const ProposalDetailBody = ({ id = 123 }: ProposalDetailBodyProps) => {
       navigate({
         pathname: "/proposals/[id]/[tab]",
         query: {
-          // To get from route
           id,
           tab: nextTab,
         },
@@ -55,34 +50,31 @@ export const ProposalDetailBody = ({ id = 123 }: ProposalDetailBodyProps) => {
   }, [router.isReady, tab, navigate, id]);
 
   return (
-    <>
-      <ProposalTop />
-      <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
-        isLazy
-        lazyBehavior="keepMounted"
+    <Tabs
+      index={Object.values(TabIndex).indexOf(tab)}
+      isLazy
+      lazyBehavior="keepMounted"
+    >
+      <TabList
+        borderBottom="1px solid"
+        borderColor="gray.700"
+        overflowX="scroll"
       >
-        <TabList
-          borderBottom="1px solid"
-          borderColor="gray.700"
-          overflowX="scroll"
-        >
-          <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
-            Proposal Overview
-          </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
-            Vote Detail
-          </CustomTab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0}>
-            <ProposalOverview />
-          </TabPanel>
-          <TabPanel p={0}>
-            <VoteDetail />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </>
+        <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+          Proposal Overview
+        </CustomTab>
+        <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
+          Vote Detail
+        </CustomTab>
+      </TabList>
+      <TabPanels>
+        <TabPanel p={0}>
+          <ProposalOverview />
+        </TabPanel>
+        <TabPanel p={0}>
+          <VoteDetail />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
