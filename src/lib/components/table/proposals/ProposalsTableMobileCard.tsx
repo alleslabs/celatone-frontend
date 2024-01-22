@@ -50,10 +50,10 @@ export const ProposalsTableMobileCard = ({
         <Flex direction="column" gap={3}>
           <Flex direction="column" gap={1}>
             <MobileLabel label="Proposal Title" />
-            <Text color="text.main" variant="body2">
+            <Text color="text.main" variant="body2" wordBreak="break-word">
               {proposal.title}
             </Text>
-            <Text color="text.dark" variant="body3">
+            <Text color="text.dark" variant="body3" wordBreak="break-word">
               {proposal.type}
             </Text>
           </Flex>
