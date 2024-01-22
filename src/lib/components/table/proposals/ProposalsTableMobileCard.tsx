@@ -47,7 +47,7 @@ export const ProposalsTableMobileCard = ({
               {proposal.title}
             </Text>
             <Text color="text.dark" variant="body3">
-              Type: {proposal.type}
+              {proposal.type}
             </Text>
           </Flex>
           <Flex direction="column" gap={1}>
