@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
@@ -15,6 +15,7 @@ import {
 import { usePool } from "./data";
 
 export const PoolId = () => {
+  usePoolConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const poolId = Number(getFirstQueryParam(router.query.poolId));

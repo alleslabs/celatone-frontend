@@ -1,9 +1,8 @@
 import { Grid, Text } from "@chakra-ui/react";
 
-import { AssetCard } from "../../components";
+import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state";
 import { useTxData } from "lib/services/txService";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
@@ -25,22 +24,24 @@ export const PoolSwap = ({
 }: PoolSwapInterface) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;
+  if (!txData) return <ErrorFetchingDetail />;
 
-  const swapEvent = txData?.logs
-    .find((log) => log.msg_index === msgIndex)
-    ?.events?.find((event) => event.type === "token_swapped");
-  if (!swapEvent)
-    return (
-      <EmptyState message="There is an error during fetching message detail." />
-    );
+  const msgEvents = txData.logs.find(
+    (log) => log.msg_index === msgIndex
+  )?.events;
 
   // Get the token-in from the third attribute of the event e.g. 10000utoken
-  const inAsset = swapEvent.attributes[3]?.value ?? "";
+  const inAsset =
+    msgEvents
+      ?.find((event) => event.type === "token_swapped")
+      ?.attributes.find((attr) => attr.key === "tokens_in")?.value ?? "";
   const { amount: inAmount, denom: inDenom } = coinsFromStr(inAsset)[0];
 
   // Get the token-out from the last attribute of the event e.g. 10000utoken
   const outAsset =
-    swapEvent.attributes[swapEvent.attributes.length - 1]?.value ?? "";
+    msgEvents
+      ?.findLast((event) => event.type === "token_swapped")
+      ?.attributes.findLast((attr) => attr.key === "tokens_out")?.value ?? "";
   const { amount: outAmount, denom: outDenom } = coinsFromStr(outAsset)[0];
 
   return (
