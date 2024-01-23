@@ -90,7 +90,6 @@ export const ResourceLeftPanel = ({
 
   return (
     <Flex
-      minW={{ base: "full", md: 80 }}
       direction="column"
       pb={{ base: 4, md: 0 }}
       mb={{ base: 4, md: 0 }}

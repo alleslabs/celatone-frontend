@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Grid } from "@chakra-ui/react";
 
 import { TableTitle } from "lib/components/table";
 import type { BechAddr, ResourceGroupByAccount, Option } from "lib/types";
@@ -24,12 +24,12 @@ export const ResourceSection = ({
       title="Resources"
       count={totalCount}
     />
-    <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
+    <Grid gap={6} templateColumns={{ base: "1fr", md: "320px 1fr" }}>
       <ResourceSectionBody
         address={address}
         resourcesByOwner={resourcesByOwner}
         isLoading={isLoading}
       />
-    </Flex>
+    </Grid>
   </Flex>
 );
