@@ -1,4 +1,6 @@
 import { Grid, Text } from "@chakra-ui/react";
+import type { Event } from "@cosmjs/stargate";
+import type { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { CustomIcon } from "lib/components/icon";
@@ -7,16 +9,50 @@ import { useTxData } from "lib/services/txService";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
 
+interface ExactInput {
+  isExactIn: boolean;
+  amount: Coin;
+  expectedDenom: string;
+}
+
 interface PoolSwapInterface {
   txHash: string;
+  exactInput: ExactInput;
   msgIndex: number;
   assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;
 }
 
+const getAssets = (
+  exactInput: ExactInput,
+  msgEvents: Option<readonly Event[]>
+): { inAsset: Coin; outAsset: Coin } => {
+  if (exactInput.isExactIn) {
+    return {
+      inAsset: exactInput.amount,
+      outAsset: coinsFromStr(
+        msgEvents
+          ?.findLast((event) => event.type === "coin_received")
+          ?.attributes.find((attr) => attr.key === "amount")?.value ??
+          `0${exactInput.expectedDenom}`
+      )[0],
+    };
+  }
+  return {
+    inAsset: coinsFromStr(
+      msgEvents
+        ?.find((event) => event.type === "coin_spent")
+        ?.attributes.find((attr) => attr.key === "amount")?.value ??
+        `0${exactInput.expectedDenom}`
+    )[0],
+    outAsset: exactInput.amount,
+  };
+};
+
 export const PoolSwap = ({
   txHash,
+  exactInput,
   msgIndex,
   assetInfos,
   isOpened,
@@ -30,20 +66,7 @@ export const PoolSwap = ({
     (log) => log.msg_index === msgIndex
   )?.events;
 
-  // Get the token-in from the third attribute of the event e.g. 10000utoken
-  const inAsset =
-    msgEvents
-      ?.find((event) => event.type === "token_swapped")
-      ?.attributes.find((attr) => attr.key === "tokens_in")?.value ?? "";
-  const { amount: inAmount, denom: inDenom } = coinsFromStr(inAsset)[0];
-
-  // Get the token-out from the last attribute of the event e.g. 10000utoken
-  const outAsset =
-    msgEvents
-      ?.findLast((event) => event.type === "token_swapped")
-      ?.attributes.findLast((attr) => attr.key === "tokens_out")?.value ?? "";
-  const { amount: outAmount, denom: outDenom } = coinsFromStr(outAsset)[0];
-
+  const { inAsset, outAsset } = getAssets(exactInput, msgEvents);
   return (
     <Grid
       gap={4}
@@ -56,9 +79,9 @@ export const PoolSwap = ({
           From
         </Text>
         <AssetCard
-          amount={inAmount}
-          denom={inDenom}
-          assetInfo={assetInfos?.[inDenom]}
+          amount={inAsset.amount}
+          denom={inAsset.denom}
+          assetInfo={assetInfos?.[inAsset.denom]}
           ampCopierSection={ampCopierSection}
         />
       </div>
@@ -68,9 +91,9 @@ export const PoolSwap = ({
           To
         </Text>
         <AssetCard
-          amount={outAmount}
-          denom={outDenom}
-          assetInfo={assetInfos?.[outDenom]}
+          amount={outAsset.amount}
+          denom={outAsset.denom}
+          assetInfo={assetInfos?.[outAsset.denom]}
           ampCopierSection={ampCopierSection}
         />
       </div>
