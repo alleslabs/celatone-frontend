@@ -49,8 +49,8 @@ export const PoolAssetsGrid = ({
     );
 
     const swapAttr = msgEvents
-      ?.find((event) => event.type === "token_swapped")
-      ?.attributes.find((attr) => attr.key === "tokens_out")?.value;
+      ?.findLast((event) => event.type === "coin_received")
+      ?.attributes.find((attr) => attr.key === "amount")?.value;
     const swapAsset = swapAttr ? coinsFromStr(swapAttr)[0] : undefined;
 
     eventAssets =
