@@ -43,6 +43,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.5.1
+
+### Improvements
+
+- [#743](https://github.com/alleslabs/celatone-frontend/pull/743) Add mobile view for proposal list
+
+### Bug fixes
+
+- [#746](https://github.com/alleslabs/celatone-frontend/pull/746) Fix initia chain pretty names and resource panel
+- [#744](https://github.com/alleslabs/celatone-frontend/pull/744) Fix pool tx events
+
 ## v1.5.0
 
 ### Features

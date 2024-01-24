@@ -1,4 +1,12 @@
-import { Accordion, Badge, Box, Button, Flex, Heading } from "@chakra-ui/react";
+import {
+  Accordion,
+  Badge,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -51,13 +59,15 @@ export const ResourceSectionBody = ({
   if (!resourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
   return (
-    <>
-      <ResourceLeftPanel
-        address={address}
-        resourcesByOwner={resourcesByOwner}
-      />
+    <Grid gap={6} templateColumns={{ base: "1fr", md: "320px 1fr" }}>
+      <GridItem>
+        <ResourceLeftPanel
+          address={address}
+          resourcesByOwner={resourcesByOwner}
+        />
+      </GridItem>
       {selectedResource && (
-        <Box w="full">
+        <GridItem>
           <Flex
             justifyContent="space-between"
             alignItems={{ base: "start", md: "center" }}
@@ -117,8 +127,8 @@ export const ResourceSectionBody = ({
               />
             ))}
           </Accordion>
-        </Box>
+        </GridItem>
       )}
-    </>
+    </Grid>
   );
 };

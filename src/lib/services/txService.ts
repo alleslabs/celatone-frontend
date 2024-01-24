@@ -31,7 +31,13 @@ import type {
   BechAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
-import { isTxHash, parseDate, parseTxHash, snakeToCamel } from "lib/utils";
+import {
+  extractTxLogs,
+  isTxHash,
+  parseDate,
+  parseTxHash,
+  snakeToCamel,
+} from "lib/utils";
 
 import { usePoolTxExpression } from "./expression";
 import type {
@@ -64,8 +70,10 @@ export const useTxData = (
   const queryFn = useCallback(
     async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
       const txData = await queryTxData(queryKey[1], queryKey[2]);
+      const logs = extractTxLogs(txData);
       return {
         ...txData,
+        logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txData.code),
       };

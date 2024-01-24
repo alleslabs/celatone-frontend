@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { PoolAssetCard } from "../components";
+import { ErrorFetchingDetail, PoolAssetCard } from "../components";
 import { PoolInfoText } from "../components/PoolInfoText";
 import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
@@ -32,6 +32,10 @@ export const MsgLockTokensDetail = ({
   isOpened,
   ampCopierSection,
 }: MsgLockTokensDetailProps) => {
+  const { data: txData, isLoading } = useTxData(txHash, isOpened);
+  if (isLoading) return <Loading withBorder={false} />;
+  if (!txData) return <ErrorFetchingDetail />;
+
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
     amount: "0",
@@ -43,16 +47,12 @@ export const MsgLockTokensDetail = ({
     assetInfos
   );
 
-  const { data: txData, isLoading } = useTxData(txHash, isOpened);
-  if (isLoading) return <Loading withBorder={false} />;
-
-  const lockId = txData?.logs
-    .find((log) => log.msg_index === msgIndex)
-    ?.events?.find(
-      (event) =>
-        event.type.includes("lock") &&
-        event.attributes.some((attr) => attr.value.includes(poolDenom))
-    )?.attributes[0]?.value;
+  const msgEvents = txData.logs.find(
+    (log) => log.msg_index === msgIndex
+  )?.events;
+  const lockId = msgEvents
+    ?.find((event) => event.type === "add_tokens_to_lock")
+    ?.attributes.find((attr) => attr.key === "period_lock_id")?.value;
 
   return (
     <Flex w="full" direction="column" gap={6}>

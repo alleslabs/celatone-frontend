@@ -1,8 +1,8 @@
 import type { Event, logs } from "@cosmjs/stargate";
 
-import type { TxData } from "lib/services/txService";
+import type { TxResponse } from "lib/services/tx";
 
-export const extractTxLogs = (txData: TxData): logs.Log[] => {
+export const extractTxLogs = (txData: TxResponse): logs.Log[] => {
   const msgLogs = txData.tx.body.messages.map((_, idx) => ({
     msg_index: idx,
     log: "",
