@@ -20,6 +20,7 @@ import {
   addTokenWithValue,
   coinToTokenWithValue,
   compareTokenWithValues,
+  formatSeconds,
   totalValueTokenWithValue,
 } from "lib/utils";
 
@@ -95,6 +96,9 @@ export const useAccountDelegationInfos = (address: BechAddr) => {
   if (accountDelegations) {
     data.stakingParams = {
       ...accountDelegations.stakingParams,
+      unbondingTime: formatSeconds(
+        accountDelegations.stakingParams.unbondingTime
+      ),
       bondDenoms: accountDelegations.stakingParams.bondDenoms.map((denom) =>
         coinToTokenWithValue(denom, "0", assetInfos, movePoolInfos)
       ),

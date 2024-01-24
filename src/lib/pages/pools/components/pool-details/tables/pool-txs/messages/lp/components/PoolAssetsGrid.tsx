@@ -2,9 +2,8 @@ import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import big from "big.js";
 
-import { AssetCard } from "../../components";
+import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state";
 import { useTxData } from "lib/services/txService";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
@@ -31,21 +30,27 @@ export const PoolAssetsGrid = ({
   ampCopierSection,
 }: PoolAssetsGridProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
-  if (!msgAssets && isLoading) return <Loading withBorder={false} />;
+  if (txHash && isLoading) return <Loading withBorder={false} />;
 
-  const receivedEvent = txData?.logs
-    .find((log) => log.msg_index === msgIndex)
-    ?.events?.find((event) => event.type === "coin_received");
+  const msgEvents = txData?.logs.find(
+    (log) => log.msg_index === msgIndex
+  )?.events;
+  const receivedEvent = msgEvents?.find(
+    (event) => event.type === "coin_received"
+  );
 
-  const assetAttr = receivedEvent?.attributes[1]?.value;
+  const assetAttr = receivedEvent?.attributes.find(
+    (attr) => attr.key === "amount"
+  )?.value;
   let eventAssets = assetAttr ? coinsFromStr(assetAttr) : undefined;
   if (msgSwapDenom) {
     const specifiedAsset = eventAssets?.find(
       (asset) => asset.denom === msgSwapDenom
     );
 
-    const swapAttr =
-      receivedEvent?.attributes[receivedEvent.attributes.length - 1]?.value;
+    const swapAttr = msgEvents
+      ?.findLast((event) => event.type === "coin_received")
+      ?.attributes.find((attr) => attr.key === "amount")?.value;
     const swapAsset = swapAttr ? coinsFromStr(swapAttr)[0] : undefined;
 
     eventAssets =
@@ -62,10 +67,7 @@ export const PoolAssetsGrid = ({
   }
 
   const assets = msgAssets ?? eventAssets;
-  if (!assets)
-    return (
-      <EmptyState message="There is an error during fetching message detail." />
-    );
+  if (!assets) return <ErrorFetchingDetail />;
 
   return (
     <Flex

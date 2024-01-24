@@ -2,15 +2,13 @@
 import type { logs } from "@cosmjs/stargate";
 
 import type { TypeUrl } from "lib/data";
-import type { TxData } from "lib/services/txService";
+import type { TxResponse } from "lib/services/tx";
 import { parseDate } from "lib/utils/date";
 
-type TestCase = { txData: TxData; result: logs.Log[] };
+type TestCase = { txData: TxResponse; result: logs.Log[] };
 
 export const fromLogs: TestCase = {
   txData: {
-    chainId: "osmo-test-5",
-    isTxFailed: false,
     code: 0,
     codespace: "",
     data: "0A260A242F636F736D7761736D2E7761736D2E76312E4D73674D696772617465436F6E7472616374",
@@ -365,8 +363,6 @@ export const fromLogs: TestCase = {
 
 export const fromEvents: TestCase = {
   txData: {
-    chainId: "stone-13",
-    isTxFailed: false,
     code: 0,
     codespace: "",
     data: "12240A222F696E697469612E6D6F76652E76312E4D73675075626C697368526573706F6E7365",

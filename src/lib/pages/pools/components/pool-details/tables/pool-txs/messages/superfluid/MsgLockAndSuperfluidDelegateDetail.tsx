@@ -1,7 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { PoolAssetCard } from "../components";
-import { PoolInfoText } from "../components/PoolInfoText";
+import {
+  ErrorFetchingDetail,
+  PoolAssetCard,
+  PoolInfoText,
+} from "../components";
 import { getPoolDenom } from "../utils";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
@@ -55,14 +58,15 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
 
   if (isTxDataLoading || isValidatorLoading)
     return <Loading withBorder={false} />;
+  if (!txData) return <ErrorFetchingDetail />;
 
-  const lockId = txData?.logs
-    .find((log) => log.msg_index === msgIndex)
-    ?.events?.find(
-      (event) =>
-        event.type.includes("lock") &&
-        event.attributes.some((attr) => attr.value.includes(poolDenom))
-    )?.attributes[0]?.value;
+  const msgEvents = txData.logs.find(
+    (log) => log.msg_index === msgIndex
+  )?.events;
+
+  const lockId = msgEvents
+    ?.find((event) => event.type === "lock_tokens")
+    ?.attributes.find((attr) => attr.key === "period_lock_id")?.value;
 
   return (
     <Flex w="full" direction="column" gap={6}>
