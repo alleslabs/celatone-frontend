@@ -24,12 +24,10 @@ export const ResourceSection = ({
       title="Resources"
       count={totalCount}
     />
-    <Flex gap={6} flexDirection={{ base: "column", md: "row" }}>
-      <ResourceSectionBody
-        address={address}
-        resourcesByOwner={resourcesByOwner}
-        isLoading={isLoading}
-      />
-    </Flex>
+    <ResourceSectionBody
+      address={address}
+      resourcesByOwner={resourcesByOwner}
+      isLoading={isLoading}
+    />
   </Flex>
 );
