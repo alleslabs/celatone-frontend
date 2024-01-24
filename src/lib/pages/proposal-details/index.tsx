@@ -1,19 +1,39 @@
 import { useRouter } from "next/router";
 
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
+import { InvalidState } from "lib/components/state";
 
 import { ProposalDetailBody } from "./components/ProposalDetailsBody";
 import { ProposalTop } from "./components/ProposalTop";
+import type { ProposalDetailsQueryParams } from "./type";
+import { zProposalDetailsQueryParams } from "./type";
 
-export const ProposalDetail = () => {
+const ProposalDetailsBody = ({
+  id,
+  tab,
+  voteTab,
+}: ProposalDetailsQueryParams) => {
+  // TODO Mock up
+  if (id === 999) return <InvalidState title="Proposal does not exist" />;
+  return (
+    <>
+      <ProposalTop id={id} />
+      <ProposalDetailBody id={id} tab={tab} voteTab={voteTab} />
+    </>
+  );
+};
+export const ProposalDetails = () => {
   const router = useRouter();
-  const proposalId = parseInt(router.query.id as string, 10);
-  if (!proposalId) return <EmptyState message="not found" />;
+
+  const validated = zProposalDetailsQueryParams.safeParse(router.query);
+
   return (
     <PageContainer>
-      <ProposalTop id={proposalId} />
-      <ProposalDetailBody id={proposalId} />
+      {!validated.success ? (
+        <InvalidState title="Proposal does not euuuxist" />
+      ) : (
+        <ProposalDetailsBody {...validated.data} />
+      )}
     </PageContainer>
   );
 };

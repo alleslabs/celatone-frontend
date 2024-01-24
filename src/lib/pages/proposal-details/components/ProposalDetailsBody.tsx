@@ -2,19 +2,21 @@ import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
+import type { ProposalDetailsQueryParams } from "../type";
 import { TabIndex } from "../type";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { getFirstQueryParam } from "lib/utils";
 
 import { ProposalOverview } from "./ProposalOverview";
 import { VoteDetail } from "./VoteDetail";
 
-export const ProposalDetailBody = ({ id }: { id: number }) => {
+export const ProposalDetailBody = ({
+  id,
+  tab,
+  // voteTab,
+}: ProposalDetailsQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
