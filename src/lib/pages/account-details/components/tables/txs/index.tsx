@@ -119,72 +119,77 @@ export const TxsTable = ({
           onViewMore={onViewMore}
         />
       ) : (
-        <TxsTop
-          txsCount={txsCount}
-          onViewMore={onViewMore}
-          relationSelection={
-            <TxRelationSelection
-              value={isSigner}
-              setValue={handleOnIsSignerChange}
-              w={{ base: "full", md: "200px" }}
-              size="lg"
-            />
-          }
-          txTypeSelection={
-            <TxFilterSelection
-              result={selectedFilters}
-              setResult={handleOnFiltersChange}
-              boxWidth={{ base: "full", md: "285px" }}
-              placeholder="All"
-              size="lg"
-              tagSize={{ base: "sm", md: "md" }}
-            />
-          }
-        />
-      )}
-      {isTxsCountTimeout && <TxsAlert />}
-      {!isMobileOverview && (
-        <TransactionsTable
-          transactions={transactions?.items}
-          isLoading={isLoading || isTxCountLoading}
-          emptyState={
-            !transactions ? (
-              <ErrorFetching dataName="transactions" />
-            ) : (
-              <EmptyState withBorder {...getEmptyStateProps(selectedFilters)} />
-            )
-          }
-          showRelations
-        />
-      )}
-      {Boolean(transactions?.items?.length) &&
-        (onViewMore
-          ? !isTxCountLoading &&
-            (txsCount === undefined || txsCount > 5) &&
-            !isMobile && <ViewMore onClick={onViewMore} />
-          : txsCount &&
-            txsCount > 10 && (
-              <Pagination
-                currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
-                offset={offset}
-                totalData={txsCount}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
-                onPageChange={(nextPage) => {
-                  setCurrentPage(nextPage);
-                  refetchTxsCount();
-                  refetchCount();
-                }}
-                onPageSizeChange={(e) => {
-                  const size = Number(e.target.value);
-                  setPageSize(size);
-                  setCurrentPage(1);
-                  refetchTxsCount();
-                  refetchCount();
-                }}
+        <>
+          <TxsTop
+            txsCount={txsCount}
+            onViewMore={onViewMore}
+            relationSelection={
+              <TxRelationSelection
+                value={isSigner}
+                setValue={handleOnIsSignerChange}
+                w={{ base: "full", md: "200px" }}
+                size="lg"
               />
-            ))}
+            }
+            txTypeSelection={
+              <TxFilterSelection
+                result={selectedFilters}
+                setResult={handleOnFiltersChange}
+                boxWidth={{ base: "full", md: "285px" }}
+                placeholder="All"
+                size="lg"
+                tagSize={{ base: "sm", md: "md" }}
+              />
+            }
+          />
+          {isTxsCountTimeout && <TxsAlert />}
+          {!isMobileOverview && (
+            <TransactionsTable
+              transactions={transactions?.items}
+              isLoading={isLoading || isTxCountLoading}
+              emptyState={
+                !transactions ? (
+                  <ErrorFetching dataName="transactions" />
+                ) : (
+                  <EmptyState
+                    withBorder
+                    {...getEmptyStateProps(selectedFilters)}
+                  />
+                )
+              }
+              showRelations
+            />
+          )}
+          {Boolean(transactions?.items?.length) &&
+            (onViewMore
+              ? !isTxCountLoading &&
+                (txsCount === undefined || txsCount > 5) &&
+                !isMobile && <ViewMore onClick={onViewMore} />
+              : txsCount &&
+                txsCount > 10 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    pagesQuantity={pagesQuantity}
+                    offset={offset}
+                    totalData={txsCount}
+                    scrollComponentId={scrollComponentId}
+                    pageSize={pageSize}
+                    onPageChange={(nextPage) => {
+                      setCurrentPage(nextPage);
+                      refetchTxsCount();
+                      refetchCount();
+                    }}
+                    onPageSizeChange={(e) => {
+                      const size = Number(e.target.value);
+                      setPageSize(size);
+                      setCurrentPage(1);
+                      refetchTxsCount();
+                      refetchCount();
+                    }}
+                  />
+                ))}
+        </>
+      )}
     </Box>
   );
 };
