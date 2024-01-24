@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Flex,
+  Grid,
   GridItem,
   Heading,
 } from "@chakra-ui/react";
@@ -58,7 +59,7 @@ export const ResourceSectionBody = ({
   if (!resourcesByOwner.length)
     return <EmptyState imageVariant="empty" message="No resources found" />;
   return (
-    <>
+    <Grid gap={6} templateColumns={{ base: "1fr", md: "320px 1fr" }}>
       <GridItem>
         <ResourceLeftPanel
           address={address}
@@ -128,6 +129,6 @@ export const ResourceSectionBody = ({
           </Accordion>
         </GridItem>
       )}
-    </>
+    </Grid>
   );
 };
