@@ -10,7 +10,7 @@ export const useRecentCodes = (
   permissionValue: PermissionFilterValue,
   setTotalData: (totalData: number) => void
 ) => {
-  const { getCodeLocalInfo } = useCodeStore();
+  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
   const { data: codes, isLoading } = useCodes(
     pageSize,
     offset,
@@ -26,13 +26,11 @@ export const useRecentCodes = (
   if (!codes) return { data: undefined, isLoading };
   return {
     data: {
-      items: codes.items.map<CodeInfo>((code) => {
-        const localInfo = getCodeLocalInfo(code.id);
-        return {
-          ...code,
-          name: localInfo?.name,
-        };
-      }),
+      items: codes.items.map<CodeInfo>((code) => ({
+        ...code,
+        name: getCodeLocalInfo(code.id)?.name,
+        isSaved: isCodeIdSaved(code.id),
+      })),
       total: codes.total,
     },
     isLoading,
