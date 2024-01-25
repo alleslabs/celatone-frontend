@@ -10,7 +10,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "mahalo-1": {
     chain: "initia",
     registryChainName: "initiadevnet1",
-    prettyName: "Initia Closed Testnet 1",
+    prettyName: "Initia Devnet 1",
     lcd: "https://lcd.mahalo-1.initia.xyz",
     rpc: "https://rpc.mahalo-1.initia.xyz:443",
     indexer: "https://mahalo-1-graphql.alleslabs.dev/v1/graphql",
@@ -60,7 +60,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "minimove-1": {
     chain: "initia",
     registryChainName: "minitiamovedevnet1",
-    prettyName: "Minitia Move Closed Testnet 1",
+    prettyName: "Minitia Move Devnet 1",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz:443",
     indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
@@ -110,7 +110,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "miniwasm-1": {
     chain: "initia",
     registryChainName: "minitiawasmdevnet1",
-    prettyName: "Minitia Wasm Closed Testnet 1",
+    prettyName: "Minitia Wasm Devnet 1",
     lcd: "https://lcd.miniwasm-1.initia.xyz",
     rpc: "https://rpc.miniwasm-1.initia.xyz:443",
     indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
@@ -155,56 +155,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     extra: { disableDelegation: true },
-  },
-  "stone-12-1": {
-    chain: "initia",
-    registryChainName: "initiatestnet12-1",
-    prettyName: "Initia Testnet 12-1",
-    lcd: "https://next-stone-rest.initia.tech",
-    rpc: "https://next-stone-rpc.initia.tech:443",
-    indexer: "https://stone-12-1-nft-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...initiaWallets, ...keplrWallets],
-    features: {
-      faucet: {
-        enabled: true,
-        url: process.env.NEXT_PUBLIC_INITIA_TESTNET_FAUCET_URL ?? "",
-      },
-      wasm: {
-        enabled: false,
-      },
-      move: {
-        enabled: true,
-        moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "https://stone-compiler.initia.tech/contracts/verify",
-      },
-      pool: {
-        enabled: false,
-      },
-      publicProject: {
-        enabled: true,
-      },
-      gov: {
-        enabled: true,
-        hideOpenProposal: true,
-      },
-      nft: {
-        enabled: true,
-      },
-    },
-    gas: {
-      gasPrice: {
-        tokenPerGas: 0.151,
-        denom: "uinit",
-      },
-      gasAdjustment: 1.5,
-      maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "https://next.app.initia.tech/validator",
-      proposal: "https://next.app.initia.tech/proposal",
-    },
-    extra: {},
   },
   "stone-13": {
     chain: "initia",

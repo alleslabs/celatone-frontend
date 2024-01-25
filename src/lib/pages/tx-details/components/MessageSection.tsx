@@ -47,9 +47,9 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
       </Flex>
       {messages.map((msg, idx) => (
         <TxMessage
-          key={msg.type + msg.value + logs[idx].msg_index.toString()}
+          key={msg.type + msg.value + idx.toString()}
           msgBody={msg}
-          log={logs[idx]}
+          log={logs.find((log) => log.msg_index === idx)}
           isSingleMsg={messages.length === 1}
         />
       ))}

@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#751](https://github.com/alleslabs/celatone-frontend/pull/751) Fix fail txs should have no logs and remove stone-12-1
+
 ## v1.5.1
 
 ### Improvements
