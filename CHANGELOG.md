@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#749](https://github.com/alleslabs/celatone-frontend/pull/749) Add multi-type proposals
+
 ### Improvements
 
 ### Bug fixes
