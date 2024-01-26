@@ -10,7 +10,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "mahalo-1": {
     chain: "initia",
     registryChainName: "initiadevnet1",
-    prettyName: "Initia Devnet 1",
+    prettyName: "Initia Closed Testnet 1",
     lcd: "https://lcd.mahalo-1.initia.xyz",
     rpc: "https://rpc.mahalo-1.initia.xyz:443",
     indexer: "https://mahalo-1-graphql.alleslabs.dev/v1/graphql",
@@ -60,7 +60,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "minimove-1": {
     chain: "initia",
     registryChainName: "minitiamovedevnet1",
-    prettyName: "Minitia Move Devnet 1",
+    prettyName: "Minitia Move Closed Testnet 1",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz:443",
     indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
@@ -110,7 +110,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "miniwasm-1": {
     chain: "initia",
     registryChainName: "minitiawasmdevnet1",
-    prettyName: "Minitia Wasm Devnet 1",
+    prettyName: "Minitia Wasm Closed Testnet 1",
     lcd: "https://lcd.miniwasm-1.initia.xyz",
     rpc: "https://rpc.miniwasm-1.initia.xyz:443",
     indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
