@@ -70,7 +70,7 @@ export const ProposalTextCell = ({
           maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
-          {types.join(", ")}
+          {types.join(" / ")}
         </Text>
       </Flex>
     </Flex>
