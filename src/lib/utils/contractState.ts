@@ -1,13 +1,18 @@
 import type { ContractState, DecodedKey } from "lib/types";
 
+import { isHex } from "./validate";
+
 const nameRegex = /^[a-zA-Z0-9_{}:"'/\\,\\[\]()]+$/;
 
 export const hexToString = (hex: string) =>
   Buffer.from(hex, "hex").toString("utf-8");
 
-export const parseStateKey = (key: string): DecodedKey => {
+// eslint-disable-next-line sonarjs/cognitive-complexity
+export const parseStateKey = (rawKey: string): DecodedKey => {
   try {
-    const decodedStr = hexToString(key);
+    const decodedStr = isHex(rawKey)
+      ? hexToString(rawKey)
+      : Buffer.from(rawKey, "base64").toString();
     if (decodedStr === "") throw new Error("Invalid hex string for decoding");
     if (nameRegex.test(decodedStr)) {
       return {
@@ -16,6 +21,9 @@ export const parseStateKey = (key: string): DecodedKey => {
       };
     }
 
+    const key = isHex(rawKey)
+      ? rawKey
+      : Buffer.from(rawKey, "base64").toString("hex");
     const values: string[] = [];
     let currentIndex = 0;
     while (currentIndex < key.length) {
@@ -60,7 +68,7 @@ export const parseStateKey = (key: string): DecodedKey => {
 
   return {
     type: "singleton",
-    value: key,
+    value: rawKey,
   };
 };
 
