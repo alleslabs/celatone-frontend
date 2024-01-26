@@ -49,7 +49,7 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
         <TxMessage
           key={msg.type + msg.value + idx.toString()}
           msgBody={msg}
-          log={logs.find((log) => log.msg_index === idx)}
+          log={logs[idx]}
           isSingleMsg={messages.length === 1}
         />
       ))}
