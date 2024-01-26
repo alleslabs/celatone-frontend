@@ -872,3 +872,206 @@ export const fromEvents: TestCase = {
     },
   ],
 };
+
+export const fromEventsTxFailed: TestCase = {
+  txData: {
+    code: 1,
+    codespace: "undefined",
+    data: "",
+    events: [
+      {
+        attributes: [
+          {
+            key: "sender",
+            value: "0xb9fe1fd018852d49cd066379ba314f94dce57f16",
+          },
+          {
+            key: "module_addr",
+            value: "0x1",
+          },
+          {
+            key: "module_name",
+            value: "coin",
+          },
+          {
+            key: "function_name",
+            value: "transfer",
+          },
+        ],
+        type: "execute",
+      },
+      {
+        attributes: [
+          {
+            key: "type_tag",
+            value: "0x1::fungible_asset::WithdrawEvent",
+          },
+          {
+            key: "data",
+            value:
+              '{"store_addr":"0xb3a18ed65a760faa12b9fa834f53ac6b413e05e416c29d14488aa45d76f15dd3","metadata_addr":"0x8e4733bdabcf7d4afc3d14f0dd46c9bf52fb0fce9e4b996c939e195b8bc891d9","amount":"750000"}',
+          },
+        ],
+        type: "move",
+      },
+      {
+        attributes: [
+          {
+            key: "type_tag",
+            value: "0x1::fungible_asset::DepositEvent",
+          },
+          {
+            key: "data",
+            value:
+              '{"store_addr":"0x66a8cb0bfb991610dcffb8a6543ac0887c7c5405b8f985ebed6d628fe50c4686","metadata_addr":"0x8e4733bdabcf7d4afc3d14f0dd46c9bf52fb0fce9e4b996c939e195b8bc891d9","amount":"750000"}',
+          },
+        ],
+        type: "move",
+      },
+      {
+        attributes: [
+          {
+            key: "spender",
+            value: "init1h8lpl5qcs5k5nngxvdum5v20jnww2lckg3n2ta",
+          },
+          {
+            key: "amount",
+            value: "750000uinit",
+          },
+        ],
+        type: "coin_spent",
+      },
+      {
+        attributes: [
+          {
+            key: "receiver",
+            value: "init17xpfvakm2amg962yls6f84z3kell8c5l70rnql",
+          },
+          {
+            key: "amount",
+            value: "750000uinit",
+          },
+        ],
+        type: "coin_received",
+      },
+      {
+        attributes: [
+          {
+            key: "recipient",
+            value: "init17xpfvakm2amg962yls6f84z3kell8c5l70rnql",
+          },
+          {
+            key: "sender",
+            value: "init1h8lpl5qcs5k5nngxvdum5v20jnww2lckg3n2ta",
+          },
+          {
+            key: "amount",
+            value: "750000uinit",
+          },
+        ],
+        type: "transfer",
+      },
+      {
+        attributes: [
+          {
+            key: "sender",
+            value: "init1h8lpl5qcs5k5nngxvdum5v20jnww2lckg3n2ta",
+          },
+        ],
+        type: "message",
+      },
+      {
+        attributes: [
+          {
+            key: "fee",
+            value: "750000uinit",
+          },
+          {
+            key: "fee_payer",
+            value: "init1h8lpl5qcs5k5nngxvdum5v20jnww2lckg3n2ta",
+          },
+        ],
+        type: "tx",
+      },
+      {
+        attributes: [
+          {
+            key: "acc_seq",
+            value: "init1h8lpl5qcs5k5nngxvdum5v20jnww2lckg3n2ta/73",
+          },
+        ],
+        type: "tx",
+      },
+      {
+        attributes: [
+          {
+            key: "signature",
+            value:
+              "2CXCevdXDrBhyMqVuh3QRwvnWrgecv6bJ2FBOv9o/JhrAF1i7HnXkoTF21fDWMgUbtHFeZvYSpU+ebTiT9+2ew==",
+          },
+        ],
+        type: "tx",
+      },
+    ],
+    gas_used: "84285",
+    gas_wanted: "5000000",
+    height: "191957",
+    info: "",
+    logs: [],
+    raw_log:
+      "failed to execute message; message index: 0: VM failure: status OUT_OF_GAS of type Execution, location=0000000000000000000000002ab506311ffe3aaf8871f84a7ba8a685e025dbba::ed25519, function=1, code_offset=12",
+    timestamp: parseDate("2024-01-26T07:05:00Z"),
+    tx: {
+      "@type": "/cosmos.tx.v1beta1.Tx",
+      auth_info: {
+        fee: {
+          amount: [
+            {
+              amount: "750000",
+              denom: "uinit",
+            },
+          ],
+          gas_limit: "5000000",
+          granter: "",
+          payer: "",
+        },
+        signer_infos: [
+          {
+            mode_info: {
+              single: {
+                mode: "SIGN_MODE_DIRECT",
+              },
+            },
+            public_key: {
+              "@type": "/cosmos.crypto.secp256k1.PubKey",
+              key: "A5vqpm4KH4Qz7T2DC31p3nZ8nK5M6ZrnDa4PcE6zg/Y0",
+            },
+            sequence: "73",
+          },
+        ],
+      },
+      body: {
+        extension_options: [],
+        memo: "",
+        messages: [
+          {
+            "@type": "/initia.move.v1.MsgExecute" as TypeUrl,
+            args: [],
+            function_name: "hash_x",
+            module_address: "0x2ab506311ffe3aaf8871f84a7ba8a685e025dbba",
+            module_name: "ed25519",
+            sender: "init1h8lpl5qcs5k5nngxvdum5v20jnww2lckg3n2ta",
+            type_args: [],
+          },
+        ],
+        non_critical_extension_options: [],
+        timeout_height: "0",
+      },
+      signatures: [
+        "2CXCevdXDrBhyMqVuh3QRwvnWrgecv6bJ2FBOv9o/JhrAF1i7HnXkoTF21fDWMgUbtHFeZvYSpU+ebTiT9+2ew==",
+      ],
+    },
+    txhash: "F252AA07AA9FA79A3488FD6E552E6B7A168E997CB923E0C43C770835F42F217C",
+  },
+  result: [],
+};

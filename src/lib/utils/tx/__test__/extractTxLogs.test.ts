@@ -4,6 +4,7 @@ import {
   fromLogs,
   fromLogsTxFailed,
   fromEvents,
+  fromEventsTxFailed,
 } from "./extractTxLogs.example";
 
 describe("extractTxLogs", () => {
@@ -17,5 +18,10 @@ describe("extractTxLogs", () => {
   });
   test("from events", () => {
     expect(extractTxLogs(fromEvents.txData)).toEqual(fromEvents.result);
+  });
+  test("from events Tx Failed", () => {
+    expect(extractTxLogs(fromEventsTxFailed.txData)).toEqual(
+      fromEventsTxFailed.result
+    );
   });
 });
