@@ -261,29 +261,6 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "initiatestnet12-1",
-    assets: [
-      {
-        description: "The native staking token of Initia.",
-        denom_units: [
-          {
-            denom: "uinit",
-            exponent: 0,
-          },
-          {
-            denom: "init",
-            exponent: 6,
-          },
-        ],
-        base: "uinit",
-        name: "Init",
-        display: "init",
-        symbol: "INIT",
-      },
-    ],
-  },
-  {
-    $schema: ASSETLIST_SCHEMA,
     chain_name: "initiatestnet13",
     assets: [
       {
