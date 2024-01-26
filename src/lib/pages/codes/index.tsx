@@ -5,62 +5,40 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import { useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
-import { CodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
 
-import { useRecentCodesData } from "./data";
+import { RecentCodesTable } from "./components/RecentCodesTable";
 
 interface RecentCodesState {
-  keyword: string;
   permissionValue: PermissionFilterValue;
 }
 
 const RecentCodes = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const navigate = useInternalNavigate();
-  const onRowSelect = (codeId: number) =>
-    navigate({
-      pathname: "/codes/[codeId]",
-      query: { codeId },
-    });
 
   const { watch, setValue } = useForm<RecentCodesState>({
     defaultValues: {
       permissionValue: "all",
-      keyword: "",
     },
   });
-  const { keyword, permissionValue } = watch();
-  const { recentCodes, isLoading } = useRecentCodesData(
-    keyword,
-    permissionValue
-  );
+  const { permissionValue } = watch();
 
   useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_RECENT_CODES);
+    if (router.isReady) track(AmpEvent.TO_CODES);
   }, [router.isReady]);
-
-  const emptyState = (
-    <EmptyState
-      imageVariant="empty"
-      message="Most recent 100 code IDs will display here."
-      withBorder
-    />
-  );
 
   return (
     <PageContainer>
       <Box>
         <Heading variant="h5" as="h5" minH="36px">
-          Recent Codes
+          Codes
         </Heading>
         <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
-          Showing the 100 most recent stored codes on this network
+          This page displays all codes on this network sorted by recency
         </Text>
         <Box mt={8} mb={4}>
           <FilterByPermission
@@ -73,12 +51,7 @@ const RecentCodes = observer(() => {
           />
         </Box>
       </Box>
-      <CodesTable
-        codes={recentCodes}
-        isLoading={isLoading}
-        emptyState={emptyState}
-        onRowSelect={onRowSelect}
-      />
+      <RecentCodesTable permissionValue={permissionValue} />
     </PageContainer>
   );
 });

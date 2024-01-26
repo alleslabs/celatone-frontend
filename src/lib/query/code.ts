@@ -1,25 +1,5 @@
 import { graphql } from "lib/gql";
 
-export const getCodeListQueryDocument = graphql(`
-  query getCodeListQuery {
-    codes(limit: 100, offset: 0, order_by: { id: desc }) {
-      id
-      contracts_aggregate {
-        aggregate {
-          count
-        }
-      }
-      account {
-        uploader: address
-      }
-      access_config_permission
-      access_config_addresses
-      cw2_contract
-      cw2_version
-    }
-  }
-`);
-
 export const getCodeListByUserQueryDocument = graphql(`
   query getCodeListByUserQuery($walletAddr: String!) {
     codes(

@@ -40,10 +40,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#731](https://github.com/alleslabs/celatone-frontend/pull/731) Add proposal detail page structure
+- [#749](https://github.com/alleslabs/celatone-frontend/pull/749) Add multi-type proposals
 
 ### Improvements
 
+- [#750](https://github.com/alleslabs/celatone-frontend/pull/750) api v1 - recent codes list
+
 ### Bug fixes
+
+- [#751](https://github.com/alleslabs/celatone-frontend/pull/751) Fix fail txs should have no logs and remove stone-12-1
+
+## v1.5.1
+
+### Improvements
+
+- [#743](https://github.com/alleslabs/celatone-frontend/pull/743) Add mobile view for proposal list
+
+### Bug fixes
+
+- [#746](https://github.com/alleslabs/celatone-frontend/pull/746) Fix initia chain pretty names and resource panel
+- [#744](https://github.com/alleslabs/celatone-frontend/pull/744) Fix pool tx events
 
 ## v1.5.0
 

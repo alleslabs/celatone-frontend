@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, trackUseTab, track } from "lib/amplitude";
+import { usePoolConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
@@ -18,6 +19,7 @@ enum TabIndex {
 }
 
 export const PoolIndex = () => {
+  usePoolConfig({ shouldRedirect: true });
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 

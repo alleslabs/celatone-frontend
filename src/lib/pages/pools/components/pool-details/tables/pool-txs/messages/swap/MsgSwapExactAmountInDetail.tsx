@@ -42,6 +42,11 @@ export const MsgSwapExactAmountInDetail = ({
     <Box w="full">
       <PoolSwap
         txHash={txHash}
+        exactInput={{
+          isExactIn: true,
+          amount: msg.token_in,
+          expectedDenom: msg.routes[msg.routes.length - 1].tokenOutDenom,
+        }}
         msgIndex={msgIndex}
         assetInfos={assetInfos}
         isOpened={isOpened}
