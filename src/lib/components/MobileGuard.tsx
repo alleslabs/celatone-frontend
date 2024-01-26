@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 
 import { NoMobile } from "./modal";
 
@@ -12,26 +12,20 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
   const router = useRouter();
   const pathName = router.asPath;
   const isMobile = useMobile();
-  const { currentChainId } = useCelatoneApp();
   const isResponsive =
-    pathName.includes(`/account`) ||
+    pathName.includes(`/accounts`) ||
     pathName.includes(`/txs`) ||
     pathName.includes(`/blocks`) ||
     pathName.includes(`/projects`) ||
-    pathName.includes(`/code`) ||
-    pathName.includes(`/nft-collections`) ||
     pathName.includes(`/query`) ||
-    pathName.includes(`/network-overview`) ||
-    pathName.includes(`/dev-home`) ||
     pathName.includes(`/404`) ||
     pathName.includes(`/proposals`) ||
+    pathName.includes(`/nft-collections`) ||
     // wasm
     pathName.includes(`/contracts/`) ||
-    pathName === `/${currentChainId}/contracts` ||
+    pathName.includes(`/codes`) ||
     // move
-    pathName.includes(`/modules/`) ||
-    pathName === `/${currentChainId}/modules` ||
-    pathName === `/${currentChainId}`;
+    pathName.includes(`/modules`);
 
   if (isResponsive && isMobile) return <>{children}</>;
   if (!isResponsive && isMobile) return <NoMobile />;
