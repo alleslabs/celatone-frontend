@@ -3,10 +3,11 @@ import { useRef, useState } from "react";
 
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
+import type { ProposalType } from "lib/types";
 
 interface ProposalTextCellProps {
   title: string;
-  types: string[];
+  types: ProposalType[];
   isExpedited: boolean;
   isDepositOrVoting: boolean;
 }
