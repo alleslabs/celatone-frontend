@@ -80,6 +80,20 @@ const Proposals = () => {
     setSearch("");
   }, [currentChainId, address]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+    setPageSize(10);
+  }, [
+    proposer,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(statuses),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(types),
+    debouncedSearch,
+    setCurrentPage,
+    setPageSize,
+  ]);
+
   return (
     <PageContainer>
       <Flex justify="space-between" alignItems="center">

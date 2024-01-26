@@ -76,7 +76,7 @@ const zProposalsResponseItem = z
     resolved_height: z.number().nullable(),
     status: zProposalStatus,
     title: z.string(),
-    type: zProposalType,
+    types: zProposalType.array(),
     voting_end_time: zUtcDate.nullable(),
   })
   .transform<Proposal>((val) => ({
@@ -87,7 +87,7 @@ const zProposalsResponseItem = z
     resolvedHeight: val.resolved_height,
     status: val.status,
     title: val.title,
-    type: val.type,
+    types: val.types,
     votingEndTime: val.voting_end_time,
   }));
 
@@ -135,34 +135,9 @@ export const getProposalsByAddress = async (
     })
     .then(({ data }) => zProposalsResponse.parse(data));
 
-const zRelatedProposalsResponseItem = z
-  .object({
-    deposit_end_time: zUtcDate,
-    proposal_id: z.number().nonnegative(),
-    is_expedited: z.boolean(),
-    proposer: zBechAddr,
-    resolved_height: z.number().nullable(),
-    status: zProposalStatus,
-    title: z.string(),
-    type: zProposalType,
-    voting_end_time: zUtcDate,
-  })
-  .transform<Proposal>((val) => ({
-    depositEndTime: val.deposit_end_time,
-    proposalId: val.proposal_id,
-    isExpedited: val.is_expedited,
-    proposer: val.proposer,
-    resolvedHeight: val.resolved_height,
-    status: val.status,
-    title: val.title,
-    type: val.type,
-    votingEndTime: val.voting_end_time,
-  }));
-
 const zRelatedProposalsResponse = z.object({
-  items: z.array(zRelatedProposalsResponseItem),
+  items: z.array(zProposalsResponseItem),
 });
-
 export type RelatedProposalsResponse = z.infer<
   typeof zRelatedProposalsResponse
 >;

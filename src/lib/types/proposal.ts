@@ -63,7 +63,7 @@ export interface Proposal {
   votingEndTime: Nullable<Date>;
   depositEndTime: Date;
   resolvedHeight: Nullable<number>;
-  type: ProposalType;
+  types: ProposalType[];
   proposer: Option<BechAddr>;
   isExpedited: boolean;
 }

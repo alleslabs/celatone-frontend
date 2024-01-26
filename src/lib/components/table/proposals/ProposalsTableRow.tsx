@@ -54,7 +54,7 @@ export const ProposalsTableRow = ({
         !isDepositFailed
           ? () => {
               trackMintScan("proposal-detail", {
-                type: proposal.type,
+                types: proposal.types,
                 status: proposal.status,
               });
               // TOOD: revisit retrieving url (make a proper hook)
@@ -86,7 +86,7 @@ export const ProposalsTableRow = ({
       >
         <ProposalTextCell
           title={proposal.title}
-          type={proposal.type}
+          types={proposal.types}
           isExpedited={proposal.isExpedited}
           isDepositOrVoting={isDepositOrVoting}
         />

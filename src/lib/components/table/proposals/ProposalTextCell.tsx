@@ -3,17 +3,18 @@ import { useRef, useState } from "react";
 
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
+import type { ProposalType } from "lib/types";
 
 interface ProposalTextCellProps {
   title: string;
-  type: string;
+  types: ProposalType[];
   isExpedited: boolean;
   isDepositOrVoting: boolean;
 }
 
 export const ProposalTextCell = ({
   title,
-  type,
+  types,
   isExpedited,
   isDepositOrVoting,
 }: ProposalTextCellProps) => {
@@ -69,7 +70,16 @@ export const ProposalTextCell = ({
           maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
-          {type}
+          {types.map((msgType, index) => (
+            <span key={msgType + index.toString()}>
+              {index > 0 && (
+                <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+                  {" / "}
+                </span>
+              )}
+              {msgType}
+            </span>
+          ))}
         </Text>
       </Flex>
     </Flex>

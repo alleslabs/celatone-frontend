@@ -160,7 +160,8 @@ export const useRelatedProposalsByModuleIdPagination = (
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.proposal.resolved_height ?? null,
-          type: proposal.proposal.type as ProposalType,
+          // TODO: fix
+          types: [proposal.proposal.type as ProposalType],
           proposer: proposal.proposal.account?.address as BechAddr,
           isExpedited: Boolean(proposal.proposal.is_expedited),
         }))
