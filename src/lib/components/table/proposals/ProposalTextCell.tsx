@@ -6,14 +6,14 @@ import { Expedited } from "lib/components/Expedited";
 
 interface ProposalTextCellProps {
   title: string;
-  type: string;
+  types: string[];
   isExpedited: boolean;
   isDepositOrVoting: boolean;
 }
 
 export const ProposalTextCell = ({
   title,
-  type,
+  types,
   isExpedited,
   isDepositOrVoting,
 }: ProposalTextCellProps) => {
@@ -69,7 +69,7 @@ export const ProposalTextCell = ({
           maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
-          {type}
+          {types.join(", ")}
         </Text>
       </Flex>
     </Flex>

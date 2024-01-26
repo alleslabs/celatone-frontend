@@ -53,9 +53,11 @@ export const ProposalsTableMobileCard = ({
             <Text color="text.main" variant="body2" wordBreak="break-word">
               {proposal.title}
             </Text>
-            <Text color="text.dark" variant="body3" wordBreak="break-word">
-              {proposal.type}
-            </Text>
+            {proposal.types.map((msgType) => (
+              <Text color="text.dark" variant="body3" wordBreak="break-word">
+                {msgType}
+              </Text>
+            ))}
           </Flex>
           <Flex direction="column" gap={1}>
             <MobileLabel label="Voting Ends" />
@@ -86,7 +88,7 @@ export const ProposalsTableMobileCard = ({
         !isDepositFailed
           ? () => {
               trackMintScan("proposal-detail", {
-                type: proposal.type,
+                types: proposal.types,
                 status: proposal.status,
               });
               // TOOD: revisit retrieving url (make a proper hook)
