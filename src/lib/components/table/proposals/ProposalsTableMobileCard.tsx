@@ -53,8 +53,13 @@ export const ProposalsTableMobileCard = ({
             <Text color="text.main" variant="body2" wordBreak="break-word">
               {proposal.title}
             </Text>
-            {proposal.types.map((msgType) => (
-              <Text color="text.dark" variant="body3" wordBreak="break-word">
+            {proposal.types.map((msgType, index) => (
+              <Text
+                key={msgType + index.toString()}
+                color="text.dark"
+                variant="body3"
+                wordBreak="break-word"
+              >
                 {msgType}
               </Text>
             ))}
