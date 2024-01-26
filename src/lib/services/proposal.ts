@@ -67,6 +67,11 @@ export const fetchGovUploadAccessParams = async (
 ): Promise<UploadAccess> =>
   axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);
 
+export const getProposalTypes = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/types`)
+    .then(({ data }) => zProposalType.array().parse(data));
+
 const zProposalsResponseItem = z
   .object({
     deposit_end_time: zUtcDate,
