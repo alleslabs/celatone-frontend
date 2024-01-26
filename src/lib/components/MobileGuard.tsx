@@ -22,7 +22,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/proposals`) ||
     pathName.includes(`/nft-collections`) ||
     // wasm
-    pathName.includes(`/contracts/`) ||
+    pathName.includes(`/contracts`) ||
     pathName.includes(`/codes`) ||
     // move
     pathName.includes(`/modules`);
