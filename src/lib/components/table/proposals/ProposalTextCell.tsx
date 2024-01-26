@@ -71,14 +71,14 @@ export const ProposalTextCell = ({
           className={showName ? undefined : "ellipsis"}
         >
           {types.map((msgType, index) => (
-            <>
+            <span key={msgType + index.toString()}>
               {index > 0 && (
                 <span style={{ color: "var(--chakra-colors-accent-main)" }}>
                   {" / "}
                 </span>
               )}
               {msgType}
-            </>
+            </span>
           ))}
         </Text>
       </Flex>
