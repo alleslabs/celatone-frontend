@@ -1,3 +1,3 @@
-import { ProposalDetails } from "lib/pages/proposal-details";
+import ProposalDetails from "lib/pages/proposal-details";
 
 export default ProposalDetails;

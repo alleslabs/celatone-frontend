@@ -1,28 +1,96 @@
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 
-import { ProposalDetailBody } from "./components/ProposalDetailsBody";
-import { ProposalTop } from "./components/ProposalTop";
+import { ProposalTop } from "./components";
+import { ProposalOverview } from "./components/ProposalOverview";
+import { VoteDetail } from "./components/VoteDetail";
 import type { ProposalDetailsQueryParams } from "./type";
-import { zProposalDetailsQueryParams } from "./type";
+import { zProposalDetailsQueryParams, TabIndex } from "./type";
 
 const ProposalDetailsBody = ({
   id,
   tab,
-  voteTab,
+  // voteTab,
 }: ProposalDetailsQueryParams) => {
-  // TODO Mock up
-  if (id === 999) return <InvalidState title="Proposal does not exist" />;
+  const router = useRouter();
+  const navigate = useInternalNavigate();
+
+  const handleTabChange = useCallback(
+    (nextTab: TabIndex) => () => {
+      if (nextTab === tab) return;
+      navigate({
+        pathname: "/proposals/[id]/[tab]",
+        query: {
+          id,
+          tab: nextTab,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [id, tab, navigate]
+  );
+
+  useEffect(() => {
+    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
+      navigate({
+        replace: true,
+        pathname: "/proposals/[id]/[tab]",
+        query: {
+          id,
+          tab: TabIndex.Overview,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    }
+  }, [router.isReady, tab, navigate, id]);
+
+  // TODO mock up data
+  if (id > 9999) return <InvalidState title="Proposal does not exist" />;
+
   return (
     <>
       <ProposalTop id={id} />
-      <ProposalDetailBody id={id} tab={tab} voteTab={voteTab} />
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          borderBottom="1px solid"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
+          <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+            Proposal Overview
+          </CustomTab>
+          <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
+            Vote Detail
+          </CustomTab>
+        </TabList>
+        <TabPanels>
+          <TabPanel p={0}>
+            <ProposalOverview />
+          </TabPanel>
+          <TabPanel p={0}>
+            <VoteDetail />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </>
   );
 };
-export const ProposalDetails = () => {
+
+const ProposalDetails = () => {
   const router = useRouter();
 
   const validated = zProposalDetailsQueryParams.safeParse(router.query);
@@ -37,3 +105,5 @@ export const ProposalDetails = () => {
     </PageContainer>
   );
 };
+
+export default ProposalDetails;
