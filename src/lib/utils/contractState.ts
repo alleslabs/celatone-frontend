@@ -32,7 +32,8 @@ export const parseStateKey = (rawKey: string): DecodedKey => {
 
       // We've assumed that the length of the key is less than 256
       // This should be the last part of key
-      if (!(length > 0 && length <= 256)) {
+      const remainingLength = key.length - currentIndex;
+      if (!(length > 0 && length <= 256) || remainingLength <= 4) {
         const valueHex = key.slice(currentIndex);
         const decodedValue = hexToString(valueHex);
         values.push(nameRegex.test(decodedValue) ? decodedValue : valueHex);

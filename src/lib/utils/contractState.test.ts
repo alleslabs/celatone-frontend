@@ -96,4 +96,12 @@ describe("parseStateKey", () => {
       ],
     });
   });
+
+  it("should parse base64 key name length less than 4", () => {
+    const key = "AAZ0b2tlbnMx"; // 0006746f6b656e7331
+    expect(parseStateKey(key)).toEqual({
+      type: "bucket",
+      values: ["tokens", "1"],
+    });
+  });
 });
