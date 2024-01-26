@@ -58,7 +58,7 @@ export const NavDrawer = () => {
         ...(wasmConfig.enabled
           ? [
               {
-                name: "Recent Codes",
+                name: "Codes",
                 slug: "/codes",
                 icon: "code" as IconKeys,
               },
