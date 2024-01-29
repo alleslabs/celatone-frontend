@@ -10,7 +10,6 @@ import {
   useCelatoneApp,
 } from "lib/app-provider";
 import {
-  getProposalTypes,
   getRelatedProposalsByModuleIdPagination,
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
@@ -51,6 +50,7 @@ import {
   getProposalsByAddress,
   getRelatedProposalsByContractAddress,
   getProposals,
+  getProposalTypes,
 } from "./proposal";
 
 export const useProposals = (
@@ -85,6 +85,15 @@ export const useProposals = (
         types,
         trimmedSearch
       ),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
+  const endpoint = useBaseApiRoute("proposals");
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
+    async () => getProposalTypes(endpoint),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -210,23 +219,6 @@ export const useRelatedProposalsCountByModuleId = (
     {
       keepPreviousData: true,
     }
-  );
-};
-
-export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getProposalTypes)
-        .then(({ proposals }) =>
-          proposals.map((proposal) => proposal.type).sort()
-        ),
-    [indexerGraphClient]
-  );
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, indexerGraphClient],
-    queryFn
   );
 };
 

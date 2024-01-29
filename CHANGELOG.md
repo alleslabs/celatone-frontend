@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#731](https://github.com/alleslabs/celatone-frontend/pull/731) Add proposal detail page structure
 - [#749](https://github.com/alleslabs/celatone-frontend/pull/749) Add multi-type proposals
+- [#753](https://github.com/alleslabs/celatone-frontend/pull/753) api v1 - proposal type filter
 
 ### Improvements
 
