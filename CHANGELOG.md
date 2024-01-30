@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#756](https://github.com/alleslabs/celatone-frontend/pull/756) Redirect usei to homepage
 - [#750](https://github.com/alleslabs/celatone-frontend/pull/750) api v1 - recent codes list
 - [#752](https://github.com/alleslabs/celatone-frontend/pull/752) Support contract state's key as base64
 
