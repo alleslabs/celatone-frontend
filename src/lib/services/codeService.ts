@@ -13,7 +13,6 @@ import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
-  getCodeListQueryDocument,
 } from "lib/query";
 import type {
   CodeInfo,
@@ -28,31 +27,7 @@ import type {
 import { isId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 import type { CodeIdInfoResponse, CodesResponse } from "./code";
-import { getCodeIdInfo, getCodesByAddress } from "./code";
-
-export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getCodeListQueryDocument)
-      .then(({ codes }) =>
-        codes.map<CodeInfo>((code) => ({
-          id: code.id,
-          uploader: code.account.uploader as BechAddr,
-          contractCount: code.contracts_aggregate.aggregate?.count,
-          instantiatePermission:
-            code.access_config_permission as AccessConfigPermission,
-          permissionAddresses:
-            code.access_config_addresses as PermissionAddresses,
-          cw2Contract: code.cw2_contract,
-          cw2Version: code.cw2_version,
-        }))
-      );
-  }, [indexerGraphClient]);
-
-  return useQuery([CELATONE_QUERY_KEYS.CODES, indexerGraphClient], queryFn);
-};
+import { getCodeIdInfo, getCodes, getCodesByAddress } from "./code";
 
 export const useCodeListByWalletAddress = (
   walletAddr: Option<BechAddr20>
@@ -185,6 +160,22 @@ export const useCodeDataByCodeId = ({
     {
       enabled: enabled && isId(codeId),
     }
+  );
+};
+
+export const useCodes = (
+  limit: number,
+  offset: number,
+  address: Option<BechAddr20>,
+  permission: Option<boolean>,
+  options?: Pick<UseQueryOptions<CodesResponse>, "onSuccess">
+): UseQueryResult<CodesResponse> => {
+  const endpoint = useBaseApiRoute("codes");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODES, endpoint, limit, offset, address, permission],
+    async () => getCodes(endpoint, limit, offset, address, permission),
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 

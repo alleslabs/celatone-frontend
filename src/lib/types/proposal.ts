@@ -1,3 +1,4 @@
+import type { Coin } from "@cosmjs/amino";
 import { z } from "zod";
 
 import type { BechAddr, Nullable, Option } from "lib/types";
@@ -57,13 +58,35 @@ export const zProposalType = z.union([
 export type ProposalType = z.infer<typeof zProposalType>;
 
 export interface Proposal {
-  proposalId: number;
+  id: number;
   title: string;
   status: ProposalStatus;
   votingEndTime: Nullable<Date>;
   depositEndTime: Date;
   resolvedHeight: Nullable<number>;
-  type: ProposalType;
+  types: ProposalType[];
   proposer: Option<BechAddr>;
   isExpedited: boolean;
+}
+
+export interface ProposalDeposit {
+  amount: Coin[];
+  depositor: BechAddr;
+  timestamp: Date;
+  txHash: string;
+}
+
+export interface ProposalData extends Proposal {
+  createdHeight: Nullable<number>;
+  createdTimestamp: Nullable<Date>;
+  createdTxHash: Nullable<string>;
+  description: string;
+  messages: Nullable<unknown[]>;
+  metadata: string;
+  proposalDeposits: ProposalDeposit[];
+  resolvedTimestamp: Nullable<Date>;
+  submitTime: Date;
+  totalDeposit: Coin[];
+  version: string;
+  votingTime: Nullable<Date>;
 }

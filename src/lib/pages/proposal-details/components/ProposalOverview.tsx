@@ -27,7 +27,7 @@ export const ProposalOverview = () => {
             <Heading as="h6" variant="h6">
               Proposal Description
             </Heading>
-            <Text variant="body1">
+            <Text variant="body1" wordBreak="break-word">
               This is a proposal to give the address
               osmo1raa4kyx5ypz75qqk3566c6slx2mw3qzsu6rymw permission to upload
               CosmWasm contracts to Osmosis without seeking governance approval

@@ -9,10 +9,11 @@ export const useBaseApiRoute = (
     | "accounts"
     | "assets"
     | "blocks"
+    | "codes"
     | "contracts"
     | "proposals"
     | "projects"
-    | "codes"
+    | "public_codes"
     | "legacy.accounts"
     | "rest"
     | "icns_names"
@@ -44,13 +45,15 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/assets`;
     case "blocks":
       return `${api}/v1/${chain}/${currentChainId}/blocks`;
+    case "codes":
+      return `${api}/v1/${chain}/${currentChainId}/wasm/codes`;
     case "contracts":
-      return `${api}/v1/${chain}/${currentChainId}/contracts`;
+      return `${api}/v1/${chain}/${currentChainId}/wasm/contracts`;
     case "proposals":
       return `${api}/v1/${chain}/${currentChainId}/proposals`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
-    case "codes":
+    case "public_codes":
       return `${api}/codes/${chain}/${currentChainId}`;
     case "legacy.accounts":
       return `${api}/accounts/${chain}/${currentChainId}`;

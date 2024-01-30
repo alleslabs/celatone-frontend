@@ -54,7 +54,7 @@ export const ProposalsTableRow = ({
         !isDepositFailed
           ? () => {
               trackMintScan("proposal-detail", {
-                type: proposal.type,
+                types: proposal.types,
                 status: proposal.status,
               });
               // TOOD: revisit retrieving url (make a proper hook)
@@ -62,7 +62,7 @@ export const ProposalsTableRow = ({
                 getNavigationUrl({
                   type: "proposal_id",
                   explorerConfig: explorerLink,
-                  value: proposal.proposalId.toString(),
+                  value: proposal.id.toString(),
                   lcdEndpoint,
                 })
               );
@@ -74,7 +74,7 @@ export const ProposalsTableRow = ({
         <ExplorerLink
           isReadOnly={isDepositFailed}
           type="proposal_id"
-          value={proposal.proposalId.toString()}
+          value={proposal.id.toString()}
           showCopyOnHover
           ampCopierSection="proposal-list"
         />
@@ -86,7 +86,7 @@ export const ProposalsTableRow = ({
       >
         <ProposalTextCell
           title={proposal.title}
-          type={proposal.type}
+          types={proposal.types}
           isExpedited={proposal.isExpedited}
           isDepositOrVoting={isDepositOrVoting}
         />

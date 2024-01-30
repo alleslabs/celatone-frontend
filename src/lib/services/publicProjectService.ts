@@ -92,7 +92,7 @@ export const usePublicProjectBySlug = (
 export const usePublicProjectByCodeId = (
   codeId: string
 ): UseQueryResult<PublicCode> => {
-  const projectsApiRoute = useBaseApiRoute("codes");
+  const projectsApiRoute = useBaseApiRoute("public_codes");
   const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
 

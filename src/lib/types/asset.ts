@@ -3,6 +3,11 @@ import { z } from "zod";
 
 import type { PoolInfo, Option, Token, U, USD } from "lib/types";
 
+export const zCoin = z.object({
+  denom: z.string(),
+  amount: z.string(),
+});
+
 export const zAssetInfo = z.object({
   coingecko: z.string(),
   description: z.string(),

@@ -1,12 +1,12 @@
 import type { TabProps } from "@chakra-ui/react";
 import { Button, useTab, useMultiStyleConfig } from "@chakra-ui/react";
 
-import type { Nullish } from "lib/types";
+import type { Nullable } from "lib/types";
 
 import { ProposalStepper } from "./ProposalStepper";
 
-interface CustomTabProps extends TabProps {
-  count?: Nullish<number | string>;
+interface VoteDetailTabProps extends TabProps {
+  count?: Nullable<number | string>;
   isLoading?: boolean;
   title: string;
   description: string;
@@ -20,7 +20,7 @@ export const VoteDetailTab = ({
   description,
   step,
   ...restProps
-}: CustomTabProps) => {
+}: VoteDetailTabProps) => {
   const tabProps = useTab({ ...restProps });
   const styles = useMultiStyleConfig("Tabs", tabProps);
 

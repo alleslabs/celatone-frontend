@@ -80,8 +80,28 @@ describe("parseStateKey", () => {
     });
   });
 
-  it("should return a singleton key if parsing fails", () => {
-    const key = "not hex";
-    expect(parseStateKey(key)).toEqual({ type: "singleton", value: key });
+  it("should parse base64 key", () => {
+    const key = "SGVsbG8="; // "Hello"
+    expect(parseStateKey(key)).toEqual({ type: "singleton", value: "Hello" });
+  });
+
+  it("should parse base64 key with multiple values", () => {
+    const key =
+      "AAdhdWN0aW9uc2VpMTJuZTdxdG1kd2QwajAzdDl0NWVzOG1kNjZ3cTRlNXhnOW5lbGFkcnNhZzhmeDN5ODlyY3M1bTJ4YWpDOTgxWjhvUVZUZXBPSzRQclN1c2VpMXhzZjA4bGtoNzBjeW10aGY0Z2h4YWVmODR3NHVsZTd5bnFucXJr==";
+    expect(parseStateKey(key)).toEqual({
+      type: "bucket",
+      values: [
+        "auction",
+        "sei12ne7qtmdwd0j03t9t5es8md66wq4e5xg9neladrsag8fx3y89rcs5m2xajC981Z8oQVTepOK4PrSusei1xsf08lkh70cymthf4ghxaef84w4ule7ynqnqrk",
+      ],
+    });
+  });
+
+  it("should parse base64 key name length less than 4", () => {
+    const key = "AAZ0b2tlbnMx"; // 0006746f6b656e7331
+    expect(parseStateKey(key)).toEqual({
+      type: "bucket",
+      values: ["tokens", "1"],
+    });
   });
 });

@@ -1,19 +1,109 @@
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
-import { EmptyState } from "lib/components/state";
+import { InvalidState } from "lib/components/state";
 
-import { ProposalDetailBody } from "./components/ProposalDetailsBody";
-import { ProposalTop } from "./components/ProposalTop";
+import { ProposalTop } from "./components";
+import { ProposalOverview } from "./components/ProposalOverview";
+import { VoteDetail } from "./components/VoteDetail";
+import type { ProposalDetailsQueryParams } from "./type";
+import { zProposalDetailsQueryParams, TabIndex } from "./type";
 
-export const ProposalDetail = () => {
+const ProposalDetailsBody = ({
+  id,
+  tab,
+  // voteTab,
+}: ProposalDetailsQueryParams) => {
   const router = useRouter();
-  const proposalId = parseInt(router.query.id as string, 10);
-  if (!proposalId) return <EmptyState message="not found" />;
+  const navigate = useInternalNavigate();
+
+  const handleTabChange = useCallback(
+    (nextTab: TabIndex) => () => {
+      if (nextTab === tab) return;
+      navigate({
+        pathname: "/proposals/[id]/[tab]",
+        query: {
+          id,
+          tab: nextTab,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [id, tab, navigate]
+  );
+
+  useEffect(() => {
+    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
+      navigate({
+        replace: true,
+        pathname: "/proposals/[id]/[tab]",
+        query: {
+          id,
+          tab: TabIndex.Overview,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    }
+  }, [router.isReady, tab, navigate, id]);
+
+  // TODO mock up data
+  if (id > 9999) return <InvalidState title="Proposal does not exist" />;
+
+  return (
+    <>
+      <ProposalTop id={id} />
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          borderBottom="1px solid"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
+          <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+            Proposal Overview
+          </CustomTab>
+          <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
+            Vote Detail
+          </CustomTab>
+        </TabList>
+        <TabPanels>
+          <TabPanel p={0}>
+            <ProposalOverview />
+          </TabPanel>
+          <TabPanel p={0}>
+            <VoteDetail />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </>
+  );
+};
+
+const ProposalDetails = () => {
+  const router = useRouter();
+
+  const validated = zProposalDetailsQueryParams.safeParse(router.query);
+
   return (
     <PageContainer>
-      <ProposalTop id={proposalId} />
-      <ProposalDetailBody id={proposalId} />
+      {!validated.success ? (
+        <InvalidState title="Proposal does not euuuxist" />
+      ) : (
+        <ProposalDetailsBody {...validated.data} />
+      )}
     </PageContainer>
   );
 };
+
+export default ProposalDetails;

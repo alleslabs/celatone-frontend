@@ -23,7 +23,7 @@ export const ContentContainer = ({
       border="1px solid"
       borderColor={isMobile && !hasSubSection ? "transparent" : "gray.700"}
       borderRadius="8px"
-      p={isMobile && !hasSubSection ? 0 : 6}
+      p={{ base: !hasSubSection ? 0 : 4, md: !hasSubSection ? 0 : 6 }}
       gap={4}
     >
       {children}

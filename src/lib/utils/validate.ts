@@ -14,14 +14,18 @@ export const isPosDecimal = (input: string): boolean => {
 export const isId = (input: string): boolean =>
   input.length <= 7 && isPosDecimal(input);
 
-export const isTxHash = (input: string): boolean => {
+export const isHex = (input: string): boolean => {
+  if (input.trim() === "") return false;
   try {
     fromHex(input);
   } catch {
     return false;
   }
-  return input.length === 64;
+  return true;
 };
+
+export const isTxHash = (input: string): boolean =>
+  isHex(input) && input.length === 64;
 
 const isHexAddress = (address: string, length: number): boolean => {
   const regex = new RegExp(`^0x[a-fA-F0-9]{1,${length}}$`);
@@ -30,12 +34,7 @@ const isHexAddress = (address: string, length: number): boolean => {
   }
 
   const strip = padHexAddress(address as HexAddr, length).slice(2);
-  try {
-    fromHex(strip);
-  } catch {
-    return false;
-  }
-  return true;
+  return isHex(strip);
 };
 
 export const isHexWalletAddress = (address: string) =>

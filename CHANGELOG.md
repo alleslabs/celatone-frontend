@@ -40,11 +40,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#745](https://github.com/alleslabs/celatone-frontend/pull/745) Add proposal top
+- [#757](https://github.com/alleslabs/celatone-frontend/pull/757) api v1 - proposal data
 - [#731](https://github.com/alleslabs/celatone-frontend/pull/731) Add proposal detail page structure
+- [#749](https://github.com/alleslabs/celatone-frontend/pull/749) Add multi-type proposals
+- [#753](https://github.com/alleslabs/celatone-frontend/pull/753) api v1 - proposal type filter
 
 ### Improvements
 
+- [#756](https://github.com/alleslabs/celatone-frontend/pull/756) Redirect usei to homepage
+- [#750](https://github.com/alleslabs/celatone-frontend/pull/750) api v1 - recent codes list
+- [#752](https://github.com/alleslabs/celatone-frontend/pull/752) Support contract state's key as base64
+
 ### Bug fixes
+
+- [#754](https://github.com/alleslabs/celatone-frontend/pull/754) Fix mobile guard incorrect behavior
+- [#751](https://github.com/alleslabs/celatone-frontend/pull/751) Fix fail txs should have no logs and remove stone-12-1
+
+## v1.5.1
+
+### Improvements
+
+- [#743](https://github.com/alleslabs/celatone-frontend/pull/743) Add mobile view for proposal list
+
+### Bug fixes
+
+- [#746](https://github.com/alleslabs/celatone-frontend/pull/746) Fix initia chain pretty names and resource panel
+- [#744](https://github.com/alleslabs/celatone-frontend/pull/744) Fix pool tx events
 
 ## v1.5.0
 

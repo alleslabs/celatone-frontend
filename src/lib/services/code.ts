@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { AccessConfigPermission, zBechAddr } from "lib/types";
-import type { BechAddr, CodeInfo } from "lib/types";
+import type { BechAddr, BechAddr20, CodeInfo, Option } from "lib/types";
 
 export interface CodeIdInfoResponse {
   code_info: {
@@ -54,6 +54,24 @@ const zCodesResponse = z.object({
 });
 
 export type CodesResponse = z.infer<typeof zCodesResponse>;
+
+export const getCodes = async (
+  endpoint: string,
+  limit: number,
+  offset: number,
+  address: Option<BechAddr20>,
+  permission: Option<boolean>
+): Promise<CodesResponse> =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+        address,
+        permission,
+      },
+    })
+    .then(({ data }) => zCodesResponse.parse(data));
 
 export const getCodesByAddress = async (
   endpoint: string,

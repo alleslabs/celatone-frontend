@@ -8,6 +8,7 @@ import { TableTitle } from "lib/components/table";
 interface ValidatorVotesTableProps extends FlexProps {
   onBack: () => void;
 }
+
 export const ValidatorVotesTable = ({
   onBack,
   ...props
