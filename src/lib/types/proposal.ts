@@ -79,7 +79,7 @@ export interface ProposalDeposit {
 export interface ProposalData extends Proposal {
   createdHeight: Nullable<number>;
   createdTimestamp: Nullable<Date>;
-  createdTxHash: string;
+  createdTxHash: Nullable<string>;
   description: string;
   messages: unknown[];
   metadata: string;

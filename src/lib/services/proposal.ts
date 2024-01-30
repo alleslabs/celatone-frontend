@@ -166,7 +166,7 @@ const zProposalDataResponse = z.object({
     .extend({
       created_height: z.number().nullable(),
       created_timestamp: zUtcDate.nullable(),
-      created_tx_hash: z.string(),
+      created_tx_hash: z.string().nullable(),
       description: z.string(),
       messages: z.unknown().array(),
       metadata: z.string(),
