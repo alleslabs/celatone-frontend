@@ -86,7 +86,7 @@ export interface ProposalData extends Proposal {
   proposalDeposits: ProposalDeposit[];
   resolvedTimestamp: Nullable<Date>;
   submitTime: Date;
-  totalDeposit: Coin[];
+  totalDeposit: Nullable<Coin[]>;
   version: string;
   votingTime: Nullable<Date>;
 }

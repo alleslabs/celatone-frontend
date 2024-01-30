@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileLabel, StatusChip } from "lib/components/table";
-import type { BechAddr } from "lib/types";
+import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
@@ -21,18 +21,6 @@ const InfoItem = ({ label, children }: InfoItemProps) => {
   );
 };
 
-type ProposalData = {
-  status: ProposalStatus;
-  createdTxHash: string;
-  proposer: BechAddr;
-  depositStart?: Date;
-  depositEnd?: Date;
-  voteStart?: Date;
-  voteEnd?: Date;
-  resolvedHeight?: number;
-  resolvedDate?: Date;
-};
-
 interface ProposalStatusProps {
   data: ProposalData;
 }
@@ -43,8 +31,8 @@ const getProposalInfo = (data: ProposalStatusProps["data"]) => {
       return (
         <InfoItem label="Deposit Start/End">
           <Text variant="body2" color="text.dark">
-            {data.depositStart && data.depositEnd
-              ? `${formatUTC(data.depositStart)} - ${formatUTC(data.depositEnd)}`
+            {data.submitTime && data.depositEndTime
+              ? `${formatUTC(data.submitTime)} - ${formatUTC(data.depositEndTime)}`
               : "N/A"}
           </Text>
         </InfoItem>
@@ -69,7 +57,9 @@ const getProposalInfo = (data: ProposalStatusProps["data"]) => {
           </InfoItem>
           <InfoItem label="Failed at">
             <Text variant="body2" color="text.dark">
-              {data.resolvedDate ? formatUTC(data.resolvedDate) : "N/A"}
+              {data.resolvedTimestamp
+                ? formatUTC(data.resolvedTimestamp)
+                : "N/A"}
             </Text>
           </InfoItem>
         </Flex>
@@ -78,8 +68,8 @@ const getProposalInfo = (data: ProposalStatusProps["data"]) => {
       return (
         <InfoItem label="Voting Start/End">
           <Text variant="body2" color="text.dark">
-            {data.voteStart && data.voteEnd
-              ? `${formatUTC(data.voteStart)} - ${formatUTC(data.voteEnd)}`
+            {data.votingTime && data.votingEndTime
+              ? `${formatUTC(data.votingTime)} - ${formatUTC(data.votingEndTime)}`
               : "N/A"}
           </Text>
         </InfoItem>
@@ -106,7 +96,9 @@ const getProposalInfo = (data: ProposalStatusProps["data"]) => {
           </InfoItem>
           <InfoItem label="Resolved at">
             <Text variant="body2" color="text.dark">
-              {data.resolvedDate ? formatUTC(data.resolvedDate) : "N/A"}
+              {data.resolvedTimestamp
+                ? formatUTC(data.resolvedTimestamp)
+                : "N/A"}
             </Text>
           </InfoItem>
         </Flex>
@@ -136,12 +128,19 @@ export const ProposalInfo = ({ data }: ProposalStatusProps) => {
         </Flex>
       </InfoItem>
       <Flex gap={8}>
-        <InfoItem label="Created Tx">
-          <ExplorerLink value="B1DE14...32F12A" type="tx_hash" />
-        </InfoItem>
-        <InfoItem label="Proposer">
-          <ExplorerLink value="cltn1...7tlju97" type="user_address" />
-        </InfoItem>
+        {data.createdTxHash && (
+          <InfoItem label="Created Tx">
+            <ExplorerLink
+              value={data.createdTxHash.toUpperCase()}
+              type="tx_hash"
+            />
+          </InfoItem>
+        )}
+        {data.proposer && (
+          <InfoItem label="Proposer">
+            <ExplorerLink value={data.proposer} type="user_address" />
+          </InfoItem>
+        )}
       </Flex>
       <Divider
         orientation="vertical"

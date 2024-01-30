@@ -1,19 +1,26 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useBaseApiRoute, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
 import { InvalidState } from "lib/components/state";
-import type { BechAddr } from "lib/types";
-import { ProposalStatus } from "lib/types";
+import type { ProposalData } from "lib/types";
+import { formatUTC, openNewTab } from "lib/utils";
 
 import { ProposalInfo } from "./ProposalInfo";
 
-export const ProposalTop = ({ id }: { id: number }) => {
-  const isMobile = useMobile();
+interface ProposalTopProps {
+  id: number;
+  proposalData: ProposalData;
+}
 
+export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
+  const isMobile = useMobile();
+  const endpoint = useBaseApiRoute("proposals");
+  const openApiPage = () =>
+    openNewTab(`${endpoint}/${encodeURIComponent(id)}/info`);
   if (!id) return <InvalidState title="Proposal does not exist" />;
 
   return (
@@ -27,8 +34,11 @@ export const ProposalTop = ({ id }: { id: number }) => {
           { text: `#${id.toString()}` },
         ]}
       />
-      <Flex direction="column" gap={1}>
-        <Flex alignItems="center" justifyContent="space-between" gap={4}>
+      <Flex
+        justifyContent="space-between"
+        direction={{ base: "column", md: "row" }}
+      >
+        <Flex direction="column" gap={1}>
           <Flex
             gap={1}
             align={{ base: "start", md: "center" }}
@@ -44,133 +54,106 @@ export const ProposalTop = ({ id }: { id: number }) => {
               variant={{ base: "h6", md: "h5" }}
               className={!isMobile ? "ellipsis" : ""}
               wordBreak="break-word"
+              color={proposalData.title ? "text.main" : "text.disabled"}
             >
-              <Heading
+              <Text
                 variant={{ base: "h6", md: "h5" }}
                 color="accent.main"
                 display="inline"
               >
                 #{id}
-              </Heading>{" "}
-              - Regular Incentive adjustment for 2023-07-10
+              </Text>{" "}
+              - {proposalData.title ? proposalData.title : "No title"}
             </Heading>
           </Flex>
-          {!isMobile && (
-            <Button
-              variant="outline-primary"
-              w="min-content"
-              minWidth="150px"
-              rightIcon={<CustomIcon name="launch" />}
-            >
-              View in JSON
-            </Button>
-          )}
-        </Flex>
-        <Flex gap={{ base: 2, md: 1 }} mb={4} direction="column">
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text
-              color="text.dark"
-              variant="body2"
-              fontWeight={500}
-              whiteSpace="nowrap"
-            >
-              Proposal Messages:
-            </Text>
-            <Text color="text.main" variant="body2">
-              ProposalStoreCode / ProposalStoreCode / ProposalStoreCode /
-              ProposalStoreCode / ProposalStoreCode
-            </Text>
-          </Flex>
-          {!isMobile && (
+          <Flex gap={{ base: 2, md: 1 }} mb={4} direction="column">
             <Flex
+              mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
-              alignItems="center"
               direction={{ base: "column", md: "row" }}
             >
-              <Text color="text.dark" variant="body2" fontWeight={500}>
-                Created Height:
+              <Text
+                variant="body2"
+                color="text.dark"
+                fontWeight={500}
+                whiteSpace="nowrap"
+                lineHeight="24px"
+              >
+                Proposal Messages:
               </Text>
-              <CopyLink
-                // value={blockData.hash.toUpperCase()}
-                value="123"
-                type="block_hash"
-              />
-              <DotSeparator />
-              <Text variant={{ base: "body3", md: "body2" }} color="text.dark">
-                {/* {formatUTC(blockData.timestamp)} */} timestamp
-              </Text>
+              {proposalData.types.length ? (
+                <Flex display="inline-block">
+                  {proposalData.types.map((msgType, index) => (
+                    <Text
+                      variant="body2"
+                      color="text.main"
+                      whiteSpace="nowrap"
+                      display="inline-block"
+                      key={msgType + index.toString()}
+                      h={6}
+                    >
+                      {index > 0 && (
+                        <span
+                          style={{
+                            color: "var(--chakra-colors-accent-main)",
+                            marginLeft: "4px",
+                          }}
+                        >
+                          {" / "}
+                        </span>
+                      )}
+                      {msgType}
+                    </Text>
+                  ))}
+                </Flex>
+              ) : (
+                <Text variant="body2" color="text.dark">
+                  No Message
+                </Text>
+              )}
             </Flex>
-          )}
+            {!isMobile && (
+              <Flex
+                gap={{ base: 0, md: 2 }}
+                alignItems="center"
+                direction={{ base: "column", md: "row" }}
+              >
+                {proposalData.createdHeight && (
+                  <>
+                    <Text color="text.dark" variant="body2" fontWeight={500}>
+                      Created Height:
+                    </Text>
+                    <CopyLink
+                      value={proposalData.createdHeight.toString()}
+                      type="block_hash"
+                    />
+                    <DotSeparator />
+                  </>
+                )}
+                {proposalData.createdTimestamp && (
+                  <Text
+                    variant={{ base: "body3", md: "body2" }}
+                    color="text.dark"
+                  >
+                    {formatUTC(proposalData.createdTimestamp)}
+                  </Text>
+                )}
+              </Flex>
+            )}
+          </Flex>
         </Flex>
-        {isMobile && (
-          <Button
-            variant="outline-primary"
-            w="full"
-            size="sm"
-            rightIcon={<CustomIcon name="launch" />}
-          >
-            View in JSON
-          </Button>
-        )}
+        <Button
+          variant="outline-primary"
+          w={{ base: "full", md: "min-content" }}
+          minWidth={{ md: "150px" }}
+          size={{ base: "sm", md: "md" }}
+          rightIcon={<CustomIcon name="launch" />}
+          onClick={openApiPage}
+        >
+          View in JSON
+        </Button>
       </Flex>
-      <ProposalInfo
-        data={{
-          status: ProposalStatus.DEPOSIT_PERIOD,
-          createdTxHash: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p",
-          proposer: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as BechAddr,
-          depositStart: new Date(),
-          depositEnd: new Date(),
-        }}
-      />
-      <ProposalInfo
-        data={{
-          status: ProposalStatus.DEPOSIT_FAILED,
-          createdTxHash: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p",
-          proposer: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as BechAddr,
-          resolvedHeight: 123456,
-          resolvedDate: new Date(),
-        }}
-      />
-      <ProposalInfo
-        data={{
-          status: ProposalStatus.VOTING_PERIOD,
-          createdTxHash: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p",
-          proposer: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as BechAddr,
-          voteStart: new Date(),
-          voteEnd: new Date(),
-        }}
-      />
-      <ProposalInfo
-        data={{
-          status: ProposalStatus.PASSED,
-          createdTxHash: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p",
-          proposer: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as BechAddr,
-          resolvedHeight: 123456,
-          resolvedDate: new Date(),
-        }}
-      />
-      <ProposalInfo
-        data={{
-          status: ProposalStatus.REJECTED,
-          createdTxHash: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p",
-          proposer: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as BechAddr,
-          resolvedHeight: 123456,
-          resolvedDate: new Date(),
-        }}
-      />
-      <ProposalInfo
-        data={{
-          status: ProposalStatus.FAILED,
-          createdTxHash: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p",
-          proposer: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as BechAddr,
-          resolvedHeight: 123456,
-          resolvedDate: new Date(),
-        }}
-      />
+      <ProposalInfo data={proposalData} />
     </Flex>
   );
 };

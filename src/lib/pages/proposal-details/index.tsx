@@ -6,6 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { useProposalData } from "lib/services/proposalService";
 
 import { ProposalTop } from "./components";
 import { ProposalOverview } from "./components/ProposalOverview";
@@ -20,6 +21,7 @@ const ProposalDetailsBody = ({
 }: ProposalDetailsQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const { data } = useProposalData(id);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -54,12 +56,14 @@ const ProposalDetailsBody = ({
     }
   }, [router.isReady, tab, navigate, id]);
 
-  // TODO mock up data
-  if (id > 9999) return <InvalidState title="Proposal does not exist" />;
+  if (!data || !data.info)
+    return <InvalidState title="Proposal does not exist" />;
+
+  const proposalData = data.info;
 
   return (
     <>
-      <ProposalTop id={id} />
+      <ProposalTop id={id} proposalData={proposalData} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
