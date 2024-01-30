@@ -21,7 +21,8 @@ export type LinkType =
   | "code_id"
   | "block_height"
   | "proposal_id"
-  | "pool_id";
+  | "pool_id"
+  | "proposal_id";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
@@ -75,13 +76,12 @@ export const getNavigationUrl = ({
       url = "/blocks";
       break;
     case "proposal_id":
-      url =
-        explorerConfig.proposal ||
-        `${lcdEndpoint}/cosmos/gov/v1beta1/proposals`;
+      url = "/proposals";
       break;
     case "pool_id":
       url = "/pools";
       break;
+
     case "invalid_address":
       return "";
     default:
@@ -189,7 +189,8 @@ export const ExplorerLink = ({
     type === "user_address" ||
     type === "tx_hash" ||
     type === "block_height" ||
-    type === "pool_id";
+    type === "pool_id" ||
+    type === "proposal_id";
 
   const [hrefLink, textValue] = [
     getNavigationUrl({

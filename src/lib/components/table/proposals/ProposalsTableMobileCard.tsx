@@ -3,11 +3,10 @@ import { Flex, Text } from "@chakra-ui/react";
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { trackMintScan } from "lib/amplitude";
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
-import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
+import { useInternalNavigate } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { openNewTab } from "lib/utils";
 
 import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
@@ -21,14 +20,17 @@ export interface ProposalsTableMobileCardProps {
 export const ProposalsTableMobileCard = ({
   proposal,
 }: ProposalsTableMobileCardProps) => {
-  const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
-  const {
-    chainConfig: { explorerLink },
-  } = useCelatoneApp();
-  const lcdEndpoint = useBaseApiRoute("rest");
+
+  const navigate = useInternalNavigate();
+
+  const onCardSelect = (proposalId: number) =>
+    navigate({
+      pathname: "/proposals/[proposalId]",
+      query: { proposalId },
+    });
 
   return (
     <MobileCardTemplate
@@ -37,7 +39,6 @@ export const ProposalsTableMobileCard = ({
           <Flex gap={2} align="center">
             <MobileLabel label="Proposal ID" variant="body2" />
             <ExplorerLink
-              isReadOnly={isDepositFailed}
               type="proposal_id"
               value={proposal.id.toString()}
               showCopyOnHover
@@ -89,25 +90,13 @@ export const ProposalsTableMobileCard = ({
           </Flex>
         </>
       }
-      onClick={
-        !isDepositFailed
-          ? () => {
-              trackMintScan("proposal-detail", {
-                types: proposal.types,
-                status: proposal.status,
-              });
-              // TOOD: revisit retrieving url (make a proper hook)
-              openNewTab(
-                getNavigationUrl({
-                  type: "proposal_id",
-                  explorerConfig: explorerLink,
-                  value: proposal.id.toString(),
-                  lcdEndpoint,
-                })
-              );
-            }
-          : undefined
-      }
+      onClick={() => {
+        trackMintScan("proposal-detail", {
+          types: proposal.types,
+          status: proposal.status,
+        });
+        onCardSelect(proposal.id);
+      }}
     />
   );
 };
