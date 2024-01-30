@@ -81,7 +81,7 @@ export interface ProposalData extends Proposal {
   createdTimestamp: Nullable<Date>;
   createdTxHash: Nullable<string>;
   description: string;
-  messages: unknown[];
+  messages: Nullable<unknown[]>;
   metadata: string;
   proposalDeposits: ProposalDeposit[];
   resolvedTimestamp: Nullable<Date>;

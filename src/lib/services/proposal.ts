@@ -168,7 +168,7 @@ const zProposalDataResponse = z.object({
       created_timestamp: zUtcDate.nullable(),
       created_tx_hash: z.string().nullable(),
       description: z.string(),
-      messages: z.unknown().array(),
+      messages: z.unknown().array().nullable(),
       metadata: z.string(),
       proposal_deposits: z
         .object({
