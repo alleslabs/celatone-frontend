@@ -1,7 +1,7 @@
 import type { Coin } from "@cosmjs/amino";
 import { z } from "zod";
 
-import { type BechAddr, type Nullable, type Option } from "lib/types";
+import type { BechAddr, Nullable, Option } from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
