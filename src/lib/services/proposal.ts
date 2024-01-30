@@ -2,7 +2,13 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import { z } from "zod";
 
-import { zUtcDate, zProposalType, zBechAddr, zProposalStatus } from "lib/types";
+import {
+  zBechAddr,
+  zCoin,
+  zProposalStatus,
+  zProposalType,
+  zUtcDate,
+} from "lib/types";
 import type {
   AccessConfigPermission,
   BechAddr,
@@ -11,6 +17,7 @@ import type {
   Proposal,
   Option,
   BechAddr20,
+  ProposalData,
   ProposalStatus,
   ProposalType,
 } from "lib/types";
@@ -72,29 +79,18 @@ export const getProposalTypes = async (endpoint: string) =>
     .get(`${endpoint}/types`)
     .then(({ data }) => zProposalType.array().parse(data));
 
-const zProposalsResponseItem = z
-  .object({
-    deposit_end_time: zUtcDate,
-    id: z.number().nonnegative(),
-    is_expedited: z.boolean(),
-    proposer: zBechAddr,
-    resolved_height: z.number().nullable(),
-    status: zProposalStatus,
-    title: z.string(),
-    types: zProposalType.array(),
-    voting_end_time: zUtcDate.nullable(),
-  })
-  .transform<Proposal>((val) => ({
-    depositEndTime: val.deposit_end_time,
-    proposalId: val.id,
-    isExpedited: val.is_expedited,
-    proposer: val.proposer,
-    resolvedHeight: val.resolved_height,
-    status: val.status,
-    title: val.title,
-    types: val.types,
-    votingEndTime: val.voting_end_time,
-  }));
+const zProposal = z.object({
+  deposit_end_time: zUtcDate,
+  id: z.number().nonnegative(),
+  is_expedited: z.boolean(),
+  proposer: zBechAddr,
+  resolved_height: z.number().nullable(),
+  status: zProposalStatus,
+  title: z.string(),
+  types: zProposalType.array(),
+  voting_end_time: zUtcDate.nullable(),
+});
+const zProposalsResponseItem = zProposal.transform<Proposal>(snakeToCamel);
 
 const zProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),
@@ -164,3 +160,42 @@ export const getRelatedProposalsByContractAddress = async (
       }
     )
     .then(({ data }) => zRelatedProposalsResponse.parse(data));
+
+const zProposalDataResponse = z.object({
+  info: zProposal
+    .extend({
+      created_height: z.number().nullable(),
+      created_timestamp: zUtcDate.nullable(),
+      created_tx_hash: z.string().nullable(),
+      description: z.string(),
+      messages: z.unknown().array().nullable(),
+      metadata: z.string(),
+      proposal_deposits: z
+        .object({
+          amount: zCoin.array(),
+          depositor: zBechAddr,
+          timestamp: zUtcDate,
+          tx_hash: z.string(),
+        })
+        .array(),
+      resolved_timestamp: zUtcDate.nullable(),
+      submit_time: zUtcDate,
+      total_deposit: zCoin.array(),
+      version: z.string(),
+      voting_time: zUtcDate.nullable(),
+    })
+    .transform<ProposalData>(({ messages, ...val }) => ({
+      ...snakeToCamel(val),
+      messages,
+    }))
+    .nullable(),
+});
+export type ProposalDataResponse = z.infer<typeof zProposalDataResponse>;
+
+export const getProposalData = async (
+  endpoint: string,
+  id: number
+): Promise<ProposalDataResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/info`)
+    .then(({ data }) => zProposalDataResponse.parse(data));

@@ -38,6 +38,7 @@ import { useAssetInfos } from "./assetService";
 import { useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
+  ProposalDataResponse,
   ProposalsResponse,
   RelatedProposalsResponse,
   UploadAccess,
@@ -51,6 +52,7 @@ import {
   getRelatedProposalsByContractAddress,
   getProposals,
   getProposalTypes,
+  getProposalData,
 } from "./proposal";
 
 export const useProposals = (
@@ -163,7 +165,7 @@ export const useRelatedProposalsByModuleIdPagination = (
       })
       .then(({ module_proposals }) =>
         module_proposals.map<Proposal>((proposal) => ({
-          proposalId: proposal.proposal_id,
+          id: proposal.proposal_id,
           title: proposal.proposal.title,
           status: proposal.proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
@@ -219,6 +221,16 @@ export const useRelatedProposalsCountByModuleId = (
     {
       keepPreviousData: true,
     }
+  );
+};
+
+export const useProposalData = (id: number) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery<ProposalDataResponse>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
+    async () => getProposalData(endpoint, id),
+    { retry: 1, keepPreviousData: true }
   );
 };
 
