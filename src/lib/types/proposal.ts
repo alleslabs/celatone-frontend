@@ -1,7 +1,7 @@
 import type { Coin } from "@cosmjs/amino";
 import { z } from "zod";
 
-import type { BechAddr, Nullable, Option } from "lib/types";
+import type { BechAddr, Nullable, Option, Validator } from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -89,4 +89,17 @@ export interface ProposalData extends Proposal {
   totalDeposit: Coin[];
   version: string;
   votingTime: Nullable<Date>;
+}
+
+export interface ProposalVote {
+  proposalId: number;
+  abstain: number;
+  no: number;
+  noWithVeto: number;
+  yes: number;
+  isVoteWeighted: boolean;
+  validator: Validator;
+  voter: Nullable<BechAddr>;
+  timestamp: Nullable<Date>;
+  txHash: Nullable<string>;
 }
