@@ -30,10 +30,7 @@ export const ProposalsTable = ({
   return isMobile ? (
     <MobileTableContainer>
       {proposals.map((proposal) => (
-        <ProposalsTableMobileCard
-          key={proposal.proposalId}
-          proposal={proposal}
-        />
+        <ProposalsTableMobileCard key={proposal.id} proposal={proposal} />
       ))}
     </MobileTableContainer>
   ) : (
@@ -44,7 +41,7 @@ export const ProposalsTable = ({
       />
       {proposals.map((proposal) => (
         <ProposalsTableRow
-          key={proposal.proposalId}
+          key={proposal.id}
           proposal={proposal}
           templateColumns={templateColumns}
           boxShadow={boxShadow}

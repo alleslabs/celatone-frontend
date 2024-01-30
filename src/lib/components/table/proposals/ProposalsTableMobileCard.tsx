@@ -39,7 +39,7 @@ export const ProposalsTableMobileCard = ({
             <ExplorerLink
               isReadOnly={isDepositFailed}
               type="proposal_id"
-              value={proposal.proposalId.toString()}
+              value={proposal.id.toString()}
               showCopyOnHover
             />
           </Flex>
@@ -101,7 +101,7 @@ export const ProposalsTableMobileCard = ({
                 getNavigationUrl({
                   type: "proposal_id",
                   explorerConfig: explorerLink,
-                  value: proposal.proposalId.toString(),
+                  value: proposal.id.toString(),
                   lcdEndpoint,
                 })
               );

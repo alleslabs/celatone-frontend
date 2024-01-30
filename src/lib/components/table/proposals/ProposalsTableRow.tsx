@@ -62,7 +62,7 @@ export const ProposalsTableRow = ({
                 getNavigationUrl({
                   type: "proposal_id",
                   explorerConfig: explorerLink,
-                  value: proposal.proposalId.toString(),
+                  value: proposal.id.toString(),
                   lcdEndpoint,
                 })
               );
@@ -74,7 +74,7 @@ export const ProposalsTableRow = ({
         <ExplorerLink
           isReadOnly={isDepositFailed}
           type="proposal_id"
-          value={proposal.proposalId.toString()}
+          value={proposal.id.toString()}
           showCopyOnHover
           ampCopierSection="proposal-list"
         />
