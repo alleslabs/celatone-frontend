@@ -68,7 +68,6 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
           </Flex>
           <Flex gap={{ base: 2, md: 1 }} mb={4} direction="column">
             <Flex
-              mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
             >
@@ -87,7 +86,8 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                     <Text
                       variant="body2"
                       color="text.main"
-                      whiteSpace="nowrap"
+                      whiteSpace="normal"
+                      wordBreak="break-all"
                       display="inline-block"
                       key={msgType + index.toString()}
                       h={6}
@@ -97,6 +97,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                           style={{
                             color: "var(--chakra-colors-accent-main)",
                             marginLeft: "4px",
+                            fontWeight: 600,
                           }}
                         >
                           {" / "}
