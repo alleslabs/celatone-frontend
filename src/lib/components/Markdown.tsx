@@ -73,6 +73,7 @@ const defaultTheme = {
         py={2}
         my={4}
         sx={{ "> p": { marginBottom: 0 } }}
+        whiteSpace="normal"
       >
         {children}
       </Box>
@@ -90,6 +91,7 @@ const defaultTheme = {
         mx={1}
         borderRadius="4px"
         sx={{ "> p": { marginBottom: 0 } }}
+        whiteSpace="normal"
       >
         {children}
       </Box>
@@ -104,6 +106,7 @@ const defaultTheme = {
         p={4}
         borderRadius="4px"
         sx={{ "> p": { marginBottom: 0 } }}
+        whiteSpace="normal"
       >
         {children}
       </Box>
@@ -112,7 +115,7 @@ const defaultTheme = {
   li: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <ListItem mb={1} fontSize="16px">
+      <ListItem mb={1} fontSize="16px" whiteSpace="normal">
         {children}
       </ListItem>
     );
@@ -125,6 +128,7 @@ const defaultTheme = {
         ml={4}
         mb={2}
         sx={{ "li::marker": { color: "primary.light" } }}
+        whiteSpace="normal"
       >
         {children}
       </List>
@@ -133,7 +137,7 @@ const defaultTheme = {
   ol: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <List as="ol" styleType="decimal" ml={4} mb={2}>
+      <List as="ol" styleType="decimal" ml={4} mb={2} whiteSpace="normal">
         {children}
       </List>
     );
