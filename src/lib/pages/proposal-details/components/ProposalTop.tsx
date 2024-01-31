@@ -66,7 +66,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
               - {proposalData.title ? proposalData.title : "No title"}
             </Heading>
           </Flex>
-          <Flex gap={{ base: 2, md: 1 }} mb={4} direction="column">
+          <Flex gap={{ base: 2, md: 0 }} mb={4} direction="column">
             <Flex
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
@@ -113,36 +113,34 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                 </Text>
               )}
             </Flex>
-            {!isMobile && (
+            <Flex>
               <Flex
                 gap={{ base: 0, md: 2 }}
-                alignItems="center"
                 direction={{ base: "column", md: "row" }}
+                alignItems={{ base: "flex-start", md: "center" }}
               >
                 {proposalData.createdHeight && (
-                  <>
+                  <Flex gap={2} alignItems="center">
                     <Text color="text.dark" variant="body2" fontWeight={500}>
                       Created Height:
                     </Text>
                     <ExplorerLink
                       type="block_height"
                       value={proposalData.createdHeight.toString()}
+                      showCopyOnHover
                     >
                       {proposalData.createdHeight.toString()}
                     </ExplorerLink>
-                    <DotSeparator />
-                  </>
+                    {!isMobile && <DotSeparator />}
+                  </Flex>
                 )}
                 {proposalData.createdTimestamp && (
-                  <Text
-                    variant={{ base: "body3", md: "body2" }}
-                    color="text.dark"
-                  >
+                  <Text variant="body2" color="text.dark">
                     {formatUTC(proposalData.createdTimestamp)}
                   </Text>
                 )}
               </Flex>
-            )}
+            </Flex>
           </Flex>
         </Flex>
         <Button

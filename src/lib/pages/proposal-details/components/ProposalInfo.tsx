@@ -10,11 +10,12 @@ import { formatUTC } from "lib/utils";
 interface InfoItemProps {
   label: string;
   children: ReactNode;
+  minW?: number;
 }
 
-const InfoItem = ({ label, children }: InfoItemProps) => {
+const InfoItem = ({ label, children, minW = 40 }: InfoItemProps) => {
   return (
-    <Flex direction="column" gap={1}>
+    <Flex direction="column" gap={1} minW={minW}>
       <MobileLabel label={label} variant="body2" />
       {children}
     </Flex>
@@ -48,6 +49,7 @@ const getProposalInfo = (data: ProposalStatusProps["data"]) => {
               <ExplorerLink
                 value={data.resolvedHeight?.toString()}
                 type="block_height"
+                showCopyOnHover
               />
             ) : (
               <Text variant="body2" color="text.dark">
@@ -87,6 +89,7 @@ const getProposalInfo = (data: ProposalStatusProps["data"]) => {
               <ExplorerLink
                 value={data.resolvedHeight?.toString()}
                 type="block_height"
+                showCopyOnHover
               />
             ) : (
               <Text variant="body2" color="text.dark">
@@ -129,16 +132,21 @@ export const ProposalInfo = ({ data }: ProposalStatusProps) => {
       </InfoItem>
       <Flex gap={8}>
         {data.createdTxHash && (
-          <InfoItem label="Created Tx">
+          <InfoItem label="Created Tx" minW={36}>
             <ExplorerLink
               value={data.createdTxHash.toUpperCase()}
               type="tx_hash"
+              showCopyOnHover
             />
           </InfoItem>
         )}
         {data.proposer && (
-          <InfoItem label="Proposer">
-            <ExplorerLink value={data.proposer} type="user_address" />
+          <InfoItem label="Proposer" minW={36}>
+            <ExplorerLink
+              value={data.proposer}
+              type="user_address"
+              showCopyOnHover
+            />
           </InfoItem>
         )}
       </Flex>
