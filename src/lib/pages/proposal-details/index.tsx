@@ -84,7 +84,7 @@ const ProposalDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <ProposalOverview />
+            <ProposalOverview proposalData={proposalData} />
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetail />
