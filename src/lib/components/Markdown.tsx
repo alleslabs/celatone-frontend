@@ -142,12 +142,14 @@ const defaultTheme = {
 
 export const Markdown = ({ markdown }: { markdown: string }) => {
   return (
-    <ReactMarkdown
-      components={ChakraUIRenderer(defaultTheme)}
-      skipHtml
-      remarkPlugins={[remarkGfm]}
-    >
-      {markdown}
-    </ReactMarkdown>
+    <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+      <ReactMarkdown
+        components={ChakraUIRenderer(defaultTheme)}
+        skipHtml
+        remarkPlugins={[remarkGfm]}
+      >
+        {markdown}
+      </ReactMarkdown>
+    </div>
   );
 };

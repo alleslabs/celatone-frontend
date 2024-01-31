@@ -88,7 +88,7 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
               <Flex
                 direction="column"
                 gap={4}
-                p={6}
+                p={4}
                 border="1px solid"
                 borderColor="gray.700"
                 borderRadius="8px"
