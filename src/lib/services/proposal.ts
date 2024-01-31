@@ -168,7 +168,13 @@ const zProposalDataResponse = z.object({
       created_timestamp: zUtcDate.nullable(),
       created_tx_hash: z.string().nullable(),
       description: z.string(),
-      messages: z.unknown().array().nullable(),
+      messages: z
+        .object({
+          "@type": z.string(),
+        })
+        .passthrough()
+        .array()
+        .nullable(),
       metadata: z.string(),
       proposal_deposits: z
         .object({

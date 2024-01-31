@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#760](https://github.com/alleslabs/celatone-frontend/pull/760) Add proposal messages
 - [#759](https://github.com/alleslabs/celatone-frontend/pull/759) Add proposal description and metadata
 - [#745](https://github.com/alleslabs/celatone-frontend/pull/745) Add proposal top
 - [#757](https://github.com/alleslabs/celatone-frontend/pull/757) api v1 - proposal data

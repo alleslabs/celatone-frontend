@@ -30,7 +30,7 @@ export const JsonInfo = ({
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
       >
-        <Heading as="h6" variant="h6">
+        <Heading as="h6" variant="h6" wordBreak="break-word">
           {header}
         </Heading>
         <CustomIcon
