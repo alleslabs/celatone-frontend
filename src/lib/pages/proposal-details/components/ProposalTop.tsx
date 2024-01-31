@@ -2,8 +2,8 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useBaseApiRoute, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { InvalidState } from "lib/components/state";
 import type { ProposalData } from "lib/types";
@@ -107,7 +107,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                   ))}
                 </Flex>
               ) : (
-                <Text variant="body2" color="text.dark">
+                <Text variant="body2" color="text.dark" lineHeight={1.8}>
                   No Message
                 </Text>
               )}
@@ -123,10 +123,12 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                     <Text color="text.dark" variant="body2" fontWeight={500}>
                       Created Height:
                     </Text>
-                    <CopyLink
+                    <ExplorerLink
+                      type="block_height"
                       value={proposalData.createdHeight.toString()}
-                      type="block_hash"
-                    />
+                    >
+                      {proposalData.createdHeight.toString()}
+                    </ExplorerLink>
                     <DotSeparator />
                   </>
                 )}
