@@ -123,11 +123,12 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             </Heading>
             {proposalData.messages?.length ? (
               <>
-                {proposalData.messages.map((item) => (
+                {proposalData.messages.map((item, i) => (
                   <JsonInfo
-                    header={item["@type"]}
+                    header={`[${i}] ${item["@type"]}`}
                     jsonString={jsonPrettify(JSON.stringify(item))}
                     defaultExpand={proposalData.messages?.length === 1}
+                    key={`msg-${item}`}
                   />
                 ))}
               </>
