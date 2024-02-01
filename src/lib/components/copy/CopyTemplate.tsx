@@ -27,8 +27,7 @@ export const CopyTemplate = ({
   return (
     <Tooltip isOpen={!isDisabled && hasCopied} label={copyLabel}>
       <Flex
-        display="inline"
-        direction="column"
+        display="inline-flex"
         onClick={(e) => {
           onCopy();
           e.stopPropagation();
