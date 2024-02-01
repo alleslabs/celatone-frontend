@@ -1,4 +1,5 @@
 import { fromHex } from "@cosmjs/encoding";
+import { z } from "zod";
 
 import { HEX_WALLET_ADDRESS_LENGTH, HEX_MODULE_ADDRESS_LENGTH } from "lib/data";
 import type { HexAddr } from "lib/types";
@@ -26,6 +27,15 @@ export const isHex = (input: string): boolean => {
 
 export const isTxHash = (input: string): boolean =>
   isHex(input) && input.length === 64;
+
+export const isUrl = (string: string): boolean => {
+  try {
+    z.string().url().parse(string);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 const isHexAddress = (address: string, length: number): boolean => {
   const regex = new RegExp(`^0x[a-fA-F0-9]{1,${length}}$`);

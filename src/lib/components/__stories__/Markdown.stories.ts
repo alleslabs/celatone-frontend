@@ -57,8 +57,7 @@ for (let i = 0; i <= 10; i++) {
 }
 \`\`\``;
 
-const list = `
-## Lists
+const list = `## Lists
 
 ### Unordered
 

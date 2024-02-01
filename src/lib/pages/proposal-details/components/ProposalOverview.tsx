@@ -2,6 +2,7 @@ import { Flex, Grid, GridItem, Heading, Text, Box } from "@chakra-ui/react";
 
 import { Markdown } from "lib/components/Markdown";
 import type { ProposalData } from "lib/types";
+import { isUrl } from "lib/utils";
 
 const ProposalStatus = () => {
   return (
@@ -17,15 +18,10 @@ const ProposalStatus = () => {
   );
 };
 
-const isUrl = (metadata: string): boolean => {
-  const urlRegex =
-    // eslint-disable-next-line no-useless-escape
-    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-  return urlRegex.test(metadata);
-};
 interface ProposalOverviewProps {
   proposalData: ProposalData;
 }
+
 export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
   const renderMetadata = () => {
     if (proposalData.metadata.length === 0) {
@@ -47,6 +43,7 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             textDecorationColor: "secondary.light",
           }}
           color="secondary.main"
+          wordBreak="break-all"
         >
           <a
             href={proposalData.metadata}
@@ -87,7 +84,6 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             ) : (
               <Flex
                 direction="column"
-                gap={4}
                 p={4}
                 border="1px solid"
                 borderColor="gray.700"
@@ -101,13 +97,7 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             <Heading as="h6" variant="h6">
               Metadata
             </Heading>
-            <Text
-              variant="body1"
-              color={proposalData.metadata.length ? "text.main" : "text.dark"}
-              wordBreak="break-word"
-            >
-              {renderMetadata()}
-            </Text>
+            {renderMetadata()}
           </Flex>
           <Flex
             direction="column"
