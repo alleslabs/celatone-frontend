@@ -44,6 +44,7 @@ import type {
   RelatedProposalsResponse,
   UploadAccess,
   VotingParamsInternal,
+  ProposalVotesInfoResponse,
 } from "./proposal";
 import {
   fetchGovVotingParams,
@@ -55,6 +56,7 @@ import {
   getProposalTypes,
   getProposalData,
   getProposalValidatorVotes,
+  getProposalVotesInfo,
 } from "./proposal";
 
 export const useProposals = (
@@ -226,16 +228,6 @@ export const useRelatedProposalsCountByModuleId = (
   );
 };
 
-export const useProposalData = (id: number) => {
-  const endpoint = useBaseApiRoute("proposals");
-
-  return useQuery<ProposalDataResponse>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
-    async () => getProposalData(endpoint, id),
-    { retry: 1, keepPreviousData: true }
-  );
-};
-
 export interface MinDeposit {
   amount: U<Token<Big>>;
   denom: string;
@@ -326,12 +318,30 @@ export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
   );
 };
 
-export const useProposalValidatorVotes = (
-  id: number
-): UseQueryResult<ProposalVotesResponse> => {
+export const useProposalData = (id: number) => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery(
+  return useQuery<ProposalDataResponse>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
+    async () => getProposalData(endpoint, id),
+    { retry: 1, keepPreviousData: true }
+  );
+};
+
+export const useProposalVotesInfo = (id: number) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery<ProposalVotesInfoResponse>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
+    async () => getProposalVotesInfo(endpoint, id),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalValidatorVotes = (id: number) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery<ProposalVotesResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
     async () => getProposalValidatorVotes(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
