@@ -5,7 +5,6 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { InvalidState } from "lib/components/state";
 import type { ProposalData } from "lib/types";
 import { formatUTC, openNewTab } from "lib/utils";
 
@@ -21,7 +20,6 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
   const endpoint = useBaseApiRoute("proposals");
   const openApiPage = () =>
     openNewTab(`${endpoint}/${encodeURIComponent(id)}/info`);
-  if (!id) return <InvalidState title="Proposal does not exist" />;
 
   return (
     <Flex direction="column" mb={6} gap={5}>

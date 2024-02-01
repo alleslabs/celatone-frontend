@@ -2,7 +2,6 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
-import { trackMintScan } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
@@ -90,13 +89,7 @@ export const ProposalsTableMobileCard = ({
           </Flex>
         </>
       }
-      onClick={() => {
-        trackMintScan("proposal-detail", {
-          types: proposal.types,
-          status: proposal.status,
-        });
-        onCardSelect(proposal.id);
-      }}
+      onClick={() => onCardSelect(proposal.id)}
     />
   );
 };

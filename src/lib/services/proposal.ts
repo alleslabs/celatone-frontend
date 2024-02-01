@@ -189,7 +189,9 @@ const zProposalDataResponse = z.object({
         ...snakeToCamel(val),
         createdTxHash: created_tx_hash ? parseTxHash(created_tx_hash) : null,
         proposalDeposits: proposal_deposits.map((deposit) => ({
-          ...deposit,
+          amount: deposit.amount,
+          depositor: deposit.depositor,
+          timestamp: deposit.timestamp,
           txHash: parseTxHash(deposit.tx_hash),
         })),
         messages,

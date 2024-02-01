@@ -81,7 +81,6 @@ export const getNavigationUrl = ({
     case "pool_id":
       url = "/pools";
       break;
-
     case "invalid_address":
       return "";
     default:
