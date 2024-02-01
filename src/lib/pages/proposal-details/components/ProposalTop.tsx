@@ -2,26 +2,24 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useBaseApiRoute, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { InvalidState } from "lib/components/state";
 import type { ProposalData } from "lib/types";
 import { formatUTC, openNewTab } from "lib/utils";
 
 import { ProposalInfo } from "./ProposalInfo";
 
 interface ProposalTopProps {
-  id: number;
   proposalData: ProposalData;
 }
 
-export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
+export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
   const isMobile = useMobile();
+  // TODO: use LCD and gov config version
   const endpoint = useBaseApiRoute("proposals");
   const openApiPage = () =>
-    openNewTab(`${endpoint}/${encodeURIComponent(id)}/info`);
-  if (!id) return <InvalidState title="Proposal does not exist" />;
+    openNewTab(`${endpoint}/${encodeURIComponent(proposalData.id)}/info`);
 
   return (
     <Flex direction="column" mb={6} gap={5}>
@@ -31,7 +29,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
             text: "Proposals",
             href: "/proposals",
           },
-          { text: `#${id.toString()}` },
+          { text: `#${proposalData.id.toString()}` },
         ]}
       />
       <Flex
@@ -61,14 +59,13 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                 color="accent.main"
                 display="inline"
               >
-                #{id}
+                #{proposalData.id}
               </Text>{" "}
               - {proposalData.title ? proposalData.title : "No title"}
             </Heading>
           </Flex>
-          <Flex gap={{ base: 2, md: 1 }} mb={4} direction="column">
+          <Flex gap={{ base: 2, md: 0 }} mb={4} direction="column">
             <Flex
-              mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
             >
@@ -87,7 +84,8 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                     <Text
                       variant="body2"
                       color="text.main"
-                      whiteSpace="nowrap"
+                      whiteSpace="normal"
+                      wordBreak="break-all"
                       display="inline-block"
                       key={msgType + index.toString()}
                       h={6}
@@ -97,6 +95,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                           style={{
                             color: "var(--chakra-colors-accent-main)",
                             marginLeft: "4px",
+                            fontWeight: 600,
                           }}
                         >
                           {" / "}
@@ -107,39 +106,39 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                   ))}
                 </Flex>
               ) : (
-                <Text variant="body2" color="text.dark">
+                <Text variant="body2" color="text.dark" lineHeight={1.8}>
                   No Message
                 </Text>
               )}
             </Flex>
-            {!isMobile && (
+            <Flex>
               <Flex
                 gap={{ base: 0, md: 2 }}
-                alignItems="center"
                 direction={{ base: "column", md: "row" }}
+                alignItems={{ base: "flex-start", md: "center" }}
               >
                 {proposalData.createdHeight && (
-                  <>
+                  <Flex gap={2} alignItems="center">
                     <Text color="text.dark" variant="body2" fontWeight={500}>
                       Created Height:
                     </Text>
-                    <CopyLink
+                    <ExplorerLink
+                      type="block_height"
                       value={proposalData.createdHeight.toString()}
-                      type="block_hash"
-                    />
-                    <DotSeparator />
-                  </>
+                      showCopyOnHover
+                    >
+                      {proposalData.createdHeight.toString()}
+                    </ExplorerLink>
+                    {!isMobile && <DotSeparator />}
+                  </Flex>
                 )}
                 {proposalData.createdTimestamp && (
-                  <Text
-                    variant={{ base: "body3", md: "body2" }}
-                    color="text.dark"
-                  >
+                  <Text variant="body2" color="text.dark">
                     {formatUTC(proposalData.createdTimestamp)}
                   </Text>
                 )}
               </Flex>
-            )}
+            </Flex>
           </Flex>
         </Flex>
         <Button

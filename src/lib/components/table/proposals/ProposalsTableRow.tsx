@@ -2,11 +2,10 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
-import { trackMintScan } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
-import type { Option, Proposal } from "lib/types";
+import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 import { ProposalTextCell } from "./ProposalTextCell";
@@ -28,36 +27,31 @@ export const ProposalsTableRow = ({
 }: ProposalsTableRowProps) => {
   const navigate = useInternalNavigate();
 
-  // TODO - Revisit split columnsWidth
-  const columnsWidth = templateColumns?.toString().split(" ");
-  const isDepositOrVoting =
-    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
-    proposal.status === ProposalStatus.VOTING_PERIOD;
-
-  const hoverBg = (): Option<string> => {
-    if (proposal.isExpedited && isDepositOrVoting) return "primary.background";
-    return "gray.900";
-  };
-
   const onRowSelect = (proposalId: number) =>
     navigate({
       pathname: "/proposals/[proposalId]",
       query: { proposalId },
     });
 
+  // TODO - Revisit split columnsWidth
+  const columnsWidth = templateColumns?.toString().split(" ");
+  const isDepositOrVoting =
+    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
+    proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Grid
       templateColumns={templateColumns}
       minW="min-content"
       cursor="pointer"
-      _hover={{ "> div": { bgColor: hoverBg } }}
-      onClick={() => {
-        trackMintScan("proposal-detail", {
-          types: proposal.types,
-          status: proposal.status,
-        });
-        onRowSelect(proposal.id);
+      _hover={{
+        "> div": {
+          bgColor:
+            proposal.isExpedited && isDepositOrVoting
+              ? "primary.background"
+              : "gray.900",
+        },
       }}
+      onClick={() => onRowSelect(proposal.id)}
     >
       <TableRowFreeze left="0">
         <ExplorerLink
