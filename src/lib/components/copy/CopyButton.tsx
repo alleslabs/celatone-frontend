@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import type { BoxProps, ButtonProps } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
@@ -42,31 +42,33 @@ export const CopyButton = ({
     ml={ml}
     w={w}
     triggerElement={
-      <Button
-        w={w}
-        isDisabled={isDisable}
-        variant={variant}
-        size={size}
-        float="right"
-        onClick={() =>
-          track(AmpEvent.USE_COPY_BUTTON, {
-            section: amptrackSection,
-            subSection: amptrackSubSection,
-            info: amptrackInfo,
-          })
-        }
-        {...buttonProps}
-        borderRadius={size === "xs" ? 6 : 8}
-      >
-        {hasIcon && (
-          <CustomIcon
-            name="copy"
-            boxSize={size === "xs" ? 3 : 4}
-            mr={iconGap}
-          />
-        )}
-        {buttonText}
-      </Button>
+      <Flex>
+        <Button
+          w={w}
+          isDisabled={isDisable}
+          variant={variant}
+          size={size}
+          float="right"
+          onClick={() =>
+            track(AmpEvent.USE_COPY_BUTTON, {
+              section: amptrackSection,
+              subSection: amptrackSubSection,
+              info: amptrackInfo,
+            })
+          }
+          {...buttonProps}
+          borderRadius={size === "xs" ? 6 : 8}
+        >
+          {hasIcon && (
+            <CustomIcon
+              name="copy"
+              boxSize={size === "xs" ? 3 : 4}
+              mr={iconGap}
+            />
+          )}
+          {buttonText}
+        </Button>
+      </Flex>
     }
   />
 );

@@ -1,4 +1,4 @@
-import type { IconProps, LayoutProps } from "@chakra-ui/react";
+import { Flex, type IconProps, type LayoutProps } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import { trackUseCopier } from "lib/amplitude";
@@ -26,18 +26,20 @@ export const Copier = ({
     value={value}
     copyLabel={copyLabel}
     triggerElement={
-      <CustomIcon
-        id={type}
-        className="copier"
-        display={display}
-        cursor="pointer"
-        m={0}
-        marginLeft={ml}
-        onClick={() => trackUseCopier(type, amptrackSection)}
-        name="copy"
-        boxSize={3}
-        color="gray.600"
-      />
+      <Flex>
+        <CustomIcon
+          id={type}
+          className="copier"
+          display={display}
+          cursor="pointer"
+          m={0}
+          marginLeft={ml}
+          onClick={() => trackUseCopier(type, amptrackSection)}
+          name="copy"
+          boxSize={3}
+          color="gray.600"
+        />
+      </Flex>
     }
   />
 );
