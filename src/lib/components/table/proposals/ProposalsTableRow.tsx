@@ -27,18 +27,17 @@ export const ProposalsTableRow = ({
 }: ProposalsTableRowProps) => {
   const navigate = useInternalNavigate();
 
-  // TODO - Revisit split columnsWidth
-  const columnsWidth = templateColumns?.toString().split(" ");
-  const isDepositOrVoting =
-    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
-    proposal.status === ProposalStatus.VOTING_PERIOD;
-
   const onRowSelect = (proposalId: number) =>
     navigate({
       pathname: "/proposals/[proposalId]",
       query: { proposalId },
     });
 
+  // TODO - Revisit split columnsWidth
+  const columnsWidth = templateColumns?.toString().split(" ");
+  const isDepositOrVoting =
+    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
+    proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Grid
       templateColumns={templateColumns}

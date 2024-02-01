@@ -19,10 +19,6 @@ export interface ProposalsTableMobileCardProps {
 export const ProposalsTableMobileCard = ({
   proposal,
 }: ProposalsTableMobileCardProps) => {
-  const isDepositOrVoting =
-    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
-    proposal.status === ProposalStatus.VOTING_PERIOD;
-
   const navigate = useInternalNavigate();
 
   const onCardSelect = (proposalId: number) =>
@@ -31,6 +27,9 @@ export const ProposalsTableMobileCard = ({
       query: { proposalId },
     });
 
+  const isDepositOrVoting =
+    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
+    proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <MobileCardTemplate
       topContent={

@@ -16,6 +16,7 @@ interface ProposalTopProps {
 
 export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
   const isMobile = useMobile();
+  // TODO: use LCD and gov config version
   const endpoint = useBaseApiRoute("proposals");
   const openApiPage = () =>
     openNewTab(`${endpoint}/${encodeURIComponent(proposalData.id)}/info`);
