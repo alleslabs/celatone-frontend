@@ -39,6 +39,7 @@ import { useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
   ProposalDataResponse,
+  ProposalVotesResponse,
   ProposalsResponse,
   RelatedProposalsResponse,
   UploadAccess,
@@ -53,6 +54,7 @@ import {
   getProposals,
   getProposalTypes,
   getProposalData,
+  getProposalValidatorVotes,
 } from "./proposal";
 
 export const useProposals = (
@@ -321,5 +323,17 @@ export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
     [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, cosmwasmEndpoint],
     () => fetchGovUploadAccessParams(cosmwasmEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalValidatorVotes = (
+  id: number
+): UseQueryResult<ProposalVotesResponse> => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
+    async () => getProposalValidatorVotes(endpoint, id),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };

@@ -8,6 +8,7 @@ import {
   zProposalStatus,
   zProposalType,
   zUtcDate,
+  zValidator,
 } from "lib/types";
 import type {
   AccessConfigPermission,
@@ -20,6 +21,7 @@ import type {
   ProposalData,
   ProposalStatus,
   ProposalType,
+  ProposalVote,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
@@ -208,3 +210,33 @@ export const getProposalData = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/info`)
     .then(({ data }) => zProposalDataResponse.parse(data));
+
+const zProposalVotesResponseItem = z
+  .object({
+    proposal_id: z.number().nonnegative(),
+    abstain: z.number().nonnegative(),
+    no: z.number().nonnegative(),
+    no_with_veto: z.number().nonnegative(),
+    yes: z.number().nonnegative(),
+    is_vote_weighted: z.boolean(),
+    validator: zValidator,
+    voter: zBechAddr.nullable(),
+    timestamp: zUtcDate.nullable(),
+    tx_hash: z.string().nullable(),
+  })
+  .transform<ProposalVote>(snakeToCamel);
+
+const zProposalVotesResponse = z.object({
+  items: z.array(zProposalVotesResponseItem),
+  total: z.number().nonnegative(),
+});
+
+export type ProposalVotesResponse = z.infer<typeof zProposalVotesResponse>;
+
+export const getProposalValidatorVotes = async (
+  endpoint: string,
+  id: number
+): Promise<ProposalVotesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
+    .then(({ data }) => zProposalVotesResponse.parse(data));
