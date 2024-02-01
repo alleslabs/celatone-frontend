@@ -4,8 +4,10 @@ import { useCallback, useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
+import { ErrorFetching, InvalidState } from "lib/components/state";
+import { useProposalData } from "lib/services/proposalService";
 
 import { ProposalTop } from "./components";
 import { ProposalOverview } from "./components/ProposalOverview";
@@ -20,6 +22,7 @@ const ProposalDetailsBody = ({
 }: ProposalDetailsQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const { data, isLoading } = useProposalData(id);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -54,12 +57,13 @@ const ProposalDetailsBody = ({
     }
   }, [router.isReady, tab, navigate, id]);
 
-  // TODO mock up data
-  if (id > 9999) return <InvalidState title="Proposal does not exist" />;
+  if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="proposal information" />;
+  if (!data.info) return <InvalidState title="Proposal does not exist" />;
 
   return (
     <>
-      <ProposalTop id={id} />
+      <ProposalTop proposalData={data.info} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy

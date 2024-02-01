@@ -23,7 +23,7 @@ import type {
   ProposalType,
   ProposalVote,
 } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { parseTxHash, snakeToCamel } from "lib/utils";
 
 interface DepositParams {
   min_deposit: Coin[];
@@ -182,14 +182,23 @@ const zProposalDataResponse = z.object({
         .array(),
       resolved_timestamp: zUtcDate.nullable(),
       submit_time: zUtcDate,
-      total_deposit: zCoin.array(),
+      total_deposit: zCoin.array().nullable(),
       version: z.string(),
       voting_time: zUtcDate.nullable(),
     })
-    .transform<ProposalData>(({ messages, ...val }) => ({
-      ...snakeToCamel(val),
-      messages,
-    }))
+    .transform<ProposalData>(
+      ({ created_tx_hash, proposal_deposits, messages, ...val }) => ({
+        ...snakeToCamel(val),
+        createdTxHash: created_tx_hash ? parseTxHash(created_tx_hash) : null,
+        proposalDeposits: proposal_deposits.map((deposit) => ({
+          amount: deposit.amount,
+          depositor: deposit.depositor,
+          timestamp: deposit.timestamp,
+          txHash: parseTxHash(deposit.tx_hash),
+        })),
+        messages,
+      })
+    )
     .nullable(),
 });
 export type ProposalDataResponse = z.infer<typeof zProposalDataResponse>;
