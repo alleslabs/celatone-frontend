@@ -11,15 +11,14 @@ import { formatUTC, openNewTab } from "lib/utils";
 import { ProposalInfo } from "./ProposalInfo";
 
 interface ProposalTopProps {
-  id: number;
   proposalData: ProposalData;
 }
 
-export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
+export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
   const isMobile = useMobile();
   const endpoint = useBaseApiRoute("proposals");
   const openApiPage = () =>
-    openNewTab(`${endpoint}/${encodeURIComponent(id)}/info`);
+    openNewTab(`${endpoint}/${encodeURIComponent(proposalData.id)}/info`);
 
   return (
     <Flex direction="column" mb={6} gap={5}>
@@ -29,7 +28,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
             text: "Proposals",
             href: "/proposals",
           },
-          { text: `#${id.toString()}` },
+          { text: `#${proposalData.id.toString()}` },
         ]}
       />
       <Flex
@@ -59,7 +58,7 @@ export const ProposalTop = ({ id, proposalData }: ProposalTopProps) => {
                 color="accent.main"
                 display="inline"
               >
-                #{id}
+                #{proposalData.id}
               </Text>{" "}
               - {proposalData.title ? proposalData.title : "No title"}
             </Heading>
