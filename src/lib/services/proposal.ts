@@ -1,5 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import big from "big.js";
 import { z } from "zod";
 
 import {
@@ -211,6 +212,33 @@ export const getProposalData = async (
     .get(`${endpoint}/${encodeURIComponent(id)}/info`)
     .then(({ data }) => zProposalDataResponse.parse(data));
 
+const zProposalVotesInfoResponse = z
+  .object({
+    yes: z.string(),
+    abstain: z.string(),
+    no: z.string(),
+    no_with_veto: z.string(),
+    total_voting_power: z.string(),
+  })
+  .transform((val) => ({
+    yes: big(val.yes),
+    abstain: big(val.abstain),
+    no: big(val.no),
+    noWithVeto: big(val.no_with_veto),
+    totalVotingPower: big(val.total_voting_power),
+  }));
+export type ProposalVotesInfoResponse = z.infer<
+  typeof zProposalVotesInfoResponse
+>;
+
+export const getProposalVotesInfo = async (
+  endpoint: string,
+  id: number
+): Promise<ProposalVotesInfoResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
+    .then(({ data }) => zProposalVotesInfoResponse.parse(data));
+
 const zProposalVotesResponseItem = z
   .object({
     proposal_id: z.number().nonnegative(),
@@ -230,7 +258,6 @@ const zProposalVotesResponse = z.object({
   items: z.array(zProposalVotesResponseItem),
   total: z.number().nonnegative(),
 });
-
 export type ProposalVotesResponse = z.infer<typeof zProposalVotesResponse>;
 
 export const getProposalValidatorVotes = async (
