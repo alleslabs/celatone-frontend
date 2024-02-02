@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#764](https://github.com/alleslabs/celatone-frontend/pull/762) api v1 - proposal params
+- [#764](https://github.com/alleslabs/celatone-frontend/pull/764) api v1 - proposal params
 - [#762](https://github.com/alleslabs/celatone-frontend/pull/762) api v1 - proposal validator votes info
 - [#745](https://github.com/alleslabs/celatone-frontend/pull/745) Add proposal top
 - [#758](https://github.com/alleslabs/celatone-frontend/pull/758) api v1 - proposal validator votes
