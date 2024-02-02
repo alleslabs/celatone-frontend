@@ -7,11 +7,12 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import { useProposalData } from "lib/services/proposalService";
+import {
+  useProposalData,
+  useProposalVotesInfo,
+} from "lib/services/proposalService";
 
-import { ProposalTop } from "./components";
-import { ProposalOverview } from "./components/ProposalOverview";
-import { VoteDetail } from "./components/VoteDetail";
+import { ProposalTop, ProposalOverview, VoteDetail } from "./components";
 import type { ProposalDetailsQueryParams } from "./type";
 import { zProposalDetailsQueryParams, TabIndex } from "./type";
 
@@ -23,6 +24,8 @@ const ProposalDetailsBody = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useProposalData(id);
+  const { data: votesInfo, isLoading: isVotesInfoLoading } =
+    useProposalVotesInfo(id);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -83,7 +86,11 @@ const ProposalDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <ProposalOverview />
+            <ProposalOverview
+              proposalData={data.info}
+              votesInfo={votesInfo}
+              isLoading={isVotesInfoLoading}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetail />

@@ -1,19 +1,21 @@
 import { Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 
-const ProposalStatus = () => {
-  return (
-    <Flex
-      borderRadius="8px"
-      border="1px solid"
-      borderColor="gray.700"
-      background="gray.900"
-      p={4}
-    >
-      Current Status component
-    </Flex>
-  );
-};
-export const ProposalOverview = () => {
+import type { ProposalVotesInfoResponse } from "lib/services/proposal";
+import type { Option, ProposalData } from "lib/types";
+
+import { StatusSummary } from "./status-summary";
+
+export interface ProposalOverviewProps {
+  proposalData: ProposalData;
+  votesInfo: Option<ProposalVotesInfoResponse>;
+  isLoading: boolean;
+}
+
+export const ProposalOverview = ({
+  proposalData,
+  votesInfo,
+  isLoading,
+}: ProposalOverviewProps) => {
   return (
     <Grid
       gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }}
@@ -22,7 +24,11 @@ export const ProposalOverview = () => {
     >
       <GridItem>
         <Flex direction="column" gap={8}>
-          <ProposalStatus />
+          <StatusSummary
+            proposalData={proposalData}
+            votesInfo={votesInfo}
+            isLoading={isLoading}
+          />
           <Flex direction="column" gap={4}>
             <Heading as="h6" variant="h6">
               Proposal Description
