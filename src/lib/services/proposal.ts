@@ -23,6 +23,8 @@ import type {
   ProposalStatus,
   ProposalType,
   ProposalVote,
+  ProposalParams,
+  ProposalVotesInfo,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
@@ -76,6 +78,33 @@ export const fetchGovUploadAccessParams = async (
   lcdEndpoint: string
 ): Promise<UploadAccess> =>
   axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);
+
+const zProposalParamsResponse = z
+  .object({
+    min_deposit: zCoin.array(),
+    min_initial_deposit_ratio: z.coerce.number(),
+    max_deposit_period: z.string(),
+    voting_period: z.string(),
+    veto_threshold: z.coerce.number(),
+    quorum: z.coerce.number(),
+    threshold: z.coerce.number(),
+    // expedited
+    expedited_voting_period: z.string().optional(),
+    expedited_threshold: z.coerce.number().optional(),
+    expedited_min_deposit: zCoin.array().optional(),
+    expedited_quorum: z.string().optional(), // only in sei
+    // emergency - only in initia
+    emergency_min_deposit: zCoin.array().optional(),
+    emergency_tally_interval: z.string().optional(),
+  })
+  .transform<ProposalParams>(snakeToCamel);
+
+export const getProposalParams = async (
+  endpoint: string
+): Promise<ProposalParams> =>
+  axios
+    .get(`${endpoint}/params`)
+    .then(({ data }) => zProposalParamsResponse.parse(data));
 
 export const getProposalTypes = async (endpoint: string) =>
   axios
@@ -220,21 +249,18 @@ const zProposalVotesInfoResponse = z
     no_with_veto: z.string(),
     total_voting_power: z.string(),
   })
-  .transform((val) => ({
+  .transform<ProposalVotesInfo>((val) => ({
     yes: big(val.yes),
     abstain: big(val.abstain),
     no: big(val.no),
     noWithVeto: big(val.no_with_veto),
     totalVotingPower: big(val.total_voting_power),
   }));
-export type ProposalVotesInfoResponse = z.infer<
-  typeof zProposalVotesInfoResponse
->;
 
 export const getProposalVotesInfo = async (
   endpoint: string,
   id: number
-): Promise<ProposalVotesInfoResponse> =>
+): Promise<ProposalVotesInfo> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
     .then(({ data }) => zProposalVotesInfoResponse.parse(data));
