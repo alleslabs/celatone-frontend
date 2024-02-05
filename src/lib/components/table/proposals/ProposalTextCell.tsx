@@ -70,16 +70,18 @@ export const ProposalTextCell = ({
           maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
-          {types.map((msgType, index) => (
-            <span key={msgType + index.toString()}>
-              {index > 0 && (
-                <span style={{ color: "var(--chakra-colors-accent-main)" }}>
-                  {" / "}
+          {types.length
+            ? types.map((msgType, index) => (
+                <span key={msgType + index.toString()}>
+                  {index > 0 && (
+                    <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+                      {" / "}
+                    </span>
+                  )}
+                  {msgType}
                 </span>
-              )}
-              {msgType}
-            </span>
-          ))}
+              ))
+            : "(No message)"}
         </Text>
       </Flex>
     </Flex>

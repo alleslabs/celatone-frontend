@@ -1,4 +1,5 @@
 import type { Coin } from "@cosmjs/amino";
+import type Big from "big.js";
 import { z } from "zod";
 
 import type { BechAddr, Nullable, Option, Validator } from "lib/types";
@@ -95,12 +96,18 @@ export interface ProposalDeposit {
   txHash: string;
 }
 
+// TODO: combine with MsgBody in services/tx.ts
+interface Message {
+  "@type": string;
+  [key: string]: unknown;
+}
+
 export interface ProposalData extends Proposal {
   createdHeight: Nullable<number>;
   createdTimestamp: Nullable<Date>;
   createdTxHash: Nullable<string>;
   description: string;
-  messages: Nullable<unknown[]>;
+  messages: Nullable<Message[]>;
   metadata: string;
   proposalDeposits: ProposalDeposit[];
   resolvedTimestamp: Nullable<Date>;

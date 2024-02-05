@@ -15,6 +15,7 @@ import {
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
+  ProposalParams,
   Option,
   ProposalStatus,
   ProposalType,
@@ -25,6 +26,7 @@ import type {
   BechAddr32,
   BechAddr,
   BechAddr20,
+  ProposalVotesInfo,
 } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -44,19 +46,19 @@ import type {
   RelatedProposalsResponse,
   UploadAccess,
   VotingParamsInternal,
-  ProposalVotesInfoResponse,
 } from "./proposal";
 import {
   fetchGovVotingParams,
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
   getProposalsByAddress,
-  getRelatedProposalsByContractAddress,
   getProposals,
-  getProposalTypes,
   getProposalData,
+  getProposalParams,
+  getProposalTypes,
   getProposalValidatorVotes,
   getProposalVotesInfo,
+  getRelatedProposalsByContractAddress,
 } from "./proposal";
 
 export const useProposals = (
@@ -95,9 +97,18 @@ export const useProposals = (
   );
 };
 
-export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
+export const useProposalParams = () => {
   const endpoint = useBaseApiRoute("proposals");
-  return useQuery(
+  return useQuery<ProposalParams>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
+    async () => getProposalParams(endpoint),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalTypes = () => {
+  const endpoint = useBaseApiRoute("proposals");
+  return useQuery<ProposalType[]>(
     [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
     async () => getProposalTypes(endpoint),
     { retry: 1, refetchOnWindowFocus: false }
@@ -331,7 +342,7 @@ export const useProposalData = (id: number) => {
 export const useProposalVotesInfo = (id: number) => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery<ProposalVotesInfoResponse>(
+  return useQuery<ProposalVotesInfo>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
     async () => getProposalVotesInfo(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
