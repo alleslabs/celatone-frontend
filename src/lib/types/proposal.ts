@@ -1,4 +1,5 @@
 import type { Coin } from "@cosmjs/amino";
+import type Big from "big.js";
 import { z } from "zod";
 
 import type { BechAddr, Nullable, Option, Validator } from "lib/types";
@@ -69,6 +70,24 @@ export interface Proposal {
   isExpedited: boolean;
 }
 
+export interface ProposalParams {
+  minDeposit: Coin[];
+  minInitialDepositRatio: number;
+  maxDepositPeriod: string;
+  votingPeriod: string;
+  vetoThreshold: number;
+  quorum: number;
+  threshold: number;
+  // expedited
+  expeditedVotingPeriod?: string;
+  expeditedThreshold?: number;
+  expeditedMinDeposit?: Coin[];
+  expeditedQuorum?: string; // only in sei
+  // emergency - only in initia
+  emergencyMinDeposit?: Coin[];
+  emergencyTallyInterval?: string;
+}
+
 export interface ProposalDeposit {
   amount: Coin[];
   depositor: BechAddr;
@@ -89,6 +108,14 @@ export interface ProposalData extends Proposal {
   totalDeposit: Nullable<Coin[]>;
   version: string;
   votingTime: Nullable<Date>;
+}
+
+export interface ProposalVotesInfo {
+  yes: Big;
+  abstain: Big;
+  no: Big;
+  noWithVeto: Big;
+  totalVotingPower: Big;
 }
 
 export interface ProposalVote {
