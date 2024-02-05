@@ -10,6 +10,7 @@ export const TopDecorations = () =>
         w="700px"
         h="700px"
         position="absolute"
+        opacity={0.3}
         src={CURR_THEME.illustration.overview.main}
         transform="translateX(-50%) translateY(-47%)"
         zIndex={0}
@@ -19,6 +20,7 @@ export const TopDecorations = () =>
         h="480px"
         position="absolute"
         src={CURR_THEME.illustration.overview?.secondary}
+        opacity={0.3}
         right={0}
         bottom={0}
         transform="translateX(40%) translateY(55%)"

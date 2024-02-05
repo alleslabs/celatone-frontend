@@ -42,7 +42,11 @@ export const BlocksTableRow = ({
           {blockData.height}
         </ExplorerLink>
       </TableRow>
-      <TableRow>{truncate(blockData.hash.toUpperCase())}</TableRow>
+      <TableRow>
+        <Text fontFamily="PP Neue Montreal Mono Regular">
+          {truncate(blockData.hash.toUpperCase())}
+        </Text>
+      </TableRow>
       <TableRow>
         <ValidatorBadge
           validator={blockData.proposer}

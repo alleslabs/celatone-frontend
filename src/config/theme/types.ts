@@ -22,37 +22,14 @@ export type ThemeConfig = {
       url: string;
       name: string;
     };
+    link?: {
+      url: string;
+      name: string;
+    };
   };
   colors: {
     gradient?: {
       main: string;
-    };
-    error: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    warning: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    success: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    background: {
-      main: string;
-      overlay: string;
-    };
-    text: {
-      main: string;
-      dark: string;
-      disabled: string;
     };
     primary: {
       main: string;
@@ -86,6 +63,33 @@ export type ThemeConfig = {
       800: string;
       900: string;
     };
+    text: {
+      main: string;
+      dark: string;
+      disabled: string;
+    };
+    background: {
+      main: string;
+      overlay: string;
+    };
+    success: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
+    error: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
+    warning: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
   };
   tag: {
     signer: {
@@ -111,6 +115,8 @@ export type ThemeConfig = {
       color: string;
       disabledBorderColor: string;
       disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
     };
   };
   borderRadius: {

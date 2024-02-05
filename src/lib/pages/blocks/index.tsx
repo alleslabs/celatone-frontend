@@ -16,7 +16,7 @@ const BlocksPage = () => {
 
   return (
     <PageContainer>
-      <Heading as="h5" variant="h5" minH="36px">
+      <Heading as="h5" variant="h5" minH="36px" fontWeight={800}>
         Blocks
       </Heading>
       <Text variant="body2" fontWeight={500} color="text.dark" mb={8}>

@@ -142,6 +142,9 @@ export const Button: ComponentStyleConfig = {
             "> div": {
               color: CURR_THEME.button.outlinePrimary.color,
             },
+            "& span": {
+              color: CURR_THEME.button.outlinePrimary.color,
+            },
             "> svg": {
               color: CURR_THEME.button.outlinePrimary.color,
             },
@@ -154,8 +157,8 @@ export const Button: ComponentStyleConfig = {
               color: CURR_THEME.button.outlinePrimary.disabledColor,
             },
           },
-          hoverBg: primaryDark,
-          activeBg: primaryLight,
+          hoverBg: CURR_THEME.button.outlinePrimary.hoverBackground,
+          activeBg: CURR_THEME.button.outlinePrimary.activeBackground,
         })
       : generateStyle({
           basic: {

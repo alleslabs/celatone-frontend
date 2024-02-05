@@ -37,7 +37,11 @@ export const BlocksTableMobileCard = ({
           <Flex direction="column" flex="1">
             <MobileLabel label="Block Hash" />
             <Flex h={6} align="end">
-              <Text variant="body2" color="text.main">
+              <Text
+                variant="body2"
+                color="text.main"
+                fontFamily="PP Neue Montreal Mono Regular"
+              >
                 {truncate(blockData.hash.toUpperCase())}
               </Text>
             </Flex>
