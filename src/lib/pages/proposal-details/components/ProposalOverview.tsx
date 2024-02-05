@@ -1,8 +1,9 @@
 import { Flex, Grid, GridItem, Heading, Text, Box } from "@chakra-ui/react";
 
+import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Markdown } from "lib/components/Markdown";
 import type { ProposalData } from "lib/types";
-import { isUrl } from "lib/utils";
+import { isUrl, jsonPrettify } from "lib/utils";
 
 const ProposalStatus = () => {
   return (
@@ -107,14 +108,22 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             <Heading as="h6" variant="h6">
               Proposal Messages
             </Heading>
-            <Flex
-              background="gray.900"
-              minH={64}
-              alignItems="center"
-              justifyContent="center"
-            >
-              Proposal message content
-            </Flex>
+            {proposalData.messages?.length ? (
+              <>
+                {proposalData.messages.map((item, i) => (
+                  <JsonInfo
+                    header={`[${i}] ${item["@type"]}`}
+                    jsonString={jsonPrettify(JSON.stringify(item))}
+                    defaultExpand={proposalData.messages?.length === 1}
+                    key={`msg-${item}`}
+                  />
+                ))}
+              </>
+            ) : (
+              <Text variant="body1" color="text.dark">
+                No Messages
+              </Text>
+            )}
           </Flex>
         </Flex>
       </GridItem>
