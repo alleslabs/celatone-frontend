@@ -1,5 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import big from "big.js";
 import { z } from "zod";
 
 import {
@@ -8,6 +9,7 @@ import {
   zProposalStatus,
   zProposalType,
   zUtcDate,
+  zValidator,
 } from "lib/types";
 import type {
   AccessConfigPermission,
@@ -20,6 +22,7 @@ import type {
   ProposalData,
   ProposalStatus,
   ProposalType,
+  ProposalVote,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
@@ -195,7 +198,9 @@ const zProposalDataResponse = z.object({
         ...snakeToCamel(val),
         createdTxHash: created_tx_hash ? parseTxHash(created_tx_hash) : null,
         proposalDeposits: proposal_deposits.map((deposit) => ({
-          ...deposit,
+          amount: deposit.amount,
+          depositor: deposit.depositor,
+          timestamp: deposit.timestamp,
           txHash: parseTxHash(deposit.tx_hash),
         })),
         messages,
@@ -212,3 +217,59 @@ export const getProposalData = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/info`)
     .then(({ data }) => zProposalDataResponse.parse(data));
+
+const zProposalVotesInfoResponse = z
+  .object({
+    yes: z.string(),
+    abstain: z.string(),
+    no: z.string(),
+    no_with_veto: z.string(),
+    total_voting_power: z.string(),
+  })
+  .transform((val) => ({
+    yes: big(val.yes),
+    abstain: big(val.abstain),
+    no: big(val.no),
+    noWithVeto: big(val.no_with_veto),
+    totalVotingPower: big(val.total_voting_power),
+  }));
+export type ProposalVotesInfoResponse = z.infer<
+  typeof zProposalVotesInfoResponse
+>;
+
+export const getProposalVotesInfo = async (
+  endpoint: string,
+  id: number
+): Promise<ProposalVotesInfoResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
+    .then(({ data }) => zProposalVotesInfoResponse.parse(data));
+
+const zProposalVotesResponseItem = z
+  .object({
+    proposal_id: z.number().nonnegative(),
+    abstain: z.number().nonnegative(),
+    no: z.number().nonnegative(),
+    no_with_veto: z.number().nonnegative(),
+    yes: z.number().nonnegative(),
+    is_vote_weighted: z.boolean(),
+    validator: zValidator,
+    voter: zBechAddr.nullable(),
+    timestamp: zUtcDate.nullable(),
+    tx_hash: z.string().nullable(),
+  })
+  .transform<ProposalVote>(snakeToCamel);
+
+const zProposalVotesResponse = z.object({
+  items: z.array(zProposalVotesResponseItem),
+  total: z.number().nonnegative(),
+});
+export type ProposalVotesResponse = z.infer<typeof zProposalVotesResponse>;
+
+export const getProposalValidatorVotes = async (
+  endpoint: string,
+  id: number
+): Promise<ProposalVotesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
+    .then(({ data }) => zProposalVotesResponse.parse(data));

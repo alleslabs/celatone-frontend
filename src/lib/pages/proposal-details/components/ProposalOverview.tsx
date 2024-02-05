@@ -3,7 +3,7 @@ import { Flex, Grid, GridItem, Heading, Text, Box } from "@chakra-ui/react";
 import { Markdown } from "lib/components/Markdown";
 import { JsonInfo } from "lib/pages/contract-details/components/JsonInfo";
 import type { ProposalData } from "lib/types";
-import { jsonPrettify } from "lib/utils";
+import { isUrl, jsonPrettify } from "lib/utils";
 
 const ProposalStatus = () => {
   return (
@@ -19,56 +19,50 @@ const ProposalStatus = () => {
   );
 };
 
-const isUrl = (metadata: string): boolean => {
-  const urlRegex =
-    // eslint-disable-next-line no-useless-escape
-    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-  return urlRegex.test(metadata);
-};
 interface ProposalOverviewProps {
   proposalData: ProposalData;
 }
-export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
-  const renderMetadata = () => {
-    if (proposalData.metadata.length === 0) {
-      return (
-        <Text variant="body1" color="text.dark">
-          Not Provided
-        </Text>
-      );
-    }
 
-    if (isUrl(proposalData.metadata)) {
-      return (
-        <Box
-          display="inline-flex"
-          alignItems="center"
-          transition="all 0.25s ease-in-out"
-          _hover={{
-            textDecoration: "underline",
-            textDecorationColor: "secondary.light",
-          }}
-          color="secondary.main"
-        >
-          <a
-            href={proposalData.metadata}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-peer
-          >
-            {proposalData.metadata}
-          </a>
-        </Box>
-      );
-    }
-
+const RenderMetadata = ({ proposalData }: ProposalOverviewProps) => {
+  if (proposalData.metadata.length === 0) {
     return (
-      <Text variant="body1" color="text.main" wordBreak="break-word">
-        {proposalData.metadata}
+      <Text variant="body1" color="text.dark">
+        Not Provided
       </Text>
     );
-  };
+  }
+  if (isUrl(proposalData.metadata)) {
+    return (
+      <Box
+        display="inline-flex"
+        alignItems="center"
+        transition="all 0.25s ease-in-out"
+        _hover={{
+          textDecoration: "underline",
+          textDecorationColor: "secondary.light",
+        }}
+        color="secondary.main"
+        wordBreak="break-all"
+      >
+        <a
+          href={proposalData.metadata}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-peer
+        >
+          {proposalData.metadata}
+        </a>
+      </Box>
+    );
+  }
 
+  return (
+    <Text variant="body1" color="text.main" wordBreak="break-word">
+      {proposalData.metadata}
+    </Text>
+  );
+};
+export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
   return (
     <Grid
       gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }}
@@ -89,7 +83,6 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             ) : (
               <Flex
                 direction="column"
-                gap={4}
                 p={4}
                 border="1px solid"
                 borderColor="gray.700"
@@ -103,13 +96,7 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             <Heading as="h6" variant="h6">
               Metadata
             </Heading>
-            <Text
-              variant="body1"
-              color={proposalData.metadata.length ? "text.main" : "text.dark"}
-              wordBreak="break-word"
-            >
-              {renderMetadata()}
-            </Text>
+            <RenderMetadata proposalData={proposalData} />
           </Flex>
           <Flex
             direction="column"

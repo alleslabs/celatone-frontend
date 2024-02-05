@@ -61,10 +61,9 @@ const ProposalDetailsBody = ({
   if (!data) return <ErrorFetching dataName="proposal information" />;
   if (!data.info) return <InvalidState title="Proposal does not exist" />;
 
-  const proposalData = data.info;
   return (
     <>
-      <ProposalTop id={id} proposalData={proposalData} />
+      <ProposalTop proposalData={data.info} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -84,7 +83,7 @@ const ProposalDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <ProposalOverview proposalData={proposalData} />
+            <ProposalOverview proposalData={data.info} />
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetail />
