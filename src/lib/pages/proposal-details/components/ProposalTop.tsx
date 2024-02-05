@@ -68,6 +68,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
             <Flex
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
+              align={{ base: "start", md: "center" }}
             >
               <Text
                 variant="body2"
@@ -106,8 +107,8 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                   ))}
                 </Flex>
               ) : (
-                <Text variant="body2" color="text.dark" lineHeight={1.8}>
-                  No Message
+                <Text variant="body2" color="text.dark">
+                  (No Message)
                 </Text>
               )}
             </Flex>

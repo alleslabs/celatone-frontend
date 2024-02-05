@@ -52,16 +52,22 @@ export const ProposalsTableMobileCard = ({
             <Text color="text.main" variant="body2" wordBreak="break-word">
               {proposal.title}
             </Text>
-            {proposal.types.map((msgType, index) => (
-              <Text
-                key={msgType + index.toString()}
-                color="text.dark"
-                variant="body3"
-                wordBreak="break-word"
-              >
-                {msgType}
+            {proposal.types.length ? (
+              proposal.types.map((msgType, index) => (
+                <Text
+                  key={msgType + index.toString()}
+                  variant="body3"
+                  color="text.dark"
+                  wordBreak="break-word"
+                >
+                  {msgType}
+                </Text>
+              ))
+            ) : (
+              <Text variant="body3" color="text.dark">
+                (No message)
               </Text>
-            ))}
+            )}
           </Flex>
           <Flex direction="column" gap={1}>
             <MobileLabel label="Voting Ends" />
