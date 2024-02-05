@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
+import { CURR_THEME } from "env";
 
 import type { Mode, Step } from "./types";
 
@@ -21,7 +22,11 @@ const StepLabel = ({
   <Flex
     justify="center"
     align="center"
-    backgroundColor={disabled ? "gray.500" : "primary.main"}
+    backgroundColor={
+      disabled
+        ? CURR_THEME.stepper?.disabled?.bg ?? "gray.500"
+        : CURR_THEME.stepper?.active?.bg ?? "primary.dark"
+    }
     width="24px"
     height="24px"
     borderRadius="50%"
@@ -29,7 +34,14 @@ const StepLabel = ({
     {currentStep > step ? (
       <CustomIcon name="check" color="text.main" boxSize={3} />
     ) : (
-      <Text variant="body3" color={disabled ? "background.main" : "text.main"}>
+      <Text
+        variant="body3"
+        color={
+          disabled
+            ? CURR_THEME.stepper?.disabled?.color ?? "background.main"
+            : CURR_THEME.stepper?.active?.color ?? "text.main"
+        }
+      >
         {step}
       </Text>
     )}

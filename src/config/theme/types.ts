@@ -101,6 +101,10 @@ export type ThemeConfig = {
       color: string;
     };
   };
+  stepper?: {
+    active?: { bg: string; color: string };
+    disabled?: { bg: string; color: string };
+  };
   button?: {
     primary?: {
       background: string;

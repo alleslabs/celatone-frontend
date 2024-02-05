@@ -118,6 +118,12 @@ export const DEFAULT_THEME: ThemeConfig = {
       color: "text.main",
     },
   },
+  stepper: {
+    active: {
+      bg: "primary.darker",
+      color: "text.main",
+    },
+  },
   borderRadius: {
     default: "8px",
     iconButton: "36px",
