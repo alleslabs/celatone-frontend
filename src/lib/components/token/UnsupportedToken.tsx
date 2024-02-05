@@ -85,15 +85,22 @@ export const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
             amptrackSection="unsupported_token_copy"
           />
         </Flex>
+      </Flex>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text variant="body2" fontWeight="900">
+          {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
+        </Text>
         {!isMobile && (
-          <Text variant="body3" color="text.dark" my={{ base: 1, md: 0 }}>
+          <Text
+            variant="body3"
+            color="text.dark"
+            minW="fit-content"
+            my={{ base: 1, md: 0 }}
+          >
             {`${tokenType} Token`}
           </Text>
         )}
       </Flex>
-      <Text variant="body2" fontWeight="900">
-        {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
-      </Text>
     </Flex>
   );
 };

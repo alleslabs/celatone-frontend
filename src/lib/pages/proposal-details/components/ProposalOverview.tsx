@@ -1,13 +1,14 @@
-import { Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 
-import type { ProposalVotesInfoResponse } from "lib/services/proposal";
-import type { Option, ProposalData } from "lib/types";
+import type { ProposalData, Option, ProposalVotesInfo } from "lib/types";
 
+import { ProposalDescription } from "./ProposalDescription";
+import { ProposalMetadata } from "./ProposalMetadata";
 import { StatusSummary } from "./status-summary";
 
 export interface ProposalOverviewProps {
   proposalData: ProposalData;
-  votesInfo: Option<ProposalVotesInfoResponse>;
+  votesInfo: Option<ProposalVotesInfo>;
   isLoading: boolean;
 }
 
@@ -29,27 +30,8 @@ export const ProposalOverview = ({
             votesInfo={votesInfo}
             isLoading={isLoading}
           />
-          <Flex direction="column" gap={4}>
-            <Heading as="h6" variant="h6">
-              Proposal Description
-            </Heading>
-            <Text variant="body1" wordBreak="break-word">
-              This is a proposal to give the address
-              osmo1raa4kyx5ypz75qqk3566c6slx2mw3qzsu6rymw permission to upload
-              CosmWasm contracts to Osmosis without seeking governance approval
-              for subsequent uploads. Deploying this contract will allow Skip to
-              leverage Osmosis swap hooks to build a service that simplifies
-              cross-chain transfers, swaps, and fee management. Skip will
-              provide this functionality via our free API, which enables
-              applications anywhere in Cosmos to seamlessly draw on Osmosis
-              liquidity. While this proposal gives authority for
-              osmo1raa4kyx5ypz75qqk3566c6slx2mw3qzsu6rymw to permissionlessly
-              upload CosmWasm contracts to Osmosis, governance only signals
-              approval for contracts relating to the function of Skip API
-              service. Details can be seen in the Commonwealth thread:
-              https://gov.osmosis.zone/discussion/11973-skip-api-contract-upload
-            </Text>
-          </Flex>
+          <ProposalDescription description={proposalData.description} />
+          <ProposalMetadata metadata={proposalData.metadata} />
           <Flex
             direction="column"
             gap={4}
