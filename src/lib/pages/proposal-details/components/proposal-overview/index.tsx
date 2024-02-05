@@ -1,6 +1,11 @@
 import { Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 
-import type { ProposalData, Option, ProposalVotesInfo } from "lib/types";
+import type {
+  ProposalData,
+  Option,
+  ProposalVotesInfo,
+  ProposalParams,
+} from "lib/types";
 
 import { ProposalDescription } from "./ProposalDescription";
 import { ProposalMessages } from "./ProposalMessages";
@@ -10,12 +15,14 @@ import { StatusSummary } from "./status-summary";
 export interface ProposalOverviewProps {
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
+  params: Option<ProposalParams>;
   isLoading: boolean;
 }
 
 export const ProposalOverview = ({
   proposalData,
   votesInfo,
+  params,
   isLoading,
 }: ProposalOverviewProps) => (
   <Grid
@@ -28,6 +35,7 @@ export const ProposalOverview = ({
         <StatusSummary
           proposalData={proposalData}
           votesInfo={votesInfo}
+          params={params}
           isLoading={isLoading}
         />
         <ProposalDescription description={proposalData.description} />

@@ -9,6 +9,7 @@ import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import {
   useProposalData,
+  useProposalParams,
   useProposalVotesInfo,
 } from "lib/services/proposalService";
 
@@ -26,6 +27,7 @@ const ProposalDetailsBody = ({
   const { data, isLoading } = useProposalData(id);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useProposalVotesInfo(id);
+  const { data: params, isLoading: isParamsLoading } = useProposalParams();
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -89,7 +91,8 @@ const ProposalDetailsBody = ({
             <ProposalOverview
               proposalData={data.info}
               votesInfo={votesInfo}
-              isLoading={isVotesInfoLoading}
+              params={params}
+              isLoading={isVotesInfoLoading || isParamsLoading}
             />
           </TabPanel>
           <TabPanel p={0}>
