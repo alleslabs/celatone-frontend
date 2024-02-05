@@ -1,4 +1,5 @@
 import { fromHex } from "@cosmjs/encoding";
+import { z } from "zod";
 
 import { HEX_WALLET_ADDRESS_LENGTH, HEX_MODULE_ADDRESS_LENGTH } from "lib/data";
 import type { HexAddr } from "lib/types";
@@ -13,6 +14,15 @@ export const isPosDecimal = (input: string): boolean => {
 
 export const isId = (input: string): boolean =>
   input.length <= 7 && isPosDecimal(input);
+
+export const isUrl = (string: string): boolean => {
+  try {
+    z.string().url().parse(string);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 export const isHex = (input: string): boolean => {
   if (input.trim() === "") return false;
