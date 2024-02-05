@@ -1,7 +1,7 @@
 import { Flex, Grid, GridItem, Heading, Text, Box } from "@chakra-ui/react";
 
+import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Markdown } from "lib/components/Markdown";
-import { JsonInfo } from "lib/pages/contract-details/components/JsonInfo";
 import type { ProposalData } from "lib/types";
 import { isUrl, jsonPrettify } from "lib/utils";
 

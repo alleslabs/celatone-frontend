@@ -1,8 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { CustomIcon } from "lib/components/icon";
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { CustomIcon } from "../icon";
+
+import JsonReadOnly from "./JsonReadOnly";
 
 interface JsonInfoProps {
   header: string;
