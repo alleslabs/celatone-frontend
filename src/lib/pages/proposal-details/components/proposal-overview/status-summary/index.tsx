@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { ProposalOverviewProps } from "../ProposalOverview";
+import type { ProposalOverviewProps } from "..";
 import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
 

@@ -1,9 +1,10 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import type { ProposalData } from "lib/types";
 import { isUrl } from "lib/utils";
 
 interface ProposalMetadataProps {
-  metadata: string;
+  metadata: ProposalData["metadata"];
 }
 
 const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {

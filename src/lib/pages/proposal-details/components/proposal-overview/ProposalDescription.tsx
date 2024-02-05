@@ -1,9 +1,10 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { Markdown } from "lib/components/Markdown";
+import type { ProposalData } from "lib/types";
 
 interface ProposalDescriptionProps {
-  description: string;
+  description: ProposalData["description"];
 }
 
 export const ProposalDescription = ({

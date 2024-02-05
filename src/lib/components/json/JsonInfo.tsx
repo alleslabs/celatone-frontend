@@ -1,8 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { CustomIcon } from "lib/components/icon";
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { CustomIcon } from "../icon";
+
+import JsonReadOnly from "./JsonReadOnly";
 
 interface JsonInfoProps {
   header: string;
@@ -30,7 +31,7 @@ export const JsonInfo = ({
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
       >
-        <Heading as="h6" variant="h6">
+        <Heading as="h6" variant="h6" wordBreak="break-word">
           {header}
         </Heading>
         <CustomIcon
