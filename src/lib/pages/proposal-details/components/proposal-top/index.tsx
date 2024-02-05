@@ -8,7 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import type { ProposalData } from "lib/types";
 import { formatUTC, openNewTab } from "lib/utils";
 
-import { ProposalInfo } from "./ProposalInfo";
+import { ProposalInfo } from "./proposal-info";
 
 interface ProposalTopProps {
   proposalData: ProposalData;
