@@ -95,6 +95,7 @@ export interface ProposalDeposit {
   txHash: string;
 }
 
+// TODO: combine with MsgBody in services/tx.ts
 interface Message {
   "@type": string;
   [key: string]: unknown;
