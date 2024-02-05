@@ -22,48 +22,46 @@ interface ProposalOverviewProps {
   proposalData: ProposalData;
 }
 
-export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
-  const renderMetadata = () => {
-    if (proposalData.metadata.length === 0) {
-      return (
-        <Text variant="body1" color="text.dark">
-          Not Provided
-        </Text>
-      );
-    }
-
-    if (isUrl(proposalData.metadata)) {
-      return (
-        <Box
-          display="inline-flex"
-          alignItems="center"
-          transition="all 0.25s ease-in-out"
-          _hover={{
-            textDecoration: "underline",
-            textDecorationColor: "secondary.light",
-          }}
-          color="secondary.main"
-          wordBreak="break-all"
-        >
-          <a
-            href={proposalData.metadata}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-peer
-          >
-            {proposalData.metadata}
-          </a>
-        </Box>
-      );
-    }
-
+const RenderMetadata = ({ proposalData }: ProposalOverviewProps) => {
+  if (proposalData.metadata.length === 0) {
     return (
-      <Text variant="body1" color="text.main" wordBreak="break-word">
-        {proposalData.metadata}
+      <Text variant="body1" color="text.dark">
+        Not Provided
       </Text>
     );
-  };
+  }
+  if (isUrl(proposalData.metadata)) {
+    return (
+      <Box
+        display="inline-flex"
+        alignItems="center"
+        transition="all 0.25s ease-in-out"
+        _hover={{
+          textDecoration: "underline",
+          textDecorationColor: "secondary.light",
+        }}
+        color="secondary.main"
+        wordBreak="break-all"
+      >
+        <a
+          href={proposalData.metadata}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-peer
+        >
+          {proposalData.metadata}
+        </a>
+      </Box>
+    );
+  }
 
+  return (
+    <Text variant="body1" color="text.main" wordBreak="break-word">
+      {proposalData.metadata}
+    </Text>
+  );
+};
+export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
   return (
     <Grid
       gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }}
@@ -97,7 +95,7 @@ export const ProposalOverview = ({ proposalData }: ProposalOverviewProps) => {
             <Heading as="h6" variant="h6">
               Metadata
             </Heading>
-            {renderMetadata()}
+            <RenderMetadata proposalData={proposalData} />
           </Flex>
           <Flex
             direction="column"
