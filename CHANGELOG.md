@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#765](https://github.com/alleslabs/celatone-frontend/pull/765) Support Proposal Cancelled status
+- [#760](https://github.com/alleslabs/celatone-frontend/pull/760) Add proposal messages
 - [#764](https://github.com/alleslabs/celatone-frontend/pull/764) api v1 - proposal params
 - [#759](https://github.com/alleslabs/celatone-frontend/pull/759) Add proposal description and metadata
 - [#762](https://github.com/alleslabs/celatone-frontend/pull/762) api v1 - proposal validator votes info
@@ -51,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#767](https://github.com/alleslabs/celatone-frontend/pull/767) Add test validation for Fee.ts
 - [#756](https://github.com/alleslabs/celatone-frontend/pull/756) Redirect usei to homepage
 - [#750](https://github.com/alleslabs/celatone-frontend/pull/750) api v1 - recent codes list
 - [#752](https://github.com/alleslabs/celatone-frontend/pull/752) Support contract state's key as base64
