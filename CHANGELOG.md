@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#769](https://github.com/alleslabs/celatone-frontend/pull/768) Add unit test for format.test.ts on shortenName function
 - [#768](https://github.com/alleslabs/celatone-frontend/pull/768) Add unit test for truncate.test.ts
 - [#767](https://github.com/alleslabs/celatone-frontend/pull/767) Add unit test for fee.test.ts
 - [#756](https://github.com/alleslabs/celatone-frontend/pull/756) Redirect usei to homepage
