@@ -23,11 +23,11 @@ export const Countdown = ({ endTime }: CountdownProps) => {
   useMemo(() => {
     setInterval(() => {
       const diffTime = Math.max(
-        dayjs(endTime).diff(getCurrentDate(), "seconds"),
-        0
+        0,
+        dayjs(endTime).diff(getCurrentDate(), "seconds")
       );
-
       const duration = dayjs.duration(diffTime, "seconds");
+
       const days = duration.days();
       const timestamp = (
         <>
