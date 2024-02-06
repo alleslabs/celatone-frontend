@@ -1,5 +1,6 @@
 import { Spinner } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import plur from "plur";
 import { useMemo, useState } from "react";
 
@@ -16,16 +17,17 @@ interface CountdownProps {
 }
 
 export const Countdown = ({ endTime }: CountdownProps) => {
+  const router = useRouter();
   const [time, setTime] = useState<JSX.Element>(<Spinner boxSize={2} mx={2} />);
 
   useMemo(() => {
-    const currentTime = getCurrentDate();
-    const diffTime = dayjs(endTime).diff(currentTime, "seconds");
-    let duration = dayjs.duration(diffTime, "seconds");
-
-    const interval = 1000;
     setInterval(() => {
-      duration = duration.subtract({ seconds: 1 });
+      const diffTime = Math.max(
+        dayjs(endTime).diff(getCurrentDate(), "seconds"),
+        0
+      );
+
+      const duration = dayjs.duration(diffTime, "seconds");
       const days = duration.days();
       const timestamp = (
         <>
@@ -41,9 +43,10 @@ export const Countdown = ({ endTime }: CountdownProps) => {
           </span>
         </>
       );
+      if (diffTime === 0) router.reload();
       setTime(timestamp);
-    }, interval);
-  }, [endTime]);
+    }, 1000);
+  }, [endTime, router]);
 
   return time;
 };
