@@ -13,11 +13,11 @@ interface StatusTimeProps {
 const getResolvedPrefix = (status: ProposalStatus) => {
   switch (status) {
     case ProposalStatus.DEPOSIT_FAILED:
-      return "Failed on";
+      return "Failed";
     case ProposalStatus.CANCELLED:
-      return "Cancelled on";
+      return "Cancelled";
     default:
-      return "Voting ended on";
+      return "Voting ended";
   }
 };
 
@@ -43,7 +43,8 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
 
   return (
     <Text variant="body2" color="text.dark">
-      {getResolvedPrefix(proposalData.status)}{" "}
+      {getResolvedPrefix(proposalData.status)}
+      {" at "}
       {proposalData.resolvedTimestamp
         ? formatUTC(proposalData.resolvedTimestamp)
         : "N/A"}
