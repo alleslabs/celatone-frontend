@@ -222,7 +222,7 @@ const zProposalDataResponse = z.object({
       version: z.string(),
       voting_time: zUtcDate.nullable(),
     })
-    .transform<ProposalData>(
+    .transform<ProposalData<Coin>>(
       ({ created_tx_hash, proposal_deposits, messages, ...val }) => ({
         ...snakeToCamel(val),
         createdTxHash: created_tx_hash ? parseTxHash(created_tx_hash) : null,

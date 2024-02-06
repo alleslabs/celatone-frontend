@@ -2,18 +2,18 @@ import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import {
-  useProposalData,
   useProposalParams,
   useProposalVotesInfo,
 } from "lib/services/proposalService";
 
 import { ProposalTop, ProposalOverview, VoteDetail } from "./components";
+import { useDerivedProposalData } from "./data";
 import type { ProposalDetailsQueryParams } from "./type";
 import { zProposalDetailsQueryParams, TabIndex } from "./type";
 
@@ -22,9 +22,11 @@ const ProposalDetailsBody = ({
   tab,
   // voteTab,
 }: ProposalDetailsQueryParams) => {
+  useGovConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useProposalData(id);
+  const { data, isLoading } = useDerivedProposalData(id);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useProposalVotesInfo(id);
   const { data: params, isLoading: isParamsLoading } = useProposalParams();

@@ -19,13 +19,7 @@ export const ProposalDescription = ({
         Not Provided
       </Text>
     ) : (
-      <Flex
-        direction="column"
-        p={4}
-        border="1px solid"
-        borderColor="gray.700"
-        borderRadius="8px"
-      >
+      <Flex p={4} border="1px solid" borderColor="gray.700" borderRadius="8px">
         <Markdown markdown={description} />
       </Flex>
     )}
