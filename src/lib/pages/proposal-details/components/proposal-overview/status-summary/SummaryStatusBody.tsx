@@ -132,7 +132,7 @@ export const SummaryStatusBody = ({
     return (
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a
-        {yes.mul(100).round(2, roundHalfUp).toNumber()}% &ldquo;Yes&rdqui; rate,
+        {yes.mul(100).round(2, roundHalfUp).toNumber()}% &ldquo;Yes&rdquo; rate,
         it was not implemented due to technical reasons.
       </Text>
     );
@@ -180,7 +180,7 @@ export const SummaryStatusBody = ({
             fontWeight: 700,
           }}
         >
-          {yes.mul(100).round(2, roundHalfUp).toNumber()}% of &ldquo;Yes&rdqui;
+          {yes.mul(100).round(2, roundHalfUp).toNumber()}% of &ldquo;Yes&rdquo;
         </span>{" "}
         rate. As a result, the proposal has been passed, and its content will
         now be implemented.
