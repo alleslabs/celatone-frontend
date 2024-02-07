@@ -2,11 +2,6 @@ import { zBechAddr } from "lib/types";
 
 import { AccountStore } from "./account";
 
-jest.mock("mobx-persist-store", () => ({
-  isHydrated: jest.fn().mockReturnValue(true),
-  makePersistable: jest.fn(),
-}));
-
 describe("accountStore", () => {
   let accountStore: AccountStore;
 
