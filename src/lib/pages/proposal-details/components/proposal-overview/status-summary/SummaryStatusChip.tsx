@@ -40,7 +40,7 @@ export const SummaryStatusChip = ({
           yes.gte(threshold) &&
           noWithVeto.lt(vetoThreshold)
             ? ProposalStatus.PASSED
-            : ProposalStatus.FAILED
+            : ProposalStatus.REJECTED
         }
         isTransparent
       />
