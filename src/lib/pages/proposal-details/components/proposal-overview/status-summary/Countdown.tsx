@@ -33,7 +33,7 @@ export const Countdown = ({ endTime }: CountdownProps) => {
       const days = duration.days();
       const timestamp = (
         <>
-          {days && (
+          {!!days && (
             <>
               <span style={{ fontWeight: 700 }}>{days}</span>
               <span> {plur("day", days)} </span>

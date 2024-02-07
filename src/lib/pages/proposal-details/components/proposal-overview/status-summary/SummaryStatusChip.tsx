@@ -1,4 +1,4 @@
-import { Spinner, Text } from "@chakra-ui/react";
+import { Skeleton, Text } from "@chakra-ui/react";
 
 import type { ProposalOverviewProps } from "..";
 import { StatusChip } from "lib/components/table";
@@ -14,7 +14,7 @@ export const SummaryStatusChip = ({
   votesInfo,
   isLoading,
 }: ProposalOverviewProps) => {
-  if (isLoading) return <Spinner boxSize={3} mx={4} />;
+  if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return <StatusChip status={ProposalStatus.DEPOSIT_FAILED} isTransparent />;

@@ -5,6 +5,7 @@ import type { ProposalOverviewProps } from "..";
 import { ProposalStatus } from "lib/types";
 
 import { ActiveDot } from "./ActiveDot";
+import { SummaryStatusBody } from "./SummaryStatusBody";
 import { SummaryStatusChip } from "./SummaryStatusChip";
 import { SummaryStatusTime } from "./SummaryStatusTime";
 
@@ -38,6 +39,8 @@ export const StatusSummary = ({
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Flex
+      direction="column"
+      gap={2}
       p={4}
       bgColor="gray.900"
       border="1px solid"
@@ -59,6 +62,7 @@ export const StatusSummary = ({
         </Flex>
         <SummaryStatusTime proposalData={proposalData} />
       </Flex>
+      <SummaryStatusBody proposalData={proposalData} {...props} />
     </Flex>
   );
 };
