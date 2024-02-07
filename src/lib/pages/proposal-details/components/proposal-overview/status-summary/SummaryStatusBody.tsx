@@ -1,7 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { SkeletonText, Text } from "@chakra-ui/react";
-import type Big from "big.js";
-import { roundHalfUp } from "big.js";
+import big from "big.js";
 
 import type { ProposalOverviewProps } from "..";
 import { ErrorFetching } from "lib/components/state";
@@ -45,7 +44,7 @@ export const SummaryStatusBody = ({
   if (isLoading)
     return <SkeletonText mt={1} noOfLines={3} spacing={4} skeletonHeight={2} />;
   if (!params || !votesInfo)
-    return <ErrorFetching dataName="proposal params and votes tally." />;
+    return <ErrorFetching dataName="proposal params and votes tally" />;
 
   const { minDeposit, quorum, threshold, vetoThreshold } = extractParams(
     params,
@@ -85,7 +84,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (noWithVeto.lt(vetoThreshold))
+    if (noWithVeto.gte(vetoThreshold))
       return (
         <Text variant="body2">
           The proposal has successfully met the voting quorum. However, if the
@@ -102,7 +101,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (yes.lt(threshold))
+    if (currentTotalVotes.eq(0) || yes.div(currentTotalVotes).lt(threshold))
       return (
         <Text variant="body2">
           The proposal has{" "}
@@ -131,9 +130,9 @@ export const SummaryStatusBody = ({
   if (proposalData.status === ProposalStatus.FAILED)
     return (
       <Text variant="body2">
-        Although the proposal successfully reached the voting quorum with a
-        {yes.mul(100).round(2, roundHalfUp).toNumber()}% &ldquo;Yes&rdquo; rate,
-        it was not implemented due to technical reasons.
+        Although the proposal successfully reached the voting quorum with a{" "}
+        {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% &ldquo;Yes&rdquo;
+        rate, it was not implemented due to technical reasons.
       </Text>
     );
 
@@ -146,7 +145,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (noWithVeto.lt(vetoThreshold))
+    if (noWithVeto.gte(vetoThreshold))
       return (
         <Text variant="body2">
           This proposal has{" "}
@@ -180,7 +179,8 @@ export const SummaryStatusBody = ({
             fontWeight: 700,
           }}
         >
-          {yes.mul(100).round(2, roundHalfUp).toNumber()}% of &ldquo;Yes&rdquo;
+          {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% of
+          &ldquo;Yes&rdquo;
         </span>{" "}
         rate. As a result, the proposal has been passed, and its content will
         now be implemented.

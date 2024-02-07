@@ -11,6 +11,15 @@ import type {
 } from "lib/types";
 
 export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
+  if (votesInfo.totalVotingPower.eq(0))
+    return {
+      yes: big(0),
+      abstain: big(0),
+      no: big(0),
+      noWithVeto: big(0),
+      currentTotalVotes: big(0),
+    };
+
   const yes = votesInfo.yes.div(votesInfo.totalVotingPower);
   const abstain = votesInfo.abstain.div(votesInfo.totalVotingPower);
   const no = votesInfo.no.div(votesInfo.totalVotingPower);

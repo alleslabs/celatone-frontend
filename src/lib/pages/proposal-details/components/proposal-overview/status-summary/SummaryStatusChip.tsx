@@ -37,8 +37,9 @@ export const SummaryStatusChip = ({
       <StatusChip
         status={
           currentTotalVotes.gte(quorum) &&
-          yes.gte(threshold) &&
-          noWithVeto.lt(vetoThreshold)
+          noWithVeto.lt(vetoThreshold) &&
+          !currentTotalVotes.eq(0) &&
+          yes.div(currentTotalVotes).gte(threshold)
             ? ProposalStatus.PASSED
             : ProposalStatus.REJECTED
         }
