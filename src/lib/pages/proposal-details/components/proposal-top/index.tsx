@@ -3,6 +3,7 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useBaseApiRoute, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { DotSeparator } from "lib/components/DotSeparator";
+import { Expedited } from "lib/components/Expedited";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { ProposalData } from "lib/types";
@@ -37,31 +38,32 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
         direction={{ base: "column", md: "row" }}
       >
         <Flex direction="column" gap={1}>
-          <Flex
-            gap={1}
-            align={{ base: "start", md: "center" }}
-            minH="36px"
-            overflow="hidden"
-            minW={{ md: "680px" }}
-          >
+          <Flex gap={2}>
             <CustomIcon name="proposal" boxSize={5} color="secondary.main" />
             <Heading
               as="h5"
               mt={{ base: 1, md: 0 }}
               ml={{ base: 1, md: 0 }}
               variant={{ base: "h6", md: "h5" }}
-              className={!isMobile ? "ellipsis" : ""}
               wordBreak="break-word"
               color={proposalData.title ? "text.main" : "text.disabled"}
             >
-              <Text
-                variant={{ base: "h6", md: "h5" }}
-                color="accent.main"
-                display="inline"
-              >
+              <span style={{ color: "var(--chakra-colors-accent-main)" }}>
                 #{proposalData.id}
-              </Text>{" "}
+              </span>{" "}
               - {proposalData.title ? proposalData.title : "No title"}
+              {proposalData.isExpedited && (
+                <span
+                  style={{
+                    display: "inline-block",
+                    marginLeft: "8px",
+                    marginBottom: "2px",
+                    verticalAlign: "middle",
+                  }}
+                >
+                  <Expedited isActiveExpedited />
+                </span>
+              )}
             </Heading>
           </Flex>
           <Flex gap={{ base: 2, md: 0 }} mb={4} direction="column">

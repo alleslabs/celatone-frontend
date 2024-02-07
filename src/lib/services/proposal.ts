@@ -92,16 +92,16 @@ const zProposalParamsResponse = z
     expedited_voting_period: z.string().optional(),
     expedited_threshold: z.coerce.number().optional(),
     expedited_min_deposit: zCoin.array().optional(),
-    expedited_quorum: z.string().optional(), // only in sei
+    expedited_quorum: z.coerce.number().optional(), // only in sei
     // emergency - only in initia
     emergency_min_deposit: zCoin.array().optional(),
     emergency_tally_interval: z.string().optional(),
   })
-  .transform<ProposalParams>(snakeToCamel);
+  .transform<ProposalParams<Coin>>(snakeToCamel);
 
 export const getProposalParams = async (
   endpoint: string
-): Promise<ProposalParams> =>
+): Promise<ProposalParams<Coin>> =>
   axios
     .get(`${endpoint}/params`)
     .then(({ data }) => zProposalParamsResponse.parse(data));

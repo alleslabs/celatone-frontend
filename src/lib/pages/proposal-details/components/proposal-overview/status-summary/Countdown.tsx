@@ -18,7 +18,9 @@ interface CountdownProps {
 
 export const Countdown = ({ endTime }: CountdownProps) => {
   const router = useRouter();
-  const [time, setTime] = useState<JSX.Element>(<Spinner boxSize={2} mx={2} />);
+  const [time, setTime] = useState<JSX.Element>(
+    <Spinner as="span" boxSize={2} mx={2} />
+  );
 
   useMemo(() => {
     setInterval(() => {

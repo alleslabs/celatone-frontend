@@ -2,10 +2,10 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
 import type { ProposalOverviewProps } from "..";
-import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
 
 import { ActiveDot } from "./ActiveDot";
+import { SummaryStatusChip } from "./SummaryStatusChip";
 import { SummaryStatusTime } from "./SummaryStatusTime";
 
 const getStatusSummaryBorderColor = (
@@ -29,7 +29,10 @@ const getStatusSummaryBorderColor = (
   }
 };
 
-export const StatusSummary = ({ proposalData }: ProposalOverviewProps) => {
+export const StatusSummary = ({
+  proposalData,
+  ...props
+}: ProposalOverviewProps) => {
   const isOngoing =
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
@@ -52,7 +55,7 @@ export const StatusSummary = ({ proposalData }: ProposalOverviewProps) => {
           <Text variant="body1" textColor="text.main" fontWeight={700}>
             {isOngoing ? "Current" : "Final"} proposal result:
           </Text>
-          <StatusChip status={proposalData.status} />
+          <SummaryStatusChip proposalData={proposalData} {...props} />
         </Flex>
         <SummaryStatusTime proposalData={proposalData} />
       </Flex>
