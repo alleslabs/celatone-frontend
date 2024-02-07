@@ -2,7 +2,7 @@ import { Spinner } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import plur from "plur";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getCurrentDate } from "lib/utils";
 
@@ -20,8 +20,8 @@ export const Countdown = ({ endTime }: CountdownProps) => {
   const router = useRouter();
   const [time, setTime] = useState<JSX.Element>(<Spinner boxSize={2} mx={2} />);
 
-  useMemo(() => {
-    setInterval(() => {
+  useEffect(() => {
+    const intervalId = setInterval(() => {
       const diffTime = Math.max(
         0,
         dayjs(endTime).diff(getCurrentDate(), "seconds")
@@ -46,6 +46,7 @@ export const Countdown = ({ endTime }: CountdownProps) => {
       if (diffTime === 0) router.reload();
       setTime(timestamp);
     }, 1000);
+    return () => clearInterval(intervalId);
   }, [endTime, router]);
 
   return time;
