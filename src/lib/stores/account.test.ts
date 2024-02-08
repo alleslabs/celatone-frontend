@@ -4,6 +4,7 @@ import { AccountStore } from "./account";
 
 describe("accountStore", () => {
   let accountStore: AccountStore;
+  const address = zBechAddr.parse("address");
 
   beforeEach(() => {
     accountStore = new AccountStore();
@@ -18,20 +19,12 @@ describe("accountStore", () => {
   });
 
   test("account info", () => {
-    expect(
-      accountStore.getAccountLocalInfo(zBechAddr.parse("address"))
-    ).toBeUndefined();
+    expect(accountStore.getAccountLocalInfo(address)).toBeUndefined();
 
-    accountStore.updateAccountLocalInfo(
-      zBechAddr.parse("address"),
-      "name",
-      "description"
-    );
+    accountStore.updateAccountLocalInfo(address, "name", "description");
 
-    expect(
-      accountStore.getAccountLocalInfo(zBechAddr.parse("address"))
-    ).toEqual({
-      address: zBechAddr.parse("address"),
+    expect(accountStore.getAccountLocalInfo(address)).toEqual({
+      address: "address",
       name: "name",
       description: "description",
     });
@@ -39,21 +32,15 @@ describe("accountStore", () => {
 
   test("saved account", () => {
     expect(accountStore.savedAccounts).toEqual({});
-    expect(accountStore.isAccountSaved(zBechAddr.parse("address"))).toBeFalsy();
+    expect(accountStore.isAccountSaved(address)).toBeFalsy();
 
-    accountStore.updateAccountLocalInfo(
-      zBechAddr.parse("address"),
-      "name",
-      "description"
-    );
+    accountStore.updateAccountLocalInfo(address, "name", "description");
 
-    expect(
-      accountStore.isAccountSaved(zBechAddr.parse("address"))
-    ).toBeTruthy();
+    expect(accountStore.isAccountSaved(address)).toBeTruthy();
 
     expect(accountStore.getSavedAccounts()).toEqual([
       {
-        address: zBechAddr.parse("address"),
+        address: "address",
         name: "name",
         description: "description",
       },
