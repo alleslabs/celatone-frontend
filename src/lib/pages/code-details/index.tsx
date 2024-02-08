@@ -150,7 +150,7 @@ const CodeDetails = observer(() => {
   return (
     <PageContainer>
       {validated.success ? (
-        <CodeDetailsBody codeId={Number(validated.data.codeId)} />
+        <CodeDetailsBody codeId={validated.data.codeId} />
       ) : (
         <InvalidCode />
       )}
