@@ -1,12 +1,11 @@
 import { z } from "zod";
 
+import { isId } from "lib/utils";
+
 export const zCodeDetailsQueryParams = z.object({
   codeId: z.string().refine(
     (val) => {
-      const code = Number(val);
-      const isInteger = Number.isInteger(code);
-
-      return isInteger && code > 0;
+      return isId(val);
     },
     {
       message: "Invalid code id",

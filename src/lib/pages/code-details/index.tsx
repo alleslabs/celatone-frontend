@@ -16,7 +16,7 @@ import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
-import { getFirstQueryParam, isId } from "lib/utils";
+import { getFirstQueryParam } from "lib/utils";
 
 import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
@@ -160,11 +160,7 @@ const CodeDetails = observer(() => {
 
   return (
     <PageContainer>
-      {!isId(codeId) ? (
-        <InvalidCode />
-      ) : (
-        <CodeDetailsBody codeDataState={data} codeId={Number(codeId)} />
-      )}
+      <CodeDetailsBody codeDataState={data} codeId={Number(codeId)} />
     </PageContainer>
   );
 });
