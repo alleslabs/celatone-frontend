@@ -18,7 +18,6 @@ import {
 import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
-import { CURR_THEME } from "env";
 import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -251,6 +250,7 @@ const Searchbar = () => {
         move: { enabled: isMove },
       },
     },
+    theme,
   } = useCelatoneApp();
   const navigate = useInternalNavigate();
   const { results, isLoading, metadata } = useSearchHandler(keyword, () =>
@@ -381,7 +381,7 @@ const Searchbar = () => {
                   bg="background.main"
                   p={5}
                   justify="center"
-                  borderRadius={CURR_THEME.borderRadius.default}
+                  borderRadius={theme.borderRadius.default}
                 >
                   <Text variant="body2" color="text.dark">
                     Your result will display here

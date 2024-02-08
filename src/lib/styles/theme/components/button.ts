@@ -20,7 +20,7 @@ const borderDefault = "1px solid";
 const errorDark = "error.dark";
 const secondaryBg = "secondary.background";
 
-const generateStyle = ({
+export const generateStyle = ({
   basic,
   disabled,
   hoverBg,

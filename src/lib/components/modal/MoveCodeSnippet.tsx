@@ -20,7 +20,6 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { CURR_THEME } from "env";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -79,6 +78,7 @@ const MoveCodeSnippet = ({
     chainConfig: {
       gas: { gasPrice },
     },
+    theme,
   } = useCelatoneApp();
 
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
@@ -290,7 +290,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                       <AceEditor
                         readOnly
                         mode={item.mode}
-                        theme={CURR_THEME.jsonTheme}
+                        theme={theme.jsonTheme}
                         fontSize="14px"
                         style={{
                           width: "100%",

@@ -1,5 +1,7 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
+import { DEFAULT_THEME } from "config/theme";
+
 import type { ChainConfigs } from "./types";
 
 export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
@@ -49,6 +51,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     extra: { disableDelegation: true },
+    theme: DEFAULT_THEME,
   },
   "pion-1": {
     chain: "neutron",
@@ -96,5 +99,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     extra: { disableDelegation: true },
+    theme: DEFAULT_THEME,
   },
 };

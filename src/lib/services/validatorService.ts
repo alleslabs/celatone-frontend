@@ -4,6 +4,7 @@ import type {
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
+import type { ThemeConfig } from "config/theme/types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -37,7 +38,8 @@ export const useValidator = (
 };
 
 export const useValidatorImage = (
-  validator: Nullable<Validator>
+  validator: Nullable<Validator>,
+  theme: ThemeConfig
 ): UseQueryResult<string> => {
   const {
     chain: { chain_name: chainName },
@@ -53,7 +55,7 @@ export const useValidatorImage = (
     ],
     queryFn: async () => {
       if (!validator) return Promise.resolve("");
-      return resolveValIdentity(chainName, validator);
+      return resolveValIdentity(chainName, validator, theme);
     },
     retry: false,
     refetchOnWindowFocus: false,

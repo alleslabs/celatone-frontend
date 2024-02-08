@@ -23,8 +23,8 @@ export const OSMOSIS_THEME: ThemeConfig = {
       name: "Poppins, serif",
     },
     body: {
-      url: "https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap",
-      name: "Inter, sans-serif",
+      url: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+      name: "Space Grotesk, sans-serif",
     },
   },
   colors: {

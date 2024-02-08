@@ -1,5 +1,7 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
+import { DEFAULT_THEME } from "config/theme";
+
 import type { ChainConfigs } from "./types";
 
 export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
@@ -49,6 +51,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://www.mintscan.io/stargaze/proposals",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
   "elgafar-1": {
     chain: "stargaze",
@@ -96,5 +99,6 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://testnet-explorer.publicawesome.dev/stargaze/gov",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
 };

@@ -8,10 +8,10 @@ import { StoreProvider } from "./store";
 import { TxBroadcastProvider } from "./tx-broadcast";
 
 export default ({ children }: { children: React.ReactNode }) => (
-  <ChakraProvider>
-    <QueryClientProvider>
-      <StoreProvider>
-        <AppProvider>
+  <StoreProvider>
+    <AppProvider>
+      <ChakraProvider>
+        <QueryClientProvider>
           <ChainProvider>
             <NavProvider>
               <AmplitudeProvider>
@@ -19,8 +19,8 @@ export default ({ children }: { children: React.ReactNode }) => (
               </AmplitudeProvider>
             </NavProvider>
           </ChainProvider>
-        </AppProvider>
-      </StoreProvider>
-    </QueryClientProvider>
-  </ChakraProvider>
+        </QueryClientProvider>
+      </ChakraProvider>
+    </AppProvider>
+  </StoreProvider>
 );

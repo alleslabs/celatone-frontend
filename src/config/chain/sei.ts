@@ -1,6 +1,8 @@
 import { wallets as compassWallets } from "@cosmos-kit/compass";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
+import { SEI_THEME } from "config/theme";
+
 import type { ChainConfigs } from "./types";
 
 /**
@@ -58,6 +60,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     extra: {
       disableAnyOfAddresses: true,
     },
+    theme: SEI_THEME,
   },
   "atlantic-2": {
     chain: "sei",
@@ -108,5 +111,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     extra: {
       disableAnyOfAddresses: true,
     },
+    theme: SEI_THEME,
   },
 };

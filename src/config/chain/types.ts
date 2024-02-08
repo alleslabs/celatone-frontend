@@ -1,5 +1,7 @@
 import type { MainWalletBase } from "@cosmos-kit/core";
 
+import type { ThemeConfig } from "config/theme/types";
+
 type FaucetConfig =
   | {
       enabled: true;
@@ -83,6 +85,7 @@ export interface ChainConfig {
     disableAnyOfAddresses?: boolean;
     disableDelegation?: boolean;
   };
+  theme: ThemeConfig;
 }
 
 export interface ChainConfigs {

@@ -1,6 +1,8 @@
 import { wallets as initiaWallets } from "@cosmos-kit/initia";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
+import { INITIA_THEME } from "config/theme";
+
 import type { ChainConfigs } from "./types";
 
 const INITIA_DECODER =
@@ -56,6 +58,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://app.testnet.initia.xyz/proposal",
     },
     extra: {},
+    theme: INITIA_THEME,
   },
   "minimove-1": {
     chain: "initia",
@@ -106,6 +109,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     extra: { disableDelegation: true },
+    theme: INITIA_THEME,
   },
   "miniwasm-1": {
     chain: "initia",
@@ -155,6 +159,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     extra: { disableDelegation: true },
+    theme: INITIA_THEME,
   },
   "stone-13": {
     chain: "initia",
@@ -205,5 +210,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://app.stone-13.initia.xyz/proposal",
     },
     extra: {},
+    theme: INITIA_THEME,
   },
 };
