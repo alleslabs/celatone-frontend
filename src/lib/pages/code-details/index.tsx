@@ -21,6 +21,7 @@ import { getFirstQueryParam, isId } from "lib/utils";
 import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
+import { zCodeDetailsQueryParams } from "./types";
 
 const codeTabId = "codeDetailsTab";
 
@@ -144,16 +145,25 @@ const CodeDetailsBody = observer(
 const CodeDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const codeIdParam = getFirstQueryParam(router.query.codeId);
-  const data = useCodeData(codeIdParam);
+
+  const validated = zCodeDetailsQueryParams.safeParse(router.query);
+
+  if (!validated.success) {
+    return <InvalidCode />;
+  }
+
+  const { codeId } = validated.data;
+
+  const data = useCodeData(codeId);
 
   if (data.isLoading) return <Loading withBorder />;
+
   return (
     <PageContainer>
-      {!isId(codeIdParam) ? (
+      {!isId(codeId) ? (
         <InvalidCode />
       ) : (
-        <CodeDetailsBody codeDataState={data} codeId={Number(codeIdParam)} />
+        <CodeDetailsBody codeDataState={data} codeId={Number(codeId)} />
       )}
     </PageContainer>
   );
