@@ -17,6 +17,7 @@ export const ActiveDot = ({ status }: ActiveDotProps) =>
       transition={{
         duration: 1.5,
         repeat: Infinity,
+        ease: "easeInOut",
       }}
     />
   );
