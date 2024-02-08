@@ -15,26 +15,22 @@ import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
-import { getFirstQueryParam } from "lib/utils";
 
 import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
-import { zCodeDetailsQueryParams } from "./types";
+import { zCodeDetailsQueryParams, TabIndex } from "./types";
 
 const codeTabId = "codeDetailsTab";
 
-enum TabIndex {
-  CodeInfo = "info",
-  JsonSchema = "schema",
-}
 interface CodeDetailsBodyProps {
   codeId: number;
+  tab: TabIndex;
 }
 
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
-const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
+const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const router = useRouter();
   const codeDataState = useCodeData(codeId);
   const navigate = useInternalNavigate();
@@ -46,13 +42,11 @@ const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
   const { getSchemaByCodeHash } = useSchemaStore();
   const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
   const isMobile = useMobile();
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });
-    // Note: we don't want to track when tab changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady, track]);
+  }, [router.isReady]);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -70,22 +64,6 @@ const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
     },
     [codeId, tab, navigate]
   );
-
-  useEffect(() => {
-    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
-      navigate({
-        replace: true,
-        pathname: "/codes/[codeId]/[tab]",
-        query: {
-          codeId,
-          tab: TabIndex.CodeInfo,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    }
-  }, [router.isReady, tab, codeId, navigate]);
 
   if (codeDataState.isLoading) return <Loading withBorder />;
 
@@ -144,13 +122,12 @@ const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
 const CodeDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-
   const validated = zCodeDetailsQueryParams.safeParse(router.query);
 
   return (
     <PageContainer>
       {validated.success ? (
-        <CodeDetailsBody codeId={validated.data.codeId} />
+        <CodeDetailsBody {...validated.data} />
       ) : (
         <InvalidCode />
       )}
