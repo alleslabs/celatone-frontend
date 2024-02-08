@@ -13,7 +13,6 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
 import { getFirstQueryParam } from "lib/utils";
@@ -30,117 +29,117 @@ enum TabIndex {
   JsonSchema = "schema",
 }
 interface CodeDetailsBodyProps {
-  codeDataState: CodeDataState;
   codeId: number;
 }
 
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
-const CodeDetailsBody = observer(
-  ({ codeDataState, codeId }: CodeDetailsBodyProps) => {
-    const router = useRouter();
-    const navigate = useInternalNavigate();
-    const {
-      chainId,
-      codeData,
-      lcdCodeData: { codeHash, isLcdCodeLoading },
-    } = codeDataState;
-    const { getSchemaByCodeHash } = useSchemaStore();
-    const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
-    const isMobile = useMobile();
-    const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
+  const router = useRouter();
+  const codeDataState = useCodeData(codeId);
+  const navigate = useInternalNavigate();
+  const {
+    chainId,
+    codeData,
+    lcdCodeData: { codeHash, isLcdCodeLoading },
+  } = codeDataState;
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
+  const isMobile = useMobile();
+  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
-    useEffect(() => {
-      if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });
-      // Note: we don't want to track when tab changes
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.isReady, track]);
+  useEffect(() => {
+    if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });
+    // Note: we don't want to track when tab changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, track]);
 
-    const handleTabChange = useCallback(
-      (nextTab: TabIndex) => () => {
-        if (nextTab === tab) return;
-        navigate({
-          pathname: "/codes/[codeId]/[tab]",
-          query: {
-            codeId,
-            tab: nextTab,
-          },
-          options: {
-            shallow: true,
-          },
-        });
-      },
-      [codeId, tab, navigate]
-    );
+  const handleTabChange = useCallback(
+    (nextTab: TabIndex) => () => {
+      if (nextTab === tab) return;
+      navigate({
+        pathname: "/codes/[codeId]/[tab]",
+        query: {
+          codeId,
+          tab: nextTab,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [codeId, tab, navigate]
+  );
 
-    useEffect(() => {
-      if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
-        navigate({
-          replace: true,
-          pathname: "/codes/[codeId]/[tab]",
-          query: {
-            codeId,
-            tab: TabIndex.CodeInfo,
-          },
-          options: {
-            shallow: true,
-          },
-        });
-      }
-    }, [router.isReady, tab, codeId, navigate]);
+  useEffect(() => {
+    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
+      navigate({
+        replace: true,
+        pathname: "/codes/[codeId]/[tab]",
+        query: {
+          codeId,
+          tab: TabIndex.CodeInfo,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    }
+  }, [router.isReady, tab, codeId, navigate]);
 
-    if (!codeData) return <InvalidCode />;
+  if (codeDataState.isLoading) return <Loading withBorder />;
 
-    return (
-      <>
-        <CodeTopInfo codeDataState={codeDataState} codeId={codeId} />
-        <Tabs
-          index={Object.values(TabIndex).indexOf(tab)}
-          isLazy
-          lazyBehavior="keepMounted"
-          my={{ base: 0, md: 8 }}
-        >
-          {!isMobile && (
-            <TabList
-              borderBottom="1px solid"
-              borderColor="gray.700"
-              overflowX="scroll"
-              id={codeTabId}
-            >
-              <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
-                Code Information
-              </CustomTab>
-              <CustomTab onClick={handleTabChange(TabIndex.JsonSchema)}>
-                JSON Schema
-              </CustomTab>
-            </TabList>
-          )}
-          <TabPanels>
-            <TabPanel p={0}>
-              <CodeInfoSection
-                codeData={codeData}
-                chainId={chainId}
-                codeHash={codeHash}
-                isCodeHashLoading={isLcdCodeLoading}
-                attached={!!jsonSchema}
-                toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
-              />
-              <CodeContractsTable codeId={codeId} />
-            </TabPanel>
-            <TabPanel p={0}>
-              <CodeSchemaSection
-                codeId={codeId}
-                codeHash={codeHash}
-                isCodeHashLoading={isLcdCodeLoading}
-                jsonSchema={jsonSchema}
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </>
-    );
-  }
-);
+  if (!codeData) return <InvalidCode />;
+
+  return (
+    <>
+      <CodeTopInfo codeDataState={codeDataState} codeId={codeId} />
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+        my={{ base: 0, md: 8 }}
+      >
+        {!isMobile && (
+          <TabList
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX="scroll"
+            id={codeTabId}
+          >
+            <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
+              Code Information
+            </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.JsonSchema)}>
+              JSON Schema
+            </CustomTab>
+          </TabList>
+        )}
+        <TabPanels>
+          <TabPanel p={0}>
+            <CodeInfoSection
+              codeData={codeData}
+              chainId={chainId}
+              codeHash={codeHash}
+              isCodeHashLoading={isLcdCodeLoading}
+              attached={!!jsonSchema}
+              toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
+            />
+            <CodeContractsTable codeId={codeId} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <CodeSchemaSection
+              codeId={codeId}
+              codeHash={codeHash}
+              isCodeHashLoading={isLcdCodeLoading}
+              jsonSchema={jsonSchema}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </>
+  );
+});
 
 const CodeDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
@@ -148,19 +147,13 @@ const CodeDetails = observer(() => {
 
   const validated = zCodeDetailsQueryParams.safeParse(router.query);
 
-  if (!validated.success) {
-    return <InvalidCode />;
-  }
-
-  const { codeId } = validated.data;
-
-  const data = useCodeData(codeId);
-
-  if (data.isLoading) return <Loading withBorder />;
-
   return (
     <PageContainer>
-      <CodeDetailsBody codeDataState={data} codeId={Number(codeId)} />
+      {validated.success ? (
+        <CodeDetailsBody codeId={Number(validated.data.codeId)} />
+      ) : (
+        <InvalidCode />
+      )}
     </PageContainer>
   );
 });
