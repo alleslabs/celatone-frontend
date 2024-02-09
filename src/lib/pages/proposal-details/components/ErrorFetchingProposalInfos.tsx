@@ -8,6 +8,6 @@ export const ErrorFetchingProposalInfos = ({
   isParamsOnly = false,
 }: ErrorFetchingProposalInfosProps) => (
   <ErrorFetching
-    dataName={`proposal params${isParamsOnly && "and votes tally"}`}
+    dataName={`proposal params${!isParamsOnly && "and votes tally"}`}
   />
 );
