@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#774](https://github.com/alleslabs/celatone-frontend/pull/774) Add relevant contract to cosmwasm pool
 - [#772](https://github.com/alleslabs/celatone-frontend/pull/772) Add zod validator to code details page code id params
 - [#770](https://github.com/alleslabs/celatone-frontend/pull/770) Add unit test for account store (mobx)
 - [#769](https://github.com/alleslabs/celatone-frontend/pull/769) Add unit test for format.test.ts on shortenName function
