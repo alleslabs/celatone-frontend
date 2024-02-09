@@ -144,15 +144,21 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           />
         </LabelText>
       )}
-      {pool.type === PoolType.COSMWASM && pool.contractAddress && (
+      {pool.type === PoolType.COSMWASM && (
         <LabelText label="Relevant Contract">
-          <Text variant="body2">
-            <ExplorerLink
-              value={pool.contractAddress?.toString()}
-              type="contract_address"
-              showCopyOnHover
-            />
-          </Text>
+          {pool.contractAddress ? (
+            <Text variant="body2">
+              <ExplorerLink
+                value={pool.contractAddress?.toString()}
+                type="contract_address"
+                showCopyOnHover
+              />
+            </Text>
+          ) : (
+            <Text variant="body2" color="text.disabled">
+              N/A
+            </Text>
+          )}
         </LabelText>
       )}
     </Flex>
