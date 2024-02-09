@@ -13,7 +13,7 @@ export const getProgressBadgeProps = (
 
     if (
       proposalData.status === ProposalStatus.CANCELLED &&
-      proposalData.votingEndTime === null
+      proposalData.votingTime === null
     )
       return { state: BadgeState.FAILED, text: "Cancelled" };
 

@@ -18,7 +18,7 @@ const getStepIconState = (step: number, proposalData: ProposalData) => {
     if (
       proposalData.status === ProposalStatus.DEPOSIT_FAILED ||
       (proposalData.status === ProposalStatus.CANCELLED &&
-        proposalData.votingEndTime === null)
+        proposalData.votingTime === null)
     )
       return StepIconState.FAILED;
 

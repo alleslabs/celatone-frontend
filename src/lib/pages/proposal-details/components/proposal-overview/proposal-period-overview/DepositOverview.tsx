@@ -21,7 +21,11 @@ const DepositOverviewBody = ({
 
   if (
     proposalData.status !== ProposalStatus.DEPOSIT_FAILED &&
-    proposalData.status !== ProposalStatus.DEPOSIT_PERIOD
+    proposalData.status !== ProposalStatus.DEPOSIT_PERIOD &&
+    !(
+      proposalData.status === ProposalStatus.CANCELLED &&
+      proposalData.votingTime === null
+    )
   )
     return (
       <Text variant="body2" color="text.dark">
