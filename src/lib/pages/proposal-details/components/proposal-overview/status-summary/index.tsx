@@ -2,9 +2,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
 import type { ProposalOverviewProps } from "..";
+import { ActiveDot } from "../../ActiveDot";
 import { ProposalStatus } from "lib/types";
 
-import { ActiveDot } from "./ActiveDot";
 import { SummaryStatusBody } from "./SummaryStatusBody";
 import { SummaryStatusChip } from "./SummaryStatusChip";
 import { SummaryStatusTime } from "./SummaryStatusTime";
@@ -54,7 +54,7 @@ export const StatusSummary = ({
         justify="space-between"
       >
         <Flex align="center" gap={2}>
-          <ActiveDot status={proposalData.status} />
+          {isOngoing && <ActiveDot />}
           <Text variant="body1" textColor="text.main" fontWeight={700}>
             {isOngoing ? "Current" : "Final"} proposal result:
           </Text>

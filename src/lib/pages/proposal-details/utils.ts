@@ -61,3 +61,6 @@ export const mapDeposit = (
       min,
     };
   });
+
+export const formatPrettyPercent = (ratio: number) =>
+  `${ratio < 0.01 ? "<0.01" : Math.round(ratio * 10000) / 100}%`;

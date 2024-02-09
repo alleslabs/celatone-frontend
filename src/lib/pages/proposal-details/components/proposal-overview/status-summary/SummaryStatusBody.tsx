@@ -3,9 +3,10 @@ import { SkeletonText, Text } from "@chakra-ui/react";
 import big from "big.js";
 
 import type { ProposalOverviewProps } from "..";
-import { ErrorFetching } from "lib/components/state";
+import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import {
   extractParams,
+  formatPrettyPercent,
   mapDeposit,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
@@ -43,8 +44,7 @@ export const SummaryStatusBody = ({
 }: ProposalOverviewProps) => {
   if (isLoading)
     return <SkeletonText mt={1} noOfLines={3} spacing={4} skeletonHeight={2} />;
-  if (!params || !votesInfo)
-    return <ErrorFetching dataName="proposal params and votes tally" />;
+  if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
 
   const { minDeposit, quorum, threshold, vetoThreshold } = extractParams(
     params,
@@ -95,7 +95,7 @@ export const SummaryStatusBody = ({
             }}
           >
             &ldquo;No with veto&rdquo; vote surpassing{" "}
-            {Math.round(vetoThreshold * 10000) / 100}%
+            {formatPrettyPercent(vetoThreshold)}
           </span>
           , the proposal will be <Rejected /> regardless of other votes.
         </Text>
@@ -157,7 +157,7 @@ export const SummaryStatusBody = ({
             reached
           </span>{" "}
           the voting quorum. But the voting period ended with &ldquo;No with
-          veto&rdquo; more than {Math.round(vetoThreshold * 10000) / 100}%, the
+          veto&rdquo; more than {formatPrettyPercent(vetoThreshold)}, the
           proposal will be <Rejected /> regardless of other votes.
         </Text>
       );

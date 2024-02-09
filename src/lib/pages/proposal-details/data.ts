@@ -7,16 +7,18 @@ import {
 import type { Nullable, Option, ProposalData, ProposalParams } from "lib/types";
 import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
 
-export const useDerivedProposalParams = (): {
+export const useDerivedProposalParams = (
+  isMobile: boolean
+): {
   data: Option<ProposalParams>;
   isLoading: boolean;
 } => {
   const { data, isLoading } = useProposalParams();
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
-    withPrices: false,
+    withPrices: !isMobile,
   });
   const { data: movePoolInfos, isLoading: isMovePoolInfosLoading } =
-    useMovePoolInfos({ withPrices: false });
+    useMovePoolInfos({ withPrices: !isMobile });
 
   if (isLoading || isAssetInfosLoading || isMovePoolInfosLoading || !data)
     return {

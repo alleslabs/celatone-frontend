@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useGovConfig, useInternalNavigate } from "lib/app-provider";
+import { useGovConfig, useInternalNavigate, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -22,12 +22,13 @@ const ProposalDetailsBody = ({
 }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useDerivedProposalData(id);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useProposalVotesInfo(id);
   const { data: params, isLoading: isParamsLoading } =
-    useDerivedProposalParams();
+    useDerivedProposalParams(isMobile);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
