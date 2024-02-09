@@ -14,12 +14,11 @@ export const SummaryStatusChip = ({
   votesInfo,
   isLoading,
 }: ProposalOverviewProps) => {
-  if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
-
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return <StatusChip status={ProposalStatus.DEPOSIT_FAILED} isTransparent />;
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
+    if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
     if (!params || !votesInfo)
       return (
         <Text variant="body2" color="text.dark">
