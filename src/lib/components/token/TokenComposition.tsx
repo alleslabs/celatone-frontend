@@ -9,14 +9,10 @@ import {
 
 interface TokenCompositionProps extends FlexProps {
   token: TokenWithValue;
-  decimal?: number;
-  displayValue?: boolean;
 }
 
 export const TokenComposition = ({
   token,
-  decimal,
-  displayValue = true,
   ...flexProps
 }: TokenCompositionProps) => (
   <Flex direction="column" {...flexProps}>
@@ -26,9 +22,7 @@ export const TokenComposition = ({
           <Text as="span" mr={1} fontWeight={700}>
             {formatUTokenWithPrecision(
               token.poolInfo.coinA.amount,
-              token.poolInfo.coinA.precision ?? 0,
-              true,
-              decimal
+              token.poolInfo.coinA.precision ?? 0
             )}
           </Text>
           {getTokenLabel(
@@ -43,9 +37,7 @@ export const TokenComposition = ({
           <Text as="span" mr={1} fontWeight={700}>
             {formatUTokenWithPrecision(
               token.poolInfo.coinB.amount,
-              token.poolInfo.coinB.precision ?? 0,
-              true,
-              decimal
+              token.poolInfo.coinB.precision ?? 0
             )}
           </Text>
           {getTokenLabel(
@@ -57,20 +49,13 @@ export const TokenComposition = ({
     ) : (
       <Text variant="body2">
         <Text as="span" fontWeight={700} mr={1}>
-          {formatUTokenWithPrecision(
-            token.amount,
-            token.precision ?? 0,
-            true,
-            decimal
-          )}
+          {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
         </Text>
         {getTokenLabel(token.denom, token.symbol)}
       </Text>
     )}
-    {displayValue && (
-      <Text variant="body3" textColor="text.dark">
-        {token.value ? `(≈ ${formatPrice(token.value)})` : "-"}
-      </Text>
-    )}
+    <Text variant="body3" textColor="text.dark">
+      {token.value ? `(≈ ${formatPrice(token.value)})` : "-"}
+    </Text>
   </Flex>
 );

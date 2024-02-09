@@ -1,9 +1,10 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenComposition, TokenImageRender } from "lib/components/token";
+import { TokenImageRender } from "lib/components/token";
 import type { ProposalDeposit } from "lib/types";
+import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 
 interface DepositListProps {
   proposalDeposits: ProposalDeposit[];
@@ -28,11 +29,17 @@ export const DepositList = ({ proposalDeposits }: DepositListProps) => {
           <div>
             {deposit.amount.map((token) => (
               <Flex key={token.denom} alignItems="center" gap={2}>
-                <TokenComposition
-                  token={token}
-                  decimal={2}
-                  displayValue={false}
-                />
+                <Text variant="body2">
+                  <Text as="span" fontWeight={700} mr={1}>
+                    {formatUTokenWithPrecision(
+                      token.amount,
+                      token.precision ?? 0,
+                      true,
+                      2
+                    )}
+                  </Text>
+                  {getTokenLabel(token.denom, token.symbol)}
+                </Text>
                 <TokenImageRender logo={token.logo} />
               </Flex>
             ))}
