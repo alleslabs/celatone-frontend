@@ -34,7 +34,7 @@ const DepositOverviewBody = ({
       </Text>
     );
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading my={0} />;
   if (!params) return <ErrorFetchingProposalInfos isParamsOnly />;
 
   const { minDeposit } = extractParams(params, proposalData.isExpedited);
