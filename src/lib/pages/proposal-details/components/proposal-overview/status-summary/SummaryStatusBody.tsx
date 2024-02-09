@@ -41,6 +41,22 @@ export const SummaryStatusBody = ({
   votesInfo,
   isLoading,
 }: ProposalOverviewProps) => {
+  if (proposalData.status === ProposalStatus.DEPOSIT_FAILED)
+    return (
+      <Text variant="body2">
+        The proposal has not received the necessary deposits to advance to the
+        voting period.
+      </Text>
+    );
+
+  if (proposalData.status === ProposalStatus.CANCELLED)
+    return (
+      <Text variant="body2">
+        The proposal was cancelled by the proposer before the governance process
+        is complete.
+      </Text>
+    );
+
   if (isLoading)
     return <SkeletonText mt={1} noOfLines={3} spacing={4} skeletonHeight={2} />;
   if (!params || !votesInfo)
@@ -170,35 +186,19 @@ export const SummaryStatusBody = ({
     );
   }
 
-  if (proposalData.status === ProposalStatus.PASSED)
-    return (
-      <Text variant="body2">
-        The proposal has successfully met the voting quorum with a{" "}
-        <span
-          style={{
-            fontWeight: 700,
-          }}
-        >
-          {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% of
-          &ldquo;Yes&rdquo;
-        </span>{" "}
-        rate. As a result, the proposal has been passed, and its content will
-        now be implemented.
-      </Text>
-    );
-
-  if (proposalData.status === ProposalStatus.CANCELLED)
-    return (
-      <Text variant="body2">
-        The proposal was cancelled by the proposer before the governance process
-        is complete.
-      </Text>
-    );
-
   return (
     <Text variant="body2">
-      The voting for this proposal did not reach the required quorum. As a
-      result, the proposal is not considered valid and rejected.
+      The proposal has successfully met the voting quorum with a{" "}
+      <span
+        style={{
+          fontWeight: 700,
+        }}
+      >
+        {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% of
+        &ldquo;Yes&rdquo;
+      </span>{" "}
+      rate. As a result, the proposal has been passed, and its content will now
+      be implemented.
     </Text>
   );
 };
