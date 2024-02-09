@@ -3,7 +3,7 @@ import { Heading } from "@chakra-ui/react";
 import type { ProposalOverviewProps } from "..";
 import { ProposalStepper } from "../../proposal-stepper";
 
-import { DepositPeriodOverview } from "./DepositPeriodOverview";
+import { DepositOverview } from "./DepositOverview";
 
 export const ProposalPeriodOverview = ({
   proposalData,
@@ -14,7 +14,7 @@ export const ProposalPeriodOverview = ({
       Proposal Period
     </Heading>
     <ProposalStepper step={1} proposalData={proposalData} isOverview />
-    <DepositPeriodOverview proposalData={proposalData} {...props} />
+    <DepositOverview proposalData={proposalData} {...props} />
     <ProposalStepper step={2} proposalData={proposalData} isOverview />
   </div>
 );

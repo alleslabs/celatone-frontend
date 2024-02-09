@@ -12,7 +12,7 @@ import { extractParams } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
-const DepositPeriodOverviewBody = ({
+const DepositOverviewBody = ({
   proposalData,
   params,
   isLoading,
@@ -69,7 +69,7 @@ const DepositPeriodOverviewBody = ({
   );
 };
 
-export const DepositPeriodOverview = (
+export const DepositOverview = (
   props: Omit<ProposalOverviewProps, "votesInfo">
 ) => (
   <Flex
@@ -80,6 +80,6 @@ export const DepositPeriodOverview = (
     py={4}
     borderLeft="1px solid var(--chakra-colors-gray-600)"
   >
-    <DepositPeriodOverviewBody {...props} />
+    <DepositOverviewBody {...props} />
   </Flex>
 );
