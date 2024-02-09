@@ -2,7 +2,13 @@ import type { Coin } from "@cosmjs/amino";
 import type Big from "big.js";
 import { z } from "zod";
 
-import type { BechAddr, Nullable, Option, Validator } from "lib/types";
+import type {
+  BechAddr,
+  Nullable,
+  Option,
+  TokenWithValue,
+  Validator,
+} from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -89,8 +95,10 @@ export interface ProposalParams {
   emergencyTallyInterval?: string;
 }
 
-export interface ProposalDeposit {
-  amount: Coin[];
+export interface ProposalDeposit<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  amount: T[];
   depositor: BechAddr;
   timestamp: Date;
   txHash: string;
@@ -102,17 +110,18 @@ interface Message {
   [key: string]: unknown;
 }
 
-export interface ProposalData extends Proposal {
+export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
+  extends Proposal {
   createdHeight: Nullable<number>;
   createdTimestamp: Nullable<Date>;
   createdTxHash: Nullable<string>;
   description: string;
   messages: Nullable<Message[]>;
   metadata: string;
-  proposalDeposits: ProposalDeposit[];
+  proposalDeposits: ProposalDeposit<T>[];
   resolvedTimestamp: Nullable<Date>;
   submitTime: Date;
-  totalDeposit: Nullable<Coin[]>;
+  totalDeposit: Nullable<T[]>;
   version: string;
   votingTime: Nullable<Date>;
 }

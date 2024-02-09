@@ -2,16 +2,18 @@ import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import { useProposalData } from "lib/services/proposalService";
+import {
+  useProposalParams,
+  useProposalVotesInfo,
+} from "lib/services/proposalService";
 
-import { ProposalTop } from "./components";
-import { ProposalOverview } from "./components/ProposalOverview";
-import { VoteDetail } from "./components/VoteDetail";
+import { ProposalTop, ProposalOverview, VoteDetail } from "./components";
+import { useDerivedProposalData } from "./data";
 import type { ProposalDetailsQueryParams } from "./type";
 import { zProposalDetailsQueryParams, TabIndex } from "./type";
 
@@ -20,9 +22,14 @@ const ProposalDetailsBody = ({
   tab,
   // voteTab,
 }: ProposalDetailsQueryParams) => {
+  useGovConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useProposalData(id);
+  const { data, isLoading } = useDerivedProposalData(id);
+  const { data: votesInfo, isLoading: isVotesInfoLoading } =
+    useProposalVotesInfo(id);
+  const { data: params, isLoading: isParamsLoading } = useProposalParams();
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -83,7 +90,12 @@ const ProposalDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <ProposalOverview proposalData={data.info} />
+            <ProposalOverview
+              proposalData={data.info}
+              votesInfo={votesInfo}
+              params={params}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetail />

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#763](https://github.com/alleslabs/celatone-frontend/pull/763) Proposal status summary top
 - [#765](https://github.com/alleslabs/celatone-frontend/pull/765) Support Proposal Cancelled status
 - [#760](https://github.com/alleslabs/celatone-frontend/pull/760) Add proposal messages
 - [#764](https://github.com/alleslabs/celatone-frontend/pull/764) api v1 - proposal params
@@ -54,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#771](https://github.com/alleslabs/celatone-frontend/pull/771) Adjust proposal detail
+- [#772](https://github.com/alleslabs/celatone-frontend/pull/772) Add zod validator to code details page code id params
+- [#770](https://github.com/alleslabs/celatone-frontend/pull/770) Add unit test for account store (mobx)
 - [#769](https://github.com/alleslabs/celatone-frontend/pull/769) Add unit test for format.test.ts on shortenName function
 - [#768](https://github.com/alleslabs/celatone-frontend/pull/768) Add unit test for truncate.test.ts
 - [#767](https://github.com/alleslabs/celatone-frontend/pull/767) Add unit test for fee.test.ts
