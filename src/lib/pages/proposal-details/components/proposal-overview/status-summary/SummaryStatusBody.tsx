@@ -12,7 +12,7 @@ import {
 } from "lib/pages/proposal-details/utils";
 import type { Token, TokenWithValue, U } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { formatTokenWithValueList } from "lib/utils";
+import { divWithDefault, formatTokenWithValueList } from "lib/utils";
 
 const Passed = () => (
   <span
@@ -50,7 +50,9 @@ export const SummaryStatusBody = ({
     params,
     proposalData.isExpedited
   );
-  const { noWithVeto, yesRatio, totalVotes } = normalizeVotesInfo(votesInfo);
+  const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+    normalizeVotesInfo(votesInfo);
+  const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {
     const required = mapDeposit(proposalData.totalDeposit, minDeposit).reduce<

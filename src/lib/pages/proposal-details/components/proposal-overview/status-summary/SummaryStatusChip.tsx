@@ -7,6 +7,7 @@ import {
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
+import { divWithDefault } from "lib/utils";
 
 export const SummaryStatusChip = ({
   proposalData,
@@ -26,11 +27,14 @@ export const SummaryStatusChip = ({
         </Text>
       );
 
-    const { noWithVeto, yesRatio, totalVotes } = normalizeVotesInfo(votesInfo);
     const { quorum, threshold, vetoThreshold } = extractParams(
       params,
       proposalData.isExpedited
     );
+    const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+      normalizeVotesInfo(votesInfo);
+    const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
+
     return (
       <StatusChip
         status={

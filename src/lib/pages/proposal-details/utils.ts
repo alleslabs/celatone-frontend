@@ -9,7 +9,6 @@ import type {
   TokenWithValue,
   U,
 } from "lib/types";
-import { divWithDefault } from "lib/utils";
 
 export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
   if (votesInfo.totalVotingPower.eq(0))
@@ -18,7 +17,7 @@ export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
       abstain: big(0),
       no: big(0),
       noWithVeto: big(0),
-      yesRatio: big(0),
+      nonAbstainVotes: big(0),
       totalVotes: big(0),
     };
 
@@ -26,16 +25,14 @@ export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
   const abstain = votesInfo.abstain.div(votesInfo.totalVotingPower);
   const no = votesInfo.no.div(votesInfo.totalVotingPower);
   const noWithVeto = votesInfo.noWithVeto.div(votesInfo.totalVotingPower);
-
   const nonAbstainVotes = yes.add(no).add(noWithVeto);
-  const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
 
   return {
     yes,
     abstain,
     no,
     noWithVeto,
-    yesRatio,
+    nonAbstainVotes,
     totalVotes: nonAbstainVotes.add(abstain),
   };
 };
