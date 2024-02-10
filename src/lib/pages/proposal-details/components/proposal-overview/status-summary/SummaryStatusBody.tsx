@@ -53,6 +53,7 @@ export const SummaryStatusBody = ({
   const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
     normalizeVotesInfo(votesInfo);
   const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
+  const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {
     const required = mapDeposit(proposalData.totalDeposit, minDeposit).reduce<
@@ -86,7 +87,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (noWithVeto.gte(vetoThreshold))
+    if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
           The proposal has successfully met the voting quorum. However, if the
@@ -147,7 +148,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (noWithVeto.gte(vetoThreshold))
+    if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
           This proposal has{" "}

@@ -34,12 +34,13 @@ export const SummaryStatusChip = ({
     const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
       normalizeVotesInfo(votesInfo);
     const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
+    const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
 
     return (
       <StatusChip
         status={
           totalVotes.gte(quorum) &&
-          noWithVeto.lt(vetoThreshold) &&
+          noWithVetoRatio.lt(vetoThreshold) &&
           yesRatio.gte(threshold)
             ? ProposalStatus.PASSED
             : ProposalStatus.REJECTED
