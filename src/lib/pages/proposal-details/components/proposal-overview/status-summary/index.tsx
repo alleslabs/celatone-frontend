@@ -53,7 +53,7 @@ export const StatusSummary = ({
         w="full"
         justify="space-between"
       >
-        <Flex align="center" gap={2}>
+        <Flex align="center" gap={2} whiteSpace="nowrap">
           {isOngoing && <ActiveDot />}
           <Text variant="body1" textColor="text.main" fontWeight={700}>
             {isOngoing ? "Current" : "Final"} proposal result:
