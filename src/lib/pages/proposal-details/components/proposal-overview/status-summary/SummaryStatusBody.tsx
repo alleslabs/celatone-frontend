@@ -50,7 +50,7 @@ export const SummaryStatusBody = ({
     params,
     proposalData.isExpedited
   );
-  const { yes, noWithVeto, currentTotalVotes } = normalizeVotesInfo(votesInfo);
+  const { noWithVeto, yesRatio, totalVotes } = normalizeVotesInfo(votesInfo);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {
     const required = mapDeposit(proposalData.totalDeposit, minDeposit).reduce<
@@ -75,7 +75,7 @@ export const SummaryStatusBody = ({
   }
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
-    if (currentTotalVotes.lt(quorum))
+    if (totalVotes.lt(quorum))
       return (
         <Text variant="body2">
           As of now, the proposal has not yet reached the required quorum. If
@@ -101,7 +101,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (currentTotalVotes.eq(0) || yes.div(currentTotalVotes).lt(threshold))
+    if (yesRatio.lt(threshold))
       return (
         <Text variant="body2">
           The proposal has{" "}
@@ -131,13 +131,13 @@ export const SummaryStatusBody = ({
     return (
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a{" "}
-        {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% &ldquo;Yes&rdquo;
-        rate, it was not implemented due to technical reasons.
+        {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}%{" "}
+        &ldquo;Yes&rdquo; rate, it was not implemented due to technical reasons.
       </Text>
     );
 
   if (proposalData.status === ProposalStatus.REJECTED) {
-    if (currentTotalVotes.lt(quorum))
+    if (totalVotes.lt(quorum))
       return (
         <Text variant="body2">
           This proposal did not meet the required quorum, resulting in its
@@ -179,7 +179,7 @@ export const SummaryStatusBody = ({
             fontWeight: 700,
           }}
         >
-          {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% of
+          {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}% of
           &ldquo;Yes&rdquo;
         </span>{" "}
         rate. As a result, the proposal has been passed, and its content will

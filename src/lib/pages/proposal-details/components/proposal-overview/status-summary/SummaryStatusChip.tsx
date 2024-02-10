@@ -26,8 +26,7 @@ export const SummaryStatusChip = ({
         </Text>
       );
 
-    const { yes, noWithVeto, currentTotalVotes } =
-      normalizeVotesInfo(votesInfo);
+    const { noWithVeto, yesRatio, totalVotes } = normalizeVotesInfo(votesInfo);
     const { quorum, threshold, vetoThreshold } = extractParams(
       params,
       proposalData.isExpedited
@@ -35,10 +34,9 @@ export const SummaryStatusChip = ({
     return (
       <StatusChip
         status={
-          currentTotalVotes.gte(quorum) &&
+          totalVotes.gte(quorum) &&
           noWithVeto.lt(vetoThreshold) &&
-          !currentTotalVotes.eq(0) &&
-          yes.div(currentTotalVotes).gte(threshold)
+          yesRatio.gte(threshold)
             ? ProposalStatus.PASSED
             : ProposalStatus.REJECTED
         }
