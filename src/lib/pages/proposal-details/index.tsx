@@ -1,6 +1,6 @@
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
@@ -80,7 +80,7 @@ const ProposalDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <VoteDetail />
+            <VoteDetail id={id} />
           </TabPanel>
         </TabPanels>
       </Tabs>
