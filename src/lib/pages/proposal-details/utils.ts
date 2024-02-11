@@ -9,6 +9,7 @@ import type {
   TokenWithValue,
   U,
 } from "lib/types";
+import { divWithDefault } from "lib/utils";
 
 export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
   if (votesInfo.totalVotingPower.eq(0))
@@ -65,5 +66,32 @@ export const mapDeposit = (
     };
   });
 
-export const formatPrettyPercent = (ratio: number) =>
-  `${ratio < 0.01 ? "<0.01" : Math.round(ratio * 10000) / 100}%`;
+export const getVoteResult = (
+  threshold: number,
+  vetoThreshold: number,
+  votesInfo: ProposalVotesInfo
+) => {
+  const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+    normalizeVotesInfo(votesInfo);
+
+  if (divWithDefault(noWithVeto, totalVotes, 0).gte(vetoThreshold))
+    return {
+      result: "No with veto",
+      resultColor: "error.dark",
+    };
+  if (divWithDefault(yes, nonAbstainVotes, 0).gte(threshold))
+    return {
+      result: "Yes",
+      resultColor: "success.main",
+    };
+  return {
+    result: "No",
+    resultColor: "error.main",
+  };
+};
+
+export const formatPrettyPercent = (ratio: number, fixedFp = false) => {
+  if (ratio > 0 && ratio < 0.01) return "<0.01%";
+  const percent = big(ratio * 100).round(2);
+  return `${fixedFp ? percent.toFixed(2) : percent.toNumber()}%`;
+};

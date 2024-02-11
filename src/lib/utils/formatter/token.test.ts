@@ -12,6 +12,7 @@ import {
   formatUTokenWithPrecision,
   formatPrice,
   formatInteger,
+  d0Formatter,
 } from "./token";
 
 const FALLBACK = "fallback";
@@ -104,6 +105,18 @@ describe("formatDecimal", () => {
 
     expect(fDelim(big(-123456.789), FALLBACK)).toEqual("-123,456.7890");
     expect(fDelim(big(-123.456789), FALLBACK)).toEqual("-123.4567");
+  });
+});
+
+describe("d0Formatter", () => {
+  test("from string", () => {
+    expect(d0Formatter("-1234.5678", FALLBACK)).toEqual("-1,234");
+    expect(d0Formatter("1234", FALLBACK)).toEqual("1,234");
+  });
+  test("from number", () => {
+    expect(d0Formatter(1234.5, FALLBACK)).toEqual("1,234");
+    expect(d0Formatter(1234, FALLBACK)).toEqual("1,234");
+    expect(d0Formatter(-1234.5, FALLBACK)).toEqual("-1,234");
   });
 });
 

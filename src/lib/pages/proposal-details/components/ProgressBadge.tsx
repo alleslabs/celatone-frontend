@@ -22,6 +22,7 @@ export enum BadgeState {
 export interface ProgressBadgeProps {
   state: BadgeState;
   text: string;
+  bgColor?: string;
 }
 
 const BadgeIcon = ({ state }: { state: BadgeState }) => {
@@ -39,13 +40,17 @@ const BadgeIcon = ({ state }: { state: BadgeState }) => {
   }
 };
 
-export const ProgressBadge = ({ state, text }: ProgressBadgeProps) => (
+export const ProgressBadge = ({
+  state,
+  text,
+  bgColor = "gray.900",
+}: ProgressBadgeProps) => (
   <Flex
     p="4px 8px"
     gap={2}
     alignItems="center"
     justifyContent="center"
-    background="gray.900"
+    bgColor={bgColor}
     borderRadius="8px"
   >
     <BadgeIcon state={state} />
