@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#777](https://github.com/alleslabs/celatone-frontend/pull/777) Proposal votes table including filter and search functionality
 - [#766](https://github.com/alleslabs/celatone-frontend/pull/766) Proposal status summary body
 - [#763](https://github.com/alleslabs/celatone-frontend/pull/763) Proposal status summary top
 - [#765](https://github.com/alleslabs/celatone-frontend/pull/765) Support Proposal Cancelled status
