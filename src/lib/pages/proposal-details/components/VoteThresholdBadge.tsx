@@ -15,7 +15,7 @@ export const VoteThresholdBadge = ({
 }: VoteThresholdBadgeProps) => {
   if (status === ProposalStatus.VOTING_PERIOD)
     return isCompact ? (
-      <ActiveDot boxSize="14px" />
+      <ActiveDot />
     ) : (
       <ProgressBadge
         state={BadgeState.ONGOING}
@@ -25,7 +25,7 @@ export const VoteThresholdBadge = ({
     );
 
   return isCompact ? (
-    <CustomIcon boxSize="14px" name="check-circle-solid" color="success.main" />
+    <CustomIcon m={0} name="check-circle-solid" color="success.main" />
   ) : (
     <ProgressBadge
       state={BadgeState.COMPLETE}

@@ -23,6 +23,7 @@ export const VpPercentThreshold = ({
       color: "success.main",
       percent: formatPrettyPercent(
         divWithDefault(yes, nonAbstainVotes, 0).toNumber(),
+        2,
         true
       ),
       votingPower: d0Formatter(votesInfo.yes, "0"),
@@ -32,6 +33,7 @@ export const VpPercentThreshold = ({
       color: "error.main",
       percent: formatPrettyPercent(
         divWithDefault(no, nonAbstainVotes, 0).toNumber(),
+        2,
         true
       ),
       votingPower: d0Formatter(votesInfo.no, "0"),
@@ -41,6 +43,7 @@ export const VpPercentThreshold = ({
       color: "error.dark",
       percent: formatPrettyPercent(
         divWithDefault(noWithVeto, nonAbstainVotes, 0).toNumber(),
+        2,
         true
       ),
       votingPower: d0Formatter(votesInfo.noWithVeto, "0"),

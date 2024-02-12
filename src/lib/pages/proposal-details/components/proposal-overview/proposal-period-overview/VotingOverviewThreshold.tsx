@@ -50,7 +50,7 @@ export const VotingOverviewThreshold = ({
     >
       {(proposalData.status === ProposalStatus.VOTING_PERIOD ||
         totalVotes.gte(quorum)) && (
-        <Flex gap={1} alignItems="center">
+        <Flex gap={2} alignItems="center">
           <VoteThresholdBadge status={proposalData.status} isCompact />
           {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
             <Text variant="body1" color="text.main">

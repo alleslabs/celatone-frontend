@@ -19,11 +19,7 @@ export const VoteQuorumBadge = ({
 }: VoteQuorumBadgeProps) => {
   if (totalVotes.gte(quorum))
     return isCompact ? (
-      <CustomIcon
-        boxSize="14px"
-        name="check-circle-solid"
-        color="success.main"
-      />
+      <CustomIcon m={0} name="check-circle-solid" color="success.main" />
     ) : (
       <ProgressBadge
         state={BadgeState.COMPLETE}
@@ -34,7 +30,7 @@ export const VoteQuorumBadge = ({
 
   if (status === ProposalStatus.VOTING_PERIOD)
     return isCompact ? (
-      <ActiveDot boxSize="14px" />
+      <ActiveDot />
     ) : (
       <ProgressBadge
         state={BadgeState.ONGOING}
@@ -44,7 +40,7 @@ export const VoteQuorumBadge = ({
     );
 
   return isCompact ? (
-    <CustomIcon boxSize="14px" name="close-circle-solid" color="error.main" />
+    <CustomIcon m={0} name="close-circle-solid" color="error.main" />
   ) : (
     <ProgressBadge
       state={BadgeState.FAILED}

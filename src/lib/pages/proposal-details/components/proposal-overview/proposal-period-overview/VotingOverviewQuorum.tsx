@@ -36,7 +36,7 @@ export const VotingOverviewQuorum = ({
   const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
   return (
     <Flex direction="column" gap={4}>
-      <Flex gap={1} alignItems="center">
+      <Flex gap={2} alignItems="center">
         <VoteQuorumBadge
           status={proposalData.status}
           quorum={quorum}

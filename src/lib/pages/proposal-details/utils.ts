@@ -90,8 +90,12 @@ export const getVoteResult = (
   };
 };
 
-export const formatPrettyPercent = (ratio: number, fixedFp = false) => {
-  if (ratio > 0 && ratio < 0.0001) return "<0.01%";
-  const percent = big(ratio * 100).round(2);
-  return `${fixedFp ? percent.toFixed(2) : percent.toNumber()}%`;
+export const formatPrettyPercent = (ratio: number, fp = 2, fixedFp = false) => {
+  const lowestPercent = 10 ** -fp;
+
+  const percent = ratio * 100;
+  if (percent > 0 && percent < lowestPercent) return `<${lowestPercent}%`;
+
+  const rounded = big(percent).round(fp);
+  return `${fixedFp ? rounded.toFixed(fp) : rounded.toNumber()}%`;
 };
