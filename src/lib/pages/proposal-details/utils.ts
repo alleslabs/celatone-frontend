@@ -91,7 +91,7 @@ export const getVoteResult = (
 };
 
 export const formatPrettyPercent = (ratio: number, fixedFp = false) => {
-  if (ratio > 0 && ratio < 0.01) return "<0.01%";
+  if (ratio > 0 && ratio < 0.0001) return "<0.01%";
   const percent = big(ratio * 100).round(2);
   return `${fixedFp ? percent.toFixed(2) : percent.toNumber()}%`;
 };

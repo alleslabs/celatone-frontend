@@ -2,8 +2,11 @@ import { Divider, Flex, Text } from "@chakra-ui/react";
 
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
+import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import {
   extractParams,
+  formatPrettyPercent,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import type {
@@ -27,7 +30,8 @@ export const VotingOverviewQuorum = ({
   votesInfo,
 }: VotingOverviewQuorumProps) => {
   const { quorum } = extractParams(params, proposalData.isExpedited);
-  const { nonAbstainVotes, totalVotes } = normalizeVotesInfo(votesInfo);
+  const { abstain, nonAbstainVotes, totalVotes } =
+    normalizeVotesInfo(votesInfo);
 
   const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
   return (
@@ -45,12 +49,39 @@ export const VotingOverviewQuorum = ({
       </Flex>
       <Divider borderColor="gray.700" />
       <Flex gap={4}>
-        <VoteQuorumCircle
-          quorum={quorum}
-          nonAbstainVotes={nonAbstainVotes}
-          totalVotes={totalVotes}
-          isCompact
-        />
+        <Tooltip
+          label={
+            <div>
+              <Flex gap={2}>
+                <CustomIcon boxSize="10px" name="circle" color="primary.main" />
+                <Text>
+                  {formatPrettyPercent(nonAbstainVotes.toNumber())} Vote
+                  response
+                </Text>
+              </Flex>
+              <Flex gap={2}>
+                <CustomIcon
+                  boxSize="10px"
+                  name="circle"
+                  color="secondary.main"
+                />
+                <Text>
+                  {formatPrettyPercent(abstain.toNumber())} Vote abstain
+                </Text>
+              </Flex>
+            </div>
+          }
+          bgColor="gray.700"
+        >
+          <div>
+            <VoteQuorumCircle
+              quorum={quorum}
+              nonAbstainVotes={nonAbstainVotes}
+              totalVotes={totalVotes}
+              isCompact
+            />
+          </div>
+        </Tooltip>
         <Flex direction="column" gap={2}>
           <VotingOverviewQuorumText
             status={proposalData.status}
