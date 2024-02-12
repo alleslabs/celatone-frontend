@@ -1,4 +1,4 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
@@ -73,14 +73,14 @@ export const VotingOverviewQuorum = ({
           }
           bgColor="gray.700"
         >
-          <div>
+          <Box h="fit-content">
             <VoteQuorumCircle
               quorum={quorum}
               nonAbstainVotes={nonAbstainVotes}
               totalVotes={totalVotes}
               isCompact
             />
-          </div>
+          </Box>
         </Tooltip>
         <Flex direction="column" gap={2}>
           <VotingOverviewQuorumText
