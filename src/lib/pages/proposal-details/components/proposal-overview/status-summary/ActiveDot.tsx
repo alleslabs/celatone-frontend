@@ -12,11 +12,12 @@ export const ActiveDot = ({ status }: ActiveDotProps) =>
       boxSize={3}
       borderRadius="50%"
       bgColor="accent.main"
-      animate={{ opacity: [1, 0, 1] }}
+      animate={{ opacity: [1, 0.25, 1] }}
       // @ts-expect-error no problem in operation, although type error appears.
       transition={{
-        duration: 1,
+        duration: 1.5,
         repeat: Infinity,
+        ease: "easeInOut",
       }}
     />
   );

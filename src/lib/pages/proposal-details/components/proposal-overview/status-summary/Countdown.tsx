@@ -18,7 +18,9 @@ interface CountdownProps {
 
 export const Countdown = ({ endTime }: CountdownProps) => {
   const router = useRouter();
-  const [time, setTime] = useState<JSX.Element>(<Spinner boxSize={2} mx={2} />);
+  const [time, setTime] = useState<JSX.Element>(
+    <Spinner as="span" boxSize={2} mx={2} />
+  );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -31,7 +33,7 @@ export const Countdown = ({ endTime }: CountdownProps) => {
       const days = duration.days();
       const timestamp = (
         <>
-          {days && (
+          {days > 0 && (
             <>
               <span style={{ fontWeight: 700 }}>{days}</span>
               <span> {plur("day", days)} </span>

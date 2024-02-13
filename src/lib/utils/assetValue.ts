@@ -145,5 +145,11 @@ export const compareTokenWithValues = (
   if (token1.value && token2.value) return token2.value.cmp(token1.value);
   if (token1.value && !token2.value) return -1;
   if (!token1.value && token2.value) return 1;
+
+  if (token1.symbol && token2.symbol)
+    return token1.symbol.localeCompare(token2.symbol);
+  if (token1.symbol && !token2.symbol) return -1;
+  if (!token1.symbol && token2.symbol) return 1;
+
   return token1.denom.localeCompare(token2.denom);
 };
