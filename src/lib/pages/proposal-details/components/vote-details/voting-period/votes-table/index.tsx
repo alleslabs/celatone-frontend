@@ -87,6 +87,8 @@ enum AnswerType {
   WEIGHTED = "weighted",
 }
 
+const tableHeaderId = "proposalVotesTable";
+
 export const ProposalVotesTable = ({
   id,
   answers,
@@ -95,14 +97,6 @@ export const ProposalVotesTable = ({
   const [answerFilter, setAnswerFilter] = useState<AnswerType>(AnswerType.ALL);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
-
-  const { data, isLoading } = useProposalVotes(
-    id,
-    10,
-    0,
-    answerFilter,
-    debouncedSearch
-  );
 
   const {
     pagesQuantity,
@@ -119,6 +113,14 @@ export const ProposalVotesTable = ({
       isDisabled: false,
     },
   });
+
+  const { data, isLoading } = useProposalVotes(
+    id,
+    pageSize,
+    offset,
+    answerFilter,
+    debouncedSearch
+  );
 
   const isSearching = debouncedSearch !== "" || answerFilter !== AnswerType.ALL;
 
@@ -182,7 +184,7 @@ export const ProposalVotesTable = ({
   };
 
   return (
-    <Box>
+    <Box id={tableHeaderId}>
       {fullVersion && (
         <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
           <GridItem>
@@ -215,6 +217,7 @@ export const ProposalVotesTable = ({
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
+          scrollComponentId={tableHeaderId}
           offset={offset}
           totalData={total}
           pageSize={pageSize}

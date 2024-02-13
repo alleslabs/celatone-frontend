@@ -7,6 +7,7 @@ import {
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
+import { divWithDefault } from "lib/utils";
 
 export const SummaryStatusChip = ({
   proposalData,
@@ -14,12 +15,11 @@ export const SummaryStatusChip = ({
   votesInfo,
   isLoading,
 }: ProposalOverviewProps) => {
-  if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
-
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return <StatusChip status={ProposalStatus.DEPOSIT_FAILED} isTransparent />;
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
+    if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
     if (!params || !votesInfo)
       return (
         <Text variant="body2" color="text.dark">
@@ -27,19 +27,21 @@ export const SummaryStatusChip = ({
         </Text>
       );
 
-    const { yes, noWithVeto, currentTotalVotes } =
-      normalizeVotesInfo(votesInfo);
     const { quorum, threshold, vetoThreshold } = extractParams(
       params,
       proposalData.isExpedited
     );
+    const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+      normalizeVotesInfo(votesInfo);
+    const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
+    const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
+
     return (
       <StatusChip
         status={
-          currentTotalVotes.gte(quorum) &&
-          noWithVeto.lt(vetoThreshold) &&
-          !currentTotalVotes.eq(0) &&
-          yes.div(currentTotalVotes).gte(threshold)
+          totalVotes.gte(quorum) &&
+          noWithVetoRatio.lt(vetoThreshold) &&
+          yesRatio.gte(threshold)
             ? ProposalStatus.PASSED
             : ProposalStatus.REJECTED
         }
