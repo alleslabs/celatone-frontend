@@ -6,13 +6,16 @@ import type { ProposalOverviewProps } from "..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import {
   extractParams,
-  formatPrettyPercent,
   mapDeposit,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import type { Token, TokenWithValue, U } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { divWithDefault, formatTokenWithValueList } from "lib/utils";
+import {
+  divWithDefault,
+  formatPrettyPercent,
+  formatTokenWithValueList,
+} from "lib/utils";
 
 const Passed = () => (
   <span
@@ -106,17 +109,33 @@ export const SummaryStatusBody = ({
     if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
-          The proposal has successfully met the voting quorum. However, if the
-          voting period concludes with a{" "}
+          The proposal has{" "}
           <span
             style={{
               fontWeight: 700,
             }}
           >
-            &ldquo;No with veto&rdquo; vote surpassing{" "}
-            {formatPrettyPercent(vetoThreshold)}
+            successfully met
+          </span>{" "}
+          the voting quorum. However, the &ldquo;No with veto&rdquo; vote
+          proportion currently constitutes{" "}
+          <span
+            style={{
+              fontWeight: 700,
+            }}
+          >
+            {formatPrettyPercent(noWithVetoRatio.toNumber())}
+          </span>{" "}
+          of the total votes, including &ldquo;Abstain&rdquo;, which exceeds the{" "}
+          <span
+            style={{
+              fontWeight: 700,
+            }}
+          >
+            {formatPrettyPercent(vetoThreshold)} threshold
           </span>
-          , the proposal will be <Rejected /> regardless of other votes.
+          . If the proposal concludes with this voting outcome, it will be
+          rejected regardless of &ldquo;Yes&rdquo; votes.
         </Text>
       );
 
@@ -167,17 +186,23 @@ export const SummaryStatusBody = ({
     if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
-          This proposal has{" "}
+          Due to the &ldquo;No with veto&rdquo; vote proportion constitutes{" "}
           <span
             style={{
               fontWeight: 700,
             }}
           >
-            reached
-          </span>{" "}
-          the voting quorum. But the voting period ended with &ldquo;No with
-          veto&rdquo; more than {formatPrettyPercent(vetoThreshold)}, the
-          proposal will be <Rejected /> regardless of other votes.
+            {formatPrettyPercent(noWithVetoRatio.toNumber())}{" "}
+          </span>
+          of the total votes including &ldquo;Abstain&rdquo;, which exceeds the{" "}
+          <span
+            style={{
+              fontWeight: 700,
+            }}
+          >
+            {formatPrettyPercent(vetoThreshold)} threshold
+          </span>
+          , the proposal is <Rejected /> regardless of &ldquo;Yes&rdquo; votes.
         </Text>
       );
 

@@ -27,7 +27,7 @@ export const ProposalOverview = ({
   isLoading,
 }: ProposalOverviewProps) => (
   <Grid
-    gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }}
+    gridTemplateColumns={{ base: "1fr", xl: "2fr minmax(360px, 1fr)" }}
     gridGap={16}
     mt={8}
   >

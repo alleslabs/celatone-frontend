@@ -16,6 +16,7 @@ const StyledCustomIcon = chakra(CustomIcon, {
 export interface ProgressBadgeProps {
   state: PeriodState;
   text: string;
+  bgColor?: string;
 }
 
 const BadgeIcon = ({ state }: { state: PeriodState }) => {
@@ -33,13 +34,17 @@ const BadgeIcon = ({ state }: { state: PeriodState }) => {
   }
 };
 
-export const ProgressBadge = ({ state, text }: ProgressBadgeProps) => (
+export const ProgressBadge = ({
+  state,
+  text,
+  bgColor = "gray.900",
+}: ProgressBadgeProps) => (
   <Flex
     p="4px 8px"
     gap={2}
     alignItems="center"
     justifyContent="center"
-    background="gray.900"
+    bgColor={bgColor}
     borderRadius="8px"
   >
     <BadgeIcon state={state} />
