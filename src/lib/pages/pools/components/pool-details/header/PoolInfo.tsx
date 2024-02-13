@@ -149,7 +149,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           {pool.contractAddress ? (
             <Text variant="body2">
               <ExplorerLink
-                value={pool.contractAddress?.toString()}
+                value={pool.contractAddress.toString()}
                 type="contract_address"
                 showCopyOnHover
               />
