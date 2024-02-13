@@ -3,15 +3,16 @@ import { SkeletonText, Text } from "@chakra-ui/react";
 import big from "big.js";
 
 import type { ProposalOverviewProps } from "..";
-import { ErrorFetching } from "lib/components/state";
+import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import {
   extractParams,
+  formatPrettyPercent,
   mapDeposit,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import type { Token, TokenWithValue, U } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { formatTokenWithValueList } from "lib/utils";
+import { divWithDefault, formatTokenWithValueList } from "lib/utils";
 
 const Passed = () => (
   <span
@@ -59,14 +60,16 @@ export const SummaryStatusBody = ({
 
   if (isLoading)
     return <SkeletonText mt={1} noOfLines={3} spacing={4} skeletonHeight={2} />;
-  if (!params || !votesInfo)
-    return <ErrorFetching dataName="proposal params and votes tally" />;
+  if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
 
   const { minDeposit, quorum, threshold, vetoThreshold } = extractParams(
     params,
     proposalData.isExpedited
   );
-  const { yes, noWithVeto, currentTotalVotes } = normalizeVotesInfo(votesInfo);
+  const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+    normalizeVotesInfo(votesInfo);
+  const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
+  const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {
     const required = mapDeposit(proposalData.totalDeposit, minDeposit).reduce<
@@ -91,7 +94,7 @@ export const SummaryStatusBody = ({
   }
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
-    if (currentTotalVotes.lt(quorum))
+    if (totalVotes.lt(quorum))
       return (
         <Text variant="body2">
           As of now, the proposal has not yet reached the required quorum. If
@@ -100,7 +103,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (noWithVeto.gte(vetoThreshold))
+    if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
           The proposal has successfully met the voting quorum. However, if the
@@ -111,13 +114,13 @@ export const SummaryStatusBody = ({
             }}
           >
             &ldquo;No with veto&rdquo; vote surpassing{" "}
-            {Math.round(vetoThreshold * 10000) / 100}%
+            {formatPrettyPercent(vetoThreshold)}
           </span>
           , the proposal will be <Rejected /> regardless of other votes.
         </Text>
       );
 
-    if (currentTotalVotes.eq(0) || yes.div(currentTotalVotes).lt(threshold))
+    if (yesRatio.lt(threshold))
       return (
         <Text variant="body2">
           The proposal has{" "}
@@ -147,13 +150,13 @@ export const SummaryStatusBody = ({
     return (
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a{" "}
-        {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% &ldquo;Yes&rdquo;
-        rate, it was not implemented due to technical reasons.
+        {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}%{" "}
+        &ldquo;Yes&rdquo; rate, it was not implemented due to technical reasons.
       </Text>
     );
 
   if (proposalData.status === ProposalStatus.REJECTED) {
-    if (currentTotalVotes.lt(quorum))
+    if (totalVotes.lt(quorum))
       return (
         <Text variant="body2">
           This proposal did not meet the required quorum, resulting in its
@@ -161,7 +164,7 @@ export const SummaryStatusBody = ({
         </Text>
       );
 
-    if (noWithVeto.gte(vetoThreshold))
+    if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
           This proposal has{" "}
@@ -173,7 +176,7 @@ export const SummaryStatusBody = ({
             reached
           </span>{" "}
           the voting quorum. But the voting period ended with &ldquo;No with
-          veto&rdquo; more than {Math.round(vetoThreshold * 10000) / 100}%, the
+          veto&rdquo; more than {formatPrettyPercent(vetoThreshold)}, the
           proposal will be <Rejected /> regardless of other votes.
         </Text>
       );

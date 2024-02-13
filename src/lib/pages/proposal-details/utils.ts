@@ -17,20 +17,23 @@ export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
       abstain: big(0),
       no: big(0),
       noWithVeto: big(0),
-      currentTotalVotes: big(0),
+      nonAbstainVotes: big(0),
+      totalVotes: big(0),
     };
 
   const yes = votesInfo.yes.div(votesInfo.totalVotingPower);
   const abstain = votesInfo.abstain.div(votesInfo.totalVotingPower);
   const no = votesInfo.no.div(votesInfo.totalVotingPower);
   const noWithVeto = votesInfo.noWithVeto.div(votesInfo.totalVotingPower);
+  const nonAbstainVotes = yes.add(no).add(noWithVeto);
 
   return {
     yes,
     abstain,
     no,
     noWithVeto,
-    currentTotalVotes: yes.add(abstain).add(no).add(noWithVeto),
+    nonAbstainVotes,
+    totalVotes: nonAbstainVotes.add(abstain),
   };
 };
 
@@ -61,3 +64,6 @@ export const mapDeposit = (
       min,
     };
   });
+
+export const formatPrettyPercent = (ratio: number) =>
+  `${ratio < 0.01 ? "<0.01" : Math.round(ratio * 10000) / 100}%`;

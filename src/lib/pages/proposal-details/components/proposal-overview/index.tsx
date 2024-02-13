@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import type {
   ProposalData,
@@ -7,6 +7,7 @@ import type {
   ProposalParams,
 } from "lib/types";
 
+import { ProposalPeriodOverview } from "./proposal-period-overview";
 import { ProposalDescription } from "./ProposalDescription";
 import { ProposalMessages } from "./ProposalMessages";
 import { ProposalMetadata } from "./ProposalMetadata";
@@ -44,17 +45,12 @@ export const ProposalOverview = ({
       </Flex>
     </GridItem>
     <GridItem>
-      <Heading as="h6" variant="h6" mb={4}>
-        Proposal Period
-      </Heading>
-      <Flex
-        background="gray.900"
-        minH={64}
-        alignItems="center"
-        justifyContent="center"
-      >
-        Proposal period content
-      </Flex>
+      <ProposalPeriodOverview
+        proposalData={proposalData}
+        votesInfo={votesInfo}
+        params={params}
+        isLoading={isLoading}
+      />
     </GridItem>
   </Grid>
 );

@@ -12,8 +12,8 @@ import { useProposalVotesInfo } from "lib/services/proposalService";
 
 import { ProposalTop, ProposalOverview, VoteDetails } from "./components";
 import { useDerivedProposalData, useDerivedProposalParams } from "./data";
-import type { ProposalDetailsQueryParams } from "./type";
-import { zProposalDetailsQueryParams, TabIndex } from "./type";
+import type { ProposalDetailsQueryParams } from "./types";
+import { zProposalDetailsQueryParams, TabIndex } from "./types";
 
 const ProposalDetailsBody = ({
   id,
