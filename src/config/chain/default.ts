@@ -1,3 +1,5 @@
+import { DEFAULT_THEME } from "config/theme";
+
 import type { ChainConfig } from "./types";
 
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
@@ -44,4 +46,5 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     proposal: "",
   },
   extra: {},
+  theme: DEFAULT_THEME,
 };

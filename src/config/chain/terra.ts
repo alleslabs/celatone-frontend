@@ -1,6 +1,8 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as staionWallets } from "@cosmos-kit/station";
 
+import { DEFAULT_THEME } from "config/theme";
+
 import type { ChainConfigs } from "./types";
 
 export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
@@ -51,6 +53,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://station.terra.money/proposal/phoenix-1",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
   "pisco-1": {
     chain: "terra",
@@ -99,5 +102,6 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://station.terra.money/proposal/pisco-1",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
 };

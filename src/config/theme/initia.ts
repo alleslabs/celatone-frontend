@@ -18,12 +18,12 @@ export const INITIA_THEME: ThemeConfig = {
   },
   fonts: {
     heading: {
-      url: "/font/pilatwide.css",
-      name: "Pilat Wide, serif",
+      url: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap",
+      name: "Poppins, serif",
     },
     body: {
-      url: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap",
-      name: "Manrope, sans-serif",
+      url: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
+      name: "Space Grotesk, sans-serif",
     },
   },
   colors: {

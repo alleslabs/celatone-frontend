@@ -1,5 +1,7 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
+import { DEFAULT_THEME } from "config/theme";
+
 import type { ChainConfigs } from "./types";
 
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
@@ -52,6 +54,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -103,6 +106,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
   localosmosis: {
     chain: "osmosis",
@@ -153,5 +157,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     extra: {},
+    theme: DEFAULT_THEME,
   },
 };

@@ -16,6 +16,8 @@ import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
 import { PROJECT_CONSTANTS } from "config/project";
 import type { ProjectConstants } from "config/project";
+import { DEFAULT_THEME } from "config/theme";
+import type { ThemeConfig } from "config/theme/types";
 import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
@@ -38,6 +40,7 @@ interface AppContextInterface {
   chainConfig: ChainConfig;
   indexerGraphClient: GraphQLClient;
   constants: ProjectConstants;
+  theme: ThemeConfig;
 }
 
 const AppContext = createContext<AppContextInterface>({
@@ -46,6 +49,7 @@ const AppContext = createContext<AppContextInterface>({
   chainConfig: DEFAULT_CHAIN_CONFIG,
   indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer),
   constants: PROJECT_CONSTANTS,
+  theme: DEFAULT_THEME,
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
@@ -78,6 +82,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
         },
       }),
       constants: PROJECT_CONSTANTS,
+      theme: chainConfig.theme,
     };
   }, [currentChainId]);
 
