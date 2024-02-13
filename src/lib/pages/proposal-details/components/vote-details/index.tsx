@@ -10,14 +10,14 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
 
-import { DepositPeriodSection } from "./DepositPeriodSection";
+import { DepositPeriodSection } from "./deposit-period/DepositPeriodSection";
 import { ProposalStepper } from "./ProposalStepper";
 import { VoteDetailTab } from "./VoteDetailTab";
-import { VotingPeriodSection } from "./VotingPeriodSection";
+import { VotingPeriod } from "./voting-period";
 
 const AccordionItemComponent = ({
   step,
@@ -47,22 +47,31 @@ const AccordionItemComponent = ({
   </AccordionItem>
 );
 
-export const VoteDetail = () => {
+interface VoteDetailsProps {
+  id: number;
+}
+
+export const VoteDetails = ({ id }: VoteDetailsProps) => {
   const isMobile = useMobile();
-  const accordionData = [
-    {
-      step: 1,
-      title: "Deposit Period",
-      description: "Deposit ends in 4 days 21:00:11",
-      content: <DepositPeriodSection />,
-    },
-    {
-      step: 2,
-      title: "Voting Period",
-      description: "Voting ends in 3 days 12:00:10",
-      content: <VotingPeriodSection />,
-    },
-  ];
+
+  const accordionData = useMemo(
+    () => [
+      {
+        step: 1,
+        title: "Deposit Period",
+        description: "Deposit ends in 4 days 21:00:11",
+        content: <DepositPeriodSection />,
+      },
+      {
+        step: 2,
+        title: "Voting Period",
+        description: "Voting ends in 3 days 12:00:10",
+        content: <VotingPeriod id={id} />,
+      },
+    ],
+    // TODO: Add dependencies
+    [id]
+  );
   return isMobile ? (
     <Flex>
       <Accordion allowToggle w="full" defaultIndex={[0]} variant="transparent">
@@ -95,7 +104,7 @@ export const VoteDetail = () => {
           borderRadius="0px 0px 8px 8px"
         >
           {accordionData.map((item) => (
-            <TabPanel>{item.content}</TabPanel>
+            <TabPanel key={item.step}>{item.content}</TabPanel>
           ))}
         </TabPanels>
       </Tabs>

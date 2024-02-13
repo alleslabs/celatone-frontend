@@ -42,11 +42,16 @@ export interface CodeDataState {
   };
 }
 
-export const useCodeData = (codeId: string): CodeDataState => {
+export const useCodeData = (codeId: number): CodeDataState => {
   const { currentChainId } = useCelatoneApp();
 
-  const { data: codeInfo, isLoading } = useCodeDataByCodeId({ codeId });
-  const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
+  // TODO: Change codeId to integer
+  const codeStr = codeId.toString();
+
+  const { data: codeInfo, isLoading } = useCodeDataByCodeId({
+    codeId: codeStr,
+  });
+  const { data: publicCodeInfo } = usePublicProjectByCodeId(codeStr);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
   );
@@ -54,7 +59,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
     data: lcdCode,
     isLoading: isLcdCodeLoading,
     error: isLcdCodeError,
-  } = useLCDCodeInfo(codeId);
+  } = useLCDCodeInfo(codeStr);
 
   return {
     isLoading,
