@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { PeriodState } from "../../types";
 import { CustomIcon } from "lib/components/icon";
+import { PeriodState } from "lib/pages/proposal-details/types";
 import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
