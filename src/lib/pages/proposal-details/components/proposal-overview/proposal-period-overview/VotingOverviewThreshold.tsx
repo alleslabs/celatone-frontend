@@ -7,7 +7,6 @@ import { CustomIcon } from "lib/components/icon";
 import { StatusChip } from "lib/components/table";
 import {
   extractParams,
-  formatPrettyPercent,
   getVoteResult,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
@@ -17,7 +16,7 @@ import {
   type ProposalParams,
   type ProposalVotesInfo,
 } from "lib/types";
-import { divWithDefault } from "lib/utils";
+import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 interface VotingOverviewThresholdProps {
   proposalData: ProposalData;

@@ -1,7 +1,7 @@
 import { Circle, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import { formatPrettyPercent } from "../utils";
+import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumCircleProps {
   quorum: number;

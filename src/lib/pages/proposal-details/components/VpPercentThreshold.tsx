@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { formatPrettyPercent, normalizeVotesInfo } from "../utils";
+import { normalizeVotesInfo } from "../utils";
 import { CustomIcon } from "lib/components/icon";
 import type { ProposalVotesInfo } from "lib/types";
-import { d0Formatter, divWithDefault } from "lib/utils";
+import { d0Formatter, divWithDefault, formatPrettyPercent } from "lib/utils";
 
 interface VpPercentThresholdProps {
   votesInfo: ProposalVotesInfo;

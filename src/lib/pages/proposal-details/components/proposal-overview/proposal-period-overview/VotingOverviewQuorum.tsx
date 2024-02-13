@@ -6,7 +6,6 @@ import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import {
   extractParams,
-  formatPrettyPercent,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import type {
@@ -14,7 +13,7 @@ import type {
   ProposalParams,
   ProposalVotesInfo,
 } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatPrettyPercent, formatUTC } from "lib/utils";
 
 import { VotingOverviewQuorumText } from "./VotingOverviewQuorumText";
 

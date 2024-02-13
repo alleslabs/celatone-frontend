@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 
-import { formatPrettyPercent } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
+import { formatPrettyPercent } from "lib/utils";
 
 interface VotingOverviewQuorumTextProps {
   status: ProposalStatus;

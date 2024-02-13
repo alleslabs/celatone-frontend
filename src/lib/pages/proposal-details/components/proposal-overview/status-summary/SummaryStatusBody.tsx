@@ -6,13 +6,16 @@ import type { ProposalOverviewProps } from "..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import {
   extractParams,
-  formatPrettyPercent,
   mapDeposit,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import type { Token, TokenWithValue, U } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { divWithDefault, formatTokenWithValueList } from "lib/utils";
+import {
+  divWithDefault,
+  formatPrettyPercent,
+  formatTokenWithValueList,
+} from "lib/utils";
 
 const Passed = () => (
   <span
