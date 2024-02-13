@@ -47,11 +47,11 @@ const AccordionItemComponent = ({
   </AccordionItem>
 );
 
-interface VoteDetailProps {
+interface VoteDetailsProps {
   id: number;
 }
 
-export const VoteDetail = ({ id }: VoteDetailProps) => {
+export const VoteDetails = ({ id }: VoteDetailsProps) => {
   const isMobile = useMobile();
 
   const accordionData = useMemo(

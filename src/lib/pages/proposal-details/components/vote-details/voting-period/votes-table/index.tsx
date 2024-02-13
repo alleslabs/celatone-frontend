@@ -20,25 +20,31 @@ interface ProposalVotesTableBodyProps {
   proposalVotes: Option<ProposalVote[]>;
   fullVersion: boolean;
   isLoading: boolean;
+  isSearching: boolean;
 }
 
 export const ProposalVotesTableBody = ({
   proposalVotes,
   fullVersion,
   isLoading,
+  isSearching,
 }: ProposalVotesTableBodyProps) => {
   const isMobile = useMobile();
   const templateColumns =
     fullVersion && !isMobile ? `1fr 0.8fr 1.5fr 1fr` : `2fr 1fr`;
 
   if (isLoading) return <Loading />;
-  if (!proposalVotes) return <ErrorFetching dataName="voter" />;
+  if (!proposalVotes) return <ErrorFetching dataName="votes" />;
 
   if (proposalVotes.length === 0) {
     return (
       <EmptyState
-        imageVariant="not-found"
-        message="The proposal has no votes yet."
+        imageVariant="empty"
+        message={
+          isSearching
+            ? "There are no vote matches your result."
+            : "The proposal has no votes yet."
+        }
       />
     );
   }
@@ -114,6 +120,8 @@ export const ProposalVotesTable = ({
     },
   });
 
+  const isSearching = debouncedSearch !== "" || answerFilter !== AnswerType.ALL;
+
   const total = answers?.total ?? 0;
 
   const answerOptions = useMemo(
@@ -182,7 +190,9 @@ export const ProposalVotesTable = ({
               formLabel="Filter by Answer"
               options={answerOptions}
               onChange={handleOnAnswerFilterChange}
+              labelBgColor="gray.900"
               initialSelected={answerFilter}
+              popoverBgColor="gray.800"
             />
           </GridItem>
           <GridItem>
@@ -199,6 +209,7 @@ export const ProposalVotesTable = ({
         proposalVotes={data?.items}
         isLoading={isLoading}
         fullVersion={fullVersion}
+        isSearching={isSearching}
       />
       {!!total && fullVersion && (
         <Pagination

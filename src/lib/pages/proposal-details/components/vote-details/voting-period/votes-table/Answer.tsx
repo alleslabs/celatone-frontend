@@ -1,7 +1,8 @@
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 
 import { TooltipInfo } from "lib/components/Tooltip";
-import type { ProposalVote } from "lib/types";
+import type { ProposalVote, Ratio } from "lib/types";
+import { formatRatio } from "lib/utils";
 
 interface AnswerProps {
   proposalVote: ProposalVote;
@@ -28,6 +29,7 @@ const resolveVote = (proposalVote: ProposalVote): [string, string] => {
 
 export const Answer = ({ proposalVote }: AnswerProps) => {
   const [color, text] = resolveVote(proposalVote);
+
   return (
     <HStack spacing={2}>
       <Box
@@ -37,7 +39,23 @@ export const Answer = ({ proposalVote }: AnswerProps) => {
         backgroundColor={color}
       />
       <Text fontWeight={700}>{text}</Text>
-      {proposalVote.isVoteWeighted && <TooltipInfo label="Weighted vote" />}
+      {proposalVote.isVoteWeighted && (
+        <TooltipInfo
+          label={[
+            ["Yes", proposalVote.yes],
+            ["No", proposalVote.no],
+            ["No With Veto", proposalVote.noWithVeto],
+            ["Abstain", proposalVote.abstain],
+          ].map(([label, value]) => (
+            <Flex gap={1} key={label}>
+              <Text>{label}:</Text>
+              <Text fontWeight={700}>
+                {formatRatio(value as Ratio<number>)}
+              </Text>
+            </Flex>
+          ))}
+        />
+      )}
     </HStack>
   );
 };
