@@ -14,6 +14,7 @@ interface ValidatorBadgeProps {
   ampCopierSection?: string;
   maxWidth?: string;
   hasLabel?: boolean;
+  moreInfo?: JSX.Element;
 }
 
 const FallbackRender = ({
@@ -40,6 +41,7 @@ export const ValidatorBadge = ({
   ampCopierSection,
   maxWidth = "160px",
   hasLabel = true,
+  moreInfo,
 }: ValidatorBadgeProps) => {
   const { data: valImgSrc, isLoading } = useValidatorImage(validator);
   const isMobile = useMobile();
@@ -71,6 +73,7 @@ export const ValidatorBadge = ({
               maxWidth={maxWidth}
               fixedHeight
             />
+            {moreInfo}
           </Flex>
         </>
       ) : (
