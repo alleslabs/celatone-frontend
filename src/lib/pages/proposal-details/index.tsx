@@ -1,6 +1,6 @@
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
