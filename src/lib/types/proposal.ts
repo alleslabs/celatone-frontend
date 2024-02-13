@@ -143,7 +143,7 @@ export interface ProposalVote {
   noWithVeto: number;
   yes: number;
   isVoteWeighted: boolean;
-  validator: Validator;
+  validator: Nullable<Validator>;
   voter: Nullable<BechAddr>;
   timestamp: Nullable<Date>;
   txHash: Nullable<string>;
