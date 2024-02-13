@@ -1,6 +1,5 @@
 import { Text } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
 import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
@@ -23,19 +22,16 @@ const getResolvedPrefix = (status: ProposalStatus) => {
 };
 
 export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
-  const isMobile = useMobile();
-  const textAlign = isMobile ? "start" : "end";
-
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return (
-      <Text variant="body2" textAlign={textAlign}>
+      <Text variant="body2" textAlign={{ base: "end", md: "start" }}>
         Deposit ends in <Countdown endTime={proposalData.depositEndTime} />
       </Text>
     );
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD)
     return (
-      <Text variant="body2" textAlign={textAlign}>
+      <Text variant="body2" textAlign={{ base: "end", md: "start" }}>
         Voting ends in{" "}
         {proposalData.votingEndTime ? (
           <Countdown endTime={proposalData.votingEndTime} />
@@ -46,7 +42,11 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
     );
 
   return (
-    <Text variant="body2" color="text.dark" textAlign={textAlign}>
+    <Text
+      variant="body2"
+      color="text.dark"
+      textAlign={{ base: "end", md: "start" }}
+    >
       {getResolvedPrefix(proposalData.status)}
       {" at "}
       {proposalData.resolvedTimestamp

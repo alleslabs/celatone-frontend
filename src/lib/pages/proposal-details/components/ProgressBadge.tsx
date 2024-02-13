@@ -1,5 +1,6 @@
 import { Flex, Text, chakra } from "@chakra-ui/react";
 
+import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
 
 import { ActiveDot } from "./ActiveDot";
@@ -12,25 +13,18 @@ const StyledCustomIcon = chakra(CustomIcon, {
   },
 });
 
-export enum BadgeState {
-  ONGOING,
-  FAILED,
-  COMPLETE,
-  WAITING,
-}
-
 export interface ProgressBadgeProps {
-  state: BadgeState;
+  state: PeriodState;
   text: string;
 }
 
-const BadgeIcon = ({ state }: { state: BadgeState }) => {
+const BadgeIcon = ({ state }: { state: PeriodState }) => {
   switch (state) {
-    case BadgeState.ONGOING:
+    case PeriodState.ONGOING:
       return <ActiveDot m={1} />;
-    case BadgeState.FAILED:
+    case PeriodState.FAILED:
       return <StyledCustomIcon name="close-circle-solid" color="error.main" />;
-    case BadgeState.COMPLETE:
+    case PeriodState.COMPLETE:
       return (
         <StyledCustomIcon name="check-circle-solid" color="success.main" />
       );

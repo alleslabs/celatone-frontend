@@ -1,3 +1,4 @@
+import { useMobile } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move";
 import {
@@ -7,12 +8,11 @@ import {
 import type { Nullable, Option, ProposalData, ProposalParams } from "lib/types";
 import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
 
-export const useDerivedProposalParams = (
-  isMobile: boolean
-): {
+export const useDerivedProposalParams = (): {
   data: Option<ProposalParams>;
   isLoading: boolean;
 } => {
+  const isMobile = useMobile();
   const { data, isLoading } = useProposalParams();
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: !isMobile,

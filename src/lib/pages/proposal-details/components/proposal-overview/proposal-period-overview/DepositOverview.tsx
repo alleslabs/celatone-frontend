@@ -7,7 +7,7 @@ import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { TabIndex, VoteTabIndex } from "lib/pages/proposal-details/type";
+import { TabIndex, VoteTabIndex } from "lib/pages/proposal-details/types";
 import { extractParams } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
@@ -58,7 +58,7 @@ const DepositOverviewBody = ({
               query: {
                 id: proposalData.id,
                 tab: TabIndex.Vote,
-                voteTab: VoteTabIndex.Deposit,
+                voteTab: VoteTabIndex.Deposit, // TODO: replace voteTab to period later
               },
               options: {
                 shallow: true,

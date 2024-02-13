@@ -1,16 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { PeriodState } from "../../types";
 import { CustomIcon } from "lib/components/icon";
 import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 import type { ProposalStepperProps } from ".";
-
-enum StepIconState {
-  ONGOING,
-  FAILED,
-  COMPLETE,
-}
 
 const getStepIconState = (step: number, proposalData: ProposalData) => {
   // Deposit Period
@@ -20,44 +15,45 @@ const getStepIconState = (step: number, proposalData: ProposalData) => {
       (proposalData.status === ProposalStatus.CANCELLED &&
         proposalData.votingTime === null)
     )
-      return StepIconState.FAILED;
+      return PeriodState.FAILED;
 
     if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
-      return StepIconState.ONGOING;
+      return PeriodState.ONGOING;
 
-    return StepIconState.COMPLETE;
+    return PeriodState.COMPLETE;
   }
 
   // Voting Period
+  if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
+    return PeriodState.WAITING;
   if (
-    proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.DEPOSIT_FAILED ||
     proposalData.status === ProposalStatus.CANCELLED
   )
-    return StepIconState.FAILED;
+    return PeriodState.FAILED;
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD)
-    return StepIconState.ONGOING;
+    return PeriodState.ONGOING;
 
-  return StepIconState.COMPLETE;
+  return PeriodState.COMPLETE;
 };
 
 export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
   const state = getStepIconState(step, proposalData);
-  const isFailed = state === StepIconState.FAILED;
+  const isGray = state === PeriodState.WAITING || state === PeriodState.FAILED;
   return (
     <Flex
       boxSize={6}
       borderRadius="50%"
       alignItems="center"
       justifyContent="center"
-      background={isFailed ? "gray.500" : "primary.main"}
+      background={isGray ? "gray.500" : "primary.main"}
     >
-      {state !== StepIconState.COMPLETE ? (
+      {state !== PeriodState.COMPLETE ? (
         <Text
           variant="body3"
           fontWeight={700}
-          color={isFailed ? "background.main" : "text.main"}
+          color={isGray ? "background.main" : "text.main"}
         >
           {step}
         </Text>

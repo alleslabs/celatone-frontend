@@ -15,8 +15,9 @@ export const DepositList = ({ proposalDeposits }: DepositListProps) => {
 
   return (
     <div>
-      {proposalDeposits.map((deposit) => (
+      {proposalDeposits.map((deposit, index) => (
         <Flex
+          key={deposit.depositor + index.toString()}
           justify="space-between"
           py="10px"
           borderY="1px solid var(--chakra-colors-gray-700)"

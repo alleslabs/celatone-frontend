@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useGovConfig, useInternalNavigate, useMobile } from "lib/app-provider";
+import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -12,8 +12,8 @@ import { useProposalVotesInfo } from "lib/services/proposalService";
 
 import { ProposalTop, ProposalOverview, VoteDetails } from "./components";
 import { useDerivedProposalData, useDerivedProposalParams } from "./data";
-import type { ProposalDetailsQueryParams } from "./type";
-import { zProposalDetailsQueryParams, TabIndex } from "./type";
+import type { ProposalDetailsQueryParams } from "./types";
+import { zProposalDetailsQueryParams, TabIndex } from "./types";
 
 const ProposalDetailsBody = ({
   id,
@@ -22,13 +22,12 @@ const ProposalDetailsBody = ({
 }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
-  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useDerivedProposalData(id);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useProposalVotesInfo(id);
   const { data: params, isLoading: isParamsLoading } =
-    useDerivedProposalParams(isMobile);
+    useDerivedProposalParams();
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
