@@ -23,7 +23,7 @@ export const TooltipInfo = ({
   iconVariant = "default",
   ...tooltipProps
 }: TooltipInfoProps) => (
-  <Tooltip {...tooltipProps}>
+  <Tooltip {...tooltipProps} shouldWrapChildren>
     <Flex cursor="pointer">
       <CustomIcon
         color="gray.600"

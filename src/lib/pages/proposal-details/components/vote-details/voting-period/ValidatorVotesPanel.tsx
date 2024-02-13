@@ -5,11 +5,14 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 
-interface AllVotesTableProps extends FlexProps {
+interface ValidatorVotesPanelProps extends FlexProps {
   onBack: () => void;
 }
 
-export const AllVotesTable = ({ onBack, ...props }: AllVotesTableProps) => {
+export const ValidatorVotesPanel = ({
+  onBack,
+  ...props
+}: ValidatorVotesPanelProps) => {
   const isMobile = useMobile();
   return (
     <Flex
@@ -31,7 +34,7 @@ export const AllVotesTable = ({ onBack, ...props }: AllVotesTableProps) => {
           <Button variant="ghost-gray" size="sm" p={0} onClick={onBack}>
             <CustomIcon name="chevron-left" boxSize={4} />
           </Button>
-          <TableTitle title="All Votes" />
+          <TableTitle title="Validator Votes" />
         </Flex>
       </Flex>
     </Flex>
