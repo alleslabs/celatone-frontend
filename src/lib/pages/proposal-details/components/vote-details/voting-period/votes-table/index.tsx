@@ -184,7 +184,7 @@ export const ProposalVotesTable = ({
   return (
     <Box>
       {fullVersion && (
-        <Grid gap={4} templateColumns="240px auto">
+        <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
           <GridItem>
             <SelectInput<AnswerType>
               formLabel="Filter by Answer"
@@ -200,7 +200,7 @@ export const ProposalVotesTable = ({
               placeholder="Search with address or validator moniker..."
               value={search}
               onChange={handleOnSearchChange}
-              size={{ base: "md", md: "lg" }}
+              size="lg"
             />
           </GridItem>
         </Grid>
