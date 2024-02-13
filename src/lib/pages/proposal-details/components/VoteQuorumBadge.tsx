@@ -1,8 +1,9 @@
+import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
 import { ProposalStatus } from "lib/types";
 
 import { ActiveDot } from "./ActiveDot";
-import { BadgeState, ProgressBadge } from "./ProgressBadge";
+import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteQuorumBadgeProps {
   status: ProposalStatus;
@@ -22,7 +23,7 @@ export const VoteQuorumBadge = ({
       <CustomIcon m={0} name="check-circle-solid" color="success.main" />
     ) : (
       <ProgressBadge
-        state={BadgeState.COMPLETE}
+        state={PeriodState.COMPLETE}
         text="Quorum Reached"
         bgColor="gray.700"
       />
@@ -33,7 +34,7 @@ export const VoteQuorumBadge = ({
       <ActiveDot />
     ) : (
       <ProgressBadge
-        state={BadgeState.ONGOING}
+        state={PeriodState.ONGOING}
         text="In Progress"
         bgColor="gray.700"
       />
@@ -43,7 +44,7 @@ export const VoteQuorumBadge = ({
     <CustomIcon m={0} name="close-circle-solid" color="error.main" />
   ) : (
     <ProgressBadge
-      state={BadgeState.FAILED}
+      state={PeriodState.FAILED}
       text="Quorum Not Reached"
       bgColor="gray.700"
     />

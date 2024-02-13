@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap
 - [#774](https://github.com/alleslabs/celatone-frontend/pull/774) Add relevant contract to cosmwasm pool
 - [#771](https://github.com/alleslabs/celatone-frontend/pull/771) Adjust proposal detail
 - [#772](https://github.com/alleslabs/celatone-frontend/pull/772) Add zod validator to code details page code id params

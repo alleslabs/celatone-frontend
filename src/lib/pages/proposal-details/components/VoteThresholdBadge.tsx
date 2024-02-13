@@ -1,8 +1,9 @@
+import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
 import { ProposalStatus } from "lib/types";
 
 import { ActiveDot } from "./ActiveDot";
-import { BadgeState, ProgressBadge } from "./ProgressBadge";
+import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteThresholdBadgeProps {
   status: ProposalStatus;
@@ -18,7 +19,7 @@ export const VoteThresholdBadge = ({
       <ActiveDot />
     ) : (
       <ProgressBadge
-        state={BadgeState.ONGOING}
+        state={PeriodState.ONGOING}
         text="In Progress"
         bgColor="gray.700"
       />
@@ -28,7 +29,7 @@ export const VoteThresholdBadge = ({
     <CustomIcon m={0} name="check-circle-solid" color="success.main" />
   ) : (
     <ProgressBadge
-      state={BadgeState.COMPLETE}
+      state={PeriodState.COMPLETE}
       text="Quorum Reached"
       bgColor="gray.700"
     />

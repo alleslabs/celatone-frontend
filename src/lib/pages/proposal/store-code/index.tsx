@@ -457,13 +457,7 @@ const StoreCodeProposal = () => {
                     label={PROPOSAL_STORE_CODE_TEXT.unpinTooltip}
                     maxW="440px"
                   >
-                    <div>
-                      <CustomIcon
-                        name="info-circle"
-                        boxSize="3"
-                        color="white"
-                      />
-                    </div>
+                    <CustomIcon name="info-circle" boxSize={3} color="white" />
                   </Tooltip>
                 </Flex>
 
