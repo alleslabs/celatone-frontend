@@ -118,35 +118,33 @@ const Proposals = () => {
               maxW="240px"
               textAlign="center"
             >
-              <div>
-                <Switch
-                  alignItems="center"
-                  justifyContent="center"
-                  h="fit-content"
-                  minW="200px"
-                  display="flex"
-                  size="md"
-                  isChecked={!!proposer}
-                  disabled={!address}
-                  onChange={(e) => {
-                    if (e.target.checked && address) {
-                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                        toggle: "on",
-                      });
-                      setProposer(address);
-                    } else {
-                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                        toggle: "off",
-                      });
-                      setProposer(undefined);
-                    }
-                  }}
-                >
-                  <Text cursor={address ? "pointer" : "default"}>
-                    My Proposals
-                  </Text>
-                </Switch>
-              </div>
+              <Switch
+                alignItems="center"
+                justifyContent="center"
+                h="fit-content"
+                minW="200px"
+                display="flex"
+                size="md"
+                isChecked={!!proposer}
+                disabled={!address}
+                onChange={(e) => {
+                  if (e.target.checked && address) {
+                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "on",
+                    });
+                    setProposer(address);
+                  } else {
+                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "off",
+                    });
+                    setProposer(undefined);
+                  }
+                }}
+              >
+                <Text cursor={address ? "pointer" : "default"}>
+                  My Proposals
+                </Text>
+              </Switch>
             </Tooltip>
           )}
         </Flex>
