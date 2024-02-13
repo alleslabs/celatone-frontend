@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#779](https://github.com/alleslabs/celatone-frontend/pull/779) Proposal period overview voting - no with veto alert
 - [#778](https://github.com/alleslabs/celatone-frontend/pull/778) Proposal period overview voting
 - [#775](https://github.com/alleslabs/celatone-frontend/pull/775) Proposal period overview deposit
 - [#777](https://github.com/alleslabs/celatone-frontend/pull/777) Proposal votes table including filter and search functionality
