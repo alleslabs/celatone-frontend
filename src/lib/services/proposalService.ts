@@ -1,3 +1,4 @@
+import type { Coin } from "@cosmjs/amino";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
@@ -99,7 +100,7 @@ export const useProposals = (
 
 export const useProposalParams = () => {
   const endpoint = useBaseApiRoute("proposals");
-  return useQuery<ProposalParams>(
+  return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
     async () => getProposalParams(endpoint),
     { retry: 1, refetchOnWindowFocus: false }

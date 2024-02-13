@@ -20,6 +20,13 @@ export const NormalChip: Story = {
   },
 };
 
+export const TransparentChip: Story = {
+  args: {
+    status: ProposalStatus.DEPOSIT_PERIOD,
+    isTransparent: true,
+  },
+};
+
 export const FilterChip: Story = {
   args: {
     status: ProposalStatus.DEPOSIT_PERIOD,
