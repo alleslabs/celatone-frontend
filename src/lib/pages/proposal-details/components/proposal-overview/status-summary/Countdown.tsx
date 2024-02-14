@@ -36,8 +36,7 @@ export const Countdown = ({ endTime, isString }: CountdownProps) => {
       const timestamp = isString ? (
         `${
           days > 0 && `${days.toString()} ${plur("day", days)} `
-        }${duration.hours()}:${formatNumber(duration.minutes())}:
-        ${formatNumber(duration.seconds())}`
+        }${duration.hours()}:${formatNumber(duration.minutes())}:${formatNumber(duration.seconds())}`
       ) : (
         <>
           {days > 0 && (
