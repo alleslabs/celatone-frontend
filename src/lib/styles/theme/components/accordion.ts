@@ -16,6 +16,7 @@ const gray900 = definePartsStyle({
     borderRadius: "0px 8px 8px 0px",
   },
 });
+
 const transparent = definePartsStyle({
   container: {
     bg: "transparent",

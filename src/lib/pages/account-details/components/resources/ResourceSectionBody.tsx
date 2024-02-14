@@ -50,6 +50,7 @@ export const ResourceSectionBody = ({
   const selectedResource = resourcesByOwner
     ?.find((resource) => resource.owner === selectedAccountParam)
     ?.resources?.find((resource) => resource.group === selectedNameParam);
+
   useEffect(() => {
     setExpandedIndexes(selectedResource?.items.length === 1 ? [0] : []);
   }, [resourcesByOwner, selectedResource]);

@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#776](https://github.com/alleslabs/celatone-frontend/pull/776) Add expand/collapse all to proposal messages in detail page
 - [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap
 - [#774](https://github.com/alleslabs/celatone-frontend/pull/774) Add relevant contract to cosmwasm pool
 - [#771](https://github.com/alleslabs/celatone-frontend/pull/771) Adjust proposal detail
