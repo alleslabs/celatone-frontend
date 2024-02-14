@@ -84,9 +84,11 @@ export const PoolAssetsTableRow = ({
           </Flex>
         </Flex>
       </TableRow>
-      <TableRow fontWeight={700} justifyContent="flex-end">
-        {poolType === PoolType.STABLESWAP ? scalingFactor : tokenWeight}
-      </TableRow>
+      {poolType !== PoolType.COSMWASM && (
+        <TableRow fontWeight={700} justifyContent="flex-end">
+          {poolType === PoolType.STABLESWAP ? scalingFactor : tokenWeight}
+        </TableRow>
+      )}
       <TableRow fontWeight={700} justifyContent="flex-end">
         {isSupported && allocation}
       </TableRow>
