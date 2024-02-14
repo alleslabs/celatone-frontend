@@ -34,6 +34,7 @@ interface SelectInputProps<T extends string> {
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
+  popoverBgColor?: string;
   size?: string | object;
 }
 
@@ -69,6 +70,7 @@ export const SelectInput = <T extends string>({
   hasDivider = false,
   helperTextComponent,
   labelBgColor = "background.main",
+  popoverBgColor = "gray.900",
   size = "lg",
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -149,7 +151,7 @@ export const SelectInput = <T extends string>({
       </PopoverTrigger>
       <PopoverContent
         border="unset"
-        bg="gray.900"
+        bg={popoverBgColor}
         w={inputRef.current?.clientWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"

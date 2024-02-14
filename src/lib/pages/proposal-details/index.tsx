@@ -10,10 +10,10 @@ import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { useProposalVotesInfo } from "lib/services/proposalService";
 
-import { ProposalTop, ProposalOverview, VoteDetail } from "./components";
+import { ProposalTop, ProposalOverview, VoteDetails } from "./components";
 import { useDerivedProposalData, useDerivedProposalParams } from "./data";
-import type { ProposalDetailsQueryParams } from "./type";
-import { zProposalDetailsQueryParams, TabIndex } from "./type";
+import type { ProposalDetailsQueryParams } from "./types";
+import { zProposalDetailsQueryParams, TabIndex } from "./types";
 
 const ProposalDetailsBody = ({
   id,
@@ -67,7 +67,7 @@ const ProposalDetailsBody = ({
             Proposal Overview
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
-            Vote Detail
+            Vote Details
           </CustomTab>
         </TabList>
         <TabPanels>
@@ -80,7 +80,7 @@ const ProposalDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <VoteDetail />
+            <VoteDetails proposalData={data.info} />
           </TabPanel>
         </TabPanels>
       </Tabs>

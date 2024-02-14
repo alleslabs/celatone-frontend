@@ -39,6 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#782](https://github.com/alleslabs/celatone-frontend/pull/782) Show proposal details on vote details section tabs
+- [#779](https://github.com/alleslabs/celatone-frontend/pull/779) Proposal period overview voting - no with veto alert
+- [#778](https://github.com/alleslabs/celatone-frontend/pull/778) Proposal period overview voting
+- [#775](https://github.com/alleslabs/celatone-frontend/pull/775) Proposal period overview deposit
+- [#777](https://github.com/alleslabs/celatone-frontend/pull/777) Proposal votes table including filter and search functionality
 - [#766](https://github.com/alleslabs/celatone-frontend/pull/766) Proposal status summary body
 - [#763](https://github.com/alleslabs/celatone-frontend/pull/763) Proposal status summary top
 - [#765](https://github.com/alleslabs/celatone-frontend/pull/765) Support Proposal Cancelled status
@@ -56,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#776](https://github.com/alleslabs/celatone-frontend/pull/776) Add expand/collapse all to proposal messages in detail page
+- [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap
 - [#774](https://github.com/alleslabs/celatone-frontend/pull/774) Add relevant contract to cosmwasm pool
 - [#771](https://github.com/alleslabs/celatone-frontend/pull/771) Adjust proposal detail
 - [#772](https://github.com/alleslabs/celatone-frontend/pull/772) Add zod validator to code details page code id params
@@ -69,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#780](https://github.com/alleslabs/celatone-frontend/pull/780) Fix proposal vote table, scroll to top on table
 - [#761](https://github.com/alleslabs/celatone-frontend/pull/761) Fix copy button tooltip alignment
 - [#754](https://github.com/alleslabs/celatone-frontend/pull/754) Fix mobile guard incorrect behavior
 - [#751](https://github.com/alleslabs/celatone-frontend/pull/751) Fix fail txs should have no logs and remove stone-12-1

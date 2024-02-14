@@ -77,9 +77,7 @@ const SubMenuRender = ({ submenu, isCurrentPage }: SubMenuProps) => (
     {submenu.map((subitem) =>
       subitem.isDisable ? (
         <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
-          <div>
-            <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
-          </div>
+          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
         </Tooltip>
       ) : (
         <AppLink

@@ -9,6 +9,7 @@ import type {
   TokenWithValue,
   U,
 } from "lib/types";
+import { divWithDefault } from "lib/utils";
 
 export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
   if (votesInfo.totalVotingPower.eq(0))
@@ -17,20 +18,23 @@ export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
       abstain: big(0),
       no: big(0),
       noWithVeto: big(0),
-      currentTotalVotes: big(0),
+      nonAbstainVotes: big(0),
+      totalVotes: big(0),
     };
 
   const yes = votesInfo.yes.div(votesInfo.totalVotingPower);
   const abstain = votesInfo.abstain.div(votesInfo.totalVotingPower);
   const no = votesInfo.no.div(votesInfo.totalVotingPower);
   const noWithVeto = votesInfo.noWithVeto.div(votesInfo.totalVotingPower);
+  const nonAbstainVotes = yes.add(no).add(noWithVeto);
 
   return {
     yes,
     abstain,
     no,
     noWithVeto,
-    currentTotalVotes: yes.add(abstain).add(no).add(noWithVeto),
+    nonAbstainVotes,
+    totalVotes: nonAbstainVotes.add(abstain),
   };
 };
 
@@ -61,3 +65,37 @@ export const mapDeposit = (
       min,
     };
   });
+
+export const getVoteResult = (
+  threshold: number,
+  vetoThreshold: number,
+  votesInfo: ProposalVotesInfo
+) => {
+  const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+    normalizeVotesInfo(votesInfo);
+
+  if (divWithDefault(noWithVeto, totalVotes, 0).gte(vetoThreshold))
+    return {
+      result: "No with veto",
+      resultColor: "error.dark",
+    };
+  if (divWithDefault(yes, nonAbstainVotes, 0).gte(threshold))
+    return {
+      result: "Yes",
+      resultColor: "success.main",
+    };
+  return {
+    result: "No",
+    resultColor: "error.main",
+  };
+};
+
+export const formatPrettyPercent = (ratio: number, fp = 2, fixedFp = false) => {
+  const lowestPercent = 10 ** -fp;
+
+  const percent = ratio * 100;
+  if (percent > 0 && percent < lowestPercent) return `<${lowestPercent}%`;
+
+  const rounded = big(percent).round(fp);
+  return `${fixedFp ? rounded.toFixed(fp) : rounded.toNumber()}%`;
+};

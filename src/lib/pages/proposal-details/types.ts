@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export enum PeriodState {
+  ONGOING,
+  FAILED,
+  COMPLETE,
+  WAITING,
+}
+
 export enum TabIndex {
   Overview = "overview",
   Vote = "vote",
