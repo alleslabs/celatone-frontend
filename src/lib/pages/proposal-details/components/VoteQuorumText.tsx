@@ -3,10 +3,11 @@ import { Text } from "@chakra-ui/react";
 import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
-interface VotingOverviewQuorumTextProps {
+interface VoteQuorumTextProps {
   status: ProposalStatus;
   quorum: number;
   totalVotes: Big;
+  isCompact: boolean;
 }
 
 const Established = () => (
@@ -20,23 +21,25 @@ const Established = () => (
   </span>
 );
 
-export const VotingOverviewQuorumText = ({
+export const VoteQuorumText = ({
   status,
   quorum,
   totalVotes,
-}: VotingOverviewQuorumTextProps) => {
+  isCompact,
+}: VoteQuorumTextProps) => {
+  const fontVariant = isCompact ? "body2" : "body1";
   const quorumPercent = formatPrettyPercent(quorum);
   const isPassingQuorum = totalVotes.gte(quorum);
 
   if (status === ProposalStatus.VOTING_PERIOD)
     return isPassingQuorum ? (
-      <Text variant="body2" color="text.main">
+      <Text variant={fontVariant} color="text.main">
         The proposal has successfully met the voting{" "}
         <span style={{ fontWeight: 700 }}>{quorumPercent}</span> quorum and will
         be <Established /> after the voting period ends.
       </Text>
     ) : (
-      <Text variant="body2" color="text.main">
+      <Text variant={fontVariant} color="text.main">
         The proposal required{" "}
         <span style={{ fontWeight: 700 }}>{quorumPercent}</span> vote quorum to
         establish.
@@ -44,13 +47,13 @@ export const VotingOverviewQuorumText = ({
     );
 
   return isPassingQuorum ? (
-    <Text variant="body2" color="text.main">
+    <Text variant={fontVariant} color="text.main">
       The proposal has successfully met the voting{" "}
       <span style={{ fontWeight: 700 }}>{quorumPercent}</span> quorum and{" "}
       <Established />.
     </Text>
   ) : (
-    <Text variant="body2" color="text.main">
+    <Text variant={fontVariant} color="text.main">
       This proposal{" "}
       <span
         style={{

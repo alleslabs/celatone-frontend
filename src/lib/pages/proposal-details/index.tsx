@@ -80,7 +80,12 @@ const ProposalDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <VoteDetails proposalData={data.info} />
+            <VoteDetails
+              proposalData={data.info}
+              votesInfo={votesInfo}
+              params={params}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

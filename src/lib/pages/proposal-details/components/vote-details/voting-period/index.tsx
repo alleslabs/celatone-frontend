@@ -1,6 +1,7 @@
 import { Button, Flex, Grid, GridItem, useDisclosure } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import type { VoteDetailsProps } from "..";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
@@ -9,6 +10,7 @@ import { useProposalAnswerCounts } from "lib/services/proposalService";
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
 import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
+import { VotingQuorum } from "./VotingQuorum";
 
 export const ContentContainer = ({
   children,
@@ -30,16 +32,12 @@ export const ContentContainer = ({
   </Flex>
 );
 
-interface VotingPeriodProps {
-  id: number;
-}
-
-export const VotingPeriod = ({ id }: VotingPeriodProps) => {
+export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();
 
-  const { data: answers } = useProposalAnswerCounts(id);
+  const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
   return (
     <Flex position="relative" overflow="hidden" width="full">
@@ -64,11 +62,7 @@ export const VotingPeriod = ({ id }: VotingPeriodProps) => {
       >
         {/* Vote Participations */}
         <ContentContainer transparent={isMobile}>
-          {!isMobile && <TableTitle title="Vote Participations" mb={0} />}
-          Vote Participations Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Soluta pariatur eveniet ducimus quasi veritatis labore aut
-          minima adipisci sit sed ratione laboriosam dolorum suscipit tenetur
-          reiciendis voluptatum, aliquid quam ullam!
+          <VotingQuorum proposalData={proposalData} {...props} />
         </ContentContainer>
         {/* Vote Results */}
         <ContentContainer transparent={isMobile}>
@@ -121,7 +115,7 @@ export const VotingPeriod = ({ id }: VotingPeriodProps) => {
                 </Button>
               </Flex>
               <ProposalVotesTable
-                id={id}
+                id={proposalData.id}
                 answers={answers?.all}
                 fullVersion={false}
               />
@@ -139,7 +133,7 @@ export const VotingPeriod = ({ id }: VotingPeriodProps) => {
       <ProposalVotesPanel
         answers={answers?.all}
         isOpen={allVoteDisclosure.isOpen}
-        id={id}
+        id={proposalData.id}
         onBack={allVoteDisclosure.onToggle}
       />
     </Flex>

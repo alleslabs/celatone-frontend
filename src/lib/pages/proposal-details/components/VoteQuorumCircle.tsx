@@ -51,7 +51,7 @@ export const VoteQuorumCircle = ({
       <Circle
         size={isCompact ? "52px" : "134px"}
         position="absolute"
-        bgColor="background.main"
+        bgColor={isCompact ? "background.main" : "gray.900"}
       >
         {!isCompact && (
           <Text
