@@ -32,7 +32,7 @@ export const VoteDetailsTab = ({
           border: "1px solid",
           borderColor: "gray.700",
           opacity: "100%",
-          borderBottomColor: "transparent",
+          borderBottomColor: "gray.800",
         },
         "&[aria-selected=false]": {
           background: "transparent",
