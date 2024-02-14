@@ -80,7 +80,7 @@ const ProposalDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <VoteDetails id={id} />
+            <VoteDetails proposalData={data.info} />
           </TabPanel>
         </TabPanels>
       </Tabs>
