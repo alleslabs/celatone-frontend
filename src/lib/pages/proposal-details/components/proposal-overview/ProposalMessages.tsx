@@ -43,7 +43,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
           onClick={() => {
             trackUseExpandAll(
               expandedIndexes.length ? "collapse" : "expand",
-              "account detail resources Tab"
+              "Proposal Messages"
             );
             setExpandedIndexes((prev) =>
               !prev.length ? Array.from(Array(messages?.length).keys()) : []
@@ -62,7 +62,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
       >
         {messages?.map((item, i) => (
           <ProposalMessageCard
-            key={`msg-${item}`}
+            key={`msg-${JSON.stringify(item)}`}
             header={`[${i}] ${item["@type"]}`}
             jsonString={jsonPrettify(JSON.stringify(item))}
           />
