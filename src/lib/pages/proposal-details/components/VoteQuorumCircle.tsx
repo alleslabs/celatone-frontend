@@ -19,10 +19,7 @@ export const VoteQuorumCircle = ({
   const nonAbstainVotesAngle = nonAbstainVotes.toNumber() * 360;
 
   const totalVotesAngle = totalVotes.toNumber() * 360;
-  const totalVotesPercent = formatPrettyPercent(
-    totalVotes.toNumber(),
-    isCompact ? 1 : 2
-  );
+  const totalVotesPercent = formatPrettyPercent(totalVotes.toNumber(), 1);
 
   const quorumAngle = quorum * 360;
   const quorumPercent = formatPrettyPercent(quorum);

@@ -94,7 +94,7 @@ export const VotingQuorum = ({
               isCompact={isMobile}
             />
             <VpPercentCard
-              name="Voted"
+              name="Voted Abstain"
               ratio={abstain}
               power={votesInfo.abstain}
               color="secondary.main"
