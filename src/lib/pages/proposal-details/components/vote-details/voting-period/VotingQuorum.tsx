@@ -77,6 +77,7 @@ export const VotingQuorum = ({
           nonAbstainVotes={nonAbstainVotes}
           totalVotes={totalVotes}
           isCompact={false}
+          isBgGray={!isMobile}
         />
         <Flex direction="column" gap={4} w="full">
           <VoteQuorumText

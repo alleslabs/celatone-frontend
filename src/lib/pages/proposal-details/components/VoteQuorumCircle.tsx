@@ -8,6 +8,7 @@ interface VoteQuorumCircleProps {
   nonAbstainVotes: Big;
   totalVotes: Big;
   isCompact: boolean;
+  isBgGray?: boolean;
 }
 
 export const VoteQuorumCircle = ({
@@ -15,6 +16,7 @@ export const VoteQuorumCircle = ({
   nonAbstainVotes,
   totalVotes,
   isCompact,
+  isBgGray,
 }: VoteQuorumCircleProps) => {
   const nonAbstainVotesAngle = nonAbstainVotes.toNumber() * 360;
 
@@ -48,7 +50,7 @@ export const VoteQuorumCircle = ({
       <Circle
         size={isCompact ? "52px" : "134px"}
         position="absolute"
-        bgColor={isCompact ? "background.main" : "gray.900"}
+        bgColor={isBgGray ? "gray.900" : "background.main"}
       >
         {!isCompact && (
           <Text
