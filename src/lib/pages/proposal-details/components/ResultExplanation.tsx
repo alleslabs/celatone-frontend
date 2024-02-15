@@ -2,20 +2,28 @@
 import { SkeletonText, Text } from "@chakra-ui/react";
 import big from "big.js";
 
-import type { ProposalOverviewProps } from "..";
-import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import {
   extractParams,
   mapDeposit,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
-import type { Token, TokenWithValue, U } from "lib/types";
+import type {
+  Option,
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
+  Token,
+  TokenWithValue,
+  U,
+} from "lib/types";
 import { ProposalStatus } from "lib/types";
 import {
   divWithDefault,
   formatPrettyPercent,
   formatTokenWithValueList,
 } from "lib/utils";
+
+import { ErrorFetchingProposalInfos } from "./ErrorFetchingProposalInfos";
 
 const Passed = () => (
   <span
@@ -39,12 +47,19 @@ const Rejected = () => (
   </span>
 );
 
-export const SummaryStatusBody = ({
+export interface ResultExplanationProps {
+  proposalData: ProposalData;
+  votesInfo: Option<ProposalVotesInfo>;
+  params: Option<ProposalParams>;
+  isLoading: boolean;
+}
+
+export const ResultExplanation = ({
   proposalData,
   params,
   votesInfo,
   isLoading,
-}: ProposalOverviewProps) => {
+}: ResultExplanationProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_FAILED)
     return (
       <Text variant="body2">

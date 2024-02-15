@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
 - [#785](https://github.com/alleslabs/celatone-frontend/pull/785) Quorum status on vote details section
 - [#782](https://github.com/alleslabs/celatone-frontend/pull/782) Show proposal details on vote details section tabs
 - [#779](https://github.com/alleslabs/celatone-frontend/pull/779) Proposal period overview voting - no with veto alert
