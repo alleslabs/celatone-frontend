@@ -77,7 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Remove loading overlay on pool list page causing the page look like flicking
+- [#789](https://github.com/alleslabs/celatone-frontend/pull/789) Remove loading overlay on pool list page causing the page look like flicking
 - [#783](https://github.com/alleslabs/celatone-frontend/pull/783) Fix link used for Osmosis Pool JSON To poolmanager
 - [#780](https://github.com/alleslabs/celatone-frontend/pull/780) Fix proposal vote table, scroll to top on table
 - [#761](https://github.com/alleslabs/celatone-frontend/pull/761) Fix copy button tooltip alignment
