@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { DelegationsSection } from "../../components/delegations";
+import { VotingPowerChart } from "../validator-details/components/VotingPowerChart";
 import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -264,6 +265,9 @@ const AccountDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
+            <Flex direction="column" gap={4} mt={4} mb={4}>
+              <VotingPowerChart currency="OSMO" />
+            </Flex>
             <Flex direction="column" gap={4}>
               <Flex
                 direction={{ base: "column", md: "row" }}

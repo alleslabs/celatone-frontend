@@ -20,6 +20,8 @@ import type { CrosshairOptions } from "chartjs-plugin-crosshair";
 import Crosshair from "chartjs-plugin-crosshair";
 import { Line } from "react-chartjs-2";
 
+import { useMobile } from "lib/app-provider";
+
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -94,6 +96,8 @@ export const LineChart = ({
   dataset,
   customizeTooltip,
 }: LineChartProps) => {
+  const isMobile = useMobile();
+
   const lineChartDataConfig = {
     borderWidth: 1,
     fill: true,
@@ -115,7 +119,7 @@ export const LineChart = ({
       },
       crosshair: {
         line: {
-          color: "#D8BEFC",
+          color: isMobile ? "#C6E141" : "#D8BEFC",
           width: 1,
           dashPattern: [5, 5],
         },
@@ -153,7 +157,8 @@ export const LineChart = ({
           },
         },
         ticks: {
-          padding: 10,
+          padding: isMobile ? 16 : 10,
+          maxTicksLimit: isMobile ? 5 : undefined,
           callback: (_value: string | number, index: number) => {
             if (index === 0) {
               return "";
@@ -167,7 +172,15 @@ export const LineChart = ({
         grid: {
           display: true,
           drawTicks: false,
-          color: "#343445",
+          color: (ctx: ScriptableScaleContext) => {
+            const { index } = ctx;
+
+            if (isMobile && (index === 0 || index === labels.length - 1)) {
+              return "transparent";
+            }
+
+            return "#343445";
+          },
         },
         min: 0,
         max: Math.max(...(dataset.data as number[])),
@@ -178,6 +191,8 @@ export const LineChart = ({
           callback: (value: string | number) => {
             return Number(value).toFixed(2);
           },
+          align: isMobile ? "start" : "center",
+          labelOffset: isMobile ? 5 : 0,
         },
       },
     },
