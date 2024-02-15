@@ -237,7 +237,7 @@ export const ResultExplanation = ({
           fontWeight: 700,
         }}
       >
-        {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% of
+        {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}% of
         &ldquo;Yes&rdquo;
       </span>{" "}
       rate. As a result, the proposal has been passed, and its content will now
