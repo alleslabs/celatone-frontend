@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import { Countdown } from "../proposal-overview/status-summary/Countdown";
 import type { ProposalData } from "lib/types";
@@ -22,9 +23,9 @@ const StepperHelperTextBody = ({
 
     if (
       proposalData.status === ProposalStatus.CANCELLED &&
-      proposalData.votingTime === null
+      isNull(proposalData.votingTime)
     )
-      return `The proposal is cancelled at ${proposalData.resolvedTimestamp ? formatUTC(proposalData.resolvedTimestamp) : "N/A"}`;
+      return `The proposal is cancelled at ${!isNull(proposalData.resolvedTimestamp) ? formatUTC(proposalData.resolvedTimestamp) : "N/A"}`;
 
     if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
       return (
@@ -34,7 +35,7 @@ const StepperHelperTextBody = ({
         </>
       );
 
-    return `The proposal passed the deposit period at ${proposalData.votingTime ? formatUTC(proposalData.votingTime) : "N/A"}`;
+    return `The proposal passed the deposit period at ${!isNull(proposalData.votingTime) ? formatUTC(proposalData.votingTime) : "N/A"}`;
   }
 
   // Voting Period
@@ -42,7 +43,7 @@ const StepperHelperTextBody = ({
     return "The proposal is rejected as it did not meet the required deposit";
 
   if (proposalData.status === ProposalStatus.CANCELLED)
-    return `The proposal is cancelled during the ${proposalData.votingTime === null ? "deposit" : "voting"}  period`;
+    return `The proposal is cancelled during the ${isNull(proposalData.votingTime) ? "deposit" : "voting"}  period`;
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return "Proposal proceeds to voting period after meeting deposit requirement";
@@ -51,7 +52,7 @@ const StepperHelperTextBody = ({
     return (
       <>
         Voting ends in{" "}
-        {proposalData.votingEndTime ? (
+        {!isNull(proposalData.votingEndTime) ? (
           <Countdown endTime={proposalData.votingEndTime} isString />
         ) : (
           "N/A"

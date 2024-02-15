@@ -17,7 +17,7 @@ export const VotingThreshold = ({
   params,
   votesInfo,
   isLoading,
-}: VoteDetailsProps) => {
+}: Omit<VoteDetailsProps, "period">) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;
   if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;

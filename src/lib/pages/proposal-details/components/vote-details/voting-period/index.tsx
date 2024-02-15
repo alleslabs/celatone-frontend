@@ -13,7 +13,7 @@ import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
 
-export const ContentContainer = ({
+const ContentContainer = ({
   children,
   transparent = false,
 }: {
@@ -33,7 +33,10 @@ export const ContentContainer = ({
   </Flex>
 );
 
-export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
+export const VotingPeriod = ({
+  proposalData,
+  ...props
+}: Omit<VoteDetailsProps, "period">) => {
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();

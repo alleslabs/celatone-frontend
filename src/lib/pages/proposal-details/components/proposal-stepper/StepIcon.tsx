@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import { CustomIcon } from "lib/components/icon";
 import { PeriodState } from "lib/pages/proposal-details/types";
@@ -13,7 +14,7 @@ const getStepIconState = (step: number, proposalData: ProposalData) => {
     if (
       proposalData.status === ProposalStatus.DEPOSIT_FAILED ||
       (proposalData.status === ProposalStatus.CANCELLED &&
-        proposalData.votingTime === null)
+        isNull(proposalData.votingTime))
     )
       return PeriodState.FAILED;
 

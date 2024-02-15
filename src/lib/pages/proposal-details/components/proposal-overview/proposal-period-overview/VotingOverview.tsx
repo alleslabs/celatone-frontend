@@ -1,11 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import type { ProposalOverviewProps } from "../..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { TabIndex, VoteTabIndex } from "lib/pages/proposal-details/types";
+import { TabIndex, PeriodIndex } from "lib/pages/proposal-details/types";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
@@ -37,8 +38,8 @@ const VotingOverviewBody = ({
     return (
       <Text variant="body2" color="text.dark">
         The proposal was cancelled during the{" "}
-        {proposalData.votingTime ? "voting" : "deposit"} period at{" "}
-        {proposalData.resolvedTimestamp
+        {!isNull(proposalData.votingTime) ? "voting" : "deposit"} period at{" "}
+        {!isNull(proposalData.resolvedTimestamp)
           ? formatUTC(proposalData.resolvedTimestamp)
           : "N/A"}
       </Text>
@@ -68,7 +69,7 @@ const VotingOverviewBody = ({
             query: {
               id: proposalData.id,
               tab: TabIndex.Vote,
-              voteTab: VoteTabIndex.Voting,
+              period: PeriodIndex.Voting,
             },
             options: {
               shallow: true,
