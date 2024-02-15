@@ -73,7 +73,7 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
           <p style="font-size: 16px; color: #F7F2FE; white-space: nowrap;">${Number(raw).toFixed(1)} ${currency}</p>
         </div>
         <hr style="margin-top: 8px; color: #68688A;"/>
-        <p style="margin-top: 8px; font-size: 12px; color: #F7F2FE;">${dateLabels[dataIndex]}</p>
+        <p style="margin-top: 8px; font-size: 12px; color: #F7F2FE; white-space: nowrap;">${dateLabels[dataIndex]}</p>
       </div>
     `;
   };
