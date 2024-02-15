@@ -8,18 +8,26 @@ import {
 } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
-import type { ProposalData } from "lib/types";
+import type {
+  Option,
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
+} from "lib/types";
 
 import { DepositPeriodSection } from "./deposit-period/DepositPeriodSection";
 import { VoteDetailsAccordionItem } from "./VoteDetailsAccordionItem";
 import { VoteDetailsTab } from "./VoteDetailsTab";
 import { VotingPeriod } from "./voting-period";
 
-interface VoteDetailsProps {
+export interface VoteDetailsProps {
   proposalData: ProposalData;
+  votesInfo: Option<ProposalVotesInfo>;
+  params: Option<ProposalParams>;
+  isLoading: boolean;
 }
 
-export const VoteDetails = ({ proposalData }: VoteDetailsProps) => {
+export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
 
   return isMobile ? (
@@ -29,7 +37,7 @@ export const VoteDetails = ({ proposalData }: VoteDetailsProps) => {
           <DepositPeriodSection />
         </VoteDetailsAccordionItem>
         <VoteDetailsAccordionItem step={2} proposalData={proposalData}>
-          <VotingPeriod id={proposalData.id} />
+          <VotingPeriod proposalData={proposalData} {...props} />
         </VoteDetailsAccordionItem>
       </Accordion>
     </Flex>
@@ -52,7 +60,7 @@ export const VoteDetails = ({ proposalData }: VoteDetailsProps) => {
             <DepositPeriodSection />
           </TabPanel>
           <TabPanel>
-            <VotingPeriod id={proposalData.id} />
+            <VotingPeriod proposalData={proposalData} {...props} />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -8,6 +8,7 @@ interface VoteQuorumCircleProps {
   nonAbstainVotes: Big;
   totalVotes: Big;
   isCompact: boolean;
+  isBgGray?: boolean;
 }
 
 export const VoteQuorumCircle = ({
@@ -15,14 +16,12 @@ export const VoteQuorumCircle = ({
   nonAbstainVotes,
   totalVotes,
   isCompact,
+  isBgGray,
 }: VoteQuorumCircleProps) => {
   const nonAbstainVotesAngle = nonAbstainVotes.toNumber() * 360;
 
   const totalVotesAngle = totalVotes.toNumber() * 360;
-  const totalVotesPercent = formatPrettyPercent(
-    totalVotes.toNumber(),
-    isCompact ? 1 : 2
-  );
+  const totalVotesPercent = formatPrettyPercent(totalVotes.toNumber(), 1);
 
   const quorumAngle = quorum * 360;
   const quorumPercent = formatPrettyPercent(quorum);
@@ -51,7 +50,7 @@ export const VoteQuorumCircle = ({
       <Circle
         size={isCompact ? "52px" : "134px"}
         position="absolute"
-        bgColor="background.main"
+        bgColor={isBgGray ? "gray.900" : "background.main"}
       >
         {!isCompact && (
           <Text

@@ -45,7 +45,7 @@ const VotingOverviewBody = ({
     );
 
   if (isLoading) return <Loading my={0} />;
-  if (!params || !votesInfo) return <ErrorFetchingProposalInfos isParamsOnly />;
+  if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
 
   return (
     <>

@@ -2,6 +2,7 @@ import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
+import { VoteQuorumText } from "../../VoteQuorumText";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import {
@@ -14,8 +15,6 @@ import type {
   ProposalVotesInfo,
 } from "lib/types";
 import { dateFromNow, formatPrettyPercent, formatUTC } from "lib/utils";
-
-import { VotingOverviewQuorumText } from "./VotingOverviewQuorumText";
 
 interface VotingOverviewQuorumProps {
   proposalData: ProposalData;
@@ -82,10 +81,11 @@ export const VotingOverviewQuorum = ({
           </Box>
         </Tooltip>
         <Flex direction="column" gap={2}>
-          <VotingOverviewQuorumText
+          <VoteQuorumText
             status={proposalData.status}
             quorum={quorum}
             totalVotes={totalVotes}
+            isCompact
           />
           <div>
             <Text variant="body3" color="text.dark">
