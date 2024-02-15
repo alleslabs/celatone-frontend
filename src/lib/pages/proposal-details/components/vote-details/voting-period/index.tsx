@@ -33,10 +33,7 @@ const ContentContainer = ({
   </Flex>
 );
 
-export const VotingPeriod = ({
-  proposalData,
-  ...props
-}: Omit<VoteDetailsProps, "period">) => {
+export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();

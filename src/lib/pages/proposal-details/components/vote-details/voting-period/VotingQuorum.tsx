@@ -19,7 +19,7 @@ export const VotingQuorum = ({
   params,
   votesInfo,
   isLoading,
-}: Omit<VoteDetailsProps, "period">) => {
+}: VoteDetailsProps) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;
   if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
