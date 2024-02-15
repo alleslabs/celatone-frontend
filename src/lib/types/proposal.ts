@@ -77,8 +77,10 @@ export interface Proposal {
   isExpedited: boolean;
 }
 
-export interface ProposalParams {
-  minDeposit: Coin[];
+export interface ProposalParams<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  minDeposit: T[];
   minInitialDepositRatio: number;
   maxDepositPeriod: string;
   votingPeriod: string;
@@ -88,10 +90,10 @@ export interface ProposalParams {
   // expedited
   expeditedVotingPeriod?: string;
   expeditedThreshold?: number;
-  expeditedMinDeposit?: Coin[];
-  expeditedQuorum?: string; // only in sei
+  expeditedMinDeposit?: T[];
+  expeditedQuorum?: number; // only in sei
   // emergency - only in initia
-  emergencyMinDeposit?: Coin[];
+  emergencyMinDeposit?: T[];
   emergencyTallyInterval?: string;
 }
 
@@ -141,7 +143,7 @@ export interface ProposalVote {
   noWithVeto: number;
   yes: number;
   isVoteWeighted: boolean;
-  validator: Validator;
+  validator: Nullable<Validator>;
   voter: Nullable<BechAddr>;
   timestamp: Nullable<Date>;
   txHash: Nullable<string>;

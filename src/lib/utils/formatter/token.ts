@@ -42,6 +42,7 @@ export const formatDecimal =
     }
   };
 
+export const d0Formatter = formatDecimal({ decimalPoints: 0, delimiter: true });
 export const d2Formatter = formatDecimal({ decimalPoints: 2, delimiter: true });
 export const d6Formatter = formatDecimal({ decimalPoints: 6, delimiter: true });
 

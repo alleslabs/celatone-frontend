@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { CustomIcon } from "../icon";
@@ -31,9 +31,9 @@ export const JsonInfo = ({
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
       >
-        <Heading as="h6" variant="h6" wordBreak="break-word">
+        <Text variant="body1" fontWeight={600} wordBreak="break-word">
           {header}
-        </Heading>
+        </Text>
         <CustomIcon
           transition="all 0.25s ease-in-out"
           name={expand ? "chevron-up" : "chevron-down"}

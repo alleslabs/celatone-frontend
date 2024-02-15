@@ -2,6 +2,7 @@ import { Spinner } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import plur from "plur";
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { getCurrentDate } from "lib/utils";
@@ -14,11 +15,14 @@ const formatNumber = (num: number) =>
 
 interface CountdownProps {
   endTime: Date;
+  isString: boolean;
 }
 
-export const Countdown = ({ endTime }: CountdownProps) => {
+export const Countdown = ({ endTime, isString }: CountdownProps) => {
   const router = useRouter();
-  const [time, setTime] = useState<JSX.Element>(<Spinner boxSize={2} mx={2} />);
+  const [time, setTime] = useState<ReactNode>(
+    <Spinner as="span" boxSize={2} mx={2} />
+  );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -29,9 +33,13 @@ export const Countdown = ({ endTime }: CountdownProps) => {
       const duration = dayjs.duration(diffTime, "seconds");
 
       const days = duration.days();
-      const timestamp = (
+      const timestamp = isString ? (
+        `${
+          days > 0 && `${days.toString()} ${plur("day", days)} `
+        }${duration.hours()}:${formatNumber(duration.minutes())}:${formatNumber(duration.seconds())}`
+      ) : (
         <>
-          {days && (
+          {days > 0 && (
             <>
               <span style={{ fontWeight: 700 }}>{days}</span>
               <span> {plur("day", days)} </span>
@@ -47,7 +55,7 @@ export const Countdown = ({ endTime }: CountdownProps) => {
       setTime(timestamp);
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [endTime, router]);
+  }, [endTime, isString, router]);
 
   return time;
 };

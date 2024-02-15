@@ -19,6 +19,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
   const futurePoolGovernorType = getAddressType(
     pool.futurePoolGovernor ?? undefined
   );
+
   return (
     <Flex
       background="gray.900"
@@ -106,7 +107,6 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           )}
         </LabelText>
       )}
-
       {pool.tickSpacing !== null && (
         <LabelText
           label="Tick Spacing"
@@ -142,6 +142,23 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
               scaling_factor_controller: pool.scalingFactorController,
             })}
           />
+        </LabelText>
+      )}
+      {pool.type === PoolType.COSMWASM && (
+        <LabelText label="Relevant Contract">
+          {pool.contractAddress ? (
+            <Text variant="body2">
+              <ExplorerLink
+                value={pool.contractAddress.toString()}
+                type="contract_address"
+                showCopyOnHover
+              />
+            </Text>
+          ) : (
+            <Text variant="body2" color="text.disabled">
+              N/A
+            </Text>
+          )}
         </LabelText>
       )}
     </Flex>

@@ -29,3 +29,13 @@ export const formatPercent = (value: Percent<BigSource>): string => {
  */
 export const formatRatio = (ratio: Ratio<BigSource>): string =>
   formatPercent(big(ratio).times(100) as Percent<Big>);
+
+export const formatPrettyPercent = (ratio: number, fp = 2, fixedFp = false) => {
+  const lowestPercent = 10 ** -fp;
+
+  const percent = ratio * 100;
+  if (percent > 0 && percent < lowestPercent) return `<${lowestPercent}%`;
+
+  const rounded = big(percent).round(fp);
+  return `${fixedFp ? rounded.toFixed(fp) : rounded.toNumber()}%`;
+};

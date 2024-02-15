@@ -85,27 +85,11 @@ const renderChartTooltip = (
   }
 
   const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-  const tooltipWidth = tooltipEl.offsetWidth;
-  const tooltipHeight = tooltipEl.offsetHeight;
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
-
-  let leftPosition = positionX + tooltip.caretX + 100;
-  let topPosition = positionY + tooltip.caretY / 2;
-
-  // Adjust left position to keep tooltip within window width
-  if (leftPosition + tooltipWidth > windowWidth) {
-    leftPosition = windowWidth - tooltipWidth;
-  }
-
-  // Adjust top position to keep tooltip within window height
-  if (topPosition + tooltipHeight > windowHeight) {
-    topPosition = windowHeight - tooltipHeight;
-  }
 
   tooltipEl.style.opacity = "1";
-  tooltipEl.style.left = `${leftPosition}px`;
-  tooltipEl.style.top = `${topPosition}px`;
+  tooltipEl.style.left = `${positionX + tooltip.caretX}px`;
+  tooltipEl.style.top = `${positionY + tooltip.caretY}px`;
+  tooltipEl.style.padding = `${tooltip.options.padding}px ${tooltip.options.padding}px`;
 };
 
 export const LineChart = ({
