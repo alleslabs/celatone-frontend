@@ -38,6 +38,7 @@ type PublicProjectConfig = { enabled: boolean };
 type GovConfig =
   | {
       enabled: true;
+      version: string;
       hideOpenProposal?: boolean;
       disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
