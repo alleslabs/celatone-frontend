@@ -1,5 +1,4 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
 
 import type { ProposalOverviewProps } from "../..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
@@ -38,8 +37,8 @@ const VotingOverviewBody = ({
     return (
       <Text variant="body2" color="text.dark">
         The proposal was cancelled during the{" "}
-        {!isNull(proposalData.votingTime) ? "voting" : "deposit"} period at{" "}
-        {!isNull(proposalData.resolvedTimestamp)
+        {proposalData.votingTime ? "voting" : "deposit"} period at{" "}
+        {proposalData.resolvedTimestamp
           ? formatUTC(proposalData.resolvedTimestamp)
           : "N/A"}
       </Text>

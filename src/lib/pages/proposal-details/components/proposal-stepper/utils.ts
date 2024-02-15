@@ -41,6 +41,3 @@ export const getProgressBadgeProps = (
 
   return { state: PeriodState.COMPLETE, text: "Vote Ended" };
 };
-
-// TODO: handle the description
-export const getStepperDescription = () => "Placeholder";

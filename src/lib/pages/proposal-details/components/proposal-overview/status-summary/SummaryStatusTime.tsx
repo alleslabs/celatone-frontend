@@ -1,5 +1,4 @@
 import { Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
 
 import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
@@ -35,7 +34,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
     return (
       <Text variant="body2" textAlign={{ base: "end", md: "start" }}>
         Voting ends in{" "}
-        {!isNull(proposalData.votingEndTime) ? (
+        {proposalData.votingEndTime ? (
           <Countdown endTime={proposalData.votingEndTime} isString={false} />
         ) : (
           "N/A"
@@ -51,7 +50,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
     >
       {getResolvedPrefix(proposalData.status)}
       {" at "}
-      {!isNull(proposalData.resolvedTimestamp)
+      {proposalData.resolvedTimestamp
         ? formatUTC(proposalData.resolvedTimestamp)
         : "N/A"}
     </Text>

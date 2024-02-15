@@ -31,9 +31,7 @@ const DepositOverviewBody = ({
     return (
       <Text variant="body2" color="text.dark">
         The proposal passed the deposit period at{" "}
-        {!isNull(proposalData.votingTime)
-          ? formatUTC(proposalData.votingTime)
-          : "N/A"}
+        {proposalData.votingTime ? formatUTC(proposalData.votingTime) : "N/A"}
       </Text>
     );
 
