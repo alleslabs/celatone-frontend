@@ -168,6 +168,12 @@ dependencies:
   chakra-ui-markdown-renderer:
     specifier: ^4.1.0
     version: 4.1.0(@chakra-ui/react@2.8.2)(react-markdown@9.0.1)
+  chart.js:
+    specifier: ^4.4.1
+    version: 4.4.1
+  chartjs-plugin-crosshair:
+    specifier: ^2.0.0
+    version: 2.0.0(chart.js@4.4.1)
   cosmjs-types:
     specifier: ^0.9.0
     version: 0.9.0
@@ -234,6 +240,9 @@ dependencies:
   react-ace:
     specifier: ^10.1.0
     version: 10.1.0(react-dom@18.2.0)(react@18.2.0)
+  react-chartjs-2:
+    specifier: ^5.2.0
+    version: 5.2.0(chart.js@4.4.1)(react@18.2.0)
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
@@ -308,6 +317,9 @@ devDependencies:
   '@storybook/test':
     specifier: ^7.6.9
     version: 7.6.9(@types/jest@29.5.11)(jest@29.7.0)
+  '@types/chartjs-plugin-crosshair':
+    specifier: ^1.1.4
+    version: 1.1.4
   '@types/file-saver':
     specifier: ^2.0.5
     version: 2.0.7
@@ -5290,6 +5302,10 @@ packages:
       utility-types: 3.10.0
     dev: false
 
+  /@kurkle/color@0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: false
+
   /@ledgerhq/devices@8.2.0:
     resolution: {integrity: sha512-XROTW2gTmmuy+YPPDjdtKKTQ3mfxrPtKtV+a9QFbj8f5MnjVMV0Zpy1BIB4CyIMsVVi4z6+nI67auT7IlsM3SQ==}
     dependencies:
@@ -8035,6 +8051,18 @@ packages:
     resolution: {integrity: sha512-qQR1dr2rGIHYlJulmr8Ioq3De0Le9E4MJ5AiaeAETJJpndT1uUNHsGFK3L/UIu+rbkQSdj8J/w2bCsBZc/Y5fQ==}
     dev: true
 
+  /@types/chart.js@2.9.41:
+    resolution: {integrity: sha512-3dvkDvueckY83UyUXtJMalYoH6faOLkWQoaTlJgB4Djde3oORmNP0Jw85HtzTuXyliUHcdp704s0mZFQKio/KQ==}
+    dependencies:
+      moment: 2.30.1
+    dev: true
+
+  /@types/chartjs-plugin-crosshair@1.1.4:
+    resolution: {integrity: sha512-AvHMQMFh7aK+npOcyqezzaRpCgA5vqg3d885RD2xUyXULeUcgvxbLPf5v6yX5QqmbUZB3xRDOv52vCabBw+YKg==}
+    dependencies:
+      '@types/chart.js': 2.9.41
+    dev: true
+
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
@@ -10276,6 +10304,21 @@ packages:
 
   /chardet@0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
+
+  /chart.js@4.4.1:
+    resolution: {integrity: sha512-C74QN1bxwV1v2PEujhmKjOZ7iUM4w6BWs23Md/6aOZZSlwMzeCIDGuZay++rBgChYru7/+QFeoQW0fQoP534Dg==}
+    engines: {pnpm: '>=7'}
+    dependencies:
+      '@kurkle/color': 0.3.2
+    dev: false
+
+  /chartjs-plugin-crosshair@2.0.0(chart.js@4.4.1):
+    resolution: {integrity: sha512-Vs6strRvYpzL92v40r/rAWhh+7au8VnfyC/m2ZHXcXeLEWeFjDgMvXjWdX+eARhbgHQo+uGIKyq9fmkS79GIyQ==}
+    peerDependencies:
+      chart.js: ^4.0.1
+    dependencies:
+      chart.js: 4.4.1
+    dev: false
 
   /check-error@1.0.3:
     resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
@@ -15849,6 +15892,10 @@ packages:
     resolution: {integrity: sha512-yoe+JbhTClckZ67b2itRtistFKf8yPYelHLc7e5xAwtNAXxM6wJTUx2C7QeVSJFDzKT7bCIFyBVybPMKvmB9AA==}
     dev: false
 
+  /moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+    dev: true
+
   /monaco-editor@0.44.0:
     resolution: {integrity: sha512-5SmjNStN6bSuSE5WPT2ZV+iYn1/yI9sd4Igtk23ChvqB7kDk9lZbB9F5frsuvpB+2njdIeGGFf2G4gbE6rCC9Q==}
     dev: false
@@ -17074,6 +17121,16 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-chartjs-2@5.2.0(chart.js@4.4.1)(react@18.2.0):
+    resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      chart.js: 4.4.1
+      react: 18.2.0
     dev: false
 
   /react-clientside-effect@1.2.6(react@18.2.0):
