@@ -93,7 +93,7 @@ export const VoteDetails = ({
         <VoteDetailsAccordionItem
           step={2}
           proposalData={proposalData}
-          onClick={handleTabChange(PeriodIndex.Deposit)}
+          onClick={handleTabChange(PeriodIndex.Voting)}
           isDisabled={isDepositOnly}
         >
           <VotingPeriod proposalData={proposalData} {...props} />
@@ -113,7 +113,7 @@ export const VoteDetails = ({
           <VoteDetailsTab
             step={2}
             proposalData={proposalData}
-            onClick={handleTabChange(PeriodIndex.Deposit)}
+            onClick={handleTabChange(PeriodIndex.Voting)}
             isDisabled={isDepositOnly}
           />
         </TabList>
