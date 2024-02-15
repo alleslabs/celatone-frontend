@@ -1,4 +1,5 @@
 import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -54,8 +55,8 @@ export const PoolIndex = () => {
 
   useEffect(() => {
     if (
-      supportedPoolCount !== undefined &&
-      unsupportedPoolCount !== undefined &&
+      !isUndefined(supportedPoolCount) &&
+      !isUndefined(unsupportedPoolCount) &&
       supportedPoolCount === 0 &&
       unsupportedPoolCount > 0
     ) {
