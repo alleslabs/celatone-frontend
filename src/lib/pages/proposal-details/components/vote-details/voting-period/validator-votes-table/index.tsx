@@ -18,33 +18,43 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import type { ProposalAnswerCountsResponse } from "lib/services/proposal";
-import { useProposalVotes } from "lib/services/proposalService";
-import type { Option, ProposalVote } from "lib/types";
+import { useProposalValidatorVotes } from "lib/services/proposalService";
+import { ProposalValidatorVoteType } from "lib/types";
+import type { Option, ProposalValidatorVote } from "lib/types";
 
-import { ProposalVotesTableHeader } from "./ProposalVotesTableHeader";
-import { ProposalVotesTableRow } from "./ProposalVotesTableRow";
+import { ValidatorVotesTableHeader } from "./ValidatorVotesTableHeader";
+import { ValidatorVotesTableRow } from "./ValidatorVotesTableRow";
 
-interface ProposalVotesTableBodyProps {
-  proposalVotes: Option<ProposalVote[]>;
+interface ValidatorVotesTableBodyProps {
+  validatorVotes: Option<ProposalValidatorVote[]>;
   fullVersion: boolean;
   isLoading: boolean;
   isSearching: boolean;
 }
 
-export const ProposalVotesTableBody = ({
-  proposalVotes,
+export const ValidatorVotesTableBody = ({
+  validatorVotes,
   fullVersion,
   isLoading,
   isSearching,
-}: ProposalVotesTableBodyProps) => {
+}: ValidatorVotesTableBodyProps) => {
   const isMobile = useMobile();
-  const templateColumns =
-    fullVersion && !isMobile ? `1fr 0.8fr 1.5fr 1fr` : `2fr 1fr`;
+
+  const templateColumns = {
+    head:
+      fullVersion && !isMobile
+        ? `0.2fr 1fr 0.8fr 1.5fr 1fr`
+        : `0.1fr 1.5fr 1fr`,
+    row:
+      fullVersion && !isMobile
+        ? `0.2fr 1fr 0.8fr 1.5fr 1fr`
+        : `0.1fr 1.5fr 1fr`,
+  };
 
   if (isLoading) return <Loading />;
-  if (!proposalVotes) return <ErrorFetching dataName="votes" />;
+  if (!validatorVotes) return <ErrorFetching dataName="votes" />;
 
-  if (proposalVotes.length === 0) {
+  if (validatorVotes.length === 0) {
     return (
       <EmptyState
         imageVariant="empty"
@@ -58,12 +68,12 @@ export const ProposalVotesTableBody = ({
   }
   return (
     <TableContainer>
-      <ProposalVotesTableHeader
-        templateColumns={templateColumns}
+      <ValidatorVotesTableHeader
+        templateColumns={templateColumns.head}
         fullVersion={fullVersion}
       />
-      {proposalVotes.map((each, idx) => (
-        <ProposalVotesTableRow
+      {validatorVotes.map((each, idx) => (
+        <ValidatorVotesTableRow
           key={
             each.proposalId.toString() +
             (each.timestamp ?? "null") +
@@ -72,39 +82,31 @@ export const ProposalVotesTableBody = ({
           }
           proposalVote={each}
           fullVersion={fullVersion}
-          templateColumns={templateColumns}
+          templateColumns={templateColumns.row}
         />
       ))}
     </TableContainer>
   );
 };
 
-interface ProposalVotesTableProps {
+interface ValidatorVotesTableProps {
   id: number;
-  answers: Option<ProposalAnswerCountsResponse["all"]>;
+  answers: Option<ProposalAnswerCountsResponse["validator"]>;
   fullVersion: boolean;
   onViewMore?: () => void;
 }
 
-// pass it to api
-enum AnswerType {
-  ALL = "all",
-  YES = "yes",
-  NO = "no",
-  NO_WITH_VETO = "no_with_veto",
-  ABSTAIN = "abstain",
-  WEIGHTED = "weighted",
-}
+const tableHeaderId = "validatorVotesTable";
 
-const tableHeaderId = "proposalVotesTable";
-
-export const ProposalVotesTable = ({
+export const ValidatorVotesTable = ({
   id,
   answers,
   fullVersion,
   onViewMore,
-}: ProposalVotesTableProps) => {
-  const [answerFilter, setAnswerFilter] = useState<AnswerType>(AnswerType.ALL);
+}: ValidatorVotesTableProps) => {
+  const [answerFilter, setAnswerFilter] = useState<ProposalValidatorVoteType>(
+    ProposalValidatorVoteType.ALL
+  );
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
 
@@ -115,6 +117,7 @@ export const ProposalVotesTable = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
     total: answers?.total,
     initialState: {
@@ -124,48 +127,57 @@ export const ProposalVotesTable = ({
     },
   });
 
-  const { data, isLoading } = useProposalVotes(
+  const { data, isLoading } = useProposalValidatorVotes(
     id,
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
   );
 
-  const isSearching = debouncedSearch !== "" || answerFilter !== AnswerType.ALL;
+  const isSearching =
+    debouncedSearch !== "" || answerFilter !== ProposalValidatorVoteType.ALL;
 
-  const total = answers?.total ?? 0;
+  const total = answers?.totalValidators ?? 0;
 
   const answerOptions = useMemo(
     () => [
       {
         label: `All votes (${total})`,
-        value: AnswerType.ALL,
+        value: ProposalValidatorVoteType.ALL,
         disabled: false,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,
-        value: AnswerType.YES,
+        value: ProposalValidatorVoteType.YES,
         disabled: false,
       },
       {
         label: `No (${answers?.no ?? 0})`,
-        value: AnswerType.NO,
+        value: ProposalValidatorVoteType.NO,
         disabled: false,
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: AnswerType.NO_WITH_VETO,
+        value: ProposalValidatorVoteType.NO_WITH_VETO,
         disabled: false,
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
-        value: AnswerType.ABSTAIN,
+        value: ProposalValidatorVoteType.ABSTAIN,
         disabled: false,
       },
       {
         label: `Weighted (${answers?.weighted ?? 0})`,
-        value: AnswerType.WEIGHTED,
+        value: ProposalValidatorVoteType.WEIGHTED,
+        disabled: false,
+      },
+      {
+        label: `Did not vote (${answers?.didNotVote ?? 0})`,
+        value: ProposalValidatorVoteType.DID_NOT_VOTE,
         disabled: false,
       },
     ],
@@ -178,7 +190,7 @@ export const ProposalVotesTable = ({
     setSearch(e.target.value);
   };
 
-  const handleOnAnswerFilterChange = (newAnswer: AnswerType) => {
+  const handleOnAnswerFilterChange = (newAnswer: ProposalValidatorVoteType) => {
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
   };
@@ -198,7 +210,7 @@ export const ProposalVotesTable = ({
       {fullVersion && (
         <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
           <GridItem>
-            <SelectInput<AnswerType>
+            <SelectInput<ProposalValidatorVoteType>
               formLabel="Filter by Answer"
               options={answerOptions}
               onChange={handleOnAnswerFilterChange}
@@ -218,8 +230,8 @@ export const ProposalVotesTable = ({
           </GridItem>
         </Grid>
       )}
-      <ProposalVotesTableBody
-        proposalVotes={data?.items}
+      <ValidatorVotesTableBody
+        validatorVotes={data?.items}
         isLoading={isLoading}
         fullVersion={fullVersion}
         isSearching={isSearching}
@@ -230,7 +242,7 @@ export const ProposalVotesTable = ({
           pagesQuantity={pagesQuantity}
           scrollComponentId={tableHeaderId}
           offset={offset}
-          totalData={total}
+          totalData={data?.total ?? 0}
           pageSize={pageSize}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
@@ -239,7 +251,7 @@ export const ProposalVotesTable = ({
       {onViewMore && !!total && total > 10 && (
         <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
           <Button w="full" variant="ghost-primary" gap={2} onClick={onViewMore}>
-            View all votes
+            View all validator votes
             <CustomIcon name="chevron-right" boxSize="12px" />
           </Button>
         </Flex>

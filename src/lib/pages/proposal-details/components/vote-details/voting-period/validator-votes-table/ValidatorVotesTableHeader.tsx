@@ -1,0 +1,40 @@
+import type { GridProps } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
+
+import { useMobile } from "lib/app-provider";
+import { TableHeader } from "lib/components/table";
+
+interface ValidatorVotesTableHeaderProps {
+  templateColumns: GridProps["templateColumns"];
+  fullVersion: boolean;
+}
+
+export const ValidatorVotesTableHeader = ({
+  templateColumns,
+  fullVersion,
+}: ValidatorVotesTableHeaderProps) => {
+  const isMobile = useMobile();
+
+  if (isMobile)
+    return (
+      <Grid templateColumns={templateColumns} minW="min-content">
+        <TableHeader pl={0}>#</TableHeader>
+        <TableHeader>Validators (Vote Answer)</TableHeader>
+        <TableHeader />
+      </Grid>
+    );
+
+  return (
+    <Grid templateColumns={templateColumns} minW="min-content">
+      <TableHeader>{fullVersion && "Rank"}</TableHeader>
+      <TableHeader>Validators</TableHeader>
+      <TableHeader>Votes</TableHeader>
+      {fullVersion && (
+        <>
+          <TableHeader>Timestamp</TableHeader>
+          <TableHeader>Transaction Hash</TableHeader>
+        </>
+      )}
+    </Grid>
+  );
+};

@@ -6,27 +6,28 @@ import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useOpenTxTab } from "lib/hooks";
-import type { ProposalVote } from "lib/types";
+import type { ProposalValidatorVote } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface ProposalVotesTableRowProps {
-  proposalVote: ProposalVote;
+interface ValidatorVotesTableRowProps {
+  proposalVote: ProposalValidatorVote;
   templateColumns: string;
   fullVersion: boolean;
 }
 
-export const ProposalVotesTableRow = ({
+export const ValidatorVotesTableRow = ({
   proposalVote,
   templateColumns,
   fullVersion,
-}: ProposalVotesTableRowProps) => {
+}: ValidatorVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");
 
   if (isMobile)
     return (
       <Grid templateColumns={templateColumns} minW="min-content">
-        <TableRow pl={0}>
+        <TableRow pl={0}>{proposalVote.rank}</TableRow>
+        <TableRow>
           <Voter proposalVote={proposalVote} />
         </TableRow>
         <TableRow justifyContent="flex-end" pr={0}>
@@ -61,6 +62,7 @@ export const ProposalVotesTableRow = ({
 
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
+      <TableRow>{proposalVote.rank}</TableRow>
       <TableRow>
         <Voter proposalVote={proposalVote} />
       </TableRow>

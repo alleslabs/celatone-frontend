@@ -1,4 +1,13 @@
-import { Button, Flex, Grid, GridItem, useDisclosure } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { isNull } from "lodash";
 import type { ReactNode } from "react";
 
 import type { VoteDetailsProps } from "..";
@@ -8,6 +17,7 @@ import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposalService";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
+import { ValidatorVotesTable } from "./validator-votes-table";
 import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
@@ -90,11 +100,30 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                   {isMobile ? "View" : "View Details"}
                 </Button>
               </Flex>
-              Validator Votes Lorem ipsum dolor, sit amet consectetur
-              adipisicing elit. Necessitatibus ipsam perspiciatis eius illo
-              maiores, magnam architecto nesciunt esse animi obcaecati
-              voluptates delectus doloribus magni alias a eligendi odio nam
-              iure?
+              {!isNull(proposalData?.resolvedHeight) && (
+                <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
+                  <CustomIcon
+                    name="alert-circle-solid"
+                    boxSize={4}
+                    color="secondary.main"
+                  />
+                  <AlertDescription>
+                    Please note that the displayed ranking is in real-time and
+                    may not accurately reflect the final vote results when the
+                    voting period ends.
+                  </AlertDescription>
+                </Alert>
+              )}
+              <ValidatorVotesTable
+                id={proposalData.id}
+                answers={answers?.validator}
+                fullVersion={false}
+                onViewMore={
+                  isMobile
+                    ? () => validatorVoteDisclosure.onToggle()
+                    : undefined
+                }
+              />
             </ContentContainer>
           </GridItem>
           {/* Recent Votes */}
@@ -118,16 +147,18 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 id={proposalData.id}
                 answers={answers?.all}
                 fullVersion={false}
+                onViewMore={
+                  isMobile ? () => allVoteDisclosure.onToggle() : undefined
+                }
               />
             </ContentContainer>
           </GridItem>
         </Grid>
       </Flex>
       <ValidatorVotesPanel
-        w="full"
-        position={validatorVoteDisclosure.isOpen ? "relative" : "absolute"}
-        opacity={validatorVoteDisclosure.isOpen ? 1 : 0}
-        left={validatorVoteDisclosure.isOpen ? "0" : "100%"}
+        answers={answers?.validator}
+        isOpen={validatorVoteDisclosure.isOpen}
+        id={proposalData.id}
         onBack={validatorVoteDisclosure.onToggle}
       />
       <ProposalVotesPanel

@@ -9,10 +9,10 @@ import type { Option } from "lib/types";
 import { ProposalVotesTable } from "./votes-table";
 
 interface ProposalVotesPanelProps {
-  isOpen: boolean;
-  onBack: () => void;
   answers: Option<ProposalAnswerCountsResponse["all"]>;
   id: number;
+  isOpen: boolean;
+  onBack: () => void;
 }
 
 export const ProposalVotesPanel = ({
