@@ -28,8 +28,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/contracts`) ||
     pathName.includes(`/codes`) ||
     // move
-    pathName.includes(`/modules`) ||
-    pathName.includes(`/validator`);
+    pathName.includes(`/modules`);
 
   if (!isResponsive && isMobile) return <NoMobile />;
   return <>{children}</>;
