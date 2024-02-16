@@ -89,13 +89,3 @@ export const getVoteResult = (
     resultColor: "error.main",
   };
 };
-
-export const formatPrettyPercent = (ratio: number, fp = 2, fixedFp = false) => {
-  const lowestPercent = 10 ** -fp;
-
-  const percent = ratio * 100;
-  if (percent > 0 && percent < lowestPercent) return `<${lowestPercent}%`;
-
-  const rounded = big(percent).round(fp);
-  return `${fixedFp ? rounded.toFixed(fp) : rounded.toNumber()}%`;
-};
