@@ -60,7 +60,6 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                   style={{
                     display: "inline-block",
                     marginLeft: "8px",
-                    marginBottom: "2px",
                     verticalAlign: "middle",
                   }}
                 >
