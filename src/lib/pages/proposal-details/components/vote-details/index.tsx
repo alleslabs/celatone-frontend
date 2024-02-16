@@ -1,6 +1,5 @@
 import {
   Accordion,
-  Flex,
   TabList,
   TabPanel,
   TabPanels,
@@ -76,62 +75,63 @@ export const VoteDetails = ({
   }, [handleTabChange, isDepositOnly, period]);
 
   return isMobile ? (
-    <Flex>
-      <Accordion
-        allowToggle
-        w="full"
-        variant="transparent"
-        index={[periodTabIndex]}
+    <Accordion
+      allowToggle
+      w="full"
+      variant="transparent"
+      index={[periodTabIndex]}
+    >
+      <VoteDetailsAccordionItem
+        step={1}
+        proposalData={proposalData}
+        onClick={handleTabChange(PeriodIndex.Deposit)}
       >
-        <VoteDetailsAccordionItem
+        <DepositPeriodSection />
+      </VoteDetailsAccordionItem>
+      <VoteDetailsAccordionItem
+        step={2}
+        proposalData={proposalData}
+        onClick={handleTabChange(PeriodIndex.Voting)}
+        isDisabled={isDepositOnly}
+      >
+        <VotingPeriod proposalData={proposalData} {...props} />
+      </VoteDetailsAccordionItem>
+    </Accordion>
+  ) : (
+    <Tabs
+      isLazy
+      lazyBehavior="keepMounted"
+      mt={6}
+      w="full"
+      index={periodTabIndex}
+    >
+      <TabList borderBottom="0px solid" gap={2}>
+        <VoteDetailsTab
           step={1}
           proposalData={proposalData}
           onClick={handleTabChange(PeriodIndex.Deposit)}
-        >
-          <DepositPeriodSection />
-        </VoteDetailsAccordionItem>
-        <VoteDetailsAccordionItem
+        />
+        <VoteDetailsTab
           step={2}
           proposalData={proposalData}
           onClick={handleTabChange(PeriodIndex.Voting)}
           isDisabled={isDepositOnly}
-        >
+        />
+      </TabList>
+      <TabPanels
+        background="gray.800"
+        border="1px solid"
+        borderColor="gray.700"
+        borderTopColor="transparent"
+        borderRadius="0px 0px 8px 8px"
+      >
+        <TabPanel>
+          <DepositPeriodSection />
+        </TabPanel>
+        <TabPanel>
           <VotingPeriod proposalData={proposalData} {...props} />
-        </VoteDetailsAccordionItem>
-      </Accordion>
-    </Flex>
-  ) : (
-    <Flex mt={8}>
-      {/* To add index to Tabs */}
-      <Tabs isLazy lazyBehavior="keepMounted" w="full" index={periodTabIndex}>
-        <TabList borderBottom="0px solid" gap={2}>
-          <VoteDetailsTab
-            step={1}
-            proposalData={proposalData}
-            onClick={handleTabChange(PeriodIndex.Deposit)}
-          />
-          <VoteDetailsTab
-            step={2}
-            proposalData={proposalData}
-            onClick={handleTabChange(PeriodIndex.Voting)}
-            isDisabled={isDepositOnly}
-          />
-        </TabList>
-        <TabPanels
-          background="gray.800"
-          border="1px solid"
-          borderColor="gray.700"
-          borderTopColor="transparent"
-          borderRadius="0px 0px 8px 8px"
-        >
-          <TabPanel>
-            <DepositPeriodSection />
-          </TabPanel>
-          <TabPanel>
-            <VotingPeriod proposalData={proposalData} {...props} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Flex>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
