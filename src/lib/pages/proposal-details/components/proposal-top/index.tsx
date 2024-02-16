@@ -6,7 +6,7 @@ import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { ProposalData } from "lib/types";
+import { ProposalStatus, type ProposalData } from "lib/types";
 import { formatUTC, openNewTab } from "lib/utils";
 
 import { ProposalInfo } from "./proposal-info";
@@ -22,6 +22,9 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
   const openApiPage = () =>
     openNewTab(`${endpoint}/${encodeURIComponent(proposalData.id)}/info`);
 
+  const isDepositOrVoting =
+    proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
+    proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Flex direction="column" mb={6} gap={5}>
       <Breadcrumb
@@ -61,7 +64,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                     verticalAlign: "middle",
                   }}
                 >
-                  <Expedited isActiveExpedited />
+                  <Expedited isActiveExpedited={isDepositOrVoting} />
                 </span>
               )}
             </Heading>

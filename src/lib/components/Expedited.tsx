@@ -62,7 +62,7 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => {
         />
       }
     >
-      <Flex align="center">
+      <Flex as="span" align="center">
         <CustomIcon
           name="expedited"
           boxSize={4}
@@ -70,6 +70,7 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => {
           color={isActiveExpedited ? "accent.main" : "gray.400"}
         />
         <Text
+          as="span"
           variant="body3"
           color={isActiveExpedited ? "accent.main" : "text.dark"}
         >
