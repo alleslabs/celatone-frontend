@@ -9,6 +9,7 @@ export enum ProposalStatus {
   REJECTED = "Rejected",
   FAILED = "Failed",
   DEPOSIT_FAILED = "Inactive",
+  CANCELLED = "Cancelled",
 }
 export const zProposalStatus = z.nativeEnum(ProposalStatus);
 
