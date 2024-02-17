@@ -18,6 +18,8 @@ const getBgColor = (
       return "success.dark";
     case ProposalStatus.VOTING_PERIOD:
       return "primary.dark";
+    case ProposalStatus.CANCELLED:
+      return "error.background";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
       return "gray.700";
