@@ -47,7 +47,8 @@ const renderChartTooltip = (
     >;
     tooltip: TooltipModel<"line">;
   },
-  customizeTooltip: (tooltip: TooltipModel<"line">) => string
+  customizeTooltip: (tooltip: TooltipModel<"line">) => string,
+  isMobile: boolean
 ) => {
   const { chart, tooltip } = context;
 
@@ -90,7 +91,7 @@ const renderChartTooltip = (
   const windowInnerWidth = window.innerWidth;
   const tooltipWidth = tooltipEl.clientWidth;
 
-  const sidebarWidth = 250;
+  const sidebarWidth = isMobile ? 0 : 250;
 
   const isOverflowLeft =
     canvasOffsetLeft + caretX - tooltipWidth / 2 - sidebarWidth < 0;
@@ -153,7 +154,7 @@ export const LineChart = ({
             enabled: false,
             position: "nearest",
             external: (context) =>
-              renderChartTooltip(context, customizeTooltip),
+              renderChartTooltip(context, customizeTooltip, isMobile),
           }
         : {
             enabled: true,
@@ -215,6 +216,9 @@ export const LineChart = ({
       },
     },
     maintainAspectRatio: false,
+    animation: {
+      easing: "easeInElastic",
+    },
   };
 
   return (
