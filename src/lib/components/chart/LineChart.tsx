@@ -85,11 +85,25 @@ const renderChartTooltip = (
   }
 
   const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
+  const { caretX, caretY } = tooltip;
+  const canvasOffsetLeft = chart.canvas.getBoundingClientRect().left;
+  const windowInnerWidth = window.innerWidth;
+  const tooltipWidth = tooltipEl.clientWidth;
+
+  const isOverflowLeft = canvasOffsetLeft + caretX - tooltipWidth / 2 < 0;
+  const isOverflowRight =
+    canvasOffsetLeft + caretX + tooltipWidth / 2 > windowInnerWidth;
 
   tooltipEl.style.opacity = "1";
-  tooltipEl.style.left = `${positionX + tooltip.caretX}px`;
-  tooltipEl.style.top = `${positionY + tooltip.caretY}px`;
-  tooltipEl.style.padding = `${tooltip.options.padding}px ${tooltip.options.padding}px`;
+  tooltipEl.style.top = `${positionY + caretY}px`;
+
+  if (isOverflowRight) {
+    tooltipEl.style.left = `${positionX + caretX - tooltipWidth / 2}px`;
+  } else if (isOverflowLeft) {
+    tooltipEl.style.left = `${positionX + caretX + tooltipWidth / 2}px`;
+  } else {
+    tooltipEl.style.left = `${positionX + caretX}px`;
+  }
 };
 
 export const LineChart = ({
@@ -120,7 +134,7 @@ export const LineChart = ({
       },
       crosshair: {
         line: {
-          color: isMobile ? "#C6E141" : "#D8BEFC",
+          color: "#D8BEFC",
           width: 1,
           dashPattern: [5, 5],
         },

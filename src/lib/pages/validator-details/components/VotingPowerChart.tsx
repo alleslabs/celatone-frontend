@@ -2,15 +2,12 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
 import { LineChart } from "../../../components/chart/LineChart";
-import { useMobile } from "lib/app-provider";
 
 interface VotingPowerChartProps {
   currency: string;
 }
 
 export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
-  const isMobile = useMobile();
-
   const labels = [
     "00:00",
     "01:00",
@@ -41,24 +38,19 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
       2000, 2500, 1800, 2100, 1200, 1500, 1800, 2000, 2500, 1800, 2100, 1200,
       1500,
     ],
-    borderColor: isMobile ? "#C6E141" : "#D8BEFC",
+    borderColor: "#D8BEFC",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 300);
 
-      if (isMobile) {
-        gradient.addColorStop(0, "rgba(198, 225, 65, .28)");
-        gradient.addColorStop(0.6, "rgba(198, 225, 65, 0)");
-      } else {
-        gradient.addColorStop(0, "rgba(216, 190, 252, 1)");
-        gradient.addColorStop(0.8, "rgba(115, 85, 156, 0)");
-      }
+      gradient.addColorStop(0, "rgba(216, 190, 252, 1)");
+      gradient.addColorStop(0.8, "rgba(115, 85, 156, 0)");
 
       return gradient;
     },
     pointHoverBackgroundColor: "#F4F9D9",
-    pointHoverBorderColor: isMobile ? "#C6E141" : "#D8BEFC",
+    pointHoverBorderColor: "#D8BEFC",
   };
 
   const currentPrice = dataset.data[dataset.data.length - 1].toFixed(1);
