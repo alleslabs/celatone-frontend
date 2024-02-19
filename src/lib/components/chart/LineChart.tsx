@@ -216,9 +216,7 @@ export const LineChart = ({
       },
     },
     maintainAspectRatio: false,
-    animation: {
-      easing: "easeInElastic",
-    },
+    animation: false,
   };
 
   return (
