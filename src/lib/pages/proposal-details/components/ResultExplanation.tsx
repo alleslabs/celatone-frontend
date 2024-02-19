@@ -1,6 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { SkeletonText, Text } from "@chakra-ui/react";
-import big from "big.js";
 
 import {
   extractParams,
@@ -184,8 +183,8 @@ export const ResultExplanation = ({
     return (
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a{" "}
-        {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}%{" "}
-        &ldquo;Yes&rdquo; rate, it was not implemented due to technical reasons.
+        {formatPrettyPercent(yesRatio.toNumber())} &ldquo;Yes&rdquo; rate, it
+        was not implemented due to technical reasons.
       </Text>
     );
 
@@ -237,8 +236,7 @@ export const ResultExplanation = ({
           fontWeight: 700,
         }}
       >
-        {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}% of
-        &ldquo;Yes&rdquo;
+        {formatPrettyPercent(yesRatio.toNumber())} of &ldquo;Yes&rdquo;
       </span>{" "}
       rate. As a result, the proposal has been passed, and its content will now
       be implemented.
