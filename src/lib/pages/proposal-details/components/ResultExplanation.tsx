@@ -1,21 +1,28 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { SkeletonText, Text } from "@chakra-ui/react";
-import big from "big.js";
 
-import type { ProposalOverviewProps } from "..";
-import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import {
   extractParams,
   mapDeposit,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
-import type { Token, TokenWithValue, U } from "lib/types";
+import type {
+  Option,
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
+  Token,
+  TokenWithValue,
+  U,
+} from "lib/types";
 import { ProposalStatus } from "lib/types";
 import {
   divWithDefault,
   formatPrettyPercent,
   formatTokenWithValueList,
 } from "lib/utils";
+
+import { ErrorFetchingProposalInfos } from "./ErrorFetchingProposalInfos";
 
 const Passed = () => (
   <span
@@ -39,12 +46,19 @@ const Rejected = () => (
   </span>
 );
 
-export const SummaryStatusBody = ({
+export interface ResultExplanationProps {
+  proposalData: ProposalData;
+  votesInfo: Option<ProposalVotesInfo>;
+  params: Option<ProposalParams>;
+  isLoading: boolean;
+}
+
+export const ResultExplanation = ({
   proposalData,
   params,
   votesInfo,
   isLoading,
-}: ProposalOverviewProps) => {
+}: ResultExplanationProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_FAILED)
     return (
       <Text variant="body2">
@@ -169,8 +183,8 @@ export const SummaryStatusBody = ({
     return (
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a{" "}
-        {yesRatio.mul(100).round(2, big.roundHalfUp).toNumber()}%{" "}
-        &ldquo;Yes&rdquo; rate, it was not implemented due to technical reasons.
+        {formatPrettyPercent(yesRatio.toNumber())} &ldquo;Yes&rdquo; rate, it
+        was not implemented due to technical reasons.
       </Text>
     );
 
@@ -222,8 +236,7 @@ export const SummaryStatusBody = ({
           fontWeight: 700,
         }}
       >
-        {yes.mul(100).round(2, big.roundHalfUp).toNumber()}% of
-        &ldquo;Yes&rdquo;
+        {formatPrettyPercent(yesRatio.toNumber())} of &ldquo;Yes&rdquo;
       </span>{" "}
       rate. As a result, the proposal has been passed, and its content will now
       be implemented.
