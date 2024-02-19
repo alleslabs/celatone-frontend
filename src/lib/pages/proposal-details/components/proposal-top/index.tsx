@@ -1,15 +1,16 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useBaseApiRoute, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { ProposalData } from "lib/types";
-import { formatUTC, openNewTab } from "lib/utils";
+import { formatUTC } from "lib/utils";
 
 import { ProposalInfo } from "./proposal-info";
+import { ViewProposalJson } from "./ViewProposalJson";
 
 interface ProposalTopProps {
   proposalData: ProposalData;
@@ -17,10 +18,6 @@ interface ProposalTopProps {
 
 export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
   const isMobile = useMobile();
-  // TODO: use LCD and gov config version
-  const endpoint = useBaseApiRoute("proposals");
-  const openApiPage = () =>
-    openNewTab(`${endpoint}/${encodeURIComponent(proposalData.id)}/info`);
 
   return (
     <Flex direction="column" mb={6} gap={5}>
@@ -144,16 +141,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
             </Flex>
           </Flex>
         </Flex>
-        <Button
-          variant="outline-primary"
-          w={{ base: "full", md: "min-content" }}
-          minWidth={{ md: "150px" }}
-          size={{ base: "sm", md: "md" }}
-          rightIcon={<CustomIcon name="launch" />}
-          onClick={openApiPage}
-        >
-          View in JSON
-        </Button>
+        <ViewProposalJson id={proposalData.id} />
       </Flex>
       <ProposalInfo data={proposalData} />
     </Flex>
