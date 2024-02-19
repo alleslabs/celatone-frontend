@@ -90,7 +90,10 @@ const renderChartTooltip = (
   const windowInnerWidth = window.innerWidth;
   const tooltipWidth = tooltipEl.clientWidth;
 
-  const isOverflowLeft = canvasOffsetLeft + caretX - tooltipWidth / 2 < 0;
+  const sidebarWidth = 250;
+
+  const isOverflowLeft =
+    canvasOffsetLeft + caretX - tooltipWidth / 2 - sidebarWidth < 0;
   const isOverflowRight =
     canvasOffsetLeft + caretX + tooltipWidth / 2 > windowInnerWidth;
 
