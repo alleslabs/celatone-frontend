@@ -31,6 +31,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
       },
       nft: {
         enabled: false,
@@ -78,6 +79,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
       },
       nft: {
         enabled: false,

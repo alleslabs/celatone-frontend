@@ -32,6 +32,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         disableStoreCodeProposal: true,
         disableWhitelistProposal: true,
       },
@@ -83,6 +84,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         disableWhitelistProposal: true,
         disableStoreCodeProposal: true,
       },
@@ -133,6 +135,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         disableWhitelistProposal: true,
         disableStoreCodeProposal: true,
       },
