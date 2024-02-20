@@ -15,6 +15,7 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposalService";
+import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
 import { ValidatorVotesTable } from "./validator-votes-table";
@@ -42,6 +43,8 @@ export const ContentContainer = ({
   </Flex>
 );
 
+const scrollComponentId = "voting-period";
+
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
@@ -49,8 +52,28 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
+  const toggleDisclosure = (
+    disclosure: typeof validatorVoteDisclosure | typeof allVoteDisclosure
+  ) => {
+    if (disclosure.isOpen) {
+      disclosure.onClose();
+    } else {
+      disclosure.onOpen();
+    }
+
+    const windowPosition = scrollYPosition();
+    if (windowPosition) {
+      scrollToComponent(scrollComponentId);
+    }
+  };
+
   return (
-    <Flex position="relative" overflow="hidden" width="full">
+    <Flex
+      position="relative"
+      overflowX="hidden"
+      width="full"
+      id={scrollComponentId}
+    >
       <Flex
         direction="column"
         w="full"
@@ -94,8 +117,9 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 />
                 <Button
                   variant="ghost-primary"
-                  onClick={() => validatorVoteDisclosure.onToggle()}
+                  onClick={() => toggleDisclosure(validatorVoteDisclosure)}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                  isDisabled={!answers?.validator.total}
                 >
                   {isMobile ? "View" : "View Details"}
                 </Button>
@@ -137,8 +161,9 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 />
                 <Button
                   variant="ghost-primary"
-                  onClick={() => allVoteDisclosure.onToggle()}
+                  onClick={() => toggleDisclosure(allVoteDisclosure)}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                  isDisabled={!answers?.all.total}
                 >
                   {isMobile ? "View" : "View Details"}
                 </Button>

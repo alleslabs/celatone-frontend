@@ -110,13 +110,13 @@ export const ProposalVotesTable = ({
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: answers?.total,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -129,7 +129,8 @@ export const ProposalVotesTable = ({
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   const isSearching = debouncedSearch !== "" || answerFilter !== AnswerType.ALL;
@@ -230,7 +231,7 @@ export const ProposalVotesTable = ({
           pagesQuantity={pagesQuantity}
           scrollComponentId={tableHeaderId}
           offset={offset}
-          totalData={total}
+          totalData={data?.total ?? 0}
           pageSize={pageSize}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}

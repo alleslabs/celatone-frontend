@@ -112,14 +112,13 @@ export const ValidatorVotesTable = ({
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
-    setTotalData,
   } = usePaginator({
-    total: answers?.total,
     initialState: {
       pageSize: 10,
       currentPage: 1,

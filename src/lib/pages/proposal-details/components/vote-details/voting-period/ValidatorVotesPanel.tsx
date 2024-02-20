@@ -29,12 +29,16 @@ export const ValidatorVotesPanel = ({
       position={isOpen ? "relative" : "absolute"}
       opacity={isOpen ? 1 : 0}
       left={isOpen ? "0" : "100%"}
+      top={0}
+      bottom={0}
+      overflowY="auto"
       transition="all 0.25s ease-in-out"
       direction="column"
       background={isMobile ? "transparent" : "gray.900"}
       border="1px solid"
       borderColor={isMobile ? "transparent" : "gray.700"}
       borderRadius="8px"
+      pointerEvents={isOpen ? "auto" : "none"}
       p={isMobile ? 0 : 6}
       gap={4}
     >

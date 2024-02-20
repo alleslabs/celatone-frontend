@@ -429,7 +429,8 @@ export const useProposalVotes = (
   limit: number,
   offset: number,
   answer?: string,
-  search?: string
+  search?: string,
+  options: Pick<UseQueryOptions<ProposalVotesResponse>, "onSuccess"> = {}
 ): UseQueryResult<ProposalVotesResponse> => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -444,7 +445,7 @@ export const useProposalVotes = (
       answer,
     ],
     async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
