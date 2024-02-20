@@ -13,7 +13,7 @@ import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
 
-export const ContentContainer = ({
+const ContentContainer = ({
   children,
   transparent = false,
 }: {

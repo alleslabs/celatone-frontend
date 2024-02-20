@@ -1,4 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import type { ProposalOverviewProps } from "..";
 import { DepositBar } from "../../deposit-bar";
@@ -7,7 +8,7 @@ import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { TabIndex, VoteTabIndex } from "lib/pages/proposal-details/types";
+import { TabIndex, PeriodIndex } from "lib/pages/proposal-details/types";
 import { extractParams } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
@@ -24,7 +25,7 @@ const DepositOverviewBody = ({
     proposalData.status !== ProposalStatus.DEPOSIT_PERIOD &&
     !(
       proposalData.status === ProposalStatus.CANCELLED &&
-      proposalData.votingTime === null
+      isNull(proposalData.votingTime)
     )
   )
     return (
@@ -58,7 +59,7 @@ const DepositOverviewBody = ({
               query: {
                 id: proposalData.id,
                 tab: TabIndex.Vote,
-                voteTab: VoteTabIndex.Deposit, // TODO: replace voteTab to period later
+                period: PeriodIndex.Deposit,
               },
               options: {
                 shallow: true,

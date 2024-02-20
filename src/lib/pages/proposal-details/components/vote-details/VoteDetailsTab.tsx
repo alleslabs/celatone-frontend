@@ -12,6 +12,7 @@ interface VoteDetailsTabProps extends TabProps {
 export const VoteDetailsTab = ({
   step,
   proposalData,
+  isDisabled,
   ...restProps
 }: VoteDetailsTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -42,6 +43,7 @@ export const VoteDetailsTab = ({
           borderBottomColor: "transparent",
         },
       }}
+      isDisabled={isDisabled}
       _active={{
         bg: "unset",
       }}
