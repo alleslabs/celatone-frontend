@@ -361,18 +361,14 @@ export const useProposalValidatorVotes = (
   limit: number,
   offset: number,
   answer?: ProposalValidatorVoteType,
-  search?: string,
-  options: Pick<
-    UseQueryOptions<ProposalValidatorVotesResponse>,
-    "onSuccess"
-  > = {}
+  search?: string
 ) => {
   const endpoint = useBaseApiRoute("proposals");
 
   const { data, ...rest } = useQuery<ProposalValidatorVotesResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
     async () => getProposalValidatorVotes(endpoint, id),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 
   const filteredData = useMemo(() => {

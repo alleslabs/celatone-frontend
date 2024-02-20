@@ -13,12 +13,14 @@ interface ValidatorVotesTableRowProps {
   proposalVote: ProposalValidatorVote;
   templateColumns: string;
   fullVersion: boolean;
+  isProposalResolved: boolean;
 }
 
 export const ValidatorVotesTableRow = ({
   proposalVote,
   templateColumns,
   fullVersion,
+  isProposalResolved,
 }: ValidatorVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");
@@ -26,7 +28,7 @@ export const ValidatorVotesTableRow = ({
   if (isMobile)
     return (
       <Grid templateColumns={templateColumns} minW="min-content">
-        <TableRow pl={0}>{proposalVote.rank}</TableRow>
+        {!isProposalResolved && <TableRow pl={0}>{proposalVote.rank}</TableRow>}
         <TableRow>
           <Voter proposalVote={proposalVote} />
         </TableRow>
@@ -62,7 +64,7 @@ export const ValidatorVotesTableRow = ({
 
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
-      <TableRow>{proposalVote.rank}</TableRow>
+      {!isProposalResolved && <TableRow>{proposalVote.rank}</TableRow>}
       <TableRow>
         <Voter proposalVote={proposalVote} />
       </TableRow>

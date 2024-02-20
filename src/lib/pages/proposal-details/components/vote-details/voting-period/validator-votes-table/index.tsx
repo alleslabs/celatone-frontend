@@ -6,7 +6,7 @@ import {
   GridItem,
   TableContainer,
 } from "@chakra-ui/react";
-import { useState, type ChangeEvent, useMemo } from "react";
+import { useState, type ChangeEvent, useMemo, useEffect } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
@@ -30,6 +30,7 @@ interface ValidatorVotesTableBodyProps {
   fullVersion: boolean;
   isLoading: boolean;
   isSearching: boolean;
+  isProposalResolved: boolean;
 }
 
 export const ValidatorVotesTableBody = ({
@@ -37,18 +38,20 @@ export const ValidatorVotesTableBody = ({
   fullVersion,
   isLoading,
   isSearching,
+  isProposalResolved,
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: ValidatorVotesTableBodyProps) => {
   const isMobile = useMobile();
 
   const templateColumns = {
     head:
       fullVersion && !isMobile
-        ? `0.2fr 1fr 0.8fr 1.5fr 1fr`
-        : `0.1fr 1.5fr 1fr`,
+        ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
+        : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`,
     row:
       fullVersion && !isMobile
-        ? `0.2fr 1fr 0.8fr 1.5fr 1fr`
-        : `0.1fr 1.5fr 1fr`,
+        ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
+        : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`,
   };
 
   if (isLoading) return <Loading />;
@@ -71,6 +74,7 @@ export const ValidatorVotesTableBody = ({
       <ValidatorVotesTableHeader
         templateColumns={templateColumns.head}
         fullVersion={fullVersion}
+        isProposalResolved={isProposalResolved}
       />
       {validatorVotes.map((each, idx) => (
         <ValidatorVotesTableRow
@@ -83,6 +87,7 @@ export const ValidatorVotesTableBody = ({
           proposalVote={each}
           fullVersion={fullVersion}
           templateColumns={templateColumns.row}
+          isProposalResolved={isProposalResolved}
         />
       ))}
     </TableContainer>
@@ -93,6 +98,7 @@ interface ValidatorVotesTableProps {
   id: number;
   answers: Option<ProposalAnswerCountsResponse["validator"]>;
   fullVersion: boolean;
+  isProposalResolved: boolean;
   onViewMore?: () => void;
 }
 
@@ -102,6 +108,7 @@ export const ValidatorVotesTable = ({
   id,
   answers,
   fullVersion,
+  isProposalResolved,
   onViewMore,
 }: ValidatorVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalValidatorVoteType>(
@@ -131,21 +138,23 @@ export const ValidatorVotesTable = ({
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    debouncedSearch
   );
+
+  // update total data because we do filter and search on frontend side
+  useEffect(() => {
+    setTotalData(data?.total ?? 0);
+  }, [data, setTotalData]);
 
   const isSearching =
     debouncedSearch !== "" || answerFilter !== ProposalValidatorVoteType.ALL;
 
-  const total = answers?.totalValidators ?? 0;
+  const totalValidators = answers?.totalValidators ?? 0;
 
   const answerOptions = useMemo(
     () => [
       {
-        label: `All votes (${total})`,
+        label: `All votes (${totalValidators})`,
         value: ProposalValidatorVoteType.ALL,
         disabled: false,
       },
@@ -181,7 +190,7 @@ export const ValidatorVotesTable = ({
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [total, JSON.stringify(answers)]
+    [totalValidators, JSON.stringify(answers)]
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -234,8 +243,9 @@ export const ValidatorVotesTable = ({
         isLoading={isLoading}
         fullVersion={fullVersion}
         isSearching={isSearching}
+        isProposalResolved={isProposalResolved}
       />
-      {!!total && fullVersion && (
+      {!!totalValidators && fullVersion && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
@@ -247,7 +257,7 @@ export const ValidatorVotesTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-      {onViewMore && !!total && total > 10 && (
+      {onViewMore && !!totalValidators && totalValidators > 10 && (
         <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
           <Button w="full" variant="ghost-primary" gap={2} onClick={onViewMore}>
             View all validator votes

@@ -53,6 +53,8 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
+  const isProposalResolved = !isNull(proposalData?.resolvedHeight);
+
   const toggleDisclosure = (
     disclosure: typeof validatorVoteDisclosure | typeof allVoteDisclosure
   ) => {
@@ -121,7 +123,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                   {isMobile ? "View" : "View Details"}
                 </Button>
               </Flex>
-              {!isNull(proposalData?.resolvedHeight) && (
+              {isProposalResolved && (
                 <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
                   <CustomIcon
                     name="alert-circle-solid"
@@ -139,6 +141,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 id={proposalData.id}
                 answers={answers?.validator}
                 fullVersion={false}
+                isProposalResolved={isProposalResolved}
                 onViewMore={
                   isMobile
                     ? () => validatorVoteDisclosure.onToggle()
@@ -182,6 +185,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         isOpen={validatorVoteDisclosure.isOpen}
         id={proposalData.id}
         onBack={validatorVoteDisclosure.onToggle}
+        isProposalResolved={isProposalResolved}
       />
       <ProposalVotesPanel
         answers={answers?.all}

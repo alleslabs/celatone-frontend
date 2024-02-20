@@ -7,18 +7,20 @@ import { TableHeader } from "lib/components/table";
 interface ValidatorVotesTableHeaderProps {
   templateColumns: GridProps["templateColumns"];
   fullVersion: boolean;
+  isProposalResolved: boolean;
 }
 
 export const ValidatorVotesTableHeader = ({
   templateColumns,
   fullVersion,
+  isProposalResolved,
 }: ValidatorVotesTableHeaderProps) => {
   const isMobile = useMobile();
 
   if (isMobile)
     return (
       <Grid templateColumns={templateColumns} minW="min-content">
-        <TableHeader pl={0}>#</TableHeader>
+        {!isProposalResolved && <TableHeader pl={0}>#</TableHeader>}
         <TableHeader>Validators (Vote Answer)</TableHeader>
         <TableHeader />
       </Grid>
@@ -26,7 +28,9 @@ export const ValidatorVotesTableHeader = ({
 
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
-      <TableHeader>{fullVersion && "Rank"}</TableHeader>
+      {!isProposalResolved && (
+        <TableHeader>{fullVersion && "Rank"}</TableHeader>
+      )}
       <TableHeader>Validators</TableHeader>
       <TableHeader>Votes</TableHeader>
       {fullVersion && (

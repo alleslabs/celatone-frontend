@@ -12,6 +12,7 @@ interface ValidatorVotesPanelProps {
   answers: Option<ProposalAnswerCountsResponse["validator"]>;
   id: number;
   isOpen: boolean;
+  isProposalResolved: boolean;
   onBack: () => void;
 }
 
@@ -20,6 +21,7 @@ export const ValidatorVotesPanel = ({
   onBack,
   answers,
   id,
+  isProposalResolved,
 }: ValidatorVotesPanelProps) => {
   const isMobile = useMobile();
 
@@ -48,7 +50,12 @@ export const ValidatorVotesPanel = ({
         </Button>
         <TableTitle title="Validator Votes" count={answers?.total} />
       </Flex>
-      <ValidatorVotesTable id={id} answers={answers} fullVersion />
+      <ValidatorVotesTable
+        id={id}
+        answers={answers}
+        fullVersion
+        isProposalResolved={isProposalResolved}
+      />
     </Flex>
   );
 };
