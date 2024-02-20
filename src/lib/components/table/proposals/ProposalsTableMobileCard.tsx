@@ -3,6 +3,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
+import { Expedited } from "lib/components/Expedited";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
@@ -51,6 +52,17 @@ export const ProposalsTableMobileCard = ({
             <MobileLabel label="Proposal Title" />
             <Text color="text.main" variant="body2" wordBreak="break-word">
               {proposal.title}
+              {proposal.isExpedited && (
+                <span
+                  style={{
+                    display: "inline-block",
+                    marginLeft: "8px",
+                    verticalAlign: "middle",
+                  }}
+                >
+                  <Expedited isActiveExpedited={isDepositOrVoting} />
+                </span>
+              )}
             </Text>
             {proposal.types.length ? (
               proposal.types.map((msgType, index) => (

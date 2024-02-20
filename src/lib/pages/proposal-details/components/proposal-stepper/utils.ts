@@ -1,3 +1,5 @@
+import { isNull } from "lodash";
+
 import { PeriodState } from "../../types";
 import type { ProgressBadgeProps } from "../ProgressBadge";
 import type { ProposalData } from "lib/types";
@@ -14,7 +16,7 @@ export const getProgressBadgeProps = (
 
     if (
       proposalData.status === ProposalStatus.CANCELLED &&
-      proposalData.votingTime === null
+      isNull(proposalData.votingTime)
     )
       return { state: PeriodState.FAILED, text: "Cancelled" };
 
@@ -39,6 +41,3 @@ export const getProgressBadgeProps = (
 
   return { state: PeriodState.COMPLETE, text: "Vote Ended" };
 };
-
-// TODO: handle the description
-export const getStepperDescription = () => "Placeholder";

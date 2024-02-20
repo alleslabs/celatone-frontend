@@ -18,7 +18,7 @@ import { zProposalDetailsQueryParams, TabIndex } from "./types";
 const ProposalDetailsBody = ({
   id,
   tab,
-  // voteTab,
+  period,
 }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
@@ -85,6 +85,7 @@ const ProposalDetailsBody = ({
               votesInfo={votesInfo}
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
+              period={period}
             />
           </TabPanel>
         </TabPanels>

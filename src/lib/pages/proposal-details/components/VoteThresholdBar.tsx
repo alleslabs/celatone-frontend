@@ -1,8 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { formatPrettyPercent, normalizeVotesInfo } from "../utils";
+import { normalizeVotesInfo } from "../utils";
 import type { ProposalVotesInfo } from "lib/types";
-import { divWithDefault } from "lib/utils";
+import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 interface BarSectionProps {
   percent: string;
