@@ -34,13 +34,11 @@ export const ValidatorVotesTableRow = ({
         </TableRow>
         <TableRow justifyContent="flex-end" pr={0}>
           <Flex direction="column" alignItems="flex-end">
-            {proposalVote.timestamp ? (
-              <Text variant="body3" color="gray.500">
-                {dateFromNow(proposalVote.timestamp)}
-              </Text>
-            ) : (
-              <Text variant="body2">N/A</Text>
-            )}
+            <Text variant="body3" color="gray.500">
+              {proposalVote.timestamp
+                ? dateFromNow(proposalVote.timestamp)
+                : "N/A"}
+            </Text>
             {proposalVote.txHash ? (
               <Button
                 variant="unstyled"
@@ -55,7 +53,9 @@ export const ValidatorVotesTableRow = ({
                 View Tx
               </Button>
             ) : (
-              <Text variant="body2">N/A</Text>
+              <Text variant="body3" textColor="text.dark">
+                N/A
+              </Text>
             )}
           </Flex>
         </TableRow>
@@ -82,7 +82,9 @@ export const ValidatorVotesTableRow = ({
                 </Text>
               </Flex>
             ) : (
-              <Text variant="body2">N/A</Text>
+              <Text variant="body3" textColor="text.dark">
+                N/A
+              </Text>
             )}
           </TableRow>
           <TableRow>
@@ -92,7 +94,9 @@ export const ValidatorVotesTableRow = ({
                 value={proposalVote.txHash.toUpperCase()}
               />
             ) : (
-              <Text variant="body2">N/A</Text>
+              <Text variant="body3" textColor="text.dark">
+                N/A
+              </Text>
             )}
           </TableRow>
         </>

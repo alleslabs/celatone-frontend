@@ -144,7 +144,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 isProposalResolved={isProposalResolved}
                 onViewMore={
                   isMobile
-                    ? () => validatorVoteDisclosure.onToggle()
+                    ? () => toggleDisclosure(validatorVoteDisclosure)
                     : undefined
                 }
               />
@@ -173,7 +173,9 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 answers={answers?.all}
                 fullVersion={false}
                 onViewMore={
-                  isMobile ? () => allVoteDisclosure.onToggle() : undefined
+                  isMobile
+                    ? () => toggleDisclosure(allVoteDisclosure)
+                    : undefined
                 }
               />
             </ContentContainer>
