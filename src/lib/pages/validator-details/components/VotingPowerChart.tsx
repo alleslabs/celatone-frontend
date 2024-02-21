@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
-import { LineChart } from "../../../components/chart/LineChart";
+import { LineChart } from "lib/components/chart/LineChart";
 
 interface VotingPowerChartProps {
   currency: string;
