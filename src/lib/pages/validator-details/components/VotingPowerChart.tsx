@@ -30,7 +30,8 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
     date.setHours(parseInt(hours, 10));
     date.setMinutes(parseInt(minutes, 10));
     date.setSeconds(0);
-    return date;
+
+    return date.toString().replace(" GMT", "<br>GMT");
   });
 
   const dataset = {
