@@ -39,6 +39,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#790](https://github.com/alleslabs/celatone-frontend/pull/790) Handling period tab condition
+- [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
+- [#785](https://github.com/alleslabs/celatone-frontend/pull/785) Quorum status on vote details section
+- [#782](https://github.com/alleslabs/celatone-frontend/pull/782) Show proposal details on vote details section tabs
+- [#779](https://github.com/alleslabs/celatone-frontend/pull/779) Proposal period overview voting - no with veto alert
+- [#778](https://github.com/alleslabs/celatone-frontend/pull/778) Proposal period overview voting
+- [#775](https://github.com/alleslabs/celatone-frontend/pull/775) Proposal period overview deposit
+- [#777](https://github.com/alleslabs/celatone-frontend/pull/777) Proposal votes table including filter and search functionality
+- [#766](https://github.com/alleslabs/celatone-frontend/pull/766) Proposal status summary body
+- [#763](https://github.com/alleslabs/celatone-frontend/pull/763) Proposal status summary top
+- [#765](https://github.com/alleslabs/celatone-frontend/pull/765) Support Proposal Cancelled status
+- [#760](https://github.com/alleslabs/celatone-frontend/pull/760) Add proposal messages
 - [#764](https://github.com/alleslabs/celatone-frontend/pull/764) api v1 - proposal params
 - [#759](https://github.com/alleslabs/celatone-frontend/pull/759) Add proposal description and metadata
 - [#762](https://github.com/alleslabs/celatone-frontend/pull/762) api v1 - proposal validator votes info
@@ -51,12 +63,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#784](https://github.com/alleslabs/celatone-frontend/pull/784) Make proposal list row clickable with command/ctrl
+- [#776](https://github.com/alleslabs/celatone-frontend/pull/776) Add expand/collapse all to proposal messages in detail page
+- [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap
+- [#774](https://github.com/alleslabs/celatone-frontend/pull/774) Add relevant contract to cosmwasm pool
+- [#771](https://github.com/alleslabs/celatone-frontend/pull/771) Adjust proposal detail
+- [#772](https://github.com/alleslabs/celatone-frontend/pull/772) Add zod validator to code details page code id params
+- [#770](https://github.com/alleslabs/celatone-frontend/pull/770) Add unit test for account store (mobx)
+- [#769](https://github.com/alleslabs/celatone-frontend/pull/769) Add unit test for format.test.ts on shortenName function
+- [#768](https://github.com/alleslabs/celatone-frontend/pull/768) Add unit test for truncate.test.ts
+- [#767](https://github.com/alleslabs/celatone-frontend/pull/767) Add unit test for fee.test.ts
 - [#756](https://github.com/alleslabs/celatone-frontend/pull/756) Redirect usei to homepage
 - [#750](https://github.com/alleslabs/celatone-frontend/pull/750) api v1 - recent codes list
 - [#752](https://github.com/alleslabs/celatone-frontend/pull/752) Support contract state's key as base64
 
 ### Bug fixes
 
+- [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
+- [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
+- [#789](https://github.com/alleslabs/celatone-frontend/pull/789) Remove loading overlay on pool list page causing the page look like flicking
+- [#783](https://github.com/alleslabs/celatone-frontend/pull/783) Fix link used for Osmosis Pool JSON To poolmanager
+- [#780](https://github.com/alleslabs/celatone-frontend/pull/780) Fix proposal vote table, scroll to top on table
 - [#761](https://github.com/alleslabs/celatone-frontend/pull/761) Fix copy button tooltip alignment
 - [#754](https://github.com/alleslabs/celatone-frontend/pull/754) Fix mobile guard incorrect behavior
 - [#751](https://github.com/alleslabs/celatone-frontend/pull/751) Fix fail txs should have no logs and remove stone-12-1

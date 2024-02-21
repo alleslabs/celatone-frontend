@@ -92,16 +92,16 @@ const zProposalParamsResponse = z
     expedited_voting_period: z.string().optional(),
     expedited_threshold: z.coerce.number().optional(),
     expedited_min_deposit: zCoin.array().optional(),
-    expedited_quorum: z.string().optional(), // only in sei
+    expedited_quorum: z.coerce.number().optional(), // only in sei
     // emergency - only in initia
     emergency_min_deposit: zCoin.array().optional(),
     emergency_tally_interval: z.string().optional(),
   })
-  .transform<ProposalParams>(snakeToCamel);
+  .transform<ProposalParams<Coin>>(snakeToCamel);
 
 export const getProposalParams = async (
   endpoint: string
-): Promise<ProposalParams> =>
+): Promise<ProposalParams<Coin>> =>
   axios
     .get(`${endpoint}/params`)
     .then(({ data }) => zProposalParamsResponse.parse(data));
@@ -200,7 +200,13 @@ const zProposalDataResponse = z.object({
       created_timestamp: zUtcDate.nullable(),
       created_tx_hash: z.string().nullable(),
       description: z.string(),
-      messages: z.unknown().array().nullable(),
+      messages: z
+        .object({
+          "@type": z.string(),
+        })
+        .passthrough()
+        .array()
+        .nullable(),
       metadata: z.string(),
       proposal_deposits: z
         .object({
@@ -216,7 +222,7 @@ const zProposalDataResponse = z.object({
       version: z.string(),
       voting_time: zUtcDate.nullable(),
     })
-    .transform<ProposalData>(
+    .transform<ProposalData<Coin>>(
       ({ created_tx_hash, proposal_deposits, messages, ...val }) => ({
         ...snakeToCamel(val),
         createdTxHash: created_tx_hash ? parseTxHash(created_tx_hash) : null,
@@ -273,12 +279,15 @@ const zProposalVotesResponseItem = z
     no_with_veto: z.number().nonnegative(),
     yes: z.number().nonnegative(),
     is_vote_weighted: z.boolean(),
-    validator: zValidator,
+    validator: zValidator.nullable(),
     voter: zBechAddr.nullable(),
     timestamp: zUtcDate.nullable(),
     tx_hash: z.string().nullable(),
   })
-  .transform<ProposalVote>(snakeToCamel);
+  .transform<ProposalVote>((val) => ({
+    ...snakeToCamel(val),
+    txHash: val.tx_hash ? parseTxHash(val.tx_hash) : null,
+  }));
 
 const zProposalVotesResponse = z.object({
   items: z.array(zProposalVotesResponseItem),
@@ -293,3 +302,49 @@ export const getProposalValidatorVotes = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
     .then(({ data }) => zProposalVotesResponse.parse(data));
+
+export const getProposalVotes = async (
+  endpoint: string,
+  id: number,
+  limit: number,
+  offset: number,
+  answer?: string,
+  search?: string
+): Promise<ProposalVotesResponse> => {
+  let url = `${endpoint}/${encodeURIComponent(id)}/votes?limit=${limit}&offset=${offset}`;
+  url = url.concat(search ? `&search=${encodeURIComponent(search)}` : "");
+  url = url.concat(answer ? `&answer=${encodeURIComponent(answer)}` : "");
+
+  return axios.get(url).then(({ data }) => zProposalVotesResponse.parse(data));
+};
+
+const zProposalAnswerCounts = z.object({
+  yes: z.number().nonnegative(),
+  abstain: z.number().nonnegative(),
+  no: z.number().nonnegative(),
+  no_with_veto: z.number().nonnegative(),
+  total: z.number().nonnegative(),
+  weighted: z.number().nonnegative(),
+});
+
+const zProposalAnswerCountsResponse = z
+  .object({
+    all: zProposalAnswerCounts,
+    validator: zProposalAnswerCounts,
+  })
+  .transform(snakeToCamel);
+
+export type ProposalAnswerCountsResponse = z.infer<
+  typeof zProposalAnswerCountsResponse
+>;
+
+export const getProposalAnswerCounts = async (
+  endpoint: string,
+  id: number,
+  validatorOnly: boolean
+): Promise<ProposalAnswerCountsResponse> =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(id)}/answer-counts?validator=${validatorOnly}`
+    )
+    .then(({ data }) => zProposalAnswerCountsResponse.parse(data));

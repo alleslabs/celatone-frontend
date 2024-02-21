@@ -2,7 +2,13 @@ import type { Coin } from "@cosmjs/amino";
 import type Big from "big.js";
 import { z } from "zod";
 
-import type { BechAddr, Nullable, Option, Validator } from "lib/types";
+import type {
+  BechAddr,
+  Nullable,
+  Option,
+  TokenWithValue,
+  Validator,
+} from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -11,6 +17,7 @@ export enum ProposalStatus {
   REJECTED = "Rejected",
   FAILED = "Failed",
   DEPOSIT_FAILED = "Inactive",
+  CANCELLED = "Cancelled",
 }
 export const zProposalStatus = z.nativeEnum(ProposalStatus);
 
@@ -70,8 +77,10 @@ export interface Proposal {
   isExpedited: boolean;
 }
 
-export interface ProposalParams {
-  minDeposit: Coin[];
+export interface ProposalParams<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  minDeposit: T[];
   minInitialDepositRatio: number;
   maxDepositPeriod: string;
   votingPeriod: string;
@@ -81,31 +90,40 @@ export interface ProposalParams {
   // expedited
   expeditedVotingPeriod?: string;
   expeditedThreshold?: number;
-  expeditedMinDeposit?: Coin[];
-  expeditedQuorum?: string; // only in sei
+  expeditedMinDeposit?: T[];
+  expeditedQuorum?: number; // only in sei
   // emergency - only in initia
-  emergencyMinDeposit?: Coin[];
+  emergencyMinDeposit?: T[];
   emergencyTallyInterval?: string;
 }
 
-export interface ProposalDeposit {
-  amount: Coin[];
+export interface ProposalDeposit<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  amount: T[];
   depositor: BechAddr;
   timestamp: Date;
   txHash: string;
 }
 
-export interface ProposalData extends Proposal {
+// TODO: combine with MsgBody in services/tx.ts
+interface Message {
+  "@type": string;
+  [key: string]: unknown;
+}
+
+export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
+  extends Proposal {
   createdHeight: Nullable<number>;
   createdTimestamp: Nullable<Date>;
   createdTxHash: Nullable<string>;
   description: string;
-  messages: Nullable<unknown[]>;
+  messages: Nullable<Message[]>;
   metadata: string;
-  proposalDeposits: ProposalDeposit[];
+  proposalDeposits: ProposalDeposit<T>[];
   resolvedTimestamp: Nullable<Date>;
   submitTime: Date;
-  totalDeposit: Nullable<Coin[]>;
+  totalDeposit: Nullable<T[]>;
   version: string;
   votingTime: Nullable<Date>;
 }
@@ -125,7 +143,7 @@ export interface ProposalVote {
   noWithVeto: number;
   yes: number;
   isVoteWeighted: boolean;
-  validator: Validator;
+  validator: Nullable<Validator>;
   voter: Nullable<BechAddr>;
   timestamp: Nullable<Date>;
   txHash: Nullable<string>;

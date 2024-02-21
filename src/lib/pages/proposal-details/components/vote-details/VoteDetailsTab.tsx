@@ -1,26 +1,20 @@
 import type { TabProps } from "@chakra-ui/react";
 import { Button, useTab, useMultiStyleConfig } from "@chakra-ui/react";
 
-import type { Nullable } from "lib/types";
+import { ProposalStepper } from "../proposal-stepper";
+import type { ProposalData } from "lib/types";
 
-import { ProposalStepper } from "./ProposalStepper";
-
-interface VoteDetailTabProps extends TabProps {
-  count?: Nullable<number | string>;
-  isLoading?: boolean;
-  title: string;
-  description: string;
+interface VoteDetailsTabProps extends TabProps {
   step: number;
+  proposalData: ProposalData;
 }
 
-export const VoteDetailTab = ({
-  count,
-  isLoading,
-  title,
-  description,
+export const VoteDetailsTab = ({
   step,
+  proposalData,
+  isDisabled,
   ...restProps
-}: VoteDetailTabProps) => {
+}: VoteDetailsTabProps) => {
   const tabProps = useTab({ ...restProps });
   const styles = useMultiStyleConfig("Tabs", tabProps);
 
@@ -29,22 +23,17 @@ export const VoteDetailTab = ({
       __css={styles.tab}
       display="flex"
       w="full"
-      alignItems="center"
-      fontSize="14px"
-      fontWeight={700}
-      lineHeight="24px"
-      letterSpacing="0.4px"
-      variant="ghost-gray"
       mb={0}
       py={3}
       borderRadius="8px 8px 0px 0px"
+      color="text.main"
       sx={{
         "&[aria-selected=true]": {
           background: "gray.800",
           border: "1px solid",
           borderColor: "gray.700",
           opacity: "100%",
-          borderBottomColor: "transparent",
+          borderBottomColor: "gray.800",
         },
         "&[aria-selected=false]": {
           background: "transparent",
@@ -54,12 +43,13 @@ export const VoteDetailTab = ({
           borderBottomColor: "transparent",
         },
       }}
+      isDisabled={isDisabled}
       _active={{
         bg: "unset",
       }}
       {...tabProps}
     >
-      <ProposalStepper title={title} description={description} step={step} />
+      <ProposalStepper step={step} proposalData={proposalData} />
     </Button>
   );
 };

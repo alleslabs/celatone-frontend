@@ -1,15 +1,17 @@
 import big from "big.js";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
+import pluginDuration from "dayjs/plugin/duration";
+import pluginRelativeTime from "dayjs/plugin/relativeTime";
+import pluginUtc from "dayjs/plugin/utc";
 import plur from "plur";
 
 import type { Option } from "lib/types";
 
 import { isNumeric } from "./number";
 
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
+dayjs.extend(pluginDuration);
+dayjs.extend(pluginRelativeTime);
+dayjs.extend(pluginUtc);
 
 export const getDefaultDate = (): Date => dayjs.utc(0).toDate();
 

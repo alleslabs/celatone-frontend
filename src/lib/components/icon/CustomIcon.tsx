@@ -488,6 +488,17 @@ export const ICONS = {
     ),
     viewBox: "-2 -4 16 16",
   },
+  circle: {
+    svg: (
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0C3.584 0 0 3.584 0 8Z"
+        fill="currentColor"
+      />
+    ),
+    viewBox: viewboxDefault,
+  },
   close: {
     svg: (
       <path

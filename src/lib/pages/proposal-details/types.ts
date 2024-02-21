@@ -1,11 +1,18 @@
 import { z } from "zod";
 
+export enum PeriodState {
+  ONGOING,
+  FAILED,
+  COMPLETE,
+  WAITING,
+}
+
 export enum TabIndex {
   Overview = "overview",
   Vote = "vote",
 }
 
-export enum VoteTabIndex {
+export enum PeriodIndex {
   Deposit = "deposit",
   Voting = "voting",
 }
@@ -19,12 +26,12 @@ export const zProposalDetailsQueryParams = z.object({
       .optional()
       .transform(() => TabIndex.Overview),
   ]),
-  voteTab: z.union([
-    z.nativeEnum(VoteTabIndex),
+  period: z.union([
+    z.nativeEnum(PeriodIndex),
     z
       .string()
       .optional()
-      .transform(() => VoteTabIndex.Deposit),
+      .transform(() => undefined),
   ]),
 });
 

@@ -1,40 +1,44 @@
 import { Button, Flex, Grid, GridItem, useDisclosure } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import type { VoteDetailsProps } from "..";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
+import { useProposalAnswerCounts } from "lib/services/proposalService";
 
-import { AllVotesTable } from "./AllVotesTable";
-import { ValidatorVotesTable } from "./ValidatorVotesTable";
+import { ProposalVotesPanel } from "./ProposalVotesPanel";
+import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
+import { ProposalVotesTable } from "./votes-table";
+import { VotingQuorum } from "./VotingQuorum";
+import { VotingThreshold } from "./VotingThreshold";
 
-export const ContentContainer = ({
+const ContentContainer = ({
   children,
-  hasSubSection,
+  transparent = false,
 }: {
   children: ReactNode;
-  hasSubSection?: boolean;
-}) => {
-  const isMobile = useMobile();
-  return (
-    <Flex
-      direction="column"
-      background={isMobile && !hasSubSection ? "transparent" : "gray.900"}
-      border="1px solid"
-      borderColor={isMobile && !hasSubSection ? "transparent" : "gray.700"}
-      borderRadius="8px"
-      p={{ base: !hasSubSection ? 0 : 4, md: !hasSubSection ? 0 : 6 }}
-      gap={4}
-    >
-      {children}
-    </Flex>
-  );
-};
+  transparent?: boolean;
+}) => (
+  <Flex
+    direction="column"
+    background={transparent ? "transparent" : "gray.900"}
+    border="1px solid"
+    borderColor={transparent ? "transparent" : "gray.700"}
+    borderRadius="8px"
+    p={{ base: 4, md: 6 }}
+    gap={4}
+  >
+    {children}
+  </Flex>
+);
 
-export const VotingPeriodSection = () => {
+export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();
+
+  const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
   return (
     <Flex position="relative" overflow="hidden" width="full">
@@ -58,27 +62,23 @@ export const VotingPeriodSection = () => {
         gap={4}
       >
         {/* Vote Participations */}
-        <ContentContainer>
-          {!isMobile && <TableTitle title="Vote Participations" mb={0} />}
-          Vote Participations Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Soluta pariatur eveniet ducimus quasi veritatis labore aut
-          minima adipisci sit sed ratione laboriosam dolorum suscipit tenetur
-          reiciendis voluptatum, aliquid quam ullam!
+        <ContentContainer transparent={isMobile}>
+          <VotingQuorum proposalData={proposalData} {...props} />
         </ContentContainer>
         {/* Vote Results */}
-        <ContentContainer>
-          {!isMobile && <TableTitle title="Vote Results" mb={0} />}
-          Vote Results Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Soluta pariatur eveniet ducimus quasi veritatis labore aut minima
-          adipisci sit sed ratione laboriosam dolorum suscipit tenetur
-          reiciendis voluptatum, aliquid quam ullam!
+        <ContentContainer transparent={isMobile}>
+          <VotingThreshold proposalData={proposalData} {...props} />
         </ContentContainer>
         <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
           {/* Validator Votes */}
           <GridItem>
-            <ContentContainer hasSubSection>
+            <ContentContainer>
               <Flex alignItems="center" justifyContent="space-between">
-                <TableTitle title="Validator Votes" mb={0} />
+                <TableTitle
+                  title="Validator Votes"
+                  mb={0}
+                  count={answers?.validator.total}
+                />
                 <Button
                   variant="ghost-primary"
                   onClick={() => validatorVoteDisclosure.onToggle()}
@@ -96,9 +96,13 @@ export const VotingPeriodSection = () => {
           </GridItem>
           {/* Recent Votes */}
           <GridItem>
-            <ContentContainer hasSubSection>
+            <ContentContainer>
               <Flex alignItems="center" justifyContent="space-between">
-                <TableTitle title="Recent Votes" mb={0} />
+                <TableTitle
+                  title="Recent Votes"
+                  mb={0}
+                  count={answers?.all.total}
+                />
                 <Button
                   variant="ghost-primary"
                   onClick={() => allVoteDisclosure.onToggle()}
@@ -107,26 +111,26 @@ export const VotingPeriodSection = () => {
                   {isMobile ? "View" : "View Details"}
                 </Button>
               </Flex>
-              Recent Votes Lorem ipsum dolor, sit amet consectetur adipisicing
-              elit. Necessitatibus ipsam perspiciatis eius illo maiores, magnam
-              architecto nesciunt esse animi obcaecati voluptates delectus
-              doloribus magni alias a eligendi odio nam iure?
+              <ProposalVotesTable
+                id={proposalData.id}
+                answers={answers?.all}
+                fullVersion={false}
+              />
             </ContentContainer>
           </GridItem>
         </Grid>
       </Flex>
-      <ValidatorVotesTable
+      <ValidatorVotesPanel
         w="full"
         position={validatorVoteDisclosure.isOpen ? "relative" : "absolute"}
         opacity={validatorVoteDisclosure.isOpen ? 1 : 0}
         left={validatorVoteDisclosure.isOpen ? "0" : "100%"}
         onBack={validatorVoteDisclosure.onToggle}
       />
-      <AllVotesTable
-        w="full"
-        position={allVoteDisclosure.isOpen ? "relative" : "absolute"}
-        opacity={allVoteDisclosure.isOpen ? 1 : 0}
-        left={allVoteDisclosure.isOpen ? "0" : "100%"}
+      <ProposalVotesPanel
+        answers={answers?.all}
+        isOpen={allVoteDisclosure.isOpen}
+        id={proposalData.id}
         onBack={allVoteDisclosure.onToggle}
       />
     </Flex>

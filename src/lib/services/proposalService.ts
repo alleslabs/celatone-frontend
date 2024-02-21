@@ -1,3 +1,4 @@
+import type { Coin } from "@cosmjs/amino";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
@@ -40,6 +41,7 @@ import { useAssetInfos } from "./assetService";
 import { useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
+  ProposalAnswerCountsResponse,
   ProposalDataResponse,
   ProposalVotesResponse,
   ProposalsResponse,
@@ -56,6 +58,8 @@ import {
   getProposalData,
   getProposalParams,
   getProposalTypes,
+  getProposalAnswerCounts,
+  getProposalVotes,
   getProposalValidatorVotes,
   getProposalVotesInfo,
   getRelatedProposalsByContractAddress,
@@ -99,7 +103,7 @@ export const useProposals = (
 
 export const useProposalParams = () => {
   const endpoint = useBaseApiRoute("proposals");
-  return useQuery<ProposalParams>(
+  return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
     async () => getProposalParams(endpoint),
     { retry: 1, refetchOnWindowFocus: false }
@@ -355,6 +359,43 @@ export const useProposalValidatorVotes = (id: number) => {
   return useQuery<ProposalVotesResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
     async () => getProposalValidatorVotes(endpoint, id),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalVotes = (
+  id: number,
+  limit: number,
+  offset: number,
+  answer?: string,
+  search?: string
+): UseQueryResult<ProposalVotesResponse> => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSAL_VOTES,
+      endpoint,
+      id,
+      limit,
+      offset,
+      search,
+      answer,
+    ],
+    async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalAnswerCounts = (
+  id: number,
+  validatorOnly = false
+): UseQueryResult<ProposalAnswerCountsResponse> => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id, validatorOnly],
+    async () => getProposalAnswerCounts(endpoint, id, validatorOnly),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };

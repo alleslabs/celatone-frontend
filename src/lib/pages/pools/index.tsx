@@ -1,11 +1,11 @@
 import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, trackUseTab, track } from "lib/amplitude";
 import { usePoolConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import { PoolType } from "lib/types";
@@ -55,8 +55,8 @@ export const PoolIndex = () => {
 
   useEffect(() => {
     if (
-      supportedPoolCount &&
-      unsupportedPoolCount &&
+      !isUndefined(supportedPoolCount) &&
+      !isUndefined(unsupportedPoolCount) &&
       supportedPoolCount === 0 &&
       unsupportedPoolCount > 0
     ) {
@@ -64,7 +64,6 @@ export const PoolIndex = () => {
     }
   }, [handleTabChange, supportedPoolCount, unsupportedPoolCount]);
 
-  if (isLoadingSupported || isLoadingUnsupported) return <LoadingOverlay />;
   return (
     <PageContainer>
       <Heading variant="h5" as="h5">
@@ -75,12 +74,16 @@ export const PoolIndex = () => {
           <CustomTab
             count={supportedPoolCount ?? 0}
             onClick={() => handleTabChange(TabIndex.Supported)}
+            isLoading={isLoadingSupported}
+            isDisabled={!supportedPoolCount}
           >
             Pools
           </CustomTab>
           <CustomTab
             count={unsupportedPoolCount ?? 0}
             onClick={() => handleTabChange(TabIndex.Unsupported)}
+            isLoading={isLoadingUnsupported}
+            isDisabled={!unsupportedPoolCount}
           >
             Pools with unsupported tokens
           </CustomTab>

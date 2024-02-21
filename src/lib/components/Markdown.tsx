@@ -152,7 +152,7 @@ export const Markdown = ({ markdown }: { markdown: string }) => {
         skipHtml
         remarkPlugins={[remarkGfm]}
       >
-        {markdown}
+        {markdown.replace(/\\n/g, "\n")}
       </ReactMarkdown>
     </div>
   );

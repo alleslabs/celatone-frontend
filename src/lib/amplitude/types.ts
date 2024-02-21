@@ -60,6 +60,7 @@ export enum AmpEvent {
   TO_FAUCET = "To Faucet",
   TO_POOL_LIST = "To Pool List",
   TO_POOL_DETAILS = "To Pool Detail",
+  TO_PROPOSAL_DETAILS = "To Proposal Detail",
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   TO_MODULE_DETAILS = "To Module Detail",
