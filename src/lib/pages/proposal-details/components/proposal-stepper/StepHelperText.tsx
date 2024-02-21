@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import { Countdown } from "../proposal-overview/status-summary/Countdown";
 import type { ProposalData } from "lib/types";
@@ -22,7 +23,7 @@ const StepperHelperTextBody = ({
 
     if (
       proposalData.status === ProposalStatus.CANCELLED &&
-      proposalData.votingTime === null
+      isNull(proposalData.votingTime)
     )
       return `The proposal is cancelled at ${proposalData.resolvedTimestamp ? formatUTC(proposalData.resolvedTimestamp) : "N/A"}`;
 
@@ -42,7 +43,7 @@ const StepperHelperTextBody = ({
     return "The proposal is rejected as it did not meet the required deposit";
 
   if (proposalData.status === ProposalStatus.CANCELLED)
-    return `The proposal is cancelled during the ${proposalData.votingTime === null ? "deposit" : "voting"}  period`;
+    return `The proposal is cancelled during the ${proposalData.votingTime ? "voting" : "deposit"}  period`;
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return "Proposal proceeds to voting period after meeting deposit requirement";

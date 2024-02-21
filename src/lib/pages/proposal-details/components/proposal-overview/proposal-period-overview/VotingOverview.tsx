@@ -5,7 +5,7 @@ import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { TabIndex, VoteTabIndex } from "lib/pages/proposal-details/types";
+import { TabIndex, PeriodIndex } from "lib/pages/proposal-details/types";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
@@ -68,7 +68,7 @@ const VotingOverviewBody = ({
             query: {
               id: proposalData.id,
               tab: TabIndex.Vote,
-              voteTab: VoteTabIndex.Voting,
+              period: PeriodIndex.Voting,
             },
             options: {
               shallow: true,

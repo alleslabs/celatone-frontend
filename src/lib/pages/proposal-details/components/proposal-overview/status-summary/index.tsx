@@ -3,9 +3,9 @@ import type { CSSProperties } from "react";
 
 import type { ProposalOverviewProps } from "..";
 import { ActiveDot } from "../../ActiveDot";
+import { ResultExplanation } from "../../ResultExplanation";
 import { ProposalStatus } from "lib/types";
 
-import { SummaryStatusBody } from "./SummaryStatusBody";
 import { SummaryStatusChip } from "./SummaryStatusChip";
 import { SummaryStatusTime } from "./SummaryStatusTime";
 
@@ -62,7 +62,7 @@ export const StatusSummary = ({
         </Flex>
         <SummaryStatusTime proposalData={proposalData} />
       </Flex>
-      <SummaryStatusBody proposalData={proposalData} {...props} />
+      <ResultExplanation proposalData={proposalData} {...props} />
     </Flex>
   );
 };

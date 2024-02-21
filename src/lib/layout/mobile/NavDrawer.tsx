@@ -77,7 +77,7 @@ export const NavDrawer = () => {
         ...(govConfig.enabled
           ? [
               {
-                name: "Proposal",
+                name: "Proposals",
                 slug: "/proposals",
                 icon: "proposal" as IconKeys,
               },

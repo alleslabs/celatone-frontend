@@ -11,8 +11,9 @@ import { ProposalVotesPanel } from "./ProposalVotesPanel";
 import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
+import { VotingThreshold } from "./VotingThreshold";
 
-export const ContentContainer = ({
+const ContentContainer = ({
   children,
   transparent = false,
 }: {
@@ -66,11 +67,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         </ContentContainer>
         {/* Vote Results */}
         <ContentContainer transparent={isMobile}>
-          {!isMobile && <TableTitle title="Vote Results" mb={0} />}
-          Vote Results Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Soluta pariatur eveniet ducimus quasi veritatis labore aut minima
-          adipisci sit sed ratione laboriosam dolorum suscipit tenetur
-          reiciendis voluptatum, aliquid quam ullam!
+          <VotingThreshold proposalData={proposalData} {...props} />
         </ContentContainer>
         <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
           {/* Validator Votes */}

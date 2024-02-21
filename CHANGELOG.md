@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Add voting power chart component
+- [#790](https://github.com/alleslabs/celatone-frontend/pull/790) Handling period tab condition
+- [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
 - [#785](https://github.com/alleslabs/celatone-frontend/pull/785) Quorum status on vote details section
 - [#782](https://github.com/alleslabs/celatone-frontend/pull/782) Show proposal details on vote details section tabs
 - [#779](https://github.com/alleslabs/celatone-frontend/pull/779) Proposal period overview voting - no with veto alert
@@ -78,6 +80,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
+- [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
+- [#789](https://github.com/alleslabs/celatone-frontend/pull/789) Remove loading overlay on pool list page causing the page look like flicking
 - [#783](https://github.com/alleslabs/celatone-frontend/pull/783) Fix link used for Osmosis Pool JSON To poolmanager
 - [#780](https://github.com/alleslabs/celatone-frontend/pull/780) Fix proposal vote table, scroll to top on table
 - [#761](https://github.com/alleslabs/celatone-frontend/pull/761) Fix copy button tooltip alignment

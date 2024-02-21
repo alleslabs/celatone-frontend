@@ -1,9 +1,12 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Divider, Flex, Text } from "@chakra-ui/react";
+import { Fragment } from "react";
 
 import { normalizeVotesInfo } from "../utils";
 import { CustomIcon } from "lib/components/icon";
 import type { ProposalVotesInfo } from "lib/types";
 import { d0Formatter, divWithDefault, formatPrettyPercent } from "lib/utils";
+
+import { VpPercentCard } from "./VpPercentCard";
 
 interface VpPercentThresholdProps {
   votesInfo: ProposalVotesInfo;
@@ -20,33 +23,21 @@ export const VpPercentThreshold = ({
   const options = [
     {
       option: "Yes",
+      ratio: divWithDefault(yes, nonAbstainVotes, 0),
+      votingPower: votesInfo.yes,
       color: "success.main",
-      percent: formatPrettyPercent(
-        divWithDefault(yes, nonAbstainVotes, 0).toNumber(),
-        2,
-        true
-      ),
-      votingPower: d0Formatter(votesInfo.yes, "0"),
     },
     {
       option: "No",
+      ratio: divWithDefault(no, nonAbstainVotes, 0),
+      votingPower: votesInfo.no,
       color: "error.main",
-      percent: formatPrettyPercent(
-        divWithDefault(no, nonAbstainVotes, 0).toNumber(),
-        2,
-        true
-      ),
-      votingPower: d0Formatter(votesInfo.no, "0"),
     },
     {
       option: "No with veto",
+      ratio: divWithDefault(noWithVeto, nonAbstainVotes, 0),
+      votingPower: votesInfo.noWithVeto,
       color: "error.dark",
-      percent: formatPrettyPercent(
-        divWithDefault(noWithVeto, nonAbstainVotes, 0).toNumber(),
-        2,
-        true
-      ),
-      votingPower: d0Formatter(votesInfo.noWithVeto, "0"),
     },
   ];
 
@@ -60,7 +51,7 @@ export const VpPercentThreshold = ({
           % (Voting Power)
         </Text>
       </Flex>
-      {options.map(({ option, color, percent, votingPower }) => (
+      {options.map(({ option, ratio, votingPower, color }) => (
         <Flex
           key={option}
           justifyContent="space-between"
@@ -76,14 +67,36 @@ export const VpPercentThreshold = ({
           </Flex>
           <Flex direction="column" align="end">
             <Text variant="body2" color="text.main">
-              {percent}
+              {formatPrettyPercent(ratio.toNumber(), 2, true)}
             </Text>
             <Text variant="body3" color="text.dark">
-              ({votingPower})
+              ({d0Formatter(votingPower, "0")})
             </Text>
           </Flex>
         </Flex>
       ))}
     </div>
-  ) : null; // TODO: will handle the vote detail desktop case here using `VpPercentCard`
+  ) : (
+    <Flex direction="row" gap={6}>
+      {options.map(({ option, ratio, votingPower, color }, idx) => (
+        <Fragment key={option}>
+          <VpPercentCard
+            name={option}
+            ratio={ratio}
+            power={votingPower}
+            color={color}
+            isCompact={false}
+          />
+          {idx === 0 && (
+            <Divider
+              orientation="vertical"
+              h="auto"
+              color="gray.700"
+              display={{ base: "none", lg: "flex" }}
+            />
+          )}
+        </Fragment>
+      ))}
+    </Flex>
+  );
 };

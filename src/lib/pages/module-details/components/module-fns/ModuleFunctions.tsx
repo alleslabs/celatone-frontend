@@ -94,6 +94,7 @@ export const ModuleFunctions = ({
   const handleTabChange = useCallback(
     (nextTab: FunctionTypeTabs) => {
       if (nextTab === tab) return;
+      track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
       navigate({
         pathname: `/modules/[address]/[moduleName]/[tab]`,
         query: {
@@ -133,10 +134,7 @@ export const ModuleFunctions = ({
       >
         <FunctionTypeSwitch
           currentTab={tab}
-          onTabChange={(nextTab) => {
-            track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
-            handleTabChange(nextTab);
-          }}
+          onTabChange={handleTabChange}
           my={3}
           counts={[
             filteredFns.length,
