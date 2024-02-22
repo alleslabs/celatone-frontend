@@ -36,6 +36,7 @@ interface SelectInputProps<T extends string> {
   labelBgColor?: string;
   popoverBgColor?: string;
   size?: string | object;
+  disableMaxH?: boolean;
 }
 
 interface SelectItemProps {
@@ -72,6 +73,7 @@ export const SelectInput = <T extends string>({
   labelBgColor = "background.main",
   popoverBgColor = "gray.900",
   size = "lg",
+  disableMaxH = false,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -153,7 +155,7 @@ export const SelectInput = <T extends string>({
         border="unset"
         bg={popoverBgColor}
         w={inputRef.current?.clientWidth}
-        maxH={`${ITEM_HEIGHT * 4}px`}
+        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
         borderRadius="8px"
         _focusVisible={{

@@ -1,9 +1,10 @@
 import type { Coin } from "@cosmjs/amino";
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
 import big from "big.js";
-import { useCallback } from "react";
+import { isUndefined } from "lodash";
+import { useCallback, useMemo } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -15,19 +16,20 @@ import {
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import type {
-  ProposalParams,
-  Option,
-  ProposalStatus,
-  ProposalType,
-  Proposal,
-  U,
-  Token,
-  Nullish,
-  BechAddr32,
-  BechAddr,
-  BechAddr20,
-  ProposalVotesInfo,
+import {
+  type ProposalParams,
+  type Option,
+  type ProposalStatus,
+  type ProposalType,
+  type Proposal,
+  type U,
+  type Token,
+  type Nullish,
+  type BechAddr32,
+  type BechAddr,
+  type BechAddr20,
+  type ProposalVotesInfo,
+  ProposalValidatorVoteType,
 } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -43,6 +45,7 @@ import type {
   DepositParamsInternal,
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
+  ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   ProposalsResponse,
   RelatedProposalsResponse,
@@ -347,20 +350,74 @@ export const useProposalVotesInfo = (id: number) => {
   const endpoint = useBaseApiRoute("proposals");
 
   return useQuery<ProposalVotesInfo>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
+    [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
     async () => getProposalVotesInfo(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
-export const useProposalValidatorVotes = (id: number) => {
+export const useProposalValidatorVotes = (
+  id: number,
+  limit: number,
+  offset: number,
+  answer?: ProposalValidatorVoteType,
+  search?: string
+) => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery<ProposalVotesResponse>(
+  const { data, ...rest } = useQuery<ProposalValidatorVotesResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
     async () => getProposalValidatorVotes(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
   );
+
+  const filteredData = useMemo(() => {
+    if (isUndefined(data?.items)) return undefined;
+
+    const filteredItemsByAnswer = data.items.filter((vote) => {
+      switch (answer) {
+        case ProposalValidatorVoteType.YES:
+          return vote.yes === 1;
+        case ProposalValidatorVoteType.NO:
+          return vote.no === 1;
+        case ProposalValidatorVoteType.NO_WITH_VETO:
+          return vote.noWithVeto === 1;
+        case ProposalValidatorVoteType.ABSTAIN:
+          return vote.abstain === 1;
+        case ProposalValidatorVoteType.WEIGHTED:
+          return vote.isVoteWeighted;
+        case ProposalValidatorVoteType.DID_NOT_VOTE:
+          return (
+            vote.yes === 0 &&
+            vote.no === 0 &&
+            vote.noWithVeto === 0 &&
+            vote.abstain === 0 &&
+            !vote.isVoteWeighted
+          );
+        case ProposalValidatorVoteType.ALL:
+        default:
+          return true;
+      }
+    });
+
+    const filteredItemsBySearch = filteredItemsByAnswer.filter((vote) => {
+      if (!search?.trim()) return true;
+
+      const keyword = search.toLowerCase();
+      return (
+        (vote.validator?.moniker?.toLowerCase() || "").includes(keyword) ||
+        vote.validator?.validatorAddress.toLowerCase().includes(keyword)
+      );
+    });
+
+    return {
+      items: filteredItemsBySearch.slice(offset, offset + limit),
+      total: filteredItemsBySearch.length,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.items, limit, offset, answer, search]);
+
+  return { data: filteredData, ...rest };
 };
 
 export const useProposalVotes = (
@@ -368,7 +425,8 @@ export const useProposalVotes = (
   limit: number,
   offset: number,
   answer?: string,
-  search?: string
+  search?: string,
+  options: Pick<UseQueryOptions<ProposalVotesResponse>, "onSuccess"> = {}
 ): UseQueryResult<ProposalVotesResponse> => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -383,7 +441,7 @@ export const useProposalVotes = (
       answer,
     ],
     async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -395,7 +453,7 @@ export const useProposalAnswerCounts = (
 
   return useQuery(
     [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id, validatorOnly],
-    async () => getProposalAnswerCounts(endpoint, id, validatorOnly),
+    async () => getProposalAnswerCounts(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };

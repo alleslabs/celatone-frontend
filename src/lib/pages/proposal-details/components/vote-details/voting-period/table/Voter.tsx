@@ -39,7 +39,7 @@ export const Voter = ({ proposalVote }: VoterProps) => {
 
   return (
     <Text variant="body2" color="text.dark">
-      -
+      N/A
     </Text>
   );
 };
