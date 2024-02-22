@@ -21,7 +21,12 @@ export const DepositBar = ({
   return (
     <Flex direction="column" gap="2px" w="full">
       {pairDeposit.map(({ current, min }) => (
-        <Flex key={min.denom} direction={isCompact ? "column" : "row"} w="full">
+        <Flex
+          key={min.denom}
+          direction={isCompact ? "column" : "row"}
+          w="full"
+          gap={isCompact ? 0 : 4}
+        >
           <ProgressBar
             value={current.amount}
             max={min.amount}
