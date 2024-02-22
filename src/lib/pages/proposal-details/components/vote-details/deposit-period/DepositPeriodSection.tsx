@@ -1,6 +1,7 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 
 import { DepositBar } from "../../deposit-bar";
+import { DepositList } from "../../DepositList";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import type { ProposalOverviewProps } from "../../proposal-overview";
 import { useMobile } from "lib/app-provider";
@@ -35,57 +36,55 @@ export const DepositPeriodSection = ({
       p={isMobile ? 0 : 6}
       gap={4}
     >
-      {!isMobile ? (
-        <Grid templateColumns="1fr 1fr minmax(300px, 3fr)">
-          <TableTitle
-            title="Depositors"
-            mb={0}
-            count={proposalData.proposalDeposits.length}
-          />
-          <Box />
-          <Flex alignContent="center">
-            <Tooltip
-              label="After reaching the total deposit amount, the proposal proceeds to the voting period."
-              closeOnClick={false}
-            >
-              <Text
-                variant="body2"
-                color="text.dark"
-                fontWeight={500}
-                whiteSpace="nowrap"
-                lineHeight={1.8}
-              >
-                Total Deposited
-                <CustomIcon
-                  name="info-circle-solid"
-                  color="gray.600"
-                  boxSize={3}
-                  my={0}
-                />
-              </Text>
-            </Tooltip>
-            <DepositBar
-              deposit={proposalData.totalDeposit}
-              minDeposit={minDeposit}
-              isCompact={false}
-            />
-          </Flex>
-        </Grid>
-      ) : (
-        <Box
-          mt={8}
-          pb={2}
-          borderBottom="1px solid"
-          borderBottomColor="gray.700"
-        >
+      {isMobile ? (
+        <>
           <DepositBar
             deposit={proposalData.totalDeposit}
             minDeposit={minDeposit}
             isCompact
           />
-        </Box>
+          <DepositList proposalDeposits={proposalData.proposalDeposits} />
+        </>
+      ) : (
+        <>
+          <Grid templateColumns="1fr 1fr minmax(300px, 3fr)">
+            <TableTitle
+              title="Depositors"
+              mb={0}
+              count={proposalData.proposalDeposits.length}
+            />
+            <Box />
+            <Flex alignContent="center">
+              <Tooltip
+                label="After reaching the total deposit amount, the proposal proceeds to the voting period."
+                closeOnClick={false}
+              >
+                <Text
+                  variant="body2"
+                  color="text.dark"
+                  fontWeight={500}
+                  whiteSpace="nowrap"
+                  lineHeight={1.8}
+                >
+                  Total Deposited
+                  <CustomIcon
+                    name="info-circle-solid"
+                    color="gray.600"
+                    boxSize={3}
+                    my={0}
+                  />
+                </Text>
+              </Tooltip>
+              <DepositBar
+                deposit={proposalData.totalDeposit}
+                minDeposit={minDeposit}
+                isCompact={false}
+              />
+            </Flex>
+          </Grid>
+          <DepositorsTable depositors={proposalData.proposalDeposits} />
+        </>
       )}
-      <DepositorsTable depositors={proposalData.proposalDeposits} />
     </Flex>
   );
 };

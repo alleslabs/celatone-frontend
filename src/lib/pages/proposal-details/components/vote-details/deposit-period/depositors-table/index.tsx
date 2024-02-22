@@ -1,6 +1,5 @@
 import { TableContainer } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
 import { EmptyState } from "lib/components/state";
 import type { ProposalDeposit } from "lib/types";
 
@@ -11,10 +10,9 @@ interface DepositorsTableProps {
   depositors: ProposalDeposit[];
 }
 
-export const DepositorsTable = ({ depositors }: DepositorsTableProps) => {
-  const isMobile = useMobile();
-  const templateColumns = isMobile ? `1fr 1fr` : `1.5fr 1.5fr 2fr 1fr`;
+const templateColumns = `1.5fr 1.5fr 2fr 1fr`;
 
+export const DepositorsTable = ({ depositors }: DepositorsTableProps) => {
   if (depositors.length === 0)
     return <EmptyState message="The proposal has no depositors yet." />;
 
