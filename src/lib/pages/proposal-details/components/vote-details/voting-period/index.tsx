@@ -1,4 +1,13 @@
-import { Button, Flex, Grid, GridItem, useDisclosure } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { isNull } from "lodash";
 import type { ReactNode } from "react";
 
 import type { VoteDetailsProps } from "..";
@@ -6,8 +15,10 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposalService";
+import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
+import { ValidatorVotesTable } from "./validator-votes-table";
 import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
@@ -33,6 +44,8 @@ const ContentContainer = ({
   </Flex>
 );
 
+const scrollComponentId = "voting-period";
+
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
@@ -40,8 +53,30 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
+  const isProposalResolved = !isNull(proposalData?.resolvedHeight);
+
+  const toggleDisclosure = (
+    disclosure: typeof validatorVoteDisclosure | typeof allVoteDisclosure
+  ) => {
+    if (disclosure.isOpen) {
+      disclosure.onClose();
+    } else {
+      disclosure.onOpen();
+    }
+
+    const windowPosition = scrollYPosition();
+    if (windowPosition) {
+      scrollToComponent(scrollComponentId);
+    }
+  };
+
   return (
-    <Flex position="relative" overflow="hidden" width="full">
+    <Flex
+      position="relative"
+      overflowX="hidden"
+      width="full"
+      id={scrollComponentId}
+    >
       <Flex
         direction="column"
         w="full"
@@ -81,17 +116,38 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 />
                 <Button
                   variant="ghost-primary"
-                  onClick={() => validatorVoteDisclosure.onToggle()}
+                  onClick={() => toggleDisclosure(validatorVoteDisclosure)}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                  isDisabled={!answers?.validator.total}
                 >
                   {isMobile ? "View" : "View Details"}
                 </Button>
               </Flex>
-              Validator Votes Lorem ipsum dolor, sit amet consectetur
-              adipisicing elit. Necessitatibus ipsam perspiciatis eius illo
-              maiores, magnam architecto nesciunt esse animi obcaecati
-              voluptates delectus doloribus magni alias a eligendi odio nam
-              iure?
+              {isProposalResolved && (
+                <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
+                  <CustomIcon
+                    name="alert-circle-solid"
+                    boxSize={4}
+                    color="secondary.main"
+                  />
+                  <AlertDescription>
+                    Please note that the displayed ranking is in real-time and
+                    may not accurately reflect the final vote results when the
+                    voting period ends.
+                  </AlertDescription>
+                </Alert>
+              )}
+              <ValidatorVotesTable
+                id={proposalData.id}
+                answers={answers?.validator}
+                fullVersion={false}
+                isProposalResolved={isProposalResolved}
+                onViewMore={
+                  isMobile
+                    ? () => toggleDisclosure(validatorVoteDisclosure)
+                    : undefined
+                }
+              />
             </ContentContainer>
           </GridItem>
           {/* Recent Votes */}
@@ -105,8 +161,9 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 />
                 <Button
                   variant="ghost-primary"
-                  onClick={() => allVoteDisclosure.onToggle()}
+                  onClick={() => toggleDisclosure(allVoteDisclosure)}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                  isDisabled={!answers?.all.total}
                 >
                   {isMobile ? "View" : "View Details"}
                 </Button>
@@ -115,17 +172,22 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 id={proposalData.id}
                 answers={answers?.all}
                 fullVersion={false}
+                onViewMore={
+                  isMobile
+                    ? () => toggleDisclosure(allVoteDisclosure)
+                    : undefined
+                }
               />
             </ContentContainer>
           </GridItem>
         </Grid>
       </Flex>
       <ValidatorVotesPanel
-        w="full"
-        position={validatorVoteDisclosure.isOpen ? "relative" : "absolute"}
-        opacity={validatorVoteDisclosure.isOpen ? 1 : 0}
-        left={validatorVoteDisclosure.isOpen ? "0" : "100%"}
+        answers={answers?.validator}
+        isOpen={validatorVoteDisclosure.isOpen}
+        id={proposalData.id}
         onBack={validatorVoteDisclosure.onToggle}
+        isProposalResolved={isProposalResolved}
       />
       <ProposalVotesPanel
         answers={answers?.all}

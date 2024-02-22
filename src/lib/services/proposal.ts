@@ -25,6 +25,7 @@ import type {
   ProposalVote,
   ProposalParams,
   ProposalVotesInfo,
+  ProposalValidatorVote,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
@@ -295,14 +296,6 @@ const zProposalVotesResponse = z.object({
 });
 export type ProposalVotesResponse = z.infer<typeof zProposalVotesResponse>;
 
-export const getProposalValidatorVotes = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalVotesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
-    .then(({ data }) => zProposalVotesResponse.parse(data));
-
 export const getProposalVotes = async (
   endpoint: string,
   id: number,
@@ -318,6 +311,28 @@ export const getProposalVotes = async (
   return axios.get(url).then(({ data }) => zProposalVotesResponse.parse(data));
 };
 
+export interface ProposalValidatorVotesResponse {
+  items: ProposalValidatorVote[];
+  total: number;
+}
+
+export const getProposalValidatorVotes = async (
+  endpoint: string,
+  id: number
+): Promise<ProposalValidatorVotesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
+    .then(({ data }) => {
+      const parsed = zProposalVotesResponse.parse(data);
+      return {
+        items: parsed.items.map<ProposalValidatorVote>((item, idx) => ({
+          ...item,
+          rank: idx + 1,
+        })),
+        total: parsed.total,
+      };
+    });
+
 const zProposalAnswerCounts = z.object({
   yes: z.number().nonnegative(),
   abstain: z.number().nonnegative(),
@@ -330,7 +345,10 @@ const zProposalAnswerCounts = z.object({
 const zProposalAnswerCountsResponse = z
   .object({
     all: zProposalAnswerCounts,
-    validator: zProposalAnswerCounts,
+    validator: zProposalAnswerCounts.extend({
+      did_not_vote: z.number().nonnegative(),
+      total_validators: z.number().nonnegative(),
+    }),
   })
   .transform(snakeToCamel);
 
@@ -340,11 +358,8 @@ export type ProposalAnswerCountsResponse = z.infer<
 
 export const getProposalAnswerCounts = async (
   endpoint: string,
-  id: number,
-  validatorOnly: boolean
+  id: number
 ): Promise<ProposalAnswerCountsResponse> =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(id)}/answer-counts?validator=${validatorOnly}`
-    )
+    .get(`${endpoint}/${encodeURIComponent(id)}/answer-counts`)
     .then(({ data }) => zProposalAnswerCountsResponse.parse(data));

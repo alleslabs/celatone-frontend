@@ -6,38 +6,39 @@ import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useOpenTxTab } from "lib/hooks";
-import type { ProposalVote } from "lib/types";
+import type { ProposalValidatorVote } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface ProposalVotesTableRowProps {
-  proposalVote: ProposalVote;
+interface ValidatorVotesTableRowProps {
+  proposalVote: ProposalValidatorVote;
   templateColumns: string;
   fullVersion: boolean;
+  isProposalResolved: boolean;
 }
 
-export const ProposalVotesTableRow = ({
+export const ValidatorVotesTableRow = ({
   proposalVote,
   templateColumns,
   fullVersion,
-}: ProposalVotesTableRowProps) => {
+  isProposalResolved,
+}: ValidatorVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");
 
   if (isMobile)
     return (
       <Grid templateColumns={templateColumns} minW="min-content">
-        <TableRow pl={0}>
+        {!isProposalResolved && <TableRow pl={0}>{proposalVote.rank}</TableRow>}
+        <TableRow>
           <Voter proposalVote={proposalVote} />
         </TableRow>
         <TableRow justifyContent="flex-end" pr={0}>
           <Flex direction="column" alignItems="flex-end">
-            {proposalVote.timestamp ? (
-              <Text variant="body3" color="gray.500" textColor="text.dark">
-                {dateFromNow(proposalVote.timestamp)}
-              </Text>
-            ) : (
-              <Text variant="body2">N/A</Text>
-            )}
+            <Text variant="body3" color="gray.500" textColor="text.dark">
+              {proposalVote.timestamp
+                ? dateFromNow(proposalVote.timestamp)
+                : "N/A"}
+            </Text>
             {proposalVote.txHash ? (
               <Button
                 variant="unstyled"
@@ -52,7 +53,9 @@ export const ProposalVotesTableRow = ({
                 View Tx
               </Button>
             ) : (
-              <Text variant="body2">N/A</Text>
+              <Text variant="body3" textColor="text.dark">
+                N/A
+              </Text>
             )}
           </Flex>
         </TableRow>
@@ -61,6 +64,7 @@ export const ProposalVotesTableRow = ({
 
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
+      {!isProposalResolved && <TableRow>{proposalVote.rank}</TableRow>}
       <TableRow>
         <Voter proposalVote={proposalVote} />
       </TableRow>
@@ -78,7 +82,9 @@ export const ProposalVotesTableRow = ({
                 </Text>
               </Flex>
             ) : (
-              <Text variant="body2">N/A</Text>
+              <Text variant="body3" textColor="text.dark">
+                N/A
+              </Text>
             )}
           </TableRow>
           <TableRow>
@@ -88,7 +94,9 @@ export const ProposalVotesTableRow = ({
                 value={proposalVote.txHash.toUpperCase()}
               />
             ) : (
-              <Text variant="body2">N/A</Text>
+              <Text variant="body3" textColor="text.dark">
+                N/A
+              </Text>
             )}
           </TableRow>
         </>

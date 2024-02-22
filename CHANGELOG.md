@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
 - [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Add voting power chart component
 - [#790](https://github.com/alleslabs/celatone-frontend/pull/790) Handling period tab condition
 - [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
