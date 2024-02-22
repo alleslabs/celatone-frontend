@@ -32,7 +32,7 @@ export const ProposalVotesTableRow = ({
         <TableRow justifyContent="flex-end" pr={0}>
           <Flex direction="column" alignItems="flex-end">
             {proposalVote.timestamp ? (
-              <Text variant="body3" color="gray.500">
+              <Text variant="body3" color="gray.500" textColor="text.dark">
                 {dateFromNow(proposalVote.timestamp)}
               </Text>
             ) : (
