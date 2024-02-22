@@ -65,6 +65,7 @@ export const DepositPeriodSection = ({
                   fontWeight={500}
                   whiteSpace="nowrap"
                   lineHeight={1.8}
+                  pt={1}
                 >
                   Total Deposited
                   <CustomIcon
