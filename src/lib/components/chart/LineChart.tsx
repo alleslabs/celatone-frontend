@@ -1,11 +1,9 @@
 import type {
-  BubbleDataPoint,
   ChartDataset,
   ChartOptions,
-  ChartTypeRegistry,
-  Point,
   ScriptableScaleContext,
   TooltipModel,
+  TooltipOptions,
 } from "chart.js";
 import {
   Chart as ChartJS,
@@ -39,14 +37,7 @@ interface LineChartProps {
 }
 
 const renderChartTooltip = (
-  context: {
-    chart: ChartJS<
-      keyof ChartTypeRegistry,
-      (number | Point | [number, number] | BubbleDataPoint | null)[],
-      unknown
-    >;
-    tooltip: TooltipModel<"line">;
-  },
+  context: Parameters<TooltipOptions<"line">["external"]>[0],
   customizeTooltip: (tooltip: TooltipModel<"line">) => string,
   isMobile: boolean
 ) => {
