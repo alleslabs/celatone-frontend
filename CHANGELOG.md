@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
 - [#790](https://github.com/alleslabs/celatone-frontend/pull/790) Handling period tab condition
 - [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
 - [#785](https://github.com/alleslabs/celatone-frontend/pull/785) Quorum status on vote details section
