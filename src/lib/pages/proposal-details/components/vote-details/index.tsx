@@ -79,14 +79,14 @@ export const VoteDetails = ({
       allowToggle
       w="full"
       variant="transparent"
-      index={[periodTabIndex]}
+      defaultIndex={[periodTabIndex]}
     >
       <VoteDetailsAccordionItem
         step={1}
         proposalData={proposalData}
         onClick={handleTabChange(PeriodIndex.Deposit)}
       >
-        <DepositPeriodSection />
+        <DepositPeriodSection proposalData={proposalData} {...props} />
       </VoteDetailsAccordionItem>
       <VoteDetailsAccordionItem
         step={2}
@@ -126,7 +126,7 @@ export const VoteDetails = ({
         borderRadius="0px 0px 8px 8px"
       >
         <TabPanel>
-          <DepositPeriodSection />
+          <DepositPeriodSection proposalData={proposalData} {...props} />
         </TabPanel>
         <TabPanel>
           <VotingPeriod proposalData={proposalData} {...props} />
