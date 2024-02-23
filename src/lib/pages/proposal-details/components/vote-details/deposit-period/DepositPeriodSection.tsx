@@ -30,8 +30,7 @@ export const DepositPeriodSection = ({
     <Flex
       direction="column"
       background={isMobile ? "transparent" : "gray.900"}
-      border="1px solid"
-      borderColor={isMobile ? "transparent" : "gray.700"}
+      border={isMobile ? undefined : "1px solid var(--chakra-colors-gray-700)"}
       borderRadius="8px"
       p={isMobile ? 0 : 6}
       gap={4}

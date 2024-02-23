@@ -13,7 +13,6 @@ interface VoteDetailsAccordionItemProps {
   step: number;
   proposalData: ProposalData;
   children: ReactNode;
-  onClick: () => void;
   isDisabled?: boolean;
 }
 
@@ -21,13 +20,11 @@ export const VoteDetailsAccordionItem = ({
   step,
   proposalData,
   children,
-  onClick,
   isDisabled,
 }: VoteDetailsAccordionItemProps) => (
   <AccordionItem
     borderTop="1px solid"
     borderColor="gray.700"
-    onClick={onClick}
     isDisabled={isDisabled}
   >
     <AccordionButton py={3} px={0}>
@@ -36,8 +33,8 @@ export const VoteDetailsAccordionItem = ({
     </AccordionButton>
     <AccordionPanel
       bg="transparent"
-      py={3}
-      px={0}
+      p={0}
+      pt={3}
       borderTop="1px solid"
       borderColor="gray.700"
     >
