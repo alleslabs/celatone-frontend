@@ -1,9 +1,8 @@
-import { Accordion, Button, Flex, Heading } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import { trackUseExpandAll } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import { EmptyState } from "lib/components/state";
 import type { ProposalData } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
@@ -12,6 +11,7 @@ import { ProposalMessageCard } from "./ProposalMessageCard";
 interface ProposalMessagesProps {
   messages: ProposalData["messages"];
 }
+
 export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
@@ -19,43 +19,47 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
     setExpandedIndexes(messages?.length === 1 ? [0] : []);
   }, [messages]);
 
+  const hasMsgs = messages && messages.length > 0;
+
   return (
     <Flex
       direction="column"
       gap={4}
-      pt={8}
-      borderTop="1px solid"
+      pt={2}
+      borderBottom={{ base: hasMsgs ? "0px" : "1px solid", md: "0px" }}
       borderColor="gray.700"
     >
       <Flex w="full" alignItems="center" justifyContent="space-between">
         <Heading as="h6" variant="h6">
           Proposal Messages
         </Heading>
-        <Button
-          variant="ghost-primary"
-          isDisabled={!messages?.length}
-          minW={{ base: "auto", md: 32 }}
-          size="sm"
-          rightIcon={
-            <CustomIcon
-              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-              boxSize={3}
-            />
-          }
-          onClick={() => {
-            trackUseExpandAll(
-              expandedIndexes.length ? "collapse" : "expand",
-              "Proposal Messages"
-            );
-            setExpandedIndexes((prev) =>
-              !prev.length ? Array.from(Array(messages?.length).keys()) : []
-            );
-          }}
-        >
-          {expandedIndexes.length ? "Collapse All" : "Expand All"}
-        </Button>
+        {hasMsgs && (
+          <Button
+            variant="ghost-primary"
+            isDisabled={!messages?.length}
+            minW={{ base: "auto", md: 32 }}
+            size="sm"
+            rightIcon={
+              <CustomIcon
+                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                boxSize={3}
+              />
+            }
+            onClick={() => {
+              trackUseExpandAll(
+                expandedIndexes.length ? "collapse" : "expand",
+                "Proposal Messages"
+              );
+              setExpandedIndexes((prev) =>
+                !prev.length ? Array.from(Array(messages?.length).keys()) : []
+              );
+            }}
+          >
+            {expandedIndexes.length ? "Collapse All" : "Expand All"}
+          </Button>
+        )}
       </Flex>
-      {messages?.length ? (
+      {hasMsgs ? (
         <Accordion
           allowMultiple
           width="full"
@@ -72,13 +76,9 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
           ))}
         </Accordion>
       ) : (
-        <EmptyState
-          message="The proposal has no message."
-          imageVariant="empty"
-          my={4}
-          py={0}
-          imageWidth={40}
-        />
+        <Text variant="body1" color="text.dark">
+          The proposal has no message.
+        </Text>
       )}
     </Flex>
   );
