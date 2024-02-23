@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { trackUseExpandAll } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
+import { EmptyState } from "lib/components/state";
 import type { ProposalData } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
@@ -32,6 +33,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
         </Heading>
         <Button
           variant="ghost-primary"
+          isDisabled={!messages?.length}
           minW={{ base: "auto", md: 32 }}
           size="sm"
           rightIcon={
@@ -53,21 +55,31 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
           {expandedIndexes.length ? "Collapse All" : "Expand All"}
         </Button>
       </Flex>
-      <Accordion
-        allowMultiple
-        width="full"
-        variant="transparent"
-        index={expandedIndexes}
-        onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
-      >
-        {messages?.map((item, i) => (
-          <ProposalMessageCard
-            key={`msg-${JSON.stringify(item)}`}
-            header={`[${i}] ${item["@type"]}`}
-            jsonString={jsonPrettify(JSON.stringify(item))}
-          />
-        ))}
-      </Accordion>
+      {messages?.length ? (
+        <Accordion
+          allowMultiple
+          width="full"
+          variant="transparent"
+          index={expandedIndexes}
+          onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
+        >
+          {messages?.map((item, i) => (
+            <ProposalMessageCard
+              key={`msg-${JSON.stringify(item)}`}
+              header={`[${i}] ${item["@type"]}`}
+              jsonString={jsonPrettify(JSON.stringify(item))}
+            />
+          ))}
+        </Accordion>
+      ) : (
+        <EmptyState
+          message="The proposal has no message."
+          imageVariant="empty"
+          my={4}
+          py={0}
+          imageWidth={40}
+        />
+      )}
     </Flex>
   );
 };

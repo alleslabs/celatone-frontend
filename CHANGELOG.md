@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
 - [#784](https://github.com/alleslabs/celatone-frontend/pull/784) Make proposal list row clickable with command/ctrl
 - [#776](https://github.com/alleslabs/celatone-frontend/pull/776) Add expand/collapse all to proposal messages in detail page
 - [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap

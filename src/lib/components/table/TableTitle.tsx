@@ -6,6 +6,7 @@ interface TableTitleProps extends BoxProps {
   count?: number;
   showCount?: boolean;
   helperText?: string;
+  isSmall?: boolean;
 }
 
 export const TableTitle = ({
@@ -14,11 +15,12 @@ export const TableTitle = ({
   showCount = true,
   helperText,
   mb = 6,
+  isSmall = false,
   ...props
 }: TableTitleProps) => (
   <Box mb={mb} {...props}>
     <Flex gap={2} h="29px" alignItems="center">
-      <Heading as="h6" variant="h6">
+      <Heading as="h6" variant={isSmall ? "h7" : "h6"}>
         {title}
       </Heading>
       {showCount && (

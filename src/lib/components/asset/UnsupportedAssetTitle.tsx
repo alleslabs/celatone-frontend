@@ -15,6 +15,7 @@ export const UnsupportedAssetTitle = ({
       title="Unsupported Assets"
       count={unsupportedAssets.length}
       mb={0}
+      isSmall
     />
   </Flex>
 );
