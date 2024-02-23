@@ -26,6 +26,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
       direction="column"
       gap={4}
       pt={2}
+      pb={hasMsgs ? 0 : 8}
       borderBottom={{ base: hasMsgs ? "0px" : "1px solid", md: "0px" }}
       borderColor="gray.700"
     >
