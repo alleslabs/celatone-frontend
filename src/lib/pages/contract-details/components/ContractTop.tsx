@@ -195,7 +195,7 @@ export const ContractTop = ({
               >
                 Label
               </Text>
-              <Text variant="body2" className="ellipsis">
+              <Text variant="body2" wordBreak="break-word">
                 {contract.label}
               </Text>
             </Flex>

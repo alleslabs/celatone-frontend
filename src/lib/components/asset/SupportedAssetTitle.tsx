@@ -22,7 +22,7 @@ export const SupportedAssetTitle = ({
     <Flex
       w="full"
       bg="gray.900"
-      py={2}
+      py={1}
       px={4}
       borderRadius="8px 8px 0px 0px"
       justifyContent="space-between"
@@ -31,12 +31,13 @@ export const SupportedAssetTitle = ({
         title="Supported Assets"
         count={supportedAssets.length}
         mb={0}
+        isSmall
       />
       {!isMobile && (
         <Heading
           mt={1}
           as="h6"
-          variant="h6"
+          variant="h7"
           color={isZeroValue ? "text.dark" : "text.main"}
         >
           {totalSupportedAssetsValue
