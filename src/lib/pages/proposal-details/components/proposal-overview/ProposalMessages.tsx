@@ -37,7 +37,6 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
         {hasMsgs && (
           <Button
             variant="ghost-primary"
-            isDisabled={!messages?.length}
             minW={{ base: "auto", md: 32 }}
             size="sm"
             rightIcon={
