@@ -6,11 +6,9 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { isNull } from "lodash";
-import { useCallback, useEffect } from "react";
 
-import { PeriodIndex, TabIndex } from "../../types";
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import {
   ProposalStatus,
   type Option,
@@ -24,21 +22,20 @@ import { VoteDetailsAccordionItem } from "./VoteDetailsAccordionItem";
 import { VoteDetailsTab } from "./VoteDetailsTab";
 import { VotingPeriod } from "./voting-period";
 
+const trackPeriodSubtab = (index: number) =>
+  track(AmpEvent.USE_SUBTAB, {
+    currentTab: index === 0 ? "deposit" : "voting",
+  });
+
 export interface VoteDetailsProps {
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
   params: Option<ProposalParams>;
   isLoading: boolean;
-  period?: PeriodIndex;
 }
 
-export const VoteDetails = ({
-  proposalData,
-  period,
-  ...props
-}: VoteDetailsProps) => {
+export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
-  const navigate = useInternalNavigate();
 
   const isDepositOnly =
     proposalData.status === ProposalStatus.DEPOSIT_FAILED ||
@@ -46,52 +43,25 @@ export const VoteDetails = ({
     (proposalData.status === ProposalStatus.CANCELLED &&
       isNull(proposalData.votingTime));
 
-  const periodTab =
-    period ?? (isDepositOnly ? PeriodIndex.Deposit : PeriodIndex.Voting);
-  const periodTabIndex = Object.values(PeriodIndex).indexOf(periodTab);
-
-  const handleTabChange = useCallback(
-    (nextSubTab: PeriodIndex) => () => {
-      if (nextSubTab === periodTab) return;
-      track(AmpEvent.USE_SUBTAB, { currentTab: periodTab });
-      navigate({
-        pathname: "/proposals/[id]/[tab]",
-        query: {
-          id: proposalData.id,
-          tab: TabIndex.Vote,
-          period: nextSubTab,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    },
-    [navigate, periodTab, proposalData.id]
-  );
-
-  useEffect(() => {
-    if (period === PeriodIndex.Voting && isDepositOnly)
-      handleTabChange(PeriodIndex.Deposit)();
-  }, [handleTabChange, isDepositOnly, period]);
+  const subtabIndex = isDepositOnly ? 0 : 1;
 
   return isMobile ? (
     <Accordion
       allowToggle
       w="full"
       variant="transparent"
-      defaultIndex={[periodTabIndex]}
+      defaultIndex={[subtabIndex]}
+      onChange={(expandedIndex: number) => {
+        if (expandedIndex === -1) return;
+        trackPeriodSubtab(expandedIndex);
+      }}
     >
-      <VoteDetailsAccordionItem
-        step={1}
-        proposalData={proposalData}
-        onClick={handleTabChange(PeriodIndex.Deposit)}
-      >
+      <VoteDetailsAccordionItem step={1} proposalData={proposalData}>
         <DepositPeriodSection proposalData={proposalData} {...props} />
       </VoteDetailsAccordionItem>
       <VoteDetailsAccordionItem
         step={2}
         proposalData={proposalData}
-        onClick={handleTabChange(PeriodIndex.Voting)}
         isDisabled={isDepositOnly}
       >
         <VotingPeriod proposalData={proposalData} {...props} />
@@ -103,18 +73,14 @@ export const VoteDetails = ({
       lazyBehavior="keepMounted"
       mt={6}
       w="full"
-      index={periodTabIndex}
+      defaultIndex={subtabIndex}
+      onChange={(index) => trackPeriodSubtab(index)}
     >
       <TabList borderBottom="0px solid" gap={2}>
-        <VoteDetailsTab
-          step={1}
-          proposalData={proposalData}
-          onClick={handleTabChange(PeriodIndex.Deposit)}
-        />
+        <VoteDetailsTab step={1} proposalData={proposalData} />
         <VoteDetailsTab
           step={2}
           proposalData={proposalData}
-          onClick={handleTabChange(PeriodIndex.Voting)}
           isDisabled={isDepositOnly}
         />
       </TabList>
