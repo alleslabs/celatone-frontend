@@ -23,6 +23,7 @@ import {
   camelToSnake,
   getMsgFurtherAction,
 } from "lib/utils";
+import { parseWithError } from "lib/utils/zod";
 
 // ----------------------------------------
 // --------------AuthInfo------------------
@@ -107,7 +108,7 @@ export const queryTxData = async (
 };
 
 const zBaseTxsResponseItem = z.object({
-  height: z.number().nonnegative(),
+  height: z.number().negative(),
   created: zUtcDate,
   hash: z.string(),
   messages: z.any().array(),
@@ -179,7 +180,7 @@ export const getTxs = async (
         is_initia: isInitia,
       },
     })
-    .then(({ data }) => zTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zTxsResponse, data));
 
 const zAccountTxsResponseItem = zBaseTxsResponseItem
   .extend({
