@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#799](https://github.com/alleslabs/celatone-frontend/pull/799) Add extra config single denom staking
 - [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
 - [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
 - [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Add voting power chart component
