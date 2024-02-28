@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { AccessConfigPermission, zBechAddr } from "lib/types";
 import type { BechAddr, BechAddr20, CodeInfo, Option } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 export interface CodeIdInfoResponse {
   code_info: {
@@ -71,7 +72,7 @@ export const getCodes = async (
         permission,
       },
     })
-    .then(({ data }) => zCodesResponse.parse(data));
+    .then(({ data }) => parseWithError(zCodesResponse, data));
 
 export const getCodesByAddress = async (
   endpoint: string,
@@ -86,4 +87,4 @@ export const getCodesByAddress = async (
         offset,
       },
     })
-    .then(({ data }) => zCodesResponse.parse(data));
+    .then(({ data }) => parseWithError(zCodesResponse, data));

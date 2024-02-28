@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { zProjectInfo, zPublicAccountInfo, type BechAddr } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { parseWithError, snakeToCamel } from "lib/utils";
 
 const zIcns = z.object({
   names: z.array(z.string()),
@@ -25,7 +25,7 @@ export const getAccountData = async (
 ): Promise<AccountData> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/info`)
-    .then(({ data }) => zAccountData.parse(data));
+    .then(({ data }) => parseWithError(zAccountData, data));
 
 const zAccountTableCounts = z
   .object({
@@ -52,4 +52,4 @@ export const getAccountTableCounts = async (
         is_wasm: isWasm,
       },
     })
-    .then(({ data }) => zAccountTableCounts.parse(data));
+    .then(({ data }) => parseWithError(zAccountTableCounts, data));

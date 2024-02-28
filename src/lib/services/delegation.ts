@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { type BechAddr, zUtcDate, zValidator } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { parseWithError, snakeToCamel } from "lib/utils";
 
 const zDelegations = z
   .object({
@@ -132,4 +132,4 @@ export const getDelegationsByAddress = async (
 ): Promise<Delegations> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/delegations`)
-    .then(({ data }) => zDelegations.parse(data));
+    .then(({ data }) => parseWithError(zDelegations, data));

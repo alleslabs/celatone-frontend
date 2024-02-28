@@ -22,8 +22,8 @@ import {
   snakeToCamel,
   camelToSnake,
   getMsgFurtherAction,
+  parseWithError,
 } from "lib/utils";
-import { parseWithError } from "lib/utils/zod";
 
 // ----------------------------------------
 // --------------AuthInfo------------------
@@ -108,7 +108,7 @@ export const queryTxData = async (
 };
 
 const zBaseTxsResponseItem = z.object({
-  height: z.number().negative(),
+  height: z.number().nonnegative(),
   created: zUtcDate,
   hash: z.string(),
   messages: z.any().array(),
@@ -260,7 +260,7 @@ export const getTxsByAddress = async (
         ...(search !== undefined && { search }),
       },
     })
-    .then(({ data }) => zAccountTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zAccountTxsResponse, data));
 };
 
 const zBlockTxsResponse = z.object({
@@ -288,7 +288,7 @@ export const getTxsByBlockHeight = async (
         is_initia: isInitia,
       },
     })
-    .then(({ data }) => zBlockTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zBlockTxsResponse, data));
 
 const zModuleTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
@@ -318,7 +318,7 @@ export const getTxsByModule = async (
         },
       }
     )
-    .then(({ data }) => zModuleTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zModuleTxsResponse, data));
 
 const zTxsCountResponse = z
   .object({
@@ -345,5 +345,5 @@ export const getTxsCountByAddress = async (
         ...(search !== undefined && { search }),
       },
     })
-    .then(({ data }) => zTxsCountResponse.parse(data));
+    .then(({ data }) => parseWithError(zTxsCountResponse, data));
 };
