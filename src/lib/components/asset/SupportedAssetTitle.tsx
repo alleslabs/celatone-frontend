@@ -31,6 +31,7 @@ export const SupportedAssetTitle = ({
         title="Supported Assets"
         count={supportedAssets.length}
         mb={0}
+        isSmall
       />
       {!isMobile && (
         <Heading
