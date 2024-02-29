@@ -40,9 +40,7 @@ interface ExplorerLinkProps extends BoxProps {
 
 export const getNavigationUrl = ({
   type,
-  explorerConfig,
   value,
-  lcdEndpoint,
   wasmEnabled = false,
 }: {
   type: ExplorerLinkProps["type"];
@@ -63,9 +61,7 @@ export const getNavigationUrl = ({
       url = "/accounts";
       break;
     case "validator_address":
-      url =
-        explorerConfig.validator ||
-        `${lcdEndpoint}/cosmos/staking/v1beta1/validators`;
+      url = "/validators";
       break;
     case "code_id":
       url = "/codes";
@@ -189,7 +185,8 @@ export const ExplorerLink = ({
     type === "tx_hash" ||
     type === "block_height" ||
     type === "pool_id" ||
-    type === "proposal_id";
+    type === "proposal_id" ||
+    type === "validator_address";
 
   const [hrefLink, textValue] = [
     getNavigationUrl({
