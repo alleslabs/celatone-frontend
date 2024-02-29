@@ -104,9 +104,9 @@ const ValidatorStats = () => (
 export const ValidatorTop = () => (
   <Flex
     direction="column"
-    mb={6}
     gap={5}
-    p={{ base: "16px", md: "48px" }}
+    px={{ base: "16px", md: "48px" }}
+    pt={{ base: "16px", md: "48px" }}
     bgGradient="linear(to-b, success.background, transparent)"
   >
     <Breadcrumb
