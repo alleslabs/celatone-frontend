@@ -27,7 +27,7 @@ import type {
   ProposalVotesInfo,
   ProposalValidatorVote,
 } from "lib/types";
-import { parseTxHash, snakeToCamel } from "lib/utils";
+import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 
 interface DepositParams {
   min_deposit: Coin[];
@@ -105,12 +105,12 @@ export const getProposalParams = async (
 ): Promise<ProposalParams<Coin>> =>
   axios
     .get(`${endpoint}/params`)
-    .then(({ data }) => zProposalParamsResponse.parse(data));
+    .then(({ data }) => parseWithError(zProposalParamsResponse, data));
 
 export const getProposalTypes = async (endpoint: string) =>
   axios
     .get(`${endpoint}/types`)
-    .then(({ data }) => zProposalType.array().parse(data));
+    .then(({ data }) => parseWithError(zProposalType.array(), data));
 
 const zProposal = z.object({
   deposit_end_time: zUtcDate,
@@ -152,7 +152,7 @@ export const getProposals = async (
         search,
       },
     })
-    .then(({ data }) => zProposalsResponse.parse(data));
+    .then(({ data }) => parseWithError(zProposalsResponse, data));
 
 export const getProposalsByAddress = async (
   endpoint: string,
@@ -167,7 +167,7 @@ export const getProposalsByAddress = async (
         offset,
       },
     })
-    .then(({ data }) => zProposalsResponse.parse(data));
+    .then(({ data }) => parseWithError(zProposalsResponse, data));
 
 const zRelatedProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),
@@ -192,7 +192,7 @@ export const getRelatedProposalsByContractAddress = async (
         },
       }
     )
-    .then(({ data }) => zRelatedProposalsResponse.parse(data));
+    .then(({ data }) => parseWithError(zRelatedProposalsResponse, data));
 
 const zProposalDataResponse = z.object({
   info: zProposal
@@ -246,7 +246,7 @@ export const getProposalData = async (
 ): Promise<ProposalDataResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/info`)
-    .then(({ data }) => zProposalDataResponse.parse(data));
+    .then(({ data }) => parseWithError(zProposalDataResponse, data));
 
 const zProposalVotesInfoResponse = z
   .object({
@@ -270,7 +270,7 @@ export const getProposalVotesInfo = async (
 ): Promise<ProposalVotesInfo> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
-    .then(({ data }) => zProposalVotesInfoResponse.parse(data));
+    .then(({ data }) => parseWithError(zProposalVotesInfoResponse, data));
 
 const zProposalVotesResponseItem = z
   .object({
@@ -308,7 +308,9 @@ export const getProposalVotes = async (
   url = url.concat(search ? `&search=${encodeURIComponent(search)}` : "");
   url = url.concat(answer ? `&answer=${encodeURIComponent(answer)}` : "");
 
-  return axios.get(url).then(({ data }) => zProposalVotesResponse.parse(data));
+  return axios
+    .get(url)
+    .then(({ data }) => parseWithError(zProposalVotesResponse, data));
 };
 
 export interface ProposalValidatorVotesResponse {
@@ -323,7 +325,7 @@ export const getProposalValidatorVotes = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
     .then(({ data }) => {
-      const parsed = zProposalVotesResponse.parse(data);
+      const parsed = parseWithError(zProposalVotesResponse, data);
       return {
         items: parsed.items.map<ProposalValidatorVote>((item, idx) => ({
           ...item,
@@ -362,4 +364,4 @@ export const getProposalAnswerCounts = async (
 ): Promise<ProposalAnswerCountsResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/answer-counts`)
-    .then(({ data }) => zProposalAnswerCountsResponse.parse(data));
+    .then(({ data }) => parseWithError(zProposalAnswerCountsResponse, data));
