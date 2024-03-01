@@ -10,6 +10,12 @@ export enum TabIndex {
   BondedTokenChanges = "bondedTokenChanges",
 }
 
+export enum PenaltyStatus {
+  JAILED = "Jailed",
+  SLASHED = "Slashed",
+  NEVER = "Never",
+}
+
 export const zValidatorDetailsQueryParams = z.object({
   validatorAddress: zBechAddr32,
   tab: z.union([

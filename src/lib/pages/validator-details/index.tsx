@@ -8,6 +8,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
+import { ValidatorOverview } from "./components/ValidatorOverviewSection";
 import { ValidatorTop } from "./components/ValidatorTop";
 // import { VotingPowerChart } from "./components/VotingPowerChart";
 import { TabIndex } from "./types";
@@ -86,8 +87,7 @@ const ValidatorDetails = () => {
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-              Overview
-              {/* <VotingPowerChart currency="OSMO" /> */}
+              <ValidatorOverview />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
               Votes
