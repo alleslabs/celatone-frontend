@@ -55,7 +55,7 @@ export const RecentBlocksLegends = () => {
         percent="3.00%"
       />
       <LegendItem
-        label="Proposed Blocks"
+        label="Missed Blocks"
         color="error.dark"
         value="3"
         percent="1.11%"

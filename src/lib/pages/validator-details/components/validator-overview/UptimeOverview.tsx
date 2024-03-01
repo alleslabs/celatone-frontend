@@ -1,15 +1,18 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { PenaltyStatus } from "../types";
+import { PenaltyStatus } from "../../types";
+import { PenaltyStatusSection } from "../PenaltyStatusSection";
+import { RecentBlocksLegends } from "../RecentBlocksLegends";
+import { RecentBlocksSection } from "../RecentBlocksSection";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 
-import { PenaltyStatusSection } from "./PenaltyStatusSection";
-import { RecentBlocksLegends } from "./RecentBlocksLegends";
-import { RecentBlocksSection } from "./RecentBlocksSection";
+interface UptimeOverviewProps {
+  onViewMore: () => void;
+}
 
-export const UptimeOverview = () => {
+export const UptimeOverview = ({ onViewMore }: UptimeOverviewProps) => {
   const isMobile = useMobile();
   return (
     <Flex
@@ -34,6 +37,7 @@ export const UptimeOverview = () => {
             display={{ base: "none", md: "flex" }}
             variant="ghost-primary"
             rightIcon={<CustomIcon name="chevron-right" />}
+            onClick={onViewMore}
           >
             View Performance
           </Button>
@@ -47,6 +51,7 @@ export const UptimeOverview = () => {
         display={{ base: "flex", md: "none" }}
         variant="ghost-primary"
         rightIcon={<CustomIcon name="chevron-right" />}
+        onClick={onViewMore}
       >
         View Performance
       </Button>

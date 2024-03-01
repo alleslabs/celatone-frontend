@@ -8,9 +8,8 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
-import { ValidatorOverview } from "./components/ValidatorOverviewSection";
+import { ValidatorOverview } from "./components/validator-overview/ValidatorOverviewSection";
 import { ValidatorTop } from "./components/ValidatorTop";
-// import { VotingPowerChart } from "./components/VotingPowerChart";
 import { TabIndex } from "./types";
 
 const tableHeaderId = "validatorDetailsTab";
@@ -80,14 +79,19 @@ const ValidatorDetails = () => {
             <CustomTab onClick={handleTabChange(TabIndex.Performance)}>
               Performance
             </CustomTab>
-
             <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
               Bonded Token Changes
             </CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-              <ValidatorOverview />
+              <ValidatorOverview
+                onSelectVotes={handleTabChange(TabIndex.Votes)}
+                onSelectPerformance={handleTabChange(TabIndex.Performance)}
+                onSelectBondedTokenChanges={handleTabChange(
+                  TabIndex.BondedTokenChanges
+                )}
+              />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
               Votes
