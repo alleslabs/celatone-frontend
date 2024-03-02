@@ -8,12 +8,14 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
+import { PerformanceSection } from "./components/PerformanceSection";
 import { ValidatorOverview } from "./components/validator-overview/ValidatorOverviewSection";
 import { ValidatorTop } from "./components/ValidatorTop";
 import { TabIndex } from "./types";
 
 const tableHeaderId = "validatorDetailsTab";
 
+// TODO: get validator addr
 const mockUpValidatorAddress =
   "osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4";
 
@@ -84,7 +86,7 @@ const ValidatorDetails = () => {
             </CustomTab>
           </TabList>
           <TabPanels>
-            <TabPanel p={0} pt={{ base: 4, md: 0 }}>
+            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <ValidatorOverview
                 onSelectVotes={handleTabChange(TabIndex.Votes)}
                 onSelectPerformance={handleTabChange(TabIndex.Performance)}
@@ -93,14 +95,14 @@ const ValidatorDetails = () => {
                 )}
               />
             </TabPanel>
-            <TabPanel p={0} pt={{ base: 4, md: 0 }}>
+            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               Votes
             </TabPanel>
-            <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-              Performances
+            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
+              <PerformanceSection />
             </TabPanel>
 
-            <TabPanel p={0} pt={{ base: 4, md: 0 }}>
+            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               Bonded Token Changes
             </TabPanel>
           </TabPanels>

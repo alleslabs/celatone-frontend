@@ -3,11 +3,11 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { RecentBlocksSection } from "../RecentBlocksSection";
 import { ProposedBlocksTable } from "../table/ProposedBlocksTable";
 import { VotedProposalsTable } from "../table/VotedProposalsTable";
+import { UptimeSection } from "../UptimeSection";
 import { VotingPowerChart } from "../VotingPowerChart";
 import { useMobile } from "lib/app-provider";
 
 import { BondedTokenChangeMobileCard } from "./BondedTokenChangeMobileCard";
-import { UptimeOverview } from "./UptimeOverview";
 import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
@@ -36,12 +36,12 @@ export const ValidatorOverview = ({
       </Flex>
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <VotingPowerOverview />
-        <UptimeOverview onViewMore={onSelectPerformance} />
+        <UptimeSection onViewMore={onSelectPerformance} />
       </Flex>
       {!isMobile && (
         <>
           <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
-            <RecentBlocksSection />
+            <RecentBlocksSection hasTitle />
           </Flex>
           <VotingPowerChart currency="OSMO" />
         </>

@@ -10,20 +10,21 @@ export const ProposedBlocksTable = ({
   onViewMore,
 }: ProposedBlocksTableProps) => {
   const isMobile = useMobile();
+  const isMobileOverview = isMobile && !!onViewMore;
   return (
     <>
-      {isMobile ? (
+      {isMobileOverview ? (
         <MobileTitle
           title="Recently Proposed Blocks"
           count={10}
           onViewMore={onViewMore}
         />
       ) : (
-        <Flex direction="column" gap={6}>
+        <Flex direction="column" gap={{ base: 4, md: 6 }}>
           <Heading as="h6" variant="h6">
             Recently Proposed Blocks
           </Heading>
-          <Flex>table</Flex>
+          {isMobile ? <Flex>mobile table</Flex> : <Flex>table</Flex>}
         </Flex>
       )}
     </>

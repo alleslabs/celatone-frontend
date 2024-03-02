@@ -8,17 +8,19 @@ import { CustomIcon } from "lib/components/icon";
 interface PenaltyStatusSectionProps {
   validatorName?: string;
   status: PenaltyStatus;
+  hasBorder?: boolean;
 }
 export const PenaltyStatusSection = ({
   validatorName = "This validator",
   status,
+  hasBorder = false,
 }: PenaltyStatusSectionProps) => {
   return (
     <Flex
       alignItems="center"
       gap={2}
-      pt={4}
-      borderTop="1px solid"
+      pt={hasBorder ? 4 : 0}
+      borderTop={hasBorder ? "1px solid" : "0px"}
       borderTopColor="gray.700"
     >
       {status === PenaltyStatus.NEVER ? (
