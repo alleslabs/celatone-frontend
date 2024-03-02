@@ -1,5 +1,9 @@
 import { Box, Grid, Flex, Text, Heading } from "@chakra-ui/react";
 
+interface RecentBlocksSectionProps {
+  hasTitle?: boolean;
+}
+
 const Block = ({ isHighlighted = false }: { isHighlighted: boolean }) => (
   <Box
     width="12px"
@@ -9,9 +13,6 @@ const Block = ({ isHighlighted = false }: { isHighlighted: boolean }) => (
   />
 );
 
-interface RecentBlocksSectionProps {
-  hasTitle?: boolean;
-}
 export const RecentBlocksSection = ({
   hasTitle = false,
 }: RecentBlocksSectionProps) => {

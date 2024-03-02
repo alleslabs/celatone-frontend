@@ -1,13 +1,13 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { RecentBlocksSection } from "../RecentBlocksSection";
+import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
+import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
+import { RecentBlocksSection } from "../performance/RecentBlocksSection";
+import { UptimeSection } from "../performance/UptimeSection";
 import { ProposedBlocksTable } from "../table/ProposedBlocksTable";
 import { VotedProposalsTable } from "../table/VotedProposalsTable";
-import { UptimeSection } from "../UptimeSection";
-import { VotingPowerChart } from "../VotingPowerChart";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useMoveConfig } from "lib/app-provider";
 
-import { BondedTokenChangeMobileCard } from "./BondedTokenChangeMobileCard";
 import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
@@ -20,6 +20,7 @@ export const ValidatorOverview = ({
   onSelectPerformance,
   onSelectBondedTokenChanges,
 }: ValidatorOverviewProps) => {
+  const move = useMoveConfig({ shouldRedirect: false });
   const isMobile = useMobile();
   return (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
@@ -43,10 +44,10 @@ export const ValidatorOverview = ({
           <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
             <RecentBlocksSection hasTitle />
           </Flex>
-          <VotingPowerChart currency="OSMO" />
+          {!move.enabled && <VotingPowerChart denom="OSMO" />}
         </>
       )}
-      {isMobile && (
+      {isMobile && !move.enabled && (
         <BondedTokenChangeMobileCard
           denom="OSMO"
           onViewMore={onSelectBondedTokenChanges}

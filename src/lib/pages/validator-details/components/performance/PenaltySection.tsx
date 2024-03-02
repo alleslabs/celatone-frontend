@@ -1,6 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { PenaltyStatus } from "../types";
+import { PenaltyStatus } from "../../types";
 
 import { PenaltyStatusSection } from "./PenaltyStatusSection";
 

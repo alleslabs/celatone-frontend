@@ -1,8 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 
+import { ProposedBlocksTable } from "../table/ProposedBlocksTable";
+
 import { PenaltySection } from "./PenaltySection";
 import { RecentBlocksSection } from "./RecentBlocksSection";
-import { ProposedBlocksTable } from "./table/ProposedBlocksTable";
 import { UptimeSection } from "./UptimeSection";
 
 export const PerformanceSection = () => {

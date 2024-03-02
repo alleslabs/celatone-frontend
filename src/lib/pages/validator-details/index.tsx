@@ -3,14 +3,16 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { trackUseTab } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
-import { PerformanceSection } from "./components/PerformanceSection";
+import { BondedTokenChangesSection } from "./components/bonded-token-changes/BondedTokenChangesSection";
+import { PerformanceSection } from "./components/performance/PerformanceSection";
 import { ValidatorOverview } from "./components/validator-overview/ValidatorOverviewSection";
 import { ValidatorTop } from "./components/ValidatorTop";
+import { VotesSection } from "./components/VotesSection";
 import { TabIndex } from "./types";
 
 const tableHeaderId = "validatorDetailsTab";
@@ -22,7 +24,11 @@ const mockUpValidatorAddress =
 const ValidatorDetails = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+
+  const move = useMoveConfig({ shouldRedirect: false });
+
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
@@ -81,9 +87,11 @@ const ValidatorDetails = () => {
             <CustomTab onClick={handleTabChange(TabIndex.Performance)}>
               Performance
             </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
-              Bonded Token Changes
-            </CustomTab>
+            {!move.enabled && (
+              <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
+                Bonded Token Changes
+              </CustomTab>
+            )}
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
@@ -96,15 +104,16 @@ const ValidatorDetails = () => {
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              Votes
+              <VotesSection />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <PerformanceSection />
             </TabPanel>
-
-            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              Bonded Token Changes
-            </TabPanel>
+            {!move.enabled && (
+              <TabPanel p={0} pt={{ base: 2, md: 0 }}>
+                <BondedTokenChangesSection />
+              </TabPanel>
+            )}
           </TabPanels>
         </Tabs>
       </PageContainer>

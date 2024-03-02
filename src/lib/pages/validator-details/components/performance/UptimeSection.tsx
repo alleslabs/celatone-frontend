@@ -1,6 +1,6 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { PenaltyStatus } from "../types";
+import { PenaltyStatus } from "../../types";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
