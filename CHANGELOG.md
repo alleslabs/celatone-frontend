@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#801](https://github.com/alleslabs/celatone-frontend/pull/801) Add validator detail ui structure
 - [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
 - [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
 - [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Add voting power chart component
