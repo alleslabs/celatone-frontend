@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import type { Block, BlockData, Validator } from "lib/types";
 import { zValidatorAddr, zUtcDate } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import { parseTxHash, parseWithError } from "lib/utils";
 
 const zNullableValidator = z.nullable(
   z
@@ -54,7 +54,7 @@ export const getBlocks = async (
         offset,
       },
     })
-    .then(({ data }) => zBlocksResponse.parse(data));
+    .then(({ data }) => parseWithError(zBlocksResponse, data));
 
 const zBlockDataResponse = z
   .object({
@@ -77,4 +77,4 @@ const zBlockDataResponse = z
 export const getBlockData = async (endpoint: string, height: number) =>
   axios
     .get(`${endpoint}/${height}/info`)
-    .then(({ data }) => zBlockDataResponse.parse(data));
+    .then(({ data }) => parseWithError(zBlockDataResponse, data));

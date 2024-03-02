@@ -3,6 +3,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import type { BechAddr } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 const zBalancesResponse = z
   .array(
@@ -19,4 +20,4 @@ export const getBalances = async (
 ): Promise<Coin[]> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/balances`)
-    .then(({ data }) => zBalancesResponse.parse(data));
+    .then(({ data }) => parseWithError(zBalancesResponse, data));
