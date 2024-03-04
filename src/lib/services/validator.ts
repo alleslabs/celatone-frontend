@@ -108,3 +108,25 @@ export const getValidators = async (
       },
     })
     .then(({ data }) => parseWithError(zValidatorsResponse, data));
+
+const zValidatorDataResponse = z
+  .object({
+    info: zValidatorData.nullable(),
+    self_voting_power: z.string(),
+    total_voting_power: z.string(),
+  })
+  .transform(({ info, self_voting_power, total_voting_power }) => ({
+    info,
+    selfVotingPower: big(self_voting_power),
+    totalVotingPower: big(total_voting_power),
+  }));
+
+export type ValidatorDataResponse = z.infer<typeof zValidatorDataResponse>;
+
+export const getValidatorData = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/info`)
+    .then(({ data }) => parseWithError(zValidatorDataResponse, data));
