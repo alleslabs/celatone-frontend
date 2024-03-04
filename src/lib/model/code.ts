@@ -8,72 +8,32 @@ import {
   useCodeSearchFilter,
 } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
+import type { CodeDataByCodeIdResponse } from "lib/services/codeService";
 import {
   useCodeDataByCodeId,
   useCodeListByCodeIds,
   useCodeListByWalletAddress,
-  useLCDCodeInfo,
 } from "lib/services/codeService";
-import {
-  usePublicProjectByCodeId,
-  usePublicProjectBySlug,
-} from "lib/services/publicProjectService";
-import type {
-  CodeData,
-  CodeInfo,
-  Option,
-  PublicCode,
-  PublicDetail,
-} from "lib/types";
+import type { CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 export interface CodeDataState {
   isLoading: boolean;
   chainId: string;
-  codeData: Option<CodeData>;
-  lcdCodeData: {
-    codeHash: Option<string>;
-    isLcdCodeLoading: boolean;
-    isLcdCodeError: unknown;
-  };
-  publicProject: {
-    publicCodeData: Option<PublicCode>;
-    publicDetail: Option<PublicDetail>;
-  };
+  codeData: CodeDataByCodeIdResponse | undefined;
 }
 
 export const useCodeData = (codeId: number): CodeDataState => {
   const { currentChainId } = useCelatoneApp();
 
-  // TODO: Change codeId to integer
-  const codeStr = codeId.toString();
-
-  const { data: codeInfo, isLoading } = useCodeDataByCodeId({
-    codeId: codeStr,
+  const { data: codeData, isLoading } = useCodeDataByCodeId({
+    codeId,
   });
-  const { data: publicCodeInfo } = usePublicProjectByCodeId(codeStr);
-  const { data: publicInfoBySlug } = usePublicProjectBySlug(
-    publicCodeInfo?.slug
-  );
-  const {
-    data: lcdCode,
-    isLoading: isLcdCodeLoading,
-    error: isLcdCodeError,
-  } = useLCDCodeInfo(codeStr);
 
   return {
     isLoading,
     chainId: currentChainId,
-    codeData: codeInfo as CodeData,
-    lcdCodeData: {
-      codeHash: lcdCode?.code_info.data_hash,
-      isLcdCodeLoading,
-      isLcdCodeError,
-    },
-    publicProject: {
-      publicCodeData: publicCodeInfo,
-      publicDetail: publicInfoBySlug?.details,
-    },
+    codeData,
   };
 };
 

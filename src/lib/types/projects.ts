@@ -1,8 +1,9 @@
 import { z } from "zod";
 
+// eslint-disable-next-line import/no-cycle
+import { AccessConfigPermission } from "lib/types";
 import type {
   AssetInfo,
-  AccessConfigPermission,
   PermissionAddresses,
   Option,
   Nullable,
@@ -145,3 +146,45 @@ export const zPublicContractInfo = z.object({
   slug: z.string(),
 });
 export type PublicContractInfo = z.infer<typeof zPublicContractInfo>;
+
+export interface PublicCodeInfo {
+  contracts: number;
+  cw2Contract: Option<Nullable<string>>;
+  cw2Version: Option<Nullable<string>>;
+  description: string;
+  github: string;
+  id: number;
+  instantiatePermission: AccessConfigPermission;
+  name: string;
+  permissionAddresses: PermissionAddresses;
+  slug: string;
+  uploader: BechAddr;
+}
+
+export const zPublicInfo = z
+  .object({
+    contracts: z.number().nonnegative(),
+    cw2_contract: z.string().nullable(),
+    cw2_version: z.string().nullable(),
+    description: z.string(),
+    github: z.string(),
+    id: z.number().nonnegative(),
+    instantiate_permission: z.nativeEnum(AccessConfigPermission),
+    name: z.string(),
+    permission_addresses: z.array(zBechAddr),
+    slug: z.string(),
+    uploader: zBechAddr,
+  })
+  .transform<PublicCodeInfo>((val) => ({
+    contracts: val.contracts,
+    cw2Contract: val.cw2_contract,
+    cw2Version: val.cw2_version,
+    description: val.description,
+    github: val.github,
+    id: val.id,
+    instantiatePermission: val.instantiate_permission,
+    name: val.name,
+    permissionAddresses: val.permission_addresses,
+    slug: val.slug,
+    uploader: val.uploader,
+  }));

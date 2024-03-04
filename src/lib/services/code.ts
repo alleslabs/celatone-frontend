@@ -1,8 +1,20 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { AccessConfigPermission, zBechAddr } from "lib/types";
-import type { BechAddr, BechAddr20, CodeInfo, Option } from "lib/types";
+import {
+  AccessConfigPermission,
+  zBechAddr,
+  zProjectInfo,
+  zPublicInfo,
+} from "lib/types";
+import type {
+  BechAddr,
+  BechAddr20,
+  CodeData,
+  CodeInfo,
+  Option,
+} from "lib/types";
+import { parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 export interface CodeIdInfoResponse {
   code_info: {
@@ -87,3 +99,80 @@ export const getCodesByAddress = async (
       },
     })
     .then(({ data }) => zCodesResponse.parse(data));
+
+const zCodeInfo = z
+  .object({
+    code_id: z.number().nonnegative(),
+    cw2_contract: z.string().nullable(),
+    cw2_version: z.string().nullable(),
+    hash: z.string(),
+    instantiate_permission: z.nativeEnum(AccessConfigPermission),
+    permission_addresses: z.array(zBechAddr),
+    proposal: z
+      .object({
+        id: z.number(),
+        height: z.number(),
+        created: z.string(),
+      })
+      .nullable(),
+    transaction: z
+      .object({
+        height: z.number(),
+        hash: z.string(),
+        created: z.string(),
+      })
+      .nullable(),
+    uploader: zBechAddr,
+  })
+  .transform<Partial<CodeData>>((val) => ({
+    codeId: val.code_id,
+    cw2Contract: val.cw2_contract,
+    cw2Version: val.cw2_version,
+    hash: parseTxHashOpt(val.hash),
+    instantiatePermission: val.instantiate_permission,
+    permissionAddresses: val.permission_addresses,
+    proposal: val.proposal
+      ? {
+          proposalId: val.proposal.id,
+          height: val.proposal.height,
+          created: parseDateOpt(val.proposal.created),
+        }
+      : undefined,
+    transaction: val.transaction
+      ? {
+          height: val.transaction.height,
+          hash: val.transaction.hash,
+          created: parseDateOpt(val.transaction.created),
+        }
+      : undefined,
+    uploader: val.uploader,
+  }));
+
+const zCodeInfoResponse = z
+  .object({
+    info: zCodeInfo,
+    project_info: zProjectInfo.nullable(),
+    public_info: zPublicInfo.nullable(),
+  })
+  .transform((val) => {
+    return {
+      info: val.info,
+      projectInfo: val.project_info,
+      publicInfo: val.public_info,
+    };
+  });
+
+export type CodeInfoResponse = z.infer<typeof zCodeInfoResponse>;
+
+export const getCodeInfo = async (
+  endpoint: string,
+  codeId: number,
+  isGov: boolean
+): Promise<CodeInfoResponse> =>
+  axios
+    .get(`${endpoint}/${codeId}/info`, {
+      params: {
+        is_gov: isGov,
+      },
+    })
+    .then(({ data }) => zCodeInfoResponse.parse(data));

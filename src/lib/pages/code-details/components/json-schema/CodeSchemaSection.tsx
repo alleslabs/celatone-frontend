@@ -14,10 +14,9 @@ import { capitalize } from "lodash";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
-import { Loading } from "lib/components/Loading";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeData, Option } from "lib/types";
 
 import { SchemaPanel } from "./SchemaPanel";
 
@@ -36,9 +35,7 @@ const StyledTabPanel = chakra(TabPanel, {
 });
 
 interface CodeSchemaSectionProps {
-  codeId: number;
-  codeHash: Option<string>;
-  isCodeHashLoading: boolean;
+  codeDataInfo: CodeData;
   jsonSchema: Option<CodeSchema>;
 }
 
@@ -50,16 +47,28 @@ const SchemaMsgTabList = [
 ];
 
 export const CodeSchemaSection = ({
-  codeId,
-  codeHash,
-  isCodeHashLoading,
+  codeDataInfo,
   jsonSchema,
 }: CodeSchemaSectionProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { hash, codeId } = codeDataInfo;
 
-  if (isCodeHashLoading) return <Loading />;
-  return codeHash ? (
-    <>
+  if (!hash) {
+    return (
+      <Flex m={6}>
+        <CustomIcon
+          name="alert-circle-solid"
+          color="gray.600"
+          boxSize={4}
+          mr={3}
+        />
+        Error fetching code hash. Please try again later.
+      </Flex>
+    );
+  }
+
+  return (
+    <div>
       <Flex mt={8} mb={3} alignItems="center" gap={2}>
         <Heading as="h6" variant="h6">
           JSON Schema
@@ -67,7 +76,7 @@ export const CodeSchemaSection = ({
         {Boolean(jsonSchema) && (
           <EditSchemaButtons
             codeId={codeId}
-            codeHash={codeHash}
+            codeHash={hash}
             openModal={onOpen}
           />
         )}
@@ -94,17 +103,13 @@ export const CodeSchemaSection = ({
         </TabList>
         <TabPanels pl={6}>
           <StyledTabPanel>
-            <SchemaPanel
-              codeId={codeId}
-              codeHash={codeHash}
-              schema={jsonSchema}
-            />
+            <SchemaPanel codeId={codeId} codeHash={hash} schema={jsonSchema} />
           </StyledTabPanel>
           {SchemaMsgTabList.map((schemaProperty) => (
             <StyledTabPanel key={schemaProperty}>
               <SchemaPanel
                 codeId={codeId}
-                codeHash={codeHash}
+                codeHash={hash}
                 schema={jsonSchema?.[schemaProperty]}
               />
             </StyledTabPanel>
@@ -115,19 +120,9 @@ export const CodeSchemaSection = ({
         isOpen={isOpen}
         onClose={onClose}
         codeId={codeId}
-        codeHash={codeHash}
+        codeHash={hash}
         isReattach={Boolean(jsonSchema)}
       />
-    </>
-  ) : (
-    <Flex m={6}>
-      <CustomIcon
-        name="alert-circle-solid"
-        color="gray.600"
-        boxSize={4}
-        mr={3}
-      />
-      Error fetching code hash. Please try again later.
-    </Flex>
+    </div>
   );
 };

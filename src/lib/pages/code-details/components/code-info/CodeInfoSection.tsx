@@ -18,14 +18,12 @@ import { JsonSchemaModal } from "lib/components/json-schema";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { CodeData, Option } from "lib/types";
+import type { CodeData } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
-  codeData: CodeData;
+  codeDataInfo: CodeData;
   chainId: string;
-  codeHash: Option<string>;
-  isCodeHashLoading: boolean;
   attached: boolean;
   toJsonSchemaTab: () => void;
 }
@@ -106,10 +104,8 @@ const getMethodSpecificRender = (
 };
 
 export const CodeInfoSection = ({
-  codeData,
+  codeDataInfo,
   chainId,
-  codeHash,
-  isCodeHashLoading,
   attached,
   toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
@@ -123,7 +119,7 @@ export const CodeInfoSection = ({
     uploader,
     instantiatePermission,
     permissionAddresses,
-  } = codeData;
+  } = codeDataInfo;
   const { methodRender, storedBlockRender } = getMethodSpecificRender(
     proposal,
     {
@@ -194,11 +190,11 @@ export const CodeInfoSection = ({
         </LabelText>
         {!isMobile && (
           <LabelText label="JSON Schema">
-            {isCodeHashLoading ? (
+            {!codeDataInfo ? (
               <Spinner size="sm" ml={2} />
             ) : (
               <div>
-                {codeHash ? (
+                {codeDataInfo.hash ? (
                   <>
                     <Button
                       variant="outline-primary"
@@ -215,8 +211,8 @@ export const CodeInfoSection = ({
                     <JsonSchemaModal
                       isOpen={isOpen}
                       onClose={onClose}
-                      codeId={codeData.codeId}
-                      codeHash={codeHash}
+                      codeId={codeDataInfo.codeId}
+                      codeHash={codeDataInfo.hash}
                     />
                   </>
                 ) : (

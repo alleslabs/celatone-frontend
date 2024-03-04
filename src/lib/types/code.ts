@@ -1,5 +1,5 @@
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { BechAddr, Option, Nullable } from "lib/types";
+import type { BechAddr, Option, Nullable, Transaction } from "lib/types";
 
 export enum AccessConfigPermission {
   EVERYBODY = "Everybody",
@@ -34,6 +34,7 @@ export interface CodeData {
   height: Option<number>;
   created: Option<Date>;
   proposal: Option<CodeProposal>;
+  transaction: Option<Partial<Transaction>>;
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
   cw2Contract: Option<Nullable<string>>;

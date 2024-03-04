@@ -10,7 +10,6 @@ import {
   useGovConfig,
 } from "lib/app-provider";
 import {
-  getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
 } from "lib/query";
@@ -23,11 +22,18 @@ import type {
   Nullable,
   BechAddr,
   BechAddr20,
+  PublicCodeInfo,
+  ProjectInfo,
 } from "lib/types";
-import { isId, parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { isId } from "lib/utils";
 
 import type { CodeIdInfoResponse, CodesResponse } from "./code";
-import { getCodeIdInfo, getCodes, getCodesByAddress } from "./code";
+import {
+  getCodeIdInfo,
+  getCodeInfo,
+  getCodes,
+  getCodesByAddress,
+} from "./code";
 
 export const useCodeListByWalletAddress = (
   walletAddr: Option<BechAddr20>
@@ -107,58 +113,30 @@ export const useCodeListByCodeIds = (
 };
 
 interface CodeDataByCodeIdParams {
-  codeId: string;
+  codeId: number;
   enabled?: boolean;
+}
+
+export interface CodeDataByCodeIdResponse {
+  info: Nullable<CodeData>;
+  projectInfo: Nullable<ProjectInfo>;
+  publicInfo: Nullable<PublicCodeInfo>;
 }
 
 export const useCodeDataByCodeId = ({
   codeId,
   enabled = true,
-}: CodeDataByCodeIdParams): UseQueryResult<
-  Nullable<Omit<CodeData, "chainId">>
-> => {
-  const { indexerGraphClient } = useCelatoneApp();
+}: CodeDataByCodeIdParams): UseQueryResult<CodeDataByCodeIdResponse> => {
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const endpoint = useBaseApiRoute("codes");
 
-  const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found (useCodeDataByCodeId)");
-
-    return indexerGraphClient
-      .request(getCodeDataByCodeId, {
-        codeId: Number(codeId),
-        isGov,
-      })
-      .then(({ codes_by_pk }) => {
-        if (!codes_by_pk) return null;
-
-        return {
-          codeId: codes_by_pk.id,
-          uploader: codes_by_pk.account.address as BechAddr,
-          hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
-          height: codes_by_pk.transaction?.block.height,
-          created: parseDateOpt(codes_by_pk.transaction?.block?.timestamp),
-          proposal: codes_by_pk.code_proposals?.[0]
-            ? {
-                proposalId: codes_by_pk.code_proposals[0].proposal_id,
-                height: codes_by_pk.code_proposals[0].block?.height,
-                created: parseDateOpt(
-                  codes_by_pk.code_proposals[0].block?.timestamp
-                ),
-              }
-            : undefined,
-          permissionAddresses:
-            codes_by_pk.access_config_addresses as PermissionAddresses,
-          instantiatePermission: codes_by_pk.access_config_permission,
-          cw2Contract: codes_by_pk.cw2_contract,
-          cw2Version: codes_by_pk.cw2_version,
-        };
-      });
-  }, [codeId, indexerGraphClient, isGov]);
   return useQuery(
-    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient, isGov],
-    queryFn,
+    [CELATONE_QUERY_KEYS.CODE_DATA_INFO, endpoint, codeId, isGov],
+    async () => getCodeInfo(endpoint, codeId, isGov),
     {
-      enabled: enabled && isId(codeId),
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled: enabled && isId(String(codeId)),
     }
   );
 };

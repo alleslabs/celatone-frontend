@@ -16,10 +16,10 @@ import { InvalidState } from "lib/components/state";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
 
-import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
+import { CodeInfoSection } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
-import { zCodeDetailsQueryParams, TabIndex } from "./types";
+import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
 const codeTabId = "codeDetailsTab";
 
@@ -34,13 +34,12 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const router = useRouter();
   const codeDataState = useCodeData(codeId);
   const navigate = useInternalNavigate();
-  const {
-    chainId,
-    codeData,
-    lcdCodeData: { codeHash, isLcdCodeLoading },
-  } = codeDataState;
+  const { chainId, codeData } = codeDataState;
   const { getSchemaByCodeHash } = useSchemaStore();
-  const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
+  const jsonSchema =
+    codeData?.info && codeData.info.hash
+      ? getSchemaByCodeHash(codeData.info.hash)
+      : undefined;
   const isMobile = useMobile();
 
   useEffect(() => {
@@ -95,23 +94,23 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         )}
         <TabPanels>
           <TabPanel p={0}>
-            <CodeInfoSection
-              codeData={codeData}
-              chainId={chainId}
-              codeHash={codeHash}
-              isCodeHashLoading={isLcdCodeLoading}
-              attached={!!jsonSchema}
-              toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
-            />
-            <CodeContractsTable codeId={codeId} />
+            {codeData.info && (
+              <CodeInfoSection
+                codeDataInfo={codeData.info}
+                chainId={chainId}
+                attached={!!jsonSchema}
+                toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
+              />
+            )}
+            {/* <CodeContractsTable codeId={codeId} /> */}
           </TabPanel>
           <TabPanel p={0}>
-            <CodeSchemaSection
-              codeId={codeId}
-              codeHash={codeHash}
-              isCodeHashLoading={isLcdCodeLoading}
-              jsonSchema={jsonSchema}
-            />
+            {codeData.info && (
+              <CodeSchemaSection
+                codeDataInfo={codeData.info}
+                jsonSchema={jsonSchema}
+              />
+            )}
           </TabPanel>
         </TabPanels>
       </Tabs>

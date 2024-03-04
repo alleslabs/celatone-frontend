@@ -117,7 +117,7 @@ export const useSearchHandler = (
 
   // Code
   const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
-    codeId: debouncedKeyword,
+    codeId: Number(debouncedKeyword),
     enabled: isWasm && isId(debouncedKeyword),
   });
 

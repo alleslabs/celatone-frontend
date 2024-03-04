@@ -10,62 +10,49 @@ import { PublicDescription } from "lib/components/PublicDescription";
 import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
-import { AccessConfigPermission, type Option } from "lib/types";
+import type { Option } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 interface CodeTopInfoProps {
   codeDataState: CodeDataState;
   codeId: number;
 }
-const CodeHashInfo = ({
-  isLcdCodeLoading,
-  isLcdCodeError,
-  codeHash,
-}: {
-  isLcdCodeLoading: boolean;
-  isLcdCodeError: unknown;
-  codeHash: Option<string>;
-}) => {
-  if (isLcdCodeLoading) return <Spinner size="sm" />;
-  if (codeHash)
-    return (
-      <CopyLink value={codeHash} amptrackSection="code_hash" type="code_hash" />
-    );
+
+const CodeHashInfo = ({ codeHash }: { codeHash: Option<string> }) => {
+  if (!codeHash) {
+    return <Spinner size="sm" />;
+  }
+
   return (
-    <Text color="text.disabled" variant="body2">
-      {isLcdCodeError ? "Error fetching data" : "N/A"}
-    </Text>
+    <CopyLink value={codeHash} amptrackSection="code_hash" type="code_hash" />
   );
 };
 
 export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
-  const {
-    codeData,
-    publicProject,
-    lcdCodeData: { codeHash, isLcdCodeLoading, isLcdCodeError },
-  } = codeDataState;
+  const { codeData } = codeDataState;
 
   const isMobile = useMobile();
 
   if (!codeData) return <InvalidState title="Code does not exist" />;
 
-  const cw2Info = getCw2Info(codeData.cw2Contract, codeData.cw2Version);
+  const { info, projectInfo, publicInfo } = codeData;
+
+  const cw2Info = getCw2Info(info?.cw2Contract, info?.cw2Version);
 
   return (
     <>
       <Breadcrumb
         items={[
           {
-            text: publicProject.publicCodeData?.name
-              ? "Public Projects"
-              : "Codes",
-            href: publicProject.publicCodeData?.name ? "/projects" : "/codes",
+            text: projectInfo?.name ? "Public Projects" : "Codes",
+            href: projectInfo?.name ? "/projects" : "/codes",
           },
           {
-            text: publicProject.publicDetail?.name,
-            href: `/projects/${publicProject.publicCodeData?.slug}`,
+            text: projectInfo?.name,
+            href: `/projects/${publicInfo?.slug}`,
           },
           { text: codeId.toString() },
         ]}
@@ -79,23 +66,21 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
           <Flex justify={{ base: "space-between", md: "start" }} align="center">
             <Flex gap={1} minH="36px" align="center">
               <CustomIcon name="code" boxSize={5} color="secondary.main" />
-              {publicProject.publicDetail?.logo && (
+              {projectInfo && (
                 <Image
-                  src={publicProject.publicDetail.logo}
+                  src={projectInfo.logo}
                   borderRadius="full"
-                  alt={publicProject.publicDetail.name}
+                  alt={projectInfo.name}
                   width={7}
                   height={7}
                 />
               )}
               <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-                {localCodeInfo?.name ??
-                  publicProject.publicCodeData?.name ??
-                  codeId}
+                {localCodeInfo?.name ?? publicInfo?.name ?? codeId}
               </Heading>
             </Flex>
           </Flex>
-          {publicProject.publicCodeData?.name && (
+          {publicInfo && (
             <Flex
               mt={{ base: 2, md: 0 }}
               gap={{ base: 0, md: 2 }}
@@ -104,7 +89,7 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Public Code Name:
               </Text>
-              <Text variant="body2">{publicProject.publicCodeData.name}</Text>
+              <Text variant="body2">{publicInfo.name}</Text>
             </Flex>
           )}
           <Flex
@@ -127,11 +112,7 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code Hash:
             </Text>
-            <CodeHashInfo
-              isLcdCodeError={isLcdCodeError}
-              isLcdCodeLoading={isLcdCodeLoading}
-              codeHash={codeHash}
-            />
+            {info && <CodeHashInfo codeHash={info.hash} />}
           </Flex>
           <Flex
             gap={{ base: 0, md: 2 }}
@@ -148,20 +129,18 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
               {cw2Info ?? "N/A"}
             </Text>
           </Flex>
-          {publicProject.publicCodeData?.github && (
-            <GitHubLink github={publicProject.publicCodeData.github} />
-          )}
+          {publicInfo && <GitHubLink github={publicInfo.github} />}
         </Flex>
         <Flex direction="column" gap={1}>
-          {!isMobile && (
+          {!isMobile && info && (
             <CTASection
               id={codeId}
-              uploader={localCodeInfo?.uploader ?? codeData.uploader}
+              uploader={localCodeInfo?.uploader ?? info.uploader}
               name={localCodeInfo?.name}
               instantiatePermission={
-                codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
+                info.instantiatePermission ?? AccessConfigPermission.UNKNOWN
               }
-              permissionAddresses={codeData.permissionAddresses ?? []}
+              permissionAddresses={info.permissionAddresses ?? []}
               contractCount={undefined}
               cw2Contract={undefined}
               cw2Version={undefined}
@@ -169,10 +148,10 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
           )}
         </Flex>
       </Flex>
-      {publicProject.publicCodeData?.description && (
+      {publicInfo && (
         <PublicDescription
           title="Public Code Description"
-          description={publicProject.publicCodeData.description}
+          description={publicInfo.description}
           textLine={2}
           icon={<CustomIcon name="public-project" ml={0} color="gray.600" />}
         />
