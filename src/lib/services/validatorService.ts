@@ -12,8 +12,13 @@ import {
 } from "lib/app-provider";
 import type { Validator, ValidatorAddr, Nullable, Option } from "lib/types";
 
-import type { ValidatorsResponse } from "./validator";
-import { resolveValIdentity, getValidator, getValidators } from "./validator";
+import type { ValidatorDataResponse, ValidatorsResponse } from "./validator";
+import {
+  resolveValIdentity,
+  getValidator,
+  getValidators,
+  getValidatorData,
+} from "./validator";
 
 export const useValidator = (
   validatorAddr: ValidatorAddr,
@@ -90,6 +95,18 @@ export const useValidators = (
     {
       retry: 1,
       ...options,
+    }
+  );
+};
+
+export const useValidatorData = (validatorAddress: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorDataResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
+    async () => getValidatorData(endpoint, validatorAddress),
+    {
+      retry: 1,
     }
   );
 };
