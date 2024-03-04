@@ -83,6 +83,7 @@ export interface ChainConfig {
   extra: {
     disableAnyOfAddresses?: boolean;
     disableDelegation?: boolean;
+    singleStakingDenom?: string;
   };
 }
 

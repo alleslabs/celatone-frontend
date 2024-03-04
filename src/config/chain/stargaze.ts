@@ -49,7 +49,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/stargaze/validators",
       proposal: "https://www.mintscan.io/stargaze/proposals",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "ustars",
+    },
   },
   "elgafar-1": {
     chain: "stargaze",
@@ -97,6 +99,8 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet-explorer.publicawesome.dev/stargaze/staking",
       proposal: "https://testnet-explorer.publicawesome.dev/stargaze/gov",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "ustars",
+    },
   },
 };

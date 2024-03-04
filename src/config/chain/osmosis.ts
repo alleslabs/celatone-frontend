@@ -52,7 +52,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/osmosis/validators",
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "uosmo",
+    },
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -104,7 +106,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "uosmo",
+    },
   },
   localosmosis: {
     chain: "osmosis",
@@ -155,6 +159,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "uosmo",
+    },
   },
 };

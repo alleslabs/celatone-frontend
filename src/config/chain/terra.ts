@@ -51,7 +51,9 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://finder.terra.money/mainnet/validator",
       proposal: "https://station.terra.money/proposal/phoenix-1",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "uluna",
+    },
   },
   "pisco-1": {
     chain: "terra",
@@ -100,6 +102,8 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://finder.terra.money/testnet/validator",
       proposal: "https://station.terra.money/proposal/pisco-1",
     },
-    extra: {},
+    extra: {
+      singleStakingDenom: "uluna",
+    },
   },
 };

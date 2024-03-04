@@ -18,6 +18,7 @@ import { zHexAddr, UpgradePolicy, zUtcDate, zBechAddr } from "lib/types";
 import {
   libDecode,
   parseJsonABI,
+  parseWithError,
   serializeAbiData,
   snakeToCamel,
 } from "lib/utils";
@@ -44,7 +45,7 @@ export const getModulesByAddress = async (
 ): Promise<AccountModulesResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
-    .then(({ data }) => zAccountModulesResponse.parse(data));
+    .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
 export const getAccountModules = async (
   baseEndpoint: string,
@@ -189,4 +190,4 @@ export const getModules = async (
         offset,
       },
     })
-    .then(({ data }) => zModulesResponse.parse(data));
+    .then(({ data }) => parseWithError(zModulesResponse, data));

@@ -14,7 +14,7 @@ import type {
   CodeInfo,
   Option,
 } from "lib/types";
-import { parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { parseDateOpt, parseTxHashOpt, parseWithError } from "lib/utils";
 
 export interface CodeIdInfoResponse {
   code_info: {
@@ -83,7 +83,7 @@ export const getCodes = async (
         permission,
       },
     })
-    .then(({ data }) => zCodesResponse.parse(data));
+    .then(({ data }) => parseWithError(zCodesResponse, data));
 
 export const getCodesByAddress = async (
   endpoint: string,
