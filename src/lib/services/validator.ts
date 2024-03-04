@@ -1,9 +1,12 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import big from "big.js";
+import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import type { StakingShare, Validator, ValidatorAddr } from "lib/types";
-import { removeSpecialChars } from "lib/utils";
+import { zValidatorData } from "lib/types";
+import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
+import { parseWithError, removeSpecialChars } from "lib/utils";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -74,3 +77,39 @@ export const resolveValIdentity = async (
       })
   );
 };
+
+const zValidatorsResponse = z
+  .object({
+    items: z.array(zValidatorData),
+    total: z.number().nonnegative(),
+    total_voting_power: z.string(),
+  })
+  .transform(({ items, total, total_voting_power }) => ({
+    items,
+    total,
+    totalVotingPower: big(total_voting_power),
+  }));
+
+export type ValidatorsResponse = z.infer<typeof zValidatorsResponse>;
+
+export const getValidators = async (
+  endpoint: string,
+  limit: number,
+  offset: number,
+  isActive: boolean,
+  sortBy: string,
+  isDesc: boolean,
+  search: Option<string>
+) =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+        is_active: isActive,
+        sort_by: sortBy,
+        is_desc: isDesc,
+        search,
+      },
+    })
+    .then(({ data }) => parseWithError(zValidatorsResponse, data));
