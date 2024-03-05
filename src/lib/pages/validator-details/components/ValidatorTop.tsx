@@ -169,6 +169,7 @@ export const ValidatorTop = () => (
             value="cltn14lzvt4gdwh2q4ymyjqma0p4j4aykpn92l4warr"
             textFormat="normal"
             maxWidth="full"
+            fixedHeight={false}
           >
             cltn14lzvt4gdwh2q4ymyjqma0p4j4aykpn92l4warr
           </ExplorerLink>
