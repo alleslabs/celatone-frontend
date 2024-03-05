@@ -1,8 +1,7 @@
 import { Flex, Text, Heading, Spinner } from "@chakra-ui/react";
 import type { Big } from "big.js";
-import big from "big.js";
 
-import type { Option, TokenWithValue, USD } from "lib/types";
+import { big, type Option, type TokenWithValue, type USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 interface MultiBondsRadioCardProps {

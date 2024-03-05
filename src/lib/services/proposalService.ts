@@ -2,7 +2,6 @@ import type { Coin } from "@cosmjs/amino";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
-import big from "big.js";
 import { isUndefined } from "lodash";
 import { useCallback, useMemo } from "react";
 
@@ -30,6 +29,7 @@ import {
   type BechAddr20,
   type ProposalVotesInfo,
   ProposalValidatorVoteType,
+  big,
 } from "lib/types";
 import {
   coinToTokenWithValue,

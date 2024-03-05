@@ -1,12 +1,11 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
-import big from "big.js";
 import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import { zValidatorData } from "lib/types";
+import { zValidatorData, zBig } from "lib/types";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
-import { parseWithError, removeSpecialChars } from "lib/utils";
+import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -82,13 +81,9 @@ const zValidatorsResponse = z
   .object({
     items: z.array(zValidatorData),
     total: z.number().nonnegative(),
-    total_voting_power: z.string(),
+    total_voting_power: zBig,
   })
-  .transform(({ items, total, total_voting_power }) => ({
-    items,
-    total,
-    totalVotingPower: big(total_voting_power),
-  }));
+  .transform(snakeToCamel);
 
 export type ValidatorsResponse = z.infer<typeof zValidatorsResponse>;
 

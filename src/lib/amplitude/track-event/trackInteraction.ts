@@ -1,9 +1,7 @@
-import big from "big.js";
-
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
 import type { SearchResultType } from "lib/services/searchService";
-import type { Addr, Option, Token } from "lib/types";
+import { big, type Addr, type Option, type Token } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 export const trackUseMainSearch = (

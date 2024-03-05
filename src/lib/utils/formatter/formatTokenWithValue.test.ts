@@ -1,6 +1,4 @@
-import big from "big.js";
-
-import type { Token, TokenWithValue, U } from "lib/types";
+import { big, type Token, type TokenWithValue, type U } from "lib/types";
 
 import {
   formatTokenWithValue,

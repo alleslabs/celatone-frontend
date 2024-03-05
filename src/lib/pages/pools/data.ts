@@ -1,5 +1,4 @@
 import type { Big } from "big.js";
-import big from "big.js";
 
 import { UPPERBOUND_COUNT } from "lib/data";
 import type { Order_By } from "lib/gql/graphql";
@@ -9,15 +8,16 @@ import {
   useTxsByPoolIdPagination,
   useTxsCountByPoolId,
 } from "lib/services/txService";
-import type {
-  Option,
-  Pool,
-  PoolDetail,
-  PoolTxFilter,
-  PoolTypeFilter,
-  PoolWeight,
-  Ratio,
-  TokenWithValue,
+import {
+  big,
+  type Option,
+  type Pool,
+  type PoolDetail,
+  type PoolTxFilter,
+  type PoolTypeFilter,
+  type PoolWeight,
+  type Ratio,
+  type TokenWithValue,
 } from "lib/types";
 import { coinToTokenWithValue, divWithDefault, formatRatio } from "lib/utils";
 

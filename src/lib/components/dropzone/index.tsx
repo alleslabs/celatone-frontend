@@ -1,12 +1,12 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
-import big from "big.js";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
+import { big } from "lib/types";
 
 import type { DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
