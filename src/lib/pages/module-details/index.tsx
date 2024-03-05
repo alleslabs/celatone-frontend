@@ -1,7 +1,7 @@
-import { Flex, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
@@ -10,13 +10,13 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import {
-  type IndexedModule,
-  useVerifyModule,
-  useModuleId,
   useAccountModules,
-  useModuleHistoriesCount,
   useModuleDetailsQuery,
+  useModuleHistoriesCount,
+  useModuleId,
+  useVerifyModule,
 } from "lib/services/move/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import { useRelatedProposalsCountByModuleId } from "lib/services/proposalService";
 import { useModuleTxsCount } from "lib/services/txService";
 import type { Addr } from "lib/types";
@@ -28,9 +28,9 @@ import {
   ModuleFunctions,
   ModuleInfo,
   ModuleStructs,
-  ModuleTop,
   ModuleTables,
   ModuleTablesTabIndex,
+  ModuleTop,
 } from "./components";
 import { TabIndex } from "./types";
 

@@ -1,5 +1,5 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Image, Flex } from "@chakra-ui/react";
+import { Flex, Image } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
 import type { Option } from "lib/types";

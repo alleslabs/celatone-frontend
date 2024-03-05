@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Grid, Flex, Text } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 

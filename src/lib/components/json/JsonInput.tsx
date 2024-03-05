@@ -1,6 +1,6 @@
-import { Text, Box, Button, Spinner, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { CustomIcon } from "../icon";
 import type { Nullable } from "lib/types";

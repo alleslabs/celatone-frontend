@@ -10,7 +10,8 @@ import { PublicDescription } from "lib/components/PublicDescription";
 import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
-import { AccessConfigPermission, type Option } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
+import type { Option } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 interface CodeTopInfoProps {

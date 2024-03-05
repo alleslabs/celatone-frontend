@@ -1,4 +1,4 @@
-import { Grid, Box } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 

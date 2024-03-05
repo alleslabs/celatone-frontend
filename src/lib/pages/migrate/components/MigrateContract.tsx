@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 
 import { AmpEvent, trackAction } from "lib/amplitude";
 import {
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeQuery,
-  useCurrentChain,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -17,11 +17,11 @@ import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import {
+  jsonInputFormKey,
   MessageInputContent,
   MessageInputSwitch,
   MessageTabs,
   SchemaInputSection,
-  jsonInputFormKey,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
 import { CodeSelectSection } from "lib/components/select-code";

@@ -1,17 +1,17 @@
 import {
-  Modal,
-  ModalHeader,
-  Heading,
-  Flex,
   Box,
-  Text,
-  ModalOverlay,
+  Button,
+  Flex,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalCloseButton,
+  ModalHeader,
+  ModalOverlay,
+  Text,
   useDisclosure,
-  ModalBody,
-  Button,
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 import { useCallback } from "react";

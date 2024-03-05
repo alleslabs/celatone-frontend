@@ -1,7 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { ProposalStatus, type ProposalData } from "lib/types";
+import { ProposalStatus } from "lib/types";
+import type { ProposalData } from "lib/types";
 import { formatUTC } from "lib/utils";
 
 import { InfoItem } from "./InfoItem";

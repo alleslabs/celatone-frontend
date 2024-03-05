@@ -1,5 +1,6 @@
 import type {
   QueryFunctionContext,
+  UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
@@ -9,9 +10,10 @@ import {
   useBaseApiRoute,
   useCurrentChain,
 } from "lib/app-provider";
-import type { Validator, ValidatorAddr, Nullable } from "lib/types";
+import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
-import { resolveValIdentity, getValidator } from "./validator";
+import type { ValidatorsResponse } from "./validator";
+import { getValidator, getValidators, resolveValIdentity } from "./validator";
 
 export const useValidator = (
   validatorAddr: ValidatorAddr,
@@ -59,4 +61,35 @@ export const useValidatorImage = (
     refetchOnWindowFocus: false,
     enabled: Boolean(validator),
   });
+};
+
+export const useValidators = (
+  limit: number,
+  offset: number,
+  isActive: boolean,
+  sortBy: string,
+  isDesc: boolean,
+  search: Option<string>,
+  options?: Pick<UseQueryOptions<ValidatorsResponse>, "onSuccess">
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorsResponse>(
+    [
+      CELATONE_QUERY_KEYS.VALIDATORS,
+      endpoint,
+      limit,
+      offset,
+      isActive,
+      sortBy,
+      isDesc,
+      search,
+    ],
+    async () =>
+      getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
+    {
+      retry: 1,
+      ...options,
+    }
+  );
 };

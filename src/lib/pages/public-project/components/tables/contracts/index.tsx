@@ -1,4 +1,4 @@
-import { Grid, Box } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
@@ -15,7 +15,7 @@ import {
 } from "lib/components/table";
 import { useContractStore } from "lib/providers/store";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { PublicContract, Option } from "lib/types";
+import type { Option, PublicContract } from "lib/types";
 
 import { PublicProjectContractMobileCard } from "./PublicProjectContractMobileCard";
 import { PublicProjectContractRow } from "./PublicProjectContractRow";

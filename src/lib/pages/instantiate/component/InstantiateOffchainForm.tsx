@@ -1,4 +1,4 @@
-import { Text, Flex, Heading, Button } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 

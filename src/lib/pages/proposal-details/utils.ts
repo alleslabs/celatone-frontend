@@ -1,6 +1,6 @@
 import type Big from "big.js";
-import big from "big.js";
 
+import { big } from "lib/types";
 import type {
   Nullable,
   ProposalParams,

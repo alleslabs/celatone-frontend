@@ -1,12 +1,12 @@
 import {
+  Divider,
   Flex,
   Image,
-  Text,
-  Tabs,
   TabList,
-  TabPanels,
   TabPanel,
-  Divider,
+  TabPanels,
+  Tabs,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";

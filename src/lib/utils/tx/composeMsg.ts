@@ -9,17 +9,17 @@ import { serializeAbiData } from "../abi";
 import { exponentify } from "../formatter";
 import { typeUrlDict } from "lib/data";
 import type {
-  ComposedMsg,
-  TxMessage,
-  AccessType,
-  Token,
-  Option,
-  ExposedFunction,
   AbiFormData,
-  BechAddr20,
+  AccessType,
   BechAddr,
+  BechAddr20,
+  ComposedMsg,
+  ExposedFunction,
+  Option,
+  Token,
+  TxMessage,
 } from "lib/types";
-import { UpgradePolicy, MsgType } from "lib/types";
+import { MsgType, UpgradePolicy } from "lib/types";
 
 export const toEncodeObject = (msgs: Msg[]): EncodeObject[] => {
   return msgs.map((msg) => ({

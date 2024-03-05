@@ -1,10 +1,10 @@
 import {
   Alert,
-  AlertTitle,
   AlertDescription,
-  Flex,
+  AlertTitle,
   Box,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 import type { AlertProps } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";

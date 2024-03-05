@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import type { Block, BlockData, Validator } from "lib/types";
-import { zValidatorAddr, zUtcDate } from "lib/types";
+import { zUtcDate, zValidatorAddr } from "lib/types";
 import { parseTxHash, parseWithError } from "lib/utils";
 
 const zNullableValidator = z.nullable(

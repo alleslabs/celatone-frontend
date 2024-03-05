@@ -20,12 +20,12 @@ import {
 } from "lib/query";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
-  Option,
-  Dict,
-  ContractInfo,
+  BechAddr,
   BechAddr20,
   BechAddr32,
-  BechAddr,
+  ContractInfo,
+  Dict,
+  Option,
 } from "lib/types";
 import { parseDateOpt } from "lib/utils";
 
@@ -34,15 +34,15 @@ import {
   getAdminContractsByAddress,
   getContractDataByContractAddress,
   getContractQueryMsgs,
-  getContractTableCounts,
   getContracts,
+  getContractTableCounts,
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
 } from "./contract";
 import type {
   ContractData,
-  ContractTableCounts,
   ContractsResponse,
+  ContractTableCounts,
   MigrationHistoriesResponse,
 } from "./contract";
 
