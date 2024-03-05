@@ -1,13 +1,13 @@
-import { Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  useWasmConfig,
-  useMobile,
   useInternalNavigate,
+  useMobile,
+  useWasmConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
@@ -16,10 +16,10 @@ import { InvalidState } from "lib/components/state";
 import { useCodeData } from "lib/model/code";
 import { useSchemaStore } from "lib/providers/store";
 
-import { CodeInfoSection, CodeContractsTable } from "./components/code-info";
+import { CodeContractsTable, CodeInfoSection } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
-import { zCodeDetailsQueryParams, TabIndex } from "./types";
+import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
 const codeTabId = "codeDetailsTab";
 

@@ -1,4 +1,4 @@
-import { Flex, Text, chakra } from "@chakra-ui/react";
+import { chakra, Flex, Text } from "@chakra-ui/react";
 
 import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";

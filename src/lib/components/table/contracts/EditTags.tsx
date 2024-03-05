@@ -1,4 +1,4 @@
-import { Flex, FormControl, Box, Text } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";

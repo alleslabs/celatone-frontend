@@ -5,6 +5,11 @@
       {
         "allowExpressions": true
       }
+    ],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "sort-imports": [
+      "error",
+      { "ignoreCase": true, "ignoreDeclarationSort": true }
     ]
   },
   "extends": [
@@ -14,8 +19,6 @@
     "plugin:storybook/recommended"
   ],
   "parserOptions": {
-    "project": [
-      "./tsconfig.json"
-    ]
+    "project": ["./tsconfig.json"]
   }
 }

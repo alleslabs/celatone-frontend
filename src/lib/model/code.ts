@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
-  useUserKey,
   useCodePermissionFilter,
   useCodeSearchFilter,
+  useUserKey,
 } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import {

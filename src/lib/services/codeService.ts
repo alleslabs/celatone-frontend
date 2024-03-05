@@ -15,14 +15,14 @@ import {
   getCodeListByUserQueryDocument,
 } from "lib/query";
 import type {
-  CodeInfo,
-  CodeData,
-  Option,
   AccessConfigPermission,
-  PermissionAddresses,
-  Nullable,
   BechAddr,
   BechAddr20,
+  CodeData,
+  CodeInfo,
+  Nullable,
+  Option,
+  PermissionAddresses,
 } from "lib/types";
 import { isId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 

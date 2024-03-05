@@ -1,6 +1,7 @@
 import type { Big, BigSource } from "big.js";
 
-import { big, type Token, type U, type USD } from "lib/types";
+import { big } from "lib/types";
+import type { Token, U, USD } from "lib/types";
 
 const INVALID = "N/A";
 

@@ -1,4 +1,4 @@
-import { Flex, Heading, Button, Accordion } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 

@@ -1,6 +1,5 @@
 import {
   Flex,
-  Text,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -8,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Text,
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 import type {
@@ -16,10 +16,10 @@ import type {
   FieldValues,
   UseControllerProps,
 } from "react-hook-form";
-import { useWatch, useController } from "react-hook-form";
+import { useController, useWatch } from "react-hook-form";
 
 import type { FormStatus } from "./FormStatus";
-import { getStatusIcon, getResponseMsg } from "./FormStatus";
+import { getResponseMsg, getStatusIcon } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
 interface ControllerInputProps<T extends FieldValues>

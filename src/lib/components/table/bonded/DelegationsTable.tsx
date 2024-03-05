@@ -4,7 +4,7 @@ import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { TableTitle } from "../TableTitle";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import { ErrorFetching, EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import type { Delegation, Option, TokenWithValue } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";

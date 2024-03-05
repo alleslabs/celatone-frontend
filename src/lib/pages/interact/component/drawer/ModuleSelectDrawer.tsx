@@ -1,22 +1,20 @@
 import {
-  Heading,
   Drawer,
-  DrawerOverlay,
+  DrawerBody,
+  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
-  DrawerCloseButton,
-  DrawerBody,
+  DrawerOverlay,
   Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import {
-  useAccountModules,
-  type IndexedModule,
-} from "lib/services/move/moduleService";
+import { useAccountModules } from "lib/services/move/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { BechAddr, HexAddr, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
@@ -24,8 +22,8 @@ import { ModuleSelectMainBody } from "./body";
 import { ModuleSelector } from "./selector";
 import type {
   DisplayMode,
-  SelectedAddress,
   ModuleSelectFunction,
+  SelectedAddress,
 } from "./types";
 
 interface ModuleSelectDrawerProps {

@@ -10,10 +10,8 @@ import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import {
-  type DecodeModuleQueryResponse,
-  useDecodeModule,
-} from "lib/services/move/moduleService";
+import { useDecodeModule } from "lib/services/move/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
 import type { Option, UpgradePolicy } from "lib/types";
 
 const DEFAULT_TEMP_FILE = {

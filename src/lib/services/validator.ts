@@ -3,7 +3,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import { zValidatorData, zBig } from "lib/types";
+import { zBig, zValidatorData } from "lib/types";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
 

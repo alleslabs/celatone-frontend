@@ -1,11 +1,11 @@
 import {
-  Grid,
-  useDisclosure,
+  Box,
   Button,
   Flex,
+  Grid,
   Heading,
   Text,
-  Box,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -26,11 +26,11 @@ import type { Addr, ExposedFunction } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
-  ModuleSelectDrawerTrigger,
-  ModuleSelectDrawer,
-  FunctionSelectPanel,
   FunctionSelectBody,
+  FunctionSelectPanel,
   InteractionTabs,
+  ModuleSelectDrawer,
+  ModuleSelectDrawerTrigger,
 } from "./component";
 
 export const Interact = () => {

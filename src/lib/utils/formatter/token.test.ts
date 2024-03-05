@@ -1,17 +1,18 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import type { Big } from "big.js";
 
-import { big, type Token, type U, type USD } from "lib/types";
+import { big } from "lib/types";
+import type { Token, U, USD } from "lib/types";
 
 import {
-  formatDecimal,
+  d0Formatter,
   d2Formatter,
   d6Formatter,
-  toToken,
-  formatUTokenWithPrecision,
-  formatPrice,
+  formatDecimal,
   formatInteger,
-  d0Formatter,
+  formatPrice,
+  formatUTokenWithPrecision,
+  toToken,
 } from "./token";
 
 const FALLBACK = "fallback";

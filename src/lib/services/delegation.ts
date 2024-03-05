@@ -1,7 +1,8 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { type BechAddr, zUtcDate, zValidator } from "lib/types";
+import { zUtcDate, zValidator } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { parseWithError, snakeToCamel } from "lib/utils";
 
 const zDelegations = z

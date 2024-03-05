@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";

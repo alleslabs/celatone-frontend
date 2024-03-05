@@ -1,16 +1,16 @@
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
   DrawerContent,
-  Text,
-  DrawerOverlay,
-  useDisclosure,
-  Image,
-  Flex,
-  Box,
   DrawerHeader,
+  DrawerOverlay,
+  Flex,
   IconButton,
+  Image,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import type { MenuInfo } from "../navbar/types";
@@ -18,10 +18,10 @@ import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,
-  useWasmConfig,
-  useNftConfig,
   useMoveConfig,
+  useNftConfig,
   usePublicProjectConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";

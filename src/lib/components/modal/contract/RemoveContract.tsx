@@ -1,5 +1,5 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, Text, Highlight } from "@chakra-ui/react";
+import { Highlight, MenuItem, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { ActionModal } from "lib/components/modal/ActionModal";

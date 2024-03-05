@@ -1,13 +1,13 @@
 import type { InputProps } from "@chakra-ui/react";
-import { FormControl, Flex, useOutsideClick } from "@chakra-ui/react";
+import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
-import { useMemo, useState, useRef, forwardRef } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import {
-  FilterChip,
   DropdownContainer,
+  FilterChip,
   FilterDropdownItem,
   FilterInput,
 } from "lib/components/filter";

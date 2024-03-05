@@ -1,4 +1,5 @@
-import { Flex, Text, type FlexProps, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
 
 import { d0Formatter, formatPrettyPercent } from "lib/utils";
 

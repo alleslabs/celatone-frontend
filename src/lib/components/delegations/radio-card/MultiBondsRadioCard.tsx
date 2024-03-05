@@ -1,4 +1,4 @@
-import { Flex, Text, Heading, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
 
 import { big } from "lib/types";
