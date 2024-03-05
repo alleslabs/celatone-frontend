@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#799](https://github.com/alleslabs/celatone-frontend/pull/799) Add extra config single denom staking
+- [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
+- [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
+- [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Add voting power chart component
 - [#790](https://github.com/alleslabs/celatone-frontend/pull/790) Handling period tab condition
 - [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
 - [#785](https://github.com/alleslabs/celatone-frontend/pull/785) Quorum status on vote details section
@@ -63,7 +67,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Branding
+- [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
+- [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
+- [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
+- [#797](https://github.com/alleslabs/celatone-frontend/pull/797) Fix Vote Periods subtab internal state instead of route
 - [#784](https://github.com/alleslabs/celatone-frontend/pull/784) Make proposal list row clickable with command/ctrl
 - [#776](https://github.com/alleslabs/celatone-frontend/pull/776) Add expand/collapse all to proposal messages in detail page
 - [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap

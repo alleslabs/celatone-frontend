@@ -12,11 +12,6 @@ export enum TabIndex {
   Vote = "vote",
 }
 
-export enum PeriodIndex {
-  Deposit = "deposit",
-  Voting = "voting",
-}
-
 export const zProposalDetailsQueryParams = z.object({
   id: z.coerce.number(),
   tab: z.union([
@@ -25,13 +20,6 @@ export const zProposalDetailsQueryParams = z.object({
       .string()
       .optional()
       .transform(() => TabIndex.Overview),
-  ]),
-  period: z.union([
-    z.nativeEnum(PeriodIndex),
-    z
-      .string()
-      .optional()
-      .transform(() => undefined),
   ]),
 });
 

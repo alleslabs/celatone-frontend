@@ -1,8 +1,16 @@
-import { Box, Grid, GridItem, TableContainer } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  TableContainer,
+} from "@chakra-ui/react";
 import { useState, type ChangeEvent, useMemo } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
@@ -75,6 +83,7 @@ interface ProposalVotesTableProps {
   id: number;
   answers: Option<ProposalAnswerCountsResponse["all"]>;
   fullVersion: boolean;
+  onViewMore?: () => void;
 }
 
 // pass it to api
@@ -93,6 +102,7 @@ export const ProposalVotesTable = ({
   id,
   answers,
   fullVersion,
+  onViewMore,
 }: ProposalVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<AnswerType>(AnswerType.ALL);
   const [search, setSearch] = useState("");
@@ -100,13 +110,13 @@ export const ProposalVotesTable = ({
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: answers?.total,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -119,7 +129,8 @@ export const ProposalVotesTable = ({
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   const isSearching = debouncedSearch !== "" || answerFilter !== AnswerType.ALL;
@@ -195,6 +206,7 @@ export const ProposalVotesTable = ({
               labelBgColor="gray.900"
               initialSelected={answerFilter}
               popoverBgColor="gray.800"
+              disableMaxH
             />
           </GridItem>
           <GridItem>
@@ -219,11 +231,19 @@ export const ProposalVotesTable = ({
           pagesQuantity={pagesQuantity}
           scrollComponentId={tableHeaderId}
           offset={offset}
-          totalData={total}
+          totalData={data?.total ?? 0}
           pageSize={pageSize}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />
+      )}
+      {onViewMore && !!total && total > 10 && (
+        <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
+          <Button w="full" variant="ghost-primary" gap={2} onClick={onViewMore}>
+            View all votes
+            <CustomIcon name="chevron-right" boxSize="12px" />
+          </Button>
+        </Flex>
       )}
     </Box>
   );

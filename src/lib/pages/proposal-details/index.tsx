@@ -15,11 +15,7 @@ import { useDerivedProposalData, useDerivedProposalParams } from "./data";
 import type { ProposalDetailsQueryParams } from "./types";
 import { zProposalDetailsQueryParams, TabIndex } from "./types";
 
-const ProposalDetailsBody = ({
-  id,
-  tab,
-  period,
-}: ProposalDetailsQueryParams) => {
+const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
   const navigate = useInternalNavigate();
@@ -85,7 +81,6 @@ const ProposalDetailsBody = ({
               votesInfo={votesInfo}
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
-              period={period}
             />
           </TabPanel>
         </TabPanels>
@@ -108,7 +103,7 @@ const ProposalDetails = () => {
   return (
     <PageContainer>
       {!validated.success ? (
-        <InvalidState title="Proposal does not euuuxist" />
+        <InvalidState title="Proposal does not exist" />
       ) : (
         <ProposalDetailsBody {...validated.data} />
       )}

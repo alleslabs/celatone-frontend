@@ -17,7 +17,7 @@ export const ProgressBar = ({ value, max, isCompact }: ProgressBarProps) => {
     <Box py={1} h={isCompact ? "28px" : "30px"} w="full">
       <Flex
         h="full"
-        w={isCompact ? "full" : "90%"}
+        w="full"
         bgColor="gray.700"
         borderRadius={10}
         align="center"

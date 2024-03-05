@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import type { Addr } from "lib/types";
 import { zHexAddr } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { parseWithError, snakeToCamel } from "lib/utils";
 
 const zResourcesResponseItem = z
   .object({
@@ -26,4 +26,4 @@ export const getAccountResources = async (
 ): Promise<ResourceResponse> =>
   axios
     .get(`${endpoint}/${encodeURIComponent(address)}/move/resources`)
-    .then(({ data }) => zResourcesResponse.parse(data));
+    .then(({ data }) => parseWithError(zResourcesResponse, data));

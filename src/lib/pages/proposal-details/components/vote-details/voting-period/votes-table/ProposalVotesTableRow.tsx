@@ -1,14 +1,13 @@
 import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 
+import { Answer } from "../table/Answer";
+import { Voter } from "../table/Voter";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useOpenTxTab } from "lib/hooks";
 import type { ProposalVote } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
-
-import { Answer } from "./Answer";
-import { Voter } from "./Voter";
 
 interface ProposalVotesTableRowProps {
   proposalVote: ProposalVote;
@@ -33,7 +32,7 @@ export const ProposalVotesTableRow = ({
         <TableRow justifyContent="flex-end" pr={0}>
           <Flex direction="column" alignItems="flex-end">
             {proposalVote.timestamp ? (
-              <Text variant="body3" color="gray.500">
+              <Text variant="body3" color="gray.500" textColor="text.dark">
                 {dateFromNow(proposalVote.timestamp)}
               </Text>
             ) : (

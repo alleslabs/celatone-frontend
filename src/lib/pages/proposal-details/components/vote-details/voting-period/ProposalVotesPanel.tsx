@@ -9,10 +9,10 @@ import type { Option } from "lib/types";
 import { ProposalVotesTable } from "./votes-table";
 
 interface ProposalVotesPanelProps {
-  isOpen: boolean;
-  onBack: () => void;
   answers: Option<ProposalAnswerCountsResponse["all"]>;
   id: number;
+  isOpen: boolean;
+  onBack: () => void;
 }
 
 export const ProposalVotesPanel = ({
@@ -29,11 +29,15 @@ export const ProposalVotesPanel = ({
       position={isOpen ? "relative" : "absolute"}
       opacity={isOpen ? 1 : 0}
       left={isOpen ? "0" : "100%"}
+      top={0}
+      bottom={0}
+      overflowY="auto"
       transition="all 0.25s ease-in-out"
       direction="column"
       background={isMobile ? "transparent" : "gray.900"}
       border="1px solid"
       borderColor={isMobile ? "transparent" : "gray.700"}
+      pointerEvents={isOpen ? "auto" : "none"}
       borderRadius="8px"
       p={isMobile ? 0 : 6}
       gap={4}

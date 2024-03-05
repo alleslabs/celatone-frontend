@@ -14,3 +14,7 @@ div[data-floating-ui-portal] {
 .accordion-stepper-wrapper:not(:last-of-type) div#after-stepper {
   visibility: visible;
 }
+
+#voting-power-chart-container > canvas {
+  width: 100% !important;
+}
