@@ -84,7 +84,6 @@ const zValidatorsResponse = z
     total_voting_power: zBig,
   })
   .transform(snakeToCamel);
-
 export type ValidatorsResponse = z.infer<typeof zValidatorsResponse>;
 
 export const getValidators = async (
@@ -112,15 +111,10 @@ export const getValidators = async (
 const zValidatorDataResponse = z
   .object({
     info: zValidatorData.nullable(),
-    self_voting_power: z.string(),
-    total_voting_power: z.string(),
+    self_voting_power: zBig,
+    total_voting_power: zBig,
   })
-  .transform(({ info, self_voting_power, total_voting_power }) => ({
-    info,
-    selfVotingPower: big(self_voting_power),
-    totalVotingPower: big(total_voting_power),
-  }));
-
+  .transform(snakeToCamel);
 export type ValidatorDataResponse = z.infer<typeof zValidatorDataResponse>;
 
 export const getValidatorData = async (
