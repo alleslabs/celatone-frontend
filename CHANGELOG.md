@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
 - [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
 - [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
 - [#797](https://github.com/alleslabs/celatone-frontend/pull/797) Fix Vote Periods subtab internal state instead of route

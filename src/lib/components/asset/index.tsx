@@ -132,16 +132,12 @@ export const AssetsSection = ({
             />
           ) : (
             <>
-              <Flex
-                border="1px solid"
-                borderColor="gray.700"
-                borderRadius="8px"
-                direction="column"
-              >
+              <Flex direction="column">
                 <SupportedAssetTitle
                   supportedAssets={supportedAssets}
                   totalSupportedAssetsValue={totalSupportedAssetsValue}
                 />
+                <Flex borderTop="1px solid" borderColor="gray.700" w="full" />
                 {isMobile && (
                   <Flex pt={4} px={4} direction="column">
                     <Text variant="body2" color="text.dark">
@@ -163,14 +159,9 @@ export const AssetsSection = ({
                   supportedAssets={supportedAssets}
                 />
               </Flex>
-              <Flex
-                border="1px solid"
-                borderColor="gray.700"
-                borderRadius="8px"
-                direction="column"
-                mt={2}
-              >
+              <Flex direction="column" mt={2}>
                 <UnsupportedAssetTitle unsupportedAssets={unsupportedAssets} />
+                <Flex borderTop="1px solid" borderColor="gray.700" w="full" />
                 <UnsupportedAssetSectionContent
                   isAccount={isAccount}
                   unsupportedAssets={unsupportedAssets}

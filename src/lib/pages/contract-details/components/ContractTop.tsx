@@ -136,7 +136,7 @@ export const ContractTop = ({
           overflow="hidden"
           minW={{ md: "680px" }}
         >
-          <Flex gap={1} align={{ base: "start", md: "center" }} minH="36px">
+          <Flex gap={1} align="start" minH="36px">
             <CustomIcon
               name="contract-address"
               boxSize={5}
@@ -156,7 +156,6 @@ export const ContractTop = ({
               mt={{ base: 1, md: 0 }}
               ml={{ base: 1, md: 0 }}
               variant={{ base: "h6", md: "h5" }}
-              className={!isMobile ? "ellipsis" : ""}
               wordBreak="break-word"
             >
               {displayName}
