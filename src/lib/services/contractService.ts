@@ -9,12 +9,11 @@ import {
   useGovConfig,
   useWasmConfig,
 } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
 import {
   getAdminByContractAddressesQueryDocument,
   getContractByContractAddressQueryDocument,
   getContractListByAdmin,
-  getContractListByCodeIdPagination,
-  getContractListCountByCodeId,
   getInstantiatedCountByUserQueryDocument,
   getInstantiatedListByUserQueryDocument,
 } from "lib/query";
@@ -22,12 +21,11 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   Option,
   Dict,
-  ContractInfo,
   BechAddr20,
   BechAddr32,
   BechAddr,
+  ContractInfo,
 } from "lib/types";
-import { parseDateOpt } from "lib/utils";
 
 import { getCodeIdInfo } from "./code";
 import {
@@ -36,6 +34,7 @@ import {
   getContractQueryMsgs,
   getContractTableCounts,
   getContracts,
+  getContractsByCodeId,
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
 } from "./contract";
@@ -282,80 +281,6 @@ export const useMigrationHistoriesByContractAddress = (
   );
 };
 
-export const useContractListByCodeIdPagination = (
-  codeId: Option<number>,
-  offset: number,
-  pageSize: number
-): UseQueryResult<ContractInfo[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found (useContractListByCodeId)");
-
-    return indexerGraphClient
-      .request(getContractListByCodeIdPagination, { codeId, offset, pageSize })
-      .then(({ contracts }) =>
-        contracts.map<ContractInfo>((contract) => ({
-          contractAddress: contract.address as BechAddr32,
-          instantiator: contract.init_by[0]?.account.address as BechAddr,
-          label: contract.label,
-          admin: contract.admin?.address as BechAddr,
-          latestUpdater: contract.contract_histories[0]?.account
-            .address as BechAddr,
-          latestUpdated: parseDateOpt(
-            contract.contract_histories[0]?.block.timestamp
-          ),
-          remark: contract.contract_histories[0]?.remark,
-        }))
-      );
-  }, [codeId, indexerGraphClient, offset, pageSize]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_PAGINATION,
-      codeId,
-      indexerGraphClient,
-      offset,
-      pageSize,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: Boolean(codeId),
-    }
-  );
-};
-
-export const useContractListCountByCodeId = (
-  codeId: Option<number>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    if (!codeId)
-      throw new Error("Code ID not found (useContractListCountByCodeId)");
-
-    return indexerGraphClient
-      .request(getContractListCountByCodeId, {
-        codeId,
-      })
-      .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [codeId, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_COUNT,
-      codeId,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: Boolean(codeId),
-    }
-  );
-};
-
 export const useInstantiatedContractsByAddress = (
   address: BechAddr,
   limit: number,
@@ -433,4 +358,38 @@ export const useContractQueryMsgs = (contractAddress: BechAddr32) => {
       refetchOnWindowFocus: false,
     }
   );
+};
+
+export const useContractsByCodeId = (
+  codeId: number,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useBaseApiRoute("codes");
+  const { getContractLocalInfo } = useContractStore();
+
+  const { data, isLoading, refetch } = useQuery(
+    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, limit, offset],
+    async () => getContractsByCodeId(endpoint, codeId, limit, offset),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const contracts: Option<ContractInfo[]> = data?.items?.map<ContractInfo>(
+    (contract) => ({
+      ...contract,
+      ...getContractLocalInfo(contract.contractAddress),
+    })
+  );
+
+  return {
+    data: {
+      ...data,
+      items: contracts,
+    },
+    isLoading,
+    refetch,
+  };
 };

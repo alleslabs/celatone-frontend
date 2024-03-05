@@ -3,12 +3,11 @@ import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {} from "lib/services/contract";
 import {
-  useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
   useInstantiatedListByUserQuery,
 } from "lib/services/contractService";
 import type { ContractListInfo } from "lib/stores/contract";
-import type { BechAddr, BechAddr32, ContractInfo, Option } from "lib/types";
+import type { BechAddr, BechAddr32 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
 interface InstantiatedByMeState {
@@ -57,22 +56,4 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
     isInfoEditable: false,
     isContractRemovable: false,
   };
-};
-
-export const useContractsByCodeId = (
-  codeId: number,
-  offset: number,
-  pageSize: number
-) => {
-  const { getContractLocalInfo } = useContractStore();
-  const { data: rawCodeContracts, isLoading } =
-    useContractListByCodeIdPagination(codeId, offset, pageSize);
-  const contracts: Option<ContractInfo[]> = rawCodeContracts?.map<ContractInfo>(
-    (contract) => ({
-      ...contract,
-      ...getContractLocalInfo(contract.contractAddress),
-    })
-  );
-
-  return { contracts, isLoading };
 };

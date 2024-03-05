@@ -30,7 +30,7 @@ export const usePaginator = ({
 } => {
   const { currentChainId } = useCelatoneApp();
 
-  const [totalData, setTotalData] = useState<number>(total ?? 0);
+  const [totalData, setTotalData] = useState(total ?? 0);
   const [pageSize, setPageSize] = useState<number>(initialState.pageSize ?? 0);
   const [currentPage, setCurrentPage] = useState<number>(
     initialState.currentPage

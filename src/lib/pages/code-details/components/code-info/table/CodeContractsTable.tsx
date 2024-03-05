@@ -6,8 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
-import { useContractsByCodeId } from "lib/model/contract";
-import { useContractListCountByCodeId } from "lib/services/contractService";
+import { useContractsByCodeId } from "lib/services/contractService";
 import type { BechAddr32 } from "lib/types";
 
 import { NoContracts } from "./NoContracts";
@@ -25,7 +24,6 @@ export const CodeContractsTable = observer(
         query: { contract },
       });
 
-    const { data: totalData, refetch } = useContractListCountByCodeId(codeId);
     const {
       pagesQuantity,
       currentPage,
@@ -34,7 +32,6 @@ export const CodeContractsTable = observer(
       setPageSize,
       offset,
     } = usePaginator({
-      total: totalData,
       initialState: {
         pageSize: 10,
         currentPage: 1,
@@ -42,10 +39,10 @@ export const CodeContractsTable = observer(
       },
     });
 
-    const { contracts, isLoading } = useContractsByCodeId(
+    const { data, isLoading, refetch } = useContractsByCodeId(
       codeId,
-      offset,
-      pageSize
+      pageSize,
+      offset
     );
 
     useEffect(() => {
@@ -69,21 +66,21 @@ export const CodeContractsTable = observer(
       <>
         <TableTitle
           title="Contract Instances"
-          count={totalData ?? 0}
+          count={data?.total ?? 0}
           id={tableHeaderId}
         />
         <ContractsTable
-          contracts={contracts}
+          contracts={data.items}
           isLoading={isLoading}
           emptyState={<NoContracts />}
           onRowSelect={onRowSelect}
         />
-        {!!totalData && totalData > 10 && (
+        {!!data?.total && data.total > 10 && (
           <Pagination
             currentPage={currentPage}
             pagesQuantity={pagesQuantity}
             offset={offset}
-            totalData={totalData}
+            totalData={data.total}
             scrollComponentId={tableHeaderId}
             pageSize={pageSize}
             onPageChange={onPageChange}
