@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 
 import { ViewMore } from "../table";
 import type { Option, TokenWithValue, USD } from "lib/types";
@@ -42,7 +42,7 @@ export const AssetSectionOverview = ({
               supportedAssets={supportedAssets}
               totalSupportedAssetsValue={totalSupportedAssetsValue}
             />
-            <Flex borderTop="1px solid" borderColor="gray.700" w="full" />
+            <Divider borderColor="gray.700" />
             <SupportedAssetSectionContent
               isAccount={isAccount}
               supportedAssets={supportedAssets.slice(
@@ -59,7 +59,7 @@ export const AssetSectionOverview = ({
       </GridItem>
       <GridItem>
         <UnsupportedAssetTitle unsupportedAssets={unsupportedAssets} />
-        <Flex borderTop="1px solid" borderColor="gray.700" w="full" />
+        <Divider borderColor="gray.700" />
         <UnsupportedAssetSectionContent
           isAccount={isAccount}
           unsupportedAssets={unsupportedAssets.slice(
