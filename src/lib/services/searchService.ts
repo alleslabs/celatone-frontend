@@ -116,10 +116,10 @@ export const useSearchHandler = (
   }, [isAddr, contractData, icnsAddressData]);
 
   // Code
-  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
-    codeId: Number(debouncedKeyword),
-    enabled: isWasm && isId(debouncedKeyword),
-  });
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
+    Number(debouncedKeyword),
+    isWasm && isId(debouncedKeyword)
+  );
 
   // Tx
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);

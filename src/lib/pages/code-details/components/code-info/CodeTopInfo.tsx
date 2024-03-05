@@ -1,4 +1,4 @@
-import { Flex, Heading, Image, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import { CTASection } from "../CTASection";
 import { useMobile } from "lib/app-provider";
@@ -7,40 +7,37 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { PublicDescription } from "lib/components/PublicDescription";
-import { InvalidState } from "lib/components/state";
-import type { CodeDataState } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
-import type { Option } from "lib/types";
+import type { Code } from "lib/services/code";
+import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 interface CodeTopInfoProps {
-  codeDataState: CodeDataState;
+  code: Code;
+  projectInfo: Nullable<ProjectInfo>;
+  publicInfo: Nullable<PublicCodeInfo>;
   codeId: number;
 }
 
-const CodeHashInfo = ({ codeHash }: { codeHash: Option<string> }) => {
-  if (!codeHash) {
-    return <Spinner size="sm" />;
-  }
-
+const CodeHashInfo = ({ codeHash }: { codeHash: string }) => {
   return (
     <CopyLink value={codeHash} amptrackSection="code_hash" type="code_hash" />
   );
 };
 
-export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
+export const CodeTopInfo = ({
+  codeId,
+  code,
+  projectInfo,
+  publicInfo,
+}: CodeTopInfoProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
-  const { codeData } = codeDataState;
 
   const isMobile = useMobile();
 
-  if (!codeData) return <InvalidState title="Code does not exist" />;
-
-  const { info, projectInfo, publicInfo } = codeData;
-
-  const cw2Info = getCw2Info(info?.cw2Contract, info?.cw2Version);
+  const cw2Info = getCw2Info(code.cw2Contract, code.cw2Version);
 
   return (
     <>
@@ -112,7 +109,7 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code Hash:
             </Text>
-            {info && <CodeHashInfo codeHash={info.hash} />}
+            <CodeHashInfo codeHash={code.hash} />
           </Flex>
           <Flex
             gap={{ base: 0, md: 2 }}
@@ -132,15 +129,15 @@ export const CodeTopInfo = ({ codeId, codeDataState }: CodeTopInfoProps) => {
           {publicInfo && <GitHubLink github={publicInfo.github} />}
         </Flex>
         <Flex direction="column" gap={1}>
-          {!isMobile && info && (
+          {!isMobile && (
             <CTASection
               id={codeId}
-              uploader={localCodeInfo?.uploader ?? info.uploader}
+              uploader={localCodeInfo?.uploader ?? code.uploader}
               name={localCodeInfo?.name}
               instantiatePermission={
-                info.instantiatePermission ?? AccessConfigPermission.UNKNOWN
+                code.instantiatePermission ?? AccessConfigPermission.UNKNOWN
               }
-              permissionAddresses={info.permissionAddresses ?? []}
+              permissionAddresses={code.permissionAddresses ?? []}
               contractCount={undefined}
               cw2Contract={undefined}
               cw2Version={undefined}

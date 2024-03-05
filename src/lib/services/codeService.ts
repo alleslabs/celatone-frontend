@@ -15,24 +15,20 @@ import {
 } from "lib/query";
 import type {
   CodeInfo,
-  CodeData,
   Option,
   AccessConfigPermission,
   PermissionAddresses,
-  Nullable,
   BechAddr,
   BechAddr20,
-  PublicCodeInfo,
-  ProjectInfo,
 } from "lib/types";
 import { isId } from "lib/utils";
 
-import type { CodeIdInfoResponse, CodesResponse } from "./code";
+import type { CodeData, CodeIdInfoResponse, CodesResponse } from "./code";
 import {
   getCodeIdInfo,
-  getCodeInfo,
-  getCodes,
+  getCodeDataByCodeId,
   getCodesByAddress,
+  getCodes,
 } from "./code";
 
 export const useCodeListByWalletAddress = (
@@ -112,31 +108,17 @@ export const useCodeListByCodeIds = (
   );
 };
 
-interface CodeDataByCodeIdParams {
-  codeId: number;
-  enabled?: boolean;
-}
-
-export interface CodeDataByCodeIdResponse {
-  info: Nullable<CodeData>;
-  projectInfo: Nullable<ProjectInfo>;
-  publicInfo: Nullable<PublicCodeInfo>;
-}
-
-export const useCodeDataByCodeId = ({
-  codeId,
-  enabled = true,
-}: CodeDataByCodeIdParams): UseQueryResult<CodeDataByCodeIdResponse> => {
+export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
   const endpoint = useBaseApiRoute("codes");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CODE_DATA_INFO, endpoint, codeId, isGov],
-    async () => getCodeInfo(endpoint, codeId, isGov),
+  return useQuery<CodeData>(
+    [CELATONE_QUERY_KEYS.CODE_DATA, endpoint, codeId, isGov],
+    async () => getCodeDataByCodeId(endpoint, codeId, isGov),
     {
       retry: 1,
       refetchOnWindowFocus: false,
-      enabled: enabled && isId(String(codeId)),
+      enabled,
     }
   );
 };

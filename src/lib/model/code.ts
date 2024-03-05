@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
   useUserKey,
@@ -8,34 +8,12 @@ import {
   useCodeSearchFilter,
 } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import type { CodeDataByCodeIdResponse } from "lib/services/codeService";
 import {
-  useCodeDataByCodeId,
   useCodeListByCodeIds,
   useCodeListByWalletAddress,
 } from "lib/services/codeService";
 import type { CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
-
-export interface CodeDataState {
-  isLoading: boolean;
-  chainId: string;
-  codeData: CodeDataByCodeIdResponse | undefined;
-}
-
-export const useCodeData = (codeId: number): CodeDataState => {
-  const { currentChainId } = useCelatoneApp();
-
-  const { data: codeData, isLoading } = useCodeDataByCodeId({
-    codeId,
-  });
-
-  return {
-    isLoading,
-    chainId: currentChainId,
-    codeData,
-  };
-};
 
 const useStoredCodes = () => {
   const { address } = useCurrentChain();

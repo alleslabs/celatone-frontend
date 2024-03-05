@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-// eslint-disable-next-line import/no-cycle
-import { AccessConfigPermission } from "lib/types";
 import type {
   AssetInfo,
   PermissionAddresses,
@@ -13,6 +11,7 @@ import type {
 } from "lib/types";
 
 import { zBechAddr, zBechAddr32 } from "./addrs";
+import { AccessConfigPermission } from "./code";
 
 export interface PublicAccount {
   // NOTE: multisig is considered a public account
@@ -147,21 +146,7 @@ export const zPublicContractInfo = z.object({
 });
 export type PublicContractInfo = z.infer<typeof zPublicContractInfo>;
 
-export interface PublicCodeInfo {
-  contracts: number;
-  cw2Contract: Option<Nullable<string>>;
-  cw2Version: Option<Nullable<string>>;
-  description: string;
-  github: string;
-  id: number;
-  instantiatePermission: AccessConfigPermission;
-  name: string;
-  permissionAddresses: PermissionAddresses;
-  slug: string;
-  uploader: BechAddr;
-}
-
-export const zPublicInfo = z
+export const zPublicCodeInfo = z
   .object({
     contracts: z.number().nonnegative(),
     cw2_contract: z.string().nullable(),
@@ -175,7 +160,7 @@ export const zPublicInfo = z
     slug: z.string(),
     uploader: zBechAddr,
   })
-  .transform<PublicCodeInfo>((val) => ({
+  .transform((val) => ({
     contracts: val.contracts,
     cw2Contract: val.cw2_contract,
     cw2Version: val.cw2_version,
@@ -188,3 +173,4 @@ export const zPublicInfo = z
     slug: val.slug,
     uploader: val.uploader,
   }));
+export type PublicCodeInfo = z.infer<typeof zPublicCodeInfo>;
