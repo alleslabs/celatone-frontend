@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
 - [#804](https://github.com/alleslabs/celatone-frontend/pull/804) api v1 - validator info
 - [#803](https://github.com/alleslabs/celatone-frontend/pull/803) api v1 - validator list
 - [#799](https://github.com/alleslabs/celatone-frontend/pull/799) Add extra config single denom staking
