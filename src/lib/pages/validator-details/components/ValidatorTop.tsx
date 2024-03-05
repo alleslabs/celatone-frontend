@@ -81,7 +81,6 @@ const StatWithLabel = ({ label, value }: { label: string; value: string }) => (
 
 const ValidatorStats = () => (
   <Flex
-    order={{ base: "1", md: "0" }}
     alignItems="center"
     justifyContent={{ base: "space-between", md: "start" }}
     gap={{ base: 3, md: 2 }}
@@ -94,9 +93,9 @@ const ValidatorStats = () => (
     borderRadius={4}
   >
     <StatWithLabel label="Commission" value="5.00%" />
-    <DotSeparator bg="gray.600" />
+    <DotSeparator bg="gray.600" display={{ base: "none", md: "flex" }} />
     <StatWithLabel label="Estimated APR" value="6.21%" />{" "}
-    <DotSeparator bg="gray.600" />
+    <DotSeparator bg="gray.600" display={{ base: "none", md: "flex" }} />
     <StatWithLabel label="Delegators" value="253" />
   </Flex>
 );
