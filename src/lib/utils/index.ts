@@ -36,3 +36,4 @@ export * from "./tx";
 export * from "./txHash";
 export * from "./validate";
 export * from "./window";
+export * from "./zod";

@@ -2,6 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { zHexAddr } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 const zPairResponseCoin = z.object({
   metadata: zHexAddr,
@@ -43,4 +44,4 @@ const zPairResponse = z
 export const getMovePoolInfos = async (endpoint: string) =>
   axios
     .get(`${endpoint}/pools`)
-    .then(({ data }) => z.array(zPairResponse).parse(data));
+    .then(({ data }) => parseWithError(z.array(zPairResponse), data));
