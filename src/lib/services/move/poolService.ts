@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
-import big from "big.js";
 
 import { useAssetInfos } from "../assetService";
 import {
@@ -8,7 +7,14 @@ import {
   useBaseApiRoute,
   useMoveConfig,
 } from "lib/app-provider";
-import type { MovePoolInfos, Option, Token, U, USD } from "lib/types";
+import {
+  big,
+  type MovePoolInfos,
+  type Option,
+  type Token,
+  type U,
+  type USD,
+} from "lib/types";
 import { calculateAssetValue, toToken } from "lib/utils";
 
 import { getMovePoolInfos } from "./pool";

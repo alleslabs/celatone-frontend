@@ -12,12 +12,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { Big } from "big.js";
-import big from "big.js";
 
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { TokenImageRender, TokenComposition } from "lib/components/token";
-import type { BechAddr, TokenWithValue, USD } from "lib/types";
+import { big, type BechAddr, type TokenWithValue, type USD } from "lib/types";
 import {
   compareTokenWithValues,
   formatPrice,

@@ -1,9 +1,8 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import big from "big.js";
 
 import { CELATONE_QUERY_KEYS, useFaucetConfig } from "lib/app-provider";
-import type { Token, U } from "lib/types";
+import { big, type Token, type U } from "lib/types";
 import { deexponentify, getTokenLabel } from "lib/utils";
 
 import { useAssetInfos } from "./assetService";

@@ -2,14 +2,13 @@
 /* eslint-disable sonarjs/max-switch-cases */
 /* eslint-disable complexity */
 import { Flex } from "@chakra-ui/react";
-import big from "big.js";
 
 import type { TxMsgData } from "..";
 import type { AddressReturnType } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { TxReceipt, Option } from "lib/types";
+import { type TxReceipt, type Option, big } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import {
   voteOption,

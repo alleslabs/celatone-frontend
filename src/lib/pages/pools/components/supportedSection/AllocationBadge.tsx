@@ -1,9 +1,15 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
-import big from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
-import type { Option, Ratio, Token, U, USD } from "lib/types";
+import {
+  big,
+  type Option,
+  type Ratio,
+  type Token,
+  type U,
+  type USD,
+} from "lib/types";
 import {
   getTokenLabel,
   formatUTokenWithPrecision,

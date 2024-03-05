@@ -1,7 +1,9 @@
-import big from "big.js";
 import { z } from "zod";
 
+import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
+
 import { zBechAddr20, zValidatorAddr } from "./addrs";
+import { zBig } from "./big";
 
 export const zValidator = z
   .object({
@@ -29,37 +31,9 @@ export const zValidatorData = z
     commission_rate: z.coerce.number(),
     is_jailed: z.boolean(),
     is_active: z.boolean(),
-    voting_power: z.string(),
+    voting_power: zBig,
     uptime: z.number().optional(),
   })
-  .transform(
-    ({
-      rank,
-      rank_cummulative_voting_power,
-      validator_address,
-      account_address,
-      identity,
-      moniker,
-      details,
-      commission_rate,
-      is_jailed,
-      is_active,
-      voting_power,
-      uptime,
-    }) => ({
-      rank,
-      rankCummulativeVotingPower: rank_cummulative_voting_power,
-      validatorAddress: validator_address,
-      accountAddress: account_address,
-      identity,
-      moniker,
-      details,
-      commissionRate: commission_rate,
-      isJailed: is_jailed,
-      isActive: is_active,
-      votingPower: big(voting_power),
-      uptime,
-    })
-  );
+  .transform(snakeToCamel);
 
 export type ValidatorData = z.infer<typeof zValidatorData>;
