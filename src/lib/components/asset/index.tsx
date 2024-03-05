@@ -165,7 +165,10 @@ export const AssetsSection = ({
                 <UnsupportedAssetSectionContent
                   isAccount={isAccount}
                   unsupportedAssets={unsupportedAssets}
-                />
+                />{" "}
+                {!unsupportedAssets.length && (
+                  <Flex borderTop="1px solid" borderColor="gray.700" w="full" />
+                )}
               </Flex>
             </>
           )}
