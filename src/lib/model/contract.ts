@@ -1,7 +1,6 @@
 import { useCurrentChain } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import {} from "lib/services/contract";
 import {
   useInstantiatedCountByUserQuery,
   useInstantiatedListByUserQuery,

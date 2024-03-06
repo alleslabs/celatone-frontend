@@ -1,12 +1,10 @@
 import { observer } from "mobx-react-lite";
-import type { ChangeEvent } from "react";
-import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
-import { useContractsByCodeId } from "lib/services/contractService";
+import { useCodeContracts } from "lib/pages/code-details/data";
 import type { BechAddr32 } from "lib/types";
 
 import { NoContracts } from "./NoContracts";
@@ -26,6 +24,7 @@ export const CodeContractsTable = observer(
 
     const {
       pagesQuantity,
+      setTotalData,
       currentPage,
       setCurrentPage,
       pageSize,
@@ -39,26 +38,9 @@ export const CodeContractsTable = observer(
       },
     });
 
-    const { data, isLoading, refetch } = useContractsByCodeId(
-      codeId,
-      pageSize,
-      offset
-    );
-
-    useEffect(() => {
-      setCurrentPage(1);
-    }, [pageSize, setCurrentPage]);
-
-    const onPageChange = (nextPage: number) => {
-      refetch();
-      setCurrentPage(nextPage);
-    };
-
-    const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-      const size = Number(e.target.value);
-      refetch();
-      setPageSize(size);
-    };
+    const { data, isLoading } = useCodeContracts(codeId, pageSize, offset, {
+      onSuccess: ({ total }) => setTotalData(total),
+    });
 
     const tableHeaderId = "contractTableHeader";
 
@@ -83,8 +65,12 @@ export const CodeContractsTable = observer(
             totalData={data.total}
             scrollComponentId={tableHeaderId}
             pageSize={pageSize}
-            onPageChange={onPageChange}
-            onPageSizeChange={onPageSizeChange}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(e) => {
+              const size = Number(e.target.value);
+              setPageSize(size);
+              setCurrentPage(1);
+            }}
           />
         )}
       </>

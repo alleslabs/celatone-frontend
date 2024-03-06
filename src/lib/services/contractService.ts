@@ -9,7 +9,6 @@ import {
   useGovConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import { useContractStore } from "lib/providers/store";
 import {
   getAdminByContractAddressesQueryDocument,
   getContractByContractAddressQueryDocument,
@@ -18,14 +17,7 @@ import {
   getInstantiatedListByUserQueryDocument,
 } from "lib/query";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type {
-  BechAddr,
-  BechAddr20,
-  BechAddr32,
-  ContractInfo,
-  Dict,
-  Option,
-} from "lib/types";
+import type { BechAddr, BechAddr20, BechAddr32, Dict, Option } from "lib/types";
 
 import { getCodeIdInfo } from "./code";
 import {
@@ -40,6 +32,7 @@ import {
 } from "./contract";
 import type {
   ContractData,
+  ContractsData,
   ContractsResponse,
   ContractTableCounts,
   MigrationHistoriesResponse,
@@ -363,33 +356,18 @@ export const useContractQueryMsgs = (contractAddress: BechAddr32) => {
 export const useContractsByCodeId = (
   codeId: number,
   limit: number,
-  offset: number
+  offset: number,
+  options: Pick<UseQueryOptions<ContractsData>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("codes");
-  const { getContractLocalInfo } = useContractStore();
 
-  const { data, isLoading, refetch } = useQuery(
+  return useQuery(
     [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, limit, offset],
     async () => getContractsByCodeId(endpoint, codeId, limit, offset),
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      ...options,
     }
   );
-
-  const contracts: Option<ContractInfo[]> = data?.items?.map<ContractInfo>(
-    (contract) => ({
-      ...contract,
-      ...getContractLocalInfo(contract.contractAddress),
-    })
-  );
-
-  return {
-    data: {
-      ...data,
-      items: contracts,
-    },
-    isLoading,
-    refetch,
-  };
 };
