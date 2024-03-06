@@ -9,6 +9,7 @@ import type {
   Option,
   PermissionAddresses,
 } from "lib/types";
+import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 
 import { zBechAddr, zBechAddr32 } from "./addrs";
 import { AccessConfigPermission } from "./code";
@@ -160,17 +161,5 @@ export const zPublicCodeInfo = z
     slug: z.string(),
     uploader: zBechAddr,
   })
-  .transform((val) => ({
-    contracts: val.contracts,
-    cw2Contract: val.cw2_contract,
-    cw2Version: val.cw2_version,
-    description: val.description,
-    github: val.github,
-    id: val.id,
-    instantiatePermission: val.instantiate_permission,
-    name: val.name,
-    permissionAddresses: val.permission_addresses,
-    slug: val.slug,
-    uploader: val.uploader,
-  }));
+  .transform(snakeToCamel);
 export type PublicCodeInfo = z.infer<typeof zPublicCodeInfo>;
