@@ -1,25 +1,25 @@
 import {
   Button,
+  chakra,
+  Flex,
   Heading,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  chakra,
-  Flex,
-  IconButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import { useCallback } from "react";
 
-import { AmpEvent, trackUseViewJSON, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseViewJSON } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";

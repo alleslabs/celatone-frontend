@@ -5,9 +5,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-syntax */
 import {
-  Form,
   Templates as DefaultTemplates,
   Widgets as DefaultWidgets,
+  Form,
 } from "@rjsf/chakra-ui";
 import type { FormProps } from "@rjsf/core";
 import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
@@ -15,7 +15,7 @@ import { createSchemaUtils } from "@rjsf/utils";
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import isEqual from "lodash/isEqual";
 import type { FC } from "react";
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { JsonDataType } from "lib/types";
 

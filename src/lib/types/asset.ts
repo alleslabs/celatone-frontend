@@ -1,7 +1,7 @@
 import type Big from "big.js";
 import { z } from "zod";
 
-import type { PoolInfo, Option, Token, U, USD } from "lib/types";
+import type { Option, PoolInfo, Token, U, USD } from "lib/types";
 
 export const zCoin = z.object({
   denom: z.string(),

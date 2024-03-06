@@ -1,14 +1,14 @@
 import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Text,
   Accordion,
   AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Box,
+  Button,
+  Flex,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";

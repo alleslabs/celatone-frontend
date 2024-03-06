@@ -1,6 +1,6 @@
 import type {
-  SigningCosmWasmClient,
   ChangeAdminResult,
+  SigningCosmWasmClient,
 } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";

@@ -1,4 +1,4 @@
-import { Heading, Button, Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";

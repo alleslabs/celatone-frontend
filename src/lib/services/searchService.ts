@@ -9,13 +9,14 @@ import {
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import { zBechAddr32, type BechAddr, type Option } from "lib/types";
+import { zBechAddr32 } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 import {
-  isHexWalletAddress,
   isHexModuleAddress,
-  splitModule,
-  isPosDecimal,
+  isHexWalletAddress,
   isId,
+  isPosDecimal,
+  splitModule,
 } from "lib/utils";
 
 import { useBlockData } from "./blockService";

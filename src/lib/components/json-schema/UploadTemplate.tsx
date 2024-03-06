@@ -8,7 +8,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import type { Dispatch } from "react";
-import { useMemo, useCallback, useReducer, useState } from "react";
+import { useCallback, useMemo, useReducer, useState } from "react";
 
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";

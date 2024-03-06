@@ -1,12 +1,12 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, useToast, FormControl } from "@chakra-ui/react";
+import { Button, FormControl, useToast } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
-import { TextInput, NumberInput } from "lib/components/forms";
+import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";

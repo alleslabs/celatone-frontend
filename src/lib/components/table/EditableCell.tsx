@@ -1,7 +1,7 @@
 import type { TextProps } from "@chakra-ui/react";
-import { Flex, Text, Input, Button, useOutsideClick } from "@chakra-ui/react";
+import { Button, Flex, Input, Text, useOutsideClick } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";

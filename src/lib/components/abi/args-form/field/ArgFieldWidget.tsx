@@ -6,11 +6,11 @@ import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
 import type { BechAddr20, Nullable } from "lib/types";
 
 import {
-  UINT_TYPES,
-  STRING_TYPE,
-  OBJECT_TYPE,
-  FIXED_POINT_TYPES,
   DECIMAL_TYPES,
+  FIXED_POINT_TYPES,
+  OBJECT_TYPE,
+  STRING_TYPE,
+  UINT_TYPES,
 } from "./constants";
 
 const getInputPlaceholder = (

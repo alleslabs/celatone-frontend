@@ -16,7 +16,7 @@ import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
-import { ErrorFetching, EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 

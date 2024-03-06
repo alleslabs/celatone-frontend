@@ -2,9 +2,9 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import {
-  useInternalNavigate,
-  useCelatoneApp,
   useBaseApiRoute,
+  useCelatoneApp,
+  useInternalNavigate,
 } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { getNavigationUrl } from "lib/components/ExplorerLink";

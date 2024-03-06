@@ -1,10 +1,10 @@
 import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-import big from "big.js";
 
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { Loading } from "lib/components/Loading";
 import { useTxData } from "lib/services/txService";
+import { big } from "lib/types";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
 

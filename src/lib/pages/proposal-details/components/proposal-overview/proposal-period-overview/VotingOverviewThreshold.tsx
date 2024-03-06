@@ -10,11 +10,11 @@ import {
   getVoteResult,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
-import {
-  ProposalStatus,
-  type ProposalData,
-  type ProposalParams,
-  type ProposalVotesInfo,
+import { ProposalStatus } from "lib/types";
+import type {
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
 } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
