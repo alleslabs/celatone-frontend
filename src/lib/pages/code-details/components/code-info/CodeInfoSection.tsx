@@ -6,7 +6,6 @@ import {
   Grid,
   Button,
   useDisclosure,
-  Spinner,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
@@ -190,30 +189,26 @@ export const CodeInfoSection = ({
         </LabelText>
         {!isMobile && (
           <LabelText label="JSON Schema">
-            {!code ? (
-              <Spinner size="sm" ml={2} />
-            ) : (
-              <div>
-                <Button
-                  variant="outline-primary"
-                  p="8px 6px"
-                  leftIcon={
-                    attached ? undefined : (
-                      <CustomIcon name="upload" boxSize={4} />
-                    )
-                  }
-                  onClick={attached ? handleView : handleAttach}
-                >
-                  {attached ? "View Schema" : "Attach"}
-                </Button>
-                <JsonSchemaModal
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  codeId={codeId}
-                  codeHash={hash}
-                />
-              </div>
-            )}
+            <div>
+              <Button
+                variant="outline-primary"
+                p="8px 6px"
+                leftIcon={
+                  attached ? undefined : (
+                    <CustomIcon name="upload" boxSize={4} />
+                  )
+                }
+                onClick={attached ? handleView : handleAttach}
+              >
+                {attached ? "View Schema" : "Attach"}
+              </Button>
+              <JsonSchemaModal
+                isOpen={isOpen}
+                onClose={onClose}
+                codeId={codeId}
+                codeHash={hash}
+              />
+            </div>
           </LabelText>
         )}
       </Grid>

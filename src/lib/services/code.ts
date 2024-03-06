@@ -96,7 +96,7 @@ export const getCodesByAddress = async (
 
 const zCode = z
   .object({
-    code_id: z.number().nonnegative(),
+    code_id: z.number().positive(),
     cw2_contract: z.string().nullable(),
     cw2_version: z.string().nullable(),
     hash: z.string(),
@@ -104,8 +104,8 @@ const zCode = z
     permission_addresses: z.array(zBechAddr),
     proposal: z
       .object({
-        id: z.number(),
-        height: z.number(),
+        id: z.number().positive(),
+        height: z.number().positive(),
         created: z.string(),
       })
       .nullable(),
@@ -135,7 +135,7 @@ const zCode = z
     transaction: val.transaction
       ? {
           height: val.transaction.height,
-          hash: val.transaction.hash,
+          hash: parseTxHash(val.transaction.hash),
           created: parseDate(val.transaction.created),
         }
       : undefined,
