@@ -1,14 +1,14 @@
-import { Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  useWasmConfig,
-  useMobile,
-  useInternalNavigate,
   useCelatoneApp,
+  useInternalNavigate,
+  useMobile,
+  useWasmConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";

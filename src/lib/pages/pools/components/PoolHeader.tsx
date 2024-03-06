@@ -1,11 +1,11 @@
-import { Flex, Heading, Text, Image } from "@chakra-ui/react";
+import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import {
   BALANCER_ICON,
+  CLP_ICON,
   COSMWASM_ICON,
   STABLESWAP_ICON,
   SUPERFLUID_ICON,
-  CLP_ICON,
 } from "../constant";
 import type { PoolDetail } from "lib/types/pool";
 import { PoolType } from "lib/types/pool";

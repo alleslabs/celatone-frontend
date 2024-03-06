@@ -1,4 +1,4 @@
-import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
+import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 
 import { trackUseExpand } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";

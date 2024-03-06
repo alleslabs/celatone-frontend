@@ -1,6 +1,6 @@
-import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
+import { Flex, Heading, Switch, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
@@ -21,9 +21,9 @@ import { useDebounce } from "lib/hooks";
 import { useProposals } from "lib/services/proposalService";
 import type {
   BechAddr20,
+  Option,
   ProposalStatus,
   ProposalType,
-  Option,
 } from "lib/types";
 
 import { ProposalStatusFilter } from "./components/ProposalStatusFilter";

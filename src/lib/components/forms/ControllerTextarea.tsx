@@ -3,8 +3,8 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
-  Textarea,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import type {
   Control,
@@ -12,7 +12,7 @@ import type {
   FieldValues,
   UseControllerProps,
 } from "react-hook-form";
-import { useWatch, useController } from "react-hook-form";
+import { useController, useWatch } from "react-hook-form";
 
 import type { TextareaProps } from "./TextareaInput";
 

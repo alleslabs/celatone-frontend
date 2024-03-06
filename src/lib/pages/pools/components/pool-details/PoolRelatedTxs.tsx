@@ -1,11 +1,11 @@
 import {
+  Box,
   Flex,
   Heading,
-  Box,
-  Tabs,
   TabList,
-  TabPanels,
   TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 

@@ -9,8 +9,8 @@ import { GitHubLink } from "lib/components/links";
 import { PublicDescription } from "lib/components/PublicDescription";
 import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/code";
-import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
+import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 interface CodeTopInfoProps {
@@ -19,12 +19,6 @@ interface CodeTopInfoProps {
   publicInfo: Nullable<PublicCodeInfo>;
   codeId: number;
 }
-
-const CodeHashInfo = ({ codeHash }: { codeHash: string }) => {
-  return (
-    <CopyLink value={codeHash} amptrackSection="code_hash" type="code_hash" />
-  );
-};
 
 export const CodeTopInfo = ({
   codeId,
@@ -109,7 +103,11 @@ export const CodeTopInfo = ({
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code Hash:
             </Text>
-            <CodeHashInfo codeHash={code.hash} />
+            <CopyLink
+              value={code.hash}
+              amptrackSection="code_hash"
+              type="code_hash"
+            />
           </Flex>
           <Flex
             gap={{ base: 0, md: 2 }}

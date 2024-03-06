@@ -6,13 +6,13 @@ import type {
   TooltipOptions,
 } from "chart.js";
 import {
-  Chart as ChartJS,
   CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
+  Chart as ChartJS,
   Filler,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
 } from "chart.js";
 import type { CrosshairOptions } from "chartjs-plugin-crosshair";
 import Crosshair from "chartjs-plugin-crosshair";

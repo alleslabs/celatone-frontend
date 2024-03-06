@@ -14,23 +14,23 @@ import {
   useMoveConfig,
 } from "lib/app-provider";
 import {
-  getModuleInitialPublishInfoQueryDocument,
   getModuleHistoriesCountQueryDocument,
   getModuleHistoriesQueryDocument,
   getModuleIdByNameAndVmAddressQueryDocument,
+  getModuleInitialPublishInfoQueryDocument,
 } from "lib/query";
 import type {
-  ModuleHistory,
-  ExposedFunction,
-  InternalModule,
-  ResponseABI,
-  Option,
   AbiFormData,
+  Addr,
+  ExposedFunction,
+  HexAddr,
+  InternalModule,
+  ModuleHistory,
+  Nullable,
+  Option,
+  ResponseABI,
   RpcQueryError,
   UpgradePolicy,
-  HexAddr,
-  Nullable,
-  Addr,
 } from "lib/types";
 import {
   parseDate,
@@ -41,16 +41,16 @@ import {
   truncate,
 } from "lib/utils";
 
-import type { ModuleVerificationInternal, ModulesResponse } from "./module";
+import type { ModulesResponse, ModuleVerificationInternal } from "./module";
 import {
   decodeModule,
   decodeScript,
   getAccountModule,
   getAccountModules,
   getFunctionView,
-  getModuleVerificationStatus,
   getModules,
   getModulesByAddress,
+  getModuleVerificationStatus,
 } from "./module";
 
 export interface IndexedModule extends InternalModule {

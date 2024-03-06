@@ -1,4 +1,4 @@
-import { TableContainer, Grid, Box } from "@chakra-ui/react";
+import { Box, Grid, TableContainer } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
@@ -13,7 +13,7 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useCodeStore } from "lib/providers/store";
-import type { Option, PublicCode, CodeInfo } from "lib/types";
+import type { CodeInfo, Option, PublicCode } from "lib/types";
 
 import { PublicProjectCodeMobileCard } from "./PublicProjectCodeMobileCard";
 import { PublicProjectCodeRow } from "./PublicProjectCodeRow";

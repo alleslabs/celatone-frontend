@@ -1,5 +1,5 @@
 import type { TabProps } from "@chakra-ui/react";
-import { Button, useTab, useMultiStyleConfig } from "@chakra-ui/react";
+import { Button, useMultiStyleConfig, useTab } from "@chakra-ui/react";
 
 import { ProposalStepper } from "../proposal-stepper";
 import type { ProposalData } from "lib/types";

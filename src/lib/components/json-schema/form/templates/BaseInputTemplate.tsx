@@ -14,7 +14,7 @@ import {
 // import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
 import type { WidgetProps } from "@rjsf/utils";
 import { getInputProps, getTemplate, getUiOptions } from "@rjsf/utils";
-import { type ChangeEvent, type FocusEvent } from "react";
+import type { ChangeEvent, FocusEvent } from "react";
 
 import { isSchemaTypeString } from "../utils";
 

@@ -1,11 +1,11 @@
 import {
-  Flex,
-  Text,
-  Grid,
-  useDisclosure,
-  Tag,
-  Box,
   Badge,
+  Box,
+  Flex,
+  Grid,
+  Tag,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { AccordionTx } from "../AccordionTx";

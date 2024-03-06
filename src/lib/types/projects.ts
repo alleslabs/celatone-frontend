@@ -2,12 +2,12 @@ import { z } from "zod";
 
 import type {
   AssetInfo,
-  PermissionAddresses,
-  Option,
-  Nullable,
   BechAddr,
   BechAddr32,
   HexAddr,
+  Nullable,
+  Option,
+  PermissionAddresses,
 } from "lib/types";
 
 import { zBechAddr, zBechAddr32 } from "./addrs";
