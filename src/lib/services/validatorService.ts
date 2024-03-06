@@ -12,11 +12,16 @@ import {
 } from "lib/app-provider";
 import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
-import type { ValidatorDataResponse, ValidatorsResponse } from "./validator";
+import type {
+  ValidatorDataResponse,
+  ValidatorsResponse,
+  ValidatorUptimeResponse,
+} from "./validator";
 import {
   getValidator,
   getValidatorData,
   getValidators,
+  getValidatorUptime,
   resolveValIdentity,
 } from "./validator";
 
@@ -105,6 +110,21 @@ export const useValidatorData = (validatorAddress: ValidatorAddr) => {
   return useQuery<ValidatorDataResponse>(
     [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
     async () => getValidatorData(endpoint, validatorAddress),
+    {
+      retry: 1,
+    }
+  );
+};
+
+export const useValidatorUptime = (
+  validatorAddress: ValidatorAddr,
+  blocks: number
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorUptimeResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_UPTIME, endpoint, validatorAddress],
+    async () => getValidatorUptime(endpoint, validatorAddress, blocks),
     {
       retry: 1,
     }

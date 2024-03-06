@@ -37,3 +37,9 @@ export const zValidatorData = z
   .transform(snakeToCamel);
 
 export type ValidatorData = z.infer<typeof zValidatorData>;
+
+export enum BlockVote {
+  PROPOSE = "PROPOSE",
+  VOTE = "VOTE",
+  ABSTAIN = "ABSTAIN",
+}

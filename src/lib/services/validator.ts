@@ -3,7 +3,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import { zBig, zValidatorData } from "lib/types";
+import { BlockVote, zBig, zUtcDate, zValidatorData } from "lib/types";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
 
@@ -124,3 +124,41 @@ export const getValidatorData = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/info`)
     .then(({ data }) => parseWithError(zValidatorDataResponse, data));
+
+const zValidatorUptimeResponse = z
+  .object({
+    uptime: z.object({
+      signed_block: z.number(),
+      proposed_block: z.number(),
+      missed_blocks: z.number(),
+      total: z.number(),
+    }),
+    recent_blocks: z
+      .object({
+        height: z.number(),
+        vote: z.nativeEnum(BlockVote),
+      })
+      .array(),
+    events: z
+      .object({
+        height: z.number(),
+        timestamp: zUtcDate,
+        is_jailed: z.boolean(),
+      })
+      .array(),
+  })
+  .transform(snakeToCamel);
+export type ValidatorUptimeResponse = z.infer<typeof zValidatorUptimeResponse>;
+
+export const getValidatorUptime = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  blocks: number
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/uptime`, {
+      params: {
+        blocks,
+      },
+    })
+    .then(({ data }) => parseWithError(zValidatorUptimeResponse, data));

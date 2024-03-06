@@ -1,3 +1,4 @@
+import Big from "big.js";
 import camelCase from "camelcase";
 
 import type { SnakeToCamelCaseNested } from "lib/types";
@@ -17,8 +18,8 @@ export const snakeToCamel = <T>(obj: T): Resolver<T> => {
     return obj as Resolver<T>;
   }
 
-  // Ignore Date, whose typeof is `object` too.
-  if (obj instanceof Date) {
+  // Ignore Date and Big, whose typeof is `object` too.
+  if (obj instanceof Date || obj instanceof Big) {
     return obj as Resolver<T>;
   }
   // Array of object
