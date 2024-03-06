@@ -1,8 +1,8 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import plur from "plur";
 
 import { useGetAddressType } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
+import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { TxReceiptRender } from "lib/components/tx";
 import type { TxReceipt } from "lib/types";
 
@@ -23,8 +23,7 @@ export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
   return (
     <Flex
       direction="column"
-      gap={6}
-      py={isExpand ? 4 : 0}
+      gap={4}
       pl={8}
       height={isExpand ? "full" : 0}
       overflow="hidden"
@@ -34,15 +33,11 @@ export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
         variant="tx-page"
         receipts={receipts}
         gap={{ base: 4, md: 3 }}
+        pt={4}
       />
       {txMsgData.log && (
-        <Flex direction="column" gap={4}>
-          {/* TODO: refactor with LiquidityDivider */}
-          <Flex gap={2} alignItems="center" py={3}>
-            <Divider borderColor="accent.main" />
-            <CustomIcon name="arrow-down" boxSize={4} color="accent.main" />
-            <Divider borderColor="accent.main" />
-          </Flex>
+        <>
+          <DividerWithArrow />
           <Text variant="body2" fontWeight={500} color="text.dark">
             {plur("Event Log", txMsgData.log.events.length)}
           </Text>
@@ -57,7 +52,7 @@ export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
               />
             ))}
           </Flex>
-        </Flex>
+        </>
       )}
     </Flex>
   );
