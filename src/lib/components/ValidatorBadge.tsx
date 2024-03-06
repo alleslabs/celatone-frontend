@@ -57,7 +57,7 @@ export const ValidatorBadge = ({
               src={valImgSrc}
               alt={validator.moniker}
               borderRadius="50%"
-              fallbackSrc="https://assets.alleslabs.dev/webapp-assets/placeholder/validator.svg"
+              fallbackSrc="https://assets.alleslabs.dev/celatone-brand/webapp-assets/placeholders/validator.svg"
               fallbackStrategy="beforeLoadOrError"
             />
           )}

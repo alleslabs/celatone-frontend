@@ -135,7 +135,7 @@ export const DEFAULT_THEME: ThemeConfig = {
     indicator: "2px",
     stepper: "full",
   },
-  jsonTheme: "monokai",
+  jsonTheme: "pastel_on_dark",
   illustration: {
     "404":
       "https://assets.alleslabs.dev/celatone-brand/illustration/states/404.svg",

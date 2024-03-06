@@ -3,6 +3,7 @@ import { CURR_THEME } from "env";
 interface NATokenProps {
   size?: string;
 }
+
 export const NAToken = ({ size = "20" }: NATokenProps) => (
   <svg
     width={size}
