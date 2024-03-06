@@ -10,13 +10,7 @@ interface UnsupportedAssetTitleProps {
 export const UnsupportedAssetTitle = ({
   unsupportedAssets,
 }: UnsupportedAssetTitleProps) => (
-  <Flex
-    w="full"
-    // bg="gray.900"
-    py={1}
-    // px={4}
-    // borderRadius="8px 8px 0px 0px"
-  >
+  <Flex w="full" py={1}>
     <TableTitle
       title="Unsupported Assets"
       count={unsupportedAssets.length}
