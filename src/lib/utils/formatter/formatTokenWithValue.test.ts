@@ -1,4 +1,5 @@
-import { big, type Token, type TokenWithValue, type U } from "lib/types";
+import { big } from "lib/types";
+import type { Token, TokenWithValue, U } from "lib/types";
 
 import {
   formatTokenWithValue,

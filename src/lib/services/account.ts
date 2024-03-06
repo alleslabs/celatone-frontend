@@ -1,7 +1,8 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zProjectInfo, zPublicAccountInfo, type BechAddr } from "lib/types";
+import { zProjectInfo, zPublicAccountInfo } from "lib/types";
+import type { BechAddr } from "lib/types";
 import { parseWithError, snakeToCamel } from "lib/utils";
 
 const zIcns = z.object({

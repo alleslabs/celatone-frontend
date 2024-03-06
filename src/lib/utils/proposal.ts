@@ -1,7 +1,8 @@
 import type { Coin } from "@cosmjs/stargate";
 
 import type { MinDeposit } from "lib/services/proposalService";
-import { big, type Option } from "lib/types";
+import { big } from "lib/types";
+import type { Option } from "lib/types";
 
 import { d2Formatter } from "./formatter";
 

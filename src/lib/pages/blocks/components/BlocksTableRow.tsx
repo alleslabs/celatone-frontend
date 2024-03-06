@@ -1,5 +1,5 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Text, Grid } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";

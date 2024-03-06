@@ -1,4 +1,4 @@
-import type { BigSource, Big } from "big.js";
+import type { Big, BigSource } from "big.js";
 
 import { big } from "lib/types";
 

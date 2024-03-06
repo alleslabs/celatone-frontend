@@ -22,7 +22,7 @@ export type Validator = z.infer<typeof zValidator>;
 export const zValidatorData = z
   .object({
     rank: z.number().nullable(),
-    rank_cummulative_voting_power: z.string().nullable(),
+    rank_cummulative_voting_power: zBig,
     validator_address: zValidatorAddr,
     account_address: zBechAddr20,
     identity: z.string(),

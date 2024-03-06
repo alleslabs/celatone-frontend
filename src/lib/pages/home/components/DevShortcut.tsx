@@ -1,5 +1,5 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Flex, Box, Text, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
 import { useMobile, useMoveConfig, useWasmConfig } from "lib/app-provider";

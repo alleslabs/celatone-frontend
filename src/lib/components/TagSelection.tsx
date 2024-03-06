@@ -1,21 +1,21 @@
 import type { InputProps, LayoutProps } from "@chakra-ui/react";
 import {
+  Box,
+  Flex,
   FormControl,
   FormHelperText,
-  Box,
   FormLabel,
-  Tag,
-  Flex,
   Input,
   List,
   ListItem,
+  Tag,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import type { CSSProperties, KeyboardEvent } from "react";
-import { useEffect, useState, useRef, forwardRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";

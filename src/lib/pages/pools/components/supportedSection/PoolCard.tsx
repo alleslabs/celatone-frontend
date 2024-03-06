@@ -8,7 +8,8 @@ import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
-import { type USD, type Pool, type Token, type U, big } from "lib/types";
+import { big } from "lib/types";
+import type { Pool, Token, U, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";

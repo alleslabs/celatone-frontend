@@ -1,4 +1,4 @@
-import type { ZodTypeDef, ZodType } from "zod";
+import type { ZodType, ZodTypeDef } from "zod";
 
 export const parseWithError = <T, S extends ZodTypeDef, U>(
   zod: ZodType<T, S, U>,

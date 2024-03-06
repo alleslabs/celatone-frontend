@@ -8,10 +8,10 @@ import {
   getCollectionCreatorQuery,
   getCollectionMutateEventsCountQuery,
   getCollectionMutateEventsQuery,
-  getCollectionTotalBurnedCountQuery,
-  getCollectionUniqueHoldersCountQuery,
   getCollectionsByAccountQuery,
   getCollectionsQuery,
+  getCollectionTotalBurnedCountQuery,
+  getCollectionUniqueHoldersCountQuery,
 } from "lib/query";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";

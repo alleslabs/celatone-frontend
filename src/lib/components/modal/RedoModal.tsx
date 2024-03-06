@@ -1,16 +1,16 @@
 import {
-  Modal,
-  ModalHeader,
-  Flex,
-  Text,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  useDisclosure,
-  ModalBody,
   Button,
+  Flex,
   Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";

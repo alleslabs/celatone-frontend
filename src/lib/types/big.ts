@@ -4,4 +4,6 @@ import { z } from "zod";
 
 export const big = (value: BigSource) => Big(value);
 
-export const zBig = z.string().transform((value) => big(value));
+export const zBig = z
+  .union([z.string(), z.number()])
+  .transform((value) => big(value));

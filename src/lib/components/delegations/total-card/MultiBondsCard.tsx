@@ -3,13 +3,8 @@ import type { Big } from "big.js";
 import plur from "plur";
 
 import { CustomIcon } from "lib/components/icon";
-import {
-  big,
-  type BechAddr,
-  type Option,
-  type TokenWithValue,
-  type USD,
-} from "lib/types";
+import { big } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 import { TotalCardModal } from "./TotalCardModal";

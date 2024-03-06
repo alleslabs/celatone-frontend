@@ -1,13 +1,13 @@
 import type Big from "big.js";
 
-import {
-  big,
-  type Nullable,
-  type ProposalParams,
-  type ProposalVotesInfo,
-  type Token,
-  type TokenWithValue,
-  type U,
+import { big } from "lib/types";
+import type {
+  Nullable,
+  ProposalParams,
+  ProposalVotesInfo,
+  Token,
+  TokenWithValue,
+  U,
 } from "lib/types";
 import { divWithDefault } from "lib/utils";
 

@@ -10,19 +10,19 @@ import {
   useBaseApiRoute,
   useCurrentChain,
 } from "lib/app-provider";
-import type { Validator, ValidatorAddr, Nullable, Option } from "lib/types";
+import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
 import type {
   ValidatorDataResponse,
-  ValidatorUptimeResponse,
   ValidatorsResponse,
+  ValidatorUptimeResponse,
 } from "./validator";
 import {
-  resolveValIdentity,
   getValidator,
-  getValidators,
   getValidatorData,
+  getValidators,
   getValidatorUptime,
+  resolveValIdentity,
 } from "./validator";
 
 export const useValidator = (

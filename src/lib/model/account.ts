@@ -5,16 +5,16 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useBalanceInfos } from "lib/services/balanceService";
 import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
-import {
-  type Option,
-  type BechAddr,
-  type USD,
-  type TokenWithValue,
-  type StakingParams,
-  type Delegation,
-  type Unbonding,
-  type Redelegation,
-  big,
+import { big } from "lib/types";
+import type {
+  BechAddr,
+  Delegation,
+  Option,
+  Redelegation,
+  StakingParams,
+  TokenWithValue,
+  Unbonding,
+  USD,
 } from "lib/types";
 import {
   addTokenWithValue,

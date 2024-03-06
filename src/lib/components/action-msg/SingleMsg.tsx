@@ -1,4 +1,4 @@
-import { Tag, Text, Flex } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { snakeCase } from "snake-case";
 
 import type { LinkType } from "lib/components/ExplorerLink";

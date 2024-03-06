@@ -1,13 +1,13 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { type Dispatch, type SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  usePublicProjectConfig,
   useCurrentChain,
-  useWasmConfig,
   useMoveConfig,
+  usePublicProjectConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
 import { StorageKeys, UNDEFINED_ICON_LIST } from "lib/data";
@@ -18,9 +18,9 @@ import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
 import type { MenuInfo } from "./types";
 import {
+  getDeviceSubmenuWasm,
   getDevSubmenuMove,
   getDevSubmenuWasm,
-  getDeviceSubmenuWasm,
   getWalletSubSectionMove,
   getWalletSubSectionWasm,
 } from "./utils";

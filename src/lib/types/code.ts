@@ -1,5 +1,5 @@
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { BechAddr, Option, Nullable } from "lib/types";
+import type { BechAddr, Nullable, Option } from "lib/types";
 
 export enum AccessConfigPermission {
   EVERYBODY = "Everybody",

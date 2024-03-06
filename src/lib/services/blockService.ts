@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import type { BlockData } from "lib/types";
 
-import { getBlocks, type BlocksResponse, getBlockData } from "./block";
+import { getBlockData, getBlocks } from "./block";
+import type { BlocksResponse } from "./block";
 
 export const useBlocks = (
   limit: number,

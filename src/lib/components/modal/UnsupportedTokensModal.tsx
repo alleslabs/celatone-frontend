@@ -1,16 +1,16 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import {
-  Modal,
-  ModalHeader,
-  Flex,
-  Text,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  useDisclosure,
-  ModalBody,
   Button,
+  Flex,
   Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { ExplorerLink } from "../ExplorerLink";

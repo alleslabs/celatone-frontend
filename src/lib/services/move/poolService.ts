@@ -7,14 +7,8 @@ import {
   useBaseApiRoute,
   useMoveConfig,
 } from "lib/app-provider";
-import {
-  big,
-  type MovePoolInfos,
-  type Option,
-  type Token,
-  type U,
-  type USD,
-} from "lib/types";
+import { big } from "lib/types";
+import type { MovePoolInfos, Option, Token, U, USD } from "lib/types";
 import { calculateAssetValue, toToken } from "lib/utils";
 
 import { getMovePoolInfos } from "./pool";

@@ -1,5 +1,6 @@
 import { CustomIcon } from "lib/components/icon";
-import { big, type Nullable, type Option } from "lib/types";
+import { big } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 import { d2Formatter } from "lib/utils";
 
 interface AlertProps {

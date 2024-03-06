@@ -7,7 +7,7 @@ import { LabelText } from "lib/components/LabelText";
 import type { Contract, ContractRest } from "lib/services/contract";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Nullable, Option } from "lib/types";
-import { formatUTC, dateFromNow, getCw2Info } from "lib/utils";
+import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {

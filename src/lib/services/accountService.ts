@@ -3,21 +3,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import {
-  useCelatoneApp,
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useWasmConfig,
+  useCelatoneApp,
   useGovConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { getAccountTypeByAddressQueryDocument } from "lib/query";
 import type { AccountType, BechAddr, Option } from "lib/types";
 
-import {
-  getAccountData,
-  type AccountData,
-  getAccountTableCounts,
-  type AccountTableCounts,
-} from "./account";
+import { getAccountData, getAccountTableCounts } from "./account";
+import type { AccountData, AccountTableCounts } from "./account";
 
 export const useAccountType = (
   address: Option<BechAddr>,

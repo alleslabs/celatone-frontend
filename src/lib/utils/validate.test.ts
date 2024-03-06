@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { isId, isTxHash, isPosDecimal, isHex } from "./validate";
+import { isHex, isId, isPosDecimal, isTxHash } from "./validate";
 
 describe("isId", () => {
   test("valid", () => {

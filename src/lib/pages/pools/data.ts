@@ -8,16 +8,16 @@ import {
   useTxsByPoolIdPagination,
   useTxsCountByPoolId,
 } from "lib/services/txService";
-import {
-  big,
-  type Option,
-  type Pool,
-  type PoolDetail,
-  type PoolTxFilter,
-  type PoolTypeFilter,
-  type PoolWeight,
-  type Ratio,
-  type TokenWithValue,
+import { big } from "lib/types";
+import type {
+  Option,
+  Pool,
+  PoolDetail,
+  PoolTxFilter,
+  PoolTypeFilter,
+  PoolWeight,
+  Ratio,
+  TokenWithValue,
 } from "lib/types";
 import { coinToTokenWithValue, divWithDefault, formatRatio } from "lib/utils";
 

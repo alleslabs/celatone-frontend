@@ -14,18 +14,18 @@ import {
 import type {
   AccessConfigPermission,
   BechAddr,
-  BechAddr32,
-  SnakeToCamelCaseNested,
-  Proposal,
-  Option,
   BechAddr20,
+  BechAddr32,
+  Option,
+  Proposal,
   ProposalData,
+  ProposalParams,
   ProposalStatus,
   ProposalType,
-  ProposalVote,
-  ProposalParams,
-  ProposalVotesInfo,
   ProposalValidatorVote,
+  ProposalVote,
+  ProposalVotesInfo,
+  SnakeToCamelCaseNested,
 } from "lib/types";
 import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 

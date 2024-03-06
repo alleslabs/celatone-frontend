@@ -4,7 +4,8 @@ import pluginRelativeTime from "dayjs/plugin/relativeTime";
 import pluginUtc from "dayjs/plugin/utc";
 import plur from "plur";
 
-import { big, type Option } from "lib/types";
+import { big } from "lib/types";
+import type { Option } from "lib/types";
 
 import { isNumeric } from "./number";
 
