@@ -116,12 +116,15 @@ export const useValidatorData = (validatorAddress: ValidatorAddr) => {
   );
 };
 
-export const useValidatorUptime = (validatorAddress: ValidatorAddr) => {
+export const useValidatorUptime = (
+  validatorAddress: ValidatorAddr,
+  blocks: number
+) => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery<ValidatorUptimeResponse>(
     [CELATONE_QUERY_KEYS.VALIDATOR_UPTIME, endpoint, validatorAddress],
-    async () => getValidatorUptime(endpoint, validatorAddress),
+    async () => getValidatorUptime(endpoint, validatorAddress, blocks),
     {
       retry: 1,
     }

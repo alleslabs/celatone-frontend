@@ -152,8 +152,13 @@ export type ValidatorUptimeResponse = z.infer<typeof zValidatorUptimeResponse>;
 
 export const getValidatorUptime = async (
   endpoint: string,
-  validatorAddress: ValidatorAddr
+  validatorAddress: ValidatorAddr,
+  blocks: number
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/uptime`)
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/uptime`, {
+      params: {
+        blocks,
+      },
+    })
     .then(({ data }) => parseWithError(zValidatorUptimeResponse, data));
