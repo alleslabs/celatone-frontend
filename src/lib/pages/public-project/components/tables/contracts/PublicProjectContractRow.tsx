@@ -2,15 +2,15 @@ import {
   Box,
   Button,
   chakra,
+  Flex,
   Grid,
   IconButton,
   Text,
-  Flex,
 } from "@chakra-ui/react";
 
 import {
-  useInternalNavigate,
   useGetAddressTypeByLength,
+  useInternalNavigate,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";

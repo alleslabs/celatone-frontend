@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Spinner, Flex, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";

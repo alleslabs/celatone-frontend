@@ -1,10 +1,10 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import type {
-  ProposalData,
   Option,
-  ProposalVotesInfo,
+  ProposalData,
   ProposalParams,
+  ProposalVotesInfo,
 } from "lib/types";
 
 import { ProposalPeriodOverview } from "./proposal-period-overview";

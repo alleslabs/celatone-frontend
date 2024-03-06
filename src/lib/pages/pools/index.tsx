@@ -1,9 +1,9 @@
-import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import { Heading, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, trackUseTab, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { usePoolConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";

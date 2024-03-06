@@ -8,8 +8,8 @@ import {
   Connected,
   Connecting,
   Disconnected,
-  WalletConnectComponent,
   Others,
+  WalletConnectComponent,
 } from "./wallet/index";
 
 export const WalletSection = () => {

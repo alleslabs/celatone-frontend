@@ -1,9 +1,9 @@
 import type { IconProps } from "@chakra-ui/react";
-import { Flex, Text, Image } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { CURR_THEME } from "env";
-import { AmpEvent, trackSocial, track } from "lib/amplitude";
+import { AmpEvent, track, trackSocial } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 

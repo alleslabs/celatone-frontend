@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Badge, Text, Image, Flex } from "@chakra-ui/react";
+import { Badge, Flex, Image, Text } from "@chakra-ui/react";
 
 import { Copier } from "lib/components/copy";
 import { Tooltip } from "lib/components/Tooltip";

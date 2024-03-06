@@ -1,4 +1,4 @@
-import { Heading, Button, Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -6,8 +6,8 @@ import { useCallback, useEffect, useState } from "react";
 import { trackToQuery } from "lib/amplitude";
 import {
   useInternalNavigate,
-  useWasmConfig,
   useMobile,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
@@ -15,8 +15,8 @@ import PageContainer from "lib/components/PageContainer";
 import type { ContractDetail } from "lib/services/contractService";
 import type { BechAddr32 } from "lib/types";
 import {
-  jsonPrettify,
   getFirstQueryParam,
+  jsonPrettify,
   jsonValidate,
   libDecode,
 } from "lib/utils";

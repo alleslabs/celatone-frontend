@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
+- [#804](https://github.com/alleslabs/celatone-frontend/pull/804) api v1 - validator info
+- [#803](https://github.com/alleslabs/celatone-frontend/pull/803) api v1 - validator list
 - [#799](https://github.com/alleslabs/celatone-frontend/pull/799) Add extra config single denom staking
 - [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
 - [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
@@ -68,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
+- [#802](https://github.com/alleslabs/celatone-frontend/pull/802) Revamp code detail page
 - [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
 - [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
 - [#797](https://github.com/alleslabs/celatone-frontend/pull/797) Fix Vote Periods subtab internal state instead of route
@@ -87,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
 - [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
 - [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
 - [#789](https://github.com/alleslabs/celatone-frontend/pull/789) Remove loading overlay on pool list page causing the page look like flicking
@@ -104,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#808](https://github.com/alleslabs/celatone-frontend/pull/808) Migrate to temp osmosis graphql
 - [#746](https://github.com/alleslabs/celatone-frontend/pull/746) Fix initia chain pretty names and resource panel
 - [#744](https://github.com/alleslabs/celatone-frontend/pull/744) Fix pool tx events
 

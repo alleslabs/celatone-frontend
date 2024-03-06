@@ -2,7 +2,6 @@ import type { Coin } from "@cosmjs/amino";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
-import big from "big.js";
 import { isUndefined } from "lodash";
 import { useCallback, useMemo } from "react";
 
@@ -16,20 +15,20 @@ import {
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import {
-  type ProposalParams,
-  type Option,
-  type ProposalStatus,
-  type ProposalType,
-  type Proposal,
-  type U,
-  type Token,
-  type Nullish,
-  type BechAddr32,
-  type BechAddr,
-  type BechAddr20,
-  type ProposalVotesInfo,
-  ProposalValidatorVoteType,
+import { big, ProposalValidatorVoteType } from "lib/types";
+import type {
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
+  Nullish,
+  Option,
+  Proposal,
+  ProposalParams,
+  ProposalStatus,
+  ProposalType,
+  ProposalVotesInfo,
+  Token,
+  U,
 } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -45,25 +44,25 @@ import type {
   DepositParamsInternal,
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
+  ProposalsResponse,
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
-  ProposalsResponse,
   RelatedProposalsResponse,
   UploadAccess,
   VotingParamsInternal,
 } from "./proposal";
 import {
-  fetchGovVotingParams,
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
-  getProposalsByAddress,
-  getProposals,
+  fetchGovVotingParams,
+  getProposalAnswerCounts,
   getProposalData,
   getProposalParams,
+  getProposals,
+  getProposalsByAddress,
   getProposalTypes,
-  getProposalAnswerCounts,
-  getProposalVotes,
   getProposalValidatorVotes,
+  getProposalVotes,
   getProposalVotesInfo,
   getRelatedProposalsByContractAddress,
 } from "./proposal";

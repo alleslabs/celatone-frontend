@@ -1,4 +1,4 @@
-import { Flex, Text, Grid, Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { AmpEvent, track } from "lib/amplitude";

@@ -3,16 +3,16 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, trackToAdminUpdate, track } from "lib/amplitude";
+import { AmpEvent, track, trackToAdminUpdate } from "lib/amplitude";
 import {
+  useCurrentChain,
   useFabricateFee,
+  useGetAddressType,
   useInternalNavigate,
   useSimulateFeeQuery,
   useUpdateAdminTx,
-  useGetAddressType,
   useValidateAddress,
   useWasmConfig,
-  useCurrentChain,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";

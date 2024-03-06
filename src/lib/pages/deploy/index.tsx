@@ -2,9 +2,9 @@ import type { AlertProps } from "@chakra-ui/react";
 import {
   Alert,
   AlertDescription,
+  Button,
   Flex,
   Heading,
-  Button,
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";

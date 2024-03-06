@@ -9,12 +9,12 @@ import { isNull } from "lodash";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
-import {
-  ProposalStatus,
-  type Option,
-  type ProposalData,
-  type ProposalParams,
-  type ProposalVotesInfo,
+import { ProposalStatus } from "lib/types";
+import type {
+  Option,
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
 } from "lib/types";
 
 import { DepositPeriodSection } from "./deposit-period/DepositPeriodSection";

@@ -9,13 +9,14 @@ import {
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import { zBechAddr32, type BechAddr, type Option } from "lib/types";
+import { zBechAddr32 } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 import {
-  isHexWalletAddress,
   isHexModuleAddress,
-  splitModule,
-  isPosDecimal,
+  isHexWalletAddress,
   isId,
+  isPosDecimal,
+  splitModule,
 } from "lib/utils";
 
 import { useBlockData } from "./blockService";
@@ -116,10 +117,10 @@ export const useSearchHandler = (
   }, [isAddr, contractData, icnsAddressData]);
 
   // Code
-  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
-    codeId: debouncedKeyword,
-    enabled: isWasm && isId(debouncedKeyword),
-  });
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
+    Number(debouncedKeyword),
+    isWasm && isId(debouncedKeyword)
+  );
 
   // Tx
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);

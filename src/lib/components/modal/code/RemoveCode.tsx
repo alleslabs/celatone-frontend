@@ -1,4 +1,4 @@
-import { useToast, Text, chakra, IconButton } from "@chakra-ui/react";
+import { chakra, IconButton, Text, useToast } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";

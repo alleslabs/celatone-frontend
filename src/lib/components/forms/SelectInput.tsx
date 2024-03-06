@@ -1,14 +1,14 @@
 import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useDisclosure,
   Flex,
   Image,
+  Input,
+  InputGroup,
   InputLeftElement,
+  InputRightElement,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  useDisclosure,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";

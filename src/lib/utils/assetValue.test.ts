@@ -1,7 +1,6 @@
-import big from "big.js";
 import type Big from "big.js";
 
-import { zHexAddr } from "lib/types";
+import { big, zHexAddr } from "lib/types";
 import type {
   AssetInfos,
   MovePoolInfos,

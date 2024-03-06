@@ -9,17 +9,17 @@ import { useForm } from "react-hook-form";
 
 import {
   AmpEvent,
+  track,
   trackActionWithFunds,
   trackToInstantiate,
-  track,
 } from "lib/amplitude";
 import {
-  useFabricateFee,
-  useInstantiateTx,
-  useValidateAddress,
-  useSimulateFeeQuery,
   useCurrentChain,
   useExampleAddresses,
+  useFabricateFee,
+  useInstantiateTx,
+  useSimulateFeeQuery,
+  useValidateAddress,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
