@@ -8,13 +8,13 @@ import { parseTxHash, parseWithError } from "lib/utils";
 const zNullableValidator = z.nullable(
   z
     .object({
-      operator_address: zValidatorAddr.nullable(),
+      validator_address: zValidatorAddr.nullable(),
       moniker: z.string(),
       identity: z.string(),
     })
     .transform<Validator>((val) => ({
       // nullable operator address for ICS chain
-      validatorAddress: val.operator_address ?? zValidatorAddr.parse(""),
+      validatorAddress: val.validator_address ?? zValidatorAddr.parse(""),
       moniker: val.moniker,
       identity: val.identity,
     }))
@@ -36,7 +36,7 @@ const zBlocksResponseItem = z
     proposer: val.validator,
   }));
 
-const zBlocksResponse = z.object({
+export const zBlocksResponse = z.object({
   items: z.array(zBlocksResponseItem),
   total: z.number().nonnegative(),
 });
