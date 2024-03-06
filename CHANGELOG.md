@@ -90,7 +90,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#808](https://github.com/alleslabs/celatone-frontend/pull/808) api v1 - validator uptime
 - [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
 - [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
 - [#789](https://github.com/alleslabs/celatone-frontend/pull/789) Remove loading overlay on pool list page causing the page look like flicking
@@ -108,6 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#808](https://github.com/alleslabs/celatone-frontend/pull/808) Migrate to temp osmosis graphql
 - [#746](https://github.com/alleslabs/celatone-frontend/pull/746) Fix initia chain pretty names and resource panel
 - [#744](https://github.com/alleslabs/celatone-frontend/pull/744) Fix pool tx events
 
