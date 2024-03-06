@@ -8,7 +8,12 @@ import {
   zPublicCodeInfo,
 } from "lib/types";
 import type { BechAddr, BechAddr20, CodeInfo, Option } from "lib/types";
-import { parseDate, parseTxHash, parseWithError } from "lib/utils";
+import {
+  parseDate,
+  parseTxHash,
+  parseWithError,
+  snakeToCamel,
+} from "lib/utils";
 
 export interface CodeIdInfoResponse {
   code_info: {
@@ -150,13 +155,7 @@ const zCodeData = z
     project_info: zProjectInfo.nullable(),
     public_info: zPublicCodeInfo.nullable(),
   })
-  .transform((val) => {
-    return {
-      info: val.info,
-      projectInfo: val.project_info,
-      publicInfo: val.public_info,
-    };
-  });
+  .transform(snakeToCamel);
 
 export type CodeData = z.infer<typeof zCodeData>;
 
