@@ -20,22 +20,3 @@ export interface CodeInfo extends CodeLocalInfo {
   cw2Version: Option<Nullable<string>>;
   isSaved?: boolean;
 }
-
-interface CodeProposal {
-  proposalId: number;
-  height: Option<number>;
-  created: Option<Date>;
-}
-
-export interface CodeData {
-  codeId: number;
-  uploader: BechAddr;
-  hash: Option<string>;
-  height: Option<number>;
-  created: Option<Date>;
-  proposal: Option<CodeProposal>;
-  instantiatePermission: AccessConfigPermission;
-  permissionAddresses: PermissionAddresses;
-  cw2Contract: Option<Nullable<string>>;
-  cw2Version: Option<Nullable<string>>;
-}

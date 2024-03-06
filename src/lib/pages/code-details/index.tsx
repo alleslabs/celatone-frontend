@@ -5,6 +5,7 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
+  useCelatoneApp,
   useInternalNavigate,
   useMobile,
   useWasmConfig,
@@ -12,9 +13,9 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
-import { useCodeData } from "lib/model/code";
+import { ErrorFetching, InvalidState } from "lib/components/state";
 import { useSchemaStore } from "lib/providers/store";
+import { useCodeDataByCodeId } from "lib/services/codeService";
 
 import { CodeContractsTable, CodeInfoSection } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
@@ -31,17 +32,14 @@ interface CodeDetailsBodyProps {
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
-  const router = useRouter();
-  const codeDataState = useCodeData(codeId);
-  const navigate = useInternalNavigate();
-  const {
-    chainId,
-    codeData,
-    lcdCodeData: { codeHash, isLcdCodeLoading },
-  } = codeDataState;
-  const { getSchemaByCodeHash } = useSchemaStore();
-  const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
   const isMobile = useMobile();
+
+  const router = useRouter();
+  const navigate = useInternalNavigate();
+  const { getSchemaByCodeHash } = useSchemaStore();
+
+  const { currentChainId } = useCelatoneApp();
+  const { data, isLoading } = useCodeDataByCodeId(codeId);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });
@@ -65,13 +63,21 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
     [codeId, tab, navigate]
   );
 
-  if (codeDataState.isLoading) return <Loading withBorder />;
+  if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="code information" />;
+  if (!data.info) return <InvalidCode />;
 
-  if (!codeData) return <InvalidCode />;
+  const { info: code, projectInfo, publicInfo } = data;
+  const jsonSchema = getSchemaByCodeHash(code.hash);
 
   return (
     <>
-      <CodeTopInfo codeDataState={codeDataState} codeId={codeId} />
+      <CodeTopInfo
+        code={code}
+        projectInfo={projectInfo}
+        publicInfo={publicInfo}
+        codeId={codeId}
+      />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -96,10 +102,8 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <CodeInfoSection
-              codeData={codeData}
-              chainId={chainId}
-              codeHash={codeHash}
-              isCodeHashLoading={isLcdCodeLoading}
+              code={code}
+              chainId={currentChainId}
               attached={!!jsonSchema}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
@@ -108,8 +112,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
           <TabPanel p={0}>
             <CodeSchemaSection
               codeId={codeId}
-              codeHash={codeHash}
-              isCodeHashLoading={isLcdCodeLoading}
+              codeHash={code.hash}
               jsonSchema={jsonSchema}
             />
           </TabPanel>

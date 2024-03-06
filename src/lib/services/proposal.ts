@@ -123,6 +123,7 @@ const zProposal = z.object({
   types: zProposalType.array(),
   voting_end_time: zUtcDate.nullable(),
 });
+
 const zProposalsResponseItem = zProposal.transform<Proposal>(snakeToCamel);
 
 const zProposalsResponse = z.object({

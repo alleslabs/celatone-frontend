@@ -12,9 +12,7 @@ import {
 import { capitalize } from "lodash";
 
 import { CustomTab } from "lib/components/CustomTab";
-import { CustomIcon } from "lib/components/icon";
 import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
-import { Loading } from "lib/components/Loading";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -37,8 +35,7 @@ const StyledTabPanel = chakra(TabPanel, {
 
 interface CodeSchemaSectionProps {
   codeId: number;
-  codeHash: Option<string>;
-  isCodeHashLoading: boolean;
+  codeHash: string;
   jsonSchema: Option<CodeSchema>;
 }
 
@@ -52,13 +49,11 @@ const SchemaMsgTabList = [
 export const CodeSchemaSection = ({
   codeId,
   codeHash,
-  isCodeHashLoading,
   jsonSchema,
 }: CodeSchemaSectionProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  if (isCodeHashLoading) return <Loading />;
-  return codeHash ? (
+  return (
     <>
       <Flex mt={8} mb={3} alignItems="center" gap={2}>
         <Heading as="h6" variant="h6">
@@ -119,15 +114,5 @@ export const CodeSchemaSection = ({
         isReattach={Boolean(jsonSchema)}
       />
     </>
-  ) : (
-    <Flex m={6}>
-      <CustomIcon
-        name="alert-circle-solid"
-        color="gray.600"
-        boxSize={4}
-        mr={3}
-      />
-      Error fetching code hash. Please try again later.
-    </Flex>
   );
 };

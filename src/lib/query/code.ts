@@ -45,36 +45,6 @@ export const getCodeListByIDsQueryDocument = graphql(`
   }
 `);
 
-export const getCodeDataByCodeId = graphql(`
-  query getCodeDataByCodeId($codeId: Int!, $isGov: Boolean!) {
-    codes_by_pk(id: $codeId) {
-      id
-      account {
-        address
-      }
-      transaction {
-        hash
-        block {
-          height
-          timestamp
-        }
-      }
-      # Can only have 1 store code proposal
-      code_proposals(limit: 1) @include(if: $isGov) {
-        proposal_id
-        block {
-          height
-          timestamp
-        }
-      }
-      access_config_permission
-      access_config_addresses
-      cw2_contract
-      cw2_version
-    }
-  }
-`);
-
 export const getCodeListByWalletAddressPagination = graphql(`
   query getCodeListByWalletAddressPagination(
     $walletAddress: String!
