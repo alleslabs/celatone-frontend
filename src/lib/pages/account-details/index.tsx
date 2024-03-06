@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { DelegationsSection } from "../../components/delegations";
-import { AmpEvent, trackUseTab, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useCelatoneApp,
   useGovConfig,

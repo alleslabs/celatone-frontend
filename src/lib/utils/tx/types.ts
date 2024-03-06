@@ -3,11 +3,11 @@ import type { Coin } from "@cosmjs/stargate";
 import type { TypeUrl } from "lib/data";
 import type {
   AccessConfigPermission,
-  Option,
-  ValidatorAddr,
-  Nullable,
   BechAddr,
   BechAddr32,
+  Nullable,
+  Option,
+  ValidatorAddr,
 } from "lib/types";
 
 import type { VoteOption } from "./mapping";

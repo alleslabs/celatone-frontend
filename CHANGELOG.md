@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
+- [#804](https://github.com/alleslabs/celatone-frontend/pull/804) api v1 - validator info
+- [#803](https://github.com/alleslabs/celatone-frontend/pull/803) api v1 - validator list
 - [#799](https://github.com/alleslabs/celatone-frontend/pull/799) Add extra config single denom staking
 - [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
 - [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
@@ -68,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
+- [#802](https://github.com/alleslabs/celatone-frontend/pull/802) Revamp code detail page
 - [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
 - [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
 - [#797](https://github.com/alleslabs/celatone-frontend/pull/797) Fix Vote Periods subtab internal state instead of route

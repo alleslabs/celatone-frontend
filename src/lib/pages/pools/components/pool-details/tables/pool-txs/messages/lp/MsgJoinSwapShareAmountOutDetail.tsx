@@ -6,7 +6,7 @@ import type { AssetInfos, Option } from "lib/types";
 import { extractMsgType } from "lib/utils";
 import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
 
-import { LiquidityDivider, PoolLPCard, PoolAssetsGrid } from "./components";
+import { LiquidityDivider, PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgJoinSwapShareAmountOutDetailProps {
   txHash: string;

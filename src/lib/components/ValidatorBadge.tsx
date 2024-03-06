@@ -1,5 +1,5 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Image, Spinner, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";

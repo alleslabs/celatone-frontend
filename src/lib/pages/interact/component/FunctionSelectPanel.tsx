@@ -9,11 +9,11 @@ import type { ExposedFunction, Option } from "lib/types";
 import { checkAvailability } from "lib/utils";
 
 import {
-  NoImageEmptyState,
-  ModuleContainer,
+  FunctionAccordion,
   InteractionTabs,
   InteractionTypeSwitch,
-  FunctionAccordion,
+  ModuleContainer,
+  NoImageEmptyState,
 } from "./common";
 
 const EmptyStateRender = ({ desc }: { desc: string }) => (

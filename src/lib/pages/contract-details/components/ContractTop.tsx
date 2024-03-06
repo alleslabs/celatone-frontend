@@ -1,10 +1,10 @@
 import {
+  Button,
   Flex,
   Heading,
-  Text,
-  Button,
   IconButton,
   Image,
+  Text,
 } from "@chakra-ui/react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";

@@ -1,12 +1,12 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
-  FieldProps,
-  RJSFSchemaDefinition,
   EnumOptionsType,
+  FieldProps,
   RJSFSchema,
+  RJSFSchemaDefinition,
 } from "@rjsf/utils";
-import { getWidget, getUiOptions, optionsList } from "@rjsf/utils";
+import { getUiOptions, getWidget, optionsList } from "@rjsf/utils";
 import isObject from "lodash/isObject";
 
 /** The `BooleanField` component is used to render a field in the schema is boolean. It constructs `enumOptions` for the

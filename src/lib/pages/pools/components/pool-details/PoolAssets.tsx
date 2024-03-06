@@ -1,13 +1,12 @@
-import { Flex, Heading, Badge, Text } from "@chakra-ui/react";
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
-import big from "big.js";
 import Link from "next/link";
 
 import { trackWebsite } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import type { PoolDetail, USD } from "lib/types";
-import { PoolType } from "lib/types";
+import { big, PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { PoolAssetsTable } from "./tables/pool-assets";

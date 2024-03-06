@@ -1,4 +1,4 @@
-import { Flex, Text, Heading, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 
 import type { Option, TokenWithValue } from "lib/types";
 import {

@@ -1,5 +1,5 @@
 import type { InputProps } from "@chakra-ui/react";
-import { InputLeftElement, Input, InputGroup } from "@chakra-ui/react";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 

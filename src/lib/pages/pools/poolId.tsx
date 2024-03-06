@@ -8,9 +8,9 @@ import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
-  PoolTopSection,
   PoolAssets,
   PoolRelatedTxs,
+  PoolTopSection,
 } from "./components/pool-details";
 import { usePool } from "./data";
 

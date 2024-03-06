@@ -1,5 +1,4 @@
 import { Divider, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
-import big from "big.js";
 
 import type { VoteDetailsProps } from "..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
@@ -13,6 +12,7 @@ import {
   extractParams,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
+import { big } from "lib/types";
 
 export const VotingQuorum = ({
   proposalData,

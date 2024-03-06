@@ -1,13 +1,13 @@
-import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  usePublicProjectConfig,
-  useWasmConfig,
   useInternalNavigate,
   useMoveConfig,
+  usePublicProjectConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
