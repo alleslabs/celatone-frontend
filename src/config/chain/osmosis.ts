@@ -9,7 +9,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Osmosis",
     lcd: "https://lcd.osmosis.zone",
     rpc: "https://rpc.osmosis.zone:443",
-    indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
+    indexer: "osmosis-1-legacy-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -62,7 +62,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Osmosis Testnet",
     lcd: "https://lcd.osmotest5.osmosis.zone",
     rpc: "https://osmosis-testnet-rpc.polkachu.com:443",
-    indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://osmo-test-5-legacy-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
