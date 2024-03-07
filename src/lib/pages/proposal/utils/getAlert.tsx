@@ -1,6 +1,5 @@
-import big from "big.js";
-
 import { CustomIcon } from "lib/components/icon";
+import { big } from "lib/types";
 import type { Nullable, Option } from "lib/types";
 import { d2Formatter } from "lib/utils";
 

@@ -4,8 +4,8 @@ import { useMemo } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  useCurrentChain,
   useConvertHexAddress,
+  useCurrentChain,
   useInternalNavigate,
   useMobile,
 } from "lib/app-provider";

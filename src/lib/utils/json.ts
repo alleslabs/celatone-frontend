@@ -1,4 +1,5 @@
-import { getSchemaType, type RJSFSchema } from "@rjsf/utils";
+import { getSchemaType } from "@rjsf/utils";
+import type { RJSFSchema } from "@rjsf/utils";
 
 import type { SchemaInfo } from "lib/stores/schema";
 import type { JsonDataType } from "lib/types";

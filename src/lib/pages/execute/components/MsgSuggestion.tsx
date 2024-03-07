@@ -1,4 +1,4 @@
-import { Box, Text, ButtonGroup } from "@chakra-ui/react";
+import { Box, ButtonGroup, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";

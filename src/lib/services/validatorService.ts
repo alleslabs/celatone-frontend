@@ -1,5 +1,6 @@
 import type {
   QueryFunctionContext,
+  UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
@@ -9,12 +10,20 @@ import {
   useBaseApiRoute,
   useCurrentChain,
 } from "lib/app-provider";
-import type { Validator, ValidatorAddr, Nullable } from "lib/types";
+import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
+import type {
+  ValidatorDataResponse,
+  ValidatorsResponse,
+  ValidatorUptimeResponse,
+} from "./validator";
 import {
-  resolveValIdentity,
-  getValidator,
   getHistoricalPowers,
+  getValidator,
+  getValidatorData,
+  getValidators,
+  getValidatorUptime,
+  resolveValIdentity,
 } from "./validator";
 
 export const useValidator = (
@@ -74,6 +83,64 @@ export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useValidators = (
+  limit: number,
+  offset: number,
+  isActive: boolean,
+  sortBy: string,
+  isDesc: boolean,
+  search: Option<string>,
+  options?: Pick<UseQueryOptions<ValidatorsResponse>, "onSuccess">
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorsResponse>(
+    [
+      CELATONE_QUERY_KEYS.VALIDATORS,
+      endpoint,
+      limit,
+      offset,
+      isActive,
+      sortBy,
+      isDesc,
+      search,
+    ],
+    async () =>
+      getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
+    {
+      retry: 1,
+      ...options,
+    }
+  );
+};
+
+export const useValidatorData = (validatorAddress: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorDataResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
+    async () => getValidatorData(endpoint, validatorAddress),
+    {
+      retry: 1,
+    }
+  );
+};
+
+export const useValidatorUptime = (
+  validatorAddress: ValidatorAddr,
+  blocks: number
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorUptimeResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_UPTIME, endpoint, validatorAddress],
+    async () => getValidatorUptime(endpoint, validatorAddress, blocks),
+    {
+      retry: 1,
     }
   );
 };

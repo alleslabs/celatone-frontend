@@ -1,4 +1,4 @@
-import { Flex, Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
 import type { DisplayMode, SelectedAddress } from "../types";

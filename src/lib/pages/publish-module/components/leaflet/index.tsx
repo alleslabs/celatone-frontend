@@ -1,20 +1,20 @@
 import type { GridItemProps } from "@chakra-ui/react";
 import {
   Button,
-  ModalFooter,
-  Modal,
-  ModalBody,
-  useDisclosure,
-  Text,
-  ModalOverlay,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
-  Flex,
-  Heading,
   chakra,
+  Flex,
   Grid,
   GridItem,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";

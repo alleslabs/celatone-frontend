@@ -1,11 +1,11 @@
 import {
+  Button,
   Flex,
   Heading,
   TabList,
-  Tabs,
-  TabPanels,
   TabPanel,
-  Button,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -13,10 +13,10 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useInternalNavigate,
+  useMobile,
   useValidateAddress,
   useWasmConfig,
-  useMobile,
-  useInternalNavigate,
 } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";

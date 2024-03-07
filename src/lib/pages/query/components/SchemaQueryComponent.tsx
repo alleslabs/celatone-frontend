@@ -1,23 +1,23 @@
 import {
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  Grid,
-  GridItem,
-  Flex,
-  Button,
   Alert,
   AlertDescription,
   Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
   Text,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, trackActionQuery, track } from "lib/amplitude";
+import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -31,11 +31,11 @@ import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
 import type {
-  RpcQueryError,
-  Option,
-  JsonDataType,
   BechAddr20,
   BechAddr32,
+  JsonDataType,
+  Option,
+  RpcQueryError,
 } from "lib/types";
 import {
   encode,

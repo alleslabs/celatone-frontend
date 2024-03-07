@@ -1,6 +1,6 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
-import type { StdFee, logs } from "@cosmjs/stargate";
+import type { logs, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";

@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Text, Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { StateImage } from "lib/components/state";
 

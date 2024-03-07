@@ -1,14 +1,14 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
-import big from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
+import { big } from "lib/types";
 import type { Option, Ratio, Token, U, USD } from "lib/types";
 import {
-  getTokenLabel,
-  formatUTokenWithPrecision,
-  formatRatio,
   divWithDefault,
+  formatRatio,
+  formatUTokenWithPrecision,
+  getTokenLabel,
 } from "lib/utils";
 
 interface AllocationBadgeProps {

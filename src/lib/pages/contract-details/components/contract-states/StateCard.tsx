@@ -1,4 +1,4 @@
-import { Text, Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
 import { DotSeparator } from "lib/components/DotSeparator";

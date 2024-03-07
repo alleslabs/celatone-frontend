@@ -6,7 +6,8 @@ import {
   GridItem,
   TableContainer,
 } from "@chakra-ui/react";
-import { useState, type ChangeEvent, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";

@@ -1,11 +1,11 @@
-import { Flex, Button } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction, KeyboardEvent } from "react";
-import { useState, useMemo, useCallback } from "react";
+import { Button, Flex } from "@chakra-ui/react";
+import type { Dispatch, KeyboardEvent, SetStateAction } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import type {
-  SelectedAddress,
   DisplayMode,
   ModuleSelectFunction,
+  SelectedAddress,
 } from "../types";
 import { trackUseModuleSelectionInputFill } from "lib/amplitude";
 import { useExampleAddresses } from "lib/app-provider";

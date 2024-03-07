@@ -9,7 +9,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
-import { type Control, useController } from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { Control } from "react-hook-form";
 
 import { useValidateAddress } from "lib/app-provider";
 import type { AbiFormData } from "lib/types";

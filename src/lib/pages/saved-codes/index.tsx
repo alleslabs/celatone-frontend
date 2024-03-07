@@ -1,4 +1,4 @@
-import { Heading, Flex, Badge, Text } from "@chakra-ui/react";
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";

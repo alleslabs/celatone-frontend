@@ -1,6 +1,6 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { VStack, Button } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { Button, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";

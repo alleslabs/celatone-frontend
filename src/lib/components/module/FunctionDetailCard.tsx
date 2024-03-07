@@ -3,10 +3,10 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
+  chakra,
   Flex,
   IconButton,
   Text,
-  chakra,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 

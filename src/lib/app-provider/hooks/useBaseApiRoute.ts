@@ -12,6 +12,7 @@ export const useBaseApiRoute = (
     | "codes"
     | "contracts"
     | "proposals"
+    | "validators"
     | "projects"
     | "public_codes"
     | "legacy.accounts"
@@ -52,6 +53,8 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/wasm/contracts`;
     case "proposals":
       return `${api}/v1/${chain}/${currentChainId}/proposals`;
+    case "validators":
+      return `${api}/v1/${chain}/${currentChainId}/validators`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
     case "public_codes":
@@ -74,8 +77,6 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/move`;
     case "modules":
       return `${api}/v1/${chain}/${currentChainId}/move/modules`;
-    case "validators":
-      return `${api}/v1/${chain}/${currentChainId}/validators`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."
