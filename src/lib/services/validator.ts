@@ -6,6 +6,7 @@ import { CURR_THEME } from "env";
 import {
   BlockVote,
   zBig,
+  zCoin,
   zUtcDate,
   zValidatorAddr,
   zValidatorData,
@@ -175,12 +176,7 @@ const zValidatorDelegationRelatedTxsResponseItem = z
   .object({
     tx_hash: z.string(),
     height: z.number().positive(),
-    tokens: z
-      .object({
-        amount: z.number(),
-        denom: z.string(),
-      })
-      .array(),
+    tokens: zCoin.array(),
     timestamp: zUtcDate,
     validator_address: zValidatorAddr,
   })
