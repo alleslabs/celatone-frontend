@@ -12,14 +12,19 @@ import {
 } from "lib/app-provider";
 import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
+import type { BlocksResponse } from "./block";
 import type {
   ValidatorDataResponse,
+  ValidatorDelegationRelatedTxsResponse,
   ValidatorsResponse,
   ValidatorUptimeResponse,
 } from "./validator";
 import {
+  getHistoricalPowers,
   getValidator,
   getValidatorData,
+  getValidatorDelegationRelatedTxs,
+  getValidatorProposedBlocks,
   getValidators,
   getValidatorUptime,
   resolveValIdentity,
@@ -71,6 +76,19 @@ export const useValidatorImage = (
     refetchOnWindowFocus: false,
     enabled: Boolean(validator),
   });
+};
+
+export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint],
+    async () => getHistoricalPowers(endpoint, validatorAddr),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useValidators = (
@@ -128,5 +146,44 @@ export const useValidatorUptime = (
     {
       retry: 1,
     }
+  );
+};
+
+export const useValidatorDelegationRelatedTxs = (
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<ValidatorDelegationRelatedTxsResponse>(
+    [
+      CELATONE_QUERY_KEYS.VALIDATOR_DELEGATION_RELATED_TXS,
+      endpoint,
+      validatorAddress,
+    ],
+    async () =>
+      getValidatorDelegationRelatedTxs(
+        endpoint,
+        validatorAddress,
+        limit,
+        offset
+      ),
+    { retry: 1 }
+  );
+};
+
+export const useValidatorProposedBlocks = (
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<BlocksResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_PROPOSED_BLOCKS, endpoint, validatorAddress],
+    async () =>
+      getValidatorProposedBlocks(endpoint, validatorAddress, limit, offset),
+    { retry: 1 }
   );
 };
