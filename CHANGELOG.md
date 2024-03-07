@@ -90,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
 - [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
 - [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
 - [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
