@@ -252,3 +252,19 @@ export const getValidatorProposedBlocks = async (
       }
     )
     .then(({ data }) => parseWithError(zBlocksResponse, data));
+
+const zValidatorDelegatorsResponse = z.object({
+  total: z.number().nonnegative(),
+});
+
+export type ValidatorDelegatorsResponse = z.infer<
+  typeof zValidatorDelegatorsResponse
+>;
+
+export const getValidatorDelegators = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
+    .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
