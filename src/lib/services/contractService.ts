@@ -32,7 +32,6 @@ import {
 } from "./contract";
 import type {
   ContractData,
-  ContractsData,
   ContractsResponse,
   ContractTableCounts,
   MigrationHistoriesResponse,
@@ -357,7 +356,7 @@ export const useContractsByCodeId = (
   codeId: number,
   limit: number,
   offset: number,
-  options: Pick<UseQueryOptions<ContractsData>, "onSuccess"> = {}
+  options: Pick<UseQueryOptions<ContractsResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("codes");
 

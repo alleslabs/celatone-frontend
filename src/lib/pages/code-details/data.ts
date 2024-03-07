@@ -1,7 +1,7 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 
 import { useContractStore } from "lib/providers/store";
-import type { ContractsData } from "lib/services/contract";
+import type { ContractsResponse } from "lib/services/contract";
 import { useContractsByCodeId } from "lib/services/contractService";
 import type { ContractInfo, Option } from "lib/types";
 
@@ -9,7 +9,7 @@ export const useCodeContracts = (
   codeId: number,
   limit: number,
   offset: number,
-  options: Pick<UseQueryOptions<ContractsData>, "onSuccess"> = {}
+  options: Pick<UseQueryOptions<ContractsResponse>, "onSuccess"> = {}
 ) => {
   const { getContractLocalInfo } = useContractStore();
   const { data, isLoading } = useContractsByCodeId(

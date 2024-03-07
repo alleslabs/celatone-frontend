@@ -15,13 +15,7 @@ import {
   zPublicContractInfo,
   zUtcDate,
 } from "lib/types";
-import {
-  encode,
-  parseDateOpt,
-  parseTxHash,
-  parseWithError,
-  snakeToCamel,
-} from "lib/utils";
+import { encode, parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 
 export interface ContractCw2Info {
   contract: string;
@@ -272,58 +266,12 @@ export const getContractQueryMsgs = async (
     .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
     .then(({ data }) => parseWithError(zContractQueryMsgs, data));
 
-export const zContractItem = z.object({
-  address: zBechAddr32,
-  admin: z
-    .object({
-      address: zBechAddr,
-    })
-    .nullable(),
-  contract_histories: z.array(
-    z.object({
-      account: z.object({
-        address: zBechAddr,
-      }),
-      block: z.object({
-        timestamp: z.string(),
-      }),
-      remark: zContractHistoryRemark,
-    })
-  ),
-  init_by: z.array(
-    z.object({
-      account: z.object({
-        address: zBechAddr,
-      }),
-    })
-  ),
-  label: z.string(),
-});
-const zContractsData = z
-  .object({
-    items: z.array(zContractItem),
-    total: z.number().nonnegative(),
-  })
-  .transform((val) => ({
-    items: val.items.map((item) => ({
-      contractAddress: item.address as BechAddr32,
-      instantiator: item.init_by[0]?.account.address as BechAddr,
-      label: item.label,
-      admin: item.admin?.address as BechAddr,
-      latestUpdater: item.contract_histories[0]?.account.address as BechAddr,
-      latestUpdated: parseDateOpt(item.contract_histories[0]?.block.timestamp),
-      remark: item.contract_histories[0]?.remark,
-    })),
-    total: val.total,
-  }));
-export type ContractsData = z.infer<typeof zContractsData>;
-
 export const getContractsByCodeId = async (
   endpoint: string,
   codeId: number,
   limit: number,
   offset: number
-): Promise<ContractsData> =>
+): Promise<ContractsResponse> =>
   axios
     .get(`${endpoint}/${codeId}/contracts`, {
       params: {
@@ -331,4 +279,4 @@ export const getContractsByCodeId = async (
         offset,
       },
     })
-    .then(({ data }) => parseWithError(zContractsData, data));
+    .then(({ data }) => parseWithError(zContractsResponse, data));
