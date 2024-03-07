@@ -24,7 +24,6 @@ export const useBaseApiRoute = (
     | "staking"
     | "move"
     | "modules"
-    | "validators"
 ): string => {
   const {
     chainConfig: { chain },

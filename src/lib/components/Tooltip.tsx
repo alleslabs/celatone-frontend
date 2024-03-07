@@ -5,15 +5,12 @@ import { CustomIcon } from "./icon";
 
 export const Tooltip = ({
   placement = "top",
+  children,
   ...tooltipProps
 }: TooltipProps) => (
-  <ChakraTooltip
-    hasArrow
-    placement={placement}
-    arrowSize={8}
-    shouldWrapChildren
-    {...tooltipProps}
-  />
+  <ChakraTooltip hasArrow placement={placement} arrowSize={8} {...tooltipProps}>
+    <span>{children}</span>
+  </ChakraTooltip>
 );
 
 interface TooltipInfoProps extends Omit<TooltipProps, "children"> {
@@ -24,7 +21,7 @@ export const TooltipInfo = ({
   iconVariant = "default",
   ...tooltipProps
 }: TooltipInfoProps) => (
-  <Tooltip {...tooltipProps} shouldWrapChildren>
+  <Tooltip {...tooltipProps}>
     <CustomIcon
       color="gray.600"
       name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}

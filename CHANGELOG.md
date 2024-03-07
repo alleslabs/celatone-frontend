@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#813](https://github.com/alleslabs/celatone-frontend/pull/813) api v1 - validator historical powers
+- [#812](https://github.com/alleslabs/celatone-frontend/pull/812) api v1 - validator delegation related txs, proposed blocks
 - [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
 - [#804](https://github.com/alleslabs/celatone-frontend/pull/804) api v1 - validator info
 - [#803](https://github.com/alleslabs/celatone-frontend/pull/803) api v1 - validator list
@@ -91,6 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
 - [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
 - [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
 - [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
