@@ -91,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
 - [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
 - [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
 - [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
