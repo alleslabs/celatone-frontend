@@ -89,7 +89,7 @@ export const resolveValIdentity = async (
 const zHistoricalPowersItem = z.object({
   hour_rounded_timestamp: zUtcDate,
   timestamp: zUtcDate,
-  voting_power: z.number().nonnegative(),
+  voting_power: zBig,
 });
 
 export const zHistoricalPowersResponse = z
