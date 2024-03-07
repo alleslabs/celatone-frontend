@@ -23,6 +23,7 @@ export const useBaseApiRoute = (
     | "staking"
     | "move"
     | "modules"
+    | "validators"
 ): string => {
   const {
     chainConfig: { chain },
@@ -73,6 +74,8 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/move`;
     case "modules":
       return `${api}/v1/${chain}/${currentChainId}/move/modules`;
+    case "validators":
+      return `${api}/v1/${chain}/${currentChainId}/validators`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

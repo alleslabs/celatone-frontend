@@ -11,7 +11,11 @@ import {
 } from "lib/app-provider";
 import type { Validator, ValidatorAddr, Nullable } from "lib/types";
 
-import { resolveValIdentity, getValidator } from "./validator";
+import {
+  resolveValIdentity,
+  getValidator,
+  getHistoricalPowers,
+} from "./validator";
 
 export const useValidator = (
   validatorAddr: ValidatorAddr,
@@ -59,4 +63,17 @@ export const useValidatorImage = (
     refetchOnWindowFocus: false,
     enabled: Boolean(validator),
   });
+};
+
+export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint],
+    async () => getHistoricalPowers(endpoint, validatorAddr),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };

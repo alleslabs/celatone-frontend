@@ -1,9 +1,15 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import type { StakingShare, Validator, ValidatorAddr } from "lib/types";
-import { removeSpecialChars } from "lib/utils";
+import {
+  zUtcDate,
+  type StakingShare,
+  type Validator,
+  type ValidatorAddr,
+} from "lib/types";
+import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -74,3 +80,25 @@ export const resolveValIdentity = async (
       })
   );
 };
+
+const zHistoricalPowersItem = z.object({
+  hour_rounded_timestamp: zUtcDate,
+  timestamp: zUtcDate,
+  voting_power: z.number().nonnegative(),
+});
+
+export const zHistoricalPowers = z
+  .object({
+    items: z.array(zHistoricalPowersItem),
+    total: z.number(),
+  })
+  .transform((data) => snakeToCamel(data));
+export type HistoricalPowers = z.infer<typeof zHistoricalPowers>;
+
+export const getHistoricalPowers = async (
+  endpoint: string,
+  validatorAddr: ValidatorAddr
+): Promise<HistoricalPowers> =>
+  axios
+    .get(`${endpoint}/${validatorAddr}/historical-powers`)
+    .then(({ data }) => parseWithError(zHistoricalPowers, data));
