@@ -20,6 +20,7 @@ import type {
   ValidatorUptimeResponse,
 } from "./validator";
 import {
+  getHistoricalPowers,
   getValidator,
   getValidatorData,
   getValidatorDelegationRelatedTxs,
@@ -75,6 +76,19 @@ export const useValidatorImage = (
     refetchOnWindowFocus: false,
     enabled: Boolean(validator),
   });
+};
+
+export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint],
+    async () => getHistoricalPowers(endpoint, validatorAddr),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useValidators = (

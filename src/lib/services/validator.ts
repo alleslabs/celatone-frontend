@@ -3,6 +3,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { CURR_THEME } from "env";
+import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import {
   BlockVote,
   zBig,
@@ -11,7 +12,6 @@ import {
   zValidatorAddr,
   zValidatorData,
 } from "lib/types";
-import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
 
 import { zBlocksResponse } from "./block";
@@ -85,6 +85,30 @@ export const resolveValIdentity = async (
       })
   );
 };
+
+const zHistoricalPowersItem = z.object({
+  hour_rounded_timestamp: zUtcDate,
+  timestamp: zUtcDate,
+  voting_power: zBig,
+});
+
+export const zHistoricalPowersResponse = z
+  .object({
+    items: z.array(zHistoricalPowersItem),
+    total: z.number(),
+  })
+  .transform(snakeToCamel);
+export type HistoricalPowersResponse = z.infer<
+  typeof zHistoricalPowersResponse
+>;
+
+export const getHistoricalPowers = async (
+  endpoint: string,
+  validatorAddr: ValidatorAddr
+): Promise<HistoricalPowersResponse> =>
+  axios
+    .get(`${endpoint}/${validatorAddr}/historical-powers`)
+    .then(({ data }) => parseWithError(zHistoricalPowersResponse, data));
 
 const zValidatorsResponse = z
   .object({
