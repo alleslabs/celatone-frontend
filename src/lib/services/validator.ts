@@ -3,9 +3,18 @@ import axios from "axios";
 import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import { BlockVote, zBig, zUtcDate, zValidatorData } from "lib/types";
+import {
+  BlockVote,
+  zBig,
+  zCoin,
+  zUtcDate,
+  zValidatorAddr,
+  zValidatorData,
+} from "lib/types";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
+
+import { zBlocksResponse } from "./block";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -162,3 +171,60 @@ export const getValidatorUptime = async (
       },
     })
     .then(({ data }) => parseWithError(zValidatorUptimeResponse, data));
+
+const zValidatorDelegationRelatedTxsResponseItem = z
+  .object({
+    tx_hash: z.string(),
+    height: z.number().positive(),
+    tokens: zCoin.array(),
+    timestamp: zUtcDate,
+    validator_address: zValidatorAddr,
+  })
+  .transform(snakeToCamel);
+
+const zValidatorDelegationRelatedTxsResponse = z.object({
+  items: z.array(zValidatorDelegationRelatedTxsResponseItem),
+  total: z.number().nonnegative(),
+});
+
+export type ValidatorDelegationRelatedTxsResponse = z.infer<
+  typeof zValidatorDelegationRelatedTxsResponse
+>;
+
+export const getValidatorDelegationRelatedTxs = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(validatorAddress)}/delegation-related-txs`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) =>
+      parseWithError(zValidatorDelegationRelatedTxsResponse, data)
+    );
+
+export const getValidatorProposedBlocks = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(validatorAddress)}/proposed-blocks`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zBlocksResponse, data));
