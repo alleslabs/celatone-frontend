@@ -22,13 +22,13 @@ import type {
 } from "./validator";
 import {
   getHistoricalPowers,
-  getStakingProvisions,
   getValidator,
   getValidatorData,
   getValidatorDelegationRelatedTxs,
   getValidatorDelegators,
   getValidatorProposedBlocks,
   getValidators,
+  getValidatorStakingProvisions,
   getValidatorUptime,
   resolveValIdentity,
 } from "./validator";
@@ -125,12 +125,12 @@ export const useValidators = (
   );
 };
 
-export const useStakingProvisions = () => {
+export const useValidatorStakingProvisions = () => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery<StakingProvisionsResponse>(
-    [CELATONE_QUERY_KEYS.STAKING_PROVISIONS, endpoint],
-    async () => getStakingProvisions(endpoint),
+    [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
+    async () => getValidatorStakingProvisions(endpoint),
     {
       retry: 1,
     }

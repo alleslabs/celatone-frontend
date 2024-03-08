@@ -148,7 +148,7 @@ export type StakingProvisionsResponse = z.infer<
   typeof zStakingProvisionsResponse
 >;
 
-export const getStakingProvisions = async (endpoint: string) =>
+export const getValidatorStakingProvisions = async (endpoint: string) =>
   axios
     .get(`${endpoint}/staking-provisions`)
     .then(({ data }) => parseWithError(zStakingProvisionsResponse, data));
