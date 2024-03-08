@@ -63,6 +63,7 @@ export enum AmpEvent {
   TO_PROPOSAL_DETAILS = "To Proposal Detail",
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
+  TO_VALIDATOR_DETAILS = "To Validator Detail",
   TO_MODULE_DETAILS = "To Module Detail",
   TO_MODULE_INTERACTION = "To Module Interaction",
   TO_PUBLISH_MODULE = "To Publish Module",

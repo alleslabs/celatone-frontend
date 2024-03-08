@@ -1,12 +1,11 @@
 import { z } from "zod";
 
-import { zBechAddr32 } from "lib/types";
+import { zValidatorAddr } from "lib/types";
 
 export enum TabIndex {
   Overview = "overview",
   Votes = "votes",
   Performance = "performance",
-  //   Delegators = "delegators",
   BondedTokenChanges = "bondedTokenChanges",
 }
 
@@ -17,7 +16,7 @@ export enum PenaltyStatus {
 }
 
 export const zValidatorDetailsQueryParams = z.object({
-  validatorAddress: zBechAddr32,
+  validatorAddress: zValidatorAddr,
   tab: z.union([
     z.nativeEnum(TabIndex),
     z
@@ -26,3 +25,7 @@ export const zValidatorDetailsQueryParams = z.object({
       .transform(() => TabIndex.Overview),
   ]),
 });
+
+export type ValidatorDetailsQueryParams = z.infer<
+  typeof zValidatorDetailsQueryParams
+>;

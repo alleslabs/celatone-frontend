@@ -2,32 +2,32 @@ import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { trackUseTab } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
-import { getFirstQueryParam } from "lib/utils";
+import { InvalidState } from "lib/components/state";
 
-import { BondedTokenChangesSection } from "./components/bonded-token-changes/BondedTokenChangesSection";
-import { PerformanceSection } from "./components/performance/PerformanceSection";
-import { ValidatorOverview } from "./components/validator-overview/ValidatorOverviewSection";
-import { ValidatorTop } from "./components/ValidatorTop";
-import { VotesSection } from "./components/VotesSection";
-import { TabIndex } from "./types";
+import {
+  BondedTokenChanges,
+  Performance,
+  ValidatorOverview,
+  ValidatorTop,
+  VotedProposalsTable,
+} from "./components";
+import type { ValidatorDetailsQueryParams } from "./types";
+import { TabIndex, zValidatorDetailsQueryParams } from "./types";
 
-const tableHeaderId = "validatorDetailsTab";
+const InvalidValidator = () => (
+  <InvalidState title="Validator does not exist" />
+);
 
-// TODO: get validator addr
-const mockUpValidatorAddress =
-  "osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4";
-
-const ValidatorDetails = () => {
-  const router = useRouter();
+const ValidatorDetailsBody = ({
+  validatorAddress,
+  tab,
+}: ValidatorDetailsQueryParams) => {
   const navigate = useInternalNavigate();
-
   const move = useMoveConfig({ shouldRedirect: false });
-
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -36,7 +36,7 @@ const ValidatorDetails = () => {
       navigate({
         pathname: "/validators/[validatorAddress]/[tab]",
         query: {
-          validatorAddress: mockUpValidatorAddress,
+          validatorAddress,
           tab: nextTab,
         },
         options: {
@@ -44,24 +44,13 @@ const ValidatorDetails = () => {
         },
       });
     },
-    [navigate, tab]
+    [navigate, tab, validatorAddress]
   );
 
-  useEffect(() => {
-    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
-      navigate({
-        replace: true,
-        pathname: "/validators/[validatorAddress]/[tab]",
-        query: {
-          validatorAddress: mockUpValidatorAddress,
-          tab: TabIndex.Overview,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    }
-  }, [router.isReady, tab, navigate]);
+  // TODO
+  // if (isLoading) return <Loading />;
+  // if (!data) return <ErrorFetching dataName="validator information" />;
+  // if (!data.info) return <InvalidValidator />;
 
   return (
     <>
@@ -76,7 +65,6 @@ const ValidatorDetails = () => {
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
-            id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
@@ -104,20 +92,46 @@ const ValidatorDetails = () => {
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              <VotesSection />
+              <VotedProposalsTable />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              <PerformanceSection />
+              <Performance />
             </TabPanel>
             {!move.enabled && (
               <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-                <BondedTokenChangesSection />
+                <BondedTokenChanges />
               </TabPanel>
             )}
           </TabPanels>
         </Tabs>
       </PageContainer>
     </>
+  );
+};
+
+const ValidatorDetails = () => {
+  const router = useRouter();
+  // TODO: remove
+  router.query = {
+    validatorAddress: "osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4",
+  };
+
+  const validated = zValidatorDetailsQueryParams.safeParse(router.query);
+
+  useEffect(() => {
+    if (router.isReady && validated.success)
+      track(AmpEvent.TO_VALIDATOR_DETAILS, { tab: validated.data.tab });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  return (
+    <PageContainer>
+      {!validated.success ? (
+        <InvalidValidator />
+      ) : (
+        <ValidatorDetailsBody {...validated.data} />
+      )}
+    </PageContainer>
   );
 };
 

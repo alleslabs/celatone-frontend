@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, Flex, Heading } from "@chakra-ui/react";
+import { Alert, AlertDescription, Box, Flex, Heading } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -13,7 +13,7 @@ export const VotedProposalsTable = ({
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
   return (
-    <>
+    <Box pt={6}>
       {isMobileOverview ? (
         <MobileTitle
           title="Voted Proposals"
@@ -42,6 +42,6 @@ export const VotedProposalsTable = ({
           {isMobile ? <Flex>mobile table</Flex> : <Flex>table</Flex>}
         </Flex>
       )}
-    </>
+    </Box>
   );
 };

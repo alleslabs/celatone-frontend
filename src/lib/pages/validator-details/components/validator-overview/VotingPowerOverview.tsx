@@ -39,6 +39,7 @@ const VotingPowerDetail = ({
     </Text>
   </Flex>
 );
+
 export const VotingPowerOverview = () => {
   return (
     <Flex

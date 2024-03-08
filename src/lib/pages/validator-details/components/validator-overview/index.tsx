@@ -1,15 +1,16 @@
-import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
+import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 
 import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
 import { UptimeSection } from "../performance/UptimeSection";
-import { ProposedBlocksTable } from "../table/ProposedBlocksTable";
-import { VotedProposalsTable } from "../table/VotedProposalsTable";
+import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
+import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 
+import { ValidatorDescription } from "./ValidatorDescription";
 import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
@@ -18,27 +19,13 @@ interface ValidatorOverviewProps {
   onSelectBondedTokenChanges: () => void;
 }
 
-const ValidatorDescription = () => (
-  <Flex direction="column" gap={2}>
-    <Heading variant="h6" as="h6" color="text.main">
-      Validator Description
-    </Heading>
-    <Text variant="body1" color="text.main">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam ad vel
-      assumenda, temporibus maiores quidem quibusdam sapiente expedita officiis
-      minus! Officiis itaque nisi reprehenderit tempora eaque eos quam, in
-      excepturi.
-    </Text>
-  </Flex>
-);
-
 export const ValidatorOverview = ({
   onSelectVotes,
   onSelectPerformance,
   onSelectBondedTokenChanges,
 }: ValidatorOverviewProps) => {
-  const move = useMoveConfig({ shouldRedirect: false });
   const isMobile = useMobile();
+  const move = useMoveConfig({ shouldRedirect: false });
 
   return (
     <>

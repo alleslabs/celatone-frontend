@@ -48,10 +48,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/osmosis/validators",
-      proposal: "https://www.mintscan.io/osmosis/proposals",
-    },
     extra: {
       singleStakingDenom: "uosmo",
     },
@@ -102,10 +98,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
-      proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
-    },
     extra: {
       singleStakingDenom: "uosmo",
     },
@@ -154,10 +146,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "",
-      proposal: "",
     },
     extra: {
       singleStakingDenom: "uosmo",

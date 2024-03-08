@@ -52,10 +52,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://mintscan.io/sei/validators",
-      proposal: "",
-    },
     extra: {
       disableAnyOfAddresses: true,
       singleStakingDenom: "usei",
@@ -103,10 +99,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "https://testnet.mintscan.io/sei-testnet/validators",
-      proposal: "https://testnet.mintscan.io/sei-testnet/proposals",
     },
     extra: {
       disableAnyOfAddresses: true,

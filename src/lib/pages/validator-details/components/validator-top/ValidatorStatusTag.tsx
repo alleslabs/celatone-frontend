@@ -23,6 +23,7 @@ export const ValidatorStatusTag = ({
         return "gray.600";
     }
   };
+
   return (
     <Flex
       background="gray.900"
