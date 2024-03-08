@@ -1,4 +1,4 @@
-import { Box, Grid, Flex, Text, Heading } from "@chakra-ui/react";
+import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
 interface RecentBlocksSectionProps {
   hasTitle?: boolean;
