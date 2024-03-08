@@ -86,11 +86,14 @@ export const resolveValIdentity = async (
   );
 };
 
-const zHistoricalPowersItem = z.object({
-  hour_rounded_timestamp: zUtcDate,
-  timestamp: zUtcDate,
-  voting_power: zBig,
-});
+const zHistoricalPowersItem = z
+  .object({
+    hour_rounded_timestamp: zUtcDate,
+    timestamp: zUtcDate,
+    voting_power: zBig,
+  })
+  .transform(snakeToCamel);
+export type HistoricalPowersItem = z.infer<typeof zHistoricalPowersItem>;
 
 export const zHistoricalPowersResponse = z
   .object({
@@ -101,6 +104,10 @@ export const zHistoricalPowersResponse = z
 export type HistoricalPowersResponse = z.infer<
   typeof zHistoricalPowersResponse
 >;
+
+export const zValidatorQueryParams = z.object({
+  validatorAddress: zValidatorAddr,
+});
 
 export const getHistoricalPowers = async (
   endpoint: string,

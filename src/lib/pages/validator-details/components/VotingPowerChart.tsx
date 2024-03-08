@@ -1,28 +1,92 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { ScriptableContext, TooltipModel } from "chart.js";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
+import { Loading } from "lib/components/Loading";
+import { ErrorFetching } from "lib/components/state";
+import { useAssetInfos } from "lib/services/assetService";
+import type {
+  HistoricalPowersItem,
+  HistoricalPowersResponse,
+} from "lib/services/validator";
+import { zValidatorQueryParams } from "lib/services/validator";
+import { useValidatorHistoricalPowers } from "lib/services/validatorService";
+import type { AssetInfo, Token, U } from "lib/types";
+import { zValidatorAddr } from "lib/types";
+import { formatHHmm, formatUTokenWithPrecision } from "lib/utils";
 
-interface VotingPowerChartProps {
-  currency: string;
-}
+export const VotingPowerChart = () => {
+  const router = useRouter();
+  const validated = zValidatorQueryParams.safeParse(router.query);
+  const [asset, setAsset] = useState<AssetInfo | undefined>();
+  const [historicalPowers, setHistoricalPowers] = useState<
+    Omit<HistoricalPowersResponse, "items"> & {
+      items: (HistoricalPowersItem & {
+        value: string;
+      })[];
+    }
+  >();
 
-export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
-  const labels = [
-    "00:00",
-    "01:00",
-    "02:00",
-    "03:00",
-    "04:00",
-    "05:00",
-    "06:00",
-    "07:00",
-    "08:00",
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-  ];
+  const {
+    chainConfig: {
+      extra: { singleStakingDenom },
+    },
+  } = useCelatoneApp();
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+
+  const { data, isLoading, error } = useValidatorHistoricalPowers(
+    zValidatorAddr.parse(
+      router.isReady && validated.success ? validated.data.validatorAddress : ""
+    )
+  );
+
+  useEffect(() => {
+    if (!singleStakingDenom || !assetInfos) {
+      return;
+    }
+
+    setAsset(assetInfos[singleStakingDenom]);
+  }, [singleStakingDenom, assetInfos]);
+
+  useEffect(() => {
+    if (isLoading || !asset || !data) return;
+
+    const items = data.items.map((item: HistoricalPowersItem) => ({
+      ...item,
+      value: formatUTokenWithPrecision(
+        item.votingPower as U<Token<Big>>,
+        asset.precision,
+        false,
+        2
+      ),
+    }));
+
+    setHistoricalPowers({
+      ...data,
+      items,
+    });
+  }, [isLoading, asset, data]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error || !historicalPowers || !historicalPowers.items.length) {
+    return <ErrorFetching dataName="Historical Powers" />;
+  }
+
+  const convertValueStringToNumber = (value: string) => {
+    const numberWithoutCommas = value.replace(/,/g, "");
+    return parseFloat(numberWithoutCommas);
+  };
+
+  const labels =
+    historicalPowers.items.map((item) =>
+      formatHHmm(item.hourRoundedTimestamp as Date)
+    ) ?? [];
 
   const dateLabels = labels.map((label) => {
     const [hours, minutes] = label.split(":");
@@ -35,10 +99,9 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
   });
 
   const dataset = {
-    data: [
-      2000, 2500, 1800, 2100, 1200, 1500, 1800, 2000, 2500, 1800, 2100, 1200,
-      1500,
-    ],
+    data: historicalPowers.items.map((item) =>
+      convertValueStringToNumber(item.value)
+    ),
     borderColor: "#D8BEFC",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
@@ -55,6 +118,9 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
   };
 
   const currentPrice = dataset.data[dataset.data.length - 1].toFixed(1);
+  const currency = asset?.symbol ?? "";
+  const diffInLast24Hr =
+    dataset.data[dataset.data.length - 1] - dataset.data[0];
 
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
     const { raw, dataIndex } = tooltip.dataPoints[0];
@@ -84,13 +150,19 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
       w="100%"
     >
       <Flex gap={2} direction="column" w={250} minW={250}>
-        <Heading variant="h6">Current Bonded Token</Heading>
+        <Heading variant="h6">
+          {asset ? "Current Bonded Token" : "Voting Powers"}
+        </Heading>
         <Heading variant="h5" fontWeight={600}>
           {currentPrice} {currency}
         </Heading>
         <Text variant="body1">
-          <Text as="span" fontWeight={700} color="success.main">
-            +24.02
+          <Text
+            as="span"
+            fontWeight={700}
+            color={diffInLast24Hr >= 0 ? "success.main" : "error.main"}
+          >
+            {diffInLast24Hr >= 0 ? `+${diffInLast24Hr}` : `-${diffInLast24Hr}`}
           </Text>{" "}
           {currency} in last 24 hr
         </Text>

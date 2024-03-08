@@ -5,7 +5,7 @@ import { VotingPowerChart } from "./components/VotingPowerChart";
 const ValidatorDetails = () => {
   return (
     <PageContainer>
-      <VotingPowerChart currency="OSMO" />
+      <VotingPowerChart />
     </PageContainer>
   );
 };

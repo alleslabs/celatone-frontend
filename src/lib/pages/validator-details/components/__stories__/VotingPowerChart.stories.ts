@@ -14,7 +14,5 @@ export default meta;
 type Story = StoryObj<typeof VotingPowerChart>;
 
 export const DefaultVotingPowerChart: Story = {
-  args: {
-    currency: "OSMO",
-  },
+  args: {},
 };
