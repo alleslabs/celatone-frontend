@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -6,10 +7,9 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Box,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
-import type { HTMLInputTypeAttribute, ChangeEvent } from "react";
+import type { ChangeEvent, HTMLInputTypeAttribute } from "react";
 import { useCallback } from "react";
 
 import { useRestrictedNumberInput } from "lib/app-provider/hooks";

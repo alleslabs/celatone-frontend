@@ -1,4 +1,5 @@
-import { ActionMsgType, type Option } from "lib/types";
+import { ActionMsgType } from "lib/types";
+import type { Option } from "lib/types";
 
 export const extractMsgType = (typePath: string): string =>
   typePath.split(".").pop() || "";

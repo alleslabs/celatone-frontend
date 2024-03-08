@@ -7,10 +7,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
+  useCurrentChain,
+  useExecuteModuleTx,
   useFabricateFee,
   useSimulateFeeQuery,
-  useExecuteModuleTx,
-  useCurrentChain,
 } from "lib/app-provider";
 import { AbiForm } from "lib/components/abi";
 import { SubmitButton } from "lib/components/button";

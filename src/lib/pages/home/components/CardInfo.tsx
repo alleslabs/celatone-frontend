@@ -1,7 +1,8 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Flex, Heading, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import type { Option } from "lib/types";
 
 const cardProps: SystemStyleObject = {

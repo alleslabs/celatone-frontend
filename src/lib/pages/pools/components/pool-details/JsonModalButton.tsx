@@ -1,14 +1,14 @@
 import {
+  Box,
   Button,
   Heading,
   Modal,
-  ModalContent,
+  ModalBody,
   ModalCloseButton,
+  ModalContent,
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  ModalBody,
-  Box,
 } from "@chakra-ui/react";
 
 import { trackUseViewJSON } from "lib/amplitude";

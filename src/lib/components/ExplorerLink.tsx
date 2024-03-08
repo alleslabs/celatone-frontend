@@ -1,8 +1,8 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { trackMintScan } from "lib/amplitude";
-import { type AddressReturnType } from "lib/app-provider";
+import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";

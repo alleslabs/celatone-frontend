@@ -7,15 +7,15 @@ import { TableRow } from "lib/components/table";
 import { TokenImageRender } from "lib/components/token";
 import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { USD, PoolDetail, TokenWithValue, Ratio } from "lib/types";
+import type { PoolDetail, Ratio, TokenWithValue, USD } from "lib/types";
 import { PoolType } from "lib/types";
 import {
+  divWithDefault,
   formatInteger,
   formatPrice,
+  formatRatio,
   formatUTokenWithPrecision,
   getTokenLabel,
-  formatRatio,
-  divWithDefault,
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {

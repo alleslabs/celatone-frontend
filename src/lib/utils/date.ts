@@ -1,10 +1,10 @@
-import big from "big.js";
 import dayjs from "dayjs";
 import pluginDuration from "dayjs/plugin/duration";
 import pluginRelativeTime from "dayjs/plugin/relativeTime";
 import pluginUtc from "dayjs/plugin/utc";
 import plur from "plur";
 
+import { big } from "lib/types";
 import type { Option } from "lib/types";
 
 import { isNumeric } from "./number";

@@ -1,10 +1,10 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
-import big from "big.js";
 import { z } from "zod";
 
 import {
   zBechAddr,
+  zBig,
   zCoin,
   zProposalStatus,
   zProposalType,
@@ -14,18 +14,18 @@ import {
 import type {
   AccessConfigPermission,
   BechAddr,
-  BechAddr32,
-  SnakeToCamelCaseNested,
-  Proposal,
-  Option,
   BechAddr20,
+  BechAddr32,
+  Option,
+  Proposal,
   ProposalData,
+  ProposalParams,
   ProposalStatus,
   ProposalType,
-  ProposalVote,
-  ProposalParams,
-  ProposalVotesInfo,
   ProposalValidatorVote,
+  ProposalVote,
+  ProposalVotesInfo,
+  SnakeToCamelCaseNested,
 } from "lib/types";
 import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 
@@ -123,6 +123,7 @@ const zProposal = z.object({
   types: zProposalType.array(),
   voting_end_time: zUtcDate.nullable(),
 });
+
 const zProposalsResponseItem = zProposal.transform<Proposal>(snakeToCamel);
 
 const zProposalsResponse = z.object({
@@ -250,19 +251,13 @@ export const getProposalData = async (
 
 const zProposalVotesInfoResponse = z
   .object({
-    yes: z.string(),
-    abstain: z.string(),
-    no: z.string(),
-    no_with_veto: z.string(),
-    total_voting_power: z.string(),
+    yes: zBig,
+    abstain: zBig,
+    no: zBig,
+    no_with_veto: zBig,
+    total_voting_power: zBig,
   })
-  .transform<ProposalVotesInfo>((val) => ({
-    yes: big(val.yes),
-    abstain: big(val.abstain),
-    no: big(val.no),
-    noWithVeto: big(val.no_with_veto),
-    totalVotingPower: big(val.total_voting_power),
-  }));
+  .transform<ProposalVotesInfo>(snakeToCamel);
 
 export const getProposalVotesInfo = async (
   endpoint: string,

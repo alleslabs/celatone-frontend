@@ -1,4 +1,4 @@
-import { Flex, chakra } from "@chakra-ui/react";
+import { chakra, Flex } from "@chakra-ui/react";
 
 import { AbiForm } from "lib/components/abi";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";

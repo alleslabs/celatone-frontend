@@ -10,10 +10,10 @@ import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { useProposalVotesInfo } from "lib/services/proposalService";
 
-import { ProposalTop, ProposalOverview, VoteDetails } from "./components";
+import { ProposalOverview, ProposalTop, VoteDetails } from "./components";
 import { useDerivedProposalData, useDerivedProposalParams } from "./data";
 import type { ProposalDetailsQueryParams } from "./types";
-import { zProposalDetailsQueryParams, TabIndex } from "./types";
+import { TabIndex, zProposalDetailsQueryParams } from "./types";
 
 const InvalidProposal = () => <InvalidState title="Proposal does not exist" />;
 

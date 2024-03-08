@@ -2,11 +2,11 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  usePoolConfig,
   useGovConfig,
-  useWasmConfig,
-  useNftConfig,
   useMoveConfig,
+  useNftConfig,
+  usePoolConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";

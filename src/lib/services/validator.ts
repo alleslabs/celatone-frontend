@@ -1,9 +1,20 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import { z } from "zod";
 
 import { CURR_THEME } from "env";
-import type { StakingShare, Validator, ValidatorAddr } from "lib/types";
-import { removeSpecialChars } from "lib/utils";
+import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
+import {
+  BlockVote,
+  zBig,
+  zCoin,
+  zUtcDate,
+  zValidatorAddr,
+  zValidatorData,
+} from "lib/types";
+import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
+
+import { zBlocksResponse } from "./block";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -74,3 +85,198 @@ export const resolveValIdentity = async (
       })
   );
 };
+
+const zHistoricalPowersItem = z.object({
+  hour_rounded_timestamp: zUtcDate,
+  timestamp: zUtcDate,
+  voting_power: zBig,
+});
+
+export const zHistoricalPowersResponse = z
+  .object({
+    items: z.array(zHistoricalPowersItem),
+    total: z.number(),
+  })
+  .transform(snakeToCamel);
+export type HistoricalPowersResponse = z.infer<
+  typeof zHistoricalPowersResponse
+>;
+
+export const getHistoricalPowers = async (
+  endpoint: string,
+  validatorAddr: ValidatorAddr
+): Promise<HistoricalPowersResponse> =>
+  axios
+    .get(`${endpoint}/${validatorAddr}/historical-powers`)
+    .then(({ data }) => parseWithError(zHistoricalPowersResponse, data));
+
+const zValidatorsResponse = z
+  .object({
+    items: z.array(zValidatorData),
+    total: z.number().nonnegative(),
+    total_voting_power: zBig,
+  })
+  .transform(snakeToCamel);
+export type ValidatorsResponse = z.infer<typeof zValidatorsResponse>;
+
+export const getValidators = async (
+  endpoint: string,
+  limit: number,
+  offset: number,
+  isActive: boolean,
+  sortBy: string,
+  isDesc: boolean,
+  search: Option<string>
+) =>
+  axios
+    .get(`${endpoint}`, {
+      params: {
+        limit,
+        offset,
+        is_active: isActive,
+        sort_by: sortBy,
+        is_desc: isDesc,
+        search,
+      },
+    })
+    .then(({ data }) => parseWithError(zValidatorsResponse, data));
+
+const zStakingProvisionsResponse = z.object({
+  staking_provisions: zBig,
+});
+export type StakingProvisionsResponse = z.infer<
+  typeof zStakingProvisionsResponse
+>;
+
+export const getValidatorStakingProvisions = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/staking-provisions`)
+    .then(({ data }) => parseWithError(zStakingProvisionsResponse, data));
+
+const zValidatorDataResponse = z
+  .object({
+    info: zValidatorData.nullable(),
+    self_voting_power: zBig,
+    total_voting_power: zBig,
+  })
+  .transform(snakeToCamel);
+export type ValidatorDataResponse = z.infer<typeof zValidatorDataResponse>;
+
+export const getValidatorData = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/info`)
+    .then(({ data }) => parseWithError(zValidatorDataResponse, data));
+
+const zValidatorUptimeResponse = z
+  .object({
+    uptime: z.object({
+      signed_block: z.number(),
+      proposed_block: z.number(),
+      missed_blocks: z.number(),
+      total: z.number(),
+    }),
+    recent_blocks: z
+      .object({
+        height: z.number(),
+        vote: z.nativeEnum(BlockVote),
+      })
+      .array(),
+    events: z
+      .object({
+        height: z.number(),
+        timestamp: zUtcDate,
+        is_jailed: z.boolean(),
+      })
+      .array(),
+  })
+  .transform(snakeToCamel);
+export type ValidatorUptimeResponse = z.infer<typeof zValidatorUptimeResponse>;
+
+export const getValidatorUptime = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  blocks: number
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/uptime`, {
+      params: {
+        blocks,
+      },
+    })
+    .then(({ data }) => parseWithError(zValidatorUptimeResponse, data));
+
+const zValidatorDelegationRelatedTxsResponseItem = z
+  .object({
+    tx_hash: z.string(),
+    height: z.number().positive(),
+    tokens: zCoin.array(),
+    timestamp: zUtcDate,
+    validator_address: zValidatorAddr,
+  })
+  .transform(snakeToCamel);
+
+const zValidatorDelegationRelatedTxsResponse = z.object({
+  items: z.array(zValidatorDelegationRelatedTxsResponseItem),
+  total: z.number().nonnegative(),
+});
+
+export type ValidatorDelegationRelatedTxsResponse = z.infer<
+  typeof zValidatorDelegationRelatedTxsResponse
+>;
+
+export const getValidatorDelegationRelatedTxs = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(validatorAddress)}/delegation-related-txs`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) =>
+      parseWithError(zValidatorDelegationRelatedTxsResponse, data)
+    );
+
+export const getValidatorProposedBlocks = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(validatorAddress)}/proposed-blocks`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zBlocksResponse, data));
+
+const zValidatorDelegatorsResponse = z.object({
+  total: z.number().nonnegative(),
+});
+
+export type ValidatorDelegatorsResponse = z.infer<
+  typeof zValidatorDelegatorsResponse
+>;
+
+export const getValidatorDelegators = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
+    .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));

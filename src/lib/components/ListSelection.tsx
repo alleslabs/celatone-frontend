@@ -1,20 +1,20 @@
 import type { InputProps } from "@chakra-ui/react";
 import {
+  Box,
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
-  Box,
-  Tag,
-  Flex,
   Input,
   List,
   ListItem,
+  Tag,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { forwardRef, useRef, useState } from "react";
 
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";

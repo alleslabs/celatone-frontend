@@ -1,6 +1,6 @@
 import type { Big, BigSource } from "big.js";
-import big from "big.js";
 
+import { big } from "lib/types";
 import type { Percent, Ratio } from "lib/types";
 
 import { d2Formatter, d6Formatter } from "./token";

@@ -13,14 +13,14 @@ import type {
   UiSchema,
 } from "@rjsf/utils";
 import {
-  getTemplate,
-  getWidget,
-  getUiOptions,
-  isFixedItems,
   allowAdditionalItems,
+  getTemplate,
+  getUiOptions,
+  getWidget,
   isCustomWidget,
-  optionsList,
+  isFixedItems,
   ITEMS_KEY,
+  optionsList,
 } from "@rjsf/utils";
 import isObject from "lodash/isObject";
 import set from "lodash/set";
