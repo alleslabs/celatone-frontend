@@ -14,6 +14,7 @@ import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
 import type { BlocksResponse } from "./block";
 import type {
+  StakingProvisionsResponse,
   ValidatorDataResponse,
   ValidatorDelegationRelatedTxsResponse,
   ValidatorsResponse,
@@ -27,6 +28,7 @@ import {
   getValidatorDelegators,
   getValidatorProposedBlocks,
   getValidators,
+  getValidatorStakingProvisions,
   getValidatorUptime,
   resolveValIdentity,
 } from "./validator";
@@ -119,6 +121,18 @@ export const useValidators = (
     {
       retry: 1,
       ...options,
+    }
+  );
+};
+
+export const useValidatorStakingProvisions = () => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<StakingProvisionsResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
+    async () => getValidatorStakingProvisions(endpoint),
+    {
+      retry: 1,
     }
   );
 };

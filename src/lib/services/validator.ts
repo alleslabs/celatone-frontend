@@ -141,6 +141,18 @@ export const getValidators = async (
     })
     .then(({ data }) => parseWithError(zValidatorsResponse, data));
 
+const zStakingProvisionsResponse = z.object({
+  staking_provisions: zBig,
+});
+export type StakingProvisionsResponse = z.infer<
+  typeof zStakingProvisionsResponse
+>;
+
+export const getValidatorStakingProvisions = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/staking-provisions`)
+    .then(({ data }) => parseWithError(zStakingProvisionsResponse, data));
+
 const zValidatorDataResponse = z
   .object({
     info: zValidatorData.nullable(),
