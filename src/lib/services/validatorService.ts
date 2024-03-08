@@ -24,6 +24,7 @@ import {
   getValidator,
   getValidatorData,
   getValidatorDelegationRelatedTxs,
+  getValidatorDelegators,
   getValidatorProposedBlocks,
   getValidators,
   getValidatorUptime,
@@ -184,6 +185,16 @@ export const useValidatorProposedBlocks = (
     [CELATONE_QUERY_KEYS.VALIDATOR_PROPOSED_BLOCKS, endpoint, validatorAddress],
     async () =>
       getValidatorProposedBlocks(endpoint, validatorAddress, limit, offset),
+    { retry: 1 }
+  );
+};
+
+export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],
+    async () => getValidatorDelegators(endpoint, validatorAddress),
     { retry: 1 }
   );
 };

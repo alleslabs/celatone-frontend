@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#815](https://github.com/alleslabs/celatone-frontend/pull/815) api v1 - validator delegators count
 - [#813](https://github.com/alleslabs/celatone-frontend/pull/813) api v1 - validator historical powers
 - [#812](https://github.com/alleslabs/celatone-frontend/pull/812) api v1 - validator delegation related txs, proposed blocks
 - [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
