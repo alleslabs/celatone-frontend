@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#816](https://github.com/alleslabs/celatone-frontend/pull/816) api v1 - validator staking provisions
+- [#815](https://github.com/alleslabs/celatone-frontend/pull/815) api v1 - validator delegators count
+- [#813](https://github.com/alleslabs/celatone-frontend/pull/813) api v1 - validator historical powers
+- [#812](https://github.com/alleslabs/celatone-frontend/pull/812) api v1 - validator delegation related txs, proposed blocks
 - [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
 - [#804](https://github.com/alleslabs/celatone-frontend/pull/804) api v1 - validator info
 - [#803](https://github.com/alleslabs/celatone-frontend/pull/803) api v1 - validator list
@@ -71,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
+- [#805](https://github.com/alleslabs/celatone-frontend/pull/805) Revamp code detail page contracts section
 - [#802](https://github.com/alleslabs/celatone-frontend/pull/802) Revamp code detail page
 - [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
 - [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
@@ -91,6 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
+- [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
 - [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
 - [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
 - [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
