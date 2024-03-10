@@ -1,11 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-// enum ValidatorStatus {
-//   ACTIVE = "Active",
-//   INACTIVE = "Inactive",
-//   JAILED = "Jailed",
-// }
-
 interface ValidatorStatusProps {
   status: string;
 }
