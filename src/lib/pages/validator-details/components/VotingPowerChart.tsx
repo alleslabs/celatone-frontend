@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
@@ -70,57 +70,69 @@ export const VotingPowerChart = () => {
     });
   }, [isLoading, asset, data]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (error || !historicalPowers || !historicalPowers.items.length) {
-    return <ErrorFetching dataName="Historical Powers" />;
-  }
-
   const convertValueStringToNumber = (value: string) => {
     const numberWithoutCommas = value.replace(/,/g, "");
     return parseFloat(numberWithoutCommas);
   };
 
-  const labels =
-    historicalPowers.items.map((item) =>
-      formatHHmm(item.hourRoundedTimestamp as Date)
-    ) ?? [];
+  const labels = useMemo(
+    () =>
+      historicalPowers?.items.map((item) =>
+        formatHHmm(item.hourRoundedTimestamp as Date)
+      ) ?? [],
+    [historicalPowers]
+  );
 
-  const dateLabels = labels.map((label) => {
-    const [hours, minutes] = label.split(":");
-    const date = new Date();
-    date.setHours(parseInt(hours, 10));
-    date.setMinutes(parseInt(minutes, 10));
-    date.setSeconds(0);
+  const dateLabels = useMemo(
+    () =>
+      labels.map((label) => {
+        const [hours, minutes] = label.split(":");
+        const date = new Date();
+        date.setHours(parseInt(hours, 10));
+        date.setMinutes(parseInt(minutes, 10));
+        date.setSeconds(0);
 
-    return date.toString().replace(" GMT", "<br>GMT");
-  });
+        return date.toString().replace(" GMT", "<br>GMT");
+      }),
+    [labels]
+  );
 
-  const dataset = {
-    data: historicalPowers.items.map((item) =>
-      convertValueStringToNumber(item.value)
-    ),
-    borderColor: "#D8BEFC",
-    backgroundColor: (context: ScriptableContext<"line">) => {
-      const { ctx } = context.chart;
+  const dataset = useMemo(
+    () => ({
+      data:
+        historicalPowers?.items.map((item) =>
+          convertValueStringToNumber(item.value)
+        ) || [],
+      borderColor: "#D8BEFC",
+      backgroundColor: (context: ScriptableContext<"line">) => {
+        const { ctx } = context.chart;
 
-      const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
 
-      gradient.addColorStop(0, "rgba(216, 190, 252, 1)");
-      gradient.addColorStop(0.8, "rgba(115, 85, 156, 0)");
+        gradient.addColorStop(0, "rgba(216, 190, 252, 1)");
+        gradient.addColorStop(0.8, "rgba(115, 85, 156, 0)");
 
-      return gradient;
-    },
-    pointHoverBackgroundColor: "#F4F9D9",
-    pointHoverBorderColor: "#D8BEFC",
-  };
+        return gradient;
+      },
+      pointHoverBackgroundColor: "#F4F9D9",
+      pointHoverBorderColor: "#D8BEFC",
+    }),
+    [historicalPowers]
+  );
 
-  const currentPrice = dataset.data[dataset.data.length - 1].toFixed(1);
+  if (isLoading || !dataset.data) return <Loading />;
+
+  if (error) return <ErrorFetching dataName="Historical Powers" />;
+
+  const isDatasetContainsData = dataset && dataset.data.length > 0;
+
+  const currentPrice = isDatasetContainsData
+    ? dataset.data[dataset.data.length - 1].toFixed(1)
+    : "";
   const currency = asset?.symbol ?? "";
-  const diffInLast24Hr =
-    dataset.data[dataset.data.length - 1] - dataset.data[0];
+  const diffInLast24Hr = isDatasetContainsData
+    ? dataset.data[dataset.data.length - 1] - dataset.data[0]
+    : 0;
 
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
     const { raw, dataIndex } = tooltip.dataPoints[0];
