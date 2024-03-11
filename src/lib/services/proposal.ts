@@ -112,7 +112,7 @@ export const getProposalTypes = async (endpoint: string) =>
     .get(`${endpoint}/types`)
     .then(({ data }) => parseWithError(zProposalType.array(), data));
 
-const zProposal = z.object({
+export const zProposal = z.object({
   deposit_end_time: zUtcDate,
   id: z.number().nonnegative(),
   is_expedited: z.boolean(),
