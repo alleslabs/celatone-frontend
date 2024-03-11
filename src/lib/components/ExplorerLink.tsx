@@ -1,11 +1,9 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
-import type { ExplorerConfig } from "config/chain/types";
 import { trackMintScan } from "lib/amplitude";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
-import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
@@ -40,15 +38,11 @@ interface ExplorerLinkProps extends BoxProps {
 
 export const getNavigationUrl = ({
   type,
-  explorerConfig,
   value,
-  lcdEndpoint,
   wasmEnabled = false,
 }: {
   type: ExplorerLinkProps["type"];
-  explorerConfig: ExplorerConfig;
   value: string;
-  lcdEndpoint: string;
   wasmEnabled?: boolean;
 }) => {
   let url = "";
@@ -63,9 +57,7 @@ export const getNavigationUrl = ({
       url = "/accounts";
       break;
     case "validator_address":
-      url =
-        explorerConfig.validator ||
-        `${lcdEndpoint}/cosmos/staking/v1beta1/validators`;
+      url = "/validators";
       break;
     case "code_id":
       url = "/codes";
@@ -176,11 +168,7 @@ export const ExplorerLink = ({
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address } = useCurrentChain();
-  const lcdEndpoint = useBaseApiRoute("rest");
   const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
-  const {
-    chainConfig: { explorerLink: explorerConfig },
-  } = useCelatoneApp();
 
   const isInternal =
     type === "code_id" ||
@@ -189,14 +177,13 @@ export const ExplorerLink = ({
     type === "tx_hash" ||
     type === "block_height" ||
     type === "pool_id" ||
-    type === "proposal_id";
+    type === "proposal_id" ||
+    type === "validator_address";
 
   const [hrefLink, textValue] = [
     getNavigationUrl({
       type,
-      explorerConfig,
       value: copyValue || value,
-      lcdEndpoint,
       wasmEnabled,
     }),
     getValueText(value === address, textFormat === "truncate", value),

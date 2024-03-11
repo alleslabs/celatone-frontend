@@ -4,10 +4,10 @@ import type { ScriptableContext, TooltipModel } from "chart.js";
 import { LineChart } from "lib/components/chart/LineChart";
 
 interface VotingPowerChartProps {
-  currency: string;
+  denom: string;
 }
 
-export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
+export const VotingPowerChart = ({ denom }: VotingPowerChartProps) => {
   const labels = [
     "00:00",
     "01:00",
@@ -63,7 +63,7 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
       <div style="padding: 8px 12px;">
         <div style="font-weight: 700;">
           <h1 style="font-size: 12px; color: #ADADC2;">Bonded Tokens</h1>
-          <p style="font-size: 16px; color: #F7F2FE; white-space: nowrap;">${Number(raw).toFixed(1)} ${currency}</p>
+          <p style="font-size: 16px; color: #F7F2FE; white-space: nowrap;">${Number(raw).toFixed(1)} ${denom}</p>
         </div>
         <hr style="margin-top: 8px; color: #68688A;"/>
         <p style="margin-top: 8px; font-size: 12px; color: #F7F2FE; white-space: nowrap;">${dateLabels[dataIndex]}</p>
@@ -86,13 +86,13 @@ export const VotingPowerChart = ({ currency }: VotingPowerChartProps) => {
       <Flex gap={2} direction="column" w={250} minW={250}>
         <Heading variant="h6">Current Bonded Token</Heading>
         <Heading variant="h5" fontWeight={600}>
-          {currentPrice} {currency}
+          {currentPrice} {denom}
         </Heading>
         <Text variant="body1">
           <Text as="span" fontWeight={700} color="success.main">
             +24.02
           </Text>{" "}
-          {currency} in last 24 hr
+          {denom} in last 24 hr
         </Text>
       </Flex>
       <Box w="100%" h="272px" id="voting-power-chart-container">
