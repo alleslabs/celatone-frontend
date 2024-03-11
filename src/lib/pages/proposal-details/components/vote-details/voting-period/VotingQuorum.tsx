@@ -91,14 +91,14 @@ export const VotingQuorum = ({
               name="Voted"
               ratio={nonAbstainVotes}
               power={votes}
-              color="primary.main"
+              color="primary.light"
               isCompact={isMobile}
             />
             <VpPercentCard
               name="Voted Abstain"
               ratio={abstain}
               power={votesInfo.abstain}
-              color="secondary.main"
+              color="accent.dark"
               isCompact={isMobile}
             />
             <Divider

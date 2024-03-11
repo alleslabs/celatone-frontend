@@ -27,9 +27,6 @@ export const SEI_THEME: ThemeConfig = {
     },
   },
   colors: {
-    gradient: {
-      main: "linear(55deg, #1D343F 0%, #184354 100%)",
-    },
     error: {
       main: "#FF666E",
       light: "#FF8086",
@@ -100,6 +97,36 @@ export const SEI_THEME: ThemeConfig = {
       color: "gray.900",
     },
   },
+  proposalChip: {
+    depositPeriod: {
+      bg: "accent.darker",
+      color: "inherit",
+    },
+    votingPeriod: {
+      bg: "accent.dark",
+      color: "inherit",
+    },
+    failed: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    rejected: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    passed: {
+      bg: "success.dark",
+      color: "inherit",
+    },
+    cancelled: {
+      bg: "error.darker",
+      color: "inherit",
+    },
+    depositFailed: {
+      bg: "gray.700",
+      color: "inherit",
+    },
+  },
   button: {
     primary: {
       background: "#F0E3CF",
@@ -116,6 +143,12 @@ export const SEI_THEME: ThemeConfig = {
       disabledColor: "#40566A",
       hoverBackground: "#C0B8A9",
       activeBackground: "#FAF6EF",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "accent.main",
+      color: "gray.100",
     },
   },
   borderRadius: {

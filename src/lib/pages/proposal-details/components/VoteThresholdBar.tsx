@@ -76,10 +76,10 @@ export const VoteThresholdBar = ({
         ml={thresholdPercent}
         transform="translate(-50%)"
       >
-        <Text variant="body3" color="accent.main" whiteSpace="preserve">
+        <Text variant="body3" color="text.main" whiteSpace="preserve">
           Threshold{isCompact && ": "}
         </Text>
-        <Text variant="body3" color="accent.main" fontWeight={700}>
+        <Text variant="body3" color="text.main" fontWeight={700}>
           {thresholdPercent}
         </Text>
       </Flex>
@@ -121,7 +121,7 @@ export const VoteThresholdBar = ({
           w="4px"
           ml={thresholdPercent}
           transform="translate(-50%)"
-          bgColor="accent.main"
+          bgColor="accent.darker"
           h="full"
         />
       </Flex>

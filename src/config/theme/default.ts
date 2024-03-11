@@ -26,7 +26,7 @@ export const DEFAULT_THEME: ThemeConfig = {
     },
     link: {
       url: "/font/main.css",
-      name: "PP Neue Montreal Regular, serif",
+      name: "PP Neue Montreal Mono Regular",
     },
   },
   colors: {
@@ -36,14 +36,14 @@ export const DEFAULT_THEME: ThemeConfig = {
       main: "#89D1F6",
       dark: "#5ABAEC",
       darker: "#2B8BBD",
-      background: "#335068",
+      background: "#244865",
     },
     secondary: {
       light: "#C2EAFF",
       main: "#89D1F6",
       dark: "#5ABAEC",
       darker: "#2B8BBD",
-      background: "#335068",
+      background: "#244865",
     },
     accent: {
       lighter: "#E0F1FB",
@@ -51,7 +51,7 @@ export const DEFAULT_THEME: ThemeConfig = {
       main: "#89D1F6",
       dark: "#5ABAEC",
       darker: "#2B8BBD",
-      background: "#335068",
+      background: "#244865",
     },
     gray: {
       100: "#F8FAFC",
@@ -60,7 +60,7 @@ export const DEFAULT_THEME: ThemeConfig = {
       600: "#707E94",
       700: "#334155",
       800: "#1E2535",
-      900: "#0A101E",
+      900: "#151B27",
     },
     text: {
       main: "#F8FAFC",
@@ -68,7 +68,7 @@ export const DEFAULT_THEME: ThemeConfig = {
       disabled: "#94A3B8",
     },
     background: {
-      main: "#020617",
+      main: "#0E131C",
       overlay: "rgba(2, 6, 23, 0.7)",
     },
     success: {
@@ -90,11 +90,41 @@ export const DEFAULT_THEME: ThemeConfig = {
       background: "#523600",
     },
   },
+  proposalChip: {
+    depositPeriod: {
+      bg: "primary.background",
+      color: "inherit",
+    },
+    votingPeriod: {
+      bg: "primary.darker",
+      color: "inherit",
+    },
+    failed: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    rejected: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    passed: {
+      bg: "success.dark",
+      color: "inherit",
+    },
+    cancelled: {
+      bg: "error.background",
+      color: "inherit",
+    },
+    depositFailed: {
+      bg: "gray.700",
+      color: "inherit",
+    },
+  },
   button: {
     primary: {
       background: "#89D1F6",
       color: "#272D3C",
-      disabledBackground: "#335068",
+      disabledBackground: "#244865",
       disabledColor: "#0A101E",
       hoverBackground: "#5ABAEC",
       activeBackground: "#2B8BBD",
@@ -102,10 +132,10 @@ export const DEFAULT_THEME: ThemeConfig = {
     outlinePrimary: {
       borderColor: "#89D1F6",
       color: "#89D1F6",
-      disabledBorderColor: "#335068",
+      disabledBorderColor: "#244865",
       disabledColor: "#2B8BBD",
-      hoverBackground: "#335068",
-      activeBackground: "#335068",
+      hoverBackground: "#244865",
+      activeBackground: "#244865",
     },
   },
   tag: {

@@ -27,9 +27,6 @@ export const INITIA_THEME: ThemeConfig = {
     },
   },
   colors: {
-    gradient: {
-      main: "linear(to-tr, #15AFF8, #5FC1EE)",
-    },
     error: {
       main: "#FF666E",
       light: "#FF8086",
@@ -97,6 +94,36 @@ export const INITIA_THEME: ThemeConfig = {
     },
     related: {
       bg: "accent.darker",
+      color: "inherit",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "secondary.darker",
+      color: "inherit",
+    },
+    votingPeriod: {
+      bg: "primary.dark",
+      color: "inherit",
+    },
+    failed: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    rejected: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    passed: {
+      bg: "success.dark",
+      color: "inherit",
+    },
+    cancelled: {
+      bg: "error.darker",
+      color: "inherit",
+    },
+    depositFailed: {
+      bg: "gray.700",
       color: "inherit",
     },
   },

@@ -28,9 +28,6 @@ export type ThemeConfig = {
     };
   };
   colors: {
-    gradient?: {
-      main: string;
-    };
     primary: {
       main: string;
       light: string;
@@ -104,6 +101,36 @@ export type ThemeConfig = {
   stepper?: {
     active?: { bg: string; color: string };
     disabled?: { bg: string; color: string };
+  };
+  proposalChip: {
+    depositPeriod: {
+      bg: string;
+      color: string;
+    };
+    votingPeriod: {
+      bg: string;
+      color: string;
+    };
+    failed: {
+      bg: string;
+      color: string;
+    };
+    rejected: {
+      bg: string;
+      color: string;
+    };
+    passed: {
+      bg: string;
+      color: string;
+    };
+    cancelled: {
+      bg: string;
+      color: string;
+    };
+    depositFailed: {
+      bg: string;
+      color: string;
+    };
   };
   button?: {
     primary?: {

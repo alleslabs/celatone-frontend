@@ -14,6 +14,7 @@ import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
 
 import type { BlocksResponse } from "./block";
 import type {
+  StakingProvisionsResponse,
   ValidatorDataResponse,
   ValidatorDelegationRelatedTxsResponse,
   ValidatorsResponse,
@@ -24,8 +25,10 @@ import {
   getValidator,
   getValidatorData,
   getValidatorDelegationRelatedTxs,
+  getValidatorDelegators,
   getValidatorProposedBlocks,
   getValidators,
+  getValidatorStakingProvisions,
   getValidatorUptime,
   resolveValIdentity,
 } from "./validator";
@@ -122,6 +125,18 @@ export const useValidators = (
   );
 };
 
+export const useValidatorStakingProvisions = () => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery<StakingProvisionsResponse>(
+    [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
+    async () => getValidatorStakingProvisions(endpoint),
+    {
+      retry: 1,
+    }
+  );
+};
+
 export const useValidatorData = (validatorAddress: ValidatorAddr) => {
   const endpoint = useBaseApiRoute("validators");
 
@@ -184,6 +199,16 @@ export const useValidatorProposedBlocks = (
     [CELATONE_QUERY_KEYS.VALIDATOR_PROPOSED_BLOCKS, endpoint, validatorAddress],
     async () =>
       getValidatorProposedBlocks(endpoint, validatorAddress, limit, offset),
+    { retry: 1 }
+  );
+};
+
+export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],
+    async () => getValidatorDelegators(endpoint, validatorAddress),
     { retry: 1 }
   );
 };

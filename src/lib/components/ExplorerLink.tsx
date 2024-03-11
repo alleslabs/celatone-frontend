@@ -2,6 +2,7 @@ import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 import type { ExplorerConfig } from "config/chain/types";
+import { CURR_THEME } from "env";
 import { trackMintScan } from "lib/amplitude";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
@@ -129,7 +130,7 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
-      fontFamily="PP Neue Montreal Mono Regular"
+      fontFamily={CURR_THEME.fonts.link?.name}
       color="secondary.main"
       transition="all 0.25s ease-in-out"
       _hover={{ color: "secondary.light" }}

@@ -28,9 +28,6 @@ export const OSMOSIS_THEME: ThemeConfig = {
     },
   },
   colors: {
-    gradient: {
-      main: "linear(55deg, #462ADF 0%,#5235EF 40%, #B72AAB 100%)",
-    },
     error: {
       main: "#FF666E",
       light: "#FF8086",
@@ -99,6 +96,36 @@ export const OSMOSIS_THEME: ThemeConfig = {
     related: {
       bg: "primary.dark",
       color: "text.main",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "secondary.darker",
+      color: "inherit",
+    },
+    votingPeriod: {
+      bg: "primary.dark",
+      color: "inherit",
+    },
+    failed: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    rejected: {
+      bg: "error.dark",
+      color: "inherit",
+    },
+    passed: {
+      bg: "success.dark",
+      color: "inherit",
+    },
+    cancelled: {
+      bg: "error.darker",
+      color: "inherit",
+    },
+    depositFailed: {
+      bg: "gray.700",
+      color: "inherit",
     },
   },
   borderRadius: {
