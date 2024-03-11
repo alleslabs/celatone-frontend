@@ -5,7 +5,6 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Image,
   Switch,
   Text,
 } from "@chakra-ui/react";
@@ -13,10 +12,10 @@ import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { SUPERFLUID_ICON } from "../../constant";
 import { usePools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
+import { SuperfluidLabel } from "../SuperfluidLabel";
 import { trackUseExpandAll, trackUseSort, trackUseToggle } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -141,8 +140,7 @@ export const UnsupportedSection = ({
               <FormLabel mb={0} cursor="pointer">
                 <Text display="flex" gap={2} alignItems="center">
                   Show only
-                  <Image boxSize={4} src={SUPERFLUID_ICON} />
-                  <Text color="#ee64e8">Superfluid</Text>
+                  <SuperfluidLabel />
                 </Text>
               </FormLabel>
             </FormControl>
