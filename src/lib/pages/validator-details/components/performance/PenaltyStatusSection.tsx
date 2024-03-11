@@ -23,7 +23,7 @@ export const PenaltyStatusSection = ({
       borderTop={hasBorder ? "1px solid" : "0px"}
       borderTopColor="gray.700"
     >
-      {status === PenaltyStatus.NEVER ? (
+      {status === PenaltyStatus.Never ? (
         <Text variant="body2" color="text.dark">
           {validatorName} never had any slash or jailed history within 90 days.
         </Text>
@@ -32,7 +32,7 @@ export const PenaltyStatusSection = ({
           <CustomIcon
             name="alert-triangle"
             color={
-              status === PenaltyStatus.SLASHED ? "error.main" : "warning.main"
+              status === PenaltyStatus.Slashed ? "error.main" : "warning.main"
             }
           />
           <Text variant="body2" color="text.main">

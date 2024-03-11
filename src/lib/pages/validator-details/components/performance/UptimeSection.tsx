@@ -54,7 +54,7 @@ export const UptimeSection = ({
       {!isDetailPage && (
         <>
           {isMobile && <RecentBlocksSection />}
-          <PenaltyStatusSection hasBorder status={PenaltyStatus.JAILED} />{" "}
+          <PenaltyStatusSection hasBorder status={PenaltyStatus.Jailed} />{" "}
         </>
       )}
       {onViewMore && isMobile && (

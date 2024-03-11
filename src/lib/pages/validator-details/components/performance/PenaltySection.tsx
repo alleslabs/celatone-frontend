@@ -22,9 +22,9 @@ export const PenaltySection = () => (
       </Text>
     </Flex>
     <Flex direction="column" gap={2}>
-      <PenaltyStatusSection status={PenaltyStatus.JAILED} />
-      <PenaltyStatusSection status={PenaltyStatus.SLASHED} />
-      <PenaltyStatusSection status={PenaltyStatus.JAILED} />
+      <PenaltyStatusSection status={PenaltyStatus.Jailed} />
+      <PenaltyStatusSection status={PenaltyStatus.Slashed} />
+      <PenaltyStatusSection status={PenaltyStatus.Jailed} />
     </Flex>
   </Flex>
 );

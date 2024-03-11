@@ -1,6 +1,7 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 
+// TODO: combine to ValidatorBadge
 export const ValidatorImage = (props: ImageProps) => (
   <Image
     borderRadius="50%"

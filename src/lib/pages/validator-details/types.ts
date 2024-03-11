@@ -6,13 +6,13 @@ export enum TabIndex {
   Overview = "overview",
   Votes = "votes",
   Performance = "performance",
-  BondedTokenChanges = "bondedTokenChanges",
+  BondedTokenChanges = "bonded-token-changes",
 }
 
 export enum PenaltyStatus {
-  JAILED = "Jailed",
-  SLASHED = "Slashed",
-  NEVER = "Never",
+  Jailed = "Jailed",
+  Slashed = "Slashed",
+  Never = "Never",
 }
 
 export const zValidatorDetailsQueryParams = z.object({
