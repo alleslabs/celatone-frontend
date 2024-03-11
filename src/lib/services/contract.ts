@@ -265,3 +265,18 @@ export const getContractQueryMsgs = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
     .then(({ data }) => parseWithError(zContractQueryMsgs, data));
+
+export const getContractsByCodeId = async (
+  endpoint: string,
+  codeId: number,
+  limit: number,
+  offset: number
+): Promise<ContractsResponse> =>
+  axios
+    .get(`${endpoint}/${codeId}/contracts`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => parseWithError(zContractsResponse, data));

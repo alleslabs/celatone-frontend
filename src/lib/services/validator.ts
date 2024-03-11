@@ -148,6 +148,18 @@ export const getValidators = async (
     })
     .then(({ data }) => parseWithError(zValidatorsResponse, data));
 
+const zStakingProvisionsResponse = z.object({
+  staking_provisions: zBig,
+});
+export type StakingProvisionsResponse = z.infer<
+  typeof zStakingProvisionsResponse
+>;
+
+export const getValidatorStakingProvisions = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/staking-provisions`)
+    .then(({ data }) => parseWithError(zStakingProvisionsResponse, data));
+
 const zValidatorDataResponse = z
   .object({
     info: zValidatorData.nullable(),
@@ -259,3 +271,19 @@ export const getValidatorProposedBlocks = async (
       }
     )
     .then(({ data }) => parseWithError(zBlocksResponse, data));
+
+const zValidatorDelegatorsResponse = z.object({
+  total: z.number().nonnegative(),
+});
+
+export type ValidatorDelegatorsResponse = z.infer<
+  typeof zValidatorDelegatorsResponse
+>;
+
+export const getValidatorDelegators = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
+    .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
