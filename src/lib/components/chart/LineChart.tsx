@@ -34,6 +34,7 @@ interface LineChartProps {
   labels: string[];
   dataset: ChartDataset<"line", number[]>;
   customizeTooltip?: (tooltip: TooltipModel<"line">) => string;
+  customizeYAxisTicks?: (value: string | number) => string;
 }
 
 const renderChartTooltip = (
@@ -105,6 +106,7 @@ export const LineChart = ({
   labels,
   dataset,
   customizeTooltip,
+  customizeYAxisTicks,
 }: LineChartProps) => {
   const isMobile = useMobile();
 
@@ -202,7 +204,7 @@ export const LineChart = ({
           maxTicksLimit: 10,
           padding: 10,
           callback: (value: string | number) => {
-            return Number(value).toFixed(2);
+            return customizeYAxisTicks ? customizeYAxisTicks(value) : value;
           },
           align: isMobile ? "start" : "center",
           labelOffset: isMobile ? 5 : 0,

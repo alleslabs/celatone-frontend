@@ -1,4 +1,5 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -8,27 +9,23 @@ import { LineChart } from "lib/components/chart/LineChart";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
-import type {
-  HistoricalPowersItem,
-  HistoricalPowersResponse,
-} from "lib/services/validator";
+import type { HistoricalPowersResponse } from "lib/services/validator";
 import { zValidatorQueryParams } from "lib/services/validator";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
 import type { AssetInfo, Token, U } from "lib/types";
 import { zValidatorAddr } from "lib/types";
-import { formatHHmm, formatUTokenWithPrecision } from "lib/utils";
+import {
+  formatDecimal,
+  formatHHmm,
+  formatUTokenWithPrecision,
+} from "lib/utils";
 
 export const VotingPowerChart = () => {
   const router = useRouter();
   const validated = zValidatorQueryParams.safeParse(router.query);
   const [asset, setAsset] = useState<AssetInfo | undefined>();
-  const [historicalPowers, setHistoricalPowers] = useState<
-    Omit<HistoricalPowersResponse, "items"> & {
-      items: (HistoricalPowersItem & {
-        value: string;
-      })[];
-    }
-  >();
+  const [historicalPowers, setHistoricalPowers] =
+    useState<HistoricalPowersResponse>();
 
   const {
     chainConfig: {
@@ -52,28 +49,10 @@ export const VotingPowerChart = () => {
   }, [singleStakingDenom, assetInfos]);
 
   useEffect(() => {
-    if (isLoading || !asset || !data) return;
+    if (isLoading || !data) return;
 
-    const items = data.items.map((item: HistoricalPowersItem) => ({
-      ...item,
-      value: formatUTokenWithPrecision(
-        item.votingPower as U<Token<Big>>,
-        asset.precision,
-        false,
-        2
-      ),
-    }));
-
-    setHistoricalPowers({
-      ...data,
-      items,
-    });
+    setHistoricalPowers(data);
   }, [isLoading, asset, data]);
-
-  const convertValueStringToNumber = (value: string) => {
-    const numberWithoutCommas = value.replace(/,/g, "");
-    return parseFloat(numberWithoutCommas);
-  };
 
   const labels = useMemo(
     () =>
@@ -100,9 +79,8 @@ export const VotingPowerChart = () => {
   const dataset = useMemo(
     () => ({
       data:
-        historicalPowers?.items.map((item) =>
-          convertValueStringToNumber(item.value)
-        ) || [],
+        historicalPowers?.items.map((item) => item.votingPower.toNumber()) ??
+        [],
       borderColor: "#D8BEFC",
       backgroundColor: (context: ScriptableContext<"line">) => {
         const { ctx } = context.chart;
@@ -124,12 +102,26 @@ export const VotingPowerChart = () => {
 
   if (error) return <ErrorFetching dataName="Historical Powers" />;
 
+  const handleFormatValue = (value: string | number, isSuffix = true) => {
+    return asset
+      ? formatUTokenWithPrecision(
+          value as U<Token<BigSource>>,
+          asset.precision,
+          isSuffix,
+          2
+        )
+      : formatDecimal({
+          decimalPoints: 0,
+          delimiter: true,
+        })(value as BigSource, "0");
+  };
+
   const isDatasetContainsData = dataset && dataset.data.length > 0;
 
-  const currentPrice = isDatasetContainsData
-    ? dataset.data[dataset.data.length - 1].toFixed(1)
-    : "";
   const currency = asset?.symbol ?? "";
+  const currentPrice = isDatasetContainsData
+    ? handleFormatValue(dataset.data[dataset.data.length - 1])
+    : "";
   const diffInLast24Hr = isDatasetContainsData
     ? dataset.data[dataset.data.length - 1] - dataset.data[0]
     : 0;
@@ -141,7 +133,7 @@ export const VotingPowerChart = () => {
       <div style="padding: 8px 12px;">
         <div style="font-weight: 700;">
           <h1 style="font-size: 12px; color: #ADADC2;">Bonded Tokens</h1>
-          <p style="font-size: 16px; color: #F7F2FE; white-space: nowrap;">${Number(raw).toFixed(1)} ${currency}</p>
+          <p style="font-size: 16px; color: #F7F2FE; white-space: nowrap;">${handleFormatValue(raw as number, false)} ${currency}</p>
         </div>
         <hr style="margin-top: 8px; color: #68688A;"/>
         <p style="margin-top: 8px; font-size: 12px; color: #F7F2FE; white-space: nowrap;">${dateLabels[dataIndex]}</p>
@@ -174,7 +166,9 @@ export const VotingPowerChart = () => {
             fontWeight={700}
             color={diffInLast24Hr >= 0 ? "success.main" : "error.main"}
           >
-            {diffInLast24Hr >= 0 ? `+${diffInLast24Hr}` : `-${diffInLast24Hr}`}
+            {diffInLast24Hr >= 0
+              ? `+${handleFormatValue(diffInLast24Hr)}`
+              : `-${handleFormatValue(diffInLast24Hr)}`}
           </Text>{" "}
           {currency} in last 24 hr
         </Text>
@@ -184,6 +178,7 @@ export const VotingPowerChart = () => {
           labels={labels}
           dataset={dataset}
           customizeTooltip={customizeTooltip}
+          customizeYAxisTicks={handleFormatValue}
         />
       </Box>
     </Flex>
