@@ -21,10 +21,10 @@ const getBgColor = (
     case ProposalStatus.PASSED:
       return CURR_THEME.proposalChip.passed.bg;
     case ProposalStatus.CANCELLED:
-      return "error.background";
+      return CURR_THEME.proposalChip.cancelled.bg;
     case ProposalStatus.DEPOSIT_FAILED:
     default:
-      return "gray.700";
+      return CURR_THEME.proposalChip.depositFailed.bg;
   }
 };
 

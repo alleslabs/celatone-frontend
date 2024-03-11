@@ -98,9 +98,9 @@ export type ThemeConfig = {
       color: string;
     };
   };
-  stepper?: {
-    active?: { bg: string; color: string };
-    disabled?: { bg: string; color: string };
+  stepper: {
+    active: { bg: string; color: string };
+    disabled: { bg: string; color: string };
   };
   proposalChip: {
     depositPeriod: {
@@ -132,8 +132,13 @@ export type ThemeConfig = {
       color: string;
     };
   };
-  button?: {
-    primary?: {
+  voteParticipations: {
+    voted: string;
+    votedAbstain: string;
+    didNotVote: string;
+  };
+  button: {
+    primary: {
       background: string;
       color: string;
       disabledBackground: string;
@@ -141,7 +146,7 @@ export type ThemeConfig = {
       hoverBackground: string;
       activeBackground: string;
     };
-    outlinePrimary?: {
+    outlinePrimary: {
       borderColor: string;
       color: string;
       disabledBorderColor: string;

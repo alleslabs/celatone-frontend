@@ -127,14 +127,37 @@ export const INITIA_THEME: ThemeConfig = {
       color: "inherit",
     },
   },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
   button: {
     primary: {
-      background: "#F5F5F5",
-      color: "#151617",
-      disabledBackground: "#A1A6AA",
-      disabledColor: "#151617",
-      hoverBackground: "#B7B7B7",
-      activeBackground: "#B7B7B7",
+      background: "gray.100",
+      color: "gray.900",
+      disabledBackground: "gray.500",
+      disabledColor: "gray.900",
+      hoverBackground: "gray.400",
+      activeBackground: "gray.400",
+    },
+    outlinePrimary: {
+      borderColor: "primary.light",
+      color: "primary.light",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.background",
+      activeBackground: "transparent",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
     },
   },
   borderRadius: {

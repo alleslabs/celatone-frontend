@@ -50,9 +50,7 @@ export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
       alignItems="center"
       justifyContent="center"
       background={
-        isGray
-          ? CURR_THEME.stepper?.disabled?.bg ?? "gray.500"
-          : CURR_THEME.stepper?.active?.bg ?? "primary.dark"
+        isGray ? CURR_THEME.stepper.disabled.bg : CURR_THEME.stepper.active.bg
       }
     >
       {state !== PeriodState.COMPLETE ? (
@@ -61,8 +59,8 @@ export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
           fontWeight={700}
           color={
             isGray
-              ? CURR_THEME.stepper?.disabled?.color ?? "background.main"
-              : CURR_THEME.stepper?.active?.color ?? "text.main"
+              ? CURR_THEME.stepper.disabled.color
+              : CURR_THEME.stepper.active.color
           }
         >
           {step}
@@ -73,8 +71,8 @@ export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
           boxSize={3}
           color={
             isGray
-              ? CURR_THEME.stepper?.disabled?.color ?? "background.main"
-              : CURR_THEME.stepper?.active?.color ?? "text.main"
+              ? CURR_THEME.stepper.disabled.color
+              : CURR_THEME.stepper.active.color
           }
         />
       )}

@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { ThemeConfig } from "config/theme/types";
 
 export const SEI_THEME: ThemeConfig = {
@@ -127,28 +128,37 @@ export const SEI_THEME: ThemeConfig = {
       color: "inherit",
     },
   },
+  voteParticipations: {
+    voted: "accent.main",
+    votedAbstain: "accent.darker",
+    didNotVote: "gray.700",
+  },
   button: {
     primary: {
-      background: "#F0E3CF",
-      color: "#0C1C23",
-      disabledBackground: "#787971",
-      disabledColor: "#0C1C23",
-      hoverBackground: "#C0B8A9",
-      activeBackground: "#FAF6EF",
+      background: "primary.main",
+      color: "gray.900",
+      disabledBackground: "primary.darker",
+      disabledColor: "gray.900",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.light",
     },
     outlinePrimary: {
-      borderColor: "#787971",
-      color: "#F0E3CF",
-      disabledBorderColor: "#1D343F",
-      disabledColor: "#40566A",
-      hoverBackground: "#C0B8A9",
-      activeBackground: "#FAF6EF",
+      borderColor: "primary.darker",
+      color: "primary.main",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.darker",
+      activeBackground: "primary.light",
     },
   },
   stepper: {
     active: {
       bg: "accent.main",
       color: "gray.100",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
     },
   },
   borderRadius: {

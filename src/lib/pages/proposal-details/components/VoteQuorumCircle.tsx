@@ -1,6 +1,7 @@
 import { Circle, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
+import { CURR_THEME } from "env";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumCircleProps {
@@ -30,7 +31,7 @@ export const VoteQuorumCircle = ({
     <Circle
       size={isCompact ? "64px" : "160px"}
       position="relative"
-      bgGradient={`conic(primary.main ${nonAbstainVotesAngle}deg, secondary.main ${nonAbstainVotesAngle}deg ${totalVotesAngle}deg, gray.800 ${totalVotesAngle}deg)`}
+      bgGradient={`conic(${CURR_THEME.voteParticipations.voted} ${nonAbstainVotesAngle}deg, ${CURR_THEME.voteParticipations.votedAbstain} ${nonAbstainVotesAngle}deg ${totalVotesAngle}deg, ${CURR_THEME.voteParticipations.didNotVote} ${totalVotesAngle}deg)`}
     >
       <Circle
         size={isCompact ? "64px" : "160px"}

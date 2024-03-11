@@ -23,23 +23,29 @@ const StepLabel = ({
     justify="center"
     align="center"
     backgroundColor={
-      disabled
-        ? CURR_THEME.stepper?.disabled?.bg ?? "gray.500"
-        : CURR_THEME.stepper?.active?.bg ?? "primary.dark"
+      disabled ? CURR_THEME.stepper.disabled.bg : CURR_THEME.stepper.active.bg
     }
     width="24px"
     height="24px"
     borderRadius="50%"
   >
     {currentStep > step ? (
-      <CustomIcon name="check" color="text.main" boxSize={3} />
+      <CustomIcon
+        name="check"
+        color={
+          disabled
+            ? CURR_THEME.stepper.disabled.color
+            : CURR_THEME.stepper.active.color
+        }
+        boxSize={3}
+      />
     ) : (
       <Text
         variant="body3"
         color={
           disabled
-            ? CURR_THEME.stepper?.disabled?.color ?? "background.main"
-            : CURR_THEME.stepper?.active?.color ?? "text.main"
+            ? CURR_THEME.stepper.disabled.color
+            : CURR_THEME.stepper.active.color
         }
       >
         {step}

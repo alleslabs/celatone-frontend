@@ -74,11 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-<<<<<<< HEAD
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
-=======
 - [#805](https://github.com/alleslabs/celatone-frontend/pull/805) Revamp code detail page contracts section
->>>>>>> develop
 - [#802](https://github.com/alleslabs/celatone-frontend/pull/802) Revamp code detail page
 - [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
 - [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages

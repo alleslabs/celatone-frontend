@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { ThemeConfig } from "./types";
 
 export const OSMOSIS_THEME: ThemeConfig = {
@@ -128,6 +129,21 @@ export const OSMOSIS_THEME: ThemeConfig = {
       color: "inherit",
     },
   },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
+  stepper: {
+    active: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
+    },
+  },
   borderRadius: {
     default: "8px",
     iconButton: "36px",
@@ -170,5 +186,23 @@ export const OSMOSIS_THEME: ThemeConfig = {
     medium: "https://medium.com/osmosis",
     telegram: "https://t.me/osmosis_chat",
     reddit: "https://www.reddit.com/r/OsmosisLab/",
+  },
+  button: {
+    primary: {
+      background: "primary.main",
+      color: "gray.100",
+      disabledBackground: "primary.background",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.light",
+    },
+    outlinePrimary: {
+      borderColor: "primary.light",
+      color: "primary.light",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.background",
+      activeBackground: "transparent",
+    },
   },
 };

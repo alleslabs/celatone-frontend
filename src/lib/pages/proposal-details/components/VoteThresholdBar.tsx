@@ -121,7 +121,7 @@ export const VoteThresholdBar = ({
           w="4px"
           ml={thresholdPercent}
           transform="translate(-50%)"
-          bgColor="accent.darker"
+          bgColor="text.main"
           h="full"
         />
       </Flex>

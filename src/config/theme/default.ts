@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { ThemeConfig } from "./types";
 
 export const DEFAULT_THEME: ThemeConfig = {
@@ -72,10 +73,10 @@ export const DEFAULT_THEME: ThemeConfig = {
       overlay: "rgba(2, 6, 23, 0.7)",
     },
     success: {
-      light: "#D6FFD4",
-      main: "#9FF59A",
-      dark: "#497252",
-      background: "#213631",
+      main: "#42BEA6",
+      light: "#67CBB7",
+      dark: "#207966",
+      background: "#102E28",
     },
     error: {
       light: "#FF8086",
@@ -120,22 +121,27 @@ export const DEFAULT_THEME: ThemeConfig = {
       color: "inherit",
     },
   },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
   button: {
     primary: {
-      background: "#89D1F6",
-      color: "#272D3C",
-      disabledBackground: "#244865",
-      disabledColor: "#0A101E",
-      hoverBackground: "#5ABAEC",
-      activeBackground: "#2B8BBD",
+      background: "primary.main",
+      color: "gray.800",
+      disabledBackground: "primary.background",
+      disabledColor: "gray.800",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.darker",
     },
     outlinePrimary: {
-      borderColor: "#89D1F6",
-      color: "#89D1F6",
-      disabledBorderColor: "#244865",
-      disabledColor: "#2B8BBD",
-      hoverBackground: "#244865",
-      activeBackground: "#244865",
+      borderColor: "primary.main",
+      color: "primary.main",
+      disabledBorderColor: "primary.background",
+      disabledColor: "primary.darker",
+      hoverBackground: "primary.background",
+      activeBackground: "primary.background",
     },
   },
   tag: {
@@ -152,6 +158,10 @@ export const DEFAULT_THEME: ThemeConfig = {
     active: {
       bg: "primary.darker",
       color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
     },
   },
   borderRadius: {
