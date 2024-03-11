@@ -111,12 +111,10 @@ const ValidatorDetailsBody = ({
 
 const ValidatorDetails = () => {
   const router = useRouter();
-  // TODO: remove
-  router.query = {
+  // TODO: change to router.query
+  const validated = zValidatorDetailsQueryParams.safeParse({
     validatorAddress: "osmovaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4ep88n0y4",
-  };
-
-  const validated = zValidatorDetailsQueryParams.safeParse(router.query);
+  });
 
   useEffect(() => {
     if (router.isReady && validated.success)
@@ -125,13 +123,13 @@ const ValidatorDetails = () => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
+    <div>
       {!validated.success ? (
         <InvalidValidator />
       ) : (
         <ValidatorDetailsBody {...validated.data} />
       )}
-    </PageContainer>
+    </div>
   );
 };
 
