@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 
 import { ViewMore } from "../table";
 import type { Option, TokenWithValue, USD } from "lib/types";
@@ -34,14 +34,15 @@ export const AssetSectionOverview = ({
     );
 
   return (
-    <Grid gridTemplateColumns={{ base: "1fr", xl: "2fr 1fr" }} gridGap={4}>
-      <GridItem border="1px solid" borderColor="gray.700" borderRadius="8px">
+    <Grid gridTemplateColumns={{ base: "1fr", xl: "1fr 1fr" }} gridGap={12}>
+      <GridItem>
         <Flex direction="column" justifyContent="space-between" h="full">
           <Flex direction="column">
             <SupportedAssetTitle
               supportedAssets={supportedAssets}
               totalSupportedAssetsValue={totalSupportedAssetsValue}
             />
+            <Divider borderColor="gray.700" />
             <SupportedAssetSectionContent
               isAccount={isAccount}
               supportedAssets={supportedAssets.slice(
@@ -52,16 +53,13 @@ export const AssetSectionOverview = ({
             />
           </Flex>
           {onViewMore && supportedAssets.length > MAX_SUPPORTED_ASSETS_SHOW && (
-            <ViewMore
-              onClick={onViewMore}
-              borderRadius="0px 0px 8px 8px"
-              minH="48px"
-            />
+            <ViewMore onClick={onViewMore} borderRadius="8px" minH="48px" />
           )}
         </Flex>
       </GridItem>
-      <GridItem border="1px solid" borderColor="gray.700" borderRadius="8px">
+      <GridItem>
         <UnsupportedAssetTitle unsupportedAssets={unsupportedAssets} />
+        <Divider borderColor="gray.700" />
         <UnsupportedAssetSectionContent
           isAccount={isAccount}
           unsupportedAssets={unsupportedAssets.slice(
@@ -72,11 +70,7 @@ export const AssetSectionOverview = ({
         />
         {onViewMore &&
           unsupportedAssets.length > MAX_UNSUPPORTED_ASSETS_SHOW && (
-            <ViewMore
-              onClick={onViewMore}
-              borderRadius="0px 0px 8px 8px"
-              minH="48px"
-            />
+            <ViewMore onClick={onViewMore} borderRadius="8px" minH="48px" />
           )}
       </GridItem>
     </Grid>
