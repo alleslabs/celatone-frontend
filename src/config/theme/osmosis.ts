@@ -47,46 +47,46 @@ export const OSMOSIS_THEME: ThemeConfig = {
       dark: "#207966",
       background: "#102E28",
     },
-    background: {
-      main: "#090524",
-      overlay: "rgba(14, 9, 49, 0.7)",
-    },
     text: {
       main: "#F2F2F4",
-      dark: "#A09ACA",
-      disabled: "#736DA0",
+      dark: "#B0AADC",
+      disabled: "#8D87B8",
     },
     primary: {
+      lighter: "#A5A3FF",
+      light: "#8481F8",
       main: "#5235EF",
-      light: "#765CFF",
-      lighter: "#8481F8",
-      dark: "#462ADF",
-      darker: "#3A1FCA",
+      dark: "#3E21DB",
+      darker: "#260BB6",
       background: "#201865",
     },
     secondary: {
+      light: "#A5A3FF",
       main: "#8481F8",
-      light: "#9B99FF",
-      dark: "#6A67EA",
-      darker: "#5855DB",
-      background: "#2F306A",
+      dark: "#5235EF",
+      darker: "#462ADF",
+      background: "#201865",
     },
     accent: {
-      main: "#DD69D3",
-      light: "#E58BDD",
       lighter: "#ECACE7",
+      light: "#E58BDD",
+      main: "#DD69D3",
       dark: "#CA2EBD",
       darker: "#B72AAB",
-      background: "#431152",
+      background: "#711B75",
     },
     gray: {
       100: "#F2F2F4",
-      400: "#8D87B8",
-      500: "#736DA0",
-      600: "#5F588F",
-      700: "#464075",
-      800: "#282750",
-      900: "#140F34",
+      400: "#B0AADC",
+      500: "#8D87B8",
+      600: "#736DA0",
+      700: "#4B447B",
+      800: "#3C356D",
+      900: "#201B43",
+    },
+    background: {
+      main: "#140F34",
+      overlay: "rgba(14, 9, 49, 0.7)",
     },
   },
   tag: {
@@ -101,7 +101,7 @@ export const OSMOSIS_THEME: ThemeConfig = {
   },
   proposalChip: {
     depositPeriod: {
-      bg: "secondary.darker",
+      bg: "primary.darker",
       color: "inherit",
     },
     votingPeriod: {
@@ -121,7 +121,7 @@ export const OSMOSIS_THEME: ThemeConfig = {
       color: "inherit",
     },
     cancelled: {
-      bg: "error.darker",
+      bg: "error.background",
       color: "inherit",
     },
     depositFailed: {
@@ -142,6 +142,24 @@ export const OSMOSIS_THEME: ThemeConfig = {
     disabled: {
       bg: "gray.500",
       color: "background.main",
+    },
+  },
+  button: {
+    primary: {
+      background: "primary.main",
+      color: "gray.100",
+      disabledBackground: "primary.background",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.light",
+    },
+    outlinePrimary: {
+      borderColor: "primary.light",
+      color: "primary.light",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.background",
+      activeBackground: "transparent",
     },
   },
   borderRadius: {
@@ -186,23 +204,5 @@ export const OSMOSIS_THEME: ThemeConfig = {
     medium: "https://medium.com/osmosis",
     telegram: "https://t.me/osmosis_chat",
     reddit: "https://www.reddit.com/r/OsmosisLab/",
-  },
-  button: {
-    primary: {
-      background: "primary.main",
-      color: "gray.100",
-      disabledBackground: "primary.background",
-      disabledColor: "gray.600",
-      hoverBackground: "primary.dark",
-      activeBackground: "primary.light",
-    },
-    outlinePrimary: {
-      borderColor: "primary.light",
-      color: "primary.light",
-      disabledBorderColor: "gray.700",
-      disabledColor: "gray.600",
-      hoverBackground: "primary.background",
-      activeBackground: "transparent",
-    },
   },
 };

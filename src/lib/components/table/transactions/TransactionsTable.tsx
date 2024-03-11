@@ -30,8 +30,8 @@ export const TransactionsTable = ({
   if (!transactions?.length) return emptyState;
 
   const templateColumns = `32px 190px 48px minmax(380px, 1fr) ${
-    showRelations ? "86px " : ""
-  }max(180px) ${showTimestamp ? "max(220px) " : ""}${
+    showRelations ? "90px " : ""
+  }max(180px) ${showTimestamp ? "max(228px) " : ""}${
     showAction ? "100px " : ""
   }`;
 

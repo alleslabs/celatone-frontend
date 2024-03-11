@@ -119,7 +119,7 @@ export const INITIA_THEME: ThemeConfig = {
       color: "inherit",
     },
     cancelled: {
-      bg: "error.darker",
+      bg: "error.background",
       color: "inherit",
     },
     depositFailed: {
