@@ -59,8 +59,8 @@ export const ValidatorOverview = ({
       <Alert variant="error" gap={2} my={6}>
         <CustomIcon name="alert-circle-solid" boxSize={4} color="error.main" />
         <AlertDescription>
-          This validator is currently inactive. The information displayed
-          reflects the latest available data.
+          This validator is currently {info.isJailed ? "jailed" : "inactive"}.
+          The information displayed reflects the latest available data.
         </AlertDescription>
       </Alert>
       <ValidatorDescription info={info} />

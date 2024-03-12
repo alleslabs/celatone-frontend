@@ -5,9 +5,9 @@ import Link from "next/link";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { ValidatorImage } from "lib/components/ValidatorImage";
 import type { ValidatorData } from "lib/types";
 
-import { ValidatorImage } from "./ValidatorImage";
 import { ValidatorStats } from "./ValidatorStats";
 import { ValidatorTitle } from "./ValidatorTitle";
 import { WebsiteButton } from "./WebsiteButton";
@@ -35,7 +35,9 @@ export const ValidatorTop = ({ info, totalVotingPower }: ValidatorTopProps) => (
       ]}
     />
     <Flex gap={4} alignItems={{ base: "start", md: "center" }}>
-      <ValidatorImage boxSize={32} display={{ base: "none", md: "flex" }} />
+      <Flex display={{ base: "none", md: "flex" }}>
+        <ValidatorImage validator={info} boxSize={32} />
+      </Flex>
       <Flex direction="column" w="full" gap={{ base: 2, md: 1 }}>
         <ValidatorTitle info={info} />
         <ValidatorStats info={info} totalVotingPower={totalVotingPower} />

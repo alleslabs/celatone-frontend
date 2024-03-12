@@ -1,9 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { ValidatorImage } from "lib/components/ValidatorImage";
 import type { ValidatorData } from "lib/types";
 
-import { ValidatorImage } from "./ValidatorImage";
 import { ValidatorStatusTag } from "./ValidatorStatusTag";
 import { WebsiteButton } from "./WebsiteButton";
 
@@ -13,7 +13,9 @@ interface ValidatorTitleProps {
 
 export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
   <Flex gap={4} alignItems={{ base: "center", md: "auto" }}>
-    <ValidatorImage boxSize={16} display={{ base: "flex", md: "none" }} />
+    <Flex display={{ base: "flex", md: "none" }}>
+      <ValidatorImage validator={info} boxSize={16} />
+    </Flex>
     <Flex
       w="full"
       direction={{ base: "column", md: "row" }}
@@ -39,8 +41,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
         >
           {info.moniker}
         </Heading>
-        {/* // TODO: Check isActive and isJailed */}
-        <ValidatorStatusTag status={info.isActive ? "Active" : "Inactive"} />
+        <ValidatorStatusTag info={info} />
       </Flex>
       <Heading
         as="h6"
