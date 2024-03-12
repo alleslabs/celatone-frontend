@@ -110,6 +110,9 @@ export const LineChart = ({
 }: LineChartProps) => {
   const isMobile = useMobile();
 
+  const maxYValue = Math.max(...dataset.data);
+  const yPadding = maxYValue * 0.2 || 1;
+
   const lineChartDataConfig = {
     borderWidth: 1,
     fill: true,
@@ -196,6 +199,8 @@ export const LineChart = ({
             return "#343445";
           },
         },
+        min: 0,
+        max: maxYValue + yPadding,
         ticks: {
           autoSkip: true,
           maxTicksLimit: 10,
