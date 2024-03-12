@@ -106,10 +106,6 @@ export type HistoricalPowersResponse = z.infer<
   typeof zHistoricalPowersResponse
 >;
 
-export const zValidatorQueryParams = z.object({
-  validatorAddress: zValidatorAddr,
-});
-
 export const getHistoricalPowers = async (
   endpoint: string,
   validatorAddr: ValidatorAddr

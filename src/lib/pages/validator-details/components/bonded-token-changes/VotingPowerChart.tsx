@@ -3,12 +3,12 @@ import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 import { useRouter } from "next/router";
 
+import { zValidatorDetailsQueryParams } from "../../types";
 import { useCelatoneApp } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
-import { zValidatorQueryParams } from "lib/services/validator";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
 import type { Token, U } from "lib/types";
 import { zValidatorAddr } from "lib/types";
@@ -20,7 +20,7 @@ import {
 
 export const VotingPowerChart = () => {
   const router = useRouter();
-  const validated = zValidatorQueryParams.safeParse(router.query);
+  const validated = zValidatorDetailsQueryParams.safeParse(router.query);
 
   const {
     chainConfig: {
