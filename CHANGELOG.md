@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#819](https://github.com/alleslabs/celatone-frontend/pull/819) Add validator detail overview section with data from APIs
 - [#801](https://github.com/alleslabs/celatone-frontend/pull/801) Add validator detail ui structure
 - [#817](https://github.com/alleslabs/celatone-frontend/pull/817) api v1 - validator voted proposals
 - [#816](https://github.com/alleslabs/celatone-frontend/pull/816) api v1 - validator staking provisions

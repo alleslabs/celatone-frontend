@@ -30,7 +30,7 @@ export const ValidatorOverview = ({
   const isMobile = useMobile();
   const move = useMoveConfig({ shouldRedirect: false });
 
-  return !info.isActive ? (
+  return info.isActive ? (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       <ValidatorDescription info={info} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
