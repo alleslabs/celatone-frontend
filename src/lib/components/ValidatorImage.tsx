@@ -1,5 +1,5 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Image, Spinner } from "@chakra-ui/react";
+import { Image, SkeletonCircle } from "@chakra-ui/react";
 
 import { useValidatorImage } from "lib/services/validatorService";
 import type { Nullable, Validator } from "lib/types";
@@ -28,7 +28,7 @@ export const ValidatorImage = ({
   }
 
   return isLoading || !data || !validator.moniker ? (
-    <Spinner boxSize={boxSize} />
+    <SkeletonCircle boxSize={boxSize} />
   ) : (
     <Image
       boxSize={boxSize}
