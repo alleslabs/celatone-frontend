@@ -49,11 +49,6 @@ type GovConfig =
 
 type NftConfig = { enabled: boolean };
 
-export interface ExplorerConfig {
-  validator: string;
-  proposal: string;
-}
-
 export interface ChainConfig {
   chain: string;
   registryChainName: string;
@@ -79,7 +74,6 @@ export interface ChainConfig {
     gasAdjustment: number;
     maxGasLimit: number;
   };
-  explorerLink: ExplorerConfig;
   extra: {
     disableAnyOfAddresses?: boolean;
     disableDelegation?: boolean;
