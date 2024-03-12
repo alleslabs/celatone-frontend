@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
 - [#805](https://github.com/alleslabs/celatone-frontend/pull/805) Revamp code detail page contracts section
 - [#802](https://github.com/alleslabs/celatone-frontend/pull/802) Revamp code detail page
