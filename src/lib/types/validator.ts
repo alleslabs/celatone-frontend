@@ -33,6 +33,7 @@ export const zValidatorData = z
     is_active: z.boolean(),
     voting_power: zBig,
     uptime: z.number().optional(),
+    website: z.string(),
   })
   .transform(snakeToCamel);
 

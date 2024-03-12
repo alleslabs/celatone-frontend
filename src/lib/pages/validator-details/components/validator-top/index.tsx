@@ -1,15 +1,23 @@
 import { Flex, Text } from "@chakra-ui/react";
+import type Big from "big.js";
+import Link from "next/link";
 
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import type { ValidatorData } from "lib/types";
 
 import { ValidatorImage } from "./ValidatorImage";
 import { ValidatorStats } from "./ValidatorStats";
 import { ValidatorTitle } from "./ValidatorTitle";
 import { WebsiteButton } from "./WebsiteButton";
 
-export const ValidatorTop = () => (
+interface ValidatorTopProps {
+  info: ValidatorData;
+  totalVotingPower: Big;
+}
+
+export const ValidatorTop = ({ info, totalVotingPower }: ValidatorTopProps) => (
   <Flex
     direction="column"
     gap={5}
@@ -23,14 +31,14 @@ export const ValidatorTop = () => (
           text: "Validators",
           href: "/validators",
         },
-        { text: `validator name` },
+        { text: info.moniker },
       ]}
     />
     <Flex gap={4} alignItems={{ base: "start", md: "center" }}>
       <ValidatorImage boxSize={32} display={{ base: "none", md: "flex" }} />
       <Flex direction="column" w="full" gap={{ base: 2, md: 1 }}>
-        <ValidatorTitle />
-        <ValidatorStats />
+        <ValidatorTitle info={info} />
+        <ValidatorStats info={info} totalVotingPower={totalVotingPower} />
         <Flex
           mt={{ base: 1, md: 0 }}
           gap={{ base: 0, md: 2 }}
@@ -46,10 +54,7 @@ export const ValidatorTop = () => (
           >
             Validator Address:
           </Text>
-          <CopyLink
-            value="osmovaloper14lzvt4gdwh2q4ymyjqma0p4j4aykpn92l4warr"
-            type="validator_address"
-          />
+          <CopyLink value={info.validatorAddress} type="validator_address" />
         </Flex>
         <Flex
           mt={{ base: 1, md: 0 }}
@@ -68,13 +73,15 @@ export const ValidatorTop = () => (
           </Text>
           <ExplorerLink
             type="user_address"
-            value="cltn14lzvt4gdwh2q4ymyjqma0p4j4aykpn92l4warr"
+            value={info.accountAddress}
             textFormat="normal"
             maxWidth="full"
             fixedHeight={false}
           />
         </Flex>
-        <WebsiteButton my={2} display={{ base: "flex", md: "none" }} />
+        <Link href={info.website} target="__blank">
+          <WebsiteButton my={2} display={{ base: "flex", md: "none" }} />
+        </Link>
       </Flex>
     </Flex>
   </Flex>

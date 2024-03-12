@@ -5,8 +5,10 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
+import { ErrorFetching, InvalidState } from "lib/components/state";
+import { useValidatorData } from "lib/services/validatorService";
 
 import {
   BondedTokenChanges,
@@ -28,6 +30,7 @@ const ValidatorDetailsBody = ({
 }: ValidatorDetailsQueryParams) => {
   const navigate = useInternalNavigate();
   const move = useMoveConfig({ shouldRedirect: false });
+  const { data, isLoading } = useValidatorData(validatorAddress);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -47,14 +50,13 @@ const ValidatorDetailsBody = ({
     [navigate, tab, validatorAddress]
   );
 
-  // TODO
-  // if (isLoading) return <Loading />;
-  // if (!data) return <ErrorFetching dataName="validator information" />;
-  // if (!data.info) return <InvalidValidator />;
+  if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="validator information" />;
+  if (!data.info) return <InvalidValidator />;
 
   return (
     <>
-      <ValidatorTop />
+      <ValidatorTop info={data.info} totalVotingPower={data.totalVotingPower} />
       <PageContainer>
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -89,6 +91,7 @@ const ValidatorDetailsBody = ({
                 onSelectBondedTokenChanges={handleTabChange(
                   TabIndex.BondedTokenChanges
                 )}
+                info={data.info}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>

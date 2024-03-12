@@ -1,10 +1,17 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import Link from "next/link";
+
+import type { ValidatorData } from "lib/types";
 
 import { ValidatorImage } from "./ValidatorImage";
 import { ValidatorStatusTag } from "./ValidatorStatusTag";
 import { WebsiteButton } from "./WebsiteButton";
 
-export const ValidatorTitle = () => (
+interface ValidatorTitleProps {
+  info: ValidatorData;
+}
+
+export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
   <Flex gap={4} alignItems={{ base: "center", md: "auto" }}>
     <ValidatorImage boxSize={16} display={{ base: "flex", md: "none" }} />
     <Flex
@@ -21,7 +28,7 @@ export const ValidatorTitle = () => (
           variant={{ base: "h6", md: "h5" }}
           color="accent.main"
         >
-          #111
+          #{info.rank}
         </Heading>
         <Heading
           as="h5"
@@ -30,9 +37,10 @@ export const ValidatorTitle = () => (
           color="text.main"
           display={{ base: "none", md: "flex" }}
         >
-          Validator name
+          {info.moniker}
         </Heading>
-        <ValidatorStatusTag status="Active" />
+        {/* // TODO: Check isActive and isJailed */}
+        <ValidatorStatusTag status={info.isActive ? "Active" : "Inactive"} />
       </Flex>
       <Heading
         as="h6"
@@ -42,9 +50,11 @@ export const ValidatorTitle = () => (
         color="text.main"
         display={{ base: "flex", md: "none" }}
       >
-        Validator name
+        {info.moniker}
       </Heading>
-      <WebsiteButton display={{ base: "none", md: "flex" }} />
+      <Link href={info.website} target="__blank">
+        <WebsiteButton display={{ base: "none", md: "flex" }} />
+      </Link>
     </Flex>
   </Flex>
 );
