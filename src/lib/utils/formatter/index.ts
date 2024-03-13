@@ -7,3 +7,4 @@ export * from "./percentage";
 export * from "./tokenType";
 export * from "./token";
 export * from "./text";
+export * from "./url";
