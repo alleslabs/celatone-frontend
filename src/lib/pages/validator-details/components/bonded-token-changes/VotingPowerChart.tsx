@@ -8,7 +8,7 @@ import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
-import type { Token, U } from "lib/types";
+import type { Token, U, ValidatorAddr } from "lib/types";
 import { zValidatorAddr } from "lib/types";
 import {
   formatHHmm,
@@ -17,7 +17,7 @@ import {
 } from "lib/utils";
 
 interface VotingPowerChartProps {
-  validatorAddress: string;
+  validatorAddress: ValidatorAddr;
 }
 
 export const VotingPowerChart = ({

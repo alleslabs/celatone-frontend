@@ -1,11 +1,12 @@
 import { Flex } from "@chakra-ui/react";
 
 import { RelatedTransactionTable } from "../tables/RelatedTransactionsTable";
+import type { ValidatorAddr } from "lib/types";
 
 import { VotingPowerChart } from "./VotingPowerChart";
 
 interface BondedTokenChangesProps {
-  validatorAddress: string;
+  validatorAddress: ValidatorAddr;
 }
 
 export const BondedTokenChanges = ({
