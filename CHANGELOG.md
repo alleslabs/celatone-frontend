@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
-- [#818](https://github.com/alleslabs/celatone-frontend/pull/818) bonded tokens voting powers replacement with real data from api v1
+- [#818](https://github.com/alleslabs/celatone-frontend/pull/818) Replace bonded tokens voting powers with real data from api v1
 - [#801](https://github.com/alleslabs/celatone-frontend/pull/801) Add validator detail ui structure
 - [#817](https://github.com/alleslabs/celatone-frontend/pull/817) api v1 - validator voted proposals
 - [#816](https://github.com/alleslabs/celatone-frontend/pull/816) api v1 - validator staking provisions
