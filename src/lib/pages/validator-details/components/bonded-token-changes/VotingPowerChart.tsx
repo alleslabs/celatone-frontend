@@ -9,7 +9,6 @@ import { ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
 import type { Token, U, ValidatorAddr } from "lib/types";
-import { zValidatorAddr } from "lib/types";
 import {
   formatHHmm,
   formatUTokenWithPrecision,
@@ -32,9 +31,8 @@ export const VotingPowerChart = ({
     withPrices: false,
   });
 
-  const { data: historicalPowers, isLoading } = useValidatorHistoricalPowers(
-    zValidatorAddr.parse(validatorAddress)
-  );
+  const { data: historicalPowers, isLoading } =
+    useValidatorHistoricalPowers(validatorAddress);
 
   if (isLoading || isAssetInfosLoading) return <Loading />;
   if (!historicalPowers) return <ErrorFetching dataName="historical powers" />;
