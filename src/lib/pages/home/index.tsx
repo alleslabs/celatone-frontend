@@ -76,7 +76,7 @@ const Home = () => {
       >
         <TopDecorations />
         <Heading as="h4" variant={{ base: "h5", md: "h4" }} mb={5} zIndex={1}>
-          <Text as="span" color="accent.main">
+          <Text as="span" color="secondary.main">
             {prettyName}
           </Text>{" "}
           Overview

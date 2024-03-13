@@ -47,12 +47,12 @@ export const DEFAULT_THEME: ThemeConfig = {
       background: "#244865",
     },
     accent: {
-      lighter: "#E0F1FB",
-      light: "#C2EAFF",
-      main: "#89D1F6",
-      dark: "#5ABAEC",
-      darker: "#2B8BBD",
-      background: "#244865",
+      lighter: "#FDFAEC",
+      light: "#F9F0C8",
+      main: "#F5E6A3",
+      dark: "#EDD25A",
+      darker: "#7B703A",
+      background: "#3B3928",
     },
     gray: {
       100: "#F8FAFC",
