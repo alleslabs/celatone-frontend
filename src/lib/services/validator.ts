@@ -15,6 +15,7 @@ import {
 import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
 
 import { zBlocksResponse } from "./block";
+import { zProposal } from "./proposal";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -86,11 +87,14 @@ export const resolveValIdentity = async (
   );
 };
 
-const zHistoricalPowersItem = z.object({
-  hour_rounded_timestamp: zUtcDate,
-  timestamp: zUtcDate,
-  voting_power: zBig,
-});
+const zHistoricalPowersItem = z
+  .object({
+    hour_rounded_timestamp: zUtcDate,
+    timestamp: zUtcDate,
+    voting_power: zBig,
+  })
+  .transform(snakeToCamel);
+export type HistoricalPowersItem = z.infer<typeof zHistoricalPowersItem>;
 
 export const zHistoricalPowersResponse = z
   .object({
@@ -280,3 +284,43 @@ export const getValidatorDelegators = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
     .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
+
+const zValidatorVotedProposalsResponseItem = zProposal
+  .extend({
+    yes: zBig,
+    abstain: zBig,
+    no: zBig,
+    no_with_veto: zBig,
+    is_vote_weighted: z.boolean(),
+  })
+  .transform(snakeToCamel);
+
+const zValidatorVotedProposalsResponse = z.object({
+  items: z.array(zValidatorVotedProposalsResponseItem),
+  total: z.number().nonnegative(),
+});
+export type ValidatorVotedProposalsResponse = z.infer<
+  typeof zValidatorVotedProposalsResponse
+>;
+
+export const getValidatorVotedProposals = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr,
+  limit: number,
+  offset: number,
+  answer?: string,
+  search?: string
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(validatorAddress)}/voted-proposals`,
+      {
+        params: {
+          limit,
+          offset,
+          answer,
+          search,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zValidatorVotedProposalsResponse, data));

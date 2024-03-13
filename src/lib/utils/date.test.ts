@@ -4,6 +4,7 @@ import MockDate from "mockdate";
 import {
   dateFromNow,
   formatDuration,
+  formatHHmm,
   formatSeconds,
   formatUTC,
   getCurrentDate,
@@ -133,6 +134,25 @@ describe("formatUTC", () => {
     expect(formatUTC(d)).toEqual("May 02, 2018, 11:12:13 AM (UTC)");
     d = parseDate("2018036187");
     expect(formatUTC(d)).toEqual("May 03, 2018, 3:00:00 PM (UTC)");
+  });
+});
+
+describe("formatHHmm", () => {
+  test("should correctly format date to HH:mm string", () => {
+    let d = parseDate("2018");
+    expect(formatHHmm(d)).toEqual("00:00");
+    d = parseDate("2018-04");
+    expect(formatHHmm(d)).toEqual("00:00");
+    d = parseDate("2018-04-24");
+    expect(formatHHmm(d)).toEqual("00:00");
+    d = parseDate("2018-04-24 11:12");
+    expect(formatHHmm(d)).toEqual("11:12");
+    d = parseDate("2018-05-02 11:12:13");
+    expect(formatHHmm(d)).toEqual("11:12");
+    d = parseDate("2018-05-02 11:12:13.998");
+    expect(formatHHmm(d)).toEqual("11:12");
+    d = parseDate("2018036187");
+    expect(formatHHmm(d)).toEqual("15:00");
   });
 });
 

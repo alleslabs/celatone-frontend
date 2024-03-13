@@ -312,6 +312,7 @@ const AccountDetailsBody = ({
                 <Flex
                   borderBottom={{ base: "0px", md: "1px solid" }}
                   borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                  my={{ base: 0, md: 2 }}
                 >
                   <DelegationsSection
                     address={accountAddress}

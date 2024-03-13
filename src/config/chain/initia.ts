@@ -52,10 +52,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://app.testnet.initia.xyz/validator",
-      proposal: "https://app.testnet.initia.xyz/proposal",
-    },
     extra: {},
   },
   "minimove-1": {
@@ -101,11 +97,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator:
-        "https://lcd.minimove-1.initia.xyz/opinit/opchild/v1/validator",
-      proposal: "",
-    },
     extra: { disableDelegation: true },
   },
   "miniwasm-1": {
@@ -149,11 +140,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator:
-        "https://lcd.miniwasm-1.initia.xyz/opinit/opchild/v1/validator",
-      proposal: "",
     },
     extra: { disableDelegation: true },
   },
@@ -201,10 +187,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "https://app.stone-13.initia.xyz/validator",
-      proposal: "https://app.stone-13.initia.xyz/proposal",
     },
     extra: {},
   },

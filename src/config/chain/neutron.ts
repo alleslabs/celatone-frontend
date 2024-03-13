@@ -9,7 +9,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Neutron",
     lcd: "https://rest-kralum.neutron-1.neutron.org",
     rpc: "https://rpc-kralum.neutron-1.neutron.org:443",
-    indexer: "https://neutron-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://neutron-1-legacy-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -44,10 +44,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
-    },
     extra: { disableDelegation: true },
   },
   "pion-1": {
@@ -56,7 +52,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Neutron Testnet",
     lcd: "https://rest-palvus.pion-1.ntrn.tech:443",
     rpc: "https://rpc-palvus.pion-1.ntrn.tech:443",
-    indexer: "https://pion-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://pion-1-legacy-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -90,10 +86,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
     },
     extra: { disableDelegation: true },
   },

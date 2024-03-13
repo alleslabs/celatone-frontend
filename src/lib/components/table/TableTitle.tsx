@@ -20,9 +20,15 @@ export const TableTitle = ({
 }: TableTitleProps) => (
   <Box mb={mb} {...props}>
     <Flex gap={2} h="29px" alignItems="center">
-      <Heading as="h6" variant={isSmall ? "h7" : "h6"}>
-        {title}
-      </Heading>
+      {isSmall ? (
+        <Text variant="body2" color="text.dark" fontWeight={700}>
+          {title}
+        </Text>
+      ) : (
+        <Heading as="h6" variant="h6">
+          {title}
+        </Heading>
+      )}
       {showCount && (
         <Badge textColor={count ? "text.main" : "text.disabled"}>
           {count ?? "N/A"}

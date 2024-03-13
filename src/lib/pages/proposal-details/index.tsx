@@ -2,7 +2,7 @@ import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
-import { AmpEvent, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
@@ -14,6 +14,8 @@ import { ProposalOverview, ProposalTop, VoteDetails } from "./components";
 import { useDerivedProposalData, useDerivedProposalParams } from "./data";
 import type { ProposalDetailsQueryParams } from "./types";
 import { TabIndex, zProposalDetailsQueryParams } from "./types";
+
+const InvalidProposal = () => <InvalidState title="Proposal does not exist" />;
 
 const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
@@ -28,6 +30,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
+      trackUseTab(nextTab);
       navigate({
         pathname: "/proposals/[id]/[tab]",
         query: {
@@ -44,7 +47,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
 
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="proposal information" />;
-  if (!data.info) return <InvalidState title="Proposal does not exist" />;
+  if (!data.info) return <InvalidProposal />;
 
   return (
     <>
@@ -103,7 +106,7 @@ const ProposalDetails = () => {
   return (
     <PageContainer>
       {!validated.success ? (
-        <InvalidState title="Proposal does not exist" />
+        <InvalidProposal />
       ) : (
         <ProposalDetailsBody {...validated.data} />
       )}
