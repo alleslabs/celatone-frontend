@@ -46,11 +46,13 @@ export const ValidatorsTableMobileCard = ({
       topContent={
         <Flex gap={3} w="full">
           {isActive && (
-            <Flex direction="column" w="64px">
+            <Flex direction="column" gap={1} w="64px">
               <MobileLabel label="Rank" />
-              <Text variant="body2" color="text.main">
-                {validator.rank}
-              </Text>
+              <Flex alignItems="center" h="full">
+                <Text variant="body2" color="text.main">
+                  {validator.rank}
+                </Text>
+              </Flex>
             </Flex>
           )}
           <Flex direction="column" gap={1}>
