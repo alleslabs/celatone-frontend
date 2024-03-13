@@ -40,7 +40,11 @@ export const ValidatorTop = ({ info, totalVotingPower }: ValidatorTopProps) => (
       </Flex>
       <Flex direction="column" w="full" gap={{ base: 2, md: 1 }}>
         <ValidatorTitle info={info} />
-        <ValidatorStats info={info} totalVotingPower={totalVotingPower} />
+        <ValidatorStats
+          validatorAddress={info.validatorAddress}
+          commissionRate={info.commissionRate}
+          totalVotingPower={totalVotingPower}
+        />
         <Flex
           mt={{ base: 1, md: 0 }}
           gap={{ base: 0, md: 2 }}

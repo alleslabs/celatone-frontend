@@ -91,7 +91,9 @@ const ValidatorDetailsBody = ({
                 onSelectBondedTokenChanges={handleTabChange(
                   TabIndex.BondedTokenChanges
                 )}
-                info={data.info}
+                isActive={data.info.isActive}
+                isJailed={data.info.isJailed}
+                details={data.info.details}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>

@@ -9,7 +9,6 @@ import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import type { ValidatorData } from "lib/types";
 
 import { ValidatorDescription } from "./ValidatorDescription";
 import { VotingPowerOverview } from "./VotingPowerOverview";
@@ -18,21 +17,25 @@ interface ValidatorOverviewProps {
   onSelectVotes: () => void;
   onSelectPerformance: () => void;
   onSelectBondedTokenChanges: () => void;
-  info: ValidatorData;
+  isActive: boolean;
+  isJailed: boolean;
+  details: string;
 }
 
 export const ValidatorOverview = ({
   onSelectVotes,
   onSelectPerformance,
   onSelectBondedTokenChanges,
-  info,
+  isActive,
+  isJailed,
+  details,
 }: ValidatorOverviewProps) => {
   const isMobile = useMobile();
   const move = useMoveConfig({ shouldRedirect: false });
 
-  return info.isActive ? (
+  return isActive && !isJailed ? (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
-      <ValidatorDescription info={info} />
+      <ValidatorDescription details={details} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <VotingPowerOverview />
         <UptimeSection onViewMore={onSelectPerformance} />
@@ -59,11 +62,11 @@ export const ValidatorOverview = ({
       <Alert variant="error" gap={2} my={6}>
         <CustomIcon name="alert-circle-solid" boxSize={4} color="error.main" />
         <AlertDescription>
-          This validator is currently {info.isJailed ? "jailed" : "inactive"}.
-          The information displayed reflects the latest available data.
+          This validator is currently {isJailed ? "jailed" : "inactive"}. The
+          information displayed reflects the latest available data.
         </AlertDescription>
       </Alert>
-      <ValidatorDescription info={info} />
+      <ValidatorDescription details={details} />
       <EmptyState
         message="This validator has recently begun their duties. Let's extend our best wishes for their success in their role. 😊"
         imageVariant="empty"
