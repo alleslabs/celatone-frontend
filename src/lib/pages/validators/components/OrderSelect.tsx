@@ -5,11 +5,11 @@ import { ValidatorOrder } from "../types";
 
 const ORDER_OPTIONS = [
   {
-    label: "Name (A to Z)",
+    label: "Validator Name (A to Z)",
     value: { order: ValidatorOrder.Moniker, isDesc: false },
   },
   {
-    label: "Name (Z to A)",
+    label: "Validator Name (Z to A)",
     value: { order: ValidatorOrder.Moniker, isDesc: true },
   },
   {
