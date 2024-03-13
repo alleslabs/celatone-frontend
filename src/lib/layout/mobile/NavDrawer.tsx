@@ -74,15 +74,6 @@ export const NavDrawer = () => {
               },
             ]
           : []),
-        ...(govConfig.enabled
-          ? [
-              {
-                name: "Proposals",
-                slug: "/proposals",
-                icon: "proposal" as IconKeys,
-              },
-            ]
-          : []),
         ...(moveConfig.enabled
           ? [
               {
@@ -103,6 +94,20 @@ export const NavDrawer = () => {
                 name: "NFT Collections",
                 slug: "/nft-collections",
                 icon: "group" as IconKeys,
+              },
+            ]
+          : []),
+        ...(govConfig.enabled
+          ? [
+              {
+                name: "Proposals",
+                slug: "/proposals",
+                icon: "proposal" as IconKeys,
+              },
+              {
+                name: "Validators",
+                slug: "/validators",
+                icon: "admin" as IconKeys,
               },
             ]
           : []),

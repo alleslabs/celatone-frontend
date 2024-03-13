@@ -32,6 +32,12 @@ const SubHeader = () => {
     { name: "Blocks", slug: "/blocks", icon: "block" },
   ];
 
+  if (wasmConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Codes", slug: "/codes", icon: "code" },
+      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
+    );
+
   if (moveConfig.enabled)
     subHeaderMenu.push({
       name: "Modules",
@@ -39,28 +45,21 @@ const SubHeader = () => {
       icon: "contract-address",
     });
 
-  if (wasmConfig.enabled)
-    subHeaderMenu.push(
-      { name: "Codes", slug: "/codes", icon: "code" },
-      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
-    );
-
-  if (govConfig.enabled)
-    subHeaderMenu.push({
-      name: "Proposals",
-      slug: "/proposals",
-      icon: "proposal",
-    });
-
-  if (poolConfig.enabled)
-    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
-
   if (nftConfig.enabled)
     subHeaderMenu.push({
       name: "NFTs",
       slug: "/nft-collections",
       icon: "group",
     });
+
+  if (govConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Proposals", slug: "/proposals", icon: "proposal" },
+      { name: "Validators", slug: "/validators", icon: "admin" }
+    );
+
+  if (poolConfig.enabled)
+    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
 
   const isCurrentPage = useIsCurrentPage();
 
