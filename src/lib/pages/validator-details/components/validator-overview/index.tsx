@@ -9,6 +9,7 @@ import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
+import type { ValidatorAddr } from "lib/types";
 
 import { ValidatorDescription } from "./ValidatorDescription";
 import { VotingPowerOverview } from "./VotingPowerOverview";
@@ -17,12 +18,14 @@ interface ValidatorOverviewProps {
   onSelectVotes: () => void;
   onSelectPerformance: () => void;
   onSelectBondedTokenChanges: () => void;
+  validatorAddress: ValidatorAddr;
 }
 
 export const ValidatorOverview = ({
   onSelectVotes,
   onSelectPerformance,
   onSelectBondedTokenChanges,
+  validatorAddress,
 }: ValidatorOverviewProps) => {
   const isMobile = useMobile();
   const move = useMoveConfig({ shouldRedirect: false });
@@ -43,7 +46,9 @@ export const ValidatorOverview = ({
             <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
               <RecentBlocksSection hasTitle />
             </Flex>
-            {!move.enabled && <VotingPowerChart />}
+            {!move.enabled && (
+              <VotingPowerChart validatorAddress={validatorAddress} />
+            )}
           </>
         )}
         {isMobile && !move.enabled && (

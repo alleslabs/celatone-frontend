@@ -1,9 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
-import { useRouter } from "next/router";
 
-import { zValidatorDetailsQueryParams } from "../../types";
 import { useCelatoneApp } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { Loading } from "lib/components/Loading";
@@ -18,10 +16,13 @@ import {
   getTokenLabel,
 } from "lib/utils";
 
-export const VotingPowerChart = () => {
-  const router = useRouter();
-  const validated = zValidatorDetailsQueryParams.safeParse(router.query);
+interface VotingPowerChartProps {
+  validatorAddress: string;
+}
 
+export const VotingPowerChart = ({
+  validatorAddress,
+}: VotingPowerChartProps) => {
   const {
     chainConfig: {
       extra: { singleStakingDenom },
@@ -32,9 +33,7 @@ export const VotingPowerChart = () => {
   });
 
   const { data: historicalPowers, isLoading } = useValidatorHistoricalPowers(
-    zValidatorAddr.parse(
-      router.isReady && validated.success ? validated.data.validatorAddress : ""
-    )
+    zValidatorAddr.parse(validatorAddress)
   );
 
   if (isLoading || isAssetInfosLoading) return <Loading />;
