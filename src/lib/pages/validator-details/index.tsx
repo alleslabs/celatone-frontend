@@ -3,11 +3,16 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useInternalNavigate,
+  useMoveConfig,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorData } from "lib/services/validatorService";
 
 import {
@@ -32,6 +37,15 @@ const ValidatorDetailsBody = ({
   const move = useMoveConfig({ shouldRedirect: false });
   const { data, isLoading } = useValidatorData(validatorAddress);
 
+  const {
+    chainConfig: {
+      extra: { singleStakingDenom },
+    },
+  } = useCelatoneApp();
+  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
+    withPrices: true,
+  });
+
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
@@ -50,13 +64,17 @@ const ValidatorDetailsBody = ({
     [navigate, tab, validatorAddress]
   );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isAssetInfosLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="validator information" />;
   if (!data.info) return <InvalidValidator />;
 
   return (
     <>
-      <ValidatorTop info={data.info} totalVotingPower={data.totalVotingPower} />
+      <ValidatorTop
+        info={data.info}
+        totalVotingPower={data.totalVotingPower}
+        singleStakingDenom={singleStakingDenom}
+      />
       <PageContainer>
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -105,7 +123,11 @@ const ValidatorDetailsBody = ({
             </TabPanel>
             {!move.enabled && (
               <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-                <BondedTokenChanges validatorAddress={validatorAddress} />
+                <BondedTokenChanges
+                  validatorAddress={validatorAddress}
+                  singleStakingDenom={singleStakingDenom}
+                  assetInfos={assetInfos}
+                />
               </TabPanel>
             )}
           </TabPanels>

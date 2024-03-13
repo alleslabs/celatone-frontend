@@ -15,9 +15,14 @@ import { WebsiteButton } from "./WebsiteButton";
 interface ValidatorTopProps {
   info: ValidatorData;
   totalVotingPower: Big;
+  singleStakingDenom?: string;
 }
 
-export const ValidatorTop = ({ info, totalVotingPower }: ValidatorTopProps) => (
+export const ValidatorTop = ({
+  info,
+  totalVotingPower,
+  singleStakingDenom,
+}: ValidatorTopProps) => (
   <Flex
     direction="column"
     gap={5}
@@ -44,6 +49,7 @@ export const ValidatorTop = ({ info, totalVotingPower }: ValidatorTopProps) => (
           validatorAddress={info.validatorAddress}
           commissionRate={info.commissionRate}
           totalVotingPower={totalVotingPower}
+          singleStakingDenom={singleStakingDenom}
         />
         <Flex
           mt={{ base: 1, md: 0 }}

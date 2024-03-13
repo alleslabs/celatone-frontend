@@ -9,7 +9,7 @@ import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import type { ValidatorAddr } from "lib/types";
+import type { AssetInfos, ValidatorAddr } from "lib/types";
 
 import { ValidatorDescription } from "./ValidatorDescription";
 import { VotingPowerOverview } from "./VotingPowerOverview";
@@ -22,6 +22,8 @@ interface ValidatorOverviewProps {
   isJailed: boolean;
   details: string;
   validatorAddress: ValidatorAddr;
+  singleStakingDenom?: string;
+  assetInfos?: AssetInfos;
 }
 
 export const ValidatorOverview = ({
@@ -32,6 +34,8 @@ export const ValidatorOverview = ({
   isJailed,
   details,
   validatorAddress,
+  singleStakingDenom,
+  assetInfos,
 }: ValidatorOverviewProps) => {
   const isMobile = useMobile();
   const move = useMoveConfig({ shouldRedirect: false });
@@ -49,7 +53,11 @@ export const ValidatorOverview = ({
             <RecentBlocksSection hasTitle />
           </Flex>
           {!move.enabled && (
-            <VotingPowerChart validatorAddress={validatorAddress} />
+            <VotingPowerChart
+              validatorAddress={validatorAddress}
+              singleStakingDenom={singleStakingDenom}
+              assetInfos={assetInfos}
+            />
           )}
         </>
       )}

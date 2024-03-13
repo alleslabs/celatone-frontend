@@ -2,13 +2,11 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
-import { useCelatoneApp } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
-import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
-import type { Token, U, ValidatorAddr } from "lib/types";
+import type { AssetInfos, Token, U, ValidatorAddr } from "lib/types";
 import {
   formatHHmm,
   formatUTokenWithPrecision,
@@ -17,24 +15,19 @@ import {
 
 interface VotingPowerChartProps {
   validatorAddress: ValidatorAddr;
+  singleStakingDenom?: string;
+  assetInfos?: AssetInfos;
 }
 
 export const VotingPowerChart = ({
   validatorAddress,
+  singleStakingDenom,
+  assetInfos,
 }: VotingPowerChartProps) => {
-  const {
-    chainConfig: {
-      extra: { singleStakingDenom },
-    },
-  } = useCelatoneApp();
-  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
-    withPrices: false,
-  });
-
   const { data: historicalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
 
-  if (isLoading || isAssetInfosLoading) return <Loading />;
+  if (isLoading) return <Loading />;
   if (!historicalPowers) return <ErrorFetching dataName="historical powers" />;
 
   const labels = historicalPowers?.items.map((item) =>

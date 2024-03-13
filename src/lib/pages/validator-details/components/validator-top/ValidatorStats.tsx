@@ -1,7 +1,6 @@
 import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
 import {
   useValidatorDelegators,
@@ -31,21 +30,18 @@ interface ValidatorStatsProps {
   validatorAddress: ValidatorAddr;
   commissionRate: number;
   totalVotingPower: Big;
+  singleStakingDenom?: string;
 }
 
 export const ValidatorStats = ({
   validatorAddress,
   commissionRate,
   totalVotingPower,
+  singleStakingDenom,
 }: ValidatorStatsProps) => {
   const { data: stakingProvisions } = useValidatorStakingProvisions();
   const { data: delegations, isLoading: isDelegationsLoading } =
     useValidatorDelegators(validatorAddress);
-  const {
-    chainConfig: {
-      extra: { singleStakingDenom },
-    },
-  } = useCelatoneApp();
 
   if (!stakingProvisions) return <Spinner size="sm" />;
 
