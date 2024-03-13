@@ -89,6 +89,7 @@ const ValidatorDetailsBody = ({
                 onSelectBondedTokenChanges={handleTabChange(
                   TabIndex.BondedTokenChanges
                 )}
+                validatorAddress={validatorAddress}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
@@ -99,7 +100,7 @@ const ValidatorDetailsBody = ({
             </TabPanel>
             {!move.enabled && (
               <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-                <BondedTokenChanges />
+                <BondedTokenChanges validatorAddress={validatorAddress} />
               </TabPanel>
             )}
           </TabPanels>

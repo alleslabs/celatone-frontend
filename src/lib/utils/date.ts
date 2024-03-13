@@ -29,6 +29,8 @@ export const parseDateDefault = (dateOpt: Option<string>): Date =>
 export const formatUTC = (date: Date) =>
   dayjs.utc(date).format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
 
+export const formatHHmm = (date: Date) => dayjs.utc(date).format("HH:mm");
+
 export const dateFromNow = (date: Date) => dayjs.utc(date).fromNow();
 
 export const formatSeconds = (sec: Option<string>) => {
