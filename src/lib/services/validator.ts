@@ -87,11 +87,14 @@ export const resolveValIdentity = async (
   );
 };
 
-const zHistoricalPowersItem = z.object({
-  hour_rounded_timestamp: zUtcDate,
-  timestamp: zUtcDate,
-  voting_power: zBig,
-});
+const zHistoricalPowersItem = z
+  .object({
+    hour_rounded_timestamp: zUtcDate,
+    timestamp: zUtcDate,
+    voting_power: zBig,
+  })
+  .transform(snakeToCamel);
+export type HistoricalPowersItem = z.infer<typeof zHistoricalPowersItem>;
 
 export const zHistoricalPowersResponse = z
   .object({

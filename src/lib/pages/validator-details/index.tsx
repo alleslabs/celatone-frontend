@@ -94,6 +94,7 @@ const ValidatorDetailsBody = ({
                 isActive={data.info.isActive}
                 isJailed={data.info.isJailed}
                 details={data.info.details}
+                validatorAddress={validatorAddress}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
@@ -104,7 +105,7 @@ const ValidatorDetailsBody = ({
             </TabPanel>
             {!move.enabled && (
               <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-                <BondedTokenChanges />
+                <BondedTokenChanges validatorAddress={validatorAddress} />
               </TabPanel>
             )}
           </TabPanels>
