@@ -55,7 +55,7 @@ const SubHeader = () => {
   if (govConfig.enabled)
     subHeaderMenu.push(
       { name: "Proposals", slug: "/proposals", icon: "proposal" },
-      { name: "Validators", slug: "/validators", icon: "admin" }
+      { name: "Validators", slug: "/validators", icon: "validator" }
     );
 
   if (poolConfig.enabled)

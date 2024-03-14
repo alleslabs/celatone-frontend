@@ -107,7 +107,7 @@ export const NavDrawer = () => {
               {
                 name: "Validators",
                 slug: "/validators",
-                icon: "admin" as IconKeys,
+                icon: "validator" as IconKeys,
               },
             ]
           : []),
