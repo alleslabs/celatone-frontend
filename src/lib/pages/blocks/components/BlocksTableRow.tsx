@@ -11,11 +11,13 @@ import { dateFromNow, formatUTC, truncate } from "lib/utils";
 interface BlocksTableRowProps {
   templateColumns: GridProps["templateColumns"];
   blockData: Block;
+  hideProposer?: boolean;
 }
 
 export const BlocksTableRow = ({
   templateColumns,
   blockData,
+  hideProposer = false,
 }: BlocksTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -42,14 +44,18 @@ export const BlocksTableRow = ({
           {blockData.height}
         </ExplorerLink>
       </TableRow>
-      <TableRow>{truncate(blockData.hash.toUpperCase())}</TableRow>
       <TableRow>
-        <ValidatorBadge
-          validator={blockData.proposer}
-          badgeSize={7}
-          maxWidth="220px"
-        />
+        {truncate(blockData.hash.toUpperCase(), hideProposer ? [9, 9] : [6, 6])}
       </TableRow>
+      {!hideProposer && (
+        <TableRow>
+          <ValidatorBadge
+            validator={blockData.proposer}
+            badgeSize={7}
+            maxWidth="220px"
+          />
+        </TableRow>
+      )}
       <TableRow
         justifyContent="center"
         color={blockData.txCount === 0 ? "text.dark" : "text.main"}

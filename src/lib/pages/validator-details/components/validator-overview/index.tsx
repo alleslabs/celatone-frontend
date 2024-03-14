@@ -57,7 +57,10 @@ export const ValidatorOverview = ({
             onViewMore={onSelectBondedTokenChanges}
           />
         )}
-        <ProposedBlocksTable onViewMore={onSelectPerformance} />
+        <ProposedBlocksTable
+          validatorAddress={validatorAddress}
+          onViewMore={onSelectPerformance}
+        />
         <VotedProposalsTable onViewMore={onSelectVotes} />
       </Flex>
       {/* TODO: change to conditions and remove line 72-74 */}

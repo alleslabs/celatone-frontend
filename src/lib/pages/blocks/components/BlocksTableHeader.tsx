@@ -6,11 +6,13 @@ import { TableHeader } from "lib/components/table";
 interface BlocksTableHeaderProps {
   templateColumns: GridProps["templateColumns"];
   scrollComponentId: string;
+  hideProposer?: boolean;
 }
 
 export const BlocksTableHeader = ({
   templateColumns,
   scrollComponentId,
+  hideProposer = false,
 }: BlocksTableHeaderProps) => (
   <Grid
     templateColumns={templateColumns}
@@ -19,7 +21,7 @@ export const BlocksTableHeader = ({
   >
     <TableHeader>Block Height</TableHeader>
     <TableHeader>Block Hash</TableHeader>
-    <TableHeader>Proposed by</TableHeader>
+    {!hideProposer && <TableHeader>Proposed by</TableHeader>}
     <TableHeader textAlign="center">Transactions</TableHeader>
     <TableHeader>Timestamp</TableHeader>
   </Grid>
