@@ -78,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
 - [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section

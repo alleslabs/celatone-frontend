@@ -1,7 +1,9 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import type { ThemeConfig } from "config/theme/types";
+import type { ComponentConfig, ThemeConfig } from "config/theme/types";
 
-export const SEI_THEME: ThemeConfig = {
+import { generateTheme } from "./utils";
+
+const SEI_BASE_THEME: ThemeConfig = {
   branding: {
     logo: "https://assets.alleslabs.dev/integrations/sei/logo.svg",
     favicon: "https://assets.alleslabs.dev/integrations/sei/favicon.ico",
@@ -25,6 +27,10 @@ export const SEI_THEME: ThemeConfig = {
     body: {
       url: "https://fonts.cdnfonts.com/css/satoshi?styles=135009,135005,135007,135002,135000",
       name: "Satoshi, sans-serif",
+    },
+    mono: {
+      url: "/font/main.css",
+      name: "PP Neue Montreal Mono Regular",
     },
   },
   colors: {
@@ -88,90 +94,17 @@ export const SEI_THEME: ThemeConfig = {
       900: "#0C1C23",
     },
   },
-  tag: {
-    signer: {
-      bg: "accent.darker",
-      color: "inherit",
-    },
-    related: {
-      bg: "primary.dark",
-      color: "gray.900",
-    },
-  },
-  proposalChip: {
-    depositPeriod: {
-      bg: "accent.darker",
-      color: "inherit",
-    },
-    votingPeriod: {
-      bg: "accent.dark",
-      color: "inherit",
-    },
-    failed: {
-      bg: "error.dark",
-      color: "inherit",
-    },
-    rejected: {
-      bg: "error.dark",
-      color: "inherit",
-    },
-    passed: {
-      bg: "success.dark",
-      color: "inherit",
-    },
-    cancelled: {
-      bg: "error.background",
-      color: "inherit",
-    },
-    depositFailed: {
-      bg: "gray.700",
-      color: "inherit",
-    },
-  },
-  voteParticipations: {
-    voted: "accent.main",
-    votedAbstain: "accent.darker",
-    didNotVote: "gray.700",
-  },
-  button: {
-    primary: {
-      background: "primary.main",
-      color: "gray.900",
-      disabledBackground: "primary.darker",
-      disabledColor: "gray.900",
-      hoverBackground: "primary.dark",
-      activeBackground: "primary.light",
-    },
-    outlinePrimary: {
-      borderColor: "primary.darker",
-      color: "primary.main",
-      disabledBorderColor: "gray.700",
-      disabledColor: "gray.600",
-      hoverBackground: "primary.darker",
-      activeBackground: "primary.light",
-    },
-  },
-  stepper: {
-    active: {
-      bg: "accent.main",
-      color: "gray.100",
-    },
-    disabled: {
-      bg: "gray.500",
-      color: "background.main",
-    },
-  },
-  borderRadius: {
-    default: "8px",
-    iconButton: "36px",
-    viewButton: "0 0 8px 8px",
-    uploadButton: "50%",
-    tag: "full",
-    badge: "16px",
-    radio: "12px",
-    indicator: "2px",
-    stepper: "full",
-  },
+  // borderRadius: {
+  //   default: "8px",
+  //   iconButton: "36px",
+  //   viewButton: "0 0 8px 8px",
+  //   uploadButton: "50%",
+  //   tag: "full",
+  //   badge: "16px",
+  //   radio: "12px",
+  //   indicator: "2px",
+  //   stepper: "full",
+  // },
   jsonTheme: "one_dark",
   illustration: {
     "404": "https://assets.alleslabs.dev/integrations/sei/illustration/404.svg",
@@ -202,3 +135,74 @@ export const SEI_THEME: ThemeConfig = {
     telegram: "https://t.me/seinetwork",
   },
 };
+
+const SEI_COMPONENT_CONFIG: ComponentConfig = {
+  button: {
+    primary: {
+      background: "primary.main",
+      color: "gray.900",
+      disabledBackground: "primary.darker",
+      disabledColor: "gray.900",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.light",
+    },
+    outlinePrimary: {
+      borderColor: "primary.darker",
+      color: "primary.main",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.darker",
+      activeBackground: "primary.light",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "accent.darker",
+    },
+    votingPeriod: {
+      bg: "accent.dark",
+    },
+    failed: {
+      bg: "error.dark",
+    },
+    rejected: {
+      bg: "error.dark",
+    },
+    passed: {
+      bg: "success.dark",
+    },
+    cancelled: {
+      bg: "error.background",
+    },
+    depositFailed: {
+      bg: "gray.700",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "accent.main",
+      color: "gray.100",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
+    },
+  },
+  tag: {
+    signer: {
+      bg: "accent.darker",
+      color: "text.main",
+    },
+    related: {
+      bg: "primary.dark",
+      color: "gray.900",
+    },
+  },
+  voteParticipations: {
+    voted: "accent.main",
+    votedAbstain: "accent.darker",
+    didNotVote: "gray.700",
+  },
+};
+
+export const SEI_THEME = generateTheme(SEI_BASE_THEME, SEI_COMPONENT_CONFIG);

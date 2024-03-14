@@ -6,7 +6,6 @@ import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
 import { VoteQuorumText } from "../../VoteQuorumText";
 import { VpPercentCard } from "../../VpPercentCard";
-import { CURR_THEME } from "env";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import {
@@ -92,14 +91,14 @@ export const VotingQuorum = ({
               name="Voted"
               ratio={nonAbstainVotes}
               power={votes}
-              color={CURR_THEME.voteParticipations.voted}
+              color="voteParticipations.voted"
               isCompact={isMobile}
             />
             <VpPercentCard
               name="Voted Abstain"
               ratio={abstain}
               power={votesInfo.abstain}
-              color={CURR_THEME.voteParticipations.votedAbstain}
+              color="voteParticipations.votedAbstain"
               isCompact={isMobile}
             />
             <Divider
@@ -112,7 +111,7 @@ export const VotingQuorum = ({
               name="Did not vote"
               ratio={big(1).minus(totalVotes)}
               power={votesInfo.totalVotingPower.minus(allVotes)}
-              color={CURR_THEME.voteParticipations.didNotVote}
+              color="voteParticipations.didNotVote"
               isCompact={isMobile}
             />
           </Flex>

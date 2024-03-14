@@ -2,7 +2,6 @@ import type { FlexProps, IconProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
-import { CURR_THEME } from "env";
 import { trackUseCopier } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { truncate } from "lib/utils";
@@ -78,7 +77,7 @@ export const CopyLink = ({
           color="secondary.main"
           transition="all 0.25s ease-in-out"
           display="inline"
-          fontFamily={CURR_THEME.fonts.link?.name}
+          fontFamily="mono"
         >
           {value === address ? `${textValue} (Me)` : textValue}
         </Text>

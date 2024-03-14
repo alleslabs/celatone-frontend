@@ -1,7 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 
-import { CURR_THEME } from "env";
 import { CustomIcon } from "lib/components/icon";
 import { PeriodState } from "lib/pages/proposal-details/types";
 import type { ProposalData } from "lib/types";
@@ -49,19 +48,13 @@ export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
       borderRadius="50%"
       alignItems="center"
       justifyContent="center"
-      background={
-        isGray ? CURR_THEME.stepper.disabled.bg : CURR_THEME.stepper.active.bg
-      }
+      background={isGray ? "stepper.disabled.bg" : "stepper.active.bg"}
     >
       {state !== PeriodState.COMPLETE ? (
         <Text
           variant="body3"
           fontWeight={700}
-          color={
-            isGray
-              ? CURR_THEME.stepper.disabled.color
-              : CURR_THEME.stepper.active.color
-          }
+          color={isGray ? "stepper.disabled.color" : "stepper.active.color"}
         >
           {step}
         </Text>
@@ -69,11 +62,7 @@ export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
         <CustomIcon
           name="check"
           boxSize={3}
-          color={
-            isGray
-              ? CURR_THEME.stepper.disabled.color
-              : CURR_THEME.stepper.active.color
-          }
+          color={isGray ? "stepper.disabled.color" : "stepper.active.color"}
         />
       )}
     </Flex>

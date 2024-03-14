@@ -3,7 +3,6 @@ import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
 import { VoteQuorumText } from "../../VoteQuorumText";
-import { CURR_THEME } from "env";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import {
@@ -55,7 +54,7 @@ export const VotingOverviewQuorum = ({
                 <CustomIcon
                   boxSize="10px"
                   name="circle"
-                  color={CURR_THEME.voteParticipations.voted}
+                  color="voteParticipations.voted"
                 />
                 <Text>
                   {formatPrettyPercent(nonAbstainVotes.toNumber())} Vote
@@ -66,7 +65,7 @@ export const VotingOverviewQuorum = ({
                 <CustomIcon
                   boxSize="10px"
                   name="circle"
-                  color={CURR_THEME.voteParticipations.votedAbstain}
+                  color="voteParticipations.votedAbstain"
                 />
                 <Text>
                   {formatPrettyPercent(abstain.toNumber())} Vote Abstain

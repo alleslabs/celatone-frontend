@@ -1,7 +1,6 @@
 import { Tag } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
-import { CURR_THEME } from "env";
 import { CustomIcon } from "lib/components/icon";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
@@ -11,20 +10,20 @@ const getBgColor = (
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
     case ProposalStatus.DEPOSIT_PERIOD:
-      return CURR_THEME.proposalChip.depositPeriod.bg;
+      return "proposalChip.depositPeriod.bg";
     case ProposalStatus.VOTING_PERIOD:
-      return CURR_THEME.proposalChip.votingPeriod.bg;
+      return "proposalChip.votingPeriod.bg";
     case ProposalStatus.FAILED:
-      return CURR_THEME.proposalChip.failed.bg;
+      return "proposalChip.failed.bg";
     case ProposalStatus.REJECTED:
-      return CURR_THEME.proposalChip.rejected.bg;
+      return "proposalChip.rejected.bg";
     case ProposalStatus.PASSED:
-      return CURR_THEME.proposalChip.passed.bg;
+      return "proposalChip.passed.bg";
     case ProposalStatus.CANCELLED:
-      return CURR_THEME.proposalChip.cancelled.bg;
+      return "proposalChip.cancelled.bg";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
-      return CURR_THEME.proposalChip.depositFailed.bg;
+      return "proposalChip.depositFailed.bg";
   }
 };
 

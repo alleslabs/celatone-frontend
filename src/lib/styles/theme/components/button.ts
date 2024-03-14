@@ -1,8 +1,6 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 import { defineStyle } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
-
 const gray400 = "gray.400";
 const gray500 = "gray.500";
 const gray600 = "gray.600";
@@ -19,6 +17,7 @@ const backgroundMain = "background.main";
 const borderDefault = "1px solid";
 const errorDark = "error.dark";
 const secondaryBg = "secondary.background";
+const buttonOutlinePrimaryColor = "button.outlinePrimary.color";
 
 const generateStyle = ({
   basic,
@@ -77,21 +76,21 @@ export const Button: ComponentStyleConfig = {
   variants: {
     primary: generateStyle({
       basic: {
-        background: CURR_THEME.button.primary.background,
-        color: CURR_THEME.button.primary.color,
+        background: "button.primary.background",
+        color: "button.primary.color",
         "& span": {
-          color: CURR_THEME.button.primary.color,
+          color: "button.primary.color",
         },
       },
       disabled: {
-        background: CURR_THEME.button.primary.disabledBackground,
-        color: CURR_THEME.button.primary.disabledColor,
+        background: "button.primary.disabledBackground",
+        color: "button.primary.disabledColor",
         "& span": {
-          color: CURR_THEME.button.primary.disabledColor,
+          color: "button.primary.disabledColor",
         },
       },
-      hoverBg: CURR_THEME.button.primary.hoverBackground,
-      activeBg: CURR_THEME.button.primary.activeBackground,
+      hoverBg: "button.primary.hoverBackground",
+      activeBg: "button.primary.activeBackground",
     }),
     "gray-solid": generateStyle({
       basic: {
@@ -117,28 +116,28 @@ export const Button: ComponentStyleConfig = {
     "outline-primary": generateStyle({
       basic: {
         border: borderDefault,
-        borderColor: CURR_THEME.button.outlinePrimary.borderColor,
-        color: CURR_THEME.button.outlinePrimary.color,
+        borderColor: "button.outlinePrimary.borderColor",
+        color: buttonOutlinePrimaryColor,
         "> div": {
-          color: CURR_THEME.button.outlinePrimary.color,
+          color: buttonOutlinePrimaryColor,
         },
         "& span": {
-          color: CURR_THEME.button.outlinePrimary.color,
+          color: buttonOutlinePrimaryColor,
         },
         "> svg": {
-          color: CURR_THEME.button.outlinePrimary.color,
+          color: buttonOutlinePrimaryColor,
         },
       },
       disabled: {
         border: borderDefault,
-        borderColor: CURR_THEME.button.outlinePrimary.disabledBorderColor,
-        color: CURR_THEME.button.outlinePrimary.disabledColor,
+        borderColor: "button.outlinePrimary.disabledBorderColor",
+        color: "button.outlinePrimary.disabledColor",
         "& span": {
-          color: CURR_THEME.button.outlinePrimary.disabledColor,
+          color: "button.outlinePrimary.disabledColor",
         },
       },
-      hoverBg: CURR_THEME.button.outlinePrimary.hoverBackground,
-      activeBg: CURR_THEME.button.outlinePrimary.activeBackground,
+      hoverBg: "button.outlinePrimary.hoverBackground",
+      activeBg: "button.outlinePrimary.activeBackground",
     }),
     "outline-gray": generateStyle({
       basic: {

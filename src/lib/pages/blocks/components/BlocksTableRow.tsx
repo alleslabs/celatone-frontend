@@ -1,7 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
@@ -46,7 +45,7 @@ export const BlocksTableRow = ({
         </ExplorerLink>
       </TableRow>
       <TableRow>
-        <Text fontFamily={CURR_THEME.fonts.link?.name}>
+        <Text fontFamily="mono">
           {truncate(
             blockData.hash.toUpperCase(),
             hideProposer ? [9, 9] : [6, 6]

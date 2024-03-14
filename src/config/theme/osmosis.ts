@@ -1,7 +1,8 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import type { ThemeConfig } from "./types";
+import type { ComponentConfig, ThemeConfig } from "./types";
+import { generateTheme } from "./utils";
 
-export const OSMOSIS_THEME: ThemeConfig = {
+const OSMOSIS_BASE_THEME: ThemeConfig = {
   branding: {
     logo: "https://assets.alleslabs.dev/integrations/osmosis/logo.svg",
     favicon: "https://assets.alleslabs.dev/integrations/osmosis/favicon.ico",
@@ -26,6 +27,10 @@ export const OSMOSIS_THEME: ThemeConfig = {
     body: {
       url: "https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap",
       name: "Inter, sans-serif",
+    },
+    mono: {
+      url: "/font/main.css",
+      name: "PP Neue Montreal Mono Regular",
     },
   },
   colors: {
@@ -89,90 +94,17 @@ export const OSMOSIS_THEME: ThemeConfig = {
       overlay: "rgba(14, 9, 49, 0.7)",
     },
   },
-  tag: {
-    signer: {
-      bg: "accent.darker",
-      color: "inherit",
-    },
-    related: {
-      bg: "primary.dark",
-      color: "text.main",
-    },
-  },
-  proposalChip: {
-    depositPeriod: {
-      bg: "primary.darker",
-      color: "inherit",
-    },
-    votingPeriod: {
-      bg: "primary.dark",
-      color: "inherit",
-    },
-    failed: {
-      bg: "error.dark",
-      color: "inherit",
-    },
-    rejected: {
-      bg: "error.dark",
-      color: "inherit",
-    },
-    passed: {
-      bg: "success.dark",
-      color: "inherit",
-    },
-    cancelled: {
-      bg: "error.background",
-      color: "inherit",
-    },
-    depositFailed: {
-      bg: "gray.700",
-      color: "inherit",
-    },
-  },
-  voteParticipations: {
-    voted: "primary.main",
-    votedAbstain: "primary.darker",
-    didNotVote: "gray.700",
-  },
-  stepper: {
-    active: {
-      bg: "primary.dark",
-      color: "text.main",
-    },
-    disabled: {
-      bg: "gray.500",
-      color: "background.main",
-    },
-  },
-  button: {
-    primary: {
-      background: "primary.main",
-      color: "gray.100",
-      disabledBackground: "primary.background",
-      disabledColor: "gray.600",
-      hoverBackground: "primary.dark",
-      activeBackground: "primary.light",
-    },
-    outlinePrimary: {
-      borderColor: "primary.light",
-      color: "primary.light",
-      disabledBorderColor: "gray.700",
-      disabledColor: "gray.600",
-      hoverBackground: "primary.background",
-      activeBackground: "transparent",
-    },
-  },
-  borderRadius: {
-    default: "8px",
-    iconButton: "36px",
-    viewButton: "0 0 8px 8px",
-    uploadButton: "50%",
-    tag: "full",
-    badge: "16px",
-    radio: "12px",
-    indicator: "2px",
-    stepper: "full",
-  },
+  // borderRadius: {
+  //   default: "8px",
+  //   iconButton: "36px",
+  //   viewButton: "0 0 8px 8px",
+  //   uploadButton: "50%",
+  //   tag: "full",
+  //   badge: "16px",
+  //   radio: "12px",
+  //   indicator: "2px",
+  //   stepper: "full",
+  // },
   jsonTheme: "pastel_on_dark",
   illustration: {
     "404":
@@ -206,3 +138,77 @@ export const OSMOSIS_THEME: ThemeConfig = {
     reddit: "https://www.reddit.com/r/OsmosisLab/",
   },
 };
+
+const OSMOSIS_COMPONENT_CONFIG: ComponentConfig = {
+  button: {
+    primary: {
+      background: "primary.main",
+      color: "gray.100",
+      disabledBackground: "primary.background",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.light",
+    },
+    outlinePrimary: {
+      borderColor: "primary.light",
+      color: "primary.light",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.background",
+      activeBackground: "transparent",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "primary.darker",
+    },
+    votingPeriod: {
+      bg: "primary.dark",
+    },
+    failed: {
+      bg: "error.dark",
+    },
+    rejected: {
+      bg: "error.dark",
+    },
+    passed: {
+      bg: "success.dark",
+    },
+    cancelled: {
+      bg: "error.background",
+    },
+    depositFailed: {
+      bg: "gray.700",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
+    },
+  },
+  tag: {
+    signer: {
+      bg: "accent.darker",
+      color: "text.main",
+    },
+    related: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+  },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
+};
+
+export const OSMOSIS_THEME = generateTheme(
+  OSMOSIS_BASE_THEME,
+  OSMOSIS_COMPONENT_CONFIG
+);
