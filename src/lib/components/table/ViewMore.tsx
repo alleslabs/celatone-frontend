@@ -8,12 +8,14 @@ interface ViewMoreProps {
   onClick: () => void;
   borderRadius?: BorderProps["borderRadius"];
   minH?: LayoutProps["minH"];
+  text?: string;
 }
 
 export const ViewMore = ({
   onClick,
   borderRadius = "0",
   minH = "64px",
+  text = "View More",
 }: ViewMoreProps) => (
   <Flex w="full" justifyContent="center" textAlign="center">
     <Button
@@ -27,7 +29,7 @@ export const ViewMore = ({
         onClick();
       }}
     >
-      View More
+      {text}
       <CustomIcon name="chevron-right" boxSize="12px" />
     </Button>
   </Flex>

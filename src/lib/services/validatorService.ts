@@ -193,15 +193,22 @@ export const useValidatorDelegationRelatedTxs = (
 export const useValidatorProposedBlocks = (
   validatorAddress: ValidatorAddr,
   limit: number,
-  offset: number
+  offset: number,
+  options: Pick<UseQueryOptions<BlocksResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery<BlocksResponse>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_PROPOSED_BLOCKS, endpoint, validatorAddress],
+    [
+      CELATONE_QUERY_KEYS.VALIDATOR_PROPOSED_BLOCKS,
+      endpoint,
+      validatorAddress,
+      limit,
+      offset,
+    ],
     async () =>
       getValidatorProposedBlocks(endpoint, validatorAddress, limit, offset),
-    { retry: 1 }
+    { retry: 1, ...options }
   );
 };
 

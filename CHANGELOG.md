@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
+- [#821](https://github.com/alleslabs/celatone-frontend/pull/821) Add Validator's proposed blocks table
 - [#818](https://github.com/alleslabs/celatone-frontend/pull/818) Replace bonded tokens voting powers with real data from api v1
 - [#801](https://github.com/alleslabs/celatone-frontend/pull/801) Add validator detail ui structure
 - [#817](https://github.com/alleslabs/celatone-frontend/pull/817) api v1 - validator voted proposals
@@ -78,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#825](https://github.com/alleslabs/celatone-frontend/pull/825) Change GraphQL pion-1 endpoint to prod
 - [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
 - [#805](https://github.com/alleslabs/celatone-frontend/pull/805) Revamp code detail page contracts section
