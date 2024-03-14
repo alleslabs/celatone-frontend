@@ -1,4 +1,5 @@
 import type { GridProps } from "@chakra-ui/react";
+import React from "react";
 
 import { ValidatorOrder } from "../../types";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
@@ -69,9 +70,8 @@ export const ValidatorsTableBody = ({
   ) : (
     <>
       {data.items.map((validator) => (
-        <>
+        <React.Fragment key={validator.validatorAddress}>
           <ValidatorsTableRow
-            key={validator.validatorAddress}
             templateColumns={templateColumns}
             isActive={isActive}
             validator={validator}
@@ -87,7 +87,7 @@ export const ValidatorsTableBody = ({
             data.metadata.percent66Rank === validator.rank && (
               <ValidatorsPercentDivider rank={validator.rank} label="66%" />
             )}
-        </>
+        </React.Fragment>
       ))}
     </>
   );

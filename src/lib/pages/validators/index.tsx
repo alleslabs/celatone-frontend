@@ -63,7 +63,7 @@ const Validators = () => {
 
   const scrollComponentId = "validator-table-header";
   return (
-    <div>
+    <>
       <Flex
         direction="column"
         gap={{ base: "24px", md: "32px" }}
@@ -143,7 +143,7 @@ const Validators = () => {
           />
         )}
       </PageContainer>
-    </div>
+    </>
   );
 };
 
