@@ -17,7 +17,7 @@ export const ValidatorsPercentDivider = ({
         placement="right"
         label={
           <Text variant="body2">
-            Cumulative voting power from 1-{rank} ranked validators are {">"}
+            Cumulative voting power from 1-{rank} ranked validators is {">"}
             {label}
           </Text>
         }
