@@ -10,9 +10,11 @@ import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableMobileCardProps {
   blockData: Block;
+  hideProposer?: boolean;
 }
 export const BlocksTableMobileCard = ({
   blockData,
+  hideProposer = false,
 }: BlocksTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
@@ -50,9 +52,7 @@ export const BlocksTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        <Flex>
-          <ValidatorBadge validator={blockData.proposer} />
-        </Flex>
+        !hideProposer && <ValidatorBadge validator={blockData.proposer} />
       }
       bottomContent={
         <Flex gap={8}>
