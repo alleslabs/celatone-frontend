@@ -121,7 +121,7 @@ const ValidatorDetailsBody = ({
               <VotedProposalsTable />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              <Performance />
+              <Performance validatorAddress={validatorAddress} />
             </TabPanel>
             {!move.enabled && (
               <TabPanel p={0} pt={{ base: 2, md: 0 }}>

@@ -63,7 +63,10 @@ export const ValidatorOverview = ({
           />
         </>
       )}
-      <ProposedBlocksTable onViewMore={onSelectPerformance} />
+      <ProposedBlocksTable
+        validatorAddress={validatorAddress}
+        onViewMore={onSelectPerformance}
+      />
       <VotedProposalsTable onViewMore={onSelectVotes} />
     </Flex>
   ) : (
