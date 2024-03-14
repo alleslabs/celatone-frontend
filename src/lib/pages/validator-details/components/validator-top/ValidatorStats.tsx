@@ -1,28 +1,37 @@
 import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 
 import { DotSeparator } from "lib/components/DotSeparator";
 import {
   useValidatorDelegators,
   useValidatorStakingProvisions,
 } from "lib/services/validatorService";
-import type { ValidatorAddr } from "lib/types";
+import type { Option, ValidatorAddr } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 const StatWithLabel = ({
   label,
   value,
+  isLoading,
 }: {
   label: string;
-  value: string | ReactNode;
+  value: Option<string>;
+  isLoading: boolean;
 }) => (
   <Flex gap={{ md: 1 }} direction={{ base: "column", md: "row" }}>
     <Text variant="body2" fontWeight={600} color="text.dark">
       {label}
     </Text>
-    <Text variant="body2" fontWeight={600} color="text.main">
-      {value}
-    </Text>
+    {isLoading ? (
+      <Spinner size="sm" />
+    ) : (
+      <Text
+        variant="body2"
+        fontWeight={600}
+        color={value ? "text.main" : "text.dark"}
+      >
+        {value ?? "N/A"}
+      </Text>
+    )}
   </Flex>
 );
 
@@ -30,7 +39,7 @@ interface ValidatorStatsProps {
   validatorAddress: ValidatorAddr;
   commissionRate: number;
   totalVotingPower: Big;
-  singleStakingDenom?: string;
+  singleStakingDenom: Option<string>;
 }
 
 export const ValidatorStats = ({
@@ -39,24 +48,22 @@ export const ValidatorStats = ({
   totalVotingPower,
   singleStakingDenom,
 }: ValidatorStatsProps) => {
-  const { data: stakingProvisions } = useValidatorStakingProvisions();
+  const { data: stakingProvisions, isLoading: isStakingProvisionsLoading } =
+    useValidatorStakingProvisions();
   const { data: delegations, isLoading: isDelegationsLoading } =
     useValidatorDelegators(validatorAddress);
 
-  if (!stakingProvisions) return <Spinner size="sm" />;
-
-  const estimatedApr = singleStakingDenom
-    ? stakingProvisions.stakingProvisions.div(
-        totalVotingPower.mul(1 - commissionRate)
+  const estimatedApr = stakingProvisions
+    ? formatPrettyPercent(
+        stakingProvisions.stakingProvisions
+          .div(totalVotingPower.mul(1 - commissionRate))
+          .toNumber(),
+        2,
+        true
       )
     : undefined;
 
-  const delegationsValue =
-    !isDelegationsLoading && delegations ? (
-      String(delegations.total)
-    ) : (
-      <Spinner size="sm" />
-    );
+  const delegatorsCount = delegations ? String(delegations.total) : undefined;
 
   return (
     <Box
@@ -75,18 +82,24 @@ export const ValidatorStats = ({
       <StatWithLabel
         label="Commission"
         value={formatPrettyPercent(commissionRate, 2, true)}
+        isLoading={false}
       />
-      {estimatedApr && (
+      {singleStakingDenom && (
         <>
           <DotSeparator bg="gray.600" display={{ base: "none", md: "flex" }} />
           <StatWithLabel
             label="Estimated APR"
-            value={formatPrettyPercent(estimatedApr.toNumber(), 2, true)}
+            value={estimatedApr}
+            isLoading={isStakingProvisionsLoading}
           />
         </>
       )}
       <DotSeparator bg="gray.600" display={{ base: "none", md: "flex" }} />
-      <StatWithLabel label="Delegators" value={delegationsValue} />
+      <StatWithLabel
+        label="Delegators"
+        value={delegatorsCount}
+        isLoading={isDelegationsLoading}
+      />
     </Box>
   );
 };

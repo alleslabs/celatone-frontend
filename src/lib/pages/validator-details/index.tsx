@@ -113,6 +113,8 @@ const ValidatorDetailsBody = ({
                 isJailed={data.info.isJailed}
                 details={data.info.details}
                 validatorAddress={validatorAddress}
+                singleStakingDenom={singleStakingDenom}
+                assetInfos={assetInfos}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>

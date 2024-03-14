@@ -3,5 +3,5 @@ export const formatUrl = (url: string): string => {
     return url;
   }
 
-  return `http://${url}`;
+  return `https://${url}`;
 };

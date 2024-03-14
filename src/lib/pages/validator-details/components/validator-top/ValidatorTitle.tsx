@@ -22,15 +22,17 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       alignItems={{ base: "start", md: "center" }}
     >
       <Flex align="center" gap={2}>
-        <Heading
-          as="h5"
-          mt={{ base: 1, md: 0 }}
-          ml={{ base: 1, md: 0 }}
-          variant={{ base: "h6", md: "h5" }}
-          color="accent.main"
-        >
-          #{info.rank}
-        </Heading>
+        {info?.rank && (
+          <Heading
+            as="h5"
+            mt={{ base: 1, md: 0 }}
+            ml={{ base: 1, md: 0 }}
+            variant={{ base: "h6", md: "h5" }}
+            color="accent.main"
+          >
+            #{info.rank}
+          </Heading>
+        )}
         <Heading
           as="h5"
           variant="h5"

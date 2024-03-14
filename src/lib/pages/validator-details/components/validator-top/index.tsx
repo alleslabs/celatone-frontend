@@ -5,7 +5,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ValidatorImage } from "lib/components/ValidatorImage";
-import type { ValidatorData } from "lib/types";
+import type { Option, ValidatorData } from "lib/types";
 
 import { ValidatorStats } from "./ValidatorStats";
 import { ValidatorTitle } from "./ValidatorTitle";
@@ -14,7 +14,7 @@ import { WebsiteButton } from "./WebsiteButton";
 interface ValidatorTopProps {
   info: ValidatorData;
   totalVotingPower: Big;
-  singleStakingDenom?: string;
+  singleStakingDenom: Option<string>;
 }
 
 export const ValidatorTop = ({

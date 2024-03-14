@@ -29,24 +29,22 @@ export const ValidatorBadge = ({
 
   return (
     <Flex alignItems="center" gap={2}>
+      <ValidatorImage validator={validator} boxSize={badgeSize} />
       {validator ? (
-        <>
-          <ValidatorImage validator={validator} boxSize={badgeSize} />
-          <Flex direction="column">
-            {isMobile && hasLabel && <MobileLabel label="Validator" />}
-            <ExplorerLink
-              value={validator.moniker ?? validator.validatorAddress}
-              copyValue={validator.validatorAddress}
-              type="validator_address"
-              textFormat="ellipsis"
-              showCopyOnHover
-              ampCopierSection={ampCopierSection}
-              maxWidth={maxWidth}
-              fixedHeight
-            />
-            {moreInfo}
-          </Flex>
-        </>
+        <Flex direction="column">
+          {isMobile && hasLabel && <MobileLabel label="Validator" />}
+          <ExplorerLink
+            value={validator.moniker ?? validator.validatorAddress}
+            copyValue={validator.validatorAddress}
+            type="validator_address"
+            textFormat="ellipsis"
+            showCopyOnHover
+            ampCopierSection={ampCopierSection}
+            maxWidth={maxWidth}
+            fixedHeight
+          />
+          {moreInfo}
+        </Flex>
       ) : (
         <>
           <ValidatorImage validator={validator} boxSize={badgeSize} />

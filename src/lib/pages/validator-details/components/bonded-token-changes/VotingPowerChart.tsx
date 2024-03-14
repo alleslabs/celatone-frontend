@@ -6,7 +6,7 @@ import { LineChart } from "lib/components/chart/LineChart";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
-import type { AssetInfos, Token, U, ValidatorAddr } from "lib/types";
+import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 import {
   formatHHmm,
   formatUTokenWithPrecision,
@@ -15,8 +15,8 @@ import {
 
 interface VotingPowerChartProps {
   validatorAddress: ValidatorAddr;
-  singleStakingDenom?: string;
-  assetInfos?: AssetInfos;
+  singleStakingDenom: Option<string>;
+  assetInfos: Option<AssetInfos>;
 }
 
 export const VotingPowerChart = ({
