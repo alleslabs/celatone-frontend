@@ -4,10 +4,10 @@ import type {
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import type { ThemeConfig } from "config/theme/types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useCurrentChain,
 } from "lib/app-provider";
 import type { Validator, ValidatorAddr, Nullable } from "lib/types";
@@ -38,12 +38,12 @@ export const useValidator = (
 };
 
 export const useValidatorImage = (
-  validator: Nullable<Validator>,
-  theme: ThemeConfig
+  validator: Nullable<Validator>
 ): UseQueryResult<string> => {
   const {
     chain: { chain_name: chainName },
   } = useCurrentChain();
+  const { theme } = useCelatoneApp();
 
   return useQuery({
     queryKey: [

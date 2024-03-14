@@ -1,7 +1,7 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useValidatorImage } from "lib/services/validatorService";
 import type { Nullable, Validator } from "lib/types";
@@ -41,9 +41,8 @@ export const ValidatorBadge = ({
   maxWidth = "160px",
   hasLabel = true,
 }: ValidatorBadgeProps) => {
-  const { theme } = useCelatoneApp();
-  const { data: valImgSrc, isLoading } = useValidatorImage(validator, theme);
   const isMobile = useMobile();
+  const { data: valImgSrc, isLoading } = useValidatorImage(validator);
   return (
     <Flex alignItems="center" gap={2}>
       {validator ? (
