@@ -35,9 +35,9 @@ export const zValidatorData = z
     uptime: z.number().optional(),
     website: z.string(),
   })
-  .transform((val) => ({
+  .transform(({ website, ...val }) => ({
     ...snakeToCamel(val),
-    website: formatUrl(val.website),
+    website: formatUrl(website),
   }));
 
 export type ValidatorData = z.infer<typeof zValidatorData>;
