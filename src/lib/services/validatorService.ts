@@ -207,7 +207,7 @@ export const useValidatorProposedBlocks = (
     ],
     async () =>
       getValidatorProposedBlocks(endpoint, validatorAddress, limit, offset),
-    { ...options, retry: 1 }
+    { retry: 1, ...options }
   );
 };
 
