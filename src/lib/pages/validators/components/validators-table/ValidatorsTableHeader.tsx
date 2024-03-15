@@ -64,7 +64,15 @@ export const ValidatorsTableHeader = ({
 
   return (
     <Grid templateColumns={templateColumns} id={scrollComponentId}>
-      {isActive && <TableHeader textAlign="center">Rank</TableHeader>}
+      {isActive && (
+        <TableHeader
+          textAlign="center"
+          cursor="pointer"
+          onClick={handleOrderChange(ValidatorOrder.VotingPower)}
+        >
+          Rank
+        </TableHeader>
+      )}
       <TableHeader
         cursor="pointer"
         onClick={handleOrderChange(ValidatorOrder.Moniker)}
