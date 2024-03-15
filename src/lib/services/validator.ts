@@ -152,9 +152,11 @@ export const getValidators = async (
     })
     .then(({ data }) => parseWithError(zValidatorsResponse, data));
 
-const zStakingProvisionsResponse = z.object({
-  staking_provisions: zBig,
-});
+const zStakingProvisionsResponse = z
+  .object({
+    staking_provisions: zBig,
+  })
+  .transform(snakeToCamel);
 export type StakingProvisionsResponse = z.infer<
   typeof zStakingProvisionsResponse
 >;

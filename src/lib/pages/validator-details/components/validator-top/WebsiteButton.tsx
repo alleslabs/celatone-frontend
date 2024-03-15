@@ -9,6 +9,7 @@ export const WebsiteButton = (props: ButtonProps) => (
     rightIcon={<CustomIcon name="launch" boxSize={3} />}
     size="sm"
     variant="outline-primary"
+    width={{ base: "full", md: "auto" }}
     {...props}
   >
     Website
