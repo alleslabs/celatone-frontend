@@ -1,12 +1,20 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Link } from "@chakra-ui/react";
 
-import { ValidatorImage } from "./ValidatorImage";
+import { ValidatorImage } from "lib/components/ValidatorImage";
+import type { ValidatorData } from "lib/types";
+
 import { ValidatorStatusTag } from "./ValidatorStatusTag";
 import { WebsiteButton } from "./WebsiteButton";
 
-export const ValidatorTitle = () => (
+interface ValidatorTitleProps {
+  info: ValidatorData;
+}
+
+export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
   <Flex gap={4} alignItems={{ base: "center", md: "auto" }}>
-    <ValidatorImage boxSize={16} display={{ base: "flex", md: "none" }} />
+    <Flex display={{ base: "flex", md: "none" }}>
+      <ValidatorImage validator={info} boxSize={16} />
+    </Flex>
     <Flex
       w="full"
       direction={{ base: "column", md: "row" }}
@@ -14,15 +22,17 @@ export const ValidatorTitle = () => (
       alignItems={{ base: "start", md: "center" }}
     >
       <Flex align="center" gap={2}>
-        <Heading
-          as="h5"
-          mt={{ base: 1, md: 0 }}
-          ml={{ base: 1, md: 0 }}
-          variant={{ base: "h6", md: "h5" }}
-          color="accent.main"
-        >
-          #111
-        </Heading>
+        {info.rank && (
+          <Heading
+            as="h5"
+            mt={{ base: 1, md: 0 }}
+            ml={{ base: 1, md: 0 }}
+            variant={{ base: "h6", md: "h5" }}
+            color="accent.main"
+          >
+            #{info.rank}
+          </Heading>
+        )}
         <Heading
           as="h5"
           variant="h5"
@@ -30,9 +40,9 @@ export const ValidatorTitle = () => (
           color="text.main"
           display={{ base: "none", md: "flex" }}
         >
-          Validator name
+          {info.moniker}
         </Heading>
-        <ValidatorStatusTag status="Active" />
+        <ValidatorStatusTag info={info} />
       </Flex>
       <Heading
         as="h6"
@@ -42,9 +52,11 @@ export const ValidatorTitle = () => (
         color="text.main"
         display={{ base: "flex", md: "none" }}
       >
-        Validator name
+        {info.moniker}
       </Heading>
-      <WebsiteButton display={{ base: "none", md: "flex" }} />
+      <Link href={info.website} isExternal>
+        <WebsiteButton display={{ base: "none", md: "flex" }} />
+      </Link>
     </Flex>
   </Flex>
 );

@@ -3,10 +3,17 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useInternalNavigate,
+  useMoveConfig,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
+import { ErrorFetching, InvalidState } from "lib/components/state";
+import { useAssetInfos } from "lib/services/assetService";
+import { useValidatorData } from "lib/services/validatorService";
 
 import {
   BondedTokenChanges,
@@ -27,7 +34,17 @@ const ValidatorDetailsBody = ({
   tab,
 }: ValidatorDetailsQueryParams) => {
   const navigate = useInternalNavigate();
+  const {
+    chainConfig: {
+      extra: { singleStakingDenom },
+    },
+  } = useCelatoneApp();
   const move = useMoveConfig({ shouldRedirect: false });
+
+  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
+    withPrices: true,
+  });
+  const { data, isLoading } = useValidatorData(validatorAddress);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -47,14 +64,17 @@ const ValidatorDetailsBody = ({
     [navigate, tab, validatorAddress]
   );
 
-  // TODO
-  // if (isLoading) return <Loading />;
-  // if (!data) return <ErrorFetching dataName="validator information" />;
-  // if (!data.info) return <InvalidValidator />;
+  if (isLoading || isAssetInfosLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="validator information" />;
+  if (!data.info) return <InvalidValidator />;
 
   return (
     <>
-      <ValidatorTop />
+      <ValidatorTop
+        info={data.info}
+        totalVotingPower={data.totalVotingPower}
+        singleStakingDenom={singleStakingDenom}
+      />
       <PageContainer>
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -89,7 +109,12 @@ const ValidatorDetailsBody = ({
                 onSelectBondedTokenChanges={handleTabChange(
                   TabIndex.BondedTokenChanges
                 )}
+                isActive={data.info.isActive}
+                isJailed={data.info.isJailed}
+                details={data.info.details}
                 validatorAddress={validatorAddress}
+                singleStakingDenom={singleStakingDenom}
+                assetInfos={assetInfos}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
@@ -98,11 +123,13 @@ const ValidatorDetailsBody = ({
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <Performance validatorAddress={validatorAddress} />
             </TabPanel>
-            {!move.enabled && (
-              <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-                <BondedTokenChanges validatorAddress={validatorAddress} />
-              </TabPanel>
-            )}
+            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
+              <BondedTokenChanges
+                validatorAddress={validatorAddress}
+                singleStakingDenom={singleStakingDenom}
+                assetInfos={assetInfos}
+              />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </PageContainer>
@@ -121,13 +148,13 @@ const ValidatorDetails = () => {
   }, [router.isReady]);
 
   return (
-    <div>
+    <>
       {!validated.success ? (
         <InvalidValidator />
       ) : (
         <ValidatorDetailsBody {...validated.data} />
       )}
-    </div>
+    </>
   );
 };
 

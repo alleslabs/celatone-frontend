@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
+import { formatUrl } from "lib/utils/formatter/url";
 
 import { zBechAddr20, zValidatorAddr } from "./addrs";
 import { zBig } from "./big";
@@ -22,7 +23,6 @@ export type Validator = z.infer<typeof zValidator>;
 export const zValidatorData = z
   .object({
     rank: z.number().nullable(),
-    rank_cummulative_voting_power: zBig,
     validator_address: zValidatorAddr,
     account_address: zBechAddr20,
     identity: z.string(),
@@ -33,8 +33,12 @@ export const zValidatorData = z
     is_active: z.boolean(),
     voting_power: zBig,
     uptime: z.number().optional(),
+    website: z.string(),
   })
-  .transform(snakeToCamel);
+  .transform(({ website, ...val }) => ({
+    ...snakeToCamel(val),
+    website: formatUrl(website),
+  }));
 
 export type ValidatorData = z.infer<typeof zValidatorData>;
 

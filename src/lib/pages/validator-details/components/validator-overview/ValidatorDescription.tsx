@@ -1,15 +1,25 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
-export const ValidatorDescription = () => (
-  <Flex direction="column" gap={2}>
-    <Heading variant="h6" as="h6" color="text.main">
+interface ValidatorDescriptionProps {
+  details: string;
+}
+
+export const ValidatorDescription = ({
+  details,
+}: ValidatorDescriptionProps) => (
+  <Flex
+    direction="column"
+    gap={2}
+    backgroundColor="gray.900"
+    p={{ base: 4, md: 6 }}
+    rounded={8}
+    w="100%"
+  >
+    <Text variant="body2" fontWeight={500} as="h6" color="text.dark">
       Validator Description
-    </Heading>
-    <Text variant="body1" color="text.main">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam ad vel
-      assumenda, temporibus maiores quidem quibusdam sapiente expedita officiis
-      minus! Officiis itaque nisi reprehenderit tempora eaque eos quam, in
-      excepturi.
+    </Text>
+    <Text variant="body2" color="text.main">
+      {details}
     </Text>
   </Flex>
 );
