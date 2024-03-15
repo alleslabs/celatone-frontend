@@ -54,7 +54,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       >
         {info.moniker}
       </Heading>
-      <Link href={info.website} isExternal>
+      <Link href={info.website} isExternal _hover={{ textDecoration: "none" }}>
         <WebsiteButton display={{ base: "none", md: "flex" }} />
       </Link>
     </Flex>

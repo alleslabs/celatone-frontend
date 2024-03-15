@@ -90,7 +90,11 @@ export const ValidatorTop = ({
             fixedHeight={false}
           />
         </Flex>
-        <Link href={info.website} isExternal>
+        <Link
+          href={info.website}
+          isExternal
+          _hover={{ textDecoration: "none" }}
+        >
           <WebsiteButton my={2} display={{ base: "flex", md: "none" }} />
         </Link>
       </Flex>
