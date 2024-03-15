@@ -5,7 +5,7 @@ import type Big from "big.js";
 import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { AssetInfos, Token, U, USD } from "lib/types";
+import type { AssetInfos, Option, Token, U, USD } from "lib/types";
 import {
   calculateAssetValue,
   divWithDefault,
@@ -15,20 +15,18 @@ import {
   toToken,
 } from "lib/utils";
 
-// TODO remove mockup data
-
 const VotingPowerDetail = ({
   label,
   percent,
   amount,
-  denom,
+  denom = "",
   value,
 }: {
   label: string;
   percent: string;
   amount: string;
-  denom: string;
-  value: string;
+  denom: Option<string>;
+  value: Option<string>;
 }) => (
   <Flex direction="column" w="full">
     <Text variant="body2" color="text.dark" mb={2}>
@@ -47,15 +45,17 @@ const VotingPowerDetail = ({
         {denom}
       </span>
     </Text>
-    <Text variant="body3" color="text.dark">
-      ({value})
-    </Text>
+    {value && (
+      <Text variant="body3" color="text.dark">
+        ({value})
+      </Text>
+    )}
   </Flex>
 );
 
 interface VotingPowerOverviewProps {
-  singleStakingDenom?: string;
-  assetInfos?: AssetInfos;
+  singleStakingDenom: Option<string>;
+  assetInfos: Option<AssetInfos>;
   votingPower: Big;
   totalVotingPower: Big;
   selfVotingPower: Big;
@@ -185,9 +185,11 @@ export const VotingPowerOverview = ({
                 {assetInfo?.symbol}
               </span>
             </Text>
-            <Text variant="body2" color="text.dark">
-              ({votingPowerValueFormatted})
-            </Text>
+            {singleStakingDenom && (
+              <Text variant="body2" color="text.dark">
+                ({votingPowerValueFormatted})
+              </Text>
+            )}
           </Flex>
           {assetInfo && (
             <TokenImageRender
@@ -209,15 +211,15 @@ export const VotingPowerOverview = ({
           label="Self-Bonded"
           percent={selfBondedPercent}
           amount={selfBondedAmount}
-          denom={assetInfo?.symbol ?? ""}
-          value={selfBondedValueFormatted ?? ""}
+          denom={assetInfo?.symbol}
+          value={selfBondedValueFormatted}
         />
         <VotingPowerDetail
           label="From Delegators"
           percent={fromDelegatorsPercent}
           amount={fromDelagatorsAmount}
-          denom={assetInfo?.symbol ?? ""}
-          value={fromDelegatorsValueFormatted ?? ""}
+          denom={assetInfo?.symbol}
+          value={fromDelegatorsValueFormatted}
         />
       </Grid>
     </Flex>
