@@ -41,14 +41,10 @@ export const ProposalMessageCard = ({
             align="center"
             className="copier-wrapper"
           >
-            <Flex alignItems="center">
-              <Text variant="body1" fontWeight={600} wordBreak="break-word">
-                {header}
-              </Text>
-            </Flex>
-            <Flex alignItems="center" gap={2}>
-              <AccordionIcon color="gray.600" />
-            </Flex>
+            <Text variant="body1" fontWeight={600} wordBreak="break-all">
+              {header}
+            </Text>
+            <AccordionIcon color="gray.600" />
           </Flex>
         </AccordionButton>
         <AccordionPanel p={0} pt={4}>

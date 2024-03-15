@@ -24,7 +24,7 @@ const getResolvedPrefix = (status: ProposalStatus) => {
 export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return (
-      <Text variant="body2" textAlign={{ base: "end", md: "start" }}>
+      <Text variant="body2">
         Deposit ends in{" "}
         <Countdown endTime={proposalData.depositEndTime} isString={false} />
       </Text>
@@ -32,7 +32,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD)
     return (
-      <Text variant="body2" textAlign={{ base: "end", md: "start" }}>
+      <Text variant="body2">
         Voting ends in{" "}
         {proposalData.votingEndTime ? (
           <Countdown endTime={proposalData.votingEndTime} isString={false} />
@@ -43,11 +43,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
     );
 
   return (
-    <Text
-      variant="body2"
-      color="text.dark"
-      textAlign={{ base: "end", md: "start" }}
-    >
+    <Text variant="body2" color="text.dark">
       {getResolvedPrefix(proposalData.status)}
       {" at "}
       {proposalData.resolvedTimestamp
