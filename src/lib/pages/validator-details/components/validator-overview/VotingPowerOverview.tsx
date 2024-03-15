@@ -182,7 +182,7 @@ export const VotingPowerOverview = ({
                   fontWeight: "400",
                 }}
               >
-                {assetInfo?.symbol}
+                {assetInfo?.symbol ?? ""}
               </span>
             </Text>
             {singleStakingDenom && (
