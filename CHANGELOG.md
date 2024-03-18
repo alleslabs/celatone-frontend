@@ -80,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#830](https://github.com/alleslabs/celatone-frontend/pull/830) Change GraphQL neutron-1 endpoint to prod
 - [#825](https://github.com/alleslabs/celatone-frontend/pull/825) Change GraphQL pion-1 endpoint to prod
 - [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
