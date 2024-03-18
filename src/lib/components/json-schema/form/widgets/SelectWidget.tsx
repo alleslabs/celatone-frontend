@@ -159,12 +159,14 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
             ...provided,
             color: state.isDisabled ? "gray.700" : undefined,
           }),
-          option: (provided, state) => ({
+          option: (provided) => ({
             ...provided,
             color: "text.main",
-            bg: state.isSelected ? "gray.800" : "gray.900",
             _hover: {
               bg: "gray.700",
+            },
+            _selected: {
+              bg: "gray.800",
             },
           }),
         }}
