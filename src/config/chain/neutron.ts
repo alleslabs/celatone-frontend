@@ -56,7 +56,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Neutron Testnet",
     lcd: "https://rest-palvus.pion-1.ntrn.tech:443",
     rpc: "https://rpc-palvus.pion-1.ntrn.tech:443",
-    indexer: "https://pion-1-legacy-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://pion-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
