@@ -214,13 +214,18 @@ export const getValidatorUptime = async (
     })
     .then(({ data }) => parseWithError(zValidatorUptimeResponse, data));
 
+const zValidatorDelegationRelatedTxsResponseMessage = z.object({
+  type: z.string(),
+});
+
 const zValidatorDelegationRelatedTxsResponseItem = z
   .object({
     tx_hash: z.string(),
     height: z.number().positive(),
     tokens: zCoin.array(),
     timestamp: zUtcDate,
-    validator_address: zValidatorAddr,
+    messages: z.array(zValidatorDelegationRelatedTxsResponseMessage),
+    sender: zValidatorAddr,
   })
   .transform(snakeToCamel);
 
