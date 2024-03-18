@@ -92,17 +92,6 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       background: "#523600",
     },
   },
-  // borderRadius: {
-  //   default: "8px",
-  //   iconButton: "36px",
-  //   viewButton: "0 0 8px 8px",
-  //   uploadButton: "50%",
-  //   tag: "full",
-  //   badge: "16px",
-  //   radio: "12px",
-  //   indicator: "2px",
-  //   stepper: "full",
-  // },
   jsonTheme: "pastel_on_dark",
   illustration: {
     "404":

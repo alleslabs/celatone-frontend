@@ -88,17 +88,6 @@ export type ThemeConfig = {
       background: string;
     };
   };
-  // borderRadius: {
-  //   default: string;
-  //   iconButton: string;
-  //   viewButton: string;
-  //   uploadButton: string;
-  //   tag: string;
-  //   badge: string;
-  //   radio: string;
-  //   indicator: string;
-  //   stepper: string;
-  // };
   illustration: {
     "404": string;
     error: string;

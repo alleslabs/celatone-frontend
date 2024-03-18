@@ -92,17 +92,6 @@ const INITIA_BASE_THEME: ThemeConfig = {
       900: "#151617",
     },
   },
-  // borderRadius: {
-  //   default: "4px",
-  //   iconButton: "36px",
-  //   viewButton: "0 0 8px 8px",
-  //   uploadButton: "50%",
-  //   tag: "full",
-  //   badge: "16px",
-  //   radio: "12px",
-  //   indicator: "2px",
-  //   stepper: "full",
-  // },
   jsonTheme: "monokai",
   illustration: {
     "404":

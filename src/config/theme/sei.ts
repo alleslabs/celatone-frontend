@@ -94,17 +94,6 @@ const SEI_BASE_THEME: ThemeConfig = {
       900: "#0C1C23",
     },
   },
-  // borderRadius: {
-  //   default: "8px",
-  //   iconButton: "36px",
-  //   viewButton: "0 0 8px 8px",
-  //   uploadButton: "50%",
-  //   tag: "full",
-  //   badge: "16px",
-  //   radio: "12px",
-  //   indicator: "2px",
-  //   stepper: "full",
-  // },
   jsonTheme: "one_dark",
   illustration: {
     "404": "https://assets.alleslabs.dev/integrations/sei/illustration/404.svg",
