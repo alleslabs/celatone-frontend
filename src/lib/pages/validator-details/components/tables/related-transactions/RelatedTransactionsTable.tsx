@@ -19,7 +19,7 @@ export const RelatedTransactionTable = ({
 }: RelatedTransactionTableProps) => {
   if (isLoading) return <Loading />;
 
-  const templateColumns = "1fr 1fr 1fr 1fr 1fr";
+  const templateColumns = "max(180px) max(180px) max(180px) 1fr max(280px)";
 
   return (
     <TableContainer>
