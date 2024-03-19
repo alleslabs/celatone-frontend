@@ -1,3 +1,3 @@
 export * from "./ProposedBlocksTable";
-export * from "./RelatedTransactionsTable";
+export * from "./related-transactions";
 export * from "./VotedProposalsTable";

@@ -168,7 +168,11 @@ export const useValidatorUptime = (
 export const useValidatorDelegationRelatedTxs = (
   validatorAddress: ValidatorAddr,
   limit: number,
-  offset: number
+  offset: number,
+  options: Pick<
+    UseQueryOptions<ValidatorDelegationRelatedTxsResponse>,
+    "onSuccess"
+  > = {}
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
@@ -177,6 +181,8 @@ export const useValidatorDelegationRelatedTxs = (
       CELATONE_QUERY_KEYS.VALIDATOR_DELEGATION_RELATED_TXS,
       endpoint,
       validatorAddress,
+      limit,
+      offset,
     ],
     async () =>
       getValidatorDelegationRelatedTxs(
@@ -185,7 +191,7 @@ export const useValidatorDelegationRelatedTxs = (
         limit,
         offset
       ),
-    { retry: 1 }
+    { retry: 1, ...options }
   );
 };
 
