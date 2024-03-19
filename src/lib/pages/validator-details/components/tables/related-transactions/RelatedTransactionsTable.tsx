@@ -1,5 +1,3 @@
-import { Box } from "@interchain-ui/react";
-
 import { Loading } from "lib/components/Loading";
 import { TableContainer } from "lib/components/table";
 import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
@@ -24,18 +22,16 @@ export const RelatedTransactionTable = ({
   const templateColumns = "1fr 1fr 1fr 1fr 1fr";
 
   return (
-    <Box>
-      <TableContainer>
-        <RelatedTransactionsTableHeader templateColumns={templateColumns} />
-        {delegationRelatedTxs.map((delegationRelatedTx) => (
-          <RelatedTransactionsTableRow
-            key={delegationRelatedTx.txHash}
-            templateColumns={templateColumns}
-            delegationRelatedTx={delegationRelatedTx}
-            assetInfos={assetInfos}
-          />
-        ))}
-      </TableContainer>
-    </Box>
+    <TableContainer>
+      <RelatedTransactionsTableHeader templateColumns={templateColumns} />
+      {delegationRelatedTxs.map((delegationRelatedTx) => (
+        <RelatedTransactionsTableRow
+          key={delegationRelatedTx.txHash}
+          templateColumns={templateColumns}
+          delegationRelatedTx={delegationRelatedTx}
+          assetInfos={assetInfos}
+        />
+      ))}
+    </TableContainer>
   );
 };

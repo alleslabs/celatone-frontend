@@ -1,6 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { RelatedTransactionTable } from "../tables";
+import {
+  RelatedTransactionsMobileCard,
+  RelatedTransactionTable,
+} from "../tables";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -59,7 +62,11 @@ export const BondedTokenChanges = ({
       />
       <Box>
         {isMobile ? (
-          <div>Is Mobile</div>
+          <RelatedTransactionsMobileCard
+            delegationRelatedTxs={data?.items}
+            isLoading={isLoading}
+            assetInfos={assetInfos}
+          />
         ) : (
           <>
             <TableTitle
