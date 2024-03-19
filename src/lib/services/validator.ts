@@ -12,7 +12,12 @@ import {
   zValidatorAddr,
   zValidatorData,
 } from "lib/types";
-import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
+import {
+  parseTxHash,
+  parseWithError,
+  removeSpecialChars,
+  snakeToCamel,
+} from "lib/utils";
 
 import { zBlocksResponse } from "./block";
 import { zProposal } from "./proposal";
@@ -214,20 +219,26 @@ export const getValidatorUptime = async (
     })
     .then(({ data }) => parseWithError(zValidatorUptimeResponse, data));
 
-const zValidatorDelegationRelatedTxsResponseMessage = z.object({
-  type: z.string(),
-});
-
 const zValidatorDelegationRelatedTxsResponseItem = z
   .object({
     tx_hash: z.string(),
     height: z.number().positive(),
     tokens: zCoin.array(),
     timestamp: zUtcDate,
-    messages: z.array(zValidatorDelegationRelatedTxsResponseMessage),
+    messages: z.array(
+      z.object({
+        type: z.string(),
+      })
+    ),
     sender: zValidatorAddr,
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    txHash: parseTxHash(val.tx_hash),
+  }));
+export type ValidatorDelegationRelatedTxsResponseItem = z.infer<
+  typeof zValidatorDelegationRelatedTxsResponseItem
+>;
 
 const zValidatorDelegationRelatedTxsResponse = z.object({
   items: z.array(zValidatorDelegationRelatedTxsResponseItem),
