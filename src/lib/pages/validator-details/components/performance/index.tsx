@@ -1,6 +1,11 @@
 import { Flex } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
+import { useState } from "react";
 
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
+import { Loading } from "lib/components/Loading";
+import { ErrorFetching } from "lib/components/state";
+import { useValidatorUptime } from "lib/services/validatorService";
 import type { ValidatorAddr } from "lib/types";
 
 import { PenaltySection } from "./PenaltySection";
@@ -11,24 +16,40 @@ interface PerformanceProps {
   validatorAddress: ValidatorAddr;
 }
 
-export const Performance = ({ validatorAddress }: PerformanceProps) => (
-  <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
-    <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
-      <Flex flex={{ md: "2" }}>
-        <UptimeSection isDetailPage />
+export const Performance = ({ validatorAddress }: PerformanceProps) => {
+  const [uptimeBlock, setUptimeBlock] = useState(100);
+  const { data: uptimeData, isLoading } = useValidatorUptime(
+    validatorAddress,
+    uptimeBlock
+  );
+
+  if (isLoading) return <Loading />;
+  if (isUndefined(uptimeData))
+    return <ErrorFetching dataName="performance data" />;
+
+  return (
+    <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
+      <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
+        <Flex flex={{ md: "2" }}>
+          <UptimeSection
+            uptimeData={uptimeData}
+            uptimeBlock={uptimeBlock}
+            setUptimeBlock={(block) => setUptimeBlock(block)}
+          />
+        </Flex>
+        <Flex flex={{ md: "1" }}>
+          <PenaltySection penaltyEvents={uptimeData.events} />
+        </Flex>
       </Flex>
-      <Flex flex={{ md: "1" }}>
-        <PenaltySection />
+      <Flex
+        backgroundColor="gray.900"
+        p={{ base: 4, md: 6 }}
+        rounded={8}
+        w="100%"
+      >
+        <RecentBlocksSection hasTitle />
       </Flex>
+      <ProposedBlocksTable validatorAddress={validatorAddress} />
     </Flex>
-    <Flex
-      backgroundColor="gray.900"
-      p={{ base: 4, md: 6 }}
-      rounded={8}
-      w="100%"
-    >
-      <RecentBlocksSection hasTitle />
-    </Flex>
-    <ProposedBlocksTable validatorAddress={validatorAddress} />
-  </Flex>
-);
+  );
+};
