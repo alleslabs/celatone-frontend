@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#823](https://github.com/alleslabs/celatone-frontend/pull/823) Add validator uptime and penalty events
 - [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
 - [#819](https://github.com/alleslabs/celatone-frontend/pull/819) Add validator detail overview section with data from APIs
 - [#821](https://github.com/alleslabs/celatone-frontend/pull/821) Add Validator's proposed blocks table
