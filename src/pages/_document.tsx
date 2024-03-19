@@ -18,9 +18,7 @@ class MyDocument extends Document {
         <Head>
           <link href={CURR_THEME.fonts.body.url} rel="stylesheet" />
           <link href={CURR_THEME.fonts.heading.url} rel="stylesheet" />
-          {CURR_THEME.fonts.link && (
-            <link href={CURR_THEME.fonts.link.url} rel="stylesheet" />
-          )}
+          <link href={CURR_THEME.fonts.mono.url} rel="stylesheet" />
           <link rel="shortcut icon" href={CURR_THEME.branding.favicon} />
           <Meta />
         </Head>

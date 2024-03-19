@@ -1,6 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
@@ -40,11 +39,7 @@ export const BlocksTableMobileCard = ({
           <Flex direction="column">
             <MobileLabel label="Block Hash" />
             <Flex h={6} align="end">
-              <Text
-                variant="body2"
-                color="text.main"
-                fontFamily={CURR_THEME.fonts.link?.name}
-              >
+              <Text variant="body2" color="text.main" fontFamily="mono">
                 {truncate(blockData.hash.toUpperCase())}
               </Text>
             </Flex>

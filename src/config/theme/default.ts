@@ -1,7 +1,8 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import type { ThemeConfig } from "./types";
+import type { ComponentConfig, ThemeConfig } from "./types";
+import { generateTheme } from "./utils";
 
-export const DEFAULT_THEME: ThemeConfig = {
+const DEFAULT_BASE_THEME: ThemeConfig = {
   branding: {
     logo: "https://assets.alleslabs.dev/celatone-brand/logo/full-white.svg",
     favicon: "https://assets.alleslabs.dev/celatone-brand/favicon.ico",
@@ -25,7 +26,7 @@ export const DEFAULT_THEME: ThemeConfig = {
       url: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
       name: "Space Grotesk, sans-serif",
     },
-    link: {
+    mono: {
       url: "/font/main.css",
       name: "PP Neue Montreal Mono Regular",
     },
@@ -91,90 +92,6 @@ export const DEFAULT_THEME: ThemeConfig = {
       background: "#523600",
     },
   },
-  proposalChip: {
-    depositPeriod: {
-      bg: "primary.background",
-      color: "inherit",
-    },
-    votingPeriod: {
-      bg: "primary.darker",
-      color: "inherit",
-    },
-    failed: {
-      bg: "error.dark",
-      color: "inherit",
-    },
-    rejected: {
-      bg: "error.dark",
-      color: "inherit",
-    },
-    passed: {
-      bg: "success.dark",
-      color: "inherit",
-    },
-    cancelled: {
-      bg: "error.background",
-      color: "inherit",
-    },
-    depositFailed: {
-      bg: "gray.700",
-      color: "inherit",
-    },
-  },
-  voteParticipations: {
-    voted: "primary.main",
-    votedAbstain: "primary.darker",
-    didNotVote: "gray.700",
-  },
-  button: {
-    primary: {
-      background: "primary.main",
-      color: "gray.800",
-      disabledBackground: "primary.background",
-      disabledColor: "gray.800",
-      hoverBackground: "primary.dark",
-      activeBackground: "primary.darker",
-    },
-    outlinePrimary: {
-      borderColor: "primary.main",
-      color: "primary.main",
-      disabledBorderColor: "primary.background",
-      disabledColor: "primary.darker",
-      hoverBackground: "primary.background",
-      activeBackground: "primary.background",
-    },
-  },
-  tag: {
-    signer: {
-      bg: "accent.darker",
-      color: "inherit",
-    },
-    related: {
-      bg: "gray.700",
-      color: "text.main",
-    },
-  },
-  stepper: {
-    active: {
-      bg: "primary.darker",
-      color: "text.main",
-    },
-    disabled: {
-      bg: "gray.500",
-      color: "background.main",
-    },
-  },
-  borderRadius: {
-    default: "8px",
-    iconButton: "36px",
-    viewButton: "0 0 8px 8px",
-    uploadButton: "50%",
-    tag: "full",
-    badge: "16px",
-    radio: "12px",
-    indicator: "2px",
-    stepper: "full",
-  },
   jsonTheme: "pastel_on_dark",
   illustration: {
     "404":
@@ -201,3 +118,77 @@ export const DEFAULT_THEME: ThemeConfig = {
     telegram: "https://t.me/celatone_announcements",
   },
 };
+
+const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
+  button: {
+    primary: {
+      background: "primary.main",
+      color: "gray.800",
+      disabledBackground: "primary.background",
+      disabledColor: "gray.800",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.darker",
+    },
+    outlinePrimary: {
+      borderColor: "primary.main",
+      color: "primary.main",
+      disabledBorderColor: "primary.background",
+      disabledColor: "primary.darker",
+      hoverBackground: "primary.background",
+      activeBackground: "primary.background",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "primary.background",
+    },
+    votingPeriod: {
+      bg: "primary.darker",
+    },
+    failed: {
+      bg: "error.dark",
+    },
+    rejected: {
+      bg: "error.dark",
+    },
+    passed: {
+      bg: "success.dark",
+    },
+    cancelled: {
+      bg: "error.background",
+    },
+    depositFailed: {
+      bg: "gray.700",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "primary.darker",
+      color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
+    },
+  },
+  tag: {
+    signer: {
+      bg: "accent.darker",
+      color: "text.main",
+    },
+    related: {
+      bg: "gray.700",
+      color: "text.main",
+    },
+  },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
+};
+
+export const DEFAULT_THEME = generateTheme(
+  DEFAULT_BASE_THEME,
+  DEFAULT_COMPONENT_CONFIG
+);
