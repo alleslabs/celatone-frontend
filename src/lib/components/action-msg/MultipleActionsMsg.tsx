@@ -12,7 +12,7 @@ export const MultipleActionsMsg = ({ messages }: MultipleActionsMsgProps) => {
   );
 
   return (
-    <Flex gap={1} flexWrap="wrap">
+    <>
       {displayMessagesCount.map((msg, index) => (
         <Flex key={msg.type} gap={1}>
           <Text variant="body2">{msg.type} </Text>
@@ -20,6 +20,6 @@ export const MultipleActionsMsg = ({ messages }: MultipleActionsMsgProps) => {
           {index < displayMessagesCount.length - 1 && ","}
         </Flex>
       ))}
-    </Flex>
+    </>
   );
 };

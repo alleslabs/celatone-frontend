@@ -1,3 +1,4 @@
+import { Flex, Tag } from "@chakra-ui/react";
 import plur from "plur";
 
 import type { Transaction } from "lib/types";
@@ -8,13 +9,11 @@ import { MultipleActionsMsg } from "./MultipleActionsMsg";
 import { SingleActionMsg } from "./SingleActionMsg";
 import { SingleMsg } from "./SingleMsg";
 
-interface RenderActionMessagesProps {
+interface ActionMessagesProps {
   transaction: Transaction;
 }
 
-export const RenderActionMessages = ({
-  transaction,
-}: RenderActionMessagesProps) => {
+const ActionMessagesBody = ({ transaction }: ActionMessagesProps) => {
   if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
     return (
       <SingleActionMsg
@@ -38,3 +37,19 @@ export const RenderActionMessages = ({
     />
   );
 };
+
+export const ActionMessages = ({ transaction }: ActionMessagesProps) => (
+  <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <ActionMessagesBody transaction={transaction} />
+    {transaction.isIbc && (
+      <Tag variant="accent-dark" size="sm">
+        IBC
+      </Tag>
+    )}
+    {transaction.isOpinit && (
+      <Tag variant="teal" size="sm">
+        OPInit
+      </Tag>
+    )}
+  </Flex>
+);
