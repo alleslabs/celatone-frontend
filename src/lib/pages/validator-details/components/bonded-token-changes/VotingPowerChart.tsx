@@ -148,8 +148,8 @@ export const VotingPowerChart = ({
           <Box>
             <Button
               variant="ghost-secondary"
-              size="sm"
               p="unset"
+              size="md"
               pl={2}
               onClick={() =>
                 navigate({
