@@ -14,9 +14,13 @@ import { UptimeSection } from "./UptimeSection";
 
 interface PerformanceProps {
   validatorAddress: ValidatorAddr;
+  onViewMore?: () => void;
 }
 
-export const Performance = ({ validatorAddress }: PerformanceProps) => {
+export const Performance = ({
+  validatorAddress,
+  onViewMore,
+}: PerformanceProps) => {
   const [uptimeBlock, setUptimeBlock] = useState(100);
   const { data: uptimeData, isLoading } = useValidatorUptime(
     validatorAddress,
@@ -26,6 +30,15 @@ export const Performance = ({ validatorAddress }: PerformanceProps) => {
   if (isLoading) return <Loading />;
   if (isUndefined(uptimeData))
     return <ErrorFetching dataName="performance data" />;
+
+  if (onViewMore)
+    return (
+      <UptimeSection
+        uptimeData={uptimeData}
+        uptimeBlock={uptimeBlock}
+        onViewMore={onViewMore}
+      />
+    );
 
   return (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>

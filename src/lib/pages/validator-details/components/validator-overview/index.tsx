@@ -2,14 +2,13 @@ import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 
 import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
+import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
-import { UptimeSection } from "../performance/UptimeSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import { useValidatorUptime } from "lib/services/validatorService";
 import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
 
 import { ValidatorDescription } from "./ValidatorDescription";
@@ -39,20 +38,14 @@ export const ValidatorOverview = ({
   assetInfos,
 }: ValidatorOverviewProps) => {
   const isMobile = useMobile();
-  const uptimeBlock = 100;
-  const { data: uptimeData } = useValidatorUptime(
-    validatorAddress,
-    uptimeBlock
-  );
 
   return isActive && !isJailed ? (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       <ValidatorDescription details={details} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <VotingPowerOverview />
-        <UptimeSection
-          uptimeData={uptimeData}
-          uptimeBlock={uptimeBlock}
+        <Performance
+          validatorAddress={validatorAddress}
           onViewMore={onSelectPerformance}
         />
       </Flex>

@@ -9,15 +9,13 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
 import { useMemo } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import type { ValidatorUptimeResponse } from "lib/services/validator";
-import type { ComputedUptime, Option, Ratio } from "lib/types";
+import type { ComputedUptime, Ratio } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 import { PenaltyEvent } from "./PenaltyEvent";
@@ -25,7 +23,7 @@ import { RecentBlocksLegends } from "./RecentBlocksLegends";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 
 interface UptimeSectionProps {
-  uptimeData: Option<ValidatorUptimeResponse>;
+  uptimeData: ValidatorUptimeResponse;
   uptimeBlock: number;
   setUptimeBlock?: (block: number) => void;
   onViewMore?: () => void;
@@ -63,8 +61,6 @@ export const UptimeSection = ({
         data.total) as Ratio<number>,
     };
   }, [uptimeData?.uptime]);
-
-  if (isUndefined(uptimeData)) return <Loading />;
 
   return (
     <Flex
@@ -127,16 +123,16 @@ export const UptimeSection = ({
           {uptimeData.events.map((event) => (
             <PenaltyEvent key={event.height} event={event} />
           ))}
+          {isMobile && (
+            <Button
+              variant="ghost-primary"
+              rightIcon={<CustomIcon name="chevron-right" />}
+              onClick={onViewMore}
+            >
+              View Performance
+            </Button>
+          )}
         </>
-      )}
-      {onViewMore && isMobile && (
-        <Button
-          variant="ghost-primary"
-          rightIcon={<CustomIcon name="chevron-right" />}
-          onClick={onViewMore}
-        >
-          View Performance
-        </Button>
       )}
     </Flex>
   );
