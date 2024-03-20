@@ -2,8 +2,8 @@ import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 
 import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
+import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
-import { UptimeSection } from "../performance/UptimeSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile } from "lib/app-provider";
@@ -44,7 +44,10 @@ export const ValidatorOverview = ({
       <ValidatorDescription details={details} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <VotingPowerOverview />
-        <UptimeSection onViewMore={onSelectPerformance} />
+        <Performance
+          validatorAddress={validatorAddress}
+          onViewMore={onSelectPerformance}
+        />
       </Flex>
       {isMobile ? (
         <BondedTokenChangeMobileCard
