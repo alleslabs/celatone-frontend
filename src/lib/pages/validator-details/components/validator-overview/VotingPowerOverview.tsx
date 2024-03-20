@@ -1,5 +1,4 @@
 import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import type { BigSource } from "big.js";
 import Big from "big.js";
 
 import { TokenImageRender } from "lib/components/token";
@@ -39,7 +38,7 @@ const VotingPowerDetail = ({
   const formattedValue = assetInfo
     ? formatPrice(
         calculateAssetValue(
-          toToken(amount as U<Token<BigSource>>, assetInfo.precision),
+          toToken(amount as U<Token<Big>>, assetInfo.precision),
           assetInfo.price as USD<number>
         )
       )
