@@ -32,7 +32,7 @@ export const RelatedTransactionTable = ({
 
   return isMobile ? (
     <MobileTableContainer>
-      {delegationRelatedTxs?.map((delegationRelatedTx) => (
+      {delegationRelatedTxs.map((delegationRelatedTx) => (
         <RelatedTransactionsMobileCard
           key={delegationRelatedTx.txHash}
           delegationRelatedTx={delegationRelatedTx}

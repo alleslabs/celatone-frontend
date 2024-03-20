@@ -66,7 +66,7 @@ export const RelatedTransactionsMobileCard = ({
           {delegationRelatedTx.tokens.map((token) => (
             <RelatedTransactionsBondedTokenChanges
               txHash={delegationRelatedTx.txHash}
-              token={token}
+              coin={token}
               assetInfos={assetInfos}
               key={delegationRelatedTx.txHash + token.amount + token.denom}
             />

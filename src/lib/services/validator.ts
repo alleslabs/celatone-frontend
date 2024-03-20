@@ -228,7 +228,7 @@ export const getValidatorUptime = async (
 
 const zValidatorDelegationRelatedTxsResponseItem = z
   .object({
-    tx_hash: z.string(),
+    tx_hash: z.string().transform(parseTxHash),
     height: z.number().positive(),
     tokens: zCoin.array(),
     timestamp: zUtcDate,
@@ -239,10 +239,7 @@ const zValidatorDelegationRelatedTxsResponseItem = z
     ),
     sender: zBechAddr,
   })
-  .transform((val) => ({
-    ...snakeToCamel(val),
-    txHash: parseTxHash(val.tx_hash),
-  }));
+  .transform(snakeToCamel);
 export type ValidatorDelegationRelatedTxsResponseItem = z.infer<
   typeof zValidatorDelegationRelatedTxsResponseItem
 >;
