@@ -9,6 +9,7 @@ interface UserDocsLinkProps {
   cta?: string;
   isButton?: boolean;
   isSmall?: boolean;
+  mt?: number;
 }
 
 export const UserDocsLink = ({
@@ -17,6 +18,7 @@ export const UserDocsLink = ({
   href,
   isButton = false,
   isSmall = true,
+  mt = 8,
 }: UserDocsLinkProps) => {
   const baseLink = "https://docs.alleslabs.com/";
   return isButton ? (
@@ -40,12 +42,14 @@ export const UserDocsLink = ({
     <Flex
       gap={{ base: 1, md: 2 }}
       alignItems="center"
-      mt={8}
+      mt={mt}
       direction={{ base: "column", md: "row" }}
     >
-      <Text color="text.main" variant="body2">
-        {title}
-      </Text>
+      {title && (
+        <Text color="text.main" variant="body2">
+          {title}
+        </Text>
+      )}
       <Link
         href={`${baseLink}/${href}`}
         target="_blank"

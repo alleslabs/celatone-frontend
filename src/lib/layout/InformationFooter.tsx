@@ -1,7 +1,8 @@
+import { track } from "@amplitude/analytics-browser";
 import { Flex, Skeleton, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { FeedbackLink } from "lib/components/FeedbackLink";
+import { AmpEvent } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useOverviewsStats } from "lib/services/overviewService";
 
@@ -52,6 +53,7 @@ export const InformationFooter = () => {
             px={2}
             borderRadius={4}
             align="center"
+            cursor="pointer"
             _hover={{ background: "gray.800" }}
             transition="all 0.25s ease-in-out"
           >
@@ -61,7 +63,28 @@ export const InformationFooter = () => {
             </Text>
           </Flex>
         </Link>
-        <FeedbackLink />
+        <Link
+          href="https://feedback.alleslabs.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => track(AmpEvent.FEEDBACK)}
+        >
+          <Flex
+            gap={1}
+            py={1}
+            px={2}
+            borderRadius={4}
+            align="center"
+            cursor="pointer"
+            _hover={{ background: "gray.800" }}
+            transition="all 0.25s ease-in-out"
+          >
+            <CustomIcon name="feedback" color="gray.600" boxSize={3} />
+            <Text variant="body3" color="text.dark">
+              Feedback
+            </Text>
+          </Flex>
+        </Link>
       </Flex>
     </Flex>
   );

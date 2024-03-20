@@ -109,12 +109,22 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
             <CodeContractsTable codeId={codeId} />
+            <UserDocsLink
+              title="What is Code in CosmWasm?"
+              cta="Read more about Code Details"
+              href="user/cosmwasm/code/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <CodeSchemaSection
               codeId={codeId}
               codeHash={code.hash}
               jsonSchema={jsonSchema}
+            />
+            <UserDocsLink
+              title="How to attached and use JSON Schema?"
+              cta="Read more about JSON Schema"
+              href="user/cosmwasm/code/attach-json-schema"
             />
           </TabPanel>
         </TabPanels>
@@ -135,11 +145,6 @@ const CodeDetails = observer(() => {
       ) : (
         <InvalidCode />
       )}
-      <UserDocsLink
-        title="What is Code in CosmWasm?"
-        cta="Read more about Code Details"
-        href="user/cosmwasm/code/detail-page"
-      />
     </PageContainer>
   );
 });
