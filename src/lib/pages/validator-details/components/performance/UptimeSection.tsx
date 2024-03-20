@@ -38,17 +38,7 @@ export const UptimeSection = ({
   const isMobile = useMobile();
 
   const computed = useMemo<ComputedUptime>(() => {
-    const data = uptimeData?.uptime;
-    if (!data)
-      return {
-        signed: 0,
-        proposed: 0,
-        missed: 0,
-        signedRatio: 0 as Ratio<number>,
-        proposedRatio: 0 as Ratio<number>,
-        missedRatio: 0 as Ratio<number>,
-        uptimeRatio: 0 as Ratio<number>,
-      };
+    const data = uptimeData.uptime;
 
     return {
       signed: data.signedBlocks,
@@ -60,7 +50,8 @@ export const UptimeSection = ({
       uptimeRatio: ((data.signedBlocks + data.proposedBlocks) /
         data.total) as Ratio<number>,
     };
-  }, [uptimeData?.uptime]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(uptimeData.uptime)]);
 
   return (
     <Flex
