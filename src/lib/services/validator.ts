@@ -123,7 +123,14 @@ const zValidatorsResponse = z
   .object({
     items: z.array(zValidatorData),
     total: z.number().nonnegative(),
-    total_voting_power: zBig,
+    metadata: z.object({
+      total_voting_power: zBig,
+      active_count: z.number().nonnegative(),
+      inactive_count: z.number().nonnegative(),
+      percent_33_rank: z.number().positive(),
+      percent_66_rank: z.number().positive(),
+      min_commission_rate: z.coerce.number(),
+    }),
   })
   .transform(snakeToCamel);
 export type ValidatorsResponse = z.infer<typeof zValidatorsResponse>;

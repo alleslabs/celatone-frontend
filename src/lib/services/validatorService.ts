@@ -121,6 +121,7 @@ export const useValidators = (
       getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
     {
       retry: 1,
+      keepPreviousData: true,
       ...options,
     }
   );

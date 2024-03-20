@@ -1,4 +1,4 @@
-import { Flex, Heading, Link } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 
 import { ValidatorImage } from "lib/components/ValidatorImage";
 import type { ValidatorData } from "lib/types";
@@ -22,7 +22,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       alignItems={{ base: "start", md: "center" }}
     >
       <Flex align="center" gap={2}>
-        {info?.rank && (
+        {info.rank && (
           <Heading
             as="h5"
             mt={{ base: 1, md: 0 }}
@@ -54,9 +54,10 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       >
         {info.moniker}
       </Heading>
-      <Link href={info.website} isExternal _hover={{ textDecoration: "none" }}>
-        <WebsiteButton display={{ base: "none", md: "flex" }} />
-      </Link>
+      <WebsiteButton
+        href={info.website}
+        display={{ base: "none", md: "flex" }}
+      />
     </Flex>
   </Flex>
 );
