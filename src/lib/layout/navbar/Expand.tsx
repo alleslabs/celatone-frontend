@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { InformationFooter } from "../InformationFooter";
 import { AmpEvent, track } from "lib/amplitude";
 import { useNavContext } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -171,7 +172,6 @@ export const ExpandNavMenu = ({
         <Text py={2} variant="body3" fontWeight={700}>
           {yourAccountMenu.category}
         </Text>
-
         <Button
           variant="ghost-accent"
           size="xs"
@@ -186,7 +186,6 @@ export const ExpandNavMenu = ({
         submenu={yourAccountMenu.submenu}
         isCurrentPage={isCurrentPage}
       />
-
       {restNavMenu.map((item) => (
         <NavbarRender
           menuInfo={item}
@@ -194,6 +193,7 @@ export const ExpandNavMenu = ({
           isCurrentPage={isCurrentPage}
         />
       ))}
+      <InformationFooter />
     </Box>
   );
 };

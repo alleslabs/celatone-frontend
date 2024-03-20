@@ -14,6 +14,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useCodeDataByCodeId } from "lib/services/codeService";
 
@@ -134,6 +135,11 @@ const CodeDetails = observer(() => {
       ) : (
         <InvalidCode />
       )}
+      <UserDocsLink
+        title="What is Code in CosmWasm?"
+        cta="Read more about Code Details"
+        href="user/cosmwasm/code/detail-page"
+      />
     </PageContainer>
   );
 });
