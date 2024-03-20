@@ -6,10 +6,10 @@ import { CURR_THEME } from "env";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import {
   BlockVote,
+  zBechAddr,
   zBig,
   zCoin,
   zUtcDate,
-  zValidatorAddr,
   zValidatorData,
 } from "lib/types";
 import {
@@ -230,7 +230,7 @@ const zValidatorDelegationRelatedTxsResponseItem = z
         type: z.string(),
       })
     ),
-    sender: zValidatorAddr,
+    sender: zBechAddr,
   })
   .transform((val) => ({
     ...snakeToCamel(val),
