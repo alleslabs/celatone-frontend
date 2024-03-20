@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
@@ -145,39 +145,27 @@ export const VotingPowerChart = ({
           </Text>
         </Flex>
         {isOverview && (
-          <Flex
-            gap={1}
-            align="center"
-            cursor="pointer"
-            _hover={{
-              textDecoration: "underline",
-              textDecorationColor: "secondary.light",
-              "& > p": { color: "secondary.light" },
-            }}
-            onClick={() =>
-              navigate({
-                pathname: "/validators/[validatorAddress]/[tab]",
-                query: {
-                  validatorAddress,
-                  tab: "bonded-token-changes",
-                },
-                options: { shallow: true },
-              })
-            }
-          >
-            <Text
-              variant="body2"
-              color="secondary.main"
-              transition="all .25s ease-in-out"
+          <Box>
+            <Button
+              variant="ghost-secondary"
+              size="sm"
+              p="unset"
+              pl={2}
+              onClick={() =>
+                navigate({
+                  pathname: "/validators/[validatorAddress]/[tab]",
+                  query: {
+                    validatorAddress,
+                    tab: "bonded-token-changes",
+                  },
+                  options: { shallow: true },
+                })
+              }
             >
               See all related transactions
-            </Text>
-            <CustomIcon
-              name="chevron-right"
-              boxSize={4}
-              color="secondary.main"
-            />
-          </Flex>
+              <CustomIcon name="chevron-right" boxSize={3} />
+            </Button>
+          </Box>
         )}
       </Flex>
       <Box w="100%" h="272px" id="voting-power-chart-container">
