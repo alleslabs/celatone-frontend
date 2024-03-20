@@ -11,12 +11,14 @@ import { RelatedTransactionsBondedTokenChanges } from "./RelatedTransactionsBond
 interface RelatedTransactionsTableRowProps {
   delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   templateColumns: string;
+  onRowSelect: (txHash: string) => void;
   assetInfos: Option<AssetInfos>;
 }
 
 export const RelatedTransactionsTableRow = ({
   delegationRelatedTx,
   templateColumns,
+  onRowSelect,
   assetInfos,
 }: RelatedTransactionsTableRowProps) => (
   <Grid
@@ -25,6 +27,7 @@ export const RelatedTransactionsTableRow = ({
     transition="all 0.25s ease-in-out"
     cursor="pointer"
     minW="min-content"
+    onClick={() => onRowSelect(delegationRelatedTx.txHash)}
   >
     <TableRow>
       <ExplorerLink
@@ -58,6 +61,7 @@ export const RelatedTransactionsTableRow = ({
           txHash={delegationRelatedTx.txHash}
           token={token}
           assetInfos={assetInfos}
+          key={delegationRelatedTx.txHash + token.amount + token.denom}
         />
       ))}
     </TableRow>

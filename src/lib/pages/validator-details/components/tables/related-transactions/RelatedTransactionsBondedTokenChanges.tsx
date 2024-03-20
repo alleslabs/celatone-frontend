@@ -52,7 +52,7 @@ export const RelatedTransactionsBondedTokenChanges = ({
             fontWeight={700}
             color={isPositiveAmount ? "success.main" : "error.main"}
           >
-            {formattedAmount}
+            {isPositiveAmount ? `+${formattedAmount}` : formattedAmount}
           </Text>{" "}
           {tokenWithValue.symbol}
         </Text>

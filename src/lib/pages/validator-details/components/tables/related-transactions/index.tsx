@@ -13,12 +13,14 @@ interface RelatedTransactionTableProps {
   delegationRelatedTxs: Option<ValidatorDelegationRelatedTxsResponseItem[]>;
   isLoading: boolean;
   assetInfos: Option<AssetInfos>;
+  onRowSelect: (txHash: string) => void;
 }
 
 export const RelatedTransactionTable = ({
   delegationRelatedTxs,
   isLoading,
   assetInfos,
+  onRowSelect,
 }: RelatedTransactionTableProps) => {
   const isMobile = useMobile();
 
@@ -32,8 +34,10 @@ export const RelatedTransactionTable = ({
     <MobileTableContainer>
       {delegationRelatedTxs?.map((delegationRelatedTx) => (
         <RelatedTransactionsMobileCard
+          key={delegationRelatedTx.txHash}
           delegationRelatedTx={delegationRelatedTx}
           assetInfos={assetInfos}
+          onRowSelect={onRowSelect}
         />
       ))}
     </MobileTableContainer>
@@ -46,6 +50,7 @@ export const RelatedTransactionTable = ({
           templateColumns={templateColumns}
           delegationRelatedTx={delegationRelatedTx}
           assetInfos={assetInfos}
+          onRowSelect={onRowSelect}
         />
       ))}
     </TableContainer>

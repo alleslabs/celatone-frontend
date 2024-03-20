@@ -11,11 +11,13 @@ import { RelatedTransactionsBondedTokenChanges } from "./RelatedTransactionsBond
 interface RelatedTransactionsMobileCardProps {
   delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   assetInfos: Option<AssetInfos>;
+  onRowSelect: (txHash: string) => void;
 }
 
 export const RelatedTransactionsMobileCard = ({
   delegationRelatedTx,
   assetInfos,
+  onRowSelect,
 }: RelatedTransactionsMobileCardProps) => (
   <MobileCardTemplate
     topContent={
@@ -66,6 +68,7 @@ export const RelatedTransactionsMobileCard = ({
               txHash={delegationRelatedTx.txHash}
               token={token}
               assetInfos={assetInfos}
+              key={delegationRelatedTx.txHash + token.amount + token.denom}
             />
           ))}
         </Box>
@@ -81,5 +84,6 @@ export const RelatedTransactionsMobileCard = ({
         </Text>
       </Box>
     }
+    onClick={() => onRowSelect(delegationRelatedTx.txHash)}
   />
 );

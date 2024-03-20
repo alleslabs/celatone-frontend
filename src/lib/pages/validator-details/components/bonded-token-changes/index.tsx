@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
 import { RelatedTransactionTable } from "../tables";
-import { useMobile } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle } from "lib/components/table";
@@ -22,6 +22,13 @@ export const BondedTokenChanges = ({
   assetInfos,
 }: BondedTokenChangesProps) => {
   const isMobile = useMobile();
+  const navigate = useInternalNavigate();
+  const onRowSelect = (txHash: string) =>
+    navigate({
+      pathname: "/txs/[txHash]",
+      query: { txHash: txHash.toUpperCase() },
+      replace: true,
+    });
 
   const {
     pagesQuantity,
@@ -70,6 +77,7 @@ export const BondedTokenChanges = ({
           delegationRelatedTxs={data?.items}
           isLoading={isLoading}
           assetInfos={assetInfos}
+          onRowSelect={onRowSelect}
         />
         {!!data?.total && data.total > 10 && (
           <Pagination
