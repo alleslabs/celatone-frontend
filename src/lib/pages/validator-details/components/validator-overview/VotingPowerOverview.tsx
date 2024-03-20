@@ -60,8 +60,7 @@ const VotingPowerDetail = ({
               fontWeight: "400",
             }}
           >
-            {" "}
-            {getTokenLabel(denom, assetInfo?.symbol)}
+            {` ${getTokenLabel(denom, assetInfo?.symbol)}`}
           </span>
         )}
       </Text>
@@ -141,8 +140,7 @@ export const VotingPowerOverview = ({
                     fontWeight: "400",
                   }}
                 >
-                  {" "}
-                  {getTokenLabel(singleStakingDenom, assetInfo?.symbol)}
+                  {` ${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`}
                 </span>
               )}
             </Text>
