@@ -1,10 +1,10 @@
 import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import Big from "big.js";
 
 import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import type { AssetInfo, AssetInfos, Option, Token, U, USD } from "lib/types";
+import { big } from "lib/types";
 import {
   calculateAssetValue,
   divWithDefault,
@@ -53,13 +53,14 @@ const VotingPowerDetail = ({
         {formattedPercent}
       </Text>
       <Text fontWeight={700} variant="body2">
-        {formattedAmount}{" "}
+        {formattedAmount}
         {denom && (
           <span
             style={{
               fontWeight: "400",
             }}
           >
+            {" "}
             {getTokenLabel(denom, assetInfo?.symbol)}
           </span>
         )}
@@ -112,13 +113,7 @@ export const VotingPowerOverview = ({
       )
     : undefined;
 
-  const selfBondedDivWithDefault = divWithDefault(
-    selfVotingPower,
-    votingPower,
-    0
-  );
-
-  const fromDelegatorsSelfVotingPowerAmount = Big(1).minus(selfVotingPower);
+  const selfVotingPowerRatio = divWithDefault(selfVotingPower, votingPower, 0);
 
   return (
     <Flex
@@ -139,13 +134,14 @@ export const VotingPowerOverview = ({
         <Flex gap={2} alignItems="center" mt={1}>
           <Flex direction="column">
             <Text fontWeight={700} variant="body1">
-              {votingPowerAmount}{" "}
+              {votingPowerAmount}
               {singleStakingDenom && (
                 <span
                   style={{
                     fontWeight: "400",
                   }}
                 >
+                  {" "}
                   {getTokenLabel(singleStakingDenom, assetInfo?.symbol)}
                 </span>
               )}
@@ -156,10 +152,12 @@ export const VotingPowerOverview = ({
               </Text>
             )}
           </Flex>
-          {assetInfo && (
+          {singleStakingDenom && (
             <TokenImageRender
               boxSize={7}
-              logo={assetInfo.logo ?? getUndefinedTokenIcon(assetInfo.symbol)}
+              logo={
+                assetInfo?.logo ?? getUndefinedTokenIcon(singleStakingDenom)
+              }
             />
           )}
         </Flex>
@@ -174,15 +172,15 @@ export const VotingPowerOverview = ({
       >
         <VotingPowerDetail
           label="Self-Bonded"
-          percent={selfBondedDivWithDefault.toNumber()}
+          percent={selfVotingPowerRatio.toNumber()}
           amount={selfVotingPower as U<Token<Big>>}
           denom={singleStakingDenom}
           assetInfo={assetInfo}
         />
         <VotingPowerDetail
           label="From Delegators"
-          percent={Big(1).minus(selfBondedDivWithDefault).toNumber()}
-          amount={fromDelegatorsSelfVotingPowerAmount as U<Token<Big>>}
+          percent={big(1).minus(selfVotingPowerRatio).toNumber()}
+          amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
           denom={singleStakingDenom}
           assetInfo={assetInfo}
         />
