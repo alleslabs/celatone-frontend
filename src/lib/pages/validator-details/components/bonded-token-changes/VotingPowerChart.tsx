@@ -2,6 +2,7 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
+import { TabIndex } from "../../types";
 import { useInternalNavigate } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
@@ -155,7 +156,7 @@ export const VotingPowerChart = ({
                 pathname: "/validators/[validatorAddress]/[tab]",
                 query: {
                   validatorAddress,
-                  tab: "bonded-token-changes",
+                  tab: TabIndex.BondedTokenChanges,
                 },
                 options: { shallow: true },
               })
