@@ -3,8 +3,8 @@ import type Big from "big.js";
 
 import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
+import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
-import { UptimeSection } from "../performance/UptimeSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile } from "lib/app-provider";
@@ -57,7 +57,10 @@ export const ValidatorOverview = ({
           totalVotingPower={totalVotingPower}
           selfVotingPower={selfVotingPower}
         />
-        <UptimeSection onViewMore={onSelectPerformance} />
+        <Performance
+          validatorAddress={validatorAddress}
+          onViewMore={onSelectPerformance}
+        />
       </Flex>
       {isMobile ? (
         <BondedTokenChangeMobileCard

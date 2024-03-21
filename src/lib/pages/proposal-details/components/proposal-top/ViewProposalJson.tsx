@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
+import { trackUseViewJSON } from "lib/amplitude";
 import { useGovConfig, useInitia, useLCDEndpoint } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab } from "lib/utils";
@@ -15,10 +16,12 @@ export const ViewProposalJson = ({ id }: ViewProposalJsonProps) => {
 
   if (!config.enabled) return null;
 
-  const openLcdPage = () =>
+  const openLcdPage = () => {
+    trackUseViewJSON("Proposal Details");
     openNewTab(
       `${endpoint}/${isInitia ? "initia" : "cosmos"}/gov/${config.version}/proposals/${encodeURIComponent(id)}`
     );
+  };
 
   return (
     <Button
