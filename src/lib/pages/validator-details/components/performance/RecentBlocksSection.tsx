@@ -1,6 +1,8 @@
 import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { forwardRef, useEffect, useRef } from "react";
 
+import { useNavContext } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { Tooltip } from "lib/components/Tooltip";
 import { useValidatorUptime } from "lib/services/validatorService";
@@ -11,52 +13,53 @@ import { formatUTC } from "lib/utils";
 interface BlockProps {
   height: number;
   vote: BlockVote;
-  withCursor?: boolean;
 }
 
-const Block = ({ height, vote, withCursor = false }: BlockProps) => {
-  let backgroundColor = "primary.main";
+const Block = forwardRef<HTMLDivElement, BlockProps>(
+  ({ height, vote }, ref) => {
+    let backgroundColor = "primary.main";
 
-  if (vote === BlockVote.PROPOSE) {
-    backgroundColor = "secondary.main";
-  } else if (vote === BlockVote.ABSTAIN) {
-    backgroundColor = "error.dark";
-  }
+    if (vote === BlockVote.PROPOSE) {
+      backgroundColor = "secondary.main";
+    } else if (vote === BlockVote.ABSTAIN) {
+      backgroundColor = "error.dark";
+    }
 
-  let voteLabel = "Signed";
+    let voteLabel = "Signed";
 
-  if (vote === BlockVote.PROPOSE) {
-    voteLabel = "Proposed";
-  } else if (vote === BlockVote.ABSTAIN) {
-    voteLabel = "Missed";
-  }
+    if (vote === BlockVote.PROPOSE) {
+      voteLabel = "Proposed";
+    } else if (vote === BlockVote.ABSTAIN) {
+      voteLabel = "Missed";
+    }
 
-  return (
-    <Tooltip label={`${height} (${voteLabel})`}>
-      <Box position="relative">
-        <Box
-          width="12px"
-          height="12px"
-          backgroundColor={backgroundColor}
-          borderRadius="2px"
-        />
-        {withCursor && (
+    return (
+      <Tooltip label={`${height} (${voteLabel})`}>
+        <Box position="relative">
           <Box
-            id="most-recent-100-blocks-cursor"
-            position="absolute"
-            bottom="-16px"
-            left="1px"
-            width="0"
-            height="0"
-            borderBottom="6px solid var(--chakra-colors-text-dark)"
-            borderLeft="5px solid transparent"
-            borderRight="5px solid transparent"
+            width="12px"
+            height="12px"
+            backgroundColor={backgroundColor}
+            borderRadius="2px"
           />
-        )}
-      </Box>
-    </Tooltip>
-  );
-};
+          {ref && (
+            <Box
+              ref={ref}
+              position="absolute"
+              bottom="-16px"
+              left="1px"
+              width="0"
+              height="0"
+              borderBottom="6px solid var(--chakra-colors-text-dark)"
+              borderLeft="5px solid transparent"
+              borderRight="5px solid transparent"
+            />
+          )}
+        </Box>
+      </Tooltip>
+    );
+  }
+);
 
 interface RecentBlocksSectionProps {
   validatorAddress: ValidatorAddr;
@@ -69,16 +72,17 @@ export const RecentBlocksSection = ({
     validatorAddress,
     100
   );
+  const { isExpand } = useNavContext();
+  const router = useRouter();
 
   const parentRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
   const hoverTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleResize = () => {
       const parentElement = parentRef.current;
-      const cursorElement = document.getElementById(
-        "most-recent-100-blocks-cursor"
-      );
+      const cursorElement = cursorRef.current;
       const hoverTextElement = hoverTextRef.current;
 
       if (parentElement && cursorElement && hoverTextElement) {
@@ -87,10 +91,14 @@ export const RecentBlocksSection = ({
         const diffLeft = cursorRect.left - parentRect.left;
         const diffRight = parentRect.right - cursorRect.right;
 
+        if (diffLeft < 0 || diffRight < 0) return;
+
         if (diffLeft < parentRect.width / 2) {
           hoverTextElement.style.left = `${diffLeft}px`;
+          hoverTextElement.style.right = "auto";
         } else {
           hoverTextElement.style.right = `${diffRight}px`;
+          hoverTextElement.style.left = "auto";
         }
       }
     };
@@ -101,7 +109,7 @@ export const RecentBlocksSection = ({
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [dataUpdatedAt]);
+  }, [dataUpdatedAt, isExpand, router.asPath]);
 
   if (isLoading) return <Loading />;
 
@@ -136,7 +144,7 @@ export const RecentBlocksSection = ({
           .map((block, index) => (
             <Block
               key={`block-${block.height}`}
-              withCursor={index === 0}
+              ref={index === 0 ? cursorRef : undefined}
               {...block}
             />
           ))

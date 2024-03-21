@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
+import { CustomIcon } from "lib/components/icon";
 import type { ValidatorUptimeResponse } from "lib/services/validator";
 
 import { PenaltyEvent } from "./PenaltyEvent";
@@ -25,7 +26,8 @@ export const PenaltySection = ({ penaltyEvents }: PenaltySectionProps) => (
         Latest 90 Days
       </Text>
     </Flex>
-    <Flex direction="column" gap={2}>
+    <Flex gap={2} alignItems="center">
+      <CustomIcon name="check-circle" color="success.main" />
       {penaltyEvents.length === 0 ? (
         <Text variant="body2" color="text.dark">
           This validator never had any slash or jailed history within 90 days.
