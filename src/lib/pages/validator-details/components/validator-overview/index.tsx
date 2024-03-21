@@ -57,7 +57,7 @@ export const ValidatorOverview = ({
       ) : (
         <>
           <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
-            <RecentBlocksSection hasTitle />
+            <RecentBlocksSection validatorAddress={validatorAddress} />
           </Flex>
           <VotingPowerChart
             validatorAddress={validatorAddress}

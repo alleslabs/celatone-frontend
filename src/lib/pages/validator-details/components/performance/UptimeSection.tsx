@@ -15,7 +15,7 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import type { ValidatorUptimeResponse } from "lib/services/validator";
-import type { ComputedUptime, Ratio } from "lib/types";
+import type { ComputedUptime, Ratio, ValidatorAddr } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 import { PenaltyEvent } from "./PenaltyEvent";
@@ -23,6 +23,7 @@ import { RecentBlocksLegends } from "./RecentBlocksLegends";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 
 interface UptimeSectionProps {
+  validatorAddress: ValidatorAddr;
   uptimeData: ValidatorUptimeResponse;
   uptimeBlock: number;
   setUptimeBlock?: (block: number) => void;
@@ -30,6 +31,7 @@ interface UptimeSectionProps {
 }
 
 export const UptimeSection = ({
+  validatorAddress,
   uptimeData,
   uptimeBlock,
   setUptimeBlock,
@@ -109,7 +111,9 @@ export const UptimeSection = ({
       <RecentBlocksLegends uptime={computed} />
       {onViewMore && (
         <>
-          {isMobile && <RecentBlocksSection />}
+          {isMobile && (
+            <RecentBlocksSection validatorAddress={validatorAddress} />
+          )}
           {uptimeData.events.length !== 0 && <Divider />}
           {uptimeData.events.map((event) => (
             <PenaltyEvent key={event.height} event={event} />
