@@ -64,7 +64,9 @@ export const ValidatorOverview = ({
       </Flex>
       {isMobile ? (
         <BondedTokenChangeMobileCard
-          denom="OSMO"
+          validatorAddress={validatorAddress}
+          singleStakingDenom={singleStakingDenom}
+          assetInfos={assetInfos}
           onViewMore={onSelectBondedTokenChanges}
         />
       ) : (
@@ -76,7 +78,7 @@ export const ValidatorOverview = ({
             validatorAddress={validatorAddress}
             singleStakingDenom={singleStakingDenom}
             assetInfos={assetInfos}
-            isOverview
+            onViewMore={onSelectBondedTokenChanges}
           />
         </>
       )}
