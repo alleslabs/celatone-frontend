@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
@@ -24,6 +25,9 @@ interface ValidatorOverviewProps {
   validatorAddress: ValidatorAddr;
   singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  votingPower: Big;
+  totalVotingPower: Big;
+  selfVotingPower: Big;
 }
 
 export const ValidatorOverview = ({
@@ -36,6 +40,9 @@ export const ValidatorOverview = ({
   validatorAddress,
   singleStakingDenom,
   assetInfos,
+  votingPower,
+  totalVotingPower,
+  selfVotingPower,
 }: ValidatorOverviewProps) => {
   const isMobile = useMobile();
 
@@ -43,7 +50,13 @@ export const ValidatorOverview = ({
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       <ValidatorDescription details={details} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
-        <VotingPowerOverview />
+        <VotingPowerOverview
+          singleStakingDenom={singleStakingDenom}
+          assetInfos={assetInfos}
+          votingPower={votingPower}
+          totalVotingPower={totalVotingPower}
+          selfVotingPower={selfVotingPower}
+        />
         <Performance
           validatorAddress={validatorAddress}
           onViewMore={onSelectPerformance}

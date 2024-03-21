@@ -115,6 +115,9 @@ const ValidatorDetailsBody = ({
                 details={data.info.details}
                 singleStakingDenom={singleStakingDenom}
                 assetInfos={assetInfos}
+                votingPower={data.info.votingPower}
+                totalVotingPower={data.totalVotingPower}
+                selfVotingPower={data.selfVotingPower}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
