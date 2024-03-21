@@ -191,12 +191,12 @@ export const getValidatorData = async (
 const zValidatorUptimeResponse = z
   .object({
     uptime: z.object({
-      signed_block: z.number(),
-      proposed_block: z.number(),
+      signed_blocks: z.number(),
+      proposed_blocks: z.number(),
       missed_blocks: z.number(),
       total: z.number(),
     }),
-    recent_blocks: z
+    recent_100_blocks: z
       .object({
         height: z.number(),
         vote: z.nativeEnum(BlockVote),

@@ -1,10 +1,14 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { PenaltyStatus } from "../../types";
+import type { ValidatorUptimeResponse } from "lib/services/validator";
 
-import { PenaltyStatusSection } from "./PenaltyStatusSection";
+import { PenaltyEvent } from "./PenaltyEvent";
 
-export const PenaltySection = () => (
+interface PenaltySectionProps {
+  penaltyEvents: ValidatorUptimeResponse["events"];
+}
+
+export const PenaltySection = ({ penaltyEvents }: PenaltySectionProps) => (
   <Flex
     direction="column"
     gap={4}
@@ -22,9 +26,15 @@ export const PenaltySection = () => (
       </Text>
     </Flex>
     <Flex direction="column" gap={2}>
-      <PenaltyStatusSection status={PenaltyStatus.Jailed} />
-      <PenaltyStatusSection status={PenaltyStatus.Slashed} />
-      <PenaltyStatusSection status={PenaltyStatus.Jailed} />
+      {penaltyEvents.length === 0 ? (
+        <Text variant="body2" color="text.dark">
+          This validator never had any slash or jailed history within 90 days.
+        </Text>
+      ) : (
+        penaltyEvents.map((event) => (
+          <PenaltyEvent key={event.height} event={event} />
+        ))
+      )}
     </Flex>
   </Flex>
 );
