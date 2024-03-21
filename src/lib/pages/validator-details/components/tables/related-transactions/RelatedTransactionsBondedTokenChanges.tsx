@@ -36,16 +36,20 @@ export const RelatedTransactionsBondedTokenChanges = ({
       alignItems="center"
     >
       <Box textAlign={{ base: "left", md: "right" }}>
-        <Text>
+        <Flex alignItems="center" gap={1}>
           <Text
-            as="span"
             fontWeight={700}
             color={isPositiveAmount ? "success.main" : "error.main"}
           >
             {formattedAmount}
           </Text>
-          {` ${getTokenLabel(token.denom, token.symbol)}`}
-        </Text>
+          <Text>{getTokenLabel(token.denom, token.symbol)}</Text>
+          <TokenImageRender
+            display={{ base: "block", md: "none" }}
+            boxSize={4}
+            logo={token.logo ?? getUndefinedTokenIcon(token.denom)}
+          />
+        </Flex>
         <Text variant="body3" color="text.dark">
           {token.value
             ? `(${formatPrice(token.value.abs() as USD<BigSource>)})`
@@ -53,6 +57,7 @@ export const RelatedTransactionsBondedTokenChanges = ({
         </Text>
       </Box>
       <TokenImageRender
+        display={{ base: "none", md: "block" }}
         boxSize={6}
         logo={token.logo ?? getUndefinedTokenIcon(token.denom)}
       />
