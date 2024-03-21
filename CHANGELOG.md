@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#833](https://github.com/alleslabs/celatone-frontend/pull/833) Add link to transactions page to current bonded token component
 - [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
 - [#831](https://github.com/alleslabs/celatone-frontend/pull/831) Update zod schema to apply with new validator delegation related txs api spec
 - [#828](https://github.com/alleslabs/celatone-frontend/pull/828) Add validator detail voting power overview section with data from APIs
