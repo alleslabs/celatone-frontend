@@ -43,7 +43,7 @@ export const RelatedTransactionsBondedTokenChanges = ({
             color={isPositiveAmount ? "success.main" : "error.main"}
           >
             {formattedAmount}
-          </Text>{" "}
+          </Text>
           {` ${getTokenLabel(token.denom, token.symbol)}`}
         </Text>
         <Text variant="body3" color="text.dark">
