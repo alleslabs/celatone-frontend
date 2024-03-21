@@ -68,8 +68,7 @@ export const formatUTokenWithPrecision = (
   amount: U<Token<BigSource>>,
   precision: number,
   isSuffix = true,
-  decimalPoints?: number,
-  allowNegativeValue = false
+  decimalPoints?: number
 ): string => {
   const token = toToken(amount, precision);
 
@@ -79,12 +78,10 @@ export const formatUTokenWithPrecision = (
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
 
-  if (!allowNegativeValue) {
-    const lowestThreshold = big(10).pow(-(decimalPoints ?? precision));
+  const lowestThreshold = big(10).pow(-(decimalPoints ?? precision));
 
-    if (!token.eq(0) && token.lt(lowestThreshold)) {
-      return `<${lowestThreshold.toFixed()}`;
-    }
+  if (!token.eq(0) && token.lt(lowestThreshold)) {
+    return `<${lowestThreshold.toFixed()}`;
   }
 
   return formatDecimal({

@@ -6,10 +6,10 @@ import { CURR_THEME } from "env";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import {
   BlockVote,
+  zBechAddr,
   zBig,
   zCoin,
   zUtcDate,
-  zValidatorAddr,
   zValidatorData,
 } from "lib/types";
 import {
@@ -123,7 +123,14 @@ const zValidatorsResponse = z
   .object({
     items: z.array(zValidatorData),
     total: z.number().nonnegative(),
-    total_voting_power: zBig,
+    metadata: z.object({
+      total_voting_power: zBig,
+      active_count: z.number().nonnegative(),
+      inactive_count: z.number().nonnegative(),
+      percent_33_rank: z.number().positive(),
+      percent_66_rank: z.number().positive(),
+      min_commission_rate: z.coerce.number(),
+    }),
   })
   .transform(snakeToCamel);
 export type ValidatorsResponse = z.infer<typeof zValidatorsResponse>;
@@ -184,12 +191,12 @@ export const getValidatorData = async (
 const zValidatorUptimeResponse = z
   .object({
     uptime: z.object({
-      signed_block: z.number(),
-      proposed_block: z.number(),
+      signed_blocks: z.number(),
+      proposed_blocks: z.number(),
       missed_blocks: z.number(),
       total: z.number(),
     }),
-    recent_blocks: z
+    recent_100_blocks: z
       .object({
         height: z.number(),
         vote: z.nativeEnum(BlockVote),
@@ -221,7 +228,7 @@ export const getValidatorUptime = async (
 
 const zValidatorDelegationRelatedTxsResponseItem = z
   .object({
-    tx_hash: z.string(),
+    tx_hash: z.string().transform(parseTxHash),
     height: z.number().positive(),
     tokens: zCoin.array(),
     timestamp: zUtcDate,
@@ -230,12 +237,9 @@ const zValidatorDelegationRelatedTxsResponseItem = z
         type: z.string(),
       })
     ),
-    sender: zValidatorAddr,
+    sender: zBechAddr,
   })
-  .transform((val) => ({
-    ...snakeToCamel(val),
-    txHash: parseTxHash(val.tx_hash),
-  }));
+  .transform(snakeToCamel);
 export type ValidatorDelegationRelatedTxsResponseItem = z.infer<
   typeof zValidatorDelegationRelatedTxsResponseItem
 >;

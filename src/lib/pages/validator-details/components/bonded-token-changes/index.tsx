@@ -1,10 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import {
-  RelatedTransactionsMobileCard,
-  RelatedTransactionTable,
-} from "../tables";
-import { useMobile } from "lib/app-provider";
+import { RelatedTransactionTable } from "../tables";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle } from "lib/components/table";
@@ -25,6 +22,12 @@ export const BondedTokenChanges = ({
   assetInfos,
 }: BondedTokenChangesProps) => {
   const isMobile = useMobile();
+  const navigate = useInternalNavigate();
+  const onRowSelect = (txHash: string) =>
+    navigate({
+      pathname: "/txs/[txHash]",
+      query: { txHash: txHash.toUpperCase() },
+    });
 
   const {
     pagesQuantity,
@@ -61,27 +64,20 @@ export const BondedTokenChanges = ({
         assetInfos={assetInfos}
       />
       <Box>
-        {isMobile ? (
-          <RelatedTransactionsMobileCard
-            delegationRelatedTxs={data?.items}
-            isLoading={isLoading}
-            assetInfos={assetInfos}
+        {!isMobile && (
+          <TableTitle
+            title="Delegation-Related Transactions"
+            count={data?.total ?? 0}
+            id={tableHeaderId}
+            helperText="Shows transactions relevant to changes in delegated tokens, excluding any token reduction due to slashing."
           />
-        ) : (
-          <>
-            <TableTitle
-              title="Delegation-Related Transactions"
-              count={data?.total ?? 0}
-              id={tableHeaderId}
-              helperText="Shows transactions relevant to changes in delegated tokens, excluding any token reduction due to slashing."
-            />
-            <RelatedTransactionTable
-              delegationRelatedTxs={data?.items}
-              isLoading={isLoading}
-              assetInfos={assetInfos}
-            />
-          </>
         )}
+        <RelatedTransactionTable
+          delegationRelatedTxs={data?.items}
+          isLoading={isLoading}
+          assetInfos={assetInfos}
+          onRowSelect={onRowSelect}
+        />
         {!!data?.total && data.total > 10 && (
           <Pagination
             currentPage={currentPage}

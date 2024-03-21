@@ -1,15 +1,18 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import type { ComputedUptime, Ratio } from "lib/types";
+import { formatPrettyPercent } from "lib/utils";
+
 const LegendItem = ({
   label,
   color,
   value,
-  percent,
+  ratio,
 }: {
   label: string;
   color: string;
-  value: string;
-  percent: string;
+  value: number;
+  ratio: Ratio<number>;
 }) => (
   <Flex gap={2} w="full">
     <Flex w={3} h={3} borderRadius="2px" backgroundColor={color} mt={1} />
@@ -34,32 +37,37 @@ const LegendItem = ({
         {value}
       </Text>
       <Text variant="body3" color="text.dark">
-        {percent}
+        {formatPrettyPercent(ratio)}
       </Text>
     </Flex>
   </Flex>
 );
-export const RecentBlocksLegends = () => {
-  return (
-    <Flex direction={{ base: "column", md: "row" }}>
-      <LegendItem
-        label="Signed Blocks"
-        color="primary.main"
-        value="88"
-        percent="95.21%"
-      />
-      <LegendItem
-        label="Proposed Blocks"
-        color="secondary.main"
-        value="12"
-        percent="3.00%"
-      />
-      <LegendItem
-        label="Missed Blocks"
-        color="error.dark"
-        value="3"
-        percent="1.11%"
-      />
-    </Flex>
-  );
-};
+
+interface RecentBlocksLegendsProps {
+  uptime: ComputedUptime;
+}
+
+export const RecentBlocksLegends = ({
+  uptime: { signed, proposed, missed, signedRatio, proposedRatio, missedRatio },
+}: RecentBlocksLegendsProps) => (
+  <Flex direction={{ base: "column", md: "row" }}>
+    <LegendItem
+      label="Signed Blocks"
+      color="primary.main"
+      value={signed}
+      ratio={signedRatio}
+    />
+    <LegendItem
+      label="Proposed Blocks"
+      color="secondary.main"
+      value={proposed}
+      ratio={proposedRatio}
+    />
+    <LegendItem
+      label="Missed Blocks"
+      color="error.dark"
+      value={missed}
+      ratio={missedRatio}
+    />
+  </Flex>
+);

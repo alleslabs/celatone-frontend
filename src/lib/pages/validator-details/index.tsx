@@ -34,17 +34,17 @@ const ValidatorDetailsBody = ({
   tab,
 }: ValidatorDetailsQueryParams) => {
   const navigate = useInternalNavigate();
-  const move = useMoveConfig({ shouldRedirect: false });
-  const { data, isLoading } = useValidatorData(validatorAddress);
-
   const {
     chainConfig: {
       extra: { singleStakingDenom },
     },
   } = useCelatoneApp();
+  const move = useMoveConfig({ shouldRedirect: false });
+
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
+  const { data, isLoading } = useValidatorData(validatorAddress);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -104,6 +104,7 @@ const ValidatorDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <ValidatorOverview
+                validatorAddress={validatorAddress}
                 onSelectVotes={handleTabChange(TabIndex.Votes)}
                 onSelectPerformance={handleTabChange(TabIndex.Performance)}
                 onSelectBondedTokenChanges={handleTabChange(
@@ -112,7 +113,6 @@ const ValidatorDetailsBody = ({
                 isActive={data.info.isActive}
                 isJailed={data.info.isJailed}
                 details={data.info.details}
-                validatorAddress={validatorAddress}
                 singleStakingDenom={singleStakingDenom}
                 assetInfos={assetInfos}
                 votingPower={data.info.votingPower}
@@ -126,15 +126,13 @@ const ValidatorDetailsBody = ({
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <Performance validatorAddress={validatorAddress} />
             </TabPanel>
-            {!move.enabled && (
-              <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-                <BondedTokenChanges
-                  validatorAddress={validatorAddress}
-                  singleStakingDenom={singleStakingDenom}
-                  assetInfos={assetInfos}
-                />
-              </TabPanel>
-            )}
+            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
+              <BondedTokenChanges
+                validatorAddress={validatorAddress}
+                singleStakingDenom={singleStakingDenom}
+                assetInfos={assetInfos}
+              />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </PageContainer>
@@ -153,13 +151,13 @@ const ValidatorDetails = () => {
   }, [router.isReady]);
 
   return (
-    <div>
+    <>
       {!validated.success ? (
         <InvalidValidator />
       ) : (
         <ValidatorDetailsBody {...validated.data} />
       )}
-    </div>
+    </>
   );
 };
 

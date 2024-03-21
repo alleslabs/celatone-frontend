@@ -1,70 +1,65 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
+import type Big from "big.js";
 
 import { TokenImageRender } from "lib/components/token";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { AssetInfos, Coin, Option, USD } from "lib/types";
+import type { AssetInfos, Coin, Option, Token, U, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   formatPrice,
   formatUTokenWithPrecision,
+  getTokenLabel,
 } from "lib/utils";
 
 interface RelatedTransactionsBondedTokenChangesProps {
   txHash: string;
-  token: Coin;
+  coin: Coin;
   assetInfos: Option<AssetInfos>;
 }
 
 export const RelatedTransactionsBondedTokenChanges = ({
   txHash,
-  token,
+  coin,
   assetInfos,
 }: RelatedTransactionsBondedTokenChangesProps) => {
-  const tokenWithValue = coinToTokenWithValue(
-    token?.denom,
-    token?.amount,
-    assetInfos
-  );
-
-  const formattedAmount = formatUTokenWithPrecision(
-    tokenWithValue.amount,
-    tokenWithValue.precision ?? 0,
-    false,
-    2,
-    true
-  );
-
-  const isPositiveAmount = tokenWithValue.amount.gte(0);
+  const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
+  const isPositiveAmount = token.amount.gte(0);
+  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${formatUTokenWithPrecision(token.amount.abs() as U<Token<Big>>, token.precision ?? 0, false, 2)}`;
 
   return (
     <Flex
       gap={2}
-      key={`${txHash}-${token.denom}`}
+      key={`${txHash}-${coin.denom}`}
       w="100%"
       justifyContent={{ base: "start", md: "end" }}
       alignItems="center"
     >
       <Box textAlign={{ base: "left", md: "right" }}>
-        <Text>
+        <Flex alignItems="center" gap={1}>
           <Text
-            as="span"
             fontWeight={700}
             color={isPositiveAmount ? "success.main" : "error.main"}
           >
             {formattedAmount}
-          </Text>{" "}
-          {tokenWithValue.symbol}
-        </Text>
+          </Text>
+          <Text>{getTokenLabel(token.denom, token.symbol)}</Text>
+          <TokenImageRender
+            display={{ base: "block", md: "none" }}
+            boxSize={4}
+            logo={token.logo ?? getUndefinedTokenIcon(token.denom)}
+          />
+        </Flex>
         <Text variant="body3" color="text.dark">
-          ({formatPrice(tokenWithValue.value?.abs() as USD<BigSource>)})
+          {token.value
+            ? `(${formatPrice(token.value.abs() as USD<BigSource>)})`
+            : "-"}
         </Text>
       </Box>
       <TokenImageRender
+        display={{ base: "none", md: "block" }}
         boxSize={6}
-        logo={
-          tokenWithValue.logo ?? getUndefinedTokenIcon(tokenWithValue.denom)
-        }
+        logo={token.logo ?? getUndefinedTokenIcon(token.denom)}
       />
     </Flex>
   );

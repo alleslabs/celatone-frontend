@@ -43,9 +43,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
 - [#831](https://github.com/alleslabs/celatone-frontend/pull/831) Update zod schema to apply with new validator delegation related txs api spec
 - [#828](https://github.com/alleslabs/celatone-frontend/pull/828) Add validator detail voting power overview section with data from APIs
+- [#835](https://github.com/alleslabs/celatone-frontend/pull/835) Add amp view in json - block and proposal details
+- [#823](https://github.com/alleslabs/celatone-frontend/pull/823) Add validator uptime and penalty events
+- [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
 - [#819](https://github.com/alleslabs/celatone-frontend/pull/819) Add validator detail overview section with data from APIs
 - [#821](https://github.com/alleslabs/celatone-frontend/pull/821) Add Validator's proposed blocks table
-- [#818](https://github.com/alleslabs/celatone-frontend/pull/818) bonded tokens voting powers replacement with real data from api v1
+- [#818](https://github.com/alleslabs/celatone-frontend/pull/818) Replace bonded tokens voting powers with real data from api v1
 - [#801](https://github.com/alleslabs/celatone-frontend/pull/801) Add validator detail ui structure
 - [#817](https://github.com/alleslabs/celatone-frontend/pull/817) api v1 - validator voted proposals
 - [#816](https://github.com/alleslabs/celatone-frontend/pull/816) api v1 - validator staking provisions
@@ -83,6 +86,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#830](https://github.com/alleslabs/celatone-frontend/pull/830) Change GraphQL neutron-1 endpoint to prod
+- [#825](https://github.com/alleslabs/celatone-frontend/pull/825) Change GraphQL pion-1 endpoint to prod
 - [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
 - [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
 - [#805](https://github.com/alleslabs/celatone-frontend/pull/805) Revamp code detail page contracts section
@@ -106,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
 - [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
 - [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
 - [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
