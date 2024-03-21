@@ -145,27 +145,25 @@ export const VotingPowerChart = ({
           </Text>
         </Flex>
         {isOverview && (
-          <Box>
-            <Button
-              variant="ghost-secondary"
-              p="unset"
-              size="md"
-              pl={2}
-              onClick={() =>
-                navigate({
-                  pathname: "/validators/[validatorAddress]/[tab]",
-                  query: {
-                    validatorAddress,
-                    tab: "bonded-token-changes",
-                  },
-                  options: { shallow: true },
-                })
-              }
-            >
-              See all related transactions
-              <CustomIcon name="chevron-right" boxSize={3} />
-            </Button>
-          </Box>
+          <Button
+            variant="ghost-secondary"
+            p="unset"
+            size="md"
+            pl={2}
+            onClick={() =>
+              navigate({
+                pathname: "/validators/[validatorAddress]/[tab]",
+                query: {
+                  validatorAddress,
+                  tab: "bonded-token-changes",
+                },
+                options: { shallow: true },
+              })
+            }
+          >
+            See all related transactions
+            <CustomIcon name="chevron-right" boxSize={3} />
+          </Button>
         )}
       </Flex>
       <Box w="100%" h="272px" id="voting-power-chart-container">
