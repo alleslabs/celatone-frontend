@@ -9,6 +9,7 @@ import {
   coinToTokenWithValue,
   formatPrice,
   formatUTokenWithPrecision,
+  getTokenLabel,
 } from "lib/utils";
 
 interface RelatedTransactionsBondedTokenChangesProps {
@@ -43,7 +44,7 @@ export const RelatedTransactionsBondedTokenChanges = ({
           >
             {formattedAmount}
           </Text>{" "}
-          {token.symbol}
+          {` ${getTokenLabel(token.denom, token.symbol)}`}
         </Text>
         <Text variant="body3" color="text.dark">
           {token.value

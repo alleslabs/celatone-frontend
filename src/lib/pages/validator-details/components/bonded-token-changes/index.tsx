@@ -27,7 +27,6 @@ export const BondedTokenChanges = ({
     navigate({
       pathname: "/txs/[txHash]",
       query: { txHash: txHash.toUpperCase() },
-      replace: true,
     });
 
   const {
