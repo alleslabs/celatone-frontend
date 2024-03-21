@@ -11,15 +11,21 @@ export const ValidatorDescription = ({
     direction="column"
     gap={2}
     backgroundColor="gray.900"
-    p={{ base: 4, md: 6 }}
+    p={4}
     rounded={8}
     w="100%"
   >
     <Text variant="body2" fontWeight={500} as="h6" color="text.dark">
       Validator Description
     </Text>
-    <Text variant="body2" color="text.main">
-      {details}
-    </Text>
+    {!details ? (
+      <Text variant="body2" color="text.dark">
+        No description provided
+      </Text>
+    ) : (
+      <Text variant="body2" color="text.main">
+        {details}
+      </Text>
+    )}
   </Flex>
 );

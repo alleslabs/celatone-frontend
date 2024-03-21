@@ -1,4 +1,4 @@
-import { Flex, Heading, Link } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 
 import { ValidatorImage } from "lib/components/ValidatorImage";
 import type { ValidatorData } from "lib/types";
@@ -54,9 +54,10 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       >
         {info.moniker}
       </Heading>
-      <Link href={info.website} isExternal>
-        <WebsiteButton display={{ base: "none", md: "flex" }} />
-      </Link>
+      <WebsiteButton
+        href={info.website}
+        display={{ base: "none", md: "flex" }}
+      />
     </Flex>
   </Flex>
 );
