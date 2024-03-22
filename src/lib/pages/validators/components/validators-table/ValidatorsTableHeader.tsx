@@ -28,13 +28,7 @@ const SortIcon = ({
   if (column !== order) return null;
   return (
     <CustomIcon
-      name={
-        // NOTE: for moniker - arrow down is A to Z
-        (isDesc && order !== ValidatorOrder.Moniker) ||
-        (!isDesc && order === ValidatorOrder.Moniker)
-          ? "arrow-down"
-          : "arrow-up"
-      }
+      name={isDesc ? "arrow-down" : "arrow-up"}
       my={0}
       boxSize="14px"
       color="gray.600"
@@ -56,7 +50,10 @@ export const ValidatorsTableHeader = ({
       if (order === column) setIsDesc(!isDesc);
       else {
         setOrder(column);
-        setIsDesc(column !== ValidatorOrder.Moniker);
+        setIsDesc(
+          column !== ValidatorOrder.Moniker &&
+            column !== ValidatorOrder.Commission
+        );
       }
     },
     [isDesc, order, setIsDesc, setOrder]
