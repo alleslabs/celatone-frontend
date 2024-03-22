@@ -1,7 +1,6 @@
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
 import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
@@ -62,24 +61,17 @@ export const ValidatorOverview = ({
           onViewMore={onSelectPerformance}
         />
       </Flex>
-      {isMobile ? (
-        <BondedTokenChangeMobileCard
-          denom="OSMO"
-          onViewMore={onSelectBondedTokenChanges}
-        />
-      ) : (
-        <>
-          <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
-            <RecentBlocksSection validatorAddress={validatorAddress} />
-          </Flex>
-          <VotingPowerChart
-            validatorAddress={validatorAddress}
-            singleStakingDenom={singleStakingDenom}
-            assetInfos={assetInfos}
-            isOverview
-          />
-        </>
+      {!isMobile && (
+        <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
+          <RecentBlocksSection validatorAddress={validatorAddress} />
+        </Flex>
       )}
+      <VotingPowerChart
+        validatorAddress={validatorAddress}
+        singleStakingDenom={singleStakingDenom}
+        assetInfos={assetInfos}
+        onViewMore={onSelectBondedTokenChanges}
+      />
       <ProposedBlocksTable
         validatorAddress={validatorAddress}
         onViewMore={onSelectPerformance}

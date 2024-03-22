@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
+- [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
 - [#836](https://github.com/alleslabs/celatone-frontend/pull/836) Add recent 100 blocks chart
 - [#833](https://github.com/alleslabs/celatone-frontend/pull/833) Add link to transactions page to current bonded token component
 - [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
