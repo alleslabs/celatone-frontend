@@ -76,6 +76,7 @@ export const ValidatorOverview = ({
             validatorAddress={validatorAddress}
             singleStakingDenom={singleStakingDenom}
             assetInfos={assetInfos}
+            isOverview
           />
         </>
       )}

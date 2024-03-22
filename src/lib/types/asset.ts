@@ -7,6 +7,7 @@ export const zCoin = z.object({
   denom: z.string(),
   amount: z.string(),
 });
+export type Coin = z.infer<typeof zCoin>;
 
 export const zAssetInfo = z.object({
   coingecko: z.string(),

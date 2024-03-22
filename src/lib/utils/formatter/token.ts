@@ -53,7 +53,7 @@ export const toToken = (
 ): Token<Big> => {
   try {
     const value = big(uAmount).div(big(10).pow(precision));
-    return (value.gte(0) ? value : big(0)) as Token<Big>;
+    return value as Token<Big>;
   } catch {
     return big(0) as Token<Big>;
   }
@@ -71,6 +71,7 @@ export const formatUTokenWithPrecision = (
   decimalPoints?: number
 ): string => {
   const token = toToken(amount, precision);
+
   if (isSuffix) {
     if (token.gte(B)) return `${d2Formatter(token.div(B), "0.00")}B`;
     if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
@@ -78,6 +79,7 @@ export const formatUTokenWithPrecision = (
   }
 
   const lowestThreshold = big(10).pow(-(decimalPoints ?? precision));
+
   if (!token.eq(0) && token.lt(lowestThreshold)) {
     return `<${lowestThreshold.toFixed()}`;
   }

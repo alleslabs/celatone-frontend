@@ -6,13 +6,18 @@ import { CURR_THEME } from "env";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import {
   BlockVote,
+  zBechAddr,
   zBig,
   zCoin,
   zUtcDate,
-  zValidatorAddr,
   zValidatorData,
 } from "lib/types";
-import { parseWithError, removeSpecialChars, snakeToCamel } from "lib/utils";
+import {
+  parseTxHash,
+  parseWithError,
+  removeSpecialChars,
+  snakeToCamel,
+} from "lib/utils";
 
 import { zBlocksResponse } from "./block";
 import { zProposal } from "./proposal";
@@ -223,13 +228,21 @@ export const getValidatorUptime = async (
 
 const zValidatorDelegationRelatedTxsResponseItem = z
   .object({
-    tx_hash: z.string(),
+    tx_hash: z.string().transform(parseTxHash),
     height: z.number().positive(),
     tokens: zCoin.array(),
     timestamp: zUtcDate,
-    validator_address: zValidatorAddr,
+    messages: z.array(
+      z.object({
+        type: z.string(),
+      })
+    ),
+    sender: zBechAddr,
   })
   .transform(snakeToCamel);
+export type ValidatorDelegationRelatedTxsResponseItem = z.infer<
+  typeof zValidatorDelegationRelatedTxsResponseItem
+>;
 
 const zValidatorDelegationRelatedTxsResponse = z.object({
   items: z.array(zValidatorDelegationRelatedTxsResponseItem),
