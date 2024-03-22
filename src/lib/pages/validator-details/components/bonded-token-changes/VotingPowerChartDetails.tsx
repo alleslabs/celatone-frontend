@@ -1,9 +1,22 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import type { HistoricalPowersResponse } from "lib/services/validator";
 import { big } from "lib/types";
 import type { AssetInfo, Option, Token, U } from "lib/types";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
+
+const formatArithmetic = (value: Big) => {
+  if (value.gt(0)) return "+";
+  if (value.lt(0)) return "-";
+  return "";
+};
+
+const formatColor = (value: Big) => {
+  if (value.gt(0)) return "success.main";
+  if (value.lt(0)) return "error.main";
+  return "text.dark";
+};
 
 interface VotingPowerChartDetailsProps {
   historicalPowers: HistoricalPowersResponse;
@@ -39,19 +52,7 @@ export const VotingPowerChartDetails = ({
       ].votingPower.minus(historicalPowers.items[0].votingPower)
     : big(0);
 
-  const formatArithmetic = () => {
-    if (compareVotingPower.gt(0)) return "+";
-    if (compareVotingPower.lt(0)) return "-";
-    return "";
-  };
-
-  const formatColor = () => {
-    if (compareVotingPower.gt(0)) return "success.main";
-    if (compareVotingPower.lt(0)) return "error.main";
-    return "text.dark";
-  };
-
-  const formattedVotingPower = `${formatArithmetic()}${formatUTokenWithPrecision(
+  const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(
     compareVotingPower.abs() as U<Token<Big>>,
     assetInfo?.precision ?? 0,
     true,
@@ -67,7 +68,11 @@ export const VotingPowerChartDetails = ({
         {currentPrice} {currency}
       </Heading>
       <Text variant="body1">
-        <Text as="span" fontWeight={700} color={formatColor()}>
+        <Text
+          as="span"
+          fontWeight={700}
+          color={formatColor(compareVotingPower)}
+        >
           {formattedVotingPower}
         </Text>
         {` ${currency}`} in last 24 hrs
