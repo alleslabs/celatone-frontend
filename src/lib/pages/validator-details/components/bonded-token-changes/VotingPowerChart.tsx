@@ -14,7 +14,7 @@ import {
   getTokenLabel,
 } from "lib/utils";
 
-import { BondedTokenChangeDetails } from "./BondedTokenChangeDetails";
+import { VotingPowerDetails } from "./VotingPowerDetails";
 
 interface VotingPowerChartProps {
   validatorAddress: ValidatorAddr;
@@ -35,11 +35,11 @@ export const VotingPowerChart = ({
   if (isLoading) return <Loading />;
   if (!historicalPowers) return <ErrorFetching dataName="historical powers" />;
 
-  const labels = historicalPowers?.items.map((item) =>
+  const labels = historicalPowers.items.map((item) =>
     formatHHmm(item.hourRoundedTimestamp as Date)
   );
 
-  const dateLabels = labels?.map((label) => {
+  const dateLabels = labels.map((label) => {
     const [hours, minutes] = label.split(":");
     const date = new Date();
     date.setHours(parseInt(hours, 10));
@@ -50,8 +50,7 @@ export const VotingPowerChart = ({
   });
 
   const dataset = {
-    data:
-      historicalPowers?.items.map((item) => item.votingPower.toNumber()) ?? [],
+    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
     borderColor: "#D8BEFC",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
@@ -112,7 +111,7 @@ export const VotingPowerChart = ({
       w="100%"
     >
       <Flex gap={6} direction="column" w={250} minW={250}>
-        <BondedTokenChangeDetails
+        <VotingPowerDetails
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
           assetInfo={assetInfo}

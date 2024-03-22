@@ -1,8 +1,8 @@
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
+import { VotingPowerMobileOverview } from "../bonded-token-changes/VotingPowerMobileOverview";
 import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
@@ -63,7 +63,7 @@ export const ValidatorOverview = ({
         />
       </Flex>
       {isMobile ? (
-        <BondedTokenChangeMobileCard
+        <VotingPowerMobileOverview
           validatorAddress={validatorAddress}
           singleStakingDenom={singleStakingDenom}
           assetInfos={assetInfos}

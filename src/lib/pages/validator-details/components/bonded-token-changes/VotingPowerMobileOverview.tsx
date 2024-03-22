@@ -6,19 +6,21 @@ import { ErrorFetching } from "lib/components/state";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
 import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
 
-import { BondedTokenChangeDetails } from "./BondedTokenChangeDetails";
+import { VotingPowerDetails } from "./VotingPowerDetails";
 
-export const BondedTokenChangeMobileCard = ({
-  validatorAddress,
-  singleStakingDenom,
-  assetInfos,
-  onViewMore,
-}: {
+interface VotingPowerMobileOverviewProps {
   validatorAddress: ValidatorAddr;
   singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
   onViewMore: () => void;
-}) => {
+}
+
+export const VotingPowerMobileOverview = ({
+  validatorAddress,
+  singleStakingDenom,
+  assetInfos,
+  onViewMore,
+}: VotingPowerMobileOverviewProps) => {
   const { data: historicalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
 
@@ -39,7 +41,7 @@ export const BondedTokenChangeMobileCard = ({
       alignItems="center"
       onClick={onViewMore}
     >
-      <BondedTokenChangeDetails
+      <VotingPowerDetails
         historicalPowers={historicalPowers}
         singleStakingDenom={singleStakingDenom}
         assetInfo={assetInfo}
