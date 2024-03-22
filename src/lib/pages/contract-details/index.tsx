@@ -156,7 +156,7 @@ const ContractDetailsBody = observer(
                       onViewMore={handleTabChange(TabIndex.Assets)}
                     />
                   </Flex>
-                  {!gov.enabled && (
+                  {gov.enabled && (
                     <Flex
                       borderBottom={{ base: "0px", md: "1px solid" }}
                       borderBottomColor={{
