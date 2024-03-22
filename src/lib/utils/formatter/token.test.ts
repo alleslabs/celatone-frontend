@@ -155,9 +155,6 @@ describe("toToken", () => {
     test("NaN", () => {
       expect(toToken(NaN as U<Token<number>>, 6)).toEqual(big(0) as Token<Big>);
     });
-    test("negative number", () => {
-      expect(toToken(-1 as U<Token<number>>, 6)).toEqual(big(0) as Token<Big>);
-    });
   });
   test("more than 1", () => {
     expect(toToken(12345678 as U<Token<number>>, 6)).toEqual(

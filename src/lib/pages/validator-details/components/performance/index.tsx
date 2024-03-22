@@ -34,6 +34,7 @@ export const Performance = ({
   if (onViewMore)
     return (
       <UptimeSection
+        validatorAddress={validatorAddress}
         uptimeData={uptimeData}
         uptimeBlock={uptimeBlock}
         onViewMore={onViewMore}
@@ -45,6 +46,7 @@ export const Performance = ({
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <Flex flex={{ md: "2" }}>
           <UptimeSection
+            validatorAddress={validatorAddress}
             uptimeData={uptimeData}
             uptimeBlock={uptimeBlock}
             setUptimeBlock={(block) => setUptimeBlock(block)}
@@ -60,7 +62,7 @@ export const Performance = ({
         rounded={8}
         w="100%"
       >
-        <RecentBlocksSection hasTitle />
+        <RecentBlocksSection validatorAddress={validatorAddress} />
       </Flex>
       <ProposedBlocksTable validatorAddress={validatorAddress} />
     </Flex>

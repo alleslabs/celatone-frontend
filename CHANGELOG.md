@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#836](https://github.com/alleslabs/celatone-frontend/pull/836) Add recent 100 blocks chart
+- [#833](https://github.com/alleslabs/celatone-frontend/pull/833) Add link to transactions page to current bonded token component
+- [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
+- [#831](https://github.com/alleslabs/celatone-frontend/pull/831) Update zod schema to apply with new validator delegation related txs api spec
 - [#828](https://github.com/alleslabs/celatone-frontend/pull/828) Add validator detail voting power overview section with data from APIs
 - [#835](https://github.com/alleslabs/celatone-frontend/pull/835) Add amp view in json - block and proposal details
 - [#823](https://github.com/alleslabs/celatone-frontend/pull/823) Add validator uptime and penalty events
@@ -109,6 +113,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
+- [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
 - [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
 - [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
 - [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full

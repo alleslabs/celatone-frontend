@@ -44,7 +44,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: { disableDelegation: true },
+    extra: {},
   },
   "pion-1": {
     chain: "neutron",
@@ -87,6 +87,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: { disableDelegation: true },
+    extra: {},
   },
 };
