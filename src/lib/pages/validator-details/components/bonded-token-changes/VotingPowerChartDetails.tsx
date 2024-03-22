@@ -5,17 +5,17 @@ import { big } from "lib/types";
 import type { AssetInfo, Option, Token, U } from "lib/types";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 
-interface VotingPowerDetailsProps {
+interface VotingPowerChartDetailsProps {
   historicalPowers: HistoricalPowersResponse;
   singleStakingDenom: Option<string>;
   assetInfo: Option<AssetInfo>;
 }
 
-export const VotingPowerDetails = ({
+export const VotingPowerChartDetails = ({
   historicalPowers,
   singleStakingDenom,
   assetInfo,
-}: VotingPowerDetailsProps) => {
+}: VotingPowerChartDetailsProps) => {
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
     : "";
