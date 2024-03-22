@@ -21,15 +21,22 @@ const StepLabel = ({
   <Flex
     justify="center"
     align="center"
-    backgroundColor={disabled ? "gray.500" : "primary.main"}
+    backgroundColor={disabled ? "stepper.disabled.bg" : "stepper.active.bg"}
     width="24px"
     height="24px"
     borderRadius="50%"
   >
     {currentStep > step ? (
-      <CustomIcon name="check" color="text.main" boxSize={3} />
+      <CustomIcon
+        name="check"
+        color={disabled ? "stepper.disabled.color" : "stepper.active.color"}
+        boxSize={3}
+      />
     ) : (
-      <Text variant="body3" color={disabled ? "background.main" : "text.main"}>
+      <Text
+        variant="body3"
+        color={disabled ? "stepper.disabled.color" : "stepper.active.color"}
+      >
         {step}
       </Text>
     )}

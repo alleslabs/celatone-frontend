@@ -48,18 +48,22 @@ export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
       borderRadius="50%"
       alignItems="center"
       justifyContent="center"
-      background={isGray ? "gray.500" : "primary.main"}
+      background={isGray ? "stepper.disabled.bg" : "stepper.active.bg"}
     >
       {state !== PeriodState.COMPLETE ? (
         <Text
           variant="body3"
           fontWeight={700}
-          color={isGray ? "background.main" : "text.main"}
+          color={isGray ? "stepper.disabled.color" : "stepper.active.color"}
         >
           {step}
         </Text>
       ) : (
-        <CustomIcon name="check" boxSize={3} />
+        <CustomIcon
+          name="check"
+          boxSize={3}
+          color={isGray ? "stepper.disabled.color" : "stepper.active.color"}
+        />
       )}
     </Flex>
   );

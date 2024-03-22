@@ -121,6 +121,7 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
+      fontFamily="mono"
       color="secondary.main"
       transition="all 0.25s ease-in-out"
       _hover={{ color: "secondary.light" }}

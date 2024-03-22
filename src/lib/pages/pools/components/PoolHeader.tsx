@@ -1,17 +1,17 @@
-import { Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import {
-  BALANCER_ICON,
-  CLP_ICON,
-  COSMWASM_ICON,
-  STABLESWAP_ICON,
-  SUPERFLUID_ICON,
-} from "../constant";
+  BalancerPoolIcon,
+  ClpIcon,
+  CosmWasmPoolIcon,
+  StableSwapIcon,
+} from "lib/icon";
 import type { PoolDetail } from "lib/types/pool";
 import { PoolType } from "lib/types/pool";
 import { getTokenLabel } from "lib/utils";
 
 import { PoolLogo } from "./PoolLogo";
+import { SuperfluidLabel } from "./SuperfluidLabel";
 
 interface PoolHeaderProps
   extends Pick<PoolDetail, "isSuperfluid" | "poolLiquidity"> {
@@ -24,22 +24,22 @@ const poolTypeRender = (type: PoolDetail["type"]) => {
     case PoolType.BALANCER:
       return {
         text: "Balancer Pool",
-        icon: BALANCER_ICON,
+        icon: <BalancerPoolIcon boxSize={4} />,
       };
     case PoolType.STABLESWAP:
       return {
         text: "StableSwap Pool",
-        icon: STABLESWAP_ICON,
+        icon: <StableSwapIcon boxSize={4} />,
       };
     case PoolType.COSMWASM:
       return {
         text: "CosmWasm Pool",
-        icon: COSMWASM_ICON,
+        icon: <CosmWasmPoolIcon boxSize={4} />,
       };
     case PoolType.CL:
       return {
         text: "Concentrated Liquidity Pool",
-        icon: CLP_ICON,
+        icon: <ClpIcon boxSize={4} />,
       };
     default:
       return {};
@@ -112,8 +112,8 @@ export const PoolHeader = ({
                   h="6px"
                 />
                 <Flex alignItems="center">
-                  <Image boxSize={4} src={poolValue.icon} mr={1} />
-                  <Text variant="body2" color="text.dark">
+                  {poolValue.icon}
+                  <Text variant="body2" color="text.dark" ml={1}>
                     {poolValue.text}
                   </Text>
                 </Flex>
@@ -127,12 +127,7 @@ export const PoolHeader = ({
                   w="6px"
                   h="6px"
                 />
-                <Flex alignItems="center" gap={1}>
-                  <Image boxSize={4} src={SUPERFLUID_ICON} />
-                  <Text variant="body2" color="#ee64e8">
-                    Superfluid
-                  </Text>
-                </Flex>
+                <SuperfluidLabel />
               </Flex>
             )}
           </Flex>

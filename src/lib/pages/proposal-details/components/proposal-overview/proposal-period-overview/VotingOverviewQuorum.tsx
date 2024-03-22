@@ -51,20 +51,24 @@ export const VotingOverviewQuorum = ({
           label={
             <div>
               <Flex gap={2}>
-                <CustomIcon boxSize="10px" name="circle" color="primary.main" />
+                <CustomIcon
+                  boxSize="10px"
+                  name="circle"
+                  color="voteParticipations.voted"
+                />
                 <Text>
                   {formatPrettyPercent(nonAbstainVotes.toNumber())} Vote
-                  response
+                  Response
                 </Text>
               </Flex>
               <Flex gap={2}>
                 <CustomIcon
                   boxSize="10px"
                   name="circle"
-                  color="secondary.main"
+                  color="voteParticipations.votedAbstain"
                 />
                 <Text>
-                  {formatPrettyPercent(abstain.toNumber())} Vote abstain
+                  {formatPrettyPercent(abstain.toNumber())} Vote Abstain
                 </Text>
               </Flex>
             </div>
