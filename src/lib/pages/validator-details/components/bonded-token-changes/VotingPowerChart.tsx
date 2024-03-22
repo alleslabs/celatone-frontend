@@ -1,8 +1,11 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
+import { TabIndex } from "../../types";
+import { useInternalNavigate } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
@@ -17,13 +20,17 @@ interface VotingPowerChartProps {
   validatorAddress: ValidatorAddr;
   singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  isOverview?: boolean;
 }
 
 export const VotingPowerChart = ({
   validatorAddress,
   singleStakingDenom,
   assetInfos,
+  isOverview,
 }: VotingPowerChartProps) => {
+  const navigate = useInternalNavigate();
+
   const { data: historicalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
 
@@ -115,27 +122,50 @@ export const VotingPowerChart = ({
       rounded={8}
       w="100%"
     >
-      <Flex gap={2} direction="column" w={250} minW={250}>
-        <Heading variant="h6">
-          {singleStakingDenom
-            ? "Current Bonded Token"
-            : "Current Voting Powers"}
-        </Heading>
-        <Heading variant="h5" fontWeight={600}>
-          {currentPrice} {currency}
-        </Heading>
-        <Text variant="body1">
-          <Text
-            as="span"
-            fontWeight={700}
-            color={diffInLast24Hr >= 0 ? "success.main" : "error.main"}
+      <Flex gap={6} direction="column" w={250} minW={250}>
+        <Flex gap={2} direction="column">
+          <Heading variant="h6">
+            {singleStakingDenom
+              ? "Current Bonded Token"
+              : "Current Voting Powers"}
+          </Heading>
+          <Heading variant="h5" fontWeight={600}>
+            {currentPrice} {currency}
+          </Heading>
+          <Text variant="body1">
+            <Text
+              as="span"
+              fontWeight={700}
+              color={diffInLast24Hr >= 0 ? "success.main" : "error.main"}
+            >
+              {diffInLast24Hr >= 0
+                ? `+${handleFormatValue(diffInLast24Hr)}`
+                : `-${handleFormatValue(-diffInLast24Hr)}`}
+            </Text>{" "}
+            {currency} in last 24 hr
+          </Text>
+        </Flex>
+        {isOverview && (
+          <Button
+            variant="ghost-secondary"
+            p="unset"
+            size="md"
+            pl={2}
+            onClick={() =>
+              navigate({
+                pathname: "/validators/[validatorAddress]/[tab]",
+                query: {
+                  validatorAddress,
+                  tab: TabIndex.BondedTokenChanges,
+                },
+                options: { shallow: true },
+              })
+            }
           >
-            {diffInLast24Hr >= 0
-              ? `+${handleFormatValue(diffInLast24Hr)}`
-              : `-${handleFormatValue(-diffInLast24Hr)}`}
-          </Text>{" "}
-          {currency} in last 24 hr
-        </Text>
+            See all related transactions
+            <CustomIcon name="chevron-right" boxSize={3} />
+          </Button>
+        )}
       </Flex>
       <Box w="100%" h="272px" id="voting-power-chart-container">
         <LineChart
