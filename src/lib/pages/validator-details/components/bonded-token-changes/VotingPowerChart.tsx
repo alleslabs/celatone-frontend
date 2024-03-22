@@ -43,26 +43,23 @@ export const VotingPowerChart = ({
     ? assetInfos?.[singleStakingDenom]
     : undefined;
 
-  if (isMobileOverview) {
-    return (
-      <Flex
-        backgroundColor="gray.900"
-        p={4}
-        rounded={8}
-        w="100%"
-        justifyContent="space-between"
-        alignItems="center"
-        onClick={onViewMore}
-      >
-        <VotingPowerDetails
-          historicalPowers={historicalPowers}
-          singleStakingDenom={singleStakingDenom}
-          assetInfo={assetInfo}
-        />
-        <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
-      </Flex>
-    );
-  }
+  if (isMobileOverview)
+    <Flex
+      backgroundColor="gray.900"
+      p={4}
+      rounded={8}
+      w="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      onClick={onViewMore}
+    >
+      <VotingPowerDetails
+        historicalPowers={historicalPowers}
+        singleStakingDenom={singleStakingDenom}
+        assetInfo={assetInfo}
+      />
+      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+    </Flex>;
 
   const labels = historicalPowers.items.map((item) =>
     formatHHmm(item.hourRoundedTimestamp as Date)
