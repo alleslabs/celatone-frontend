@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useRef } from "react";
 
 import { useNavContext } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import { ErrorFetching } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { useValidatorUptime } from "lib/services/validatorService";
 import { BlockVote } from "lib/types";
@@ -18,18 +19,13 @@ interface BlockProps {
 const Block = forwardRef<HTMLDivElement, BlockProps>(
   ({ height, vote }, ref) => {
     let backgroundColor = "primary.main";
-
-    if (vote === BlockVote.PROPOSE) {
-      backgroundColor = "secondary.main";
-    } else if (vote === BlockVote.ABSTAIN) {
-      backgroundColor = "error.dark";
-    }
-
     let voteLabel = "Signed";
 
     if (vote === BlockVote.PROPOSE) {
+      backgroundColor = "secondary.main";
       voteLabel = "Proposed";
     } else if (vote === BlockVote.ABSTAIN) {
+      backgroundColor = "error.dark";
       voteLabel = "Missed";
     }
 
@@ -112,6 +108,7 @@ export const RecentBlocksSection = ({
   }, [dataUpdatedAt, isExpand, router.asPath]);
 
   if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="recent blocks data" />;
 
   return (
     <Flex
@@ -140,7 +137,7 @@ export const RecentBlocksSection = ({
         gap={1}
         width="full"
       >
-        {data?.recent100Blocks
+        {data.recent100Blocks
           .map((block, index) => (
             <Block
               key={`block-${block.height}`}
@@ -157,7 +154,7 @@ export const RecentBlocksSection = ({
         bottom="0"
         ref={hoverTextRef}
       >
-        Most Recent Blocks: {data?.recent100Blocks[0].height ?? "N/A"}
+        Most Recent Blocks: {data.recent100Blocks[0].height ?? "N/A"}
       </Text>
     </Flex>
   );
