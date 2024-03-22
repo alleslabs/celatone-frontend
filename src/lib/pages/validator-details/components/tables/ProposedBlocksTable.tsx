@@ -70,7 +70,8 @@ export const ProposedBlocksTable = ({
       <TableTitle
         title="Proposed Blocks"
         count={data?.total}
-        mb={2}
+        mt={2}
+        mb={1}
         helperText="Display the proposed blocks by this validator within the last 30 days"
       />
       {isMobile ? (

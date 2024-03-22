@@ -162,6 +162,7 @@ export const useValidatorUptime = (
     async () => getValidatorUptime(endpoint, validatorAddress, blocks),
     {
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
