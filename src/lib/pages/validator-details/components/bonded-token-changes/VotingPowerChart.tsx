@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
+import { useMobile } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -29,11 +30,39 @@ export const VotingPowerChart = ({
   assetInfos,
   onViewMore,
 }: VotingPowerChartProps) => {
+  const isMobile = useMobile();
+  const isMobileOverview = isMobile && !!onViewMore;
+
   const { data: historicalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
 
   if (isLoading) return <Loading />;
   if (!historicalPowers) return <ErrorFetching dataName="historical powers" />;
+
+  const assetInfo = singleStakingDenom
+    ? assetInfos?.[singleStakingDenom]
+    : undefined;
+
+  if (isMobileOverview) {
+    return (
+      <Flex
+        backgroundColor="gray.900"
+        p={4}
+        rounded={8}
+        w="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        onClick={onViewMore}
+      >
+        <VotingPowerDetails
+          historicalPowers={historicalPowers}
+          singleStakingDenom={singleStakingDenom}
+          assetInfo={assetInfo}
+        />
+        <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+      </Flex>
+    );
+  }
 
   const labels = historicalPowers.items.map((item) =>
     formatHHmm(item.hourRoundedTimestamp as Date)
@@ -65,10 +94,6 @@ export const VotingPowerChart = ({
     pointHoverBackgroundColor: "#F4F9D9",
     pointHoverBorderColor: "#D8BEFC",
   };
-
-  const assetInfo = singleStakingDenom
-    ? assetInfos?.[singleStakingDenom]
-    : undefined;
 
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
