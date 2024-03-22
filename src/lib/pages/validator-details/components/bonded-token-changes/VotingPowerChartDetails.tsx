@@ -39,7 +39,19 @@ export const VotingPowerChartDetails = ({
       ].votingPower.minus(historicalPowers.items[0].votingPower)
     : big(0);
 
-  const formattedVotingPower = `${compareVotingPower.gte(0) ? "+" : "-"}${formatUTokenWithPrecision(
+  const formatArithmetic = () => {
+    if (compareVotingPower.gt(0)) return "+";
+    if (compareVotingPower.lt(0)) return "-";
+    return "";
+  };
+
+  const formatColor = () => {
+    if (compareVotingPower.gt(0)) return "success.main";
+    if (compareVotingPower.lt(0)) return "error.main";
+    return "text.dark";
+  };
+
+  const formattedVotingPower = `${formatArithmetic()}${formatUTokenWithPrecision(
     compareVotingPower.abs() as U<Token<Big>>,
     assetInfo?.precision ?? 0,
     true,
@@ -55,11 +67,7 @@ export const VotingPowerChartDetails = ({
         {currentPrice} {currency}
       </Heading>
       <Text variant="body1">
-        <Text
-          as="span"
-          fontWeight={700}
-          color={compareVotingPower.gte(0) ? "success.main" : "error.main"}
-        >
+        <Text as="span" fontWeight={700} color={formatColor()}>
           {formattedVotingPower}
         </Text>
         {` ${currency}`} in last 24 hrs
