@@ -1,6 +1,6 @@
 import type { Big } from "big.js";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useGovConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useBalanceInfos } from "lib/services/balanceService";
 import { useDelegationsByAddress } from "lib/services/delegationService";
@@ -238,11 +238,7 @@ export const useAccountDelegationInfos = (address: BechAddr) => {
 export const useAccountTotalValue = (address: BechAddr) => {
   const defaultValue = big(0) as USD<Big>;
 
-  const {
-    chainConfig: {
-      extra: { disableDelegation },
-    },
-  } = useCelatoneApp();
+  const gov = useGovConfig({ shouldRedirect: false });
   const {
     totalSupportedAssetsValue = defaultValue,
     isLoading: isLoadingTotalSupportedAssetsValue,
@@ -255,7 +251,7 @@ export const useAccountTotalValue = (address: BechAddr) => {
     totalCommission,
   } = useAccountDelegationInfos(address);
 
-  if (disableDelegation)
+  if (!gov.enabled)
     return {
       totalAccountValue: totalSupportedAssetsValue,
       isLoading: false,

@@ -111,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
 - [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
 - [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
 - [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
