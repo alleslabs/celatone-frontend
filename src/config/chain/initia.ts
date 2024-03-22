@@ -97,7 +97,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: { disableDelegation: true },
+    extra: {},
   },
   "miniwasm-1": {
     chain: "initia",
@@ -141,7 +141,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: { disableDelegation: true },
+    extra: {},
   },
   "stone-13": {
     chain: "initia",

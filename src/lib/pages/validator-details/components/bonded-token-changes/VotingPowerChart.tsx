@@ -15,7 +15,7 @@ import {
   getTokenLabel,
 } from "lib/utils";
 
-import { VotingPowerDetails } from "./VotingPowerDetails";
+import { VotingPowerChartDetails } from "./VotingPowerChartDetails";
 
 interface VotingPowerChartProps {
   validatorAddress: ValidatorAddr;
@@ -54,7 +54,7 @@ export const VotingPowerChart = ({
         alignItems="center"
         onClick={onViewMore}
       >
-        <VotingPowerDetails
+        <VotingPowerChartDetails
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
           assetInfo={assetInfo}
@@ -135,7 +135,7 @@ export const VotingPowerChart = ({
       w="100%"
     >
       <Flex gap={6} direction="column" w={250} minW={250}>
-        <VotingPowerDetails
+        <VotingPowerChartDetails
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
           assetInfo={assetInfo}
