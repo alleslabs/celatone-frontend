@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import {
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { ContractDetail } from "lib/services/contractService";
 import type { BechAddr32 } from "lib/types";
 import {
@@ -79,20 +80,20 @@ const Query = observer(() => {
         <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
-        {!isMobile && (
-          <Box>
+        <Flex>
+          <UserDocsLink isButton isSmall href="cosmwasm/query-execute#query" />
+          {!isMobile && (
             <Button
-              variant="ghost-secondary"
+              variant="ghost-primary"
               size="sm"
-              p="unset"
-              pl={2}
+              ml={2}
               onClick={goToExecute}
             >
               Go To Execute
               <CustomIcon name="chevron-right" boxSize={3} />
             </Button>
-          </Box>
-        )}
+          )}
+        </Flex>
       </Flex>
 
       <ContractSelectSection

@@ -77,7 +77,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
       </LabelText>
       <UserDocsLink
         cta="More about Txs"
-        href="user/general/transaction/detail-page"
+        href="general/transaction/detail-page"
         mt={0}
       />
     </Container>

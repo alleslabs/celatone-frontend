@@ -19,7 +19,7 @@ const BlocksPage = () => {
       <PageHeader
         title="Blocks"
         subtitle="This page displays all blocks on this network sorted by recency"
-        docHref="user/introduction/block-explorer#recent-blocks"
+        docHref="introduction/block-explorer#recent-blocks"
       />
       <BlocksTable />
     </PageContainer>

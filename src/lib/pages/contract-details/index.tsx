@@ -228,7 +228,7 @@ const ContractDetailsBody = observer(
               <UserDocsLink
                 title="What is Contract in CosmWasm?"
                 cta="Read more about Contract Details"
-                href="user/cosmwasm/contract/detail-page"
+                href="cosmwasm/contract/detail-page"
               />
             </TabPanel>
             <TabPanel p={0}>
@@ -236,7 +236,7 @@ const ContractDetailsBody = observer(
               <UserDocsLink
                 title="What is Supported and Unsupported Assets? "
                 cta="Read more about Assets"
-                href="user/cosmwasm/contract/detail-page#assets"
+                href="cosmwasm/contract/detail-page#assets"
               />
             </TabPanel>
             <TabPanel px={0} pt={{ base: 0, md: 5 }}>
@@ -244,7 +244,7 @@ const ContractDetailsBody = observer(
               <UserDocsLink
                 title="What is Delegations, Total Bonded, Rewards?"
                 cta="Read more about Delegations"
-                href="user/cosmwasm/contract/detail-page#delegations"
+                href="cosmwasm/contract/detail-page#delegations"
               />
             </TabPanel>
             <TabPanel px={0} pt={5}>
@@ -252,7 +252,7 @@ const ContractDetailsBody = observer(
               <UserDocsLink
                 title="What is transactions related to the contract?"
                 cta="Read more about Transactions & Histories"
-                href="user/cosmwasm/contract/detail-page#transactions-and-histories"
+                href="cosmwasm/contract/detail-page#transactions-and-histories"
               />
             </TabPanel>
             <TabPanel px={0} pt={5}>
@@ -260,7 +260,7 @@ const ContractDetailsBody = observer(
               <UserDocsLink
                 title="What is contract states?"
                 cta="Read more about Contract States"
-                href="user/cosmwasm/contract/detail-page#contract-states"
+                href="cosmwasm/contract/detail-page#contract-states"
               />
             </TabPanel>
           </TabPanels>

@@ -103,7 +103,7 @@ const Proposals = () => {
         </Heading>
         <Flex gap={4}>
           <UserDocsLink
-            href="user/introduction/block-explorer#recent-proposals"
+            href="introduction/block-explorer#recent-proposals"
             isButton
             isSmall={!!isMobile}
           />

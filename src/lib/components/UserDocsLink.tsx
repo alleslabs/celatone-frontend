@@ -1,10 +1,14 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { trackWebsite } from "lib/amplitude";
+
 import { CustomIcon } from "./icon";
 
+const BASE_LINK = "https://docs.alleslabs.com/user/";
+
 interface UserDocsLinkProps {
-  href: string;
+  href?: string;
   title?: string;
   cta?: string;
   isButton?: boolean;
@@ -19,11 +23,14 @@ export const UserDocsLink = ({
   isButton = false,
   isSmall = true,
   mt = 8,
-}: UserDocsLinkProps) => {
-  const baseLink = "https://docs.alleslabs.com/";
-  return isButton ? (
+}: UserDocsLinkProps) =>
+  isButton ? (
     <Link
-      href={`${baseLink}/${href}`}
+      href={`${BASE_LINK}/${href}`}
+      onClick={(e) => {
+        trackWebsite(`${BASE_LINK}/${href}`);
+        e.stopPropagation();
+      }}
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -51,7 +58,7 @@ export const UserDocsLink = ({
         </Text>
       )}
       <Link
-        href={`${baseLink}/${href}`}
+        href={`${BASE_LINK}/${href}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -62,7 +69,7 @@ export const UserDocsLink = ({
             cursor: "pointer",
             "&:hover": {
               "> *": {
-                color: "primary.light",
+                color: "secondary.light",
                 textDecoration: "underline",
                 transition: "all",
                 transitionDuration: "0.25s",
@@ -71,12 +78,11 @@ export const UserDocsLink = ({
             },
           }}
         >
-          <CustomIcon name="document" color="primary.main" boxSize={3} />
-          <Text color="primary.main" variant="body2">
+          <CustomIcon name="document" color="secondary.main" boxSize={3} />
+          <Text color="secondary.main" variant="body2">
             {cta}
           </Text>
         </Flex>
       </Link>
     </Flex>
   );
-};

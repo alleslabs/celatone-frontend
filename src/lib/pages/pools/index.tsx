@@ -85,7 +85,7 @@ export const PoolIndex = () => {
           </Text>
         </Flex>
         <UserDocsLink
-          href="user/introduction/block-explorer#osmosis-pools"
+          href="introduction/block-explorer#osmosis-pools"
           isButton
         />
       </Flex>

@@ -75,7 +75,7 @@ const Validators = () => {
         <PageHeader
           title="Validators"
           subtitle="This page displays all validators on this network"
-          docHref="user/introduction/block-explorer#recent-validators"
+          docHref="introduction/block-explorer#recent-validators"
         />
         <Flex
           direction={{ base: "column", md: "row" }}

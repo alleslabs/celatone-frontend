@@ -79,9 +79,9 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
               isLoading={isVotesInfoLoading || isParamsLoading}
             />
             <UserDocsLink
-              title="What’s the Proposal Process in CosmWasm?"
+              title="What is Proposal in CosmWasm?"
               cta="Read more about Proposal Details"
-              href="user/general/proposal/detail-page"
+              href="general/proposal/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -92,9 +92,9 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
               isLoading={isVotesInfoLoading || isParamsLoading}
             />
             <UserDocsLink
-              title="What's the CosmWasm proposal vote progress?"
+              title="What is the CosmWasm proposal vote progress?"
               cta="Read more about Vote Details"
-              href="user/general/proposal/detail-page#proposal-vote-details"
+              href="general/proposal/detail-page#proposal-vote-details"
             />
           </TabPanel>
         </TabPanels>

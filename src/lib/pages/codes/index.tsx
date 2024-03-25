@@ -37,7 +37,7 @@ const RecentCodes = observer(() => {
       <PageHeader
         title="Codes"
         subtitle="This page displays all codes on this network sorted by recency"
-        docHref="user/introduction/block-explorer#recent-codes"
+        docHref="introduction/block-explorer#recent-codes"
       />
       <Flex direction="column" mt={8} mb={4}>
         <FilterByPermission

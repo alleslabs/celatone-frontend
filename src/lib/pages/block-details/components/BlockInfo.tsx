@@ -21,7 +21,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
         </Heading>
         <UserDocsLink
           cta="More about Block"
-          href="user/general/block/detail-page"
+          href="general/block/detail-page"
           mt={0}
         />
       </Flex>

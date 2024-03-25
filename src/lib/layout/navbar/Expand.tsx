@@ -167,33 +167,42 @@ export const ExpandNavMenu = ({
   const restNavMenu = navMenu.slice(1);
 
   return (
-    <Box px={4} py={2} overflowY="auto">
-      <Flex justifyContent="space-between" alignItems="center">
-        <Text py={2} variant="body3" fontWeight={700}>
-          {yourAccountMenu.category}
-        </Text>
-        <Button
-          variant="ghost-accent"
-          size="xs"
-          iconSpacing={1}
-          leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
-          onClick={() => setIsExpand(false)}
-        >
-          HIDE
-        </Button>
-      </Flex>
-      <SubMenuRender
-        submenu={yourAccountMenu.submenu}
-        isCurrentPage={isCurrentPage}
-      />
-      {restNavMenu.map((item) => (
-        <NavbarRender
-          menuInfo={item}
-          key={item.slug}
+    <Flex
+      direction="column"
+      h="full"
+      justifyContent="space-between"
+      px={4}
+      py={2}
+      overflowY="auto"
+    >
+      <Flex direction="column">
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text py={2} variant="body3" fontWeight={700}>
+            {yourAccountMenu.category}
+          </Text>
+          <Button
+            variant="ghost-accent"
+            size="xs"
+            iconSpacing={1}
+            leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
+            onClick={() => setIsExpand(false)}
+          >
+            HIDE
+          </Button>
+        </Flex>
+        <SubMenuRender
+          submenu={yourAccountMenu.submenu}
           isCurrentPage={isCurrentPage}
         />
-      ))}
+        {restNavMenu.map((item) => (
+          <NavbarRender
+            menuInfo={item}
+            key={item.slug}
+            isCurrentPage={isCurrentPage}
+          />
+        ))}
+      </Flex>
       <InformationFooter />
-    </Box>
+    </Flex>
   );
 };
