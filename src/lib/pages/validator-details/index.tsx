@@ -104,6 +104,7 @@ const ValidatorDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <ValidatorOverview
+                validatorAddress={validatorAddress}
                 onSelectVotes={handleTabChange(TabIndex.Votes)}
                 onSelectPerformance={handleTabChange(TabIndex.Performance)}
                 onSelectBondedTokenChanges={handleTabChange(
@@ -112,9 +113,11 @@ const ValidatorDetailsBody = ({
                 isActive={data.info.isActive}
                 isJailed={data.info.isJailed}
                 details={data.info.details}
-                validatorAddress={validatorAddress}
                 singleStakingDenom={singleStakingDenom}
                 assetInfos={assetInfos}
+                votingPower={data.info.votingPower}
+                totalVotingPower={data.totalVotingPower}
+                selfVotingPower={data.selfVotingPower}
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>

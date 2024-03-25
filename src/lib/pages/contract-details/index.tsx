@@ -13,6 +13,7 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useGovConfig,
   useInternalNavigate,
   useMobile,
   useValidateAddress,
@@ -53,6 +54,7 @@ const ContractDetailsBody = observer(
   ({ contractAddress, tab }: ContractDetailsBodyProps) => {
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
+    const gov = useGovConfig({ shouldRedirect: false });
 
     // ------------------------------------------//
     // ------------------QUERIES-----------------//
@@ -124,7 +126,10 @@ const ContractDetailsBody = observer(
             >
               Assets
             </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
+            <CustomTab
+              onClick={handleTabChange(TabIndex.Delegations)}
+              hidden={!gov.enabled}
+            >
               Delegations
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
@@ -152,15 +157,20 @@ const ContractDetailsBody = observer(
                       onViewMore={handleTabChange(TabIndex.Assets)}
                     />
                   </Flex>
-                  <Flex
-                    borderBottom={{ base: "0px", md: "1px solid" }}
-                    borderBottomColor={{ base: "transparent", md: "gray.700" }}
-                  >
-                    <DelegationsSection
-                      address={contractAddress}
-                      onViewMore={handleTabChange(TabIndex.Delegations)}
-                    />
-                  </Flex>
+                  {gov.enabled && (
+                    <Flex
+                      borderBottom={{ base: "0px", md: "1px solid" }}
+                      borderBottomColor={{
+                        base: "transparent",
+                        md: "gray.700",
+                      }}
+                    >
+                      <DelegationsSection
+                        address={contractAddress}
+                        onViewMore={handleTabChange(TabIndex.Delegations)}
+                      />
+                    </Flex>
+                  )}
                 </Flex>
                 {/* Query/Execute commands section */}
                 <CommandSection

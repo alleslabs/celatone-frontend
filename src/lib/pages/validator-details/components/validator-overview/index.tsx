@@ -1,9 +1,9 @@
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
+import type Big from "big.js";
 
-import { BondedTokenChangeMobileCard } from "../bonded-token-changes/BondedTokenChangeMobileCard";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
+import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
-import { UptimeSection } from "../performance/UptimeSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/VotedProposalsTable";
 import { useMobile } from "lib/app-provider";
@@ -24,6 +24,9 @@ interface ValidatorOverviewProps {
   validatorAddress: ValidatorAddr;
   singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  votingPower: Big;
+  totalVotingPower: Big;
+  selfVotingPower: Big;
 }
 
 export const ValidatorOverview = ({
@@ -36,6 +39,9 @@ export const ValidatorOverview = ({
   validatorAddress,
   singleStakingDenom,
   assetInfos,
+  votingPower,
+  totalVotingPower,
+  selfVotingPower,
 }: ValidatorOverviewProps) => {
   const isMobile = useMobile();
 
@@ -43,26 +49,29 @@ export const ValidatorOverview = ({
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       <ValidatorDescription details={details} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
-        <VotingPowerOverview />
-        <UptimeSection onViewMore={onSelectPerformance} />
-      </Flex>
-      {isMobile ? (
-        <BondedTokenChangeMobileCard
-          denom="OSMO"
-          onViewMore={onSelectBondedTokenChanges}
+        <VotingPowerOverview
+          singleStakingDenom={singleStakingDenom}
+          assetInfos={assetInfos}
+          votingPower={votingPower}
+          totalVotingPower={totalVotingPower}
+          selfVotingPower={selfVotingPower}
         />
-      ) : (
-        <>
-          <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
-            <RecentBlocksSection hasTitle />
-          </Flex>
-          <VotingPowerChart
-            validatorAddress={validatorAddress}
-            singleStakingDenom={singleStakingDenom}
-            assetInfos={assetInfos}
-          />
-        </>
+        <Performance
+          validatorAddress={validatorAddress}
+          onViewMore={onSelectPerformance}
+        />
+      </Flex>
+      {!isMobile && (
+        <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
+          <RecentBlocksSection validatorAddress={validatorAddress} />
+        </Flex>
       )}
+      <VotingPowerChart
+        validatorAddress={validatorAddress}
+        singleStakingDenom={singleStakingDenom}
+        assetInfos={assetInfos}
+        onViewMore={onSelectBondedTokenChanges}
+      />
       <ProposedBlocksTable
         validatorAddress={validatorAddress}
         onViewMore={onSelectPerformance}

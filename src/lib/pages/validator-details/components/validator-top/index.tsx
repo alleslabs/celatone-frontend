@@ -1,4 +1,4 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
 import { Breadcrumb } from "lib/components/Breadcrumb";
@@ -90,9 +90,11 @@ export const ValidatorTop = ({
             fixedHeight={false}
           />
         </Flex>
-        <Link href={info.website} isExternal>
-          <WebsiteButton my={2} display={{ base: "flex", md: "none" }} />
-        </Link>
+        <WebsiteButton
+          href={info.website}
+          my={2}
+          display={{ base: "flex", md: "none" }}
+        />
       </Flex>
     </Flex>
   </Flex>

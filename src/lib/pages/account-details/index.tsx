@@ -13,7 +13,6 @@ import { useCallback, useEffect } from "react";
 import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
-  useCelatoneApp,
   useGovConfig,
   useInternalNavigate,
   useMoveConfig,
@@ -70,11 +69,6 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const {
-    chainConfig: {
-      extra: { disableDelegation },
-    },
-  } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
   const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -169,7 +163,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             onClick={handleTabChange(TabIndex.Delegations, undefined)}
-            hidden={disableDelegation}
+            hidden={!gov.enabled}
           >
             Delegations
           </CustomTab>
@@ -309,7 +303,7 @@ const AccountDetailsBody = ({
                   onViewMore={handleTabChange(TabIndex.Assets, undefined)}
                 />
               </Flex>
-              {!disableDelegation && (
+              {gov.enabled && (
                 <Flex
                   borderBottom={{ base: "0px", md: "1px solid" }}
                   borderBottomColor={{ base: "transparent", md: "gray.700" }}

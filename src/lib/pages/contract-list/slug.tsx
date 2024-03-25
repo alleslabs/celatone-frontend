@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Flex,
   Heading,
@@ -98,9 +99,14 @@ const ContractsByList = observer(() => {
         mt={2}
         gap={5}
       >
-        <Heading as="h5" variant="h5" className="ellipsis">
-          {contractListInfo.name}
-        </Heading>
+        <Flex align="center">
+          <Heading as="h5" variant="h5">
+            {contractListInfo.name}
+          </Heading>
+          <Badge variant="primary" ml={2}>
+            {contractListInfo.contracts.length}
+          </Badge>
+        </Flex>
         <Flex gap={isInstantiatedByMe ? 4 : 2}>
           {isInstantiatedByMe && (
             <UserDocsLink

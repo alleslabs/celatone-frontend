@@ -39,6 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
+- [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
+- [#836](https://github.com/alleslabs/celatone-frontend/pull/836) Add recent 100 blocks chart
+- [#833](https://github.com/alleslabs/celatone-frontend/pull/833) Add link to transactions page to current bonded token component
+- [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
+- [#831](https://github.com/alleslabs/celatone-frontend/pull/831) Update zod schema to apply with new validator delegation related txs api spec
+- [#828](https://github.com/alleslabs/celatone-frontend/pull/828) Add validator detail voting power overview section with data from APIs
+- [#835](https://github.com/alleslabs/celatone-frontend/pull/835) Add amp view in json - block and proposal details
+- [#823](https://github.com/alleslabs/celatone-frontend/pull/823) Add validator uptime and penalty events
 - [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
 - [#819](https://github.com/alleslabs/celatone-frontend/pull/819) Add validator detail overview section with data from APIs
 - [#821](https://github.com/alleslabs/celatone-frontend/pull/821) Add Validator's proposed blocks table
@@ -81,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
+- [#841](https://github.com/alleslabs/celatone-frontend/pull/841) Bump cosmos-kit package fixing the installed wallet issue
 - [#830](https://github.com/alleslabs/celatone-frontend/pull/830) Change GraphQL neutron-1 endpoint to prod
 - [#825](https://github.com/alleslabs/celatone-frontend/pull/825) Change GraphQL pion-1 endpoint to prod
 - [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
@@ -106,6 +116,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
+- [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
 - [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
 - [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
 - [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full

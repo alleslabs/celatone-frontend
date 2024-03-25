@@ -5,6 +5,7 @@ import { formatUrl } from "lib/utils/formatter/url";
 
 import { zBechAddr20, zValidatorAddr } from "./addrs";
 import { zBig } from "./big";
+import type { Ratio } from "./currency";
 
 export const zValidator = z
   .object({
@@ -47,3 +48,13 @@ export enum BlockVote {
   VOTE = "VOTE",
   ABSTAIN = "ABSTAIN",
 }
+
+export type ComputedUptime = {
+  signed: number;
+  proposed: number;
+  missed: number;
+  signedRatio: Ratio<number>;
+  proposedRatio: Ratio<number>;
+  missedRatio: Ratio<number>;
+  uptimeRatio: Ratio<number>;
+};
