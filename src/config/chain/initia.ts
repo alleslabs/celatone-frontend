@@ -27,7 +27,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
-        verify: "https://compiler.mahalo-1.initia.xyz/contracts/verify",
+        verify: "https://compiler.mahalo-2.initia.xyz/contracts/verify",
       },
       pool: {
         enabled: false,
