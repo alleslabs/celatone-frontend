@@ -7,13 +7,13 @@ const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
-  "mahalo-1": {
+  "mahalo-2": {
     chain: "initia",
-    registryChainName: "initiadevnet1",
-    prettyName: "Initia Closed Testnet 1",
-    lcd: "https://lcd.mahalo-1.initia.xyz",
-    rpc: "https://rpc.mahalo-1.initia.xyz:443",
-    indexer: "https://mahalo-1-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "initiadevnet2",
+    prettyName: "Initia Closed Testnet 2",
+    lcd: "https://lcd.mahalo-2.initia.xyz",
+    rpc: "https://rpc.mahalo-2.initia.xyz:443",
+    indexer: "https://mahalo-2-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -54,13 +54,13 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
-  "minimove-1": {
+  "minimove-2": {
     chain: "initia",
-    registryChainName: "minitiamovedevnet1",
-    prettyName: "Minitia Move Closed Testnet 1",
-    lcd: "https://lcd.minimove-1.initia.xyz",
-    rpc: "https://rpc.minimove-1.initia.xyz:443",
-    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "minitiamovedevnet2",
+    prettyName: "Minitia Move Closed Testnet 2",
+    lcd: "https://lcd.minimove-2.initia.xyz",
+    rpc: "https://rpc.minimove-2.initia.xyz:443",
+    indexer: "https://minimove-2-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -99,13 +99,13 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
-  "miniwasm-1": {
+  "miniwasm-2": {
     chain: "initia",
-    registryChainName: "minitiawasmdevnet1",
-    prettyName: "Minitia Wasm Closed Testnet 1",
-    lcd: "https://lcd.miniwasm-1.initia.xyz",
-    rpc: "https://rpc.miniwasm-1.initia.xyz:443",
-    indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "minitiawasmdevnet2",
+    prettyName: "Minitia Wasm Closed Testnet 2",
+    lcd: "https://lcd.miniwasm-2.initia.xyz",
+    rpc: "https://rpc.miniwasm-2.initia.xyz:443",
+    indexer: "https://miniwasm-2-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
