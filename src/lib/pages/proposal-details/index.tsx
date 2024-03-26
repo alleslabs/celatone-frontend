@@ -67,7 +67,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
             Proposal Overview
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
-            Vote Details
+            Voting Details
           </CustomTab>
         </TabList>
         <TabPanels>
