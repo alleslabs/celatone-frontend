@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
+import { isUndefined } from "lodash";
 import { useMemo } from "react";
 
 import type { Option } from "lib/types";
@@ -12,7 +13,7 @@ interface ActiveFilterProps {
 }
 
 const getOptionLabel = (label: string, count: Option<number>) =>
-  label + (count ? ` (${count})` : "");
+  label + (!isUndefined(count) ? ` (${count})` : "");
 
 export const ActiveFilter = ({
   isActive,
