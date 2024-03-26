@@ -120,7 +120,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
       {!!error && (
         <Alert variant="error" alignItems="center">
           <AlertDescription wordBreak="break-word">
-            Error fetching
+            Error fetching data from LCD. Please refresh to try again.
           </AlertDescription>
         </Alert>
       )}
