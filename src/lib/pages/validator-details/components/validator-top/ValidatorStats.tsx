@@ -6,7 +6,7 @@ import {
   useValidatorStakingProvisions,
 } from "lib/services/validatorService";
 import type { Option, ValidatorAddr } from "lib/types";
-import { formatPrettyPercent } from "lib/utils";
+import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 const StatWithLabel = ({
   label,
@@ -55,9 +55,11 @@ export const ValidatorStats = ({
 
   const estimatedApr = stakingProvisions
     ? formatPrettyPercent(
-        stakingProvisions.stakingProvisions
-          .div(totalVotingPower.mul(1 - commissionRate))
-          .toNumber(),
+        divWithDefault(
+          stakingProvisions.stakingProvisions,
+          totalVotingPower.mul(1 - commissionRate),
+          0
+        ).toNumber(),
         2,
         true
       )
