@@ -7,11 +7,11 @@ const NODE_HOME = "$HOME/.init";
 export const initiatestnet: Chain[] = [
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "initiadevnet1",
+    chain_name: "initiadevnet2",
     status: "live",
     network_type: "devnet",
-    pretty_name: "Initia Devnet 1",
-    chain_id: "mahalo-1",
+    pretty_name: "Initia Devnet 2",
+    chain_id: "mahalo-2",
     bech32_prefix: "init",
     daemon_name: "initiad",
     node_home: NODE_HOME,
@@ -42,23 +42,23 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://rpc.mahalo-1.initia.xyz:443",
+          address: "https://rpc.mahalo-2.initia.xyz:443",
         },
       ],
       rest: [
         {
-          address: "https://lcd.mahalo-1.initia.xyz",
+          address: "https://lcd.mahalo-2.initia.xyz",
         },
       ],
     },
   },
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "minitiamovedevnet1",
+    chain_name: "minitiamovedevnet2",
     status: "live",
     network_type: "devnet",
-    pretty_name: "Minitia Move Devnet 1",
-    chain_id: "minimove-1",
+    pretty_name: "Minitia Move Devnet 2",
+    chain_id: "minimove-2",
     bech32_prefix: "init",
     daemon_name: "minitiad",
     node_home: NODE_HOME,
@@ -68,7 +68,7 @@ export const initiatestnet: Chain[] = [
       fee_tokens: [
         {
           denom:
-            "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
+            "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
           fixed_min_gas_price: 0,
           low_gas_price: 0.151,
           average_gas_price: 0.151,
@@ -84,23 +84,23 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://rpc.minimove-1.initia.xyz:443",
+          address: "https://rpc.minimove-2.initia.xyz:443",
         },
       ],
       rest: [
         {
-          address: "https://lcd.minimove-1.initia.xyz",
+          address: "https://lcd.minimove-2.initia.xyz",
         },
       ],
     },
   },
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "minitiawasmdevnet1",
+    chain_name: "minitiawasmdevnet2",
     status: "live",
     network_type: "devnet",
-    pretty_name: "Minitia Wasm Devnet 1",
-    chain_id: "miniwasm-1",
+    pretty_name: "Minitia Wasm Devnet 2",
+    chain_id: "miniwasm-2",
     bech32_prefix: "init",
     daemon_name: "minitiad",
     node_home: NODE_HOME,
@@ -110,7 +110,7 @@ export const initiatestnet: Chain[] = [
       fee_tokens: [
         {
           denom:
-            "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
+            "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
           fixed_min_gas_price: 0,
           low_gas_price: 0.151,
           average_gas_price: 0.151,
@@ -126,12 +126,12 @@ export const initiatestnet: Chain[] = [
     apis: {
       rpc: [
         {
-          address: "https://rpc.miniwasm-1.initia.xyz:443",
+          address: "https://rpc.miniwasm-2.initia.xyz:443",
         },
       ],
       rest: [
         {
-          address: "https://lcd.miniwasm-1.initia.xyz",
+          address: "https://lcd.miniwasm-2.initia.xyz",
         },
       ],
     },
@@ -237,7 +237,7 @@ const ASSETLIST_SCHEMA = "../assetlist.schema.json";
 export const initiatestnetAssets: AssetList[] = [
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "initiadevnet1",
+    chain_name: "initiadevnet2",
     assets: [
       {
         description: "The native staking token of Initia.",
@@ -260,14 +260,14 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "minitiamovedevnet1",
+    chain_name: "minitiamovedevnet2",
     assets: [
       {
         description: "The native staking token of Initia.",
         denom_units: [
           {
             denom:
-              "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
+              "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
             exponent: 0,
           },
           {
@@ -275,7 +275,7 @@ export const initiatestnetAssets: AssetList[] = [
             exponent: 6,
           },
         ],
-        base: "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
+        base: "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
         name: "Init",
         display: "init",
         symbol: "INIT",
@@ -284,14 +284,14 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "minitiawasmdevnet1",
+    chain_name: "minitiawasmdevnet2",
     assets: [
       {
         description: "The native staking token of Initia.",
         denom_units: [
           {
             denom:
-              "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
+              "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
             exponent: 0,
           },
           {
@@ -299,7 +299,7 @@ export const initiatestnetAssets: AssetList[] = [
             exponent: 6,
           },
         ],
-        base: "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
+        base: "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
         name: "Init",
         display: "init",
         symbol: "INIT",
