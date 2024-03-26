@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#848](https://github.com/alleslabs/celatone-frontend/pull/848) Change Initia's config to use the new chain IDs (mahalo-2, minimove-2, miniwasm-2)
 - [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add Amplitude tracking on Proposal details page
 - [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
 - [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
@@ -119,6 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
+- [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge
 - [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
 - [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
 - [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip

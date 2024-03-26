@@ -106,11 +106,11 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         transition="all 0.25s ease-in-out"
         gap={4}
       >
-        {/* Vote Participations */}
+        {/* Voting Participations */}
         <ContentContainer transparent={isMobile}>
           <VotingQuorum proposalData={proposalData} {...props} />
         </ContentContainer>
-        {/* Vote Results */}
+        {/* Voting Results */}
         <ContentContainer transparent={isMobile}>
           <VotingThreshold proposalData={proposalData} {...props} />
         </ContentContainer>

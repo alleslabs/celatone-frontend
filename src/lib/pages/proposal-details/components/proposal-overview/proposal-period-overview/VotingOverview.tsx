@@ -75,7 +75,7 @@ const VotingOverviewBody = ({
           })
         }
       >
-        View Full Vote Details
+        View Full Voting Details
       </Button>
     </>
   );

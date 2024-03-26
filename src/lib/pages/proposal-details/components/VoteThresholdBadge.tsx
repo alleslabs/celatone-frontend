@@ -30,7 +30,7 @@ export const VoteThresholdBadge = ({
   ) : (
     <ProgressBadge
       state={PeriodState.COMPLETE}
-      text="Quorum Reached"
+      text="Ended"
       bgColor="gray.700"
     />
   );
