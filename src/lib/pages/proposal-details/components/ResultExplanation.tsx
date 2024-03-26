@@ -189,7 +189,7 @@ export const ResultExplanation = ({
     );
 
   if (proposalData.status === ProposalStatus.REJECTED) {
-    if (totalVotes.lt(quorum))
+    if (yesRatio.gte(threshold))
       return (
         <Text variant="body2">
           This proposal did not meet the required quorum, resulting in its
@@ -200,7 +200,8 @@ export const ResultExplanation = ({
     if (noWithVetoRatio.gte(vetoThreshold))
       return (
         <Text variant="body2">
-          Due to the &ldquo;No with veto&rdquo; vote proportion constitutes{" "}
+          The proposal is <Rejected /> due to either the quorum is not reached
+          or the &ldquo;No with veto&rdquo; vote proportion constitutes{" "}
           <span
             style={{
               fontWeight: 700,
@@ -216,14 +217,14 @@ export const ResultExplanation = ({
           >
             {formatPrettyPercent(vetoThreshold)} threshold
           </span>
-          , the proposal is <Rejected /> regardless of &ldquo;Yes&rdquo; votes.
+          .
         </Text>
       );
 
     return (
       <Text variant="body2">
-        The proposal has reached the voting quorum but fell short of reaching
-        the &ldquo;Yes&rdquo; votes threshold, resulting in its rejection.
+        The proposal is <Rejected /> due to either the quorum is not reached or
+        fell short of reaching the &ldquo;Yes&rdquo; votes threshold.
       </Text>
     );
   }
