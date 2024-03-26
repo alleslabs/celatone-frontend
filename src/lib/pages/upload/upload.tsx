@@ -37,19 +37,21 @@ export const Upload = ({
   }, [enableUpload, isLoading, navigate, router.isReady]);
 
   return (
-    <WasmPageContainer>
-      <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
-        DEPLOY NEW CONTRACT
-      </Text>
-      <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h5" variant="h5" my={12}>
-        Upload Wasm file
-      </Heading>
-      <ConnectWalletAlert
-        subtitle="You need to connect your wallet first"
-        mb={12}
-      />
+    <>
+      <WasmPageContainer flexProps={{ py: 0, pt: 12, minH: "auto" }}>
+        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+          DEPLOY NEW CONTRACT
+        </Text>
+        <Stepper mode="deploy" currentStep={1} />
+        <Heading as="h5" variant="h5" my={12}>
+          Upload Wasm file
+        </Heading>
+        <ConnectWalletAlert
+          subtitle="You need to connect your wallet first"
+          mb={12}
+        />
+      </WasmPageContainer>
       <UploadSection handleBack={router.back} onComplete={onComplete} />
-    </WasmPageContainer>
+    </>
   );
 };

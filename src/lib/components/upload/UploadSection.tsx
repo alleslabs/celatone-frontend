@@ -1,10 +1,12 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
+import { FooterCTA } from "../layouts";
+import WasmPageContainer from "../WasmPageContainer";
 import { AmpEvent, track } from "lib/amplitude";
 import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import {
@@ -200,101 +202,96 @@ export const UploadSection = ({
   }, [wasmFile, address, shouldNotSimulate, permission, setValue]);
 
   return (
-    <Flex direction="column" gap={8} maxW="550px">
-      {wasmFile ? (
-        <UploadCard
-          file={wasmFile}
-          deleteFile={() => {
-            setValue("wasmFile", undefined);
-            setEstimatedFee(undefined);
-          }}
-        />
-      ) : (
-        <DropZone
-          setFile={(file) => setValue("wasmFile", file)}
-          fileType="wasm"
-        />
-      )}
-      <CodeHashBox codeHash={codeHash} />
-      <ControllerInput
-        name="codeName"
-        control={control}
-        label="Code Name (Optional)"
-        placeholder="Untitled Name"
-        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
-        rules={{
-          maxLength: constants.maxCodeNameLength,
-        }}
-        error={
-          errors.codeName && getMaxLengthError(codeName.length, "code_name")
-        }
-        variant="fixed-floating"
-      />
-      <Flex direction="column">
-        <Heading as="h6" variant="h6" fontWeight={600} my={2}>
-          Instantiate Permission
-        </Heading>
-        <Text color="text.dark" variant="body2" mb={4}>
-          Specify who has the authority to instantiate the contract using this
-          code
-        </Text>
-        <InstantiatePermissionRadio
-          control={control}
-          setValue={setValue}
-          trigger={trigger}
-        />
-      </Flex>
-      <Box width="full">
-        {(simulateStatus.status !== "default" || isSimulating) && (
-          <SimulateMessageRender
-            value={
-              isSimulating
-                ? "Checking Wasm and permission validity"
-                : simulateStatus.message
+    <>
+      <WasmPageContainer flexProps={{ py: 0, pb: 12, minH: "auto" }}>
+        <Flex direction="column" gap={8} maxW="550px">
+          {wasmFile ? (
+            <UploadCard
+              file={wasmFile}
+              deleteFile={() => {
+                setValue("wasmFile", undefined);
+                setEstimatedFee(undefined);
+              }}
+            />
+          ) : (
+            <DropZone
+              setFile={(file) => setValue("wasmFile", file)}
+              fileType="wasm"
+            />
+          )}
+          <CodeHashBox codeHash={codeHash} />
+          <ControllerInput
+            name="codeName"
+            control={control}
+            label="Code Name (Optional)"
+            placeholder="Untitled Name"
+            helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
+            rules={{
+              maxLength: constants.maxCodeNameLength,
+            }}
+            error={
+              errors.codeName && getMaxLengthError(codeName.length, "code_name")
             }
-            isLoading={isSimulating}
-            mb={2}
-            isSuccess={simulateStatus.status === "succeeded"}
+            variant="fixed-floating"
           />
-        )}
-
-        <Flex
-          fontSize="14px"
-          color="text.dark"
-          alignSelf="flex-start"
-          alignItems="center"
-          display="flex"
-          gap={1}
-        >
-          <p>Transaction Fee:</p>
-          <EstimatedFeeRender
-            estimatedFee={estimatedFee}
-            loading={isSimulating}
-          />
+          <Flex direction="column">
+            <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+              Instantiate Permission
+            </Heading>
+            <Text color="text.dark" variant="body2" mb={4}>
+              Specify who has the authority to instantiate the contract using
+              this code
+            </Text>
+            <InstantiatePermissionRadio
+              control={control}
+              setValue={setValue}
+              trigger={trigger}
+            />
+          </Flex>
+          <Box width="full">
+            {(simulateStatus.status !== "default" || isSimulating) && (
+              <SimulateMessageRender
+                value={
+                  isSimulating
+                    ? "Checking Wasm and permission validity"
+                    : simulateStatus.message
+                }
+                isLoading={isSimulating}
+                mb={2}
+                isSuccess={simulateStatus.status === "succeeded"}
+              />
+            )}
+            <Flex
+              fontSize="14px"
+              color="text.dark"
+              alignSelf="flex-start"
+              alignItems="center"
+              display="flex"
+              gap={1}
+            >
+              <p>Transaction Fee:</p>
+              <EstimatedFeeRender
+                estimatedFee={estimatedFee}
+                loading={isSimulating}
+              />
+            </Flex>
+          </Box>
         </Flex>
-      </Box>
-      <Flex justify="space-between" w="100%" mt="32px">
-        <Button
-          variant="outline-gray"
-          w="128px"
-          leftIcon={<CustomIcon name="chevron-left" />}
-          onClick={handleBack}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="primary"
-          w="128px"
-          isDisabled={
+      </WasmPageContainer>
+      <FooterCTA
+        cancelButton={{
+          leftIcon: <CustomIcon name="chevron-left" />,
+          onClick: handleBack,
+        }}
+        actionButton={{
+          isDisabled:
             isSimulating ||
             shouldNotSimulate ||
-            simulateStatus.status !== "succeeded"
-          }
-          onClick={proceed}
-        >
-          Upload
-        </Button>
-      </Flex>
-    </Flex>
+            simulateStatus.status !== "succeeded",
+          onClick: proceed,
+        }}
+        actionLabel="Upload"
+      />
+    </>
   );
 };
