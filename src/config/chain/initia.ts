@@ -92,7 +92,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/4b66eb60bf9f503ea97fe4dc96d5c604c1dca14ee988e21510ac4b087bf72671",
+          "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
@@ -136,7 +136,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/926dab95dc14918344374867b8576adee2c6cfca69b968fdb08c5280390cd1a7",
+          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
