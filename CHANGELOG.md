@@ -115,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge
 - [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
 - [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
 - [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
