@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
 - [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add Amplitude tracking on Proposal details page
 - [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
 - [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
