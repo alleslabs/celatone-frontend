@@ -49,11 +49,13 @@ const VotingOverviewBody = ({
 
   return (
     <>
-      <VotingOverviewQuorum
-        proposalData={proposalData}
-        params={params}
-        votesInfo={votesInfo}
-      />
+      {proposalData.status === ProposalStatus.VOTING_PERIOD && (
+        <VotingOverviewQuorum
+          proposalData={proposalData}
+          params={params}
+          votesInfo={votesInfo}
+        />
+      )}
       <VotingOverviewThreshold
         proposalData={proposalData}
         params={params}

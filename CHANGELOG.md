@@ -119,6 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#852](https://github.com/alleslabs/celatone-frontend/pull/852) Show quorum only during the voting period since past total voting power is not available
 - [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
 - [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge
 - [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
