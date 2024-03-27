@@ -33,7 +33,7 @@ export const ActiveFilter = ({
   );
 
   return (
-    <Flex direction="column" gap={1} minW={{ base: "full", md: "240px" }}>
+    <Flex direction="column" gap={1} minW={{ base: "full", md: "280px" }}>
       <Text variant="body3" color="text.dark" pl={{ base: 1, md: 3 }}>
         Show only
       </Text>
