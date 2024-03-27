@@ -1,13 +1,20 @@
 import { TableContainer } from "@chakra-ui/react";
+import { Fragment } from "react";
 
-import type { ValidatorOrder } from "../../types";
-import { useMobile } from "lib/app-provider";
+import { ValidatorOrder } from "../../types";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
+import { useAssetInfos } from "lib/services/assetService";
 import type { ValidatorsResponse } from "lib/services/validator";
 import type { Option } from "lib/types";
+import { coinToTokenWithValue } from "lib/utils";
 
-import { ValidatorsTableBody } from "./ValidatorsTableBody";
+import { ValidatorsPercentDivider } from "./ValidatorsPercentDivider";
 import { ValidatorsTableHeader } from "./ValidatorsTableHeader";
+import { ValidatorsTableMobileCard } from "./ValidatorsTableMobileCard";
+import { ValidatorsTableRow } from "./ValidatorsTableRow";
 
 interface ValidatorsTableProps {
   data: Option<ValidatorsResponse>;
@@ -31,19 +38,44 @@ export const ValidatorsTable = ({
   scrollComponentId,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
+  const {
+    chainConfig: {
+      extra: { singleStakingDenom },
+    },
+  } = useCelatoneApp();
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+
+  if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="validators" />;
+  if (!data.total)
+    return (
+      <EmptyState
+        imageVariant="empty"
+        message={`This network does not have any ${isActive ? "active" : "inactive"} validators.`}
+        withBorder
+      />
+    );
+
+  const displayDividers = order === ValidatorOrder.VotingPower && isDesc;
+  const denomToken = singleStakingDenom
+    ? coinToTokenWithValue(singleStakingDenom, "0", assetInfos)
+    : undefined;
+
   const templateColumns = `${isActive ? "64px " : ""}3fr 2fr 110px 110px`;
   return (
     <>
       {isMobile ? (
         <MobileTableContainer>
-          <ValidatorsTableBody
-            templateColumns={templateColumns}
-            data={data}
-            isLoading={isLoading}
-            isActive={isActive}
-            order={order}
-            isDesc={isDesc}
-          />
+          {data.items.map((validator) => (
+            <ValidatorsTableMobileCard
+              key={validator.validatorAddress}
+              isActive={isActive}
+              validator={validator}
+              totalVotingPower={data.metadata.totalVotingPower}
+              minCommissionRate={data.metadata.minCommissionRate}
+              denomToken={denomToken}
+            />
+          ))}
         </MobileTableContainer>
       ) : (
         <TableContainer>
@@ -56,14 +88,30 @@ export const ValidatorsTable = ({
             isDesc={isDesc}
             setIsDesc={setIsDesc}
           />
-          <ValidatorsTableBody
-            templateColumns={templateColumns}
-            data={data}
-            isLoading={isLoading}
-            isActive={isActive}
-            order={order}
-            isDesc={isDesc}
-          />
+          {data.items.map((validator) => (
+            <Fragment key={validator.validatorAddress}>
+              <ValidatorsTableRow
+                templateColumns={templateColumns}
+                isActive={isActive}
+                validator={validator}
+                totalVotingPower={data.metadata.totalVotingPower}
+                minCommissionRate={data.metadata.minCommissionRate}
+                denomToken={denomToken}
+              />
+              {displayDividers &&
+                (validator.rank === data.metadata.percent33Rank ||
+                  validator.rank === data.metadata.percent66Rank) && (
+                  <ValidatorsPercentDivider
+                    rank={validator.rank}
+                    label={
+                      validator.rank === data.metadata.percent66Rank
+                        ? "66%"
+                        : "33%"
+                    }
+                  />
+                )}
+            </Fragment>
+          ))}
         </TableContainer>
       )}
     </>
