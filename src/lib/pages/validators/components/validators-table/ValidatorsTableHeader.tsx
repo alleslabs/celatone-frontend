@@ -3,6 +3,7 @@ import { Grid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ValidatorOrder } from "../../types";
+import { trackUseSort } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { TableHeader } from "lib/components/table";
 
@@ -47,13 +48,17 @@ export const ValidatorsTableHeader = ({
 }: ValidatorsTableHeaderProps) => {
   const handleOrderChange = useCallback(
     (column: ValidatorOrder) => () => {
-      if (order === column) setIsDesc(!isDesc);
-      else {
-        setOrder(column);
-        setIsDesc(
+      if (order === column) {
+        const newIsDesc = !isDesc;
+        trackUseSort(column, newIsDesc ? "descending" : "ascending");
+        setIsDesc(newIsDesc);
+      } else {
+        const newIsDesc =
           column !== ValidatorOrder.Moniker &&
-            column !== ValidatorOrder.Commission
-        );
+          column !== ValidatorOrder.Commission;
+        trackUseSort(column, newIsDesc ? "descending" : "ascending");
+        setOrder(column);
+        setIsDesc(newIsDesc);
       }
     },
     [isDesc, order, setIsDesc, setOrder]

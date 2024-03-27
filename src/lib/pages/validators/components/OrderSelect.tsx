@@ -2,6 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 
 import { ValidatorOrder } from "../types";
+import { trackUseSort } from "lib/amplitude";
 
 const ORDER_OPTIONS = [
   {
@@ -63,6 +64,10 @@ export const OrderSelect = ({
       )}
       onChange={(selectedOption) => {
         if (selectedOption) {
+          trackUseSort(
+            selectedOption.value.order,
+            selectedOption.value.isDesc ? "descending" : "ascending"
+          );
           setOrder(selectedOption.value.order);
           setIsDesc(selectedOption.value.isDesc);
         }

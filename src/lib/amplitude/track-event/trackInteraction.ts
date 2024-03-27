@@ -171,7 +171,8 @@ export const trackUseFilter = (
   event:
     | AmpEvent.USE_FILTER_POOL_TYPE
     | AmpEvent.USE_FILTER_PROPOSALS_TYPE
-    | AmpEvent.USE_FILTER_PROPOSALS_STATUS,
+    | AmpEvent.USE_FILTER_PROPOSALS_STATUS
+    | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE,
   filters: string[],
   action: string
 ) => amp.track(event, { action, filters });
@@ -187,8 +188,10 @@ export const trackUsePaginationNavigate = (
     currentPage,
   });
 
-export const trackUseSort = (order: "ascending" | "descending") =>
-  amp.track(AmpEvent.USE_SORT, { order });
+export const trackUseSort = (
+  sortBy: string,
+  order: "ascending" | "descending"
+) => amp.track(AmpEvent.USE_SORT, { sortBy, order });
 
 export const trackUseView = (view: string) =>
   amp.track(AmpEvent.USE_VIEW, { view });
