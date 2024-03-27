@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useGovConfig, useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
@@ -18,6 +18,7 @@ import { ValidatorOrder } from "./types";
 const Validators = () => {
   const router = useRouter();
   const isMobile = useMobile();
+  useGovConfig({ shouldRedirect: true });
 
   const [isActive, setIsActive] = useState(true);
   const [order, setOrder] = useState(ValidatorOrder.VotingPower);

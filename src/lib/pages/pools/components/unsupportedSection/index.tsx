@@ -169,7 +169,7 @@ export const UnsupportedSection = ({
               pr={1}
               onClick={() => {
                 const isDesc = !showNewest;
-                trackUseSort(isDesc ? "descending" : "ascending");
+                trackUseSort("newest", isDesc ? "descending" : "ascending");
                 setShowNewest(isDesc);
               }}
             >
