@@ -6,6 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
@@ -65,13 +66,7 @@ const Validators = () => {
   const scrollComponentId = "validator-table-header";
   return (
     <>
-      <Flex
-        direction="column"
-        gap={{ base: "24px", md: "32px" }}
-        px={{ base: "16px", md: "48px" }}
-        pt={{ base: "16px", md: "48px" }}
-        bgGradient={{ md: "linear(to-b, success.background, transparent)" }}
-      >
+      <PageHeaderContainer bgColor="success.background">
         <Flex direction="column" gap={1}>
           <Heading as="h5" variant="h5" color="text.main" fontWeight={600}>
             Validators
@@ -115,7 +110,7 @@ const Validators = () => {
             amptrackSection="validator-list-search"
           />
         </Flex>
-      </Flex>
+      </PageHeaderContainer>
       <PageContainer>
         <ValidatorsTable
           data={data}
