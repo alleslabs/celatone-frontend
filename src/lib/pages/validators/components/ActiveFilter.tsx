@@ -1,7 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
+import { isUndefined } from "lodash";
 import { useMemo } from "react";
 
+import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import type { Option } from "lib/types";
 
 interface ActiveFilterProps {
@@ -12,7 +14,7 @@ interface ActiveFilterProps {
 }
 
 const getOptionLabel = (label: string, count: Option<number>) =>
-  label + (count ? ` (${count})` : "");
+  label + (!isUndefined(count) ? ` (${count})` : "");
 
 export const ActiveFilter = ({
   isActive,
@@ -31,8 +33,17 @@ export const ActiveFilter = ({
     [activeCount, inactiveCount]
   );
 
+  const handleOnChange = (newValue: boolean) => {
+    trackUseFilter(
+      AmpEvent.USE_FILTER_VALIDATORS_ACTIVE,
+      [String(newValue)],
+      String(newValue)
+    );
+    setIsActive(newValue);
+  };
+
   return (
-    <Flex direction="column" gap={1} minW={{ base: "full", md: "240px" }}>
+    <Flex direction="column" gap={1} minW={{ base: "full", md: "256px" }}>
       <Text variant="body3" color="text.dark" pl={{ base: 1, md: 3 }}>
         Show only
       </Text>
@@ -41,7 +52,7 @@ export const ActiveFilter = ({
         options={activeOptions}
         value={activeOptions.find(({ value }) => value === isActive)}
         onChange={(selectedOption) =>
-          selectedOption && setIsActive(selectedOption.value)
+          selectedOption && handleOnChange(selectedOption.value)
         }
         chakraStyles={{
           valueContainer: (provided) => ({

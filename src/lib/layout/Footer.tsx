@@ -141,9 +141,8 @@ const IconLink = ({
 );
 
 const Footer = () => {
-  const isThemed = CURR_THEME.footer;
   const isMobile = useMobile();
-  return isThemed ? (
+  return CURR_THEME.footer ? (
     <Flex
       as="footer"
       direction={{ base: "column", md: "row" }}
@@ -161,7 +160,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image src={isThemed.logo} h={{ base: 6, md: 8 }} mr={2} />
+            <Image src={CURR_THEME.footer.logo} h={{ base: 6, md: 8 }} mr={2} />
           </Link>
           <Flex mt={{ base: 2, md: 0 }}>
             <SocialMenuRender isThemed iconSize={5} />
@@ -172,7 +171,7 @@ const Footer = () => {
           color="gray.400"
           textAlign={{ base: "center", md: "left" }}
         >
-          {isThemed.description}
+          {CURR_THEME.footer.description}
         </Text>
       </Flex>
       <Flex

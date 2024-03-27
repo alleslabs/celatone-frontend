@@ -2,10 +2,9 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { trackWebsite } from "lib/amplitude";
+import { DOCS_LINK } from "lib/data";
 
 import { CustomIcon } from "./icon";
-
-const BASE_LINK = "https://docs.alleslabs.com/user-guide/";
 
 interface UserDocsLinkProps {
   href?: string;
@@ -26,9 +25,9 @@ export const UserDocsLink = ({
 }: UserDocsLinkProps) =>
   isButton ? (
     <Link
-      href={`${BASE_LINK}/${href}`}
+      href={`${DOCS_LINK}/${href}`}
       onClick={(e) => {
-        trackWebsite(`${BASE_LINK}/${href}`);
+        trackWebsite(`${DOCS_LINK}/${href}`);
         e.stopPropagation();
       }}
       target="_blank"
@@ -58,7 +57,7 @@ export const UserDocsLink = ({
         </Text>
       )}
       <Link
-        href={`${BASE_LINK}/${href}`}
+        href={`${DOCS_LINK}/${href}`}
         target="_blank"
         rel="noopener noreferrer"
       >

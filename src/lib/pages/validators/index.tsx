@@ -3,10 +3,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useGovConfig, useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
@@ -19,6 +20,7 @@ import { ValidatorOrder } from "./types";
 const Validators = () => {
   const router = useRouter();
   const isMobile = useMobile();
+  useGovConfig({ shouldRedirect: true });
 
   const [isActive, setIsActive] = useState(true);
   const [order, setOrder] = useState(ValidatorOrder.VotingPower);
@@ -65,13 +67,7 @@ const Validators = () => {
   const scrollComponentId = "validator-table-header";
   return (
     <>
-      <Flex
-        direction="column"
-        gap={{ base: "24px", md: "32px" }}
-        px={{ base: "16px", md: "48px" }}
-        pt={{ base: "16px", md: "48px" }}
-        bgGradient={{ md: "linear(to-b, success.background, transparent)" }}
-      >
+      <PageHeaderContainer bgColor="success.background">
         <PageHeader
           title="Validators"
           subtitle="This page displays all validators on this network"
@@ -112,7 +108,7 @@ const Validators = () => {
             amptrackSection="validator-list-search"
           />
         </Flex>
-      </Flex>
+      </PageHeaderContainer>
       <PageContainer>
         <ValidatorsTable
           data={data}
