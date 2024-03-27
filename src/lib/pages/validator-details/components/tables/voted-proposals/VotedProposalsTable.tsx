@@ -67,7 +67,7 @@ export const VotedProposalsTable = ({
 
   return (
     <>
-      <TableTitle title="Voted Proposals" count={data?.total ?? 0} />
+      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
       {data?.total ? (
         <>
           {isMobile ? (
