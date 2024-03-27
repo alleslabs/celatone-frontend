@@ -22,13 +22,7 @@ export const ValidatorTop = ({
   totalVotingPower,
   singleStakingDenom,
 }: ValidatorTopProps) => (
-  <Flex
-    direction="column"
-    gap={5}
-    px={{ base: "16px", md: "48px" }}
-    pt={{ base: "16px", md: "48px" }}
-    bgGradient="linear(to-b, success.background, transparent)"
-  >
+  <>
     <Breadcrumb
       items={[
         {
@@ -97,5 +91,5 @@ export const ValidatorTop = ({
         />
       </Flex>
     </Flex>
-  </Flex>
+  </>
 );
