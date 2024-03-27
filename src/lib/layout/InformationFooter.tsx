@@ -8,7 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { DOCS_LINK } from "lib/data";
 import { useOverviewsStats } from "lib/services/overviewService";
 
-const footerButtons = [
+const FOOTER_BUTTONS = [
   {
     href: `${DOCS_LINK}/introduction/user-introduction`,
     icon: "document" as IconKeys,
@@ -61,7 +61,7 @@ export const InformationFooter = () => {
         </Flex>
       )}
       <Flex>
-        {footerButtons.map(({ href, icon, text, onClick }) => (
+        {FOOTER_BUTTONS.map(({ href, icon, text, onClick }) => (
           <Link
             key={text}
             href={href}
