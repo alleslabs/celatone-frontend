@@ -5,7 +5,7 @@ import { trackWebsite } from "lib/amplitude";
 
 import { CustomIcon } from "./icon";
 
-const BASE_LINK = "https://docs.alleslabs.com/user/";
+const BASE_LINK = "https://docs.alleslabs.com/user-guide/";
 
 interface UserDocsLinkProps {
   href?: string;
