@@ -43,7 +43,7 @@ export const InformationFooter = () => {
       )}
       <Flex>
         <Link
-          href="https://docs.alleslabs.com"
+          href="https://docs.alleslabs.com/user/introduction/user-introduction"
           target="_blank"
           rel="noopener noreferrer"
         >
