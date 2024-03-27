@@ -7,7 +7,7 @@ const PageHeaderContainer = ({
   ...containerProps
 }: FlexProps) => (
   <Flex
-    as="header"
+    as="section"
     direction="column"
     gap={{ base: "24px", md: "32px" }}
     px={{ base: "16px", md: "48px" }}
