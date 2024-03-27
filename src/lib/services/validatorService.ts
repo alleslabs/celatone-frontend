@@ -128,13 +128,14 @@ export const useValidators = (
   );
 };
 
-export const useValidatorStakingProvisions = () => {
+export const useValidatorStakingProvisions = (enabled: boolean) => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery<StakingProvisionsResponse>(
     [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
     async () => getValidatorStakingProvisions(endpoint),
     {
+      enabled,
       retry: 1,
     }
   );

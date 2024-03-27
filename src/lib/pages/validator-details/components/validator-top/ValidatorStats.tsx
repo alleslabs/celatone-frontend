@@ -49,7 +49,7 @@ export const ValidatorStats = ({
   singleStakingDenom,
 }: ValidatorStatsProps) => {
   const { data: stakingProvisions, isLoading: isStakingProvisionsLoading } =
-    useValidatorStakingProvisions();
+    useValidatorStakingProvisions(!!singleStakingDenom);
   const { data: delegations, isLoading: isDelegationsLoading } =
     useValidatorDelegators(validatorAddress);
 

@@ -5,6 +5,7 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useGovConfig,
   useInternalNavigate,
   useMoveConfig,
 } from "lib/app-provider";
@@ -142,6 +143,8 @@ const ValidatorDetailsBody = ({
 
 const ValidatorDetails = () => {
   const router = useRouter();
+  useGovConfig({ shouldRedirect: true });
+
   const validated = zValidatorDetailsQueryParams.safeParse(router.query);
 
   useEffect(() => {
