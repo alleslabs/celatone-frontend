@@ -1,4 +1,7 @@
+import { Flex } from "@chakra-ui/react";
+
 import { useMobile } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
@@ -19,6 +22,7 @@ export const VotedProposalsTable = ({
   onViewMore,
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
+  const isMobileOverview = isMobile && !!onViewMore;
 
   const { setTotalData, pageSize, offset } = usePaginator({
     initialState: {
@@ -39,6 +43,23 @@ export const VotedProposalsTable = ({
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="voted proposals" />;
+
+  if (isMobileOverview) {
+    return (
+      <Flex
+        backgroundColor="gray.900"
+        p={4}
+        rounded={8}
+        w="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        onClick={onViewMore}
+      >
+        <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+        <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+      </Flex>
+    );
+  }
 
   const templateColumns =
     "100px minmax(360px, 2fr) 150px 150px minmax(330px, 1fr)";

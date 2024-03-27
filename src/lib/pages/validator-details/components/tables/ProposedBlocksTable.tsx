@@ -1,4 +1,7 @@
+import { Flex } from "@chakra-ui/react";
+
 import { useMobile } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -28,6 +31,7 @@ export const ProposedBlocksTable = ({
   onViewMore,
 }: ProposedBlocksTableProps) => {
   const isMobile = useMobile();
+  const isMoibleOverview = isMobile && !!onViewMore;
 
   const {
     pagesQuantity,
@@ -56,6 +60,23 @@ export const ProposedBlocksTable = ({
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="blocks" />;
+
+  if (isMoibleOverview) {
+    return (
+      <Flex
+        backgroundColor="gray.900"
+        p={4}
+        rounded={8}
+        w="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        onClick={onViewMore}
+      >
+        <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
+        <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+      </Flex>
+    );
+  }
 
   return (
     <>
