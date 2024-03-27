@@ -46,17 +46,12 @@ export const ValidatorsTable = ({
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
   if (isLoading) return <Loading />;
-  if (!data)
-    return (
-      <ErrorFetching
-        dataName={`${isActive ? "active" : "inactive"} validators`}
-      />
-    );
+  if (!data) return <ErrorFetching dataName="validators" />;
   if (!data.total)
     return (
       <EmptyState
         imageVariant="empty"
-        message="This network does not have any validators."
+        message={`This network does not have any ${isActive ? "active" : "inactive"} validators.`}
         withBorder
       />
     );
