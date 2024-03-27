@@ -1,5 +1,5 @@
 import { TableContainer } from "@chakra-ui/react";
-import React from "react";
+import { Fragment } from "react";
 
 import { ValidatorOrder } from "../../types";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
@@ -89,7 +89,7 @@ export const ValidatorsTable = ({
             setIsDesc={setIsDesc}
           />
           {data.items.map((validator) => (
-            <React.Fragment key={validator.validatorAddress}>
+            <Fragment key={validator.validatorAddress}>
               <ValidatorsTableRow
                 templateColumns={templateColumns}
                 isActive={isActive}
@@ -110,7 +110,7 @@ export const ValidatorsTable = ({
                     }
                   />
                 )}
-            </React.Fragment>
+            </Fragment>
           ))}
         </TableContainer>
       )}
