@@ -138,6 +138,7 @@ export enum AmpEvent {
   USE_FILTER_MY_PROPOSALS = "Use Filter My Proposals",
   USE_FILTER_PROPOSALS_STATUS = "Use Filter Proposals Status",
   USE_FILTER_PROPOSALS_TYPE = "Use Filter Proposals Types",
+  USE_FILTER_VALIDATORS_ACTIVE = "Use Filter Validators Active",
   USE_SEE_VALIDATOR_VOTES = "Use See Validator Votes",
   USE_SEE_VOTES = "Use See Votes",
   USE_FILTER_POOL_TYPE = "Use Filter Pool Types",

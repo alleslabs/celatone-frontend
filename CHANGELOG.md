@@ -39,8 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#850](https://github.com/alleslabs/celatone-frontend/pull/850) Add amp validator list page
 - [#848](https://github.com/alleslabs/celatone-frontend/pull/848) Change Initia's config to use the new chain IDs (mahalo-2, minimove-2, miniwasm-2)
-- [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add Amplitude tracking on Proposal details page
+- [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add amp proposal details page
 - [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
 - [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
 - [#836](https://github.com/alleslabs/celatone-frontend/pull/836) Add recent 100 blocks chart
