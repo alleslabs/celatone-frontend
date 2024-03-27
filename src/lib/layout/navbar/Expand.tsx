@@ -175,7 +175,7 @@ export const ExpandNavMenu = ({
       py={2}
       overflowY="auto"
     >
-      <Flex direction="column">
+      <div>
         <Flex justifyContent="space-between" alignItems="center">
           <Text py={2} variant="body3" fontWeight={700}>
             {yourAccountMenu.category}
@@ -201,7 +201,7 @@ export const ExpandNavMenu = ({
             isCurrentPage={isCurrentPage}
           />
         ))}
-      </Flex>
+      </div>
       <InformationFooter />
     </Flex>
   );

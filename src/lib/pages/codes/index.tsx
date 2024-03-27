@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -39,7 +39,7 @@ const RecentCodes = observer(() => {
         subtitle="This page displays all codes on this network sorted by recency"
         docHref="introduction/block-explorer#recent-codes"
       />
-      <Flex direction="column" mt={8} mb={4}>
+      <Box mt={8} mb={4}>
         <FilterByPermission
           maxWidth="full"
           initialSelected="all"
@@ -48,7 +48,7 @@ const RecentCodes = observer(() => {
             setValue("permissionValue", newVal);
           }}
         />
-      </Flex>
+      </Box>
       <RecentCodesTable permissionValue={permissionValue} />
     </PageContainer>
   );

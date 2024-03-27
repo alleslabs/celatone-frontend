@@ -9,11 +9,12 @@ interface PageHeaderProps {
   subtitle: string;
   docHref: string;
 }
+
 export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
   const isMobile = useMobile();
   return (
     <Flex w="full" justifyContent="space-between" alignItems="center" mb={8}>
-      <Flex w="full" direction="column">
+      <div>
         <Flex justifyContent="space-between">
           <Heading
             as="h5"
@@ -29,7 +30,7 @@ export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
         <Text variant="body2" color="text.dark" fontWeight={500}>
           {subtitle}
         </Text>
-      </Flex>
+      </div>
       {!isMobile && <UserDocsLink href={docHref} isButton />}
     </Flex>
   );
