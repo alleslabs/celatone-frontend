@@ -56,71 +56,77 @@ export const ProposedBlocksTable = ({
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="blocks" />;
-  if (!data?.total)
-    return (
-      <EmptyState
-        imageVariant="empty"
-        message="This validator never proposed any blocks."
-        withBorder
-      />
-    );
 
   return (
     <>
       <TableTitle
         title="Proposed Blocks"
-        count={data?.total}
+        count={data?.total ?? 0}
         mt={2}
         mb={1}
-        helperText="Display the proposed blocks by this validator within the last 30 days"
+        helperText={
+          onViewMore
+            ? ""
+            : "Display the proposed blocks by this validator within the last 30 days"
+        }
       />
-      {isMobile ? (
-        <MobileTableContainer>
-          {data.items.map((block) => (
-            <BlocksTableMobileCard
-              key={block.hash}
-              blockData={block}
-              hideProposer
+      {data?.total ? (
+        <>
+          {isMobile ? (
+            <MobileTableContainer>
+              {data.items.map((block) => (
+                <BlocksTableMobileCard
+                  key={block.hash}
+                  blockData={block}
+                  hideProposer
+                />
+              ))}
+            </MobileTableContainer>
+          ) : (
+            <TableContainer>
+              <BlocksTableHeader
+                templateColumns={TEMPLATE_COLUMNS}
+                scrollComponentId={scrollComponentId}
+                hideProposer
+              />
+              {data.items.map((block) => (
+                <BlocksTableRow
+                  key={block.hash}
+                  templateColumns={TEMPLATE_COLUMNS}
+                  blockData={block}
+                  hideProposer
+                />
+              ))}
+            </TableContainer>
+          )}
+          {onViewMore && data.total > 5 && (
+            <ViewMore
+              onClick={onViewMore}
+              text={`View all proposed blocks (${data.total})`}
             />
-          ))}
-        </MobileTableContainer>
+          )}
+          {!onViewMore && data.total > 10 && (
+            <Pagination
+              currentPage={currentPage}
+              pagesQuantity={pagesQuantity}
+              offset={offset}
+              totalData={data.total}
+              scrollComponentId={scrollComponentId}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={(e) => {
+                const size = Number(e.target.value);
+                setPageSize(size);
+                setCurrentPage(1);
+              }}
+            />
+          )}
+        </>
       ) : (
-        <TableContainer>
-          <BlocksTableHeader
-            templateColumns={TEMPLATE_COLUMNS}
-            scrollComponentId={scrollComponentId}
-            hideProposer
-          />
-          {data.items.map((block) => (
-            <BlocksTableRow
-              key={block.hash}
-              templateColumns={TEMPLATE_COLUMNS}
-              blockData={block}
-              hideProposer
-            />
-          ))}
-        </TableContainer>
-      )}
-      {onViewMore && data.total > 5 && (
-        <ViewMore
-          onClick={onViewMore}
-          text={`View all proposed blocks (${data.total})`}
-        />
-      )}
-      {!onViewMore && data.total > 10 && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={data.total}
-          scrollComponentId={scrollComponentId}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={(e) => {
-            const size = Number(e.target.value);
-            setPageSize(size);
-            setCurrentPage(1);
-          }}
+        <EmptyState
+          imageVariant={onViewMore ? undefined : "empty"}
+          message="This validator never proposed any blocks."
+          withBorder
         />
       )}
     </>

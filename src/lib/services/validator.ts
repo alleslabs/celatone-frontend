@@ -316,6 +316,9 @@ const zValidatorVotedProposalsResponseItem = zProposal
     is_vote_weighted: z.boolean(),
   })
   .transform(snakeToCamel);
+export type ValidatorVotedProposalsResponseItem = z.infer<
+  typeof zValidatorVotedProposalsResponseItem
+>;
 
 const zValidatorVotedProposalsResponse = z.object({
   items: z.array(zValidatorVotedProposalsResponseItem),

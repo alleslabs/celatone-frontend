@@ -1,6 +1,6 @@
 import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 
-import { Answer } from "../table/Answer";
+import { Answer } from "../../../../../../components/table/proposals/Answer";
 import { Voter } from "../table/Voter";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -65,7 +65,13 @@ export const ProposalVotesTableRow = ({
         <Voter proposalVote={proposalVote} />
       </TableRow>
       <TableRow>
-        <Answer proposalVote={proposalVote} />
+        <Answer
+          isVoteWeighted={proposalVote.isVoteWeighted}
+          yes={proposalVote.yes}
+          no={proposalVote.no}
+          noWithVeto={proposalVote.noWithVeto}
+          abstain={proposalVote.abstain}
+        />
       </TableRow>
       {fullVersion && !isMobile && (
         <>

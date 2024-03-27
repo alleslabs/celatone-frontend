@@ -20,7 +20,6 @@ import {
   Performance,
   ValidatorOverview,
   ValidatorTop,
-  VotedProposalsTable,
 } from "./components";
 import type { ValidatorDetailsQueryParams } from "./types";
 import { TabIndex, zValidatorDetailsQueryParams } from "./types";
@@ -121,7 +120,7 @@ const ValidatorDetailsBody = ({
               />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              <VotedProposalsTable />
+              {/* <VotedProposalsTable /> */}
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <Performance validatorAddress={validatorAddress} />
