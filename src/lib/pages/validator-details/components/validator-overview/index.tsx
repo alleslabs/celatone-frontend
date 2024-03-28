@@ -5,7 +5,7 @@ import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
 import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
-import { VotedProposalsTable } from "../tables/VotedProposalsTable";
+import { VotedProposalsTable } from "../tables/voted-proposals";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
@@ -76,7 +76,10 @@ export const ValidatorOverview = ({
         validatorAddress={validatorAddress}
         onViewMore={onSelectPerformance}
       />
-      <VotedProposalsTable onViewMore={onSelectVotes} />
+      <VotedProposalsTable
+        validatorAddress={validatorAddress}
+        onViewMore={onSelectVotes}
+      />
     </Flex>
   ) : (
     <>

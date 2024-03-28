@@ -309,13 +309,16 @@ export const getValidatorDelegators = async (
 
 const zValidatorVotedProposalsResponseItem = zProposal
   .extend({
-    yes: zBig,
-    abstain: zBig,
-    no: zBig,
-    no_with_veto: zBig,
+    yes: z.number(),
+    abstain: z.number(),
+    no: z.number(),
+    no_with_veto: z.number(),
     is_vote_weighted: z.boolean(),
   })
   .transform(snakeToCamel);
+export type ValidatorVotedProposalsResponseItem = z.infer<
+  typeof zValidatorVotedProposalsResponseItem
+>;
 
 const zValidatorVotedProposalsResponse = z.object({
   items: z.array(zValidatorVotedProposalsResponseItem),
