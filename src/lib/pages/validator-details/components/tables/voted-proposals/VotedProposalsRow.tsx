@@ -74,10 +74,10 @@ export const VotedProposalsTableRow = ({
       <TableRow>
         <Answer
           isVoteWeighted={votedProposal.isVoteWeighted}
-          yes={votedProposal.yes.toNumber()}
-          no={votedProposal.no.toNumber()}
-          noWithVeto={votedProposal.noWithVeto.toNumber()}
-          abstain={votedProposal.abstain.toNumber()}
+          yes={votedProposal.yes}
+          no={votedProposal.no}
+          noWithVeto={votedProposal.noWithVeto}
+          abstain={votedProposal.abstain}
         />
       </TableRow>
       <TableRow>
