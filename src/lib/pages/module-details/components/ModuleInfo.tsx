@@ -136,7 +136,7 @@ const ModuleInfoBody = ({
           "N/A"
         )}
       </LabelText>
-      <LabelText label="Published by" helperText1="(VM Address)">
+      <LabelText label="Initial Published by" helperText1="(VM Address)">
         <ExplorerLink
           type="user_address"
           value={publisherVmAddress}
