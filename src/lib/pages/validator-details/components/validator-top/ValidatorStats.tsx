@@ -5,7 +5,7 @@ import {
   useValidatorDelegators,
   useValidatorStakingProvisions,
 } from "lib/services/validatorService";
-import type { Option, ValidatorAddr } from "lib/types";
+import type { Option, Ratio, ValidatorAddr } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 const StatWithLabel = ({
@@ -59,7 +59,7 @@ export const ValidatorStats = ({
           stakingProvisions.stakingProvisions,
           totalVotingPower.mul(1 - commissionRate),
           0
-        ).toNumber(),
+        ).toNumber() as Ratio<number>,
         2,
         true
       )
@@ -83,7 +83,7 @@ export const ValidatorStats = ({
     >
       <StatWithLabel
         label="Commission"
-        value={formatPrettyPercent(commissionRate, 2, true)}
+        value={formatPrettyPercent(commissionRate as Ratio<number>, 2, true)}
         isLoading={false}
       />
       {singleStakingDenom && (

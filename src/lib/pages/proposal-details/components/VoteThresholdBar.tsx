@@ -1,8 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { normalizeVotesInfo } from "../utils";
-import type { ProposalVotesInfo } from "lib/types";
-import { divWithDefault, formatPrettyPercent } from "lib/utils";
+import type { ProposalVotesInfo, Ratio } from "lib/types";
+import { formatPrettyPercent } from "lib/utils";
 
 interface BarSectionProps {
   percent: string;
@@ -52,20 +52,10 @@ export const VoteThresholdBar = ({
   votesInfo,
   isCompact,
 }: VoteThresholdBarProps) => {
-  const thresholdPercent = formatPrettyPercent(threshold);
-
-  const { yes, no, noWithVeto, nonAbstainVotes } =
+  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
     normalizeVotesInfo(votesInfo);
-  const yesRatioPercent = formatPrettyPercent(
-    divWithDefault(yes, nonAbstainVotes, 0).toNumber()
-  );
-  const noRatioPercent = formatPrettyPercent(
-    divWithDefault(no, nonAbstainVotes, 0).toNumber()
-  );
-  const noWithVetoRatioPercent = formatPrettyPercent(
-    divWithDefault(noWithVeto, nonAbstainVotes, 0).toNumber()
-  );
 
+  const thresholdPercent = formatPrettyPercent(threshold as Ratio<number>);
   return (
     <Flex direction={isCompact ? "column-reverse" : "column"} w="full">
       <Flex
@@ -95,21 +85,21 @@ export const VoteThresholdBar = ({
           bgColor="gray.800"
         >
           <BarSection
-            percent={yesRatioPercent}
+            percent={formatPrettyPercent(yesNonRatio)}
             color="success.main"
             option="Yes"
             textColor="background.main"
             isCompact={isCompact}
           />
           <BarSection
-            percent={noRatioPercent}
+            percent={formatPrettyPercent(noNonRatio)}
             color="error.main"
             option="No"
             textColor="background.main"
             isCompact={isCompact}
           />
           <BarSection
-            percent={noWithVetoRatioPercent}
+            percent={formatPrettyPercent(noWithVetoNonRatio)}
             color="error.dark"
             option="No with veto"
             textColor="text.main"

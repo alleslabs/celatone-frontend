@@ -1,7 +1,7 @@
 import { Flex, SkeletonText, Text } from "@chakra-ui/react";
 
 import { useProposalParams } from "lib/services/proposalService";
-import type { Option } from "lib/types";
+import type { Option, Ratio } from "lib/types";
 import { formatPrettyPercent, formatSeconds } from "lib/utils";
 
 import { CustomIcon } from "./icon";
@@ -31,10 +31,13 @@ const ExpeditedText = ({
     <Text variant="body3">
       An expedited governance proposal is required to{" "}
       <span style={{ fontWeight: 700, color: "text.main" }}>
-        pass a quorum of {quorum ? formatPrettyPercent(quorum, 1, true) : "N/A"}{" "}
+        pass a quorum of{" "}
+        {quorum ? formatPrettyPercent(quorum as Ratio<number>, 1, true) : "N/A"}{" "}
         and a high threshold of{" "}
-        {threshold ? formatPrettyPercent(threshold, 1, true) : "N/A"} within{" "}
-        {formatSeconds(votingPeriod)} voting period
+        {threshold
+          ? formatPrettyPercent(threshold as Ratio<number>, 1, true)
+          : "N/A"}{" "}
+        within {formatSeconds(votingPeriod)} voting period
       </span>{" "}
       in order to pass.
     </Text>
