@@ -12,6 +12,7 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorData } from "lib/services/validatorService";
@@ -71,11 +72,13 @@ const ValidatorDetailsBody = ({
 
   return (
     <>
-      <ValidatorTop
-        info={data.info}
-        totalVotingPower={data.totalVotingPower}
-        singleStakingDenom={singleStakingDenom}
-      />
+      <PageHeaderContainer bgColor="success.background">
+        <ValidatorTop
+          info={data.info}
+          totalVotingPower={data.totalVotingPower}
+          singleStakingDenom={singleStakingDenom}
+        />
+      </PageHeaderContainer>
       <PageContainer>
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
