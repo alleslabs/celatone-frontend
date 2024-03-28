@@ -7,7 +7,6 @@ import {
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
-import { divWithDefault } from "lib/utils";
 
 export const SummaryStatusChip = ({
   proposalData,
@@ -31,17 +30,15 @@ export const SummaryStatusChip = ({
       params,
       proposalData.isExpedited
     );
-    const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+    const { totalVotes, yesNonRatio, noWithVetoRatio } =
       normalizeVotesInfo(votesInfo);
-    const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
-    const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
 
     return (
       <StatusChip
         status={
-          totalVotes.gte(quorum) &&
-          noWithVetoRatio.lt(vetoThreshold) &&
-          yesRatio.gte(threshold)
+          totalVotes >= quorum &&
+          noWithVetoRatio < vetoThreshold &&
+          yesNonRatio >= threshold
             ? ProposalStatus.PASSED
             : ProposalStatus.REJECTED
         }

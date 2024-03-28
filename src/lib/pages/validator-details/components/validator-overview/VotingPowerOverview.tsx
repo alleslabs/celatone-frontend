@@ -3,8 +3,15 @@ import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { AssetInfo, AssetInfos, Option, Token, U, USD } from "lib/types";
-import { big } from "lib/types";
+import type {
+  AssetInfo,
+  AssetInfos,
+  Option,
+  Ratio,
+  Token,
+  U,
+  USD,
+} from "lib/types";
 import {
   calculateAssetValue,
   divWithDefault,
@@ -17,18 +24,18 @@ import {
 
 const VotingPowerDetail = ({
   label,
-  percent,
+  ratio,
   amount,
   denom,
   assetInfo,
 }: {
   label: string;
-  percent: number;
+  ratio: Ratio<number>;
   amount: U<Token<Big>>;
   denom: Option<string>;
   assetInfo: Option<AssetInfo>;
 }) => {
-  const formattedPercent = formatPrettyPercent(percent, 2, true);
+  const formattedPercent = formatPrettyPercent(ratio, 2, true);
   const formattedAmount = formatUTokenWithPrecision(
     amount,
     assetInfo?.precision ?? 0,
@@ -93,7 +100,11 @@ export const VotingPowerOverview = ({
     : undefined;
 
   const votingPowerPercent = formatPrettyPercent(
-    divWithDefault(votingPower, totalVotingPower, 0).toNumber(),
+    divWithDefault(
+      votingPower,
+      totalVotingPower,
+      0
+    ).toNumber() as Ratio<number>,
     2,
     true
   );
@@ -112,7 +123,11 @@ export const VotingPowerOverview = ({
       )
     : undefined;
 
-  const selfVotingPowerRatio = divWithDefault(selfVotingPower, votingPower, 0);
+  const selfVotingPowerRatio = divWithDefault(
+    selfVotingPower,
+    votingPower,
+    0
+  ).toNumber() as Ratio<number>;
 
   return (
     <Flex
@@ -170,14 +185,14 @@ export const VotingPowerOverview = ({
       >
         <VotingPowerDetail
           label="Self-Bonded"
-          percent={selfVotingPowerRatio.toNumber()}
+          ratio={selfVotingPowerRatio}
           amount={selfVotingPower as U<Token<Big>>}
           denom={singleStakingDenom}
           assetInfo={assetInfo}
         />
         <VotingPowerDetail
           label="From Delegators"
-          percent={big(1).minus(selfVotingPowerRatio).toNumber()}
+          ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
           amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
           denom={singleStakingDenom}
           assetInfo={assetInfo}

@@ -5,6 +5,7 @@ import type {
   Nullable,
   ProposalParams,
   ProposalVotesInfo,
+  Ratio,
   Token,
   TokenWithValue,
   U,
@@ -14,12 +15,16 @@ import { divWithDefault } from "lib/utils";
 export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
   if (votesInfo.totalVotingPower.eq(0))
     return {
-      yes: big(0),
-      abstain: big(0),
-      no: big(0),
-      noWithVeto: big(0),
-      nonAbstainVotes: big(0),
-      totalVotes: big(0),
+      yes: 0 as Ratio<number>,
+      abstain: 0 as Ratio<number>,
+      no: 0 as Ratio<number>,
+      noWithVeto: 0 as Ratio<number>,
+      nonAbstainVotes: 0 as Ratio<number>,
+      totalVotes: 0 as Ratio<number>,
+      yesNonRatio: 0 as Ratio<number>,
+      noNonRatio: 0 as Ratio<number>,
+      noWithVetoNonRatio: 0 as Ratio<number>,
+      noWithVetoRatio: 0 as Ratio<number>,
     };
 
   const yes = votesInfo.yes.div(votesInfo.totalVotingPower);
@@ -27,14 +32,35 @@ export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
   const no = votesInfo.no.div(votesInfo.totalVotingPower);
   const noWithVeto = votesInfo.noWithVeto.div(votesInfo.totalVotingPower);
   const nonAbstainVotes = yes.add(no).add(noWithVeto);
+  const totalVotes = nonAbstainVotes.add(abstain);
 
   return {
-    yes,
-    abstain,
-    no,
-    noWithVeto,
-    nonAbstainVotes,
-    totalVotes: nonAbstainVotes.add(abstain),
+    yes: yes.toNumber() as Ratio<number>,
+    abstain: abstain.toNumber() as Ratio<number>,
+    no: no.toNumber() as Ratio<number>,
+    noWithVeto: noWithVeto.toNumber() as Ratio<number>,
+    nonAbstainVotes: nonAbstainVotes.toNumber() as Ratio<number>,
+    totalVotes: totalVotes.toNumber() as Ratio<number>,
+    yesNonRatio: divWithDefault(
+      yes,
+      nonAbstainVotes,
+      0
+    ).toNumber() as Ratio<number>,
+    noNonRatio: divWithDefault(
+      no,
+      nonAbstainVotes,
+      0
+    ).toNumber() as Ratio<number>,
+    noWithVetoNonRatio: divWithDefault(
+      noWithVeto,
+      nonAbstainVotes,
+      0
+    ).toNumber() as Ratio<number>,
+    noWithVetoRatio: divWithDefault(
+      noWithVeto,
+      totalVotes,
+      0
+    ).toNumber() as Ratio<number>,
   };
 };
 

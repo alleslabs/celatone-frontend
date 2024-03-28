@@ -1,12 +1,13 @@
 import { Text } from "@chakra-ui/react";
 
+import type { Ratio } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumTextProps {
   status: ProposalStatus;
   quorum: number;
-  totalVotes: Big;
+  totalVotes: Ratio<number>;
   isCompact: boolean;
 }
 
@@ -28,8 +29,8 @@ export const VoteQuorumText = ({
   isCompact,
 }: VoteQuorumTextProps) => {
   const fontVariant = isCompact ? "body2" : "body1";
-  const quorumPercent = formatPrettyPercent(quorum);
-  const isPassingQuorum = totalVotes.gte(quorum);
+  const quorumPercent = formatPrettyPercent(quorum as Ratio<number>);
+  const isPassingQuorum = totalVotes >= quorum;
 
   if (status === ProposalStatus.VOTING_PERIOD)
     return isPassingQuorum ? (

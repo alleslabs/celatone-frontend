@@ -7,6 +7,7 @@ import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type {
   Option,
+  Ratio,
   Token,
   TokenWithValue,
   U,
@@ -76,7 +77,9 @@ export const ValidatorsTableRow = ({
         <div>
           <Text variant="body2" color="text.main">
             {formatPrettyPercent(
-              validator.votingPower.div(totalVotingPower).toNumber(),
+              validator.votingPower
+                .div(totalVotingPower)
+                .toNumber() as Ratio<number>,
               2,
               true
             )}
@@ -102,7 +105,11 @@ export const ValidatorsTableRow = ({
           color={isZeroUptime ? "error.main" : "text.main"}
           fontWeight={isZeroUptime ? 700 : undefined}
         >
-          {formatPrettyPercent((validator.uptime ?? 0) / 100, 0, true)}
+          {formatPrettyPercent(
+            ((validator.uptime ?? 0) / 100) as Ratio<number>,
+            0,
+            true
+          )}
         </Text>
       </TableRow>
       <TableRow>
@@ -111,7 +118,11 @@ export const ValidatorsTableRow = ({
           color={isMinCommissionRate ? "success.main" : "text.main"}
           fontWeight={isMinCommissionRate ? 700 : undefined}
         >
-          {formatPrettyPercent(validator.commissionRate, 2, true)}
+          {formatPrettyPercent(
+            validator.commissionRate as Ratio<number>,
+            2,
+            true
+          )}
         </Text>
       </TableRow>
     </Grid>
