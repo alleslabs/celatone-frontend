@@ -71,13 +71,13 @@ const ProposedBlocksTableBody = ({
             hideProposer
           />
         ))}
-        {onViewMore && data.total > 5 && (
-          <ViewMore
-            onClick={onViewMore}
-            text={`View all proposed blocks (${data.total})`}
-          />
-        )}
       </TableContainer>
+    )}
+    {onViewMore && data.total > 5 && (
+      <ViewMore
+        onClick={onViewMore}
+        text={`View all proposed blocks (${data.total})`}
+      />
     )}
     {!onViewMore && data.total > 10 && (
       <Pagination
