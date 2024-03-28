@@ -17,6 +17,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
 import { useProposals } from "lib/services/proposalService";
 import type {
@@ -100,7 +101,14 @@ const Proposals = () => {
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        {!isMobile && <NewProposalButton />}
+        <Flex gap={4}>
+          <UserDocsLink
+            href="introduction/block-explorer#recent-proposals"
+            isButton
+            isSmall={!!isMobile}
+          />
+          {!isMobile && <NewProposalButton />}
+        </Flex>
       </Flex>
       <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
         <Flex justify="space-between" align="center">

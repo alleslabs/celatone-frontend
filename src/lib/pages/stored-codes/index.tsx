@@ -15,6 +15,7 @@ import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { MyStoredCodesTable } from "lib/components/table";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { useUploadAccessParams } from "lib/services/proposalService";
@@ -81,25 +82,32 @@ const StoredCodes = observer(() => {
             {storedCodesCount}
           </Badge>
         </Flex>
-        <Skeleton
-          isLoaded={!isUploadAccessFetching}
-          display="flex"
-          gap={2}
-          borderRadius={8}
-        >
-          {isPermissionedNetwork ? (
-            <>
-              <UploadButton isAllowed={isAllowed} />
-              {govConfig.enabled &&
-                !(
-                  govConfig.disableStoreCodeProposal ||
-                  govConfig.hideOpenProposal
-                ) && <ProposalButton />}
-            </>
-          ) : (
-            <UploadButton isAllowed />
-          )}
-        </Skeleton>
+        <Flex gap={4}>
+          <UserDocsLink
+            href="cosmwasm/code/organize#viewing-my-stored-codes"
+            isButton
+            isSmall={false}
+          />
+          <Skeleton
+            isLoaded={!isUploadAccessFetching}
+            display="flex"
+            gap={2}
+            borderRadius={8}
+          >
+            {isPermissionedNetwork ? (
+              <>
+                <UploadButton isAllowed={isAllowed} />
+                {govConfig.enabled &&
+                  !(
+                    govConfig.disableStoreCodeProposal ||
+                    govConfig.hideOpenProposal
+                  ) && <ProposalButton />}
+              </>
+            ) : (
+              <UploadButton isAllowed />
+            )}
+          </Skeleton>
+        </Flex>
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon

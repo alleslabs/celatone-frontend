@@ -1,8 +1,9 @@
-import { Alert, AlertDescription, Heading } from "@chakra-ui/react";
+import { Alert, AlertDescription, Flex, Heading } from "@chakra-ui/react";
 
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { UploadAccess } from "lib/services/proposal";
 import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
@@ -34,9 +35,17 @@ export const MigrateOptions = ({
   );
   return (
     <>
-      <Heading as="h5" variant="h5" mb={6} textAlign="center">
-        Migrate Options
-      </Heading>
+      <Flex direction="column" alignItems="center" gap={4} mb={6}>
+        <Heading as="h5" variant="h5" textAlign="center">
+          Migrate Options
+        </Heading>
+        <UserDocsLink
+          mt={0}
+          cta="Read more about Migrate Contract"
+          href="cosmwasm/contract/admin-actions#migrating-a-contract"
+        />
+      </Flex>
+
       {address && !isAllowed && (
         <Alert variant="primary" mb={4} alignItems="flex-start" gap={2}>
           <CustomIcon

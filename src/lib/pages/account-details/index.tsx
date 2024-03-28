@@ -26,6 +26,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
@@ -401,12 +402,27 @@ const AccountDetailsBody = ({
                 )}
               />
             )}
+            <UserDocsLink
+              title="What is an Account?"
+              cta="Read more about Account"
+              href="cosmwasm/account/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <AssetsSection isAccount address={accountAddress} />
+            <UserDocsLink
+              title="What is Supported and Unsupported Assets?"
+              cta="Read more about Assets"
+              href="cosmwasm/account/detail-page#assets"
+            />
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <DelegationsSection address={accountAddress} />
+            <UserDocsLink
+              title="What is Delegations, Total Bonded, Rewards?"
+              cta="Read more about Delegations"
+              href="cosmwasm/account/detail-page#delegations"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <NftsSection address={hexAddress} totalData={nftsCount} />
@@ -417,6 +433,11 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
               refetchCount={refetchCounts}
             />
+            <UserDocsLink
+              title="What is transactions related to the account?"
+              cta="Read more about Account Transactions"
+              href="cosmwasm/account/detail-page#transactions"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable
@@ -424,6 +445,11 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount ?? undefined}
               refetchCount={refetchCounts}
+            />
+            <UserDocsLink
+              title="What is Stored Codes in the account?"
+              cta="Read more about Stored Codes in Account"
+              href="cosmwasm/account/detail-page#codes"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -433,6 +459,11 @@ const AccountDetailsBody = ({
               totalData={tableCounts.contractsCount ?? undefined}
               refetchCount={refetchCounts}
             />
+            <UserDocsLink
+              title="What is contract instances in the account?"
+              cta="Read more about Contracts in Account"
+              href="cosmwasm/account/detail-page#contracts"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <AdminContractsTable
@@ -440,6 +471,11 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount ?? undefined}
               refetchCount={refetchCounts}
+            />
+            <UserDocsLink
+              title="What is contract admins in the account?"
+              cta="Read more about Account Contract Admins"
+              href="cosmwasm/account/detail-page#contracts-admin"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -464,6 +500,11 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount ?? undefined}
               refetchCount={refetchCounts}
+            />
+            <UserDocsLink
+              title="What is Opened Proposals in the account?"
+              cta="Read more about Opened Proposals"
+              href="cosmwasm/account/detail-page#proposals"
             />
           </TabPanel>
         </TabPanels>

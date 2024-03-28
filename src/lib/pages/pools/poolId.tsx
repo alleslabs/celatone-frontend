@@ -5,6 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -32,6 +33,11 @@ export const PoolId = () => {
       <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />
+      <UserDocsLink
+        title="What is Osmosis liquidity pools?"
+        cta="Read more about Osmosis Pool Details"
+        href="cosmwasm/osmosis/pool-detail"
+      />
     </PageContainer>
   );
 };

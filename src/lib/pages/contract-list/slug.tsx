@@ -22,6 +22,7 @@ import {
 } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { ContractListDetail } from "lib/components/select-contract";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
@@ -106,7 +107,14 @@ const ContractsByList = observer(() => {
             {contractListInfo.contracts.length}
           </Badge>
         </Flex>
-        <Flex gap={2}>
+        <Flex gap={isInstantiatedByMe ? 4 : 2}>
+          {isInstantiatedByMe && (
+            <UserDocsLink
+              isButton
+              isSmall={false}
+              href="cosmwasm/contract/organize#saving-contract-for-later-use"
+            />
+          )}
           {isInstantiatedByMe ? (
             <Button
               leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
@@ -165,6 +173,13 @@ const ContractsByList = observer(() => {
         isLoading={isInstantiatedByMe ? isLoading : false}
         onContractSelect={onContractSelect}
       />
+      {!isInstantiatedByMe && (
+        <UserDocsLink
+          title="How to organize and save contracts?"
+          cta="Read more about Saved Contracts"
+          href="cosmwasm/contract/organize#saving-contract-for-later-use"
+        />
+      )}
     </PageContainer>
   );
 });

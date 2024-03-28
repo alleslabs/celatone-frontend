@@ -20,6 +20,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
@@ -169,9 +170,16 @@ const UpdateAdmin = () => {
 
   return (
     <WasmPageContainer>
-      <Heading as="h5" variant="h5" mb={6}>
-        Update Admin
-      </Heading>
+      <Flex direction="column" alignItems="center" mb={6}>
+        <Heading as="h5" variant="h5">
+          Update Admin
+        </Heading>
+        <UserDocsLink
+          mt={2}
+          cta="View Update Admin Guideline"
+          href="cosmwasm/contract/admin-actions#update-new-admin-to-the-contract"
+        />
+      </Flex>
       <ConnectWalletAlert
         mb={6}
         subtitle="You need to connect your wallet to perform this action"

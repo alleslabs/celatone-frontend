@@ -8,6 +8,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useProposalVotesInfo } from "lib/services/proposalService";
 
 import { ProposalOverview, ProposalTop, VoteDetails } from "./components";
@@ -77,6 +78,11 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
             />
+            <UserDocsLink
+              title="What is Proposal in CosmWasm?"
+              cta="Read more about Proposal Details"
+              href="general/proposal/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetails
@@ -84,6 +90,11 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
               votesInfo={votesInfo}
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
+            />
+            <UserDocsLink
+              title="What is the CosmWasm proposal vote progress?"
+              cta="Read more about Vote Details"
+              href="general/proposal/detail-page#proposal-vote-details"
             />
           </TabPanel>
         </TabPanels>

@@ -27,6 +27,7 @@ import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBalances } from "lib/services/balanceService";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
@@ -234,18 +235,43 @@ const ContractDetailsBody = observer(
                 </Flex>
                 <ContractTables contractAddress={contractAddress} />
               </Flex>
+              <UserDocsLink
+                title="What is Contract in CosmWasm?"
+                cta="Read more about Contract Details"
+                href="cosmwasm/contract/detail-page"
+              />
             </TabPanel>
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
+              <UserDocsLink
+                title="What is Supported and Unsupported Assets? "
+                cta="Read more about Assets"
+                href="cosmwasm/contract/detail-page#assets"
+              />
             </TabPanel>
             <TabPanel px={0} pt={{ base: 0, md: 5 }}>
               <DelegationsSection address={contractAddress} />
+              <UserDocsLink
+                title="What is Delegations, Total Bonded, Rewards?"
+                cta="Read more about Delegations"
+                href="cosmwasm/contract/detail-page#delegations"
+              />
             </TabPanel>
             <TabPanel px={0} pt={5}>
               <ContractTables contractAddress={contractAddress} />
+              <UserDocsLink
+                title="What is transactions related to the contract?"
+                cta="Read more about Transactions & Histories"
+                href="cosmwasm/contract/detail-page#transactions-and-histories"
+              />
             </TabPanel>
             <TabPanel px={0} pt={5}>
               <ContractStates contractAddress={contractAddress} />
+              <UserDocsLink
+                title="What is contract states?"
+                cta="Read more about Contract States"
+                href="cosmwasm/contract/detail-page#contract-states"
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

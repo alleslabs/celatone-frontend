@@ -12,6 +12,8 @@ import { MsgType } from "lib/types";
  */
 import { formatSlugName } from "lib/utils/format";
 
+export const DOCS_LINK = "https://docs.alleslabs.com/user-guide";
+
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
 export const SAVED_LIST_NAME = "Saved Contracts";
