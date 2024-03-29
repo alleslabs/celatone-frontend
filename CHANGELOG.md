@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
 - [#854](https://github.com/alleslabs/celatone-frontend/pull/854) Create PageHeaderContainer component
 - [#851](https://github.com/alleslabs/celatone-frontend/pull/851) Add amp validator list page
 - [#848](https://github.com/alleslabs/celatone-frontend/pull/848) Change Initia's config to use the new chain IDs (mahalo-2, minimove-2, miniwasm-2)
