@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -45,7 +45,7 @@ const ProposedBlocksTableBody = ({
   setCurrentPage,
   setPageSize,
 }: ProposedBlocksTableBodyProps) => (
-  <Box>
+  <Flex direction="column" gap={6}>
     {isMobile ? (
       <MobileTableContainer>
         {data.items.map((block) => (
@@ -71,13 +71,13 @@ const ProposedBlocksTableBody = ({
             hideProposer
           />
         ))}
+        {onViewMore && data.total > 5 && (
+          <ViewMore
+            onClick={onViewMore}
+            text={`View all proposed blocks (${data.total})`}
+          />
+        )}
       </TableContainer>
-    )}
-    {onViewMore && data.total > 5 && (
-      <ViewMore
-        onClick={onViewMore}
-        text={`View all proposed blocks (${data.total})`}
-      />
     )}
     {!onViewMore && data.total > 10 && (
       <Pagination
@@ -95,7 +95,7 @@ const ProposedBlocksTableBody = ({
         }}
       />
     )}
-  </Box>
+  </Flex>
 );
 
 interface ProposedBlocksTableProps {
@@ -159,7 +159,7 @@ export const ProposedBlocksTable = ({
     );
 
   return (
-    <>
+    <Flex direction="column" gap={6}>
       {isMoibleOverview ? (
         <Flex
           backgroundColor="gray.900"
@@ -198,6 +198,6 @@ export const ProposedBlocksTable = ({
           setPageSize={setPageSize}
         />
       )}
-    </>
+    </Flex>
   );
 };

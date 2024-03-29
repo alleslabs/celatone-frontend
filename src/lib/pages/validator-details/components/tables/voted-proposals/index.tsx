@@ -1,36 +1,72 @@
-import { Flex } from "@chakra-ui/react";
+import { Alert, Flex, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
+import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { TableContainer, TableTitle, ViewMore } from "lib/components/table";
+import {
+  MobileTableContainer,
+  TableContainer,
+  TableTitle,
+  ViewMore,
+} from "lib/components/table";
 import type { ValidatorVotedProposalsResponse } from "lib/services/validator";
 import { useValidatorVotedProposals } from "lib/services/validatorService";
 import type { ValidatorAddr } from "lib/types";
 
 import { VotedProposalsTableRow } from "./VotedProposalsRow";
 import { VotedProposalsTableHeader } from "./VotedProposalsTableHeader";
+import { VotedProposalsTableMobileCard } from "./VotedProposalsTableMobileCard";
 
 const templateColumns =
   "100px minmax(360px, 2fr) 150px 150px minmax(330px, 1fr)";
 const boxShadow = "16px 0 32px -10px";
+const scrollComponentId = "voted-proposals-table-header";
 
 interface VotedProposalsTableBodyProps {
   data: ValidatorVotedProposalsResponse;
   onViewMore?: () => void;
   isMobile: boolean;
+  currentPage: number;
+  offset: number;
+  pageSize: number;
+  pagesQuantity: number;
+  setCurrentPage: (page: number) => void;
+  setPageSize: (size: number) => void;
 }
 
 const VotedProposalsTableBody = ({
   data,
   onViewMore,
   isMobile,
+  currentPage,
+  offset,
+  pageSize,
+  pagesQuantity,
+  setCurrentPage,
+  setPageSize,
 }: VotedProposalsTableBodyProps) => (
-  <>
+  <Flex direction="column" gap={6}>
+    {!onViewMore && (
+      <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
+        <CustomIcon boxSize={4} name="info-circle-solid" />
+        <Text variant="body2" color="text.dark">
+          Kindly note that the validator may not have voted on the proposal due
+          to ineligibility, such as being recently added to the network.
+        </Text>
+      </Alert>
+    )}
     {isMobile ? (
-      <div>Mobile</div>
+      <MobileTableContainer>
+        {data.items.map((votedProposal) => (
+          <VotedProposalsTableMobileCard
+            key={votedProposal.id}
+            votedProposal={votedProposal}
+          />
+        ))}
+      </MobileTableContainer>
     ) : (
       <TableContainer>
         <VotedProposalsTableHeader
@@ -53,7 +89,23 @@ const VotedProposalsTableBody = ({
         )}
       </TableContainer>
     )}
-  </>
+    {!onViewMore && data.total > 10 && (
+      <Pagination
+        currentPage={currentPage}
+        pagesQuantity={pagesQuantity}
+        offset={offset}
+        totalData={data.total}
+        scrollComponentId={scrollComponentId}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={(e) => {
+          const size = Number(e.target.value);
+          setPageSize(size);
+          setCurrentPage(1);
+        }}
+      />
+    )}
+  </Flex>
 );
 
 interface VotedProposalsTableProps {
@@ -68,7 +120,15 @@ export const VotedProposalsTable = ({
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
 
-  const { setTotalData, pageSize, offset } = usePaginator({
+  const {
+    pagesQuantity,
+    setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
+  } = usePaginator({
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -100,7 +160,7 @@ export const VotedProposalsTable = ({
     );
 
   return (
-    <>
+    <Flex direction="column" gap={6}>
       {isMobileOverview ? (
         <Flex
           backgroundColor="gray.900"
@@ -122,8 +182,14 @@ export const VotedProposalsTable = ({
           data={data}
           onViewMore={onViewMore}
           isMobile={isMobile}
+          currentPage={currentPage}
+          offset={offset}
+          pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          setCurrentPage={setCurrentPage}
+          setPageSize={setPageSize}
         />
       )}
-    </>
+    </Flex>
   );
 };
