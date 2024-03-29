@@ -1,28 +1,28 @@
-import { Alert, Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle, ViewMore } from "lib/components/table";
-import { useValidatorVotedProposals } from "lib/services/validatorService";
+import { useValidatorProposedBlocks } from "lib/services/validatorService";
 import type { ValidatorAddr } from "lib/types";
 
-import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
+import { ProposedsBlockTableBody } from "./ProposedBlocksTableBody";
 
-const scrollComponentId = "voted-proposals-table-header";
+const scrollComponentId = "proposed-block-table-header";
 
-interface VotedProposalsTableProps {
+interface ProposedBlocksTableProps {
   validatorAddress: ValidatorAddr;
   onViewMore?: () => void;
 }
 
-export const VotedProposalsTable = ({
+export const ProposedBlocksTable = ({
   validatorAddress,
   onViewMore,
-}: VotedProposalsTableProps) => {
+}: ProposedBlocksTableProps) => {
   const isMobile = useMobile();
-  const isMobileOverview = isMobile && !!onViewMore;
+  const isMoibleOverview = isMobile && !!onViewMore;
 
   const {
     pagesQuantity,
@@ -40,7 +40,7 @@ export const VotedProposalsTable = ({
     },
   });
 
-  const { data, isLoading } = useValidatorVotedProposals(
+  const { data, isLoading } = useValidatorProposedBlocks(
     validatorAddress,
     onViewMore ? 5 : pageSize,
     offset,
@@ -51,7 +51,7 @@ export const VotedProposalsTable = ({
 
   return (
     <Flex direction="column" gap={6}>
-      {isMobileOverview ? (
+      {isMoibleOverview ? (
         <Flex
           backgroundColor="gray.900"
           p={4}
@@ -61,27 +61,22 @@ export const VotedProposalsTable = ({
           alignItems="center"
           onClick={onViewMore}
         >
-          <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+          <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
           <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
         </Flex>
       ) : (
         <>
-          <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
-          {!onViewMore && (
-            <Alert
-              variant="info"
-              gap={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              <CustomIcon boxSize={4} name="info-circle-solid" />
-              <Text variant="body2" color="text.dark">
-                Kindly note that the validator may not have voted on the
-                proposal due to ineligibility, such as being recently added to
-                the network.
-              </Text>
-            </Alert>
-          )}
-          <VotedProposalsTableBody
+          <TableTitle
+            title="Proposed Blocks"
+            count={data?.total ?? 0}
+            helperText={
+              onViewMore
+                ? ""
+                : "Display the proposed blocks by this validator within the last 30 days"
+            }
+            mb={0}
+          />
+          <ProposedsBlockTableBody
             data={data}
             isLoading={isLoading}
             onViewMore={onViewMore}
@@ -91,8 +86,8 @@ export const VotedProposalsTable = ({
               {onViewMore
                 ? data.total > 5 && (
                     <ViewMore
-                      text={`View all proposed blocks (${data.total})`}
                       onClick={onViewMore}
+                      text={`View all proposed blocks (${data.total})`}
                     />
                   )
                 : data.total > 10 && (
