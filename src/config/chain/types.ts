@@ -1,5 +1,7 @@
 import type { MainWalletBase } from "@cosmos-kit/core";
 
+import type { Nullable } from "lib/types";
+
 type FaucetConfig =
   | {
       enabled: true;
@@ -77,6 +79,7 @@ export interface ChainConfig {
   extra: {
     disableAnyOfAddresses?: boolean;
     singleStakingDenom?: string;
+    isValidatorExternalLink?: Nullable<string>;
   };
 }
 
