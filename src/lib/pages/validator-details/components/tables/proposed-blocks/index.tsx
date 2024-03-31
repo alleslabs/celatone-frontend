@@ -49,67 +49,60 @@ export const ProposedBlocksTable = ({
     }
   );
 
-  return (
+  return isMoibleOverview ? (
+    <Flex
+      backgroundColor="gray.900"
+      p={4}
+      rounded={8}
+      w="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      onClick={onViewMore}
+    >
+      <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
+      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+    </Flex>
+  ) : (
     <Flex direction="column" gap={6}>
-      {isMoibleOverview ? (
-        <Flex
-          backgroundColor="gray.900"
-          p={4}
-          rounded={8}
-          w="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          onClick={onViewMore}
-        >
-          <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
-          <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
-        </Flex>
-      ) : (
-        <>
-          <TableTitle
-            title="Proposed Blocks"
-            count={data?.total ?? 0}
-            helperText={
-              onViewMore
-                ? ""
-                : "Display the proposed blocks by this validator within the last 30 days"
-            }
-            mb={0}
-          />
-          <ProposedsBlockTableBody
-            data={data}
-            isLoading={isLoading}
-            onViewMore={onViewMore}
-          />
-          {data && (
-            <>
-              {onViewMore
-                ? data.total > 5 && (
-                    <ViewMore
-                      onClick={onViewMore}
-                      text={`View all proposed blocks (${data.total})`}
-                    />
-                  )
-                : data.total > 10 && (
-                    <Pagination
-                      currentPage={currentPage}
-                      pagesQuantity={pagesQuantity}
-                      offset={offset}
-                      totalData={data.total}
-                      scrollComponentId={scrollComponentId}
-                      pageSize={pageSize}
-                      onPageChange={setCurrentPage}
-                      onPageSizeChange={(e) => {
-                        const size = Number(e.target.value);
-                        setPageSize(size);
-                        setCurrentPage(1);
-                      }}
-                    />
-                  )}
-            </>
-          )}
-        </>
-      )}
+      <TableTitle
+        title="Proposed Blocks"
+        count={data?.total ?? 0}
+        helperText={
+          onViewMore
+            ? ""
+            : "Display the proposed blocks by this validator within the last 30 days"
+        }
+        mb={0}
+      />
+      <ProposedsBlockTableBody
+        data={data}
+        isLoading={isLoading}
+        onViewMore={onViewMore}
+      />
+      {data &&
+        (onViewMore
+          ? data.total > 5 && (
+              <ViewMore
+                onClick={onViewMore}
+                text={`View all proposed blocks (${data.total})`}
+              />
+            )
+          : data.total > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={data.total}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
+              />
+            ))}
     </Flex>
   );
 };

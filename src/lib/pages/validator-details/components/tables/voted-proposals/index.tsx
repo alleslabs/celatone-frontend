@@ -54,9 +54,7 @@ export const VotedProposalsTable = ({
     offset,
     answerFilter,
     debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,83 +62,71 @@ export const VotedProposalsTable = ({
     setSearch(e.target.value);
   };
 
-  return (
+  return isMobileOverview ? (
+    <Flex
+      backgroundColor="gray.900"
+      p={4}
+      rounded={8}
+      w="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      onClick={onViewMore}
+    >
+      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+    </Flex>
+  ) : (
     <Flex direction="column" gap={6}>
-      {isMobileOverview ? (
-        <Flex
-          backgroundColor="gray.900"
-          p={4}
-          rounded={8}
-          w="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          onClick={onViewMore}
-        >
-          <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
-          <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
-        </Flex>
-      ) : (
-        <>
-          <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
-          {!onViewMore && (
-            <Alert
-              variant="info"
-              gap={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              <CustomIcon boxSize={4} name="info-circle-solid" />
-              <Text variant="body2" color="text.dark">
-                Kindly note that the validator may not have voted on the
-                proposal due to ineligibility, such as being recently added to
-                the network.
-              </Text>
-            </Alert>
-          )}
-          <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
-            <GridItem>{/* // TODO: Add filter here... */}</GridItem>
-            <GridItem>
-              <InputWithIcon
-                placeholder="Search with proposal ID or proposal title..."
-                value={search}
-                onChange={handleOnSearchChange}
-                size="lg"
-              />
-            </GridItem>
-          </Grid>
-          <VotedProposalsTableBody
-            data={data}
-            isLoading={isLoading}
-            onViewMore={onViewMore}
-          />
-          {data && (
-            <>
-              {onViewMore
-                ? data.total > 5 && (
-                    <ViewMore
-                      text={`View all proposed blocks (${data.total})`}
-                      onClick={onViewMore}
-                    />
-                  )
-                : data.total > 10 && (
-                    <Pagination
-                      currentPage={currentPage}
-                      pagesQuantity={pagesQuantity}
-                      offset={offset}
-                      totalData={data.total}
-                      scrollComponentId={scrollComponentId}
-                      pageSize={pageSize}
-                      onPageChange={setCurrentPage}
-                      onPageSizeChange={(e) => {
-                        const size = Number(e.target.value);
-                        setPageSize(size);
-                        setCurrentPage(1);
-                      }}
-                    />
-                  )}
-            </>
-          )}
-        </>
+      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+      {!onViewMore && (
+        <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
+          <CustomIcon boxSize={4} name="info-circle-solid" />
+          <Text variant="body2" color="text.dark">
+            Kindly note that the validator may not have voted on the proposal
+            due to ineligibility, such as being recently added to the network.
+          </Text>
+        </Alert>
       )}
+      <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
+        <GridItem>{/* // TODO: Add filter here... */}</GridItem>
+        <GridItem>
+          <InputWithIcon
+            placeholder="Search with proposal ID or proposal title..."
+            value={search}
+            onChange={handleOnSearchChange}
+            size="lg"
+          />
+        </GridItem>
+      </Grid>
+      <VotedProposalsTableBody
+        data={data}
+        isLoading={isLoading}
+        onViewMore={onViewMore}
+      />
+      {data &&
+        (onViewMore
+          ? data.total > 5 && (
+              <ViewMore
+                text={`View all proposed blocks (${data.total})`}
+                onClick={onViewMore}
+              />
+            )
+          : data.total > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={data.total}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
+              />
+            ))}
     </Flex>
   );
 };
