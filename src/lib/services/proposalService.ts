@@ -413,7 +413,6 @@ export const useProposalValidatorVotes = (
       items: filteredItemsBySearch.slice(offset, offset + limit),
       total: filteredItemsBySearch.length,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.items, limit, offset, answer, search]);
 
   return { data: filteredData, ...rest };

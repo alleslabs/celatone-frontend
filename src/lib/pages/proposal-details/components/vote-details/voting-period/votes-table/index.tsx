@@ -179,16 +179,6 @@ export const ProposalVotesTable = ({
     setAnswerFilter(newAnswer);
   };
 
-  const onPageChange = (nextPage: number) => {
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
   return (
     <Box id={tableHeaderId}>
       {fullVersion && (
@@ -228,8 +218,12 @@ export const ProposalVotesTable = ({
           offset={offset}
           totalData={data?.total ?? 0}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
         />
       )}
       {onViewMore && !!total && total > 10 && (
