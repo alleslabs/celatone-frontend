@@ -20,7 +20,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import type { ProposalAnswerCountsResponse } from "lib/services/proposal";
 import { useProposalValidatorVotes } from "lib/services/proposalService";
-import { ProposalValidatorVoteType } from "lib/types";
+import { ProposalVoteType } from "lib/types";
 import type { Option, ProposalValidatorVote } from "lib/types";
 
 import { ValidatorVotesTableHeader } from "./ValidatorVotesTableHeader";
@@ -112,8 +112,8 @@ export const ValidatorVotesTable = ({
   isProposalResolved,
   onViewMore,
 }: ValidatorVotesTableProps) => {
-  const [answerFilter, setAnswerFilter] = useState<ProposalValidatorVoteType>(
-    ProposalValidatorVoteType.ALL
+  const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
+    ProposalVoteType.ALL
   );
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -148,7 +148,7 @@ export const ValidatorVotesTable = ({
   }, [data, setTotalData]);
 
   const isSearching =
-    debouncedSearch !== "" || answerFilter !== ProposalValidatorVoteType.ALL;
+    debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;
 
   const totalValidators = answers?.totalValidators ?? 0;
 
@@ -156,37 +156,37 @@ export const ValidatorVotesTable = ({
     () => [
       {
         label: `All votes (${totalValidators})`,
-        value: ProposalValidatorVoteType.ALL,
+        value: ProposalVoteType.ALL,
         disabled: false,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,
-        value: ProposalValidatorVoteType.YES,
+        value: ProposalVoteType.YES,
         disabled: false,
       },
       {
         label: `No (${answers?.no ?? 0})`,
-        value: ProposalValidatorVoteType.NO,
+        value: ProposalVoteType.NO,
         disabled: false,
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: ProposalValidatorVoteType.NO_WITH_VETO,
+        value: ProposalVoteType.NO_WITH_VETO,
         disabled: false,
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
-        value: ProposalValidatorVoteType.ABSTAIN,
+        value: ProposalVoteType.ABSTAIN,
         disabled: false,
       },
       {
         label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalValidatorVoteType.WEIGHTED,
+        value: ProposalVoteType.WEIGHTED,
         disabled: false,
       },
       {
         label: `Did not vote (${answers?.didNotVote ?? 0})`,
-        value: ProposalValidatorVoteType.DID_NOT_VOTE,
+        value: ProposalVoteType.DID_NOT_VOTE,
         disabled: false,
       },
     ],
@@ -199,7 +199,7 @@ export const ValidatorVotesTable = ({
     setSearch(e.target.value);
   };
 
-  const handleOnAnswerFilterChange = (newAnswer: ProposalValidatorVoteType) => {
+  const handleOnAnswerFilterChange = (newAnswer: ProposalVoteType) => {
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
   };
@@ -219,7 +219,7 @@ export const ValidatorVotesTable = ({
       {fullVersion && (
         <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
           <GridItem>
-            <SelectInput<ProposalValidatorVoteType>
+            <SelectInput<ProposalVoteType>
               formLabel="Filter by Answer"
               options={answerOptions}
               onChange={handleOnAnswerFilterChange}

@@ -10,6 +10,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import { useValidatorVotedProposals } from "lib/services/validatorService";
+import { ProposalVoteType } from "lib/types";
 import type { ValidatorAddr } from "lib/types";
 
 import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
@@ -27,6 +28,7 @@ export const VotedProposalsTable = ({
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
+  const [answerFilter] = useState<ProposalVoteType>(ProposalVoteType.ALL);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
 
@@ -50,12 +52,11 @@ export const VotedProposalsTable = ({
     validatorAddress,
     onViewMore ? 5 : pageSize,
     offset,
+    answerFilter,
+    debouncedSearch,
     {
       onSuccess: ({ total }) => setTotalData(total),
-    },
-    // answerFilter,
-    undefined,
-    debouncedSearch
+    }
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -20,6 +20,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import type { ProposalAnswerCountsResponse } from "lib/services/proposal";
 import { useProposalVotes } from "lib/services/proposalService";
+import { ProposalVoteType } from "lib/types";
 import type { Option, ProposalVote } from "lib/types";
 
 import { ProposalVotesTableHeader } from "./ProposalVotesTableHeader";
@@ -87,16 +88,6 @@ interface ProposalVotesTableProps {
   onViewMore?: () => void;
 }
 
-// pass it to api
-enum AnswerType {
-  ALL = "all",
-  YES = "yes",
-  NO = "no",
-  NO_WITH_VETO = "no_with_veto",
-  ABSTAIN = "abstain",
-  WEIGHTED = "weighted",
-}
-
 const tableHeaderId = "proposalVotesTable";
 
 export const ProposalVotesTable = ({
@@ -105,7 +96,9 @@ export const ProposalVotesTable = ({
   fullVersion,
   onViewMore,
 }: ProposalVotesTableProps) => {
-  const [answerFilter, setAnswerFilter] = useState<AnswerType>(AnswerType.ALL);
+  const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
+    ProposalVoteType.ALL
+  );
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
 
@@ -134,7 +127,8 @@ export const ProposalVotesTable = ({
     { onSuccess: ({ total }) => setTotalData(total) }
   );
 
-  const isSearching = debouncedSearch !== "" || answerFilter !== AnswerType.ALL;
+  const isSearching =
+    debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;
 
   const total = answers?.total ?? 0;
 
@@ -142,32 +136,32 @@ export const ProposalVotesTable = ({
     () => [
       {
         label: `All votes (${total})`,
-        value: AnswerType.ALL,
+        value: ProposalVoteType.ALL,
         disabled: false,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,
-        value: AnswerType.YES,
+        value: ProposalVoteType.YES,
         disabled: false,
       },
       {
         label: `No (${answers?.no ?? 0})`,
-        value: AnswerType.NO,
+        value: ProposalVoteType.NO,
         disabled: false,
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: AnswerType.NO_WITH_VETO,
+        value: ProposalVoteType.NO_WITH_VETO,
         disabled: false,
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
-        value: AnswerType.ABSTAIN,
+        value: ProposalVoteType.ABSTAIN,
         disabled: false,
       },
       {
         label: `Weighted (${answers?.weighted ?? 0})`,
-        value: AnswerType.WEIGHTED,
+        value: ProposalVoteType.WEIGHTED,
         disabled: false,
       },
     ],
@@ -180,7 +174,7 @@ export const ProposalVotesTable = ({
     setSearch(e.target.value);
   };
 
-  const handleOnAnswerFilterChange = (newAnswer: AnswerType) => {
+  const handleOnAnswerFilterChange = (newAnswer: ProposalVoteType) => {
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
   };
@@ -200,7 +194,7 @@ export const ProposalVotesTable = ({
       {fullVersion && (
         <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
           <GridItem>
-            <SelectInput<AnswerType>
+            <SelectInput<ProposalVoteType>
               formLabel="Filter by Answer"
               options={answerOptions}
               onChange={handleOnAnswerFilterChange}

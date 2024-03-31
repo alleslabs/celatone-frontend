@@ -15,7 +15,7 @@ import {
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import { big, ProposalValidatorVoteType } from "lib/types";
+import { big, ProposalVoteType } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
@@ -359,8 +359,8 @@ export const useProposalValidatorVotes = (
   id: number,
   limit: number,
   offset: number,
-  answer?: ProposalValidatorVoteType,
-  search?: string
+  answer: ProposalVoteType,
+  search: string
 ) => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -375,17 +375,17 @@ export const useProposalValidatorVotes = (
 
     const filteredItemsByAnswer = data.items.filter((vote) => {
       switch (answer) {
-        case ProposalValidatorVoteType.YES:
+        case ProposalVoteType.YES:
           return vote.yes === 1;
-        case ProposalValidatorVoteType.NO:
+        case ProposalVoteType.NO:
           return vote.no === 1;
-        case ProposalValidatorVoteType.NO_WITH_VETO:
+        case ProposalVoteType.NO_WITH_VETO:
           return vote.noWithVeto === 1;
-        case ProposalValidatorVoteType.ABSTAIN:
+        case ProposalVoteType.ABSTAIN:
           return vote.abstain === 1;
-        case ProposalValidatorVoteType.WEIGHTED:
+        case ProposalVoteType.WEIGHTED:
           return vote.isVoteWeighted;
-        case ProposalValidatorVoteType.DID_NOT_VOTE:
+        case ProposalVoteType.DID_NOT_VOTE:
           return (
             vote.yes === 0 &&
             vote.no === 0 &&
@@ -393,7 +393,7 @@ export const useProposalValidatorVotes = (
             vote.abstain === 0 &&
             !vote.isVoteWeighted
           );
-        case ProposalValidatorVoteType.ALL:
+        case ProposalVoteType.ALL:
         default:
           return true;
       }
@@ -423,8 +423,8 @@ export const useProposalVotes = (
   id: number,
   limit: number,
   offset: number,
-  answer?: string,
-  search?: string,
+  answer: ProposalVoteType,
+  search: string,
   options: Pick<UseQueryOptions<ProposalVotesResponse>, "onSuccess"> = {}
 ): UseQueryResult<ProposalVotesResponse> => {
   const endpoint = useBaseApiRoute("proposals");
