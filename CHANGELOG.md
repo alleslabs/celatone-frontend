@@ -39,7 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
 - [#854](https://github.com/alleslabs/celatone-frontend/pull/854) Create PageHeaderContainer component
 - [#851](https://github.com/alleslabs/celatone-frontend/pull/851) Add amp validator list page
@@ -123,6 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#852](https://github.com/alleslabs/celatone-frontend/pull/852) Show quorum only during the voting period since past total voting power is not available
 - [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
 - [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge

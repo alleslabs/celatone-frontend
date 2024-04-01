@@ -44,6 +44,10 @@ export const VotingPowerChart = ({
     ? assetInfos?.[singleStakingDenom]
     : undefined;
 
+  const currency = singleStakingDenom
+    ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
+    : "";
+
   const labels = historicalPowers.items.map((item) =>
     formatHHmm(item.hourRoundedTimestamp as Date)
   );
@@ -67,10 +71,6 @@ export const VotingPowerChart = ({
 
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
     const { raw, dataIndex } = tooltip.dataPoints[0];
-
-    const currency = singleStakingDenom
-      ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
-      : "";
 
     const formattedAmount = formatUTokenWithPrecision(
       raw as U<Token<BigSource>>,
