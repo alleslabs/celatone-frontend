@@ -103,9 +103,7 @@ export type HistoricalPowersItem = z.infer<typeof zHistoricalPowersItem>;
 
 export const zHistoricalPowersResponse = z
   .object({
-    items: z
-      .array(zHistoricalPowersItem)
-      .transform((items) => [...items].reverse()),
+    items: z.array(zHistoricalPowersItem),
     total: z.number(),
   })
   .transform(snakeToCamel);
