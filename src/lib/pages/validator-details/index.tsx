@@ -124,8 +124,8 @@ const ValidatorDetailsBody = ({
                 selfVotingPower={data.selfVotingPower}
               />
             </TabPanel>
-            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              <VotedProposalsTable />
+            <TabPanel p={0} pt={6}>
+              <VotedProposalsTable validatorAddress={validatorAddress} />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <Performance validatorAddress={validatorAddress} />

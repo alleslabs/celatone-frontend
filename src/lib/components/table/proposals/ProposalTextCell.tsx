@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 import type { ProposalType } from "lib/types";
@@ -18,6 +19,7 @@ export const ProposalTextCell = ({
   isExpedited,
   isDepositOrVoting,
 }: ProposalTextCellProps) => {
+  const isMobile = useMobile();
   const [isHoverText, setIsHoverText] = useState(false);
   const titleRef = useRef<HTMLParagraphElement>(null);
   const typeRef = useRef<HTMLParagraphElement>(null);
@@ -31,14 +33,11 @@ export const ProposalTextCell = ({
 
   return (
     <Flex
-      left={0}
-      h="80%"
       flexDirection="column"
-      position="absolute"
       justify="center"
       borderRadius="8px"
       bgColor={showName ? "gray.800" : "undefined"}
-      px={4}
+      px={isMobile ? 0 : 4}
       maxW={showName ? undefined : "full"}
       onMouseOver={() => setIsHoverText(true)}
       onMouseOut={() => setIsHoverText(false)}

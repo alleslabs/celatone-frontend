@@ -19,6 +19,7 @@ import type {
   ValidatorDelegationRelatedTxsResponse,
   ValidatorsResponse,
   ValidatorUptimeResponse,
+  ValidatorVotedProposalsResponse,
 } from "./validator";
 import {
   getHistoricalPowers,
@@ -234,6 +235,10 @@ export const useValidatorVotedProposals = (
   validatorAddress: ValidatorAddr,
   limit: number,
   offset: number,
+  options: Pick<
+    UseQueryOptions<ValidatorVotedProposalsResponse>,
+    "onSuccess"
+  > = {},
   answer?: string,
   search?: string
 ) => {
@@ -258,6 +263,6 @@ export const useValidatorVotedProposals = (
         answer,
         search
       ),
-    { retry: 1 }
+    { retry: 1, ...options }
   );
 };
