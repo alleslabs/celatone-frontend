@@ -237,7 +237,7 @@ const ContractDetailsBody = observer(
               </Flex>
               <UserDocsLink
                 title="What is Contract in CosmWasm?"
-                cta="Read more about Contract Details"
+                cta="View more about Contract Details"
                 href="cosmwasm/contract/detail-page"
               />
             </TabPanel>
@@ -245,7 +245,7 @@ const ContractDetailsBody = observer(
               <AssetsSection address={contractAddress} />
               <UserDocsLink
                 title="What is Supported and Unsupported Assets? "
-                cta="Read more about Assets"
+                cta="View more about Assets"
                 href="cosmwasm/contract/detail-page#assets"
               />
             </TabPanel>
@@ -253,7 +253,7 @@ const ContractDetailsBody = observer(
               <DelegationsSection address={contractAddress} />
               <UserDocsLink
                 title="What is Delegations, Total Bonded, Rewards?"
-                cta="Read more about Delegations"
+                cta="View more about Delegations"
                 href="cosmwasm/contract/detail-page#delegations"
               />
             </TabPanel>
@@ -261,7 +261,7 @@ const ContractDetailsBody = observer(
               <ContractTables contractAddress={contractAddress} />
               <UserDocsLink
                 title="What is transactions related to the contract?"
-                cta="Read more about Transactions & Histories"
+                cta="View more about Transactions & Histories"
                 href="cosmwasm/contract/detail-page#transactions-and-histories"
               />
             </TabPanel>
@@ -269,7 +269,7 @@ const ContractDetailsBody = observer(
               <ContractStates contractAddress={contractAddress} />
               <UserDocsLink
                 title="What is contract states?"
-                cta="Read more about Contract States"
+                cta="View more about Contract States"
                 href="cosmwasm/contract/detail-page#contract-states"
               />
             </TabPanel>

@@ -19,6 +19,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
 import type { Option } from "lib/types";
@@ -223,6 +224,9 @@ export const PublishModule = ({
               <Text color="text.dark" pt={4} textAlign="center">
                 {publishModuleText.description}
               </Text>
+              <Flex justifyContent="center" mt={4}>
+                <UserDocsLink isButton href="move/publish-module" />
+              </Flex>
               <ConnectWalletAlert
                 subtitle={publishModuleText.connectWallet}
                 mt={12}
@@ -315,6 +319,13 @@ export const PublishModule = ({
             </Box>
             <Box gridArea="3 / 3" pl="32px">
               <PolicyAccordion chainName={chainPrettyName} />
+              <Box>
+                <UserDocsLink
+                  cta="View more about republish"
+                  isSmall={false}
+                  href="move/publish-module#republishing-modules"
+                />
+              </Box>
             </Box>
           </Grid>
         </Box>
@@ -324,7 +335,6 @@ export const PublishModule = ({
           const republishModules = modules.filter((ampTrackRepublish) =>
             ampTrackRepublish.publishStatus.text.includes("republish")
           );
-
           track(AmpEvent.ACTION_MOVE_PUBLISH, {
             numberOfModule: modules.length,
             numberOfRepublishModules: republishModules.length,

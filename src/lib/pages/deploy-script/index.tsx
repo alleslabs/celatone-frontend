@@ -13,6 +13,7 @@ import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";
@@ -135,13 +136,25 @@ export const DeployScript = () => {
   return (
     <>
       <WasmPageContainer>
-        <Heading as="h4" variant="h4">
-          Script
-        </Heading>
-        <Text fontWeight={600} variant="body2" color="text.dark" mt={2} mb={12}>
-          Upload a .mv file to deploy one-time use Script which execute
-          messages.
-        </Text>
+        <Flex
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          mb={12}
+        >
+          <Heading as="h4" variant="h4">
+            Script
+          </Heading>
+          <Text color="text.dark" mt={4}>
+            Upload a .mv file to deploy one-time use Script which execute
+            messages.
+          </Text>
+          <UserDocsLink
+            mt={4}
+            cta="View more about Deploy Script"
+            href="move/deploy-script"
+          />
+        </Flex>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"
           mb={12}

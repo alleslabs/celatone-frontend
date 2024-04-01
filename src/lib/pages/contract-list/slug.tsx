@@ -176,7 +176,7 @@ const ContractsByList = observer(() => {
       {!isInstantiatedByMe && (
         <UserDocsLink
           title="How to organize and save contracts?"
-          cta="Read more about Saved Contracts"
+          cta="View more about Saved Contracts"
           href="cosmwasm/contract/organize#saving-contract-for-later-use"
         />
       )}

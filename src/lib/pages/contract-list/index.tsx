@@ -53,7 +53,7 @@ const AllContractListsPage = observer(() => {
       </Flex>
       <UserDocsLink
         title="How to use contract list?"
-        cta="Read more about Contract Lists"
+        cta="View more about Contract Lists"
         href="cosmwasm/contract/organize#using-contract-lists"
       />
     </PageContainer>

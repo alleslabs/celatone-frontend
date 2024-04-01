@@ -2,7 +2,6 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { LabelText } from "lib/components/LabelText";
-import { UserDocsLink } from "lib/components/UserDocsLink";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { BlockData } from "lib/types";
 import { formatInteger } from "lib/utils";
@@ -19,11 +18,6 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
         <Heading as="h6" variant="h6">
           Block Info
         </Heading>
-        <UserDocsLink
-          cta="More about Block"
-          href="general/block/detail-page"
-          mt={0}
-        />
       </Flex>
       <Flex gap={{ base: 4, md: 12 }} direction={{ base: "column", md: "row" }}>
         <Flex direction="row" flex="1" maxW={{ md: "400px" }}>

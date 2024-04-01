@@ -22,6 +22,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useCollectionByCollectionAddress,
@@ -264,6 +265,11 @@ const NftDetailsBody = ({
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <UserDocsLink
+          title="What is a NFT?"
+          cta="View more about NFT"
+          href="move/nft/detail-page"
+        />
       </Flex>
     </>
   );

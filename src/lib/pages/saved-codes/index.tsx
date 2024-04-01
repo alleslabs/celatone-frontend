@@ -102,7 +102,7 @@ const SavedCodes = observer(() => {
       />
       <UserDocsLink
         title="How to organize and save codes?"
-        cta="Read more about Saved Codes"
+        cta="View more about Saved Codes"
         href="cosmwasm/code/organize#saving-code-for-later-use"
       />
     </PageContainer>

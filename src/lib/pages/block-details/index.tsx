@@ -6,6 +6,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBlockData } from "lib/services/blockService";
 
 import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
@@ -33,6 +34,11 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
       <BlockDetailsTop blockData={blockData} />
       <BlockInfo blockData={blockData} />
       <BlockTxsTable height={height} />
+      <UserDocsLink
+        title="What is a block?"
+        cta="View more about Block"
+        href="general/block/detail-page"
+      />
     </>
   );
 };

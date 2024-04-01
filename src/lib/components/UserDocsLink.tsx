@@ -78,7 +78,7 @@ export const UserDocsLink = ({
           }}
         >
           <CustomIcon name="document" color="secondary.main" boxSize={3} />
-          <Text color="secondary.main" variant="body2">
+          <Text color="secondary.main" fontWeight={800} variant="body2">
             {cta}
           </Text>
         </Flex>
