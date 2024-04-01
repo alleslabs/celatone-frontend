@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
 - [#854](https://github.com/alleslabs/celatone-frontend/pull/854) Create PageHeaderContainer component
 - [#851](https://github.com/alleslabs/celatone-frontend/pull/851) Add amp validator list page
