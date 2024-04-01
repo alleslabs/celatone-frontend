@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { StatusSummary } from "../status-summary";
 import { big, ProposalStatus } from "lib/types";
-import type { ProposalData, ProposalParams, Token, U } from "lib/types";
+import type { ProposalData, ProposalParams, Ratio, Token, U } from "lib/types";
 
 const meta: Meta<typeof StatusSummary> = {
   component: StatusSummary,
@@ -67,9 +67,9 @@ const params: ProposalParams = {
   minInitialDepositRatio: 0.2,
   maxDepositPeriod: "",
   votingPeriod: "",
-  vetoThreshold: 0.3,
-  quorum: 0.3,
-  threshold: 0.5,
+  vetoThreshold: 0.3 as Ratio<number>,
+  quorum: 0.3 as Ratio<number>,
+  threshold: 0.5 as Ratio<number>,
 };
 
 export const DepositPeriod: Story = {

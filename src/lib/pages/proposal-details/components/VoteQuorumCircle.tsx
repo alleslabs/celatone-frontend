@@ -4,7 +4,7 @@ import type { Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumCircleProps {
-  quorum: number;
+  quorum: Ratio<number>;
   nonAbstainVotes: Ratio<number>;
   totalVotes: Ratio<number>;
   isCompact: boolean;
@@ -24,7 +24,7 @@ export const VoteQuorumCircle = ({
   const totalVotesPercent = formatPrettyPercent(totalVotes, 1);
 
   const quorumAngle = quorum * 360;
-  const quorumPercent = formatPrettyPercent(quorum as Ratio<number>);
+  const quorumPercent = formatPrettyPercent(quorum);
 
   return (
     <Circle

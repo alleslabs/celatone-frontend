@@ -11,7 +11,6 @@ import type {
   ProposalData,
   ProposalParams,
   ProposalVotesInfo,
-  Ratio,
   Token,
   TokenWithValue,
   U,
@@ -141,7 +140,7 @@ export const ResultExplanation = ({
               fontWeight: 700,
             }}
           >
-            {formatPrettyPercent(vetoThreshold as Ratio<number>)} threshold
+            {formatPrettyPercent(vetoThreshold)} threshold
           </span>
           . If the proposal concludes with this voting outcome, it will be
           rejected regardless of &ldquo;Yes&rdquo; votes.
@@ -210,7 +209,7 @@ export const ResultExplanation = ({
               fontWeight: 700,
             }}
           >
-            {formatPrettyPercent(vetoThreshold as Ratio<number>)} threshold
+            {formatPrettyPercent(vetoThreshold)} threshold
           </span>
           .
         </Text>

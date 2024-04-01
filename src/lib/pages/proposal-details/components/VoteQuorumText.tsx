@@ -6,7 +6,7 @@ import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumTextProps {
   status: ProposalStatus;
-  quorum: number;
+  quorum: Ratio<number>;
   totalVotes: Ratio<number>;
   isCompact: boolean;
 }
@@ -29,7 +29,7 @@ export const VoteQuorumText = ({
   isCompact,
 }: VoteQuorumTextProps) => {
   const fontVariant = isCompact ? "body2" : "body1";
-  const quorumPercent = formatPrettyPercent(quorum as Ratio<number>);
+  const quorumPercent = formatPrettyPercent(quorum);
   const isPassingQuorum = totalVotes >= quorum;
 
   if (status === ProposalStatus.VOTING_PERIOD)

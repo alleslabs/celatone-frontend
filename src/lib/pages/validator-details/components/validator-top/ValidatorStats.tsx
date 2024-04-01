@@ -37,7 +37,7 @@ const StatWithLabel = ({
 
 interface ValidatorStatsProps {
   validatorAddress: ValidatorAddr;
-  commissionRate: number;
+  commissionRate: Ratio<number>;
   totalVotingPower: Big;
   singleStakingDenom: Option<string>;
 }
@@ -83,7 +83,7 @@ export const ValidatorStats = ({
     >
       <StatWithLabel
         label="Commission"
-        value={formatPrettyPercent(commissionRate as Ratio<number>, 2, true)}
+        value={formatPrettyPercent(commissionRate, 2, true)}
         isLoading={false}
       />
       {singleStakingDenom && (

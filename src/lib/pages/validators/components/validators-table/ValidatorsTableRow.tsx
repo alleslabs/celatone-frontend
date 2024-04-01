@@ -118,11 +118,7 @@ export const ValidatorsTableRow = ({
           color={isMinCommissionRate ? "success.main" : "text.main"}
           fontWeight={isMinCommissionRate ? 700 : undefined}
         >
-          {formatPrettyPercent(
-            validator.commissionRate as Ratio<number>,
-            2,
-            true
-          )}
+          {formatPrettyPercent(validator.commissionRate, 2, true)}
         </Text>
       </TableRow>
     </Grid>

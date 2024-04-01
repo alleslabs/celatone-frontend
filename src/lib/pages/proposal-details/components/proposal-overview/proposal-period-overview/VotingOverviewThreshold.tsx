@@ -15,7 +15,6 @@ import type {
   ProposalData,
   ProposalParams,
   ProposalVotesInfo,
-  Ratio,
 } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
@@ -122,8 +121,7 @@ export const VotingOverviewThreshold = ({
                     fontWeight: 700,
                   }}
                 >
-                  {formatPrettyPercent(vetoThreshold as Ratio<number>)}{" "}
-                  threshold
+                  {formatPrettyPercent(vetoThreshold)} threshold
                 </span>
                 . If the proposal concludes with this voting outcome, it will be
                 regardless of &ldquo;Yes&rdquo; votes.
@@ -146,8 +144,7 @@ export const VotingOverviewThreshold = ({
                     fontWeight: 700,
                   }}
                 >
-                  {formatPrettyPercent(vetoThreshold as Ratio<number>)}{" "}
-                  threshold
+                  {formatPrettyPercent(vetoThreshold)} threshold
                 </span>
                 , the proposal is rejected regardless of &ldquo;Yes&rdquo;
                 votes.
