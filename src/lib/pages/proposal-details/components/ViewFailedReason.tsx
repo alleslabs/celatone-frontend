@@ -28,6 +28,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
           variant="body2"
           color="text.disabled"
           cursor="not-allowed"
+          whiteSpace="nowrap"
         >
           View Failed Reason
         </Text>
@@ -55,7 +56,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
         returnFocusOnClose={false}
       >
         <ModalOverlay />
-        <ModalContent w="600px">
+        <ModalContent>
           <ModalHeader>Failed Reason</ModalHeader>
           <ModalCloseButton color="gray.600" />
           <ModalBody>
