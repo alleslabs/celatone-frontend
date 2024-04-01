@@ -114,6 +114,7 @@ interface Message {
 
 export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
   extends Proposal {
+  failedReason: string;
   createdHeight: Nullable<number>;
   createdTimestamp: Nullable<Date>;
   createdTxHash: Nullable<string>;

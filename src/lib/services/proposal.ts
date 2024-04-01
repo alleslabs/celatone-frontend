@@ -198,6 +198,7 @@ export const getRelatedProposalsByContractAddress = async (
 const zProposalDataResponse = z.object({
   info: zProposal
     .extend({
+      failed_reason: z.string(),
       created_height: z.number().nullable(),
       created_timestamp: zUtcDate.nullable(),
       created_tx_hash: z.string().nullable(),
