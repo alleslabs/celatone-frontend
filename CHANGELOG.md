@@ -94,6 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
 - [#845](https://github.com/alleslabs/celatone-frontend/pull/845) Edit error fetching message on the contract state
 - [#844](https://github.com/alleslabs/celatone-frontend/pull/844) Modify wording status for rejected proposals
 - [#841](https://github.com/alleslabs/celatone-frontend/pull/841) Bump cosmos-kit package fixing the installed wallet issue
