@@ -185,7 +185,7 @@ export default function BaseInputTemplate<
       isInvalid={rawErrors && rawErrors.length > 0}
     >
       {displayLabel && (
-        <Flex>
+        <Flex gap={2}>
           <FormLabel
             htmlFor={id}
             id={`${id}-label`}
