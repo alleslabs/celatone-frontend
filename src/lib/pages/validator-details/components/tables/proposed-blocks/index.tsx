@@ -76,6 +76,7 @@ export const ProposedBlocksTable = ({
       />
       <ProposedsBlockTableBody
         data={data}
+        scrollComponentId={scrollComponentId}
         isLoading={isLoading}
         onViewMore={onViewMore}
       />

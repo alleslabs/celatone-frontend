@@ -11,10 +11,10 @@ import type { BlocksResponse } from "lib/services/block";
 import type { Option } from "lib/types";
 
 const TEMPLATE_COLUMNS = "150px minmax(160px, 1fr) 180px 280px";
-const scrollComponentId = "proposed-block-table-header";
 
 interface ProposedBlocksTableBodyProps {
   data: Option<BlocksResponse>;
+  scrollComponentId: string;
   isLoading: boolean;
   onViewMore?: () => void;
 }
@@ -22,6 +22,7 @@ interface ProposedBlocksTableBodyProps {
 export const ProposedsBlockTableBody = ({
   data,
   isLoading,
+  scrollComponentId,
   onViewMore,
 }: ProposedBlocksTableBodyProps) => {
   const isMobile = useMobile();

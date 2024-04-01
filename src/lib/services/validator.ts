@@ -6,6 +6,7 @@ import { CURR_THEME } from "env";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import {
   BlockVote,
+  SlashingEvent,
   zBechAddr,
   zBig,
   zCoin,
@@ -206,7 +207,7 @@ const zValidatorUptimeResponse = z
       .object({
         height: z.number(),
         timestamp: zUtcDate,
-        is_jailed: z.boolean(),
+        type: z.nativeEnum(SlashingEvent),
       })
       .array(),
   })
