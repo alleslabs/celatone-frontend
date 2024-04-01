@@ -13,6 +13,7 @@ import type {
   ValidatorData,
 } from "lib/types";
 import {
+  divWithDefault,
   formatPrettyPercent,
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -77,9 +78,11 @@ export const ValidatorsTableMobileCard = ({
               <MobileLabel label="Voting Power" />
               <Text variant="body2" color="text.main">
                 {formatPrettyPercent(
-                  validator.votingPower
-                    .div(totalVotingPower)
-                    .toNumber() as Ratio<number>,
+                  divWithDefault(
+                    validator.votingPower,
+                    totalVotingPower,
+                    0
+                  ).toNumber() as Ratio<number>,
                   2,
                   true
                 )}
