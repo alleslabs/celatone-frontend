@@ -1,8 +1,9 @@
 import { Alert, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
+import { SelectInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
@@ -10,6 +11,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import { useValidatorVotedProposals } from "lib/services/validatorService";
+import { ProposalValidatorVoteType } from "lib/types";
 import type { ValidatorAddr } from "lib/types";
 
 import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
@@ -27,6 +29,10 @@ export const VotedProposalsTable = ({
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
+
+  const [answerFilter, setAnswerFilter] = useState<ProposalValidatorVoteType>(
+    ProposalValidatorVoteType.ALL
+  );
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
 
@@ -53,14 +59,59 @@ export const VotedProposalsTable = ({
     {
       onSuccess: ({ total }) => setTotalData(total),
     },
-    // answerFilter,
-    undefined,
+    answerFilter,
     debouncedSearch
+  );
+
+  const answerOptions = useMemo(
+    () => [
+      {
+        label: `All votes`,
+        value: ProposalValidatorVoteType.ALL,
+        disabled: false,
+      },
+      {
+        label: `Yes`,
+        value: ProposalValidatorVoteType.YES,
+        disabled: false,
+      },
+      {
+        label: `No`,
+        value: ProposalValidatorVoteType.NO,
+        disabled: false,
+      },
+      {
+        label: `No with veto`,
+        value: ProposalValidatorVoteType.NO_WITH_VETO,
+        disabled: false,
+      },
+      {
+        label: `Abstain`,
+        value: ProposalValidatorVoteType.ABSTAIN,
+        disabled: false,
+      },
+      {
+        label: `Weighted`,
+        value: ProposalValidatorVoteType.WEIGHTED,
+        disabled: false,
+      },
+      {
+        label: `Did not vote`,
+        value: ProposalValidatorVoteType.DID_NOT_VOTE,
+        disabled: false,
+      },
+    ],
+    []
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(1);
     setSearch(e.target.value);
+  };
+
+  const handleOnAnswerFilterChange = (newAnswer: ProposalValidatorVoteType) => {
+    setCurrentPage(1);
+    setAnswerFilter(newAnswer);
   };
 
   return (
@@ -82,30 +133,42 @@ export const VotedProposalsTable = ({
         <>
           <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
           {!onViewMore && (
-            <Alert
-              variant="info"
-              gap={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              <CustomIcon boxSize={4} name="info-circle-solid" />
-              <Text variant="body2" color="text.dark">
-                Kindly note that the validator may not have voted on the
-                proposal due to ineligibility, such as being recently added to
-                the network.
-              </Text>
-            </Alert>
+            <>
+              <Alert
+                variant="info"
+                gap={4}
+                display={{ base: "none", md: "flex" }}
+              >
+                <CustomIcon boxSize={4} name="info-circle-solid" />
+                <Text variant="body2" color="text.dark">
+                  Kindly note that the validator may not have voted on the
+                  proposal due to ineligibility, such as being recently added to
+                  the network.
+                </Text>
+              </Alert>
+              <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
+                <GridItem>
+                  <SelectInput<ProposalValidatorVoteType>
+                    formLabel="Filter by vote answer"
+                    options={answerOptions}
+                    onChange={handleOnAnswerFilterChange}
+                    labelBgColor="gray.900"
+                    initialSelected={answerFilter}
+                    popoverBgColor="gray.800"
+                    disableMaxH
+                  />
+                </GridItem>
+                <GridItem>
+                  <InputWithIcon
+                    placeholder="Search with proposal ID or proposal title..."
+                    value={search}
+                    onChange={handleOnSearchChange}
+                    size="lg"
+                  />
+                </GridItem>
+              </Grid>
+            </>
           )}
-          <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
-            <GridItem>{/* // TODO: Add filter here... */}</GridItem>
-            <GridItem>
-              <InputWithIcon
-                placeholder="Search with proposal ID or proposal title..."
-                value={search}
-                onChange={handleOnSearchChange}
-                size="lg"
-              />
-            </GridItem>
-          </Grid>
           <VotedProposalsTableBody
             data={data}
             isLoading={isLoading}
