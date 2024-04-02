@@ -128,35 +128,37 @@ export const VotedProposalsTable = ({
     <Flex direction="column" gap={6}>
       <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
       {!onViewMore && (
-        <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
-          <CustomIcon boxSize={4} name="info-circle-solid" />
-          <Text variant="body2" color="text.dark">
-            Kindly note that the validator may not have voted on the proposal
-            due to ineligibility, such as being recently added to the network.
-          </Text>
-        </Alert>
+        <>
+          <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
+            <CustomIcon boxSize={4} name="info-circle-solid" />
+            <Text variant="body2" color="text.dark">
+              Kindly note that the validator may not have voted on the proposal
+              due to ineligibility, such as being recently added to the network.
+            </Text>
+          </Alert>
+          <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
+            <GridItem>
+              <SelectInput<ProposalVoteType>
+                formLabel="Filter by vote answer"
+                options={answerOptions}
+                onChange={handleOnAnswerFilterChange}
+                labelBgColor="gray.900"
+                initialSelected={answerFilter}
+                popoverBgColor="gray.800"
+                disableMaxH
+              />
+            </GridItem>
+            <GridItem>
+              <InputWithIcon
+                placeholder="Search with proposal ID or proposal title..."
+                value={search}
+                onChange={handleOnSearchChange}
+                size="lg"
+              />
+            </GridItem>
+          </Grid>
+        </>
       )}
-      <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
-        <GridItem>
-          <SelectInput<ProposalVoteType>
-            formLabel="Filter by vote answer"
-            options={answerOptions}
-            onChange={handleOnAnswerFilterChange}
-            labelBgColor="gray.900"
-            initialSelected={answerFilter}
-            popoverBgColor="gray.800"
-            disableMaxH
-          />
-        </GridItem>
-        <GridItem>
-          <InputWithIcon
-            placeholder="Search with proposal ID or proposal title..."
-            value={search}
-            onChange={handleOnSearchChange}
-            size="lg"
-          />
-        </GridItem>
-      </Grid>
       <VotedProposalsTableBody
         data={data}
         isLoading={isLoading}
