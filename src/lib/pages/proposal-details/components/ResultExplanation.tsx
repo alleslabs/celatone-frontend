@@ -19,6 +19,7 @@ import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent, formatTokenWithValueList } from "lib/utils";
 
 import { ErrorFetchingProposalInfos } from "./ErrorFetchingProposalInfos";
+import { ViewFailedReason } from "./ViewFailedReason";
 
 const Passed = () => (
   <span
@@ -178,7 +179,8 @@ export const ResultExplanation = ({
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a{" "}
         {formatPrettyPercent(yesNonRatio)} &ldquo;Yes&rdquo; rate, it was not
-        implemented due to technical reasons.
+        implemented due to technical reasons.{" "}
+        <ViewFailedReason text={proposalData.failedReason} />
       </Text>
     );
 

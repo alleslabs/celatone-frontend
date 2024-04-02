@@ -41,7 +41,7 @@ export const ValidatorsTableMobileCard = ({
     <MobileCardTemplate
       onClick={() =>
         navigate({
-          pathname: "/blocks/[validatorAddress]",
+          pathname: "/validators/[validatorAddress]",
           query: { validatorAddress: validator.validatorAddress },
         })
       }

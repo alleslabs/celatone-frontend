@@ -59,3 +59,9 @@ export type ComputedUptime = {
   missedRatio: Ratio<number>;
   uptimeRatio: Ratio<number>;
 };
+
+export enum SlashingEvent {
+  Unjailed = "Unjailed",
+  Jailed = "Jailed",
+  Slashed = "Slashed",
+}

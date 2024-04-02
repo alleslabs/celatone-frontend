@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -8,6 +8,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import PageContainer from "lib/components/PageContainer";
+import { PageHeader } from "lib/components/PageHeader";
 import type { PermissionFilterValue } from "lib/hooks";
 
 import { RecentCodesTable } from "./components/RecentCodesTable";
@@ -33,23 +34,20 @@ const RecentCodes = observer(() => {
 
   return (
     <PageContainer>
-      <Box>
-        <Heading variant="h5" as="h5" minH="36px">
-          Codes
-        </Heading>
-        <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
-          This page displays all codes on this network sorted by recency
-        </Text>
-        <Box mt={8} mb={4}>
-          <FilterByPermission
-            maxWidth="full"
-            initialSelected="all"
-            setPermissionValue={(newVal: PermissionFilterValue) => {
-              if (newVal === permissionValue) return;
-              setValue("permissionValue", newVal);
-            }}
-          />
-        </Box>
+      <PageHeader
+        title="Codes"
+        subtitle="This page displays all codes on this network sorted by recency"
+        docHref="introduction/block-explorer#recent-codes"
+      />
+      <Box mt={8} mb={4}>
+        <FilterByPermission
+          maxWidth="full"
+          initialSelected="all"
+          setPermissionValue={(newVal: PermissionFilterValue) => {
+            if (newVal === permissionValue) return;
+            setValue("permissionValue", newVal);
+          }}
+        />
       </Box>
       <RecentCodesTable permissionValue={permissionValue} />
     </PageContainer>
