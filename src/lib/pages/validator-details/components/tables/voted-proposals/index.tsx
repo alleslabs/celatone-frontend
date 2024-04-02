@@ -142,7 +142,7 @@ export const VotedProposalsTable = ({
                 formLabel="Filter by vote answer"
                 options={answerOptions}
                 onChange={handleOnAnswerFilterChange}
-                labelBgColor="gray.900"
+                labelBgColor="background.main"
                 initialSelected={answerFilter}
                 popoverBgColor="gray.800"
                 disableMaxH
