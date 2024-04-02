@@ -10,7 +10,13 @@ import {
   useBaseApiRoute,
   useCurrentChain,
 } from "lib/app-provider";
-import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
+import type {
+  Nullable,
+  Option,
+  ProposalVoteType,
+  Validator,
+  ValidatorAddr,
+} from "lib/types";
 
 import type { BlocksResponse } from "./block";
 import type {
@@ -235,12 +241,12 @@ export const useValidatorVotedProposals = (
   validatorAddress: ValidatorAddr,
   limit: number,
   offset: number,
+  answer: ProposalVoteType,
+  search: string,
   options: Pick<
     UseQueryOptions<ValidatorVotedProposalsResponse>,
     "onSuccess"
-  > = {},
-  answer?: string,
-  search?: string
+  > = {}
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
