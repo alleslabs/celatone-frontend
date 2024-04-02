@@ -122,6 +122,7 @@ export default function BaseInputTemplate<
     type,
     hideLabel, // remove this from ...rest
     hideError, // remove this from ...rest
+    placeholder,
     ...rest
   } = props;
   const DescriptionFieldTemplate = getTemplate<
@@ -156,8 +157,8 @@ export default function BaseInputTemplate<
 
   const handleOnChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) =>
-      onChange(value === "" ? options.emptyValue : target.value),
-    [onChange, options.emptyValue, value]
+      onChange(target.value === "" ? options.emptyValue : target.value),
+    [onChange, options.emptyValue]
   );
   const handleOnBlur = useCallback(
     ({ target }: FocusEvent<HTMLInputElement>) => onBlur(id, target.value),
@@ -209,6 +210,7 @@ export default function BaseInputTemplate<
             value={inputValue}
             autoFocus={autofocus}
             placeholder={
+              placeholder ||
               getBaseInputPlaceholder(
                 value,
                 readonly ?? false,
@@ -238,9 +240,8 @@ export default function BaseInputTemplate<
           />
           {/* {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>} */}
         </InputGroup>
-        {isStringType && (
+        {!readonly && isStringType && (
           <Checkbox
-            isReadOnly={readonly}
             pl={2}
             isChecked={value === ""}
             onChange={(e) => {
