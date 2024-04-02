@@ -308,6 +308,18 @@ export const getValidatorDelegators = async (
     .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
     .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
 
+const zValidatorVotedProposalsResponseAnswerCounts = z
+  .object({
+    all: z.number(),
+    yes: z.number(),
+    no: z.number(),
+    no_with_veto: z.number(),
+    abstain: z.number(),
+    did_not_vote: z.number(),
+    weighted: z.number(),
+  })
+  .transform(snakeToCamel);
+
 const zValidatorVotedProposalsResponseItem = zProposal
   .extend({
     yes: z.number(),
@@ -350,3 +362,15 @@ export const getValidatorVotedProposals = async (
       }
     )
     .then(({ data }) => parseWithError(zValidatorVotedProposalsResponse, data));
+
+export const getValidatorVotedProposalsAnswerCounts = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(
+      `${endpoint}/${encodeURIComponent(validatorAddress)}/voted-proposals/answer-counts`
+    )
+    .then(({ data }) =>
+      parseWithError(zValidatorVotedProposalsResponseAnswerCounts, data)
+    );

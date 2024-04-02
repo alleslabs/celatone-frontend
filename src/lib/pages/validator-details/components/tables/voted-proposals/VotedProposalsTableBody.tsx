@@ -19,22 +19,30 @@ interface VotedProposalsTableBodyProps {
   data: Option<ValidatorVotedProposalsResponse>;
   isLoading: boolean;
   onViewMore?: () => void;
+  search: string;
 }
 
 export const VotedProposalsTableBody = ({
   data,
   isLoading,
   onViewMore,
+  search,
 }: VotedProposalsTableBodyProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="voted proposals" />;
   if (!data.total)
-    return (
+    return !search.length ? (
       <EmptyState
         imageVariant={onViewMore ? undefined : "empty"}
         message="This validator had no eligibility to cast votes on any proposals."
+        withBorder
+      />
+    ) : (
+      <EmptyState
+        imageVariant="not-found"
+        message="No proposals match your input. Please ensure it is a valid proposal ID or title."
         withBorder
       />
     );
