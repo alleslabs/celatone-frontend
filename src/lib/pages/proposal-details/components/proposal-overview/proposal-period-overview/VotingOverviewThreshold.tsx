@@ -16,7 +16,7 @@ import type {
   ProposalParams,
   ProposalVotesInfo,
 } from "lib/types";
-import { divWithDefault, formatPrettyPercent } from "lib/utils";
+import { formatPrettyPercent } from "lib/utils";
 
 interface VotingOverviewThresholdProps {
   proposalData: ProposalData;
@@ -33,8 +33,7 @@ export const VotingOverviewThreshold = ({
     params,
     proposalData.isExpedited
   );
-  const { noWithVeto, totalVotes } = normalizeVotesInfo(votesInfo);
-  const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
+  const { totalVotes, noWithVetoRatio } = normalizeVotesInfo(votesInfo);
 
   const { result, resultColor } = getVoteResult(
     threshold,
@@ -52,7 +51,7 @@ export const VotingOverviewThreshold = ({
         borderTopColor="gray.700"
       >
         {(proposalData.status === ProposalStatus.VOTING_PERIOD ||
-          totalVotes.gte(quorum)) && (
+          totalVotes >= quorum) && (
           <Flex gap={2} alignItems="center">
             <VoteThresholdBadge status={proposalData.status} isCompact />
             {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
@@ -89,7 +88,7 @@ export const VotingOverviewThreshold = ({
         />
         <VpPercentThreshold votesInfo={votesInfo} isCompact />
       </Flex>
-      {noWithVetoRatio.gte(vetoThreshold) && (
+      {noWithVetoRatio >= vetoThreshold && (
         <Flex
           gap={3}
           p="12px 16px"
@@ -113,7 +112,7 @@ export const VotingOverviewThreshold = ({
                     fontWeight: 700,
                   }}
                 >
-                  {formatPrettyPercent(noWithVetoRatio.toNumber())}{" "}
+                  {formatPrettyPercent(noWithVetoRatio)}{" "}
                 </span>
                 of the total votes, including &ldquo;Abstain&rdquo;, which
                 exceeds the{" "}
@@ -136,7 +135,7 @@ export const VotingOverviewThreshold = ({
                     fontWeight: 700,
                   }}
                 >
-                  {formatPrettyPercent(noWithVetoRatio.toNumber())}{" "}
+                  {formatPrettyPercent(noWithVetoRatio)}{" "}
                 </span>
                 of the total votes including &ldquo;Abstain&rdquo;, which
                 exceeds the{" "}

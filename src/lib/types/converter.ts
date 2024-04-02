@@ -8,7 +8,7 @@ export type SnakeToCamelCaseNested<T> = T extends (...args: any[]) => any
   ? T
   : T extends Array<infer R>
     ? Array<SnakeToCamelCaseNested<R>>
-    : T extends string
+    : T extends string | number
       ? T
       : T extends Date
         ? T
@@ -31,7 +31,7 @@ export type CamelToSnakeCaseNested<T> = T extends (...args: any[]) => any
   ? T
   : T extends Array<infer R>
     ? Array<CamelToSnakeCaseNested<R>>
-    : T extends string
+    : T extends string | number
       ? T
       : T extends Date
         ? T
