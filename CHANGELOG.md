@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
 - [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
 - [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
 - [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
