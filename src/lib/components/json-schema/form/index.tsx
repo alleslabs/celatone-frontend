@@ -13,7 +13,7 @@ import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import { isUndefined } from "lodash";
 import type { FC } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { JsonDataType } from "lib/types";
 
@@ -64,19 +64,6 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
 }) => {
   const [formData, setFormData] = useState<JsonDataType>(initialFormData);
 
-  const onSubmit = (values: Record<string, unknown>) => {
-    console.log("onSubmit", values);
-    propsOnSubmit?.(values);
-  };
-
-  const onChange = useCallback(
-    (data: JsonDataType, errors: RJSFValidationError[]) => {
-      setFormData(data);
-      propsOnChange?.(data, errors);
-    },
-    [formData, propsOnChange]
-  );
-
   useEffect(() => {
     setFormData(initialFormData);
 
@@ -117,14 +104,14 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       noValidate
       showErrorList={false}
       onChange={({ formData: values, errors }) => {
-        // log.info(values)
-        onChange?.(values, errors);
+        setFormData(values);
+        propsOnChange?.(values, errors);
       }}
       onSubmit={({ formData: values }) => {
-        // log.info(values)
-        onSubmit(values);
+        // console.log("onSubmit", values);
+        propsOnSubmit?.(values);
       }}
-      onError={() => console.error("errors")}
+      // onError={() => console.error("errors")}
       experimental_defaultFormStateBehavior={{
         // Assign value to formData when only default is set
         emptyObjectFields: "skipEmptyDefaults",
