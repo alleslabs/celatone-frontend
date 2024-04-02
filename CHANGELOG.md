@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
+- [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
 - [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
 - [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add amp proposal details page
 - [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
@@ -96,6 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
+- [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
 - [#845](https://github.com/alleslabs/celatone-frontend/pull/845) Edit error fetching message on the contract state
 - [#844](https://github.com/alleslabs/celatone-frontend/pull/844) Modify wording status for rejected proposals
 - [#841](https://github.com/alleslabs/celatone-frontend/pull/841) Bump cosmos-kit package fixing the installed wallet issue
@@ -124,6 +127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links
 - [#852](https://github.com/alleslabs/celatone-frontend/pull/852) Show quorum only during the voting period since past total voting power is not available
 - [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
 - [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge

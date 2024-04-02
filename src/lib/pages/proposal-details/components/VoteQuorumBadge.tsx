@@ -1,5 +1,6 @@
 import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
+import type { Ratio } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 import { ActiveDot } from "./ActiveDot";
@@ -8,7 +9,7 @@ import { ProgressBadge } from "./ProgressBadge";
 interface VoteQuorumBadgeProps {
   status: ProposalStatus;
   quorum: number;
-  totalVotes: Big;
+  totalVotes: Ratio<number>;
   isCompact: boolean;
 }
 
@@ -18,7 +19,7 @@ export const VoteQuorumBadge = ({
   totalVotes,
   isCompact,
 }: VoteQuorumBadgeProps) => {
-  if (totalVotes.gte(quorum))
+  if (totalVotes >= quorum)
     return isCompact ? (
       <CustomIcon m={0} name="check-circle-solid" color="success.main" />
     ) : (

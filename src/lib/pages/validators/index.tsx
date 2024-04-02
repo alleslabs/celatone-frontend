@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -6,6 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { PageHeader } from "lib/components/PageHeader";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -67,14 +68,11 @@ const Validators = () => {
   return (
     <>
       <PageHeaderContainer bgColor="success.background">
-        <Flex direction="column" gap={1}>
-          <Heading as="h5" variant="h5" color="text.main" fontWeight={600}>
-            Validators
-          </Heading>
-          <Text variant="body2" color="text.dark" fontWeight={500}>
-            This page displays all validators on this network
-          </Text>
-        </Flex>
+        <PageHeader
+          title="Validators"
+          subtitle="This page displays all validators on this network"
+          docHref="introduction/block-explorer#recent-validators"
+        />
         <Flex
           direction={{ base: "column", md: "row" }}
           align="end"

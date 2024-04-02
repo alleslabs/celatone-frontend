@@ -1,7 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import { formatPrettyPercent } from "lib/utils";
+import type { Ratio } from "lib/types";
+import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 interface ProgressBarProps {
   value: Big;
@@ -10,7 +11,7 @@ interface ProgressBarProps {
 }
 
 export const ProgressBar = ({ value, max, isCompact }: ProgressBarProps) => {
-  const ratio = value.div(max).toNumber();
+  const ratio = divWithDefault(value, max, 0).toNumber() as Ratio<number>;
   const percent = formatPrettyPercent(ratio);
 
   return (

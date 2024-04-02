@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { StatusSummary } from "../status-summary";
 import { big, ProposalStatus } from "lib/types";
-import type { ProposalData, ProposalParams, Token, U } from "lib/types";
+import type { ProposalData, ProposalParams, Ratio, Token, U } from "lib/types";
 
 const meta: Meta<typeof StatusSummary> = {
   component: StatusSummary,
@@ -19,7 +19,11 @@ type Story = StoryObj<typeof StatusSummary>;
 
 const data: Omit<
   ProposalData,
-  "status" | "depositEndTime" | "votingEndTime" | "resolvedTimestamp"
+  | "status"
+  | "failedReason"
+  | "depositEndTime"
+  | "votingEndTime"
+  | "resolvedTimestamp"
 > = {
   id: 999,
   title: "storybook",
@@ -67,9 +71,9 @@ const params: ProposalParams = {
   minInitialDepositRatio: 0.2,
   maxDepositPeriod: "",
   votingPeriod: "",
-  vetoThreshold: 0.3,
-  quorum: 0.3,
-  threshold: 0.5,
+  vetoThreshold: 0.3 as Ratio<number>,
+  quorum: 0.3 as Ratio<number>,
+  threshold: 0.5 as Ratio<number>,
 };
 
 export const DepositPeriod: Story = {
@@ -77,6 +81,7 @@ export const DepositPeriod: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.DEPOSIT_PERIOD,
+      failedReason: "",
       depositEndTime: dayjs().utc().add(2, "days").toDate(),
       votingEndTime: null,
       resolvedTimestamp: null,
@@ -97,6 +102,7 @@ export const VotingPeriodRejectedQuorum: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.VOTING_PERIOD,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().add(2, "days").toDate(),
       resolvedTimestamp: null,
@@ -117,6 +123,7 @@ export const VotingPeriodRejectedNoWithVeto: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.VOTING_PERIOD,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().add(2, "days").toDate(),
       resolvedTimestamp: null,
@@ -137,6 +144,7 @@ export const VotingPeriodRejectedNotPassed: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.VOTING_PERIOD,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().add(2, "days").toDate(),
       resolvedTimestamp: null,
@@ -157,6 +165,7 @@ export const VotingPeriodPassed: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.VOTING_PERIOD,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().add(2, "days").toDate(),
       resolvedTimestamp: null,
@@ -177,6 +186,8 @@ export const Failed: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.FAILED,
+      failedReason:
+        "VM error: status BACKWARD_INCOMPATIBLE_MODULE_UPDATE of type Verification with message Module Update Failure: Public function/struct signature of new module differs from existing module in 0000000000000000000000000000000000000000000000000000000000000001::simple_json",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
@@ -197,6 +208,7 @@ export const RejectedQuorum: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.REJECTED,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
@@ -217,6 +229,7 @@ export const RejectedNoWithVeto: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.REJECTED,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
@@ -237,6 +250,7 @@ export const RejectedNotPassed: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.REJECTED,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
@@ -257,6 +271,7 @@ export const Passed: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.PASSED,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
@@ -277,6 +292,7 @@ export const Cancelled: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.CANCELLED,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
@@ -297,6 +313,7 @@ export const DepositFailed: Story = {
     proposalData: {
       ...data,
       status: ProposalStatus.DEPOSIT_FAILED,
+      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
       votingEndTime: null,
       resolvedTimestamp: dayjs().utc().toDate(),
