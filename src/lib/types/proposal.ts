@@ -6,6 +6,7 @@ import type {
   BechAddr,
   Nullable,
   Option,
+  Ratio,
   TokenWithValue,
   Validator,
 } from "lib/types";
@@ -84,14 +85,14 @@ export interface ProposalParams<
   minInitialDepositRatio: number;
   maxDepositPeriod: string;
   votingPeriod: string;
-  vetoThreshold: number;
-  quorum: number;
-  threshold: number;
+  vetoThreshold: Ratio<number>;
+  quorum: Ratio<number>;
+  threshold: Ratio<number>;
   // expedited
   expeditedVotingPeriod?: string;
-  expeditedThreshold?: number;
+  expeditedThreshold?: Ratio<number>;
   expeditedMinDeposit?: T[];
-  expeditedQuorum?: number; // only in sei
+  expeditedQuorum?: Ratio<number>; // only in sei
   // emergency - only in initia
   emergencyMinDeposit?: T[];
   emergencyTallyInterval?: string;

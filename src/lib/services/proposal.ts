@@ -8,6 +8,7 @@ import {
   zCoin,
   zProposalStatus,
   zProposalType,
+  zRatio,
   zUtcDate,
   zValidator,
 } from "lib/types";
@@ -86,14 +87,14 @@ const zProposalParamsResponse = z
     min_initial_deposit_ratio: z.coerce.number(),
     max_deposit_period: z.string(),
     voting_period: z.string(),
-    veto_threshold: z.coerce.number(),
-    quorum: z.coerce.number(),
-    threshold: z.coerce.number(),
+    veto_threshold: zRatio(z.coerce.number()),
+    quorum: zRatio(z.coerce.number()),
+    threshold: zRatio(z.coerce.number()),
     // expedited
     expedited_voting_period: z.string().optional(),
-    expedited_threshold: z.coerce.number().optional(),
+    expedited_threshold: zRatio(z.coerce.number()).optional(),
     expedited_min_deposit: zCoin.array().optional(),
-    expedited_quorum: z.coerce.number().optional(), // only in sei
+    expedited_quorum: zRatio(z.coerce.number()).optional(), // only in sei
     // emergency - only in initia
     emergency_min_deposit: zCoin.array().optional(),
     emergency_tally_interval: z.string().optional(),
