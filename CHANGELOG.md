@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
 - [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
 - [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add amp proposal details page
 - [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
