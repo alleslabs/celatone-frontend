@@ -11,7 +11,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import { useValidatorVotedProposals } from "lib/services/validatorService";
-import { ProposalValidatorVoteType } from "lib/types";
+import { ProposalVoteType } from "lib/types";
 import type { ValidatorAddr } from "lib/types";
 
 import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
@@ -29,9 +29,8 @@ export const VotedProposalsTable = ({
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
-
-  const [answerFilter, setAnswerFilter] = useState<ProposalValidatorVoteType>(
-    ProposalValidatorVoteType.ALL
+  const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
+    ProposalVoteType.ALL
   );
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
@@ -56,48 +55,46 @@ export const VotedProposalsTable = ({
     validatorAddress,
     onViewMore ? 5 : pageSize,
     offset,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    },
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   const answerOptions = useMemo(
     () => [
       {
         label: `All votes`,
-        value: ProposalValidatorVoteType.ALL,
+        value: ProposalVoteType.ALL,
         disabled: false,
       },
       {
         label: `Yes`,
-        value: ProposalValidatorVoteType.YES,
+        value: ProposalVoteType.YES,
         disabled: false,
       },
       {
         label: `No`,
-        value: ProposalValidatorVoteType.NO,
+        value: ProposalVoteType.NO,
         disabled: false,
       },
       {
         label: `No with veto`,
-        value: ProposalValidatorVoteType.NO_WITH_VETO,
+        value: ProposalVoteType.NO_WITH_VETO,
         disabled: false,
       },
       {
         label: `Abstain`,
-        value: ProposalValidatorVoteType.ABSTAIN,
+        value: ProposalVoteType.ABSTAIN,
         disabled: false,
       },
       {
         label: `Weighted`,
-        value: ProposalValidatorVoteType.WEIGHTED,
+        value: ProposalVoteType.WEIGHTED,
         disabled: false,
       },
       {
         label: `Did not vote`,
-        value: ProposalValidatorVoteType.DID_NOT_VOTE,
+        value: ProposalVoteType.DID_NOT_VOTE,
         disabled: false,
       },
     ],
@@ -109,100 +106,86 @@ export const VotedProposalsTable = ({
     setSearch(e.target.value);
   };
 
-  const handleOnAnswerFilterChange = (newAnswer: ProposalValidatorVoteType) => {
+  const handleOnAnswerFilterChange = (newAnswer: ProposalVoteType) => {
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
   };
 
-  return (
+  return isMobileOverview ? (
+    <Flex
+      backgroundColor="gray.900"
+      p={4}
+      rounded={8}
+      w="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      onClick={onViewMore}
+    >
+      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+    </Flex>
+  ) : (
     <Flex direction="column" gap={6}>
-      {isMobileOverview ? (
-        <Flex
-          backgroundColor="gray.900"
-          p={4}
-          rounded={8}
-          w="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          onClick={onViewMore}
-        >
-          <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
-          <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
-        </Flex>
-      ) : (
-        <>
-          <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
-          {!onViewMore && (
-            <>
-              <Alert
-                variant="info"
-                gap={4}
-                display={{ base: "none", md: "flex" }}
-              >
-                <CustomIcon boxSize={4} name="info-circle-solid" />
-                <Text variant="body2" color="text.dark">
-                  Kindly note that the validator may not have voted on the
-                  proposal due to ineligibility, such as being recently added to
-                  the network.
-                </Text>
-              </Alert>
-              <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
-                <GridItem>
-                  <SelectInput<ProposalValidatorVoteType>
-                    formLabel="Filter by vote answer"
-                    options={answerOptions}
-                    onChange={handleOnAnswerFilterChange}
-                    labelBgColor="gray.900"
-                    initialSelected={answerFilter}
-                    popoverBgColor="gray.800"
-                    disableMaxH
-                  />
-                </GridItem>
-                <GridItem>
-                  <InputWithIcon
-                    placeholder="Search with proposal ID or proposal title..."
-                    value={search}
-                    onChange={handleOnSearchChange}
-                    size="lg"
-                  />
-                </GridItem>
-              </Grid>
-            </>
-          )}
-          <VotedProposalsTableBody
-            data={data}
-            isLoading={isLoading}
-            onViewMore={onViewMore}
-          />
-          {data && (
-            <>
-              {onViewMore
-                ? data.total > 5 && (
-                    <ViewMore
-                      text={`View all proposed blocks (${data.total})`}
-                      onClick={onViewMore}
-                    />
-                  )
-                : data.total > 10 && (
-                    <Pagination
-                      currentPage={currentPage}
-                      pagesQuantity={pagesQuantity}
-                      offset={offset}
-                      totalData={data.total}
-                      scrollComponentId={scrollComponentId}
-                      pageSize={pageSize}
-                      onPageChange={setCurrentPage}
-                      onPageSizeChange={(e) => {
-                        const size = Number(e.target.value);
-                        setPageSize(size);
-                        setCurrentPage(1);
-                      }}
-                    />
-                  )}
-            </>
-          )}
-        </>
+      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+      {!onViewMore && (
+        <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
+          <CustomIcon boxSize={4} name="info-circle-solid" />
+          <Text variant="body2" color="text.dark">
+            Kindly note that the validator may not have voted on the proposal
+            due to ineligibility, such as being recently added to the network.
+          </Text>
+        </Alert>
       )}
+      <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
+        <GridItem>
+          <SelectInput<ProposalVoteType>
+            formLabel="Filter by vote answer"
+            options={answerOptions}
+            onChange={handleOnAnswerFilterChange}
+            labelBgColor="gray.900"
+            initialSelected={answerFilter}
+            popoverBgColor="gray.800"
+            disableMaxH
+          />
+        </GridItem>
+        <GridItem>
+          <InputWithIcon
+            placeholder="Search with proposal ID or proposal title..."
+            value={search}
+            onChange={handleOnSearchChange}
+            size="lg"
+          />
+        </GridItem>
+      </Grid>
+      <VotedProposalsTableBody
+        data={data}
+        isLoading={isLoading}
+        onViewMore={onViewMore}
+      />
+      {data &&
+        (onViewMore
+          ? data.total > 5 && (
+              <ViewMore
+                text={`View all proposed blocks (${data.total})`}
+                onClick={onViewMore}
+              />
+            )
+          : data.total > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={data.total}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
+              />
+            ))}
     </Flex>
   );
 };

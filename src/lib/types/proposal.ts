@@ -153,12 +153,12 @@ export interface ProposalValidatorVote extends ProposalVote {
   rank: number;
 }
 
-export enum ProposalValidatorVoteType {
+export enum ProposalVoteType {
   ALL = "all",
   YES = "yes",
   NO = "no",
   NO_WITH_VETO = "no_with_veto",
   ABSTAIN = "abstain",
   WEIGHTED = "weighted",
-  DID_NOT_VOTE = "did_not_vote",
+  DID_NOT_VOTE = "did_not_vote", // only for validator votes
 }
