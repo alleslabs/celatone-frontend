@@ -183,6 +183,53 @@ export const initiatestnet: Chain[] = [
       ],
     },
   },
+  {
+    $schema: CHAIN_SCHEMA,
+    chain_name: "allesbugbash",
+    status: "live",
+    network_type: "testnet",
+    pretty_name: "Initia Bug Bash",
+    chain_id: "bug-bash",
+    bech32_prefix: "init",
+    daemon_name: "initiad",
+    node_home: NODE_HOME,
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom: "uinit",
+          fixed_min_gas_price: 0,
+          low_gas_price: 0.151,
+          average_gas_price: 0.151,
+          high_gas_price: 0.151,
+        },
+      ],
+    },
+    staking: {
+      staking_tokens: [
+        {
+          denom: "uinit",
+        },
+      ],
+    },
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address: "http://35.247.147.50:26657",
+        },
+      ],
+      rest: [
+        {
+          address: "http://35.247.147.50:1317",
+        },
+      ],
+    },
+  },
 ];
 
 const ASSETLIST_SCHEMA = "../assetlist.schema.json";
@@ -262,6 +309,29 @@ export const initiatestnetAssets: AssetList[] = [
   {
     $schema: ASSETLIST_SCHEMA,
     chain_name: "initiatestnet13",
+    assets: [
+      {
+        description: "The native staking token of Initia.",
+        denom_units: [
+          {
+            denom: "uinit",
+            exponent: 0,
+          },
+          {
+            denom: "init",
+            exponent: 6,
+          },
+        ],
+        base: "uinit",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "allesbugbash",
     assets: [
       {
         description: "The native staking token of Initia.",
