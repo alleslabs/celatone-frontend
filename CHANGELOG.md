@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
 - [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
 - [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
 - [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
@@ -97,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
 - [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
 - [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
 - [#845](https://github.com/alleslabs/celatone-frontend/pull/845) Edit error fetching message on the contract state
@@ -128,6 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
+- [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
 - [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links

@@ -10,6 +10,8 @@ import {
   zBechAddr,
   zBig,
   zCoin,
+  zProposalStatus,
+  zProposalType,
   zUtcDate,
   zValidatorData,
 } from "lib/types";
@@ -21,7 +23,6 @@ import {
 } from "lib/utils";
 
 import { zBlocksResponse } from "./block";
-import { zProposal } from "./proposal";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -308,15 +309,38 @@ export const getValidatorDelegators = async (
     .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
     .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
 
-const zValidatorVotedProposalsResponseItem = zProposal
-  .extend({
+const zValidatorVotedProposalsResponseAnswerCounts = z
+  .object({
+    all: z.number(),
     yes: z.number(),
-    abstain: z.number(),
     no: z.number(),
     no_with_veto: z.number(),
-    is_vote_weighted: z.boolean(),
+    abstain: z.number(),
+    did_not_vote: z.number(),
+    weighted: z.number(),
   })
   .transform(snakeToCamel);
+
+const zValidatorVotedProposalsResponseItem = z
+  .object({
+    proposal_id: z.number().nonnegative(),
+    abstain: z.number().nonnegative(),
+    is_expedited: z.boolean(),
+    is_vote_weighted: z.boolean().default(false),
+    no: z.number().nonnegative(),
+    no_with_veto: z.number().nonnegative(),
+    status: zProposalStatus,
+    timestamp: zUtcDate.nullable(),
+    title: z.string(),
+    tx_hash: z.string().nullable(),
+    yes: z.number().nonnegative(),
+    types: zProposalType.array(),
+  })
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    txHash: val.tx_hash ? parseTxHash(val.tx_hash) : null,
+  }));
+
 export type ValidatorVotedProposalsResponseItem = z.infer<
   typeof zValidatorVotedProposalsResponseItem
 >;
@@ -350,3 +374,13 @@ export const getValidatorVotedProposals = async (
       }
     )
     .then(({ data }) => parseWithError(zValidatorVotedProposalsResponse, data));
+
+export const getValidatorVotedProposalsAnswerCounts = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/answer-counts`)
+    .then(({ data }) =>
+      parseWithError(zValidatorVotedProposalsResponseAnswerCounts, data)
+    );
