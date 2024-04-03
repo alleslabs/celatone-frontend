@@ -41,7 +41,7 @@ export const VotedProposalsTableRow = ({
   return (
     <Grid
       templateColumns={templateColumns}
-      onClick={() => onRowSelect(votedProposal.id)}
+      onClick={() => onRowSelect(votedProposal.proposalId)}
       _hover={{ bg: "gray.900" }}
       transition="all 0.25s ease-in-out"
       cursor="pointer"
@@ -49,7 +49,7 @@ export const VotedProposalsTableRow = ({
       <TableRowFreeze left="0">
         <ExplorerLink
           type="proposal_id"
-          value={votedProposal.id.toString()}
+          value={votedProposal.proposalId.toString()}
           showCopyOnHover
           ampCopierSection="proposal-list"
         />
@@ -73,7 +73,7 @@ export const VotedProposalsTableRow = ({
       </TableRow>
       <TableRow>
         <Answer
-          isVoteWeighted={votedProposal.isVotingWeighted}
+          isVoteWeighted={votedProposal.isVoteWeighted}
           yes={votedProposal.yes}
           no={votedProposal.no}
           noWithVeto={votedProposal.noWithVeto}
