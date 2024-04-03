@@ -33,7 +33,7 @@ export const VotedProposalsTableBody = ({
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="voted proposals" />;
   if (!data.total)
-    return !search.length ? (
+    return !search.trim().length ? (
       <EmptyState
         imageVariant={onViewMore ? undefined : "empty"}
         message="This validator had no eligibility to cast votes on any proposals."

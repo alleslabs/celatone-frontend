@@ -116,7 +116,8 @@ export const VotedProposalsTable = ({
         iconColor: "primary.light",
       },
     ],
-    [answer]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(answer)]
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
