@@ -29,7 +29,7 @@ export const VotedProposalsTableMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={() => onRowSelect(votedProposal.id)}
+      onClick={() => onRowSelect(votedProposal.proposalId)}
       topContent={
         <Flex justify="space-between" w="100%">
           <Flex gap={3} alignItems="center">
@@ -38,7 +38,7 @@ export const VotedProposalsTableMobileCard = ({
             </Text>
             <ExplorerLink
               type="proposal_id"
-              value={votedProposal.id.toString()}
+              value={votedProposal.proposalId.toString()}
               showCopyOnHover
               ampCopierSection="proposal-list"
             />
@@ -65,7 +65,7 @@ export const VotedProposalsTableMobileCard = ({
                 Voted
               </Text>
               <Answer
-                isVoteWeighted={votedProposal.isVotingWeighted}
+                isVoteWeighted={votedProposal.isVoteWeighted}
                 yes={votedProposal.yes}
                 no={votedProposal.no}
                 noWithVeto={votedProposal.noWithVeto}

@@ -51,7 +51,7 @@ export const VotedProposalsTableBody = ({
     <MobileTableContainer>
       {data.items.map((votedProposal) => (
         <VotedProposalsTableMobileCard
-          key={votedProposal.id}
+          key={votedProposal.proposalId}
           votedProposal={votedProposal}
         />
       ))}
@@ -64,7 +64,7 @@ export const VotedProposalsTableBody = ({
       />
       {data.items.map((votedProposal) => (
         <VotedProposalsTableRow
-          key={votedProposal.id}
+          key={votedProposal.proposalId}
           votedProposal={votedProposal}
           templateColumns={templateColumns}
           boxShadow={boxShadow}

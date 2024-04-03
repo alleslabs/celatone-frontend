@@ -11,6 +11,7 @@ import {
   zBig,
   zCoin,
   zProposalStatus,
+  zProposalType,
   zUtcDate,
   zValidatorData,
 } from "lib/types";
@@ -322,10 +323,10 @@ const zValidatorVotedProposalsResponseAnswerCounts = z
 
 const zValidatorVotedProposalsResponseItem = z
   .object({
-    id: z.number().nonnegative(),
+    proposal_id: z.number().nonnegative(),
     abstain: z.number().nonnegative(),
     is_expedited: z.boolean(),
-    is_voting_weighted: z.boolean().default(false),
+    is_vote_weighted: z.boolean().default(false),
     no: z.number().nonnegative(),
     no_with_veto: z.number().nonnegative(),
     status: zProposalStatus,
@@ -333,9 +334,13 @@ const zValidatorVotedProposalsResponseItem = z
     title: z.string(),
     tx_hash: z.string().nullable(),
     yes: z.number().nonnegative(),
-    types: z.array(z.string()),
+    types: zProposalType.array(),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    txHash: val.tx_hash ? parseTxHash(val.tx_hash) : null,
+  }));
+
 export type ValidatorVotedProposalsResponseItem = z.infer<
   typeof zValidatorVotedProposalsResponseItem
 >;
