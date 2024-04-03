@@ -46,20 +46,19 @@ export const ValidatorOverview = ({
 
   return (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
-      {!isActive ||
-        (isJailed && (
-          <Alert variant="error" gap={2} my={6}>
-            <CustomIcon
-              name="alert-circle-solid"
-              boxSize={4}
-              color="error.main"
-            />
-            <AlertDescription>
-              This validator is currently {isJailed ? "jailed" : "inactive"}.
-              The information displayed reflects the latest available data.
-            </AlertDescription>
-          </Alert>
-        ))}
+      {(!isActive || isJailed) && (
+        <Alert variant="error" gap={2} my={6}>
+          <CustomIcon
+            name="alert-circle-solid"
+            boxSize={4}
+            color="error.main"
+          />
+          <AlertDescription>
+            This validator is currently {isJailed ? "jailed" : "inactive"}. The
+            information displayed reflects the latest available data.
+          </AlertDescription>
+        </Alert>
+      )}
       <ValidatorDescription details={details} />
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <VotingPowerOverview
