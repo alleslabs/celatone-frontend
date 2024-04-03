@@ -10,6 +10,7 @@ import {
   zBechAddr,
   zBig,
   zCoin,
+  zProposalStatus,
   zUtcDate,
   zValidatorData,
 } from "lib/types";
@@ -21,7 +22,6 @@ import {
 } from "lib/utils";
 
 import { zBlocksResponse } from "./block";
-import { zProposal } from "./proposal";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -320,13 +320,20 @@ const zValidatorVotedProposalsResponseAnswerCounts = z
   })
   .transform(snakeToCamel);
 
-const zValidatorVotedProposalsResponseItem = zProposal
-  .extend({
-    yes: z.number(),
-    abstain: z.number(),
-    no: z.number(),
-    no_with_veto: z.number(),
-    is_vote_weighted: z.boolean(),
+const zValidatorVotedProposalsResponseItem = z
+  .object({
+    id: z.number().nonnegative(),
+    abstain: z.number().nonnegative(),
+    is_expedited: z.boolean(),
+    is_voting_weighted: z.boolean().default(false),
+    no: z.number().nonnegative(),
+    no_with_veto: z.number().nonnegative(),
+    status: zProposalStatus,
+    timestamp: zUtcDate.nullable(),
+    title: z.string(),
+    tx_hash: z.string().nullable(),
+    yes: z.number().nonnegative(),
+    types: z.array(z.string()),
   })
   .transform(snakeToCamel);
 export type ValidatorVotedProposalsResponseItem = z.infer<
@@ -368,9 +375,7 @@ export const getValidatorVotedProposalsAnswerCounts = async (
   validatorAddress: ValidatorAddr
 ) =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(validatorAddress)}/voted-proposals/answer-counts`
-    )
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/answer-counts`)
     .then(({ data }) =>
       parseWithError(zValidatorVotedProposalsResponseAnswerCounts, data)
     );
