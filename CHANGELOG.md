@@ -127,6 +127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
 - [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links
