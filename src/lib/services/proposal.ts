@@ -269,7 +269,7 @@ export const getProposalVotesInfo = async (
     .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
     .then(({ data }) => parseWithError(zProposalVotesInfoResponse, data));
 
-export const zProposalVotesResponseItem = z
+const zProposalVotesResponseItem = z
   .object({
     proposal_id: z.number().nonnegative(),
     abstain: z.number().nonnegative(),
