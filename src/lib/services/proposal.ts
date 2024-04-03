@@ -26,6 +26,7 @@ import type {
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
+  ProposalVoteType,
   SnakeToCamelCaseNested,
 } from "lib/types";
 import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
@@ -298,7 +299,7 @@ export const getProposalVotes = async (
   id: number,
   limit: number,
   offset: number,
-  answer?: string,
+  answer?: ProposalVoteType,
   search?: string
 ): Promise<ProposalVotesResponse> => {
   let url = `${endpoint}/${encodeURIComponent(id)}/votes?limit=${limit}&offset=${offset}`;
@@ -317,10 +318,21 @@ export interface ProposalValidatorVotesResponse {
 
 export const getProposalValidatorVotes = async (
   endpoint: string,
-  id: number
-): Promise<ProposalValidatorVotesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
+  id: number,
+  limit: number,
+  offset: number,
+  answer: ProposalVoteType,
+  search: string
+): Promise<ProposalValidatorVotesResponse> => {
+  return axios
+    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
+      params: {
+        limit,
+        offset,
+        answer,
+        search,
+      },
+    })
     .then(({ data }) => {
       const parsed = parseWithError(zProposalVotesResponse, data);
       return {
@@ -331,6 +343,7 @@ export const getProposalValidatorVotes = async (
         total: parsed.total,
       };
     });
+};
 
 const zProposalAnswerCounts = z.object({
   yes: z.number().nonnegative(),

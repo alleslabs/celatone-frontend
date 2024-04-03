@@ -98,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
 - [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
 - [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
 - [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
