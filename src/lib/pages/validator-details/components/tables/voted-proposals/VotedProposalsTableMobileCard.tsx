@@ -65,7 +65,7 @@ export const VotedProposalsTableMobileCard = ({
                 Voted
               </Text>
               <Answer
-                isVoteWeighted={votedProposal.isVoteWeighted}
+                isVoteWeighted={votedProposal.isVotingWeighted}
                 yes={votedProposal.yes}
                 no={votedProposal.no}
                 noWithVeto={votedProposal.noWithVeto}
@@ -75,13 +75,13 @@ export const VotedProposalsTableMobileCard = ({
                 On
               </Text>
             </Flex>
-            {votedProposal.votingEndTime ? (
+            {votedProposal.timestamp ? (
               <Box>
                 <Text variant="body2" color="text.dark">
-                  {formatUTC(votedProposal.votingEndTime)}
+                  {formatUTC(votedProposal.timestamp)}
                 </Text>
                 <Text variant="body3" color="text.disabled">
-                  {`(${dateFromNow(votedProposal.votingEndTime)})`}
+                  {`(${dateFromNow(votedProposal.timestamp)})`}
                 </Text>
               </Box>
             ) : (
