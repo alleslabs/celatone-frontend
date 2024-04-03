@@ -1,4 +1,4 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -8,6 +8,7 @@ import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import { AccessConfigPermission } from "lib/types";
@@ -37,21 +38,26 @@ export const Upload = ({
   }, [enableUpload, isLoading, navigate, router.isReady]);
 
   return (
-    <>
-      <WasmPageContainer flexProps={{ py: 0, pt: 12, minH: "auto" }}>
-        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
-          DEPLOY NEW CONTRACT
-        </Text>
-        <Stepper mode="deploy" currentStep={1} />
-        <Heading as="h5" variant="h5" my={12}>
+    <WasmPageContainer>
+      <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+        DEPLOY NEW CONTRACT
+      </Text>
+      <Stepper mode="deploy" currentStep={1} />
+      <Flex direction="column" alignItems="center" my={12}>
+        <Heading as="h5" variant="h5">
           Upload Wasm file
         </Heading>
-        <ConnectWalletAlert
-          subtitle="You need to connect your wallet first"
-          mb={12}
+        <UserDocsLink
+          mt={2}
+          cta="View Upload Guideline"
+          href="cosmwasm/deploy-contract#upload-wasm-to-store-code"
         />
-      </WasmPageContainer>
+      </Flex>
+      <ConnectWalletAlert
+        subtitle="You need to connect your wallet first"
+        mb={12}
+      />
       <UploadSection handleBack={router.back} onComplete={onComplete} />
-    </>
+    </WasmPageContainer>
   );
 };

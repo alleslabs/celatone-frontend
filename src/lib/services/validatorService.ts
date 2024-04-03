@@ -10,7 +10,13 @@ import {
   useBaseApiRoute,
   useCurrentChain,
 } from "lib/app-provider";
-import type { Nullable, Option, Validator, ValidatorAddr } from "lib/types";
+import type {
+  Nullable,
+  Option,
+  ProposalVoteType,
+  Validator,
+  ValidatorAddr,
+} from "lib/types";
 
 import type { BlocksResponse } from "./block";
 import type {
@@ -19,6 +25,7 @@ import type {
   ValidatorDelegationRelatedTxsResponse,
   ValidatorsResponse,
   ValidatorUptimeResponse,
+  ValidatorVotedProposalsResponse,
 } from "./validator";
 import {
   getHistoricalPowers,
@@ -127,13 +134,14 @@ export const useValidators = (
   );
 };
 
-export const useValidatorStakingProvisions = () => {
+export const useValidatorStakingProvisions = (enabled: boolean) => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery<StakingProvisionsResponse>(
     [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
     async () => getValidatorStakingProvisions(endpoint),
     {
+      enabled,
       retry: 1,
     }
   );
@@ -233,8 +241,12 @@ export const useValidatorVotedProposals = (
   validatorAddress: ValidatorAddr,
   limit: number,
   offset: number,
-  answer?: string,
-  search?: string
+  answer: ProposalVoteType,
+  search: string,
+  options: Pick<
+    UseQueryOptions<ValidatorVotedProposalsResponse>,
+    "onSuccess"
+  > = {}
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
@@ -257,6 +269,6 @@ export const useValidatorVotedProposals = (
         answer,
         search
       ),
-    { retry: 1 }
+    { retry: 1, ...options }
   );
 };

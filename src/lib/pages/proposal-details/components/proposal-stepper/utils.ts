@@ -39,5 +39,5 @@ export const getProgressBadgeProps = (
   if (proposalData.status === ProposalStatus.VOTING_PERIOD)
     return { state: PeriodState.ONGOING, text: "In Progress" };
 
-  return { state: PeriodState.COMPLETE, text: "Vote Ended" };
+  return { state: PeriodState.COMPLETE, text: "Ended" };
 };

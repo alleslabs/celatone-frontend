@@ -2,10 +2,9 @@ import { Text, VStack } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { Answer } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { ProposalVote } from "lib/types";
-
-import { Answer } from "./Answer";
 
 interface VoterProps {
   proposalVote: ProposalVote;
@@ -19,7 +18,17 @@ export const Voter = ({ proposalVote }: VoterProps) => {
       <ValidatorBadge
         validator={proposalVote.validator}
         hasLabel={!isMobile}
-        moreInfo={isMobile ? <Answer proposalVote={proposalVote} /> : undefined}
+        moreInfo={
+          isMobile ? (
+            <Answer
+              isVoteWeighted={proposalVote.isVoteWeighted}
+              yes={proposalVote.yes}
+              no={proposalVote.no}
+              noWithVeto={proposalVote.noWithVeto}
+              abstain={proposalVote.abstain}
+            />
+          ) : undefined
+        }
       />
     );
   }
@@ -32,7 +41,15 @@ export const Voter = ({ proposalVote }: VoterProps) => {
           value={proposalVote.voter}
           showCopyOnHover
         />
-        {isMobile && <Answer proposalVote={proposalVote} />}
+        {isMobile && (
+          <Answer
+            isVoteWeighted={proposalVote.isVoteWeighted}
+            yes={proposalVote.yes}
+            no={proposalVote.no}
+            noWithVeto={proposalVote.noWithVeto}
+            abstain={proposalVote.abstain}
+          />
+        )}
       </VStack>
     );
   }

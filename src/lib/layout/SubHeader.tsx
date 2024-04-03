@@ -70,52 +70,48 @@ const SubHeader = () => {
   };
 
   return (
-    <Flex px={6} alignItems="center" h="full" justifyContent="space-between">
-      <Flex h="full">
-        {subHeaderMenu.map((item) => (
-          <AppLink
-            href={item.slug}
-            key={item.slug}
-            onClick={() => trackOnClick(item.name)}
-          >
-            <Flex
-              alignItems="center"
-              px={4}
-              gap={2}
-              h="full"
-              borderBottomWidth={2}
-              borderColor={
-                isCurrentPage(item.slug) ? activeColor : "transparent"
-              }
-              transition="all 0.25s ease-in-out"
-              _hover={{ borderColor: activeColor }}
-              sx={{
-                _hover: {
-                  "> svg, > p": {
-                    color: activeColor,
-                    transition: "all .25s ease-in-out",
-                  },
-                  borderBottomWidth: 2,
-                  borderColor: activeColor,
+    <Flex px={6} h="full">
+      {subHeaderMenu.map((item) => (
+        <AppLink
+          href={item.slug}
+          key={item.slug}
+          onClick={() => trackOnClick(item.name)}
+        >
+          <Flex
+            alignItems="center"
+            px={4}
+            gap={2}
+            h="full"
+            borderBottomWidth={2}
+            borderColor={isCurrentPage(item.slug) ? activeColor : "transparent"}
+            transition="all 0.25s ease-in-out"
+            _hover={{ borderColor: activeColor }}
+            sx={{
+              _hover: {
+                "> svg, > p": {
+                  color: activeColor,
+                  transition: "all .25s ease-in-out",
                 },
-              }}
+                borderBottomWidth: 2,
+                borderColor: activeColor,
+              },
+            }}
+          >
+            <CustomIcon
+              boxSize={3}
+              name={item.icon}
+              color={isCurrentPage(item.slug) ? activeColor : "gray.600"}
+            />
+            <Text
+              variant="body2"
+              fontWeight={700}
+              color={isCurrentPage(item.slug) ? activeColor : "text.dark"}
             >
-              <CustomIcon
-                boxSize={3}
-                name={item.icon}
-                color={isCurrentPage(item.slug) ? activeColor : "gray.600"}
-              />
-              <Text
-                variant="body2"
-                fontWeight={700}
-                color={isCurrentPage(item.slug) ? activeColor : "text.dark"}
-              >
-                {item.name}
-              </Text>
-            </Flex>
-          </AppLink>
-        ))}
-      </Flex>
+              {item.name}
+            </Text>
+          </Flex>
+        </AppLink>
+      ))}
     </Flex>
   );
 };

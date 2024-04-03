@@ -5,12 +5,14 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useGovConfig,
   useInternalNavigate,
   useMoveConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorData } from "lib/services/validatorService";
@@ -70,11 +72,13 @@ const ValidatorDetailsBody = ({
 
   return (
     <>
-      <ValidatorTop
-        info={data.info}
-        totalVotingPower={data.totalVotingPower}
-        singleStakingDenom={singleStakingDenom}
-      />
+      <PageHeaderContainer bgColor="success.background">
+        <ValidatorTop
+          info={data.info}
+          totalVotingPower={data.totalVotingPower}
+          singleStakingDenom={singleStakingDenom}
+        />
+      </PageHeaderContainer>
       <PageContainer>
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -120,8 +124,8 @@ const ValidatorDetailsBody = ({
                 selfVotingPower={data.selfVotingPower}
               />
             </TabPanel>
-            <TabPanel p={0} pt={{ base: 2, md: 0 }}>
-              <VotedProposalsTable />
+            <TabPanel p={0} pt={6}>
+              <VotedProposalsTable validatorAddress={validatorAddress} />
             </TabPanel>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <Performance validatorAddress={validatorAddress} />
@@ -142,6 +146,8 @@ const ValidatorDetailsBody = ({
 
 const ValidatorDetails = () => {
   const router = useRouter();
+  useGovConfig({ shouldRedirect: true });
+
   const validated = zValidatorDetailsQueryParams.safeParse(router.query);
 
   useEffect(() => {

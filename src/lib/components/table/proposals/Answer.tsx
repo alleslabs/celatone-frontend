@@ -1,34 +1,56 @@
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 
 import { TooltipInfo } from "lib/components/Tooltip";
-import type { ProposalVote, Ratio } from "lib/types";
+import type { Ratio } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 interface AnswerProps {
-  proposalVote: ProposalVote;
+  isVoteWeighted: boolean;
+  yes: number;
+  no: number;
+  noWithVeto: number;
+  abstain: number;
 }
 
-const resolveVote = (proposalVote: ProposalVote): [string, string] => {
-  if (proposalVote.isVoteWeighted) {
+const resolveVote = ({
+  isVoteWeighted,
+  yes,
+  no,
+  noWithVeto,
+  abstain,
+}: AnswerProps): [string, string] => {
+  if (isVoteWeighted) {
     return ["primary.light", "Weighted"];
   }
-  if (proposalVote.yes === 1) {
+  if (yes === 1) {
     return ["success.main", "Yes"];
   }
-  if (proposalVote.no === 1) {
+  if (no === 1) {
     return ["error.main", "No"];
   }
-  if (proposalVote.noWithVeto === 1) {
+  if (noWithVeto === 1) {
     return ["error.dark", "No with veto"];
   }
-  if (proposalVote.abstain === 1) {
+  if (abstain === 1) {
     return ["gray.600", "Abstain"];
   }
   return ["gray.600", "Did not vote"];
 };
 
-export const Answer = ({ proposalVote }: AnswerProps) => {
-  const [color, text] = resolveVote(proposalVote);
+export const Answer = ({
+  isVoteWeighted,
+  yes,
+  no,
+  noWithVeto,
+  abstain,
+}: AnswerProps) => {
+  const [color, text] = resolveVote({
+    isVoteWeighted,
+    yes,
+    no,
+    noWithVeto,
+    abstain,
+  });
 
   return (
     <HStack spacing={2}>
@@ -39,13 +61,13 @@ export const Answer = ({ proposalVote }: AnswerProps) => {
         backgroundColor={color}
       />
       <Text fontWeight={700}>{text}</Text>
-      {proposalVote.isVoteWeighted && (
+      {isVoteWeighted && (
         <TooltipInfo
           label={[
-            ["Yes", proposalVote.yes],
-            ["No", proposalVote.no],
-            ["No With Veto", proposalVote.noWithVeto],
-            ["Abstain", proposalVote.abstain],
+            ["Yes", yes],
+            ["No", no],
+            ["No With Veto", noWithVeto],
+            ["Abstain", abstain],
           ].map(([label, value]) => (
             <Flex gap={1} key={label}>
               <Text>{label}:</Text>

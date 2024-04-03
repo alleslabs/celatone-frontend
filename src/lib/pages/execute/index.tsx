@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { ContractDetail } from "lib/services/contractService";
 import type { BechAddr32 } from "lib/types";
 import {
@@ -98,24 +99,22 @@ const Execute = () => {
         <Heading as="h5" variant="h5">
           Execute Contract
         </Heading>
-        <Box>
-          <Button
-            variant="ghost-secondary"
-            size="sm"
-            p="unset"
-            pl={2}
-            onClick={goToQuery}
-          >
+        <Flex>
+          <UserDocsLink
+            isButton
+            isSmall
+            href="cosmwasm/query-execute#execute"
+          />
+          <Button variant="ghost-primary" size="sm" ml={2} onClick={goToQuery}>
             Go To Query
             <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
-        </Box>
+        </Flex>
       </Flex>
       <ConnectWalletAlert
         subtitle="You need to connect your wallet to perform this action"
         mb={8}
       />
-
       <ContractSelectSection
         mode="all-lists"
         contractAddress={contractAddress}

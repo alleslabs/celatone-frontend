@@ -1,7 +1,7 @@
 import { Flex, SkeletonText, Text } from "@chakra-ui/react";
 
 import { useProposalParams } from "lib/services/proposalService";
-import type { Option } from "lib/types";
+import type { Option, Ratio } from "lib/types";
 import { formatPrettyPercent, formatSeconds } from "lib/utils";
 
 import { CustomIcon } from "./icon";
@@ -13,8 +13,8 @@ const ExpeditedText = ({
   votingPeriod,
   isLoading,
 }: {
-  quorum: Option<number>;
-  threshold: Option<number>;
+  quorum: Option<Ratio<number>>;
+  threshold: Option<Ratio<number>>;
   votingPeriod: Option<string>;
   isLoading: boolean;
 }) => {

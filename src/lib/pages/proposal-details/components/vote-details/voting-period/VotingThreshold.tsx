@@ -54,7 +54,7 @@ export const VotingThreshold = ({
         <>
           <Flex gap={2} align="center">
             <Heading as="h6" variant="h6" textColor="text.main">
-              Vote Participations
+              Voting Results
             </Heading>
             <VoteThresholdBadge
               status={proposalData.status}

@@ -12,7 +12,7 @@ import {
   extractParams,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
-import { big } from "lib/types";
+import type { Ratio } from "lib/types";
 
 export const VotingQuorum = ({
   proposalData,
@@ -49,7 +49,7 @@ export const VotingQuorum = ({
         ) : (
           <>
             <Heading as="h6" variant="h6" textColor="text.main">
-              Vote Participations
+              Voting Participations
             </Heading>
             <VoteQuorumBadge
               status={proposalData.status}
@@ -109,7 +109,7 @@ export const VotingQuorum = ({
             />
             <VpPercentCard
               name="Did not vote"
-              ratio={big(1).minus(totalVotes)}
+              ratio={(1 - totalVotes) as Ratio<number>}
               power={votesInfo.totalVotingPower.minus(allVotes)}
               color="gray.800"
               isCompact={isMobile}
