@@ -35,7 +35,7 @@ export const PoolId = () => {
       <PoolRelatedTxs pool={pool} />
       <UserDocsLink
         title="What is Osmosis liquidity pools?"
-        cta="View more about Osmosis Pool Details"
+        cta="Read more about Osmosis Pool Details"
         href="cosmwasm/osmosis/pool-detail"
       />
     </PageContainer>

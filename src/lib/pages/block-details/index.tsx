@@ -36,7 +36,7 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
       <BlockTxsTable height={height} />
       <UserDocsLink
         title="What is a block?"
-        cta="View more about Block"
+        cta="Read more about Block"
         href="general/block/detail-page"
       />
     </>

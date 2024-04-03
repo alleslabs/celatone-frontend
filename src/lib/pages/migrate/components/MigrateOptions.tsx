@@ -41,7 +41,7 @@ export const MigrateOptions = ({
         </Heading>
         <UserDocsLink
           mt={0}
-          cta="View more about Migrate Contract"
+          cta="Read more about Migrate Contract"
           href="cosmwasm/contract/admin-actions#migrating-a-contract"
         />
       </Flex>

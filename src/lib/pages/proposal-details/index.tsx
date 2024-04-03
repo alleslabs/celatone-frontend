@@ -80,7 +80,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
             />
             <UserDocsLink
               title="What is Proposal in CosmWasm?"
-              cta="View more about Proposal Details"
+              cta="Read more about Proposal Details"
               href="general/proposal/detail-page"
             />
           </TabPanel>
@@ -93,7 +93,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
             />
             <UserDocsLink
               title="What is the CosmWasm proposal vote progress?"
-              cta="View more about Vote Details"
+              cta="Read more about Vote Details"
               href="general/proposal/detail-page#proposal-vote-details"
             />
           </TabPanel>

@@ -145,15 +145,15 @@ export const DeployScript = () => {
           <Heading as="h4" variant="h4">
             Script
           </Heading>
-          <Text color="text.dark" mt={4}>
+          <Text color="text.dark" mt={4} textAlign="center" display="inline">
             Upload a .mv file to deploy one-time use Script which execute
-            messages.
+            messages.{" "}
+            <UserDocsLink
+              mt={0}
+              cta="Read more about Deploy Script"
+              href="move/deploy-script"
+            />
           </Text>
-          <UserDocsLink
-            mt={4}
-            cta="View more about Deploy Script"
-            href="move/deploy-script"
-          />
         </Flex>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"

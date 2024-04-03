@@ -267,7 +267,7 @@ const NftDetailsBody = ({
         </Tabs>
         <UserDocsLink
           title="What is a NFT?"
-          cta="View more about NFT"
+          cta="Read more about NFT"
           href="move/nft/detail-page"
         />
       </Flex>

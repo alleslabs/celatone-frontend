@@ -226,7 +226,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             </Flex>
             <UserDocsLink
               title="What is a move module?"
-              cta="View more about Module"
+              cta="Read more about Module"
               href="move/module/detail-page"
             />
           </TabPanel>
@@ -240,7 +240,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             />
             <UserDocsLink
               title="What is Module functions?"
-              cta="View more about View and Execute Functions"
+              cta="Read more about View and Execute Functions"
               href="move/module/detail-page#functions"
             />
           </TabPanel>
@@ -258,7 +258,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             />
             <UserDocsLink
               title="What is Module Transaction?"
-              cta="View more about transaction in module"
+              cta="Read more about transaction in module"
               href="move/module/detail-page#transactions-histories"
             />
           </TabPanel>
@@ -266,7 +266,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             <ModuleStructs structs={moduleData.parsedAbi.structs} />
             <UserDocsLink
               title="What is Module Struct?"
-              cta="View more about struct in module"
+              cta="Read more about struct in module"
               href="move/module/detail-page#structs"
             />
           </TabPanel>

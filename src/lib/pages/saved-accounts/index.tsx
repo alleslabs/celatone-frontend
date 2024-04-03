@@ -94,7 +94,7 @@ const SavedAccounts = observer(() => {
       )}
       <UserDocsLink
         title="How to organize and save accounts?"
-        cta="View more about Saved Accounts"
+        cta="Read more about Saved Accounts"
         href={`${move.enabled ? "move" : "cosmwasm"}/account/organize#saving-accounts-for-later-use`}
       />
     </PageContainer>

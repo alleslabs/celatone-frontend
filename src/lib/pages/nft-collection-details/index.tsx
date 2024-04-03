@@ -248,7 +248,7 @@ const CollectionDetailsBody = ({
             </Flex>
             <UserDocsLink
               title="What does an NFT Collection consist of?"
-              cta="View more about NFT Collection"
+              cta="Read more about NFT Collection"
               href="move/nft/collection-detail"
             />
           </TabPanel>

@@ -111,7 +111,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             <CodeContractsTable codeId={codeId} />
             <UserDocsLink
               title="What is Code in CosmWasm?"
-              cta="View more about Code Details"
+              cta="Read more about Code Details"
               href="cosmwasm/code/detail-page"
             />
           </TabPanel>
@@ -123,7 +123,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             />
             <UserDocsLink
               title="How to attached and use JSON Schema?"
-              cta="View more about JSON Schema"
+              cta="Read more about JSON Schema"
               href="cosmwasm/code/attach-json-schema"
             />
           </TabPanel>

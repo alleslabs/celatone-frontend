@@ -404,7 +404,7 @@ const AccountDetailsBody = ({
             )}
             <UserDocsLink
               title="What is an Account?"
-              cta="View more about Account"
+              cta="Read more about Account"
               href={`${move.enabled ? "move" : "cosmwasm"}/account/detail-page`}
             />
           </TabPanel>
@@ -412,7 +412,7 @@ const AccountDetailsBody = ({
             <AssetsSection isAccount address={accountAddress} />
             <UserDocsLink
               title="What is Supported and Unsupported Assets?"
-              cta="View more about Assets"
+              cta="Read more about Assets"
               href={`${move.enabled ? "move" : "cosmwasm"}/account/detail-page#assets`}
             />
           </TabPanel>
@@ -420,7 +420,7 @@ const AccountDetailsBody = ({
             <DelegationsSection address={accountAddress} />
             <UserDocsLink
               title="What is Delegations, Total Bonded, Rewards?"
-              cta="View more about Delegations"
+              cta="Read more about Delegations"
               href={`${move.enabled ? "move" : "cosmwasm"}/account/detail-page#delegations`}
             />
           </TabPanel>
@@ -428,7 +428,7 @@ const AccountDetailsBody = ({
             <NftsSection address={hexAddress} totalData={nftsCount} />
             <UserDocsLink
               title="What is NFTs in the account?"
-              cta="View more about NFTs"
+              cta="Read more about NFTs"
               href="move/account/detail-page#nfts"
             />
           </TabPanel>
@@ -440,7 +440,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is transactions related to the account?"
-              cta="View more about Account Transactions"
+              cta="Read more about Account Transactions"
               href={`${move.enabled ? "move" : "cosmwasm"}/account/detail-page#transactions`}
             />
           </TabPanel>
@@ -453,7 +453,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is Stored Codes in the account?"
-              cta="View more about Stored Codes in Account"
+              cta="Read more about Stored Codes in Account"
               href="cosmwasm/account/detail-page#codes"
             />
           </TabPanel>
@@ -466,7 +466,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is contract instances in the account?"
-              cta="View more about Contracts in Account"
+              cta="Read more about Contracts in Account"
               href="cosmwasm/account/detail-page#contracts"
             />
           </TabPanel>
@@ -479,7 +479,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is contract admins in the account?"
-              cta="View more about Account Contract Admins"
+              cta="Read more about Account Contract Admins"
               href="cosmwasm/account/detail-page#contracts-admin"
             />
           </TabPanel>
@@ -492,7 +492,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is resources?"
-              cta="View more about Resources"
+              cta="Read more about Resources"
               href="move/account/detail-page#resources"
             />
           </TabPanel>
@@ -505,7 +505,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is modules?"
-              cta="View more about Modules"
+              cta="Read more about Modules"
               href="move/account/detail-page#modules"
             />
           </TabPanel>
@@ -518,7 +518,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is Opened Proposals in the account?"
-              cta="View more about Opened Proposals"
+              cta="Read more about Opened Proposals"
               href={`${move.enabled ? "move" : "cosmwasm"}/account/detail-page#proposals`}
             />
           </TabPanel>

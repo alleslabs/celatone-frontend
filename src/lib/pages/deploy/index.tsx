@@ -92,7 +92,7 @@ const Deploy = () => {
         </Heading>
         <UserDocsLink
           mt={2}
-          cta="View more about Deploy Contract"
+          cta="Read more about Deploy Contract"
           href="cosmwasm/deploy-contract"
         />
       </Flex>

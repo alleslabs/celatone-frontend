@@ -12,6 +12,7 @@ interface UserDocsLinkProps {
   cta?: string;
   isButton?: boolean;
   isSmall?: boolean;
+  isInline?: boolean;
   mt?: number;
 }
 
@@ -21,6 +22,7 @@ export const UserDocsLink = ({
   href,
   isButton = false,
   isSmall = true,
+  isInline = false,
   mt = 8,
 }: UserDocsLinkProps) =>
   isButton ? (
@@ -35,8 +37,8 @@ export const UserDocsLink = ({
     >
       <Button
         variant={{
-          base: "ghost-primary",
-          md: isSmall ? "ghost-primary" : "outline-primary",
+          base: "ghost-secondary",
+          md: isSmall ? "ghost-secondary" : "outline-secondary",
         }}
         size={isSmall ? "sm" : "md"}
         leftIcon={<CustomIcon name="document" boxSize={3} />}
@@ -50,6 +52,7 @@ export const UserDocsLink = ({
       alignItems="center"
       mt={mt}
       direction={{ base: "column", md: "row" }}
+      display={isInline ? "flex" : "inline-flex"}
     >
       {title && (
         <Text color="text.main" variant="body2">
