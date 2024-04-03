@@ -194,4 +194,50 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
+  "bug-bash": {
+    chain: "initia",
+    registryChainName: "allesbugbash",
+    prettyName: "Initia Bug Bash",
+    lcd: "http://35.247.147.50:1317",
+    rpc: "http://35.247.147.50:26657",
+    indexer: "https://bug-bash-dev-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "https://stone-compiler.initia.tech/contracts/verify",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: true,
+        version: "v1",
+        hideOpenProposal: true,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom: "uinit",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {},
+  },
 };
