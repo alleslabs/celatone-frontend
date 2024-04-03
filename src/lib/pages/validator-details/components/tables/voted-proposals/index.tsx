@@ -4,13 +4,17 @@ import { useMemo, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
-import { useValidatorVotedProposals } from "lib/services/validatorService";
+import {
+  useValidatorVotedProposals,
+  useValidatorVotedProposalsAnswerCounts,
+} from "lib/services/validatorService";
 import { ProposalVoteType } from "lib/types";
 import type { ValidatorAddr } from "lib/types";
 
@@ -59,46 +63,61 @@ export const VotedProposalsTable = ({
     debouncedSearch,
     { onSuccess: ({ total }) => setTotalData(total) }
   );
+  const { data: answer } =
+    useValidatorVotedProposalsAnswerCounts(validatorAddress);
 
   const answerOptions = useMemo(
     () => [
       {
-        label: `All votes`,
+        label: `All proposals (${answer?.all ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: false,
+        disabled: !answer?.all,
       },
       {
-        label: `Yes`,
+        label: `Yes (${answer?.yes ?? 0})`,
         value: ProposalVoteType.YES,
-        disabled: false,
+        disabled: !answer?.yes,
+        icon: "circle" as IconKeys,
+        iconColor: "success.main",
       },
       {
-        label: `No`,
+        label: `No (${answer?.no ?? 0})`,
         value: ProposalVoteType.NO,
-        disabled: false,
+        disabled: !answer?.no,
+        icon: "circle" as IconKeys,
+        iconColor: "error.main",
       },
       {
-        label: `No with veto`,
+        label: `No with veto (${answer?.noWithVeto ?? 0})`,
         value: ProposalVoteType.NO_WITH_VETO,
-        disabled: false,
+        disabled: !answer?.noWithVeto,
+        icon: "circle" as IconKeys,
+        iconColor: "error.dark",
       },
       {
-        label: `Abstain`,
+        label: `Abstain (${answer?.abstain ?? 0})`,
         value: ProposalVoteType.ABSTAIN,
-        disabled: false,
+        disabled: !answer?.abstain,
+        icon: "circle" as IconKeys,
+        iconColor: "gray.600",
       },
       {
-        label: `Weighted`,
-        value: ProposalVoteType.WEIGHTED,
-        disabled: false,
-      },
-      {
-        label: `Did not vote`,
+        label: `Did not vote (${answer?.didNotVote ?? 0})`,
         value: ProposalVoteType.DID_NOT_VOTE,
-        disabled: false,
+        disabled: !answer?.didNotVote,
+        icon: "circle" as IconKeys,
+        iconColor: "gray.600",
+      },
+      {
+        label: `Weighted (${answer?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
+        disabled: !answer?.weighted,
+        icon: "circle" as IconKeys,
+        iconColor: "primary.light",
       },
     ],
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(answer)]
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -121,12 +140,12 @@ export const VotedProposalsTable = ({
       alignItems="center"
       onClick={onViewMore}
     >
-      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+      <TableTitle title="Voted Proposals" count={answer?.all ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
     </Flex>
   ) : (
     <Flex direction="column" gap={6}>
-      <TableTitle title="Voted Proposals" count={data?.total ?? 0} mb={0} />
+      <TableTitle title="Voted Proposals" count={answer?.all ?? 0} mb={0} />
       {!onViewMore && (
         <>
           <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
@@ -163,6 +182,7 @@ export const VotedProposalsTable = ({
         data={data}
         isLoading={isLoading}
         onViewMore={onViewMore}
+        search={search}
       />
       {data &&
         (onViewMore

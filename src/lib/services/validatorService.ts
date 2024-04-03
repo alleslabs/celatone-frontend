@@ -38,6 +38,7 @@ import {
   getValidatorStakingProvisions,
   getValidatorUptime,
   getValidatorVotedProposals,
+  getValidatorVotedProposalsAnswerCounts,
   resolveValIdentity,
 } from "./validator";
 
@@ -270,5 +271,22 @@ export const useValidatorVotedProposals = (
         search
       ),
     { retry: 1, ...options }
+  );
+};
+
+export const useValidatorVotedProposalsAnswerCounts = (
+  validatorAddress: ValidatorAddr
+) => {
+  const endpoint = useBaseApiRoute("validators");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.VALIDATOR_VOTED_PROPOSALS_ANSWER_COUNTS,
+      endpoint,
+      validatorAddress,
+    ],
+    async () =>
+      getValidatorVotedProposalsAnswerCounts(endpoint, validatorAddress),
+    { retry: 1 }
   );
 };

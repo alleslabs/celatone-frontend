@@ -77,19 +77,15 @@ export const SelectInput = <T extends string>({
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [selected, setSelected] = useState(
-    () => options.find((item) => item.value === initialSelected)?.label ?? ""
-  );
+  const [selected, setSelected] = useState("");
 
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
-    if (options.every((option) => !option.disabled)) {
-      setSelected(
-        () =>
-          options.find((item) => item.value === initialSelected)?.label ?? ""
-      );
-    }
+    setSelected(
+      options.find((item) => !item.disabled && item.value === initialSelected)
+        ?.label ?? ""
+    );
   }, [initialSelected, options]);
 
   return (

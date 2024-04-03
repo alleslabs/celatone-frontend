@@ -19,22 +19,30 @@ interface VotedProposalsTableBodyProps {
   data: Option<ValidatorVotedProposalsResponse>;
   isLoading: boolean;
   onViewMore?: () => void;
+  search: string;
 }
 
 export const VotedProposalsTableBody = ({
   data,
   isLoading,
   onViewMore,
+  search,
 }: VotedProposalsTableBodyProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="voted proposals" />;
   if (!data.total)
-    return (
+    return !search.trim().length ? (
       <EmptyState
         imageVariant={onViewMore ? undefined : "empty"}
         message="This validator had no eligibility to cast votes on any proposals."
+        withBorder
+      />
+    ) : (
+      <EmptyState
+        imageVariant="not-found"
+        message="No proposals match your input. Please ensure it is a valid proposal ID or title."
         withBorder
       />
     );
@@ -43,7 +51,7 @@ export const VotedProposalsTableBody = ({
     <MobileTableContainer>
       {data.items.map((votedProposal) => (
         <VotedProposalsTableMobileCard
-          key={votedProposal.id}
+          key={votedProposal.proposalId}
           votedProposal={votedProposal}
         />
       ))}
@@ -56,7 +64,7 @@ export const VotedProposalsTableBody = ({
       />
       {data.items.map((votedProposal) => (
         <VotedProposalsTableRow
-          key={votedProposal.id}
+          key={votedProposal.proposalId}
           votedProposal={votedProposal}
           templateColumns={templateColumns}
           boxShadow={boxShadow}
