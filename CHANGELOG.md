@@ -128,6 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links
 - [#852](https://github.com/alleslabs/celatone-frontend/pull/852) Show quorum only during the voting period since past total voting power is not available
 - [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
