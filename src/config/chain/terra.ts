@@ -10,7 +10,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Terra",
     lcd: "https://phoenix-lcd.terra.dev:443",
     rpc: "https://terra2-rpc.lavenderfive.com:443",
-    indexer: "https://phoenix-1-legacy-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://terra-mainnet-graphql.alleslabs.dev/v1/graphql",
     wallets: [...staionWallets, ...keplrWallets],
     features: {
       faucet: {
