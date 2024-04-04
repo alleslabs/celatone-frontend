@@ -299,8 +299,8 @@ export const getProposalVotes = async (
   id: number,
   limit: number,
   offset: number,
-  answer?: ProposalVoteType,
-  search?: string
+  answer: ProposalVoteType,
+  search: string
 ): Promise<ProposalVotesResponse> => {
   let url = `${endpoint}/${encodeURIComponent(id)}/votes?limit=${limit}&offset=${offset}`;
   url = url.concat(search ? `&search=${encodeURIComponent(search)}` : "");
@@ -323,8 +323,8 @@ export const getProposalValidatorVotes = async (
   offset: number,
   answer: ProposalVoteType,
   search: string
-): Promise<ProposalValidatorVotesResponse> => {
-  return axios
+): Promise<ProposalValidatorVotesResponse> =>
+  axios
     .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
       params: {
         limit,
@@ -343,7 +343,6 @@ export const getProposalValidatorVotes = async (
         total: parsed.total,
       };
     });
-};
 
 const zProposalAnswerCounts = z.object({
   yes: z.number().nonnegative(),
