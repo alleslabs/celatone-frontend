@@ -5,7 +5,7 @@ import {
   useValidatorDelegators,
   useValidatorStakingProvisions,
 } from "lib/services/validatorService";
-import type { Option, ValidatorAddr } from "lib/types";
+import type { Option, Ratio, ValidatorAddr } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 const StatWithLabel = ({
@@ -37,7 +37,7 @@ const StatWithLabel = ({
 
 interface ValidatorStatsProps {
   validatorAddress: ValidatorAddr;
-  commissionRate: number;
+  commissionRate: Ratio<number>;
   totalVotingPower: Big;
   singleStakingDenom: Option<string>;
 }
@@ -59,7 +59,7 @@ export const ValidatorStats = ({
           stakingProvisions.stakingProvisions,
           totalVotingPower.mul(1 - commissionRate),
           0
-        ).toNumber(),
+        ).toNumber() as Ratio<number>,
         2,
         true
       )

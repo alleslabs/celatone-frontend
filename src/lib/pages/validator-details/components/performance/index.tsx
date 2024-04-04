@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 import { useState } from "react";
 
-import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
+import { ProposedBlocksTable } from "../tables/proposed-blocks";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useValidatorUptime } from "lib/services/validatorService";

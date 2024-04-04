@@ -1,5 +1,6 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 
 import { trackMintScan } from "lib/amplitude";
 import type { AddressReturnType } from "lib/app-provider";
@@ -26,6 +27,7 @@ interface ExplorerLinkProps extends BoxProps {
   value: string;
   type: LinkType;
   copyValue?: string;
+  externalLink?: string;
   showCopyOnHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
@@ -154,9 +156,10 @@ const LinkRender = ({
 };
 
 export const ExplorerLink = ({
-  value,
   type,
+  value,
   copyValue,
+  externalLink,
   showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
@@ -167,20 +170,11 @@ export const ExplorerLink = ({
   fixedHeight = true,
   ...componentProps
 }: ExplorerLinkProps) => {
+  const isMobile = useMobile();
   const { address } = useCurrentChain();
   const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
 
-  const isInternal =
-    type === "code_id" ||
-    type === "contract_address" ||
-    type === "user_address" ||
-    type === "tx_hash" ||
-    type === "block_height" ||
-    type === "pool_id" ||
-    type === "proposal_id" ||
-    type === "validator_address";
-
-  const [hrefLink, textValue] = [
+  const [internalLink, textValue] = [
     getNavigationUrl({
       type,
       value: copyValue || value,
@@ -189,8 +183,8 @@ export const ExplorerLink = ({
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
-  const readOnly = isReadOnly || !hrefLink;
-  const isMobile = useMobile();
+  const link = externalLink ?? internalLink;
+  const readOnly = isReadOnly || !link;
   // TODO: handle auto width
   return (
     <Box
@@ -218,8 +212,8 @@ export const ExplorerLink = ({
         >
           <LinkRender
             type={type}
-            isInternal={isInternal}
-            hrefLink={hrefLink}
+            isInternal={isUndefined(externalLink)}
+            hrefLink={link}
             textValue={textValue}
             isEllipsis={textFormat === "ellipsis"}
             maxWidth={maxWidth}

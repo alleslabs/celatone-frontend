@@ -9,6 +9,7 @@ import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { AllContractLists } from "lib/components/select-contract";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 
@@ -50,6 +51,11 @@ const AllContractListsPage = observer(() => {
           isReadOnly={false}
         />
       </Flex>
+      <UserDocsLink
+        title="How to use contract list?"
+        cta="Read more about Contract Lists"
+        href="cosmwasm/contract/organize#using-contract-lists"
+      />
     </PageContainer>
   );
 });

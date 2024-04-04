@@ -6,9 +6,12 @@ import { CURR_THEME } from "env";
 import type { Option, StakingShare, Validator, ValidatorAddr } from "lib/types";
 import {
   BlockVote,
+  SlashingEvent,
   zBechAddr,
   zBig,
   zCoin,
+  zProposalStatus,
+  zProposalType,
   zUtcDate,
   zValidatorData,
 } from "lib/types";
@@ -20,7 +23,6 @@ import {
 } from "lib/utils";
 
 import { zBlocksResponse } from "./block";
-import { zProposal } from "./proposal";
 
 interface ValidatorResponse {
   operator_address: ValidatorAddr;
@@ -206,7 +208,7 @@ const zValidatorUptimeResponse = z
       .object({
         height: z.number(),
         timestamp: zUtcDate,
-        is_jailed: z.boolean(),
+        type: z.nativeEnum(SlashingEvent),
       })
       .array(),
   })
@@ -307,15 +309,41 @@ export const getValidatorDelegators = async (
     .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
     .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
 
-const zValidatorVotedProposalsResponseItem = zProposal
-  .extend({
-    yes: zBig,
-    abstain: zBig,
-    no: zBig,
-    no_with_veto: zBig,
-    is_vote_weighted: z.boolean(),
+const zValidatorVotedProposalsResponseAnswerCounts = z
+  .object({
+    all: z.number(),
+    yes: z.number(),
+    no: z.number(),
+    no_with_veto: z.number(),
+    abstain: z.number(),
+    did_not_vote: z.number(),
+    weighted: z.number(),
   })
   .transform(snakeToCamel);
+
+const zValidatorVotedProposalsResponseItem = z
+  .object({
+    proposal_id: z.number().nonnegative(),
+    abstain: z.number().nonnegative(),
+    is_expedited: z.boolean(),
+    is_vote_weighted: z.boolean().default(false),
+    no: z.number().nonnegative(),
+    no_with_veto: z.number().nonnegative(),
+    status: zProposalStatus,
+    timestamp: zUtcDate.nullable(),
+    title: z.string(),
+    tx_hash: z.string().nullable(),
+    yes: z.number().nonnegative(),
+    types: zProposalType.array(),
+  })
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    txHash: val.tx_hash ? parseTxHash(val.tx_hash) : null,
+  }));
+
+export type ValidatorVotedProposalsResponseItem = z.infer<
+  typeof zValidatorVotedProposalsResponseItem
+>;
 
 const zValidatorVotedProposalsResponse = z.object({
   items: z.array(zValidatorVotedProposalsResponseItem),
@@ -346,3 +374,13 @@ export const getValidatorVotedProposals = async (
       }
     )
     .then(({ data }) => parseWithError(zValidatorVotedProposalsResponse, data));
+
+export const getValidatorVotedProposalsAnswerCounts = async (
+  endpoint: string,
+  validatorAddress: ValidatorAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/answer-counts`)
+    .then(({ data }) =>
+      parseWithError(zValidatorVotedProposalsResponseAnswerCounts, data)
+    );
