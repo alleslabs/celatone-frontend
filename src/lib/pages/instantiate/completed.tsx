@@ -1,6 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -76,8 +77,11 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/execute",
-              query: { contract: txInfo.contractAddress },
+              pathname: "/contract-interaction",
+              query: {
+                selectedType: ContractInteractionTabs.EXECUTE,
+                contract: txInfo.contractAddress,
+              },
             })
           }
         >
@@ -88,8 +92,11 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/query",
-              query: { contract: txInfo.contractAddress },
+              pathname: "/contract-interaction",
+              query: {
+                selectedType: ContractInteractionTabs.QUERY,
+                contract: txInfo.contractAddress,
+              },
             })
           }
         >

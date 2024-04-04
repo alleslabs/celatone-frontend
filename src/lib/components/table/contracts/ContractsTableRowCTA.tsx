@@ -19,6 +19,7 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { CustomIcon } from "lib/components/icon";
 import {
   AddToOtherListModal,
@@ -67,12 +68,16 @@ export const ContractsTableRowCTA = ({
           justifyContent="flex-end"
           onClick={(e) => e.stopPropagation()}
         >
-          <AppLink href={`/execute?contract=${contractInfo.contractAddress}`}>
+          <AppLink
+            href={`/contract-interaction?selectedType=${ContractInteractionTabs.EXECUTE}&contract=${contractInfo.contractAddress}`}
+          >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
-          <AppLink href={`/query?contract=${contractInfo.contractAddress}`}>
+          <AppLink
+            href={`/contract-interaction?selectedType=${ContractInteractionTabs.QUERY}&contract=${contractInfo.contractAddress}`}
+          >
             <Button variant="outline-gray" size="sm">
               Query
             </Button>

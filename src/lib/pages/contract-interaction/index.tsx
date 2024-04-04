@@ -1,20 +1,44 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
 
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import {
   ContractInteractionSwitch,
   ContractInteractionTabs,
 } from "lib/components/ContractInteractionSwitch";
 import PageContainer from "lib/components/PageContainer";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { getFirstQueryParam } from "lib/utils";
 
-import ExecuteSection from "./components/ExecuteSection";
+import ExecuteSection from "./components/execute/ExecuteSection";
 import { InteractionWrapper } from "./components/InteractionWrapper";
-import QuerySection from "./components/QuerySection";
+import QuerySection from "./components/query/QuerySection";
 
 export const ContractInteraction = () => {
-  const [selectedInteractionType, setSelectedInteractionType] =
-    useState<ContractInteractionTabs>(ContractInteractionTabs.QUERY);
+  const router = useRouter();
+  const isMobile = useMobile();
+  const navigate = useInternalNavigate();
+
+  const selectedType = getFirstQueryParam(
+    router.query.selectedType
+  ) as ContractInteractionTabs;
+  const contract = getFirstQueryParam(router.query.contract);
+  const handleSetSelectedType = useCallback(
+    (newType: ContractInteractionTabs) =>
+      navigate({
+        pathname: "/contract-interaction",
+        query: {
+          selectedType: newType,
+          ...(contract && { contract }),
+        },
+      }),
+    [contract, navigate]
+  );
+
+  useEffect(() => {
+    if (!selectedType) handleSetSelectedType(ContractInteractionTabs.QUERY);
+  }, [handleSetSelectedType, selectedType]);
 
   return (
     <PageContainer>
@@ -22,18 +46,20 @@ export const ContractInteraction = () => {
         <Flex align="center" justify="space-between" w="full">
           <Flex align="center" gap={4}>
             <Heading variant="h5" as="h5" alignSelf="flex-start">
-              Contract Interaction
+              {isMobile ? "Query" : "Contract Interaction"}
             </Heading>
-            <ContractInteractionSwitch
-              currentTab={selectedInteractionType}
-              onTabChange={setSelectedInteractionType}
-            />
+            {!isMobile && (
+              <ContractInteractionSwitch
+                currentTab={selectedType}
+                onTabChange={handleSetSelectedType}
+              />
+            )}
           </Flex>
           <UserDocsLink isButton isSmall href="cosmwasm/query-execute" />
         </Flex>
       </Flex>
       <InteractionWrapper
-        currentTab={selectedInteractionType}
+        currentTab={selectedType}
         queryContent={<QuerySection />}
         executeContent={<ExecuteSection />}
       />

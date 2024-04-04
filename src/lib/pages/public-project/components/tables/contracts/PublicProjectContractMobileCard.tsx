@@ -5,6 +5,7 @@ import {
   useInternalNavigate,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 
@@ -45,7 +46,9 @@ export const PublicProjectContractMobileCard = ({
             justifyContent="center"
             onClick={(e) => e.stopPropagation()}
           >
-            <AppLink href={`/query?contract=${publicInfo.contractAddress}`}>
+            <AppLink
+              href={`/contract-interaction?selectedType=${ContractInteractionTabs.QUERY}&contract=${publicInfo.contractAddress}`}
+            >
               <Button variant="outline-gray" size="sm">
                 Query
               </Button>

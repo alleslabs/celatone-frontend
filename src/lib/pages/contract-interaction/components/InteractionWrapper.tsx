@@ -21,23 +21,18 @@ export const InteractionWrapper = ({
   currentTab,
   queryContent,
   executeContent,
-}: InteractionWrapperProps) => {
-  return (
-    <Box
-      sx={{
-        "& .query": {
-          display: resolveTabDisplay(currentTab, ContractInteractionTabs.QUERY),
-        },
-        "& .execute": {
-          display: resolveTabDisplay(
-            currentTab,
-            ContractInteractionTabs.EXECUTE
-          ),
-        },
-      }}
-    >
-      <div className="query">{queryContent}</div>
-      <div className="execute">{executeContent}</div>
-    </Box>
-  );
-};
+}: InteractionWrapperProps) => (
+  <Box
+    sx={{
+      "& .query": {
+        display: resolveTabDisplay(currentTab, ContractInteractionTabs.QUERY),
+      },
+      "& .execute": {
+        display: resolveTabDisplay(currentTab, ContractInteractionTabs.EXECUTE),
+      },
+    }}
+  >
+    <div className="query">{queryContent}</div>
+    <div className="execute">{executeContent}</div>
+  </Box>
+);

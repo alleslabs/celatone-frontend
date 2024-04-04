@@ -1,22 +1,14 @@
 import { Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
-import type { CSSProperties, Dispatch, SetStateAction } from "react";
+import type { CSSProperties } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
 
 export enum ContractInteractionTabs {
-  QUERY = "Query",
-  EXECUTE = "Execute",
+  QUERY = "query",
+  EXECUTE = "execute",
 }
-
-// export enum OutputMessageTabs {
-//   JSON_OUTPUT = "JSON Output",
-//   YOUR_SCHEMA = "Your Schema",
-// }
-
-// export const jsonInputFormKey = ContractInteractionTabs.QUERY as "Query";
-// export const yourSchemaInputFormKey = ContractInteractionTabs.EXECUTE as "Execute";
 
 interface ContractInteractionSwitchProps<
   T extends Option<ContractInteractionTabs>,
@@ -24,7 +16,7 @@ interface ContractInteractionSwitchProps<
   currentTab: T;
   disabled?: boolean;
   ml?: CSSProperties["marginLeft"];
-  onTabChange: Dispatch<SetStateAction<T>>;
+  onTabChange: (newType: T) => void;
 }
 
 export const ContractInteractionSwitch = <
@@ -78,6 +70,7 @@ export const ContractInteractionSwitch = <
             onClick={() => onTabChange(tab as T)}
             zIndex={1}
             textAlign="center"
+            textTransform="capitalize"
           >
             {tab}
           </MotionBox>

@@ -1,4 +1,3 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -6,10 +5,9 @@ import { useCallback, useEffect, useState } from "react";
 import { trackToExecute } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
-import { CustomIcon } from "lib/components/icon";
-import PageContainer from "lib/components/PageContainer";
-import { UserDocsLink } from "lib/components/UserDocsLink";
+import { ExecuteArea } from "lib/pages/contract-interaction/components/execute/ExecuteArea";
 import type { ContractDetail } from "lib/services/contractService";
 import type { BechAddr32 } from "lib/types";
 import {
@@ -19,9 +17,7 @@ import {
   libDecode,
 } from "lib/utils";
 
-import { ExecuteArea } from "./components/ExecuteArea";
-
-const Execute = () => {
+const ExecuteSection = () => {
   // ------------------------------------------//
   // --------------DEPENDENCIES----------------//
   // ------------------------------------------//
@@ -42,20 +38,15 @@ const Execute = () => {
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
   // ------------------------------------------//
-  const goToQuery = () => {
-    navigate({
-      pathname: "/query",
-      query: {
-        ...(contractAddress && { contract: contractAddress }),
-      },
-    });
-  };
 
   const onContractSelect = useCallback(
     (contract: BechAddr32) => {
       navigate({
-        pathname: "/execute",
-        query: { ...(contract && { contract }) },
+        pathname: "/contract-interaction",
+        query: {
+          selectedType: ContractInteractionTabs.EXECUTE,
+          ...(contract && { contract }),
+        },
         options: { shallow: true },
       });
     },
@@ -94,23 +85,7 @@ const Execute = () => {
   }, [router, onContractSelect]);
 
   return (
-    <PageContainer>
-      <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h5" variant="h5">
-          Execute Contract
-        </Heading>
-        <Flex>
-          <UserDocsLink
-            isButton
-            isSmall
-            href="cosmwasm/query-execute#execute"
-          />
-          <Button variant="ghost-primary" size="sm" ml={2} onClick={goToQuery}>
-            Go To Query
-            <CustomIcon name="chevron-right" boxSize={3} />
-          </Button>
-        </Flex>
-      </Flex>
+    <>
       <ConnectWalletAlert
         subtitle="You need to connect your wallet to perform this action"
         mb={8}
@@ -124,7 +99,6 @@ const Execute = () => {
           setCodeId(data.codeId);
         }}
       />
-
       <ExecuteArea
         contractAddress={contractAddress}
         initialMsg={initialMsg}
@@ -132,8 +106,8 @@ const Execute = () => {
         codeId={codeId}
         codeHash={codeHash}
       />
-    </PageContainer>
+    </>
   );
 };
 
-export default Execute;
+export default ExecuteSection;

@@ -5,11 +5,13 @@ import {
   IconButton,
   Image,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { AdminButton } from "lib/components/button";
+import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
@@ -32,12 +34,12 @@ import { truncate } from "lib/utils";
 
 interface ContractTopProps {
   contractAddress: BechAddr32;
-
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
 }
+
 export const ContractTop = ({
   contractAddress,
   projectInfo,
@@ -52,16 +54,13 @@ export const ContractTop = ({
     contractLocalInfo?.name || publicInfo?.name || contract.label;
   const projectName = projectInfo?.name;
 
-  const goToQuery = () => {
+  const goToContractInteraction = (type: string) => {
     navigate({
-      pathname: "/query",
-      query: { ...(contractAddress && { contract: contractAddress }) },
-    });
-  };
-  const goToExecute = () => {
-    navigate({
-      pathname: "/execute",
-      query: { ...(contractAddress && { contract: contractAddress }) },
+      pathname: "/contract-interaction",
+      query: {
+        selectedType: type,
+        ...(contractAddress && { contract: contractAddress }),
+      },
     });
   };
 
@@ -237,7 +236,9 @@ export const ContractTop = ({
               variant="outline-primary"
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="query" />}
-              onClick={goToQuery}
+              onClick={() =>
+                goToContractInteraction(ContractInteractionTabs.QUERY)
+              }
               size={{ base: "sm", md: "md" }}
             >
               Query
@@ -246,10 +247,19 @@ export const ContractTop = ({
               variant="outline-primary"
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="execute" />}
-              onClick={goToExecute}
+              onClick={() => {
+                goToContractInteraction(ContractInteractionTabs.EXECUTE);
+              }}
               size={{ base: "sm", md: "md" }}
+              isDisabled={isMobile}
             >
-              Execute
+              {isMobile ? (
+                <Tooltip label="Sorry, this feature is currently not supported on mobile.">
+                  <span>Execute</span>
+                </Tooltip>
+              ) : (
+                "Execute"
+              )}
             </Button>
             {!isMobile && (
               <Flex>

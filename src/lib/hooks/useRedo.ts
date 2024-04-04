@@ -19,8 +19,13 @@ export const useRedo = () => {
       if (type === "MsgExecuteContract") {
         const encodeMsg = libEncode(JSON.stringify(camelToSnake(msg)));
         navigate({
-          pathname: "/execute",
-          query: { chainName, contract: msg.contract, msg: encodeMsg },
+          pathname: "/contract-interaction",
+          query: {
+            chainName,
+            selectedType: "execute",
+            contract: msg.contract,
+            msg: encodeMsg,
+          },
         });
       } else if (
         type === "MsgInstantiateContract" ||

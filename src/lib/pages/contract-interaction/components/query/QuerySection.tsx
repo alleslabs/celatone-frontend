@@ -1,18 +1,12 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { trackToQuery } from "lib/amplitude";
-import {
-  useInternalNavigate,
-  useMobile,
-  useWasmConfig,
-} from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
-import { CustomIcon } from "lib/components/icon";
-import PageContainer from "lib/components/PageContainer";
-import { UserDocsLink } from "lib/components/UserDocsLink";
+import { QueryArea } from "lib/pages/contract-interaction/components/query/QueryArea";
 import type { ContractDetail } from "lib/services/contractService";
 import type { BechAddr32 } from "lib/types";
 import {
@@ -22,9 +16,7 @@ import {
   libDecode,
 } from "lib/utils";
 
-import { QueryArea } from "./components/QueryArea";
-
-const Query = observer(() => {
+const QuerySection = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -33,20 +25,15 @@ const Query = observer(() => {
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState<number>();
   const [initialMsg, setInitialMsg] = useState("");
-  const isMobile = useMobile();
-
-  const goToExecute = () => {
-    navigate({
-      pathname: "/execute",
-      query: { ...(contractAddress && { contract: contractAddress }) },
-    });
-  };
 
   const onContractSelect = useCallback(
     (contract: BechAddr32) => {
       navigate({
-        pathname: "/query",
-        query: { ...(contract && { contract }) },
+        pathname: "/contract-interaction",
+        query: {
+          selectedType: ContractInteractionTabs.QUERY,
+          ...(contract && { contract }),
+        },
         options: { shallow: true },
       });
     },
@@ -75,27 +62,7 @@ const Query = observer(() => {
   }, [router, onContractSelect]);
 
   return (
-    <PageContainer>
-      <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h5" variant="h5">
-          Query Contract
-        </Heading>
-        <Flex>
-          <UserDocsLink isButton isSmall href="cosmwasm/query-execute#query" />
-          {!isMobile && (
-            <Button
-              variant="ghost-primary"
-              size="sm"
-              ml={2}
-              onClick={goToExecute}
-            >
-              Go To Execute
-              <CustomIcon name="chevron-right" boxSize={3} />
-            </Button>
-          )}
-        </Flex>
-      </Flex>
-
+    <>
       <ContractSelectSection
         mode="all-lists"
         contractAddress={contractAddress}
@@ -105,15 +72,14 @@ const Query = observer(() => {
           setCodeId(data.codeId);
         }}
       />
-
       <QueryArea
         contractAddress={contractAddress}
         initialMsg={initialMsg}
         codeId={codeId}
         codeHash={codeHash}
       />
-    </PageContainer>
+    </>
   );
 });
 
-export default Query;
+export default QuerySection;
