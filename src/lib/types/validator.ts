@@ -5,6 +5,8 @@ import { formatUrl } from "lib/utils/formatter/url";
 
 import { zBechAddr20, zValidatorAddr } from "./addrs";
 import { zBig } from "./big";
+import { zRatio } from "./currency";
+import type { Ratio } from "./currency";
 
 export const zValidator = z
   .object({
@@ -28,7 +30,7 @@ export const zValidatorData = z
     identity: z.string(),
     moniker: z.string(),
     details: z.string(),
-    commission_rate: z.coerce.number(),
+    commission_rate: zRatio(z.coerce.number()),
     is_jailed: z.boolean(),
     is_active: z.boolean(),
     voting_power: zBig,
@@ -46,4 +48,20 @@ export enum BlockVote {
   PROPOSE = "PROPOSE",
   VOTE = "VOTE",
   ABSTAIN = "ABSTAIN",
+}
+
+export type ComputedUptime = {
+  signed: number;
+  proposed: number;
+  missed: number;
+  signedRatio: Ratio<number>;
+  proposedRatio: Ratio<number>;
+  missedRatio: Ratio<number>;
+  uptimeRatio: Ratio<number>;
+};
+
+export enum SlashingEvent {
+  Unjailed = "Unjailed",
+  Jailed = "Jailed",
+  Slashed = "Slashed",
 }

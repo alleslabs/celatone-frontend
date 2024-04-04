@@ -3,7 +3,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Flex,
   Text,
 } from "@chakra-ui/react";
 
@@ -25,6 +24,9 @@ export const ProposalMessageCard = ({
         <AccordionButton
           background="gray.900"
           borderRadius={8}
+          px={4}
+          justifyContent="space-between"
+          alignItems="center"
           _hover={{ background: "gray.900" }}
           onClick={() =>
             trackUseExpand({
@@ -34,22 +36,15 @@ export const ProposalMessageCard = ({
             })
           }
         >
-          <Flex
-            px={4}
-            justifyContent="space-between"
-            w="full"
-            align="center"
-            className="copier-wrapper"
+          <Text
+            variant="body1"
+            fontWeight={600}
+            wordBreak="break-all"
+            textAlign="start"
           >
-            <Flex alignItems="center">
-              <Text variant="body1" fontWeight={600} wordBreak="break-word">
-                {header}
-              </Text>
-            </Flex>
-            <Flex alignItems="center" gap={2}>
-              <AccordionIcon color="gray.600" />
-            </Flex>
-          </Flex>
+            {header}
+          </Text>
+          <AccordionIcon color="gray.600" />
         </AccordionButton>
         <AccordionPanel p={0} pt={4}>
           <JsonReadOnly text={jsonString} canCopy isExpandable />

@@ -1,4 +1,4 @@
-import { Flex, Tag, Text } from "@chakra-ui/react";
+import { Tag, Text } from "@chakra-ui/react";
 import { snakeCase } from "snake-case";
 
 import type { LinkType } from "lib/components/ExplorerLink";
@@ -38,7 +38,7 @@ export const SingleMsg = ({
 }: SingleMsgProps) => {
   if (!type) return <Text variant="body2">Message Unavailable</Text>;
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <>
       <Text variant="body2">
         {type} {text1}
       </Text>
@@ -100,6 +100,6 @@ export const SingleMsg = ({
           textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
         />
       )}
-    </Flex>
+    </>
   );
 };

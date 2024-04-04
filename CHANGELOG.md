@@ -39,6 +39,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
+- [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
+- [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
+- [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
+- [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add amp proposal details page
+- [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
+- [#854](https://github.com/alleslabs/celatone-frontend/pull/854) Create PageHeaderContainer component
+- [#851](https://github.com/alleslabs/celatone-frontend/pull/851) Add amp validator list page
+- [#848](https://github.com/alleslabs/celatone-frontend/pull/848) Change Initia's config to use the new chain IDs (mahalo-2, minimove-2, miniwasm-2)
+- [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
+- [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
+- [#836](https://github.com/alleslabs/celatone-frontend/pull/836) Add recent 100 blocks chart
+- [#833](https://github.com/alleslabs/celatone-frontend/pull/833) Add link to transactions page to current bonded token component
+- [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
+- [#831](https://github.com/alleslabs/celatone-frontend/pull/831) Update zod schema to apply with new validator delegation related txs api spec
+- [#828](https://github.com/alleslabs/celatone-frontend/pull/828) Add validator detail voting power overview section with data from APIs
+- [#835](https://github.com/alleslabs/celatone-frontend/pull/835) Add amp view in json - block and proposal details
+- [#823](https://github.com/alleslabs/celatone-frontend/pull/823) Add validator uptime and penalty events
 - [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
 - [#819](https://github.com/alleslabs/celatone-frontend/pull/819) Add validator detail overview section with data from APIs
 - [#821](https://github.com/alleslabs/celatone-frontend/pull/821) Add Validator's proposed blocks table
@@ -82,6 +100,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
+- [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
+- [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
+- [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
+- [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
+- [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
+- [#845](https://github.com/alleslabs/celatone-frontend/pull/845) Edit error fetching message on the contract state
+- [#844](https://github.com/alleslabs/celatone-frontend/pull/844) Modify wording status for rejected proposals
+- [#841](https://github.com/alleslabs/celatone-frontend/pull/841) Bump cosmos-kit package fixing the installed wallet issue
 - [#830](https://github.com/alleslabs/celatone-frontend/pull/830) Change GraphQL neutron-1 endpoint to prod
 - [#825](https://github.com/alleslabs/celatone-frontend/pull/825) Change GraphQL pion-1 endpoint to prod
 - [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
@@ -107,6 +133,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
+- [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
+- [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
+- [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
+- [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links
+- [#852](https://github.com/alleslabs/celatone-frontend/pull/852) Show quorum only during the voting period since past total voting power is not available
+- [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
+- [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge
+- [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
+- [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
+- [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
 - [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
 - [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
 - [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview

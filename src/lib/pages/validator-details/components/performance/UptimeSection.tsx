@@ -1,24 +1,60 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
+import { useMemo } from "react";
 
-import { PenaltyStatus } from "../../types";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
+import type { ValidatorUptimeResponse } from "lib/services/validator";
+import type { ComputedUptime, Ratio, ValidatorAddr } from "lib/types";
+import { formatRatio } from "lib/utils";
 
-import { PenaltyStatusSection } from "./PenaltyStatusSection";
+import { PenaltyEvent } from "./PenaltyEvent";
 import { RecentBlocksLegends } from "./RecentBlocksLegends";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 
 interface UptimeSectionProps {
-  isDetailPage?: boolean;
+  validatorAddress: ValidatorAddr;
+  uptimeData: ValidatorUptimeResponse;
+  uptimeBlock: number;
+  setUptimeBlock?: (block: number) => void;
   onViewMore?: () => void;
 }
 
 export const UptimeSection = ({
+  validatorAddress,
+  uptimeData,
+  uptimeBlock,
+  setUptimeBlock,
   onViewMore,
-  isDetailPage = false,
 }: UptimeSectionProps) => {
   const isMobile = useMobile();
+
+  const computed = useMemo<ComputedUptime>(() => {
+    const data = uptimeData.uptime;
+
+    return {
+      signed: data.signedBlocks,
+      proposed: data.proposedBlocks,
+      missed: data.missedBlocks,
+      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
+      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
+      missedRatio: (data.missedBlocks / data.total) as Ratio<number>,
+      uptimeRatio: ((data.signedBlocks + data.proposedBlocks) /
+        data.total) as Ratio<number>,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(uptimeData.uptime)]);
+
   return (
     <Flex
       direction="column"
@@ -34,9 +70,31 @@ export const UptimeSection = ({
             <Heading variant="h6" as="h6" color="text.main">
               Uptime
             </Heading>
-            <Text variant="body2" color="text.dark">
-              Latest 100 Blocks
-            </Text>
+            {setUptimeBlock ? (
+              <Menu>
+                <MenuButton>
+                  <Text variant="body2" color="text.dark">
+                    Latest {uptimeBlock} Blocks
+                    <CustomIcon name="chevron-down" ml={2} />
+                  </Text>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => setUptimeBlock(100)}>
+                    Latest 100 Blocks
+                  </MenuItem>
+                  <MenuItem onClick={() => setUptimeBlock(1000)}>
+                    Latest 1000 Blocks
+                  </MenuItem>
+                  <MenuItem onClick={() => setUptimeBlock(10000)}>
+                    Latest 10000 Blocks
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <Text variant="body2" color="text.dark">
+                Latest 100 Blocks
+              </Text>
+            )}
           </Flex>
           {onViewMore && !isMobile && (
             <Button
@@ -48,23 +106,28 @@ export const UptimeSection = ({
             </Button>
           )}
         </Flex>
-        <ValueWithIcon icon="block" value="98.21%" />
+        <ValueWithIcon icon="block" value={formatRatio(computed.uptimeRatio)} />
       </Flex>
-      <RecentBlocksLegends />
-      {!isDetailPage && (
+      <RecentBlocksLegends uptime={computed} />
+      {onViewMore && (
         <>
-          {isMobile && <RecentBlocksSection />}
-          <PenaltyStatusSection hasBorder status={PenaltyStatus.Jailed} />{" "}
+          {isMobile && (
+            <RecentBlocksSection validatorAddress={validatorAddress} />
+          )}
+          {uptimeData.events.length !== 0 && <Divider />}
+          {uptimeData.events.map((event) => (
+            <PenaltyEvent key={event.height} event={event} />
+          ))}
+          {isMobile && (
+            <Button
+              variant="ghost-primary"
+              rightIcon={<CustomIcon name="chevron-right" />}
+              onClick={onViewMore}
+            >
+              View Performance
+            </Button>
+          )}
         </>
-      )}
-      {onViewMore && isMobile && (
-        <Button
-          variant="ghost-primary"
-          rightIcon={<CustomIcon name="chevron-right" />}
-          onClick={onViewMore}
-        >
-          View Performance
-        </Button>
       )}
     </Flex>
   );

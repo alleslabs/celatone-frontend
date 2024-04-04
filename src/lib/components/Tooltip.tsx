@@ -1,5 +1,5 @@
 import type { TooltipProps } from "@chakra-ui/react";
-import { Tooltip as ChakraTooltip } from "@chakra-ui/react";
+import { Tooltip as ChakraTooltip, useDisclosure } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
 
@@ -7,11 +7,26 @@ export const Tooltip = ({
   placement = "top",
   children,
   ...tooltipProps
-}: TooltipProps) => (
-  <ChakraTooltip hasArrow placement={placement} arrowSize={8} {...tooltipProps}>
-    <span>{children}</span>
-  </ChakraTooltip>
-);
+}: TooltipProps) => {
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  return (
+    <ChakraTooltip
+      hasArrow
+      placement={placement}
+      arrowSize={8}
+      isOpen={isOpen}
+      {...tooltipProps}
+    >
+      <span
+        onMouseEnter={onOpen}
+        onMouseLeave={onClose}
+        onClickCapture={onToggle}
+      >
+        {children}
+      </span>
+    </ChakraTooltip>
+  );
+};
 
 interface TooltipInfoProps extends Omit<TooltipProps, "children"> {
   iconVariant?: "default" | "solid";
@@ -28,6 +43,7 @@ export const TooltipInfo = ({
       boxSize={3}
       m={0}
       cursor="pointer"
+      onClick={(e) => e.stopPropagation()}
     />
   </Tooltip>
 );

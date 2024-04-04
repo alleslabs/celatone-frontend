@@ -1,46 +1,134 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
+import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
-
-// TODO remove mockup data
+import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
+import type {
+  AssetInfo,
+  AssetInfos,
+  Option,
+  Ratio,
+  Token,
+  U,
+  USD,
+} from "lib/types";
+import {
+  calculateAssetValue,
+  divWithDefault,
+  formatPrettyPercent,
+  formatPrice,
+  formatUTokenWithPrecision,
+  getTokenLabel,
+  toToken,
+} from "lib/utils";
 
 const VotingPowerDetail = ({
   label,
-  percent,
+  ratio,
   amount,
   denom,
-  value,
+  assetInfo,
 }: {
   label: string;
-  percent: string;
-  amount: string;
-  denom: string;
-  value: string;
-}) => (
-  <Flex direction="column" w="full">
-    <Text variant="body2" color="text.dark" mb={2}>
-      {label}
-    </Text>
-    <Text fontWeight={700} variant="body1">
-      {percent}
-    </Text>
-    <Text fontWeight={700} variant="body2">
-      {amount}{" "}
-      <span
-        style={{
-          fontWeight: "400",
-        }}
-      >
-        {denom}
-      </span>
-    </Text>
-    <Text variant="body3" color="text.dark">
-      ({value})
-    </Text>
-  </Flex>
-);
+  ratio: Ratio<number>;
+  amount: U<Token<Big>>;
+  denom: Option<string>;
+  assetInfo: Option<AssetInfo>;
+}) => {
+  const formattedPercent = formatPrettyPercent(ratio, 2, true);
+  const formattedAmount = formatUTokenWithPrecision(
+    amount,
+    assetInfo?.precision ?? 0,
+    true,
+    2
+  );
+  const formattedValue = assetInfo
+    ? formatPrice(
+        calculateAssetValue(
+          toToken(amount as U<Token<Big>>, assetInfo.precision),
+          assetInfo.price as USD<number>
+        )
+      )
+    : undefined;
 
-export const VotingPowerOverview = () => {
+  return (
+    <Flex direction="column" w="full">
+      <Text variant="body2" color="text.dark" mb={2}>
+        {label}
+      </Text>
+      <Text fontWeight={700} variant="body1">
+        {formattedPercent}
+      </Text>
+      <Text fontWeight={700} variant="body2">
+        {formattedAmount}
+        {denom && (
+          <span
+            style={{
+              fontWeight: "400",
+            }}
+          >
+            {` ${getTokenLabel(denom, assetInfo?.symbol)}`}
+          </span>
+        )}
+      </Text>
+      {formattedValue && (
+        <Text variant="body3" color="text.dark">
+          ({formattedValue})
+        </Text>
+      )}
+    </Flex>
+  );
+};
+
+interface VotingPowerOverviewProps {
+  singleStakingDenom: Option<string>;
+  assetInfos: Option<AssetInfos>;
+  votingPower: Big;
+  totalVotingPower: Big;
+  selfVotingPower: Big;
+}
+
+export const VotingPowerOverview = ({
+  singleStakingDenom,
+  assetInfos,
+  votingPower,
+  totalVotingPower,
+  selfVotingPower,
+}: VotingPowerOverviewProps) => {
+  const assetInfo = singleStakingDenom
+    ? assetInfos?.[singleStakingDenom]
+    : undefined;
+
+  const votingPowerPercent = formatPrettyPercent(
+    divWithDefault(
+      votingPower,
+      totalVotingPower,
+      0
+    ).toNumber() as Ratio<number>,
+    2,
+    true
+  );
+  const votingPowerAmount = formatUTokenWithPrecision(
+    votingPower as U<Token<Big>>,
+    assetInfo?.precision ?? 0,
+    false,
+    2
+  );
+  const votingPowerValueFormatted = assetInfo
+    ? formatPrice(
+        calculateAssetValue(
+          toToken(votingPower as U<Token<Big>>, assetInfo.precision),
+          assetInfo.price as USD<number>
+        )
+      )
+    : undefined;
+
+  const selfVotingPowerRatio = divWithDefault(
+    selfVotingPower,
+    votingPower,
+    0
+  ).toNumber() as Ratio<number>;
+
   return (
     <Flex
       direction="column"
@@ -56,47 +144,60 @@ export const VotingPowerOverview = () => {
             Voting Power
           </Heading>
         </Flex>
-        <ValueWithIcon icon="vote" value="7.21%" />
+        <ValueWithIcon icon="vote" value={votingPowerPercent} />
         <Flex gap={2} alignItems="center" mt={1}>
           <Flex direction="column">
             <Text fontWeight={700} variant="body1">
-              123,456,789.0{" "}
-              <span
-                style={{
-                  fontWeight: "400",
-                }}
-              >
-                OSMO
-              </span>
+              {votingPowerAmount}
+              {singleStakingDenom && (
+                <span
+                  style={{
+                    fontWeight: "400",
+                  }}
+                >
+                  {` ${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`}
+                </span>
+              )}
             </Text>
-            <Text variant="body2" color="text.dark">
-              ($12.00)
-            </Text>
+            {singleStakingDenom && (
+              <Text variant="body2" color="text.dark">
+                ({votingPowerValueFormatted})
+              </Text>
+            )}
           </Flex>
-          {/* TODO: add TokenImageRender here */}
+          {singleStakingDenom && (
+            <TokenImageRender
+              boxSize={7}
+              logo={
+                assetInfo?.logo ?? getUndefinedTokenIcon(singleStakingDenom)
+              }
+            />
+          )}
         </Flex>
       </Flex>
-      <Flex
+      <Grid
         borderTop="1px solid"
         borderTopColor="gray.700"
         pt={4}
-        display={{ base: "none", md: "flex" }}
+        display={{ base: "none", md: "grid" }}
+        gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        gap={4}
       >
         <VotingPowerDetail
           label="Self-Bonded"
-          percent="80.00%"
-          amount="123,456,789.00"
-          denom="OSMO"
-          value="$12.00"
+          ratio={selfVotingPowerRatio}
+          amount={selfVotingPower as U<Token<Big>>}
+          denom={singleStakingDenom}
+          assetInfo={assetInfo}
         />
         <VotingPowerDetail
           label="From Delegators"
-          percent="20.00%"
-          amount="123,456,789.00"
-          denom="OSMO"
-          value="$12.00"
+          ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
+          amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
+          denom={singleStakingDenom}
+          assetInfo={assetInfo}
         />
-      </Flex>
+      </Grid>
     </Flex>
   );
 };

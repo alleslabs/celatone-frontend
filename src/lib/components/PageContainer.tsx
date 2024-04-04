@@ -1,12 +1,7 @@
 import type { BoxProps } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 
-interface PageContainerProps extends BoxProps {
-  children: ReactNode;
-}
-
-const PageContainer = ({ children, ...containerProps }: PageContainerProps) => (
+const PageContainer = ({ children, ...containerProps }: BoxProps) => (
   <Box
     as="main"
     p={{ base: "16px", md: "48px" }}

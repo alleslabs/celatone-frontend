@@ -12,6 +12,7 @@ import {
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { useOverviewsStats } from "lib/services/overviewService";
@@ -75,12 +76,24 @@ const Home = () => {
         sx={{ "& > div": { zIndex: 1 } }}
       >
         <TopDecorations />
-        <Heading as="h4" variant={{ base: "h5", md: "h4" }} mb={5} zIndex={1}>
-          <Text as="span" color="secondary.main">
-            {prettyName}
-          </Text>{" "}
-          Overview
-        </Heading>
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          mb={5}
+          zIndex={1}
+        >
+          <Heading as="h4" variant={{ base: "h5", md: "h4" }}>
+            <Text as="span" color="accent.main">
+              {prettyName}
+            </Text>{" "}
+            Overview
+          </Heading>
+          <UserDocsLink
+            isButton
+            isSmall
+            href="introduction/user-introduction"
+          />
+        </Flex>
         <Flex gap={4} direction={{ base: "column", md: "row" }}>
           <CardInfo
             title={txInfo.title}

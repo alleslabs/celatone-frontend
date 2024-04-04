@@ -11,10 +11,12 @@ import { isNull } from "lodash";
 import type { ReactNode } from "react";
 
 import type { VoteDetailsProps } from "..";
+import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposalService";
+import { ProposalStatus } from "lib/types";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
@@ -23,6 +25,8 @@ import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
+
+type VoterVariant = "validator" | "all";
 
 const ContentContainer = ({
   children,
@@ -55,13 +59,20 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const isProposalResolved = !isNull(proposalData?.resolvedHeight);
 
-  const toggleDisclosure = (
-    disclosure: typeof validatorVoteDisclosure | typeof allVoteDisclosure
-  ) => {
+  const toggleDisclosure = (voter: VoterVariant) => {
+    let disclosure = validatorVoteDisclosure;
+    let ampEvent = AmpEvent.USE_SEE_VALIDATOR_VOTES;
+
+    if (voter === "all") {
+      disclosure = allVoteDisclosure;
+      ampEvent = AmpEvent.USE_SEE_VOTES;
+    }
+
     if (disclosure.isOpen) {
       disclosure.onClose();
     } else {
       disclosure.onOpen();
+      track(ampEvent);
     }
 
     const windowPosition = scrollYPosition();
@@ -96,11 +107,13 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         transition="all 0.25s ease-in-out"
         gap={4}
       >
-        {/* Vote Participations */}
-        <ContentContainer transparent={isMobile}>
-          <VotingQuorum proposalData={proposalData} {...props} />
-        </ContentContainer>
-        {/* Vote Results */}
+        {/* Voting Participations */}
+        {proposalData.status === ProposalStatus.VOTING_PERIOD && (
+          <ContentContainer transparent={isMobile}>
+            <VotingQuorum proposalData={proposalData} {...props} />
+          </ContentContainer>
+        )}
+        {/* Voting Results */}
         <ContentContainer transparent={isMobile}>
           <VotingThreshold proposalData={proposalData} {...props} />
         </ContentContainer>
@@ -116,7 +129,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 />
                 <Button
                   variant="ghost-primary"
-                  onClick={() => toggleDisclosure(validatorVoteDisclosure)}
+                  onClick={() => toggleDisclosure("validator")}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
                   isDisabled={!answers?.validator.total}
                 >
@@ -143,9 +156,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 fullVersion={false}
                 isProposalResolved={isProposalResolved}
                 onViewMore={
-                  isMobile
-                    ? () => toggleDisclosure(validatorVoteDisclosure)
-                    : undefined
+                  isMobile ? () => toggleDisclosure("validator") : undefined
                 }
               />
             </ContentContainer>
@@ -161,7 +172,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 />
                 <Button
                   variant="ghost-primary"
-                  onClick={() => toggleDisclosure(allVoteDisclosure)}
+                  onClick={() => toggleDisclosure("all")}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
                   isDisabled={!answers?.all.total}
                 >
@@ -173,9 +184,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 answers={answers?.all}
                 fullVersion={false}
                 onViewMore={
-                  isMobile
-                    ? () => toggleDisclosure(allVoteDisclosure)
-                    : undefined
+                  isMobile ? () => toggleDisclosure("all") : undefined
                 }
               />
             </ContentContainer>

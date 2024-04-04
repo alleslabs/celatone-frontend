@@ -1,86 +1,112 @@
 /* eslint-disable */
-import type { FieldProps, RJSFSchema } from "@rjsf/utils";
+import type {
+  FieldProps,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+  UiSchema,
+} from "@rjsf/utils";
 import {
-  ERRORS_KEY,
+  ANY_OF_KEY,
   deepEquals,
+  ERRORS_KEY,
+  getDiscriminatorFieldFromSchema,
   getUiOptions,
   getWidget,
-  guessType,
+  mergeSchemas,
+  ONE_OF_KEY,
+  TranslatableString,
 } from "@rjsf/utils";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
-import unset from "lodash/unset";
 import { Component } from "react";
-import { getMatchingOptionFixed } from "../utils";
 
 /** Type used for the state of the `AnyOfField` component */
-type AnyOfFieldState = {
+type AnyOfFieldState<S extends StrictRJSFSchema = RJSFSchema> = {
   /** The currently selected option */
-  selectedOptionIndex: number;
+  selectedOption: number;
+  /** The option schemas after retrieving all $refs */
+  retrievedOptions: S[];
 };
 
-/**
- * Replacement from react-jsonschema-form. Ensures fields are named correctly
- * The `AnyOfField` component is used to render a field in the schema that is an `anyOf`, `allOf`
- * or `oneOf`. It tracks the currently selected option and cleans up any irrelevant data in
- * `formData`.
+/** The `AnyOfField` component is used to render a field in the schema that is an `anyOf`, `allOf` or `oneOf`. It tracks
+ * the currently selected option and cleans up any irrelevant data in `formData`.
  *
  * @param props - The `FieldProps` for this template
  */
-class MultiSchemaField<T extends object = any, F = any> extends Component<
-  FieldProps<T, F>,
-  AnyOfFieldState
-> {
+class MultiSchemaField<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+> extends Component<FieldProps<T, S, F>, AnyOfFieldState<S>> {
   /** Constructs an `AnyOfField` with the given `props` to initialize the initially selected option in state
    *
    * @param props - The `FieldProps` for this template
    */
-  constructor(props: FieldProps<T, F>) {
+  constructor(props: FieldProps<T, S, F>) {
     super(props);
 
-    const { formData, options } = this.props;
+    const {
+      formData,
+      options,
+      registry: { schemaUtils },
+    } = this.props;
+    // cache the retrieved options in state in case they have $refs to save doing it later
+    const retrievedOptions = options.map((opt: S) =>
+      schemaUtils.retrieveSchema(opt, formData)
+    );
 
     this.state = {
-      selectedOptionIndex: this.getMatchingOption(0, formData, options),
+      retrievedOptions,
+      selectedOption: this.getMatchingOption(0, formData, retrievedOptions),
     };
   }
 
-  /**
-   * React lifecycle methos that is called when the props and/or state for this component is
-   * updated. It recomputes the currently selected option based on the overall `formData`
+  /** React lifecycle method that is called when the props and/or state for this component is updated. It recomputes the
+   * currently selected option based on the overall `formData`
    *
    * @param prevProps - The previous `FieldProps` for this template
    * @param prevState - The previous `AnyOfFieldState` for this template
    */
   componentDidUpdate(
-    prevProps: Readonly<FieldProps<T, F>>,
+    prevProps: Readonly<FieldProps<T, S, F>>,
     prevState: Readonly<AnyOfFieldState>
   ) {
     const { formData, options, idSchema } = this.props;
-    const { selectedOptionIndex } = this.state;
+    const { selectedOption } = this.state;
+    let newState = this.state;
+    if (!deepEquals(prevProps.options, options)) {
+      const {
+        registry: { schemaUtils },
+      } = this.props;
+      // re-cache the retrieved options in state in case they have $refs to save doing it later
+      const retrievedOptions = options.map((opt: S) =>
+        schemaUtils.retrieveSchema(opt, formData)
+      );
+      newState = { selectedOption, retrievedOptions };
+    }
     if (
       !deepEquals(formData, prevProps.formData) &&
       idSchema.$id === prevProps.idSchema.$id
     ) {
+      const { retrievedOptions } = newState;
       const matchingOption = this.getMatchingOption(
-        selectedOptionIndex,
+        selectedOption,
         formData,
-        options
+        retrievedOptions
       );
 
-      if (!prevState || matchingOption === selectedOptionIndex) {
-        return;
+      if (prevState && matchingOption !== selectedOption) {
+        newState = { selectedOption: matchingOption, retrievedOptions };
       }
-
-      this.setState({
-        selectedOptionIndex: matchingOption,
-      });
+    }
+    if (newState !== this.state) {
+      this.setState(newState);
     }
   }
 
-  /**
-   * Determines the best matching option for the given `formData` and `options`.
+  /** Determines the best matching option for the given `formData` and `options`.
    *
    * @param formData - The new formData
    * @param options - The list of options to choose from
@@ -88,108 +114,85 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
    */
   getMatchingOption(
     selectedOption: number,
-    formData: T,
-    options: RJSFSchema[]
+    formData: T | undefined,
+    options: S[]
   ) {
     const {
-      registry: { schemaUtils, rootSchema },
+      schema,
+      registry: { schemaUtils },
     } = this.props;
 
-    const option = getMatchingOptionFixed(
-      schemaUtils.getValidator(),
+    const discriminator = getDiscriminatorFieldFromSchema<S>(schema);
+    return schemaUtils.getClosestMatchingOption(
       formData,
       options,
-      rootSchema
+      selectedOption,
+      discriminator
     );
-    if (option !== -1) {
-      return option;
-    }
-    // If the form data matches none of the options, use the currently selected
-    // option, assuming it's available; otherwise use the first option
-    return selectedOption || 0;
   }
 
-  /**
-   *  Callback handler to remember what the currently selected option is. In addition to that the
-   * `formData` is updated to remove properties that are not part of the newly selected option
-   * schema, and then the updated data is passed to the `onChange` handler.
+  /** Callback handler to remember what the currently selected option is. In addition to that the `formData` is updated
+   * to remove properties that are not part of the newly selected option schema, and then the updated data is passed to
+   * the `onChange` handler.
    *
-   * @param option -
+   * @param option - The new option value being selected
    */
-  onOptionChange = (selectedOption: any) => {
-    const selectedOptionIndex = parseInt(selectedOption, 10);
-    // console.log("I HAVE SELECTED", selectedOptionIndex)
-    const { formData, onChange, options, registry } = this.props;
+  onOptionChange = (option: string) => {
+    const { selectedOption, retrievedOptions } = this.state;
+    const { formData, onChange, registry } = this.props;
     const { schemaUtils } = registry;
-    const newOption = schemaUtils.retrieveSchema(
-      options[selectedOptionIndex],
+    const intOption = option !== undefined ? parseInt(option, 10) : -1;
+    if (intOption === selectedOption) {
+      return;
+    }
+    const newOption = intOption >= 0 ? retrievedOptions[intOption] : undefined;
+    const oldOption =
+      selectedOption >= 0 ? retrievedOptions[selectedOption] : undefined;
+
+    let newFormData = schemaUtils.sanitizeDataForNewSchema(
+      newOption,
+      oldOption,
       formData
     );
-
-    // If the new option is of type object and the current data is an object,
-    // discard properties added using the old option.
-    let newFormData: T | undefined;
-    if (
-      guessType(formData) === "object" &&
-      (newOption.type === "object" || newOption.properties)
-    ) {
-      newFormData = { ...formData };
-
-      const optionsToDiscard = options.slice();
-      // Remove the newly selected option from the list of options to discard
-      optionsToDiscard.splice(selectedOptionIndex, 1);
-      // console.log("OPTIONS TO DISCARD", optionsToDiscard)
-
-      // Discard any data added using other options
-      for (const option of optionsToDiscard) {
-        if (option.properties) {
-          for (const key in option.properties) {
-            if (key in newFormData) {
-              // console.log("UNSET", newFormData, key)
-              unset(newFormData, key);
-            }
-          }
-        }
-      }
+    if (newFormData && newOption) {
+      // Call getDefaultFormState to make sure defaults are populated on change. Pass "excludeObjectChildren"
+      // so that only the root objects themselves are created without adding undefined children properties
+      newFormData = schemaUtils.getDefaultFormState(
+        newOption,
+        newFormData,
+        "excludeObjectChildren"
+      ) as T;
     }
 
-    // Call getDefaultFormState to make sure defaults are populated on change.
-    const defaultFormState = schemaUtils.getDefaultFormState(
-      options[selectedOptionIndex],
-      newFormData
-    ) as T;
-    // console.log("DEFAULT FORM STATE", defaultFormState)
-    onChange(defaultFormState);
+    onChange(newFormData, undefined, this.getFieldId());
 
-    this.setState({
-      selectedOptionIndex,
-    });
+    this.setState({ selectedOption: intOption });
   };
 
-  /**
-   * Renders the `AnyOfField` selector along with a `SchemaField` for the value of the `formData`
+  getFieldId() {
+    const { idSchema, schema } = this.props;
+    return `${idSchema.$id}${schema.oneOf ? "__oneof_select" : "__anyof_select"}`;
+  }
+
+  /** Renders the `AnyOfField` selector along with a `SchemaField` for the value of the `formData`
    */
   render() {
     const {
       name,
       disabled = false,
-      baseType,
       errorSchema = {},
       formContext,
-      idSchema,
       onBlur,
       onFocus,
-      options,
       registry,
-      uiSchema,
       schema,
-      required,
-      readonly,
+      uiSchema,
     } = this.props;
 
-    const { widgets, fields, schemaUtils } = registry;
-    const { SchemaField } = fields;
-    const { selectedOptionIndex } = this.state;
+    const { widgets, fields, translateString, globalUiOptions, schemaUtils } =
+      registry;
+    const { SchemaField: _SchemaField } = fields;
+    const { selectedOption, retrievedOptions } = this.state;
     const {
       widget = "select",
       placeholder,
@@ -197,65 +200,104 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
       autocomplete,
       title = schema.title,
       ...uiOptions
-    } = getUiOptions<T, F>(uiSchema);
-    const Widget = getWidget<T>({ type: "number" }, widget, widgets);
+    } = getUiOptions<T, S, F>(uiSchema, globalUiOptions);
+    const Widget = getWidget<T, S, F>({ type: "number" }, widget, widgets);
     const rawErrors = get(errorSchema, ERRORS_KEY, []);
     const fieldErrorSchema = omit(errorSchema, [ERRORS_KEY]);
-    const displayLabel = schemaUtils.getDisplayLabel<F>(schema, uiSchema);
+    const displayLabel = schemaUtils.getDisplayLabel(
+      schema,
+      uiSchema,
+      globalUiOptions
+    );
 
-    const selectedOption = options[selectedOptionIndex] || null;
-    let optionSchema;
-    if (selectedOption) {
-      // If the subschema doesn't declare a type, infer the type from the
-      // parent schema
-      optionSchema = selectedOption.type
-        ? selectedOption
-        : { ...selectedOption, type: baseType };
+    const option =
+      selectedOption >= 0 ? retrievedOptions[selectedOption] || null : null;
+    let optionSchema: S | undefined | null;
+
+    if (option) {
+      // merge top level required field
+      const { required } = schema;
+      // Merge in all the non-oneOf/anyOf properties and also skip the special ADDITIONAL_PROPERTY_FLAG property
+      optionSchema = required
+        ? (mergeSchemas({ required }, option) as S)
+        : option;
     }
 
-    // if the second option's type is "null" it's probably a rust optional.
-    // This means that the nonnull value should use the name as the option name
-    const enumOptions = options.map((option: RJSFSchema, index: number) => {
-      let optionTitle = option.title;
+    // First we will check to see if there is an anyOf/oneOf override for the UI schema
+    let optionsUiSchema: UiSchema<T, S, F>[] = [];
+    if (ONE_OF_KEY in schema && uiSchema && ONE_OF_KEY in uiSchema) {
+      if (Array.isArray(uiSchema[ONE_OF_KEY])) {
+        optionsUiSchema = uiSchema[ONE_OF_KEY];
+      } else {
+        console.warn(`uiSchema.oneOf is not an array for "${title || name}"`);
+      }
+    } else if (ANY_OF_KEY in schema && uiSchema && ANY_OF_KEY in uiSchema) {
+      if (Array.isArray(uiSchema[ANY_OF_KEY])) {
+        optionsUiSchema = uiSchema[ANY_OF_KEY];
+      } else {
+        console.warn(`uiSchema.anyOf is not an array for "${title || name}"`);
+      }
+    }
+    // Then we pick the one that matches the selected option index, if one exists otherwise default to the main uiSchema
+    let optionUiSchema = uiSchema;
+    if (selectedOption >= 0 && optionsUiSchema.length > selectedOption) {
+      optionUiSchema = optionsUiSchema[selectedOption];
+    }
 
-      // Rust optional case
-      if (option.required?.length && option.required.length > 0) {
-        // there is one option available, so we can use  its title
-        if (option.required.length === 1) {
-          optionTitle = option.required[0];
+    const translateEnum: TranslatableString = title
+      ? TranslatableString.TitleOptionPrefix
+      : TranslatableString.OptionPrefix;
+    const translateParams = title ? [title] : [];
+    const enumOptions = retrievedOptions.map(
+      (option: RJSFSchema, index: number) => {
+        // Also see if there is an override title in the uiSchema for each option, otherwise use the title from the option
+        const { title: uiTitle } = getUiOptions<T, S, F>(
+          optionsUiSchema[index]
+        );
+
+        let optionTitle = uiTitle ?? option.title;
+
+        // Rust optional case
+        if (option.required?.length && option.required.length > 0) {
+          // there is one option available, so we can use  its title
+          if (option.required.length === 1) {
+            optionTitle = option.required[0];
+          }
         }
-      }
-      if (option.type === "string" && option.enum?.length === 1) {
-        optionTitle = option.enum[0]?.toString();
-      }
-      // Rust optional case
-      else if (option.type === "null") {
-        optionTitle = `${name} as null`;
-      }
-      // Here we do the second part of the above, because the non optional
-      else if (
-        options.length === 2 &&
-        options.some((opt: RJSFSchema) => opt.type === "null")
-      ) {
-        optionTitle = name;
-      }
+        if (option.type === "string" && option.enum?.length === 1) {
+          optionTitle = option.enum[0]?.toString();
+        }
+        // Rust optional case
+        else if (option.type === "null") {
+          optionTitle = `${name} as null`;
+        }
+        // Here we do the second part of the above, because the non optional
+        else if (
+          retrievedOptions.length === 2 &&
+          retrievedOptions.some((opt: RJSFSchema) => opt.type === "null")
+        ) {
+          optionTitle = name;
+        }
 
-      return {
-        label: optionTitle || `Option ${index + 1}`,
-        value: index,
-      };
-    });
+        return {
+          label:
+            optionTitle ||
+            translateString(
+              translateEnum,
+              translateParams.concat(String(index + 1))
+            ),
+          value: index,
+        };
+      }
+    );
 
     return (
       <div className="panel panel-default panel-body">
         <div className="form-group">
           <Widget
-            id={`${idSchema.$id}${
-              schema.oneOf ? "__oneof_select" : "__anyof_select"
-            }`}
-            schema={{ type: "number", default: 0 }}
-            required={required}
-            readonly={readonly}
+            id={this.getFieldId()}
+            name={`${name}${schema.oneOf ? "__oneof_select" : "__anyof_select"}`}
+            schema={{ type: "number", default: 0 } as S}
             onChange={this.onOptionChange}
             onBlur={onBlur}
             onFocus={onFocus}
@@ -263,7 +305,7 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
             multiple={false}
             rawErrors={rawErrors}
             errorSchema={fieldErrorSchema}
-            value={selectedOptionIndex >= 0 ? selectedOptionIndex : undefined}
+            value={selectedOption >= 0 ? selectedOption : undefined}
             options={{ enumOptions, ...uiOptions }}
             registry={registry}
             formContext={formContext}
@@ -274,8 +316,12 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
             hideLabel={!displayLabel}
           />
         </div>
-        {selectedOption !== null && (
-          <SchemaField {...this.props} schema={optionSchema} />
+        {optionSchema && (
+          <_SchemaField
+            {...this.props}
+            schema={optionSchema}
+            uiSchema={optionUiSchema}
+          />
         )}
       </div>
     );

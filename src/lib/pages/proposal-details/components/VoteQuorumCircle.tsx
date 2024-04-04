@@ -1,12 +1,12 @@
 import { Circle, Heading, Text } from "@chakra-ui/react";
-import type Big from "big.js";
 
+import type { Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumCircleProps {
-  quorum: number;
-  nonAbstainVotes: Big;
-  totalVotes: Big;
+  quorum: Ratio<number>;
+  nonAbstainVotes: Ratio<number>;
+  totalVotes: Ratio<number>;
   isCompact: boolean;
   isBgGray?: boolean;
 }
@@ -18,10 +18,10 @@ export const VoteQuorumCircle = ({
   isCompact,
   isBgGray,
 }: VoteQuorumCircleProps) => {
-  const nonAbstainVotesAngle = nonAbstainVotes.toNumber() * 360;
+  const nonAbstainVotesAngle = nonAbstainVotes * 360;
 
-  const totalVotesAngle = totalVotes.toNumber() * 360;
-  const totalVotesPercent = formatPrettyPercent(totalVotes.toNumber(), 1);
+  const totalVotesAngle = totalVotes * 360;
+  const totalVotesPercent = formatPrettyPercent(totalVotes, 1);
 
   const quorumAngle = quorum * 360;
   const quorumPercent = formatPrettyPercent(quorum);

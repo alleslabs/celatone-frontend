@@ -3,6 +3,7 @@ import { Grid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ValidatorOrder } from "../../types";
+import { trackUseSort } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { TableHeader } from "lib/components/table";
 
@@ -28,13 +29,7 @@ const SortIcon = ({
   if (column !== order) return null;
   return (
     <CustomIcon
-      name={
-        // NOTE: for moniker - arrow down is A to Z
-        (isDesc && order !== ValidatorOrder.Moniker) ||
-        (!isDesc && order === ValidatorOrder.Moniker)
-          ? "arrow-down"
-          : "arrow-up"
-      }
+      name={isDesc ? "arrow-down" : "arrow-up"}
       my={0}
       boxSize="14px"
       color="gray.600"
@@ -53,10 +48,17 @@ export const ValidatorsTableHeader = ({
 }: ValidatorsTableHeaderProps) => {
   const handleOrderChange = useCallback(
     (column: ValidatorOrder) => () => {
-      if (order === column) setIsDesc(!isDesc);
-      else {
+      if (order === column) {
+        const newIsDesc = !isDesc;
+        trackUseSort(column, newIsDesc ? "descending" : "ascending");
+        setIsDesc(newIsDesc);
+      } else {
+        const newIsDesc =
+          column !== ValidatorOrder.Moniker &&
+          column !== ValidatorOrder.Commission;
+        trackUseSort(column, newIsDesc ? "descending" : "ascending");
         setOrder(column);
-        setIsDesc(column !== ValidatorOrder.Moniker);
+        setIsDesc(newIsDesc);
       }
     },
     [isDesc, order, setIsDesc, setOrder]
@@ -64,7 +66,15 @@ export const ValidatorsTableHeader = ({
 
   return (
     <Grid templateColumns={templateColumns} id={scrollComponentId}>
-      {isActive && <TableHeader textAlign="center">Rank</TableHeader>}
+      {isActive && (
+        <TableHeader
+          textAlign="center"
+          cursor="pointer"
+          onClick={handleOrderChange(ValidatorOrder.VotingPower)}
+        >
+          Rank
+        </TableHeader>
+      )}
       <TableHeader
         cursor="pointer"
         onClick={handleOrderChange(ValidatorOrder.Moniker)}

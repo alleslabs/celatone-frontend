@@ -16,13 +16,10 @@ import type {
   U,
 } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import {
-  divWithDefault,
-  formatPrettyPercent,
-  formatTokenWithValueList,
-} from "lib/utils";
+import { formatPrettyPercent, formatTokenWithValueList } from "lib/utils";
 
 import { ErrorFetchingProposalInfos } from "./ErrorFetchingProposalInfos";
+import { ViewFailedReason } from "./ViewFailedReason";
 
 const Passed = () => (
   <span
@@ -83,10 +80,8 @@ export const ResultExplanation = ({
     params,
     proposalData.isExpedited
   );
-  const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
+  const { totalVotes, yesNonRatio, noWithVetoRatio } =
     normalizeVotesInfo(votesInfo);
-  const yesRatio = divWithDefault(yes, nonAbstainVotes, 0);
-  const noWithVetoRatio = divWithDefault(noWithVeto, totalVotes, 0);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {
     const required = mapDeposit(proposalData.totalDeposit, minDeposit).reduce<
@@ -111,7 +106,7 @@ export const ResultExplanation = ({
   }
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
-    if (totalVotes.lt(quorum))
+    if (totalVotes < quorum)
       return (
         <Text variant="body2">
           As of now, the proposal has not yet reached the required quorum. If
@@ -120,7 +115,7 @@ export const ResultExplanation = ({
         </Text>
       );
 
-    if (noWithVetoRatio.gte(vetoThreshold))
+    if (noWithVetoRatio >= vetoThreshold)
       return (
         <Text variant="body2">
           The proposal has{" "}
@@ -138,7 +133,7 @@ export const ResultExplanation = ({
               fontWeight: 700,
             }}
           >
-            {formatPrettyPercent(noWithVetoRatio.toNumber())}
+            {formatPrettyPercent(noWithVetoRatio)}
           </span>{" "}
           of the total votes, including &ldquo;Abstain&rdquo;, which exceeds the{" "}
           <span
@@ -153,7 +148,7 @@ export const ResultExplanation = ({
         </Text>
       );
 
-    if (yesRatio.lt(threshold))
+    if (yesNonRatio < threshold)
       return (
         <Text variant="body2">
           The proposal has{" "}
@@ -183,13 +178,14 @@ export const ResultExplanation = ({
     return (
       <Text variant="body2">
         Although the proposal successfully reached the voting quorum with a{" "}
-        {formatPrettyPercent(yesRatio.toNumber())} &ldquo;Yes&rdquo; rate, it
-        was not implemented due to technical reasons.
+        {formatPrettyPercent(yesNonRatio)} &ldquo;Yes&rdquo; rate, it was not
+        implemented due to technical reasons.{" "}
+        <ViewFailedReason text={proposalData.failedReason} />
       </Text>
     );
 
   if (proposalData.status === ProposalStatus.REJECTED) {
-    if (totalVotes.lt(quorum))
+    if (yesNonRatio >= threshold)
       return (
         <Text variant="body2">
           This proposal did not meet the required quorum, resulting in its
@@ -197,16 +193,17 @@ export const ResultExplanation = ({
         </Text>
       );
 
-    if (noWithVetoRatio.gte(vetoThreshold))
+    if (noWithVetoRatio >= vetoThreshold)
       return (
         <Text variant="body2">
-          Due to the &ldquo;No with veto&rdquo; vote proportion constitutes{" "}
+          The proposal is <Rejected /> due to either the quorum is not reached
+          or the &ldquo;No with veto&rdquo; vote proportion constitutes{" "}
           <span
             style={{
               fontWeight: 700,
             }}
           >
-            {formatPrettyPercent(noWithVetoRatio.toNumber())}{" "}
+            {formatPrettyPercent(noWithVetoRatio)}{" "}
           </span>
           of the total votes including &ldquo;Abstain&rdquo;, which exceeds the{" "}
           <span
@@ -216,14 +213,14 @@ export const ResultExplanation = ({
           >
             {formatPrettyPercent(vetoThreshold)} threshold
           </span>
-          , the proposal is <Rejected /> regardless of &ldquo;Yes&rdquo; votes.
+          .
         </Text>
       );
 
     return (
       <Text variant="body2">
-        The proposal has reached the voting quorum but fell short of reaching
-        the &ldquo;Yes&rdquo; votes threshold, resulting in its rejection.
+        The proposal is <Rejected /> due to either the quorum is not reached or
+        fell short of reaching the &ldquo;Yes&rdquo; votes threshold.
       </Text>
     );
   }
@@ -236,7 +233,7 @@ export const ResultExplanation = ({
           fontWeight: 700,
         }}
       >
-        {formatPrettyPercent(yesRatio.toNumber())} of &ldquo;Yes&rdquo;
+        {formatPrettyPercent(yesNonRatio)} of &ldquo;Yes&rdquo;
       </span>{" "}
       rate. As a result, the proposal has been passed, and its content will now
       be implemented.

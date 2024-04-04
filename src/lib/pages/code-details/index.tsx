@@ -14,6 +14,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useCodeDataByCodeId } from "lib/services/codeService";
 
@@ -108,12 +109,22 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
             <CodeContractsTable codeId={codeId} />
+            <UserDocsLink
+              title="What is Code in CosmWasm?"
+              cta="Read more about Code Details"
+              href="cosmwasm/code/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <CodeSchemaSection
               codeId={codeId}
               codeHash={code.hash}
               jsonSchema={jsonSchema}
+            />
+            <UserDocsLink
+              title="How to attached and use JSON Schema?"
+              cta="Read more about JSON Schema"
+              href="cosmwasm/code/attach-json-schema"
             />
           </TabPanel>
         </TabPanels>

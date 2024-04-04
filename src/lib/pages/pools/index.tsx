@@ -1,4 +1,12 @@
-import { Heading, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -7,6 +15,7 @@ import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { usePoolConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import { PoolType } from "lib/types";
 
@@ -66,9 +75,20 @@ export const PoolIndex = () => {
 
   return (
     <PageContainer>
-      <Heading variant="h5" as="h5">
-        Osmosis Pools
-      </Heading>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Flex direction="column">
+          <Heading variant="h5" as="h5" minH="36px">
+            Osmosis Pools
+          </Heading>
+          <Text variant="body2" color="text.dark" fontWeight="500">
+            This page displays liquidity pools on this network sorted by recency
+          </Text>
+        </Flex>
+        <UserDocsLink
+          href="introduction/block-explorer#osmosis-pools"
+          isButton
+        />
+      </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tabIndex)}
         lazyBehavior="keepMounted"

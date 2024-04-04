@@ -1,4 +1,4 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
 import { Breadcrumb } from "lib/components/Breadcrumb";
@@ -22,13 +22,7 @@ export const ValidatorTop = ({
   totalVotingPower,
   singleStakingDenom,
 }: ValidatorTopProps) => (
-  <Flex
-    direction="column"
-    gap={5}
-    px={{ base: "16px", md: "48px" }}
-    pt={{ base: "16px", md: "48px" }}
-    bgGradient="linear(to-b, success.background, transparent)"
-  >
+  <>
     <Breadcrumb
       items={[
         {
@@ -90,10 +84,12 @@ export const ValidatorTop = ({
             fixedHeight={false}
           />
         </Flex>
-        <Link href={info.website} isExternal>
-          <WebsiteButton my={2} display={{ base: "flex", md: "none" }} />
-        </Link>
+        <WebsiteButton
+          href={info.website}
+          my={2}
+          display={{ base: "flex", md: "none" }}
+        />
       </Flex>
     </Flex>
-  </Flex>
+  </>
 );
