@@ -42,7 +42,11 @@ export const VotedProposalsTableRow = ({
     <Grid
       templateColumns={templateColumns}
       onClick={() => onRowSelect(votedProposal.proposalId)}
-      _hover={{ bg: "gray.900" }}
+      _hover={{
+        "> div": {
+          bgColor: "gray.900",
+        },
+      }}
       transition="all 0.25s ease-in-out"
       cursor="pointer"
     >

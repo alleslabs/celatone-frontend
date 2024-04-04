@@ -26,6 +26,7 @@ import type {
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
+  ProposalVoteType,
   SnakeToCamelCaseNested,
 } from "lib/types";
 import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
@@ -298,8 +299,8 @@ export const getProposalVotes = async (
   id: number,
   limit: number,
   offset: number,
-  answer?: string,
-  search?: string
+  answer: ProposalVoteType,
+  search: string
 ): Promise<ProposalVotesResponse> => {
   let url = `${endpoint}/${encodeURIComponent(id)}/votes?limit=${limit}&offset=${offset}`;
   url = url.concat(search ? `&search=${encodeURIComponent(search)}` : "");
@@ -317,10 +318,21 @@ export interface ProposalValidatorVotesResponse {
 
 export const getProposalValidatorVotes = async (
   endpoint: string,
-  id: number
+  id: number,
+  limit: number,
+  offset: number,
+  answer: ProposalVoteType,
+  search: string
 ): Promise<ProposalValidatorVotesResponse> =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`)
+    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
+      params: {
+        limit,
+        offset,
+        answer,
+        search,
+      },
+    })
     .then(({ data }) => {
       const parsed = parseWithError(zProposalVotesResponse, data);
       return {

@@ -188,7 +188,7 @@ export const VotedProposalsTable = ({
         (onViewMore
           ? data.total > 5 && (
               <ViewMore
-                text={`View all proposed blocks (${data.total})`}
+                text={`View all proposals (${data.total})`}
                 onClick={onViewMore}
               />
             )

@@ -99,6 +99,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Contract Interactions
+- [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
+- [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
 - [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
 - [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
 - [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
@@ -130,6 +132,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
+- [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
 - [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links
