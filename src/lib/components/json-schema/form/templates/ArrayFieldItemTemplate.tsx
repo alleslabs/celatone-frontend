@@ -1,45 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, ButtonGroup, HStack } from "@chakra-ui/react";
-import type { ArrayFieldTemplateItemType } from "@rjsf/utils";
-import { useMemo } from "react";
+import type {
+  ArrayFieldTemplateItemType,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from "@rjsf/utils";
 
-export default function ArrayFieldItemTemplate<T = any, F = any>(
-  props: ArrayFieldTemplateItemType<T, F>
-) {
+/** The `ArrayFieldItemTemplate` component is the template used to render an items of an array.
+ *
+ * @param props - The `ArrayFieldTemplateItemType` props for the component
+ */
+export default function ArrayFieldItemTemplate<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: ArrayFieldTemplateItemType<T, S, F>) {
   const {
     children,
+    className,
     disabled,
     hasToolbar,
     hasMoveDown,
     hasMoveUp,
     hasRemove,
+    hasCopy,
     index,
+    onCopyIndexClick,
     onDropIndexClick,
     onReorderClick,
     readonly,
-    uiSchema,
     registry,
+    uiSchema,
   } = props;
-  const { MoveDownButton, MoveUpButton, RemoveButton } =
+  const { CopyButton, MoveDownButton, MoveUpButton, RemoveButton } =
     registry.templates.ButtonTemplates;
 
-  const onRemoveClick = useMemo(
-    () => onDropIndexClick(index),
-    [index, onDropIndexClick]
-  );
-
-  const onArrowUpClick = useMemo(
-    () => onReorderClick(index, index - 1),
-    [index, onReorderClick]
-  );
-
-  const onArrowDownClick = useMemo(
-    () => onReorderClick(index, index + 1),
-    [index, onReorderClick]
-  );
-
   return (
-    <HStack alignItems="center" gap={2}>
+    <HStack className={className} alignItems="center" gap={2}>
       <Box
         w="100%"
         border="1px solid var(--chakra-colors-gray-600)"
@@ -53,22 +51,33 @@ export default function ArrayFieldItemTemplate<T = any, F = any>(
           {(hasMoveUp || hasMoveDown) && (
             <MoveUpButton
               disabled={disabled || readonly || !hasMoveUp}
-              onClick={onArrowUpClick}
+              onClick={onReorderClick(index, index - 1)}
               uiSchema={uiSchema}
+              registry={registry}
             />
           )}
           {(hasMoveUp || hasMoveDown) && (
             <MoveDownButton
               disabled={disabled || readonly || !hasMoveDown}
-              onClick={onArrowDownClick}
+              onClick={onReorderClick(index, index + 1)}
               uiSchema={uiSchema}
+              registry={registry}
+            />
+          )}
+          {hasCopy && (
+            <CopyButton
+              disabled={disabled || readonly}
+              onClick={onCopyIndexClick(index)}
+              uiSchema={uiSchema}
+              registry={registry}
             />
           )}
           {hasRemove && (
             <RemoveButton
               disabled={disabled || readonly}
-              onClick={onRemoveClick}
+              onClick={onDropIndexClick(index)}
               uiSchema={uiSchema}
+              registry={registry}
             />
           )}
         </ButtonGroup>
