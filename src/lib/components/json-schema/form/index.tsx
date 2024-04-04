@@ -13,7 +13,7 @@ import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import { isUndefined } from "lodash";
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { JsonDataType } from "lib/types";
 
@@ -62,6 +62,10 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   uiSchema,
   formContext,
 }) => {
+  const fixedSchema = useMemo(() => {
+    fixSchema(schema);
+    return schema;
+  }, [schema]);
   const [formData, setFormData] = useState<JsonDataType>(initialFormData);
 
   useEffect(() => {
@@ -72,13 +76,12 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
     propsOnChange?.(initialFormData, errors);
   }, [JSON.stringify(initialFormData)]);
 
-  fixSchema(schema);
   return (
     <Form
       id={formId}
       formContext={formContext}
       formData={formData}
-      schema={schema}
+      schema={fixedSchema}
       uiSchema={{
         "ui:submitButtonOptions": {
           norender: true,
