@@ -83,10 +83,10 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   return (
     <Flex
+      id={scrollComponentId}
       position="relative"
       overflowX="hidden"
       width="full"
-      id={scrollComponentId}
     >
       <Flex
         direction="column"

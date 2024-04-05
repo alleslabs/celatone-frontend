@@ -91,6 +91,7 @@ export const ProposalVotesTableRow = ({
               <ExplorerLink
                 type="tx_hash"
                 value={proposalVote.txHash.toUpperCase()}
+                showCopyOnHover
               />
             ) : (
               <Text variant="body2">N/A</Text>

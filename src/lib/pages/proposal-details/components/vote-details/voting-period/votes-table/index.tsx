@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  TableContainer,
-} from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, TableContainer } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 
@@ -45,8 +38,7 @@ export const ProposalVotesTableBody = ({
 
   if (isLoading) return <Loading />;
   if (!proposalVotes) return <ErrorFetching dataName="votes" />;
-
-  if (proposalVotes.length === 0) {
+  if (proposalVotes.length === 0)
     return (
       <EmptyState
         imageVariant="empty"
@@ -57,7 +49,7 @@ export const ProposalVotesTableBody = ({
         }
       />
     );
-  }
+
   return (
     <TableContainer>
       <ProposalVotesTableHeader
@@ -130,12 +122,10 @@ export const ProposalVotesTable = ({
   const isSearching =
     debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;
 
-  const total = answers?.total ?? 0;
-
   const answerOptions = useMemo(
     () => [
       {
-        label: `All votes (${total})`,
+        label: `All votes (${answers?.total ?? 0})`,
         value: ProposalVoteType.ALL,
         disabled: false,
       },
@@ -166,7 +156,7 @@ export const ProposalVotesTable = ({
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [total, JSON.stringify(answers)]
+    [JSON.stringify(answers)]
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -180,9 +170,13 @@ export const ProposalVotesTable = ({
   };
 
   return (
-    <Box id={tableHeaderId}>
+    <>
       {fullVersion && (
-        <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
+        <Grid
+          id={tableHeaderId}
+          gap={4}
+          templateColumns={{ base: "1fr", md: "240px auto" }}
+        >
           <GridItem>
             <SelectInput<ProposalVoteType>
               formLabel="Filter by Answer"
@@ -210,30 +204,38 @@ export const ProposalVotesTable = ({
         fullVersion={fullVersion}
         isSearching={isSearching}
       />
-      {!!total && fullVersion && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          scrollComponentId={tableHeaderId}
-          offset={offset}
-          totalData={data?.total ?? 0}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={(e) => {
-            const size = Number(e.target.value);
-            setPageSize(size);
-            setCurrentPage(1);
-          }}
-        />
-      )}
-      {onViewMore && !!total && total > 10 && (
-        <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
-          <Button w="full" variant="ghost-primary" gap={2} onClick={onViewMore}>
-            View all votes
-            <CustomIcon name="chevron-right" boxSize="12px" />
-          </Button>
-        </Flex>
-      )}
-    </Box>
+      {data &&
+        data.total > 10 &&
+        (onViewMore ? (
+          <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
+            <Button
+              w="full"
+              variant="ghost-primary"
+              gap={2}
+              onClick={onViewMore}
+            >
+              View all votes
+              <CustomIcon name="chevron-right" boxSize="12px" />
+            </Button>
+          </Flex>
+        ) : (
+          fullVersion && (
+            <Pagination
+              currentPage={currentPage}
+              pagesQuantity={pagesQuantity}
+              scrollComponentId={tableHeaderId}
+              offset={offset}
+              totalData={data?.total ?? 0}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={(e) => {
+                const size = Number(e.target.value);
+                setPageSize(size);
+                setCurrentPage(1);
+              }}
+            />
+          )
+        ))}
+    </>
   );
 };

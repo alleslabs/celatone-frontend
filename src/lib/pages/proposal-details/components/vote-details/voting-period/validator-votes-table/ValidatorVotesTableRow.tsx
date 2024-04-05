@@ -97,6 +97,7 @@ export const ValidatorVotesTableRow = ({
               <ExplorerLink
                 type="tx_hash"
                 value={proposalVote.txHash.toUpperCase()}
+                showCopyOnHover
               />
             ) : (
               <Text variant="body3" textColor="text.dark">
