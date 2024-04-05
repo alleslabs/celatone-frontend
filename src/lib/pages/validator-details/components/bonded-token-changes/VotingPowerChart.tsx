@@ -122,28 +122,31 @@ export const VotingPowerChart = ({
       }}
       gap={8}
       backgroundColor="gray.900"
-      p={6}
+      py={6}
+      px={4}
       rounded={8}
       w="100%"
     >
-      <Flex gap={6} direction="column" w={250} minW={250}>
+      <Flex gap={6} direction="column" w={280} minW={280}>
         <VotingPowerChartDetails
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
           assetInfo={assetInfo}
         />
-        {onViewMore && (
-          <Button
-            variant="ghost-secondary"
-            p="unset"
-            size="md"
-            pl={2}
-            onClick={onViewMore}
-          >
-            See all related transactions
-            <CustomIcon name="chevron-right" boxSize={3} />
-          </Button>
-        )}
+        <Flex>
+          {onViewMore && (
+            <Button
+              variant="ghost-secondary"
+              p="unset"
+              pl={2}
+              size="md"
+              onClick={onViewMore}
+            >
+              See all related transactions
+              <CustomIcon name="chevron-right" boxSize={3} />
+            </Button>
+          )}
+        </Flex>
       </Flex>
       <Box w="100%" h="272px" id="voting-power-chart-container">
         <LineChart
