@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
+import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
@@ -54,6 +55,13 @@ export const UptimeSection = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(uptimeData.uptime)]);
+
+  const handleOnViewMore = () => {
+    if (!onViewMore) return;
+
+    trackUseViewMore();
+    onViewMore();
+  };
 
   return (
     <Flex
@@ -100,7 +108,7 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={handleOnViewMore}
             >
               View Performance
             </Button>
@@ -122,7 +130,7 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={handleOnViewMore}
             >
               View Performance
             </Button>

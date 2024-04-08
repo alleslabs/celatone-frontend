@@ -23,6 +23,12 @@ export const trackUseTab = (tab: string, section?: string, info?: string) =>
     info,
   });
 
+export const trackUseViewMore = (section?: string) => {
+  amp.track(AmpEvent.USE_VIEW_MORE, {
+    section,
+  });
+};
+
 export const trackUseRadio = (radio: string, section?: string) =>
   amp.track(AmpEvent.USE_RADIO, {
     radio,
