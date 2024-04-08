@@ -31,7 +31,6 @@ interface VotedProposalsTableProps {
 export const VotedProposalsTable = ({
   validatorAddress,
   onViewMore,
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -132,13 +131,6 @@ export const VotedProposalsTable = ({
     setAnswerFilter(newAnswer);
   };
 
-  const handleOnViewMore = () => {
-    if (!onViewMore) return;
-
-    trackUseViewMore();
-    onViewMore();
-  };
-
   return isMobileOverview ? (
     <Flex
       backgroundColor="gray.900"
@@ -147,7 +139,10 @@ export const VotedProposalsTable = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={handleOnViewMore}
+      onClick={() => {
+        trackUseViewMore();
+        onViewMore();
+      }}
     >
       <TableTitle title="Voted Proposals" count={answer?.all ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
