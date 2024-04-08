@@ -2,7 +2,7 @@ import { Alert, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 
-import { trackUseViewMore } from "lib/amplitude";
+import { AmpEvent, trackUseFilter, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
 import type { IconKeys } from "lib/components/icon";
@@ -127,6 +127,11 @@ export const VotedProposalsTable = ({
   };
 
   const handleOnAnswerFilterChange = (newAnswer: ProposalVoteType) => {
+    trackUseFilter(
+      AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
+      Object.values(ProposalVoteType),
+      newAnswer
+    );
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
   };
@@ -177,6 +182,7 @@ export const VotedProposalsTable = ({
                 value={search}
                 onChange={handleOnSearchChange}
                 size="lg"
+                amptrackSection="voted-proposals-search"
               />
             </GridItem>
           </Grid>

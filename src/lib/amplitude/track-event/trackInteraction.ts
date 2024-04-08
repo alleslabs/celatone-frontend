@@ -23,8 +23,20 @@ export const trackUseTab = (tab: string, section?: string, info?: string) =>
     info,
   });
 
-export const trackUseViewMore = (section?: string) => {
+export const trackUseViewMore = (section?: { [key: string]: string }) => {
   amp.track(AmpEvent.USE_VIEW_MORE, {
+    section,
+  });
+};
+
+export const trackUseUpTime = (section?: { [key: string]: string }) => {
+  amp.track(AmpEvent.USE_UPTIME, {
+    section,
+  });
+};
+
+export const trackSearchInput = (section?: { [key: string]: string }) => {
+  amp.track(AmpEvent.USE_SEARCH_INPUT, {
     section,
   });
 };
@@ -178,7 +190,8 @@ export const trackUseFilter = (
     | AmpEvent.USE_FILTER_POOL_TYPE
     | AmpEvent.USE_FILTER_PROPOSALS_TYPE
     | AmpEvent.USE_FILTER_PROPOSALS_STATUS
-    | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE,
+    | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE
+    | AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
   filters: string[],
   action: string
 ) => amp.track(event, { action, filters });
