@@ -49,7 +49,6 @@ export interface ResultMetadata {
   };
 }
 
-// TODO: Add Proposal ID
 // eslint-disable-next-line complexity
 export const useSearchHandler = (
   keyword: string,

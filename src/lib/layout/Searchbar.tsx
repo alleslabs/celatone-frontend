@@ -266,7 +266,6 @@ const Searchbar = () => {
   const boxRef = useRef<HTMLDivElement>(null);
 
   const [keyword, setKeyword] = useState("");
-  const [displayResults, setDisplayResults] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
 
@@ -277,7 +276,6 @@ const Searchbar = () => {
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setKeyword(inputValue);
-    setDisplayResults(inputValue.length > 0);
     setIsTyping(true);
     setCursor(0);
   };
@@ -295,7 +293,6 @@ const Searchbar = () => {
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
         });
-        setDisplayResults(false);
         setKeyword("");
       }
     },
@@ -329,10 +326,7 @@ const Searchbar = () => {
 
   useOutsideClick({
     ref: boxRef,
-    handler: () => {
-      onClose();
-      setDisplayResults(false);
-    },
+    handler: onClose,
   });
 
   return isMobile ? (
@@ -359,12 +353,11 @@ const Searchbar = () => {
                   onChange={handleSearchChange}
                   placeholder="Type your keyword ..."
                   autoFocus
-                  onFocus={() => setDisplayResults(keyword.length > 0)}
                   onKeyDown={handleOnKeyEnter}
                   autoComplete="off"
                 />
               </Flex>
-              {displayResults ? (
+              {keyword.length > 0 ? (
                 <List borderRadius="8px" bg="gray.900" w="full">
                   {isLoading || isTyping ? (
                     <StyledListItem
@@ -420,10 +413,7 @@ const Searchbar = () => {
         value={keyword}
         onChange={handleSearchChange}
         placeholder={`Search on ${currentChainId}`}
-        onFocus={() => {
-          onOpen();
-          setDisplayResults(keyword.length > 0);
-        }}
+        onFocus={onOpen}
         onKeyDown={handleOnKeyEnter}
         autoComplete="off"
       />
@@ -431,15 +421,13 @@ const Searchbar = () => {
         borderRadius="8px"
         bg="gray.900"
         position="absolute"
-        zIndex={2}
         w="full"
+        h={isOpen ? "fit-content" : 0}
         top="50px"
         overflowY="scroll"
         shadow="dark-lg"
-        h={isOpen ? "fit-content" : 0}
-        transition="all 0.25s ease-in-out"
       >
-        {displayResults ? (
+        {keyword.length > 0 ? (
           <>
             {isLoading || isTyping ? (
               <StyledListItem display="flex" alignItems="center" gap={2} p={4}>
@@ -460,7 +448,7 @@ const Searchbar = () => {
             )}
           </>
         ) : (
-          <StyledListItem display="flex" alignItems="center" gap={2} p={4}>
+          <StyledListItem p={4}>
             <Text color="text.disabled" variant="body2" fontWeight={500}>
               {getPlaceholder({ isWasm, isPool, isMove, isGov })}
             </Text>
