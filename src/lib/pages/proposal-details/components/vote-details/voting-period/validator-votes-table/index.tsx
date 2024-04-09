@@ -37,16 +37,10 @@ export const ValidatorVotesTableBody = ({
 }: ValidatorVotesTableBodyProps) => {
   const isMobile = useMobile();
 
-  const templateColumns = {
-    head:
-      fullVersion && !isMobile
-        ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
-        : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`,
-    row:
-      fullVersion && !isMobile
-        ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
-        : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`,
-  };
+  const templateColumns =
+    fullVersion && !isMobile
+      ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
+      : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`;
 
   if (isLoading) return <Loading />;
   if (!validatorVotes) return <ErrorFetching dataName="votes" />;
@@ -65,7 +59,7 @@ export const ValidatorVotesTableBody = ({
   return (
     <TableContainer>
       <ValidatorVotesTableHeader
-        templateColumns={templateColumns.head}
+        templateColumns={templateColumns}
         fullVersion={fullVersion}
         isProposalResolved={isProposalResolved}
       />
@@ -79,7 +73,7 @@ export const ValidatorVotesTableBody = ({
           }
           proposalVote={each}
           fullVersion={fullVersion}
-          templateColumns={templateColumns.row}
+          templateColumns={templateColumns}
           isProposalResolved={isProposalResolved}
         />
       ))}
@@ -93,6 +87,7 @@ interface ValidatorVotesTableProps {
   fullVersion: boolean;
   isProposalResolved: boolean;
   onViewMore?: () => void;
+  enabled?: boolean;
 }
 
 const tableHeaderId = "validatorVotesTable";
@@ -103,6 +98,7 @@ export const ValidatorVotesTable = ({
   fullVersion,
   isProposalResolved,
   onViewMore,
+  enabled,
 }: ValidatorVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
     ProposalVoteType.ALL
@@ -198,7 +194,7 @@ export const ValidatorVotesTable = ({
     <>
       {fullVersion && (
         <Grid
-          id={tableHeaderId}
+          id={enabled ? tableHeaderId : undefined}
           gap={4}
           templateColumns={{ base: "1fr", md: "240px auto" }}
         >

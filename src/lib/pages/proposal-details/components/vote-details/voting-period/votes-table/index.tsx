@@ -78,6 +78,7 @@ interface ProposalVotesTableProps {
   answers: Option<ProposalAnswerCountsResponse["all"]>;
   fullVersion: boolean;
   onViewMore?: () => void;
+  enabled?: boolean;
 }
 
 const tableHeaderId = "proposalVotesTable";
@@ -87,6 +88,7 @@ export const ProposalVotesTable = ({
   answers,
   fullVersion,
   onViewMore,
+  enabled,
 }: ProposalVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
     ProposalVoteType.ALL
@@ -173,7 +175,7 @@ export const ProposalVotesTable = ({
     <>
       {fullVersion && (
         <Grid
-          id={tableHeaderId}
+          id={enabled ? tableHeaderId : undefined}
           gap={4}
           templateColumns={{ base: "1fr", md: "240px auto" }}
         >
