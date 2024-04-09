@@ -20,11 +20,13 @@ const StatWithLabel = ({
   isLoading: boolean;
   tooltipLabel?: string;
 }) => (
-  <Flex gap={{ md: 1 }} direction={{ base: "column", md: "row" }}>
-    <Text variant="body2" fontWeight={600} color="text.dark">
-      {label}
-    </Text>
-    {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
+  <Flex gap={{ md: 2 }} direction={{ base: "column", md: "row" }}>
+    <Flex gap={1} alignItems="center">
+      <Text variant="body2" fontWeight={600} color="text.dark">
+        {label}
+      </Text>
+      {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
+    </Flex>
     {isLoading ? (
       <Spinner size="sm" />
     ) : (
