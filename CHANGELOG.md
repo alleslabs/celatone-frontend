@@ -131,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#877](https://github.com/alleslabs/celatone-frontend/pull/877) Fix validator list/details bug bash
 - [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
 - [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
