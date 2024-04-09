@@ -40,6 +40,7 @@ export const VotedProposalsTableRow = ({
 
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
       onClick={() => onRowSelect(votedProposal.proposalId)}
       _hover={{

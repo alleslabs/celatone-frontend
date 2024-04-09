@@ -10,7 +10,7 @@ import { ErrorFetching } from "lib/components/state";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
 import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 import {
-  formatHHmm,
+  formatMMMDD,
   formatUTC,
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -48,9 +48,9 @@ export const VotingPowerChart = ({
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
     : "";
 
-  const labels = historicalPowers.items.map((item) =>
-    formatHHmm(item.hourRoundedTimestamp as Date)
-  );
+  const labels = historicalPowers.items.map((item) => {
+    return formatMMMDD(item.hourRoundedTimestamp as Date);
+  });
 
   const dataset = {
     data: historicalPowers.items.map((item) => item.votingPower.toNumber()),

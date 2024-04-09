@@ -31,6 +31,8 @@ export const formatUTC = (date: Date) =>
 
 export const formatHHmm = (date: Date) => dayjs.utc(date).format("HH:mm");
 
+export const formatMMMDD = (date: Date) => dayjs.utc(date).format("MMM DD");
+
 export const dateFromNow = (date: Date) => dayjs.utc(date).fromNow();
 
 export const formatSeconds = (sec: Option<string>) => {

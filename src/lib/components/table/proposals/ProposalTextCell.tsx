@@ -47,9 +47,9 @@ export const ProposalTextCell = ({
       <Text
         ref={titleRef}
         variant="body2"
-        whiteSpace="nowrap"
+        whiteSpace={isMobile ? undefined : "nowrap"}
         maxW={showName ? undefined : "full"}
-        className={showName ? undefined : "ellipsis"}
+        className={showName || isMobile ? undefined : "ellipsis"}
       >
         {title}
       </Text>
@@ -65,9 +65,9 @@ export const ProposalTextCell = ({
           ref={typeRef}
           variant="body3"
           color="text.dark"
-          whiteSpace="nowrap"
+          whiteSpace={isMobile ? undefined : "nowrap"}
           maxW={showName ? undefined : "full"}
-          className={showName ? undefined : "ellipsis"}
+          className={showName || isMobile ? undefined : "ellipsis"}
         >
           {types.length
             ? types.map((msgType, index) => (
