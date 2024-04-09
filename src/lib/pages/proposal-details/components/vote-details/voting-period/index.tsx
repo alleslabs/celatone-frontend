@@ -125,13 +125,13 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 <TableTitle
                   title="Validator Votes"
                   mb={0}
-                  count={answers?.validator.total}
+                  count={answers?.validator.totalValidators}
                 />
                 <Button
                   variant="ghost-primary"
                   onClick={() => toggleDisclosure("validator")}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                  isDisabled={!answers?.validator.total}
+                  isDisabled={!answers?.validator.totalValidators}
                 >
                   {isMobile ? "View" : "View Details"}
                 </Button>
