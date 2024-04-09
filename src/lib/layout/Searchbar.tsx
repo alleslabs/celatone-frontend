@@ -83,7 +83,7 @@ const getRouteOptions = (
     case "Block":
       return { pathname: "/blocks/[height]", query: ["height"] };
     case "Proposal ID":
-      return { pathname: "/proposals/[id]", query: ["id"] };
+      return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
     case "Validator Address":
       return {
         pathname: "/validators/[validatorAddress]",
