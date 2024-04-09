@@ -1,6 +1,7 @@
 import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 
 import { DotSeparator } from "lib/components/DotSeparator";
+import { TooltipInfo } from "lib/components/Tooltip";
 import {
   useValidatorDelegators,
   useValidatorStakingProvisions,
@@ -12,15 +13,18 @@ const StatWithLabel = ({
   label,
   value,
   isLoading,
+  tooltipLabel,
 }: {
   label: string;
   value: Option<string>;
   isLoading: boolean;
+  tooltipLabel?: string;
 }) => (
   <Flex gap={{ md: 1 }} direction={{ base: "column", md: "row" }}>
     <Text variant="body2" fontWeight={600} color="text.dark">
       {label}
     </Text>
+    {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
     {isLoading ? (
       <Spinner size="sm" />
     ) : (
@@ -93,6 +97,7 @@ export const ValidatorStats = ({
             label="Estimated APR"
             value={estimatedApr}
             isLoading={isStakingProvisionsLoading}
+            tooltipLabel="APR calculated only from the network inflation, not including transaction fees."
           />
         </>
       )}
