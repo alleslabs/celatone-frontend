@@ -72,7 +72,7 @@ export const ProposalVotesTableRow = ({
           abstain={proposalVote.abstain}
         />
       </TableRow>
-      {fullVersion && !isMobile && (
+      {fullVersion && (
         <>
           <TableRow>
             {proposalVote.timestamp ? (

@@ -50,8 +50,7 @@ export const ValidatorVotesTableBody = ({
 
   if (isLoading) return <Loading />;
   if (!validatorVotes) return <ErrorFetching dataName="votes" />;
-
-  if (validatorVotes.length === 0) {
+  if (validatorVotes.length === 0)
     return (
       <EmptyState
         imageVariant="empty"
@@ -62,7 +61,7 @@ export const ValidatorVotesTableBody = ({
         }
       />
     );
-  }
+
   return (
     <TableContainer>
       <ValidatorVotesTableHeader

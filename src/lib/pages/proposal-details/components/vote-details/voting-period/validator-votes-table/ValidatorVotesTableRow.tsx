@@ -76,7 +76,7 @@ export const ValidatorVotesTableRow = ({
           abstain={proposalVote.abstain}
         />
       </TableRow>
-      {fullVersion && !isMobile && (
+      {fullVersion && (
         <>
           <TableRow>
             {proposalVote.timestamp ? (
