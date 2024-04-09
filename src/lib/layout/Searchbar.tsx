@@ -82,6 +82,13 @@ const getRouteOptions = (
       };
     case "Block":
       return { pathname: "/blocks/[height]", query: ["height"] };
+    case "Proposal ID":
+      return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
+    case "Validator Address":
+      return {
+        pathname: "/validators/[validatorAddress]",
+        query: ["validatorAddress"],
+      };
     case "Pool ID":
       return { pathname: "/pools/[poolId]", query: ["poolId"] };
     case "Module Path":
@@ -224,39 +231,48 @@ const getPlaceholder = ({
   isWasm,
   isPool,
   isMove,
+  isGov,
 }: {
   isWasm: boolean;
   isPool: boolean;
   isMove: boolean;
+  isGov: boolean;
 }) => {
   const wasmText = isWasm ? " / Code ID / Contract Address" : "";
-  const poolText = isPool ? " / Pool ID" : "";
   const moveText = isMove ? " / Module Path" : "";
+  const govText = isGov ? " / Proposal ID / Validator Address" : "";
+  const poolText = isPool ? " / Pool ID" : "";
 
-  return `Search by Account Address / Tx Hash / Block${wasmText}${poolText}${moveText}`;
+  return `Search by Account Address / Tx Hash / Block${wasmText}${moveText}${govText}${poolText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const Searchbar = () => {
-  const [keyword, setKeyword] = useState("");
-  const [displayResults, setDisplayResults] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [cursor, setCursor] = useState<number>();
-
+  const isMobile = useMobile();
+  const navigate = useInternalNavigate();
   const {
+    currentChainId,
     chainConfig: {
       features: {
         wasm: { enabled: isWasm },
         pool: { enabled: isPool },
         move: { enabled: isMove },
+        gov: { enabled: isGov },
       },
     },
   } = useCelatoneApp();
-  const navigate = useInternalNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const boxRef = useRef<HTMLDivElement>(null);
+
+  const [keyword, setKeyword] = useState("");
+  const [displayResults, setDisplayResults] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [cursor, setCursor] = useState<number>();
+
   const { results, isLoading, metadata } = useSearchHandler(keyword, () =>
     setIsTyping(false)
   );
-  const boxRef = useRef<HTMLDivElement>(null);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -287,7 +303,7 @@ const Searchbar = () => {
   );
 
   const handleOnKeyEnter = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>, onClose?: () => void) => {
+    (e: KeyboardEvent<HTMLInputElement>) => {
       if (!results.length) return;
       switch (e.key) {
         case "ArrowUp":
@@ -302,21 +318,23 @@ const Searchbar = () => {
         }
         case "Enter":
           handleSelectResult(results[cursor ?? 0]);
-          onClose?.();
+          onClose();
           break;
         default:
           break;
       }
     },
-    [cursor, results, handleSelectResult]
+    [cursor, handleSelectResult, onClose, results]
   );
 
   useOutsideClick({
     ref: boxRef,
-    handler: () => setDisplayResults(false),
+    handler: () => {
+      onClose();
+      setDisplayResults(false);
+    },
   });
-  const isMobile = useMobile();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return isMobile ? (
     <>
       <Button variant="outline-gray" size="sm" onClick={onOpen}>
@@ -326,7 +344,7 @@ const Searchbar = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerBody overflowY="scroll" p={2} m={2}>
-            <FormControl ref={boxRef}>
+            <FormControl>
               <Flex mb={4}>
                 <IconButton
                   fontSize="24px"
@@ -342,7 +360,7 @@ const Searchbar = () => {
                   placeholder="Type your keyword ..."
                   autoFocus
                   onFocus={() => setDisplayResults(keyword.length > 0)}
-                  onKeyDown={(e) => handleOnKeyEnter(e, onClose)}
+                  onKeyDown={handleOnKeyEnter}
                   autoComplete="off"
                 />
               </Flex>
@@ -390,7 +408,7 @@ const Searchbar = () => {
               )}
             </FormControl>
             <Text variant="body3" color="text.dark" textAlign="center" mt={2}>
-              {getPlaceholder({ isWasm, isPool, isMove })}
+              {getPlaceholder({ isWasm, isPool, isMove, isGov })}
             </Text>
           </DrawerBody>
         </DrawerContent>
@@ -401,41 +419,54 @@ const Searchbar = () => {
       <InputWithIcon
         value={keyword}
         onChange={handleSearchChange}
-        placeholder={getPlaceholder({ isWasm, isPool, isMove })}
-        onFocus={() => setDisplayResults(keyword.length > 0)}
+        placeholder={`Search on ${currentChainId}`}
+        onFocus={() => {
+          onOpen();
+          setDisplayResults(keyword.length > 0);
+        }}
         onKeyDown={handleOnKeyEnter}
         autoComplete="off"
       />
-      {displayResults && (
-        <List
-          borderRadius="8px"
-          bg="gray.900"
-          position="absolute"
-          zIndex={2}
-          w="full"
-          top="50px"
-          overflowY="scroll"
-          shadow="dark-lg"
-        >
-          {isLoading || isTyping ? (
-            <StyledListItem display="flex" alignItems="center" gap={2} p={4}>
-              <Spinner color="gray.600" size="sm" />
-              <Text color="text.disabled" variant="body2" fontWeight={500}>
-                Looking for results ...
-              </Text>
-            </StyledListItem>
-          ) : (
-            <ResultRender
-              results={results}
-              keyword={keyword}
-              cursor={cursor}
-              metadata={metadata}
-              setCursor={setCursor}
-              handleSelectResult={handleSelectResult}
-            />
-          )}
-        </List>
-      )}
+      <List
+        borderRadius="8px"
+        bg="gray.900"
+        position="absolute"
+        zIndex={2}
+        w="full"
+        top="50px"
+        overflowY="scroll"
+        shadow="dark-lg"
+        h={isOpen ? "fit-content" : 0}
+        transition="all 0.25s ease-in-out"
+      >
+        {displayResults ? (
+          <>
+            {isLoading || isTyping ? (
+              <StyledListItem display="flex" alignItems="center" gap={2} p={4}>
+                <Spinner color="gray.600" size="sm" />
+                <Text color="text.disabled" variant="body2" fontWeight={500}>
+                  Looking for results ...
+                </Text>
+              </StyledListItem>
+            ) : (
+              <ResultRender
+                results={results}
+                keyword={keyword}
+                cursor={cursor}
+                metadata={metadata}
+                setCursor={setCursor}
+                handleSelectResult={handleSelectResult}
+              />
+            )}
+          </>
+        ) : (
+          <StyledListItem display="flex" alignItems="center" gap={2} p={4}>
+            <Text color="text.disabled" variant="body2" fontWeight={500}>
+              {getPlaceholder({ isWasm, isPool, isMove, isGov })}
+            </Text>
+          </StyledListItem>
+        )}
+      </List>
     </FormControl>
   );
 };
