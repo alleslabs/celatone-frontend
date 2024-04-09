@@ -83,7 +83,7 @@ const getRouteOptions = (
     case "Block":
       return { pathname: "/blocks/[height]", query: ["height"] };
     case "Proposal ID":
-      return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
+      return { pathname: "/proposals/[id]", query: ["id"] };
     case "Validator Address":
       return {
         pathname: "/validators/[validatorAddress]",
@@ -195,8 +195,8 @@ const ResultRender = ({
     ) : (
       results.map((type, index) => (
         <ResultItem
-          index={index}
           key={type}
+          index={index}
           type={type}
           value={keyword}
           cursor={cursor}
@@ -294,9 +294,10 @@ const Searchbar = () => {
           query: generateQueryObject(routeOptions.query, queryValues),
         });
         setKeyword("");
+        onClose();
       }
     },
-    [navigate, metadata.icns.address, keyword]
+    [keyword, metadata.icns.address, navigate, onClose]
   );
 
   const handleOnKeyEnter = useCallback(
@@ -314,14 +315,14 @@ const Searchbar = () => {
           break;
         }
         case "Enter":
+          e.currentTarget.blur();
           handleSelectResult(results[cursor ?? 0]);
-          onClose();
           break;
         default:
           break;
       }
     },
-    [cursor, handleSelectResult, onClose, results]
+    [cursor, handleSelectResult, results]
   );
 
   useOutsideClick({
@@ -344,7 +345,7 @@ const Searchbar = () => {
                   fontSize="24px"
                   variant="gray"
                   aria-label="back"
-                  onClick={() => onClose()}
+                  onClick={onClose}
                   color="gray.600"
                   icon={<CustomIcon name="chevron-left" />}
                 />
