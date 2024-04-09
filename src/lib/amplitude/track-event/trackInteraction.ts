@@ -23,23 +23,14 @@ export const trackUseTab = (tab: string, section?: string, info?: string) =>
     info,
   });
 
-export const trackUseViewMore = (section?: { [key: string]: string }) => {
-  amp.track(AmpEvent.USE_VIEW_MORE, {
-    section,
-  });
-};
+export const trackUseViewMore = (properties?: { [key: string]: string }) =>
+  amp.track(AmpEvent.USE_VIEW_MORE, properties);
 
-export const trackUseUpTime = (section?: { [key: string]: string }) => {
-  amp.track(AmpEvent.USE_UPTIME, {
-    section,
-  });
-};
+export const trackUseUpTime = (properties?: { [key: string]: string }) =>
+  amp.track(AmpEvent.USE_UPTIME, properties);
 
-export const trackSearchInput = (section?: { [key: string]: string }) => {
-  amp.track(AmpEvent.USE_SEARCH_INPUT, {
-    section,
-  });
-};
+export const trackSearchInput = (properties?: { [key: string]: string }) =>
+  amp.track(AmpEvent.USE_SEARCH_INPUT, properties);
 
 export const trackUseRadio = (radio: string, section?: string) =>
   amp.track(AmpEvent.USE_RADIO, {

@@ -13,7 +13,6 @@ const InputWithIcon = ({
   my,
   size = "md",
   amptrackSection,
-  value,
   ...inputProps
 }: InputWithIconProps) => (
   <InputGroup my={my}>
