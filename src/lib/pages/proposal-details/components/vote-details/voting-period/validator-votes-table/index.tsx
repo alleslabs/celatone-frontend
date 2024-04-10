@@ -1,5 +1,5 @@
 import { Button, Flex, Grid, GridItem, TableContainer } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
@@ -128,13 +128,9 @@ export const ValidatorVotesTable = ({
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
-
-  // update total data because we do filter and search on frontend side
-  useEffect(() => {
-    setTotalData(data?.total ?? 0);
-  }, [data, setTotalData]);
 
   const isSearching =
     debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;
