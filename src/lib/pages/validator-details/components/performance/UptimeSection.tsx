@@ -23,6 +23,8 @@ import { PenaltyEvent } from "./PenaltyEvent";
 import { RecentBlocksLegends } from "./RecentBlocksLegends";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 
+const SUPPORTED_UPTIME_BLOCKS = [100, 1000, 10000];
+
 interface UptimeSectionProps {
   validatorAddress: ValidatorAddr;
   uptimeData: ValidatorUptimeResponse;
@@ -80,7 +82,7 @@ export const UptimeSection = ({
                   </Text>
                 </MenuButton>
                 <MenuList>
-                  {[100, 1000, 10000].map((block) => (
+                  {SUPPORTED_UPTIME_BLOCKS.map((block) => (
                     <MenuItem
                       key={block}
                       onClick={() => {
