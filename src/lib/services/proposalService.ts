@@ -45,6 +45,7 @@ import type {
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
   ProposalsResponse,
+  ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
   UploadAccess,
@@ -384,7 +385,11 @@ export const useProposalValidatorVotes = (
   limit: number,
   offset: number,
   answer: ProposalVoteType,
-  search: string
+  search: string,
+  options: Pick<
+    UseQueryOptions<ProposalValidatorVotesResponse>,
+    "onSuccess"
+  > = {}
 ) => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -400,7 +405,7 @@ export const useProposalValidatorVotes = (
     ],
     async () =>
       getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 

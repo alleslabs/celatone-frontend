@@ -72,7 +72,7 @@ export const ProposalVotesTableRow = ({
           abstain={proposalVote.abstain}
         />
       </TableRow>
-      {fullVersion && !isMobile && (
+      {fullVersion && (
         <>
           <TableRow>
             {proposalVote.timestamp ? (
@@ -91,6 +91,7 @@ export const ProposalVotesTableRow = ({
               <ExplorerLink
                 type="tx_hash"
                 value={proposalVote.txHash.toUpperCase()}
+                showCopyOnHover
               />
             ) : (
               <Text variant="body2">N/A</Text>

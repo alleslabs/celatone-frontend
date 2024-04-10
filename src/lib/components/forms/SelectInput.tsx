@@ -91,6 +91,7 @@ export const SelectInput = <T extends string>({
   return (
     <Popover
       placement="bottom-start"
+      strategy="fixed"
       isOpen={isOpen}
       onOpen={onOpen}
       onClose={onClose}
@@ -152,7 +153,6 @@ export const SelectInput = <T extends string>({
         bg={popoverBgColor}
         w={inputRef.current?.clientWidth}
         maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
-        overflow="scroll"
         borderRadius="8px"
         _focusVisible={{
           outline: "none",

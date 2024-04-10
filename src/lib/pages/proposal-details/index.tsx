@@ -82,7 +82,7 @@ const ProposalDetailsBody = ({
               isLoading={isVotesInfoLoading || isParamsLoading}
             />
             <UserDocsLink
-              title="What is Proposal in CosmWasm?"
+              title="What is a Proposal?"
               cta="Read more about Proposal Details"
               href="general/proposal/detail-page"
             />

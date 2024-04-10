@@ -2,6 +2,7 @@ import { Alert, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 
+import { AmpEvent, trackUseFilter, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
 import type { IconKeys } from "lib/components/icon";
@@ -63,61 +64,61 @@ export const VotedProposalsTable = ({
     debouncedSearch,
     { onSuccess: ({ total }) => setTotalData(total) }
   );
-  const { data: answer } =
+  const { data: answers } =
     useValidatorVotedProposalsAnswerCounts(validatorAddress);
 
   const answerOptions = useMemo(
     () => [
       {
-        label: `All proposals (${answer?.all ?? 0})`,
+        label: `All proposals (${answers?.all ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: !answer?.all,
+        disabled: !answers?.all,
       },
       {
-        label: `Yes (${answer?.yes ?? 0})`,
+        label: `Yes (${answers?.yes ?? 0})`,
         value: ProposalVoteType.YES,
-        disabled: !answer?.yes,
+        disabled: !answers?.yes,
         icon: "circle" as IconKeys,
         iconColor: "success.main",
       },
       {
-        label: `No (${answer?.no ?? 0})`,
+        label: `No (${answers?.no ?? 0})`,
         value: ProposalVoteType.NO,
-        disabled: !answer?.no,
+        disabled: !answers?.no,
         icon: "circle" as IconKeys,
         iconColor: "error.main",
       },
       {
-        label: `No with veto (${answer?.noWithVeto ?? 0})`,
+        label: `No with veto (${answers?.noWithVeto ?? 0})`,
         value: ProposalVoteType.NO_WITH_VETO,
-        disabled: !answer?.noWithVeto,
+        disabled: !answers?.noWithVeto,
         icon: "circle" as IconKeys,
         iconColor: "error.dark",
       },
       {
-        label: `Abstain (${answer?.abstain ?? 0})`,
+        label: `Abstain (${answers?.abstain ?? 0})`,
         value: ProposalVoteType.ABSTAIN,
-        disabled: !answer?.abstain,
+        disabled: !answers?.abstain,
         icon: "circle" as IconKeys,
         iconColor: "gray.600",
       },
       {
-        label: `Did not vote (${answer?.didNotVote ?? 0})`,
+        label: `Did not vote (${answers?.didNotVote ?? 0})`,
         value: ProposalVoteType.DID_NOT_VOTE,
-        disabled: !answer?.didNotVote,
+        disabled: !answers?.didNotVote,
         icon: "circle" as IconKeys,
         iconColor: "gray.600",
       },
       {
-        label: `Weighted (${answer?.weighted ?? 0})`,
+        label: `Weighted (${answers?.weighted ?? 0})`,
         value: ProposalVoteType.WEIGHTED,
-        disabled: !answer?.weighted,
+        disabled: !answers?.weighted,
         icon: "circle" as IconKeys,
         iconColor: "primary.light",
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(answer)]
+    [JSON.stringify(answers)]
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -126,6 +127,11 @@ export const VotedProposalsTable = ({
   };
 
   const handleOnAnswerFilterChange = (newAnswer: ProposalVoteType) => {
+    trackUseFilter(
+      AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
+      Object.values(ProposalVoteType),
+      newAnswer
+    );
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
   };
@@ -138,14 +144,17 @@ export const VotedProposalsTable = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={onViewMore}
+      onClick={() => {
+        trackUseViewMore();
+        onViewMore();
+      }}
     >
-      <TableTitle title="Voted Proposals" count={answer?.all ?? 0} mb={0} />
+      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
     </Flex>
   ) : (
     <Flex direction="column" gap={6}>
-      <TableTitle title="Voted Proposals" count={answer?.all ?? 0} mb={0} />
+      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
       {!onViewMore && (
         <>
           <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
@@ -173,6 +182,7 @@ export const VotedProposalsTable = ({
                 value={search}
                 onChange={handleOnSearchChange}
                 size="lg"
+                amptrackSection="voted-proposals-search"
               />
             </GridItem>
           </Grid>

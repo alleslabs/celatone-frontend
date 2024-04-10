@@ -35,6 +35,7 @@ export const VoteDetailsAccordionItem = ({
       bg="transparent"
       p={0}
       pt={3}
+      pb={step === 2 ? 4 : 0}
       borderTop="1px solid"
       borderColor="gray.700"
     >

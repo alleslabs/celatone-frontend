@@ -101,7 +101,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                             fontWeight: 600,
                           }}
                         >
-                          {" / "}
+                          {" , "}
                         </span>
                       )}
                       {msgType}
@@ -144,7 +144,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
             </Flex>
           </Flex>
         </Flex>
-        <ViewProposalJson id={proposalData.id} />
+        <ViewProposalJson id={proposalData.id} status={proposalData.status} />
       </Flex>
       <ProposalInfo data={proposalData} />
     </Flex>

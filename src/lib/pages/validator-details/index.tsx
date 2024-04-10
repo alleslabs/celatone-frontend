@@ -7,13 +7,13 @@ import {
   useCelatoneApp,
   useGovConfig,
   useInternalNavigate,
-  useMoveConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useValidatorData } from "lib/services/validatorService";
 
@@ -41,7 +41,6 @@ const ValidatorDetailsBody = ({
       extra: { singleStakingDenom },
     },
   } = useCelatoneApp();
-  const move = useMoveConfig({ shouldRedirect: false });
 
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
@@ -99,11 +98,9 @@ const ValidatorDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Performance)}>
               Performance
             </CustomTab>
-            {!move.enabled && (
-              <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
-                Bonded Token Changes
-              </CustomTab>
-            )}
+            <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
+              Bonded Token Changes
+            </CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
@@ -139,6 +136,11 @@ const ValidatorDetailsBody = ({
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <UserDocsLink
+          title="What is a Validator?"
+          cta="Read more about Validator Details"
+          href="general/validator/detail-page"
+        />
       </PageContainer>
     </>
   );

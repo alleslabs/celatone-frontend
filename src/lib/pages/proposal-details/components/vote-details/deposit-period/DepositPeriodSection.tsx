@@ -53,28 +53,29 @@ export const DepositPeriodSection = ({
               count={proposalData.proposalDeposits.length}
             />
             <Box />
-            <Flex alignContent="center">
-              <Tooltip
-                label="After reaching the total deposit amount, the proposal proceeds to the voting period."
-                closeOnClick={false}
+            <Flex>
+              <Text
+                variant="body2"
+                color="text.dark"
+                fontWeight={500}
+                whiteSpace="nowrap"
+                lineHeight={1.8}
+                pt={1}
               >
-                <Text
-                  variant="body2"
-                  color="text.dark"
-                  fontWeight={500}
-                  whiteSpace="nowrap"
-                  lineHeight={1.8}
-                  pt={1}
+                Total Deposited
+                <Tooltip
+                  label="After reaching the total deposit amount, the proposal proceeds to the voting period."
+                  closeOnClick={false}
                 >
-                  Total Deposited
                   <CustomIcon
                     name="info-circle-solid"
                     color="gray.600"
                     boxSize={3}
-                    my={0}
+                    mt={0}
+                    mb={1}
                   />
-                </Text>
-              </Tooltip>
+                </Tooltip>
+              </Text>
               <DepositBar
                 deposit={proposalData.totalDeposit}
                 minDeposit={minDeposit}

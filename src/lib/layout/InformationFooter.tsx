@@ -27,7 +27,12 @@ export const InformationFooter = () => {
   const { data: overviewsStats, isLoading } = useOverviewsStats();
 
   return (
-    <Flex direction={{ base: "row", md: "column" }} mt={8} mb={2}>
+    <Flex
+      direction="column"
+      mt={8}
+      mb={2}
+      alignItems={{ base: "center", md: "start" }}
+    >
       {isLoading ? (
         <Skeleton
           ml={2}
