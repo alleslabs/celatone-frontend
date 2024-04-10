@@ -2,7 +2,12 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { Answer, MobileCardTemplate, StatusChip } from "lib/components/table";
+import {
+  Answer,
+  MobileCardTemplate,
+  MobileLabel,
+  StatusChip,
+} from "lib/components/table";
 import { ProposalTextCell } from "lib/components/table/proposals/ProposalTextCell";
 import type { ValidatorVotedProposalsResponseItem } from "lib/services/validator";
 import { ProposalStatus } from "lib/types";
@@ -31,11 +36,9 @@ export const VotedProposalsTableMobileCard = ({
     <MobileCardTemplate
       onClick={() => onRowSelect(votedProposal.proposalId)}
       topContent={
-        <Flex justify="space-between" w="100%">
-          <Flex gap={3} alignItems="center">
-            <Text variant="body2" color="text.dark">
-              Proposal ID
-            </Text>
+        <>
+          <Flex gap={2} alignItems="center">
+            <MobileLabel label="Proposal ID" variant="body2" />
             <ExplorerLink
               type="proposal_id"
               value={votedProposal.proposalId.toString()}
@@ -44,7 +47,7 @@ export const VotedProposalsTableMobileCard = ({
             />
           </Flex>
           <StatusChip status={votedProposal.status} />
-        </Flex>
+        </>
       }
       middleContent={
         <Flex direction="column" gap={3}>

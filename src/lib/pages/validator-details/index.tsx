@@ -7,7 +7,6 @@ import {
   useCelatoneApp,
   useGovConfig,
   useInternalNavigate,
-  useMoveConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
@@ -42,7 +41,6 @@ const ValidatorDetailsBody = ({
       extra: { singleStakingDenom },
     },
   } = useCelatoneApp();
-  const move = useMoveConfig({ shouldRedirect: false });
 
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
@@ -100,11 +98,9 @@ const ValidatorDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Performance)}>
               Performance
             </CustomTab>
-            {!move.enabled && (
-              <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
-                Bonded Token Changes
-              </CustomTab>
-            )}
+            <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
+              Bonded Token Changes
+            </CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>

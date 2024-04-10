@@ -16,6 +16,7 @@ export const MobileLabel = ({
     variant={variant}
     fontWeight={fontWeight}
     textTransform="capitalize"
+    whiteSpace="nowrap"
   >
     {label}
   </Text>
