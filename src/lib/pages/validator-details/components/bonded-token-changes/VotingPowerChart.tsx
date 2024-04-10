@@ -133,20 +133,19 @@ export const VotingPowerChart = ({
           singleStakingDenom={singleStakingDenom}
           assetInfo={assetInfo}
         />
-        <Flex>
-          {onViewMore && (
-            <Button
-              variant="ghost-secondary"
-              p="unset"
-              pl={2}
-              size="md"
-              onClick={onViewMore}
-            >
-              See all related transactions
-              <CustomIcon name="chevron-right" boxSize={3} />
-            </Button>
-          )}
-        </Flex>
+        {onViewMore && (
+          <Button
+            variant="ghost-secondary"
+            p="unset"
+            size="md"
+            pl={2}
+            w="fit-content"
+            onClick={onViewMore}
+          >
+            See all related transactions
+            <CustomIcon name="chevron-right" boxSize={3} />
+          </Button>
+        )}
       </Flex>
       <Box w="100%" h="272px" id="voting-power-chart-container">
         <LineChart
