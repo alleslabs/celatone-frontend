@@ -83,10 +83,10 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   return (
     <Flex
+      id={scrollComponentId}
       position="relative"
       overflowX="hidden"
       width="full"
-      id={scrollComponentId}
     >
       <Flex
         direction="column"
@@ -195,14 +195,14 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         answers={answers?.validator}
         isOpen={validatorVoteDisclosure.isOpen}
         id={proposalData.id}
-        onBack={validatorVoteDisclosure.onToggle}
+        onBack={validatorVoteDisclosure.onClose}
         isProposalResolved={isProposalResolved}
       />
       <ProposalVotesPanel
         answers={answers?.all}
         isOpen={allVoteDisclosure.isOpen}
         id={proposalData.id}
-        onBack={allVoteDisclosure.onToggle}
+        onBack={allVoteDisclosure.onClose}
       />
     </Flex>
   );

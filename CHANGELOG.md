@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#875](https://github.com/alleslabs/celatone-frontend/pull/875) Add Amplitude tracking to validator details page
 - [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
 - [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
 - [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
@@ -132,6 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#876](https://github.com/alleslabs/celatone-frontend/pull/876) Fix validator votes dropdown
+- [#873](https://github.com/alleslabs/celatone-frontend/pull/873) Fix bug bash select input and ui
 - [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
 - [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text

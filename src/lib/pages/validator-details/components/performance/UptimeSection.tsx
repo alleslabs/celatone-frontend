@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
+import { trackUseUpTime, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
@@ -55,6 +56,20 @@ export const UptimeSection = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(uptimeData.uptime)]);
 
+  const handleOnViewMore = () => {
+    if (!onViewMore) return;
+
+    trackUseViewMore();
+    onViewMore();
+  };
+
+  const handleSetupBlock = (block: number) => {
+    if (!setUptimeBlock) return;
+
+    trackUseUpTime({ block: String(block) });
+    setUptimeBlock(block);
+  };
+
   return (
     <Flex
       direction="column"
@@ -79,13 +94,13 @@ export const UptimeSection = ({
                   </Text>
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => setUptimeBlock(100)}>
+                  <MenuItem onClick={() => handleSetupBlock(100)}>
                     Latest 100 Blocks
                   </MenuItem>
-                  <MenuItem onClick={() => setUptimeBlock(1000)}>
+                  <MenuItem onClick={() => handleSetupBlock(1000)}>
                     Latest 1000 Blocks
                   </MenuItem>
-                  <MenuItem onClick={() => setUptimeBlock(10000)}>
+                  <MenuItem onClick={() => handleSetupBlock(10000)}>
                     Latest 10000 Blocks
                   </MenuItem>
                 </MenuList>
@@ -100,7 +115,7 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={handleOnViewMore}
             >
               View Performance
             </Button>
@@ -122,7 +137,7 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={handleOnViewMore}
             >
               View Performance
             </Button>

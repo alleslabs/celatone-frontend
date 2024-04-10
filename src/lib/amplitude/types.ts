@@ -185,6 +185,8 @@ export enum AmpEvent {
   USE_NFT_VIEW_RESOURCE_CTA = "Use NFT View Resource CTA",
   USE_NFT_CARD = "Use NFT Card",
   USE_SELECT_NFT_COLLECTION_GROUP = "Use Select NFT Selection Group",
+  USE_UPTIME = "Use Uptime",
+  USE_FILTER_VOTED_PROPOSALS_ANSWER = "Use Filter Voted Proposals Answer",
 
   // TX
   TX_SUCCEED = "Tx Succeed",
