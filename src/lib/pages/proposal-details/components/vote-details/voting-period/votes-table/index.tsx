@@ -130,7 +130,7 @@ export const ProposalVotesTable = ({
       {
         label: `All votes (${answers?.total ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: !total,
+        disabled: !answers?.total,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,

@@ -144,7 +144,7 @@ export const ValidatorVotesTable = ({
       {
         label: `All votes (${answers?.totalValidators ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: !totalValidators,
+        disabled: !answers?.totalValidators,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,
