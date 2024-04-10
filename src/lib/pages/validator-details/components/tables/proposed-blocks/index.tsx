@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
+import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
@@ -49,6 +50,13 @@ export const ProposedBlocksTable = ({
     }
   );
 
+  const handleOnViewMore = () => {
+    if (!onViewMore) return;
+
+    trackUseViewMore();
+    onViewMore();
+  };
+
   return isMoibleOverview ? (
     <Flex
       backgroundColor="gray.900"
@@ -57,7 +65,7 @@ export const ProposedBlocksTable = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={onViewMore}
+      onClick={handleOnViewMore}
     >
       <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
