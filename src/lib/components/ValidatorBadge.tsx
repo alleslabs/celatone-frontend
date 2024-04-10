@@ -34,10 +34,10 @@ export const ValidatorBadge = ({
   } = useCelatoneApp();
 
   return (
-    <Flex alignItems="center" gap={2}>
+    <Flex alignItems="center" gap={2} w="full">
       <ValidatorImage validator={validator} boxSize={badgeSize} />
       {validator ? (
-        <Flex direction="column">
+        <Flex direction="column" w="full">
           {isMobile && hasLabel && <MobileLabel label="Validator" />}
           <ExplorerLink
             type="validator_address"
