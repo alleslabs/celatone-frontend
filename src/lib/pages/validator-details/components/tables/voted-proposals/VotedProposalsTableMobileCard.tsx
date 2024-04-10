@@ -51,17 +51,12 @@ export const VotedProposalsTableMobileCard = ({
       }
       middleContent={
         <Flex direction="column" gap={3}>
-          <Box>
-            <Text variant="body2" color="text.dark">
-              Proposal Title
-            </Text>
-            <ProposalTextCell
-              title={votedProposal.title}
-              types={votedProposal.types}
-              isExpedited={votedProposal.isExpedited}
-              isDepositOrVoting={isDepositOrVoting}
-            />
-          </Box>
+          <ProposalTextCell
+            title={votedProposal.title}
+            types={votedProposal.types}
+            isExpedited={votedProposal.isExpedited}
+            isDepositOrVoting={isDepositOrVoting}
+          />
           <Box>
             <Flex alignItems="center" gap={3}>
               <Text variant="body2" color="text.dark">
