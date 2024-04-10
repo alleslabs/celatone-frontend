@@ -22,7 +22,9 @@ export const ProposalsTableHeader = ({
         boxShadow={boxShadow}
         color="gray.800"
       >
-        <Text color="text.main">Proposal Title/Type</Text>
+        <Text color="text.main" px={4}>
+          Proposal Title/Type
+        </Text>
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>

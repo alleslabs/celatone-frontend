@@ -29,6 +29,7 @@ export const Voter = ({ proposalVote }: VoterProps) => {
             />
           ) : undefined
         }
+        maxWidth="110px"
       />
     );
   }
