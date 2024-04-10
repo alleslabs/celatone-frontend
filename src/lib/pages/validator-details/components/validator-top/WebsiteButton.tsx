@@ -1,6 +1,7 @@
 import { Button, Link } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 
+import { trackWebsite } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 
@@ -16,6 +17,7 @@ const RenderWebsiteButton = ({ href, ...props }: WebsiteButtonProps) => (
     variant="outline-primary"
     width={{ base: "full", md: "auto" }}
     isDisabled={!href}
+    onClick={() => trackWebsite(href)}
     {...props}
   >
     Website

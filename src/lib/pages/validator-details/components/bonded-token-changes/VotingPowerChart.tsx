@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
+import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
@@ -97,6 +98,13 @@ export const VotingPowerChart = ({
     `;
   };
 
+  const handleOnViewMore = () => {
+    if (!onViewMore) return;
+
+    trackUseViewMore();
+    onViewMore();
+  };
+
   return isMobileOverview ? (
     <Flex
       backgroundColor="gray.900"
@@ -105,7 +113,7 @@ export const VotingPowerChart = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={onViewMore}
+      onClick={handleOnViewMore}
     >
       <VotingPowerChartDetails
         historicalPowers={historicalPowers}
@@ -138,7 +146,7 @@ export const VotingPowerChart = ({
             p="unset"
             size="md"
             pl={2}
-            onClick={onViewMore}
+            onClick={handleOnViewMore}
           >
             See all related transactions
             <CustomIcon name="chevron-right" boxSize={3} />
