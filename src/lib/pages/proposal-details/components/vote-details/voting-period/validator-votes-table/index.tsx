@@ -1,9 +1,10 @@
 import { Button, Flex, Grid, GridItem, TableContainer } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
@@ -127,13 +128,9 @@ export const ValidatorVotesTable = ({
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
-
-  // update total data because we do filter and search on frontend side
-  useEffect(() => {
-    setTotalData(data?.total ?? 0);
-  }, [data, setTotalData]);
 
   const isSearching =
     debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;
@@ -143,37 +140,49 @@ export const ValidatorVotesTable = ({
       {
         label: `All votes (${answers?.totalValidators ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: false,
+        disabled: !answers?.totalValidators,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,
         value: ProposalVoteType.YES,
-        disabled: false,
+        disabled: !answers?.yes,
+        icon: "circle" as IconKeys,
+        iconColor: "success.main",
       },
       {
         label: `No (${answers?.no ?? 0})`,
         value: ProposalVoteType.NO,
-        disabled: false,
+        disabled: !answers?.no,
+        icon: "circle" as IconKeys,
+        iconColor: "error.main",
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
         value: ProposalVoteType.NO_WITH_VETO,
-        disabled: false,
+        disabled: !answers?.noWithVeto,
+        icon: "circle" as IconKeys,
+        iconColor: "error.dark",
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
         value: ProposalVoteType.ABSTAIN,
-        disabled: false,
-      },
-      {
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
-        disabled: false,
+        disabled: !answers?.abstain,
+        icon: "circle" as IconKeys,
+        iconColor: "gray.600",
       },
       {
         label: `Did not vote (${answers?.didNotVote ?? 0})`,
         value: ProposalVoteType.DID_NOT_VOTE,
-        disabled: false,
+        disabled: !answers?.didNotVote,
+        icon: "circle" as IconKeys,
+        iconColor: "gray.600",
+      },
+      {
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
+        disabled: !answers?.weighted,
+        icon: "circle" as IconKeys,
+        iconColor: "primary.light",
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

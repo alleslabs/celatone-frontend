@@ -101,7 +101,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                             fontWeight: 600,
                           }}
                         >
-                          {" / "}
+                          {" , "}
                         </span>
                       )}
                       {msgType}

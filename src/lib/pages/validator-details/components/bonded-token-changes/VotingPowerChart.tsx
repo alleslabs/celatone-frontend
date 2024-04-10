@@ -98,13 +98,6 @@ export const VotingPowerChart = ({
     `;
   };
 
-  const handleOnViewMore = () => {
-    if (!onViewMore) return;
-
-    trackUseViewMore();
-    onViewMore();
-  };
-
   return isMobileOverview ? (
     <Flex
       backgroundColor="gray.900"
@@ -113,7 +106,10 @@ export const VotingPowerChart = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={handleOnViewMore}
+      onClick={() => {
+        trackUseViewMore();
+        onViewMore();
+      }}
     >
       <VotingPowerChartDetails
         historicalPowers={historicalPowers}
@@ -130,11 +126,12 @@ export const VotingPowerChart = ({
       }}
       gap={8}
       backgroundColor="gray.900"
-      p={6}
+      py={6}
+      px={4}
       rounded={8}
       w="100%"
     >
-      <Flex gap={6} direction="column" w={250} minW={250}>
+      <Flex gap={6} direction="column" w={280} minW={280}>
         <VotingPowerChartDetails
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
@@ -146,7 +143,11 @@ export const VotingPowerChart = ({
             p="unset"
             size="md"
             pl={2}
-            onClick={handleOnViewMore}
+            w="fit-content"
+            onClick={() => {
+              trackUseViewMore();
+              onViewMore();
+            }}
           >
             See all related transactions
             <CustomIcon name="chevron-right" boxSize={3} />

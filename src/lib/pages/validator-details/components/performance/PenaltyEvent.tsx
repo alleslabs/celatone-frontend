@@ -13,9 +13,11 @@ export const PenaltyEvent = ({ event }: PenaltyEventProps) => {
   const { icon, color } = useMemo(() => {
     switch (event.type) {
       case SlashingEvent.Slashed:
-        return { icon: "alert-triangle" as const, color: "error.main" };
+        return { icon: "slashed" as const, color: "error.main" };
       case SlashingEvent.Jailed:
-        return { icon: "alert-triangle" as const, color: "warning.main" };
+        return { icon: "jailed" as const, color: "error.main" };
+      case SlashingEvent.Unjailed:
+        return { icon: "unjailed" as const, color: "success.main" };
       default:
         return { icon: "info-circle" as const, color: "secondary.main" };
     }
@@ -24,9 +26,9 @@ export const PenaltyEvent = ({ event }: PenaltyEventProps) => {
   return (
     <Flex alignItems="center" gap={2}>
       <Flex alignItems="center" gap={1}>
-        <CustomIcon name={icon} color={color} />
+        <CustomIcon name={icon} color={color} boxSize={5} />
         <Text variant="body2" color="text.main">
-          {event.type} at block height
+          <span style={{ fontWeight: 700 }}>{event.type}</span> at block height
         </Text>
         <ExplorerLink
           type="block_height"

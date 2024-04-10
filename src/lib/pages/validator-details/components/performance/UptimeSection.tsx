@@ -23,6 +23,8 @@ import { PenaltyEvent } from "./PenaltyEvent";
 import { RecentBlocksLegends } from "./RecentBlocksLegends";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 
+const SUPPORTED_UPTIME_BLOCKS = [100, 1000, 10000];
+
 interface UptimeSectionProps {
   validatorAddress: ValidatorAddr;
   uptimeData: ValidatorUptimeResponse;
@@ -56,20 +58,6 @@ export const UptimeSection = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(uptimeData.uptime)]);
 
-  const handleOnViewMore = () => {
-    if (!onViewMore) return;
-
-    trackUseViewMore();
-    onViewMore();
-  };
-
-  const handleSetupBlock = (block: number) => {
-    if (!setUptimeBlock) return;
-
-    trackUseUpTime({ block: String(block) });
-    setUptimeBlock(block);
-  };
-
   return (
     <Flex
       direction="column"
@@ -94,15 +82,17 @@ export const UptimeSection = ({
                   </Text>
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => handleSetupBlock(100)}>
-                    Latest 100 Blocks
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSetupBlock(1000)}>
-                    Latest 1000 Blocks
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSetupBlock(10000)}>
-                    Latest 10000 Blocks
-                  </MenuItem>
+                  {SUPPORTED_UPTIME_BLOCKS.map((block) => (
+                    <MenuItem
+                      key={block}
+                      onClick={() => {
+                        trackUseUpTime({ block: block.toString() });
+                        setUptimeBlock(block);
+                      }}
+                    >
+                      Latest {block} Blocks
+                    </MenuItem>
+                  ))}
                 </MenuList>
               </Menu>
             ) : (
@@ -115,7 +105,10 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={handleOnViewMore}
+              onClick={() => {
+                trackUseViewMore();
+                onViewMore();
+              }}
             >
               View Performance
             </Button>
@@ -137,7 +130,10 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={handleOnViewMore}
+              onClick={() => {
+                trackUseViewMore();
+                onViewMore();
+              }}
             >
               View Performance
             </Button>

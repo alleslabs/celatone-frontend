@@ -148,7 +148,10 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
   );
 };
 
-export const useValidatorData = (validatorAddress: ValidatorAddr) => {
+export const useValidatorData = (
+  validatorAddress: ValidatorAddr,
+  enabled = true
+) => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery<ValidatorDataResponse>(
@@ -156,6 +159,7 @@ export const useValidatorData = (validatorAddress: ValidatorAddr) => {
     async () => getValidatorData(endpoint, validatorAddress),
     {
       retry: 1,
+      enabled,
     }
   );
 };
