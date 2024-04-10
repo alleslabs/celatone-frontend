@@ -50,13 +50,6 @@ export const ProposedBlocksTable = ({
     }
   );
 
-  const handleOnViewMore = () => {
-    if (!onViewMore) return;
-
-    trackUseViewMore();
-    onViewMore();
-  };
-
   return isMoibleOverview ? (
     <Flex
       backgroundColor="gray.900"
@@ -65,7 +58,10 @@ export const ProposedBlocksTable = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={handleOnViewMore}
+      onClick={() => {
+        trackUseViewMore();
+        onViewMore();
+      }}
     >
       <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />

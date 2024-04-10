@@ -56,13 +56,6 @@ export const UptimeSection = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(uptimeData.uptime)]);
 
-  const handleOnViewMore = () => {
-    if (!onViewMore) return;
-
-    trackUseViewMore();
-    onViewMore();
-  };
-
   const handleSetupBlock = (block: number) => {
     if (!setUptimeBlock) return;
 
@@ -115,7 +108,10 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={handleOnViewMore}
+              onClick={() => {
+                trackUseViewMore();
+                onViewMore();
+              }}
             >
               View Performance
             </Button>
@@ -137,7 +133,10 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={handleOnViewMore}
+              onClick={() => {
+                trackUseViewMore();
+                onViewMore();
+              }}
             >
               View Performance
             </Button>
