@@ -52,6 +52,7 @@ export const BlocksTable = ({
           key={block.hash}
           templateColumns={templateColumns}
           blockData={block}
+          showProposer={showProposer}
         />
       ))}
     </TableContainer>
