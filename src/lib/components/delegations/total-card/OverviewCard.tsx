@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { big } from "lib/types";
 import type { Option, TokenWithValue, USD } from "lib/types";

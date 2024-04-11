@@ -41,11 +41,13 @@ const DepositOverviewBody = ({
   const { minDeposit } = extractParams(params, proposalData.isExpedited);
   return (
     <>
-      <DepositBar
-        deposit={proposalData.totalDeposit}
-        minDeposit={minDeposit}
-        isCompact
-      />
+      {proposalData.status === ProposalStatus.DEPOSIT_PERIOD && (
+        <DepositBar
+          deposit={proposalData.totalDeposit}
+          minDeposit={minDeposit}
+          isCompact
+        />
+      )}
       <DepositList
         proposalDeposits={proposalData.proposalDeposits.slice(0, 5)}
       />

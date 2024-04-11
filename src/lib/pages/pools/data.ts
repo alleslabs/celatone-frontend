@@ -1,4 +1,4 @@
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { UPPERBOUND_COUNT } from "lib/data";
 import type { Order_By } from "lib/gql/graphql";

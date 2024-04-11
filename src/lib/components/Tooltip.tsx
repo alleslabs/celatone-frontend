@@ -18,7 +18,7 @@ export const Tooltip = ({
       {...tooltipProps}
     >
       <span
-        style={{ display: "flex", alignItems: "center" }}
+        style={{ display: "inline-flex", alignItems: "center" }}
         onMouseEnter={onOpen}
         onMouseLeave={onClose}
         onClickCapture={onToggle}

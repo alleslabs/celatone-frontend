@@ -10,21 +10,27 @@ interface DepositAmountsProps {
 
 export const DepositAmounts = ({ deposit }: DepositAmountsProps) => (
   <div>
-    {deposit.amount.map((token) => (
-      <Flex key={token.denom} alignItems="center" gap={2}>
-        <Text variant="body2">
-          <Text as="span" fontWeight={700} mr={1}>
-            {formatUTokenWithPrecision(
-              token.amount,
-              token.precision ?? 0,
-              true,
-              2
-            )}
+    {deposit.amount.length === 0 ? (
+      <Text variant="body2" color="text.dark">
+        -
+      </Text>
+    ) : (
+      deposit.amount.map((token) => (
+        <Flex key={token.denom} alignItems="center" gap={2}>
+          <Text variant="body2">
+            <Text as="span" fontWeight={700} mr={1}>
+              {formatUTokenWithPrecision(
+                token.amount,
+                token.precision ?? 0,
+                true,
+                2
+              )}
+            </Text>
+            {getTokenLabel(token.denom, token.symbol)}
           </Text>
-          {getTokenLabel(token.denom, token.symbol)}
-        </Text>
-        <TokenImageRender logo={token.logo} />
-      </Flex>
-    ))}
+          <TokenImageRender logo={token.logo} />
+        </Flex>
+      ))
+    )}
   </div>
 );

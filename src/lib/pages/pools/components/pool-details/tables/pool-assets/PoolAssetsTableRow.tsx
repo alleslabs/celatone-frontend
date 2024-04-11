@@ -1,6 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { Copier } from "lib/components/copy";
 import { TableRow } from "lib/components/table";
