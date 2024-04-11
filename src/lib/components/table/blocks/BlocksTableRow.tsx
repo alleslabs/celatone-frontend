@@ -29,6 +29,7 @@ export const BlocksTableRow = ({
 
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
       onClick={() => onRowSelect(blockData.height)}
       _hover={{ bg: "gray.900" }}

@@ -52,6 +52,7 @@ export const FunctionCard = ({
       isDisabled={!disabled}
     >
       <Flex
+        w="full"
         borderRadius={8}
         py={2}
         px={3}

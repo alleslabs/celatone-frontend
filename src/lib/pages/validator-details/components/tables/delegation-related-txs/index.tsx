@@ -3,23 +3,25 @@ import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
 
-import { RelatedTransactionsMobileCard } from "./RelatedTransactionsMobileCard";
-import { RelatedTransactionsTableHeader } from "./RelatedTransactionsTableHeader";
-import { RelatedTransactionsTableRow } from "./RelatedTransactionsTableRow";
+import { DelegationRelatedTxsTableHeader } from "./DelegationRelatedTxsTableHeader";
+import { DelegationRelatedTxsTableMobileCard } from "./DelegationRelatedTxsTableMobileCard";
+import { DelegationRelatedTxsTableRow } from "./DelegationRelatedTxsTableRow";
 
-interface RelatedTransactionTableProps {
+interface DelegationRelatedTxsTableProps {
   delegationRelatedTxs: Option<ValidatorDelegationRelatedTxsResponseItem[]>;
   isLoading: boolean;
   assetInfos: Option<AssetInfos>;
+  movePoolInfos: Option<MovePoolInfos>;
 }
 
-export const RelatedTransactionTable = ({
+export const DelegationRelatedTxsTable = ({
   delegationRelatedTxs,
   isLoading,
   assetInfos,
-}: RelatedTransactionTableProps) => {
+  movePoolInfos,
+}: DelegationRelatedTxsTableProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const onRowSelect = (txHash: string) =>
@@ -37,23 +39,25 @@ export const RelatedTransactionTable = ({
   return isMobile ? (
     <MobileTableContainer>
       {delegationRelatedTxs.map((delegationRelatedTx) => (
-        <RelatedTransactionsMobileCard
+        <DelegationRelatedTxsTableMobileCard
           key={delegationRelatedTx.txHash}
           delegationRelatedTx={delegationRelatedTx}
           assetInfos={assetInfos}
+          movePoolInfos={movePoolInfos}
           onRowSelect={onRowSelect}
         />
       ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <RelatedTransactionsTableHeader templateColumns={templateColumns} />
+      <DelegationRelatedTxsTableHeader templateColumns={templateColumns} />
       {delegationRelatedTxs.map((delegationRelatedTx) => (
-        <RelatedTransactionsTableRow
+        <DelegationRelatedTxsTableRow
           key={delegationRelatedTx.txHash}
           templateColumns={templateColumns}
           delegationRelatedTx={delegationRelatedTx}
           assetInfos={assetInfos}
+          movePoolInfos={movePoolInfos}
           onRowSelect={onRowSelect}
         />
       ))}

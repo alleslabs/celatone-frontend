@@ -129,7 +129,6 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                       type="block_height"
                       value={proposalData.createdHeight.toString()}
                       showCopyOnHover
-                      w="fit-content"
                     >
                       {proposalData.createdHeight.toString()}
                     </ExplorerLink>

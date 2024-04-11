@@ -3,22 +3,24 @@ import { Badge, Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate } from "lib/components/table";
 import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
-import { RelatedTransactionsBondedTokenChanges } from "./RelatedTransactionsBondedTokenChanges";
+import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
-interface RelatedTransactionsMobileCardProps {
+interface DelegationRelatedTxsTableMobileCardProps {
   delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   assetInfos: Option<AssetInfos>;
+  movePoolInfos: Option<MovePoolInfos>;
   onRowSelect: (txHash: string) => void;
 }
 
-export const RelatedTransactionsMobileCard = ({
+export const DelegationRelatedTxsTableMobileCard = ({
   delegationRelatedTx,
   assetInfos,
+  movePoolInfos,
   onRowSelect,
-}: RelatedTransactionsMobileCardProps) => (
+}: DelegationRelatedTxsTableMobileCardProps) => (
   <MobileCardTemplate
     topContent={
       <Flex w="100%" flexDirection="column" gap={2}>
@@ -63,12 +65,13 @@ export const RelatedTransactionsMobileCard = ({
           <Text variant="body3" color="text.dark" fontWeight={600}>
             Bonded Token Changes
           </Text>
-          {delegationRelatedTx.tokens.map((token) => (
-            <RelatedTransactionsBondedTokenChanges
+          {delegationRelatedTx.tokens.map((coin) => (
+            <DelegationRelatedTxsTokenChange
               txHash={delegationRelatedTx.txHash}
-              coin={token}
+              coin={coin}
               assetInfos={assetInfos}
-              key={delegationRelatedTx.txHash + token.amount + token.denom}
+              movePoolInfos={movePoolInfos}
+              key={delegationRelatedTx.txHash + coin.amount + coin.denom}
             />
           ))}
         </Box>

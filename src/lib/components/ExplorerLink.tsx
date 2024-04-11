@@ -198,7 +198,6 @@ export const ExplorerLink = ({
       display={{ base: "inline-flex", md: "flex" }}
       align="center"
       h={fixedHeight ? "24px" : "auto"}
-      w="full"
       transition="all 0.25s ease-in-out"
       _hover={{
         textDecoration: "underline",

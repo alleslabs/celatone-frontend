@@ -3,24 +3,26 @@ import { Badge, Box, Grid, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
-import { RelatedTransactionsBondedTokenChanges } from "./RelatedTransactionsBondedTokenChanges";
+import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
-interface RelatedTransactionsTableRowProps {
+interface DelegationRelatedTxsTableRowProps {
   delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   templateColumns: string;
-  onRowSelect: (txHash: string) => void;
   assetInfos: Option<AssetInfos>;
+  movePoolInfos: Option<MovePoolInfos>;
+  onRowSelect: (txHash: string) => void;
 }
 
-export const RelatedTransactionsTableRow = ({
+export const DelegationRelatedTxsTableRow = ({
   delegationRelatedTx,
   templateColumns,
   onRowSelect,
+  movePoolInfos,
   assetInfos,
-}: RelatedTransactionsTableRowProps) => (
+}: DelegationRelatedTxsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
@@ -56,12 +58,13 @@ export const RelatedTransactionsTableRow = ({
       </Text>
     </TableRow>
     <TableRow>
-      {delegationRelatedTx.tokens.map((token) => (
-        <RelatedTransactionsBondedTokenChanges
+      {delegationRelatedTx.tokens.map((coin) => (
+        <DelegationRelatedTxsTokenChange
           txHash={delegationRelatedTx.txHash}
-          coin={token}
+          coin={coin}
           assetInfos={assetInfos}
-          key={delegationRelatedTx.txHash + token.amount + token.denom}
+          movePoolInfos={movePoolInfos}
+          key={delegationRelatedTx.txHash + coin.amount + coin.denom}
         />
       ))}
     </TableRow>
