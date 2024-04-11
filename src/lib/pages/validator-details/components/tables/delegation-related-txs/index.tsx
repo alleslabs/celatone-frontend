@@ -1,6 +1,6 @@
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import { ErrorFetching } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
 import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
@@ -33,6 +33,14 @@ export const DelegationRelatedTxsTable = ({
   if (isLoading) return <Loading />;
   if (!delegationRelatedTxs)
     return <ErrorFetching dataName="delegation related txs" />;
+  if (!delegationRelatedTxs.length)
+    return (
+      <EmptyState
+        imageVariant="empty"
+        message="This validator has not seen any changes in voting power."
+        withBorder
+      />
+    );
 
   const templateColumns = "max(180px) max(180px) max(180px) 1fr max(280px)";
 
