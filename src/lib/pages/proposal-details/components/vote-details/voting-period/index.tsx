@@ -56,7 +56,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
-  const isProposalResolved = !isNull(proposalData?.resolvedHeight);
+  const isProposalResolved = !isNull(proposalData.resolvedHeight);
 
   const toggleDisclosure = (voter: VoterVariant) => {
     let disclosure = validatorVoteDisclosure;

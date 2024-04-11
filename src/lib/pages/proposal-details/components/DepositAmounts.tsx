@@ -11,7 +11,7 @@ interface DepositAmountsProps {
 export const DepositAmounts = ({ deposit }: DepositAmountsProps) => (
   <div>
     {deposit.amount.length === 0 ? (
-      <Text variant="body2" color="text.dark">
+      <Text variant="body2" color="text.dark" px={4}>
         -
       </Text>
     ) : (
