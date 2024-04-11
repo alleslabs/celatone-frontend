@@ -57,7 +57,7 @@ export const ValidatorsTableMobileCard = ({
               </Flex>
             </Flex>
           )}
-          <Flex direction="column" gap={1}>
+          <Flex direction="column" gap={1} minW={0}>
             <MobileLabel label="Validator" />
             <ValidatorBadge
               validator={{

@@ -35,7 +35,7 @@ export const ProposalVotesTableBody = ({
 }: ProposalVotesTableBodyProps) => {
   const isMobile = useMobile();
   const templateColumns =
-    fullVersion && !isMobile ? `1fr 0.8fr 1.5fr 1fr` : `2fr 1fr`;
+    fullVersion && !isMobile ? `1fr 0.8fr 1.5fr 1fr` : `3fr 1fr`;
 
   if (isLoading) return <Loading />;
   if (!proposalVotes) return <ErrorFetching dataName="votes" />;

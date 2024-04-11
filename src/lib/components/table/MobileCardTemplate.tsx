@@ -20,6 +20,7 @@ export const MobileCardTemplate = ({
     cursor="pointer"
     direction="column"
     gap={3}
+    minW={0}
     w="full"
     onClick={onClick}
   >

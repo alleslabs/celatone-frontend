@@ -10,6 +10,7 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -62,6 +63,11 @@ const Home = () => {
 
   return (
     <PageContainer>
+      <ExplorerLink
+        type="user_address"
+        value="Lorem ipsum dolor sit amet consectetur adipisicing elit. Error quaerat cupiditate iste explicabo quisquam tempore debitis corporis veniam minus! Beatae sit porro cum! Exercitationem quas laborum placeat voluptatem error adipisci!"
+        textFormat="ellipsis"
+      />
       <Flex
         direction="column"
         p={{ base: 3, md: 12 }}

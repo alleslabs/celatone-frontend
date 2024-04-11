@@ -64,7 +64,7 @@ export const ValidatorsTableRow = ({
           </Text>
         </TableRow>
       )}
-      <TableRow>
+      <TableRow minW={0}>
         <ValidatorBadge
           validator={{
             validatorAddress: validator.validatorAddress,
@@ -72,7 +72,6 @@ export const ValidatorsTableRow = ({
             moniker: validator.moniker,
           }}
           badgeSize={7}
-          maxWidth="220px"
         />
       </TableRow>
       <TableRow>

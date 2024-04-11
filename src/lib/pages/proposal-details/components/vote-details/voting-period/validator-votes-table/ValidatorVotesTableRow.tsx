@@ -32,7 +32,7 @@ export const ValidatorVotesTableRow = ({
         minW="min-content"
       >
         {!isProposalResolved && <TableRow pl={0}>{proposalVote.rank}</TableRow>}
-        <TableRow>
+        <TableRow minW={0}>
           <Voter proposalVote={proposalVote} />
         </TableRow>
         <TableRow justifyContent="flex-end" pr={0}>
@@ -68,7 +68,7 @@ export const ValidatorVotesTableRow = ({
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
       {!isProposalResolved && <TableRow>{proposalVote.rank}</TableRow>}
-      <TableRow>
+      <TableRow minW={0}>
         <Voter proposalVote={proposalVote} />
       </TableRow>
       <TableRow>
