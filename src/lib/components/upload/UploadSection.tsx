@@ -81,10 +81,6 @@ export const UploadSection = ({
     setDefaultBehavior,
   ]);
 
-  // useEffect(() => {
-  //   onUploadChange(formData);
-  // }, [formData, onUploadChange]);
-
   return (
     <Flex direction="column" gap={8} maxW="550px">
       {wasmFile ? (
