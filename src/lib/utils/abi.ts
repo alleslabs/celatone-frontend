@@ -71,6 +71,10 @@ export const getArgType = (argType: string) =>
     .replace("0x1::decimal128::Decimal128", BCS.DECIMAL128)
     .replace("0x1::decimal256::Decimal256", BCS.DECIMAL256);
 
+const getChildType = (parentType: string, type: string) => {
+  const [pType, childType] = type.split(/<(.*)>/);
+  return pType === parentType ? childType : undefined;
+};
 const getArgValue = ({
   type,
   value,
@@ -81,13 +85,14 @@ const getArgValue = ({
   try {
     if (value === null) return null;
     if (type.startsWith("vector")) {
-      const [, elementType] = type.split(/<(.*)>/);
+      const elementType = getChildType("vector", type);
       const elements = getVectorElements(value);
       return elementType === "bool"
         ? elements.map((element) => element.toLowerCase() === "true")
         : elements;
     }
-    if (type === "bool") return value.toLowerCase() === "true";
+    if (type === "bool" || getChildType("0x1::option::Option", type) === "bool")
+      return value.toLowerCase() === "true";
     return value.trim();
   } catch (e) {
     return "";
