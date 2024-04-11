@@ -1,5 +1,6 @@
 import type { StdFee } from "@cosmjs/amino";
 import { useCallback, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
 import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
@@ -44,19 +45,22 @@ export const useUploadCode = (
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const fabricateFee = useFabricateFee();
 
-  const [formData, setFormData] = useState<UploadSectionState>({
-    wasmFile: undefined,
-    codeName: "",
-    permission: AccessType.ACCESS_TYPE_EVERYBODY,
-    addresses: [{ address: "" as BechAddr }],
-  });
-
-  const { wasmFile, codeName, permission, addresses } = formData;
-
   const setDefaultBehavior = useCallback(() => {
     setSimulateStatus({ status: "default", message: "" });
     setEstimatedFee(undefined);
   }, [setEstimatedFee]);
+
+  const formData = useForm<UploadSectionState>({
+    defaultValues: {
+      wasmFile: undefined,
+      codeName: "",
+      permission: AccessType.ACCESS_TYPE_EVERYBODY,
+      addresses: [{ address: "" as BechAddr }],
+    },
+    mode: "all",
+  });
+
+  const { wasmFile, codeName, permission, addresses } = formData.watch();
 
   // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
   const shouldNotSimulate = useMemo(() => {
@@ -159,7 +163,7 @@ export const useUploadCode = (
 
   return {
     proceed,
-    setFormData,
+    formData,
     estimatedFee,
     setEstimatedFee,
     shouldNotSimulate,

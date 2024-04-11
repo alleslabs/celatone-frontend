@@ -1,11 +1,12 @@
 import { Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/amino";
+import type { UseFormReturn } from "react-hook-form";
 
 import { UploadSection } from "lib/components/upload/UploadSection";
 import type { Option, SimulateStatus, UploadSectionState } from "lib/types";
 
 interface UploadNewCodeProps {
-  onUploadChange: (formData: UploadSectionState) => void;
+  formData: UseFormReturn<UploadSectionState>;
   estimatedFee: Option<StdFee>;
   setEstimatedFee: (fee: StdFee | undefined) => void;
   setDefaultBehavior: () => void;

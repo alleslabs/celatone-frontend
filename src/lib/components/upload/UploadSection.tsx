@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
@@ -14,7 +14,6 @@ import type {
   SimulateStatus,
   UploadSectionState,
 } from "lib/types";
-import { AccessType } from "lib/types";
 import { getCodeHash } from "lib/utils";
 
 import { CodeHashBox } from "./CodeHashBox";
@@ -23,7 +22,7 @@ import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
-  onUploadChange: (formData: UploadSectionState) => void;
+  formData: UseFormReturn<UploadSectionState>;
   estimatedFee: Option<StdFee>;
   setEstimatedFee: (fee: StdFee | undefined) => void;
   setDefaultBehavior: () => void;
@@ -33,7 +32,7 @@ interface UploadSectionProps {
 }
 
 export const UploadSection = ({
-  onUploadChange,
+  formData,
   estimatedFee,
   setEstimatedFee,
   setDefaultBehavior,
@@ -44,7 +43,6 @@ export const UploadSection = ({
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { address } = useCurrentChain();
-
   const [codeHash, setCodeHash] = useState<string>();
 
   const {
@@ -53,18 +51,8 @@ export const UploadSection = ({
     watch,
     formState: { errors },
     trigger,
-  } = useForm<UploadSectionState>({
-    defaultValues: {
-      wasmFile: undefined,
-      codeName: "",
-      permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as BechAddr }],
-    },
-    mode: "all",
-  });
-
-  const formData = watch();
-  const { wasmFile, codeName, permission } = formData;
+  } = formData;
+  const { wasmFile, codeName, permission } = watch();
 
   // Generate hash value from wasm file
   const setHashValue = useCallback(async () => {
@@ -93,9 +81,9 @@ export const UploadSection = ({
     setDefaultBehavior,
   ]);
 
-  useEffect(() => {
-    onUploadChange(formData);
-  }, [formData, onUploadChange]);
+  // useEffect(() => {
+  //   onUploadChange(formData);
+  // }, [formData, onUploadChange]);
 
   return (
     <Flex direction="column" gap={8} maxW="550px">

@@ -27,7 +27,7 @@ export const Upload = ({
   const { data, isLoading } = useUploadAccessParams();
   const {
     proceed,
-    setFormData,
+    formData,
     estimatedFee,
     setEstimatedFee,
     shouldNotSimulate,
@@ -73,7 +73,7 @@ export const Upload = ({
           mb={12}
         />
         <UploadSection
-          onUploadChange={setFormData}
+          formData={formData}
           estimatedFee={estimatedFee}
           setEstimatedFee={setEstimatedFee}
           shouldNotSimulate={shouldNotSimulate}

@@ -41,7 +41,7 @@ const Migrate = () => {
   const { data: uploadAccess, isFetching } = useUploadAccessParams();
   const {
     proceed,
-    setFormData,
+    formData,
     estimatedFee,
     setEstimatedFee,
     shouldNotSimulate,
@@ -122,7 +122,7 @@ const Migrate = () => {
       case "upload_new_code":
         return (
           <UploadNewCode
-            onUploadChange={setFormData}
+            formData={formData}
             estimatedFee={estimatedFee}
             setEstimatedFee={setEstimatedFee}
             shouldNotSimulate={shouldNotSimulate}
