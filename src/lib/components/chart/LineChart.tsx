@@ -175,7 +175,7 @@ export const LineChart = ({
         },
         ticks: {
           padding: isMobile ? 16 : 10,
-          maxTicksLimit: isMobile ? 5 : undefined,
+          maxTicksLimit: isMobile ? 8 : 32,
           callback: (_value: string | number, index: number) => {
             if (index === 0) {
               return "";
