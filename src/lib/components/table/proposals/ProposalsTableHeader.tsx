@@ -23,7 +23,7 @@ export const ProposalsTableHeader = ({
         color="gray.800"
       >
         <Text color="text.main" px={4}>
-          Proposal Title/Type
+          Proposal Title/Types
         </Text>
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>

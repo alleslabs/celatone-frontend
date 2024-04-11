@@ -7,20 +7,6 @@ import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 import type { ProposalType } from "lib/types";
 
-const RenderMsg = ({ types }: { types: string[] }) =>
-  types.length
-    ? types.map((msgType, index) => (
-        <span key={msgType + index.toString()}>
-          {index > 0 && (
-            <span style={{ color: "var(--chakra-colors-accent-main)" }}>
-              {" , "}
-            </span>
-          )}
-          {msgType}
-        </span>
-      ))
-    : "(No message)";
-
 interface ProposalTextCellProps {
   title: string;
   types: ProposalType[];
@@ -50,27 +36,36 @@ export const ProposalTextCell = ({
     return (
       <Flex direction="column" gap={1}>
         <MobileLabel label="Proposal Title" />
-        <Flex direction="column" gap={1}>
-          <Text
-            color="text.main"
-            variant="body2"
-            fontWeight={500}
-            wordBreak="break-word"
-          >
-            {title}
-          </Text>
-          <Flex align="center" gap={2}>
-            {isExpedited && (
-              <>
-                <Expedited isActiveExpedited={isDepositOrVoting} />
-                <DotSeparator />
-              </>
-            )}
-            <Text ref={typeRef} variant="body3" color="text.dark">
-              <RenderMsg types={types} />
+        <Text color="text.main" variant="body2" wordBreak="break-word">
+          {title}
+          {isExpedited && (
+            <span
+              style={{
+                display: "inline-block",
+                marginLeft: "8px",
+                verticalAlign: "middle",
+              }}
+            >
+              <Expedited isActiveExpedited={isDepositOrVoting} />
+            </span>
+          )}
+        </Text>
+        {types.length ? (
+          types.map((msgType, index) => (
+            <Text
+              key={msgType + index.toString()}
+              variant="body3"
+              color="text.dark"
+              wordBreak="break-word"
+            >
+              {msgType}
             </Text>
-          </Flex>
-        </Flex>
+          ))
+        ) : (
+          <Text variant="body3" color="text.dark">
+            (No message)
+          </Text>
+        )}
       </Flex>
     );
   }
@@ -113,7 +108,18 @@ export const ProposalTextCell = ({
           maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
-          <RenderMsg types={types} />
+          {types.length
+            ? types.map((msgType, index) => (
+                <span key={msgType + index.toString()}>
+                  {index > 0 && (
+                    <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+                      {" , "}
+                    </span>
+                  )}
+                  {msgType}
+                </span>
+              ))
+            : "(No message)"}
         </Text>
       </Flex>
     </Flex>
