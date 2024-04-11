@@ -1,5 +1,4 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable react/destructuring-assignment */
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
@@ -12,8 +11,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 // import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
-import type { WidgetProps } from "@rjsf/utils";
-import { getInputProps, getTemplate, getUiOptions } from "@rjsf/utils";
+import type {
+  BaseInputTemplateProps,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from "@rjsf/utils";
+import {
+  ariaDescribedByIds,
+  descriptionId,
+  examplesId,
+  getInputProps,
+  getTemplate,
+} from "@rjsf/utils";
+import { useCallback } from "react";
 import type { ChangeEvent, FocusEvent } from "react";
 
 import { isSchemaTypeString } from "../utils";
@@ -76,48 +87,85 @@ const getBaseInputPlaceholder = (
   return `${readonly ? "" : "Left blank to send as "}null`;
 };
 
-const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
+/** The `BaseInputTemplate` is the template to use to render the basic `<input>` component for the `core` theme.
+ * It is used as the template for rendering many of the <input> based widgets that differ by `type` and callbacks only.
+ * It can be customized/overridden for other themes or individual implementations as needed.
+ *
+ * @param props - The `WidgetProps` for this template
+ */
+export default function BaseInputTemplate<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: BaseInputTemplateProps<T, S, F>) {
   const {
     id,
-    type,
+    name, // remove this from ...rest
     value,
     label,
-    schema,
-    uiSchema,
-    onChange,
+    readonly,
+    disabled,
+    autofocus,
     onBlur,
     onFocus,
+    onChange,
+    onChangeOverride,
     options,
     required = false,
-    readonly,
-    rawErrors,
-    autofocus,
-    // placeholder,
-    disabled,
-    // formContext,
+    schema,
+    uiSchema,
+    formContext,
     registry,
+    rawErrors,
+    type,
+    hideLabel, // remove this from ...rest
+    hideError, // remove this from ...rest
+    placeholder,
+    ...rest
   } = props;
-  const inputProps = getInputProps<T, F>(schema, type, options);
-
-  const uiOptions = getUiOptions<T, F>(uiSchema);
   const DescriptionFieldTemplate = getTemplate<
     "DescriptionFieldTemplate",
     T,
+    S,
     F
-  >("DescriptionFieldTemplate", registry, uiOptions);
+  >("DescriptionFieldTemplate", registry, options);
 
   const { schemaUtils } = registry;
   const displayLabel =
     schemaUtils.getDisplayLabel(schema, uiSchema) &&
     (!!label || !!schema.title);
 
-  const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) =>
-    onChange(target.value === "" ? options.emptyValue : target.value);
-  const handleOnBlur = ({ target }: FocusEvent<HTMLInputElement>) =>
-    onBlur(id, target.value);
-  const handleOnFocus = ({ target }: FocusEvent<HTMLInputElement>) =>
-    onFocus(id, target.value);
+  // Note: since React 15.2.0 we can't forward unknown element attributes, so we
+  // exclude the "options" and "schema" ones here.
+  if (!id) {
+    // console.log("No id for", props);
+    throw new Error(`no id for props ${JSON.stringify(props)}`);
+  }
+  const inputProps = {
+    ...rest,
+    ...getInputProps<T, S, F>(schema, type, options),
+  };
 
+  let inputValue;
+  if (inputProps.type === "number" || inputProps.type === "integer") {
+    inputValue = value || value === 0 ? value : "";
+  } else {
+    inputValue = value == null ? "" : value;
+  }
+
+  const handleOnChange = useCallback(
+    ({ target }: ChangeEvent<HTMLInputElement>) =>
+      onChange(target.value === "" ? options.emptyValue : target.value),
+    [onChange, options.emptyValue]
+  );
+  const handleOnBlur = useCallback(
+    ({ target }: FocusEvent<HTMLInputElement>) => onBlur(id, target.value),
+    [onBlur, id]
+  );
+  const handleOnFocus = useCallback(
+    ({ target }: FocusEvent<HTMLInputElement>) => onFocus(id, target.value),
+    [onFocus, id]
+  );
   // const rightAddon = renderRightAddOn(
   //   value,
   //   label,
@@ -127,16 +175,16 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   // );
 
   const isStringType = isSchemaTypeString(schema.type);
-
   return (
     <FormControl
+      className="form-control"
       isDisabled={disabled || readonly}
       isRequired={required && !readonly}
       isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
     >
       {displayLabel && (
-        <Flex>
+        <Flex gap={2}>
           <FormLabel
             htmlFor={id}
             id={`${id}-label`}
@@ -157,12 +205,10 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
           <Input
             id={id}
             name={id}
-            value={value || value === 0 ? value : ""}
-            onChange={handleOnChange}
-            onBlur={handleOnBlur}
-            onFocus={handleOnFocus}
+            value={inputValue}
             autoFocus={autofocus}
             placeholder={
+              placeholder ||
               getBaseInputPlaceholder(
                 value,
                 readonly ?? false,
@@ -174,7 +220,11 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
               // )?.[1]
             }
             {...inputProps}
-            list={schema.examples ? `examples_${id}` : undefined}
+            list={schema.examples ? examplesId<T>(id) : undefined}
+            onChange={handleOnChange}
+            onBlur={handleOnBlur}
+            onFocus={handleOnFocus}
+            aria-describedby={ariaDescribedByIds<T>(id, !!schema.examples)}
             _disabled={{
               color: "text.main",
               cursor: "not-allowed",
@@ -201,8 +251,8 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
           </Checkbox>
         )}
       </Flex>
-      {Array.isArray(schema.examples) ? (
-        <datalist id={`examples_${id}`}>
+      {Array.isArray(schema.examples) && (
+        <datalist key={`datalist_${id}`} id={examplesId<T>(id)}>
           {(schema.examples as string[])
             .concat(
               schema.default && !schema.examples.includes(schema.default)
@@ -215,18 +265,17 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
               );
             })}
         </datalist>
-      ) : null}
+      )}
       {!!schema.description && (
         <Box mt={1}>
           <DescriptionFieldTemplate
-            id={`${id}-description`}
+            id={descriptionId<T>(id)}
             description={schema.description}
+            schema={schema}
             registry={registry}
           />
         </Box>
       )}
     </FormControl>
   );
-};
-
-export default BaseInputTemplate;
+}

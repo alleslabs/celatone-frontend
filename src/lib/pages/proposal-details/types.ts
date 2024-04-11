@@ -13,7 +13,7 @@ export enum TabIndex {
 }
 
 export const zProposalDetailsQueryParams = z.object({
-  id: z.coerce.number(),
+  proposalId: z.coerce.number(),
   tab: z.union([
     z.nativeEnum(TabIndex),
     z

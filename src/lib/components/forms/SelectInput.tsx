@@ -77,24 +77,21 @@ export const SelectInput = <T extends string>({
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [selected, setSelected] = useState(
-    () => options.find((item) => item.value === initialSelected)?.label ?? ""
-  );
+  const [selected, setSelected] = useState("");
 
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
-    if (options.every((option) => !option.disabled)) {
-      setSelected(
-        () =>
-          options.find((item) => item.value === initialSelected)?.label ?? ""
-      );
-    }
+    setSelected(
+      options.find((item) => !item.disabled && item.value === initialSelected)
+        ?.label ?? ""
+    );
   }, [initialSelected, options]);
 
   return (
     <Popover
       placement="bottom-start"
+      strategy="fixed"
       isOpen={isOpen}
       onOpen={onOpen}
       onClose={onClose}
@@ -156,7 +153,6 @@ export const SelectInput = <T extends string>({
         bg={popoverBgColor}
         w={inputRef.current?.clientWidth}
         maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
-        overflow="scroll"
         borderRadius="8px"
         _focusVisible={{
           outline: "none",

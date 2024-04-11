@@ -2,7 +2,7 @@ import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
 import { TableTitle } from "../table";
-import { AmpEvent, track } from "lib/amplitude";
+import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
@@ -33,7 +33,10 @@ export const DelegationInfo = ({
           bg="gray.900"
           borderRadius="8px"
           p={4}
-          onClick={onViewMore}
+          onClick={() => {
+            trackUseViewMore();
+            onViewMore();
+          }}
         >
           <Flex direction="column" gap={2}>
             <Heading variant="h6" as="h6">
@@ -67,7 +70,7 @@ export const DelegationInfo = ({
                 minW="fit-content"
                 rightIcon={<CustomIcon name="chevron-right" />}
                 onClick={() => {
-                  track(AmpEvent.USE_VIEW_MORE);
+                  trackUseViewMore();
                   onViewMore();
                 }}
               >

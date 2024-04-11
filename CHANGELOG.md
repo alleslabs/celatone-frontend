@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#878](https://github.com/alleslabs/celatone-frontend/pull/878) Support searching proposal id and validator address on the main search
+- [#875](https://github.com/alleslabs/celatone-frontend/pull/875) Add Amplitude tracking to validator details page
+- [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
 - [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
 - [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
 - [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
@@ -97,6 +100,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
+- [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
+- [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
 - [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
 - [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
 - [#845](https://github.com/alleslabs/celatone-frontend/pull/845) Edit error fetching message on the contract state
@@ -127,6 +133,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#881](https://github.com/alleslabs/celatone-frontend/pull/881) Fix abi option boolean problem
+- [#877](https://github.com/alleslabs/celatone-frontend/pull/877) Fix validator list/details bug bash
+- [#874](https://github.com/alleslabs/celatone-frontend/pull/874) Fix minor proposal and validator bugs
+- [#876](https://github.com/alleslabs/celatone-frontend/pull/876) Fix validator votes dropdown
+- [#873](https://github.com/alleslabs/celatone-frontend/pull/873) Fix bug bash select input and ui
+- [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
+- [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
 - [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
 - [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links

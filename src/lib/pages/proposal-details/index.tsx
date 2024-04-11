@@ -18,13 +18,16 @@ import { TabIndex, zProposalDetailsQueryParams } from "./types";
 
 const InvalidProposal = () => <InvalidState title="Proposal does not exist" />;
 
-const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
+const ProposalDetailsBody = ({
+  proposalId,
+  tab,
+}: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useDerivedProposalData(id);
+  const { data, isLoading } = useDerivedProposalData(proposalId);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
-    useProposalVotesInfo(id);
+    useProposalVotesInfo(proposalId);
   const { data: params, isLoading: isParamsLoading } =
     useDerivedProposalParams();
 
@@ -33,9 +36,9 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
-        pathname: "/proposals/[id]/[tab]",
+        pathname: "/proposals/[proposalId]/[tab]",
         query: {
-          id,
+          proposalId,
           tab: nextTab,
         },
         options: {
@@ -43,7 +46,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
         },
       });
     },
-    [id, tab, navigate]
+    [navigate, proposalId, tab]
   );
 
   if (isLoading) return <Loading />;
@@ -79,7 +82,7 @@ const ProposalDetailsBody = ({ id, tab }: ProposalDetailsQueryParams) => {
               isLoading={isVotesInfoLoading || isParamsLoading}
             />
             <UserDocsLink
-              title="What is Proposal in CosmWasm?"
+              title="What is a Proposal?"
               cta="Read more about Proposal Details"
               href="general/proposal/detail-page"
             />

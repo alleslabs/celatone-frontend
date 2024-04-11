@@ -2,7 +2,7 @@ import type { BorderProps, LayoutProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, track } from "lib/amplitude";
+import { trackUseViewMore } from "lib/amplitude";
 
 interface ViewMoreProps {
   onClick: () => void;
@@ -25,7 +25,7 @@ export const ViewMore = ({
       variant="ghost-gray"
       gap={2}
       onClick={() => {
-        track(AmpEvent.USE_VIEW_MORE);
+        trackUseViewMore();
         onClick();
       }}
     >

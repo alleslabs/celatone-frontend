@@ -48,7 +48,12 @@ export const ProposalVotesPanel = ({
         </Button>
         <TableTitle title="All Votes" count={answers?.total} mb={0} />
       </Flex>
-      <ProposalVotesTable id={id} answers={answers} fullVersion />
+      <ProposalVotesTable
+        id={id}
+        answers={answers}
+        fullVersion
+        enabled={isOpen}
+      />
     </Flex>
   );
 };

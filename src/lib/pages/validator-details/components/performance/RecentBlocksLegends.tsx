@@ -18,7 +18,7 @@ const LegendItem = ({
     <Flex w={3} h={3} borderRadius="2px" backgroundColor={color} mt={1} />
     <Flex
       direction={{ base: "row", md: "column" }}
-      alignItems={{ base: "end", md: "start" }}
+      alignItems={{ base: "center", md: "start" }}
     >
       <Text
         variant="body2"

@@ -1,5 +1,5 @@
-import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import type { FlexProps, TextProps } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 
 import { trackMintScan } from "lib/amplitude";
@@ -23,7 +23,7 @@ export type LinkType =
   | "pool_id"
   | "proposal_id";
 
-interface ExplorerLinkProps extends BoxProps {
+interface ExplorerLinkProps extends FlexProps {
   value: string;
   type: LinkType;
   copyValue?: string;
@@ -186,50 +186,44 @@ export const ExplorerLink = ({
   const link = externalLink ?? internalLink;
   const readOnly = isReadOnly || !link;
   // TODO: handle auto width
-  return (
-    <Box
-      display="inline-flex"
-      alignItems="center"
+  return readOnly ? (
+    <Flex alignItems="center" {...componentProps}>
+      <Text variant="body2" color="text.disabled">
+        {textValue}
+      </Text>
+    </Flex>
+  ) : (
+    <Flex
+      className="copier-wrapper"
+      display={{ base: "inline-flex", md: "flex" }}
+      align="center"
+      h={fixedHeight ? "24px" : "auto"}
+      w="full"
       transition="all 0.25s ease-in-out"
       _hover={{
-        ...(!readOnly && {
-          textDecoration: "underline",
-          textDecorationColor: "secondary.light",
-        }),
+        textDecoration: "underline",
+        textDecorationColor: "secondary.light",
       }}
       {...componentProps}
     >
-      {readOnly ? (
-        <Text variant="body2" color="text.disabled">
-          {textValue}
-        </Text>
-      ) : (
-        <Flex
-          className="copier-wrapper"
-          display={{ base: "inline-flex", md: "flex" }}
-          align="center"
-          h={fixedHeight ? "24px" : "auto"}
-        >
-          <LinkRender
-            type={type}
-            isInternal={isUndefined(externalLink)}
-            hrefLink={link}
-            textValue={textValue}
-            isEllipsis={textFormat === "ellipsis"}
-            maxWidth={maxWidth}
-            textVariant={textVariant}
-            openNewTab={openNewTab}
-          />
-          <Copier
-            type={type}
-            value={copyValue || value}
-            copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-            display={showCopyOnHover && !isMobile ? "none" : "inline"}
-            ml={2}
-            amptrackSection={ampCopierSection}
-          />
-        </Flex>
-      )}
-    </Box>
+      <LinkRender
+        type={type}
+        isInternal={isUndefined(externalLink)}
+        hrefLink={link}
+        textValue={textValue}
+        isEllipsis={textFormat === "ellipsis"}
+        maxWidth={maxWidth}
+        textVariant={textVariant}
+        openNewTab={openNewTab}
+      />
+      <Copier
+        type={type}
+        value={copyValue || value}
+        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
+        display={showCopyOnHover && !isMobile ? "none" : "inline"}
+        ml={2}
+        amptrackSection={ampCopierSection}
+      />
+    </Flex>
   );
 };
