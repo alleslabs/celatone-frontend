@@ -1,9 +1,10 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
 import type { DisplayMode, SelectedAddress } from "../types";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
 
 interface ModuleSelectorDisplayProps {
   selectedAddress: SelectedAddress;
@@ -25,19 +26,24 @@ export const ModuleSelectorDisplay = ({
     borderRadius={8}
     alignItems="center"
   >
-    <Flex direction="column" gap={1}>
-      <Text variant="body2" color="text.dark" fontWeight={500}>
-        Viewing Address
-      </Text>
-      <CopyLink value={selectedAddress.address} type="user_address" />
+    <Flex flex={1}>
+      <LabelText label="Viewing Address">
+        <CopyLink
+          value={selectedAddress.address}
+          type="user_address"
+          showCopyOnHover
+        />
+      </LabelText>
     </Flex>
-    <Flex direction="column" gap={1}>
-      <Text variant="body2" color="text.dark" fontWeight={500}>
-        Hex
-      </Text>
-      <CopyLink value={selectedAddress.hex} type="user_address" />
+    <Flex flex={1}>
+      <LabelText label="Hex">
+        <CopyLink
+          value={selectedAddress.hex}
+          type="user_address"
+          showCopyOnHover
+        />
+      </LabelText>
     </Flex>
-    <div />
     <Button
       variant="outline-white"
       size="sm"
