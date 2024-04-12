@@ -23,6 +23,7 @@ export const BondedTableMobileCard = ({
     direction="column"
     gap={3}
     w="full"
+    minW={0}
     border="1px solid"
     borderColor="gray.700"
   >

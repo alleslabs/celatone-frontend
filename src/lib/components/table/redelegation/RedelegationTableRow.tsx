@@ -23,13 +23,13 @@ export const RedelegationTableRow = ({
     minW="min-content"
     sx={{ "& > div": { alignItems: "flex-start" } }}
   >
-    <TableRow>
+    <TableRow minW={0}>
       <ValidatorBadge validator={redelegation.srcValidator} />
     </TableRow>
     <TableRow>
       <CustomIcon name="arrow-right" boxSize={6} color="gray.600" />
     </TableRow>
-    <TableRow>
+    <TableRow minW={0}>
       <ValidatorBadge validator={redelegation.dstValidator} />
     </TableRow>
     <TableRow flexDirection="column" alignItems="start" gap={2}>

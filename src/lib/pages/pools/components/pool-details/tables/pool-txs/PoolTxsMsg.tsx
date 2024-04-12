@@ -47,6 +47,7 @@ export const PoolTxsMsg = ({
   const hasMsgDetails = transaction.success && message;
   return (
     <Box
+      className="copier-wrapper"
       w="full"
       minW="min-content"
       borderBottom="1px solid"
@@ -59,7 +60,6 @@ export const PoolTxsMsg = ({
       }}
     >
       <Grid
-        className="copier-wrapper"
         templateColumns={templateColumns}
         transition="all 0.25s ease-in-out"
         cursor="pointer"
@@ -153,7 +153,7 @@ export const PoolTxsMsg = ({
           hidden={!isOpen}
           templateColumns={msgDetailTemplateColumns}
         >
-          <TableNoBorderRow gridArea="1 / 4" py={0}>
+          <TableNoBorderRow gridArea="1 / 4" py={0} minW={0}>
             <PoolMsgDetail
               txHash={transaction.hash}
               blockHeight={transaction.height}
