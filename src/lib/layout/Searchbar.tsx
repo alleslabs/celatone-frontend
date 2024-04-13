@@ -418,44 +418,50 @@ const Searchbar = () => {
         onKeyDown={handleOnKeyEnter}
         autoComplete="off"
       />
-      <List
-        borderRadius="8px"
-        bg="gray.900"
-        position="absolute"
-        w="full"
-        h={isOpen ? "fit-content" : 0}
-        top="50px"
-        overflowY="scroll"
-        shadow="dark-lg"
-      >
-        {keyword.length > 0 ? (
-          <>
-            {isLoading || isTyping ? (
-              <StyledListItem display="flex" alignItems="center" gap={2} p={4}>
-                <Spinner color="gray.600" size="sm" />
-                <Text color="text.disabled" variant="body2" fontWeight={500}>
-                  Looking for results ...
-                </Text>
-              </StyledListItem>
-            ) : (
-              <ResultRender
-                results={results}
-                keyword={keyword}
-                cursor={cursor}
-                metadata={metadata}
-                setCursor={setCursor}
-                handleSelectResult={handleSelectResult}
-              />
-            )}
-          </>
-        ) : (
-          <StyledListItem p={4}>
-            <Text color="text.disabled" variant="body2" fontWeight={500}>
-              {getPlaceholder({ isWasm, isPool, isMove, isGov })}
-            </Text>
-          </StyledListItem>
-        )}
-      </List>
+      {isOpen && (
+        <List
+          borderRadius="8px"
+          bg="gray.900"
+          position="absolute"
+          w="full"
+          top="50px"
+          overflowY="scroll"
+          shadow="dark-lg"
+        >
+          {keyword.length > 0 ? (
+            <>
+              {isLoading || isTyping ? (
+                <StyledListItem
+                  display="flex"
+                  alignItems="center"
+                  gap={2}
+                  p={4}
+                >
+                  <Spinner color="gray.600" size="sm" />
+                  <Text color="text.disabled" variant="body2" fontWeight={500}>
+                    Looking for results ...
+                  </Text>
+                </StyledListItem>
+              ) : (
+                <ResultRender
+                  results={results}
+                  keyword={keyword}
+                  cursor={cursor}
+                  metadata={metadata}
+                  setCursor={setCursor}
+                  handleSelectResult={handleSelectResult}
+                />
+              )}
+            </>
+          ) : (
+            <StyledListItem p={4}>
+              <Text color="text.disabled" variant="body2" fontWeight={500}>
+                {getPlaceholder({ isWasm, isPool, isMove, isGov })}
+              </Text>
+            </StyledListItem>
+          )}
+        </List>
+      )}
     </FormControl>
   );
 };
