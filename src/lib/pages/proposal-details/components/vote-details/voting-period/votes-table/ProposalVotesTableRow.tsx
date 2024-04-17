@@ -24,7 +24,11 @@ export const ProposalVotesTableRow = ({
 
   if (isMobile)
     return (
-      <Grid templateColumns={templateColumns} minW="min-content">
+      <Grid
+        className="copier-wrapper"
+        templateColumns={templateColumns}
+        minW="min-content"
+      >
         <TableRow pl={0}>
           <Voter proposalVote={proposalVote} />
         </TableRow>

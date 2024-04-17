@@ -1,5 +1,5 @@
 import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
-import type { Big } from "big.js";
+import type Big from "big.js";
 import Link from "next/link";
 
 import { trackWebsite } from "lib/amplitude";

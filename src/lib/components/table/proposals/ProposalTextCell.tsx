@@ -32,7 +32,7 @@ export const ProposalTextCell = ({
       Number(typeRef.current?.scrollWidth) >
         Number(typeRef.current?.clientWidth));
 
-  if (isMobile) {
+  if (isMobile)
     return (
       <Flex direction="column" gap={1}>
         <MobileLabel label="Proposal Title" />
@@ -68,7 +68,6 @@ export const ProposalTextCell = ({
         )}
       </Flex>
     );
-  }
 
   return (
     <Flex

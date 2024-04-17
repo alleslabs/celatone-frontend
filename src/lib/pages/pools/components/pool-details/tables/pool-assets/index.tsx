@@ -1,4 +1,4 @@
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { TableContainer } from "lib/components/table";
 import { PoolType } from "lib/types";

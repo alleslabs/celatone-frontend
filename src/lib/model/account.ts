@@ -1,4 +1,4 @@
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { useGovConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";

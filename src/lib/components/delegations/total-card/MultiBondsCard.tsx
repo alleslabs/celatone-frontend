@@ -1,5 +1,5 @@
 import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
-import type { Big } from "big.js";
+import type Big from "big.js";
 import plur from "plur";
 
 import { CustomIcon } from "lib/components/icon";

@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { TokenImageRender } from "lib/components/token";

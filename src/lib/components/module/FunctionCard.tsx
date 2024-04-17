@@ -49,9 +49,10 @@ export const FunctionCard = ({
     <Tooltip
       bg="primary.dark"
       label="Only functions with “is_entry: true” are able to interacted through Celatone’s module interactions."
-      isDisabled={!disabled}
+      hidden={!disabled}
     >
       <Flex
+        w="full"
         borderRadius={8}
         py={2}
         px={3}
