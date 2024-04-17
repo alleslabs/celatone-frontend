@@ -136,6 +136,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#885](https://github.com/alleslabs/celatone-frontend/pull/885) Fix voted proposals freeze columns
 - [#881](https://github.com/alleslabs/celatone-frontend/pull/881) Fix abi option boolean problem
 - [#877](https://github.com/alleslabs/celatone-frontend/pull/877) Fix validator list/details bug bash
 - [#874](https://github.com/alleslabs/celatone-frontend/pull/874) Fix minor proposal and validator bugs
