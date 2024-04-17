@@ -1,13 +1,15 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { FlexProps } from "@chakra-ui/react";
+import type Big from "big.js";
+import { isNull } from "lodash";
 
-import type { Ratio } from "lib/types";
+import type { Nullable, Ratio } from "lib/types";
 import { d0Formatter, formatPrettyPercent } from "lib/utils";
 
 interface VpPercentCardProps {
   name: string;
-  ratio: Ratio<number>;
-  power: Big;
+  ratio: Nullable<Ratio<number>>;
+  power: Nullable<Big>;
   color: FlexProps["bgColor"];
   isCompact: boolean;
 }
@@ -30,11 +32,16 @@ export const VpPercentCard = ({
         {name}
       </Text>
       <Flex direction={isCompact ? "row" : "column"} gap={isCompact ? 2 : 0}>
-        <Heading as="h6" variant="h6" fontWeight={600}>
-          {formatPrettyPercent(ratio)}
+        <Heading
+          as="h6"
+          variant="h6"
+          fontWeight={600}
+          color={ratio ? "text.main" : "text.dark"}
+        >
+          {!isNull(ratio) ? formatPrettyPercent(ratio) : "N/A"}
         </Heading>
         <Text variant="body2" color="text.dark">
-          ({d0Formatter(power, "0")})
+          ({!isNull(power) ? d0Formatter(power, "0") : "-"})
         </Text>
       </Flex>
     </Flex>

@@ -48,7 +48,7 @@ export const ProgressBadge = ({
     borderRadius="8px"
   >
     <BadgeIcon state={state} />
-    <Text variant="body3" color="text.main">
+    <Text variant="body3" color="text.main" whiteSpace="nowrap">
       {text}
     </Text>
   </Flex>

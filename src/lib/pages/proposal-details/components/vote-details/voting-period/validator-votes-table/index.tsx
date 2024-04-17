@@ -40,8 +40,8 @@ export const ValidatorVotesTableBody = ({
 
   const templateColumns =
     fullVersion && !isMobile
-      ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
-      : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`;
+      ? `${!isProposalResolved ? "32px " : ""}1fr 0.8fr 1.5fr 1fr`
+      : `${!isProposalResolved ? "32px " : ""}1.5fr 0.5fr`;
 
   if (isLoading) return <Loading />;
   if (!validatorVotes) return <ErrorFetching dataName="votes" />;

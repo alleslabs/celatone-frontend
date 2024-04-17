@@ -25,7 +25,7 @@ export const DepositBar = ({
           key={min.denom}
           direction={isCompact ? "column" : "row"}
           w="full"
-          gap={isCompact ? 0 : 4}
+          gap={isCompact ? 0 : 2}
         >
           <ProgressBar
             value={current.amount}

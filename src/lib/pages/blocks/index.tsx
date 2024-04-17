@@ -5,7 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 
-import { BlocksTable } from "./components/BlocksTable";
+import { RecentBlocksTable } from "./components/RecentBlocksTable";
 
 const BlocksPage = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ const BlocksPage = () => {
         subtitle="This page displays all blocks on this network sorted by recency"
         docHref="introduction/overview#recent-blocks"
       />
-      <BlocksTable />
+      <RecentBlocksTable />
     </PageContainer>
   );
 };

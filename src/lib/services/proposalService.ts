@@ -1,7 +1,7 @@
 import type { Coin } from "@cosmjs/amino";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import type { Big } from "big.js";
+import type Big from "big.js";
 import { useCallback } from "react";
 
 import {

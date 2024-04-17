@@ -31,7 +31,6 @@ interface ExplorerLinkProps extends FlexProps {
   showCopyOnHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
-  maxWidth?: string;
   textVariant?: TextProps["variant"];
   ampCopierSection?: string;
   openNewTab?: boolean;
@@ -106,7 +105,6 @@ const LinkRender = ({
   hrefLink,
   textValue,
   isEllipsis,
-  maxWidth,
   textVariant,
   openNewTab,
 }: {
@@ -115,7 +113,6 @@ const LinkRender = ({
   hrefLink: string;
   textValue: string;
   isEllipsis: boolean;
-  maxWidth: ExplorerLinkProps["maxWidth"];
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
@@ -124,10 +121,7 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       color="secondary.main"
-      transition="all 0.25s ease-in-out"
-      _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
-      maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
@@ -136,7 +130,12 @@ const LinkRender = ({
   );
 
   return isInternal && !openNewTab ? (
-    <AppLink href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
+    <AppLink
+      href={hrefLink}
+      passHref
+      onClick={(e) => e.stopPropagation()}
+      style={{ overflow: "hidden" }}
+    >
       {textElement}
     </AppLink>
   ) : (
@@ -149,6 +148,7 @@ const LinkRender = ({
         if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
+      style={{ overflow: "hidden" }}
     >
       {textElement}
     </a>
@@ -163,7 +163,6 @@ export const ExplorerLink = ({
   showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
-  maxWidth = "160px",
   textVariant = "body2",
   ampCopierSection,
   openNewTab,
@@ -198,7 +197,6 @@ export const ExplorerLink = ({
       display={{ base: "inline-flex", md: "flex" }}
       align="center"
       h={fixedHeight ? "24px" : "auto"}
-      w="full"
       transition="all 0.25s ease-in-out"
       _hover={{
         textDecoration: "underline",
@@ -212,7 +210,6 @@ export const ExplorerLink = ({
         hrefLink={link}
         textValue={textValue}
         isEllipsis={textFormat === "ellipsis"}
-        maxWidth={maxWidth}
         textVariant={textVariant}
         openNewTab={openNewTab}
       />

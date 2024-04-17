@@ -15,6 +15,7 @@ import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
 import { useValidatorData } from "lib/services/validatorService";
 
 import {
@@ -45,6 +46,10 @@ const ValidatorDetailsBody = ({
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
+  const { data: movePoolInfos, isLoading: isMovePoolInfosLoading } =
+    useMovePoolInfos({
+      withPrices: true,
+    });
   const { data, isLoading } = useValidatorData(validatorAddress);
 
   const handleTabChange = useCallback(
@@ -65,7 +70,8 @@ const ValidatorDetailsBody = ({
     [navigate, tab, validatorAddress]
   );
 
-  if (isLoading || isAssetInfosLoading) return <Loading />;
+  if (isLoading || isAssetInfosLoading || isMovePoolInfosLoading)
+    return <Loading />;
   if (!data) return <ErrorFetching dataName="validator information" />;
   if (!data.info) return <InvalidValidator />;
 
@@ -132,6 +138,7 @@ const ValidatorDetailsBody = ({
                 validatorAddress={validatorAddress}
                 singleStakingDenom={singleStakingDenom}
                 assetInfos={assetInfos}
+                movePoolInfos={movePoolInfos}
               />
             </TabPanel>
           </TabPanels>

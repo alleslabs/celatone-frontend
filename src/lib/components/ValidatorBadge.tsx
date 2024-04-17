@@ -13,7 +13,6 @@ interface ValidatorBadgeProps {
   validator: Nullable<Validator>;
   badgeSize?: ImageProps["boxSize"];
   ampCopierSection?: string;
-  maxWidth?: string;
   hasLabel?: boolean;
   moreInfo?: JSX.Element;
 }
@@ -22,7 +21,6 @@ export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
   ampCopierSection,
-  maxWidth = "160px",
   hasLabel = true,
   moreInfo,
 }: ValidatorBadgeProps) => {
@@ -37,7 +35,7 @@ export const ValidatorBadge = ({
     <Flex alignItems="center" gap={2} w="full">
       <ValidatorImage validator={validator} boxSize={badgeSize} />
       {validator ? (
-        <Flex direction="column" w="full">
+        <Flex direction="column" w="full" minW={0}>
           {isMobile && hasLabel && <MobileLabel label="Validator" />}
           <ExplorerLink
             type="validator_address"
@@ -51,7 +49,6 @@ export const ValidatorBadge = ({
             isReadOnly={isNull(isValidatorExternalLink)}
             showCopyOnHover
             textFormat="ellipsis"
-            maxWidth={maxWidth}
             ampCopierSection={ampCopierSection}
             fixedHeight
           />

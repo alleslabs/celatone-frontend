@@ -41,6 +41,7 @@ const tableRowBaseStyle = {
   fontSize: "14px",
   fontWeight: 400,
   p: 4,
+  minW: 0,
   minH: "75px",
   display: "flex",
   alignItems: "center",

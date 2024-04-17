@@ -120,10 +120,10 @@ const Proposals = () => {
           />
           {!isMobile && (
             <Tooltip
-              isDisabled={!!address}
               label="You need to connect your wallet to see your proposals"
               maxW="240px"
               textAlign="center"
+              hidden={!!address}
             >
               <Switch
                 alignItems="center"

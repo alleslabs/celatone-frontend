@@ -72,7 +72,6 @@ export const ValidatorsTableRow = ({
             moniker: validator.moniker,
           }}
           badgeSize={7}
-          maxWidth="220px"
         />
       </TableRow>
       <TableRow>

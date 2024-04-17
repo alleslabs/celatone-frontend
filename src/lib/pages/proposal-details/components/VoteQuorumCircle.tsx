@@ -1,28 +1,25 @@
 import { Circle, Heading, Text } from "@chakra-ui/react";
 
-import type { Ratio } from "lib/types";
+import type { Nullable, Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumCircleProps {
   quorum: Ratio<number>;
-  nonAbstainVotes: Ratio<number>;
-  totalVotes: Ratio<number>;
+  nonAbstainRatio: Nullable<Ratio<number>>;
+  totalRatio: Nullable<Ratio<number>>;
   isCompact: boolean;
   isBgGray?: boolean;
 }
 
 export const VoteQuorumCircle = ({
   quorum,
-  nonAbstainVotes,
-  totalVotes,
+  nonAbstainRatio,
+  totalRatio,
   isCompact,
   isBgGray,
 }: VoteQuorumCircleProps) => {
-  const nonAbstainVotesAngle = nonAbstainVotes * 360;
-
-  const totalVotesAngle = totalVotes * 360;
-  const totalVotesPercent = formatPrettyPercent(totalVotes, 1);
-
+  const nonAbstainAngle = (nonAbstainRatio ?? 0) * 360;
+  const totalAngle = (totalRatio ?? 0) * 360;
   const quorumAngle = quorum * 360;
   const quorumPercent = formatPrettyPercent(quorum);
 
@@ -30,7 +27,7 @@ export const VoteQuorumCircle = ({
     <Circle
       size={isCompact ? "64px" : "160px"}
       position="relative"
-      bgGradient={`conic(primary.main ${nonAbstainVotesAngle}deg, secondary.main ${nonAbstainVotesAngle}deg ${totalVotesAngle}deg, gray.800 ${totalVotesAngle}deg)`}
+      bgGradient={`conic(primary.main ${nonAbstainAngle}deg, secondary.main ${nonAbstainAngle}deg ${totalAngle}deg, gray.800 ${totalAngle}deg)`}
     >
       <Circle
         size={isCompact ? "64px" : "160px"}
@@ -65,9 +62,9 @@ export const VoteQuorumCircle = ({
         <Heading
           variant={isCompact ? "h7" : "h4"}
           fontWeight={600}
-          color="text.main"
+          color={totalRatio ? "text.main" : "text.dark"}
         >
-          {totalVotesPercent}
+          {totalRatio ? formatPrettyPercent(totalRatio, 1) : "N/A"}
         </Heading>
       </Circle>
     </Circle>

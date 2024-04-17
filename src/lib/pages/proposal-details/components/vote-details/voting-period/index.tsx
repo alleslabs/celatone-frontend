@@ -16,7 +16,6 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposalService";
-import { ProposalStatus } from "lib/types";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
@@ -57,7 +56,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
-  const isProposalResolved = !isNull(proposalData?.resolvedHeight);
+  const isProposalResolved = !isNull(proposalData.resolvedHeight);
 
   const toggleDisclosure = (voter: VoterVariant) => {
     let disclosure = validatorVoteDisclosure;
@@ -108,11 +107,9 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         gap={4}
       >
         {/* Voting Participations */}
-        {proposalData.status === ProposalStatus.VOTING_PERIOD && (
-          <ContentContainer transparent={isMobile}>
-            <VotingQuorum proposalData={proposalData} {...props} />
-          </ContentContainer>
-        )}
+        <ContentContainer transparent={isMobile}>
+          <VotingQuorum proposalData={proposalData} {...props} />
+        </ContentContainer>
         {/* Voting Results */}
         <ContentContainer transparent={isMobile}>
           <VotingThreshold proposalData={proposalData} {...props} />

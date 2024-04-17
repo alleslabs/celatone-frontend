@@ -26,7 +26,11 @@ export const ValidatorVotesTableRow = ({
 
   if (isMobile)
     return (
-      <Grid templateColumns={templateColumns} minW="min-content">
+      <Grid
+        className="copier-wrapper"
+        templateColumns={templateColumns}
+        minW="min-content"
+      >
         {!isProposalResolved && <TableRow pl={0}>{proposalVote.rank}</TableRow>}
         <TableRow>
           <Voter proposalVote={proposalVote} />

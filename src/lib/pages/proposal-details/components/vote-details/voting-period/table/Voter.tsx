@@ -13,7 +13,7 @@ interface VoterProps {
 export const Voter = ({ proposalVote }: VoterProps) => {
   const isMobile = useMobile();
 
-  if (proposalVote.validator) {
+  if (proposalVote.validator)
     return (
       <ValidatorBadge
         validator={proposalVote.validator}
@@ -29,12 +29,10 @@ export const Voter = ({ proposalVote }: VoterProps) => {
             />
           ) : undefined
         }
-        maxWidth="110px"
       />
     );
-  }
 
-  if (proposalVote.voter) {
+  if (proposalVote.voter)
     return (
       <VStack spacing={1} alignItems="flex-start">
         <ExplorerLink
@@ -53,7 +51,6 @@ export const Voter = ({ proposalVote }: VoterProps) => {
         )}
       </VStack>
     );
-  }
 
   return (
     <Text variant="body2" color="text.dark">

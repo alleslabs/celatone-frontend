@@ -258,7 +258,7 @@ const zProposalVotesInfoResponse = z
     abstain: zBig,
     no: zBig,
     no_with_veto: zBig,
-    total_voting_power: zBig,
+    total_voting_power: zBig.nullable(),
   })
   .transform<ProposalVotesInfo>(snakeToCamel);
 
