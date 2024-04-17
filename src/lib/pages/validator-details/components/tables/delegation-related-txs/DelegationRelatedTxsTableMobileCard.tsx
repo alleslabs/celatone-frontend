@@ -67,11 +67,11 @@ export const DelegationRelatedTxsTableMobileCard = ({
           </Text>
           {delegationRelatedTx.tokens.map((coin) => (
             <DelegationRelatedTxsTokenChange
+              key={delegationRelatedTx.txHash + coin.amount + coin.denom}
               txHash={delegationRelatedTx.txHash}
               coin={coin}
               assetInfos={assetInfos}
               movePoolInfos={movePoolInfos}
-              key={delegationRelatedTx.txHash + coin.amount + coin.denom}
             />
           ))}
         </Box>
