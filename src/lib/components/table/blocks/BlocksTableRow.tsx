@@ -50,11 +50,7 @@ export const BlocksTableRow = ({
       </TableRow>
       {showProposer && (
         <TableRow>
-          <ValidatorBadge
-            validator={blockData.proposer}
-            badgeSize={7}
-            maxWidth="220px"
-          />
+          <ValidatorBadge validator={blockData.proposer} badgeSize={7} />
         </TableRow>
       )}
       <TableRow

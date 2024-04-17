@@ -28,7 +28,7 @@ export const ValidatorImage = ({
   }
 
   return isLoading || !data || !validator.moniker ? (
-    <SkeletonCircle boxSize={boxSize} />
+    <SkeletonCircle boxSize={boxSize} minWidth={boxSize} />
   ) : (
     <Image
       boxSize={boxSize}

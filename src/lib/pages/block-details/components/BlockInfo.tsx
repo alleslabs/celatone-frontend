@@ -36,7 +36,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
             }`}
           </LabelText>
         </Flex>
-        <LabelText label="Proposed by" flex="1">
+        <LabelText label="Proposed by" flex="1" minW={0}>
           <ValidatorBadge
             validator={blockData.proposer}
             badgeSize={6}
