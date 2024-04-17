@@ -72,7 +72,7 @@ export const VotingOverviewQuorum = ({
             </div>
           }
           bgColor="gray.700"
-          isDisabled={isNull(nonAbstainRatio) || isNull(abstainRatio)}
+          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
         >
           <Box h="fit-content">
             <VoteQuorumCircle

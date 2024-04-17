@@ -32,7 +32,7 @@ export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
   return (
     <Tooltip
       label="Deposit failed and cancelled proposals are pruned from the network"
-      isDisabled={!disabled}
+      hidden={!disabled}
     >
       <Button
         variant="outline-primary"
