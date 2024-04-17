@@ -51,7 +51,7 @@ export const Countdown = ({ endTime, isString }: CountdownProps) => {
           </span>
         </>
       );
-      if (diffTime === 0) router.reload();
+      if (diffTime === 0) clearInterval(intervalId);
       setTime(timestamp);
     }, 1000);
     return () => clearInterval(intervalId);
