@@ -208,7 +208,7 @@ export const PublishModule = ({
 
   return (
     <>
-      <PageContainer display="inline" p={0}>
+      <PageContainer p={0}>
         <Box minH="inherit" maxW="1440px" mx="auto">
           <Grid
             templateColumns="1fr 6fr 4fr 1fr"
