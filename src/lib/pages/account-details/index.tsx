@@ -428,7 +428,7 @@ const AccountDetailsBody = ({
             <NftsSection address={hexAddress} totalData={nftsCount} />
             <UserDocsLink
               title="What is NFTs in the account?"
-              cta="Read more about NFTs"
+              cta="Read more about NFTs in Account"
               href="general/accounts/detail-page#nfts"
             />
           </TabPanel>
@@ -454,7 +454,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is Stored Codes in the account?"
               cta="Read more about Stored Codes in Account"
-              href="cosmwasm/accounts/detail-page#codes"
+              href="general/accounts/detail-page#codes"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -467,7 +467,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is contract instances in the account?"
               cta="Read more about Contracts in Account"
-              href="cosmwasm/accounts/detail-page#contracts"
+              href="general/accounts/detail-page#contracts"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -480,7 +480,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is contract admins in the account?"
               cta="Read more about Account Contract Admins"
-              href="cosmwasm/accounts/detail-page#contracts-admin"
+              href="general/accounts/detail-page#contracts-admin"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -492,7 +492,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is resources?"
-              cta="Read more about Resources"
+              cta="Read more about Resources in Account"
               href="general/accounts/detail-page#resources"
             />
           </TabPanel>
@@ -505,7 +505,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is modules?"
-              cta="Read more about Modules"
+              cta="Read more about Modules in Account"
               href="general/accounts/detail-page#modules"
             />
           </TabPanel>
