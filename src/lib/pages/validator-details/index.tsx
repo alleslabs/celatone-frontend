@@ -77,7 +77,7 @@ const ValidatorDetailsBody = ({
 
   return (
     <>
-      <PageHeaderContainer bgColor="success.background">
+      <PageHeaderContainer bgColor="transparent">
         <ValidatorTop
           info={data.info}
           totalVotingPower={data.totalVotingPower}
@@ -146,7 +146,7 @@ const ValidatorDetailsBody = ({
         <UserDocsLink
           title="What is a Validator?"
           cta="Read more about Validator Details"
-          href="general/validator/detail-page"
+          href="general/validators/detail-page"
         />
       </PageContainer>
     </>

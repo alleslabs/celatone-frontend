@@ -84,7 +84,7 @@ const ProposalDetailsBody = ({
             <UserDocsLink
               title="What is a Proposal?"
               cta="Read more about Proposal Details"
-              href="general/proposal/detail-page"
+              href="general/proposals/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -97,7 +97,7 @@ const ProposalDetailsBody = ({
             <UserDocsLink
               title="What is the CosmWasm proposal vote progress?"
               cta="Read more about Vote Details"
-              href="general/proposal/detail-page#proposal-vote-details"
+              href="general/proposals/detail-page#proposal-vote-details"
             />
           </TabPanel>
         </TabPanels>

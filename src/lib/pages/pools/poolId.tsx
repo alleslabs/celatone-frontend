@@ -36,7 +36,7 @@ export const PoolId = () => {
       <UserDocsLink
         title="What is Osmosis liquidity pools?"
         cta="Read more about Osmosis Pool Details"
-        href="cosmwasm/osmosis/pool-detail"
+        href="osmosis/pool-detail"
       />
     </PageContainer>
   );

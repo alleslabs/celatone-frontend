@@ -21,6 +21,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
@@ -245,6 +246,11 @@ const CollectionDetailsBody = ({
                 onClickMutateEvents={handleTabChange(TabIndex.MutateEvents)}
               />
             </Flex>
+            <UserDocsLink
+              title="What does an NFT Collection consist of?"
+              cta="Read more about NFT Collection"
+              href="move/nfts/collection-detail"
+            />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <CollectionSupplies

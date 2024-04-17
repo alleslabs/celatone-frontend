@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
 - [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
 - [#884](https://github.com/alleslabs/celatone-frontend/pull/884) Bump cosmjs tx parsing problem
 - [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version

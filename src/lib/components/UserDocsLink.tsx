@@ -2,7 +2,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { trackWebsite } from "lib/amplitude";
-import { DOCS_LINK } from "lib/data";
+import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 
 import { CustomIcon } from "./icon";
 
@@ -11,7 +11,8 @@ interface UserDocsLinkProps {
   title?: string;
   cta?: string;
   isButton?: boolean;
-  isSmall?: boolean;
+  isInline?: boolean;
+  isDevTool?: boolean;
   mt?: number;
 }
 
@@ -20,25 +21,25 @@ export const UserDocsLink = ({
   cta,
   href,
   isButton = false,
-  isSmall = true,
+  isInline = false,
+  isDevTool = false,
   mt = 8,
 }: UserDocsLinkProps) =>
   isButton ? (
     <Link
-      href={`${DOCS_LINK}/${href}`}
+      href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
       onClick={(e) => {
-        trackWebsite(`${DOCS_LINK}/${href}`);
+        trackWebsite(
+          `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
+        );
         e.stopPropagation();
       }}
       target="_blank"
       rel="noopener noreferrer"
     >
       <Button
-        variant={{
-          base: "ghost-primary",
-          md: isSmall ? "ghost-primary" : "outline-primary",
-        }}
-        size={isSmall ? "sm" : "md"}
+        variant="ghost-secondary"
+        size="sm"
         leftIcon={<CustomIcon name="document" boxSize={3} />}
       >
         View Doc
@@ -50,6 +51,7 @@ export const UserDocsLink = ({
       alignItems="center"
       mt={mt}
       direction={{ base: "column", md: "row" }}
+      display={isInline ? "inline-flex" : "flex"}
     >
       {title && (
         <Text color="text.main" variant="body2">
@@ -57,7 +59,7 @@ export const UserDocsLink = ({
         </Text>
       )}
       <Link
-        href={`${DOCS_LINK}/${href}`}
+        href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -78,7 +80,7 @@ export const UserDocsLink = ({
           }}
         >
           <CustomIcon name="document" color="secondary.main" boxSize={3} />
-          <Text color="secondary.main" variant="body2">
+          <Text color="secondary.main" fontWeight={800} variant="body2">
             {cta}
           </Text>
         </Flex>

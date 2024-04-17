@@ -21,7 +21,7 @@ const RecentContracts = () => {
       <PageHeader
         title="Contracts"
         subtitle="This page displays all contracts on this network sorted by recency"
-        docHref="introduction/block-explorer#recent-contracts"
+        docHref="introduction/overview#recent-contracts"
       />
       <RecentContractsTable />
     </PageContainer>

@@ -69,7 +69,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
             >
               <Flex gap="2px" alignItems="center">
                 <Text color="secondary.main" variant="body2">
-                  Read more
+                  View more
                 </Text>
                 <CustomIcon name="launch" color="secondary.main" boxSize={3} />
               </Flex>

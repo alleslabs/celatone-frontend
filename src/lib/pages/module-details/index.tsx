@@ -9,6 +9,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import {
   useAccountModules,
   useModuleDetailsQuery,
@@ -223,6 +224,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 }}
               />
             </Flex>
+            <UserDocsLink
+              title="What is a move module?"
+              cta="Read more about Module"
+              href="move/modules/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
@@ -231,6 +237,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               fns={moduleData.parsedAbi.exposed_functions}
               viewFns={moduleData.viewFunctions}
               executeFns={moduleData.executeFunctions}
+            />
+            <UserDocsLink
+              title="What is Module functions?"
+              cta="Read more about View and Execute Functions"
+              href="move/modules/detail-page#functions"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -245,9 +256,19 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               tab={tableTabIndex}
               setTab={setTableTabIndex}
             />
+            <UserDocsLink
+              title="What is Module Transaction?"
+              cta="Read more about transaction in module"
+              href="move/modules/detail-page#transactions-histories"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleStructs structs={moduleData.parsedAbi.structs} />
+            <UserDocsLink
+              title="What is Module Struct?"
+              cta="Read more about struct in module"
+              href="move/modules/detail-page#structs"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

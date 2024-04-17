@@ -101,11 +101,10 @@ const Proposals = () => {
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        <Flex gap={4}>
+        <Flex gap={4} align="center">
           <UserDocsLink
-            href="introduction/block-explorer#recent-proposals"
+            href="introduction/overview#recent-proposals"
             isButton
-            isSmall={!!isMobile}
           />
           {!isMobile && <NewProposalButton />}
         </Flex>

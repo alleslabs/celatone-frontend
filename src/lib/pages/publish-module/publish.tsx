@@ -324,7 +324,6 @@ export const PublishModule = ({
           const republishModules = modules.filter((ampTrackRepublish) =>
             ampTrackRepublish.publishStatus.text.includes("republish")
           );
-
           track(AmpEvent.ACTION_MOVE_PUBLISH, {
             numberOfModule: modules.length,
             numberOfRepublishModules: republishModules.length,
