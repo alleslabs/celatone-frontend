@@ -24,6 +24,7 @@ export const DelegationRelatedTxsTableRow = ({
   assetInfos,
 }: DelegationRelatedTxsTableRowProps) => (
   <Grid
+    className="copier-wrapper"
     templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
     transition="all 0.25s ease-in-out"
@@ -60,11 +61,11 @@ export const DelegationRelatedTxsTableRow = ({
     <TableRow>
       {delegationRelatedTx.tokens.map((coin) => (
         <DelegationRelatedTxsTokenChange
+          key={delegationRelatedTx.txHash + coin.amount + coin.denom}
           txHash={delegationRelatedTx.txHash}
           coin={coin}
           assetInfos={assetInfos}
           movePoolInfos={movePoolInfos}
-          key={delegationRelatedTx.txHash + coin.amount + coin.denom}
         />
       ))}
     </TableRow>
