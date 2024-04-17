@@ -20,7 +20,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
     <Menu>
       <Tooltip
         label="You don't have admin access to this contract."
-        isDisabled={isAdmin}
+        hidden={isAdmin}
       >
         <MenuButton
           variant="outline-gray"

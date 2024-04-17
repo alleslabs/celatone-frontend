@@ -13,8 +13,8 @@ interface PageHeaderProps {
 export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
   const isMobile = useMobile();
   return (
-    <Flex w="full" justifyContent="space-between" alignItems="center" mb={8}>
-      <div>
+    <Flex justifyContent="space-between" alignItems="center" mb={8}>
+      <div style={{ width: "100%" }}>
         <Flex justifyContent="space-between">
           <Heading
             as="h5"

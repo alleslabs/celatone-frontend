@@ -29,8 +29,8 @@ export const VotingQuorum = ({
     normalizeVotesInfo(votesInfo);
 
   const { yes, abstain, no, noWithVeto, totalVotingPower } = votesInfo;
-  const votes = yes.add(no).add(noWithVeto);
-  const allVotes = votes.add(abstain);
+  const nonAbstain = yes.add(no).add(noWithVeto);
+  const allVotes = nonAbstain.add(abstain);
 
   return (
     <Flex direction="column" gap={4}>
@@ -91,7 +91,7 @@ export const VotingQuorum = ({
             <VpPercentCard
               name="Voted"
               ratio={nonAbstainRatio}
-              power={votes}
+              power={nonAbstain}
               color="primary.main"
               isCompact={isMobile}
             />

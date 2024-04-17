@@ -71,7 +71,7 @@ export const ExecuteArea = observer(
             >
               <Tooltip
                 label="Please select contract first"
-                isDisabled={Boolean(contractAddress)}
+                hidden={Boolean(contractAddress)}
               >
                 Your Schema
               </Tooltip>

@@ -193,9 +193,9 @@ export const FunctionDetailCard = ({
                     </Flex>
 
                     <Tooltip
-                      isDisabled={!disabled}
                       bg="primary.dark"
                       label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+                      hidden={!disabled}
                     >
                       <Button
                         variant={getButtonStyle().variant}
