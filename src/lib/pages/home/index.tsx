@@ -88,7 +88,7 @@ const Home = () => {
             </Text>{" "}
             Overview
           </Heading>
-          <UserDocsLink isButton isSmall href="introduction/overview" />
+          <UserDocsLink isButton href="introduction/overview" />
         </Flex>
         <Flex gap={4} direction={{ base: "column", md: "row" }}>
           <CardInfo

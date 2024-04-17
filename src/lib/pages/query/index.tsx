@@ -83,7 +83,6 @@ const Query = observer(() => {
         <Flex>
           <UserDocsLink
             isButton
-            isSmall
             isDevTool
             href="cosmwasm/query-execute#query"
           />

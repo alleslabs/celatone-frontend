@@ -107,12 +107,11 @@ const ContractsByList = observer(() => {
             {contractListInfo.contracts.length}
           </Badge>
         </Flex>
-        <Flex gap={isInstantiatedByMe ? 4 : 2}>
+        <Flex gap={isInstantiatedByMe ? 4 : 2} align="center">
           {isInstantiatedByMe && (
             <UserDocsLink
               isDevTool
               isButton
-              isSmall={false}
               href="cosmwasm/contracts/organize#saving-contract-for-later-use"
             />
           )}

@@ -44,7 +44,6 @@ export const UploadAccordion = () => (
       </AccordionPanel>
       <UserDocsLink
         isDevTool
-        isSmall={false}
         mt={3}
         cta="Read more about publish"
         href="initia/move/publish-module"
@@ -98,7 +97,6 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
       </AccordionPanel>
       <UserDocsLink
         isDevTool
-        isSmall={false}
         mt={3}
         cta="Read more about republish"
         href="initia/move/publish-module#republishing-modules"

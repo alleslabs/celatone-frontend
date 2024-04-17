@@ -8,7 +8,6 @@ import {
   useCurrentChain,
   useGovConfig,
   useMobile,
-  useMoveConfig,
 } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -33,7 +32,6 @@ import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 
 const Proposals = () => {
   useGovConfig({ shouldRedirect: true });
-  const move = useMoveConfig({ shouldRedirect: false });
   const isMobile = useMobile();
   const router = useRouter();
   const { address } = useCurrentChain();
@@ -103,11 +101,10 @@ const Proposals = () => {
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        <Flex gap={4}>
+        <Flex gap={4} align="center">
           <UserDocsLink
             href="introduction/overview#recent-proposals"
             isButton
-            isSmall={move.enabled || !!isMobile}
           />
           {!isMobile && <NewProposalButton />}
         </Flex>

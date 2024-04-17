@@ -11,10 +11,8 @@ interface UserDocsLinkProps {
   title?: string;
   cta?: string;
   isButton?: boolean;
-  isSmall?: boolean;
   isInline?: boolean;
   isDevTool?: boolean;
-
   mt?: number;
 }
 
@@ -23,7 +21,6 @@ export const UserDocsLink = ({
   cta,
   href,
   isButton = false,
-  isSmall = true,
   isInline = false,
   isDevTool = false,
   mt = 8,
@@ -41,11 +38,8 @@ export const UserDocsLink = ({
       rel="noopener noreferrer"
     >
       <Button
-        variant={{
-          base: "ghost-secondary",
-          md: isSmall ? "ghost-secondary" : "outline-secondary",
-        }}
-        size={isSmall ? "sm" : "md"}
+        variant="ghost-secondary"
+        size="sm"
         leftIcon={<CustomIcon name="document" boxSize={3} />}
       >
         View Doc
