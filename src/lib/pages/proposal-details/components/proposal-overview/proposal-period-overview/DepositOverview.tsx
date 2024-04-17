@@ -55,9 +55,9 @@ const DepositOverviewBody = ({
           rightIcon={<CustomIcon name="chevron-right" />}
           onClick={() =>
             navigate({
-              pathname: "/proposals/[id]/[tab]",
+              pathname: "/proposals/[proposalId]/[tab]",
               query: {
-                id: proposalData.id,
+                proposalId: proposalData.id,
                 tab: TabIndex.Vote,
               },
               options: {

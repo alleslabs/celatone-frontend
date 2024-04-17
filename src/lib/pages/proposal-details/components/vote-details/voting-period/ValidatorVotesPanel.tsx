@@ -55,6 +55,7 @@ export const ValidatorVotesPanel = ({
         answers={answers}
         fullVersion
         isProposalResolved={isProposalResolved}
+        enabled={isOpen}
       />
     </Flex>
   );

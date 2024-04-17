@@ -40,16 +40,21 @@ export const VotedProposalsTableRow = ({
 
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
-      onClick={() => onRowSelect(votedProposal.id)}
-      _hover={{ bg: "gray.900" }}
+      onClick={() => onRowSelect(votedProposal.proposalId)}
+      _hover={{
+        "> div": {
+          bgColor: "gray.900",
+        },
+      }}
       transition="all 0.25s ease-in-out"
       cursor="pointer"
     >
       <TableRowFreeze left="0">
         <ExplorerLink
           type="proposal_id"
-          value={votedProposal.id.toString()}
+          value={votedProposal.proposalId.toString()}
           showCopyOnHover
           ampCopierSection="proposal-list"
         />
@@ -81,13 +86,13 @@ export const VotedProposalsTableRow = ({
         />
       </TableRow>
       <TableRow>
-        {votedProposal.votingEndTime ? (
+        {votedProposal.timestamp ? (
           <Box>
             <Text variant="body2" color="text.dark">
-              {formatUTC(votedProposal.votingEndTime)}
+              {formatUTC(votedProposal.timestamp)}
             </Text>
             <Text variant="body3" color="text.disabled">
-              {`(${dateFromNow(votedProposal.votingEndTime)})`}
+              {`(${dateFromNow(votedProposal.timestamp)})`}
             </Text>
           </Box>
         ) : (

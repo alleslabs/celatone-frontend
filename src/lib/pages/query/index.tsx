@@ -81,7 +81,12 @@ const Query = observer(() => {
           Query Contract
         </Heading>
         <Flex>
-          <UserDocsLink isButton isSmall href="cosmwasm/query-execute#query" />
+          <UserDocsLink
+            isButton
+            isSmall
+            isDevTool
+            href="cosmwasm/query-execute#query"
+          />
           {!isMobile && (
             <Button
               variant="ghost-primary"

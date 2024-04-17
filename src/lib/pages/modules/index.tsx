@@ -19,7 +19,7 @@ const RecentModules = () => {
       <PageHeader
         title="Modules"
         subtitle=" These modules are the most recently published on this network"
-        docHref="move/module/detail-page"
+        docHref="move/modules/detail-page"
       />
       <RecentModulesTable />
     </PageContainer>

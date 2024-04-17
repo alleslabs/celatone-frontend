@@ -12,5 +12,6 @@ export const DropdownContainer = chakra(List, {
     w: "full",
     top: "60px",
     overflowY: "auto",
+    boxShadow: "0px 8px 8px 0px var(--chakra-colors-background-main)",
   },
 });

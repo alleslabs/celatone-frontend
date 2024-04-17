@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
+import { trackUseUpTime, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
@@ -21,6 +22,8 @@ import { formatRatio } from "lib/utils";
 import { PenaltyEvent } from "./PenaltyEvent";
 import { RecentBlocksLegends } from "./RecentBlocksLegends";
 import { RecentBlocksSection } from "./RecentBlocksSection";
+
+const SUPPORTED_UPTIME_BLOCKS = [100, 1000, 10000];
 
 interface UptimeSectionProps {
   validatorAddress: ValidatorAddr;
@@ -79,15 +82,17 @@ export const UptimeSection = ({
                   </Text>
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => setUptimeBlock(100)}>
-                    Latest 100 Blocks
-                  </MenuItem>
-                  <MenuItem onClick={() => setUptimeBlock(1000)}>
-                    Latest 1000 Blocks
-                  </MenuItem>
-                  <MenuItem onClick={() => setUptimeBlock(10000)}>
-                    Latest 10000 Blocks
-                  </MenuItem>
+                  {SUPPORTED_UPTIME_BLOCKS.map((block) => (
+                    <MenuItem
+                      key={block}
+                      onClick={() => {
+                        trackUseUpTime({ block: block.toString() });
+                        setUptimeBlock(block);
+                      }}
+                    >
+                      Latest {block} Blocks
+                    </MenuItem>
+                  ))}
                 </MenuList>
               </Menu>
             ) : (
@@ -100,7 +105,10 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={() => {
+                trackUseViewMore();
+                onViewMore();
+              }}
             >
               View Performance
             </Button>
@@ -122,7 +130,10 @@ export const UptimeSection = ({
             <Button
               variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={() => {
+                trackUseViewMore();
+                onViewMore();
+              }}
             >
               View Performance
             </Button>

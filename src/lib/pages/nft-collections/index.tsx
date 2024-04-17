@@ -8,7 +8,7 @@ const NftCollections = () => (
     <PageHeader
       title="NFT Collections"
       subtitle="These are the most recently NFT collections created on this network"
-      docHref="move/nft/collection-list"
+      docHref="move/nfts/collection-list"
     />
     <Collections />
   </PageContainer>

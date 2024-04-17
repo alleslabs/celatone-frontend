@@ -149,9 +149,10 @@ export const DeployScript = () => {
             Upload a .mv file to deploy one-time use Script which execute
             messages.{" "}
             <UserDocsLink
+              isDevTool
               mt={0}
               cta="Read more about Deploy Script"
-              href="move/deploy-script"
+              href="initia/move/deploy-script"
             />
           </Text>
         </Flex>

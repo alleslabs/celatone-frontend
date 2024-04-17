@@ -84,7 +84,8 @@ const StoredCodes = observer(() => {
         </Flex>
         <Flex gap={4}>
           <UserDocsLink
-            href="cosmwasm/code/organize#viewing-my-stored-codes"
+            isDevTool
+            href="cosmwasm/codes/organize#viewing-my-stored-codes"
             isButton
             isSmall={false}
           />

@@ -1,7 +1,7 @@
 import type { InputProps } from "@chakra-ui/react";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 
-import { AmpEvent, track } from "lib/amplitude";
+import { trackSearchInput } from "lib/amplitude";
 
 import { CustomIcon } from "./icon";
 
@@ -25,7 +25,10 @@ const InputWithIcon = ({
       paddingLeft="36px !important"
       onClick={
         amptrackSection
-          ? () => track(AmpEvent.USE_SEARCH_INPUT, { amptrackSection })
+          ? () =>
+              trackSearchInput({
+                amptrackSection,
+              })
           : undefined
       }
     />

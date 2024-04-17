@@ -37,7 +37,7 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
       <UserDocsLink
         title="What is a block?"
         cta="Read more about Block"
-        href="general/block/detail-page"
+        href="general/blocks/detail-page"
       />
     </>
   );

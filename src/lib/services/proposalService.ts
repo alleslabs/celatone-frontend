@@ -2,8 +2,7 @@ import type { Coin } from "@cosmjs/amino";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { Big } from "big.js";
-import { isUndefined } from "lodash";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -15,7 +14,7 @@ import {
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import { big, ProposalVoteType } from "lib/types";
+import { big } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
@@ -27,6 +26,7 @@ import type {
   ProposalStatus,
   ProposalType,
   ProposalVotesInfo,
+  ProposalVoteType,
   Token,
   U,
 } from "lib/types";
@@ -335,13 +335,13 @@ export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
   );
 };
 
-export const useProposalData = (id: number) => {
+export const useProposalData = (id: number, enabled = true) => {
   const endpoint = useBaseApiRoute("proposals");
 
   return useQuery<ProposalDataResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
     async () => getProposalData(endpoint, id),
-    { retry: 1, keepPreviousData: true }
+    { retry: 1, enabled }
   );
 };
 
@@ -353,69 +353,6 @@ export const useProposalVotesInfo = (id: number) => {
     async () => getProposalVotesInfo(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
   );
-};
-
-export const useProposalValidatorVotes = (
-  id: number,
-  limit: number,
-  offset: number,
-  answer: ProposalVoteType,
-  search: string
-) => {
-  const endpoint = useBaseApiRoute("proposals");
-
-  const { data, ...rest } = useQuery<ProposalValidatorVotesResponse>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES, endpoint, id],
-    async () => getProposalValidatorVotes(endpoint, id),
-    { retry: 1, refetchOnWindowFocus: false }
-  );
-
-  const filteredData = useMemo(() => {
-    if (isUndefined(data?.items)) return undefined;
-
-    const filteredItemsByAnswer = data.items.filter((vote) => {
-      switch (answer) {
-        case ProposalVoteType.YES:
-          return vote.yes === 1;
-        case ProposalVoteType.NO:
-          return vote.no === 1;
-        case ProposalVoteType.NO_WITH_VETO:
-          return vote.noWithVeto === 1;
-        case ProposalVoteType.ABSTAIN:
-          return vote.abstain === 1;
-        case ProposalVoteType.WEIGHTED:
-          return vote.isVoteWeighted;
-        case ProposalVoteType.DID_NOT_VOTE:
-          return (
-            vote.yes === 0 &&
-            vote.no === 0 &&
-            vote.noWithVeto === 0 &&
-            vote.abstain === 0 &&
-            !vote.isVoteWeighted
-          );
-        case ProposalVoteType.ALL:
-        default:
-          return true;
-      }
-    });
-
-    const filteredItemsBySearch = filteredItemsByAnswer.filter((vote) => {
-      if (!search?.trim()) return true;
-
-      const keyword = search.toLowerCase();
-      return (
-        (vote.validator?.moniker?.toLowerCase() || "").includes(keyword) ||
-        vote.validator?.validatorAddress.toLowerCase().includes(keyword)
-      );
-    });
-
-    return {
-      items: filteredItemsBySearch.slice(offset, offset + limit),
-      total: filteredItemsBySearch.length,
-    };
-  }, [data?.items, limit, offset, answer, search]);
-
-  return { data: filteredData, ...rest };
 };
 
 export const useProposalVotes = (
@@ -439,6 +376,35 @@ export const useProposalVotes = (
       answer,
     ],
     async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
+    { retry: 1, refetchOnWindowFocus: false, ...options }
+  );
+};
+
+export const useProposalValidatorVotes = (
+  id: number,
+  limit: number,
+  offset: number,
+  answer: ProposalVoteType,
+  search: string,
+  options: Pick<
+    UseQueryOptions<ProposalValidatorVotesResponse>,
+    "onSuccess"
+  > = {}
+) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES,
+      endpoint,
+      id,
+      limit,
+      offset,
+      answer,
+      search,
+    ],
+    async () =>
+      getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
     { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };

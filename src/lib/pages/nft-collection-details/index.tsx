@@ -249,7 +249,7 @@ const CollectionDetailsBody = ({
             <UserDocsLink
               title="What does an NFT Collection consist of?"
               cta="Read more about NFT Collection"
-              href="move/nft/collection-detail"
+              href="move/nfts/collection-detail"
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>

@@ -2,7 +2,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { trackWebsite } from "lib/amplitude";
-import { DOCS_LINK } from "lib/data";
+import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 
 import { CustomIcon } from "./icon";
 
@@ -13,6 +13,8 @@ interface UserDocsLinkProps {
   isButton?: boolean;
   isSmall?: boolean;
   isInline?: boolean;
+  isDevTool?: boolean;
+
   mt?: number;
 }
 
@@ -23,13 +25,16 @@ export const UserDocsLink = ({
   isButton = false,
   isSmall = true,
   isInline = false,
+  isDevTool = false,
   mt = 8,
 }: UserDocsLinkProps) =>
   isButton ? (
     <Link
-      href={`${DOCS_LINK}/${href}`}
+      href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
       onClick={(e) => {
-        trackWebsite(`${DOCS_LINK}/${href}`);
+        trackWebsite(
+          `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
+        );
         e.stopPropagation();
       }}
       target="_blank"
@@ -60,7 +65,7 @@ export const UserDocsLink = ({
         </Text>
       )}
       <Link
-        href={`${DOCS_LINK}/${href}`}
+        href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
         target="_blank"
         rel="noopener noreferrer"
       >

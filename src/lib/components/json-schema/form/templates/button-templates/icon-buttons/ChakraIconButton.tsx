@@ -1,11 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IconButtonProps as ChakraIconButtonProps } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
-import type { IconButtonProps } from "@rjsf/utils";
+import type {
+  FormContextType,
+  IconButtonProps,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from "@rjsf/utils";
 import { memo } from "react";
 
-function ChakraIconButton<T = any, F = any>(props: IconButtonProps<T, F>) {
-  const { title, icon, iconType, uiSchema, ...otherProps } = props;
+function ChakraIconButton<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: IconButtonProps<T, S, F>) {
+  const {
+    iconType = "default",
+    icon,
+    className,
+    uiSchema,
+    registry,
+    title,
+    ...otherProps
+  } = props;
   return (
     <IconButton
       as="button"

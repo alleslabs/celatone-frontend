@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type {
   ArrayFieldTemplateItemType,
   ArrayFieldTemplateProps,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
 } from "@rjsf/utils";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
 
@@ -10,59 +13,69 @@ import { isNullFormData } from "../utils";
 
 import { FieldTypeTag } from "./FieldTypeTag";
 
-export default function ArrayFieldTemplate<T = any, F = any>(
-  props: ArrayFieldTemplateProps<T, F>
-) {
+/** The `ArrayFieldTemplate` component is the template used to render all items in an array.
+ *
+ * @param props - The `ArrayFieldTemplateItemType` props for the component
+ */
+export default function ArrayFieldTemplate<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: ArrayFieldTemplateProps<T, S, F>) {
   const {
     formData,
     canAdd,
+    className,
     disabled,
     idSchema,
     uiSchema,
     items,
     onAddClick,
-    readonly = false,
+    readonly,
     registry,
     required,
     schema,
     title,
   } = props;
-  const uiOptions = getUiOptions<T, F>(uiSchema);
+  const uiOptions = getUiOptions<T, S, F>(uiSchema);
   const ArrayFieldDescriptionTemplate = getTemplate<
     "ArrayFieldDescriptionTemplate",
     T,
+    S,
     F
   >("ArrayFieldDescriptionTemplate", registry, uiOptions);
-  const ArrayFieldItemTemplate = getTemplate<"ArrayFieldItemTemplate", T, F>(
+  const ArrayFieldItemTemplate = getTemplate<"ArrayFieldItemTemplate", T, S, F>(
     "ArrayFieldItemTemplate",
     registry,
     uiOptions
   );
-  const ArrayFieldTitleTemplate = getTemplate<"ArrayFieldTitleTemplate", T, F>(
+  const ArrayFieldTitleTemplate = getTemplate<
     "ArrayFieldTitleTemplate",
-    registry,
-    uiOptions
-  );
+    T,
+    S,
+    F
+  >("ArrayFieldTitleTemplate", registry, uiOptions);
   // Button templates are not overridden in the uiSchema
   const {
     ButtonTemplates: { AddButton },
   } = registry.templates;
   return (
-    <Box>
+    <div className={className}>
       <Flex gap={3}>
         <ArrayFieldTitleTemplate
           idSchema={idSchema}
           title={uiOptions.title || title}
-          uiSchema={uiSchema}
           required={required}
+          schema={schema}
+          uiSchema={uiSchema}
           registry={registry}
         />
         <FieldTypeTag type={schema.type} />
       </Flex>
-
       <ArrayFieldDescriptionTemplate
         idSchema={idSchema}
-        description={uiOptions.description || schema.description || ""}
+        description={uiOptions.description || schema.description}
+        schema={schema}
         uiSchema={uiSchema}
         registry={registry}
       />
@@ -99,7 +112,7 @@ export default function ArrayFieldTemplate<T = any, F = any>(
             </Text>
           ) : (
             items.map(
-              ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
+              ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, S, F>) => (
                 <GridItem key={key}>
                   <ArrayFieldItemTemplate key={key} {...itemProps} />
                 </GridItem>
@@ -113,11 +126,12 @@ export default function ArrayFieldTemplate<T = any, F = any>(
                 onClick={onAddClick}
                 disabled={disabled || readonly}
                 uiSchema={uiSchema}
+                registry={registry}
               />
             </GridItem>
           )}
         </Grid>
       )}
-    </Box>
+    </div>
   );
 }
