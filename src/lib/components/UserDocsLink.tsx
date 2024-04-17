@@ -51,7 +51,7 @@ export const UserDocsLink = ({
       alignItems="center"
       mt={mt}
       direction={{ base: "column", md: "row" }}
-      display={isInline ? "flex" : "inline-flex"}
+      display={isInline ? "inline-flex" : "flex"}
     >
       {title && (
         <Text color="text.main" variant="body2">

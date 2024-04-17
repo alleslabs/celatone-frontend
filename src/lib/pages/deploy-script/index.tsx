@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -136,26 +136,28 @@ export const DeployScript = () => {
   return (
     <>
       <WasmPageContainer>
-        <Flex
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          mb={12}
+        <Heading as="h4" variant="h4">
+          Script
+        </Heading>
+        <div
+          style={{
+            marginTop: "16px",
+            marginBottom: "48px",
+            textAlign: "center",
+            color: "var(--chakra-colors-text-dark)",
+            display: "inline",
+          }}
         >
-          <Heading as="h4" variant="h4">
-            Script
-          </Heading>
-          <Text color="text.dark" mt={4} textAlign="center" display="inline">
-            Upload a .mv file to deploy one-time use Script which execute
-            messages.{" "}
-            <UserDocsLink
-              isDevTool
-              mt={0}
-              cta="Read more about Deploy Script"
-              href="initia/move/deploy-script"
-            />
-          </Text>
-        </Flex>
+          Upload a .mv file to deploy one-time use Script which execute
+          messages.{" "}
+          <UserDocsLink
+            isDevTool
+            mt={0}
+            cta="Read more about Deploy Script"
+            href="initia/move/deploy-script"
+            isInline
+          />
+        </div>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"
           mb={12}
