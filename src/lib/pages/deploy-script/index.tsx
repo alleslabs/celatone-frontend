@@ -145,7 +145,6 @@ export const DeployScript = () => {
             marginBottom: "48px",
             textAlign: "center",
             color: "var(--chakra-colors-text-dark)",
-            display: "inline",
           }}
         >
           Upload a .mv file to deploy one-time use Script which execute
