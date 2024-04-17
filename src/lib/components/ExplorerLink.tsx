@@ -134,10 +134,7 @@ const LinkRender = ({
       href={hrefLink}
       passHref
       onClick={(e) => e.stopPropagation()}
-      style={{
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-      }}
+      style={{ overflow: "hidden" }}
     >
       {textElement}
     </AppLink>
@@ -151,10 +148,7 @@ const LinkRender = ({
         if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
-      style={{
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-      }}
+      style={{ overflow: "hidden" }}
     >
       {textElement}
     </a>
