@@ -194,7 +194,7 @@ export const ExplorerLink = ({
   ) : (
     <Flex
       className="copier-wrapper"
-      display={{ base: "inline-flex", md: "flex" }}
+      display="inline-flex"
       align="center"
       h={fixedHeight ? "24px" : "auto"}
       transition="all 0.25s ease-in-out"
