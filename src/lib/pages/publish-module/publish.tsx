@@ -223,9 +223,6 @@ export const PublishModule = ({
               <Text color="text.dark" pt={4} textAlign="center">
                 {publishModuleText.description}
               </Text>
-              {/* <Flex justifyContent="center" mt={4}>
-                <UserDocsLink isButton href="move/publish-module" />
-              </Flex> */}
               <ConnectWalletAlert
                 subtitle={publishModuleText.connectWallet}
                 mt={12}

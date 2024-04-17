@@ -76,8 +76,7 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
         bg="transparent"
         py={3}
         px={0}
-        borderTop="1px solid"
-        borderBottom="1px solid"
+        borderY="1px solid"
         borderColor="gray.700"
       >
         <Text variant="body2" color="text.dark" p={1}>
