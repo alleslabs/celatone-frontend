@@ -49,7 +49,7 @@ export const BlocksTableRow = ({
         {truncate(blockData.hash.toUpperCase(), showProposer ? [6, 6] : [9, 9])}
       </TableRow>
       {showProposer && (
-        <TableRow minW={0}>
+        <TableRow>
           <ValidatorBadge validator={blockData.proposer} badgeSize={7} />
         </TableRow>
       )}

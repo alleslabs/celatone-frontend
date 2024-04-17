@@ -34,7 +34,7 @@ export const BondedTableRow = ({
     minW="min-content"
     sx={{ "& > div": { alignItems: "flex-start" } }}
   >
-    <TableRow minW={0}>
+    <TableRow>
       <ValidatorBadge validator={bondedInfo.validator} />
     </TableRow>
     <TableRow>

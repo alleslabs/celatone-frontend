@@ -153,7 +153,7 @@ export const PoolTxsMsg = ({
           hidden={!isOpen}
           templateColumns={msgDetailTemplateColumns}
         >
-          <TableNoBorderRow gridArea="1 / 4" py={0} minW={0}>
+          <TableNoBorderRow gridArea="1 / 4" py={0}>
             <PoolMsgDetail
               txHash={transaction.hash}
               blockHeight={transaction.height}

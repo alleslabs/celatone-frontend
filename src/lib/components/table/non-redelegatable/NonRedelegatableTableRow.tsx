@@ -19,7 +19,7 @@ export const NonRedelegatableTableRow = ({
     transition="all 0.25s ease-in-out"
     minW="min-content"
   >
-    <TableRow minW={0}>
+    <TableRow>
       <ValidatorBadge validator={nonRedelegatable.dstValidator} />
     </TableRow>
 

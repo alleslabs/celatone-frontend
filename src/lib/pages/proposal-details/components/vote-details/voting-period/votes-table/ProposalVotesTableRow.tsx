@@ -29,7 +29,7 @@ export const ProposalVotesTableRow = ({
         templateColumns={templateColumns}
         minW="min-content"
       >
-        <TableRow pl={0} minW={0}>
+        <TableRow pl={0}>
           <Voter proposalVote={proposalVote} />
         </TableRow>
         <TableRow justifyContent="flex-end" pr={0}>
@@ -64,7 +64,7 @@ export const ProposalVotesTableRow = ({
 
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
-      <TableRow minW={0}>
+      <TableRow>
         <Voter proposalVote={proposalVote} />
       </TableRow>
       <TableRow>
