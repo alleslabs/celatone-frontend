@@ -126,7 +126,7 @@ const PastTxs = () => {
         >
           Past Transactions
         </Heading>
-        <UserDocsLink isButton href="general/transaction/past-txs" />
+        <UserDocsLink isButton href="general/transactions/past-txs" />
       </Flex>
       <Flex my={8} gap={3}>
         <InputWithIcon

@@ -82,11 +82,11 @@ const StoredCodes = observer(() => {
             {storedCodesCount}
           </Badge>
         </Flex>
-        <Flex gap={4}>
+        <Flex gap={4} align="center">
           <UserDocsLink
-            href="cosmwasm/code/organize#viewing-my-stored-codes"
+            isDevTool
+            href="cosmwasm/codes/organize#viewing-my-stored-codes"
             isButton
-            isSmall={false}
           />
           <Skeleton
             isLoaded={!isUploadAccessFetching}

@@ -16,7 +16,6 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposalService";
-import { ProposalStatus } from "lib/types";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
@@ -57,7 +56,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   const { data: answers } = useProposalAnswerCounts(proposalData.id);
 
-  const isProposalResolved = !isNull(proposalData?.resolvedHeight);
+  const isProposalResolved = !isNull(proposalData.resolvedHeight);
 
   const toggleDisclosure = (voter: VoterVariant) => {
     let disclosure = validatorVoteDisclosure;
@@ -83,10 +82,10 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   return (
     <Flex
+      id={scrollComponentId}
       position="relative"
       overflowX="hidden"
       width="full"
-      id={scrollComponentId}
     >
       <Flex
         direction="column"
@@ -108,11 +107,9 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         gap={4}
       >
         {/* Voting Participations */}
-        {proposalData.status === ProposalStatus.VOTING_PERIOD && (
-          <ContentContainer transparent={isMobile}>
-            <VotingQuorum proposalData={proposalData} {...props} />
-          </ContentContainer>
-        )}
+        <ContentContainer transparent={isMobile}>
+          <VotingQuorum proposalData={proposalData} {...props} />
+        </ContentContainer>
         {/* Voting Results */}
         <ContentContainer transparent={isMobile}>
           <VotingThreshold proposalData={proposalData} {...props} />
@@ -125,13 +122,13 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 <TableTitle
                   title="Validator Votes"
                   mb={0}
-                  count={answers?.validator.total}
+                  count={answers?.validator.totalValidators}
                 />
                 <Button
                   variant="ghost-primary"
                   onClick={() => toggleDisclosure("validator")}
                   rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                  isDisabled={!answers?.validator.total}
+                  isDisabled={!answers?.validator.totalValidators}
                 >
                   {isMobile ? "View" : "View Details"}
                 </Button>
@@ -195,14 +192,14 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         answers={answers?.validator}
         isOpen={validatorVoteDisclosure.isOpen}
         id={proposalData.id}
-        onBack={validatorVoteDisclosure.onToggle}
+        onBack={validatorVoteDisclosure.onClose}
         isProposalResolved={isProposalResolved}
       />
       <ProposalVotesPanel
         answers={answers?.all}
         isOpen={allVoteDisclosure.isOpen}
         id={proposalData.id}
-        onBack={allVoteDisclosure.onToggle}
+        onBack={allVoteDisclosure.onClose}
       />
     </Flex>
   );

@@ -4,7 +4,7 @@ import type Big from "big.js";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
 import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
-import { ProposedBlocksTable } from "../tables/proposed-blocks";
+import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/voted-proposals";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";

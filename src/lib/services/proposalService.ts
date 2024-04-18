@@ -1,7 +1,7 @@
 import type { Coin } from "@cosmjs/amino";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import type { Big } from "big.js";
+import type Big from "big.js";
 import { useCallback } from "react";
 
 import {
@@ -45,6 +45,7 @@ import type {
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
   ProposalsResponse,
+  ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
   UploadAccess,
@@ -334,13 +335,13 @@ export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
   );
 };
 
-export const useProposalData = (id: number) => {
+export const useProposalData = (id: number, enabled = true) => {
   const endpoint = useBaseApiRoute("proposals");
 
   return useQuery<ProposalDataResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
     async () => getProposalData(endpoint, id),
-    { retry: 1, keepPreviousData: true }
+    { retry: 1, enabled }
   );
 };
 
@@ -384,7 +385,11 @@ export const useProposalValidatorVotes = (
   limit: number,
   offset: number,
   answer: ProposalVoteType,
-  search: string
+  search: string,
+  options: Pick<
+    UseQueryOptions<ProposalValidatorVotesResponse>,
+    "onSuccess"
+  > = {}
 ) => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -400,7 +405,7 @@ export const useProposalValidatorVotes = (
     ],
     async () =>
       getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 

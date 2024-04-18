@@ -1,4 +1,4 @@
-import { Flex, ListItem } from "@chakra-ui/react";
+import { Flex, ListItem, Text } from "@chakra-ui/react";
 import type { CSSProperties, ReactNode } from "react";
 
 import { CustomIcon } from "../icon";
@@ -28,7 +28,9 @@ export const FilterDropdownItem = ({
     onClick={onSelect}
   >
     <Flex alignItems="center" justifyContent="space-between">
-      {filterDropdownComponent}
+      <Text wordBreak="break-all" lineHeight="1.2">
+        {filterDropdownComponent}
+      </Text>
       {isOptionSelected && <CustomIcon name="check" color="gray.600" />}
     </Flex>
   </ListItem>

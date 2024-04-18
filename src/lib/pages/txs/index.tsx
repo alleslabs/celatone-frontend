@@ -20,7 +20,7 @@ const Txs = () => {
         title="Transactions"
         subtitle="This page displays all transactions on this network sorted by
         recency"
-        docHref="introduction/block-explorer#recent-transactions"
+        docHref="introduction/overview#recent-transactions"
       />
       <TxsTable isViewMore={false} />
     </PageContainer>

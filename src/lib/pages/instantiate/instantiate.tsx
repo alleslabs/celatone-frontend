@@ -398,9 +398,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             Instantiate new contract
           </Heading>
           <UserDocsLink
+            isDevTool
             mt={2}
             cta="View Instantiate Guideline"
-            href="cosmwasm/deploy-contract#instantiate-contract-from-code"
+            href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
           />
         </Flex>
         <ConnectWalletAlert

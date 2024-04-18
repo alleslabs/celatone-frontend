@@ -1,14 +1,15 @@
 import { Flex } from "@chakra-ui/react";
 
+import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
+import { BlocksTable } from "lib/components/table/blocks";
 import { useValidatorProposedBlocks } from "lib/services/validatorService";
 import type { ValidatorAddr } from "lib/types";
-
-import { ProposedsBlockTableBody } from "./ProposedBlocksTableBody";
 
 const scrollComponentId = "proposed-block-table-header";
 
@@ -57,7 +58,10 @@ export const ProposedBlocksTable = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={onViewMore}
+      onClick={() => {
+        trackUseViewMore();
+        onViewMore();
+      }}
     >
       <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
@@ -65,6 +69,7 @@ export const ProposedBlocksTable = ({
   ) : (
     <Flex direction="column" gap={6}>
       <TableTitle
+        id={scrollComponentId}
         title="Proposed Blocks"
         count={data?.total ?? 0}
         helperText={
@@ -74,11 +79,17 @@ export const ProposedBlocksTable = ({
         }
         mb={0}
       />
-      <ProposedsBlockTableBody
-        data={data}
-        scrollComponentId={scrollComponentId}
+      <BlocksTable
+        blocks={data?.items}
         isLoading={isLoading}
-        onViewMore={onViewMore}
+        emptyState={
+          <EmptyState
+            imageVariant={onViewMore ? undefined : "empty"}
+            message="This validator never proposed any blocks."
+            withBorder
+          />
+        }
+        showProposer={false}
       />
       {data &&
         (onViewMore

@@ -1,4 +1,5 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
@@ -28,7 +29,7 @@ export const VotingOverviewQuorum = ({
   votesInfo,
 }: VotingOverviewQuorumProps) => {
   const { quorum } = extractParams(params, proposalData.isExpedited);
-  const { abstain, nonAbstainVotes, totalVotes } =
+  const { abstainRatio, nonAbstainRatio, totalRatio } =
     normalizeVotesInfo(votesInfo);
 
   const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
@@ -38,7 +39,7 @@ export const VotingOverviewQuorum = ({
         <VoteQuorumBadge
           status={proposalData.status}
           quorum={quorum}
-          totalVotes={totalVotes}
+          totalRatio={totalRatio}
           isCompact
         />
         <Text variant="body1" color="text.main">
@@ -57,7 +58,8 @@ export const VotingOverviewQuorum = ({
                   color="voteParticipations.voted"
                 />
                 <Text>
-                  {formatPrettyPercent(nonAbstainVotes)} Vote response
+                  {nonAbstainRatio ? formatPrettyPercent(nonAbstainRatio) : "-"}{" "}
+                  Vote response
                 </Text>
               </Flex>
               <Flex gap={2}>
@@ -66,17 +68,21 @@ export const VotingOverviewQuorum = ({
                   name="circle"
                   color="voteParticipations.votedAbstain"
                 />
-                <Text>{formatPrettyPercent(abstain)} Vote abstain</Text>
+                <Text>
+                  {abstainRatio ? formatPrettyPercent(abstainRatio) : "-"} Vote
+                  abstain
+                </Text>
               </Flex>
             </div>
           }
           bgColor="gray.700"
+          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
         >
           <Box h="fit-content">
             <VoteQuorumCircle
               quorum={quorum}
-              nonAbstainVotes={nonAbstainVotes}
-              totalVotes={totalVotes}
+              nonAbstainRatio={nonAbstainRatio}
+              totalRatio={totalRatio}
               isCompact
             />
           </Box>
@@ -85,7 +91,7 @@ export const VotingOverviewQuorum = ({
           <VoteQuorumText
             status={proposalData.status}
             quorum={quorum}
-            totalVotes={totalVotes}
+            totalRatio={totalRatio}
             isCompact
           />
           <div>

@@ -1,5 +1,5 @@
 import type { Coin } from "@cosmjs/stargate";
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import type {
   BechAddr,

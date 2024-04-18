@@ -72,7 +72,7 @@ export const CopyLink = ({
         {...flexProps}
       >
         <Text
-          wordBreak={{ base: "break-all", md: "inherit" }}
+          wordBreak="break-all"
           variant="body2"
           color="secondary.main"
           transition="all 0.25s ease-in-out"

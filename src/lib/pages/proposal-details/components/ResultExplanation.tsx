@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { SkeletonText, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import {
   extractParams,
@@ -43,6 +44,21 @@ const Rejected = () => (
   </span>
 );
 
+const QuorumRejected = () => (
+  <Text variant="body2">
+    This proposal{" "}
+    <span
+      style={{
+        color: "var(--chakra-colors-error-main)",
+        fontWeight: 700,
+      }}
+    >
+      did not meet the required quorum
+    </span>
+    , resulting in its rejection regardless of the voting outcomes.
+  </Text>
+);
+
 export interface ResultExplanationProps {
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
@@ -80,7 +96,7 @@ export const ResultExplanation = ({
     params,
     proposalData.isExpedited
   );
-  const { totalVotes, yesNonRatio, noWithVetoRatio } =
+  const { totalRatio, yesNonRatio, noWithVetoTotalRatio } =
     normalizeVotesInfo(votesInfo);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {
@@ -106,7 +122,8 @@ export const ResultExplanation = ({
   }
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
-    if (totalVotes < quorum)
+    if (isNull(totalRatio)) return <ErrorFetchingProposalInfos />;
+    if (totalRatio < quorum)
       return (
         <Text variant="body2">
           As of now, the proposal has not yet reached the required quorum. If
@@ -114,8 +131,7 @@ export const ResultExplanation = ({
           will be <Rejected />.
         </Text>
       );
-
-    if (noWithVetoRatio >= vetoThreshold)
+    if (noWithVetoTotalRatio >= vetoThreshold)
       return (
         <Text variant="body2">
           The proposal has{" "}
@@ -133,7 +149,7 @@ export const ResultExplanation = ({
               fontWeight: 700,
             }}
           >
-            {formatPrettyPercent(noWithVetoRatio)}
+            {formatPrettyPercent(noWithVetoTotalRatio)}
           </span>{" "}
           of the total votes, including &ldquo;Abstain&rdquo;, which exceeds the{" "}
           <span
@@ -185,15 +201,46 @@ export const ResultExplanation = ({
     );
 
   if (proposalData.status === ProposalStatus.REJECTED) {
-    if (yesNonRatio >= threshold)
+    if (!isNull(totalRatio)) {
+      if (totalRatio < quorum) return <QuorumRejected />;
+
+      if (noWithVetoTotalRatio >= vetoThreshold)
+        return (
+          <Text variant="body2">
+            Due to the &ldquo;No with veto&rdquo; vote proportion constitutes{" "}
+            <span
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              {formatPrettyPercent(noWithVetoTotalRatio)}{" "}
+            </span>
+            of the total votes including &ldquo;Abstain&rdquo;, which exceeds
+            the{" "}
+            <span
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              {formatPrettyPercent(vetoThreshold)} threshold
+            </span>
+            , the proposal is <Rejected /> regardless of &ldquo;Yes&rdquo;
+            votes.
+          </Text>
+        );
+
       return (
         <Text variant="body2">
-          This proposal did not meet the required quorum, resulting in its
-          rejection regardless of the voting outcomes.
+          The proposal has reached the voting quorum but fell short of reaching
+          the &ldquo;Yes&rdquo; votes threshold, so the proposal is <Rejected />
+          .
         </Text>
       );
+    }
 
-    if (noWithVetoRatio >= vetoThreshold)
+    if (yesNonRatio >= threshold) return <QuorumRejected />;
+
+    if (noWithVetoTotalRatio >= vetoThreshold)
       return (
         <Text variant="body2">
           The proposal is <Rejected /> due to either the quorum is not reached
@@ -203,7 +250,7 @@ export const ResultExplanation = ({
               fontWeight: 700,
             }}
           >
-            {formatPrettyPercent(noWithVetoRatio)}{" "}
+            {formatPrettyPercent(noWithVetoTotalRatio)}{" "}
           </span>
           of the total votes including &ldquo;Abstain&rdquo;, which exceeds the{" "}
           <span

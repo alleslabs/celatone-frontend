@@ -24,7 +24,11 @@ export const ProposalVotesTableRow = ({
 
   if (isMobile)
     return (
-      <Grid templateColumns={templateColumns} minW="min-content">
+      <Grid
+        className="copier-wrapper"
+        templateColumns={templateColumns}
+        minW="min-content"
+      >
         <TableRow pl={0}>
           <Voter proposalVote={proposalVote} />
         </TableRow>
@@ -72,7 +76,7 @@ export const ProposalVotesTableRow = ({
           abstain={proposalVote.abstain}
         />
       </TableRow>
-      {fullVersion && !isMobile && (
+      {fullVersion && (
         <>
           <TableRow>
             {proposalVote.timestamp ? (
@@ -91,6 +95,7 @@ export const ProposalVotesTableRow = ({
               <ExplorerLink
                 type="tx_hash"
                 value={proposalVote.txHash.toUpperCase()}
+                showCopyOnHover
               />
             ) : (
               <Text variant="body2">N/A</Text>

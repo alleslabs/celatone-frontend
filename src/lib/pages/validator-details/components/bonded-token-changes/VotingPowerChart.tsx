@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
 
+import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
@@ -10,7 +11,7 @@ import { ErrorFetching } from "lib/components/state";
 import { useValidatorHistoricalPowers } from "lib/services/validatorService";
 import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 import {
-  formatHHmm,
+  formatMMMDD,
   formatUTC,
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -48,9 +49,9 @@ export const VotingPowerChart = ({
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
     : "";
 
-  const labels = historicalPowers.items.map((item) =>
-    formatHHmm(item.hourRoundedTimestamp as Date)
-  );
+  const labels = historicalPowers.items.map((item) => {
+    return formatMMMDD(item.hourRoundedTimestamp as Date);
+  });
 
   const dataset = {
     data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
@@ -105,7 +106,10 @@ export const VotingPowerChart = ({
       w="100%"
       justifyContent="space-between"
       alignItems="center"
-      onClick={onViewMore}
+      onClick={() => {
+        trackUseViewMore();
+        onViewMore();
+      }}
     >
       <VotingPowerChartDetails
         historicalPowers={historicalPowers}
@@ -122,11 +126,12 @@ export const VotingPowerChart = ({
       }}
       gap={8}
       backgroundColor="gray.900"
-      p={6}
+      py={6}
+      px={4}
       rounded={8}
       w="100%"
     >
-      <Flex gap={6} direction="column" w={250} minW={250}>
+      <Flex gap={6} direction="column" w={280} minW={280}>
         <VotingPowerChartDetails
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
@@ -138,7 +143,11 @@ export const VotingPowerChart = ({
             p="unset"
             size="md"
             pl={2}
-            onClick={onViewMore}
+            w="fit-content"
+            onClick={() => {
+              trackUseViewMore();
+              onViewMore();
+            }}
           >
             See all related transactions
             <CustomIcon name="chevron-right" boxSize={3} />

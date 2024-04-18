@@ -13,7 +13,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
+import { RecentBlocksTable } from "lib/pages/blocks/components/RecentBlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { useOverviewsStats } from "lib/services/overviewService";
 
@@ -88,11 +88,7 @@ const Home = () => {
             </Text>{" "}
             Overview
           </Heading>
-          <UserDocsLink
-            isButton
-            isSmall
-            href="introduction/user-introduction"
-          />
+          <UserDocsLink isButton href="introduction/overview" />
         </Flex>
         <Flex gap={4} direction={{ base: "column", md: "row" }}>
           <CardInfo
@@ -143,7 +139,7 @@ const Home = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <BlocksTable isViewMore />
+        <RecentBlocksTable isViewMore />
         {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}

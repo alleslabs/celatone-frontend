@@ -16,6 +16,8 @@ const accentDarker = "accent.darker";
 const backgroundMain = "background.main";
 const borderDefault = "1px solid";
 const errorDark = "error.dark";
+const secondaryLight = "secondary.light";
+const secondaryMain = "secondary.main";
 const secondaryBg = "secondary.background";
 const buttonOutlinePrimaryColor = "button.outlinePrimary.color";
 
@@ -139,6 +141,26 @@ export const Button: ComponentStyleConfig = {
       hoverBg: "button.outlinePrimary.hoverBackground",
       activeBg: "button.outlinePrimary.activeBackground",
     }),
+    "outline-secondary": generateStyle({
+      basic: {
+        border: borderDefault,
+        borderColor: "secondary.dark",
+        color: secondaryLight,
+        "> svg": {
+          color: secondaryLight,
+        },
+      },
+      disabled: {
+        border: borderDefault,
+        borderColor: gray700,
+        color: gray600,
+        "> svg": {
+          color: gray600,
+        },
+      },
+      hoverBg: gray700,
+      activeBg: "transparent",
+    }),
     "outline-gray": generateStyle({
       basic: {
         border: borderDefault,
@@ -238,9 +260,9 @@ export const Button: ComponentStyleConfig = {
     }),
     "ghost-secondary": generateStyle({
       basic: {
-        color: "secondary.main",
+        color: secondaryMain,
         "> svg": {
-          color: "secondary.main",
+          color: secondaryMain,
         },
       },
       disabled: {

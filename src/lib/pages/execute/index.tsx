@@ -102,7 +102,7 @@ const Execute = () => {
         <Flex>
           <UserDocsLink
             isButton
-            isSmall
+            isDevTool
             href="cosmwasm/query-execute#execute"
           />
           <Button variant="ghost-primary" size="sm" ml={2} onClick={goToQuery}>

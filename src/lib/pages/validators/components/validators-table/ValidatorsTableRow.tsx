@@ -50,6 +50,7 @@ export const ValidatorsTableRow = ({
   const isMinCommissionRate = minCommissionRate === validator.commissionRate;
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
       onClick={() => onRowSelect(validator.validatorAddress)}
       _hover={{ bg: "gray.900" }}
@@ -71,7 +72,6 @@ export const ValidatorsTableRow = ({
             moniker: validator.moniker,
           }}
           badgeSize={7}
-          maxWidth="220px"
         />
       </TableRow>
       <TableRow>
