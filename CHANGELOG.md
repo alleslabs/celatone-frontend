@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.6.0
+
+### Features
+
 - [#887](https://github.com/alleslabs/celatone-frontend/pull/887) Add blackwing devnet 1 network
 - [#880](https://github.com/alleslabs/celatone-frontend/pull/880) Add resolved voting power for proposals
 - [#878](https://github.com/alleslabs/celatone-frontend/pull/878) Support searching proposal id and validator address on the main search
