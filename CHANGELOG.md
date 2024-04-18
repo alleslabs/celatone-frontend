@@ -102,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#888](https://github.com/alleslabs/celatone-frontend/pull/888) Apply timeout for delegator counts on validator detail
 - [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
 - [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
 - [#884](https://github.com/alleslabs/celatone-frontend/pull/884) Bump cosmjs tx parsing problem
