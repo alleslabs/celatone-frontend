@@ -238,12 +238,12 @@ const getPlaceholder = ({
   isMove: boolean;
   isGov: boolean;
 }) => {
+  const govText = isGov ? " / Validator Address / Proposal ID" : "";
   const wasmText = isWasm ? " / Code ID / Contract Address" : "";
   const moveText = isMove ? " / Module Path" : "";
-  const govText = isGov ? " / Proposal ID / Validator Address" : "";
   const poolText = isPool ? " / Pool ID" : "";
 
-  return `Search by Account Address / Tx Hash / Block${wasmText}${moveText}${govText}${poolText}`;
+  return `Search by Account Address / Tx Hash / Block${govText}${wasmText}${moveText}${poolText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -254,10 +254,10 @@ const Searchbar = () => {
     currentChainId,
     chainConfig: {
       features: {
-        wasm: { enabled: isWasm },
-        pool: { enabled: isPool },
-        move: { enabled: isMove },
         gov: { enabled: isGov },
+        wasm: { enabled: isWasm },
+        move: { enabled: isMove },
+        pool: { enabled: isPool },
       },
     },
   } = useCelatoneApp();
