@@ -1,21 +1,21 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { Copier } from "lib/components/copy";
 import { TableRow } from "lib/components/table";
 import { TokenImageRender } from "lib/components/token";
 import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { USD, PoolDetail, TokenWithValue, Ratio } from "lib/types";
+import type { PoolDetail, Ratio, TokenWithValue, USD } from "lib/types";
 import { PoolType } from "lib/types";
 import {
+  divWithDefault,
   formatInteger,
   formatPrice,
+  formatRatio,
   formatUTokenWithPrecision,
   getTokenLabel,
-  formatRatio,
-  divWithDefault,
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {

@@ -14,9 +14,10 @@ import { EmptyState } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useDebounce } from "lib/hooks";
-import { useTxsCountByAddress, useTxsByAddress } from "lib/services/txService";
+import { useTxsByAddress, useTxsCountByAddress } from "lib/services/txService";
 import type { Option, TxFilters } from "lib/types";
 
 interface PastTxsState {
@@ -115,15 +116,18 @@ const PastTxs = () => {
 
   return (
     <PageContainer>
-      <Heading
-        variant="h5"
-        as="h5"
-        minH="36px"
-        display="flex"
-        alignItems="center"
-      >
-        Past Transactions
-      </Heading>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Heading
+          variant="h5"
+          as="h5"
+          minH="36px"
+          display="flex"
+          alignItems="center"
+        >
+          Past Transactions
+        </Heading>
+        <UserDocsLink isButton href="general/transactions/past-txs" />
+      </Flex>
       <Flex my={8} gap={3}>
         <InputWithIcon
           placeholder={`Search with Transaction Hash${

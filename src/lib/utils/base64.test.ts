@@ -1,4 +1,4 @@
-import { encode, decode, libEncode, libDecode } from "./base64";
+import { decode, encode, libDecode, libEncode } from "./base64";
 
 describe("base64 utility functions", () => {
   const testString = "Hello, world!";

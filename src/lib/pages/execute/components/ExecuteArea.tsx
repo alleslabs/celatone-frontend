@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { observer } from "mobx-react-lite";
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
@@ -71,7 +71,7 @@ export const ExecuteArea = observer(
             >
               <Tooltip
                 label="Please select contract first"
-                isDisabled={Boolean(contractAddress)}
+                hidden={Boolean(contractAddress)}
               >
                 Your Schema
               </Tooltip>

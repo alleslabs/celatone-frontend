@@ -31,6 +31,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
       },
       nft: {
         enabled: false,
@@ -44,11 +45,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/stargaze/validators",
-      proposal: "https://www.mintscan.io/stargaze/proposals",
+    extra: {
+      singleStakingDenom: "ustars",
     },
-    extra: {},
   },
   "elgafar-1": {
     chain: "stargaze",
@@ -78,6 +77,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
       },
       nft: {
         enabled: false,
@@ -91,10 +91,8 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 50_000_000,
     },
-    explorerLink: {
-      validator: "https://testnet-explorer.publicawesome.dev/stargaze/staking",
-      proposal: "https://testnet-explorer.publicawesome.dev/stargaze/gov",
+    extra: {
+      singleStakingDenom: "ustars",
     },
-    extra: {},
   },
 };

@@ -2,13 +2,11 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
-import { trackMintScan } from "lib/amplitude";
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
-import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
+import { useInternalNavigate } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
-import type { Option, Proposal } from "lib/types";
+import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { openNewTab } from "lib/utils";
 
 import { ProposalTextCell } from "./ProposalTextCell";
 import { Proposer } from "./Proposer";
@@ -27,54 +25,39 @@ export const ProposalsTableRow = ({
   templateColumns,
   boxShadow,
 }: ProposalsTableRowProps) => {
-  const {
-    chainConfig: { explorerLink },
-  } = useCelatoneApp();
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const navigate = useInternalNavigate();
+
+  const onRowSelect = (proposalId: number) =>
+    navigate({
+      pathname: "/proposals/[proposalId]",
+      query: { proposalId },
+    });
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
-  const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
-
-  const hoverBg = (): Option<string> => {
-    if (proposal.isExpedited && isDepositOrVoting) return "primary.background";
-    return isDepositFailed ? undefined : "gray.900";
-  };
-
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
+      onClick={() => onRowSelect(proposal.id)}
       minW="min-content"
-      cursor={isDepositFailed ? "default" : "pointer"}
-      _hover={{ "> div": { bgColor: hoverBg } }}
-      onClick={
-        !isDepositFailed
-          ? () => {
-              trackMintScan("proposal-detail", {
-                type: proposal.type,
-                status: proposal.status,
-              });
-              // TOOD: revisit retrieving url (make a proper hook)
-              openNewTab(
-                getNavigationUrl({
-                  type: "proposal_id",
-                  explorerConfig: explorerLink,
-                  value: proposal.proposalId.toString(),
-                  lcdEndpoint,
-                })
-              );
-            }
-          : undefined
-      }
+      cursor="pointer"
+      _hover={{
+        "> div": {
+          bgColor:
+            proposal.isExpedited && isDepositOrVoting
+              ? "primary.background"
+              : "gray.900",
+        },
+      }}
     >
       <TableRowFreeze left="0">
         <ExplorerLink
-          isReadOnly={isDepositFailed}
           type="proposal_id"
-          value={proposal.proposalId.toString()}
+          value={proposal.id.toString()}
           showCopyOnHover
           ampCopierSection="proposal-list"
         />
@@ -86,7 +69,7 @@ export const ProposalsTableRow = ({
       >
         <ProposalTextCell
           title={proposal.title}
-          type={proposal.type}
+          types={proposal.types}
           isExpedited={proposal.isExpedited}
           isDepositOrVoting={isDepositOrVoting}
         />

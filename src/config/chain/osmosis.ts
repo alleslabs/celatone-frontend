@@ -9,7 +9,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Osmosis",
     lcd: "https://lcd.osmosis.zone",
     rpc: "https://rpc.osmosis.zone:443",
-    indexer: "https://osmosis-1-legacy-graphql.alleslabs.dev/v1/graphql",
+    indexer: "https://osmosis-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...keplrWallets],
     features: {
       faucet: {
@@ -32,6 +32,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         disableStoreCodeProposal: true,
         disableWhitelistProposal: true,
       },
@@ -47,11 +48,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/osmosis/validators",
-      proposal: "https://www.mintscan.io/osmosis/proposals",
+    extra: {
+      singleStakingDenom: "uosmo",
     },
-    extra: {},
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -83,6 +82,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         disableWhitelistProposal: true,
         disableStoreCodeProposal: true,
       },
@@ -98,11 +98,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
-      proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
+    extra: {
+      singleStakingDenom: "uosmo",
     },
-    extra: {},
   },
   localosmosis: {
     chain: "osmosis",
@@ -133,6 +131,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         disableWhitelistProposal: true,
         disableStoreCodeProposal: true,
       },
@@ -148,10 +147,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "",
-      proposal: "",
+    extra: {
+      singleStakingDenom: "uosmo",
     },
-    extra: {},
   },
 };

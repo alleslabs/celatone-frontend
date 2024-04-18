@@ -22,7 +22,6 @@ export const UnsupportedAssetSectionContent = ({
         justifyContent={{ base: "flex-start", md: "center" }}
         h="calc(100% - 45px)"
         minH={20}
-        px={4}
       >
         <Text variant="body2" color="text.dark">
           This {isAccount ? "address" : "contract"} does not hold any
@@ -32,7 +31,7 @@ export const UnsupportedAssetSectionContent = ({
     );
 
   return (
-    <Flex direction="column" gap={5} p={4}>
+    <Flex direction="column" gap={5} py={4}>
       <Grid
         gridGap={4}
         gridTemplateColumns={{

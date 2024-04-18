@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Accordion } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Heading } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { trackUseExpandAll, trackUseViewJSON } from "lib/amplitude";

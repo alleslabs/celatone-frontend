@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { isId, isTxHash, isPosDecimal } from "./validate";
+import { isHex, isId, isPosDecimal, isTxHash } from "./validate";
 
 describe("isId", () => {
   test("valid", () => {
@@ -20,6 +20,20 @@ describe("isId", () => {
     });
     test("hexstring", () => {
       expect(isId("0x1234")).toBeFalsy();
+    });
+  });
+});
+
+describe("isHex", () => {
+  test("valid", () => {
+    expect(isHex("1234ABCD")).toBeTruthy();
+  });
+  describe("invalid", () => {
+    test("empty string", () => {
+      expect(isHex("")).toBeFalsy();
+    });
+    test("non-hexstring", () => {
+      expect(isHex("XYZ")).toBeFalsy();
     });
   });
 });

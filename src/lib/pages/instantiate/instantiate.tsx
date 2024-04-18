@@ -9,17 +9,17 @@ import { useForm } from "react-hook-form";
 
 import {
   AmpEvent,
+  track,
   trackActionWithFunds,
   trackToInstantiate,
-  track,
 } from "lib/amplitude";
 import {
-  useFabricateFee,
-  useInstantiateTx,
-  useValidateAddress,
-  useSimulateFeeQuery,
   useCurrentChain,
   useExampleAddresses,
+  useFabricateFee,
+  useInstantiateTx,
+  useSimulateFeeQuery,
+  useValidateAddress,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
@@ -43,6 +43,7 @@ import {
 } from "lib/components/json-schema";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -392,9 +393,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           DEPLOY NEW CONTRACT
         </Text>
         <Stepper mode="deploy" currentStep={2} />
-        <Heading as="h5" variant="h5" my={12}>
-          Instantiate new contract
-        </Heading>
+        <Flex direction="column" alignItems="center" my={12}>
+          <Heading as="h5" variant="h5">
+            Instantiate new contract
+          </Heading>
+          <UserDocsLink
+            isDevTool
+            mt={2}
+            cta="View Instantiate Guideline"
+            href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
+          />
+        </Flex>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"
           mb={6}

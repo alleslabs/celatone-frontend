@@ -49,7 +49,7 @@ const nextConfig = {
       "tx",
     ];
 
-    return routes.reduce((acc, route) => {
+    const rules = routes.reduce((acc, route) => {
       acc.push({
         source: `/:network/${route}/:id`,
         destination: `/:network/${route}s/:id`,
@@ -76,6 +76,14 @@ const nextConfig = {
 
       return acc;
     }, []);
+
+    rules.push({
+      source: "/:network/accounts/usei",
+      destination: "/:network",
+      permanent: false,
+    });
+
+    return rules;
   },
 };
 

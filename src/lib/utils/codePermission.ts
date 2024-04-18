@@ -1,4 +1,4 @@
-import type { PermissionAddresses, Option, BechAddr20 } from "lib/types";
+import type { BechAddr20, Option, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 import { truncate } from "./truncate";

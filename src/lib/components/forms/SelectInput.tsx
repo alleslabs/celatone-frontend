@@ -1,14 +1,14 @@
 import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useDisclosure,
   Flex,
   Image,
+  Input,
+  InputGroup,
   InputLeftElement,
+  InputRightElement,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  useDisclosure,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
@@ -34,7 +34,9 @@ interface SelectInputProps<T extends string> {
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
+  popoverBgColor?: string;
   size?: string | object;
+  disableMaxH?: boolean;
 }
 
 interface SelectItemProps {
@@ -69,28 +71,27 @@ export const SelectInput = <T extends string>({
   hasDivider = false,
   helperTextComponent,
   labelBgColor = "background.main",
+  popoverBgColor = "gray.900",
   size = "lg",
+  disableMaxH = false,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [selected, setSelected] = useState(
-    () => options.find((item) => item.value === initialSelected)?.label ?? ""
-  );
+  const [selected, setSelected] = useState("");
 
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
-    if (options.every((option) => !option.disabled)) {
-      setSelected(
-        () =>
-          options.find((item) => item.value === initialSelected)?.label ?? ""
-      );
-    }
+    setSelected(
+      options.find((item) => !item.disabled && item.value === initialSelected)
+        ?.label ?? ""
+    );
   }, [initialSelected, options]);
 
   return (
     <Popover
       placement="bottom-start"
+      strategy="fixed"
       isOpen={isOpen}
       onOpen={onOpen}
       onClose={onClose}
@@ -149,10 +150,9 @@ export const SelectInput = <T extends string>({
       </PopoverTrigger>
       <PopoverContent
         border="unset"
-        bg="gray.900"
+        bg={popoverBgColor}
         w={inputRef.current?.clientWidth}
-        maxH={`${ITEM_HEIGHT * 4}px`}
-        overflow="scroll"
+        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
         borderRadius="8px"
         _focusVisible={{
           outline: "none",

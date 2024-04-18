@@ -1,25 +1,5 @@
 import { graphql } from "lib/gql";
 
-export const getCodeListQueryDocument = graphql(`
-  query getCodeListQuery {
-    codes(limit: 100, offset: 0, order_by: { id: desc }) {
-      id
-      contracts_aggregate {
-        aggregate {
-          count
-        }
-      }
-      account {
-        uploader: address
-      }
-      access_config_permission
-      access_config_addresses
-      cw2_contract
-      cw2_version
-    }
-  }
-`);
-
 export const getCodeListByUserQueryDocument = graphql(`
   query getCodeListByUserQuery($walletAddr: String!) {
     codes(
@@ -56,36 +36,6 @@ export const getCodeListByIDsQueryDocument = graphql(`
       }
       account {
         uploader: address
-      }
-      access_config_permission
-      access_config_addresses
-      cw2_contract
-      cw2_version
-    }
-  }
-`);
-
-export const getCodeDataByCodeId = graphql(`
-  query getCodeDataByCodeId($codeId: Int!, $isGov: Boolean!) {
-    codes_by_pk(id: $codeId) {
-      id
-      account {
-        address
-      }
-      transaction {
-        hash
-        block {
-          height
-          timestamp
-        }
-      }
-      # Can only have 1 store code proposal
-      code_proposals(limit: 1) @include(if: $isGov) {
-        proposal_id
-        block {
-          height
-          timestamp
-        }
       }
       access_config_permission
       access_config_addresses

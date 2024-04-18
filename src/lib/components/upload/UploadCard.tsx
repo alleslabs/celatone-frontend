@@ -1,8 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import big from "big.js";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon, UploadIcon } from "lib/components/icon";
+import { big } from "lib/types";
 import type { Nullable, Option } from "lib/types";
 
 type CardTheme = "primary" | "secondary";

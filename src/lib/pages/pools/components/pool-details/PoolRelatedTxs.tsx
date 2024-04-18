@@ -1,11 +1,11 @@
 import {
+  Box,
   Flex,
   Heading,
-  Box,
-  Tabs,
   TabList,
-  TabPanels,
   TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 
@@ -108,6 +108,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           </CustomTab>
           <CustomTab
             count={countDisplaySwapTxs}
+            isDisabled={countDisplaySwapTxs === "0"}
             isLoading={isLoadingSwapTxs}
             onClick={() => handleTabChange(TabIndex.Swap)}
           >
@@ -116,6 +117,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.type === PoolType.CL ? (
             <CustomTab
               count={countDisplayClpTxs}
+              isDisabled={countDisplayClpTxs === "0"}
               isLoading={isLoadingClpTxs}
               onClick={() => handleTabChange(TabIndex.CLP)}
             >
@@ -124,6 +126,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           ) : (
             <CustomTab
               count={countDisplayLpTxs}
+              isDisabled={countDisplayLpTxs === "0"}
               isLoading={isLoadingLpTxs}
               onClick={() => handleTabChange(TabIndex.LP)}
             >
@@ -132,6 +135,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           )}
           <CustomTab
             count={countDisplayBondTxs}
+            isDisabled={countDisplayBondTxs === "0"}
             isLoading={isLoadingBondTxs}
             onClick={() => handleTabChange(TabIndex.Bonding)}
           >
@@ -140,6 +144,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.isSuperfluid && (
             <CustomTab
               count={countDisplaySuperfluidTxs}
+              isDisabled={countDisplaySuperfluidTxs === "0"}
               isLoading={isLoadingSuperfluidTxs}
               onClick={() => handleTabChange(TabIndex.Superfluid)}
             >
@@ -149,6 +154,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.type === PoolType.CL && (
             <CustomTab
               count={countDisplayCollectTxs}
+              isDisabled={countDisplayCollectTxs === "0"}
               isLoading={isLoadingCollectTxs}
               onClick={() => handleTabChange(TabIndex.Collect)}
             >
@@ -158,6 +164,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <CustomTab
               count={countDisplayMigrateTxs}
+              isDisabled={countDisplayMigrateTxs === "0"}
               isLoading={isLoadingMigrateTxs}
               onClick={() => trackUseTab("Migrate")}
             >

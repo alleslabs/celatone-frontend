@@ -1,12 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolInfoText } from "../components/PoolInfoText";
+import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
 import { extractMsgType } from "lib/utils";
 import type { MsgJoinSwapExternAmountInDetails } from "lib/utils/tx/types";
 
-import { LiquidityDivider, PoolLPCard, PoolAssetsGrid } from "./components";
+import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgJoinSwapExternAmountInDetailProps {
   txHash: string;
@@ -48,7 +49,7 @@ export const MsgJoinSwapExternAmountInDetail = ({
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
       />
-      <LiquidityDivider />
+      <DividerWithArrow />
       <PoolLPCard
         txHash={txHash}
         msgIndex={msgIndex}

@@ -5,15 +5,15 @@ import { useMobile, useMoveConfig } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import {
-  SaveNewAccountModal,
   EditSavedAccountModal,
   RemoveSavedAccountModal,
+  SaveNewAccountModal,
 } from "lib/components/modal";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/account";
-import type { HexAddr, BechAddr, Option } from "lib/types";
+import type { BechAddr, HexAddr, Option } from "lib/types";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;

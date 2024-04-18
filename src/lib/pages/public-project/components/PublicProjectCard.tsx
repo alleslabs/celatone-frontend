@@ -1,4 +1,4 @@
-import { Flex, Text, Image, Box } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useClampText } from "use-clamp-text";
 

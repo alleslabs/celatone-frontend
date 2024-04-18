@@ -2,16 +2,17 @@ import { z } from "zod";
 
 import type {
   AssetInfo,
-  AccessConfigPermission,
-  PermissionAddresses,
-  Option,
-  Nullable,
   BechAddr,
   BechAddr32,
   HexAddr,
+  Nullable,
+  Option,
+  PermissionAddresses,
 } from "lib/types";
+import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 
 import { zBechAddr, zBechAddr32 } from "./addrs";
+import { AccessConfigPermission } from "./code";
 
 export interface PublicAccount {
   // NOTE: multisig is considered a public account
@@ -145,3 +146,20 @@ export const zPublicContractInfo = z.object({
   slug: z.string(),
 });
 export type PublicContractInfo = z.infer<typeof zPublicContractInfo>;
+
+export const zPublicCodeInfo = z
+  .object({
+    contracts: z.number().nonnegative(),
+    cw2_contract: z.string().nullable(),
+    cw2_version: z.string().nullable(),
+    description: z.string(),
+    github: z.string(),
+    id: z.number().nonnegative(),
+    instantiate_permission: z.nativeEnum(AccessConfigPermission),
+    name: z.string(),
+    permission_addresses: z.array(zBechAddr),
+    slug: z.string(),
+    uploader: zBechAddr,
+  })
+  .transform(snakeToCamel);
+export type PublicCodeInfo = z.infer<typeof zPublicCodeInfo>;

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
@@ -31,7 +31,7 @@ export const usePaginator = ({
   const { currentChainId } = useCelatoneApp();
 
   const [totalData, setTotalData] = useState<number>(total ?? 0);
-  const [pageSize, setPageSize] = useState<number>(initialState.pageSize ?? 0);
+  const [pageSize, setPageSize] = useState<number>(initialState.pageSize ?? 10);
   const [currentPage, setCurrentPage] = useState<number>(
     initialState.currentPage
   );
@@ -56,9 +56,9 @@ export const usePaginator = ({
   }, [totalData, pageSize]);
 
   useEffect(() => {
-    setPageSize(10);
+    setPageSize(initialState.pageSize ?? 10);
     setCurrentPage(1);
-  }, [currentChainId]);
+  }, [currentChainId, initialState.pageSize]);
 
   useEffect(() => {
     setTotalData(total ?? 0);

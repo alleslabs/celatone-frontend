@@ -1,9 +1,9 @@
-import { Flex, Tag, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
-import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
+import { ActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Transaction } from "lib/types";
@@ -47,21 +47,7 @@ export const TransactionsTableMobileCard = ({
           {showRelations && <RelationChip isSigner={transaction.isSigner} />}
         </>
       }
-      middleContent={
-        <Flex>
-          <RenderActionMessages transaction={transaction} />
-          {transaction.isIbc && (
-            <Tag variant="accent-dark" size="sm">
-              IBC
-            </Tag>
-          )}
-          {transaction.isOpinit && (
-            <Tag variant="teal" size="sm">
-              OPInit
-            </Tag>
-          )}
-        </Flex>
-      }
+      middleContent={<ActionMessages transaction={transaction} />}
       bottomContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">

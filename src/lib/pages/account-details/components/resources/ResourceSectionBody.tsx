@@ -16,7 +16,7 @@ import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
-import { ErrorFetching, EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -50,6 +50,7 @@ export const ResourceSectionBody = ({
   const selectedResource = resourcesByOwner
     ?.find((resource) => resource.owner === selectedAccountParam)
     ?.resources?.find((resource) => resource.group === selectedNameParam);
+
   useEffect(() => {
     setExpandedIndexes(selectedResource?.items.length === 1 ? [0] : []);
   }, [resourcesByOwner, selectedResource]);

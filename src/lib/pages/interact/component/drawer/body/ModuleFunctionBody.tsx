@@ -1,5 +1,5 @@
 import type { FlexProps, GridItemProps } from "@chakra-ui/react";
-import { GridItem, Heading, Flex, Text } from "@chakra-ui/react";
+import { Flex, GridItem, Heading, Text } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 
 import { ModuleEmptyState, NoImageEmptyState } from "../../common";

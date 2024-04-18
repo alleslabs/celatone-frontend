@@ -1,5 +1,5 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, useToast, Text } from "@chakra-ui/react";
+import { MenuItem, Text, useToast } from "@chakra-ui/react";
 
 import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";

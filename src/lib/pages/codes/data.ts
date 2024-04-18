@@ -1,37 +1,38 @@
-import { useMemo } from "react";
-
 import type { PermissionFilterValue } from "lib/hooks";
-import { useCodePermissionFilter, useCodeSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useCodeListQuery } from "lib/services/codeService";
-import type { CodeInfo } from "lib/types";
+import { useCodes } from "lib/services/codeService";
+import type { BechAddr20, CodeInfo, Option } from "lib/types";
 
-interface RecentCodesData {
-  recentCodes: CodeInfo[];
-  isLoading: boolean;
-}
-
-export const useRecentCodesData = (
-  keyword: string,
-  permissionValue: PermissionFilterValue
-): RecentCodesData => {
+export const useRecentCodes = (
+  pageSize: number,
+  offset: number,
+  address: Option<BechAddr20>,
+  permissionValue: PermissionFilterValue,
+  setTotalData: (totalData: number) => void
+) => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
-  const { data: rawRecentCodes = [], isLoading } = useCodeListQuery();
-  const permissionFilterFn = useCodePermissionFilter(permissionValue);
-  const searchFilterFn = useCodeSearchFilter(keyword);
+  const { data: codes, isLoading } = useCodes(
+    pageSize,
+    offset,
+    address,
+    permissionValue === "all"
+      ? undefined
+      : permissionValue === "without-proposal",
+    {
+      onSuccess: (data) => setTotalData(data.total),
+    }
+  );
 
-  const recentCodes = rawRecentCodes.map<CodeInfo>((code) => ({
-    ...code,
-    name: getCodeLocalInfo(code.id)?.name,
-    isSaved: isCodeIdSaved(code.id),
-  }));
-
-  return useMemo(() => {
-    return {
-      recentCodes: recentCodes
-        .filter(permissionFilterFn)
-        .filter(searchFilterFn),
-      isLoading,
-    };
-  }, [recentCodes, isLoading, permissionFilterFn, searchFilterFn]);
+  if (!codes) return { data: undefined, isLoading };
+  return {
+    data: {
+      items: codes.items.map<CodeInfo>((code) => ({
+        ...code,
+        name: getCodeLocalInfo(code.id)?.name,
+        isSaved: isCodeIdSaved(code.id),
+      })),
+      total: codes.total,
+    },
+    isLoading,
+  };
 };

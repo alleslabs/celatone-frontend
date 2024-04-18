@@ -1,14 +1,13 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
-import { trackMintScan } from "lib/amplitude";
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
-import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
+import { useInternalNavigate } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { openNewTab } from "lib/utils";
 
+import { ProposalTextCell } from "./ProposalTextCell";
 import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
@@ -21,15 +20,17 @@ export interface ProposalsTableMobileCardProps {
 export const ProposalsTableMobileCard = ({
   proposal,
 }: ProposalsTableMobileCardProps) => {
-  const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
+  const navigate = useInternalNavigate();
+
+  const onCardSelect = (proposalId: number) =>
+    navigate({
+      pathname: "/proposals/[proposalId]",
+      query: { proposalId },
+    });
+
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
-  const {
-    chainConfig: { explorerLink },
-  } = useCelatoneApp();
-  const lcdEndpoint = useBaseApiRoute("rest");
-
   return (
     <MobileCardTemplate
       topContent={
@@ -37,9 +38,8 @@ export const ProposalsTableMobileCard = ({
           <Flex gap={2} align="center">
             <MobileLabel label="Proposal ID" variant="body2" />
             <ExplorerLink
-              isReadOnly={isDepositFailed}
               type="proposal_id"
-              value={proposal.proposalId.toString()}
+              value={proposal.id.toString()}
               showCopyOnHover
             />
           </Flex>
@@ -48,15 +48,12 @@ export const ProposalsTableMobileCard = ({
       }
       middleContent={
         <Flex direction="column" gap={3}>
-          <Flex direction="column" gap={1}>
-            <MobileLabel label="Proposal Title" />
-            <Text color="text.main" variant="body2" wordBreak="break-word">
-              {proposal.title}
-            </Text>
-            <Text color="text.dark" variant="body3" wordBreak="break-word">
-              {proposal.type}
-            </Text>
-          </Flex>
+          <ProposalTextCell
+            title={proposal.title}
+            types={proposal.types}
+            isExpedited={proposal.isExpedited}
+            isDepositOrVoting={isDepositOrVoting}
+          />
           <Flex direction="column" gap={1}>
             <MobileLabel label="Voting Ends" />
             <VotingEndTime
@@ -82,25 +79,7 @@ export const ProposalsTableMobileCard = ({
           </Flex>
         </>
       }
-      onClick={
-        !isDepositFailed
-          ? () => {
-              trackMintScan("proposal-detail", {
-                type: proposal.type,
-                status: proposal.status,
-              });
-              // TOOD: revisit retrieving url (make a proper hook)
-              openNewTab(
-                getNavigationUrl({
-                  type: "proposal_id",
-                  explorerConfig: explorerLink,
-                  value: proposal.proposalId.toString(),
-                  lcdEndpoint,
-                })
-              );
-            }
-          : undefined
-      }
+      onClick={() => onCardSelect(proposal.id)}
     />
   );
 };

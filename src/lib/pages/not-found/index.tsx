@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Image } from "@chakra-ui/react";
+import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 

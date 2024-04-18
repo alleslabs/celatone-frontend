@@ -1,20 +1,20 @@
 import {
-  InputRightElement,
-  InputGroup,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
-  Flex,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
 import type {
-  HTMLInputTypeAttribute,
   Dispatch,
-  SetStateAction,
+  HTMLInputTypeAttribute,
   ReactNode,
+  SetStateAction,
 } from "react";
 
 import type { FormStatus } from "./FormStatus";

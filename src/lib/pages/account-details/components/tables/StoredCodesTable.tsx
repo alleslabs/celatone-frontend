@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { ErrorFetching, EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import {
   CodesTable,
   MobileTitle,

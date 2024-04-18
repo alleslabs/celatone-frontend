@@ -1,17 +1,18 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import type { Big } from "big.js";
-import big from "big.js";
+import type Big from "big.js";
 
+import { big } from "lib/types";
 import type { Token, U, USD } from "lib/types";
 
 import {
-  formatDecimal,
+  d0Formatter,
   d2Formatter,
   d6Formatter,
-  toToken,
-  formatUTokenWithPrecision,
-  formatPrice,
+  formatDecimal,
   formatInteger,
+  formatPrice,
+  formatUTokenWithPrecision,
+  toToken,
 } from "./token";
 
 const FALLBACK = "fallback";
@@ -107,6 +108,18 @@ describe("formatDecimal", () => {
   });
 });
 
+describe("d0Formatter", () => {
+  test("from string", () => {
+    expect(d0Formatter("-1234.5678", FALLBACK)).toEqual("-1,234");
+    expect(d0Formatter("1234", FALLBACK)).toEqual("1,234");
+  });
+  test("from number", () => {
+    expect(d0Formatter(1234.5, FALLBACK)).toEqual("1,234");
+    expect(d0Formatter(1234, FALLBACK)).toEqual("1,234");
+    expect(d0Formatter(-1234.5, FALLBACK)).toEqual("-1,234");
+  });
+});
+
 describe("d2Formatter", () => {
   test("from string", () => {
     expect(d2Formatter("-1234.5678", FALLBACK)).toEqual("-1,234.56");
@@ -141,9 +154,6 @@ describe("toToken", () => {
     });
     test("NaN", () => {
       expect(toToken(NaN as U<Token<number>>, 6)).toEqual(big(0) as Token<Big>);
-    });
-    test("negative number", () => {
-      expect(toToken(-1 as U<Token<number>>, 6)).toEqual(big(0) as Token<Big>);
     });
   });
   test("more than 1", () => {

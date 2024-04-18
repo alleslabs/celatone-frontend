@@ -1,7 +1,13 @@
 import type Big from "big.js";
 import { z } from "zod";
 
-import type { PoolInfo, Option, Token, U, USD } from "lib/types";
+import type { Option, PoolInfo, Token, U, USD } from "lib/types";
+
+export const zCoin = z.object({
+  denom: z.string(),
+  amount: z.string(),
+});
+export type Coin = z.infer<typeof zCoin>;
 
 export const zAssetInfo = z.object({
   coingecko: z.string(),

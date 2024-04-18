@@ -3,16 +3,16 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, trackToAdminUpdate, track } from "lib/amplitude";
+import { AmpEvent, track, trackToAdminUpdate } from "lib/amplitude";
 import {
+  useCurrentChain,
   useFabricateFee,
+  useGetAddressType,
   useInternalNavigate,
   useSimulateFeeQuery,
   useUpdateAdminTx,
-  useGetAddressType,
   useValidateAddress,
   useWasmConfig,
-  useCurrentChain,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -20,6 +20,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
@@ -169,9 +170,17 @@ const UpdateAdmin = () => {
 
   return (
     <WasmPageContainer>
-      <Heading as="h5" variant="h5" mb={6}>
-        Update Admin
-      </Heading>
+      <Flex direction="column" alignItems="center" mb={6}>
+        <Heading as="h5" variant="h5">
+          Update Admin
+        </Heading>
+        <UserDocsLink
+          isDevTool
+          mt={2}
+          cta="View Update Admin Guideline"
+          href="cosmwasm/contracts/admin-actions#update-new-admin-to-the-contract"
+        />
+      </Flex>
       <ConnectWalletAlert
         mb={6}
         subtitle="You need to connect your wallet to perform this action"

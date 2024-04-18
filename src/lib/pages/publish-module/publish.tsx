@@ -1,4 +1,4 @@
-import { Text, Grid, Heading, Flex, Button, Box } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
@@ -26,14 +26,14 @@ import { composePublishMsg } from "lib/utils";
 
 import type { PublishCompleteState } from ".";
 import {
-  PolicyAccordion,
-  UploadAccordion,
   Footer,
+  PolicyAccordion,
   PolicyCard,
+  UploadAccordion,
   UploadModuleCard,
 } from "./components";
 import type { PublishModuleState, PublishStatus } from "./formConstants";
-import { emptyModule, POLICIES, defaultValues } from "./formConstants";
+import { defaultValues, emptyModule, POLICIES } from "./formConstants";
 import { statusResolver } from "./utils";
 
 interface PublishModuleProps {
@@ -208,7 +208,7 @@ export const PublishModule = ({
 
   return (
     <>
-      <PageContainer display="inline" p={0}>
+      <PageContainer p={0}>
         <Box minH="inherit" maxW="1440px" mx="auto">
           <Grid
             templateColumns="1fr 6fr 4fr 1fr"
@@ -324,7 +324,6 @@ export const PublishModule = ({
           const republishModules = modules.filter((ampTrackRepublish) =>
             ampTrackRepublish.publishStatus.text.includes("republish")
           );
-
           track(AmpEvent.ACTION_MOVE_PUBLISH, {
             numberOfModule: modules.length,
             numberOfRepublishModules: republishModules.length,

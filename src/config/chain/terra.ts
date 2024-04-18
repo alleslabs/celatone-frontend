@@ -32,6 +32,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         hideOpenProposal: true,
       },
       nft: {
@@ -46,11 +47,9 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://finder.terra.money/mainnet/validator",
-      proposal: "https://station.terra.money/proposal/phoenix-1",
+    extra: {
+      singleStakingDenom: "uluna",
     },
-    extra: {},
   },
   "pisco-1": {
     chain: "terra",
@@ -80,6 +79,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         hideOpenProposal: true,
       },
       nft: {
@@ -94,10 +94,8 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://finder.terra.money/testnet/validator",
-      proposal: "https://station.terra.money/proposal/pisco-1",
+    extra: {
+      singleStakingDenom: "uluna",
     },
-    extra: {},
   },
 };

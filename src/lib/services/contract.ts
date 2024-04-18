@@ -15,7 +15,7 @@ import {
   zPublicContractInfo,
   zUtcDate,
 } from "lib/types";
-import { encode, parseTxHash, snakeToCamel } from "lib/utils";
+import { encode, parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 
 export interface ContractCw2Info {
   contract: string;
@@ -58,7 +58,7 @@ export const queryContract = async (
   contractAddress: BechAddr32
 ) =>
   axios(`${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`).then(
-    ({ data }) => zContractRest.parse(data)
+    ({ data }) => parseWithError(zContractRest, data)
   );
 
 const zContractsResponseItem = z
@@ -101,7 +101,7 @@ export const getContracts = async (
         offset,
       },
     })
-    .then(({ data }) => zContractsResponse.parse(data));
+    .then(({ data }) => parseWithError(zContractsResponse, data));
 
 export const getInstantiatedContractsByAddress = async (
   endpoint: string,
@@ -119,7 +119,7 @@ export const getInstantiatedContractsByAddress = async (
         },
       }
     )
-    .then(({ data }) => zContractsResponse.parse(data));
+    .then(({ data }) => parseWithError(zContractsResponse, data));
 
 export const getAdminContractsByAddress = async (
   endpoint: string,
@@ -134,7 +134,7 @@ export const getAdminContractsByAddress = async (
         offset,
       },
     })
-    .then(({ data }) => zContractsResponse.parse(data));
+    .then(({ data }) => parseWithError(zContractsResponse, data));
 
 export const zContract = z
   .object({
@@ -182,7 +182,7 @@ export const getContractDataByContractAddress = async (
         is_gov: isGov,
       },
     })
-    .then(({ data }) => zContractData.parse(data));
+    .then(({ data }) => parseWithError(zContractData, data));
 
 const zContractTableCounts = z
   .object({
@@ -204,7 +204,7 @@ export const getContractTableCounts = async (
         is_gov: isGov,
       },
     })
-    .then(({ data }) => zContractTableCounts.parse(data));
+    .then(({ data }) => parseWithError(zContractTableCounts, data));
 
 const zMigrationHistoriesResponseItem = z
   .object({
@@ -248,7 +248,7 @@ export const getMigrationHistoriesByContractAddress = async (
         offset,
       },
     })
-    .then(({ data }) => zMigrationHistoriesResponse.parse(data));
+    .then(({ data }) => parseWithError(zMigrationHistoriesResponse, data));
 
 const zContractQueryMsgs = z
   .object({
@@ -264,4 +264,19 @@ export const getContractQueryMsgs = async (
 ) =>
   axios
     .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
-    .then(({ data }) => zContractQueryMsgs.parse(data));
+    .then(({ data }) => parseWithError(zContractQueryMsgs, data));
+
+export const getContractsByCodeId = async (
+  endpoint: string,
+  codeId: number,
+  limit: number,
+  offset: number
+): Promise<ContractsResponse> =>
+  axios
+    .get(`${endpoint}/${codeId}/contracts`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => parseWithError(zContractsResponse, data));

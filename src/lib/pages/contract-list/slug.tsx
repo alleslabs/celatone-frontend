@@ -1,7 +1,8 @@
 import {
+  Badge,
+  Button,
   Flex,
   Heading,
-  Button,
   Menu,
   MenuButton,
   MenuList,
@@ -21,6 +22,7 @@ import {
 } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { ContractListDetail } from "lib/components/select-contract";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
@@ -97,10 +99,22 @@ const ContractsByList = observer(() => {
         mt={2}
         gap={5}
       >
-        <Heading as="h5" variant="h5" className="ellipsis">
-          {contractListInfo.name}
-        </Heading>
-        <Flex gap={2}>
+        <Flex align="center">
+          <Heading as="h5" variant="h5">
+            {contractListInfo.name}
+          </Heading>
+          <Badge variant="primary" ml={2}>
+            {contractListInfo.contracts.length}
+          </Badge>
+        </Flex>
+        <Flex gap={isInstantiatedByMe ? 4 : 2} align="center">
+          {isInstantiatedByMe && (
+            <UserDocsLink
+              isDevTool
+              isButton
+              href="cosmwasm/contracts/organize#saving-contract-for-later-use"
+            />
+          )}
           {isInstantiatedByMe ? (
             <Button
               leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
@@ -159,6 +173,14 @@ const ContractsByList = observer(() => {
         isLoading={isInstantiatedByMe ? isLoading : false}
         onContractSelect={onContractSelect}
       />
+      {!isInstantiatedByMe && (
+        <UserDocsLink
+          isDevTool
+          title="How to organize and save contracts?"
+          cta="Read more about Saved Contracts"
+          href="cosmwasm/contracts/organize#saving-contract-for-later-use"
+        />
+      )}
     </PageContainer>
   );
 });

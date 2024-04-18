@@ -1,16 +1,8 @@
-import {
-  Flex,
-  Text,
-  Grid,
-  useDisclosure,
-  Tag,
-  Box,
-  Badge,
-} from "@chakra-ui/react";
+import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableRow } from "../tableComponents";
-import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
+import { ActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { Transaction } from "lib/types";
@@ -78,27 +70,13 @@ export const TransactionsTableRow = ({
           )}
         </TableRow>
         <TableRow>
-          <Flex gap={1} flexWrap="wrap" align="center">
-            <RenderActionMessages transaction={transaction} />
-            {transaction.isIbc && (
-              <Tag variant="accent-dark" size="sm">
-                IBC
-              </Tag>
-            )}
-            {transaction.isOpinit && (
-              <Tag variant="teal" size="sm">
-                OPInit
-              </Tag>
-            )}
-          </Flex>
+          <ActionMessages transaction={transaction} />
         </TableRow>
-
         {showRelations && (
           <TableRow>
             <RelationChip isSigner={transaction.isSigner} />
           </TableRow>
         )}
-
         <TableRow>
           <ExplorerLink
             value={transaction.sender}
@@ -106,7 +84,6 @@ export const TransactionsTableRow = ({
             showCopyOnHover
           />
         </TableRow>
-
         {showTimestamp && (
           <TableRow>
             <Flex direction="column" gap={1}>
@@ -117,7 +94,6 @@ export const TransactionsTableRow = ({
             </Flex>
           </TableRow>
         )}
-
         {showAction && (
           <TableRow>
             <FurtherActionButton transaction={transaction} />

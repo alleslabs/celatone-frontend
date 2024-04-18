@@ -6,9 +6,9 @@ import { useForm, useFormState } from "react-hook-form";
 
 import { AmpEvent, trackActionWithFunds } from "lib/amplitude";
 import {
-  useFabricateFee,
-  useExecuteContractTx,
   useCurrentChain,
+  useExecuteContractTx,
+  useFabricateFee,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";

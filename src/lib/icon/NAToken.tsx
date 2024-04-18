@@ -1,16 +1,10 @@
+import { Icon } from "@chakra-ui/react";
+import type { IconProps } from "@chakra-ui/react";
+
 import { CURR_THEME } from "env";
 
-interface NATokenProps {
-  size?: string;
-}
-export const NAToken = ({ size = "20" }: NATokenProps) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 40 40"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+export const NAToken = (props: IconProps) => (
+  <Icon viewBox="0 0 40 40" {...props}>
     <g clipPath="url(#clip0_45_8268)">
       <path
         d="M20 40C31.0457 40 40 31.0457 40 20C40 8.9543 31.0457 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40Z"
@@ -26,5 +20,5 @@ export const NAToken = ({ size = "20" }: NATokenProps) => (
         <rect width="100%" height="100%" fill="white" />
       </clipPath>
     </defs>
-  </svg>
+  </Icon>
 );

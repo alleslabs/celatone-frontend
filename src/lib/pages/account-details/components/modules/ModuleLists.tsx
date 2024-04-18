@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
-import { type IndexedModule } from "lib/services/move/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import type { BechAddr, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";

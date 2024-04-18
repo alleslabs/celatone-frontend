@@ -1,12 +1,13 @@
 import {
+  Button,
   chakra,
   Flex,
   Heading,
   IconButton,
   Text,
-  Button,
 } from "@chakra-ui/react";
 
+import { trackUseViewJSON } from "lib/amplitude";
 import { useBaseApiRoute } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
@@ -31,10 +32,13 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
   const lcdEndpoint = useBaseApiRoute("rest");
 
-  const openLcdPage = () =>
+  const openLcdPage = () => {
+    trackUseViewJSON("Block Details");
     openNewTab(
       `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
     );
+  };
+
   const disablePrevious = block <= 1;
   return (
     <Flex

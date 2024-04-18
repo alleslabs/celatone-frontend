@@ -13,3 +13,13 @@ export const formatTokenWithValue = (
     false,
     decimalPoints
   )} ${getTokenLabel(token.denom, token.symbol)}`;
+
+export const formatTokenWithValueList = (tokens: TokenWithValue[]) => {
+  if (tokens.length <= 2)
+    return tokens.map((token) => formatTokenWithValue(token, 2)).join(" and ");
+
+  return `${tokens
+    .slice(0, -1)
+    .map((token) => formatTokenWithValue(token, 2))
+    .join(", ")}, and ${formatTokenWithValue(tokens[tokens.length - 1], 2)}`;
+};

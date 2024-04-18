@@ -1,4 +1,4 @@
-import { useToast, Text } from "@chakra-ui/react";
+import { Text, useToast } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";

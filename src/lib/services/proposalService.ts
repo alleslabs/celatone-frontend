@@ -1,7 +1,7 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { Coin } from "@cosmjs/amino";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import type { Big } from "big.js";
-import big from "big.js";
+import type Big from "big.js";
 import { useCallback } from "react";
 
 import {
@@ -10,22 +10,25 @@ import {
   useCelatoneApp,
 } from "lib/app-provider";
 import {
-  getProposalTypes,
   getRelatedProposalsByModuleIdPagination,
   getRelatedProposalsCountByModuleId,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
+import { big } from "lib/types";
 import type {
-  Option,
-  ProposalStatus,
-  ProposalType,
-  Proposal,
-  U,
-  Token,
-  Nullish,
-  BechAddr32,
   BechAddr,
   BechAddr20,
+  BechAddr32,
+  Nullish,
+  Option,
+  Proposal,
+  ProposalParams,
+  ProposalStatus,
+  ProposalType,
+  ProposalVotesInfo,
+  ProposalVoteType,
+  Token,
+  U,
 } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -39,18 +42,29 @@ import { useAssetInfos } from "./assetService";
 import { useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
+  ProposalAnswerCountsResponse,
+  ProposalDataResponse,
   ProposalsResponse,
+  ProposalValidatorVotesResponse,
+  ProposalVotesResponse,
   RelatedProposalsResponse,
   UploadAccess,
   VotingParamsInternal,
 } from "./proposal";
 import {
-  fetchGovVotingParams,
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
-  getProposalsByAddress,
-  getRelatedProposalsByContractAddress,
+  fetchGovVotingParams,
+  getProposalAnswerCounts,
+  getProposalData,
+  getProposalParams,
   getProposals,
+  getProposalsByAddress,
+  getProposalTypes,
+  getProposalValidatorVotes,
+  getProposalVotes,
+  getProposalVotesInfo,
+  getRelatedProposalsByContractAddress,
 } from "./proposal";
 
 export const useProposals = (
@@ -85,6 +99,24 @@ export const useProposals = (
         types,
         trimmedSearch
       ),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalParams = () => {
+  const endpoint = useBaseApiRoute("proposals");
+  return useQuery<ProposalParams<Coin>>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
+    async () => getProposalParams(endpoint),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalTypes = () => {
+  const endpoint = useBaseApiRoute("proposals");
+  return useQuery<ProposalType[]>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
+    async () => getProposalTypes(endpoint),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -154,13 +186,14 @@ export const useRelatedProposalsByModuleIdPagination = (
       })
       .then(({ module_proposals }) =>
         module_proposals.map<Proposal>((proposal) => ({
-          proposalId: proposal.proposal_id,
+          id: proposal.proposal_id,
           title: proposal.proposal.title,
           status: proposal.proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.proposal.resolved_height ?? null,
-          type: proposal.proposal.type as ProposalType,
+          // TODO: fix
+          types: [proposal.proposal.type as ProposalType],
           proposer: proposal.proposal.account?.address as BechAddr,
           isExpedited: Boolean(proposal.proposal.is_expedited),
         }))
@@ -209,23 +242,6 @@ export const useRelatedProposalsCountByModuleId = (
     {
       keepPreviousData: true,
     }
-  );
-};
-
-export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getProposalTypes)
-        .then(({ proposals }) =>
-          proposals.map((proposal) => proposal.type).sort()
-        ),
-    [indexerGraphClient]
-  );
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, indexerGraphClient],
-    queryFn
   );
 };
 
@@ -316,5 +332,92 @@ export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
     [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, cosmwasmEndpoint],
     () => fetchGovUploadAccessParams(cosmwasmEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalData = (id: number, enabled = true) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery<ProposalDataResponse>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
+    async () => getProposalData(endpoint, id),
+    { retry: 1, enabled }
+  );
+};
+
+export const useProposalVotesInfo = (id: number) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery<ProposalVotesInfo>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
+    async () => getProposalVotesInfo(endpoint, id),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalVotes = (
+  id: number,
+  limit: number,
+  offset: number,
+  answer: ProposalVoteType,
+  search: string,
+  options: Pick<UseQueryOptions<ProposalVotesResponse>, "onSuccess"> = {}
+): UseQueryResult<ProposalVotesResponse> => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSAL_VOTES,
+      endpoint,
+      id,
+      limit,
+      offset,
+      search,
+      answer,
+    ],
+    async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
+    { retry: 1, refetchOnWindowFocus: false, ...options }
+  );
+};
+
+export const useProposalValidatorVotes = (
+  id: number,
+  limit: number,
+  offset: number,
+  answer: ProposalVoteType,
+  search: string,
+  options: Pick<
+    UseQueryOptions<ProposalValidatorVotesResponse>,
+    "onSuccess"
+  > = {}
+) => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES,
+      endpoint,
+      id,
+      limit,
+      offset,
+      answer,
+      search,
+    ],
+    async () =>
+      getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
+    { retry: 1, refetchOnWindowFocus: false, ...options }
+  );
+};
+
+export const useProposalAnswerCounts = (
+  id: number,
+  validatorOnly = false
+): UseQueryResult<ProposalAnswerCountsResponse> => {
+  const endpoint = useBaseApiRoute("proposals");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id, validatorOnly],
+    async () => getProposalAnswerCounts(endpoint, id),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };

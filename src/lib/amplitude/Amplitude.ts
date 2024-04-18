@@ -1,4 +1,4 @@
-import { Identify, createInstance } from "@amplitude/analytics-browser";
+import { createInstance, Identify } from "@amplitude/analytics-browser";
 import type { BrowserClient } from "@amplitude/analytics-types";
 import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichment-browser";
 

@@ -11,12 +11,12 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import type { Big } from "big.js";
-import big from "big.js";
+import type Big from "big.js";
 
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
-import { TokenImageRender, TokenComposition } from "lib/components/token";
+import { TokenComposition, TokenImageRender } from "lib/components/token";
+import { big } from "lib/types";
 import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import {
   compareTokenWithValues,

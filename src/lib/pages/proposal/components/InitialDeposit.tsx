@@ -1,4 +1,4 @@
-import { Text, Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 import type { GovParams } from "lib/services/proposalService";
 import type { Option } from "lib/types";

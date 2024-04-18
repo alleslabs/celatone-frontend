@@ -1,7 +1,8 @@
 import { Flex, FormControl, Input, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import { useState } from "react";
-import { useController, type Control } from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { Control } from "react-hook-form";
 
 import type { AbiFormData } from "lib/types";
 

@@ -1,7 +1,7 @@
-import { Flex, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
@@ -9,14 +9,15 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import {
-  type IndexedModule,
-  useVerifyModule,
-  useModuleId,
   useAccountModules,
-  useModuleHistoriesCount,
   useModuleDetailsQuery,
+  useModuleHistoriesCount,
+  useModuleId,
+  useVerifyModule,
 } from "lib/services/move/moduleService";
+import type { IndexedModule } from "lib/services/move/moduleService";
 import { useRelatedProposalsCountByModuleId } from "lib/services/proposalService";
 import { useModuleTxsCount } from "lib/services/txService";
 import type { Addr } from "lib/types";
@@ -28,9 +29,9 @@ import {
   ModuleFunctions,
   ModuleInfo,
   ModuleStructs,
-  ModuleTop,
   ModuleTables,
   ModuleTablesTabIndex,
+  ModuleTop,
 } from "./components";
 import { TabIndex } from "./types";
 
@@ -223,6 +224,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 }}
               />
             </Flex>
+            <UserDocsLink
+              title="What is a move module?"
+              cta="Read more about Module"
+              href="move/modules/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
@@ -231,6 +237,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               fns={moduleData.parsedAbi.exposed_functions}
               viewFns={moduleData.viewFunctions}
               executeFns={moduleData.executeFunctions}
+            />
+            <UserDocsLink
+              title="What is Module functions?"
+              cta="Read more about View and Execute Functions"
+              href="move/modules/detail-page#functions"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -245,9 +256,19 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
               tab={tableTabIndex}
               setTab={setTableTabIndex}
             />
+            <UserDocsLink
+              title="What is Module Transaction?"
+              cta="Read more about transaction in module"
+              href="move/modules/detail-page#transactions-histories"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleStructs structs={moduleData.parsedAbi.structs} />
+            <UserDocsLink
+              title="What is Module Struct?"
+              cta="Read more about struct in module"
+              href="move/modules/detail-page#structs"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

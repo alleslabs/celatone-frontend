@@ -1,11 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormControl } from "@chakra-ui/react";
-import type { FieldTemplateProps } from "@rjsf/utils";
+import type {
+  FieldTemplateProps,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from "@rjsf/utils";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
 
-export default function FieldTemplate<T = any, F = any>(
-  props: FieldTemplateProps<T, F>
-) {
+/** The `FieldTemplate` component is the template used by `SchemaField` to render any field. It renders the field
+ * content, (label, description, children, errors and help) inside of a `WrapIfAdditional` component.
+ *
+ * @param props - The `FieldTemplateProps` for this component
+ */
+export default function FieldTemplate<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: FieldTemplateProps<T, S, F>) {
   const {
     id,
     children,
@@ -24,16 +36,17 @@ export default function FieldTemplate<T = any, F = any>(
     schema,
     uiSchema,
   } = props;
-  const uiOptions = getUiOptions<T, F>(uiSchema);
+  const uiOptions = getUiOptions(uiSchema);
   const WrapIfAdditionalTemplate = getTemplate<
     "WrapIfAdditionalTemplate",
     T,
+    S,
     F
   >("WrapIfAdditionalTemplate", registry, uiOptions);
-
-  return hidden ? (
-    <div style={{ display: "none" }}>{children}</div>
-  ) : (
+  if (hidden) {
+    return <div style={{ display: "none" }}>{children}</div>;
+  }
+  return (
     <WrapIfAdditionalTemplate
       classNames={classNames}
       disabled={disabled}

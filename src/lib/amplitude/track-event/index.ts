@@ -1,5 +1,5 @@
 import { amp } from "../Amplitude";
-import type { AmpEvent, ActionAmpEvent, SpecialAmpEvent } from "../types";
+import type { ActionAmpEvent, AmpEvent, SpecialAmpEvent } from "../types";
 
 export const track = (
   event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>,

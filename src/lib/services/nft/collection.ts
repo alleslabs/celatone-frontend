@@ -8,14 +8,14 @@ import {
   getCollectionCreatorQuery,
   getCollectionMutateEventsCountQuery,
   getCollectionMutateEventsQuery,
-  getCollectionTotalBurnedCountQuery,
-  getCollectionUniqueHoldersCountQuery,
   getCollectionsByAccountQuery,
   getCollectionsQuery,
+  getCollectionTotalBurnedCountQuery,
+  getCollectionUniqueHoldersCountQuery,
 } from "lib/query";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import { parseTxHash, parseWithError } from "lib/utils";
 
 const zCollection = z
   .object({
@@ -58,7 +58,7 @@ export const getCollections = async (
       query: getCollectionsQuery,
       variables: { offset, pageSize, search },
     })
-    .then(({ data: res }) => zCollectionsResponse.parse(res.data));
+    .then(({ data: res }) => parseWithError(zCollectionsResponse, res.data));
 
 const zCollectionByCollectionAddressResponse = z.object({
   data: z
@@ -102,7 +102,7 @@ export const getCollectionByCollectionAddress = async (
       variables: { vmAddress: collectionAddress },
     })
     .then(({ data: res }) =>
-      zCollectionByCollectionAddressResponse.parse({
+      parseWithError(zCollectionByCollectionAddressResponse, {
         data: res.data.collections[0],
       })
     );
@@ -122,7 +122,7 @@ export const getCollectionTotalBurnedCount = async (
       query: getCollectionTotalBurnedCountQuery,
       variables: { vmAddress: collectionAddress },
     })
-    .then(({ data }) => zTotalBurnedResponse.parse(data.data));
+    .then(({ data }) => parseWithError(zTotalBurnedResponse, data.data));
 
 const zCollectionCreatorResponse = z
   .object({
@@ -165,7 +165,9 @@ export const getCollectionCreator = async (
       query: getCollectionCreatorQuery,
       variables: { vmAddress: collectionAddress },
     })
-    .then(({ data: res }) => zCollectionCreatorResponse.parse(res.data));
+    .then(({ data: res }) =>
+      parseWithError(zCollectionCreatorResponse, res.data)
+    );
 
 const zActivity = z
   .object({
@@ -213,7 +215,7 @@ export const getCollectionActivities = async (
       },
     })
     .then(({ data: res }) =>
-      zActivity.array().parse(res.data.collection_transactions)
+      parseWithError(zActivity.array(), res.data.collection_transactions)
     );
 };
 
@@ -236,7 +238,7 @@ export const getCollectionActivitiesCount = async (
       query: getCollectionActivitiesCountQuery,
       variables: { vmAddress: collectionAddress },
     })
-    .then(({ data }) => zActivitiesCountResponse.parse(data.data));
+    .then(({ data }) => parseWithError(zActivitiesCountResponse, data.data));
 
 const zCollectionMutateEventsResponse = z
   .object({
@@ -270,9 +272,10 @@ export const getCollectionMutateEvents = async (
       },
     })
     .then(({ data: res }) =>
-      zCollectionMutateEventsResponse
-        .array()
-        .parse(res.data.collection_mutation_events)
+      parseWithError(
+        zCollectionMutateEventsResponse.array(),
+        res.data.collection_mutation_events
+      )
     );
 
 const zMutationEventsCountResponseItem = z
@@ -294,7 +297,9 @@ export const getCollectionMutateEventsCount = async (
       query: getCollectionMutateEventsCountQuery,
       variables: { vmAddress: collectionAddress },
     })
-    .then(({ data }) => zMutationEventsCountResponseItem.parse(data.data));
+    .then(({ data }) =>
+      parseWithError(zMutationEventsCountResponseItem, data.data)
+    );
 
 const zUniqueHoldersCountResponseItem = z
   .object({
@@ -313,7 +318,9 @@ export const getCollectionUniqueHoldersCount = async (
       query: getCollectionUniqueHoldersCountQuery,
       variables: { vmAddress: collectionAddress },
     })
-    .then(({ data }) => zUniqueHoldersCountResponseItem.parse(data.data));
+    .then(({ data }) =>
+      parseWithError(zUniqueHoldersCountResponseItem, data.data)
+    );
 
 const zCollectionsByAccountResponse = z
   .object({
@@ -343,7 +350,8 @@ export const getCollectionsByAccount = async (
       variables: { accountAddress },
     })
     .then(({ data: res }) =>
-      zCollectionsByAccountResponse
-        .parse(res.data.collections)
-        .filter((collection) => collection.hold > 0)
+      parseWithError(
+        zCollectionsByAccountResponse,
+        res.data.collections
+      ).filter((collection) => collection.hold > 0)
     );

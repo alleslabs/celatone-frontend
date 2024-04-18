@@ -15,7 +15,7 @@ import {
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import type { RJSFValidationError } from "@rjsf/utils";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
 import { AmpEvent, trackActionWithFunds } from "lib/amplitude";

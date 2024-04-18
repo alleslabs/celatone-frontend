@@ -1,4 +1,4 @@
-import type { Chain, AssetList } from "@chain-registry/types";
+import type { AssetList, Chain } from "@chain-registry/types";
 
 export const localosmosis: Chain = {
   $schema: "../chain.schema.json",

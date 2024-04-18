@@ -1,6 +1,6 @@
-import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
+import { Flex, Heading, Switch, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
@@ -17,13 +17,14 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
 import { useProposals } from "lib/services/proposalService";
 import type {
   BechAddr20,
+  Option,
   ProposalStatus,
   ProposalType,
-  Option,
 } from "lib/types";
 
 import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
@@ -80,13 +81,33 @@ const Proposals = () => {
     setSearch("");
   }, [currentChainId, address]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+    setPageSize(10);
+  }, [
+    proposer,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(statuses),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(types),
+    debouncedSearch,
+    setCurrentPage,
+    setPageSize,
+  ]);
+
   return (
     <PageContainer>
       <Flex justify="space-between" alignItems="center">
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        {!isMobile && <NewProposalButton />}
+        <Flex gap={4} align="center">
+          <UserDocsLink
+            href="introduction/overview#recent-proposals"
+            isButton
+          />
+          {!isMobile && <NewProposalButton />}
+        </Flex>
       </Flex>
       <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
         <Flex justify="space-between" align="center">
@@ -99,40 +120,38 @@ const Proposals = () => {
           />
           {!isMobile && (
             <Tooltip
-              isDisabled={!!address}
               label="You need to connect your wallet to see your proposals"
               maxW="240px"
               textAlign="center"
+              hidden={!!address}
             >
-              <div>
-                <Switch
-                  alignItems="center"
-                  justifyContent="center"
-                  h="fit-content"
-                  minW="200px"
-                  display="flex"
-                  size="md"
-                  isChecked={!!proposer}
-                  disabled={!address}
-                  onChange={(e) => {
-                    if (e.target.checked && address) {
-                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                        toggle: "on",
-                      });
-                      setProposer(address);
-                    } else {
-                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                        toggle: "off",
-                      });
-                      setProposer(undefined);
-                    }
-                  }}
-                >
-                  <Text cursor={address ? "pointer" : "default"}>
-                    My Proposals
-                  </Text>
-                </Switch>
-              </div>
+              <Switch
+                alignItems="center"
+                justifyContent="center"
+                h="fit-content"
+                minW="200px"
+                display="flex"
+                size="md"
+                isChecked={!!proposer}
+                disabled={!address}
+                onChange={(e) => {
+                  if (e.target.checked && address) {
+                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "on",
+                    });
+                    setProposer(address);
+                  } else {
+                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "off",
+                    });
+                    setProposer(undefined);
+                  }
+                }}
+              >
+                <Text cursor={address ? "pointer" : "default"}>
+                  My Proposals
+                </Text>
+              </Switch>
             </Tooltip>
           )}
         </Flex>

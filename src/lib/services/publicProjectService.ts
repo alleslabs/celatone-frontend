@@ -11,15 +11,15 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import type {
-  PublicContract,
   Option,
+  PublicCode,
+  PublicContract,
   PublicInfo,
+  PublicModule,
   PublicProjectInfo,
+  RawPublicCode,
   RawPublicContract,
   RawPublicProjectInfo,
-  PublicCode,
-  RawPublicCode,
-  PublicModule,
 } from "lib/types";
 import { isId } from "lib/utils";
 
@@ -92,7 +92,7 @@ export const usePublicProjectBySlug = (
 export const usePublicProjectByCodeId = (
   codeId: string
 ): UseQueryResult<PublicCode> => {
-  const projectsApiRoute = useBaseApiRoute("codes");
+  const projectsApiRoute = useBaseApiRoute("public_codes");
   const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
 

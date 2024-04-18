@@ -13,16 +13,16 @@ import type {
   CollectionsResponse,
 } from "./collection";
 import {
-  getCollectionMutateEvents,
-  getCollectionByCollectionAddress,
-  getCollectionTotalBurnedCount,
-  getCollectionCreator,
-  getCollectionActivitiesCount,
   getCollectionActivities,
+  getCollectionActivitiesCount,
+  getCollectionByCollectionAddress,
+  getCollectionCreator,
+  getCollectionMutateEvents,
   getCollectionMutateEventsCount,
-  getCollectionUniqueHoldersCount,
-  getCollectionsByAccount,
   getCollections,
+  getCollectionsByAccount,
+  getCollectionTotalBurnedCount,
+  getCollectionUniqueHoldersCount,
 } from "./collection";
 
 export const useCollections = (

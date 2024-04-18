@@ -1,28 +1,28 @@
 import type { InputProps, LayoutProps } from "@chakra-ui/react";
 import {
+  Box,
+  Flex,
   FormControl,
   FormHelperText,
-  Box,
   FormLabel,
-  Tag,
-  Flex,
   Input,
   List,
   ListItem,
+  Tag,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
-import { useMemo, useState, useRef, forwardRef } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { useInitia, useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import {
   DEFAULT_BASE_TX_FILTERS,
+  DEFAULT_INITIA_TX_FILTERS,
   DEFAULT_MOVE_TX_FILTERS,
   DEFAULT_WASM_TX_FILTERS,
-  DEFAULT_INITIA_TX_FILTERS,
 } from "lib/data";
 import { displayActionValue, mergeRefs } from "lib/utils";
 

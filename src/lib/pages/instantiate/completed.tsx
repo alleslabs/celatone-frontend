@@ -1,4 +1,4 @@
-import { Flex, Heading, Button } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";

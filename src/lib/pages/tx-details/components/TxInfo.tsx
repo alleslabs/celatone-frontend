@@ -1,8 +1,9 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Text, chakra, Flex } from "@chakra-ui/react";
+import { chakra, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move";
 import type { TxData } from "lib/services/txService";
@@ -74,6 +75,11 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
           </Text>
         )}
       </LabelText>
+      <UserDocsLink
+        cta="Read more about Txs"
+        href="general/transactions/detail-page"
+        mt={0}
+      />
     </Container>
   );
 };

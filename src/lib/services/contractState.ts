@@ -3,7 +3,12 @@ import { z } from "zod";
 
 import type { BechAddr32, ContractState } from "lib/types";
 import { zPagination } from "lib/types/rest";
-import { libDecode, parseJsonStr, parseStateKey } from "lib/utils";
+import {
+  libDecode,
+  parseJsonStr,
+  parseStateKey,
+  parseWithError,
+} from "lib/utils";
 
 const zResponseContractState = z.object({
   key: z.string(),
@@ -28,7 +33,7 @@ export const getContractStates = async (
         pagination_key: paginationKey,
       },
     })
-    .then(({ data }) => zResponseContractStates.parse(data));
+    .then(({ data }) => parseWithError(zResponseContractStates, data));
 
   const parsedStates = states.models.map<ContractState>((model) => ({
     rawKey: model.key,

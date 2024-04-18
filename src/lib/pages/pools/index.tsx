@@ -1,12 +1,21 @@
-import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { AmpEvent, trackUseTab, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { usePoolConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import { PoolType } from "lib/types";
 
@@ -55,8 +64,8 @@ export const PoolIndex = () => {
 
   useEffect(() => {
     if (
-      supportedPoolCount &&
-      unsupportedPoolCount &&
+      !isUndefined(supportedPoolCount) &&
+      !isUndefined(unsupportedPoolCount) &&
       supportedPoolCount === 0 &&
       unsupportedPoolCount > 0
     ) {
@@ -64,23 +73,34 @@ export const PoolIndex = () => {
     }
   }, [handleTabChange, supportedPoolCount, unsupportedPoolCount]);
 
-  if (isLoadingSupported || isLoadingUnsupported) return <LoadingOverlay />;
   return (
     <PageContainer>
-      <Heading variant="h5" as="h5">
-        Osmosis Pools
-      </Heading>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Flex direction="column">
+          <Heading variant="h5" as="h5" minH="36px">
+            Osmosis Pools
+          </Heading>
+          <Text variant="body2" color="text.dark" fontWeight="500">
+            This page displays liquidity pools on this network sorted by recency
+          </Text>
+        </Flex>
+        <UserDocsLink href="osmosis/pool-list" isButton />
+      </Flex>
       <Tabs index={Object.values(TabIndex).indexOf(tabIndex)}>
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={supportedPoolCount ?? 0}
             onClick={() => handleTabChange(TabIndex.Supported)}
+            isLoading={isLoadingSupported}
+            isDisabled={!supportedPoolCount}
           >
             Pools
           </CustomTab>
           <CustomTab
             count={unsupportedPoolCount ?? 0}
             onClick={() => handleTabChange(TabIndex.Unsupported)}
+            isLoading={isLoadingUnsupported}
+            isDisabled={!unsupportedPoolCount}
           >
             Pools with unsupported tokens
           </CustomTab>

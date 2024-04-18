@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import type { AssetInfo } from "lib/types";
 import { zAssetInfo } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 export const getAssetInfos = async (
   endpoint: string,
@@ -14,4 +15,4 @@ export const getAssetInfos = async (
         with_prices: withPrices,
       },
     })
-    .then(({ data }) => z.array(zAssetInfo).parse(data));
+    .then(({ data }) => parseWithError(z.array(zAssetInfo), data));

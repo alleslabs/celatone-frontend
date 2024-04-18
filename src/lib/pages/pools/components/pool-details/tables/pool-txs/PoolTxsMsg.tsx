@@ -1,4 +1,4 @@
-import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
+import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 
 import { trackUseExpand } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -47,6 +47,7 @@ export const PoolTxsMsg = ({
   const hasMsgDetails = transaction.success && message;
   return (
     <Box
+      className="copier-wrapper"
       w="full"
       minW="min-content"
       borderBottom="1px solid"
@@ -59,7 +60,6 @@ export const PoolTxsMsg = ({
       }}
     >
       <Grid
-        className="copier-wrapper"
         templateColumns={templateColumns}
         transition="all 0.25s ease-in-out"
         cursor="pointer"

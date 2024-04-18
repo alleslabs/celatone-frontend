@@ -1,7 +1,7 @@
 import { Flex, Tag } from "@chakra-ui/react";
 
 import { useCurrentChain } from "lib/app-provider";
-import type { PermissionAddresses, AccessConfigPermission } from "lib/types";
+import type { AccessConfigPermission, PermissionAddresses } from "lib/types";
 import { getPermissionHelper, resolvePermission } from "lib/utils";
 
 import { Tooltip } from "./Tooltip";

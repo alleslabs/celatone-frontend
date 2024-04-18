@@ -45,5 +45,11 @@ export const Heading: ComponentStyleConfig = {
       lineHeight: 1.2,
       letterSpacing: "0.15px",
     },
+    h7: {
+      fontSize: "16px",
+      fontWeight: 500,
+      lineHeight: 1.2,
+      letterSpacing: "0px",
+    },
   },
 };

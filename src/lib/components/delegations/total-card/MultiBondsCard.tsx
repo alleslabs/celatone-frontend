@@ -1,9 +1,9 @@
 import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
-import type { Big } from "big.js";
-import big from "big.js";
+import type Big from "big.js";
 import plur from "plur";
 
 import { CustomIcon } from "lib/components/icon";
+import { big } from "lib/types";
 import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 

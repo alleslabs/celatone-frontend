@@ -1,10 +1,10 @@
-import { ButtonGroup, Flex, Spacer, Box, Text } from "@chakra-ui/react";
+import { Box, ButtonGroup, Flex, Spacer, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { AmpEvent, trackActionQuery, track } from "lib/amplitude";
+import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -22,11 +22,11 @@ import { queryData } from "lib/services/contract";
 import { useContractQueryMsgs } from "lib/services/contractService";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
-  jsonPrettify,
-  jsonValidate,
-  jsonLineCount,
   encode,
   getCurrentDate,
+  jsonLineCount,
+  jsonPrettify,
+  jsonValidate,
 } from "lib/utils";
 
 const WasmCodeSnippet = dynamic(

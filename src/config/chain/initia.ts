@@ -37,6 +37,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         hideOpenProposal: true,
       },
       nft: {
@@ -50,10 +51,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "https://app.testnet.initia.xyz/validator",
-      proposal: "https://app.testnet.initia.xyz/proposal",
     },
     extra: {},
   },
@@ -100,12 +97,9 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator:
-        "https://lcd.minimove-2.initia.xyz/opinit/opchild/v1/validator",
-      proposal: "",
+    extra: {
+      isValidatorExternalLink: null,
     },
-    extra: { disableDelegation: true },
   },
   "miniwasm-2": {
     chain: "initia",
@@ -149,25 +143,21 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator:
-        "https://lcd.miniwasm-2.initia.xyz/opinit/opchild/v1/validator",
-      proposal: "",
+    extra: {
+      isValidatorExternalLink: null,
     },
-    extra: { disableDelegation: true },
   },
-  "stone-12-1": {
+  "tomcat-1": {
     chain: "initia",
-    registryChainName: "initiatestnet12-1",
-    prettyName: "Initia Testnet 12-1",
-    lcd: "https://next-stone-rest.initia.tech",
-    rpc: "https://next-stone-rpc.initia.tech:443",
-    indexer: "https://stone-12-1-nft-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "blackwingdevnet1",
+    prettyName: "Blackwing Closed Testnet 1",
+    lcd: "https://maze-rest-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
+    indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
-        enabled: true,
-        url: process.env.NEXT_PUBLIC_INITIA_TESTNET_FAUCET_URL ?? "",
+        enabled: false,
       },
       wasm: {
         enabled: false,
@@ -176,7 +166,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
         decodeApi: INITIA_DECODER,
-        verify: "https://stone-compiler.initia.tech/contracts/verify",
+        verify: "",
       },
       pool: {
         enabled: false,
@@ -185,8 +175,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       gov: {
-        enabled: true,
-        hideOpenProposal: true,
+        enabled: false,
       },
       nft: {
         enabled: true,
@@ -195,16 +184,15 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     gas: {
       gasPrice: {
         tokenPerGas: 0.151,
-        denom: "uinit",
+        denom:
+          "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://next.app.initia.tech/validator",
-      proposal: "https://next.app.initia.tech/proposal",
+    extra: {
+      isValidatorExternalLink: null,
     },
-    extra: {},
   },
   "stone-13": {
     chain: "initia",
@@ -236,6 +224,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
         hideOpenProposal: true,
       },
       nft: {
@@ -249,10 +238,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    explorerLink: {
-      validator: "https://app.stone-13.initia.xyz/validator",
-      proposal: "https://app.stone-13.initia.xyz/proposal",
     },
     extra: {},
   },

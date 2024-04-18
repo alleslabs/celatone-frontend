@@ -7,21 +7,22 @@ import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
 import type {
-  Transaction,
-  Option,
-  Fee,
-  TxFilters,
-  HexAddr,
   BechAddr,
+  Fee,
+  HexAddr,
+  Option,
+  Transaction,
+  TxFilters,
 } from "lib/types";
-import { MsgFurtherAction, zUtcDate, zBechAddr } from "lib/types";
+import { MsgFurtherAction, zBechAddr, zUtcDate } from "lib/types";
 import {
+  camelToSnake,
   getActionMsgType,
+  getMsgFurtherAction,
   parseDateOpt,
   parseTxHash,
+  parseWithError,
   snakeToCamel,
-  camelToSnake,
-  getMsgFurtherAction,
 } from "lib/utils";
 
 // ----------------------------------------
@@ -179,7 +180,7 @@ export const getTxs = async (
         is_initia: isInitia,
       },
     })
-    .then(({ data }) => zTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zTxsResponse, data));
 
 const zAccountTxsResponseItem = zBaseTxsResponseItem
   .extend({
@@ -259,7 +260,7 @@ export const getTxsByAddress = async (
         ...(search !== undefined && { search }),
       },
     })
-    .then(({ data }) => zAccountTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zAccountTxsResponse, data));
 };
 
 const zBlockTxsResponse = z.object({
@@ -287,7 +288,7 @@ export const getTxsByBlockHeight = async (
         is_initia: isInitia,
       },
     })
-    .then(({ data }) => zBlockTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zBlockTxsResponse, data));
 
 const zModuleTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
@@ -317,7 +318,7 @@ export const getTxsByModule = async (
         },
       }
     )
-    .then(({ data }) => zModuleTxsResponse.parse(data));
+    .then(({ data }) => parseWithError(zModuleTxsResponse, data));
 
 const zTxsCountResponse = z
   .object({
@@ -344,5 +345,5 @@ export const getTxsCountByAddress = async (
         ...(search !== undefined && { search }),
       },
     })
-    .then(({ data }) => zTxsCountResponse.parse(data));
+    .then(({ data }) => parseWithError(zTxsCountResponse, data));
 };

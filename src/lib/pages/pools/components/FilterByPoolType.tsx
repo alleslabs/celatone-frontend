@@ -2,9 +2,9 @@ import { Grid } from "@chakra-ui/react";
 
 import {
   BALANCER_ICON,
+  CLP_ICON,
   COSMWASM_ICON,
   STABLESWAP_ICON,
-  CLP_ICON,
 } from "../constant";
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import { SelectInput } from "lib/components/forms";

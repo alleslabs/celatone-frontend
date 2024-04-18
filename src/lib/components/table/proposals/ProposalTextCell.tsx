@@ -1,22 +1,26 @@
-import { Text, Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
+import { MobileLabel } from "../MobileLabel";
+import { useMobile } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
+import type { ProposalType } from "lib/types";
 
 interface ProposalTextCellProps {
   title: string;
-  type: string;
+  types: ProposalType[];
   isExpedited: boolean;
   isDepositOrVoting: boolean;
 }
 
 export const ProposalTextCell = ({
   title,
-  type,
+  types,
   isExpedited,
   isDepositOrVoting,
 }: ProposalTextCellProps) => {
+  const isMobile = useMobile();
   const [isHoverText, setIsHoverText] = useState(false);
   const titleRef = useRef<HTMLParagraphElement>(null);
   const typeRef = useRef<HTMLParagraphElement>(null);
@@ -28,12 +32,46 @@ export const ProposalTextCell = ({
       Number(typeRef.current?.scrollWidth) >
         Number(typeRef.current?.clientWidth));
 
+  if (isMobile)
+    return (
+      <Flex direction="column" gap={1}>
+        <MobileLabel label="Proposal Title" />
+        <Text color="text.main" variant="body2" wordBreak="break-word">
+          {title}
+          {isExpedited && (
+            <span
+              style={{
+                display: "inline-block",
+                marginLeft: "8px",
+                verticalAlign: "middle",
+              }}
+            >
+              <Expedited isActiveExpedited={isDepositOrVoting} />
+            </span>
+          )}
+        </Text>
+        {types.length ? (
+          types.map((msgType, index) => (
+            <Text
+              key={msgType + index.toString()}
+              variant="body3"
+              color="text.dark"
+              wordBreak="break-word"
+            >
+              {msgType}
+            </Text>
+          ))
+        ) : (
+          <Text variant="body3" color="text.dark">
+            (No message)
+          </Text>
+        )}
+      </Flex>
+    );
+
   return (
     <Flex
-      left={0}
-      h="80%"
       flexDirection="column"
-      position="absolute"
       justify="center"
       borderRadius="8px"
       bgColor={showName ? "gray.800" : "undefined"}
@@ -69,7 +107,18 @@ export const ProposalTextCell = ({
           maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
-          {type}
+          {types.length
+            ? types.map((msgType, index) => (
+                <span key={msgType + index.toString()}>
+                  {index > 0 && (
+                    <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+                      {" , "}
+                    </span>
+                  )}
+                  {msgType}
+                </span>
+              ))
+            : "(No message)"}
         </Text>
       </Flex>
     </Flex>

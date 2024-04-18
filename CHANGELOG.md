@@ -43,6 +43,142 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.6.0
+
+### Features
+
+- [#887](https://github.com/alleslabs/celatone-frontend/pull/887) Add blackwing devnet 1 network
+- [#880](https://github.com/alleslabs/celatone-frontend/pull/880) Add resolved voting power for proposals
+- [#878](https://github.com/alleslabs/celatone-frontend/pull/878) Support searching proposal id and validator address on the main search
+- [#875](https://github.com/alleslabs/celatone-frontend/pull/875) Add Amplitude tracking to validator details page
+- [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
+- [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
+- [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
+- [#853](https://github.com/alleslabs/celatone-frontend/pull/853) Add voted proposals in overview
+- [#847](https://github.com/alleslabs/celatone-frontend/pull/847) Add amp proposal details page
+- [#857](https://github.com/alleslabs/celatone-frontend/pull/857) Migrate osmosis-1 graphql
+- [#854](https://github.com/alleslabs/celatone-frontend/pull/854) Create PageHeaderContainer component
+- [#851](https://github.com/alleslabs/celatone-frontend/pull/851) Add amp validator list page
+- [#848](https://github.com/alleslabs/celatone-frontend/pull/848) Change Initia's config to use the new chain IDs (mahalo-2, minimove-2, miniwasm-2)
+- [#840](https://github.com/alleslabs/celatone-frontend/pull/840) Add chip total count in instantiated by me title
+- [#837](https://github.com/alleslabs/celatone-frontend/pull/837) Voting power in validator detail overview
+- [#836](https://github.com/alleslabs/celatone-frontend/pull/836) Add recent 100 blocks chart
+- [#833](https://github.com/alleslabs/celatone-frontend/pull/833) Add link to transactions page to current bonded token component
+- [#832](https://github.com/alleslabs/celatone-frontend/pull/832) Add bonded token changes delegation related transactions
+- [#831](https://github.com/alleslabs/celatone-frontend/pull/831) Update zod schema to apply with new validator delegation related txs api spec
+- [#828](https://github.com/alleslabs/celatone-frontend/pull/828) Add validator detail voting power overview section with data from APIs
+- [#835](https://github.com/alleslabs/celatone-frontend/pull/835) Add amp view in json - block and proposal details
+- [#823](https://github.com/alleslabs/celatone-frontend/pull/823) Add validator uptime and penalty events
+- [#822](https://github.com/alleslabs/celatone-frontend/pull/822) Add validator list page
+- [#819](https://github.com/alleslabs/celatone-frontend/pull/819) Add validator detail overview section with data from APIs
+- [#821](https://github.com/alleslabs/celatone-frontend/pull/821) Add Validator's proposed blocks table
+- [#818](https://github.com/alleslabs/celatone-frontend/pull/818) Replace bonded tokens voting powers with real data from api v1
+- [#801](https://github.com/alleslabs/celatone-frontend/pull/801) Add validator detail ui structure
+- [#817](https://github.com/alleslabs/celatone-frontend/pull/817) api v1 - validator voted proposals
+- [#816](https://github.com/alleslabs/celatone-frontend/pull/816) api v1 - validator staking provisions
+- [#815](https://github.com/alleslabs/celatone-frontend/pull/815) api v1 - validator delegators count
+- [#813](https://github.com/alleslabs/celatone-frontend/pull/813) api v1 - validator historical powers
+- [#812](https://github.com/alleslabs/celatone-frontend/pull/812) api v1 - validator delegation related txs, proposed blocks
+- [#807](https://github.com/alleslabs/celatone-frontend/pull/807) api v1 - validator uptime
+- [#804](https://github.com/alleslabs/celatone-frontend/pull/804) api v1 - validator info
+- [#803](https://github.com/alleslabs/celatone-frontend/pull/803) api v1 - validator list
+- [#799](https://github.com/alleslabs/celatone-frontend/pull/799) Add extra config single denom staking
+- [#796](https://github.com/alleslabs/celatone-frontend/pull/796) Depositors list in vote details section
+- [#793](https://github.com/alleslabs/celatone-frontend/pull/793) Proposal Validator Votes Table
+- [#788](https://github.com/alleslabs/celatone-frontend/pull/788) Add voting power chart component
+- [#790](https://github.com/alleslabs/celatone-frontend/pull/790) Handling period tab condition
+- [#787](https://github.com/alleslabs/celatone-frontend/pull/787) Vote result on vote details section
+- [#785](https://github.com/alleslabs/celatone-frontend/pull/785) Quorum status on vote details section
+- [#782](https://github.com/alleslabs/celatone-frontend/pull/782) Show proposal details on vote details section tabs
+- [#779](https://github.com/alleslabs/celatone-frontend/pull/779) Proposal period overview voting - no with veto alert
+- [#778](https://github.com/alleslabs/celatone-frontend/pull/778) Proposal period overview voting
+- [#775](https://github.com/alleslabs/celatone-frontend/pull/775) Proposal period overview deposit
+- [#777](https://github.com/alleslabs/celatone-frontend/pull/777) Proposal votes table including filter and search functionality
+- [#766](https://github.com/alleslabs/celatone-frontend/pull/766) Proposal status summary body
+- [#763](https://github.com/alleslabs/celatone-frontend/pull/763) Proposal status summary top
+- [#765](https://github.com/alleslabs/celatone-frontend/pull/765) Support Proposal Cancelled status
+- [#760](https://github.com/alleslabs/celatone-frontend/pull/760) Add proposal messages
+- [#764](https://github.com/alleslabs/celatone-frontend/pull/764) api v1 - proposal params
+- [#759](https://github.com/alleslabs/celatone-frontend/pull/759) Add proposal description and metadata
+- [#762](https://github.com/alleslabs/celatone-frontend/pull/762) api v1 - proposal validator votes info
+- [#745](https://github.com/alleslabs/celatone-frontend/pull/745) Add proposal top
+- [#758](https://github.com/alleslabs/celatone-frontend/pull/758) api v1 - proposal validator votes
+- [#757](https://github.com/alleslabs/celatone-frontend/pull/757) api v1 - proposal data
+- [#731](https://github.com/alleslabs/celatone-frontend/pull/731) Add proposal detail page structure
+- [#749](https://github.com/alleslabs/celatone-frontend/pull/749) Add multi-type proposals
+- [#753](https://github.com/alleslabs/celatone-frontend/pull/753) api v1 - proposal type filter
+
+### Improvements
+
+- [#888](https://github.com/alleslabs/celatone-frontend/pull/888) Apply timeout for delegator counts on validator detail
+- [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
+- [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
+- [#884](https://github.com/alleslabs/celatone-frontend/pull/884) Bump cosmjs tx parsing problem
+- [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
+- [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
+- [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
+- [#855](https://github.com/alleslabs/celatone-frontend/pull/855) Modify formatPrettyPercent param type to ratio number for better readability
+- [#843](https://github.com/alleslabs/celatone-frontend/pull/843) Add link to user document
+- [#845](https://github.com/alleslabs/celatone-frontend/pull/845) Edit error fetching message on the contract state
+- [#844](https://github.com/alleslabs/celatone-frontend/pull/844) Modify wording status for rejected proposals
+- [#841](https://github.com/alleslabs/celatone-frontend/pull/841) Bump cosmos-kit package fixing the installed wallet issue
+- [#830](https://github.com/alleslabs/celatone-frontend/pull/830) Change GraphQL neutron-1 endpoint to prod
+- [#825](https://github.com/alleslabs/celatone-frontend/pull/825) Change GraphQL pion-1 endpoint to prod
+- [#820](https://github.com/alleslabs/celatone-frontend/pull/820) Change GraphQL neutron endpoint to legacy
+- [#806](https://github.com/alleslabs/celatone-frontend/pull/806) UX Improvement - adjust txs icon, event logs layout and adjust asset section
+- [#805](https://github.com/alleslabs/celatone-frontend/pull/805) Revamp code detail page contracts section
+- [#802](https://github.com/alleslabs/celatone-frontend/pull/802) Revamp code detail page
+- [#800](https://github.com/alleslabs/celatone-frontend/pull/800) Add logging error in Zod parsing
+- [#798](https://github.com/alleslabs/celatone-frontend/pull/798) Add empty state to proposal messages
+- [#797](https://github.com/alleslabs/celatone-frontend/pull/797) Fix Vote Periods subtab internal state instead of route
+- [#784](https://github.com/alleslabs/celatone-frontend/pull/784) Make proposal list row clickable with command/ctrl
+- [#776](https://github.com/alleslabs/celatone-frontend/pull/776) Add expand/collapse all to proposal messages in detail page
+- [#781](https://github.com/alleslabs/celatone-frontend/pull/781) Tooltip default shouldWrap
+- [#774](https://github.com/alleslabs/celatone-frontend/pull/774) Add relevant contract to cosmwasm pool
+- [#771](https://github.com/alleslabs/celatone-frontend/pull/771) Adjust proposal detail
+- [#772](https://github.com/alleslabs/celatone-frontend/pull/772) Add zod validator to code details page code id params
+- [#770](https://github.com/alleslabs/celatone-frontend/pull/770) Add unit test for account store (mobx)
+- [#769](https://github.com/alleslabs/celatone-frontend/pull/769) Add unit test for format.test.ts on shortenName function
+- [#768](https://github.com/alleslabs/celatone-frontend/pull/768) Add unit test for truncate.test.ts
+- [#767](https://github.com/alleslabs/celatone-frontend/pull/767) Add unit test for fee.test.ts
+- [#756](https://github.com/alleslabs/celatone-frontend/pull/756) Redirect usei to homepage
+- [#750](https://github.com/alleslabs/celatone-frontend/pull/750) api v1 - recent codes list
+- [#752](https://github.com/alleslabs/celatone-frontend/pull/752) Support contract state's key as base64
+
+### Bug fixes
+
+- [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
+- [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
+- [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline
+- [#885](https://github.com/alleslabs/celatone-frontend/pull/885) Fix voted proposals freeze columns
+- [#881](https://github.com/alleslabs/celatone-frontend/pull/881) Fix abi option boolean problem
+- [#877](https://github.com/alleslabs/celatone-frontend/pull/877) Fix validator list/details bug bash
+- [#874](https://github.com/alleslabs/celatone-frontend/pull/874) Fix minor proposal and validator bugs
+- [#876](https://github.com/alleslabs/celatone-frontend/pull/876) Fix validator votes dropdown
+- [#873](https://github.com/alleslabs/celatone-frontend/pull/873) Fix bug bash select input and ui
+- [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
+- [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
+- [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
+- [#859](https://github.com/alleslabs/celatone-frontend/pull/859) Fix voting power chart display data
+- [#858](https://github.com/alleslabs/celatone-frontend/pull/858) Handle neutron and minitia validator links
+- [#852](https://github.com/alleslabs/celatone-frontend/pull/852) Show quorum only during the voting period since past total voting power is not available
+- [#849](https://github.com/alleslabs/celatone-frontend/pull/849) Fix validator list empty state and voting percent dividers
+- [#846](https://github.com/alleslabs/celatone-frontend/pull/846) Fix voting period status badge
+- [#838](https://github.com/alleslabs/celatone-frontend/pull/838) Fix validator list sorting on priority
+- [#839](https://github.com/alleslabs/celatone-frontend/pull/839) Disable contract delegations on non-gov chains
+- [#827](https://github.com/alleslabs/celatone-frontend/pull/827) Fix misc bugs - proposal msgs accordion, IBC tag, mobile tooltip
+- [#814](https://github.com/alleslabs/celatone-frontend/pull/814) Fix pool fallback icon incorrect size
+- [#811](https://github.com/alleslabs/celatone-frontend/pull/811) Fix pool asset cards not full
+- [#810](https://github.com/alleslabs/celatone-frontend/pull/810) Incorrect tooltip style on overview
+- [#792](https://github.com/alleslabs/celatone-frontend/pull/792) Expedited with network params
+- [#791](https://github.com/alleslabs/celatone-frontend/pull/791) Proposal view in json direct to the lcd information
+- [#789](https://github.com/alleslabs/celatone-frontend/pull/789) Remove loading overlay on pool list page causing the page look like flicking
+- [#783](https://github.com/alleslabs/celatone-frontend/pull/783) Fix link used for Osmosis Pool JSON To poolmanager
+- [#780](https://github.com/alleslabs/celatone-frontend/pull/780) Fix proposal vote table, scroll to top on table
+- [#761](https://github.com/alleslabs/celatone-frontend/pull/761) Fix copy button tooltip alignment
+- [#754](https://github.com/alleslabs/celatone-frontend/pull/754) Fix mobile guard incorrect behavior
+- [#751](https://github.com/alleslabs/celatone-frontend/pull/751) Fix fail txs should have no logs and remove stone-12-1
+
 ## v1.5.1
 
 ### Improvements
@@ -63,7 +199,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
 - [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract details
 - [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
-- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
+- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract details
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 - [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
 

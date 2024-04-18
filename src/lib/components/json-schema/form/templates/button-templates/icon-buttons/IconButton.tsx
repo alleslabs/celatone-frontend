@@ -1,34 +1,64 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { IconButtonProps } from "@rjsf/utils";
+import { TranslatableString } from "@rjsf/utils";
+import type {
+  FormContextType,
+  IconButtonProps,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from "@rjsf/utils";
 
 import { CustomIcon } from "lib/components/icon";
 
 import ChakraIconButton from "./ChakraIconButton";
 
-export function MoveDownButton<T = any, F = any>(props: IconButtonProps<T, F>) {
+export function MoveDownButton<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: IconButtonProps<T, S, F>) {
+  const {
+    registry: { translateString },
+  } = props;
   return (
-    <ChakraIconButton<T, F>
-      title="Move Down"
+    <ChakraIconButton<T, S, F>
+      title={translateString(TranslatableString.MoveDownButton)}
+      className="array-item-move-down"
       {...props}
       icon={<CustomIcon name="arrow-down" />}
     />
   );
 }
 
-export function MoveUpButton<T = any, F = any>(props: IconButtonProps<T, F>) {
+export function MoveUpButton<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: IconButtonProps<T, S, F>) {
+  const {
+    registry: { translateString },
+  } = props;
   return (
-    <ChakraIconButton<T, F>
-      title="Move Up"
+    <ChakraIconButton<T, S, F>
+      title={translateString(TranslatableString.MoveUpButton)}
+      className="array-item-move-up"
       {...props}
       icon={<CustomIcon name="arrow-up" />}
     />
   );
 }
 
-export function RemoveButton<T = any, F = any>(props: IconButtonProps<T, F>) {
+export function RemoveButton<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: IconButtonProps<T, S, F>) {
+  const {
+    registry: { translateString },
+  } = props;
   return (
-    <ChakraIconButton<T, F>
-      title="Remove"
+    <ChakraIconButton<T, S, F>
+      title={translateString(TranslatableString.RemoveButton)}
+      className="array-item-remove"
       {...props}
       icon={<CustomIcon name="delete" boxSize={3} />}
     />

@@ -1,6 +1,15 @@
+import type { Coin } from "@cosmjs/amino";
+import type Big from "big.js";
 import { z } from "zod";
 
-import type { BechAddr, Nullable, Option } from "lib/types";
+import type {
+  BechAddr,
+  Nullable,
+  Option,
+  Ratio,
+  TokenWithValue,
+  Validator,
+} from "lib/types";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",
@@ -58,13 +67,100 @@ export const zProposalType = z.union([
 export type ProposalType = z.infer<typeof zProposalType>;
 
 export interface Proposal {
-  proposalId: number;
+  id: number;
   title: string;
   status: ProposalStatus;
   votingEndTime: Nullable<Date>;
   depositEndTime: Date;
   resolvedHeight: Nullable<number>;
-  type: ProposalType;
+  types: ProposalType[];
   proposer: Option<BechAddr>;
   isExpedited: boolean;
+}
+
+export interface ProposalParams<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  minDeposit: T[];
+  minInitialDepositRatio: number;
+  maxDepositPeriod: string;
+  votingPeriod: string;
+  vetoThreshold: Ratio<number>;
+  quorum: Ratio<number>;
+  threshold: Ratio<number>;
+  // expedited
+  expeditedVotingPeriod?: string;
+  expeditedThreshold?: Ratio<number>;
+  expeditedMinDeposit?: T[];
+  expeditedQuorum?: Ratio<number>; // only in sei
+  // emergency - only in initia
+  emergencyMinDeposit?: T[];
+  emergencyTallyInterval?: string;
+}
+
+export interface ProposalDeposit<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  amount: T[];
+  depositor: BechAddr;
+  timestamp: Date;
+  txHash: string;
+}
+
+// TODO: combine with MsgBody in services/tx.ts
+interface Message {
+  "@type": string;
+  [key: string]: unknown;
+}
+
+export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
+  extends Proposal {
+  failedReason: string;
+  createdHeight: Nullable<number>;
+  createdTimestamp: Nullable<Date>;
+  createdTxHash: Nullable<string>;
+  description: string;
+  messages: Nullable<Message[]>;
+  metadata: string;
+  proposalDeposits: ProposalDeposit<T>[];
+  resolvedTimestamp: Nullable<Date>;
+  submitTime: Date;
+  totalDeposit: Nullable<T[]>;
+  version: string;
+  votingTime: Nullable<Date>;
+}
+
+export interface ProposalVotesInfo {
+  yes: Big;
+  abstain: Big;
+  no: Big;
+  noWithVeto: Big;
+  totalVotingPower: Nullable<Big>;
+}
+
+export interface ProposalVote {
+  proposalId: number;
+  abstain: number;
+  no: number;
+  noWithVeto: number;
+  yes: number;
+  isVoteWeighted: boolean;
+  validator: Nullable<Validator>;
+  voter: Nullable<BechAddr>;
+  timestamp: Nullable<Date>;
+  txHash: Nullable<string>;
+}
+
+export interface ProposalValidatorVote extends ProposalVote {
+  rank: number;
+}
+
+export enum ProposalVoteType {
+  ALL = "all",
+  YES = "yes",
+  NO = "no",
+  NO_WITH_VETO = "no_with_veto",
+  ABSTAIN = "abstain",
+  WEIGHTED = "weighted",
+  DID_NOT_VOTE = "did_not_vote", // only for validator votes
 }

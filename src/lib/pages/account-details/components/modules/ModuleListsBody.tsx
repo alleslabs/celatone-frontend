@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
-import { ErrorFetching, EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import type { BechAddr, Option } from "lib/types";
 

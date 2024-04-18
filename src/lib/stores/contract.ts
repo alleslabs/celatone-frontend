@@ -3,12 +3,12 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type {
-  LVPair,
-  Dict,
-  Option,
+  BechAddr,
   BechAddr20,
   BechAddr32,
-  BechAddr,
+  Dict,
+  LVPair,
+  Option,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 

@@ -1,12 +1,12 @@
 import {
-  Flex,
-  Heading,
-  Text,
-  Grid,
-  GridItem,
-  Button,
   Alert,
   AlertDescription,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
@@ -20,10 +20,10 @@ import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
   AmpEvent,
+  track,
   trackUseDepositFill,
   trackUseSubmitProposal,
   trackUseWhitelistedAddress,
-  track,
 } from "lib/amplitude";
 import {
   useCelatoneApp,

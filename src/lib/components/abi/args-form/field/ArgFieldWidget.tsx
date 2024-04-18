@@ -6,11 +6,11 @@ import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
 import type { BechAddr20, Nullable } from "lib/types";
 
 import {
-  UINT_TYPES,
-  STRING_TYPE,
-  OBJECT_TYPE,
-  FIXED_POINT_TYPES,
   DECIMAL_TYPES,
+  FIXED_POINT_TYPES,
+  OBJECT_TYPE,
+  STRING_TYPE,
+  UINT_TYPES,
 } from "./constants";
 
 const getInputPlaceholder = (
@@ -108,12 +108,14 @@ export const ArgFieldWidget = ({
             ...provided,
             color: state.isDisabled ? "gray.700" : undefined,
           }),
-          option: (provided, state) => ({
+          option: (provided) => ({
             ...provided,
             color: "text.main",
-            bg: state.isSelected ? "gray.800" : "gray.900",
             _hover: {
               bg: "gray.700",
+            },
+            _selected: {
+              bg: "gray.800",
             },
           }),
         }}

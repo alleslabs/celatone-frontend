@@ -9,13 +9,14 @@ import {
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import { zBechAddr32, type BechAddr, type Option } from "lib/types";
+import { zBechAddr32, zValidatorAddr } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 import {
-  isHexWalletAddress,
   isHexModuleAddress,
-  splitModule,
-  isPosDecimal,
+  isHexWalletAddress,
   isId,
+  isPosDecimal,
+  splitModule,
 } from "lib/utils";
 
 import { useBlockData } from "./blockService";
@@ -25,7 +26,9 @@ import { useAccountModules } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
+import { useProposalData } from "./proposalService";
 import { useTxData } from "./txService";
+import { useValidatorData } from "./validatorService";
 
 export type SearchResultType =
   | "Code ID"
@@ -35,6 +38,7 @@ export type SearchResultType =
   | "Proposal ID"
   | "Block"
   | "Pool ID"
+  | "Validator Address"
   | "Module Path";
 
 export interface ResultMetadata {
@@ -45,7 +49,6 @@ export interface ResultMetadata {
   };
 }
 
-// TODO: Add Proposal ID
 // eslint-disable-next-line complexity
 export const useSearchHandler = (
   keyword: string,
@@ -60,6 +63,7 @@ export const useSearchHandler = (
   const {
     chainConfig: {
       features: {
+        gov: { enabled: isGov },
         wasm: { enabled: isWasm },
         pool: { enabled: isPool },
         move: { enabled: isMove },
@@ -71,7 +75,7 @@ export const useSearchHandler = (
     chain: { bech32_prefix: bech32Prefix },
   } = useCurrentChain();
   const getAddressType = useGetAddressType();
-  const { isSomeValidAddress } = useValidateAddress();
+  const { isSomeValidAddress, validateValidatorAddress } = useValidateAddress();
   const addressType = getAddressType(debouncedKeyword);
 
   // Contract
@@ -116,10 +120,10 @@ export const useSearchHandler = (
   }, [isAddr, contractData, icnsAddressData]);
 
   // Code
-  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
-    codeId: debouncedKeyword,
-    enabled: isWasm && isId(debouncedKeyword),
-  });
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
+    Number(debouncedKeyword),
+    isWasm && isId(debouncedKeyword)
+  );
 
   // Tx
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
@@ -129,6 +133,19 @@ export const useSearchHandler = (
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword)
   );
+
+  // Proposal
+  const { data: proposalData, isFetching: proposalFetching } = useProposalData(
+    Number(debouncedKeyword),
+    isGov && isId(debouncedKeyword)
+  );
+
+  // Validator
+  const { data: validatorData, isFetching: validatorFetching } =
+    useValidatorData(
+      zValidatorAddr.parse(debouncedKeyword),
+      isGov && validateValidatorAddress(debouncedKeyword) === null
+    );
 
   // Pool
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
@@ -174,10 +191,12 @@ export const useSearchHandler = (
   return {
     results: [
       addressResult,
-      moduleName && enableModuleFetching && moduleData && "Module Path",
+      moduleData && "Module Path",
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
+      proposalData?.info && "Proposal ID",
+      validatorData && "Validator Address",
       poolData && "Pool ID",
     ].filter((res) => Boolean(res)) as SearchResultType[],
     isLoading:
@@ -187,7 +206,9 @@ export const useSearchHandler = (
       contractFetching ||
       blockFetching ||
       icnsAddressFetching ||
-      poolFetching,
+      poolFetching ||
+      proposalFetching ||
+      validatorFetching,
     metadata: {
       icns: {
         icnsNames,

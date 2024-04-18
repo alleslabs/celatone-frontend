@@ -1,5 +1,7 @@
 import type { MainWalletBase } from "@cosmos-kit/core";
 
+import type { Nullable } from "lib/types";
+
 type FaucetConfig =
   | {
       enabled: true;
@@ -38,6 +40,7 @@ type PublicProjectConfig = { enabled: boolean };
 type GovConfig =
   | {
       enabled: true;
+      version: "v1beta1" | "v1";
       hideOpenProposal?: boolean;
       disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
@@ -47,11 +50,6 @@ type GovConfig =
     };
 
 type NftConfig = { enabled: boolean };
-
-export interface ExplorerConfig {
-  validator: string;
-  proposal: string;
-}
 
 export interface ChainConfig {
   chain: string;
@@ -78,10 +76,10 @@ export interface ChainConfig {
     gasAdjustment: number;
     maxGasLimit: number;
   };
-  explorerLink: ExplorerConfig;
   extra: {
     disableAnyOfAddresses?: boolean;
-    disableDelegation?: boolean;
+    singleStakingDenom?: string;
+    isValidatorExternalLink?: Nullable<string>;
   };
 }
 

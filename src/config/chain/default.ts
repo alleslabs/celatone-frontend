@@ -39,9 +39,5 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     gasAdjustment: 1.0,
     maxGasLimit: 0,
   },
-  explorerLink: {
-    validator: "",
-    proposal: "",
-  },
   extra: {},
 };

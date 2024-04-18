@@ -3,10 +3,10 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
+  chakra,
   Flex,
   IconButton,
   Text,
-  chakra,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -193,9 +193,9 @@ export const FunctionDetailCard = ({
                     </Flex>
 
                     <Tooltip
-                      isDisabled={!disabled}
                       bg="primary.dark"
                       label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+                      hidden={!disabled}
                     >
                       <Button
                         variant={getButtonStyle().variant}

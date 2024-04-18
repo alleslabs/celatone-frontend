@@ -1,5 +1,5 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, useToast, Box } from "@chakra-ui/react";
+import { Box, Button, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 

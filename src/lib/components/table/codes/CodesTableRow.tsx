@@ -1,4 +1,4 @@
-import { Text, Grid, HStack } from "@chakra-ui/react";
+import { Grid, HStack, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { useGetAddressType } from "lib/app-provider";

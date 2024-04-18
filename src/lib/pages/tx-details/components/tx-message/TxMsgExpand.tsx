@@ -41,11 +41,11 @@ export const TxMsgExpand = ({
 
   const { "@type": type, ...body } = msgBody;
   const isIBC =
-    Boolean(log.events.find((event) => event.type === "send_packet")) ||
+    Boolean(log?.events.find((event) => event.type === "send_packet")) ||
     type.startsWith("/ibc");
   const isOpinit = Boolean(type.startsWith("/opinit"));
 
-  let msgIcon: IconKeys = "info-circle";
+  let msgIcon: IconKeys = "file";
   let content: ReactNode;
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":

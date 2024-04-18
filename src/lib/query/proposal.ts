@@ -38,11 +38,3 @@ export const getRelatedProposalsCountByModuleId = graphql(`
     }
   }
 `);
-
-export const getProposalTypes = graphql(`
-  query getProposalTypes {
-    proposals(distinct_on: type) {
-      type
-    }
-  }
-`);

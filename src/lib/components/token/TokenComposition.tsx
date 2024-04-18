@@ -1,4 +1,5 @@
-import { Flex, type FlexProps, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
 
 import type { TokenWithValue } from "lib/types";
 import {

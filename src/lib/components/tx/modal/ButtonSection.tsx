@@ -1,11 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import {
-  useInternalNavigate,
-  useCelatoneApp,
-  useBaseApiRoute,
-} from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { getNavigationUrl } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -30,10 +26,6 @@ export const ButtonSection = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const openTxTab = useOpenTxTab("tx-page");
-  const {
-    chainConfig: { explorerLink },
-  } = useCelatoneApp();
-  const lcdEndpoint = useBaseApiRoute("rest");
 
   const openTxExplorer = () => {
     const txHash = receipts
@@ -51,9 +43,7 @@ export const ButtonSection = ({
     openNewTab(
       getNavigationUrl({
         type: "proposal_id",
-        explorerConfig: explorerLink,
         value: proposalId ?? "",
-        lcdEndpoint,
       })
     );
     onClose?.();

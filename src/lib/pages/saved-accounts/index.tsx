@@ -1,4 +1,4 @@
-import { Badge, Text, Flex, Heading } from "@chakra-ui/react";
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -91,6 +91,11 @@ const SavedAccounts = observer(() => {
       ) : (
         <AccountZeroState button={<SaveAccountButton />} />
       )}
+      {/* <UserDocsLink
+        title="How to organize and save accounts?"
+        cta="Read more about Saved Accounts"
+        href={`${move.enabled ? "move" : "cosmwasm"}/account/organize#saving-accounts-for-later-use`}
+      /> */}
     </PageContainer>
   );
 });

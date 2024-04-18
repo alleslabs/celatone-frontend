@@ -44,11 +44,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
+    extra: {
+      isValidatorExternalLink: "https://www.mintscan.io/cosmos/validators",
     },
-    extra: { disableDelegation: true },
   },
   "pion-1": {
     chain: "neutron",
@@ -91,10 +89,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
+    extra: {
+      isValidatorExternalLink:
+        "https://www.mintscan.io/ics-testnet-provider/validators",
     },
-    extra: { disableDelegation: true },
   },
 };

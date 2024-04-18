@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import type { Msg, Option } from "lib/types";
-import { libEncode, camelToSnake } from "lib/utils";
+import { camelToSnake, libEncode } from "lib/utils";
 
 export const useRedo = () => {
   const navigate = useInternalNavigate();

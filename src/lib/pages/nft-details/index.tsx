@@ -1,12 +1,12 @@
 import {
+  Divider,
   Flex,
   Image,
-  Text,
-  Tabs,
   TabList,
-  TabPanels,
   TabPanel,
-  Divider,
+  TabPanels,
+  Tabs,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -22,6 +22,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useCollectionByCollectionAddress,
@@ -264,6 +265,11 @@ const NftDetailsBody = ({
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <UserDocsLink
+          title="What is a NFT?"
+          cta="Read more about NFT"
+          href="move/nfts/detail-page"
+        />
       </Flex>
     </>
   );

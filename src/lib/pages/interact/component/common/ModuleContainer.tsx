@@ -1,4 +1,4 @@
-import { Flex, chakra } from "@chakra-ui/react";
+import { chakra, Flex } from "@chakra-ui/react";
 
 export const ModuleContainer = chakra(Flex, {
   baseStyle: {

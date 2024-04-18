@@ -2,15 +2,16 @@
 import MockDate from "mockdate";
 
 import {
-  getDefaultDate,
-  getCurrentDate,
-  parseDate,
-  parseDateOpt,
-  parseDateDefault,
-  formatUTC,
   dateFromNow,
-  formatSeconds,
   formatDuration,
+  formatHHmm,
+  formatSeconds,
+  formatUTC,
+  getCurrentDate,
+  getDefaultDate,
+  parseDate,
+  parseDateDefault,
+  parseDateOpt,
 } from "./date";
 
 const MOCK_CURRENT_ISO = "2026-06-06T06:00:00.000Z";
@@ -133,6 +134,25 @@ describe("formatUTC", () => {
     expect(formatUTC(d)).toEqual("May 02, 2018, 11:12:13 AM (UTC)");
     d = parseDate("2018036187");
     expect(formatUTC(d)).toEqual("May 03, 2018, 3:00:00 PM (UTC)");
+  });
+});
+
+describe("formatHHmm", () => {
+  test("should correctly format date to HH:mm string", () => {
+    let d = parseDate("2018");
+    expect(formatHHmm(d)).toEqual("00:00");
+    d = parseDate("2018-04");
+    expect(formatHHmm(d)).toEqual("00:00");
+    d = parseDate("2018-04-24");
+    expect(formatHHmm(d)).toEqual("00:00");
+    d = parseDate("2018-04-24 11:12");
+    expect(formatHHmm(d)).toEqual("11:12");
+    d = parseDate("2018-05-02 11:12:13");
+    expect(formatHHmm(d)).toEqual("11:12");
+    d = parseDate("2018-05-02 11:12:13.998");
+    expect(formatHHmm(d)).toEqual("11:12");
+    d = parseDate("2018036187");
+    expect(formatHHmm(d)).toEqual("15:00");
   });
 });
 

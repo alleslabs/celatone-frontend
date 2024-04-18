@@ -1,13 +1,13 @@
 import {
-  useDisclosure,
   Button,
-  Heading,
   Drawer,
-  DrawerOverlay,
+  DrawerBody,
+  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
-  DrawerCloseButton,
-  DrawerBody,
+  DrawerOverlay,
+  Heading,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
