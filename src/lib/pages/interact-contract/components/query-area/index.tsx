@@ -20,21 +20,19 @@ import { SchemaQuery } from "./SchemaQuery";
 
 interface QueryAreaProps {
   contractAddress: BechAddr32;
-  codeId: Option<number>;
-  codeHash: string;
   initialMsg: string;
+  codeId: Option<number>;
+  codeHash: Option<string>;
 }
 
 export const QueryArea = observer(
-  ({ contractAddress, codeId, codeHash, initialMsg }: QueryAreaProps) => {
-    const [tab, setTab] = useState<MessageTabs>();
+  ({ contractAddress, initialMsg, codeId, codeHash }: QueryAreaProps) => {
+    const isMobile = useMobile();
+    const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
 
     const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
-    const schema = getQuerySchema(codeHash);
-    const attached = Boolean(getSchemaByCodeHash(codeHash));
-    const isMobile = useMobile();
-
-    const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
+    const attached = Boolean(codeHash && getSchemaByCodeHash(codeHash));
+    const schema = codeHash ? getQuerySchema(codeHash) : undefined;
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
@@ -57,7 +55,11 @@ export const QueryArea = observer(
           Query Message
         </Heading>
         {!isMobile && (
-          <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
+          <Tabs
+            isLazy
+            lazyBehavior="keepMounted"
+            index={Object.values(MessageTabs).indexOf(tab)}
+          >
             <TabList mb={8} borderBottom="1px" borderColor="gray.800">
               <CustomTab
                 onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
@@ -87,9 +89,10 @@ export const QueryArea = observer(
             />
           }
           schemaContent={
-            codeId && (
+            codeId &&
+            codeHash && (
               <>
-                {codeHash && attached ? (
+                {attached ? (
                   <SchemaQuery
                     codeId={codeId}
                     codeHash={codeHash}

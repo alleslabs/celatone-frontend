@@ -11,7 +11,6 @@ import {
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { AdminButton } from "lib/components/button";
-import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
@@ -23,6 +22,7 @@ import {
 import { TotalValue } from "lib/components/TotalValue";
 import type { Contract } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
+import { ContractInteractionTabs } from "lib/types";
 import type {
   BechAddr32,
   Nullable,
@@ -54,9 +54,9 @@ export const ContractTop = ({
     contractLocalInfo?.name || publicInfo?.name || contract.label;
   const projectName = projectInfo?.name;
 
-  const goToContractInteraction = (type: string) => {
+  const goToInteractContract = (type: string) => {
     navigate({
-      pathname: "/contract-interaction",
+      pathname: "/interact-contract",
       query: {
         selectedType: type,
         ...(contractAddress && { contract: contractAddress }),
@@ -237,7 +237,7 @@ export const ContractTop = ({
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="query" />}
               onClick={() =>
-                goToContractInteraction(ContractInteractionTabs.QUERY)
+                goToInteractContract(ContractInteractionTabs.QueryContract)
               }
               size={{ base: "sm", md: "md" }}
             >
@@ -248,7 +248,7 @@ export const ContractTop = ({
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="execute" />}
               onClick={() => {
-                goToContractInteraction(ContractInteractionTabs.EXECUTE);
+                goToInteractContract(ContractInteractionTabs.ExecuteContract);
               }}
               size={{ base: "sm", md: "md" }}
               isDisabled={isMobile}

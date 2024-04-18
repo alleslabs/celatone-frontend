@@ -2,7 +2,7 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
+import { ContractInteractionTabs } from "lib/types";
 import type { Option } from "lib/types";
 
 interface InteractionWrapperProps {
@@ -25,10 +25,16 @@ export const InteractionWrapper = ({
   <Box
     sx={{
       "& .query": {
-        display: resolveTabDisplay(currentTab, ContractInteractionTabs.QUERY),
+        display: resolveTabDisplay(
+          currentTab,
+          ContractInteractionTabs.QueryContract
+        ),
       },
       "& .execute": {
-        display: resolveTabDisplay(currentTab, ContractInteractionTabs.EXECUTE),
+        display: resolveTabDisplay(
+          currentTab,
+          ContractInteractionTabs.ExecuteContract
+        ),
       },
     }}
   >

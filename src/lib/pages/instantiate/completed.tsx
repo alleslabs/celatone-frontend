@@ -1,12 +1,12 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { ContractInteractionTabs } from "lib/types";
 import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -77,9 +77,9 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/contract-interaction",
+              pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.EXECUTE,
+                selectedType: ContractInteractionTabs.ExecuteContract,
                 contract: txInfo.contractAddress,
               },
             })
@@ -92,9 +92,9 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/contract-interaction",
+              pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.QUERY,
+                selectedType: ContractInteractionTabs.QueryContract,
                 contract: txInfo.contractAddress,
               },
             })

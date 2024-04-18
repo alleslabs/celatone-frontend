@@ -23,7 +23,7 @@ interface ExecuteAreaProps {
   initialMsg: string;
   initialFunds: Coin[];
   codeId: Option<number>;
-  codeHash: string;
+  codeHash: Option<string>;
 }
 
 export const ExecuteArea = observer(
@@ -34,11 +34,11 @@ export const ExecuteArea = observer(
     codeHash,
     codeId,
   }: ExecuteAreaProps) => {
-    const [tab, setTab] = useState<MessageTabs>();
+    const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
+
     const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
-    const schema = getExecuteSchema(codeHash);
-    const attached = Boolean(getSchemaByCodeHash(codeHash));
-    const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
+    const attached = Boolean(codeHash && getSchemaByCodeHash(codeHash));
+    const schema = codeHash ? getExecuteSchema(codeHash) : undefined;
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
@@ -60,7 +60,11 @@ export const ExecuteArea = observer(
         <Heading variant="h6" as="h6" mt={8} mb={4}>
           Execute Message
         </Heading>
-        <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
+        <Tabs
+          isLazy
+          lazyBehavior="keepMounted"
+          index={Object.values(MessageTabs).indexOf(tab)}
+        >
           <TabList mb={8} borderBottom="1px" borderColor="gray.800">
             <CustomTab onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}>
               JSON Input
@@ -88,9 +92,10 @@ export const ExecuteArea = observer(
             />
           }
           schemaContent={
-            codeId && (
+            codeId &&
+            codeHash && (
               <>
-                {codeHash && attached ? (
+                {attached ? (
                   <SchemaExecute
                     codeId={codeId}
                     codeHash={codeHash}

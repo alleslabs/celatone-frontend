@@ -40,7 +40,7 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
         },
         {
           name: "Query / Execute",
-          slug: "/contract-interaction",
+          slug: "/interact-contract",
           icon: "query" as IconKeys,
         },
         {

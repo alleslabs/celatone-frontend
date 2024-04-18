@@ -3,14 +3,10 @@ import { useCallback } from "react";
 import type { CSSProperties } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
+import { ContractInteractionTabs } from "lib/types";
 import type { Option } from "lib/types";
 
-export enum ContractInteractionTabs {
-  QUERY = "query",
-  EXECUTE = "execute",
-}
-
-interface ContractInteractionSwitchProps<
+interface InteractionTypeSwitchProps<
   T extends Option<ContractInteractionTabs>,
 > {
   currentTab: T;
@@ -19,14 +15,14 @@ interface ContractInteractionSwitchProps<
   onTabChange: (newType: T) => void;
 }
 
-export const ContractInteractionSwitch = <
+export const InteractionTypeSwitch = <
   T extends Option<ContractInteractionTabs>,
 >({
   currentTab,
   disabled = false,
   ml,
   onTabChange: onTabChangeProps,
-}: ContractInteractionSwitchProps<T>) => {
+}: InteractionTypeSwitchProps<T>) => {
   const tabs: T[] = Object.values(ContractInteractionTabs) as T[];
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 

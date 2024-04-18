@@ -13,7 +13,6 @@ import {
   useInternalNavigate,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { ContractInteractionTabs } from "lib/components/ContractInteractionSwitch";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -22,6 +21,7 @@ import {
 } from "lib/components/modal";
 import { TableRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { ContractInteractionTabs } from "lib/types";
 
 import type { PublicContractInfo } from ".";
 
@@ -98,14 +98,14 @@ export const PublicProjectContractRow = ({
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
-            href={`/contract-interaction?selectedType=${ContractInteractionTabs.EXECUTE}contract=${publicContractInfo.publicInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.ExecuteContract}contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
           <AppLink
-            href={`/contract-interaction?selectedType=${ContractInteractionTabs.QUERY}&contract=${publicContractInfo.publicInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.QueryContract}&contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Query

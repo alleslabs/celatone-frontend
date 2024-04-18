@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Interact Contract
+
 ### Bug fixes
 
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
@@ -112,14 +114,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-<<<<<<< HEAD
-- [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Contract Interactions
-=======
 - [#888](https://github.com/alleslabs/celatone-frontend/pull/888) Apply timeout for delegator counts on validator detail
 - [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
 - [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
 - [#884](https://github.com/alleslabs/celatone-frontend/pull/884) Bump cosmjs tx parsing problem
->>>>>>> develop
 - [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
 - [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
 - [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
