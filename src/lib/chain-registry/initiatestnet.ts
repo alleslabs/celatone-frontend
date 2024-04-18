@@ -281,30 +281,6 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "blackwingdevnet1",
-    assets: [
-      {
-        description: "The native staking token of Initia.",
-        denom_units: [
-          {
-            denom:
-              "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
-            exponent: 0,
-          },
-          {
-            denom: "init",
-            exponent: 6,
-          },
-        ],
-        base: "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
-        name: "Init",
-        display: "init",
-        symbol: "INIT",
-      },
-    ],
-  },
-  {
-    $schema: ASSETLIST_SCHEMA,
     chain_name: "minitiawasmdevnet2",
     assets: [
       {
@@ -321,6 +297,30 @@ export const initiatestnetAssets: AssetList[] = [
           },
         ],
         base: "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "blackwingdevnet1",
+    assets: [
+      {
+        description: "The native staking token of Initia.",
+        denom_units: [
+          {
+            denom:
+              "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
+            exponent: 0,
+          },
+          {
+            denom: "init",
+            exponent: 6,
+          },
+        ],
+        base: "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
         name: "Init",
         display: "init",
         symbol: "INIT",

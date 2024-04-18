@@ -238,7 +238,7 @@ const getPlaceholder = ({
   isMove: boolean;
   isGov: boolean;
 }) => {
-  const govText = isGov ? " / Proposal ID / Validator Address" : "";
+  const govText = isGov ? " / Validator Address / Proposal ID" : "";
   const wasmText = isWasm ? " / Code ID / Contract Address" : "";
   const moveText = isMove ? " / Module Path" : "";
   const poolText = isPool ? " / Pool ID" : "";
