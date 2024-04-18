@@ -6,6 +6,7 @@ import { ValidatorOrder } from "../../types";
 import { trackUseSort } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { TableHeader } from "lib/components/table";
+import { TooltipInfo } from "lib/components/Tooltip";
 
 const SortIcon = ({
   column,
@@ -29,6 +30,9 @@ const SortIcon = ({
 
 const StyledTableHeader = chakra(TableHeader, {
   baseStyle: {
+    display: "flex",
+    gap: 1,
+    alignItems: "center",
     py: 4,
     cursor: "pointer",
     transition: "all 0.25s ease-in-out",
@@ -102,7 +106,8 @@ export const ValidatorsTableHeader = ({
         />
       </StyledTableHeader>
       <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Uptime)}>
-        Uptime (100B)
+        Uptime
+        <TooltipInfo label="Calculated from recent 100 blocks" />
         <SortIcon
           column={ValidatorOrder.Uptime}
           order={order}
