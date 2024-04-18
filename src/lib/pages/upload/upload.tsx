@@ -63,6 +63,7 @@ export const Upload = ({
             Upload Wasm file
           </Heading>
           <UserDocsLink
+            isDevTool
             mt={2}
             cta="View Upload Guideline"
             href="cosmwasm/deploy-contract#upload-wasm-to-store-code"
@@ -81,7 +82,7 @@ export const Upload = ({
           simulateStatus={simulateStatus}
           isSimulating={isSimulating}
         />
-      </WasmPageContainer>{" "}
+      </WasmPageContainer>
       <FooterCTA
         cancelButton={{
           leftIcon: <CustomIcon name="chevron-left" />,
