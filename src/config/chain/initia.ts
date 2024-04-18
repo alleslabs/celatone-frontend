@@ -104,7 +104,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "tomcat-1": {
     chain: "initia",
     registryChainName: "blackwingdevnet1",
-    prettyName: "Blackwong Devnet 1",
+    prettyName: "Blackwing Devnet 1",
     lcd: "https://maze-rest-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
     rpc: "https://maze-rpc-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
     indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
