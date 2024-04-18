@@ -66,7 +66,7 @@ export const Upload = ({
             isDevTool
             mt={2}
             cta="View Upload Guideline"
-            href="cosmwasm/deploy-contract#upload-wasm-to-store-code"
+            href="cosmwasm/upload-instantiate#upload-wasm-to-store-code"
           />
         </Flex>
         <ConnectWalletAlert
