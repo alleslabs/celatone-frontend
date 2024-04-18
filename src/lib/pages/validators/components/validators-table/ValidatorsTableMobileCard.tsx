@@ -72,8 +72,8 @@ export const ValidatorsTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        <Flex gap={3} flexWrap="wrap">
-          <Flex direction="column" flex="1" minW="fit-content">
+        <Flex gap={3}>
+          <Flex direction="column" flex="1">
             <MobileLabel label="Voting Power" />
             <Text variant="body2" color="text.main">
               {formatPrettyPercent(
@@ -100,7 +100,7 @@ export const ValidatorsTableMobileCard = ({
               )
             </Text>
           </Flex>
-          <Flex direction="column" flex="1" minW="fit-content">
+          <Flex direction="column" flex="1">
             <MobileLabel label="Uptime" />
             <Text
               variant="body2"
@@ -120,17 +120,15 @@ export const ValidatorsTableMobileCard = ({
         </Flex>
       }
       bottomContent={
-        <Flex gap={3} w="full">
-          <Flex direction="column" flex="2">
-            <MobileLabel label="Commission" />
-            <Text
-              variant="body2"
-              color={isMinCommissionRate ? "success.main" : "text.main"}
-              fontWeight={isMinCommissionRate ? 700 : undefined}
-            >
-              {formatPrettyPercent(validator.commissionRate, 2, true)}
-            </Text>
-          </Flex>
+        <Flex direction="column">
+          <MobileLabel label="Commission" />
+          <Text
+            variant="body2"
+            color={isMinCommissionRate ? "success.main" : "text.main"}
+            fontWeight={isMinCommissionRate ? 700 : undefined}
+          >
+            {formatPrettyPercent(validator.commissionRate, 2, true)}
+          </Text>
         </Flex>
       }
     />
