@@ -138,6 +138,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
 - [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline
 - [#885](https://github.com/alleslabs/celatone-frontend/pull/885) Fix voted proposals freeze columns
 - [#881](https://github.com/alleslabs/celatone-frontend/pull/881) Fix abi option boolean problem

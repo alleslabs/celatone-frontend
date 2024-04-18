@@ -72,51 +72,56 @@ export const ValidatorsTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        <Flex direction="column" gap={3}>
-          <Flex gap={3} w="full">
-            <Flex direction="column" flex="1">
-              <MobileLabel label="Voting Power" />
-              <Text variant="body2" color="text.main">
-                {formatPrettyPercent(
-                  divWithDefault(
-                    validator.votingPower,
-                    totalVotingPower,
-                    0
-                  ).toNumber() as Ratio<number>,
-                  2,
-                  true
-                )}
-              </Text>
-              <Text variant="body3" color="text.dark">
-                (
-                {formatUTokenWithPrecision(
-                  validator.votingPower as U<Token<Big>>,
-                  denomToken?.precision ?? 0,
-                  false,
-                  2
-                )}
-                {denomToken
-                  ? ` ${getTokenLabel(denomToken.denom, denomToken.symbol)}`
-                  : undefined}
-                )
-              </Text>
-            </Flex>
-            <Flex direction="column" flex="1">
-              <MobileLabel label="Uptime (100B)" />
-              <Text
-                variant="body2"
-                color={isZeroUptime ? "error.main" : "text.main"}
-                fontWeight={isZeroUptime ? 700 : undefined}
-              >
-                {formatPrettyPercent(
-                  ((validator.uptime ?? 0) / 100) as Ratio<number>,
-                  0,
-                  true
-                )}
-              </Text>
-            </Flex>
+        <Flex gap={3} flexWrap="wrap">
+          <Flex direction="column" flex="1" minW="fit-content">
+            <MobileLabel label="Voting Power" />
+            <Text variant="body2" color="text.main">
+              {formatPrettyPercent(
+                divWithDefault(
+                  validator.votingPower,
+                  totalVotingPower,
+                  0
+                ).toNumber() as Ratio<number>,
+                2,
+                true
+              )}
+            </Text>
+            <Text variant="body3" color="text.dark">
+              (
+              {formatUTokenWithPrecision(
+                validator.votingPower as U<Token<Big>>,
+                denomToken?.precision ?? 0,
+                false,
+                2
+              )}
+              {denomToken
+                ? ` ${getTokenLabel(denomToken.denom, denomToken.symbol)}`
+                : undefined}
+              )
+            </Text>
           </Flex>
-          <Flex direction="column" flex="1">
+          <Flex direction="column" flex="1" minW="fit-content">
+            <MobileLabel label="Uptime" />
+            <Text
+              variant="body2"
+              color={isZeroUptime ? "error.main" : "text.main"}
+              fontWeight={isZeroUptime ? 700 : undefined}
+            >
+              {formatPrettyPercent(
+                ((validator.uptime ?? 0) / 100) as Ratio<number>,
+                0,
+                true
+              )}
+            </Text>
+            <Text variant="body3" color="text.dark">
+              (Recent 100 blocks)
+            </Text>
+          </Flex>
+        </Flex>
+      }
+      bottomContent={
+        <Flex gap={3} w="full">
+          <Flex direction="column" flex="2">
             <MobileLabel label="Commission" />
             <Text
               variant="body2"
