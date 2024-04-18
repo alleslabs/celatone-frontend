@@ -296,7 +296,7 @@ export const initiatestnetAssets: AssetList[] = [
             exponent: 6,
           },
         ],
-        base: "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
+        base: "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
         name: "Init",
         display: "init",
         symbol: "INIT",
