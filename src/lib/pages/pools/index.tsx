@@ -84,10 +84,7 @@ export const PoolIndex = () => {
             This page displays liquidity pools on this network sorted by recency
           </Text>
         </Flex>
-        <UserDocsLink
-          href="introduction/block-explorer#osmosis-pools"
-          isButton
-        />
+        <UserDocsLink href="osmosis/pool-list" isButton />
       </Flex>
       <Tabs index={Object.values(TabIndex).indexOf(tabIndex)}>
         <TabList my={8} borderBottom="1px" borderColor="gray.800">

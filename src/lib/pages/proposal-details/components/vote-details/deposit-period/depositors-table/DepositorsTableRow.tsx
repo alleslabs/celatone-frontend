@@ -15,15 +15,24 @@ export const DepositorsTableRow = ({
   proposalDeposit,
   templateColumns,
 }: DepositorsTableRowProps) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid
+    className="copier-wrapper"
+    templateColumns={templateColumns}
+    minW="min-content"
+  >
     <TableRow>
-      <ExplorerLink type="user_address" value={proposalDeposit.depositor} />
+      <ExplorerLink
+        type="user_address"
+        value={proposalDeposit.depositor}
+        showCopyOnHover
+      />
     </TableRow>
     <TableRow>
       {proposalDeposit.txHash ? (
         <ExplorerLink
           type="tx_hash"
           value={proposalDeposit.txHash.toUpperCase()}
+          showCopyOnHover
         />
       ) : (
         <Text variant="body3" textColor="text.dark">

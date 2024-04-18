@@ -5,15 +5,16 @@ import Link from "next/link";
 import { AmpEvent, trackWebsite } from "lib/amplitude";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import { DOCS_LINK } from "lib/data";
+import { USER_GUIDE_DOCS_LINK } from "lib/data";
 import { useOverviewsStats } from "lib/services/overviewService";
 
 const FOOTER_BUTTONS = [
   {
-    href: `${DOCS_LINK}/introduction/user-introduction`,
+    href: `${USER_GUIDE_DOCS_LINK}/introduction/overview`,
     icon: "document" as IconKeys,
     text: "View Doc",
-    onClick: () => trackWebsite(`${DOCS_LINK}/introduction/user-introduction`),
+    onClick: () =>
+      trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
   },
   {
     href: "https://feedback.alleslabs.com",

@@ -21,6 +21,7 @@ export const MobileCardTemplate = ({
     direction="column"
     gap={3}
     w="full"
+    minW={0}
     onClick={onClick}
   >
     <Flex align="center" justify="space-between">

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -16,6 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
+import { PageHeader } from "lib/components/PageHeader";
 import { useOpenNewTab } from "lib/hooks";
 import type { IndexedModule } from "lib/services/move/moduleService";
 import {
@@ -150,16 +143,14 @@ export const Interact = () => {
         display="grid"
         gridTemplateRows="auto auto 1fr"
       >
-        <Heading as="h5" variant="h5">
-          Module Interactions
-        </Heading>
+        <PageHeader title=" Module Interactions" docHref="move/view-execute" />
         <Flex
           alignItems="center"
           justifyContent="space-between"
           bgColor="gray.900"
           p={4}
           borderRadius={4}
-          my={8}
+          mb={8}
         >
           {module ? (
             <>

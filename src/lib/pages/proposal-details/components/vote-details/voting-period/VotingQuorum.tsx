@@ -25,11 +25,12 @@ export const VotingQuorum = ({
   if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
 
   const { quorum } = extractParams(params, proposalData.isExpedited);
-  const { abstain, nonAbstainVotes, totalVotes } =
+  const { abstainRatio, nonAbstainRatio, totalRatio } =
     normalizeVotesInfo(votesInfo);
 
-  const votes = votesInfo.yes.add(votesInfo.no).add(votesInfo.noWithVeto);
-  const allVotes = votes.add(votesInfo.abstain);
+  const { yes, abstain, no, noWithVeto, totalVotingPower } = votesInfo;
+  const nonAbstain = yes.add(no).add(noWithVeto);
+  const allVotes = nonAbstain.add(abstain);
 
   return (
     <Flex direction="column" gap={4}>
@@ -39,7 +40,7 @@ export const VotingQuorum = ({
             <VoteQuorumBadge
               status={proposalData.status}
               quorum={quorum}
-              totalVotes={totalVotes}
+              totalRatio={totalRatio}
               isCompact
             />
             <Text variant="body1" color="text.main">
@@ -54,7 +55,7 @@ export const VotingQuorum = ({
             <VoteQuorumBadge
               status={proposalData.status}
               quorum={quorum}
-              totalVotes={totalVotes}
+              totalRatio={totalRatio}
               isCompact={false}
             />
             <Spacer />
@@ -74,8 +75,8 @@ export const VotingQuorum = ({
       >
         <VoteQuorumCircle
           quorum={quorum}
-          nonAbstainVotes={nonAbstainVotes}
-          totalVotes={totalVotes}
+          nonAbstainRatio={nonAbstainRatio}
+          totalRatio={totalRatio}
           isCompact={false}
           isBgGray={!isMobile}
         />
@@ -83,21 +84,21 @@ export const VotingQuorum = ({
           <VoteQuorumText
             status={proposalData.status}
             quorum={quorum}
-            totalVotes={totalVotes}
+            totalRatio={totalRatio}
             isCompact={false}
           />
           <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? 3 : 8}>
             <VpPercentCard
               name="Voted"
-              ratio={nonAbstainVotes}
-              power={votes}
+              ratio={nonAbstainRatio}
+              power={nonAbstain}
               color="primary.main"
               isCompact={isMobile}
             />
             <VpPercentCard
               name="Voted Abstain"
-              ratio={abstain}
-              power={votesInfo.abstain}
+              ratio={abstainRatio}
+              power={abstain}
               color="secondary.main"
               isCompact={isMobile}
             />
@@ -109,8 +110,8 @@ export const VotingQuorum = ({
             />
             <VpPercentCard
               name="Did not vote"
-              ratio={(1 - totalVotes) as Ratio<number>}
-              power={votesInfo.totalVotingPower.minus(allVotes)}
+              ratio={totalRatio ? ((1 - totalRatio) as Ratio<number>) : null}
+              power={totalVotingPower ? totalVotingPower.minus(allVotes) : null}
               color="gray.800"
               isCompact={isMobile}
             />

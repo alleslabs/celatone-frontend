@@ -175,9 +175,10 @@ const UpdateAdmin = () => {
           Update Admin
         </Heading>
         <UserDocsLink
+          isDevTool
           mt={2}
           cta="View Update Admin Guideline"
-          href="cosmwasm/contract/admin-actions#update-new-admin-to-the-contract"
+          href="cosmwasm/contracts/admin-actions#update-new-admin-to-the-contract"
         />
       </Flex>
       <ConnectWalletAlert

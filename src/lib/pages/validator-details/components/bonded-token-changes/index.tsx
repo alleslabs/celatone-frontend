@@ -1,12 +1,17 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { RelatedTransactionTable } from "../tables";
+import { DelegationRelatedTxsTable } from "../tables";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle } from "lib/components/table";
 import { useValidatorDelegationRelatedTxs } from "lib/services/validatorService";
-import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
+import type {
+  AssetInfos,
+  MovePoolInfos,
+  Option,
+  ValidatorAddr,
+} from "lib/types";
 
 import { VotingPowerChart } from "./VotingPowerChart";
 
@@ -14,12 +19,14 @@ interface BondedTokenChangesProps {
   validatorAddress: ValidatorAddr;
   singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  movePoolInfos: Option<MovePoolInfos>;
 }
 
 export const BondedTokenChanges = ({
   validatorAddress,
   singleStakingDenom,
   assetInfos,
+  movePoolInfos,
 }: BondedTokenChangesProps) => {
   const isMobile = useMobile();
 
@@ -66,10 +73,11 @@ export const BondedTokenChanges = ({
             helperText="Shows transactions relevant to changes in delegated tokens, excluding any token reduction due to slashing."
           />
         )}
-        <RelatedTransactionTable
+        <DelegationRelatedTxsTable
           delegationRelatedTxs={data?.items}
           isLoading={isLoading}
           assetInfos={assetInfos}
+          movePoolInfos={movePoolInfos}
         />
         {!!data?.total && data.total > 10 && (
           <Pagination

@@ -7,6 +7,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { UserDocsLink } from "lib/components/UserDocsLink";
+
 export const UploadAccordion = () => (
   <Accordion
     allowToggle
@@ -15,7 +17,7 @@ export const UploadAccordion = () => (
     position="sticky"
     top={0}
   >
-    <AccordionItem borderTop="none" borderColor="gray.700">
+    <AccordionItem>
       <AccordionButton>
         <Text
           variant="body2"
@@ -32,6 +34,7 @@ export const UploadAccordion = () => (
         py={3}
         px={0}
         borderTop="1px solid"
+        borderBottom="1px solid"
         borderColor="gray.700"
       >
         <Text variant="body2" color="text.dark" p={1}>
@@ -39,6 +42,12 @@ export const UploadAccordion = () => (
           their properties, module mechanics, friends.
         </Text>
       </AccordionPanel>
+      <UserDocsLink
+        isDevTool
+        mt={3}
+        cta="Read more about publish"
+        href="initia/move/publish-module"
+      />
     </AccordionItem>
   </Accordion>
 );
@@ -51,7 +60,7 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
     position="sticky"
     top={0}
   >
-    <AccordionItem borderTop="none" borderColor="gray.700">
+    <AccordionItem>
       <AccordionButton>
         <Text
           variant="body2"
@@ -67,7 +76,7 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
         bg="transparent"
         py={3}
         px={0}
-        borderTop="1px solid"
+        borderY="1px solid"
         borderColor="gray.700"
       >
         <Text variant="body2" color="text.dark" p={1}>
@@ -85,6 +94,12 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
           module ever.
         </Text>
       </AccordionPanel>
+      <UserDocsLink
+        isDevTool
+        mt={3}
+        cta="Read more about republish"
+        href="initia/move/publish-module#republishing-modules"
+      />
     </AccordionItem>
   </Accordion>
 );

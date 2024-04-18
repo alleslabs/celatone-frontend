@@ -40,9 +40,10 @@ export const MigrateOptions = ({
           Migrate Options
         </Heading>
         <UserDocsLink
+          isDevTool
           mt={0}
           cta="Read more about Migrate Contract"
-          href="cosmwasm/contract/admin-actions#migrating-a-contract"
+          href="cosmwasm/contracts/admin-actions#migrating-a-contract"
         />
       </Flex>
 

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#880](https://github.com/alleslabs/celatone-frontend/pull/880) Add resolved voting power for proposals
 - [#878](https://github.com/alleslabs/celatone-frontend/pull/878) Support searching proposal id and validator address on the main search
 - [#875](https://github.com/alleslabs/celatone-frontend/pull/875) Add Amplitude tracking to validator details page
 - [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
@@ -101,6 +102,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
+- [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
+- [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
+- [#884](https://github.com/alleslabs/celatone-frontend/pull/884) Bump cosmjs tx parsing problem
 - [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
 - [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
 - [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
@@ -134,6 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline
+- [#885](https://github.com/alleslabs/celatone-frontend/pull/885) Fix voted proposals freeze columns
 - [#881](https://github.com/alleslabs/celatone-frontend/pull/881) Fix abi option boolean problem
 - [#877](https://github.com/alleslabs/celatone-frontend/pull/877) Fix validator list/details bug bash
 - [#874](https://github.com/alleslabs/celatone-frontend/pull/874) Fix minor proposal and validator bugs

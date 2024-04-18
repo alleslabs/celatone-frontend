@@ -208,7 +208,7 @@ export const PublishModule = ({
 
   return (
     <>
-      <PageContainer display="inline" p={0}>
+      <PageContainer p={0}>
         <Box minH="inherit" maxW="1440px" mx="auto">
           <Grid
             templateColumns="1fr 6fr 4fr 1fr"
@@ -324,7 +324,6 @@ export const PublishModule = ({
           const republishModules = modules.filter((ampTrackRepublish) =>
             ampTrackRepublish.publishStatus.text.includes("republish")
           );
-
           track(AmpEvent.ACTION_MOVE_PUBLISH, {
             numberOfModule: modules.length,
             numberOfRepublishModules: republishModules.length,

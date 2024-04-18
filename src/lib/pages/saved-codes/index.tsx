@@ -101,9 +101,10 @@ const SavedCodes = observer(() => {
         onRowSelect={onRowSelect}
       />
       <UserDocsLink
+        isDevTool
         title="How to organize and save codes?"
         cta="Read more about Saved Codes"
-        href="cosmwasm/code/organize#saving-code-for-later-use"
+        href="cosmwasm/codes/organize#saving-code-for-later-use"
       />
     </PageContainer>
   );

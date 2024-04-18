@@ -37,7 +37,7 @@ const RecentCodes = observer(() => {
       <PageHeader
         title="Codes"
         subtitle="This page displays all codes on this network sorted by recency"
-        docHref="introduction/block-explorer#recent-codes"
+        docHref="introduction/overview#recent-codes"
       />
       <Box mt={8} mb={4}>
         <FilterByPermission

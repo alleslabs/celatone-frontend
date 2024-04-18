@@ -107,12 +107,12 @@ const ContractsByList = observer(() => {
             {contractListInfo.contracts.length}
           </Badge>
         </Flex>
-        <Flex gap={isInstantiatedByMe ? 4 : 2}>
+        <Flex gap={isInstantiatedByMe ? 4 : 2} align="center">
           {isInstantiatedByMe && (
             <UserDocsLink
+              isDevTool
               isButton
-              isSmall={false}
-              href="cosmwasm/contract/organize#saving-contract-for-later-use"
+              href="cosmwasm/contracts/organize#saving-contract-for-later-use"
             />
           )}
           {isInstantiatedByMe ? (
@@ -175,9 +175,10 @@ const ContractsByList = observer(() => {
       />
       {!isInstantiatedByMe && (
         <UserDocsLink
+          isDevTool
           title="How to organize and save contracts?"
           cta="Read more about Saved Contracts"
-          href="cosmwasm/contract/organize#saving-contract-for-later-use"
+          href="cosmwasm/contracts/organize#saving-contract-for-later-use"
         />
       )}
     </PageContainer>

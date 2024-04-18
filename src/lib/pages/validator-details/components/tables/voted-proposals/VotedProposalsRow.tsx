@@ -43,13 +43,16 @@ export const VotedProposalsTableRow = ({
       className="copier-wrapper"
       templateColumns={templateColumns}
       onClick={() => onRowSelect(votedProposal.proposalId)}
+      minW="min-content"
+      cursor="pointer"
       _hover={{
         "> div": {
-          bgColor: "gray.900",
+          bgColor:
+            votedProposal.isExpedited && isDepositOrVoting
+              ? "primary.background"
+              : "gray.900",
         },
       }}
-      transition="all 0.25s ease-in-out"
-      cursor="pointer"
     >
       <TableRowFreeze left="0">
         <ExplorerLink
