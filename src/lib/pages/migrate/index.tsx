@@ -49,7 +49,7 @@ const Migrate = () => {
     simulateStatus,
     isSimulating,
     isDisabledProcess,
-  } = useUploadCode(undefined, false);
+  } = useUploadCode(undefined, true);
 
   const { address = "" } = useCurrentChain();
 
