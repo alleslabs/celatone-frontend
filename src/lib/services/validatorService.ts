@@ -4,12 +4,14 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
 } from "lib/app-provider";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   Nullable,
   Option,
@@ -235,10 +237,15 @@ export const useValidatorProposedBlocks = (
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
   const endpoint = useBaseApiRoute("validators");
 
+  const queryFn = useCallback(
+    async () => getValidatorDelegators(endpoint, validatorAddress),
+    [endpoint, validatorAddress]
+  );
+
   return useQuery(
     [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],
-    async () => getValidatorDelegators(endpoint, validatorAddress),
-    { retry: 1 }
+    createQueryFnWithTimeout(queryFn),
+    { retry: false }
   );
 };
 
