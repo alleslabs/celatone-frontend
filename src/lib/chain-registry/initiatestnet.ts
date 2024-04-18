@@ -96,6 +96,50 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: CHAIN_SCHEMA,
+    chain_name: "blackwingdevnet1",
+    status: "live",
+    network_type: "devnet",
+    pretty_name: "Blackwing Devnet 1",
+    chain_id: "tomcat-1",
+    bech32_prefix: "init",
+    daemon_name: "minitiad",
+    node_home: NODE_HOME,
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom:
+            "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
+          fixed_min_gas_price: 0,
+          low_gas_price: 0.151,
+          average_gas_price: 0.151,
+          high_gas_price: 0.151,
+        },
+      ],
+    },
+    staking: undefined,
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address:
+            "https://maze-rpc-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
+        },
+      ],
+      rest: [
+        {
+          address:
+            "https://maze-rest-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
+        },
+      ],
+    },
+  },
+  {
+    $schema: CHAIN_SCHEMA,
     chain_name: "minitiawasmdevnet2",
     status: "live",
     network_type: "devnet",
@@ -229,6 +273,30 @@ export const initiatestnetAssets: AssetList[] = [
           },
         ],
         base: "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "blackwingdevnet1",
+    assets: [
+      {
+        description: "The native staking token of Initia.",
+        denom_units: [
+          {
+            denom:
+              "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
+            exponent: 0,
+          },
+          {
+            denom: "init",
+            exponent: 6,
+          },
+        ],
+        base: "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
         name: "Init",
         display: "init",
         symbol: "INIT",
