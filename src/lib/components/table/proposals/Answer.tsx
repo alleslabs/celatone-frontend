@@ -55,8 +55,8 @@ export const Answer = ({
   return (
     <HStack spacing={2}>
       <Box
-        width="12px"
-        height="12px"
+        boxSize="12px"
+        minW="12px"
         borderRadius="50%"
         backgroundColor={color}
       />

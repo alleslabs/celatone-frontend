@@ -1,13 +1,14 @@
 import { Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
-import type { Ratio } from "lib/types";
+import type { Nullable, Ratio } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumTextProps {
   status: ProposalStatus;
   quorum: Ratio<number>;
-  totalVotes: Ratio<number>;
+  totalRatio: Nullable<Ratio<number>>;
   isCompact: boolean;
 }
 
@@ -25,12 +26,20 @@ const Established = () => (
 export const VoteQuorumText = ({
   status,
   quorum,
-  totalVotes,
+  totalRatio,
   isCompact,
 }: VoteQuorumTextProps) => {
   const fontVariant = isCompact ? "body2" : "body1";
+  if (isNull(totalRatio))
+    return (
+      <Text variant={fontVariant}>
+        Quorum information cannot be retrieved, due to the completion proposal
+        being concluded a considerable time ago.
+      </Text>
+    );
+
   const quorumPercent = formatPrettyPercent(quorum);
-  const isPassingQuorum = totalVotes >= quorum;
+  const isPassingQuorum = totalRatio >= quorum;
 
   if (status === ProposalStatus.VOTING_PERIOD)
     return isPassingQuorum ? (

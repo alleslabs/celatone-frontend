@@ -11,13 +11,13 @@ import { dateFromNow, formatUTC, truncate } from "lib/utils";
 interface BlocksTableRowProps {
   templateColumns: GridProps["templateColumns"];
   blockData: Block;
-  hideProposer?: boolean;
+  showProposer: boolean;
 }
 
 export const BlocksTableRow = ({
   templateColumns,
   blockData,
-  hideProposer = false,
+  showProposer,
 }: BlocksTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -29,6 +29,7 @@ export const BlocksTableRow = ({
 
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
       onClick={() => onRowSelect(blockData.height)}
       _hover={{ bg: "gray.900" }}
@@ -45,15 +46,11 @@ export const BlocksTableRow = ({
         </ExplorerLink>
       </TableRow>
       <TableRow>
-        {truncate(blockData.hash.toUpperCase(), hideProposer ? [9, 9] : [6, 6])}
+        {truncate(blockData.hash.toUpperCase(), showProposer ? [6, 6] : [9, 9])}
       </TableRow>
-      {!hideProposer && (
+      {showProposer && (
         <TableRow>
-          <ValidatorBadge
-            validator={blockData.proposer}
-            badgeSize={7}
-            maxWidth="220px"
-          />
+          <ValidatorBadge validator={blockData.proposer} badgeSize={7} />
         </TableRow>
       )}
       <TableRow

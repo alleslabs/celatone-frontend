@@ -9,11 +9,11 @@ import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableMobileCardProps {
   blockData: Block;
-  hideProposer?: boolean;
+  showProposer: boolean;
 }
 export const BlocksTableMobileCard = ({
   blockData,
-  hideProposer = false,
+  showProposer,
 }: BlocksTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
@@ -26,7 +26,7 @@ export const BlocksTableMobileCard = ({
       }
       topContent={
         <Flex align="center" gap={4} w="full">
-          <Flex direction="column">
+          <Flex direction="column" flex={1}>
             <MobileLabel label="Block Height" />
             <ExplorerLink
               type="block_height"
@@ -36,7 +36,7 @@ export const BlocksTableMobileCard = ({
               {blockData.height}
             </ExplorerLink>
           </Flex>
-          <Flex direction="column">
+          <Flex direction="column" flex={{ base: 2, sm: 3 }}>
             <MobileLabel label="Block Hash" />
             <Flex h={6} align="end">
               <Text variant="body2" color="text.main">
@@ -47,11 +47,11 @@ export const BlocksTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        !hideProposer && <ValidatorBadge validator={blockData.proposer} />
+        showProposer && <ValidatorBadge validator={blockData.proposer} />
       }
       bottomContent={
-        <Flex gap={8}>
-          <Flex direction="column">
+        <Flex align="start" gap={4} w="full">
+          <Flex direction="column" flex={1}>
             <MobileLabel label="Transactions" />
             <Flex h={6} align="end">
               <Text
@@ -62,9 +62,9 @@ export const BlocksTableMobileCard = ({
               </Text>
             </Flex>
           </Flex>
-          <Flex direction="column" gap={0}>
+          <Flex direction="column" flex={{ base: 2, sm: 3 }} gap={0}>
             <Text variant="body3">{formatUTC(blockData.timestamp)}</Text>
-            <Text variant="body3" color="text.dark">
+            <Text variant="body3" color="text.dark" mt="3px">
               {`(${dateFromNow(blockData.timestamp)})`}
             </Text>
           </Flex>

@@ -91,9 +91,10 @@ const Deploy = () => {
           Select Deploy Option
         </Heading>
         <UserDocsLink
+          isDevTool
           mt={2}
           cta="Read more about Deploy Contract"
-          href="cosmwasm/deploy-contract"
+          href="cosmwasm/upload-instantiate"
         />
       </Flex>
       <ConnectWalletAlert

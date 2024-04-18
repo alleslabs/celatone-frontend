@@ -55,7 +55,7 @@ export const ContractInteraction = () => {
               />
             )}
           </Flex>
-          <UserDocsLink isButton isSmall href="cosmwasm/query-execute" />
+          <UserDocsLink isButton isDevTool href="cosmwasm/query-execute" />
         </Flex>
       </Flex>
       <InteractionWrapper

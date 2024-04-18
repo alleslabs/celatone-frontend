@@ -29,12 +29,12 @@ export const RedelegationTableMobileCard = ({
       templateColumns="1fr 32px 1fr"
       alignItems="center"
     >
-      <Flex direction="column" gap={1}>
+      <Flex direction="column" gap={1} minW={0}>
         <MobileLabel label="From validator" />
         <ValidatorBadge validator={redelegation.srcValidator} />
       </Flex>
       <CustomIcon name="arrow-right" boxSize={3} color="gray.600" />
-      <Flex direction="column" gap={1}>
+      <Flex direction="column" gap={1} minW={0}>
         <MobileLabel label="To validator" />
         <ValidatorBadge validator={redelegation.dstValidator} />
       </Flex>

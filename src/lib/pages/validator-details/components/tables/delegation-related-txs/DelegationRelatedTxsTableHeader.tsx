@@ -2,13 +2,13 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "lib/components/table";
 
-interface RelatedTransactionsTableHeaderProps {
+interface DelegationRelatedTxsTableHeaderProps {
   templateColumns: string;
 }
 
-export const RelatedTransactionsTableHeader = ({
+export const DelegationRelatedTxsTableHeader = ({
   templateColumns,
-}: RelatedTransactionsTableHeaderProps) => (
+}: DelegationRelatedTxsTableHeaderProps) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Transaction Hash</TableHeader>
     <TableHeader>Sender</TableHeader>

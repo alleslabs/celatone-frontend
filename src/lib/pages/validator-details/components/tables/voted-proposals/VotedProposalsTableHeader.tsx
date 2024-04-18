@@ -20,7 +20,7 @@ export const VotedProposalsTableHeader = ({
       color="gray.800"
     >
       <Text color="text.main" px={4}>
-        Proposal Title/Type
+        Proposal Title/Types
       </Text>
     </TableHeaderFreeze>
     <TableHeader textAlign="center">Proposal Status</TableHeader>

@@ -29,11 +29,11 @@ export const VotingOverviewThreshold = ({
   params,
   votesInfo,
 }: VotingOverviewThresholdProps) => {
-  const { quorum, threshold, vetoThreshold } = extractParams(
+  const { threshold, vetoThreshold } = extractParams(
     params,
     proposalData.isExpedited
   );
-  const { totalVotes, noWithVetoRatio } = normalizeVotesInfo(votesInfo);
+  const { noWithVetoTotalRatio } = normalizeVotesInfo(votesInfo);
 
   const { result, resultColor } = getVoteResult(
     threshold,
@@ -50,37 +50,34 @@ export const VotingOverviewThreshold = ({
         borderTop="1px solid"
         borderTopColor="gray.700"
       >
-        {(proposalData.status === ProposalStatus.VOTING_PERIOD ||
-          totalVotes >= quorum) && (
-          <Flex gap={2} alignItems="center">
-            <VoteThresholdBadge status={proposalData.status} isCompact />
-            {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
+        <Flex gap={2} alignItems="center">
+          <VoteThresholdBadge status={proposalData.status} isCompact />
+          {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
+            <Text variant="body1" color="text.main">
+              Current Voting Result
+            </Text>
+          ) : (
+            <Flex gap={2} alignItems="center">
               <Text variant="body1" color="text.main">
-                Current Voting Result
+                Final Vote Result:
               </Text>
-            ) : (
-              <Flex gap={2} alignItems="center">
-                <Text variant="body1" color="text.main">
-                  Final Vote Result:
-                </Text>
-                {proposalData.status === ProposalStatus.FAILED ? (
-                  <StatusChip status={ProposalStatus.FAILED} />
-                ) : (
-                  <>
-                    <CustomIcon
-                      name="circle"
-                      boxSize="14px"
-                      color={resultColor}
-                    />
-                    <Text variant="body2" color="text.main" fontWeight={700}>
-                      {result}
-                    </Text>
-                  </>
-                )}
-              </Flex>
-            )}
-          </Flex>
-        )}
+              {proposalData.status === ProposalStatus.FAILED ? (
+                <StatusChip status={ProposalStatus.FAILED} />
+              ) : (
+                <>
+                  <CustomIcon
+                    name="circle"
+                    boxSize="14px"
+                    color={resultColor}
+                  />
+                  <Text variant="body2" color="text.main" fontWeight={700}>
+                    {result}
+                  </Text>
+                </>
+              )}
+            </Flex>
+          )}
+        </Flex>
         <VoteThresholdBar
           threshold={threshold}
           votesInfo={votesInfo}
@@ -88,7 +85,7 @@ export const VotingOverviewThreshold = ({
         />
         <VpPercentThreshold votesInfo={votesInfo} isCompact />
       </Flex>
-      {noWithVetoRatio >= vetoThreshold && (
+      {noWithVetoTotalRatio >= vetoThreshold && (
         <Flex
           gap={3}
           p="12px 16px"
@@ -112,7 +109,7 @@ export const VotingOverviewThreshold = ({
                     fontWeight: 700,
                   }}
                 >
-                  {formatPrettyPercent(noWithVetoRatio)}{" "}
+                  {formatPrettyPercent(noWithVetoTotalRatio)}{" "}
                 </span>
                 of the total votes, including &ldquo;Abstain&rdquo;, which
                 exceeds the{" "}
@@ -135,7 +132,7 @@ export const VotingOverviewThreshold = ({
                     fontWeight: 700,
                   }}
                 >
-                  {formatPrettyPercent(noWithVetoRatio)}{" "}
+                  {formatPrettyPercent(noWithVetoTotalRatio)}{" "}
                 </span>
                 of the total votes including &ldquo;Abstain&rdquo;, which
                 exceeds the{" "}

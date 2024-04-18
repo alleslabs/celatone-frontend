@@ -6,15 +6,15 @@ import { UserDocsLink } from "./UserDocsLink";
 
 interface PageHeaderProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   docHref: string;
 }
 
 export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
   const isMobile = useMobile();
   return (
-    <Flex w="full" justifyContent="space-between" alignItems="center" mb={8}>
-      <div>
+    <Flex justifyContent="space-between" alignItems="center" mb={8}>
+      <div style={{ width: "100%" }}>
         <Flex justifyContent="space-between">
           <Heading
             as="h5"
@@ -27,9 +27,11 @@ export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
           </Heading>
           {isMobile && <UserDocsLink href={docHref} isButton />}
         </Flex>
-        <Text variant="body2" color="text.dark" fontWeight={500}>
-          {subtitle}
-        </Text>
+        {subtitle && (
+          <Text variant="body2" color="text.dark" fontWeight={500}>
+            {subtitle}
+          </Text>
+        )}
       </div>
       {!isMobile && <UserDocsLink href={docHref} isButton />}
     </Flex>

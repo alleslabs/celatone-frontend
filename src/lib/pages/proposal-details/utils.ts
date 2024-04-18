@@ -12,35 +12,37 @@ import type {
 } from "lib/types";
 import { divWithDefault } from "lib/utils";
 
-export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
-  if (votesInfo.totalVotingPower.eq(0))
-    return {
-      yes: 0 as Ratio<number>,
-      abstain: 0 as Ratio<number>,
-      no: 0 as Ratio<number>,
-      noWithVeto: 0 as Ratio<number>,
-      nonAbstainVotes: 0 as Ratio<number>,
-      totalVotes: 0 as Ratio<number>,
-      yesNonRatio: 0 as Ratio<number>,
-      noNonRatio: 0 as Ratio<number>,
-      noWithVetoNonRatio: 0 as Ratio<number>,
-      noWithVetoRatio: 0 as Ratio<number>,
-    };
-
-  const yes = votesInfo.yes.div(votesInfo.totalVotingPower);
-  const abstain = votesInfo.abstain.div(votesInfo.totalVotingPower);
-  const no = votesInfo.no.div(votesInfo.totalVotingPower);
-  const noWithVeto = votesInfo.noWithVeto.div(votesInfo.totalVotingPower);
+export const normalizeVotesInfo = ({
+  yes,
+  abstain,
+  no,
+  noWithVeto,
+  totalVotingPower,
+}: ProposalVotesInfo) => {
   const nonAbstainVotes = yes.add(no).add(noWithVeto);
   const totalVotes = nonAbstainVotes.add(abstain);
-
   return {
-    yes: yes.toNumber() as Ratio<number>,
-    abstain: abstain.toNumber() as Ratio<number>,
-    no: no.toNumber() as Ratio<number>,
-    noWithVeto: noWithVeto.toNumber() as Ratio<number>,
-    nonAbstainVotes: nonAbstainVotes.toNumber() as Ratio<number>,
-    totalVotes: totalVotes.toNumber() as Ratio<number>,
+    abstainRatio: totalVotingPower
+      ? (divWithDefault(
+          abstain,
+          totalVotingPower,
+          0
+        ).toNumber() as Ratio<number>)
+      : null,
+    nonAbstainRatio: totalVotingPower
+      ? (divWithDefault(
+          nonAbstainVotes,
+          totalVotingPower,
+          0
+        ).toNumber() as Ratio<number>)
+      : null,
+    totalRatio: totalVotingPower
+      ? (divWithDefault(
+          totalVotes,
+          totalVotingPower,
+          0
+        ).toNumber() as Ratio<number>)
+      : null,
     yesNonRatio: divWithDefault(
       yes,
       nonAbstainVotes,
@@ -56,7 +58,7 @@ export const normalizeVotesInfo = (votesInfo: ProposalVotesInfo) => {
       nonAbstainVotes,
       0
     ).toNumber() as Ratio<number>,
-    noWithVetoRatio: divWithDefault(
+    noWithVetoTotalRatio: divWithDefault(
       noWithVeto,
       totalVotes,
       0
@@ -97,15 +99,14 @@ export const getVoteResult = (
   vetoThreshold: number,
   votesInfo: ProposalVotesInfo
 ) => {
-  const { yes, noWithVeto, nonAbstainVotes, totalVotes } =
-    normalizeVotesInfo(votesInfo);
+  const { yesNonRatio, noWithVetoTotalRatio } = normalizeVotesInfo(votesInfo);
 
-  if (divWithDefault(noWithVeto, totalVotes, 0).gte(vetoThreshold))
+  if (noWithVetoTotalRatio >= vetoThreshold)
     return {
       result: "No with veto",
       resultColor: "error.dark",
     };
-  if (divWithDefault(yes, nonAbstainVotes, 0).gte(threshold))
+  if (yesNonRatio >= threshold)
     return {
       result: "Yes",
       resultColor: "success.main",

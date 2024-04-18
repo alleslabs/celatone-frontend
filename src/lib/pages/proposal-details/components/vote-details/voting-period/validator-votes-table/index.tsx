@@ -1,16 +1,10 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  TableContainer,
-} from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { Button, Flex, Grid, GridItem, TableContainer } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
@@ -44,21 +38,14 @@ export const ValidatorVotesTableBody = ({
 }: ValidatorVotesTableBodyProps) => {
   const isMobile = useMobile();
 
-  const templateColumns = {
-    head:
-      fullVersion && !isMobile
-        ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
-        : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`,
-    row:
-      fullVersion && !isMobile
-        ? `${!isProposalResolved ? "0.2fr " : ""}1fr 0.8fr 1.5fr 1fr`
-        : `${!isProposalResolved ? "0.1fr " : ""}1.5fr 1fr`,
-  };
+  const templateColumns =
+    fullVersion && !isMobile
+      ? `${!isProposalResolved ? "32px " : ""}1fr 0.8fr 1.5fr 1fr`
+      : `${!isProposalResolved ? "32px " : ""}1.5fr 0.5fr`;
 
   if (isLoading) return <Loading />;
   if (!validatorVotes) return <ErrorFetching dataName="votes" />;
-
-  if (validatorVotes.length === 0) {
+  if (validatorVotes.length === 0)
     return (
       <EmptyState
         imageVariant="empty"
@@ -69,11 +56,11 @@ export const ValidatorVotesTableBody = ({
         }
       />
     );
-  }
+
   return (
     <TableContainer>
       <ValidatorVotesTableHeader
-        templateColumns={templateColumns.head}
+        templateColumns={templateColumns}
         fullVersion={fullVersion}
         isProposalResolved={isProposalResolved}
       />
@@ -87,7 +74,7 @@ export const ValidatorVotesTableBody = ({
           }
           proposalVote={each}
           fullVersion={fullVersion}
-          templateColumns={templateColumns.row}
+          templateColumns={templateColumns}
           isProposalResolved={isProposalResolved}
         />
       ))}
@@ -101,6 +88,7 @@ interface ValidatorVotesTableProps {
   fullVersion: boolean;
   isProposalResolved: boolean;
   onViewMore?: () => void;
+  enabled?: boolean;
 }
 
 const tableHeaderId = "validatorVotesTable";
@@ -111,6 +99,7 @@ export const ValidatorVotesTable = ({
   fullVersion,
   isProposalResolved,
   onViewMore,
+  enabled,
 }: ValidatorVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
     ProposalVoteType.ALL
@@ -139,59 +128,65 @@ export const ValidatorVotesTable = ({
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch
+    debouncedSearch,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
-
-  // update total data because we do filter and search on frontend side
-  useEffect(() => {
-    setTotalData(data?.total ?? 0);
-  }, [data, setTotalData]);
 
   const isSearching =
     debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;
 
-  const totalValidators = answers?.totalValidators ?? 0;
-
   const answerOptions = useMemo(
     () => [
       {
-        label: `All votes (${totalValidators})`,
+        label: `All votes (${answers?.totalValidators ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: false,
+        disabled: !answers?.totalValidators,
       },
       {
         label: `Yes (${answers?.yes ?? 0})`,
         value: ProposalVoteType.YES,
-        disabled: false,
+        disabled: !answers?.yes,
+        icon: "circle" as IconKeys,
+        iconColor: "success.main",
       },
       {
         label: `No (${answers?.no ?? 0})`,
         value: ProposalVoteType.NO,
-        disabled: false,
+        disabled: !answers?.no,
+        icon: "circle" as IconKeys,
+        iconColor: "error.main",
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
         value: ProposalVoteType.NO_WITH_VETO,
-        disabled: false,
+        disabled: !answers?.noWithVeto,
+        icon: "circle" as IconKeys,
+        iconColor: "error.dark",
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
         value: ProposalVoteType.ABSTAIN,
-        disabled: false,
-      },
-      {
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
-        disabled: false,
+        disabled: !answers?.abstain,
+        icon: "circle" as IconKeys,
+        iconColor: "gray.600",
       },
       {
         label: `Did not vote (${answers?.didNotVote ?? 0})`,
         value: ProposalVoteType.DID_NOT_VOTE,
-        disabled: false,
+        disabled: !answers?.didNotVote,
+        icon: "circle" as IconKeys,
+        iconColor: "gray.600",
+      },
+      {
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
+        disabled: !answers?.weighted,
+        icon: "circle" as IconKeys,
+        iconColor: "primary.light",
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [totalValidators, JSON.stringify(answers)]
+    [JSON.stringify(answers)]
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -205,9 +200,13 @@ export const ValidatorVotesTable = ({
   };
 
   return (
-    <Box id={tableHeaderId}>
+    <>
       {fullVersion && (
-        <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
+        <Grid
+          id={enabled ? tableHeaderId : undefined}
+          gap={4}
+          templateColumns={{ base: "1fr", md: "240px auto" }}
+        >
           <GridItem>
             <SelectInput<ProposalVoteType>
               formLabel="Filter by Answer"
@@ -236,30 +235,38 @@ export const ValidatorVotesTable = ({
         isSearching={isSearching}
         isProposalResolved={isProposalResolved}
       />
-      {!!totalValidators && fullVersion && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          scrollComponentId={tableHeaderId}
-          offset={offset}
-          totalData={data?.total ?? 0}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={(e) => {
-            const size = Number(e.target.value);
-            setPageSize(size);
-            setCurrentPage(1);
-          }}
-        />
-      )}
-      {onViewMore && !!totalValidators && totalValidators > 10 && (
-        <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
-          <Button w="full" variant="ghost-primary" gap={2} onClick={onViewMore}>
-            View all validator votes
-            <CustomIcon name="chevron-right" boxSize="12px" />
-          </Button>
-        </Flex>
-      )}
-    </Box>
+      {data &&
+        data.total > 10 &&
+        (onViewMore ? (
+          <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
+            <Button
+              w="full"
+              variant="ghost-primary"
+              gap={2}
+              onClick={onViewMore}
+            >
+              View all validator votes
+              <CustomIcon name="chevron-right" boxSize="12px" />
+            </Button>
+          </Flex>
+        ) : (
+          fullVersion && (
+            <Pagination
+              currentPage={currentPage}
+              pagesQuantity={pagesQuantity}
+              scrollComponentId={tableHeaderId}
+              offset={offset}
+              totalData={data?.total ?? 0}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={(e) => {
+                const size = Number(e.target.value);
+                setPageSize(size);
+                setCurrentPage(1);
+              }}
+            />
+          )
+        ))}
+    </>
   );
 };

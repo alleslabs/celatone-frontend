@@ -7,14 +7,15 @@ import {
   useCelatoneApp,
   useGovConfig,
   useInternalNavigate,
-  useMoveConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move";
 import { useValidatorData } from "lib/services/validatorService";
 
 import {
@@ -41,11 +42,14 @@ const ValidatorDetailsBody = ({
       extra: { singleStakingDenom },
     },
   } = useCelatoneApp();
-  const move = useMoveConfig({ shouldRedirect: false });
 
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
   });
+  const { data: movePoolInfos, isLoading: isMovePoolInfosLoading } =
+    useMovePoolInfos({
+      withPrices: true,
+    });
   const { data, isLoading } = useValidatorData(validatorAddress);
 
   const handleTabChange = useCallback(
@@ -66,13 +70,14 @@ const ValidatorDetailsBody = ({
     [navigate, tab, validatorAddress]
   );
 
-  if (isLoading || isAssetInfosLoading) return <Loading />;
+  if (isLoading || isAssetInfosLoading || isMovePoolInfosLoading)
+    return <Loading />;
   if (!data) return <ErrorFetching dataName="validator information" />;
   if (!data.info) return <InvalidValidator />;
 
   return (
     <>
-      <PageHeaderContainer bgColor="success.background">
+      <PageHeaderContainer bgColor="transparent">
         <ValidatorTop
           info={data.info}
           totalVotingPower={data.totalVotingPower}
@@ -99,11 +104,9 @@ const ValidatorDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Performance)}>
               Performance
             </CustomTab>
-            {!move.enabled && (
-              <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
-                Bonded Token Changes
-              </CustomTab>
-            )}
+            <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
+              Bonded Token Changes
+            </CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
@@ -135,10 +138,16 @@ const ValidatorDetailsBody = ({
                 validatorAddress={validatorAddress}
                 singleStakingDenom={singleStakingDenom}
                 assetInfos={assetInfos}
+                movePoolInfos={movePoolInfos}
               />
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <UserDocsLink
+          title="What is a Validator?"
+          cta="Read more about Validator Details"
+          href="general/validators/detail-page"
+        />
       </PageContainer>
     </>
   );

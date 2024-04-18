@@ -9,7 +9,6 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { AccountZeroState, EmptyState } from "lib/components/state";
 import { SavedAccountsTable } from "lib/components/table";
-import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 
@@ -92,11 +91,11 @@ const SavedAccounts = observer(() => {
       ) : (
         <AccountZeroState button={<SaveAccountButton />} />
       )}
-      <UserDocsLink
+      {/* <UserDocsLink
         title="How to organize and save accounts?"
         cta="Read more about Saved Accounts"
-        href="cosmwasm/account/organize#saving-accounts-for-later-use"
-      />
+        href={`${move.enabled ? "move" : "cosmwasm"}/account/organize#saving-accounts-for-later-use`}
+      /> */}
     </PageContainer>
   );
 });

@@ -49,13 +49,11 @@ const VotingOverviewBody = ({
 
   return (
     <>
-      {proposalData.status === ProposalStatus.VOTING_PERIOD && (
-        <VotingOverviewQuorum
-          proposalData={proposalData}
-          params={params}
-          votesInfo={votesInfo}
-        />
-      )}
+      <VotingOverviewQuorum
+        proposalData={proposalData}
+        params={params}
+        votesInfo={votesInfo}
+      />
       <VotingOverviewThreshold
         proposalData={proposalData}
         params={params}
@@ -66,9 +64,9 @@ const VotingOverviewBody = ({
         rightIcon={<CustomIcon name="chevron-right" />}
         onClick={() =>
           navigate({
-            pathname: "/proposals/[id]/[tab]",
+            pathname: "/proposals/[proposalId]/[tab]",
             query: {
-              id: proposalData.id,
+              proposalId: proposalData.id,
               tab: TabIndex.Vote,
             },
             options: {

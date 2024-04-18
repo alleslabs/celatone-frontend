@@ -33,10 +33,10 @@ export const NavDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
+  const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
-  const govConfig = useGovConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
   const mobileMenu: MenuInfo[] = [
@@ -55,6 +55,20 @@ export const NavDrawer = () => {
           slug: "/blocks",
           icon: "block",
         },
+        ...(govConfig.enabled
+          ? [
+              {
+                name: "Validators",
+                slug: "/validators",
+                icon: "validator" as IconKeys,
+              },
+              {
+                name: "Proposals",
+                slug: "/proposals",
+                icon: "proposal" as IconKeys,
+              },
+            ]
+          : []),
         ...(wasmConfig.enabled
           ? [
               {
@@ -94,20 +108,6 @@ export const NavDrawer = () => {
                 name: "NFT Collections",
                 slug: "/nft-collections",
                 icon: "group" as IconKeys,
-              },
-            ]
-          : []),
-        ...(govConfig.enabled
-          ? [
-              {
-                name: "Proposals",
-                slug: "/proposals",
-                icon: "proposal" as IconKeys,
-              },
-              {
-                name: "Validators",
-                slug: "/validators",
-                icon: "validator" as IconKeys,
               },
             ]
           : []),

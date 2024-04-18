@@ -135,7 +135,7 @@ export interface ProposalVotesInfo {
   abstain: Big;
   no: Big;
   noWithVeto: Big;
-  totalVotingPower: Big;
+  totalVotingPower: Nullable<Big>;
 }
 
 export interface ProposalVote {

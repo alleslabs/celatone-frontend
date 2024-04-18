@@ -1,21 +1,12 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
+import { chakra, Grid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ValidatorOrder } from "../../types";
 import { trackUseSort } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { TableHeader } from "lib/components/table";
-
-interface ValidatorsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
-  scrollComponentId: string;
-  isActive: boolean;
-  order: ValidatorOrder;
-  setOrder: (value: ValidatorOrder) => void;
-  isDesc: boolean;
-  setIsDesc: (value: boolean) => void;
-}
+import { TooltipInfo } from "lib/components/Tooltip";
 
 const SortIcon = ({
   column,
@@ -36,6 +27,28 @@ const SortIcon = ({
     />
   );
 };
+
+const StyledTableHeader = chakra(TableHeader, {
+  baseStyle: {
+    display: "flex",
+    gap: 1,
+    alignItems: "center",
+    py: 4,
+    cursor: "pointer",
+    transition: "all 0.25s ease-in-out",
+    _hover: { bgColor: "gray.800", borderRadius: "4px" },
+  },
+});
+
+interface ValidatorsTableHeaderProps {
+  templateColumns: GridProps["templateColumns"];
+  scrollComponentId: string;
+  isActive: boolean;
+  order: ValidatorOrder;
+  setOrder: (value: ValidatorOrder) => void;
+  isDesc: boolean;
+  setIsDesc: (value: boolean) => void;
+}
 
 export const ValidatorsTableHeader = ({
   templateColumns,
@@ -67,27 +80,22 @@ export const ValidatorsTableHeader = ({
   return (
     <Grid templateColumns={templateColumns} id={scrollComponentId}>
       {isActive && (
-        <TableHeader
+        <StyledTableHeader
           textAlign="center"
-          cursor="pointer"
           onClick={handleOrderChange(ValidatorOrder.VotingPower)}
         >
           Rank
-        </TableHeader>
+        </StyledTableHeader>
       )}
-      <TableHeader
-        cursor="pointer"
-        onClick={handleOrderChange(ValidatorOrder.Moniker)}
-      >
+      <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Moniker)}>
         Validator
         <SortIcon
           column={ValidatorOrder.Moniker}
           order={order}
           isDesc={isDesc}
         />
-      </TableHeader>
-      <TableHeader
-        cursor="pointer"
+      </StyledTableHeader>
+      <StyledTableHeader
         onClick={handleOrderChange(ValidatorOrder.VotingPower)}
       >
         Voting Power
@@ -96,29 +104,24 @@ export const ValidatorsTableHeader = ({
           order={order}
           isDesc={isDesc}
         />
-      </TableHeader>
-      <TableHeader
-        cursor="pointer"
-        onClick={handleOrderChange(ValidatorOrder.Uptime)}
-      >
-        Uptime (100B)
+      </StyledTableHeader>
+      <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Uptime)}>
+        Uptime
+        <TooltipInfo label="Calculated from recent 100 blocks" />
         <SortIcon
           column={ValidatorOrder.Uptime}
           order={order}
           isDesc={isDesc}
         />
-      </TableHeader>
-      <TableHeader
-        cursor="pointer"
-        onClick={handleOrderChange(ValidatorOrder.Commission)}
-      >
+      </StyledTableHeader>
+      <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Commission)}>
         Commission
         <SortIcon
           column={ValidatorOrder.Commission}
           order={order}
           isDesc={isDesc}
         />
-      </TableHeader>
+      </StyledTableHeader>
     </Grid>
   );
 };

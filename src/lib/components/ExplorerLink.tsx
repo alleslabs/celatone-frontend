@@ -1,5 +1,5 @@
-import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import type { FlexProps, TextProps } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 
 import { trackMintScan } from "lib/amplitude";
@@ -23,7 +23,7 @@ export type LinkType =
   | "pool_id"
   | "proposal_id";
 
-interface ExplorerLinkProps extends BoxProps {
+interface ExplorerLinkProps extends FlexProps {
   value: string;
   type: LinkType;
   copyValue?: string;
@@ -31,7 +31,6 @@ interface ExplorerLinkProps extends BoxProps {
   showCopyOnHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
-  maxWidth?: string;
   textVariant?: TextProps["variant"];
   ampCopierSection?: string;
   openNewTab?: boolean;
@@ -106,7 +105,6 @@ const LinkRender = ({
   hrefLink,
   textValue,
   isEllipsis,
-  maxWidth,
   textVariant,
   openNewTab,
 }: {
@@ -115,7 +113,6 @@ const LinkRender = ({
   hrefLink: string;
   textValue: string;
   isEllipsis: boolean;
-  maxWidth: ExplorerLinkProps["maxWidth"];
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
@@ -124,10 +121,7 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       color="secondary.main"
-      transition="all 0.25s ease-in-out"
-      _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
-      maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
@@ -136,7 +130,12 @@ const LinkRender = ({
   );
 
   return isInternal && !openNewTab ? (
-    <AppLink href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
+    <AppLink
+      href={hrefLink}
+      passHref
+      onClick={(e) => e.stopPropagation()}
+      style={{ overflow: "hidden" }}
+    >
       {textElement}
     </AppLink>
   ) : (
@@ -149,6 +148,7 @@ const LinkRender = ({
         if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
+      style={{ overflow: "hidden" }}
     >
       {textElement}
     </a>
@@ -163,7 +163,6 @@ export const ExplorerLink = ({
   showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
-  maxWidth = "160px",
   textVariant = "body2",
   ampCopierSection,
   openNewTab,
@@ -186,50 +185,42 @@ export const ExplorerLink = ({
   const link = externalLink ?? internalLink;
   const readOnly = isReadOnly || !link;
   // TODO: handle auto width
-  return (
-    <Box
+  return readOnly ? (
+    <Flex alignItems="center" {...componentProps}>
+      <Text variant="body2" color="text.disabled">
+        {textValue}
+      </Text>
+    </Flex>
+  ) : (
+    <Flex
+      className="copier-wrapper"
       display="inline-flex"
-      alignItems="center"
+      align="center"
+      h={fixedHeight ? "24px" : "auto"}
       transition="all 0.25s ease-in-out"
       _hover={{
-        ...(!readOnly && {
-          textDecoration: "underline",
-          textDecorationColor: "secondary.light",
-        }),
+        textDecoration: "underline",
+        textDecorationColor: "secondary.light",
       }}
       {...componentProps}
     >
-      {readOnly ? (
-        <Text variant="body2" color="text.disabled">
-          {textValue}
-        </Text>
-      ) : (
-        <Flex
-          className="copier-wrapper"
-          display={{ base: "inline-flex", md: "flex" }}
-          align="center"
-          h={fixedHeight ? "24px" : "auto"}
-        >
-          <LinkRender
-            type={type}
-            isInternal={isUndefined(externalLink)}
-            hrefLink={link}
-            textValue={textValue}
-            isEllipsis={textFormat === "ellipsis"}
-            maxWidth={maxWidth}
-            textVariant={textVariant}
-            openNewTab={openNewTab}
-          />
-          <Copier
-            type={type}
-            value={copyValue || value}
-            copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-            display={showCopyOnHover && !isMobile ? "none" : "inline"}
-            ml={2}
-            amptrackSection={ampCopierSection}
-          />
-        </Flex>
-      )}
-    </Box>
+      <LinkRender
+        type={type}
+        isInternal={isUndefined(externalLink)}
+        hrefLink={link}
+        textValue={textValue}
+        isEllipsis={textFormat === "ellipsis"}
+        textVariant={textVariant}
+        openNewTab={openNewTab}
+      />
+      <Copier
+        type={type}
+        value={copyValue || value}
+        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
+        display={showCopyOnHover && !isMobile ? "none" : "inline"}
+        ml={2}
+        amptrackSection={ampCopierSection}
+      />
+    </Flex>
   );
 };

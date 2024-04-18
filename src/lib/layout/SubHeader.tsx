@@ -20,17 +20,23 @@ interface SubHeaderMenuInfo {
 }
 
 const SubHeader = () => {
+  const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
-  const poolConfig = usePoolConfig({ shouldRedirect: false });
-  const govConfig = useGovConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
+  const poolConfig = usePoolConfig({ shouldRedirect: false });
 
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
   ];
+
+  if (govConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Validators", slug: "/validators", icon: "validator" },
+      { name: "Proposals", slug: "/proposals", icon: "proposal" }
+    );
 
   if (wasmConfig.enabled)
     subHeaderMenu.push(
@@ -51,12 +57,6 @@ const SubHeader = () => {
       slug: "/nft-collections",
       icon: "group",
     });
-
-  if (govConfig.enabled)
-    subHeaderMenu.push(
-      { name: "Proposals", slug: "/proposals", icon: "proposal" },
-      { name: "Validators", slug: "/validators", icon: "validator" }
-    );
 
   if (poolConfig.enabled)
     subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });

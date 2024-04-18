@@ -39,6 +39,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+- [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
+
+## v1.6.0
+
+### Features
+
+- [#887](https://github.com/alleslabs/celatone-frontend/pull/887) Add blackwing devnet 1 network
+- [#880](https://github.com/alleslabs/celatone-frontend/pull/880) Add resolved voting power for proposals
+- [#878](https://github.com/alleslabs/celatone-frontend/pull/878) Support searching proposal id and validator address on the main search
+- [#875](https://github.com/alleslabs/celatone-frontend/pull/875) Add Amplitude tracking to validator details page
 - [#865](https://github.com/alleslabs/celatone-frontend/pull/865) Apply voted proposals filter and search input to table
 - [#860](https://github.com/alleslabs/celatone-frontend/pull/860) Add voted proposals in voted tab
 - [#862](https://github.com/alleslabs/celatone-frontend/pull/862) View failed reason
@@ -98,7 +112,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+<<<<<<< HEAD
 - [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Contract Interactions
+=======
+- [#888](https://github.com/alleslabs/celatone-frontend/pull/888) Apply timeout for delegator counts on validator detail
+- [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
+- [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
+- [#884](https://github.com/alleslabs/celatone-frontend/pull/884) Bump cosmjs tx parsing problem
+>>>>>>> develop
 - [#861](https://github.com/alleslabs/celatone-frontend/pull/861) Upgrade json schema package version
 - [#871](https://github.com/alleslabs/celatone-frontend/pull/871) Move filter and search logic to API
 - [#869](https://github.com/alleslabs/celatone-frontend/pull/869) Change GraphQL phoenix-1 endpoint to prod
@@ -132,6 +153,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
+- [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
+- [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline
+- [#885](https://github.com/alleslabs/celatone-frontend/pull/885) Fix voted proposals freeze columns
+- [#881](https://github.com/alleslabs/celatone-frontend/pull/881) Fix abi option boolean problem
+- [#877](https://github.com/alleslabs/celatone-frontend/pull/877) Fix validator list/details bug bash
+- [#874](https://github.com/alleslabs/celatone-frontend/pull/874) Fix minor proposal and validator bugs
+- [#876](https://github.com/alleslabs/celatone-frontend/pull/876) Fix validator votes dropdown
+- [#873](https://github.com/alleslabs/celatone-frontend/pull/873) Fix bug bash select input and ui
 - [#868](https://github.com/alleslabs/celatone-frontend/pull/868) Fix validator jail state
 - [#867](https://github.com/alleslabs/celatone-frontend/pull/867) Fix validator details voting table
 - [#864](https://github.com/alleslabs/celatone-frontend/pull/864) Fix voting countdown text
@@ -173,9 +203,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#721](https://github.com/alleslabs/celatone-frontend/pull/721) Migrate to pnpm
 - [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
-- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
+- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract details
 - [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
-- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
+- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract details
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 - [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
 
@@ -287,8 +317,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#680](https://github.com/alleslabs/celatone-frontend/pull/680) Temporarily hide sei block time
+- [#679](https://github.com/alleslabs/celatone-frontend/pull/679) Temporarily update sei pacific graphql endpoint
+- [#661](https://github.com/alleslabs/celatone-frontend/pull/661) Add stone-12-1 network
 - [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
-- [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save contract count
+- [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save
 - [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details
 - [#620](https://github.com/alleslabs/celatone-frontend/pull/620) Add hex address in save account feature in initia
 - [#618](https://github.com/alleslabs/celatone-frontend/pull/618) Add save account feature in account detail page
@@ -322,6 +355,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#688](https://github.com/alleslabs/celatone-frontend/pull/688) Update stone-12-1 graphql
 - [#627](https://github.com/alleslabs/celatone-frontend/pull/627) Add responsive for published event in module detail
 - [#625](https://github.com/alleslabs/celatone-frontend/pull/625) Fix abi empty vector serialization
 - [#605](https://github.com/alleslabs/celatone-frontend/pull/605) Apply singleton class style to Amplitude structure
@@ -885,4 +919,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Docs
 
-- [#57](https://github.com/alleslabs/celatone-frontend/pull/57) Rewrite README file with more information and structure
+- [#57](https://github.com/alleslabs/celatone-frontend/pull/57) Rewrite README.md file with more information and structure

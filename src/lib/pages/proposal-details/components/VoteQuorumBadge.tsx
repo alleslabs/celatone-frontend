@@ -1,6 +1,8 @@
+import { isNull } from "lodash";
+
 import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
-import type { Ratio } from "lib/types";
+import type { Nullable, Ratio } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 import { ActiveDot } from "./ActiveDot";
@@ -9,17 +11,19 @@ import { ProgressBadge } from "./ProgressBadge";
 interface VoteQuorumBadgeProps {
   status: ProposalStatus;
   quorum: number;
-  totalVotes: Ratio<number>;
+  totalRatio: Nullable<Ratio<number>>;
   isCompact: boolean;
 }
 
 export const VoteQuorumBadge = ({
   status,
   quorum,
-  totalVotes,
+  totalRatio,
   isCompact,
 }: VoteQuorumBadgeProps) => {
-  if (totalVotes >= quorum)
+  if (isNull(totalRatio)) return null;
+
+  if (totalRatio >= quorum)
     return isCompact ? (
       <CustomIcon m={0} name="check-circle-solid" color="success.main" />
     ) : (

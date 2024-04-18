@@ -154,7 +154,7 @@ export const RecentBlocksSection = ({
         bottom="0"
         ref={hoverTextRef}
       >
-        Most Recent Blocks: {data.recent100Blocks[0]?.height ?? "N/A"}
+        Most Recent Block: {data.recent100Blocks[0]?.height ?? "N/A"}
       </Text>
     </Flex>
   );

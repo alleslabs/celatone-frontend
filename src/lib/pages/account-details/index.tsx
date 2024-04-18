@@ -405,7 +405,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is an Account?"
               cta="Read more about Account"
-              href="cosmwasm/account/detail-page"
+              href="general/accounts/detail-page"
             />
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
@@ -413,7 +413,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is Supported and Unsupported Assets?"
               cta="Read more about Assets"
-              href="cosmwasm/account/detail-page#assets"
+              href="general/accounts/detail-page#assets"
             />
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
@@ -421,11 +421,16 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is Delegations, Total Bonded, Rewards?"
               cta="Read more about Delegations"
-              href="cosmwasm/account/detail-page#delegations"
+              href="general/accounts/detail-page#staking"
             />
           </TabPanel>
           <TabPanel p={0}>
             <NftsSection address={hexAddress} totalData={nftsCount} />
+            <UserDocsLink
+              title="What is NFTs in the account?"
+              cta="Read more about NFTs in Account"
+              href="general/accounts/detail-page#nfts"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable
@@ -436,7 +441,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is transactions related to the account?"
               cta="Read more about Account Transactions"
-              href="cosmwasm/account/detail-page#transactions"
+              href="general/accounts/detail-page#transactions"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -449,7 +454,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is Stored Codes in the account?"
               cta="Read more about Stored Codes in Account"
-              href="cosmwasm/account/detail-page#codes"
+              href="general/accounts/detail-page#codes"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -462,7 +467,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is contract instances in the account?"
               cta="Read more about Contracts in Account"
-              href="cosmwasm/account/detail-page#contracts"
+              href="general/accounts/detail-page#contracts"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -475,7 +480,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is contract admins in the account?"
               cta="Read more about Account Contract Admins"
-              href="cosmwasm/account/detail-page#contracts-admin"
+              href="general/accounts/detail-page#contracts-admin"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -485,6 +490,11 @@ const AccountDetailsBody = ({
               resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />
+            <UserDocsLink
+              title="What is resources?"
+              cta="Read more about Resources in Account"
+              href="general/accounts/detail-page#resources"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
@@ -492,6 +502,11 @@ const AccountDetailsBody = ({
               totalCount={modulesData?.length}
               modules={modulesData}
               isLoading={isModulesLoading}
+            />
+            <UserDocsLink
+              title="What is modules?"
+              cta="Read more about Modules in Account"
+              href="general/accounts/detail-page#modules"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -504,7 +519,7 @@ const AccountDetailsBody = ({
             <UserDocsLink
               title="What is Opened Proposals in the account?"
               cta="Read more about Opened Proposals"
-              href="cosmwasm/account/detail-page#proposals"
+              href="general/accounts/detail-page#proposals"
             />
           </TabPanel>
         </TabPanels>
