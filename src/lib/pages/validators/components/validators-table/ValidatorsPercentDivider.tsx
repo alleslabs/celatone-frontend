@@ -12,7 +12,7 @@ export const ValidatorsPercentDivider = ({
   label,
 }: ValidatorsPercentDividerProps) => (
   <Flex position="relative" h={1} bgColor="gray.700">
-    <div style={{ position: "absolute", top: "-200%" }}>
+    <div style={{ position: "absolute", top: "-300%" }}>
       <Tooltip
         placement="right"
         label={
