@@ -2,12 +2,14 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useMoveConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 
 import { RecentModulesTable } from "./components/RecentModulesTable";
 
 const RecentModules = () => {
+  useMoveConfig({ shouldRedirect: true });
   const router = useRouter();
 
   useEffect(() => {
