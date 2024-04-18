@@ -197,9 +197,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#721](https://github.com/alleslabs/celatone-frontend/pull/721) Migrate to pnpm
 - [#727](https://github.com/alleslabs/celatone-frontend/pull/727) Add amp nft pages
-- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract detail
+- [#720](https://github.com/alleslabs/celatone-frontend/pull/720) Add delegations for contract details
 - [#684](https://github.com/alleslabs/celatone-frontend/pull/684) Add nft page
-- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract detail
+- [#717](https://github.com/alleslabs/celatone-frontend/pull/717) Add total value for contract details
 - [#711](https://github.com/alleslabs/celatone-frontend/pull/711) Refactor assetInfos and add movePoolInfos to tx details
 - [#724](https://github.com/alleslabs/celatone-frontend/pull/724) Add stone-13
 
@@ -311,8 +311,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#680](https://github.com/alleslabs/celatone-frontend/pull/680) Temporarily hide sei block time
+- [#679](https://github.com/alleslabs/celatone-frontend/pull/679) Temporarily update sei pacific graphql endpoint
+- [#661](https://github.com/alleslabs/celatone-frontend/pull/661) Add stone-12-1 network
 - [#642](https://github.com/alleslabs/celatone-frontend/pull/642) Add stone-12 network
-- [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save contract count
+- [#629](https://github.com/alleslabs/celatone-frontend/pull/629) Add Amplitude for save account,to save code page count, and to save
 - [#628](https://github.com/alleslabs/celatone-frontend/pull/628) Add Amplitude for contract states, pagination and contract details
 - [#620](https://github.com/alleslabs/celatone-frontend/pull/620) Add hex address in save account feature in initia
 - [#618](https://github.com/alleslabs/celatone-frontend/pull/618) Add save account feature in account detail page
@@ -346,6 +349,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#688](https://github.com/alleslabs/celatone-frontend/pull/688) Update stone-12-1 graphql
 - [#627](https://github.com/alleslabs/celatone-frontend/pull/627) Add responsive for published event in module detail
 - [#625](https://github.com/alleslabs/celatone-frontend/pull/625) Fix abi empty vector serialization
 - [#605](https://github.com/alleslabs/celatone-frontend/pull/605) Apply singleton class style to Amplitude structure
@@ -909,4 +913,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Docs
 
-- [#57](https://github.com/alleslabs/celatone-frontend/pull/57) Rewrite README file with more information and structure
+- [#57](https://github.com/alleslabs/celatone-frontend/pull/57) Rewrite README.md file with more information and structure
