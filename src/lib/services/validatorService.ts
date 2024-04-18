@@ -244,7 +244,7 @@ export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
 
   return useQuery(
     [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],
-    createQueryFnWithTimeout(queryFn),
+    createQueryFnWithTimeout(queryFn, 10000),
     { retry: false }
   );
 };
