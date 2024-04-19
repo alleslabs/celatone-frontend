@@ -247,6 +247,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "contro-test-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "controtestnet1",
     prettyName: "Contro Testnet 1",
