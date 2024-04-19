@@ -16,7 +16,7 @@ import { useSchemaStore } from "lib/providers/store";
 import type { BechAddr32, Option } from "lib/types";
 
 import { JsonQuery } from "./JsonQuery";
-import { SchemaQuery } from "./SchemaQuery";
+import { SchemaQuery } from "./schema-query";
 
 interface QueryAreaProps {
   contractAddress: BechAddr32;
