@@ -97,12 +97,12 @@ export const ExecuteArea = observer(
               <>
                 {attached ? (
                   <SchemaExecute
-                    codeId={codeId}
-                    codeHash={codeHash}
                     schema={schema}
                     contractAddress={contractAddress}
-                    initialFunds={initialFunds}
                     initialMsg={initialMsg}
+                    initialFunds={initialFunds}
+                    codeId={codeId}
+                    codeHash={codeHash}
                   />
                 ) : (
                   <UploadSchemaSection
