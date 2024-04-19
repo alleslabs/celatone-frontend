@@ -246,6 +246,52 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       isValidatorExternalLink: null,
     },
   },
+  "contro-test-1": {
+    chain: "initia",
+    registryChainName: "controtestnet1",
+    prettyName: "Contro Testnet 1",
+    lcd: "https://maze-rest-493360ba-cd86-4627-aca3-8b61635eb2bf.ue1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-493360ba-cd86-4627-aca3-8b61635eb2bf.ue1-prod.newmetric.xyz",
+    indexer: "https://miniwasm-2-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      move: {
+        enabled: false,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: false,
+      },
+      nft: {
+        enabled: false,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom:
+          "l2/2716295e82bab3b0308dc1e35837fe471657ea07ee71aebb6129739fb0f1278a",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {
+      isValidatorExternalLink: null,
+    },
+  },
   "stone-13": {
     tier: "full",
     chain: "initia",

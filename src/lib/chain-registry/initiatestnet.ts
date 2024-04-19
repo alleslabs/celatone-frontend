@@ -182,6 +182,58 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: CHAIN_SCHEMA,
+    chain_name: "controtestnet1",
+    status: "live",
+    network_type: "devnet",
+    pretty_name: "Contro Testnet 1",
+    chain_id: "contro-test-1",
+    bech32_prefix: "init",
+    daemon_name: "minitiad",
+    node_home: NODE_HOME,
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom:
+            "l2/2716295e82bab3b0308dc1e35837fe471657ea07ee71aebb6129739fb0f1278a",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.15,
+          average_gas_price: 0.15,
+          high_gas_price: 0.4,
+        },
+        {
+          denom:
+            "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.15,
+          average_gas_price: 0.15,
+          high_gas_price: 0.4,
+        },
+      ],
+    },
+    staking: undefined,
+    logo_URIs: {
+      png: "",
+      svg: "",
+    },
+    apis: {
+      rpc: [
+        {
+          address:
+            "https://maze-rpc-493360ba-cd86-4627-aca3-8b61635eb2bf.ue1-prod.newmetric.xyz",
+        },
+      ],
+      rest: [
+        {
+          address:
+            "https://maze-rest-493360ba-cd86-4627-aca3-8b61635eb2bf.ue1-prod.newmetric.xyz",
+        },
+      ],
+    },
+  },
+  {
+    $schema: CHAIN_SCHEMA,
     chain_name: "initiatestnet13",
     status: "live",
     network_type: "testnet",
@@ -321,6 +373,30 @@ export const initiatestnetAssets: AssetList[] = [
           },
         ],
         base: "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
+        name: "Init",
+        display: "init",
+        symbol: "INIT",
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "controtestnet1",
+    assets: [
+      {
+        description: "The native staking token of Initia.",
+        denom_units: [
+          {
+            denom:
+              "l2/2716295e82bab3b0308dc1e35837fe471657ea07ee71aebb6129739fb0f1278a",
+            exponent: 0,
+          },
+          {
+            denom: "init",
+            exponent: 6,
+          },
+        ],
+        base: "l2/2716295e82bab3b0308dc1e35837fe471657ea07ee71aebb6129739fb0f1278a",
         name: "Init",
         display: "init",
         symbol: "INIT",
