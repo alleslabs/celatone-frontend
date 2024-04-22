@@ -48,7 +48,6 @@ const InteractContractBody = ({
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
   // ------------------------------------------//
-
   const handleSetSelectedType = useCallback(
     (newType: ContractInteractionTabs) =>
       navigate({
