@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
+import { Flex, TabList, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 
@@ -50,10 +50,7 @@ export const QueryArea = observer(
     }, [JSON.stringify(schema)]);
 
     return (
-      <Box my={4}>
-        <Heading variant="h6" as="h6" mr={2} mt={8} mb={4}>
-          Query Message
-        </Heading>
+      <>
         {!isMobile && (
           <Tabs
             isLazy
@@ -122,7 +119,7 @@ export const QueryArea = observer(
             )
           }
         />
-      </Box>
+      </>
     );
   }
 );

@@ -1,9 +1,10 @@
-import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
+import { Flex, TabList, Tabs } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 
 import { trackUseTab } from "lib/amplitude";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -56,10 +57,11 @@ export const ExecuteArea = observer(
     }, [JSON.stringify(schema)]);
 
     return (
-      <Box my={4}>
-        <Heading variant="h6" as="h6" mt={8} mb={4}>
-          Execute Message
-        </Heading>
+      <>
+        <ConnectWalletAlert
+          subtitle="You need to connect your wallet to perform this action"
+          mb={4}
+        />
         <Tabs
           isLazy
           lazyBehavior="keepMounted"
@@ -126,7 +128,7 @@ export const ExecuteArea = observer(
             )
           }
         />
-      </Box>
+      </>
     );
   }
 );

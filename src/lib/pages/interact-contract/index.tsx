@@ -8,7 +8,6 @@ import {
   useMobile,
   useWasmConfig,
 } from "lib/app-provider";
-import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
@@ -96,48 +95,35 @@ const InteractContractBody = ({
   }, [contract, isMobile, navigate, selectedType]);
 
   useEffect(() => {
+    setContractAddress(contract);
+    setCodeId(undefined);
+    setCodeHash(undefined);
+
     if (!msg) {
       setInitialMsg("");
       setInitialFunds([]);
-    }
-
-    const decodeMsg = libDecode(msg);
-    if (decodeMsg && !jsonValidate(decodeMsg)) {
-      const jsonMsg = JSON.parse(decodeMsg);
-      if (!jsonMsg.msg) {
-        setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg)));
-      } else {
-        setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg.msg)));
-        setInitialFunds(jsonMsg.funds);
+    } else {
+      const decodeMsg = libDecode(msg);
+      if (decodeMsg && !jsonValidate(decodeMsg)) {
+        const jsonMsg = JSON.parse(decodeMsg);
+        if (!jsonMsg.msg) {
+          setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg)));
+        } else {
+          setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg.msg)));
+          setInitialFunds(jsonMsg.funds);
+        }
       }
     }
-    setContractAddress(contract);
   }, [contract, msg]);
 
   return (
     <PageContainer>
-      <Flex mt={1} mb={8} justify="space-between">
-        <Flex align="center" justify="space-between" w="full">
-          <Flex align="center" gap={4}>
-            <Heading variant="h5" as="h5" alignSelf="flex-start">
-              {isMobile ? "Query" : "Contract Interactions"}
-            </Heading>
-            {!isMobile && (
-              <InteractionTypeSwitch
-                currentTab={selectedType}
-                onTabChange={handleSetSelectedType}
-              />
-            )}
-          </Flex>
-          <UserDocsLink isButton isDevTool href="cosmwasm/query-execute" />
-        </Flex>
+      <Flex align="center" justify="space-between" w="full" mt={1} mb={8}>
+        <Heading variant="h5" as="h5" alignSelf="flex-start">
+          {isMobile ? "Query" : "Contract Interactions"}
+        </Heading>
+        <UserDocsLink isButton isDevTool href="cosmwasm/query-execute" />
       </Flex>
-      {selectedType === ContractInteractionTabs.ExecuteContract && (
-        <ConnectWalletAlert
-          subtitle="You need to connect your wallet to perform this action"
-          mb={8}
-        />
-      )}
       <ContractSelectSection
         mode="all-lists"
         contractAddress={contract}
@@ -147,6 +133,17 @@ const InteractContractBody = ({
           setCodeId(data.codeId);
         }}
       />
+      <Flex gap={4} align="center" mt={8} mb={4}>
+        <Heading variant="h6" as="h6" minW={40} mr={2}>
+          {selectedType} Message
+        </Heading>
+        {!isMobile && (
+          <InteractionTypeSwitch
+            currentTab={selectedType}
+            onTabChange={handleSetSelectedType}
+          />
+        )}
+      </Flex>
       <InteractionWrapper
         currentTab={selectedType}
         queryContent={
