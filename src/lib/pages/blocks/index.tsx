@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 
 import { RecentBlocksTable } from "./components/RecentBlocksTable";
 
@@ -15,14 +16,18 @@ const BlocksPage = () => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
-      <PageHeader
-        title="Blocks"
-        subtitle="This page displays all blocks on this network sorted by recency"
-        docHref="introduction/overview#recent-blocks"
-      />
-      <RecentBlocksTable />
-    </PageContainer>
+    <>
+      <PageHeaderContainer bgColor="overlay.block">
+        <PageHeader
+          title="Blocks"
+          subtitle="This page displays all blocks on this network sorted by recency"
+          docHref="introduction/overview#recent-blocks"
+        />
+      </PageHeaderContainer>
+      <PageContainer>
+        <RecentBlocksTable />
+      </PageContainer>
+    </>
   );
 };
 

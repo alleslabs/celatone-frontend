@@ -67,7 +67,7 @@ const Validators = () => {
   const scrollComponentId = "validator-table-header";
   return (
     <>
-      <PageHeaderContainer bgColor="transparent">
+      <PageHeaderContainer bgColor="overlay.validator">
         <PageHeader
           title="Validators"
           subtitle="This page displays all validators on this network"

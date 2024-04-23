@@ -8,12 +8,18 @@ interface PageHeaderProps {
   title: string;
   subtitle?: string;
   docHref: string;
+  mb?: number;
 }
 
-export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
+export const PageHeader = ({
+  title,
+  subtitle,
+  docHref,
+  mb = 0,
+}: PageHeaderProps) => {
   const isMobile = useMobile();
   return (
-    <Flex justifyContent="space-between" alignItems="center" mb={8}>
+    <Flex justifyContent="space-between" alignItems="center" mb={mb} zIndex={1}>
       <div style={{ width: "100%" }}>
         <Flex justifyContent="space-between">
           <Heading

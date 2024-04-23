@@ -12,6 +12,7 @@ import {
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
@@ -96,128 +97,145 @@ const Proposals = () => {
   ]);
 
   return (
-    <PageContainer>
-      <Flex justify="space-between" alignItems="center">
-        <Heading as="h5" variant="h5">
-          Proposals
-        </Heading>
-        <Flex gap={4} align="center">
-          <UserDocsLink
-            href="introduction/overview#recent-proposals"
-            isButton
-          />
-          {!isMobile && <NewProposalButton />}
-        </Flex>
-      </Flex>
-      <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
-        <Flex justify="space-between" align="center">
-          <InputWithIcon
-            placeholder="Search with Proposal ID or Proposal Title"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            size="lg"
-            amptrackSection="proposal-list-search"
-          />
-          {!isMobile && (
-            <Tooltip
-              label="You need to connect your wallet to see your proposals"
-              maxW="240px"
-              textAlign="center"
-              hidden={!!address}
-            >
-              <Switch
-                alignItems="center"
-                justifyContent="center"
-                h="fit-content"
-                minW="200px"
-                display="flex"
-                size="md"
-                isChecked={!!proposer}
-                disabled={!address}
-                onChange={(e) => {
-                  if (e.target.checked && address) {
-                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                      toggle: "on",
-                    });
-                    setProposer(address);
-                  } else {
-                    track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
-                      toggle: "off",
-                    });
-                    setProposer(undefined);
-                  }
-                }}
+    <>
+      <PageHeaderContainer bgColor="overlay.proposal">
+        <Flex justify="space-between" alignItems="center" zIndex={1}>
+          <div style={{ width: "100%" }}>
+            <Flex justifyContent="space-between">
+              <Heading
+                as="h5"
+                variant="h5"
+                color="text.main"
+                fontWeight={600}
+                minH="36px"
               >
-                <Text cursor={address ? "pointer" : "default"}>
-                  My Proposals
-                </Text>
-              </Switch>
-            </Tooltip>
-          )}
+                Proposals
+              </Heading>
+            </Flex>
+            <Text variant="body2" color="text.dark" fontWeight={500}>
+              This page displays all proposals on this network sorted by recency
+            </Text>
+          </div>
+          <Flex gap={4} align="center">
+            <UserDocsLink
+              href="introduction/overview#recent-proposals"
+              isButton
+            />
+            {!isMobile && <NewProposalButton />}
+          </Flex>
         </Flex>
-        <Flex
-          gap={{ base: 10, md: 3 }}
-          pb={3}
-          direction={{ base: "column", md: "row" }}
-        >
-          <ProposalStatusFilter
-            label="Filter by Status"
-            result={statuses}
-            setResult={setStatuses}
-            placeholder="All Status"
-          />
-          <ProposalTypeFilter
-            label="Filter by Type"
-            result={types}
-            setResult={setTypes}
-            placeholder="All Type"
-          />
+        <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
+          <Flex justify="space-between" align="center">
+            <InputWithIcon
+              placeholder="Search with Proposal ID or Proposal Title"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              size="lg"
+              amptrackSection="proposal-list-search"
+            />
+            {!isMobile && (
+              <Tooltip
+                label="You need to connect your wallet to see your proposals"
+                maxW="240px"
+                textAlign="center"
+                hidden={!!address}
+              >
+                <Switch
+                  alignItems="center"
+                  justifyContent="center"
+                  h="fit-content"
+                  minW="200px"
+                  display="flex"
+                  size="md"
+                  isChecked={!!proposer}
+                  disabled={!address}
+                  onChange={(e) => {
+                    if (e.target.checked && address) {
+                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                        toggle: "on",
+                      });
+                      setProposer(address);
+                    } else {
+                      track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                        toggle: "off",
+                      });
+                      setProposer(undefined);
+                    }
+                  }}
+                >
+                  <Text cursor={address ? "pointer" : "default"}>
+                    My Proposals
+                  </Text>
+                </Switch>
+              </Tooltip>
+            )}
+          </Flex>
+          <Flex
+            gap={{ base: 10, md: 3 }}
+            pb={3}
+            direction={{ base: "column", md: "row" }}
+          >
+            <ProposalStatusFilter
+              label="Filter by Status"
+              result={statuses}
+              setResult={setStatuses}
+              placeholder="All Status"
+            />
+            <ProposalTypeFilter
+              label="Filter by Type"
+              result={types}
+              setResult={setTypes}
+              placeholder="All Type"
+            />
+          </Flex>
         </Flex>
-      </Flex>
-      <ProposalsTable
-        proposals={proposals?.items}
-        isLoading={isLoading}
-        emptyState={
-          error ? (
-            <ErrorFetching dataName="proposals" />
-          ) : (
-            <>
-              {!!proposer ||
-              statuses.length > 0 ||
-              types.length > 0 ||
-              search.trim().length > 0 ? (
-                <EmptyState
-                  imageVariant="not-found"
-                  message="No matches found. Please double-check your input and select correct network."
-                  withBorder
-                />
-              ) : (
-                <EmptyState
-                  imageVariant="empty"
-                  message="There are no proposals on this network."
-                  withBorder
-                />
-              )}
-            </>
-          )
-        }
-      />
-      {proposals && proposals.total > 10 && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={proposals.total}
-          pageSize={pageSize}
-          onPageChange={(nextPage) => setCurrentPage(nextPage)}
-          onPageSizeChange={(e) => {
-            const size = Number(e.target.value);
-            setPageSize(size);
-            setCurrentPage(1);
-          }}
+      </PageHeaderContainer>
+      <PageContainer>
+        <ProposalsTable
+          proposals={proposals?.items}
+          isLoading={isLoading}
+          emptyState={
+            error ? (
+              <ErrorFetching dataName="proposals" />
+            ) : (
+              <>
+                {!!proposer ||
+                statuses.length > 0 ||
+                types.length > 0 ||
+                search.trim().length > 0 ? (
+                  <EmptyState
+                    imageVariant="not-found"
+                    message="No matches found. Please double-check your input and select correct network."
+                    withBorder
+                  />
+                ) : (
+                  <EmptyState
+                    imageVariant="empty"
+                    message="There are no proposals on this network."
+                    withBorder
+                  />
+                )}
+              </>
+            )
+          }
         />
-      )}
-    </PageContainer>
+        {proposals && proposals.total > 10 && (
+          <Pagination
+            currentPage={currentPage}
+            pagesQuantity={pagesQuantity}
+            offset={offset}
+            totalData={proposals.total}
+            pageSize={pageSize}
+            onPageChange={(nextPage) => setCurrentPage(nextPage)}
+            onPageSizeChange={(e) => {
+              const size = Number(e.target.value);
+              setPageSize(size);
+              setCurrentPage(1);
+            }}
+          />
+        )}
+      </PageContainer>
+    </>
   );
 };
 
