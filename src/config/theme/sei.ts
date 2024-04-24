@@ -89,6 +89,15 @@ export const SEI_THEME: ThemeConfig = {
       800: "#132730",
       900: "#0C1C23",
     },
+    overlay: {
+      transaction: "rgba(217, 217, 217, 0.1)",
+      block: "rgba(32, 135, 255, 0.1)",
+      validator: "rgba(255, 157, 189, 0.1)",
+      proposal: "rgba(74, 194, 255, 0.1)",
+      code: "rgba(161, 255, 88, 0.1)",
+      contract: "rgba(124, 118, 255, 0.1)",
+      account: "rgba(105, 255, 255, 0.1)",
+    },
   },
   tag: {
     signer: {

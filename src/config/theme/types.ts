@@ -86,6 +86,19 @@ export type ThemeConfig = {
       800: string;
       900: string;
     };
+    overlay: {
+      transaction: string;
+      block: string;
+      validator: string;
+      proposal: string;
+      account: string;
+      code?: string;
+      contract?: string;
+      module?: string;
+      pool?: string;
+      collection?: string;
+      nft?: string;
+    };
   };
   tag: {
     signer: {

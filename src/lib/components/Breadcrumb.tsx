@@ -23,6 +23,7 @@ type BreadcrumbProps = {
 export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
   <ChakraBreadcrumb
     w="full"
+    zIndex={1}
     spacing="4px"
     mb={mb}
     separator={

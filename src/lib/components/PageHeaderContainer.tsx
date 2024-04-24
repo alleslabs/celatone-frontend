@@ -10,7 +10,6 @@ const PageHeaderContainer = ({
     as="section"
     direction="column"
     position="relative"
-    gap={{ base: "24px", md: "32px" }}
     px={{ base: "16px", md: "48px" }}
     pt={{ base: "16px", md: "48px" }}
     sx={{
@@ -24,9 +23,7 @@ const PageHeaderContainer = ({
         height: 40,
         zIndex: 0,
         bgGradient: bgColor
-          ? {
-              md: `linear(to-b, ${bgColor}, transparent)`,
-            }
+          ? `linear(to-b, ${bgColor}, transparent)`
           : undefined,
       },
     }}

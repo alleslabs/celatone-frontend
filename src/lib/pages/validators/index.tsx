@@ -73,11 +73,15 @@ const Validators = () => {
           subtitle="This page displays all validators on this network"
           docHref="introduction/overview#validators"
         />
+      </PageHeaderContainer>
+      <PageContainer hasPaddingTop={false}>
         <Flex
-          direction={{ base: "column", md: "row" }}
-          align="end"
-          gap={{ base: "18px", md: "8px" }}
           w="full"
+          align="end"
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: "18px", md: "8px" }}
+          mt={{ base: 4, md: 8 }}
+          mb={6}
         >
           <ActiveFilter
             isActive={isActive}
@@ -108,8 +112,6 @@ const Validators = () => {
             amptrackSection="validator-list-search"
           />
         </Flex>
-      </PageHeaderContainer>
-      <PageContainer>
         <ValidatorsTable
           data={data}
           isLoading={isLoading}

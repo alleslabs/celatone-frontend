@@ -77,7 +77,7 @@ const ValidatorDetailsBody = ({
 
   return (
     <>
-      <PageHeaderContainer bgColor="transparent">
+      <PageHeaderContainer bgColor="overlay.validator" gap={{ base: 6, md: 8 }}>
         <ValidatorTop
           info={data.info}
           totalVotingPower={data.totalVotingPower}

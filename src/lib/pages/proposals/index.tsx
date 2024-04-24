@@ -190,7 +190,7 @@ const Proposals = () => {
           </Flex>
         </Flex>
       </PageHeaderContainer>
-      <PageContainer>
+      <PageContainer hasPaddingTop={false}>
         <ProposalsTable
           proposals={proposals?.items}
           isLoading={isLoading}

@@ -7,6 +7,7 @@ import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useProposalVotesInfo } from "lib/services/proposalService";
@@ -55,53 +56,57 @@ const ProposalDetailsBody = ({
 
   return (
     <>
-      <ProposalTop proposalData={data.info} />
-      <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
-        isLazy
-        lazyBehavior="keepMounted"
-      >
-        <TabList
-          borderBottom="1px solid"
-          borderColor="gray.700"
-          overflowX="scroll"
+      <PageHeaderContainer bgColor="overlay.proposal">
+        <ProposalTop proposalData={data.info} />
+      </PageHeaderContainer>
+      <PageContainer hasPaddingTop={false}>
+        <Tabs
+          index={Object.values(TabIndex).indexOf(tab)}
+          isLazy
+          lazyBehavior="keepMounted"
         >
-          <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
-            Proposal Overview
-          </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
-            Voting Details
-          </CustomTab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0}>
-            <ProposalOverview
-              proposalData={data.info}
-              votesInfo={votesInfo}
-              params={params}
-              isLoading={isVotesInfoLoading || isParamsLoading}
-            />
-            <UserDocsLink
-              title="What is a Proposal?"
-              cta="Read more about Proposal Details"
-              href="general/proposals/detail-page"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <VoteDetails
-              proposalData={data.info}
-              votesInfo={votesInfo}
-              params={params}
-              isLoading={isVotesInfoLoading || isParamsLoading}
-            />
-            <UserDocsLink
-              title="What is the CosmWasm proposal vote progress?"
-              cta="Read more about Vote Details"
-              href="general/proposals/detail-page#proposal-vote-details"
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+          <TabList
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX="scroll"
+          >
+            <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+              Proposal Overview
+            </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
+              Voting Details
+            </CustomTab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p={0}>
+              <ProposalOverview
+                proposalData={data.info}
+                votesInfo={votesInfo}
+                params={params}
+                isLoading={isVotesInfoLoading || isParamsLoading}
+              />
+              <UserDocsLink
+                title="What is a Proposal?"
+                cta="Read more about Proposal Details"
+                href="general/proposals/detail-page"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <VoteDetails
+                proposalData={data.info}
+                votesInfo={votesInfo}
+                params={params}
+                isLoading={isVotesInfoLoading || isParamsLoading}
+              />
+              <UserDocsLink
+                title="What is the CosmWasm proposal vote progress?"
+                cta="Read more about Vote Details"
+                href="general/proposals/detail-page#proposal-vote-details"
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </PageContainer>
     </>
   );
 };
@@ -118,13 +123,15 @@ const ProposalDetails = () => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
+    <>
       {!validated.success ? (
-        <InvalidProposal />
+        <PageContainer>
+          <InvalidProposal />
+        </PageContainer>
       ) : (
         <ProposalDetailsBody {...validated.data} />
       )}
-    </PageContainer>
+    </>
   );
 };
 

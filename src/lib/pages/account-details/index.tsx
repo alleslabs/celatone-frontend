@@ -25,6 +25,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -120,410 +121,418 @@ const AccountDetailsBody = ({
 
   return (
     <>
-      <Flex direction="column" mb={6}>
-        {accountData?.projectInfo && accountData?.publicInfo && (
-          <Breadcrumb
-            items={[
-              { text: "Public Projects", href: "/projects" },
-              {
-                text: accountData.projectInfo.name,
-                href: `/projects/${accountData.publicInfo.slug}`,
-              },
-              { text: truncate(accountAddress) },
-            ]}
-            mb={6}
+      <PageHeaderContainer bgColor="overlay.account">
+        <Flex direction="column" mb={6}>
+          {accountData?.projectInfo && accountData?.publicInfo && (
+            <Breadcrumb
+              items={[
+                { text: "Public Projects", href: "/projects" },
+                {
+                  text: accountData.projectInfo.name,
+                  href: `/projects/${accountData.publicInfo.slug}`,
+                },
+                { text: truncate(accountAddress) },
+              ]}
+              mb={6}
+            />
+          )}
+          <AccountHeader
+            accountData={accountData}
+            accountAddress={accountAddress}
+            hexAddress={hexAddress}
           />
-        )}
-        <AccountHeader
-          accountData={accountData}
-          accountAddress={accountAddress}
-          hexAddress={hexAddress}
-        />
-      </Flex>
-      <Tabs
-        index={Object.values(TabIndex).indexOf(tabParam)}
-        isLazy
-        lazyBehavior="keepMounted"
-      >
-        <TabList
-          borderBottom="1px solid"
-          borderColor="gray.700"
-          overflowX="scroll"
-          id={tableHeaderId}
+        </Flex>
+      </PageHeaderContainer>
+      <PageContainer hasPaddingTop={false}>
+        <Tabs
+          index={Object.values(TabIndex).indexOf(tabParam)}
+          isLazy
+          lazyBehavior="keepMounted"
         >
-          <CustomTab onClick={handleTabChange(TabIndex.Overview, undefined)}>
-            Overview
-          </CustomTab>
-          <CustomTab
-            count={tableCounts.assetsCount}
-            isDisabled={tableCounts.assetsCount === 0}
-            onClick={handleTabChange(TabIndex.Assets, undefined)}
+          <TabList
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX="scroll"
+            id={tableHeaderId}
           >
-            Assets
-          </CustomTab>
-          <CustomTab
-            onClick={handleTabChange(TabIndex.Delegations, undefined)}
-            hidden={!gov.enabled}
-          >
-            Delegations
-          </CustomTab>
-          <CustomTab
-            count={nftsCount}
-            isDisabled={nftsCount === 0}
-            onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
-            isLoading={isNftsCountLoading}
-            hidden={!nft.enabled}
-          >
-            NFTs
-          </CustomTab>
-          <CustomTab
-            count={tableCounts.txsCount}
-            isDisabled={tableCounts.txsCount === 0}
-            onClick={handleTabChange(
-              TabIndex.Txs,
-              tableCounts.txsCount ?? undefined
-            )}
-            isLoading={isLoadingAccountTableCounts}
-          >
-            Transactions
-          </CustomTab>
-          <CustomTab
-            count={tableCounts.codesCount}
-            isDisabled={tableCounts.codesCount === 0}
-            onClick={handleTabChange(
-              TabIndex.Codes,
-              tableCounts.codesCount ?? undefined
-            )}
-            isLoading={isLoadingAccountTableCounts}
-            hidden={!wasm.enabled}
-          >
-            Codes
-          </CustomTab>
-          <CustomTab
-            count={tableCounts.contractsCount}
-            isDisabled={tableCounts.contractsCount === 0}
-            onClick={handleTabChange(
-              TabIndex.Contracts,
-              tableCounts.contractsCount ?? undefined
-            )}
-            isLoading={isLoadingAccountTableCounts}
-            hidden={!wasm.enabled}
-          >
-            Contracts
-          </CustomTab>
-          <CustomTab
-            count={tableCounts.contractsAdminCount}
-            isDisabled={tableCounts.contractsAdminCount === 0}
-            onClick={handleTabChange(
-              TabIndex.Admins,
-              tableCounts.contractsAdminCount ?? undefined
-            )}
-            isLoading={isLoadingAccountTableCounts}
-            hidden={!wasm.enabled}
-          >
-            Admins
-          </CustomTab>
-          <CustomTab
-            count={resourcesData?.totalCount}
-            isDisabled={resourcesData?.totalCount === 0}
-            onClick={handleTabChange(
-              TabIndex.Resources,
-              resourcesData?.groupedByOwner.length
-            )}
-            isLoading={isResourceLoading}
-            hidden={!move.enabled}
-          >
-            Resources
-          </CustomTab>
-          <CustomTab
-            count={modulesData?.length}
-            isDisabled={modulesData?.length === 0}
-            onClick={handleTabChange(TabIndex.Modules, undefined)}
-            isLoading={isModulesLoading}
-            hidden={!move.enabled}
-          >
-            Modules
-          </CustomTab>
-          <CustomTab
-            count={tableCounts.proposalsCount}
-            isDisabled={tableCounts.proposalsCount === 0}
-            onClick={handleTabChange(
-              TabIndex.Proposals,
-              tableCounts.proposalsCount ?? undefined
-            )}
-            isLoading={isLoadingAccountTableCounts}
-            hidden={!gov.enabled}
-          >
-            Proposals
-          </CustomTab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Flex direction="column" gap={4}>
-              <Flex
-                direction={{ base: "column", md: "row" }}
-                gap={{ base: 4, md: 6 }}
-                mt={{ base: 0, md: 8 }}
-              >
-                {accountData?.publicInfo?.description && (
-                  <Flex
-                    direction="column"
-                    bg="gray.900"
-                    maxW="100%"
-                    borderRadius="8px"
-                    py={4}
-                    px={4}
-                    flex="1"
-                  >
-                    <Flex alignItems="center" gap={1} minH="32px">
-                      <CustomIcon
-                        name="website"
-                        ml={0}
-                        mb={2}
-                        color="gray.600"
-                      />
-                      <Text variant="body2" fontWeight={500} color="text.dark">
-                        Public Account Description
-                      </Text>
-                    </Flex>
-                    <Text variant="body2" color="text.main" mb={1}>
-                      {accountData.publicInfo.description}
-                    </Text>
-                  </Flex>
-                )}
-                <UserAccountDesc address={accountAddress} />
-              </Flex>
-              <Flex
-                borderBottom={{ base: "0px", md: "1px solid" }}
-                borderBottomColor={{ base: "transparent", md: "gray.700" }}
-              >
-                <AssetsSection
-                  isAccount
-                  address={accountAddress}
-                  onViewMore={handleTabChange(TabIndex.Assets, undefined)}
-                />
-              </Flex>
-              {gov.enabled && (
-                <Flex
-                  borderBottom={{ base: "0px", md: "1px solid" }}
-                  borderBottomColor={{ base: "transparent", md: "gray.700" }}
-                  my={{ base: 0, md: 2 }}
-                >
-                  <DelegationsSection
-                    address={accountAddress}
-                    onViewMore={handleTabChange(
-                      TabIndex.Delegations,
-                      undefined
-                    )}
-                  />
-                </Flex>
-              )}
-            </Flex>
-            {nft.enabled && (
-              <NftsOverview
-                totalCount={nftsCount}
-                userAddress={hexAddress}
-                onViewMore={handleTabChange(TabIndex.Nfts, nftsCount)}
-              />
-            )}
-            <TxsTable
-              address={accountAddress}
-              scrollComponentId={tableHeaderId}
-              refetchCount={refetchCounts}
-              onViewMore={handleTabChange(
+            <CustomTab onClick={handleTabChange(TabIndex.Overview, undefined)}>
+              Overview
+            </CustomTab>
+            <CustomTab
+              count={tableCounts.assetsCount}
+              isDisabled={tableCounts.assetsCount === 0}
+              onClick={handleTabChange(TabIndex.Assets, undefined)}
+            >
+              Assets
+            </CustomTab>
+            <CustomTab
+              onClick={handleTabChange(TabIndex.Delegations, undefined)}
+              hidden={!gov.enabled}
+            >
+              Delegations
+            </CustomTab>
+            <CustomTab
+              count={nftsCount}
+              isDisabled={nftsCount === 0}
+              onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
+              isLoading={isNftsCountLoading}
+              hidden={!nft.enabled}
+            >
+              NFTs
+            </CustomTab>
+            <CustomTab
+              count={tableCounts.txsCount}
+              isDisabled={tableCounts.txsCount === 0}
+              onClick={handleTabChange(
                 TabIndex.Txs,
                 tableCounts.txsCount ?? undefined
               )}
-            />
-            {wasm.enabled && (
-              <>
-                <StoredCodesTable
+              isLoading={isLoadingAccountTableCounts}
+            >
+              Transactions
+            </CustomTab>
+            <CustomTab
+              count={tableCounts.codesCount}
+              isDisabled={tableCounts.codesCount === 0}
+              onClick={handleTabChange(
+                TabIndex.Codes,
+                tableCounts.codesCount ?? undefined
+              )}
+              isLoading={isLoadingAccountTableCounts}
+              hidden={!wasm.enabled}
+            >
+              Codes
+            </CustomTab>
+            <CustomTab
+              count={tableCounts.contractsCount}
+              isDisabled={tableCounts.contractsCount === 0}
+              onClick={handleTabChange(
+                TabIndex.Contracts,
+                tableCounts.contractsCount ?? undefined
+              )}
+              isLoading={isLoadingAccountTableCounts}
+              hidden={!wasm.enabled}
+            >
+              Contracts
+            </CustomTab>
+            <CustomTab
+              count={tableCounts.contractsAdminCount}
+              isDisabled={tableCounts.contractsAdminCount === 0}
+              onClick={handleTabChange(
+                TabIndex.Admins,
+                tableCounts.contractsAdminCount ?? undefined
+              )}
+              isLoading={isLoadingAccountTableCounts}
+              hidden={!wasm.enabled}
+            >
+              Admins
+            </CustomTab>
+            <CustomTab
+              count={resourcesData?.totalCount}
+              isDisabled={resourcesData?.totalCount === 0}
+              onClick={handleTabChange(
+                TabIndex.Resources,
+                resourcesData?.groupedByOwner.length
+              )}
+              isLoading={isResourceLoading}
+              hidden={!move.enabled}
+            >
+              Resources
+            </CustomTab>
+            <CustomTab
+              count={modulesData?.length}
+              isDisabled={modulesData?.length === 0}
+              onClick={handleTabChange(TabIndex.Modules, undefined)}
+              isLoading={isModulesLoading}
+              hidden={!move.enabled}
+            >
+              Modules
+            </CustomTab>
+            <CustomTab
+              count={tableCounts.proposalsCount}
+              isDisabled={tableCounts.proposalsCount === 0}
+              onClick={handleTabChange(
+                TabIndex.Proposals,
+                tableCounts.proposalsCount ?? undefined
+              )}
+              isLoading={isLoadingAccountTableCounts}
+              hidden={!gov.enabled}
+            >
+              Proposals
+            </CustomTab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p={0} pt={{ base: 4, md: 0 }}>
+              <Flex direction="column" gap={4}>
+                <Flex
+                  direction={{ base: "column", md: "row" }}
+                  gap={{ base: 4, md: 6 }}
+                  mt={{ base: 0, md: 8 }}
+                >
+                  {accountData?.publicInfo?.description && (
+                    <Flex
+                      direction="column"
+                      bg="gray.900"
+                      maxW="100%"
+                      borderRadius="8px"
+                      py={4}
+                      px={4}
+                      flex="1"
+                    >
+                      <Flex alignItems="center" gap={1} minH="32px">
+                        <CustomIcon
+                          name="website"
+                          ml={0}
+                          mb={2}
+                          color="gray.600"
+                        />
+                        <Text
+                          variant="body2"
+                          fontWeight={500}
+                          color="text.dark"
+                        >
+                          Public Account Description
+                        </Text>
+                      </Flex>
+                      <Text variant="body2" color="text.main" mb={1}>
+                        {accountData.publicInfo.description}
+                      </Text>
+                    </Flex>
+                  )}
+                  <UserAccountDesc address={accountAddress} />
+                </Flex>
+                <Flex
+                  borderBottom={{ base: "0px", md: "1px solid" }}
+                  borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                >
+                  <AssetsSection
+                    isAccount
+                    address={accountAddress}
+                    onViewMore={handleTabChange(TabIndex.Assets, undefined)}
+                  />
+                </Flex>
+                {gov.enabled && (
+                  <Flex
+                    borderBottom={{ base: "0px", md: "1px solid" }}
+                    borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                    my={{ base: 0, md: 2 }}
+                  >
+                    <DelegationsSection
+                      address={accountAddress}
+                      onViewMore={handleTabChange(
+                        TabIndex.Delegations,
+                        undefined
+                      )}
+                    />
+                  </Flex>
+                )}
+              </Flex>
+              {nft.enabled && (
+                <NftsOverview
+                  totalCount={nftsCount}
+                  userAddress={hexAddress}
+                  onViewMore={handleTabChange(TabIndex.Nfts, nftsCount)}
+                />
+              )}
+              <TxsTable
+                address={accountAddress}
+                scrollComponentId={tableHeaderId}
+                refetchCount={refetchCounts}
+                onViewMore={handleTabChange(
+                  TabIndex.Txs,
+                  tableCounts.txsCount ?? undefined
+                )}
+              />
+              {wasm.enabled && (
+                <>
+                  <StoredCodesTable
+                    address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.codesCount ?? undefined}
+                    refetchCount={refetchCounts}
+                    onViewMore={handleTabChange(
+                      TabIndex.Codes,
+                      tableCounts.codesCount ?? undefined
+                    )}
+                  />
+                  <InstantiatedContractsTable
+                    address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.contractsCount ?? undefined}
+                    refetchCount={refetchCounts}
+                    onViewMore={handleTabChange(
+                      TabIndex.Contracts,
+                      tableCounts.contractsCount ?? undefined
+                    )}
+                  />
+                  <AdminContractsTable
+                    address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.contractsAdminCount ?? undefined}
+                    refetchCount={refetchCounts}
+                    onViewMore={handleTabChange(
+                      TabIndex.Admins,
+                      tableCounts.contractsAdminCount ?? undefined
+                    )}
+                  />
+                </>
+              )}
+              {move.enabled && (
+                <>
+                  <ResourceOverview
+                    address={accountAddress}
+                    totalCount={resourcesData?.totalCount}
+                    resourcesByName={resourcesData?.groupedByName}
+                    isLoading={isResourceLoading}
+                    onViewMore={handleTabChange(
+                      TabIndex.Resources,
+                      resourcesData?.groupedByOwner.length
+                    )}
+                  />
+                  <ModuleLists
+                    address={accountAddress}
+                    totalCount={modulesData?.length}
+                    modules={modulesData}
+                    isLoading={isModulesLoading}
+                    onViewMore={handleTabChange(TabIndex.Modules, undefined)}
+                  />
+                </>
+              )}
+              {gov.enabled && (
+                <OpenedProposalsTable
                   address={accountAddress}
                   scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.codesCount ?? undefined}
+                  totalData={tableCounts.proposalsCount ?? undefined}
                   refetchCount={refetchCounts}
                   onViewMore={handleTabChange(
-                    TabIndex.Codes,
-                    tableCounts.codesCount ?? undefined
+                    TabIndex.Proposals,
+                    tableCounts.proposalsCount ?? undefined
                   )}
                 />
-                <InstantiatedContractsTable
-                  address={accountAddress}
-                  scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.contractsCount ?? undefined}
-                  refetchCount={refetchCounts}
-                  onViewMore={handleTabChange(
-                    TabIndex.Contracts,
-                    tableCounts.contractsCount ?? undefined
-                  )}
-                />
-                <AdminContractsTable
-                  address={accountAddress}
-                  scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.contractsAdminCount ?? undefined}
-                  refetchCount={refetchCounts}
-                  onViewMore={handleTabChange(
-                    TabIndex.Admins,
-                    tableCounts.contractsAdminCount ?? undefined
-                  )}
-                />
-              </>
-            )}
-            {move.enabled && (
-              <>
-                <ResourceOverview
-                  address={accountAddress}
-                  totalCount={resourcesData?.totalCount}
-                  resourcesByName={resourcesData?.groupedByName}
-                  isLoading={isResourceLoading}
-                  onViewMore={handleTabChange(
-                    TabIndex.Resources,
-                    resourcesData?.groupedByOwner.length
-                  )}
-                />
-                <ModuleLists
-                  address={accountAddress}
-                  totalCount={modulesData?.length}
-                  modules={modulesData}
-                  isLoading={isModulesLoading}
-                  onViewMore={handleTabChange(TabIndex.Modules, undefined)}
-                />
-              </>
-            )}
-            {gov.enabled && (
+              )}
+              <UserDocsLink
+                title="What is an Account?"
+                cta="Read more about Account"
+                href="general/accounts/detail-page"
+              />
+            </TabPanel>
+            <TabPanel p={0} mt={{ base: 0, md: 8 }}>
+              <AssetsSection isAccount address={accountAddress} />
+              <UserDocsLink
+                title="What is Supported and Unsupported Assets?"
+                cta="Read more about Assets"
+                href="general/accounts/detail-page#assets"
+              />
+            </TabPanel>
+            <TabPanel p={0} mt={{ base: 0, md: 8 }}>
+              <DelegationsSection address={accountAddress} />
+              <UserDocsLink
+                title="What is Delegations, Total Bonded, Rewards?"
+                cta="Read more about Delegations"
+                href="general/accounts/detail-page#staking"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <NftsSection address={hexAddress} totalData={nftsCount} />
+              <UserDocsLink
+                title="What is NFTs in the account?"
+                cta="Read more about NFTs in Account"
+                href="general/accounts/detail-page#nfts"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <TxsTable
+                address={accountAddress}
+                scrollComponentId={tableHeaderId}
+                refetchCount={refetchCounts}
+              />
+              <UserDocsLink
+                title="What is transactions related to the account?"
+                cta="Read more about Account Transactions"
+                href="general/accounts/detail-page#transactions"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <StoredCodesTable
+                address={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.codesCount ?? undefined}
+                refetchCount={refetchCounts}
+              />
+              <UserDocsLink
+                title="What is Stored Codes in the account?"
+                cta="Read more about Stored Codes in Account"
+                href="general/accounts/detail-page#codes"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <InstantiatedContractsTable
+                address={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.contractsCount ?? undefined}
+                refetchCount={refetchCounts}
+              />
+              <UserDocsLink
+                title="What is contract instances in the account?"
+                cta="Read more about Contracts in Account"
+                href="general/accounts/detail-page#contracts"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <AdminContractsTable
+                address={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.contractsAdminCount ?? undefined}
+                refetchCount={refetchCounts}
+              />
+              <UserDocsLink
+                title="What is contract admins in the account?"
+                cta="Read more about Account Contract Admins"
+                href="general/accounts/detail-page#contracts-admin"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <ResourceSection
+                address={accountAddress}
+                totalCount={resourcesData?.totalCount}
+                resourcesByOwner={resourcesData?.groupedByOwner}
+                isLoading={isResourceLoading}
+              />
+              <UserDocsLink
+                title="What is resources?"
+                cta="Read more about Resources in Account"
+                href="general/accounts/detail-page#resources"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <ModuleLists
+                address={accountAddress}
+                totalCount={modulesData?.length}
+                modules={modulesData}
+                isLoading={isModulesLoading}
+              />
+              <UserDocsLink
+                title="What is modules?"
+                cta="Read more about Modules in Account"
+                href="general/accounts/detail-page#modules"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
               <OpenedProposalsTable
                 address={accountAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.proposalsCount ?? undefined}
                 refetchCount={refetchCounts}
-                onViewMore={handleTabChange(
-                  TabIndex.Proposals,
-                  tableCounts.proposalsCount ?? undefined
-                )}
               />
-            )}
-            <UserDocsLink
-              title="What is an Account?"
-              cta="Read more about Account"
-              href="general/accounts/detail-page"
-            />
-          </TabPanel>
-          <TabPanel p={0} mt={{ base: 0, md: 8 }}>
-            <AssetsSection isAccount address={accountAddress} />
-            <UserDocsLink
-              title="What is Supported and Unsupported Assets?"
-              cta="Read more about Assets"
-              href="general/accounts/detail-page#assets"
-            />
-          </TabPanel>
-          <TabPanel p={0} mt={{ base: 0, md: 8 }}>
-            <DelegationsSection address={accountAddress} />
-            <UserDocsLink
-              title="What is Delegations, Total Bonded, Rewards?"
-              cta="Read more about Delegations"
-              href="general/accounts/detail-page#staking"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <NftsSection address={hexAddress} totalData={nftsCount} />
-            <UserDocsLink
-              title="What is NFTs in the account?"
-              cta="Read more about NFTs in Account"
-              href="general/accounts/detail-page#nfts"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <TxsTable
-              address={accountAddress}
-              scrollComponentId={tableHeaderId}
-              refetchCount={refetchCounts}
-            />
-            <UserDocsLink
-              title="What is transactions related to the account?"
-              cta="Read more about Account Transactions"
-              href="general/accounts/detail-page#transactions"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <StoredCodesTable
-              address={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.codesCount ?? undefined}
-              refetchCount={refetchCounts}
-            />
-            <UserDocsLink
-              title="What is Stored Codes in the account?"
-              cta="Read more about Stored Codes in Account"
-              href="general/accounts/detail-page#codes"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <InstantiatedContractsTable
-              address={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.contractsCount ?? undefined}
-              refetchCount={refetchCounts}
-            />
-            <UserDocsLink
-              title="What is contract instances in the account?"
-              cta="Read more about Contracts in Account"
-              href="general/accounts/detail-page#contracts"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <AdminContractsTable
-              address={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.contractsAdminCount ?? undefined}
-              refetchCount={refetchCounts}
-            />
-            <UserDocsLink
-              title="What is contract admins in the account?"
-              cta="Read more about Account Contract Admins"
-              href="general/accounts/detail-page#contracts-admin"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <ResourceSection
-              address={accountAddress}
-              totalCount={resourcesData?.totalCount}
-              resourcesByOwner={resourcesData?.groupedByOwner}
-              isLoading={isResourceLoading}
-            />
-            <UserDocsLink
-              title="What is resources?"
-              cta="Read more about Resources in Account"
-              href="general/accounts/detail-page#resources"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <ModuleLists
-              address={accountAddress}
-              totalCount={modulesData?.length}
-              modules={modulesData}
-              isLoading={isModulesLoading}
-            />
-            <UserDocsLink
-              title="What is modules?"
-              cta="Read more about Modules in Account"
-              href="general/accounts/detail-page#modules"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <OpenedProposalsTable
-              address={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.proposalsCount ?? undefined}
-              refetchCount={refetchCounts}
-            />
-            <UserDocsLink
-              title="What is Opened Proposals in the account?"
-              cta="Read more about Opened Proposals"
-              href="general/accounts/detail-page#proposals"
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+              <UserDocsLink
+                title="What is Opened Proposals in the account?"
+                cta="Read more about Opened Proposals"
+                href="general/accounts/detail-page#proposals"
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </PageContainer>
     </>
   );
 };
@@ -541,17 +550,19 @@ const AccountDetails = () => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
+    <>
       {!validated.success ||
       !isSomeValidAddress(validated.data.accountAddress) ? (
-        <InvalidAccount />
+        <PageContainer>
+          <InvalidAccount />
+        </PageContainer>
       ) : (
         <AccountDetailsBody
           accountAddressParam={validated.data.accountAddress}
           tabParam={validated.data.tab}
         />
       )}
-    </PageContainer>
+    </>
   );
 };
 

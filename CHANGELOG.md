@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#896](https://github.com/alleslabs/celatone-frontend/pull/896) Add overlay background for better feature distinction
+
 ### Improvements
 
 ### Bug fixes

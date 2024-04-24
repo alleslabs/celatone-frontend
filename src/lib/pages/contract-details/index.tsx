@@ -26,6 +26,7 @@ import { CustomIcon } from "lib/components/icon";
 import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBalances } from "lib/services/balanceService";
@@ -97,67 +98,60 @@ const ContractDetailsBody = observer(
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
     return (
       <>
-        <ContractTop
-          contractAddress={contractAddress}
-          projectInfo={projectInfo}
-          publicInfo={publicInfo}
-          contract={contract}
-          contractLocalInfo={contractLocalInfo}
-        />
-        <Tabs
-          index={Object.values(TabIndex).indexOf(tab)}
-          isLazy
-          lazyBehavior="keepMounted"
-        >
-          <TabList
-            borderBottom="1px solid"
-            borderColor="gray.700"
-            overflowX="scroll"
-            id={tableHeaderId}
+        <PageHeaderContainer bgColor="overlay.contract">
+          <ContractTop
+            contractAddress={contractAddress}
+            projectInfo={projectInfo}
+            publicInfo={publicInfo}
+            contract={contract}
+            contractLocalInfo={contractLocalInfo}
+          />
+        </PageHeaderContainer>
+        <PageContainer hasPaddingTop={false}>
+          <Tabs
+            index={Object.values(TabIndex).indexOf(tab)}
+            isLazy
+            lazyBehavior="keepMounted"
           >
-            <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
-              Overview
-            </CustomTab>
-            <CustomTab
-              onClick={handleTabChange(TabIndex.Assets)}
-              count={balances?.length}
-              isDisabled={balances?.length === 0}
-              isLoading={isBalancesLoading}
+            <TabList
+              borderBottom="1px solid"
+              borderColor="gray.700"
+              overflowX="scroll"
+              id={tableHeaderId}
             >
-              Assets
-            </CustomTab>
-            <CustomTab
-              onClick={handleTabChange(TabIndex.Delegations)}
-              hidden={!gov.enabled}
-            >
-              Delegations
-            </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
-              Transactions & Histories
-            </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.States)}>
-              Contract States
-            </CustomTab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0} pt={{ base: 0, md: 8 }}>
-              <Flex flexDirection="column" gap={8}>
-                <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
-                  <ContractDesc
-                    publicInfo={publicInfo}
-                    contract={contract}
-                    contractLocalInfo={contractLocalInfo}
-                  />
-                  <Flex
-                    borderBottom={{ base: "0px", md: "1px solid" }}
-                    borderBottomColor={{ base: "transparent", md: "gray.700" }}
-                  >
-                    <AssetsSection
-                      address={contractAddress}
-                      onViewMore={handleTabChange(TabIndex.Assets)}
+              <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+                Overview
+              </CustomTab>
+              <CustomTab
+                onClick={handleTabChange(TabIndex.Assets)}
+                count={balances?.length}
+                isDisabled={balances?.length === 0}
+                isLoading={isBalancesLoading}
+              >
+                Assets
+              </CustomTab>
+              <CustomTab
+                onClick={handleTabChange(TabIndex.Delegations)}
+                hidden={!gov.enabled}
+              >
+                Delegations
+              </CustomTab>
+              <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
+                Transactions & Histories
+              </CustomTab>
+              <CustomTab onClick={handleTabChange(TabIndex.States)}>
+                Contract States
+              </CustomTab>
+            </TabList>
+            <TabPanels>
+              <TabPanel p={0} pt={{ base: 0, md: 8 }}>
+                <Flex flexDirection="column" gap={8}>
+                  <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
+                    <ContractDesc
+                      publicInfo={publicInfo}
+                      contract={contract}
+                      contractLocalInfo={contractLocalInfo}
                     />
-                  </Flex>
-                  {gov.enabled && (
                     <Flex
                       borderBottom={{ base: "0px", md: "1px solid" }}
                       borderBottomColor={{
@@ -165,116 +159,130 @@ const ContractDetailsBody = observer(
                         md: "gray.700",
                       }}
                     >
-                      <DelegationsSection
+                      <AssetsSection
                         address={contractAddress}
-                        onViewMore={handleTabChange(TabIndex.Delegations)}
+                        onViewMore={handleTabChange(TabIndex.Assets)}
                       />
                     </Flex>
-                  )}
-                </Flex>
-                {/* Query/Execute commands section */}
-                <CommandSection
-                  contractAddress={contractAddress}
-                  codeHash={contract.codeHash}
-                  codeId={contract.codeId}
-                />
-                {/* Instantiate/Contract Info Section */}
-                <Flex direction="column" gap={6}>
-                  {!isMobile && (
-                    <Heading as="h6" variant="h6" minW="fit-content">
-                      Contract Information
-                    </Heading>
-                  )}
-                  <Flex
-                    mb={12}
-                    justify="space-between"
-                    direction={{ base: "column", md: "row" }}
-                  >
-                    {/* Instantiate Info */}
-                    <div>
-                      {isMobile && (
-                        <Heading as="h6" variant="h6" mb={6}>
-                          Instantiate Info
-                        </Heading>
-                      )}
-                      <InstantiateInfo
-                        contract={contract}
-                        contractRest={contractRest}
-                        codeLocalInfo={codeLocalInfo}
-                      />
-                      <Button
-                        size="sm"
-                        variant="outline-primary"
-                        mt={4}
-                        pr={1}
-                        onClick={handleTabChange(TabIndex.States)}
+                    {gov.enabled && (
+                      <Flex
+                        borderBottom={{ base: "0px", md: "1px solid" }}
+                        borderBottomColor={{
+                          base: "transparent",
+                          md: "gray.700",
+                        }}
                       >
-                        View Contract States
-                        <CustomIcon name="chevron-right" boxSize={3} />
-                      </Button>
-                    </div>
+                        <DelegationsSection
+                          address={contractAddress}
+                          onViewMore={handleTabChange(TabIndex.Delegations)}
+                        />
+                      </Flex>
+                    )}
+                  </Flex>
+                  {/* Query/Execute commands section */}
+                  <CommandSection
+                    contractAddress={contractAddress}
+                    codeHash={contract.codeHash}
+                    codeId={contract.codeId}
+                  />
+                  {/* Instantiate/Contract Info Section */}
+                  <Flex direction="column" gap={6}>
+                    {!isMobile && (
+                      <Heading as="h6" variant="h6" minW="fit-content">
+                        Contract Information
+                      </Heading>
+                    )}
                     <Flex
-                      direction="column"
-                      flex={0.8}
-                      gap={4}
-                      mt={{ base: 12, md: 0 }}
+                      mb={12}
+                      justify="space-between"
+                      direction={{ base: "column", md: "row" }}
                     >
-                      <JsonInfo
-                        header="Contract Info"
-                        jsonString={jsonPrettify(
-                          JSON.stringify(contractRest?.contract_info ?? {})
+                      {/* Instantiate Info */}
+                      <div>
+                        {isMobile && (
+                          <Heading as="h6" variant="h6" mb={6}>
+                            Instantiate Info
+                          </Heading>
                         )}
-                      />
-                      <JsonInfo
-                        header="Instantiate Message"
-                        jsonString={jsonPrettify(contract.initMsg)}
-                        defaultExpand
-                      />
+                        <InstantiateInfo
+                          contract={contract}
+                          contractRest={contractRest}
+                          codeLocalInfo={codeLocalInfo}
+                        />
+                        <Button
+                          size="sm"
+                          variant="outline-primary"
+                          mt={4}
+                          pr={1}
+                          onClick={handleTabChange(TabIndex.States)}
+                        >
+                          View Contract States
+                          <CustomIcon name="chevron-right" boxSize={3} />
+                        </Button>
+                      </div>
+                      <Flex
+                        direction="column"
+                        flex={0.8}
+                        gap={4}
+                        mt={{ base: 12, md: 0 }}
+                      >
+                        <JsonInfo
+                          header="Contract Info"
+                          jsonString={jsonPrettify(
+                            JSON.stringify(contractRest?.contract_info ?? {})
+                          )}
+                        />
+                        <JsonInfo
+                          header="Instantiate Message"
+                          jsonString={jsonPrettify(contract.initMsg)}
+                          defaultExpand
+                        />
+                      </Flex>
                     </Flex>
                   </Flex>
+                  <ContractTables contractAddress={contractAddress} />
                 </Flex>
+                <UserDocsLink
+                  title="What is Contract in CosmWasm?"
+                  cta="Read more about Contract Details"
+                  href="cosmwasm/contracts/detail-page"
+                />
+              </TabPanel>
+              <TabPanel p={0}>
+                <AssetsSection address={contractAddress} />
+                <UserDocsLink
+                  title="What is Supported and Unsupported Assets? "
+                  cta="Read more about Assets"
+                  href="cosmwasm/contracts/detail-page#assets"
+                />
+              </TabPanel>
+              <TabPanel px={0} pt={{ base: 0, md: 5 }}>
+                <DelegationsSection address={contractAddress} />
+                <UserDocsLink
+                  title="What is Delegations, Total Bonded, Rewards?"
+                  cta="Read more about Delegations"
+                  href="cosmwasm/contracts/detail-page#delegations"
+                />
+              </TabPanel>
+              <TabPanel px={0} pt={5}>
                 <ContractTables contractAddress={contractAddress} />
-              </Flex>
-              <UserDocsLink
-                title="What is Contract in CosmWasm?"
-                cta="Read more about Contract Details"
-                href="cosmwasm/contracts/detail-page"
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <AssetsSection address={contractAddress} />
-              <UserDocsLink
-                title="What is Supported and Unsupported Assets? "
-                cta="Read more about Assets"
-                href="cosmwasm/contracts/detail-page#assets"
-              />
-            </TabPanel>
-            <TabPanel px={0} pt={{ base: 0, md: 5 }}>
-              <DelegationsSection address={contractAddress} />
-              <UserDocsLink
-                title="What is Delegations, Total Bonded, Rewards?"
-                cta="Read more about Delegations"
-                href="cosmwasm/contracts/detail-page#delegations"
-              />
-            </TabPanel>
-            <TabPanel px={0} pt={5}>
-              <ContractTables contractAddress={contractAddress} />
-              <UserDocsLink
-                title="What is transactions related to the contract?"
-                cta="Read more about Transactions & Histories"
-                href="cosmwasm/contracts/detail-page#transactions-and-histories"
-              />
-            </TabPanel>
-            <TabPanel px={0} pt={5}>
-              <ContractStates contractAddress={contractAddress} />
-              <UserDocsLink
-                title="What is contract states?"
-                cta="Read more about Contract States"
-                href="cosmwasm/contracts/detail-page#contract-states"
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+                <UserDocsLink
+                  title="What is transactions related to the contract?"
+                  cta="Read more about Transactions & Histories"
+                  href="cosmwasm/contracts/detail-page#transactions-and-histories"
+                />
+              </TabPanel>
+              <TabPanel px={0} pt={5}>
+                <ContractStates contractAddress={contractAddress} />
+                <UserDocsLink
+                  title="What is contract states?"
+                  cta="Read more about Contract States"
+                  href="cosmwasm/contracts/detail-page#contract-states"
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </PageContainer>
       </>
     );
   }
@@ -294,14 +302,16 @@ const ContractDetails = observer(() => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
+    <>
       {!validated.success ||
       validateContractAddress(validated.data.contractAddress) ? (
-        <InvalidContract />
+        <PageContainer>
+          <InvalidContract />
+        </PageContainer>
       ) : (
         <ContractDetailsBody {...validated.data} />
       )}
-    </PageContainer>
+    </>
   );
 });
 

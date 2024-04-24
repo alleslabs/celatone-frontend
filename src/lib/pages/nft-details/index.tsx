@@ -20,6 +20,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -78,17 +79,17 @@ const NftDetailsBody = ({
 
   return (
     <>
-      <Breadcrumb
-        items={[
-          { text: "NFT Collections", href: "/nft-collections" },
-          {
-            text: displayCollectionName,
-            href: `/nft-collections/${collectionAddress}`,
-          },
-          { text: tokenId },
-        ]}
-      />
-      <Flex direction="column" gap={8}>
+      <PageHeaderContainer bgColor="overlay.nft">
+        <Breadcrumb
+          items={[
+            { text: "NFT Collections", href: "/nft-collections" },
+            {
+              text: displayCollectionName,
+              href: `/nft-collections/${collectionAddress}`,
+            },
+            { text: tokenId },
+          ]}
+        />
         <Flex
           direction={{ base: "column", md: "row" }}
           gap={{ base: 2, md: 8 }}
@@ -229,7 +230,9 @@ const NftDetailsBody = ({
             )}
           </Flex>
         </Flex>
-        <Divider width="100%" color="gray.700" />
+        <Divider width="100%" color="gray.700" my={{ base: 4, md: 8 }} />
+      </PageHeaderContainer>
+      <PageContainer hasPaddingTop={false}>
         <Tabs
           isLazy
           lazyBehavior="keepMounted"
@@ -270,7 +273,7 @@ const NftDetailsBody = ({
           cta="Read more about NFT"
           href="move/nfts/detail-page"
         />
-      </Flex>
+      </PageContainer>
     </>
   );
 };
@@ -284,11 +287,16 @@ const NftDetails = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  if (!validated.success) return <InvalidNft />;
   return (
-    <PageContainer>
-      <NftDetailsBody {...validated.data} />
-    </PageContainer>
+    <>
+      {!validated.success ? (
+        <PageContainer>
+          <InvalidNft />
+        </PageContainer>
+      ) : (
+        <NftDetailsBody {...validated.data} />
+      )}
+    </>
   );
 });
 

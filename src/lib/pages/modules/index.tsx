@@ -5,6 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 
 import { RecentModulesTable } from "./components/RecentModulesTable";
 
@@ -17,14 +18,18 @@ const RecentModules = () => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
-      <PageHeader
-        title="Modules"
-        subtitle=" These modules are the most recently published on this network"
-        docHref="move/modules/detail-page"
-      />
-      <RecentModulesTable />
-    </PageContainer>
+    <>
+      <PageHeaderContainer bgColor="overlay.module">
+        <PageHeader
+          title="Modules"
+          subtitle=" These modules are the most recently published on this network"
+          docHref="move/modules/detail-page"
+        />
+      </PageHeaderContainer>
+      <PageContainer>
+        <RecentModulesTable />
+      </PageContainer>
+    </>
   );
 };
 

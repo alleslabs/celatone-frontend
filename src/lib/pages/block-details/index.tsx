@@ -5,6 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBlockData } from "lib/services/blockService";
@@ -25,20 +26,24 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
   if (!blockData) return <InvalidBlock />;
   return (
     <>
-      <Breadcrumb
-        items={[
-          { text: "Blocks", href: "/blocks" },
-          { text: blockData.height.toString() },
-        ]}
-      />
-      <BlockDetailsTop blockData={blockData} />
-      <BlockInfo blockData={blockData} />
-      <BlockTxsTable height={height} />
-      <UserDocsLink
-        title="What is a block?"
-        cta="Read more about Block"
-        href="general/blocks/detail-page"
-      />
+      <PageHeaderContainer bgColor="overlay.block">
+        <Breadcrumb
+          items={[
+            { text: "Blocks", href: "/blocks" },
+            { text: blockData.height.toString() },
+          ]}
+        />
+        <BlockDetailsTop blockData={blockData} />
+      </PageHeaderContainer>
+      <PageContainer hasPaddingTop={false}>
+        <BlockInfo blockData={blockData} />
+        <BlockTxsTable height={height} />
+        <UserDocsLink
+          title="What is a block?"
+          cta="Read more about Block"
+          href="general/blocks/detail-page"
+        />
+      </PageContainer>
     </>
   );
 };
@@ -52,13 +57,15 @@ const BlockDetails = () => {
   }, [router.isReady]);
 
   return (
-    <PageContainer>
+    <>
       {!validated.success ? (
-        <InvalidBlock />
+        <PageContainer>
+          <InvalidBlock />
+        </PageContainer>
       ) : (
         <BlockDetailsBody height={validated.data.height} />
       )}
-    </PageContainer>
+    </>
   );
 };
 

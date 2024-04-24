@@ -13,6 +13,7 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
@@ -73,62 +74,67 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
 
   return (
     <>
-      <CodeTopInfo
-        code={code}
-        projectInfo={projectInfo}
-        publicInfo={publicInfo}
-        codeId={codeId}
-      />
-      <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
-        isLazy
-        lazyBehavior="keepMounted"
-        my={{ base: 0, md: 8 }}
-      >
-        {!isMobile && (
-          <TabList
-            borderBottom="1px solid"
-            borderColor="gray.700"
-            overflowX="scroll"
-            id={codeTabId}
-          >
-            <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
-              Code Information
-            </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.JsonSchema)}>
-              JSON Schema
-            </CustomTab>
-          </TabList>
-        )}
-        <TabPanels>
-          <TabPanel p={0}>
-            <CodeInfoSection
-              code={code}
-              chainId={currentChainId}
-              attached={!!jsonSchema}
-              toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
-            />
-            <CodeContractsTable codeId={codeId} />
-            <UserDocsLink
-              title="What is Code in CosmWasm?"
-              cta="Read more about Code Details"
-              href="cosmwasm/code/detail-page"
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <CodeSchemaSection
-              codeId={codeId}
-              codeHash={code.hash}
-              jsonSchema={jsonSchema}
-            />
-            <UserDocsLink
-              title="How to attached and use JSON Schema?"
-              cta="Read more about JSON Schema"
-              href="cosmwasm/code/attach-json-schema"
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <PageHeaderContainer bgColor="overlay.code">
+        <CodeTopInfo
+          code={code}
+          projectInfo={projectInfo}
+          publicInfo={publicInfo}
+          codeId={codeId}
+        />
+      </PageHeaderContainer>
+      <PageContainer hasPaddingTop={false}>
+        <Tabs
+          index={Object.values(TabIndex).indexOf(tab)}
+          isLazy
+          lazyBehavior="keepMounted"
+          mt={{ base: 0, md: 2 }}
+          mb={{ base: 0, md: 8 }}
+        >
+          {!isMobile && (
+            <TabList
+              borderBottom="1px solid"
+              borderColor="gray.700"
+              overflowX="scroll"
+              id={codeTabId}
+            >
+              <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
+                Code Information
+              </CustomTab>
+              <CustomTab onClick={handleTabChange(TabIndex.JsonSchema)}>
+                JSON Schema
+              </CustomTab>
+            </TabList>
+          )}
+          <TabPanels>
+            <TabPanel p={0}>
+              <CodeInfoSection
+                code={code}
+                chainId={currentChainId}
+                attached={!!jsonSchema}
+                toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
+              />
+              <CodeContractsTable codeId={codeId} />
+              <UserDocsLink
+                title="What is Code in CosmWasm?"
+                cta="Read more about Code Details"
+                href="cosmwasm/code/detail-page"
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <CodeSchemaSection
+                codeId={codeId}
+                codeHash={code.hash}
+                jsonSchema={jsonSchema}
+              />
+              <UserDocsLink
+                title="How to attached and use JSON Schema?"
+                cta="Read more about JSON Schema"
+                href="cosmwasm/code/attach-json-schema"
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </PageContainer>
     </>
   );
 });
@@ -139,13 +145,15 @@ const CodeDetails = observer(() => {
   const validated = zCodeDetailsQueryParams.safeParse(router.query);
 
   return (
-    <PageContainer>
-      {validated.success ? (
-        <CodeDetailsBody {...validated.data} />
+    <>
+      {!validated.success ? (
+        <PageContainer>
+          <InvalidCode />
+        </PageContainer>
       ) : (
-        <InvalidCode />
+        <CodeDetailsBody {...validated.data} />
       )}
-    </PageContainer>
+    </>
   );
 });
 

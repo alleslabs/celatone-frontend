@@ -7,6 +7,7 @@ import { useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { useTxData } from "lib/services/txService";
 import { getFirstQueryParam, truncate } from "lib/utils";
@@ -41,30 +42,38 @@ const TxDetails = () => {
   if ((txLoading && txFetching) || !hashParam) return <Loading withBorder />;
 
   return (
-    <PageContainer>
-      <Breadcrumb
-        items={[
-          { text: "Transactions", href: "/txs" },
-          { text: truncate(txData?.txhash) },
-        ]}
-      />
+    <>
       {txData ? (
         <>
-          <TxHeader mt={2} txData={txData} />
-          {isMobile && <TxInfoMobile txData={txData} />}
-          <Flex my={{ base: 0, md: 12 }} justify="space-between">
-            {!isMobile && <TxInfo txData={txData} />}
-            <MessageSection txData={txData} />
-          </Flex>
+          <PageHeaderContainer bgColor="overlay.transaction">
+            <Flex direction="column" gap={2}>
+              <Breadcrumb
+                items={[
+                  { text: "Transactions", href: "/txs" },
+                  { text: truncate(txData?.txhash) },
+                ]}
+              />
+              <TxHeader txData={txData} />
+            </Flex>
+          </PageHeaderContainer>
+          <PageContainer>
+            {isMobile && <TxInfoMobile txData={txData} />}
+            <Flex mb={{ base: 0, md: 12 }} justify="space-between">
+              {!isMobile && <TxInfo txData={txData} />}
+              <MessageSection txData={txData} />
+            </Flex>
+          </PageContainer>
         </>
       ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Transaction does not exist"
-          message="Please check your input or make sure you have selected the correct network."
-        />
+        <PageContainer>
+          <EmptyState
+            imageVariant="not-found"
+            heading="Transaction does not exist"
+            message="Please check your input or make sure you have selected the correct network."
+          />
+        </PageContainer>
       )}
-    </PageContainer>
+    </>
   );
 };
 
