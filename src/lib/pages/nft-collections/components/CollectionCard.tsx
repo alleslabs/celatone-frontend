@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
@@ -10,6 +11,7 @@ interface CollectionCardProps {
 }
 
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
+  const isMobile = useMobile();
   const { uri, description, name } = collectionInfo;
   const { data: metadata } = useMetadata(uri);
 
@@ -81,6 +83,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
               <ExplorerLink
                 value={collectionInfo.creator}
                 type="user_address"
+                showCopyOnHover={!isMobile}
+                minW={36}
                 ampCopierSection="collection-list"
               />
             </Flex>
@@ -91,6 +95,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
               <ExplorerLink
                 value={collectionInfo.collectionAddress}
                 type="contract_address"
+                showCopyOnHover={!isMobile}
+                minW={36}
                 ampCopierSection="collection-list"
               />
             </Flex>
