@@ -7,6 +7,54 @@ const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
+  "mahalo-2-lite": {
+    tier: "lite",
+    chain: "initia",
+    registryChainName: "initiadevnet2",
+    prettyName: "Initia Closed Testnet 2 Lite",
+    lcd: "https://lcd.mahalo-2.initia.xyz",
+    rpc: "https://rpc.mahalo-2.initia.xyz:443",
+    indexer: "https://mahalo-2-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+        // url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "https://compiler.mahalo-2.initia.xyz/contracts/verify",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: true,
+        version: "v1",
+        hideOpenProposal: true,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom: "uinit",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {},
+  },
   "mahalo-2": {
     tier: "full",
     chain: "initia",

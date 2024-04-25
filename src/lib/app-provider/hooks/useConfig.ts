@@ -9,11 +9,15 @@ const TierMap: Record<ChainConfig["tier"], number> = {
   full: 2,
 };
 
-export const useTierConfig = ({
-  minTier = "lite",
-}: {
-  minTier?: ChainConfig["tier"];
-}) => {
+export const useTierConfig = (
+  {
+    minTier,
+  }: {
+    minTier: ChainConfig["tier"];
+  } = {
+    minTier: "lite",
+  }
+) => {
   const {
     chainConfig: { tier },
   } = useCelatoneApp();
