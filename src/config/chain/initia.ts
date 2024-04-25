@@ -8,6 +8,7 @@ const INITIA_DECODER =
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "mahalo-2": {
+    tier: "full",
     chain: "initia",
     registryChainName: "initiadevnet2",
     prettyName: "Initia Closed Testnet 2",
@@ -55,6 +56,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     extra: {},
   },
   "minimove-2": {
+    tier: "full",
     chain: "initia",
     registryChainName: "minitiamovedevnet2",
     prettyName: "Minitia Move Closed Testnet 2",
@@ -102,6 +104,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "miniwasm-2": {
+    tier: "full",
     chain: "initia",
     registryChainName: "minitiawasmdevnet2",
     prettyName: "Minitia Wasm Closed Testnet 2",
@@ -148,6 +151,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "tomcat-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "blackwingdevnet1",
     prettyName: "Blackwing Closed Testnet 1",
@@ -195,6 +199,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "stone-13": {
+    tier: "full",
     chain: "initia",
     registryChainName: "initiatestnet13",
     prettyName: "Initia Testnet 13",

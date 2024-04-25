@@ -10,6 +10,7 @@ import type { ChainConfigs } from "./types";
  */
 export const SEI_CHAIN_CONFIGS: ChainConfigs = {
   "pacific-1": {
+    tier: "full",
     chain: "sei",
     registryChainName: "sei",
     prettyName: "Sei",
@@ -58,6 +59,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "atlantic-2": {
+    tier: "full",
     chain: "sei",
     registryChainName: "seitestnet2",
     prettyName: "Sei Testnet2",

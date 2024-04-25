@@ -5,6 +5,7 @@ import type { ChainConfigs } from "./types";
 
 export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
   "phoenix-1": {
+    tier: "full",
     chain: "terra",
     registryChainName: "terra2",
     prettyName: "Terra",
@@ -52,6 +53,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "pisco-1": {
+    tier: "full",
     chain: "terra",
     registryChainName: "terra2testnet",
     prettyName: "Terra Testnet",

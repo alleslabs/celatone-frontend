@@ -1,6 +1,7 @@
 import type { ChainConfig } from "./types";
 
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
+  tier: "lite",
   chain: "",
   registryChainName: "",
   prettyName: "",

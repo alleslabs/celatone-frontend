@@ -3,6 +3,28 @@ import type { ChainConfig } from "config/chain/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
 
+const TierMap: Record<ChainConfig["tier"], number> = {
+  lite: 0,
+  // new metric 1
+  full: 2,
+};
+
+export const useTierConfig = ({
+  minTier = "lite",
+}: {
+  minTier?: ChainConfig["tier"];
+}) => {
+  const {
+    chainConfig: { tier },
+  } = useCelatoneApp();
+  const navigate = useInternalNavigate();
+
+  if (TierMap[tier] < TierMap[minTier])
+    navigate({ pathname: "/", replace: true });
+
+  return tier;
+};
+
 type Features = ChainConfig["features"];
 
 type FeatureVariant = Features[keyof Features];
