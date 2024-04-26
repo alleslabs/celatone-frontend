@@ -53,7 +53,9 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
         />
         <Flex alignItems="center">
           <Flex gap={1} direction="column">
-            <Heading variant="h6">{item.title}</Heading>
+            <Heading as="h6" variant="h6">
+              {item.title}
+            </Heading>
             <Text textDecoration="none" variant="body2">
               {item.subtitle}
             </Text>

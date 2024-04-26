@@ -10,10 +10,9 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import { INSTANTIATED_LIST_NAME, StorageKeys } from "lib/data";
+import { StorageKeys } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
-import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
@@ -51,24 +50,6 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         ...getYourAccountSubmenu(address),
         ...(tier === "lite"
           ? getYourAccountSubmenuLite(wasm.enabled, move.enabled)
-          : []),
-        ...(wasm.enabled
-          ? [
-              {
-                name: INSTANTIATED_LIST_NAME,
-                slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
-                icon: getListIcon(INSTANTIATED_LIST_NAME),
-              },
-            ]
-          : []),
-        ...(move.enabled
-          ? [
-              {
-                name: "My Published Modules",
-                slug: "/my-published-modules",
-                icon: "contract-address" as IconKeys,
-              },
-            ]
           : []),
       ],
     },

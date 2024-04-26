@@ -135,12 +135,6 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
 
   const quickMenu = useMemo<CardProps[]>(
     () => [
-      {
-        title: "Block",
-        slug: "blocks",
-        icon: "block" as const,
-        isDocument: false,
-      },
       ...(wasm.enabled
         ? [
             {

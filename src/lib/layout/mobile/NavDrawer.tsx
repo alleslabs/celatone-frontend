@@ -21,6 +21,7 @@ import {
   useMoveConfig,
   useNftConfig,
   usePublicProjectConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -38,6 +39,7 @@ export const NavDrawer = () => {
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
+  const tier = useTierConfig({ minTier: "lite" });
 
   const mobileMenu: MenuInfo[] = [
     {
@@ -45,16 +47,20 @@ export const NavDrawer = () => {
       slug: "overview",
       submenu: [
         { name: "Overview", slug: "/", icon: "home" },
-        {
-          name: "Transactions",
-          slug: "/txs",
-          icon: "file",
-        },
-        {
-          name: "Blocks",
-          slug: "/blocks",
-          icon: "block",
-        },
+        ...(tier === "full"
+          ? [
+              {
+                name: "Transactions",
+                slug: "/txs",
+                icon: "file" as IconKeys,
+              },
+              {
+                name: "Blocks",
+                slug: "/blocks",
+                icon: "block" as IconKeys,
+              },
+            ]
+          : []),
         ...(govConfig.enabled
           ? [
               {
@@ -76,11 +82,15 @@ export const NavDrawer = () => {
                 slug: "/codes",
                 icon: "code" as IconKeys,
               },
-              {
-                name: "Contracts",
-                slug: "/contracts",
-                icon: "contract-address" as IconKeys,
-              },
+              ...(tier === "full"
+                ? [
+                    {
+                      name: "Contracts",
+                      slug: "/contracts",
+                      icon: "contract-address" as IconKeys,
+                    },
+                  ]
+                : []),
               {
                 name: "Query",
                 slug: "/query",
@@ -90,11 +100,15 @@ export const NavDrawer = () => {
           : []),
         ...(moveConfig.enabled
           ? [
-              {
-                name: "Modules",
-                slug: "/modules",
-                icon: "contract-address" as IconKeys,
-              },
+              ...(tier === "full"
+                ? [
+                    {
+                      name: "Modules",
+                      slug: "/modules",
+                      icon: "contract-address" as IconKeys,
+                    },
+                  ]
+                : []),
               {
                 name: "0x1 Page",
                 slug: "/account/0x1",
@@ -102,7 +116,7 @@ export const NavDrawer = () => {
               },
             ]
           : []),
-        ...(nftConfig.enabled
+        ...(nftConfig.enabled && tier === "full"
           ? [
               {
                 name: "NFT Collections",
