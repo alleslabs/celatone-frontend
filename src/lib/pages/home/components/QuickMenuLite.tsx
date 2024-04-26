@@ -218,11 +218,19 @@ export const QuickMenuLite = () => {
               direction="column"
             >
               {item.isDocument ? (
-                <Link href={USER_GUIDE_DOCS_LINK}>
+                <Link
+                  href={USER_GUIDE_DOCS_LINK}
+                  style={{ height: "100%" }}
+                  target="_blank"
+                >
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </Link>
               ) : (
-                <AppLink href={`/${item.slug}`} key={item.slug}>
+                <AppLink
+                  href={`/${item.slug}`}
+                  key={item.slug}
+                  style={{ height: "100%" }}
+                >
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </AppLink>
               )}

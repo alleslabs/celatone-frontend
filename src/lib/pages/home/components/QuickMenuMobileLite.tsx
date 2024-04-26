@@ -80,55 +80,28 @@ const QuickActionCard = ({ item }: { item: CardProps }) => {
   );
 };
 
-const ListPageCard = ({ item }: { item: CardProps }) => {
-  return item.isDocument ? (
-    <Link href={USER_GUIDE_DOCS_LINK} key={item.slug}>
-      <Flex
-        sx={cardProps}
-        alignItems="center"
-        justifyContent="space-between"
-        h="full"
-      >
-        <Flex alignItems="center" gap={2}>
-          <CustomIcon
-            name={item.icon}
-            boxSize={{ base: 5, md: 6 }}
-            color="gray.600"
-          />
-          <Heading variant="h6">{item.title}</Heading>
-        </Flex>
-        <CustomIcon
-          name={item.isDocument ? "launch" : "chevron-right"}
-          boxSize={{ base: 5, md: 6 }}
-          color="gray.600"
-        />
-      </Flex>
-    </Link>
-  ) : (
-    <AppLink href={`/${item.slug}`} key={item.slug}>
-      <Flex
-        sx={cardProps}
-        alignItems="center"
-        justifyContent="space-between"
-        h="full"
-      >
-        <Flex alignItems="center" gap={2}>
-          <CustomIcon
-            name={item.icon}
-            boxSize={{ base: 5, md: 6 }}
-            color="gray.600"
-          />
-          <Heading variant="h6">{item.title}</Heading>
-        </Flex>
-        <CustomIcon
-          name={item.isDocument ? "launch" : "chevron-right"}
-          boxSize={{ base: 5, md: 6 }}
-          color="gray.600"
-        />
-      </Flex>
-    </AppLink>
-  );
-};
+const ListPageCard = ({ item }: { item: CardProps }) => (
+  <Flex
+    sx={cardProps}
+    alignItems="center"
+    justifyContent="space-between"
+    h="full"
+  >
+    <Flex alignItems="center" gap={2}>
+      <CustomIcon
+        name={item.icon}
+        boxSize={{ base: 5, md: 6 }}
+        color="gray.600"
+      />
+      <Heading variant="h6">{item.title}</Heading>
+    </Flex>
+    <CustomIcon
+      name={item.isDocument ? "launch" : "chevron-right"}
+      boxSize={{ base: 5, md: 6 }}
+      color="gray.600"
+    />
+  </Flex>
+);
 
 export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -193,9 +166,17 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
         Explore {prettyName}
       </Heading>
       <Grid gap={4}>
-        {quickMenu.map((item) => (
-          <ListPageCard item={item} />
-        ))}
+        {quickMenu.map((item) =>
+          item.isDocument ? (
+            <Link href={USER_GUIDE_DOCS_LINK} key={item.slug} target="_blank">
+              <ListPageCard item={item} />
+            </Link>
+          ) : (
+            <AppLink href={`/${item.slug}`} key={item.slug}>
+              <ListPageCard item={item} />
+            </AppLink>
+          )
+        )}
       </Grid>
     </Grid>
   );
