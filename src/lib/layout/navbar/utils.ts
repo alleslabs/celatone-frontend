@@ -1,7 +1,77 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { AmpEvent, track } from "lib/amplitude";
 import type { IconKeys } from "lib/components/icon";
-import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
+import {
+  INSTANTIATED_LIST_NAME,
+  SAVED_LIST_NAME,
+  StorageKeys,
+  UNDEFINED_ICON_LIST,
+} from "lib/data";
+import type { PublicProject } from "lib/stores/project";
+import type { BechAddr20, Option } from "lib/types";
 import { formatSlugName, getListIcon } from "lib/utils";
+
+export const getYourAccountSubmenu = (address: Option<BechAddr20>) => [
+  {
+    name: "Past Transactions",
+    slug: "/past-txs",
+    icon: "history" as IconKeys,
+  },
+  {
+    name: "Your Account Details",
+    slug: `/accounts/${address}`,
+    icon: "admin" as IconKeys,
+    isDisable: !address,
+    tooltipText: "You need to connect wallet to view your account details.",
+    trackEvent: () => track(AmpEvent.USE_TO_YOUR_ACCOUNT),
+  },
+];
+
+export const getYourAccountSubmenuLite = (isWasm: boolean, isMove: boolean) => [
+  ...(isWasm
+    ? [
+        {
+          name: INSTANTIATED_LIST_NAME,
+          slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+          icon: getListIcon(INSTANTIATED_LIST_NAME),
+        },
+      ]
+    : []),
+  ...(isMove
+    ? [
+        {
+          name: "My Published Modules",
+          slug: "/my-published-modules",
+          icon: "contract-address" as IconKeys,
+        },
+      ]
+    : []),
+];
+
+export const getPublicProjectsSubmenu = (
+  hasPublicProject: boolean,
+  projects: PublicProject[]
+) =>
+  hasPublicProject
+    ? [
+        {
+          category: "Public Projects",
+          slug: StorageKeys.ProjectSidebar,
+          submenu: [
+            ...projects.map((list) => ({
+              name: list.name,
+              slug: `/projects/${list.slug}`,
+              logo: list.logo || UNDEFINED_ICON_LIST[0],
+            })),
+            {
+              name: "View All Projects",
+              slug: "/projects",
+              icon: "public-project" as IconKeys,
+            },
+          ],
+        },
+      ]
+    : [];
 
 export const getDevSubmenuMove = (isMove: boolean) =>
   isMove

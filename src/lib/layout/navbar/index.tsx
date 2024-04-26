@@ -2,17 +2,18 @@ import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { Dispatch, SetStateAction } from "react";
 
-import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
   useMoveConfig,
   usePublicProjectConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import { StorageKeys, UNDEFINED_ICON_LIST } from "lib/data";
+import { INSTANTIATED_LIST_NAME, StorageKeys } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
+import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
@@ -21,8 +22,11 @@ import {
   getDeviceSubmenuWasm,
   getDevSubmenuMove,
   getDevSubmenuWasm,
+  getPublicProjectsSubmenu,
   getWalletSubSectionMove,
   getWalletSubSectionWasm,
+  getYourAccountSubmenu,
+  getYourAccountSubmenuLite,
 } from "./utils";
 
 interface NavbarProps {
@@ -36,7 +40,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-
+  const tier = useTierConfig({ minTier: "lite" });
   const { address } = useCurrentChain();
 
   const navMenu: MenuInfo[] = [
@@ -44,41 +48,35 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       category: "Your Account",
       slug: "your-account",
       submenu: [
-        {
-          name: "Past Transactions",
-          slug: "/past-txs",
-          icon: "history" as IconKeys,
-        },
-        {
-          name: "Your Account Details",
-          slug: `/accounts/${address}`,
-          icon: "admin" as IconKeys,
-          isDisable: !address,
-          tooltipText:
-            "You need to connect wallet to view your account details.",
-          trackEvent: () => track(AmpEvent.USE_TO_YOUR_ACCOUNT),
-        },
+        ...getYourAccountSubmenu(address),
+        ...(tier === "lite"
+          ? getYourAccountSubmenuLite(wasm.enabled, move.enabled)
+          : []),
+        ...(wasm.enabled
+          ? [
+              {
+                name: INSTANTIATED_LIST_NAME,
+                slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+                icon: getListIcon(INSTANTIATED_LIST_NAME),
+              },
+            ]
+          : []),
+        ...(move.enabled
+          ? [
+              {
+                name: "My Published Modules",
+                slug: "/my-published-modules",
+                icon: "contract-address" as IconKeys,
+              },
+            ]
+          : []),
       ],
     },
     ...(publicProject.enabled
-      ? [
-          {
-            category: "Public Projects",
-            slug: StorageKeys.ProjectSidebar,
-            submenu: [
-              ...getSavedPublicProjects().map((list) => ({
-                name: list.name,
-                slug: `/projects/${list.slug}`,
-                logo: list.logo || UNDEFINED_ICON_LIST[0],
-              })),
-              {
-                name: "View All Projects",
-                slug: "/projects",
-                icon: "public-project" as IconKeys,
-              },
-            ],
-          },
-        ]
+      ? getPublicProjectsSubmenu(
+          publicProject.enabled,
+          getSavedPublicProjects()
+        )
       : []),
     ...(move.enabled || wasm.enabled
       ? [
@@ -90,8 +88,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
               ...getDevSubmenuWasm(wasm.enabled),
             ],
             subSection: [
-              ...getWalletSubSectionMove(move.enabled),
-              ...getWalletSubSectionWasm(wasm.enabled),
+              ...(tier === "full"
+                ? [
+                    ...getWalletSubSectionMove(move.enabled),
+                    ...getWalletSubSectionWasm(wasm.enabled),
+                  ]
+                : []),
               {
                 category: "This Device",
                 submenu: [

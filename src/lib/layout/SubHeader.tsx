@@ -6,6 +6,7 @@ import {
   useMoveConfig,
   useNftConfig,
   usePoolConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -25,6 +26,7 @@ const SubHeader = () => {
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
+  const tier = useTierConfig({ minTier: "lite" });
 
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
@@ -61,6 +63,24 @@ const SubHeader = () => {
   if (poolConfig.enabled)
     subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
 
+  // LITE
+
+  const subHeaderMenuLite: SubHeaderMenuInfo[] = [
+    { name: "Overview", slug: "/", icon: "home" },
+  ];
+
+  if (tier === "lite") {
+    if (govConfig.enabled)
+      subHeaderMenuLite.push(
+        { name: "Validators", slug: "/validators", icon: "validator" },
+        { name: "Proposals", slug: "/proposals", icon: "proposal" }
+      );
+    if (wasmConfig.enabled)
+      subHeaderMenuLite.push({ name: "Codes", slug: "/codes", icon: "code" });
+  }
+
+  const subMenu = tier === "lite" ? subHeaderMenuLite : subHeaderMenu;
+
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";
@@ -71,7 +91,7 @@ const SubHeader = () => {
 
   return (
     <Flex px={6} h="full">
-      {subHeaderMenu.map((item) => (
+      {subMenu.map((item) => (
         <AppLink
           href={item.slug}
           key={item.slug}
