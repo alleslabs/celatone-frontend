@@ -3,7 +3,7 @@ import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { useWasmConfig } from "lib/app-provider";
+import { useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
@@ -105,6 +105,7 @@ const ListPageCard = ({ item }: { item: CardProps }) => (
 
 export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   const quickMenu = useMemo<CardProps[]>(
     () => [
@@ -118,18 +119,22 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
             },
           ]
         : []),
-      {
-        title: "Proposals",
-        slug: "proposals",
-        icon: "proposal" as const,
-        isDocument: false,
-      },
-      {
-        title: "Validators",
-        slug: "validators",
-        icon: "admin" as const,
-        isDocument: false,
-      },
+      ...(gov.enabled
+        ? [
+            {
+              title: "Proposals",
+              slug: "proposals",
+              icon: "proposal" as const,
+              isDocument: false,
+            },
+            {
+              title: "Validators",
+              slug: "validators",
+              icon: "admin" as const,
+              isDocument: false,
+            },
+          ]
+        : []),
       {
         title: "User Guide",
         subtitle: "View Celatone documents",
@@ -137,7 +142,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
         isDocument: true,
       },
     ],
-    [wasm.enabled]
+    [wasm.enabled, gov.enabled]
   );
 
   return (

@@ -47,20 +47,16 @@ export const NavDrawer = () => {
       slug: "overview",
       submenu: [
         { name: "Overview", slug: "/", icon: "home" },
-        ...(tier === "full"
-          ? [
-              {
-                name: "Transactions",
-                slug: "/txs",
-                icon: "file" as IconKeys,
-              },
-              {
-                name: "Blocks",
-                slug: "/blocks",
-                icon: "block" as IconKeys,
-              },
-            ]
-          : []),
+        {
+          name: "Transactions",
+          slug: "/txs",
+          icon: "file" as IconKeys,
+        },
+        {
+          name: "Blocks",
+          slug: "/blocks",
+          icon: "block" as IconKeys,
+        },
         ...(govConfig.enabled
           ? [
               {
@@ -82,15 +78,11 @@ export const NavDrawer = () => {
                 slug: "/codes",
                 icon: "code" as IconKeys,
               },
-              ...(tier === "full"
-                ? [
-                    {
-                      name: "Contracts",
-                      slug: "/contracts",
-                      icon: "contract-address" as IconKeys,
-                    },
-                  ]
-                : []),
+              {
+                name: "Contracts",
+                slug: "/contracts",
+                icon: "contract-address" as IconKeys,
+              },
               {
                 name: "Query",
                 slug: "/query",
@@ -100,15 +92,11 @@ export const NavDrawer = () => {
           : []),
         ...(moveConfig.enabled
           ? [
-              ...(tier === "full"
-                ? [
-                    {
-                      name: "Modules",
-                      slug: "/modules",
-                      icon: "contract-address" as IconKeys,
-                    },
-                  ]
-                : []),
+              {
+                name: "Modules",
+                slug: "/modules",
+                icon: "contract-address" as IconKeys,
+              },
               {
                 name: "0x1 Page",
                 slug: "/account/0x1",
@@ -116,7 +104,7 @@ export const NavDrawer = () => {
               },
             ]
           : []),
-        ...(nftConfig.enabled && tier === "full"
+        ...(nftConfig.enabled
           ? [
               {
                 name: "NFT Collections",
@@ -129,8 +117,57 @@ export const NavDrawer = () => {
     },
   ];
 
+  const mobileMenuLite: MenuInfo[] = [
+    {
+      category: "Overview",
+      slug: "overview",
+      submenu: [
+        { name: "Overview", slug: "/", icon: "home" },
+        ...(wasmConfig.enabled
+          ? [
+              {
+                name: "Query",
+                slug: "/query",
+                icon: "query" as IconKeys,
+              },
+              {
+                name: "Codes",
+                slug: "/codes",
+                icon: "code" as IconKeys,
+              },
+            ]
+          : []),
+        ...(govConfig.enabled
+          ? [
+              {
+                name: "Proposals",
+                slug: "/proposals",
+                icon: "proposal" as IconKeys,
+              },
+              {
+                name: "Validators",
+                slug: "/validators",
+                icon: "validator" as IconKeys,
+              },
+            ]
+          : []),
+        ...(moveConfig.enabled
+          ? [
+              {
+                name: "0x1 Page",
+                slug: "/account/0x1",
+                icon: "hex" as IconKeys,
+              },
+            ]
+          : []),
+      ],
+    },
+  ];
+
+  const navMenu = tier === "lite" ? mobileMenuLite : mobileMenu;
+
   if (publicProject.enabled) {
-    mobileMenu.push({
+    navMenu.push({
       category: "Public Projects",
       slug: "public-projects",
       submenu: [
@@ -170,7 +207,7 @@ export const NavDrawer = () => {
             </Flex>
           </DrawerHeader>
           <DrawerBody overflowY="scroll" px={4}>
-            {mobileMenu.map((item) => (
+            {navMenu.map((item) => (
               <Box
                 pb={4}
                 mb={4}
