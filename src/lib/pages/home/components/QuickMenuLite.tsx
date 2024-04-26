@@ -1,5 +1,6 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import { CURR_THEME } from "env";
@@ -7,6 +8,7 @@ import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
+import { USER_GUIDE_DOCS_LINK } from "lib/data";
 
 const baseCardProps: SystemStyleObject = {
   width: "full",
@@ -69,51 +71,44 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
 
 const ContentCard = ({
   item,
-  index,
-  isMove,
+  isDocument,
 }: {
   item: ShortcutMetadata;
-  index: number;
-  isMove: boolean;
+  isDocument: boolean;
 }) => {
   return (
-    <Box
-      key={item.slug}
-      width={isMove && index === 0 ? "100%" : "auto"}
-      gridColumn={isMove && index === 0 ? "1 / -1" : "auto"}
+    <Flex
+      sx={cardProps}
+      _hover={{ bg: "gray.700" }}
+      transition="all 0.25s ease-in-out"
     >
-      <AppLink href={`/${item.slug}`} key={item.slug}>
-        <Flex
-          sx={cardProps}
-          _hover={{ bg: "gray.700" }}
-          transition="all 0.25s ease-in-out"
-        >
-          <Flex
-            gap={6}
-            direction="column"
-            justifyContent="space-between"
-            h="full"
-          >
-            <CustomIcon
-              name={item.icon}
-              boxSize={{ base: 5, md: 6 }}
-              color="gray.600"
-            />
-            <Box>
-              <Heading variant="h6">{item.title}</Heading>
-              <Text textDecoration="none" variant="body2" color="text.dark">
-                {item.subtitle}
-              </Text>
-            </Box>
+      <Flex
+        gap={6}
+        direction="column"
+        justifyContent="space-between"
+        h="full"
+        w="full"
+      >
+        <CustomIcon
+          name={item.icon}
+          boxSize={{ base: 5, md: 6 }}
+          color="gray.600"
+        />
+        <Flex justifyContent="space-between" alignItems="flex-end">
+          <Flex direction="column">
+            <Heading variant="h6">{item.title}</Heading>
+            <Text textDecoration="none" variant="body2" color="text.dark">
+              {item.subtitle}
+            </Text>
           </Flex>
           <CustomIcon
-            name="chevron-right"
+            name={isDocument ? "launch" : "chevron-right"}
             boxSize={{ base: 5, md: 6 }}
             color="gray.600"
           />
         </Flex>
-      </AppLink>
-    </Box>
+      </Flex>
+    </Flex>
   );
 };
 
@@ -214,7 +209,22 @@ export const QuickMenuLite = () => {
         {quickMenu
           .filter((item) => item.isHighlight === false)
           .map((item, index) => (
-            <ContentCard item={item} index={index} isMove={move.enabled} />
+            <Flex
+              key={item.slug}
+              width={move.enabled && index === 0 ? "100%" : "auto"}
+              gridColumn={move.enabled && index === 0 ? "1 / -1" : "auto"}
+              direction="column"
+            >
+              {item.isDocument ? (
+                <Link href={USER_GUIDE_DOCS_LINK}>
+                  <ContentCard item={item} isDocument={item.isDocument} />
+                </Link>
+              ) : (
+                <AppLink href={`/${item.slug}`} key={item.slug}>
+                  <ContentCard item={item} isDocument={item.isDocument} />
+                </AppLink>
+              )}
+            </Flex>
           ))}
       </Grid>
     </Grid>
