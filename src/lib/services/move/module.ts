@@ -228,7 +228,7 @@ export const getModuleInfo = async (
   vmAddress: HexAddr
 ): Promise<ModuleInfoResponse> =>
   axios
-    .get(`${endpoint}/${vmAddress}/${moduleName}/info`)
+    .get(`${endpoint}/${encodeURIComponent(vmAddress)}/${moduleName}/info`)
     .then(({ data }) => parseWithError(zModuleInfoResponse, data));
 
 const zModuleTableCountsResponse = z.object({
@@ -246,7 +246,9 @@ export const getModuleTableCounts = async (
   vmAddress: HexAddr
 ): Promise<ModuleTableCountsResponse> =>
   axios
-    .get(`${endpoint}/${vmAddress}/${moduleName}/table-counts`)
+    .get(
+      `${endpoint}/${encodeURIComponent(vmAddress)}/${moduleName}/table-counts`
+    )
     .then(({ data }) => parseWithError(zModuleTableCountsResponse, data));
 
 const zModuleTxsResponse = z.object({
