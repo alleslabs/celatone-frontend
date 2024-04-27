@@ -1,6 +1,8 @@
 import axios from "axios";
 import { z } from "zod";
 
+import { zProposal, zProposalsResponseItem } from "../proposal";
+import { zTxsResponseItem } from "../tx";
 import type {
   AbiFormData,
   Addr,
@@ -14,10 +16,17 @@ import type {
   ResponseModules,
   SnakeToCamelCaseNested,
 } from "lib/types";
-import { UpgradePolicy, zBechAddr, zHexAddr, zUtcDate } from "lib/types";
+import {
+  UpgradePolicy,
+  zBechAddr,
+  zHexAddr,
+  zRemark,
+  zUtcDate,
+} from "lib/types";
 import {
   libDecode,
   parseJsonABI,
+  parseTxHashOpt,
   parseWithError,
   serializeAbiData,
   snakeToCamel,
@@ -191,3 +200,141 @@ export const getModules = async (
       },
     })
     .then(({ data }) => parseWithError(zModulesResponse, data));
+
+const zModuleInfoResponse = z
+  .object({
+    abi: z.string(),
+    address: zHexAddr,
+    module_name: z.string(),
+    raw_bytes: z.string(),
+    upgrade_policy: z.nativeEnum(UpgradePolicy),
+    recent_publish_transaction: z.string().nullable(),
+    recent_publish_proposal: zProposal
+      .pick({ id: true, title: true })
+      .nullable(),
+    is_republished: z.boolean(),
+  })
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    recentPublishTransaction: parseTxHashOpt(
+      val.recent_publish_transaction ?? undefined
+    ),
+  }));
+export type ModuleInfoResponse = z.infer<typeof zModuleInfoResponse>;
+
+export const getModuleInfo = async (
+  endpoint: string,
+  moduleName: string,
+  vmAddress: HexAddr
+): Promise<ModuleInfoResponse> =>
+  axios
+    .get(`${endpoint}/${vmAddress}/${moduleName}/info`)
+    .then(({ data }) => parseWithError(zModuleInfoResponse, data));
+
+const zModuleTableCountsResponse = z.object({
+  txs: z.number().nonnegative().nullable(),
+  histories: z.number().nonnegative().nullable(),
+  proposals: z.number().nonnegative().nullable(),
+});
+export type ModuleTableCountsResponse = z.infer<
+  typeof zModuleTableCountsResponse
+>;
+
+export const getModuleTableCounts = async (
+  endpoint: string,
+  moduleName: string,
+  vmAddress: HexAddr
+): Promise<ModuleTableCountsResponse> =>
+  axios
+    .get(`${endpoint}/${vmAddress}/${moduleName}/table-counts`)
+    .then(({ data }) => parseWithError(zModuleTableCountsResponse, data));
+
+const zModuleTxsResponse = z.object({
+  items: z.array(zTxsResponseItem),
+  total: z.number().nonnegative(),
+});
+export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
+
+export const getModuleTxs = async (
+  endpoint: string,
+  address: HexAddr,
+  moduleName: string,
+  limit: number,
+  offset: number,
+  isInitia: boolean
+) =>
+  axios
+    .get(
+      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/txs`,
+      {
+        params: {
+          limit,
+          offset,
+          is_initia: isInitia,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zModuleTxsResponse, data));
+
+const zModuleHistory = z
+  .object({
+    remark: zRemark,
+    upgrade_policy: z.nativeEnum(UpgradePolicy),
+    height: z.number(),
+    timestamp: zUtcDate,
+    previous_policy: z.nativeEnum(UpgradePolicy).nullable(),
+  })
+  .transform(snakeToCamel);
+export type ModuleHistory = z.infer<typeof zModuleHistory>;
+
+const zModuleHistoriesResponse = z.object({
+  items: z.array(zModuleHistory),
+  total: z.number().nonnegative(),
+});
+export type ModuleHistoriesResponse = z.infer<typeof zModuleHistoriesResponse>;
+
+export const getModuleHistories = async (
+  endpoint: string,
+  address: HexAddr,
+  moduleName: string,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/histories`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zModuleHistoriesResponse, data));
+
+const zModuleRelatedProposalsResponse = z.object({
+  items: z.array(zProposalsResponseItem),
+  total: z.number().nonnegative(),
+});
+export type ModuleRelatedProposalsResponse = z.infer<
+  typeof zModuleRelatedProposalsResponse
+>;
+
+export const getModuleRelatedProposals = async (
+  endpoint: string,
+  address: HexAddr,
+  moduleName: string,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(
+      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/related-proposals`,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zModuleRelatedProposalsResponse, data));

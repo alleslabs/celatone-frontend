@@ -1,4 +1,3 @@
-import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
@@ -6,7 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
-import { useTxsByModule } from "lib/services/txService";
+import { useModuleTxs } from "lib/services/move";
 import type { HexAddr, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
@@ -15,7 +14,6 @@ interface ModuleTxsTableProps {
   txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
-  refetchCount: () => void;
 }
 
 export const ModuleTxsTable = ({
@@ -24,7 +22,6 @@ export const ModuleTxsTable = ({
   txCount,
   onViewMore,
   scrollComponentId,
-  refetchCount,
 }: ModuleTxsTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
@@ -35,6 +32,7 @@ export const ModuleTxsTable = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
     total: txCount,
     initialState: {
@@ -48,19 +46,9 @@ export const ModuleTxsTable = ({
     data: moduleTxs,
     isLoading,
     error,
-  } = useTxsByModule(address, moduleName, offset, pageSize);
-
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
+  } = useModuleTxs(address, moduleName, offset, pageSize, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
 
   useEffect(() => {
     if (!onViewMore) setPageSize(10);
@@ -96,8 +84,12 @@ export const ModuleTxsTable = ({
                 offset={offset}
                 totalData={txCount}
                 pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
                 scrollComponentId={scrollComponentId}
               />
             ))}

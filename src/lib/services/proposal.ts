@@ -126,7 +126,8 @@ export const zProposal = z.object({
   voting_end_time: zUtcDate.nullable(),
 });
 
-const zProposalsResponseItem = zProposal.transform<Proposal>(snakeToCamel);
+export const zProposalsResponseItem =
+  zProposal.transform<Proposal>(snakeToCamel);
 
 const zProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),

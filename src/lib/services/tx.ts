@@ -6,14 +6,7 @@ import type { Any } from "cosmjs-types/google/protobuf/any";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type {
-  BechAddr,
-  Fee,
-  HexAddr,
-  Option,
-  Transaction,
-  TxFilters,
-} from "lib/types";
+import type { BechAddr, Fee, Option, Transaction, TxFilters } from "lib/types";
 import { MsgFurtherAction, zBechAddr, zUtcDate } from "lib/types";
 import {
   camelToSnake,
@@ -132,29 +125,31 @@ const zBaseTxsResponseItem = z.object({
   is_move_upgrade: z.boolean().optional(),
 });
 
-const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>((val) => ({
-  hash: parseTxHash(val.hash),
-  messages: snakeToCamel(val.messages),
-  sender: val.sender,
-  isSigner: false,
-  height: val.height,
-  created: val.created,
-  success: val.success,
-  actionMsgType: getActionMsgType([
-    val.is_send,
-    val.is_execute,
-    val.is_instantiate,
-    val.is_store_code,
-    val.is_migrate,
-    val.is_update_admin,
-    val.is_clear_admin,
-    // TODO: implement Move msg type
-  ]),
-  furtherAction: MsgFurtherAction.NONE,
-  isIbc: val.is_ibc,
-  isOpinit: val.is_opinit ?? false,
-  isInstantiate: val.is_instantiate ?? false,
-}));
+export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
+  (val) => ({
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages),
+    sender: val.sender,
+    isSigner: false,
+    height: val.height,
+    created: val.created,
+    success: val.success,
+    actionMsgType: getActionMsgType([
+      val.is_send,
+      val.is_execute,
+      val.is_instantiate,
+      val.is_store_code,
+      val.is_migrate,
+      val.is_update_admin,
+      val.is_clear_admin,
+      // TODO: implement Move msg type
+    ]),
+    furtherAction: MsgFurtherAction.NONE,
+    isIbc: val.is_ibc,
+    isOpinit: val.is_opinit ?? false,
+    isInstantiate: val.is_instantiate ?? false,
+  })
+);
 
 const zTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
@@ -289,36 +284,6 @@ export const getTxsByBlockHeight = async (
       },
     })
     .then(({ data }) => parseWithError(zBlockTxsResponse, data));
-
-const zModuleTxsResponse = z.object({
-  items: z.array(zTxsResponseItem),
-});
-export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
-
-export const getTxsByModule = async (
-  endpoint: string,
-  address: HexAddr,
-  moduleName: string,
-  limit: number,
-  offset: number,
-  isWasm: boolean,
-  isMove: boolean,
-  isInitia: boolean
-) =>
-  axios
-    .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/txs`,
-      {
-        params: {
-          limit,
-          offset,
-          is_wasm: isWasm,
-          is_move: isMove,
-          is_initia: isInitia,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zModuleTxsResponse, data));
 
 const zTxsCountResponse = z
   .object({

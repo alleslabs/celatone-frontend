@@ -1,12 +1,4 @@
-import type { BechAddr, Option, Remark, UpgradePolicy } from "lib/types";
-
-export interface ModuleHistory {
-  remark: Remark;
-  upgradePolicy: UpgradePolicy;
-  height: number;
-  timestamp: Date;
-  previousPolicy: Option<UpgradePolicy>;
-}
+import type { BechAddr } from "lib/types";
 
 export interface ModuleInfo {
   // NOTE: can also be an ica or a contract

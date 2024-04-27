@@ -5,7 +5,7 @@ import { capitalize } from "lodash";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { RemarkRender, TableRow } from "lib/components/table";
-import type { ModuleHistory } from "lib/types";
+import type { ModuleHistory } from "lib/services/move/module";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface PublishedEventsTableRowProps {
@@ -39,7 +39,7 @@ export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
           <Text variant="body2" color="text.dark">
             Changed from{" "}
             <Text as="span" fontWeight={700}>
-              {capitalize(history.previousPolicy)}
+              {capitalize(history.previousPolicy ?? undefined)}
             </Text>
           </Text>
           <CustomIcon
