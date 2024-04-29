@@ -187,6 +187,8 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // ----------------SIDE EFFECTS--------------//
   // ------------------------------------------//
+  useEffect(() => setMsg(initialMsg), [contractAddress, initialMsg]);
+
   /**
    * @remarks
    * Handle when there is an initialFunds
@@ -203,8 +205,6 @@ export const JsonExecute = ({
       // comment just to avoid eslint no-empty
     }
   }, [initialFunds, reset, setValue]);
-
-  useEffect(() => setMsg(initialMsg), [initialMsg]);
 
   useEffect(() => {
     if (enableExecute) {

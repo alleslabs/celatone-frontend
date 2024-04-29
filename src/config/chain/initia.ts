@@ -7,7 +7,56 @@ const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
+  "tomcat-1-lite": {
+    tier: "lite",
+    chain: "initia",
+    registryChainName: "blackwingdevnet1",
+    prettyName: "Blackwing Closed Testnet 1 Lite",
+    lcd: "https://maze-rest-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-c64ef367-a391-4e71-901e-87951e5e9030.ue1-prod.newmetric.xyz",
+    indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: false,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom:
+          "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {
+      isValidatorExternalLink: null,
+    },
+  },
   "mahalo-2": {
+    tier: "full",
     chain: "initia",
     registryChainName: "initiadevnet2",
     prettyName: "Initia Closed Testnet 2",
@@ -55,6 +104,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     extra: {},
   },
   "minimove-2": {
+    tier: "full",
     chain: "initia",
     registryChainName: "minitiamovedevnet2",
     prettyName: "Minitia Move Closed Testnet 2",
@@ -102,6 +152,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "miniwasm-2": {
+    tier: "full",
     chain: "initia",
     registryChainName: "minitiawasmdevnet2",
     prettyName: "Minitia Wasm Closed Testnet 2",
@@ -148,6 +199,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "tomcat-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "blackwingdevnet1",
     prettyName: "Blackwing Closed Testnet 1",
@@ -195,6 +247,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "stone-13": {
+    tier: "full",
     chain: "initia",
     registryChainName: "initiatestnet13",
     prettyName: "Initia Testnet 13",

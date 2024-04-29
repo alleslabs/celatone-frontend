@@ -39,7 +39,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#897](https://github.com/alleslabs/celatone-frontend/pull/897) Add config for lite version support
+
 ### Improvements
+
+- [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Interact Contract
+- [#895](https://github.com/alleslabs/celatone-frontend/pull/895) Show collection address and creator on the collection list page
 
 ### Bug fixes
 

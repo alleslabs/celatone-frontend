@@ -18,7 +18,7 @@ export const MsgSuggestion = ({
 }: MsgSuggestionProps) => (
   <Box>
     {contractAddress && (
-      <Text variant="body3" mb={4}>
+      <Text variant="body3" mb={2}>
         Message Suggestions:
       </Text>
     )}

@@ -52,6 +52,7 @@ type GovConfig =
 type NftConfig = { enabled: boolean };
 
 export interface ChainConfig {
+  tier: "lite" | "full";
   chain: string;
   registryChainName: string;
   prettyName: string;
