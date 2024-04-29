@@ -8,7 +8,7 @@ import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState, ErrorFetching } from "lib/components/state";
+import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
 
@@ -77,15 +77,11 @@ export const RecentCodesTableFull = observer(() => {
         codes={data?.items}
         isLoading={isLoading}
         emptyState={
-          data ? (
-            <EmptyState
-              imageVariant="empty"
-              message="This network does not have any codes."
-              withBorder
-            />
-          ) : (
-            <ErrorFetching dataName="codes" />
-          )
+          <EmptyState
+            imageVariant="empty"
+            message="This network does not have any codes."
+            withBorder
+          />
         }
         onRowSelect={onRowSelect}
       />

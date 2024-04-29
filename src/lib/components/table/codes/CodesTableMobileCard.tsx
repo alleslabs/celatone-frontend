@@ -12,9 +12,11 @@ import { CodeNameCell } from "./CodeNameCell";
 
 interface CodesTableMobileCardProps {
   codeInfo: CodeInfo;
+  showCw2andContracts: boolean;
 }
 export const CodesTableMobileCard = ({
   codeInfo,
+  showCw2andContracts,
 }: CodesTableMobileCardProps) => {
   const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
   const navigate = useInternalNavigate();
@@ -43,31 +45,35 @@ export const CodesTableMobileCard = ({
             <MobileLabel label="Code Name" />
             <CodeNameCell code={codeInfo} isReadOnly />
           </Flex>
-          <Flex direction="column">
-            <MobileLabel label="CW2 Info" />
-            <Text
-              color={cw2Info ? "text.main" : "text.disabled"}
-              wordBreak="break-all"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {cw2Info ?? "N/A"}
-            </Text>
-          </Flex>
+          {showCw2andContracts && (
+            <Flex direction="column">
+              <MobileLabel label="CW2 Info" />
+              <Text
+                color={cw2Info ? "text.main" : "text.disabled"}
+                wordBreak="break-all"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {cw2Info ?? "N/A"}
+              </Text>
+            </Flex>
+          )}
         </Flex>
       }
       bottomContent={
         <Flex gap={3} w="full">
-          <Flex direction="column" flex="1">
-            <MobileLabel label="Contracts" />
-            <Text
-              variant="body3"
-              onClick={(e) => e.stopPropagation()}
-              cursor="text"
-              color={codeInfo.contractCount ? "text.main" : "text.disabled"}
-            >
-              {codeInfo.contractCount ?? "N/A"}
-            </Text>
-          </Flex>
+          {showCw2andContracts && (
+            <Flex direction="column" flex="1">
+              <MobileLabel label="Contracts" />
+              <Text
+                variant="body3"
+                onClick={(e) => e.stopPropagation()}
+                cursor="text"
+                color={codeInfo.contractCount ? "text.main" : "text.disabled"}
+              >
+                {codeInfo.contractCount ?? "N/A"}
+              </Text>
+            </Flex>
+          )}
           <Flex direction="column" flex="1">
             <MobileLabel label="Permission" />
             <PermissionChip

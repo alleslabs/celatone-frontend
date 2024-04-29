@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState, ErrorFetching } from "lib/components/state";
+import { EmptyState } from "lib/components/state";
 import {
   CodesTable,
   MobileTitle,
@@ -93,14 +93,10 @@ export const StoredCodesTable = observer(
               codes={codes}
               isLoading={isLoading}
               emptyState={
-                !codes ? (
-                  <ErrorFetching dataName="codes" />
-                ) : (
-                  <EmptyState
-                    message="No codes have been stored by this account before."
-                    withBorder
-                  />
-                )
+                <EmptyState
+                  message="No codes have been stored by this account before."
+                  withBorder
+                />
               }
               onRowSelect={onRowSelect}
             />
