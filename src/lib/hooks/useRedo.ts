@@ -23,7 +23,7 @@ export const useRedo = () => {
           pathname: "/interact-contract",
           query: {
             chainName,
-            selectedType: ContractInteractionTabs.ExecuteContract,
+            selectedType: ContractInteractionTabs.Execute,
             contract: msg.contract,
             msg: encodeMsg,
           },

@@ -98,14 +98,14 @@ export const PublicProjectContractRow = ({
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
-            href={`/interact-contract?selectedType=${ContractInteractionTabs.ExecuteContract}contract=${publicContractInfo.publicInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
           <AppLink
-            href={`/interact-contract?selectedType=${ContractInteractionTabs.QueryContract}&contract=${publicContractInfo.publicInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Query

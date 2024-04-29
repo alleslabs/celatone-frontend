@@ -8,7 +8,7 @@ export const zInteractContractQueryParams = z.object({
     z
       .string()
       .optional()
-      .transform(() => ContractInteractionTabs.QueryContract),
+      .transform(() => ContractInteractionTabs.Query),
   ]),
   contract: zBechAddr32.default(""),
   msg: z.string().default(""),

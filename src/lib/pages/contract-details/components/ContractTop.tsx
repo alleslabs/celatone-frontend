@@ -54,7 +54,7 @@ export const ContractTop = ({
     contractLocalInfo?.name || publicInfo?.name || contract.label;
   const projectName = projectInfo?.name;
 
-  const goToInteractContract = (type: string) => {
+  const goToInteractContract = (type: ContractInteractionTabs) => {
     navigate({
       pathname: "/interact-contract",
       query: {
@@ -237,7 +237,7 @@ export const ContractTop = ({
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="query" />}
               onClick={() =>
-                goToInteractContract(ContractInteractionTabs.QueryContract)
+                goToInteractContract(ContractInteractionTabs.Query)
               }
               size={{ base: "sm", md: "md" }}
             >
@@ -248,7 +248,7 @@ export const ContractTop = ({
               w={{ base: "full", md: "auto" }}
               leftIcon={<CustomIcon name="execute" />}
               onClick={() => {
-                goToInteractContract(ContractInteractionTabs.ExecuteContract);
+                goToInteractContract(ContractInteractionTabs.Execute);
               }}
               size={{ base: "sm", md: "md" }}
               isDisabled={isMobile}

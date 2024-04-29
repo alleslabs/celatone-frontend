@@ -25,16 +25,10 @@ export const InteractionWrapper = ({
   <Box
     sx={{
       "& .query": {
-        display: resolveTabDisplay(
-          currentTab,
-          ContractInteractionTabs.QueryContract
-        ),
+        display: resolveTabDisplay(currentTab, ContractInteractionTabs.Query),
       },
       "& .execute": {
-        display: resolveTabDisplay(
-          currentTab,
-          ContractInteractionTabs.ExecuteContract
-        ),
+        display: resolveTabDisplay(currentTab, ContractInteractionTabs.Execute),
       },
     }}
   >

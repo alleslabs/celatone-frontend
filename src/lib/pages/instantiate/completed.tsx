@@ -79,7 +79,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
             navigate({
               pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.ExecuteContract,
+                selectedType: ContractInteractionTabs.Execute,
                 contract: txInfo.contractAddress,
               },
             })
@@ -94,7 +94,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
             navigate({
               pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.QueryContract,
+                selectedType: ContractInteractionTabs.Query,
                 contract: txInfo.contractAddress,
               },
             })

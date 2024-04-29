@@ -69,14 +69,14 @@ export const ContractsTableRowCTA = ({
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
-            href={`/interact-contract?selectedType=${ContractInteractionTabs.ExecuteContract}&contract=${contractInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}&contract=${contractInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
           <AppLink
-            href={`/interact-contract?selectedType=${ContractInteractionTabs.QueryContract}&contract=${contractInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${contractInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Query

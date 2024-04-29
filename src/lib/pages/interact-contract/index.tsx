@@ -81,7 +81,7 @@ const InteractContractBody = ({
   // ---------------SIDE EFFECTS---------------//
   // ------------------------------------------//
   useEffect(() => {
-    if (isMobile && selectedType === ContractInteractionTabs.ExecuteContract)
+    if (isMobile && selectedType === ContractInteractionTabs.Execute)
       navigate({
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
@@ -176,7 +176,7 @@ const InteractContract = () => {
   useEffect(() => {
     if (router.isReady && validated.success) {
       const { selectedType, contract, msg } = validated.data;
-      if (selectedType === ContractInteractionTabs.QueryContract)
+      if (selectedType === ContractInteractionTabs.Query)
         trackToQuery(!!contract, !!msg);
       else trackToExecute(!!contract, !!msg);
     }

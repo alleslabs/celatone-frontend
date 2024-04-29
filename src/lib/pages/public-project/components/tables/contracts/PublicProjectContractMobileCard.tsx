@@ -47,7 +47,7 @@ export const PublicProjectContractMobileCard = ({
             onClick={(e) => e.stopPropagation()}
           >
             <AppLink
-              href={`/interact-contract?selectedType=${ContractInteractionTabs.QueryContract}&contract=${publicInfo.contractAddress}`}
+              href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicInfo.contractAddress}`}
             >
               <Button variant="outline-gray" size="sm">
                 Query
