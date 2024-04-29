@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#900](https://github.com/alleslabs/celatone-frontend/pull/900) Refactor module details info
 - [#899](https://github.com/alleslabs/celatone-frontend/pull/899) Refactor module details APIs
 
 ### Bug fixes
