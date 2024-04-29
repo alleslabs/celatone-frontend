@@ -167,9 +167,7 @@ export const ContractSelectSection = observer(
           label: data.label,
         });
       },
-      () => {
-        reset(defaultValues);
-      }
+      () => reset(defaultValues)
     );
 
     useEffect(() => {

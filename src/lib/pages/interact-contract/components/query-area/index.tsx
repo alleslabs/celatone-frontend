@@ -1,9 +1,9 @@
-import { Box, Flex, Heading, TabList, Tabs } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
+import { Flex, TabList, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 
 import { trackUseTab } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -15,30 +15,24 @@ import { Tooltip } from "lib/components/Tooltip";
 import { useSchemaStore } from "lib/providers/store";
 import type { BechAddr32, Option } from "lib/types";
 
-import { JsonExecute } from "./JsonExecute";
-import { SchemaExecute } from "./schema-execute";
+import { JsonQuery } from "./JsonQuery";
+import { SchemaQuery } from "./schema-query";
 
-interface ExecuteAreaProps {
+interface QueryAreaProps {
   contractAddress: BechAddr32;
   initialMsg: string;
-  initialFunds: Coin[];
   codeId: Option<number>;
-  codeHash: string;
+  codeHash: Option<string>;
 }
 
-export const ExecuteArea = observer(
-  ({
-    contractAddress,
-    initialMsg,
-    initialFunds,
-    codeHash,
-    codeId,
-  }: ExecuteAreaProps) => {
-    const [tab, setTab] = useState<MessageTabs>();
-    const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
-    const schema = getExecuteSchema(codeHash);
-    const attached = Boolean(getSchemaByCodeHash(codeHash));
-    const currentTabIdx = tab ? Object.values(MessageTabs).indexOf(tab) : 0;
+export const QueryArea = observer(
+  ({ contractAddress, initialMsg, codeId, codeHash }: QueryAreaProps) => {
+    const isMobile = useMobile();
+    const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
+
+    const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
+    const attached = Boolean(codeHash && getSchemaByCodeHash(codeHash));
+    const schema = codeHash ? getQuerySchema(codeHash) : undefined;
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
@@ -56,47 +50,51 @@ export const ExecuteArea = observer(
     }, [JSON.stringify(schema)]);
 
     return (
-      <Box my={4}>
-        <Heading variant="h6" as="h6" mt={8} mb={4}>
-          Execute Message
-        </Heading>
-        <Tabs isLazy lazyBehavior="keepMounted" index={currentTabIdx}>
-          <TabList mb={8} borderBottom="1px" borderColor="gray.800">
-            <CustomTab onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}>
-              JSON Input
-            </CustomTab>
-            <CustomTab
-              onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
-              isDisabled={!contractAddress}
-            >
-              <Tooltip
-                label="Please select contract first"
-                hidden={Boolean(contractAddress)}
+      <>
+        {!isMobile && (
+          <Tabs
+            isLazy
+            lazyBehavior="keepMounted"
+            index={Object.values(MessageTabs).indexOf(tab)}
+          >
+            <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
               >
-                Your Schema
-              </Tooltip>
-            </CustomTab>
-          </TabList>
-        </Tabs>
+                JSON Input
+              </CustomTab>
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
+                isDisabled={!contractAddress}
+              >
+                <Tooltip
+                  label="Please select contract first"
+                  hidden={Boolean(contractAddress)}
+                >
+                  Your Schema
+                </Tooltip>
+              </CustomTab>
+            </TabList>
+          </Tabs>
+        )}
         <MessageInputContent
           currentTab={tab}
           jsonContent={
-            <JsonExecute
+            <JsonQuery
               contractAddress={contractAddress}
-              initialFunds={initialFunds}
               initialMsg={initialMsg}
             />
           }
           schemaContent={
-            codeId && (
+            codeId &&
+            codeHash && (
               <>
-                {codeHash && attached ? (
-                  <SchemaExecute
+                {attached ? (
+                  <SchemaQuery
                     codeId={codeId}
                     codeHash={codeHash}
                     schema={schema}
                     contractAddress={contractAddress}
-                    initialFunds={initialFunds}
                     initialMsg={initialMsg}
                   />
                 ) : (
@@ -121,7 +119,7 @@ export const ExecuteArea = observer(
             )
           }
         />
-      </Box>
+      </>
     );
   }
 );

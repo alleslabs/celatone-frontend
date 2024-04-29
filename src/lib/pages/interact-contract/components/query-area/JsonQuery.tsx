@@ -51,7 +51,11 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const [msg, setMsg] = useState("");
   const [res, setRes] = useState("");
 
-  useEffect(() => setMsg(initialMsg), [initialMsg]);
+  useEffect(() => {
+    setMsg(initialMsg);
+    setRes("");
+  }, [contractAddress, initialMsg]);
+
   // TODO: Abstract query
   const {
     refetch,
