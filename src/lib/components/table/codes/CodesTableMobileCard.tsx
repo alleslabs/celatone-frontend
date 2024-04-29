@@ -45,23 +45,34 @@ export const CodesTableMobileCard = ({
             <MobileLabel label="Code Name" />
             <CodeNameCell code={codeInfo} isReadOnly />
           </Flex>
-          {showCw2andContracts && (
-            <Flex direction="column">
-              <MobileLabel label="CW2 Info" />
-              <Text
-                color={cw2Info ? "text.main" : "text.disabled"}
-                wordBreak="break-all"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {cw2Info ?? "N/A"}
-              </Text>
-            </Flex>
-          )}
+          <Flex direction="column">
+            {showCw2andContracts ? (
+              <>
+                <MobileLabel label="CW2 Info" />
+                <Text
+                  color={cw2Info ? "text.main" : "text.disabled"}
+                  wordBreak="break-all"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {cw2Info ?? "N/A"}
+                </Text>
+              </>
+            ) : (
+              <Flex direction="column" flex="1">
+                <MobileLabel label="Permission" />
+                <PermissionChip
+                  instantiatePermission={codeInfo.instantiatePermission}
+                  permissionAddresses={codeInfo.permissionAddresses}
+                  tagSize="xs"
+                />
+              </Flex>
+            )}
+          </Flex>
         </Flex>
       }
       bottomContent={
-        <Flex gap={3} w="full">
-          {showCw2andContracts && (
+        showCw2andContracts && (
+          <Flex gap={3} w="full">
             <Flex direction="column" flex="1">
               <MobileLabel label="Contracts" />
               <Text
@@ -73,16 +84,16 @@ export const CodesTableMobileCard = ({
                 {codeInfo.contractCount ?? "N/A"}
               </Text>
             </Flex>
-          )}
-          <Flex direction="column" flex="1">
-            <MobileLabel label="Permission" />
-            <PermissionChip
-              instantiatePermission={codeInfo.instantiatePermission}
-              permissionAddresses={codeInfo.permissionAddresses}
-              tagSize="xs"
-            />
+            <Flex direction="column" flex="1">
+              <MobileLabel label="Permission" />
+              <PermissionChip
+                instantiatePermission={codeInfo.instantiatePermission}
+                permissionAddresses={codeInfo.permissionAddresses}
+                tagSize="xs"
+              />
+            </Flex>
           </Flex>
-        </Flex>
+        )
       }
     />
   );
