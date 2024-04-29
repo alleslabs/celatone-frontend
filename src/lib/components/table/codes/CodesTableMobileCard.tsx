@@ -8,8 +8,6 @@ import { PermissionChip } from "lib/components/PermissionChip";
 import type { CodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
-import { CodeNameCell } from "./CodeNameCell";
-
 interface CodesTableMobileCardProps {
   codeInfo: CodeInfo;
   showCw2andContracts: boolean;
@@ -30,45 +28,49 @@ export const CodesTableMobileCard = ({
         })
       }
       topContent={
-        <Flex gap={2} align="center">
-          <MobileLabel variant="body2" label="Code ID" />
-          <ExplorerLink
-            type="code_id"
-            value={codeInfo.id.toString()}
-            showCopyOnHover
-          />
-        </Flex>
+        showCw2andContracts ? (
+          <Flex gap={2} align="center">
+            <MobileLabel variant="body2" label="Code ID" />
+            <ExplorerLink
+              type="code_id"
+              value={codeInfo.id.toString()}
+              showCopyOnHover
+            />
+          </Flex>
+        ) : (
+          <Flex gap={3} w="full">
+            <Flex direction="column" flex="1">
+              <MobileLabel variant="body2" label="Code ID" />
+              <ExplorerLink
+                type="code_id"
+                value={codeInfo.id.toString()}
+                showCopyOnHover
+              />
+            </Flex>
+            <Flex direction="column" flex="1" gap={1}>
+              <MobileLabel variant="body2" label="Permission" />
+              <PermissionChip
+                instantiatePermission={codeInfo.instantiatePermission}
+                permissionAddresses={codeInfo.permissionAddresses}
+                tagSize="xs"
+              />
+            </Flex>
+          </Flex>
+        )
       }
       middleContent={
-        <Flex direction="column" gap={3}>
+        showCw2andContracts && (
           <Flex direction="column">
-            <MobileLabel label="Code Name" />
-            <CodeNameCell code={codeInfo} isReadOnly />
+            <MobileLabel label="CW2 Info" />
+            <Text
+              color={cw2Info ? "text.main" : "text.disabled"}
+              wordBreak="break-all"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {cw2Info ?? "N/A"}
+            </Text>
           </Flex>
-          <Flex direction="column">
-            {showCw2andContracts ? (
-              <>
-                <MobileLabel label="CW2 Info" />
-                <Text
-                  color={cw2Info ? "text.main" : "text.disabled"}
-                  wordBreak="break-all"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {cw2Info ?? "N/A"}
-                </Text>
-              </>
-            ) : (
-              <Flex direction="column" flex="1">
-                <MobileLabel label="Permission" />
-                <PermissionChip
-                  instantiatePermission={codeInfo.instantiatePermission}
-                  permissionAddresses={codeInfo.permissionAddresses}
-                  tagSize="xs"
-                />
-              </Flex>
-            )}
-          </Flex>
-        </Flex>
+        )
       }
       bottomContent={
         showCw2andContracts && (
