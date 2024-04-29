@@ -3,7 +3,12 @@ import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { useGovConfig, useWasmConfig } from "lib/app-provider";
+import {
+  useGovConfig,
+  useMoveConfig,
+  usePublicProjectConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
@@ -105,10 +110,28 @@ const ListPageCard = ({ item }: { item: CardProps }) => (
 
 export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
   const gov = useGovConfig({ shouldRedirect: false });
+  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
   const quickMenu = useMemo<CardProps[]>(
     () => [
+      ...(gov.enabled
+        ? [
+            {
+              title: "Validators",
+              slug: "validators",
+              icon: "admin" as const,
+              isDocument: false,
+            },
+            {
+              title: "Proposals",
+              slug: "proposals",
+              icon: "proposal" as const,
+              isDocument: false,
+            },
+          ]
+        : []),
       ...(wasm.enabled
         ? [
             {
@@ -119,18 +142,22 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
             },
           ]
         : []),
-      ...(gov.enabled
+      ...(move.enabled
         ? [
             {
-              title: "Proposals",
-              slug: "proposals",
-              icon: "proposal" as const,
+              title: "0x1 Page",
+              slug: "/account/0x1",
+              icon: "hex" as IconKeys,
               isDocument: false,
             },
+          ]
+        : []),
+      ...(publicProject.enabled
+        ? [
             {
-              title: "Validators",
-              slug: "validators",
-              icon: "admin" as const,
+              title: "Public Projects",
+              slug: "projects",
+              icon: "public-project" as const,
               isDocument: false,
             },
           ]
@@ -142,31 +169,25 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
         isDocument: true,
       },
     ],
-    [wasm.enabled, gov.enabled]
+    [gov.enabled, wasm.enabled, move.enabled, publicProject.enabled]
   );
 
   return (
     <Grid gap={4} pt={6}>
-      <Heading variant="h6">Quick Action</Heading>
-      <QuickActionCard
-        item={
-          wasm.enabled
-            ? {
-                title: "Query",
-                subtitle: "Query and get contract state data",
-                slug: "query",
-                icon: "query" as const,
-                isDocument: false,
-              }
-            : {
-                title: "View",
-                subtitle: "Interact with module's view functions",
-                slug: "interact",
-                icon: "query" as const,
-                isDocument: false,
-              }
-        }
-      />
+      {wasm.enabled && (
+        <>
+          <Heading variant="h6">Quick Action</Heading>
+          <QuickActionCard
+            item={{
+              title: "Query",
+              subtitle: "Query and get contract state data",
+              slug: "query",
+              icon: "query" as const,
+              isDocument: false,
+            }}
+          />
+        </>
+      )}
       <Heading variant="h6" mt={6}>
         Explore {prettyName}
       </Heading>

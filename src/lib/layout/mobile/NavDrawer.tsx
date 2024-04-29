@@ -30,6 +30,7 @@ import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const NavDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isCurrentPage = useIsCurrentPage();
@@ -39,132 +40,136 @@ export const NavDrawer = () => {
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
-  const tier = useTierConfig({ minTier: "lite" });
+  const tier = useTierConfig();
 
-  const mobileMenu: MenuInfo[] = [
-    {
-      category: "Overview",
-      slug: "overview",
-      submenu: [
-        { name: "Overview", slug: "/", icon: "home" },
-        {
-          name: "Transactions",
-          slug: "/txs",
-          icon: "file" as IconKeys,
-        },
-        {
-          name: "Blocks",
-          slug: "/blocks",
-          icon: "block" as IconKeys,
-        },
-        ...(govConfig.enabled
-          ? [
+  const navMenu: MenuInfo[] =
+    tier === "full"
+      ? [
+          {
+            category: "Overview",
+            slug: "overview",
+            submenu: [
+              { name: "Overview", slug: "/", icon: "home" },
               {
-                name: "Validators",
-                slug: "/validators",
-                icon: "validator" as IconKeys,
+                name: "Transactions",
+                slug: "/txs",
+                icon: "file" as IconKeys,
               },
               {
-                name: "Proposals",
-                slug: "/proposals",
-                icon: "proposal" as IconKeys,
+                name: "Blocks",
+                slug: "/blocks",
+                icon: "block" as IconKeys,
               },
-            ]
-          : []),
-        ...(wasmConfig.enabled
-          ? [
-              {
-                name: "Codes",
-                slug: "/codes",
-                icon: "code" as IconKeys,
-              },
-              {
-                name: "Contracts",
-                slug: "/contracts",
-                icon: "contract-address" as IconKeys,
-              },
-              {
-                name: "Query",
-                slug: "/query",
-                icon: "query" as IconKeys,
-              },
-            ]
-          : []),
-        ...(moveConfig.enabled
-          ? [
-              {
-                name: "Modules",
-                slug: "/modules",
-                icon: "contract-address" as IconKeys,
-              },
-              {
-                name: "0x1 Page",
-                slug: "/account/0x1",
-                icon: "hex" as IconKeys,
-              },
-            ]
-          : []),
-        ...(nftConfig.enabled
-          ? [
-              {
-                name: "NFT Collections",
-                slug: "/nft-collections",
-                icon: "group" as IconKeys,
-              },
-            ]
-          : []),
-      ],
-    },
-  ];
-
-  const mobileMenuLite: MenuInfo[] = [
-    {
-      category: "Overview",
-      slug: "overview",
-      submenu: [
-        { name: "Overview", slug: "/", icon: "home" },
-        ...(wasmConfig.enabled
-          ? [
-              {
-                name: "Query",
-                slug: "/query",
-                icon: "query" as IconKeys,
-              },
-              {
-                name: "Codes",
-                slug: "/codes",
-                icon: "code" as IconKeys,
-              },
-            ]
-          : []),
-        ...(govConfig.enabled
-          ? [
-              {
-                name: "Proposals",
-                slug: "/proposals",
-                icon: "proposal" as IconKeys,
-              },
-              {
-                name: "Validators",
-                slug: "/validators",
-                icon: "validator" as IconKeys,
-              },
-            ]
-          : []),
-        ...(moveConfig.enabled
-          ? [
-              {
-                name: "0x1 Page",
-                slug: "/account/0x1",
-                icon: "hex" as IconKeys,
-              },
-            ]
-          : []),
-      ],
-    },
-  ];
-
-  const navMenu = tier === "lite" ? mobileMenuLite : mobileMenu;
+              ...(govConfig.enabled
+                ? [
+                    {
+                      name: "Validators",
+                      slug: "/validators",
+                      icon: "validator" as IconKeys,
+                    },
+                    {
+                      name: "Proposals",
+                      slug: "/proposals",
+                      icon: "proposal" as IconKeys,
+                    },
+                  ]
+                : []),
+              ...(wasmConfig.enabled
+                ? [
+                    {
+                      name: "Codes",
+                      slug: "/codes",
+                      icon: "code" as IconKeys,
+                    },
+                    {
+                      name: "Contracts",
+                      slug: "/contracts",
+                      icon: "contract-address" as IconKeys,
+                    },
+                    {
+                      name: "Query",
+                      slug: "/query",
+                      icon: "query" as IconKeys,
+                    },
+                  ]
+                : []),
+              ...(moveConfig.enabled
+                ? [
+                    {
+                      name: "Modules",
+                      slug: "/modules",
+                      icon: "contract-address" as IconKeys,
+                    },
+                    {
+                      name: "0x1 Page",
+                      slug: "/account/0x1",
+                      icon: "hex" as IconKeys,
+                    },
+                  ]
+                : []),
+              ...(nftConfig.enabled
+                ? [
+                    {
+                      name: "NFT Collections",
+                      slug: "/nft-collections",
+                      icon: "group" as IconKeys,
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : [
+          {
+            category: "Overview",
+            slug: "overview",
+            submenu: [
+              { name: "Overview", slug: "/", icon: "home" },
+              ...(govConfig.enabled
+                ? [
+                    {
+                      name: "Validators",
+                      slug: "/validators",
+                      icon: "validator" as IconKeys,
+                    },
+                    {
+                      name: "Proposals",
+                      slug: "/proposals",
+                      icon: "proposal" as IconKeys,
+                    },
+                  ]
+                : []),
+              ...(wasmConfig.enabled
+                ? [
+                    {
+                      name: "Codes",
+                      slug: "/codes",
+                      icon: "code" as IconKeys,
+                    },
+                    {
+                      name: "Query",
+                      slug: "/query",
+                      icon: "query" as IconKeys,
+                    },
+                  ]
+                : []),
+              ...(moveConfig.enabled
+                ? [
+                    {
+                      name: "0x1 Page",
+                      slug: "/account/0x1",
+                      icon: "hex" as IconKeys,
+                    },
+                    // {
+                    //   name: "View",
+                    //   slug: "/interact",
+                    //   icon: "query" as IconKeys,
+                    // },
+                  ]
+                : []),
+            ],
+          },
+        ];
 
   if (publicProject.enabled) {
     navMenu.push({

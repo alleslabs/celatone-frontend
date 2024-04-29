@@ -20,6 +20,7 @@ interface SubHeaderMenuInfo {
   icon: IconKeys;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const SubHeader = () => {
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
@@ -28,58 +29,84 @@ const SubHeader = () => {
   const poolConfig = usePoolConfig({ shouldRedirect: false });
   const tier = useTierConfig({ minTier: "lite" });
 
-  const subHeaderMenu: SubHeaderMenuInfo[] = [
-    { name: "Overview", slug: "/", icon: "home" },
-    { name: "Transactions", slug: "/txs", icon: "file" },
-    { name: "Blocks", slug: "/blocks", icon: "block" },
-  ];
-
-  if (govConfig.enabled)
-    subHeaderMenu.push(
-      { name: "Validators", slug: "/validators", icon: "validator" },
-      { name: "Proposals", slug: "/proposals", icon: "proposal" }
-    );
-
-  if (wasmConfig.enabled)
-    subHeaderMenu.push(
-      { name: "Codes", slug: "/codes", icon: "code" },
-      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
-    );
-
-  if (moveConfig.enabled)
-    subHeaderMenu.push({
-      name: "Modules",
-      slug: "/modules",
-      icon: "contract-address",
-    });
-
-  if (nftConfig.enabled)
-    subHeaderMenu.push({
-      name: "NFTs",
-      slug: "/nft-collections",
-      icon: "group",
-    });
-
-  if (poolConfig.enabled)
-    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
-
-  // LITE
-
-  const subHeaderMenuLite: SubHeaderMenuInfo[] = [
-    { name: "Overview", slug: "/", icon: "home" },
-  ];
-
-  if (tier === "lite") {
-    if (govConfig.enabled)
-      subHeaderMenuLite.push(
-        { name: "Validators", slug: "/validators", icon: "validator" },
-        { name: "Proposals", slug: "/proposals", icon: "proposal" }
-      );
-    if (wasmConfig.enabled)
-      subHeaderMenuLite.push({ name: "Codes", slug: "/codes", icon: "code" });
-  }
-
-  const subMenu = tier === "lite" ? subHeaderMenuLite : subHeaderMenu;
+  const subMenu: SubHeaderMenuInfo[] =
+    tier === "full"
+      ? [
+          { name: "Overview", slug: "/", icon: "home" },
+          { name: "Transactions", slug: "/txs", icon: "file" },
+          { name: "Blocks", slug: "/blocks", icon: "block" },
+          ...(govConfig.enabled
+            ? [
+                {
+                  name: "Validators",
+                  slug: "/validators",
+                  icon: "validator" as IconKeys,
+                },
+                {
+                  name: "Proposals",
+                  slug: "/proposals",
+                  icon: "proposal" as IconKeys,
+                },
+              ]
+            : []),
+          ...(wasmConfig.enabled
+            ? [
+                { name: "Codes", slug: "/codes", icon: "code" as IconKeys },
+                {
+                  name: "Contracts",
+                  slug: "/contracts",
+                  icon: "contract-address" as IconKeys,
+                },
+              ]
+            : []),
+          ...(moveConfig.enabled
+            ? [
+                {
+                  name: "Modules",
+                  slug: "/modules",
+                  icon: "contract-address" as IconKeys,
+                },
+              ]
+            : []),
+          ...(nftConfig.enabled
+            ? [
+                {
+                  name: "NFTs",
+                  slug: "/nft-collections",
+                  icon: "group" as IconKeys,
+                },
+              ]
+            : []),
+          ...(poolConfig.enabled
+            ? [
+                {
+                  name: "Osmosis Pools",
+                  slug: "/pools",
+                  icon: "pool" as IconKeys,
+                },
+              ]
+            : []),
+        ]
+      : [
+          { name: "Overview", slug: "/", icon: "home" },
+          ...(govConfig.enabled
+            ? [
+                {
+                  name: "Validators",
+                  slug: "/validators",
+                  icon: "validator" as IconKeys,
+                },
+                {
+                  name: "Proposals",
+                  slug: "/proposals",
+                  icon: "proposal" as IconKeys,
+                },
+              ]
+            : []),
+          ...(wasmConfig.enabled
+            ? [{ name: "Codes", slug: "/codes", icon: "code" as IconKeys }]
+            : []),
+        ];
 
   const isCurrentPage = useIsCurrentPage();
 
