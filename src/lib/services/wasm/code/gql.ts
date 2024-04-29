@@ -1,14 +1,8 @@
-/* eslint-disable sonarjs/no-identical-functions */
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useGovConfig,
-} from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import {
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
@@ -21,15 +15,6 @@ import type {
   Option,
   PermissionAddresses,
 } from "lib/types";
-import { isId } from "lib/utils";
-
-import type { CodeData, CodeIdInfoResponse, CodesResponse } from "./code";
-import {
-  getCodeDataByCodeId,
-  getCodeIdInfo,
-  getCodes,
-  getCodesByAddress,
-} from "./code";
 
 export const useCodeListByWalletAddress = (
   walletAddr: Option<BechAddr20>
@@ -105,68 +90,5 @@ export const useCodeListByCodeIds = (
       keepPreviousData: true,
       enabled: !!ids,
     }
-  );
-};
-
-export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
-  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
-  const endpoint = useBaseApiRoute("codes");
-
-  return useQuery<CodeData>(
-    [CELATONE_QUERY_KEYS.CODE_DATA, endpoint, codeId, isGov],
-    async () => getCodeDataByCodeId(endpoint, codeId, isGov),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-};
-
-export const useCodes = (
-  limit: number,
-  offset: number,
-  address: Option<BechAddr20>,
-  permission: Option<boolean>,
-  options?: Pick<UseQueryOptions<CodesResponse>, "onSuccess">
-): UseQueryResult<CodesResponse> => {
-  const endpoint = useBaseApiRoute("codes");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CODES, endpoint, limit, offset, address, permission],
-    async () => getCodes(endpoint, limit, offset, address, permission),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
-  );
-};
-
-export const useCodesByAddress = (
-  address: BechAddr,
-  limit: number,
-  offset: number
-): UseQueryResult<CodesResponse> => {
-  const endpoint = useBaseApiRoute("accounts");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
-    async () => getCodesByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
-export type LCDCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
-
-export const useLCDCodeInfo = (
-  codeId: string,
-  options?: Omit<UseQueryOptions<CodeIdInfoResponse>, "queryKey">
-) => {
-  const lcdEndpoint = useBaseApiRoute("rest");
-  const queryFn = async () => {
-    if (!isId(codeId)) throw new Error("Invalid code ID");
-    return getCodeIdInfo(lcdEndpoint, Number(codeId));
-  };
-  return useQuery<CodeIdInfoResponse>(
-    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
-    queryFn,
-    options
   );
 };

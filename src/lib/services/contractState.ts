@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import type { BechAddr32, ContractState } from "lib/types";
+import type { BechAddr32, ContractState, Option } from "lib/types";
 import { zPagination } from "lib/types/rest";
 import {
   libDecode,
@@ -24,13 +24,13 @@ export const getContractStates = async (
   baseEndpoint: string,
   contractAddress: BechAddr32,
   numStatesToLoad: number,
-  paginationKey: string | null
+  paginationKey: Option<string>
 ) => {
   const states = await axios
     .get(`${baseEndpoint}/${contractAddress}/states`, {
       params: {
         limit: numStatesToLoad,
-        pagination_key: paginationKey,
+        "pagination.key": paginationKey,
       },
     })
     .then(({ data }) => parseWithError(zResponseContractStates, data));
@@ -44,6 +44,6 @@ export const getContractStates = async (
   return {
     states: parsedStates,
     rawStates: states.models,
-    nextKey: states.pagination.next_key,
+    nextKey: states.pagination.nextKey,
   };
 };

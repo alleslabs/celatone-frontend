@@ -19,7 +19,6 @@ import {
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr20, BechAddr32, Dict, Option } from "lib/types";
 
-import { getCodeIdInfo } from "./code";
 import {
   getAdminContractsByAddress,
   getContractDataByContractAddress,
@@ -36,6 +35,7 @@ import type {
   ContractTableCounts,
   MigrationHistoriesResponse,
 } from "./contract";
+import { getCodeIdInfoLcd } from "./wasm/code";
 
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
@@ -57,10 +57,10 @@ export const useContractDetailByContractAddress = (
       .then<ContractDetail>(async ({ contracts_by_pk }) => {
         if (!contracts_by_pk) throw Error("Contract not found");
         // TODO: retrieve code hash from gql instead when available
-        const codeHash = await getCodeIdInfo(
+        const codeHash = await getCodeIdInfoLcd(
           lcdEndpoint,
           contracts_by_pk.code_id
-        ).then((data) => data.code_info.data_hash);
+        ).then((data) => data.codeInfo.dataHash);
         return {
           contractAddress,
           codeId: contracts_by_pk.code_id,

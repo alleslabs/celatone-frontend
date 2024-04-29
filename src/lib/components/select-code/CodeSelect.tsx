@@ -6,8 +6,8 @@ import { PermissionChip } from "../PermissionChip";
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
-import type { LCDCodeInfoSuccessCallback } from "lib/services/codeService";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import { useCodeInfoLcd } from "lib/services/wasm/code";
+import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 import { isId } from "lib/utils";
 
@@ -15,7 +15,7 @@ import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
   onCodeSelect: (code: string) => void;
-  setCodeHash?: LCDCodeInfoSuccessCallback;
+  setCodeHash?: (data: CodeInfoResponseLcd) => void;
   codeId: string;
   status: FormStatus;
 }
@@ -29,7 +29,7 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const name = getCodeLocalInfo(Number(codeId))?.name;
-  const { data: codeInfo } = useLCDCodeInfo(codeId, {
+  const { data: codeInfo } = useCodeInfoLcd(codeId, {
     onSuccess: setCodeHash,
     enabled: isId(codeId),
   });
@@ -66,11 +66,11 @@ export const CodeSelect = ({
               <DotSeparator />
               <PermissionChip
                 instantiatePermission={
-                  codeInfo?.code_info.instantiate_permission.permission ??
+                  codeInfo?.codeInfo.instantiatePermission.permission ??
                   AccessConfigPermission.UNKNOWN
                 }
                 permissionAddresses={
-                  codeInfo?.code_info.instantiate_permission.addresses ?? []
+                  codeInfo?.codeInfo.instantiatePermission.addresses ?? []
                 }
               />
             </Flex>

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#900](https://github.com/alleslabs/celatone-frontend/pull/900) Support lite version recent codes
 - [#897](https://github.com/alleslabs/celatone-frontend/pull/897) Add config for lite version support
 
 ### Improvements

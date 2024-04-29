@@ -47,8 +47,8 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { CodeIdInfoResponse } from "lib/services/code";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import { useCodeInfoLcd } from "lib/services/wasm/code";
+import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -193,13 +193,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useLCDCodeInfo(codeId, {
+  const { refetch } = useCodeInfoLcd(codeId, {
     enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
-      const permission = data.code_info.instantiate_permission;
-      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+      const permission = data.codeInfo.instantiatePermission;
+      setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
       if (
         resolvePermission(
           address,
@@ -417,8 +417,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setValue("codeId", code);
             resetMsgInputSchema();
           }}
-          setCodeHash={(data: CodeIdInfoResponse) => {
-            setValue("codeHash", data.code_info.data_hash.toLowerCase());
+          setCodeHash={(data: CodeInfoResponseLcd) => {
+            setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
           }}
           codeId={codeId}
         />

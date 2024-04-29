@@ -60,7 +60,7 @@ export const getAccountModules = async (
       }`
     );
     result.push(...data.modules);
-    if (data.pagination.next_key) await fetchFn(data.pagination.next_key);
+    if (data.pagination.nextKey) await fetchFn(data.pagination.nextKey);
   };
 
   await fetchFn(null);
