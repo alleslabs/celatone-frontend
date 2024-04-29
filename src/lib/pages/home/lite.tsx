@@ -15,6 +15,7 @@ export const HomeLite = () => {
     chainConfig: { prettyName },
   } = useCelatoneApp();
 
+  // TODO: replace with latest block height data from lcd
   const { data: overviewsStats, isLoading } = useOverviewsStats();
 
   return (

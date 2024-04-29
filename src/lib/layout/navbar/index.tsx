@@ -39,58 +39,92 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const tier = useTierConfig({ minTier: "lite" });
+  const tier = useTierConfig();
   const { address } = useCurrentChain();
 
-  const navMenu: MenuInfo[] = [
-    {
-      category: "Your Account",
-      slug: "your-account",
-      submenu: [
-        ...getYourAccountSubmenu(address),
-        ...(tier === "lite"
-          ? getYourAccountSubmenuLite(wasm.enabled, move.enabled)
-          : []),
-      ],
-    },
-    ...(publicProject.enabled
-      ? getPublicProjectsSubmenu(
-          publicProject.enabled,
-          getSavedPublicProjects()
-        )
-      : []),
-    ...(move.enabled || wasm.enabled
+  const navMenu: MenuInfo[] =
+    tier === "full"
       ? [
           {
-            category: "Developer Tools",
-            slug: StorageKeys.DevSidebar,
-            submenu: [
-              ...getDevSubmenuMove(move.enabled),
-              ...getDevSubmenuWasm(wasm.enabled),
-            ],
-            subSection: [
-              ...(tier === "full"
-                ? [
+            category: "Your Account",
+            slug: "your-account",
+            submenu: [...getYourAccountSubmenu(address)],
+          },
+          ...(publicProject.enabled
+            ? getPublicProjectsSubmenu(
+                publicProject.enabled,
+                getSavedPublicProjects()
+              )
+            : []),
+          ...(move.enabled || wasm.enabled
+            ? [
+                {
+                  category: "Developer Tools",
+                  slug: StorageKeys.DevSidebar,
+                  submenu: [
+                    ...getDevSubmenuMove(move.enabled),
+                    ...getDevSubmenuWasm(wasm.enabled),
+                  ],
+                  subSection: [
                     ...getWalletSubSectionMove(move.enabled),
                     ...getWalletSubSectionWasm(wasm.enabled),
-                  ]
-                : []),
-              {
-                category: "This Device",
-                submenu: [
-                  {
-                    name: "Saved Accounts",
-                    slug: "/saved-accounts",
-                    icon: "admin" as IconKeys,
-                  },
-                  ...getDeviceSubmenuWasm(wasm.enabled),
-                ],
-              },
+                    {
+                      category: "This Device",
+                      submenu: [
+                        {
+                          name: "Saved Accounts",
+                          slug: "/saved-accounts",
+                          icon: "admin" as IconKeys,
+                        },
+                        ...getDeviceSubmenuWasm(wasm.enabled),
+                      ],
+                    },
+                  ],
+                },
+              ]
+            : []),
+        ]
+      : [
+          {
+            category: "Your Account",
+            slug: "your-account",
+            submenu: [
+              ...getYourAccountSubmenu(address),
+              ...getYourAccountSubmenuLite(wasm.enabled, move.enabled),
             ],
           },
-        ]
-      : []),
-  ];
+          ...(publicProject.enabled
+            ? getPublicProjectsSubmenu(
+                publicProject.enabled,
+                getSavedPublicProjects()
+              )
+            : []),
+          ...(move.enabled || wasm.enabled
+            ? [
+                {
+                  category: "Developer Tools",
+                  slug: StorageKeys.DevSidebar,
+                  submenu: [
+                    ...getDevSubmenuMove(move.enabled),
+                    ...getDevSubmenuWasm(wasm.enabled),
+                  ],
+                  subSection: [
+                    {
+                      category: "This Device",
+                      submenu: [
+                        {
+                          name: "Saved Accounts",
+                          slug: "/saved-accounts",
+                          icon: "admin" as IconKeys,
+                        },
+                        ...getDeviceSubmenuWasm(wasm.enabled),
+                      ],
+                    },
+                  ],
+                },
+              ]
+            : []),
+        ];
 
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
