@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
 - [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Interact Contract
 - [#895](https://github.com/alleslabs/celatone-frontend/pull/895) Show collection address and creator on the collection list page
 
@@ -117,7 +118,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
 - [#888](https://github.com/alleslabs/celatone-frontend/pull/888) Apply timeout for delegator counts on validator detail
 - [#863](https://github.com/alleslabs/celatone-frontend/pull/863) Add link to user document (move)
 - [#883](https://github.com/alleslabs/celatone-frontend/pull/883) Improve validator badge to have a dynamic width
