@@ -16,7 +16,7 @@ interface CodeSelectSectionProps<T extends FieldValues> {
   control: Control<T>;
   error: Option<string>;
   onCodeSelect: (codeId: string) => void;
-  setCodeHash?: (data: CodeInfoResponseLcd) => void;
+  setCodeHash: (data: CodeInfoResponseLcd) => void;
   status: FormStatus;
 }
 

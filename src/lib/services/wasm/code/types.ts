@@ -18,12 +18,24 @@ export const zCodeInfoResponseLcd = z
       data_hash: z.string(),
       instantiate_permission: z.object({
         permission: z.nativeEnum(AccessConfigPermission),
-        address: zBechAddr,
-        addresses: z.array(zBechAddr),
+        address: zBechAddr.optional(),
+        addresses: z.array(zBechAddr).default([]),
       }),
     }),
   })
-  .transform(snakeToCamel);
+  .transform(({ code_info: { instantiate_permission, ...rest } }) => ({
+    codeInfo: {
+      ...snakeToCamel(rest),
+      instantiatePermission: {
+        permission: instantiate_permission.permission,
+        addresses:
+          instantiate_permission.address &&
+          instantiate_permission.address !== ""
+            ? [instantiate_permission.address]
+            : instantiate_permission.addresses,
+      },
+    },
+  }));
 export type CodeInfoResponseLcd = z.infer<typeof zCodeInfoResponseLcd>;
 
 const zCodesResponseItemLcd = z

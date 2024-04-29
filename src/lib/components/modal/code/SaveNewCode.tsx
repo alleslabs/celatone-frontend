@@ -63,9 +63,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       const { message, messageColor } = getPermissionHelper(
         address,
         data.codeInfo.instantiatePermission.permission,
-        data.codeInfo.instantiatePermission.address
-          ? [data.codeInfo.instantiatePermission.address]
-          : data.codeInfo.instantiatePermission.addresses
+        data.codeInfo.instantiatePermission.addresses
       );
       setCodeIdStatus({
         state: "success",

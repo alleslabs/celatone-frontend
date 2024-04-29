@@ -201,12 +201,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       const permission = data.codeInfo.instantiatePermission;
       setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
       if (
-        resolvePermission(
-          address,
-          permission.permission,
-          permission.addresses,
-          permission.address
-        )
+        resolvePermission(address, permission.permission, permission.addresses)
       )
         setStatus({ state: "success" });
       else {

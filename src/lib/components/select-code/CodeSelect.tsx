@@ -15,7 +15,7 @@ import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
   onCodeSelect: (code: string) => void;
-  setCodeHash?: (data: CodeInfoResponseLcd) => void;
+  setCodeHash: (data: CodeInfoResponseLcd) => void;
   codeId: string;
   status: FormStatus;
 }
