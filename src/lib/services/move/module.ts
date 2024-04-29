@@ -228,7 +228,9 @@ export const getModuleInfo = async (
   vmAddress: HexAddr
 ): Promise<ModuleInfoResponse> =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(vmAddress)}/${moduleName}/info`)
+    .get(
+      `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/info`
+    )
     .then(({ data }) => parseWithError(zModuleInfoResponse, data));
 
 const zModuleTableCountsResponse = z.object({
@@ -247,7 +249,7 @@ export const getModuleTableCounts = async (
 ): Promise<ModuleTableCountsResponse> =>
   axios
     .get(
-      `${endpoint}/${encodeURIComponent(vmAddress)}/${moduleName}/table-counts`
+      `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/table-counts`
     )
     .then(({ data }) => parseWithError(zModuleTableCountsResponse, data));
 
@@ -267,7 +269,7 @@ export const getModuleTxs = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/txs`,
+      `${endpoint}/modules/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}/txs`,
       {
         params: {
           limit,
@@ -304,7 +306,7 @@ export const getModuleHistories = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/histories`,
+      `${endpoint}/modules/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}/histories`,
       {
         params: {
           limit,
@@ -331,7 +333,7 @@ export const getModuleRelatedProposals = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${moduleName}/related-proposals`,
+      `${endpoint}/modules/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}/related-proposals`,
       {
         params: {
           limit,
