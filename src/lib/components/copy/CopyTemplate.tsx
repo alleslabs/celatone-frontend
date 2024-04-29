@@ -31,6 +31,7 @@ export const CopyTemplate = ({
         onClick={(e) => {
           onCopy();
           e.stopPropagation();
+          e.preventDefault();
         }}
         w={w}
         ml={ml}
