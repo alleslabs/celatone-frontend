@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Tag, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { AmpEvent, track } from "lib/amplitude";
@@ -19,12 +19,14 @@ interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;
   templateColumns: string;
   isPublishedModules: boolean;
+  isRepublished: boolean;
 }
 
 export const ModulesTableRow = ({
   moduleInfo,
   templateColumns,
   isPublishedModules,
+  isRepublished,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));
@@ -72,6 +74,11 @@ export const ModulesTableRow = ({
             type="user_address"
             showCopyOnHover
           />
+        </TableRow>
+        <TableRow>
+          <Tag variant={isRepublished ? "primary-light" : "gray"}>
+            {isRepublished ? "Republish" : "Publish"}
+          </Tag>
         </TableRow>
         {!isPublishedModules && moduleInfo.latestUpdated && (
           <TableRow>

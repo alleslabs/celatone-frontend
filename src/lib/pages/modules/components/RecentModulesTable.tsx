@@ -40,7 +40,6 @@ export const RecentModulesTable = () => {
             />
           )
         }
-        isPublishedModules={false}
       />
       {!!data && data.total > 10 && (
         <Pagination

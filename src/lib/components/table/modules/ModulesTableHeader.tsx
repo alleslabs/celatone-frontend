@@ -20,6 +20,7 @@ export const ModulesTableHeader = ({
       </TableHeader>
     )}
     <TableHeader>Creator</TableHeader>
+    {!isPublishedModules && <TableHeader>Publishing Activity</TableHeader>}
     {!isPublishedModules && <TableHeader>Timestamp</TableHeader>}
     <TableHeader />
   </Grid>
