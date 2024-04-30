@@ -32,15 +32,16 @@ import { usePublicProjectStore } from "lib/providers/store";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const NavDrawer = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const isCurrentPage = useIsCurrentPage();
-  const { getSavedPublicProjects } = usePublicProjectStore();
+  const tier = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
-  const tier = useTierConfig();
+
+  const isCurrentPage = useIsCurrentPage();
+  const { getSavedPublicProjects } = usePublicProjectStore();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navMenu: MenuInfo[] =
     tier === "full"

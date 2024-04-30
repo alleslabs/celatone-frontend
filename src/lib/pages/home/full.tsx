@@ -126,7 +126,6 @@ export const HomeFull = () => {
           <ViewMore onClick={toTxs} />
         )}
       </section>
-
       <section>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
