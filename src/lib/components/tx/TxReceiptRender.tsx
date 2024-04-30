@@ -49,8 +49,13 @@ const variantStyle: Record<
 };
 
 const ReceiptRow = ({ title, value, html }: TxReceipt) => (
-  <Flex fontSize="14px" w="full" direction={{ base: "column", md: "row" }}>
-    <Text variant="body2" mb={{ base: 1, md: 0 }}>
+  <Flex
+    fontSize="14px"
+    w="full"
+    direction={{ base: "column", md: "row" }}
+    gap={4}
+  >
+    <Text variant="body2" mb={{ base: 1, md: 0 }} whiteSpace="nowrap">
       {title}
     </Text>
     {html || (
