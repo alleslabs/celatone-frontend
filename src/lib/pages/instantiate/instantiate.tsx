@@ -41,12 +41,13 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
+import { FooterCTA } from "lib/components/layouts";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
@@ -60,7 +61,6 @@ import {
   resolvePermission,
 } from "lib/utils";
 
-import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
@@ -529,10 +529,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           />
         </Flex>
       </WasmPageContainer>
-      <Footer
-        onInstantiate={proceed}
-        disabled={!enableInstantiate || !estimatedFee || isSimulating}
+      <FooterCTA
         loading={processing}
+        cancelButton={{
+          onClick: router.back,
+          leftIcon: <CustomIcon name="chevron-left" />,
+        }}
+        actionButton={{
+          isDisabled: !enableInstantiate || !estimatedFee || isSimulating,
+          onClick: proceed,
+        }}
+        actionLabel="Instantiate"
       />
     </>
   );

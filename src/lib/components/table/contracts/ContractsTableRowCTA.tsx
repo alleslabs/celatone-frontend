@@ -27,6 +27,7 @@ import {
   RemoveContractModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
+import { ContractInteractionTabs } from "lib/types";
 import type { ContractInfo, LVPair, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -67,12 +68,16 @@ export const ContractsTableRowCTA = ({
           justifyContent="flex-end"
           onClick={(e) => e.stopPropagation()}
         >
-          <AppLink href={`/execute?contract=${contractInfo.contractAddress}`}>
+          <AppLink
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}&contract=${contractInfo.contractAddress}`}
+          >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
-          <AppLink href={`/query?contract=${contractInfo.contractAddress}`}>
+          <AppLink
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${contractInfo.contractAddress}`}
+          >
             <Button variant="outline-gray" size="sm">
               Query
             </Button>

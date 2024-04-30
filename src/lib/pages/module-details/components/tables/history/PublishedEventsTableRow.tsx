@@ -14,46 +14,42 @@ interface PublishedEventsTableRowProps {
 }
 
 export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
-  switch (history.previousPolicy) {
-    case undefined:
-      return (
-        <Text variant="body2" color="text.dark">
-          Set as{" "}
-          <Text as="span" fontWeight={700} color="text.main">
-            {capitalize(history.upgradePolicy)}
-          </Text>
+  const { upgradePolicy, previousPolicy } = history;
+
+  if (!previousPolicy)
+    return (
+      <Text variant="body2" color="text.dark">
+        Set as{" "}
+        <Text as="span" fontWeight={700} color="text.main">
+          {capitalize(history.upgradePolicy)}
         </Text>
-      );
-    case history.upgradePolicy:
-      return (
-        <Text variant="body2" color="text.dark">
-          Remain as{" "}
-          <Text as="span" fontWeight={700}>
-            {capitalize(history.upgradePolicy)}
-          </Text>
+      </Text>
+    );
+
+  if (previousPolicy === upgradePolicy)
+    return (
+      <Text variant="body2" color="text.dark">
+        Remain as{" "}
+        <Text as="span" fontWeight={700}>
+          {capitalize(history.upgradePolicy)}
         </Text>
-      );
-    default:
-      return (
-        <Flex align="center" wrap="wrap">
-          <Text variant="body2" color="text.dark">
-            Changed from{" "}
-            <Text as="span" fontWeight={700}>
-              {capitalize(history.previousPolicy ?? undefined)}
-            </Text>
-          </Text>
-          <CustomIcon
-            name="arrow-right"
-            boxSize={3}
-            color="accent.main"
-            mx={2}
-          />
-          <Text variant="body2" fontWeight={700}>
-            {capitalize(history.upgradePolicy)}
-          </Text>
-        </Flex>
-      );
-  }
+      </Text>
+    );
+
+  return (
+    <Flex align="center" wrap="wrap">
+      <Text variant="body2" color="text.dark">
+        Changed from{" "}
+        <Text as="span" fontWeight={700}>
+          {capitalize(previousPolicy)}
+        </Text>
+      </Text>
+      <CustomIcon name="arrow-right" boxSize={3} color="accent.main" mx={2} />
+      <Text variant="body2" fontWeight={700}>
+        {capitalize(history.upgradePolicy)}
+      </Text>
+    </Flex>
+  );
 };
 
 export const PublishedEventsTableRow = ({

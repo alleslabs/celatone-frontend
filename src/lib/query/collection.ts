@@ -5,13 +5,21 @@ export const getCollectionsQuery = gql`
     collections(
       limit: $pageSize
       offset: $offset
-      where: { name: { _iregex: $search } }
+      where: {
+        _or: [
+          { name: { _iregex: $search } }
+          { vm_address: { vm_address: { _eq: $search } } }
+        ]
+      }
       order_by: { name: asc }
     ) {
       name
       uri
       description
       vm_address {
+        vm_address
+      }
+      vmAddressByCreator {
         vm_address
       }
     }

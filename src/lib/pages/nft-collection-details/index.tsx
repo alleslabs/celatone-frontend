@@ -140,16 +140,14 @@ const CollectionDetailsBody = ({
               Collection:
             </Text>
             <Tooltip label="View as Account Address">
-              <Flex>
-                <ExplorerLink
-                  value={collectionAddress}
-                  type="user_address"
-                  textFormat="normal"
-                  maxWidth="full"
-                  fixedHeight={false}
-                  ampCopierSection="collection-addresss-top"
-                />
-              </Flex>
+              <ExplorerLink
+                value={collectionAddress}
+                type="contract_address"
+                textFormat="normal"
+                maxWidth="full"
+                fixedHeight={false}
+                ampCopierSection="collection-addresss-top"
+              />
             </Tooltip>
           </Flex>
           <Flex gap={1} align="center">

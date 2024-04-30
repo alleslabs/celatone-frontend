@@ -21,6 +21,7 @@ import {
 } from "lib/components/modal";
 import { TableRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { ContractInteractionTabs } from "lib/types";
 
 import type { PublicContractInfo } from ".";
 
@@ -97,14 +98,14 @@ export const PublicProjectContractRow = ({
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
-            href={`/execute?contract=${publicContractInfo.publicInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
           <AppLink
-            href={`/query?contract=${publicContractInfo.publicInfo.contractAddress}`}
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
             <Button variant="outline-gray" size="sm">
               Query

@@ -36,3 +36,8 @@ export interface ContractMigrationHistory {
   cw2Contract: Nullable<string>;
   cw2Version: Nullable<string>;
 }
+
+export enum ContractInteractionTabs {
+  Query = "Query",
+  Execute = "Execute",
+}
