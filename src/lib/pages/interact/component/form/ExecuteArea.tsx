@@ -17,7 +17,7 @@ import { SubmitButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getAbiInitialData, serializeAbiData, toEncodeObject } from "lib/utils";
 

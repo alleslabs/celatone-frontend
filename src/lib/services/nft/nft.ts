@@ -56,7 +56,7 @@ export const getNfts = async (
         collectionAddress,
         limit: pageSize,
         offset,
-        search: `%${search}%`,
+        search,
       },
     })
     .then(({ data: res }) => parseWithError(zNft.array(), res.data.nfts));

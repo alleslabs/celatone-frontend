@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 import type { Option } from "lib/types";
 
@@ -7,7 +7,7 @@ interface CodeHashBoxProps {
 }
 
 export const CodeHashBox = ({ codeHash }: CodeHashBoxProps) => (
-  <Flex position="relative">
+  <Box position="relative">
     <Text
       position="absolute"
       variant="body3"
@@ -18,7 +18,7 @@ export const CodeHashBox = ({ codeHash }: CodeHashBoxProps) => (
     >
       Code Hash
     </Text>
-    <Flex
+    <Box
       border="1px"
       borderRadius="5px"
       px={3}
@@ -30,7 +30,7 @@ export const CodeHashBox = ({ codeHash }: CodeHashBoxProps) => (
       overflowX="auto"
       overflowY="hidden"
     >
-      <Text>{codeHash}</Text>
-    </Flex>
-  </Flex>
+      <Text whiteSpace="nowrap">{codeHash}</Text>
+    </Box>
+  </Box>
 );

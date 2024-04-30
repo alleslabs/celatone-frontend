@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackToModuleInteraction } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
@@ -27,6 +27,8 @@ import {
 } from "./component";
 
 export const Interact = () => {
+  useMoveConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
