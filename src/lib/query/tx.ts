@@ -96,13 +96,3 @@ export const getBlockTransactionCountByHeightQueryDocument = graphql(`
     }
   }
 `);
-
-export const getModuleTransactionsCountQueryDocument = graphql(`
-  query getModuleTransactionsCountQuery($moduleId: Int!) {
-    module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {
-      aggregate {
-        count
-      }
-    }
-  }
-`);

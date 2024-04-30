@@ -1,5 +1,5 @@
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import { isNull } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -10,17 +10,17 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import type {
+  ModuleInfoResponse,
+  ModuleTableCountsResponse,
+} from "lib/services/move/module";
 import {
-  useAccountModules,
-  useModuleDetailsQuery,
-  useModuleHistoriesCount,
-  useModuleId,
+  indexModuleResponse,
+  useModuleInfo,
+  useModuleTableCounts,
   useVerifyModule,
 } from "lib/services/move/moduleService";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import { useRelatedProposalsCountByModuleId } from "lib/services/proposalService";
-import { useModuleTxsCount } from "lib/services/txService";
-import type { Addr } from "lib/types";
+import type { HexAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -38,42 +38,26 @@ import { TabIndex } from "./types";
 const mainTabHeaderId = "main-table-header";
 
 interface ModuleDetailsBodyProps {
-  moduleData: IndexedModule;
+  moduleInfo: ModuleInfoResponse;
+  moduleTableCounts: ModuleTableCountsResponse;
 }
 
 const InvalidModule = () => <InvalidState title="Module does not exist" />;
 
-export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
+export const ModuleDetailsBody = ({
+  moduleInfo,
+  moduleTableCounts,
+}: ModuleDetailsBodyProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
-  const { data: moduleId } = useModuleId(
-    moduleData.moduleName,
-    moduleData.address
-  );
-
-  const { data: moduleDetails, isLoading: moduleDetailsLoading } =
-    useModuleDetailsQuery(moduleId);
+  const moduleData = indexModuleResponse(moduleInfo);
 
   const { data: verificationData, isLoading: verificationLoading } =
     useVerifyModule({
-      address: moduleData.address,
-      moduleName: moduleData.moduleName,
+      address: moduleInfo.address,
+      moduleName: moduleInfo.moduleName,
     });
-
-  const { data: moduleTxsCount, refetch: refetchTxsCount } =
-    useModuleTxsCount(moduleId);
-  const { data: moduleHistoriesCount, refetch: refetchHistoriesCount } =
-    useModuleHistoriesCount(moduleId);
-  const {
-    data: moduleRelatedProposalsCount,
-    refetch: refetchRelatedProposalsCount,
-  } = useRelatedProposalsCountByModuleId(moduleId);
-  const refetchCount = () => {
-    refetchTxsCount();
-    refetchHistoriesCount();
-    refetchRelatedProposalsCount();
-  };
 
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const [overviewTabIndex, setOverviewTabIndex] = useState(
@@ -90,8 +74,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       navigate({
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          address: moduleData.address,
-          moduleName: moduleData.moduleName,
+          address: moduleInfo.address,
+          moduleName: moduleInfo.moduleName,
           tab: nextTab,
           ...(fnType && { type: fnType }),
         },
@@ -100,7 +84,7 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
         },
       });
     },
-    [moduleData.address, moduleData.moduleName, navigate, tab]
+    [moduleInfo.address, moduleInfo.moduleName, navigate, tab]
   );
 
   useEffect(() => {
@@ -109,8 +93,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
         replace: true,
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          address: moduleData.address,
-          moduleName: moduleData.moduleName,
+          address: moduleInfo.address,
+          moduleName: moduleInfo.moduleName,
           tab: TabIndex.Overview,
         },
         options: {
@@ -122,8 +106,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
     router.isReady,
     tab,
     navigate,
-    moduleData.address,
-    moduleData.moduleName,
+    moduleInfo.address,
+    moduleInfo.moduleName,
   ]);
 
   useEffect(() => {
@@ -135,11 +119,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   }, [router.isReady, tab, verificationLoading, verificationData]);
 
   useEffect(() => {
-    if (moduleTxsCount === 0) {
+    if (moduleTableCounts.txs === 0) {
       setOverviewTabIndex(ModuleTablesTabIndex.PublishedEvents);
       setTableTabIndex(ModuleTablesTabIndex.PublishedEvents);
     }
-  }, [moduleTxsCount]);
+  }, [moduleTableCounts.txs]);
 
   return (
     <>
@@ -187,9 +171,9 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 viewFns={moduleData.viewFunctions.length}
                 executeFns={moduleData.executeFunctions.length}
                 allTxsCount={
-                  !isUndefined(moduleTxsCount) &&
-                  !isUndefined(moduleHistoriesCount)
-                    ? moduleTxsCount + moduleHistoriesCount
+                  !isNull(moduleTableCounts.txs) &&
+                  !isNull(moduleTableCounts.histories)
+                    ? moduleTableCounts.txs + moduleTableCounts.histories
                     : undefined
                 }
                 onSelectAction={(
@@ -203,19 +187,21 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 }}
               />
               <ModuleInfo
-                upgradePolicy={moduleData.upgradePolicy}
-                moduleDetails={moduleDetails}
+                vmAddress={moduleInfo.address}
+                upgradePolicy={moduleInfo.upgradePolicy}
+                transaction={moduleInfo.recentPublishTransaction}
+                proposal={moduleInfo.recentPublishProposal}
+                isRepublished={moduleInfo.isRepublished}
+                blockHeight={moduleInfo.recentPublishBlockHeight}
+                blockTimestamp={moduleInfo.recentPublishBlockTimestamp}
                 verificationData={verificationData}
-                isLoading={moduleDetailsLoading}
               />
               <ModuleTables
-                address={moduleData.address}
-                moduleName={moduleData.moduleName}
-                moduleId={moduleId}
-                txsCount={moduleTxsCount}
-                historiesCount={moduleHistoriesCount}
-                refetchCount={refetchCount}
-                relatedProposalsCount={moduleRelatedProposalsCount}
+                vmAddress={moduleInfo.address}
+                moduleName={moduleInfo.moduleName}
+                txsCount={moduleTableCounts.txs ?? 0}
+                historiesCount={moduleTableCounts.histories ?? 0}
+                relatedProposalsCount={moduleTableCounts.proposals ?? 0}
                 tab={overviewTabIndex}
                 setTab={setOverviewTabIndex}
                 onViewMore={(nextTab: ModuleTablesTabIndex) => {
@@ -232,8 +218,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
-              address={moduleData.address}
-              moduleName={moduleData.moduleName}
+              address={moduleInfo.address}
+              moduleName={moduleInfo.moduleName}
               fns={moduleData.parsedAbi.exposed_functions}
               viewFns={moduleData.viewFunctions}
               executeFns={moduleData.executeFunctions}
@@ -246,13 +232,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
           </TabPanel>
           <TabPanel p={0}>
             <ModuleTables
-              address={moduleData.address}
-              moduleName={moduleData.moduleName}
-              moduleId={moduleId}
-              txsCount={moduleTxsCount}
-              historiesCount={moduleHistoriesCount}
-              refetchCount={refetchCount}
-              relatedProposalsCount={moduleRelatedProposalsCount}
+              vmAddress={moduleInfo.address}
+              moduleName={moduleInfo.moduleName}
+              txsCount={moduleTableCounts.txs ?? 0}
+              historiesCount={moduleTableCounts.histories ?? 0}
+              relatedProposalsCount={moduleTableCounts.proposals ?? 0}
               tab={tableTabIndex}
               setTab={setTableTabIndex}
             />
@@ -278,22 +262,28 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
 
 export const ModuleDetails = () => {
   const router = useRouter();
-
   const addr = getFirstQueryParam(router.query.address);
   const moduleName = getFirstQueryParam(router.query.moduleName);
 
-  const { data, isLoading } = useAccountModules({
-    address: addr as Addr,
-    moduleName,
-  });
+  const { data: moduleInfo, isLoading: isModuleInfoLoading } = useModuleInfo(
+    addr as HexAddr,
+    moduleName
+  );
+  const { data: moduleTableCounts, isLoading: isMoudleTableCountsLoading } =
+    useModuleTableCounts(moduleName, addr as HexAddr);
 
-  if (!router.isReady || isLoading) return <Loading />;
+  if (!router.isReady || isModuleInfoLoading || isMoudleTableCountsLoading)
+    return <Loading />;
+
   return (
     <PageContainer>
-      {data === undefined ? (
+      {!moduleInfo || !moduleTableCounts ? (
         <InvalidModule />
       ) : (
-        <ModuleDetailsBody moduleData={data as IndexedModule} />
+        <ModuleDetailsBody
+          moduleInfo={moduleInfo}
+          moduleTableCounts={moduleTableCounts}
+        />
       )}
     </PageContainer>
   );
