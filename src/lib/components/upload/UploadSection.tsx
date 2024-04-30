@@ -1,27 +1,19 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
-import { AmpEvent, track } from "lib/amplitude";
-import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
-import {
-  useCelatoneApp,
-  useCurrentChain,
-  useFabricateFee,
-  useSimulateFeeForStoreCode,
-  useStoreCodeTx,
-  useValidateAddress,
-} from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
-import { useCodeStore } from "lib/providers/store";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
-import { AccessType } from "lib/types";
+import type {
+  BechAddr,
+  Option,
+  SimulateStatus,
+  UploadSectionState,
+} from "lib/types";
 import { getCodeHash } from "lib/utils";
 
 import { CodeHashBox } from "./CodeHashBox";
@@ -30,36 +22,28 @@ import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
-  handleBack: () => void;
-  onComplete?: StoreCodeSucceedCallback;
-  isMigrate?: boolean;
+  formData: UseFormReturn<UploadSectionState>;
+  estimatedFee: Option<StdFee>;
+  setEstimatedFee: (fee: StdFee | undefined) => void;
+  setDefaultBehavior: () => void;
+  shouldNotSimulate: boolean;
+  simulateStatus: SimulateStatus;
+  isSimulating: boolean;
 }
 
 export const UploadSection = ({
-  handleBack,
-  onComplete,
-  isMigrate = false,
+  formData,
+  estimatedFee,
+  setEstimatedFee,
+  setDefaultBehavior,
+  shouldNotSimulate,
+  simulateStatus,
+  isSimulating,
 }: UploadSectionProps) => {
-  const {
-    constants,
-    chainConfig: {
-      extra: { disableAnyOfAddresses },
-    },
-  } = useCelatoneApp();
+  const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const fabricateFee = useFabricateFee();
   const { address } = useCurrentChain();
-  const { broadcast } = useTxBroadcast();
-  const { updateCodeInfo } = useCodeStore();
-  const storeCodeTx = useStoreCodeTx(isMigrate);
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
-
   const [codeHash, setCodeHash] = useState<string>();
-  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
-  const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
-    status: "default",
-    message: "",
-  });
 
   const {
     control,
@@ -67,117 +51,8 @@ export const UploadSection = ({
     watch,
     formState: { errors },
     trigger,
-  } = useForm<UploadSectionState>({
-    defaultValues: {
-      wasmFile: undefined,
-      codeName: "",
-      permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as BechAddr }],
-    },
-    mode: "all",
-  });
-
-  const { wasmFile, codeName, addresses, permission } = watch();
-
-  const setDefaultBehavior = () => {
-    setSimulateStatus({ status: "default", message: "" });
-    setEstimatedFee(undefined);
-  };
-
-  // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
-  const shouldNotSimulate = useMemo(
-    () =>
-      permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
-      (addresses.some((addr) => addr.address.trim().length === 0) ||
-        addresses.some((addr) =>
-          Boolean(
-            validateUserAddress(addr.address) &&
-              validateContractAddress(addr.address)
-          )
-        )),
-
-    [
-      addresses,
-      permission,
-      validateContractAddress,
-      validateUserAddress,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      JSON.stringify(addresses),
-    ]
-  );
-
-  const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
-    enabled: Boolean(wasmFile && address && !shouldNotSimulate),
-    wasmFile,
-    permission,
-    // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
-    addresses: disableAnyOfAddresses
-      ? undefined
-      : addresses.map((addr) => addr.address),
-    onSuccess: (fee) => {
-      if (wasmFile && address) {
-        if (shouldNotSimulate) {
-          setDefaultBehavior();
-        }
-        if (fee) {
-          setSimulateStatus({
-            status: "succeeded",
-            message: "Valid Wasm file and instantiate permission",
-          });
-          setEstimatedFee(fabricateFee(fee));
-        }
-      }
-    },
-    onError: (e) => {
-      if (shouldNotSimulate) {
-        setDefaultBehavior();
-      } else {
-        setSimulateStatus({ status: "failed", message: e.message });
-        setEstimatedFee(undefined);
-      }
-    },
-  });
-
-  const proceed = useCallback(async () => {
-    if (address) {
-      track(AmpEvent.ACTION_UPLOAD);
-      const stream = await storeCodeTx({
-        wasmFileName: wasmFile?.name,
-        wasmCode: wasmFile?.arrayBuffer(),
-        // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
-        addresses: disableAnyOfAddresses
-          ? undefined
-          : addresses.map((addr) => addr.address),
-        permission,
-        codeName,
-        estimatedFee,
-        onTxSucceed: (txResult) => {
-          onComplete?.(txResult);
-          updateCodeInfo(
-            Number(txResult.codeId),
-            address,
-            codeName || `${wasmFile?.name}(${txResult.codeId})`
-          );
-        },
-      });
-
-      if (stream) broadcast(stream);
-    }
-  }, [
-    address,
-    storeCodeTx,
-    wasmFile,
-    addresses,
-    permission,
-    codeName,
-    estimatedFee,
-    broadcast,
-    updateCodeInfo,
-    onComplete,
-    disableAnyOfAddresses,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(addresses),
-  ]);
+  } = formData;
+  const { wasmFile, codeName, permission } = watch();
 
   // Generate hash value from wasm file
   const setHashValue = useCallback(async () => {
@@ -193,11 +68,18 @@ export const UploadSection = ({
       setDefaultBehavior();
       setValue("addresses", [{ address: "" as BechAddr }]);
     }
-  }, [setValue, wasmFile]);
+  }, [setValue, wasmFile, setDefaultBehavior]);
 
   useEffect(() => {
     if (wasmFile && address && shouldNotSimulate) setDefaultBehavior();
-  }, [wasmFile, address, shouldNotSimulate, permission, setValue]);
+  }, [
+    wasmFile,
+    address,
+    shouldNotSimulate,
+    permission,
+    setValue,
+    setDefaultBehavior,
+  ]);
 
   return (
     <Flex direction="column" gap={8} maxW="550px">
@@ -257,7 +139,6 @@ export const UploadSection = ({
             isSuccess={simulateStatus.status === "succeeded"}
           />
         )}
-
         <Flex
           fontSize="14px"
           color="text.dark"
@@ -273,28 +154,6 @@ export const UploadSection = ({
           />
         </Flex>
       </Box>
-      <Flex justify="space-between" w="100%" mt="32px">
-        <Button
-          variant="outline-gray"
-          w="128px"
-          leftIcon={<CustomIcon name="chevron-left" />}
-          onClick={handleBack}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="primary"
-          w="128px"
-          isDisabled={
-            isSimulating ||
-            shouldNotSimulate ||
-            simulateStatus.status !== "succeeded"
-          }
-          onClick={proceed}
-        >
-          Upload
-        </Button>
-      </Flex>
     </Flex>
   );
 };

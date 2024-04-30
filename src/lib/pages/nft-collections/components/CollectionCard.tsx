@@ -1,5 +1,7 @@
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
 import type { Collection } from "lib/services/nft";
@@ -9,12 +11,14 @@ interface CollectionCardProps {
 }
 
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
+  const isMobile = useMobile();
   const { uri, description, name } = collectionInfo;
   const { data: metadata } = useMetadata(uri);
 
   return (
     <Box
       p={{ base: 3, md: 6 }}
+      h="full"
       bg="gray.900"
       borderRadius="8px"
       transition="all .25s ease-in-out"
@@ -22,13 +26,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
         bg: "gray.800",
       }}
     >
-      <Flex
-        gap="24px"
-        alignItems="center"
-        maxW="full"
-        w="full"
-        overflow="hidden"
-      >
+      <Flex gap="24px" maxW="full" w="full" overflow="hidden">
         <Image
           minW={{ base: 28, md: 40 }}
           w={{ base: 28, md: 40 }}
@@ -40,7 +38,13 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           fallbackSrc={NFT_IMAGE_PLACEHOLDER}
           fallbackStrategy="beforeLoadOrError"
         />
-        <Flex direction="column" gap={2} overflow="hidden" w="full">
+        <Flex
+          direction="column"
+          gap={2}
+          overflow="hidden"
+          w="full"
+          alignSelf="center"
+        >
           <Heading
             as="h6"
             variant="h6"
@@ -70,6 +74,33 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           >
             {description}
           </Text>
+          <Box borderY="1px solid var(--chakra-colors-gray-700)" mt={2} />
+          <Flex flexWrap="wrap">
+            <Flex direction="column" flex={1} minW="fit-content" mt={2}>
+              <Text variant="body2" color="text.dark">
+                Created by
+              </Text>
+              <ExplorerLink
+                value={collectionInfo.creator}
+                type="user_address"
+                showCopyOnHover={!isMobile}
+                minW={36}
+                ampCopierSection="collection-list"
+              />
+            </Flex>
+            <Flex direction="column" flex={1} minW="fit-content" mt={2}>
+              <Text color="text.dark" variant="body2">
+                Collection
+              </Text>
+              <ExplorerLink
+                value={collectionInfo.collectionAddress}
+                type="contract_address"
+                showCopyOnHover={!isMobile}
+                minW={36}
+                ampCopierSection="collection-list"
+              />
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
     </Box>

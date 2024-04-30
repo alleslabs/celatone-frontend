@@ -22,7 +22,7 @@ import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";

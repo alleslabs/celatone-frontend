@@ -10,7 +10,7 @@ import { EmptyState, StateImage } from "lib/components/state";
 import { useSchemaStore } from "lib/providers/store";
 import type { ExecuteSchema } from "lib/stores/schema";
 import type { BechAddr32, Option } from "lib/types";
-import { getDefaultMsg, resolveInitialMsg } from "lib/utils";
+import { jsonPrettify, resolveInitialMsg } from "lib/utils";
 
 import { ExecuteBox } from "./ExecuteBox";
 
@@ -161,8 +161,7 @@ export const SchemaExecute = ({
                 contractAddress={contractAddress}
                 initialMsg={parsed}
                 initialFunds={
-                  JSON.stringify(parsed) !==
-                  JSON.stringify(getDefaultMsg(msgSchema))
+                  jsonPrettify(JSON.stringify(parsed)) === initialMsg
                     ? initialFunds
                     : []
                 }
