@@ -3,7 +3,7 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { TooltipInfo } from "./Tooltip";
 
-export interface LabelTextProps extends FlexProps {
+interface LabelTextProps extends FlexProps {
   label: string;
   labelWeight?: number;
   labelColor?: string;

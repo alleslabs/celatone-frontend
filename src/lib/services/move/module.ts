@@ -213,7 +213,7 @@ const zModuleInfoResponse = z
       .pick({ id: true, title: true })
       .nullable(),
     is_republished: z.boolean(),
-    recent_publish_block_height: z.number().nullable(),
+    recent_publish_block_height: z.number().nonnegative(),
     recent_publish_block_timestamp: zUtcDate,
   })
   .transform((val) => ({

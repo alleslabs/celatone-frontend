@@ -1,25 +1,10 @@
-import { Flex, Grid } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { LabelTextProps } from "lib/components/LabelText";
 import { LabelText } from "lib/components/LabelText";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import type { ModuleInfoProps } from "./ModuleInfo";
-
-interface ModuleInfoBodyValueProps {
-  labelText: Pick<LabelTextProps, "label" | "helperText1" | "helperText2">;
-  content: string | JSX.Element;
-}
-
-const ModuleInfoBodyValue = ({
-  labelText,
-  content,
-}: ModuleInfoBodyValueProps) => (
-  <Flex flexDirection="column" gap={1}>
-    <LabelText {...labelText}>{content}</LabelText>
-  </Flex>
-);
 
 const ModuleInfoBodyPublishedAndRepublished = ({
   transaction,
@@ -30,39 +15,28 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 
   if (transaction) {
     return (
-      <ModuleInfoBodyValue
-        labelText={{ label: `${labelPrefix} Transaction` }}
-        content={
-          <ExplorerLink type="tx_hash" value={transaction} showCopyOnHover />
-        }
-      />
+      <LabelText label={`${labelPrefix} Transaction`}>
+        <ExplorerLink type="tx_hash" value={transaction} showCopyOnHover />
+      </LabelText>
     );
   }
 
   if (proposal && proposal.id) {
     return (
-      <ModuleInfoBodyValue
-        labelText={{
-          label: `${labelPrefix} Proposal ID`,
-          helperText1: proposal.title,
-        }}
-        content={
-          <ExplorerLink
-            type="proposal_id"
-            value={proposal.id.toString()}
-            showCopyOnHover
-          />
-        }
-      />
+      <LabelText
+        label={`${labelPrefix} Proposal ID`}
+        helperText1={proposal.title}
+      >
+        <ExplorerLink
+          type="proposal_id"
+          value={proposal.id.toString()}
+          showCopyOnHover
+        />
+      </LabelText>
     );
   }
 
-  return (
-    <ModuleInfoBodyValue
-      labelText={{ label: "Created by" }}
-      content="Genesis"
-    />
-  );
+  return <LabelText label="Created by">Genesis</LabelText>;
 };
 
 export const ModuleInfoBody = ({
@@ -82,34 +56,25 @@ export const ModuleInfoBody = ({
     borderRadius={8}
     gap={6}
   >
-    <ModuleInfoBodyValue
-      labelText={{ label: "Upgrade Policy" }}
-      content={upgradePolicy}
-    />
-    <ModuleInfoBodyValue
-      labelText={{ label: "Published by", helperText1: "(Wallet Address)" }}
-      content={
-        <ExplorerLink type="user_address" value={address} showCopyOnHover />
-      }
-    />
-    <ModuleInfoBodyValue
-      labelText={{
-        label: "Published Block Height",
-        helperText1: formatUTC(blockTimestamp),
-        helperText2: `(${dateFromNow(blockTimestamp)})`,
-      }}
-      content={
-        blockHeight ? (
-          <ExplorerLink
-            type="block_height"
-            value={blockHeight.toString()}
-            showCopyOnHover
-          />
-        ) : (
-          "N/A"
-        )
-      }
-    />
+    <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
+    <LabelText label="Published by" helperText1="(Wallet Address)">
+      <ExplorerLink type="user_address" value={address} showCopyOnHover />
+    </LabelText>
+    <LabelText
+      label="Published Block Height"
+      helperText1={formatUTC(blockTimestamp)}
+      helperText2={dateFromNow(blockTimestamp)}
+    >
+      {blockHeight ? (
+        <ExplorerLink
+          type="block_height"
+          value={blockHeight.toString()}
+          showCopyOnHover
+        />
+      ) : (
+        "N/A"
+      )}
+    </LabelText>
     <ModuleInfoBodyPublishedAndRepublished
       transaction={transaction}
       proposal={proposal}

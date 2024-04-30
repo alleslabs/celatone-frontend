@@ -19,7 +19,7 @@ export interface ModuleInfoProps {
   transaction: Option<string>;
   proposal: Nullable<Partial<Proposal>>;
   isRepublished: boolean;
-  blockHeight: Nullable<number>;
+  blockHeight: number;
   blockTimestamp: Date;
   verificationData: Option<Nullable<ModuleVerificationInternal>>;
 }
