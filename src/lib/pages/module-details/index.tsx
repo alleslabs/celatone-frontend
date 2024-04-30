@@ -27,6 +27,7 @@ import {
   FunctionTypeTabs,
   ModuleActions,
   ModuleFunctions,
+  ModuleInfo,
   ModuleStructs,
   ModuleTables,
   ModuleTablesTabIndex,
@@ -179,12 +180,16 @@ export const ModuleDetailsBody = ({
                   handleTabChange(nextTab, fnType)();
                 }}
               />
-              {/* <ModuleInfo
+              <ModuleInfo
+                address={moduleInfo.address}
                 upgradePolicy={moduleInfo.upgradePolicy}
-                moduleDetails={moduleDetails}
+                transaction={moduleInfo.recentPublishTransaction}
+                proposal={moduleInfo.recentPublishProposal}
+                isRepublished={moduleInfo.isRepublished}
+                blockHeight={moduleInfo.recentPublishBlockHeight}
+                blockTimestamp={moduleInfo.recentPublishBlockTimestamp}
                 verificationData={verificationData}
-                isLoading={moduleDetailsLoading}
-              /> */}
+              />
               <ModuleTables
                 address={moduleInfo.address}
                 moduleName={moduleInfo.moduleName}
