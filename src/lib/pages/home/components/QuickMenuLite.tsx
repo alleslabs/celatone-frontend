@@ -45,13 +45,19 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
       _hover={{ opacity: "90%" }}
       transition="all 0.25s ease-in-out"
     >
-      <Flex gap={3} direction="column" justifyContent="space-between" h="full">
+      <Flex
+        gap={3}
+        direction="column"
+        justifyContent="space-between"
+        h="full"
+        w="full"
+      >
         <CustomIcon
           name={item.icon ?? "add-new"}
           boxSize={{ base: 5, md: 6 }}
           color="gray.100"
         />
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="space-between">
           <Flex gap={1} direction="column">
             <Heading as="h6" variant="h6">
               {item.title}

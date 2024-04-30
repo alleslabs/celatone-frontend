@@ -19,14 +19,13 @@ export const HomeLite = () => {
   const { data: overviewsStats, isLoading } = useOverviewsStats();
 
   return (
-    <PageContainer>
+    <PageContainer display="flex" alignItems="center">
       <Flex
         alignItems="center"
         justifyContent="center"
-        h="full"
+        w="full"
         direction="column"
         px={{ base: 4, md: 6, xl: 16 }}
-        py={{ base: 4, md: 6, xl: 10 }}
       >
         <Flex
           justifyContent="space-between"
