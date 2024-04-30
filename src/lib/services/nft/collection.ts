@@ -23,12 +23,14 @@ const zCollection = z
     vm_address: z.object({ vm_address: zHexAddr32 }),
     uri: z.string(),
     description: z.string(),
+    vmAddressByCreator: z.object({ vm_address: zHexAddr32 }),
   })
   .transform((val) => ({
     description: val.description,
     uri: val.uri,
     name: val.name,
     collectionAddress: val.vm_address.vm_address,
+    creator: val.vmAddressByCreator.vm_address,
   }));
 export type Collection = z.infer<typeof zCollection>;
 

@@ -54,10 +54,12 @@ export const NftsByCollection = ({
     setSearchKeyword("");
   }, [collectionAddress, setPageSize, setCurrentPage]);
 
+  useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
+
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder="Search with Token ID"
+        placeholder="Search with Token ID or NFT VM Address"
         value={searchKeyword}
         autoFocus
         onChange={(e) => setSearchKeyword(e.target.value)}

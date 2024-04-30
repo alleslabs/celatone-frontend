@@ -109,14 +109,9 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
           icon: "add-new" as IconKeys,
         },
         {
-          name: "Query",
-          slug: "/query",
+          name: "Query / Execute",
+          slug: "/interact-contract",
           icon: "query" as IconKeys,
-        },
-        {
-          name: "Execute",
-          slug: "/execute",
-          icon: "execute" as IconKeys,
         },
         {
           name: "Migrate",

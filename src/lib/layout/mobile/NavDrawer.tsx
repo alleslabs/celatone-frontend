@@ -88,7 +88,7 @@ export const NavDrawer = () => {
                     },
                     {
                       name: "Query",
-                      slug: "/query",
+                      slug: "/interact-contract",
                       icon: "query" as IconKeys,
                     },
                   ]

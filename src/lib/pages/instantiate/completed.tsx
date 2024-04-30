@@ -6,6 +6,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { ContractInteractionTabs } from "lib/types";
 import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -76,8 +77,11 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/execute",
-              query: { contract: txInfo.contractAddress },
+              pathname: "/interact-contract",
+              query: {
+                selectedType: ContractInteractionTabs.Execute,
+                contract: txInfo.contractAddress,
+              },
             })
           }
         >
@@ -88,8 +92,11 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/query",
-              query: { contract: txInfo.contractAddress },
+              pathname: "/interact-contract",
+              query: {
+                selectedType: ContractInteractionTabs.Query,
+                contract: txInfo.contractAddress,
+              },
             })
           }
         >

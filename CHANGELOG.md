@@ -44,6 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
+- [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Interact Contract
+- [#895](https://github.com/alleslabs/celatone-frontend/pull/895) Show collection address and creator on the collection list page
+
 ### Bug fixes
 
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent

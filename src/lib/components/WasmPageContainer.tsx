@@ -1,26 +1,24 @@
-import { Flex } from "@chakra-ui/react";
+import type { BoxProps } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 type WasmPageContainerProps = {
   children: ReactNode;
-  width?: string;
+  boxProps?: BoxProps;
 };
 
-const WasmPageContainer = ({
-  children,
-  width = "540px",
-}: WasmPageContainerProps) => (
-  <Flex
+const WasmPageContainer = ({ children, boxProps }: WasmPageContainerProps) => (
+  <Box
     as="main"
     align="center"
-    width={width}
+    w={540}
     mx="auto"
-    py={12}
-    direction="column"
     minH="inherit"
+    py={12}
+    {...boxProps}
   >
     {children}
-  </Flex>
+  </Box>
 );
 
 export default WasmPageContainer;
