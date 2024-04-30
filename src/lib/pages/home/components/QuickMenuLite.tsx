@@ -83,42 +83,40 @@ const ContentCard = ({
 }: {
   item: ShortcutMetadata;
   isDocument: boolean;
-}) => {
-  return (
+}) => (
+  <Flex
+    sx={cardProps}
+    _hover={{ bg: "gray.700" }}
+    transition="all 0.25s ease-in-out"
+  >
     <Flex
-      sx={cardProps}
-      _hover={{ bg: "gray.700" }}
-      transition="all 0.25s ease-in-out"
+      gap={6}
+      direction="column"
+      justifyContent="space-between"
+      h="full"
+      w="full"
     >
-      <Flex
-        gap={6}
-        direction="column"
-        justifyContent="space-between"
-        h="full"
-        w="full"
-      >
+      <CustomIcon
+        name={item.icon}
+        boxSize={{ base: 5, md: 6 }}
+        color="gray.600"
+      />
+      <Flex justifyContent="space-between" alignItems="flex-end">
+        <Flex direction="column">
+          <Heading variant="h6">{item.title}</Heading>
+          <Text textDecoration="none" variant="body2" color="text.dark">
+            {item.subtitle}
+          </Text>
+        </Flex>
         <CustomIcon
-          name={item.icon}
+          name={isDocument ? "launch" : "chevron-right"}
           boxSize={{ base: 5, md: 6 }}
           color="gray.600"
         />
-        <Flex justifyContent="space-between" alignItems="flex-end">
-          <Flex direction="column">
-            <Heading variant="h6">{item.title}</Heading>
-            <Text textDecoration="none" variant="body2" color="text.dark">
-              {item.subtitle}
-            </Text>
-          </Flex>
-          <CustomIcon
-            name={isDocument ? "launch" : "chevron-right"}
-            boxSize={{ base: 5, md: 6 }}
-            color="gray.600"
-          />
-        </Flex>
       </Flex>
     </Flex>
-  );
-};
+  </Flex>
+);
 
 export const QuickMenuLite = () => {
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -215,7 +213,7 @@ export const QuickMenuLite = () => {
       />
       <Grid templateRows="repeat(2, 1fr)" templateColumns="1fr 1fr" gap={4}>
         {quickMenu
-          .filter((item) => item.isHighlight === false)
+          .filter((item) => !item.isHighlight)
           .map((item, index) => (
             <Flex
               key={item.slug}

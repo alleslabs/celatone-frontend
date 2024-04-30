@@ -4,7 +4,6 @@ import { CURR_THEME } from "env";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
-import { TooltipInfo } from "lib/components/Tooltip";
 import { useOverviewsStats } from "lib/services/overviewService";
 
 import { QuickMenuLite, QuickMenuMobileLite } from "./components";
@@ -49,15 +48,9 @@ export const HomeLite = () => {
             direction="column"
             gap={1}
           >
-            <Flex alignItems="center" gap={1}>
-              <Text variant="body2" color="text.dark">
-                Latest Indexed Block Height
-              </Text>
-              <TooltipInfo
-                label="The latest block height indexed by the indexer."
-                iconVariant="solid"
-              />
-            </Flex>
+            <Text variant="body2" color="text.dark">
+              Latest Block Height
+            </Text>
             {isLoading ? (
               <Spinner size="md" />
             ) : (

@@ -42,48 +42,46 @@ interface CardProps {
   isDocument: boolean;
 }
 
-const QuickActionCard = ({ item }: { item: CardProps }) => {
-  return (
-    <Box>
-      <AppLink href={`/${item.slug}`}>
+const QuickActionCard = ({ item }: { item: CardProps }) => (
+  <Box>
+    <AppLink href={`/${item.slug}`}>
+      <Flex
+        sx={actionCardProps}
+        _hover={{ bg: "gray.700" }}
+        transition="all 0.25s ease-in-out"
+      >
         <Flex
-          sx={actionCardProps}
-          _hover={{ bg: "gray.700" }}
-          transition="all 0.25s ease-in-out"
+          gap={6}
+          direction="column"
+          justifyContent="space-between"
+          h="full"
         >
-          <Flex
-            gap={6}
-            direction="column"
-            justifyContent="space-between"
-            h="full"
-          >
-            <CustomIcon
-              name={item.icon}
-              boxSize={{ base: 5, md: 6 }}
-              color="gray.600"
-            />
-            <Box>
-              <Heading variant="h6">{item.title}</Heading>
-              <Text
-                textDecoration="none"
-                variant="body2"
-                color="text.dark"
-                mt={1}
-              >
-                {item.subtitle}
-              </Text>
-            </Box>
-          </Flex>
           <CustomIcon
-            name="chevron-right"
+            name={item.icon}
             boxSize={{ base: 5, md: 6 }}
             color="gray.600"
           />
+          <Box>
+            <Heading variant="h6">{item.title}</Heading>
+            <Text
+              textDecoration="none"
+              variant="body2"
+              color="text.dark"
+              mt={1}
+            >
+              {item.subtitle}
+            </Text>
+          </Box>
         </Flex>
-      </AppLink>
-    </Box>
-  );
-};
+        <CustomIcon
+          name="chevron-right"
+          boxSize={{ base: 5, md: 6 }}
+          color="gray.600"
+        />
+      </Flex>
+    </AppLink>
+  </Box>
+);
 
 const ListPageCard = ({ item }: { item: CardProps }) => (
   <Flex
