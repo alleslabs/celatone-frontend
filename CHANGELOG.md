@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
 
 ## v1.6.0
