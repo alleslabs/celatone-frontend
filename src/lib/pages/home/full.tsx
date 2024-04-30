@@ -7,7 +7,6 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
-import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { RecentBlocksTable } from "lib/pages/blocks/components/RecentBlocksTable";
@@ -53,7 +52,7 @@ export const HomeFull = () => {
     });
 
   return (
-    <PageContainer>
+    <>
       <Flex
         direction="column"
         p={{ base: 3, md: 12 }}
@@ -126,7 +125,6 @@ export const HomeFull = () => {
           <ViewMore onClick={toTxs} />
         )}
       </section>
-
       <section>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
@@ -136,6 +134,6 @@ export const HomeFull = () => {
           <ViewMore onClick={toBlocks} />
         )}
       </section>
-    </PageContainer>
+    </>
   );
 };
