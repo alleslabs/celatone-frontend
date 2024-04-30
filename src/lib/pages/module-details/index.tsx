@@ -84,7 +84,7 @@ export const ModuleDetailsBody = ({
         },
       });
     },
-    [moduleInfo, navigate, tab]
+    [moduleInfo.address, moduleInfo.moduleName, navigate, tab]
   );
 
   useEffect(() => {
@@ -102,7 +102,13 @@ export const ModuleDetailsBody = ({
         },
       });
     }
-  }, [router.isReady, tab, navigate, moduleInfo]);
+  }, [
+    router.isReady,
+    tab,
+    navigate,
+    moduleInfo.address,
+    moduleInfo.moduleName,
+  ]);
 
   useEffect(() => {
     if (router.isReady && tab && !verificationLoading)
@@ -117,7 +123,7 @@ export const ModuleDetailsBody = ({
       setOverviewTabIndex(ModuleTablesTabIndex.PublishedEvents);
       setTableTabIndex(ModuleTablesTabIndex.PublishedEvents);
     }
-  }, [moduleTableCounts]);
+  }, [moduleTableCounts.txs]);
 
   return (
     <>
@@ -181,7 +187,7 @@ export const ModuleDetailsBody = ({
                 }}
               />
               <ModuleInfo
-                address={moduleInfo.address}
+                vmAddress={moduleInfo.address}
                 upgradePolicy={moduleInfo.upgradePolicy}
                 transaction={moduleInfo.recentPublishTransaction}
                 proposal={moduleInfo.recentPublishProposal}
@@ -191,7 +197,7 @@ export const ModuleDetailsBody = ({
                 verificationData={verificationData}
               />
               <ModuleTables
-                address={moduleInfo.address}
+                vmAddress={moduleInfo.address}
                 moduleName={moduleInfo.moduleName}
                 txsCount={moduleTableCounts.txs ?? 0}
                 historiesCount={moduleTableCounts.histories ?? 0}
@@ -226,7 +232,7 @@ export const ModuleDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleTables
-              address={moduleInfo.address}
+              vmAddress={moduleInfo.address}
               moduleName={moduleInfo.moduleName}
               txsCount={moduleTableCounts.txs ?? 0}
               historiesCount={moduleTableCounts.histories ?? 0}
@@ -260,8 +266,8 @@ export const ModuleDetails = () => {
   const moduleName = getFirstQueryParam(router.query.moduleName);
 
   const { data: moduleInfo, isLoading: isModuleInfoLoading } = useModuleInfo(
-    moduleName,
-    addr as HexAddr
+    addr as HexAddr,
+    moduleName
   );
   const { data: moduleTableCounts, isLoading: isMoudleTableCountsLoading } =
     useModuleTableCounts(moduleName, addr as HexAddr);

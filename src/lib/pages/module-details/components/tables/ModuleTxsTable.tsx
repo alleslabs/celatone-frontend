@@ -9,7 +9,7 @@ import { useModuleTxs } from "lib/services/move";
 import type { HexAddr, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
-  address: HexAddr;
+  vmAddress: HexAddr;
   moduleName: string;
   txCount: Option<number>;
   onViewMore?: () => void;
@@ -17,7 +17,7 @@ interface ModuleTxsTableProps {
 }
 
 export const ModuleTxsTable = ({
-  address,
+  vmAddress,
   moduleName,
   txCount,
   onViewMore,
@@ -46,7 +46,7 @@ export const ModuleTxsTable = ({
     data: moduleTxs,
     isLoading,
     error,
-  } = useModuleTxs(address, moduleName, offset, pageSize, {
+  } = useModuleTxs(vmAddress, moduleName, pageSize, offset, {
     onSuccess: ({ total }) => setTotalData(total),
   });
 

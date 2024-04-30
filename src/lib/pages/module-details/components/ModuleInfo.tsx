@@ -14,10 +14,10 @@ import type {
 import { ModuleInfoBody } from "./ModuleInfoBody";
 
 export interface ModuleInfoProps {
-  address: HexAddr;
+  vmAddress: HexAddr;
   upgradePolicy: UpgradePolicy;
   transaction: Option<string>;
-  proposal: Nullable<Partial<Proposal>>;
+  proposal: Nullable<Pick<Proposal, "id" | "title">>;
   isRepublished: boolean;
   blockHeight: number;
   blockTimestamp: Date;
@@ -25,7 +25,7 @@ export interface ModuleInfoProps {
 }
 
 export const ModuleInfo = ({
-  address,
+  vmAddress,
   upgradePolicy,
   transaction,
   proposal,
@@ -50,7 +50,7 @@ export const ModuleInfo = ({
       )}
     </Flex>
     <ModuleInfoBody
-      address={address}
+      vmAddress={vmAddress}
       upgradePolicy={upgradePolicy}
       transaction={transaction}
       proposal={proposal}

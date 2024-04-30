@@ -24,7 +24,7 @@ export enum ModuleTablesTabIndex {
 }
 
 interface ModuleTablesProps {
-  address: HexAddr;
+  vmAddress: HexAddr;
   moduleName: string;
   txsCount: Option<number>;
   historiesCount: Option<number>;
@@ -35,7 +35,7 @@ interface ModuleTablesProps {
 }
 
 export const ModuleTables = ({
-  address,
+  vmAddress,
   moduleName,
   txsCount,
   historiesCount,
@@ -112,7 +112,7 @@ export const ModuleTables = ({
         <TabPanels>
           <TabPanel p={0}>
             <ModuleTxsTable
-              address={address}
+              vmAddress={vmAddress}
               moduleName={moduleName}
               txCount={txsCount}
               scrollComponentId={tableHeaderId}
@@ -121,7 +121,7 @@ export const ModuleTables = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleHistoryTable
-              address={address}
+              vmAddress={vmAddress}
               moduleName={moduleName}
               historyCount={historiesCount}
               scrollComponentId={tableHeaderId}
@@ -132,7 +132,7 @@ export const ModuleTables = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleRelatedProposalsTable
-              address={address}
+              vmAddress={vmAddress}
               moduleName={moduleName}
               relatedProposalsCount={relatedProposalsCount}
               scrollComponentId={tableHeaderId}

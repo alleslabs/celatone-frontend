@@ -11,7 +11,7 @@ import type { HexAddr, Option } from "lib/types";
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
 interface ModuleHistoryTableProps {
-  address: HexAddr;
+  vmAddress: HexAddr;
   moduleName: string;
   historyCount: Option<number>;
   scrollComponentId?: string;
@@ -19,7 +19,7 @@ interface ModuleHistoryTableProps {
 }
 
 export const ModuleHistoryTable = ({
-  address,
+  vmAddress,
   moduleName,
   historyCount,
   scrollComponentId,
@@ -49,10 +49,10 @@ export const ModuleHistoryTable = ({
     isLoading,
     error,
   } = useModuleHistories(
-    address,
+    vmAddress,
     moduleName,
-    offset,
     onViewMore ? 5 : pageSize,
+    offset,
     {
       onSuccess: ({ total }) => setTotalData(total),
     }
