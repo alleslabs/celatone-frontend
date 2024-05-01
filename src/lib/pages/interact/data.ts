@@ -6,7 +6,7 @@ import {
 } from "lib/services/move";
 import type { Addr, IndexedModule, Option } from "lib/types";
 
-export const useAccountModules = ({
+export const useSearchModules = ({
   address,
   moduleName,
   onModuleSuccess,

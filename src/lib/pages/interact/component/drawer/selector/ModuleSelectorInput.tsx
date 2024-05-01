@@ -11,7 +11,7 @@ import { trackUseModuleSelectionInputFill } from "lib/amplitude";
 import { useExampleAddresses } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useAccountModules } from "lib/pages/interact/data";
+import { useSearchModules } from "lib/pages/interact/data";
 import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
 import type { IndexedModule, Option } from "lib/types";
 import { splitModule } from "lib/utils";
@@ -47,7 +47,7 @@ export const ModuleSelectorInput = ({
     setMode("display");
   }, [addr, formatAddresses, setMode, setSelectedAddress]);
 
-  const { refetch, isFetching } = useAccountModules({
+  const { refetch, isFetching } = useSearchModules({
     address: addr,
     moduleName,
     onModuleSuccess: (data) => {

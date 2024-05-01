@@ -2,11 +2,15 @@ import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
 import type { Proposal } from "../proposal";
 
-import type { ExposedFunction, InternalModule, ResponseABI } from "./abi";
+import type { ExposedFunction, ResponseABI, UpgradePolicy } from "./abi";
 
-export interface IndexedModule extends InternalModule {
+export interface IndexedModule {
   // NOTE: can also be an ica or a contract
   address: HexAddr;
+  moduleName: string;
+  abi: string;
+  rawBytes: string;
+  upgradePolicy: UpgradePolicy;
   parsedAbi: ResponseABI;
   viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];

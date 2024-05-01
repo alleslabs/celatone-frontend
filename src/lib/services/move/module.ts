@@ -9,67 +9,81 @@ import type {
   ExposedFunction,
   HexAddr,
   IndexedModule,
-  InternalModule,
   ModuleData,
   ModuleInfo,
   Nullable,
   ResponseABI,
-  ResponseModule,
-  SnakeToCamelCaseNested,
 } from "lib/types";
 import { UpgradePolicy, zHexAddr, zRemark, zUtcDate } from "lib/types";
-import type { Pagination } from "lib/types/rest";
+import { zPagination } from "lib/types/rest";
 import {
+  indexModuleAbi,
   libDecode,
   parseJsonABI,
   parseTxHash,
   parseWithError,
   serializeAbiData,
   snakeToCamel,
-  splitViewExecuteFunctions,
 } from "lib/utils";
 
-const indexModuleAbi = (module: InternalModule): IndexedModule => {
-  const parsedAbi = parseJsonABI<ResponseABI>(module.abi);
-  const { view, execute } = splitViewExecuteFunctions(
-    parsedAbi.exposed_functions
-  );
-  return {
-    ...module,
-    address: module.address as HexAddr,
-    parsedAbi,
-    viewFunctions: view,
-    executeFunctions: execute,
-  };
-};
+const zBaseModuleLcd = z.object({
+  address: zHexAddr,
+  module_name: z.string(),
+  abi: z.string(),
+  raw_bytes: z.string(),
+  upgrade_policy: z.nativeEnum(UpgradePolicy),
+});
 
-interface ModuleReturn {
-  module: ResponseModule;
-}
+const zIndexedModuleLcd = zBaseModuleLcd.transform<IndexedModule>((val) => ({
+  ...snakeToCamel(val),
+  ...indexModuleAbi(val.abi),
+}));
+
+const zModuleLcdReturn = z.object({
+  module: zIndexedModuleLcd,
+});
 
 export const getModuleByAddressLcd = async (
   baseEndpoint: string,
   address: Addr,
   moduleName: string
-): Promise<IndexedModule> => {
-  const { data } = await axios.get<ModuleReturn>(
-    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}`
-  );
-  return indexModuleAbi(snakeToCamel(data.module));
+): Promise<IndexedModule> =>
+  axios
+    .get(
+      `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}`
+    )
+    .then(({ data }) => parseWithError(zModuleLcdReturn, data).module);
+
+const zModulesLcdReturn = z.object({
+  modules: z.array(zIndexedModuleLcd),
+  pagination: zPagination,
+});
+
+export const getModulesByAddressLcd = async (
+  baseEndpoint: string,
+  address: Addr
+): Promise<IndexedModule[]> => {
+  const result: IndexedModule[] = [];
+
+  const fetchFn = async (paginationKey: Nullable<string>) => {
+    const res = await axios
+      .get(
+        `${baseEndpoint}/initia/move/v1/accounts/${address}/modules${
+          paginationKey ? `?pagination.key=${paginationKey}` : ""
+        }`
+      )
+      .then(({ data }) => parseWithError(zModulesLcdReturn, data));
+    result.push(...res.modules);
+    if (res.pagination.next_key) await fetchFn(res.pagination.next_key);
+  };
+
+  await fetchFn(null);
+
+  return result.sort((a, b) => a.moduleName.localeCompare(b.moduleName));
 };
 
-const zAccountModulesResponseItem = z
-  .object({
-    abi: z.string(),
-    address: zHexAddr,
-    module_name: z.string(),
-    raw_bytes: z.string(),
-    upgrade_policy: z.nativeEnum(UpgradePolicy),
-  })
-  .transform((val) => indexModuleAbi(snakeToCamel(val)));
-
 const zAccountModulesResponse = z.object({
-  items: z.array(zAccountModulesResponseItem),
+  items: z.array(zIndexedModuleLcd),
   total: z.number().nonnegative(),
 });
 type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
@@ -82,53 +96,21 @@ export const getModulesByAddress = async (
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
     .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
-interface ModulesReturn {
-  modules: ResponseModule[];
-  pagination: Pagination;
-}
-
-export const getModulesByAddressLcd = async (
-  baseEndpoint: string,
-  address: Addr
-): Promise<IndexedModule[]> => {
-  const result: ResponseModule[] = [];
-
-  const fetchFn = async (paginationKey: Nullable<string>) => {
-    const { data } = await axios.get<ModulesReturn>(
-      `${baseEndpoint}/initia/move/v1/accounts/${address}/modules${
-        paginationKey ? `?pagination.key=${paginationKey}` : ""
-      }`
-    );
-    result.push(...data.modules);
-    if (data.pagination.next_key) await fetchFn(data.pagination.next_key);
-  };
-
-  await fetchFn(null);
-
-  return snakeToCamel(result)
-    .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
-    .map((module) => indexModuleAbi(module));
-};
-
-interface ModuleVerificationReturn {
-  id: number;
-  module_address: HexAddr;
-  module_name: string;
-  verified_at: string;
-  digest: string;
-  source: string;
-  base64: string;
-  chain_id: string;
-}
-
-// TODO: Figure out how to correctly infer NominalType intersection
-export interface ModuleVerificationInternal
-  extends Omit<
-    SnakeToCamelCaseNested<ModuleVerificationReturn>,
-    "moduleAddress"
-  > {
-  moduleAddress: HexAddr;
-}
+const zModuleVerificationInternal = z
+  .object({
+    id: z.number(),
+    module_address: zHexAddr,
+    module_name: z.string(),
+    verified_at: z.string(),
+    digest: z.string(),
+    source: z.string(),
+    base64: z.string(),
+    chain_id: z.string(),
+  })
+  .transform(snakeToCamel);
+export type ModuleVerificationInternal = z.infer<
+  typeof zModuleVerificationInternal
+>;
 
 export const getModuleVerificationStatus = async (
   endpoint: string,
@@ -136,11 +118,8 @@ export const getModuleVerificationStatus = async (
   moduleName: string
 ): Promise<Nullable<ModuleVerificationInternal>> =>
   axios
-    .get<ModuleVerificationReturn>(`${endpoint}/${address}/${moduleName}`)
-    .then(({ data }) => ({
-      ...snakeToCamel(data),
-      moduleAddress: data.module_address,
-    }))
+    .get(`${endpoint}/${address}/${moduleName}`)
+    .then(({ data }) => parseWithError(zModuleVerificationInternal, data))
     .catch(() => null);
 
 export const getFunctionView = async (
@@ -212,13 +191,8 @@ export const getModules = async (
     })
     .then(({ data }) => parseWithError(zModulesResponse, data));
 
-const zModuleDataResponse = z
-  .object({
-    abi: z.string(),
-    address: zHexAddr,
-    module_name: z.string(),
-    raw_bytes: z.string(),
-    upgrade_policy: z.nativeEnum(UpgradePolicy),
+const zModuleDataResponse = zBaseModuleLcd
+  .extend({
     recent_publish_transaction: z.string().nullable(),
     recent_publish_proposal: zProposal
       .pick({ id: true, title: true })
@@ -227,25 +201,13 @@ const zModuleDataResponse = z
     recent_publish_block_timestamp: zUtcDate,
     is_republished: z.boolean(),
   })
-  .transform<ModuleData>(
-    ({
-      recent_publish_transaction,
-      recent_publish_proposal,
-      recent_publish_block_height,
-      recent_publish_block_timestamp,
-      is_republished,
-      ...internalModule
-    }) => ({
-      ...indexModuleAbi(snakeToCamel(internalModule)),
-      recentPublishTransaction: recent_publish_transaction
-        ? parseTxHash(recent_publish_transaction)
-        : null,
-      recentPublishProposal: recent_publish_proposal,
-      recentPublishBlockHeight: recent_publish_block_height,
-      recentPublishBlockTimestamp: recent_publish_block_timestamp,
-      isRepublished: is_republished,
-    })
-  );
+  .transform<ModuleData>((val) => ({
+    ...snakeToCamel(val),
+    ...indexModuleAbi(val.abi),
+    recentPublishTransaction: val.recent_publish_transaction
+      ? parseTxHash(val.recent_publish_transaction)
+      : null,
+  }));
 
 export const getModuleData = async (
   endpoint: string,

@@ -1,5 +1,4 @@
 import type { Nullable } from "../common";
-import type { SnakeToCamelCaseNested } from "../converter";
 
 export enum UpgradePolicy {
   ARBITRARY = "ARBITRARY",
@@ -26,16 +25,6 @@ interface ABIFunction {
   argsTypes: string[];
 }
 
-/* response */
-// TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection
-export interface ResponseModule {
-  address: string;
-  module_name: string;
-  abi: string;
-  raw_bytes: string;
-  upgrade_policy: UpgradePolicy;
-}
-
 // TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection
 export interface ResponseABI {
   address: string;
@@ -44,8 +33,6 @@ export interface ResponseABI {
   exposed_functions: ExposedFunction[];
   structs: Struct[];
 }
-
-export type InternalModule = SnakeToCamelCaseNested<ResponseModule>;
 
 export interface ExposedFunction {
   name: string;
