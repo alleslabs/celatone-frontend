@@ -18,6 +18,7 @@ import type {
   ExposedFunction,
   HexAddr,
   IndexedModule,
+  ModuleData,
   Nullable,
   Option,
   ResponseABI,
@@ -27,7 +28,6 @@ import type {
 import { truncate } from "lib/utils";
 
 import type {
-  ModuleDataResponse,
   ModuleHistoriesResponse,
   ModuleRelatedProposalsResponse,
   ModulesResponse,
@@ -268,7 +268,7 @@ export const useModules = (
 export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
   const endpoint = useBaseApiRoute("modules");
 
-  return useQuery<ModuleDataResponse>(
+  return useQuery<ModuleData>(
     [CELATONE_QUERY_KEYS.MODULE_DATA, endpoint, vmAddress, moduleName],
     async () => getModuleData(endpoint, vmAddress, moduleName),
     {

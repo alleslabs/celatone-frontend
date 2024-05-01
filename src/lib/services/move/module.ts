@@ -246,13 +246,12 @@ const zModuleDataResponse = z
       isRepublished: is_republished,
     })
   );
-export type ModuleDataResponse = z.infer<typeof zModuleDataResponse>;
 
 export const getModuleData = async (
   endpoint: string,
   vmAddress: HexAddr,
   moduleName: string
-): Promise<ModuleDataResponse> =>
+): Promise<ModuleData> =>
   axios
     .get(
       `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/info`
