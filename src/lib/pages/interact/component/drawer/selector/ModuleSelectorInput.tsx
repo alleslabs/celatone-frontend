@@ -112,6 +112,7 @@ export const ModuleSelectorInput = ({
       <TextInput
         value={keyword}
         setInputState={setKeyword}
+        isDisabled={isFetching}
         error={error}
         size="md"
         helperText={`ex. “${user}”, “${user}::module_name”, or “${user}::module_name::function_name”`}
