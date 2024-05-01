@@ -11,10 +11,9 @@ import { trackUseModuleSelectionInputFill } from "lib/amplitude";
 import { useExampleAddresses } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
+import { useAccountModules } from "lib/pages/interact/data";
 import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import { useAccountModules } from "lib/services/move/moduleService";
-import type { Option } from "lib/types";
+import type { IndexedModule, Option } from "lib/types";
 import { splitModule } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
@@ -42,31 +41,34 @@ export const ModuleSelectorInput = ({
   );
 
   const formatAddresses = useFormatAddresses();
-  const validateModuleInput = useValidateModuleInput();
-  const { user } = useExampleAddresses();
+  const onSuccessCallback = useCallback(() => {
+    setError("");
+    setSelectedAddress(formatAddresses(addr));
+    setMode("display");
+  }, [addr, formatAddresses, setMode, setSelectedAddress]);
+
   const { refetch, isFetching } = useAccountModules({
     address: addr,
     moduleName,
-    functionName,
-    options: {
-      refetchOnWindowFocus: false,
-      enabled: false,
-      retry: false,
-      onSuccess: (data) => {
-        setError("");
-        setSelectedAddress(formatAddresses(addr));
-        if (Array.isArray(data)) {
-          setModules(data);
-          setMode("display");
-        } else {
-          handleModuleSelect(data, data.searchedFn);
-          closeModal();
-          setMode("display");
-        }
-      },
-      onError: (err) => setError((err as Error).message),
+    onModuleSuccess: (data) => {
+      const searchedFn = functionName
+        ? data.parsedAbi.exposed_functions.find(
+            (fn) => fn.name === functionName
+          )
+        : undefined;
+      handleModuleSelect(data, searchedFn);
+      onSuccessCallback();
+      closeModal();
     },
+    onModulesSuccess: (data) => {
+      setModules(data);
+      onSuccessCallback();
+    },
+    onError: (err) => setError((err as Error).message),
   });
+
+  const validateModuleInput = useValidateModuleInput();
+  const { user } = useExampleAddresses();
 
   const handleSubmit = useCallback(() => {
     trackUseModuleSelectionInputFill(addr, !!moduleName, !!functionName);

@@ -17,18 +17,18 @@ import type {
   Addr,
   ExposedFunction,
   HexAddr,
-  InternalModule,
+  IndexedModule,
   Nullable,
   Option,
   ResponseABI,
   RpcQueryError,
   UpgradePolicy,
 } from "lib/types";
-import { parseJsonABI, splitViewExecuteFunctions, truncate } from "lib/utils";
+import { truncate } from "lib/utils";
 
 import type {
+  ModuleDataResponse,
   ModuleHistoriesResponse,
-  ModuleInfoResponse,
   ModuleRelatedProposalsResponse,
   ModulesResponse,
   ModuleTableCountsResponse,
@@ -38,78 +38,52 @@ import type {
 import {
   decodeModule,
   decodeScript,
-  getAccountModule,
-  getAccountModules,
   getFunctionView,
+  getModuleByAddressLcd,
+  getModuleData,
   getModuleHistories,
-  getModuleInfo,
   getModuleRelatedProposals,
   getModules,
   getModulesByAddress,
+  getModulesByAddressLcd,
   getModuleTableCounts,
   getModuleTxs,
   getModuleVerificationStatus,
 } from "./module";
 
-export interface IndexedModule extends InternalModule {
-  address: HexAddr;
-  parsedAbi: ResponseABI;
-  viewFunctions: ExposedFunction[];
-  executeFunctions: ExposedFunction[];
-  searchedFn: Option<ExposedFunction>;
-}
-
-export const indexModuleResponse = (
-  module: InternalModule,
-  functionName?: string
-): IndexedModule => {
-  const parsedAbi = parseJsonABI<ResponseABI>(module.abi);
-  const { view, execute } = splitViewExecuteFunctions(
-    parsedAbi.exposed_functions
-  );
-  return {
-    ...module,
-    address: module.address as HexAddr,
-    parsedAbi,
-    viewFunctions: view,
-    executeFunctions: execute,
-    searchedFn: parsedAbi.exposed_functions.find(
-      (fn) => fn.name === functionName
-    ),
-  };
-};
-
-export const useAccountModules = ({
+export const useModuleByAddressLcd = ({
   address,
   moduleName,
-  functionName,
   options = {},
 }: {
   address: Addr;
-  moduleName: Option<string>;
-  functionName?: Option<string>;
-  options?: Omit<UseQueryOptions<IndexedModule | IndexedModule[]>, "queryKey">;
-}): UseQueryResult<IndexedModule | IndexedModule[]> => {
+  moduleName: string;
+  options?: Omit<UseQueryOptions<IndexedModule>, "queryKey">;
+}): UseQueryResult => {
   const baseEndpoint = useBaseApiRoute("rest");
-  const queryFn: QueryFunction<IndexedModule | IndexedModule[]> = () =>
-    moduleName
-      ? getAccountModule(baseEndpoint, address, moduleName).then((module) =>
-          indexModuleResponse(module, functionName)
-        )
-      : getAccountModules(baseEndpoint, address).then((modules) =>
-          modules
-            .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
-            .map((module) => indexModuleResponse(module))
-        );
+  const queryFn = () =>
+    getModuleByAddressLcd(baseEndpoint, address, moduleName);
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.ACCOUNT_MODULES,
-      baseEndpoint,
-      address,
-      moduleName,
-      functionName,
-    ],
+  return useQuery<IndexedModule>(
+    [CELATONE_QUERY_KEYS.ACCOUNT_MODULE, baseEndpoint, address, moduleName],
+    queryFn,
+    options
+  );
+};
+
+export const useModulesByAddressLcd = ({
+  address,
+
+  options = {},
+}: {
+  address: Addr;
+  options?: Omit<UseQueryOptions<IndexedModule[]>, "queryKey">;
+}) => {
+  const baseEndpoint = useBaseApiRoute("rest");
+  const queryFn = () => getModulesByAddressLcd(baseEndpoint, address);
+
+  return useQuery<IndexedModule[]>(
+    [CELATONE_QUERY_KEYS.ACCOUNT_MODULES, baseEndpoint, address],
     queryFn,
     options
   );
@@ -123,9 +97,7 @@ export const useModulesByAddress = (address: Option<Addr>) => {
     [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, endpoint, address],
     async () => {
       if (!address) throw new Error("address is undefined");
-      return getModulesByAddress(endpoint, address).then((modules) =>
-        modules.items.map((module) => indexModuleResponse(module))
-      );
+      return getModulesByAddress(endpoint, address);
     },
     {
       enabled,
@@ -218,7 +190,7 @@ export const useDecodeModule = ({
     const abi = await decodeModule(move.decodeApi, base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
-    const currentPolicy = await getAccountModule(
+    const currentPolicy = await getModuleByAddressLcd(
       baseEndpoint,
       abi.address as HexAddr,
       abi.name
@@ -293,12 +265,12 @@ export const useModules = (
   );
 };
 
-export const useModuleInfo = (vmAddress: HexAddr, moduleName: string) => {
+export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
   const endpoint = useBaseApiRoute("modules");
 
-  return useQuery<ModuleInfoResponse>(
-    [CELATONE_QUERY_KEYS.MODULE_INFO, endpoint, vmAddress, moduleName],
-    async () => getModuleInfo(endpoint, vmAddress, moduleName),
+  return useQuery<ModuleDataResponse>(
+    [CELATONE_QUERY_KEYS.MODULE_DATA, endpoint, vmAddress, moduleName],
+    async () => getModuleData(endpoint, vmAddress, moduleName),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -307,8 +279,8 @@ export const useModuleInfo = (vmAddress: HexAddr, moduleName: string) => {
 };
 
 export const useModuleTableCounts = (
-  moduleName: string,
-  vmAddress: HexAddr
+  vmAddress: HexAddr,
+  moduleName: string
 ) => {
   const endpoint = useBaseApiRoute("modules");
 

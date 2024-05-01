@@ -5,13 +5,9 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CountBadge } from "lib/components/module";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { ModuleInfo } from "lib/types";
-import {
-  bech32AddressToHex,
-  dateFromNow,
-  formatUTC,
-  unpadHexAddress,
-} from "lib/utils";
+import { dateFromNow, formatUTC } from "lib/utils";
 
 import { ModulePathLink } from "./ModulePathLink";
 
@@ -27,7 +23,8 @@ export const ModulesTableRow = ({
   isPublishedModules,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
-  const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));
+  const formatAddresses = useFormatAddresses();
+  const { address } = formatAddresses(moduleInfo.address);
 
   return (
     <Box w="full" minW="min-content">
@@ -41,37 +38,39 @@ export const ModulesTableRow = ({
           navigate({
             pathname: "/modules/[address]/[moduleName]",
             query: {
-              address: hex,
-              moduleName: moduleInfo.name,
+              address: moduleInfo.address,
+              moduleName: moduleInfo.moduleName,
             },
           })
         }
       >
         <TableRow>
-          <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
+          <ModulePathLink
+            hexAddr={moduleInfo.address}
+            moduleName={moduleInfo.moduleName}
+          />
         </TableRow>
         {isPublishedModules && (
           <TableRow>
-            <Text>{moduleInfo.name}</Text>
+            <Text>{moduleInfo.moduleName}</Text>
           </TableRow>
         )}
         {isPublishedModules && (
           <TableRow>
             <Flex gap={1} justifyContent="center" w="full">
-              <CountBadge count={moduleInfo.functions?.view} variant="view" />
               <CountBadge
-                count={moduleInfo.functions?.execute}
+                count={moduleInfo.viewFunctions?.length}
+                variant="view"
+              />
+              <CountBadge
+                count={moduleInfo.executeFunctions?.length}
                 variant="execute"
               />
             </Flex>
           </TableRow>
         )}
         <TableRow>
-          <ExplorerLink
-            value={moduleInfo.address}
-            type="user_address"
-            showCopyOnHover
-          />
+          <ExplorerLink value={address} type="user_address" showCopyOnHover />
         </TableRow>
         {!isPublishedModules && moduleInfo.latestUpdated && (
           <TableRow>
@@ -94,8 +93,8 @@ export const ModulesTableRow = ({
                 navigate({
                   pathname: "/interact",
                   query: {
-                    address: hex,
-                    moduleName: moduleInfo.name,
+                    address: moduleInfo.address,
+                    moduleName: moduleInfo.moduleName,
                     functionType: "view",
                   },
                 });
@@ -112,8 +111,8 @@ export const ModulesTableRow = ({
                 navigate({
                   pathname: "/interact",
                   query: {
-                    address: hex,
-                    moduleName: moduleInfo.name,
+                    address: moduleInfo.address,
+                    moduleName: moduleInfo.moduleName,
                     functionType: "execute",
                   },
                 });

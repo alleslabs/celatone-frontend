@@ -1,6 +1,5 @@
 import type { Nullable } from "../common";
 import type { SnakeToCamelCaseNested } from "../converter";
-import type { Pagination } from "../rest";
 
 export enum UpgradePolicy {
   ARBITRARY = "ARBITRARY",
@@ -35,11 +34,6 @@ export interface ResponseModule {
   abi: string;
   raw_bytes: string;
   upgrade_policy: UpgradePolicy;
-}
-
-export interface ResponseModules {
-  modules: ResponseModule[];
-  pagination: Pagination;
 }
 
 // TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection

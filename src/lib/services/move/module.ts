@@ -8,29 +8,55 @@ import type {
   Addr,
   ExposedFunction,
   HexAddr,
+  IndexedModule,
   InternalModule,
+  ModuleData,
   ModuleInfo,
   Nullable,
   ResponseABI,
   ResponseModule,
-  ResponseModules,
   SnakeToCamelCaseNested,
 } from "lib/types";
-import {
-  UpgradePolicy,
-  zBechAddr,
-  zHexAddr,
-  zRemark,
-  zUtcDate,
-} from "lib/types";
+import { UpgradePolicy, zHexAddr, zRemark, zUtcDate } from "lib/types";
+import type { Pagination } from "lib/types/rest";
 import {
   libDecode,
   parseJsonABI,
-  parseTxHashOpt,
+  parseTxHash,
   parseWithError,
   serializeAbiData,
   snakeToCamel,
+  splitViewExecuteFunctions,
 } from "lib/utils";
+
+const indexModuleAbi = (module: InternalModule): IndexedModule => {
+  const parsedAbi = parseJsonABI<ResponseABI>(module.abi);
+  const { view, execute } = splitViewExecuteFunctions(
+    parsedAbi.exposed_functions
+  );
+  return {
+    ...module,
+    address: module.address as HexAddr,
+    parsedAbi,
+    viewFunctions: view,
+    executeFunctions: execute,
+  };
+};
+
+interface ModuleReturn {
+  module: ResponseModule;
+}
+
+export const getModuleByAddressLcd = async (
+  baseEndpoint: string,
+  address: Addr,
+  moduleName: string
+): Promise<IndexedModule> => {
+  const { data } = await axios.get<ModuleReturn>(
+    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}`
+  );
+  return indexModuleAbi(snakeToCamel(data.module));
+};
 
 const zAccountModulesResponseItem = z
   .object({
@@ -40,7 +66,7 @@ const zAccountModulesResponseItem = z
     raw_bytes: z.string(),
     upgrade_policy: z.nativeEnum(UpgradePolicy),
   })
-  .transform(snakeToCamel);
+  .transform((val) => indexModuleAbi(snakeToCamel(val)));
 
 const zAccountModulesResponse = z.object({
   items: z.array(zAccountModulesResponseItem),
@@ -56,14 +82,19 @@ export const getModulesByAddress = async (
     .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
     .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
-export const getAccountModules = async (
+interface ModulesReturn {
+  modules: ResponseModule[];
+  pagination: Pagination;
+}
+
+export const getModulesByAddressLcd = async (
   baseEndpoint: string,
   address: Addr
-): Promise<InternalModule[]> => {
+): Promise<IndexedModule[]> => {
   const result: ResponseModule[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
-    const { data } = await axios.get<ResponseModules>(
+    const { data } = await axios.get<ModulesReturn>(
       `${baseEndpoint}/initia/move/v1/accounts/${address}/modules${
         paginationKey ? `?pagination.key=${paginationKey}` : ""
       }`
@@ -74,22 +105,9 @@ export const getAccountModules = async (
 
   await fetchFn(null);
 
-  return snakeToCamel(result);
-};
-
-interface ModuleReturn {
-  module: ResponseModule;
-}
-
-export const getAccountModule = async (
-  baseEndpoint: string,
-  address: Addr,
-  moduleName: string
-): Promise<InternalModule> => {
-  const { data } = await axios.get<ModuleReturn>(
-    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}`
-  );
-  return snakeToCamel(data.module);
+  return snakeToCamel(result)
+    .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
+    .map((module) => indexModuleAbi(module));
 };
 
 interface ModuleVerificationReturn {
@@ -165,21 +183,14 @@ export const decodeScript = async (
 
 const zModulesResponseItem = z
   .object({
-    address: zBechAddr,
-    name: z.string(),
+    address: zHexAddr,
+    module_name: z.string(),
     height: z.number(),
     latest_updated: zUtcDate,
     is_republished: z.boolean(),
     is_verified: z.boolean(),
   })
-  .transform<ModuleInfo>((val) => ({
-    address: val.address,
-    name: val.name,
-    height: val.height,
-    latestUpdated: val.latest_updated,
-    isRepublished: val.is_republished,
-    isVerified: val.is_verified,
-  }));
+  .transform<ModuleInfo>(snakeToCamel);
 
 const zModulesResponse = z.object({
   items: z.array(zModulesResponseItem),
@@ -201,7 +212,7 @@ export const getModules = async (
     })
     .then(({ data }) => parseWithError(zModulesResponse, data));
 
-const zModuleInfoResponse = z
+const zModuleDataResponse = z
   .object({
     abi: z.string(),
     address: zHexAddr,
@@ -212,28 +223,41 @@ const zModuleInfoResponse = z
     recent_publish_proposal: zProposal
       .pick({ id: true, title: true })
       .nullable(),
-    is_republished: z.boolean(),
     recent_publish_block_height: z.number().nonnegative(),
     recent_publish_block_timestamp: zUtcDate,
+    is_republished: z.boolean(),
   })
-  .transform((val) => ({
-    ...snakeToCamel(val),
-    recentPublishTransaction: parseTxHashOpt(
-      val.recent_publish_transaction ?? undefined
-    ),
-  }));
-export type ModuleInfoResponse = z.infer<typeof zModuleInfoResponse>;
+  .transform<ModuleData>(
+    ({
+      recent_publish_transaction,
+      recent_publish_proposal,
+      recent_publish_block_height,
+      recent_publish_block_timestamp,
+      is_republished,
+      ...internalModule
+    }) => ({
+      ...indexModuleAbi(snakeToCamel(internalModule)),
+      recentPublishTransaction: recent_publish_transaction
+        ? parseTxHash(recent_publish_transaction)
+        : null,
+      recentPublishProposal: recent_publish_proposal,
+      recentPublishBlockHeight: recent_publish_block_height,
+      recentPublishBlockTimestamp: recent_publish_block_timestamp,
+      isRepublished: is_republished,
+    })
+  );
+export type ModuleDataResponse = z.infer<typeof zModuleDataResponse>;
 
-export const getModuleInfo = async (
+export const getModuleData = async (
   endpoint: string,
   vmAddress: HexAddr,
   moduleName: string
-): Promise<ModuleInfoResponse> =>
+): Promise<ModuleDataResponse> =>
   axios
     .get(
       `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/info`
     )
-    .then(({ data }) => parseWithError(zModuleInfoResponse, data));
+    .then(({ data }) => parseWithError(zModuleDataResponse, data));
 
 const zModuleTableCountsResponse = z.object({
   txs: z.number().nonnegative().nullable(),
