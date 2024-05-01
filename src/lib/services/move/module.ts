@@ -50,7 +50,7 @@ export const getModuleByAddressLcd = async (
 ): Promise<IndexedModule> =>
   axios
     .get(
-      `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}`
+      `${baseEndpoint}/initia/move/v1/accounts/${encodeURIComponent(address)}/modules/${encodeURIComponent(moduleName)}`
     )
     .then(({ data }) => parseWithError(zModuleLcdReturn, data).module);
 
