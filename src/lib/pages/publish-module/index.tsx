@@ -11,7 +11,7 @@ import { PublishModule } from "./publish";
 const DEFAULT_STATE: PublishCompleteState = {
   txHash: "",
   txFee: undefined,
-  upgradePolicy: UpgradePolicy.ARBITRARY,
+  upgradePolicy: UpgradePolicy.UNSPECIFIED,
   modules: [],
 };
 export interface PublishCompleteState extends PublishTxInternalResult {

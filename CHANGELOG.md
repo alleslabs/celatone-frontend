@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
 - [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
 

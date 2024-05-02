@@ -51,7 +51,6 @@ export const statusResolver = ({
     // Policy check
     // IMMUTABLE -> cannot be republished
     // COMPATIBLE -> can be republished as COMPATIBLE and IMMUTABLE only
-    // ARBITRARY -> can be freely republished
     case UpgradePolicy.IMMUTABLE:
       return {
         status: "error",
