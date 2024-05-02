@@ -1,3 +1,4 @@
+import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
 
 export type Visibility = "public" | "friend" | "private" | "script";
@@ -18,9 +19,8 @@ export type Visibility = "public" | "friend" | "private" | "script";
 //   argsTypes: string[];
 // }
 
-// TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection
 export interface ResponseABI {
-  address: string;
+  address: HexAddr;
   name: string;
   friends: string[];
   exposed_functions: ExposedFunction[];
