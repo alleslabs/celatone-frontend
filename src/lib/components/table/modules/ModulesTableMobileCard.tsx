@@ -4,6 +4,7 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { ModuleInfo } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -17,6 +18,8 @@ export const ModulesTableMobileCard = ({
   moduleInfo,
 }: ModulesTableMobileCardProps) => {
   const navigate = useInternalNavigate();
+  const formatAddresses = useFormatAddresses();
+  const { address: creator } = formatAddresses(moduleInfo.address);
 
   return (
     <MobileCardTemplate
@@ -41,12 +44,8 @@ export const ModulesTableMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel label="owner" />
-            <ExplorerLink
-              value={moduleInfo.address}
-              type="user_address"
-              showCopyOnHover
-            />
+            <MobileLabel label="creator" />
+            <ExplorerLink value={creator} type="user_address" showCopyOnHover />
           </Flex>
           {moduleInfo.latestUpdated && (
             <Flex direction="column">

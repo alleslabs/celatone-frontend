@@ -24,7 +24,7 @@ export const ModulesTableRow = ({
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
-  const { address } = formatAddresses(moduleInfo.address);
+  const { address: creator } = formatAddresses(moduleInfo.address);
 
   return (
     <Box w="full" minW="min-content">
@@ -70,7 +70,7 @@ export const ModulesTableRow = ({
           </TableRow>
         )}
         <TableRow>
-          <ExplorerLink value={address} type="user_address" showCopyOnHover />
+          <ExplorerLink value={creator} type="user_address" showCopyOnHover />
         </TableRow>
         {!isPublishedModules && moduleInfo.latestUpdated && (
           <TableRow>
