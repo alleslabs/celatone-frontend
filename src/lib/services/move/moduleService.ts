@@ -21,7 +21,7 @@ import type {
   ModuleData,
   Nullable,
   Option,
-  ResponseABI,
+  ResponseAbi,
   RpcQueryError,
   UpgradePolicy,
 } from "lib/types";
@@ -170,7 +170,7 @@ export const useFunctionView = ({
   );
 };
 export interface DecodeModuleQueryResponse {
-  abi: ResponseABI;
+  abi: ResponseAbi;
   modulePath: string;
   currentPolicy: Option<UpgradePolicy>;
 }

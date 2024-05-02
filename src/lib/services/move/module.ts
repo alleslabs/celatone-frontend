@@ -12,7 +12,7 @@ import type {
   ModuleData,
   ModuleInfo,
   Nullable,
-  ResponseABI,
+  ResponseAbi,
 } from "lib/types";
 import { UpgradePolicy, zHexAddr, zRemark, zUtcDate } from "lib/types";
 import { zPagination } from "lib/types/rest";
@@ -143,12 +143,12 @@ interface DecodeModuleReturn {
 export const decodeModule = async (
   decodeAPI: string,
   moduleEncode: string
-): Promise<ResponseABI> =>
+): Promise<ResponseAbi> =>
   axios
     .post<DecodeModuleReturn>(decodeAPI, {
       code_bytes: moduleEncode,
     })
-    .then(({ data }) => parseJsonABI<ResponseABI>(libDecode(data.abi)));
+    .then(({ data }) => parseJsonABI<ResponseAbi>(libDecode(data.abi)));
 
 export const decodeScript = async (
   decodeAPI: string,

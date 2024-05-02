@@ -4,7 +4,7 @@ import type {
   AbiFormData,
   ExposedFunction,
   Nullable,
-  ResponseABI,
+  ResponseAbi,
 } from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
@@ -50,7 +50,7 @@ const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
 };
 
 export const indexModuleAbi = (abi: string) => {
-  const parsedAbi = parseJsonABI<ResponseABI>(abi);
+  const parsedAbi = parseJsonABI<ResponseAbi>(abi);
   const { view, execute } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
   );

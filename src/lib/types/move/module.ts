@@ -2,7 +2,7 @@ import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
 import type { Proposal } from "../proposal";
 
-import type { ExposedFunction, ResponseABI } from "./abi";
+import type { ExposedFunction, ResponseAbi } from "./abi";
 
 export enum UpgradePolicy {
   ARBITRARY = "ARBITRARY",
@@ -17,7 +17,7 @@ export interface IndexedModule {
   abi: string;
   rawBytes: string;
   upgradePolicy: UpgradePolicy;
-  parsedAbi: ResponseABI;
+  parsedAbi: ResponseAbi;
   viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];
 }
