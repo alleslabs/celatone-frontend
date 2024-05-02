@@ -27,8 +27,8 @@ import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData } from "./proposalService";
-import { useTxData } from "./txService";
 import { useValidatorData } from "./validatorService";
+import { useTxData } from "./wasm/txs";
 
 export type SearchResultType =
   | "Code ID"

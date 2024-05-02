@@ -5,7 +5,7 @@ import type { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
-import { useTxData } from "lib/services/txService";
+import { useTxData } from "lib/services/wasm/txs";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
 

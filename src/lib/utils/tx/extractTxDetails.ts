@@ -2,7 +2,7 @@ import type { Log } from "@cosmjs/stargate/build/logs";
 import { snakeCase } from "snake-case";
 
 import type { TypeUrl } from "lib/data";
-import type { MsgBody } from "lib/services/tx";
+import type { MsgBody } from "lib/services/wasm/txs";
 import type { Option } from "lib/types";
 
 import { findAttr } from "./findAttr";

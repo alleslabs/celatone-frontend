@@ -2,7 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, TransactionsTable } from "lib/components/table";
-import { useTxsByBlockHeight } from "lib/services/txService";
+import { useTxsByBlockHeight } from "lib/services/wasm/txs";
 
 const scrollComponentId = "block_tx_table_header";
 

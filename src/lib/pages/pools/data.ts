@@ -7,7 +7,7 @@ import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
 import {
   useTxsByPoolIdPagination,
   useTxsCountByPoolId,
-} from "lib/services/txService";
+} from "lib/services/wasm/txs";
 import { big } from "lib/types";
 import type {
   Option,
