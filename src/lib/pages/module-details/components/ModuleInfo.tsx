@@ -16,7 +16,7 @@ import { ModuleInfoBody } from "./ModuleInfoBody";
 export interface ModuleInfoProps {
   vmAddress: HexAddr;
   upgradePolicy: UpgradePolicy;
-  transaction: Option<string>;
+  transaction: Nullable<string>;
   proposal: Nullable<Pick<Proposal, "id" | "title">>;
   isRepublished: boolean;
   blockHeight: number;

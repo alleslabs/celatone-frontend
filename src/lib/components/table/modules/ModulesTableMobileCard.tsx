@@ -4,13 +4,9 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { ModuleInfo } from "lib/types";
-import {
-  bech32AddressToHex,
-  dateFromNow,
-  formatUTC,
-  unpadHexAddress,
-} from "lib/utils";
+import { dateFromNow, formatUTC } from "lib/utils";
 
 import { ModulePathLink } from "./ModulePathLink";
 
@@ -22,32 +18,36 @@ export const ModulesTableMobileCard = ({
   moduleInfo,
 }: ModulesTableMobileCardProps) => {
   const navigate = useInternalNavigate();
+  const formatAddresses = useFormatAddresses();
+  const { address: creator } = formatAddresses(moduleInfo.address);
 
-  const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));
   return (
     <MobileCardTemplate
       onClick={() =>
         navigate({
           pathname: "/modules/[address]/[moduleName]",
           query: {
-            address: hex,
-            moduleName: moduleInfo.name,
+            address: moduleInfo.address,
+            moduleName: moduleInfo.moduleName,
           },
         })
       }
       topContent={
         <Flex direction="column">
           <MobileLabel label="Module Path" />
-          <ModulePathLink hexAddr={hex} moduleName={moduleInfo.name} />
+          <ModulePathLink
+            hexAddr={moduleInfo.address}
+            moduleName={moduleInfo.moduleName}
+          />
         </Flex>
       }
       middleContent={
         <Flex direction="column" gap={3}>
           <Grid templateColumns="repeat(2, 1fr)">
             <Flex direction="column">
-              <MobileLabel label="owner" />
+              <MobileLabel label="creator" />
               <ExplorerLink
-                value={moduleInfo.address}
+                value={creator}
                 type="user_address"
                 showCopyOnHover
               />

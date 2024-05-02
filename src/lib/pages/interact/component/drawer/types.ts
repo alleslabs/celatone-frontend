@@ -1,5 +1,9 @@
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { BechAddr, ExposedFunction, HexAddr } from "lib/types";
+import type {
+  BechAddr,
+  ExposedFunction,
+  HexAddr,
+  IndexedModule,
+} from "lib/types";
 
 export interface SelectedAddress {
   address: BechAddr;

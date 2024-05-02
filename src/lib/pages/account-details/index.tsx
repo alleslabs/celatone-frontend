@@ -236,8 +236,8 @@ const AccountDetailsBody = ({
             Resources
           </CustomTab>
           <CustomTab
-            count={modulesData?.length}
-            isDisabled={modulesData?.length === 0}
+            count={modulesData?.total}
+            isDisabled={modulesData?.total === 0}
             onClick={handleTabChange(TabIndex.Modules, undefined)}
             isLoading={isModulesLoading}
             hidden={!move.enabled}
@@ -383,8 +383,8 @@ const AccountDetailsBody = ({
                 />
                 <ModuleLists
                   address={accountAddress}
-                  totalCount={modulesData?.length}
-                  modules={modulesData}
+                  totalCount={modulesData?.total}
+                  modules={modulesData?.items}
                   isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules, undefined)}
                 />
@@ -499,8 +499,8 @@ const AccountDetailsBody = ({
           <TabPanel p={0}>
             <ModuleLists
               address={accountAddress}
-              totalCount={modulesData?.length}
-              modules={modulesData}
+              totalCount={modulesData?.total}
+              modules={modulesData?.items}
               isLoading={isModulesLoading}
             />
             <UserDocsLink

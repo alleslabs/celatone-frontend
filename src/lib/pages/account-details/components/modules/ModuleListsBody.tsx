@@ -4,8 +4,7 @@ import { useMemo } from "react";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { BechAddr, Option } from "lib/types";
+import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
   address: BechAddr;
