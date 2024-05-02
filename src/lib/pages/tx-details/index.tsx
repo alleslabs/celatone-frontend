@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { useTxData } from "lib/services/wasm/txs";
+import { useTxData, useTxDataLcd } from "lib/services/wasm/txs";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
@@ -18,14 +18,15 @@ const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
   const isMobile = useMobile();
-  const {
-    data: txData,
-    isLoading: txLoading,
-    isFetching: txFetching,
-  } = useTxData(hashParam);
+  const tier = useTierConfig();
+
+  const txData = useTxData(hashParam, tier === "full");
+  const txDataLcd = useTxDataLcd(hashParam, tier === "lite");
+
+  const { data, isLoading, isFetched } = tier === "full" ? txData : txDataLcd;
 
   useEffect(() => {
-    if (router.isReady && !(txLoading && txFetching)) {
+    if (router.isReady && !(isLoading && isFetched)) {
       const mapTxFailed = {
         true: "fail",
         false: "success",
@@ -33,28 +34,28 @@ const TxDetails = () => {
       };
       track(AmpEvent.TO_TRANSACTION_DETAILS, {
         tx_status:
-          mapTxFailed[String(txData?.isTxFailed) as keyof typeof mapTxFailed],
+          mapTxFailed[String(data?.isTxFailed) as keyof typeof mapTxFailed],
       });
     }
-  }, [router.isReady, txData, txLoading, txFetching]);
+  }, [router.isReady, data, isLoading, isFetched]);
 
-  if ((txLoading && txFetching) || !hashParam) return <Loading withBorder />;
+  if ((isLoading && isFetched) || !hashParam) return <Loading withBorder />;
 
   return (
     <PageContainer>
       <Breadcrumb
         items={[
           { text: "Transactions", href: "/txs" },
-          { text: truncate(txData?.txhash) },
+          { text: truncate(data?.txhash) },
         ]}
       />
-      {txData ? (
+      {data ? (
         <>
-          <TxHeader mt={2} txData={txData} />
-          {isMobile && <TxInfoMobile txData={txData} />}
+          <TxHeader mt={2} txData={data} />
+          {isMobile && <TxInfoMobile txData={data} />}
           <Flex my={{ base: 0, md: 12 }} justify="space-between">
-            {!isMobile && <TxInfo txData={txData} />}
-            <MessageSection txData={txData} />
+            {!isMobile && <TxInfo txData={data} />}
+            <MessageSection txData={data} />
           </Flex>
         </>
       ) : (

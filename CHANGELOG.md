@@ -40,11 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
+- [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
 - [#903](https://github.com/alleslabs/celatone-frontend/pull/903) Prevent list pages in lite version
 - [#897](https://github.com/alleslabs/celatone-frontend/pull/897) Add config for lite version support
 
 ### Improvements
 
+- [#905](https://github.com/alleslabs/celatone-frontend/pull/905) Refactor module related component for better readability
 - [#900](https://github.com/alleslabs/celatone-frontend/pull/900) Refactor module details info
 - [#899](https://github.com/alleslabs/celatone-frontend/pull/899) Refactor module details APIs
 - [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
