@@ -1,29 +1,22 @@
 import type { Nullable } from "../common";
 
-export enum UpgradePolicy {
-  ARBITRARY = "ARBITRARY",
-  COMPATIBLE = "COMPATIBLE",
-  IMMUTABLE = "IMMUTABLE",
-}
-
 export type Visibility = "public" | "friend" | "private" | "script";
 
-// TODO: revisit address type later
-export interface ABIModule {
-  address: string;
-  name: string;
-  functions: ABIFunction[];
-}
-
-// TODO: revisit moduleAddress type later
-interface ABIFunction {
-  method: "query" | "tx";
-  moduleAddress: string;
-  moduleName: string;
-  functionName: string;
-  typeArgsLength: number;
-  argsTypes: string[];
-}
+// NOTE: not used, but keeping it just in case for now
+// export interface ABIModule {
+//   address: string; // revisit type
+//   name: string;
+//   functions: ABIFunction[];
+// }
+//
+// interface ABIFunction {
+//   method: "query" | "tx";
+//   moduleAddress: string; // revisit type
+//   moduleName: string;
+//   functionName: string;
+//   typeArgsLength: number;
+//   argsTypes: string[];
+// }
 
 // TODO: change address type to HexAddr after figuring out how to correctly infer NominalType intersection
 export interface ResponseABI {

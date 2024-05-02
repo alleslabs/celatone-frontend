@@ -2,7 +2,13 @@ import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
 import type { Proposal } from "../proposal";
 
-import type { ExposedFunction, ResponseABI, UpgradePolicy } from "./abi";
+import type { ExposedFunction, ResponseABI } from "./abi";
+
+export enum UpgradePolicy {
+  ARBITRARY = "ARBITRARY",
+  COMPATIBLE = "COMPATIBLE",
+  IMMUTABLE = "IMMUTABLE",
+}
 
 export interface IndexedModule {
   // NOTE: can also be an ica or a contract
