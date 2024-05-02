@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Tag, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { AmpEvent, track } from "lib/amplitude";
@@ -51,36 +51,53 @@ export const ModulesTableRow = ({
           />
         </TableRow>
         {isPublishedModules && (
-          <TableRow>
-            <Text>{moduleInfo.moduleName}</Text>
-          </TableRow>
-        )}
-        {isPublishedModules && (
-          <TableRow>
-            <Flex gap={1} justifyContent="center" w="full">
-              <CountBadge
-                count={moduleInfo.viewFunctions?.length}
-                variant="view"
-              />
-              <CountBadge
-                count={moduleInfo.executeFunctions?.length}
-                variant="execute"
-              />
-            </Flex>
-          </TableRow>
+          <>
+            <TableRow>
+              <Text>{moduleInfo.moduleName}</Text>
+            </TableRow>
+            <TableRow>
+              <Flex gap={1} justifyContent="center" w="full">
+                <CountBadge
+                  count={moduleInfo.viewFunctions?.length}
+                  variant="view"
+                />
+                <CountBadge
+                  count={moduleInfo.executeFunctions?.length}
+                  variant="execute"
+                />
+              </Flex>
+            </TableRow>
+          </>
         )}
         <TableRow>
           <ExplorerLink value={creator} type="user_address" showCopyOnHover />
         </TableRow>
-        {!isPublishedModules && moduleInfo.latestUpdated && (
-          <TableRow>
-            <Flex direction="column" gap={1}>
-              <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
-              <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(moduleInfo.latestUpdated)})`}
-              </Text>
-            </Flex>
-          </TableRow>
+        {!isPublishedModules && (
+          <>
+            <TableRow>
+              <Tag
+                variant={moduleInfo.isRepublished ? "primary-light" : "gray"}
+              >
+                {moduleInfo.isRepublished ? "Republish" : "Publish"}
+              </Tag>
+            </TableRow>
+            <TableRow>
+              <Flex direction="column" gap={1}>
+                {moduleInfo.latestUpdated ? (
+                  <>
+                    <Text variant="body3">
+                      {formatUTC(moduleInfo.latestUpdated)}
+                    </Text>
+                    <Text variant="body3" color="text.dark">
+                      {`(${dateFromNow(moduleInfo.latestUpdated)})`}
+                    </Text>
+                  </>
+                ) : (
+                  <Text variant="body3">N/A</Text>
+                )}
+              </Flex>
+            </TableRow>
+          </>
         )}
         <TableRow>
           <Flex gap="8px" w="full" justifyContent="end">
