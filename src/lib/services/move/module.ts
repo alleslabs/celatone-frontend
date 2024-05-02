@@ -226,8 +226,8 @@ export type ModuleInfoResponse = z.infer<typeof zModuleInfoResponse>;
 
 export const getModuleInfo = async (
   endpoint: string,
-  moduleName: string,
-  vmAddress: HexAddr
+  vmAddress: HexAddr,
+  moduleName: string
 ): Promise<ModuleInfoResponse> =>
   axios
     .get(
@@ -246,8 +246,8 @@ export type ModuleTableCountsResponse = z.infer<
 
 export const getModuleTableCounts = async (
   endpoint: string,
-  moduleName: string,
-  vmAddress: HexAddr
+  vmAddress: HexAddr,
+  moduleName: string
 ): Promise<ModuleTableCountsResponse> =>
   axios
     .get(
@@ -263,7 +263,7 @@ export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
 
 export const getModuleTxs = async (
   endpoint: string,
-  address: HexAddr,
+  vmAddress: HexAddr,
   moduleName: string,
   limit: number,
   offset: number,
@@ -271,7 +271,7 @@ export const getModuleTxs = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}/txs`,
+      `${endpoint}/modules/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/txs`,
       {
         params: {
           limit,
@@ -286,7 +286,7 @@ const zModuleHistory = z
   .object({
     remark: zRemark,
     upgrade_policy: z.nativeEnum(UpgradePolicy),
-    height: z.number(),
+    height: z.number().nonnegative(),
     timestamp: zUtcDate,
     previous_policy: z.nativeEnum(UpgradePolicy).nullable(),
   })
@@ -301,14 +301,14 @@ export type ModuleHistoriesResponse = z.infer<typeof zModuleHistoriesResponse>;
 
 export const getModuleHistories = async (
   endpoint: string,
-  address: HexAddr,
+  vmAddress: HexAddr,
   moduleName: string,
   limit: number,
   offset: number
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}/histories`,
+      `${endpoint}/modules/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/histories`,
       {
         params: {
           limit,
@@ -328,14 +328,14 @@ export type ModuleRelatedProposalsResponse = z.infer<
 
 export const getModuleRelatedProposals = async (
   endpoint: string,
-  address: HexAddr,
+  vmAddress: HexAddr,
   moduleName: string,
   limit: number,
   offset: number
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}/related-proposals`,
+      `${endpoint}/modules/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/related-proposals`,
       {
         params: {
           limit,

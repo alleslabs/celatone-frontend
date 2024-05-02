@@ -293,12 +293,12 @@ export const useModules = (
   );
 };
 
-export const useModuleInfo = (moduleName: string, vmAddress: HexAddr) => {
+export const useModuleInfo = (vmAddress: HexAddr, moduleName: string) => {
   const endpoint = useBaseApiRoute("modules");
 
   return useQuery<ModuleInfoResponse>(
-    [CELATONE_QUERY_KEYS.MODULE_INFO, endpoint, moduleName, vmAddress],
-    async () => getModuleInfo(endpoint, moduleName, vmAddress),
+    [CELATONE_QUERY_KEYS.MODULE_INFO, endpoint, vmAddress, moduleName],
+    async () => getModuleInfo(endpoint, vmAddress, moduleName),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -313,8 +313,8 @@ export const useModuleTableCounts = (
   const endpoint = useBaseApiRoute("modules");
 
   return useQuery<ModuleTableCountsResponse>(
-    [CELATONE_QUERY_KEYS.MODULE_TABLE_COUNTS, endpoint, moduleName, vmAddress],
-    async () => getModuleTableCounts(endpoint, moduleName, vmAddress),
+    [CELATONE_QUERY_KEYS.MODULE_TABLE_COUNTS, endpoint, vmAddress, moduleName],
+    async () => getModuleTableCounts(endpoint, vmAddress, moduleName),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -323,10 +323,10 @@ export const useModuleTableCounts = (
 };
 
 export const useModuleTxs = (
-  address: HexAddr,
+  vmAddress: HexAddr,
   moduleName: string,
-  offset: number,
   limit: number,
+  offset: number,
   options: Pick<UseQueryOptions<ModuleTxsResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("move");
@@ -336,23 +336,23 @@ export const useModuleTxs = (
     [
       CELATONE_QUERY_KEYS.MODULE_TXS,
       endpoint,
-      address,
+      vmAddress,
       moduleName,
       limit,
       offset,
       isInitia,
     ],
     async () =>
-      getModuleTxs(endpoint, address, moduleName, limit, offset, isInitia),
+      getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
     { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
 export const useModuleHistories = (
-  address: HexAddr,
+  vmAddress: HexAddr,
   moduleName: string,
-  offset: number,
   limit: number,
+  offset: number,
   options: Pick<UseQueryOptions<ModuleHistoriesResponse>, "onSuccess"> = {}
 ): UseQueryResult<ModuleHistoriesResponse> => {
   const endpoint = useBaseApiRoute("move");
@@ -361,22 +361,22 @@ export const useModuleHistories = (
     [
       CELATONE_QUERY_KEYS.MODULE_HISTORIES,
       endpoint,
-      address,
+      vmAddress,
       moduleName,
-      offset,
       limit,
+      offset,
     ],
     async () =>
-      getModuleHistories(endpoint, address, moduleName, limit, offset),
+      getModuleHistories(endpoint, vmAddress, moduleName, limit, offset),
     { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
 export const useModuleRelatedProposals = (
-  address: HexAddr,
+  vmAddress: HexAddr,
   moduleName: string,
-  offset: number,
   limit: number,
+  offset: number,
   options: Pick<
     UseQueryOptions<ModuleRelatedProposalsResponse>,
     "onSuccess"
@@ -388,13 +388,13 @@ export const useModuleRelatedProposals = (
     [
       CELATONE_QUERY_KEYS.MODULE_PROPOSALS,
       endpoint,
-      address,
+      vmAddress,
       moduleName,
-      offset,
       limit,
+      offset,
     ],
     async () =>
-      getModuleRelatedProposals(endpoint, address, moduleName, limit, offset),
+      getModuleRelatedProposals(endpoint, vmAddress, moduleName, limit, offset),
     { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };

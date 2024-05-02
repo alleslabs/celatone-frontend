@@ -1,10 +1,11 @@
-import { useNftConfig } from "lib/app-provider";
+import { useNftConfig, useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 
 import { Collections } from "./components/Collections";
 
 const NftCollections = () => {
+  useTierConfig({ minTier: "full" });
   useNftConfig({ shouldRedirect: true });
   return (
     <PageContainer>

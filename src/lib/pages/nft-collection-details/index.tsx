@@ -13,7 +13,11 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useMobile,
+  useTierConfig,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -275,6 +279,7 @@ const CollectionDetailsBody = ({
 };
 
 const CollectionDetails = () => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 

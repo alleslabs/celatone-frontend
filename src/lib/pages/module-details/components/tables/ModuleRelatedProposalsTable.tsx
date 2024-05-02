@@ -6,7 +6,7 @@ import { useModuleRelatedProposals } from "lib/services/move";
 import type { HexAddr, Option } from "lib/types";
 
 interface ModuleRelatedProposalsTableProps {
-  address: HexAddr;
+  vmAddress: HexAddr;
   moduleName: string;
   scrollComponentId: string;
   relatedProposalsCount: Option<number>;
@@ -14,7 +14,7 @@ interface ModuleRelatedProposalsTableProps {
 }
 
 export const ModuleRelatedProposalsTable = ({
-  address,
+  vmAddress,
   moduleName,
   scrollComponentId,
   relatedProposalsCount,
@@ -42,14 +42,12 @@ export const ModuleRelatedProposalsTable = ({
     isLoading,
     error,
   } = useModuleRelatedProposals(
-    address,
+    vmAddress,
     moduleName,
-    offset,
     onViewMore ? 5 : pageSize,
+    offset,
     {
-      onSuccess: (data) => {
-        setTotalData(data.total);
-      },
+      onSuccess: (data) => setTotalData(data.total),
     }
   );
 

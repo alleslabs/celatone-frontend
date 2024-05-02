@@ -40,7 +40,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 };
 
 export const ModuleInfoBody = ({
-  address,
+  vmAddress,
   upgradePolicy,
   transaction,
   proposal,
@@ -58,7 +58,7 @@ export const ModuleInfoBody = ({
   >
     <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
     <LabelText label="Published by" helperText1="(Wallet Address)">
-      <ExplorerLink type="user_address" value={address} showCopyOnHover />
+      <ExplorerLink type="user_address" value={vmAddress} showCopyOnHover />
     </LabelText>
     <LabelText
       label="Published Block Height"
