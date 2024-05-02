@@ -30,7 +30,7 @@ export const ModulesTableMobileCard = ({
         navigate({
           pathname: "/modules/[address]/[moduleName]",
           query: {
-            address: moduleInfo.address,
+            address: hex,
             moduleName: moduleInfo.name,
           },
         })

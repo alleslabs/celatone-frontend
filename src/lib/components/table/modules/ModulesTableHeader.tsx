@@ -25,7 +25,7 @@ export const ModulesTableHeader = ({
     {!isPublishedModules && (
       <>
         <TableHeader>Publishing Activity</TableHeader>
-        <TableHeader>Timestamp</TableHeader>
+        <TableHeader>Published/Republished Timestamp</TableHeader>
       </>
     )}
     <TableHeader />
