@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Grid, Tag, Text } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
@@ -30,7 +30,7 @@ export const ModulesTableMobileCard = ({
         navigate({
           pathname: "/modules/[address]/[moduleName]",
           query: {
-            address: moduleInfo.address,
+            address: hex,
             moduleName: moduleInfo.name,
           },
         })
@@ -43,14 +43,25 @@ export const ModulesTableMobileCard = ({
       }
       middleContent={
         <Flex direction="column" gap={3}>
-          <Flex direction="column">
-            <MobileLabel label="owner" />
-            <ExplorerLink
-              value={moduleInfo.address}
-              type="user_address"
-              showCopyOnHover
-            />
-          </Flex>
+          <Grid templateColumns="repeat(2, 1fr)">
+            <Flex direction="column">
+              <MobileLabel label="owner" />
+              <ExplorerLink
+                value={moduleInfo.address}
+                type="user_address"
+                showCopyOnHover
+              />
+            </Flex>
+            <Flex direction="column" gap={1}>
+              <MobileLabel label="Action" />
+              <Tag
+                width="fit-content"
+                variant={moduleInfo.isRepublished ? "primary-light" : "gray"}
+              >
+                {moduleInfo.isRepublished ? "Republish" : "Publish"}
+              </Tag>
+            </Flex>
+          </Grid>
           {moduleInfo.latestUpdated && (
             <Flex direction="column">
               <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
