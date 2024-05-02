@@ -47,7 +47,6 @@ export const ModulesTable = ({
           moduleInfo={module}
           templateColumns={templateColumns}
           isPublishedModules={isPublishedModules}
-          isRepublished={!!module.isRepublished}
         />
       ))}
     </TableContainer>

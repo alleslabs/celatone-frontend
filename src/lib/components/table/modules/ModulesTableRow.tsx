@@ -19,14 +19,12 @@ interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;
   templateColumns: string;
   isPublishedModules: boolean;
-  isRepublished: boolean;
 }
 
 export const ModulesTableRow = ({
   moduleInfo,
   templateColumns,
   isPublishedModules,
-  isRepublished,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const hex = unpadHexAddress(bech32AddressToHex(moduleInfo.address));
@@ -75,28 +73,32 @@ export const ModulesTableRow = ({
             showCopyOnHover
           />
         </TableRow>
-        <TableRow>
-          <Tag variant={isRepublished ? "primary-light" : "gray"}>
-            {isRepublished ? "Republish" : "Publish"}
-          </Tag>
-        </TableRow>
         {!isPublishedModules && (
-          <TableRow>
-            <Flex direction="column" gap={1}>
-              {moduleInfo.latestUpdated ? (
-                <>
-                  <Text variant="body3">
-                    {formatUTC(moduleInfo.latestUpdated)}
-                  </Text>
-                  <Text variant="body3" color="text.dark">
-                    {`(${dateFromNow(moduleInfo.latestUpdated)})`}
-                  </Text>
-                </>
-              ) : (
-                <Text variant="body3">N/A</Text>
-              )}
-            </Flex>
-          </TableRow>
+          <>
+            <TableRow>
+              <Tag
+                variant={moduleInfo.isRepublished ? "primary-light" : "gray"}
+              >
+                {moduleInfo.isRepublished ? "Republish" : "Publish"}
+              </Tag>
+            </TableRow>
+            <TableRow>
+              <Flex direction="column" gap={1}>
+                {moduleInfo.latestUpdated ? (
+                  <>
+                    <Text variant="body3">
+                      {formatUTC(moduleInfo.latestUpdated)}
+                    </Text>
+                    <Text variant="body3" color="text.dark">
+                      {`(${dateFromNow(moduleInfo.latestUpdated)})`}
+                    </Text>
+                  </>
+                ) : (
+                  <Text variant="body3">N/A</Text>
+                )}
+              </Flex>
+            </TableRow>
+          </>
         )}
         <TableRow>
           <Flex gap="8px" w="full" justifyContent="end">
