@@ -25,8 +25,8 @@ import {
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
 import { CodeSelectSection } from "lib/components/select-code";
+import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
 import { useCodeInfoLcd } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg } from "lib/types";

@@ -1,6 +1,11 @@
 import { BCS } from "@initia/initia.js";
 
-import type { AbiFormData, ExposedFunction, Nullable } from "lib/types";
+import type {
+  AbiFormData,
+  ExposedFunction,
+  ModuleAbi,
+  Nullable,
+} from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
   fn.is_view || fn.is_entry;
@@ -19,7 +24,7 @@ const sortByAvailability = (a: ExposedFunction, b: ExposedFunction) => {
   return checkAvailability(a) ? -1 : 1;
 };
 
-export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
+const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   const functionMap = functions.reduce<{
     view: ExposedFunction[];
     execute: ExposedFunction[];
@@ -42,6 +47,18 @@ export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   functionMap.execute.sort(sortByAvailability);
 
   return functionMap;
+};
+
+export const indexModuleAbi = (abi: string) => {
+  const parsedAbi = parseJsonABI<ModuleAbi>(abi);
+  const { view, execute } = splitViewExecuteFunctions(
+    parsedAbi.exposed_functions
+  );
+  return {
+    parsedAbi,
+    viewFunctions: view,
+    executeFunctions: execute,
+  };
 };
 
 export const getAbiInitialData = (length: number) =>

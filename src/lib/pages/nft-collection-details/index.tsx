@@ -13,7 +13,11 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useMobile,
+  useTierConfig,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -140,16 +144,14 @@ const CollectionDetailsBody = ({
               Collection:
             </Text>
             <Tooltip label="View as Account Address">
-              <Flex>
-                <ExplorerLink
-                  value={collectionAddress}
-                  type="user_address"
-                  textFormat="normal"
-                  maxWidth="full"
-                  fixedHeight={false}
-                  ampCopierSection="collection-addresss-top"
-                />
-              </Flex>
+              <ExplorerLink
+                value={collectionAddress}
+                type="contract_address"
+                textFormat="normal"
+                maxWidth="full"
+                fixedHeight={false}
+                ampCopierSection="collection-addresss-top"
+              />
             </Tooltip>
           </Flex>
           <Flex gap={1} align="center">
@@ -277,6 +279,7 @@ const CollectionDetailsBody = ({
 };
 
 const CollectionDetails = () => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 

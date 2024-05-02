@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -276,6 +276,7 @@ const NftDetailsBody = ({
 };
 
 const NftDetails = observer(() => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zNftDetailQueryParams.safeParse(router.query);
 
