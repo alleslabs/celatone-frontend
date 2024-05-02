@@ -6,7 +6,6 @@ import {
   useCelatoneApp,
   useLCDEndpoint,
 } from "lib/app-provider";
-import type { Option } from "lib/types";
 import { extractTxLogs, isTxHash } from "lib/utils";
 
 import type { TxData } from "./types";
@@ -14,12 +13,10 @@ import type { TxData } from "./types";
 const getTxDataLcd = async (
   endpoint: string,
   currentChainId: string,
-  txHash: Option<string>
+  txHash: string
 ): Promise<TxData> => {
   const txData = await axios
-    .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs/${encodeURIComponent(txHash ?? "")}`
-    )
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURIComponent(txHash)}`)
     .then(({ data }) => {
       return data;
     });
@@ -36,7 +33,7 @@ const getTxDataLcd = async (
   };
 };
 
-export const useTxDataLcd = (txHash: Option<string>, enabled = true) => {
+export const useTxDataLcd = (txHash: string, enabled = true) => {
   const lcdEndpoint = useLCDEndpoint();
   const { currentChainId } = useCelatoneApp();
 
