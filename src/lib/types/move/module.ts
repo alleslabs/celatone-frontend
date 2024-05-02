@@ -5,7 +5,7 @@ import type { Proposal } from "../proposal";
 import type { ExposedFunction, ModuleAbi } from "./abi";
 
 export enum UpgradePolicy {
-  ARBITRARY = "ARBITRARY",
+  UNSPECIFIED = "UNSPECIFIED",
   COMPATIBLE = "COMPATIBLE",
   IMMUTABLE = "IMMUTABLE",
 }

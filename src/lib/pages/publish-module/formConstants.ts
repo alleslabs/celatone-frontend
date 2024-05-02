@@ -35,11 +35,6 @@ export const emptyModule: Module = {
 
 export const POLICIES = [
   {
-    value: UpgradePolicy.ARBITRARY,
-    description: "You can publish these modules again without any restrictions",
-    condition: false,
-  },
-  {
     value: UpgradePolicy.COMPATIBLE,
     description:
       "This address can publish these modules again but need to maintain several properties.",
@@ -54,5 +49,5 @@ export const POLICIES = [
 
 export const defaultValues: PublishModuleState = {
   modules: [emptyModule],
-  upgradePolicy: UpgradePolicy.ARBITRARY,
+  upgradePolicy: UpgradePolicy.COMPATIBLE,
 };
