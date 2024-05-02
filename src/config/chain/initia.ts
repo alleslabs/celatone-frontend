@@ -7,13 +7,13 @@ const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
-  "mahalo-2": {
+  "mahalo-3": {
     chain: "initia",
-    registryChainName: "initiadevnet2",
-    prettyName: "Initia Closed Testnet 2",
-    lcd: "https://lcd.mahalo-2.initia.xyz",
-    rpc: "https://rpc.mahalo-2.initia.xyz:443",
-    indexer: "https://mahalo-2-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "initiadevnet3",
+    prettyName: "Initia Closed Testnet 3",
+    lcd: "https://lcd.mahalo-3.initia.xyz",
+    rpc: "https://rpc.mahalo-3.initia.xyz:443",
+    indexer: "https://mahalo-3-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -54,13 +54,13 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
-  "minimove-2": {
+  "minimove-3": {
     chain: "initia",
-    registryChainName: "minitiamovedevnet2",
-    prettyName: "Minitia Move Closed Testnet 2",
-    lcd: "https://lcd.minimove-2.initia.xyz",
-    rpc: "https://rpc.minimove-2.initia.xyz:443",
-    indexer: "https://minimove-2-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "minitiamovedevnet3",
+    prettyName: "Minitia Move Closed Testnet 3",
+    lcd: "https://lcd.minimove-3.initia.xyz",
+    rpc: "https://rpc.minimove-3.initia.xyz:443",
+    indexer: "https://minimove-3-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -92,7 +92,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
+          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
@@ -101,13 +101,13 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       isValidatorExternalLink: null,
     },
   },
-  "miniwasm-2": {
+  "miniwasm-3": {
     chain: "initia",
-    registryChainName: "minitiawasmdevnet2",
-    prettyName: "Minitia Wasm Closed Testnet 2",
-    lcd: "https://lcd.miniwasm-2.initia.xyz",
-    rpc: "https://rpc.miniwasm-2.initia.xyz:443",
-    indexer: "https://miniwasm-2-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "minitiawasmdevnet3",
+    prettyName: "Minitia Wasm Closed Testnet 3",
+    lcd: "https://lcd.miniwasm-3.initia.xyz",
+    rpc: "https://rpc.miniwasm-3.initia.xyz:443",
+    indexer: "https://miniwasm-3-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -138,7 +138,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
+          "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
