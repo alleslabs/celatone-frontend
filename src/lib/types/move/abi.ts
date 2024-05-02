@@ -3,23 +3,7 @@ import type { Nullable } from "../common";
 
 export type Visibility = "public" | "friend" | "private" | "script";
 
-// NOTE: not used, but keeping it just in case for now
-// export interface AbiModule {
-//   address: string; // revisit type
-//   name: string;
-//   functions: AbiFunction[];
-// }
-//
-// interface AbiFunction {
-//   method: "query" | "tx";
-//   moduleAddress: string; // revisit type
-//   moduleName: string;
-//   functionName: string;
-//   typeArgsLength: number;
-//   argsTypes: string[];
-// }
-
-export interface ResponseAbi {
+export interface ModuleAbi {
   address: HexAddr;
   name: string;
   friends: string[];

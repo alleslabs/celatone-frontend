@@ -3,8 +3,8 @@ import { BCS } from "@initia/initia.js";
 import type {
   AbiFormData,
   ExposedFunction,
+  ModuleAbi,
   Nullable,
-  ResponseAbi,
 } from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
@@ -50,7 +50,7 @@ const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
 };
 
 export const indexModuleAbi = (abi: string) => {
-  const parsedAbi = parseJsonABI<ResponseAbi>(abi);
+  const parsedAbi = parseJsonABI<ModuleAbi>(abi);
   const { view, execute } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
   );

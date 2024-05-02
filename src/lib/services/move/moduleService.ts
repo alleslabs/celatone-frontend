@@ -18,10 +18,10 @@ import type {
   ExposedFunction,
   HexAddr,
   IndexedModule,
+  ModuleAbi,
   ModuleData,
   Nullable,
   Option,
-  ResponseAbi,
   RpcQueryError,
   UpgradePolicy,
 } from "lib/types";
@@ -170,7 +170,7 @@ export const useFunctionView = ({
   );
 };
 export interface DecodeModuleQueryResponse {
-  abi: ResponseAbi;
+  abi: ModuleAbi;
   modulePath: string;
   currentPolicy: Option<UpgradePolicy>;
 }

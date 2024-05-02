@@ -9,10 +9,10 @@ import type {
   ExposedFunction,
   HexAddr,
   IndexedModule,
+  ModuleAbi,
   ModuleData,
   ModuleInfo,
   Nullable,
-  ResponseAbi,
 } from "lib/types";
 import { UpgradePolicy, zHexAddr, zRemark, zUtcDate } from "lib/types";
 import { zPagination } from "lib/types/rest";
@@ -68,7 +68,7 @@ export const getModulesByAddressLcd = async (
   const fetchFn = async (paginationKey: Nullable<string>) => {
     const res = await axios
       .get(
-        `${baseEndpoint}/initia/move/v1/accounts/${address}/modules${
+        `${baseEndpoint}/initia/move/v1/accounts/${encodeURIComponent(address)}/modules${
           paginationKey ? `?pagination.key=${paginationKey}` : ""
         }`
       )
@@ -118,7 +118,9 @@ export const getModuleVerificationStatus = async (
   moduleName: string
 ): Promise<Nullable<ModuleVerificationInternal>> =>
   axios
-    .get(`${endpoint}/${address}/${moduleName}`)
+    .get(
+      `${endpoint}/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}`
+    )
     .then(({ data }) => parseWithError(zModuleVerificationInternal, data))
     .catch(() => null);
 
@@ -143,12 +145,12 @@ interface DecodeModuleReturn {
 export const decodeModule = async (
   decodeAPI: string,
   moduleEncode: string
-): Promise<ResponseAbi> =>
+): Promise<ModuleAbi> =>
   axios
     .post<DecodeModuleReturn>(decodeAPI, {
       code_bytes: moduleEncode,
     })
-    .then(({ data }) => parseJsonABI<ResponseAbi>(libDecode(data.abi)));
+    .then(({ data }) => parseJsonABI<ModuleAbi>(libDecode(data.abi)));
 
 export const decodeScript = async (
   decodeAPI: string,
