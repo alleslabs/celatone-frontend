@@ -54,7 +54,7 @@ import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePer
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
-import { useGovParams } from "lib/services/proposalService";
+import { useGovParams } from "lib/services/wasm/proposal";
 import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
 import { AccessConfigPermission, AccessType } from "lib/types";
 import {

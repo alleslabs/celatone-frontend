@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zProposal, zProposalsResponseItem } from "../proposal";
+import { zProposal, zProposalsResponseItem } from "../wasm/proposal";
 import { zTxsResponseItem } from "../wasm/txs";
 import type {
   AbiFormData,
@@ -74,7 +74,7 @@ export const getModulesByAddressLcd = async (
       )
       .then(({ data }) => parseWithError(zModulesLcdReturn, data));
     result.push(...res.modules);
-    if (res.pagination.next_key) await fetchFn(res.pagination.next_key);
+    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
 
   await fetchFn(null);

@@ -12,8 +12,8 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import type { ProposalAnswerCountsResponse } from "lib/services/proposal";
-import { useProposalValidatorVotes } from "lib/services/proposalService";
+import type { ProposalAnswerCountsResponse } from "lib/services/wasm/proposal";
+import { useProposalValidatorVotes } from "lib/services/wasm/proposal";
 import { ProposalVoteType } from "lib/types";
 import type { Option, ProposalValidatorVote } from "lib/types";
 

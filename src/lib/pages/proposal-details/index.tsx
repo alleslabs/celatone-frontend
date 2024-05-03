@@ -9,7 +9,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useProposalVotesInfo } from "lib/services/proposalService";
+import { useProposalVotesInfo } from "lib/services/wasm/proposal";
 
 import { ProposalOverview, ProposalTop, VoteDetails } from "./components";
 import { useDerivedProposalData, useDerivedProposalParams } from "./data";

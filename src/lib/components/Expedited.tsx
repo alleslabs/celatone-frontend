@@ -1,6 +1,6 @@
 import { Flex, SkeletonText, Text } from "@chakra-ui/react";
 
-import { useProposalParams } from "lib/services/proposalService";
+import { useProposalParams } from "lib/services/wasm/proposal";
 import type { Option, Ratio } from "lib/types";
 import { formatPrettyPercent, formatSeconds } from "lib/utils";
 

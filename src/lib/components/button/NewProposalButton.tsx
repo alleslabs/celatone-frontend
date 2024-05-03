@@ -4,15 +4,10 @@ import { Tooltip } from "../Tooltip";
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-// import { useGovParams } from "lib/services/proposalService";
-// import { AccessConfigPermission } from "lib/types";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
   const govConfig = useGovConfig({ shouldRedirect: false });
-  // const { data: govParams } = useGovParams();
-  // const isPermissionless =
-  //   govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
 
   if (govConfig.enabled && govConfig.hideOpenProposal) return null;
 

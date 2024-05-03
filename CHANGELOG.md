@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
+- [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
 - [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
 - [#903](https://github.com/alleslabs/celatone-frontend/pull/903) Prevent list pages in lite version
 - [#897](https://github.com/alleslabs/celatone-frontend/pull/897) Add config for lite version support
@@ -56,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
 - [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
 

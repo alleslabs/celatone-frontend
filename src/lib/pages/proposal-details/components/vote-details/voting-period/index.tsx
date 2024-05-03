@@ -15,7 +15,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
-import { useProposalAnswerCounts } from "lib/services/proposalService";
+import { useProposalAnswerCounts } from "lib/services/wasm/proposal";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";

@@ -1,10 +1,7 @@
 import { useMobile } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move";
-import {
-  useProposalData,
-  useProposalParams,
-} from "lib/services/proposalService";
+import { useProposalData, useProposalParams } from "lib/services/wasm/proposal";
 import type { Nullable, Option, ProposalData, ProposalParams } from "lib/types";
 import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
 

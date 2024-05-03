@@ -1,5 +1,3 @@
-import type { Coin } from "@cosmjs/stargate";
-import axios from "axios";
 import { z } from "zod";
 
 import {
@@ -15,23 +13,41 @@ import {
 import type {
   AccessConfigPermission,
   BechAddr,
-  BechAddr20,
-  BechAddr32,
-  Option,
+  Coin,
   Proposal,
   ProposalData,
   ProposalParams,
-  ProposalStatus,
-  ProposalType,
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
-  ProposalVoteType,
   SnakeToCamelCaseNested,
+  Token,
+  U,
 } from "lib/types";
-import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
+import { parseTxHash, snakeToCamel } from "lib/utils";
 
-interface DepositParams {
+export interface MinDeposit {
+  amount: U<Token<Big>>;
+  denom: string;
+  formattedAmount: Token;
+  formattedDenom: string;
+  formattedToken: string;
+  precision: number;
+}
+
+interface DepositParamsReturn
+  extends Omit<DepositParamsInternal, "minDeposit"> {
+  minDeposit: MinDeposit;
+  minInitialDeposit: Token;
+}
+
+export interface GovParams {
+  depositParams: DepositParamsReturn;
+  uploadAccess: UploadAccess;
+  votingParams: VotingParamsInternal;
+}
+
+export interface DepositParams {
   min_deposit: Coin[];
   max_deposit_period: string;
   min_expedited_deposit: Coin[];
@@ -40,21 +56,12 @@ interface DepositParams {
 
 export type DepositParamsInternal = SnakeToCamelCaseNested<DepositParams>;
 
-export const fetchGovDepositParams = (
-  lcdEndpoint: string
-): Promise<DepositParamsInternal> =>
-  axios
-    .get<{
-      deposit_params: DepositParams;
-    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
-    .then(({ data }) => snakeToCamel(data.deposit_params));
-
 interface ProposalVotingPeriod {
   proposal_type: string;
   voting_period: string;
 }
 
-interface VotingParams {
+export interface VotingParams {
   voting_period: string;
   proposal_voting_periods: ProposalVotingPeriod[];
   expedited_voting_period: string;
@@ -62,27 +69,13 @@ interface VotingParams {
 
 export type VotingParamsInternal = SnakeToCamelCaseNested<VotingParams>;
 
-export const fetchGovVotingParams = (
-  lcdEndpoint: string
-): Promise<VotingParamsInternal> =>
-  axios
-    .get<{
-      voting_params: VotingParams;
-    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
-    .then(({ data }) => snakeToCamel(data.voting_params));
-
 export interface UploadAccess {
   permission: AccessConfigPermission;
   address: BechAddr;
   addresses?: BechAddr[];
 }
 
-export const fetchGovUploadAccessParams = async (
-  lcdEndpoint: string
-): Promise<UploadAccess> =>
-  axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);
-
-const zProposalParamsResponse = z
+export const zProposalParamsResponse = z
   .object({
     min_deposit: zCoin.array(),
     min_initial_deposit_ratio: z.coerce.number(),
@@ -102,18 +95,6 @@ const zProposalParamsResponse = z
   })
   .transform<ProposalParams<Coin>>(snakeToCamel);
 
-export const getProposalParams = async (
-  endpoint: string
-): Promise<ProposalParams<Coin>> =>
-  axios
-    .get(`${endpoint}/params`)
-    .then(({ data }) => parseWithError(zProposalParamsResponse, data));
-
-export const getProposalTypes = async (endpoint: string) =>
-  axios
-    .get(`${endpoint}/types`)
-    .then(({ data }) => parseWithError(zProposalType.array(), data));
-
 export const zProposal = z.object({
   deposit_end_time: zUtcDate,
   id: z.number().nonnegative(),
@@ -129,76 +110,20 @@ export const zProposal = z.object({
 export const zProposalsResponseItem =
   zProposal.transform<Proposal>(snakeToCamel);
 
-const zProposalsResponse = z.object({
+export const zProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),
   total: z.number().nonnegative(),
 });
-
 export type ProposalsResponse = z.infer<typeof zProposalsResponse>;
 
-export const getProposals = async (
-  endpoint: string,
-  limit: number,
-  offset: number,
-  proposer: Option<BechAddr20>,
-  statuses: ProposalStatus[],
-  types: ProposalType[],
-  search: string
-): Promise<ProposalsResponse> =>
-  axios
-    .get(`${endpoint}`, {
-      params: {
-        limit,
-        offset,
-        proposer,
-        statuses: statuses.join(","),
-        types: types.join(","),
-        search,
-      },
-    })
-    .then(({ data }) => parseWithError(zProposalsResponse, data));
-
-export const getProposalsByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  limit: number,
-  offset: number
-): Promise<ProposalsResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/proposals`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zProposalsResponse, data));
-
-const zRelatedProposalsResponse = z.object({
+export const zRelatedProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),
 });
 export type RelatedProposalsResponse = z.infer<
   typeof zRelatedProposalsResponse
 >;
 
-export const getRelatedProposalsByContractAddress = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  limit: number,
-  offset: number
-): Promise<RelatedProposalsResponse> =>
-  axios
-    .get(
-      `${endpoint}/${encodeURIComponent(contractAddress)}/related-proposals`,
-      {
-        params: {
-          limit,
-          offset,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zRelatedProposalsResponse, data));
-
-const zProposalDataResponse = z.object({
+export const zProposalDataResponse = z.object({
   info: zProposal
     .extend({
       failed_reason: z.string(),
@@ -245,15 +170,7 @@ const zProposalDataResponse = z.object({
 });
 export type ProposalDataResponse = z.infer<typeof zProposalDataResponse>;
 
-export const getProposalData = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalDataResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/info`)
-    .then(({ data }) => parseWithError(zProposalDataResponse, data));
-
-const zProposalVotesInfoResponse = z
+export const zProposalVotesInfoResponse = z
   .object({
     yes: zBig,
     abstain: zBig,
@@ -262,14 +179,6 @@ const zProposalVotesInfoResponse = z
     total_voting_power: zBig.nullable(),
   })
   .transform<ProposalVotesInfo>(snakeToCamel);
-
-export const getProposalVotesInfo = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalVotesInfo> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
-    .then(({ data }) => parseWithError(zProposalVotesInfoResponse, data));
 
 const zProposalVotesResponseItem = z
   .object({
@@ -289,61 +198,16 @@ const zProposalVotesResponseItem = z
     txHash: val.tx_hash ? parseTxHash(val.tx_hash) : null,
   }));
 
-const zProposalVotesResponse = z.object({
+export const zProposalVotesResponse = z.object({
   items: z.array(zProposalVotesResponseItem),
   total: z.number().nonnegative(),
 });
 export type ProposalVotesResponse = z.infer<typeof zProposalVotesResponse>;
 
-export const getProposalVotes = async (
-  endpoint: string,
-  id: number,
-  limit: number,
-  offset: number,
-  answer: ProposalVoteType,
-  search: string
-): Promise<ProposalVotesResponse> => {
-  let url = `${endpoint}/${encodeURIComponent(id)}/votes?limit=${limit}&offset=${offset}`;
-  url = url.concat(search ? `&search=${encodeURIComponent(search)}` : "");
-  url = url.concat(answer ? `&answer=${encodeURIComponent(answer)}` : "");
-
-  return axios
-    .get(url)
-    .then(({ data }) => parseWithError(zProposalVotesResponse, data));
-};
-
 export interface ProposalValidatorVotesResponse {
   items: ProposalValidatorVote[];
   total: number;
 }
-
-export const getProposalValidatorVotes = async (
-  endpoint: string,
-  id: number,
-  limit: number,
-  offset: number,
-  answer: ProposalVoteType,
-  search: string
-): Promise<ProposalValidatorVotesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
-      params: {
-        limit,
-        offset,
-        answer,
-        search,
-      },
-    })
-    .then(({ data }) => {
-      const parsed = parseWithError(zProposalVotesResponse, data);
-      return {
-        items: parsed.items.map<ProposalValidatorVote>((item, idx) => ({
-          ...item,
-          rank: idx + 1,
-        })),
-        total: parsed.total,
-      };
-    });
 
 const zProposalAnswerCounts = z.object({
   yes: z.number().nonnegative(),
@@ -354,7 +218,7 @@ const zProposalAnswerCounts = z.object({
   weighted: z.number().nonnegative(),
 });
 
-const zProposalAnswerCountsResponse = z
+export const zProposalAnswerCountsResponse = z
   .object({
     all: zProposalAnswerCounts,
     validator: zProposalAnswerCounts.extend({
@@ -363,15 +227,6 @@ const zProposalAnswerCountsResponse = z
     }),
   })
   .transform(snakeToCamel);
-
 export type ProposalAnswerCountsResponse = z.infer<
   typeof zProposalAnswerCountsResponse
 >;
-
-export const getProposalAnswerCounts = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalAnswerCountsResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/answer-counts`)
-    .then(({ data }) => parseWithError(zProposalAnswerCountsResponse, data));

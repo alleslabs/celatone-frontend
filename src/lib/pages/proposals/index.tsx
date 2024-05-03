@@ -19,7 +19,7 @@ import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
-import { useProposals } from "lib/services/proposalService";
+import { useProposals } from "lib/services/wasm/proposal";
 import type {
   BechAddr20,
   Option,

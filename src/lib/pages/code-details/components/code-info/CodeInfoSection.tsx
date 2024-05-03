@@ -17,7 +17,7 @@ import { JsonSchemaModal } from "lib/components/json-schema";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { Code } from "lib/services/code";
+import type { Code } from "lib/services/wasm/code";
 import type { Option } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 

@@ -6,13 +6,10 @@ import { truncate } from "./truncate";
 export const resolvePermission = (
   address: Option<BechAddr20>,
   permission: AccessConfigPermission = AccessConfigPermission.UNKNOWN,
-  permissionAddresses: PermissionAddresses = [],
-  permissionAddress = ""
+  permissionAddresses: PermissionAddresses = []
 ): boolean =>
   permission === AccessConfigPermission.EVERYBODY ||
-  (address
-    ? permissionAddresses.includes(address) || permissionAddress === address
-    : false);
+  (address ? permissionAddresses.includes(address) : false);
 
 export const getPermissionHelper = (
   address: Option<BechAddr20>,
