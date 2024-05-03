@@ -74,7 +74,7 @@ export const getModulesByAddressLcd = async (
       )
       .then(({ data }) => parseWithError(zModulesLcdReturn, data));
     result.push(...res.modules);
-    if (res.pagination.next_key) await fetchFn(res.pagination.next_key);
+    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
 
   await fetchFn(null);

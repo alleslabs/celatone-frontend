@@ -11,7 +11,7 @@ import { useCodeStore } from "lib/providers/store";
 import {
   useCodeListByCodeIds,
   useCodeListByWalletAddress,
-} from "lib/services/codeService";
+} from "lib/services/wasm/code";
 import type { CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
