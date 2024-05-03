@@ -85,9 +85,8 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
           with similar configurations.
           <br />
           <br />
-          Each policy will provide different flexibility for further upgrades
-          whether you can add new functions without maintaining old functions
-          (Arbitrary), or required to maintain old functions (Compatible).
+          “Compatible” will allow for further upgrades while requiring to
+          maintain old functions.
           <br />
           <br />
           Choosing “Immutable” will not allow you to make any changes with this

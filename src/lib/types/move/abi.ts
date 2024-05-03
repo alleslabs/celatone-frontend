@@ -3,7 +3,7 @@ import type { SnakeToCamelCaseNested } from "../converter";
 import type { Pagination } from "../rest";
 
 export enum UpgradePolicy {
-  ARBITRARY = "ARBITRARY",
+  UNSPECIFIED = "UNSPECIFIED",
   COMPATIBLE = "COMPATIBLE",
   IMMUTABLE = "IMMUTABLE",
 }
