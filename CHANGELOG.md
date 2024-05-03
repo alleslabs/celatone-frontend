@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#907](https://github.com/alleslabs/celatone-frontend/pull/907) Mirgrate mahalo and minitias from 2 to 3
+- [#907](https://github.com/alleslabs/celatone-frontend/pull/907) Migrate mahalo and minitias from 2 to 3
 - [#905](https://github.com/alleslabs/celatone-frontend/pull/905) Refactor module related component for better readability
 - [#900](https://github.com/alleslabs/celatone-frontend/pull/900) Refactor module details info
 - [#899](https://github.com/alleslabs/celatone-frontend/pull/899) Refactor module details APIs
@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
 - [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
 - [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
