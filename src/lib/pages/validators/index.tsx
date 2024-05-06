@@ -3,68 +3,41 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useGovConfig, useMobile } from "lib/app-provider";
+import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
-import { Pagination } from "lib/components/pagination";
-import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
-import { useValidators } from "lib/services/validatorService";
 
-import { ActiveFilter, OrderSelect } from "./components";
-import { ValidatorsTable } from "./components/validators-table";
+import {
+  ActiveFilter,
+  OrderSelect,
+  ValidatorsBodyFull,
+  ValidatorsBodyLite,
+} from "./components";
+import type { ValidatorCounts } from "./types";
 import { ValidatorOrder } from "./types";
+
+const SCROLL_COMPONENT_ID = "validator-table-header";
 
 const Validators = () => {
   const router = useRouter();
   const isMobile = useMobile();
+  const tier = useTierConfig();
   useGovConfig({ shouldRedirect: true });
 
   const [isActive, setIsActive] = useState(true);
+  const [counts, setCounts] = useState<ValidatorCounts>();
   const [order, setOrder] = useState(ValidatorOrder.VotingPower);
   const [isDesc, setIsDesc] = useState(true);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
 
-  const {
-    pagesQuantity,
-    setTotalData,
-    currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
-    offset,
-  } = usePaginator({
-    initialState: {
-      pageSize: 100,
-      currentPage: 1,
-      isDisabled: false,
-    },
-  });
-  const { data, isFetching: isLoading } = useValidators(
-    pageSize,
-    offset,
-    isActive,
-    order,
-    isDesc,
-    debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
-  );
-
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_VALIDATORS);
   }, [router.isReady]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    setPageSize(100);
-  }, [isActive, order, isDesc, debouncedSearch, setCurrentPage, setPageSize]);
-
-  const scrollComponentId = "validator-table-header";
   return (
     <>
       <PageHeaderContainer bgColor="transparent">
@@ -82,8 +55,8 @@ const Validators = () => {
           <ActiveFilter
             isActive={isActive}
             setIsActive={setIsActive}
-            activeCount={data?.metadata.activeCount}
-            inactiveCount={data?.metadata.inactiveCount}
+            activeCount={counts?.activeCount}
+            inactiveCount={counts?.inactiveCount}
           />
           {isMobile && (
             <OrderSelect
@@ -110,30 +83,27 @@ const Validators = () => {
         </Flex>
       </PageHeaderContainer>
       <PageContainer>
-        <ValidatorsTable
-          data={data}
-          isLoading={isLoading}
-          isActive={isActive}
-          order={order}
-          setOrder={setOrder}
-          isDesc={isDesc}
-          setIsDesc={setIsDesc}
-          scrollComponentId={scrollComponentId}
-        />
-        {data && data.total > 10 && (
-          <Pagination
-            currentPage={currentPage}
-            pagesQuantity={pagesQuantity}
-            offset={offset}
-            totalData={data.total}
-            scrollComponentId={scrollComponentId}
-            pageSize={pageSize}
-            onPageChange={setCurrentPage}
-            onPageSizeChange={(e) => {
-              const size = Number(e.target.value);
-              setPageSize(size);
-              setCurrentPage(1);
-            }}
+        {tier === "full" ? (
+          <ValidatorsBodyFull
+            isActive={isActive}
+            setCounts={setCounts}
+            order={order}
+            setOrder={setOrder}
+            isDesc={isDesc}
+            setIsDesc={setIsDesc}
+            search={debouncedSearch}
+            scrollComponentId={SCROLL_COMPONENT_ID}
+          />
+        ) : (
+          <ValidatorsBodyLite
+            isActive={isActive}
+            setCounts={setCounts}
+            order={order}
+            setOrder={setOrder}
+            isDesc={isDesc}
+            setIsDesc={setIsDesc}
+            search={debouncedSearch}
+            scrollComponentId={SCROLL_COMPONENT_ID}
           />
         )}
       </PageContainer>

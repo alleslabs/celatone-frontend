@@ -2,7 +2,7 @@ import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
+import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/types";
 import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
 
 import { DelegationRelatedTxsTableHeader } from "./DelegationRelatedTxsTableHeader";

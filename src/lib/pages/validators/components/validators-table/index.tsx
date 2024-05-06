@@ -7,7 +7,7 @@ import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 import { useAssetInfos } from "lib/services/assetService";
-import type { ValidatorsResponse } from "lib/services/validator";
+import type { ValidatorsResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 
@@ -25,6 +25,7 @@ interface ValidatorsTableProps {
   isDesc: boolean;
   setIsDesc: (value: boolean) => void;
   scrollComponentId: string;
+  showUptime?: boolean;
 }
 
 export const ValidatorsTable = ({
@@ -36,6 +37,7 @@ export const ValidatorsTable = ({
   isDesc,
   setIsDesc,
   scrollComponentId,
+  showUptime = true,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
   const {
@@ -61,7 +63,7 @@ export const ValidatorsTable = ({
     ? coinToTokenWithValue(singleStakingDenom, "0", assetInfos)
     : undefined;
 
-  const templateColumns = `${isActive ? "64px " : ""}3fr 2fr 110px 110px`;
+  const templateColumns = `${isActive ? "64px " : ""}3fr 2fr ${showUptime ? "110px" : ""} 110px`;
   return (
     <>
       {isMobile ? (
@@ -74,6 +76,7 @@ export const ValidatorsTable = ({
               totalVotingPower={data.metadata.totalVotingPower}
               minCommissionRate={data.metadata.minCommissionRate}
               denomToken={denomToken}
+              showUptime={showUptime}
             />
           ))}
         </MobileTableContainer>
@@ -87,6 +90,7 @@ export const ValidatorsTable = ({
             setOrder={setOrder}
             isDesc={isDesc}
             setIsDesc={setIsDesc}
+            showUptime={showUptime}
           />
           {data.items.map((validator) => (
             <Fragment key={validator.validatorAddress}>
@@ -97,6 +101,7 @@ export const ValidatorsTable = ({
                 totalVotingPower={data.metadata.totalVotingPower}
                 minCommissionRate={data.metadata.minCommissionRate}
                 denomToken={denomToken}
+                showUptime={showUptime}
               />
               {displayDividers &&
                 (validator.rank === data.metadata.percent33Rank ||

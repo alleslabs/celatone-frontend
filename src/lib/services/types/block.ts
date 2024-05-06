@@ -1,9 +1,8 @@
-import axios from "axios";
 import { z } from "zod";
 
 import type { Block, BlockData, Validator } from "lib/types";
 import { zUtcDate, zValidatorAddr } from "lib/types";
-import { parseTxHash, parseWithError } from "lib/utils";
+import { parseTxHash } from "lib/utils";
 
 const zNullableValidator = z.nullable(
   z
@@ -42,21 +41,7 @@ export const zBlocksResponse = z.object({
 });
 export type BlocksResponse = z.infer<typeof zBlocksResponse>;
 
-export const getBlocks = async (
-  endpoint: string,
-  limit: number,
-  offset: number
-) =>
-  axios
-    .get(`${endpoint}`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zBlocksResponse, data));
-
-const zBlockDataResponse = z
+export const zBlockDataResponse = z
   .object({
     hash: z.string().transform(parseTxHash),
     height: z.number().nonnegative(),
@@ -73,8 +58,3 @@ const zBlockDataResponse = z
     gasUsed: val.gas_used,
     gasLimit: val.gas_limit,
   }));
-
-export const getBlockData = async (endpoint: string, height: number) =>
-  axios
-    .get(`${endpoint}/${height}/info`)
-    .then(({ data }) => parseWithError(zBlockDataResponse, data));

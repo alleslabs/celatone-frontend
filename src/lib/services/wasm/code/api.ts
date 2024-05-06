@@ -7,11 +7,10 @@ import {
   useBaseApiRoute,
   useGovConfig,
 } from "lib/app-provider";
+import { zCodeData, zCodesResponse } from "lib/services/types";
+import type { CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
-
-import { zCodeData, zCodesResponse } from "./types";
-import type { CodeData, CodesResponse } from "./types";
 
 const getCodes = async (
   endpoint: string,

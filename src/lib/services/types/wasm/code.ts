@@ -4,10 +4,10 @@ import type { CodeInfo } from "lib/types";
 import {
   AccessConfigPermission,
   zBechAddr,
+  zPagination,
   zProjectInfo,
   zPublicCodeInfo,
 } from "lib/types";
-import { zPagination } from "lib/types/rest";
 import { parseDate, parseTxHash, snakeToCamel } from "lib/utils";
 
 export const zCodeInfoResponseLcd = z

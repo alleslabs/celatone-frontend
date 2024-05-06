@@ -14,8 +14,13 @@ import type {
   ModuleInfo,
   Nullable,
 } from "lib/types";
-import { UpgradePolicy, zHexAddr, zRemark, zUtcDate } from "lib/types";
-import { zPagination } from "lib/types/rest";
+import {
+  UpgradePolicy,
+  zHexAddr,
+  zPagination,
+  zRemark,
+  zUtcDate,
+} from "lib/types";
 import {
   indexModuleAbi,
   libDecode,

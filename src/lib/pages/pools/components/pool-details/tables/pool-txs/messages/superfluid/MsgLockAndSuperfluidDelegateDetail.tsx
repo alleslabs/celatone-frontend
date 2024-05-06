@@ -10,7 +10,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useTxData } from "lib/services/txService";
-import { useValidator } from "lib/services/validatorService";
+import { useValidator } from "lib/services/validator";
 import type { AssetInfos, Option, PoolDetail } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";

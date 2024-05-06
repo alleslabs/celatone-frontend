@@ -5,7 +5,7 @@ import { TooltipInfo } from "lib/components/Tooltip";
 import {
   useValidatorDelegators,
   useValidatorStakingProvisions,
-} from "lib/services/validatorService";
+} from "lib/services/validator";
 import type { Option, Ratio, ValidatorAddr } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
