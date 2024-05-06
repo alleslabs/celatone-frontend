@@ -1,3 +1,4 @@
+import { capitalize } from "lodash";
 import { z } from "zod";
 
 import {
@@ -5,6 +6,7 @@ import {
   zBig,
   zCoin,
   zProposalStatus,
+  zProposalStatusLcd,
   zProposalType,
   zRatio,
   zUtcDate,
@@ -17,6 +19,7 @@ import type {
   Proposal,
   ProposalData,
   ProposalParams,
+  ProposalStatus,
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
@@ -24,6 +27,7 @@ import type {
   Token,
   U,
 } from "lib/types";
+import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
 export interface MinDeposit {
@@ -230,3 +234,52 @@ export const zProposalAnswerCountsResponse = z
 export type ProposalAnswerCountsResponse = z.infer<
   typeof zProposalAnswerCountsResponse
 >;
+
+export const zProposalsResponseItemLcd = z
+  .object({
+    id: z.string(),
+    messages: z
+      .object({
+        "@type": z.string(),
+      })
+      .passthrough()
+      .array()
+      .nullable(),
+    status: zProposalStatusLcd,
+    final_tally_result: z.object({
+      yes_count: z.string(),
+      no_count: z.string(),
+      abstain_count: z.string(),
+      no_with_veto_count: z.string(),
+    }),
+    submit_time: zUtcDate,
+    deposit_end_time: zUtcDate,
+    total_deposit: zCoin.array(),
+    voting_start_time: zUtcDate,
+    voting_end_time: zUtcDate,
+    metadata: z.string(),
+    title: z.string(),
+    summary: z.string(),
+    proposer: zBechAddr,
+  })
+  .transform<Proposal>((val) => ({
+    ...snakeToCamel(val),
+    id: Number(val.id),
+    status: val.status
+      .replace("PROPOSAL_STATUS_", "")
+      .split("_")
+      .map((term: string) => capitalize(term.toLowerCase()))
+      .join("") as ProposalStatus,
+    resolvedHeight: null,
+    types: [],
+    isExpedited: false,
+  }));
+export type ProposalsResponseItemLcd = z.infer<
+  typeof zProposalsResponseItemLcd
+>;
+
+export const zProposalsResponseLcd = z.object({
+  proposals: z.array(zProposalsResponseItemLcd),
+  pagination: zPagination,
+});
+export type ProposalsResponseLcd = z.infer<typeof zProposalsResponseLcd>;

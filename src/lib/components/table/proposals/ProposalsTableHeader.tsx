@@ -2,6 +2,7 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid, Text } from "@chakra-ui/react";
 
 import { TableHeader, TableHeaderFreeze } from "../tableComponents";
+import { useTierConfig } from "lib/app-provider";
 
 interface ProposalsTableHeaderProps {
   templateColumns: GridProps["templateColumns"];
@@ -12,8 +13,11 @@ export const ProposalsTableHeader = ({
   templateColumns,
   boxShadow,
 }: ProposalsTableHeaderProps) => {
+  const tier = useTierConfig();
+
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
+
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
       <TableHeaderFreeze left="0">Proposal ID</TableHeaderFreeze>
@@ -28,7 +32,7 @@ export const ProposalsTableHeader = ({
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>
-      <TableHeader>Resolved Block Height</TableHeader>
+      {tier === "full" && <TableHeader>Resolved Block Height</TableHeader>}
       <TableHeader>Proposed By</TableHeader>
     </Grid>
   );

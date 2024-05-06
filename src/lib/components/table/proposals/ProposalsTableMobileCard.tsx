@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
@@ -20,6 +20,7 @@ export interface ProposalsTableMobileCardProps {
 export const ProposalsTableMobileCard = ({
   proposal,
 }: ProposalsTableMobileCardProps) => {
+  const tier = useTierConfig();
   const navigate = useInternalNavigate();
 
   const onCardSelect = (proposalId: number) =>
@@ -65,19 +66,21 @@ export const ProposalsTableMobileCard = ({
         </Flex>
       }
       bottomContent={
-        <>
-          <Flex direction="column" flex="1">
-            <MobileLabel label="Resolved Block Height" />
-            <ResolvedHeight
-              resolvedHeight={proposal.resolvedHeight}
-              isDepositOrVoting={isDepositOrVoting}
-            />
-          </Flex>
-          <Flex direction="column" flex="1">
-            <MobileLabel label="Proposed by" />
-            <Proposer proposer={proposal.proposer} />
-          </Flex>
-        </>
+        tier === "full" && (
+          <>
+            <Flex direction="column" flex="1">
+              <MobileLabel label="Resolved Block Height" />
+              <ResolvedHeight
+                resolvedHeight={proposal.resolvedHeight}
+                isDepositOrVoting={isDepositOrVoting}
+              />
+            </Flex>
+            <Flex direction="column" flex="1">
+              <MobileLabel label="Proposed by" />
+              <Proposer proposer={proposal.proposer} />
+            </Flex>
+          </>
+        )
       }
       onClick={() => onCardSelect(proposal.id)}
     />
