@@ -5,7 +5,7 @@ import { useCurrentChain } from "./useCurrentChain";
 import { useCallback } from "react";
 import { useWalletClient } from "@cosmos-kit/react";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { useRpcEndpoint } from "./useRpcEndpoint_";
+import { useRpcEndpoint } from "./useRpcEndpoint";
 import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
 
 type MergedWalletClient =
