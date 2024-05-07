@@ -1,4 +1,3 @@
-import { capitalize } from "lodash";
 import { z } from "zod";
 
 import {
@@ -19,7 +18,6 @@ import type {
   Proposal,
   ProposalData,
   ProposalParams,
-  ProposalStatus,
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
@@ -29,6 +27,8 @@ import type {
 } from "lib/types";
 import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+
+import { mapProposalStatusLcdToProposalStatus } from "./helper";
 
 export interface MinDeposit {
   amount: U<Token<Big>>;
@@ -265,11 +265,7 @@ export const zProposalsResponseItemLcd = z
   .transform<Proposal>((val) => ({
     ...snakeToCamel(val),
     id: Number(val.id),
-    status: val.status
-      .replace("PROPOSAL_STATUS_", "")
-      .split("_")
-      .map((term: string) => capitalize(term.toLowerCase()))
-      .join("") as ProposalStatus,
+    status: mapProposalStatusLcdToProposalStatus(val.status),
     resolvedHeight: null,
     types: [],
     isExpedited: false,

@@ -163,6 +163,7 @@ export const SelectInput = <T extends string>({
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
+        overflow="hidden"
       >
         {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem

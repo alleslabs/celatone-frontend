@@ -1,23 +1,25 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { SelectInput } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import {
+  mapProposalStatusLcdToProposalStatus,
   useProposalDataLcd,
   useProposalsLcd,
 } from "lib/services/wasm/proposal";
-import type { ProposalStatus } from "lib/types";
-
-import { ProposalStatusFilter } from "./ProposalStatusFilter";
+import { ProposalStatusLcd } from "lib/types";
 
 export const ProposalsTableLite = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
-  const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
+  const [proposalStatus, setProposalStatus] = useState<ProposalStatusLcd>(
+    ProposalStatusLcd.ALL
+  );
 
   const {
     data: proposalsData,
@@ -26,7 +28,7 @@ export const ProposalsTableLite = () => {
     hasNextPage,
     isLoading: isProposalsLoading,
     isFetchingNextPage,
-  } = useProposalsLcd();
+  } = useProposalsLcd(proposalStatus);
 
   const { data: proposalData, isLoading: isProposalDataLoading } =
     useProposalDataLcd(debouncedSearch);
@@ -42,7 +44,11 @@ export const ProposalsTableLite = () => {
     proposals &&
     proposals.length > 1;
 
-  // TODO: filter by status
+  const options = Object.values(ProposalStatusLcd).map((status) => ({
+    label: mapProposalStatusLcdToProposalStatus(status),
+    value: status,
+    disabled: false,
+  }));
 
   return (
     <>
@@ -62,11 +68,12 @@ export const ProposalsTableLite = () => {
           />
         </GridItem>
         <GridItem>
-          <ProposalStatusFilter
-            label="Filter by Status"
-            result={statuses}
-            setResult={setStatuses}
-            placeholder="All Status"
+          <SelectInput<ProposalStatusLcd>
+            formLabel="Filter by Status"
+            options={options}
+            onChange={setProposalStatus}
+            placeholder=""
+            initialSelected={proposalStatus}
           />
         </GridItem>
       </Grid>
@@ -78,7 +85,7 @@ export const ProposalsTableLite = () => {
             <ErrorFetching dataName="proposals" />
           ) : (
             <>
-              {statuses.length > 0 || search.trim().length > 0 ? (
+              {proposalStatus || search.trim().length > 0 ? (
                 <EmptyState
                   imageVariant="not-found"
                   message="No matches found. Please double-check your input and select correct network."
