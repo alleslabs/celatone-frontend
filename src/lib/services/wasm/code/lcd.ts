@@ -32,7 +32,7 @@ export const useCodeInfoLcd = (
   };
 
   return useQuery<CodeInfoResponseLcd>(
-    [CELATONE_QUERY_KEYS.CODE_INFO, endpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO_LCD, endpoint, codeId],
     queryFn,
     options
   );
@@ -56,7 +56,7 @@ export const useCodesLcd = () => {
   const endpoint = useLcdEndpoint();
 
   return useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.CODES, endpoint],
+    [CELATONE_QUERY_KEYS.CODES_LCD, endpoint],
     ({ pageParam }) => getCodesLcd(endpoint, pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,

@@ -31,7 +31,7 @@ export const useValidatorsLcd = () => {
   const endpoint = useLcdEndpoint();
 
   return useQuery<ValidatorData[]>(
-    [CELATONE_QUERY_KEYS.VALIDATORS, endpoint],
+    [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
     async () => getValidatorsLcd(endpoint),
     {
       retry: 1,
@@ -49,7 +49,11 @@ export const useValidator = (validatorAddr: ValidatorAddr, enabled = true) => {
   const endpoint = useLcdEndpoint();
 
   return useQuery<ValidatorData>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddr] as string[],
+    [
+      CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD,
+      endpoint,
+      validatorAddr,
+    ] as string[],
     async () => getValidatorLcd(endpoint, validatorAddr),
     {
       enabled: enabled && Boolean(validatorAddr),
