@@ -9,7 +9,7 @@ import { useDebounce } from "lib/hooks";
 import {
   useProposalDataLcd,
   useProposalsLcd,
-} from "lib/services/wasm/proposal/lcd";
+} from "lib/services/wasm/proposal";
 import type { ProposalStatus } from "lib/types";
 
 import { ProposalStatusFilter } from "./ProposalStatusFilter";
