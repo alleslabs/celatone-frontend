@@ -85,21 +85,11 @@ export const ProposalsTableLite = () => {
           proposalsError ? (
             <ErrorFetching dataName="proposals" />
           ) : (
-            <>
-              {proposalStatus || search.trim().length > 0 ? (
-                <EmptyState
-                  imageVariant="not-found"
-                  message="No matches found. Please double-check your input and select correct network."
-                  withBorder
-                />
-              ) : (
-                <EmptyState
-                  imageVariant="empty"
-                  message="There are no proposals on this network."
-                  withBorder
-                />
-              )}
-            </>
+            <EmptyState
+              imageVariant="not-found"
+              message="No matches found. Please double-check your input and select correct network."
+              withBorder
+            />
           )
         }
       />
