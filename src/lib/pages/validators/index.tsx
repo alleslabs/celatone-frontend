@@ -64,6 +64,7 @@ const Validators = () => {
               setOrder={setOrder}
               isDesc={isDesc}
               setIsDesc={setIsDesc}
+              allowUptime={tier === "full"}
             />
           )}
           <InputWithIcon

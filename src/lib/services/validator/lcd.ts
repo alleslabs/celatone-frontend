@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-import { CELATONE_QUERY_KEYS, useLcdEndpoint } from "lib/app-provider";
 import {
   zValidatorResponseLcd,
   zValidatorsResponseLcd,
@@ -9,7 +7,7 @@ import {
 import type { Nullable, ValidatorAddr, ValidatorData } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-const getValidatorsLcd = async (endpoint: string) => {
+export const getValidatorsLcd = async (endpoint: string) => {
   const result: ValidatorData[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
@@ -27,38 +25,10 @@ const getValidatorsLcd = async (endpoint: string) => {
   return result;
 };
 
-export const useValidatorsLcd = () => {
-  const endpoint = useLcdEndpoint();
-
-  return useQuery<ValidatorData[]>(
-    [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
-    async () => getValidatorsLcd(endpoint),
-    {
-      retry: 1,
-      keepPreviousData: true,
-    }
-  );
-};
-
-const getValidatorLcd = (endpoint: string, validatorAddr: ValidatorAddr) =>
+export const getValidatorDataLcd = (
+  endpoint: string,
+  validatorAddr: ValidatorAddr
+) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/validators/${validatorAddr}`)
     .then(({ data }) => parseWithError(zValidatorResponseLcd, data).validator);
-
-export const useValidator = (validatorAddr: ValidatorAddr, enabled = true) => {
-  const endpoint = useLcdEndpoint();
-
-  return useQuery<ValidatorData>(
-    [
-      CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD,
-      endpoint,
-      validatorAddr,
-    ] as string[],
-    async () => getValidatorLcd(endpoint, validatorAddr),
-    {
-      enabled: enabled && Boolean(validatorAddr),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};

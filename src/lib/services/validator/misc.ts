@@ -1,13 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import type { UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
 
 import { CURR_THEME } from "env";
-import { CELATONE_QUERY_KEYS, useCurrentChain } from "lib/app-provider";
-import type { Nullable, Validator } from "lib/types";
+import type { Validator } from "lib/types";
 import { removeSpecialChars } from "lib/utils";
 
-const resolveValIdentity = async (
+export const resolveValIdentity = async (
   chainName: string,
   validator: Validator
 ): Promise<string> => {
@@ -31,29 +28,4 @@ const resolveValIdentity = async (
         return uiAvatarsUrl;
       })
   );
-};
-
-export const useValidatorImage = (
-  validator: Nullable<Validator>
-): UseQueryResult<string> => {
-  const {
-    chain: { chain_name: chainName },
-  } = useCurrentChain();
-
-  return useQuery({
-    queryKey: [
-      CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY,
-      chainName,
-      validator?.validatorAddress,
-      validator?.identity,
-      validator?.moniker,
-    ],
-    queryFn: async () => {
-      if (!validator) return Promise.resolve("");
-      return resolveValIdentity(chainName, validator);
-    },
-    retry: false,
-    refetchOnWindowFocus: false,
-    enabled: Boolean(validator),
-  });
 };

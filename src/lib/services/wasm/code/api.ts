@@ -1,18 +1,11 @@
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useGovConfig,
-} from "lib/app-provider";
 import { zCodeData, zCodesResponse } from "lib/services/types";
 import type { CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-const getCodes = async (
+export const getCodes = async (
   endpoint: string,
   limit: number,
   offset: number,
@@ -30,23 +23,7 @@ const getCodes = async (
     })
     .then(({ data }) => parseWithError(zCodesResponse, data));
 
-export const useCodes = (
-  limit: number,
-  offset: number,
-  address: Option<BechAddr20>,
-  permission: Option<boolean>,
-  options?: Pick<UseQueryOptions<CodesResponse>, "onSuccess">
-): UseQueryResult<CodesResponse> => {
-  const endpoint = useBaseApiRoute("codes");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CODES, endpoint, limit, offset, address, permission],
-    async () => getCodes(endpoint, limit, offset, address, permission),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
-  );
-};
-
-const getCodesByAddress = async (
+export const getCodesByAddress = async (
   endpoint: string,
   address: BechAddr,
   limit: number,
@@ -61,21 +38,7 @@ const getCodesByAddress = async (
     })
     .then(({ data }) => zCodesResponse.parse(data));
 
-export const useCodesByAddress = (
-  address: BechAddr,
-  limit: number,
-  offset: number
-): UseQueryResult<CodesResponse> => {
-  const endpoint = useBaseApiRoute("accounts");
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
-    async () => getCodesByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
-const getCodeDataByCodeId = async (
+export const getCodeDataByCodeId = async (
   endpoint: string,
   codeId: number,
   isGov: boolean
@@ -87,18 +50,3 @@ const getCodeDataByCodeId = async (
       },
     })
     .then(({ data }) => parseWithError(zCodeData, data));
-
-export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
-  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
-  const endpoint = useBaseApiRoute("codes");
-
-  return useQuery<CodeData>(
-    [CELATONE_QUERY_KEYS.CODE_DATA, endpoint, codeId, isGov],
-    async () => getCodeDataByCodeId(endpoint, codeId, isGov),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-};
