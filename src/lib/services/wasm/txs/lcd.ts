@@ -17,9 +17,7 @@ const getTxDataLcd = async (
 ): Promise<TxData> => {
   const txData = await axios
     .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURIComponent(txHash)}`)
-    .then(({ data }) => {
-      return data;
-    });
+    .then(({ data }) => data);
 
   const { tx_response: txResponse } = txData;
 

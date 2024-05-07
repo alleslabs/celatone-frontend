@@ -23,10 +23,10 @@ const TxDetails = () => {
   const txData = useTxData(hashParam, tier === "full");
   const txDataLcd = useTxDataLcd(hashParam, tier === "lite");
 
-  const { data, isLoading, isFetched } = tier === "full" ? txData : txDataLcd;
+  const { data, isLoading } = tier === "full" ? txData : txDataLcd;
 
   useEffect(() => {
-    if (router.isReady && !(isLoading && isFetched)) {
+    if (router.isReady && !isLoading) {
       const mapTxFailed = {
         true: "fail",
         false: "success",
@@ -37,9 +37,9 @@ const TxDetails = () => {
           mapTxFailed[String(data?.isTxFailed) as keyof typeof mapTxFailed],
       });
     }
-  }, [router.isReady, data, isLoading, isFetched]);
+  }, [router.isReady, data, isLoading]);
 
-  if ((isLoading && isFetched) || !hashParam) return <Loading withBorder />;
+  if (isLoading || !hashParam) return <Loading withBorder />;
 
   return (
     <PageContainer>
