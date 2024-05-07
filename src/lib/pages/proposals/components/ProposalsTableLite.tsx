@@ -74,6 +74,7 @@ export const ProposalsTableLite = () => {
             onChange={setProposalStatus}
             placeholder=""
             initialSelected={proposalStatus}
+            disableMaxH
           />
         </GridItem>
       </Grid>
