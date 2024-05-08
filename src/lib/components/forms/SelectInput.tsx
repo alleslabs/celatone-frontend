@@ -21,6 +21,7 @@ interface SelectInputProps<T extends string> {
   formLabel?: string;
   options: {
     label: string;
+    chipContainerComponent?: JSX.Element;
     value: T;
     disabled: boolean;
     icon?: IconKeys;
@@ -164,21 +165,31 @@ export const SelectInput = <T extends string>({
         }}
         overflow="hidden"
       >
-        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
-          <SelectItem
-            key={value}
-            onSelect={() => {
-              setSelected(label);
-              onChange(value);
-              onClose();
-            }}
-            disabled={disabled}
-          >
-            <Flex alignItems="center">{image}</Flex>
-            {icon && <CustomIcon name={icon} color={iconColor} />}
-            {label}
-          </SelectItem>
-        ))}
+        {options.map(
+          ({
+            label,
+            value,
+            disabled,
+            icon,
+            iconColor,
+            image,
+            chipContainerComponent,
+          }) => (
+            <SelectItem
+              key={value}
+              onSelect={() => {
+                setSelected(label);
+                onChange(value);
+                onClose();
+              }}
+              disabled={disabled}
+            >
+              {image && <Flex alignItems="center">{image}</Flex>}
+              {icon && <CustomIcon name={icon} color={iconColor} />}
+              {chipContainerComponent ?? label}
+            </SelectItem>
+          )
+        )}
         {helperTextComponent && (
           <Flex
             px={4}

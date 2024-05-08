@@ -63,6 +63,12 @@ export const ProposalsTableMobileCard = ({
               status={proposal.status}
             />
           </Flex>
+          {tier === "lite" && (
+            <Flex direction="column" flex="1">
+              <MobileLabel label="Proposed by" />
+              <Proposer proposer={proposal.proposer} />
+            </Flex>
+          )}
         </Flex>
       }
       bottomContent={

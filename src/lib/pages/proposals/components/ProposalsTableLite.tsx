@@ -5,7 +5,7 @@ import { SelectInput } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { ProposalsTable } from "lib/components/table";
+import { ProposalsTable, StatusChip } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import {
   mapProposalStatusLcdToProposalStatus,
@@ -44,19 +44,24 @@ export const ProposalsTableLite = () => {
     proposals &&
     proposals.length > 1;
 
-  const options = Object.values(ProposalStatusLcd).map((status) => ({
-    label: mapProposalStatusLcdToProposalStatus(status),
-    value: status,
-    disabled: false,
-  }));
+  const options = Object.values(ProposalStatusLcd).map((status) => {
+    const mapStatus = mapProposalStatusLcdToProposalStatus(status);
+
+    return {
+      label: status === ProposalStatusLcd.ALL ? "All Status" : mapStatus,
+      value: status,
+      disabled: false,
+      chipContainerComponent: <StatusChip status={mapStatus} />,
+    };
+  });
 
   return (
     <>
       <Grid
         mt={8}
-        mb={{ base: 16, md: 8 }}
+        mb={{ base: 6, md: 8 }}
         gridTemplateColumns={{ base: "1fr", md: "1fr 370px" }}
-        gap={{ base: 3, md: 6 }}
+        gap={{ base: 4, md: 6 }}
       >
         <GridItem>
           <InputWithIcon
