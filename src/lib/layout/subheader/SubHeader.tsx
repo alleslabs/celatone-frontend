@@ -14,6 +14,8 @@ import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 
+import { getSubHeaderFull, getSubHeaderLite } from "./utils";
+
 const ACTIVE_COLOR = "primary.light";
 
 interface SubHeaderMenuInfo {
@@ -34,82 +36,17 @@ const SubHeader = () => {
 
   const subMenu: SubHeaderMenuInfo[] =
     tier === "full"
-      ? [
-          { name: "Overview", slug: "/", icon: "home" },
-          { name: "Transactions", slug: "/txs", icon: "file" },
-          { name: "Blocks", slug: "/blocks", icon: "block" },
-          ...(govConfig.enabled
-            ? [
-                {
-                  name: "Validators",
-                  slug: "/validators",
-                  icon: "validator" as IconKeys,
-                },
-                {
-                  name: "Proposals",
-                  slug: "/proposals",
-                  icon: "proposal" as IconKeys,
-                },
-              ]
-            : []),
-          ...(wasmConfig.enabled
-            ? [
-                { name: "Codes", slug: "/codes", icon: "code" as IconKeys },
-                {
-                  name: "Contracts",
-                  slug: "/contracts",
-                  icon: "contract-address" as IconKeys,
-                },
-              ]
-            : []),
-          ...(moveConfig.enabled
-            ? [
-                {
-                  name: "Modules",
-                  slug: "/modules",
-                  icon: "contract-address" as IconKeys,
-                },
-              ]
-            : []),
-          ...(nftConfig.enabled
-            ? [
-                {
-                  name: "NFTs",
-                  slug: "/nft-collections",
-                  icon: "group" as IconKeys,
-                },
-              ]
-            : []),
-          ...(poolConfig.enabled
-            ? [
-                {
-                  name: "Osmosis Pools",
-                  slug: "/pools",
-                  icon: "pool" as IconKeys,
-                },
-              ]
-            : []),
-        ]
-      : [
-          { name: "Overview", slug: "/", icon: "home" },
-          ...(govConfig.enabled
-            ? [
-                {
-                  name: "Validators",
-                  slug: "/validators",
-                  icon: "validator" as IconKeys,
-                },
-                {
-                  name: "Proposals",
-                  slug: "/proposals",
-                  icon: "proposal" as IconKeys,
-                },
-              ]
-            : []),
-          ...(wasmConfig.enabled
-            ? [{ name: "Codes", slug: "/codes", icon: "code" as IconKeys }]
-            : []),
-        ];
+      ? (getSubHeaderFull(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled,
+          nftConfig.enabled,
+          poolConfig.enabled
+        ) as SubHeaderMenuInfo[])
+      : (getSubHeaderLite(
+          govConfig.enabled,
+          wasmConfig.enabled
+        ) as SubHeaderMenuInfo[]);
 
   return (
     <Flex px={6} h="full">

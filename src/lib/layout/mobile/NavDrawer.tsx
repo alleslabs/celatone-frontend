@@ -30,7 +30,8 @@ import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
+import { getNavDrawerFull, getNavDrawerLite } from "./utils";
+
 export const NavDrawer = () => {
   const tier = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
@@ -43,134 +44,19 @@ export const NavDrawer = () => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const navMenu: MenuInfo[] =
+  const navMenu =
     tier === "full"
-      ? [
-          {
-            category: "Overview",
-            slug: "overview",
-            submenu: [
-              { name: "Overview", slug: "/", icon: "home" },
-              {
-                name: "Transactions",
-                slug: "/txs",
-                icon: "file" as IconKeys,
-              },
-              {
-                name: "Blocks",
-                slug: "/blocks",
-                icon: "block" as IconKeys,
-              },
-              ...(govConfig.enabled
-                ? [
-                    {
-                      name: "Validators",
-                      slug: "/validators",
-                      icon: "validator" as IconKeys,
-                    },
-                    {
-                      name: "Proposals",
-                      slug: "/proposals",
-                      icon: "proposal" as IconKeys,
-                    },
-                  ]
-                : []),
-              ...(wasmConfig.enabled
-                ? [
-                    {
-                      name: "Codes",
-                      slug: "/codes",
-                      icon: "code" as IconKeys,
-                    },
-                    {
-                      name: "Contracts",
-                      slug: "/contracts",
-                      icon: "contract-address" as IconKeys,
-                    },
-                    {
-                      name: "Query",
-                      slug: "/interact-contract",
-                      icon: "query" as IconKeys,
-                    },
-                  ]
-                : []),
-              ...(moveConfig.enabled
-                ? [
-                    {
-                      name: "Modules",
-                      slug: "/modules",
-                      icon: "contract-address" as IconKeys,
-                    },
-                    {
-                      name: "0x1 Page",
-                      slug: "/account/0x1",
-                      icon: "hex" as IconKeys,
-                    },
-                  ]
-                : []),
-              ...(nftConfig.enabled
-                ? [
-                    {
-                      name: "NFT Collections",
-                      slug: "/nft-collections",
-                      icon: "group" as IconKeys,
-                    },
-                  ]
-                : []),
-            ],
-          },
-        ]
-      : [
-          {
-            category: "Overview",
-            slug: "overview",
-            submenu: [
-              { name: "Overview", slug: "/", icon: "home" },
-              ...(govConfig.enabled
-                ? [
-                    {
-                      name: "Validators",
-                      slug: "/validators",
-                      icon: "validator" as IconKeys,
-                    },
-                    {
-                      name: "Proposals",
-                      slug: "/proposals",
-                      icon: "proposal" as IconKeys,
-                    },
-                  ]
-                : []),
-              ...(wasmConfig.enabled
-                ? [
-                    {
-                      name: "Codes",
-                      slug: "/codes",
-                      icon: "code" as IconKeys,
-                    },
-                    {
-                      name: "Query",
-                      slug: "/query",
-                      icon: "query" as IconKeys,
-                    },
-                  ]
-                : []),
-              ...(moveConfig.enabled
-                ? [
-                    {
-                      name: "0x1 Page",
-                      slug: "/account/0x1",
-                      icon: "hex" as IconKeys,
-                    },
-                    // {
-                    //   name: "View",
-                    //   slug: "/interact",
-                    //   icon: "query" as IconKeys,
-                    // },
-                  ]
-                : []),
-            ],
-          },
-        ];
+      ? (getNavDrawerFull(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled,
+          nftConfig.enabled
+        ) as MenuInfo[])
+      : (getNavDrawerLite(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled
+        ) as MenuInfo[]);
 
   if (publicProject.enabled) {
     navMenu.push({
