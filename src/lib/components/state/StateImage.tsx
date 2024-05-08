@@ -24,7 +24,7 @@ export const StateImage = ({
   return (
     <Image
       src={imageSourceMap[imageVariant]}
-      alt="result not found"
+      alt={`result ${imageVariant}`}
       width={imageWidth}
     />
   );

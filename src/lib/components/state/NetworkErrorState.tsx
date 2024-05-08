@@ -1,6 +1,8 @@
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+import { DEFAULT_THEME } from "config/theme";
+
 const bullets = [
   "The configuration for your chosen chain hasn't been set up yet.",
   "The network you selected is no longer supported.",
@@ -18,18 +20,14 @@ export const NetworkErrorState = () => {
       h="100vh"
       bg="background.main"
     >
-      <Image
-        src="https://assets.alleslabs.dev/branding/logo/logo.svg"
-        alt="Celatone"
-        width="300px"
-      />
+      <Image src={DEFAULT_THEME.branding.logo} alt="Celatone" width="300px" />
       <Flex
         flexDir="column"
         align="center"
         sx={{ "& > p": { lineHeight: "22px" } }}
       >
         <Image
-          src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+          src={DEFAULT_THEME.illustration.searchNotFound}
           alt="config_not_found"
           width="152px"
         />

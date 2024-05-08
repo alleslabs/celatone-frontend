@@ -1,6 +1,5 @@
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
-import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import {
   createContext,
@@ -18,15 +17,7 @@ import type { ProjectConstants } from "config/project";
 import { DEFAULT_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
 import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
-import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
-import { DEFAULT_ADDRESS } from "lib/data";
-import {
-  useAccountStore,
-  useCodeStore,
-  useContractStore,
-  usePublicProjectStore,
-} from "lib/providers/store";
-import { changeFavicon, formatUserKey } from "lib/utils";
+import { changeFavicon } from "lib/utils";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -41,23 +32,21 @@ interface AppContextInterface {
   theme: ThemeConfig;
 }
 
-const AppContext = createContext<AppContextInterface>({
-  availableChainIds: [],
+const DEFAULT_STATES: AppContextInterface = {
+  availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer),
   constants: PROJECT_CONSTANTS,
   theme: DEFAULT_THEME,
-});
+};
 
-export const AppProvider = observer(({ children }: AppProviderProps) => {
-  const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
-  const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
-  const { setContractUserKey, isContractUserKeyExist } = useContractStore();
-  const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
+const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
+
+export const AppProvider = ({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
 
-  const [states, setStates] = useState<AppContextInterface>();
+  const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
   // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback((newChainId: string) => {
@@ -80,25 +69,6 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (states?.chainConfig.registryChainName) {
-      const userKey = formatUserKey(
-        states?.chainConfig.registryChainName,
-        DEFAULT_ADDRESS
-      );
-      setAccountUserKey(userKey);
-      setCodeUserKey(userKey);
-      setContractUserKey(userKey);
-      setProjectUserKey(userKey);
-    }
-  }, [
-    states?.chainConfig.registryChainName,
-    setAccountUserKey,
-    setCodeUserKey,
-    setContractUserKey,
-    setProjectUserKey,
-  ]);
-
   // Disable "Leave page" alert
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -117,24 +87,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
   useNetworkChange(handleOnChainIdChange);
 
-  if (states && !(states.currentChainId in CHAIN_CONFIGS))
-    return <NetworkErrorState />;
-
-  if (
-    !isAccountUserKeyExist() ||
-    !isCodeUserKeyExist() ||
-    !isContractUserKeyExist() ||
-    !isProjectUserKeyExist() ||
-    !states
-  )
-    return (
-      <div className="app-loader">
-        <div className="app-loader-spinner" />
-      </div>
-    );
-
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
-});
+};
 
 export const useCelatoneApp = (): AppContextInterface => {
   return useContext(AppContext);
