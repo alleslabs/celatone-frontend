@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
+- [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
 - [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
 - [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
 - [#903](https://github.com/alleslabs/celatone-frontend/pull/903) Prevent list pages in lite version

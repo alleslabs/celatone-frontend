@@ -9,7 +9,7 @@ import {
   StatusChip,
 } from "lib/components/table";
 import { ProposalTextCell } from "lib/components/table/proposals/ProposalTextCell";
-import type { ValidatorVotedProposalsResponseItem } from "lib/services/validator";
+import type { ValidatorVotedProposalsResponseItem } from "lib/services/types";
 import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 

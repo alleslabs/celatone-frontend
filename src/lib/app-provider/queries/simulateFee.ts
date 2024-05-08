@@ -9,7 +9,7 @@ import {
   useCurrentChain,
   useDummyWallet,
   useGetSigningClient,
-  useRPCEndpoint,
+  useRpcEndpoint,
 } from "../hooks";
 import type { AccessType, BechAddr, ComposedMsg, Gas, Option } from "lib/types";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
@@ -34,7 +34,7 @@ export const useSimulateFeeQuery = ({
   const { address, chain } = useCurrentChain();
   const getSigningClient = useGetSigningClient();
   const { dummyWallet, dummyAddress } = useDummyWallet();
-  const rpcEndpoint = useRPCEndpoint();
+  const rpcEndpoint = useRpcEndpoint();
   const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
 
   const simulateFn = async (msgs: ComposedMsg[]) => {

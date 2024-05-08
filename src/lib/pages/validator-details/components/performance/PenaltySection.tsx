@@ -1,7 +1,7 @@
 import { Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import type { ValidatorUptimeResponse } from "lib/services/validator";
+import type { ValidatorUptimeResponse } from "lib/services/types";
 
 import { PenaltyEvent } from "./PenaltyEvent";
 

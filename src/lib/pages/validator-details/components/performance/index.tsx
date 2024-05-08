@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
-import { useValidatorUptime } from "lib/services/validatorService";
+import { useValidatorUptime } from "lib/services/validator";
 import type { ValidatorAddr } from "lib/types";
 
 import { PenaltySection } from "./PenaltySection";

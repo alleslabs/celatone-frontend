@@ -44,6 +44,7 @@ interface OrderSelectProps {
   setOrder: (value: ValidatorOrder) => void;
   isDesc: boolean;
   setIsDesc: (value: boolean) => void;
+  allowUptime: boolean;
 }
 
 export const OrderSelect = ({
@@ -51,6 +52,7 @@ export const OrderSelect = ({
   setOrder,
   isDesc,
   setIsDesc,
+  allowUptime,
 }: OrderSelectProps) => (
   <Flex direction="column" gap={1} minW="full">
     <Text variant="body3" color="text.dark" pl={1}>
@@ -58,7 +60,13 @@ export const OrderSelect = ({
     </Text>
     <Select
       size="lg"
-      options={ORDER_OPTIONS}
+      options={
+        allowUptime
+          ? ORDER_OPTIONS
+          : ORDER_OPTIONS.filter(
+              (val) => val.value.order !== ValidatorOrder.Uptime
+            )
+      }
       value={ORDER_OPTIONS.find(
         ({ value }) => value.order === order && value.isDesc === isDesc
       )}

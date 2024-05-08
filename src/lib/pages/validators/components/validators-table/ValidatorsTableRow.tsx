@@ -28,6 +28,7 @@ interface ValidatorsTableRowProps {
   totalVotingPower: Big;
   minCommissionRate: number;
   denomToken: Option<TokenWithValue>;
+  showUptime: boolean;
 }
 
 export const ValidatorsTableRow = ({
@@ -37,6 +38,7 @@ export const ValidatorsTableRow = ({
   totalVotingPower,
   minCommissionRate,
   denomToken,
+  showUptime,
 }: ValidatorsTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -102,19 +104,21 @@ export const ValidatorsTableRow = ({
           </Text>
         </div>
       </TableRow>
-      <TableRow>
-        <Text
-          variant="body2"
-          color={isZeroUptime ? "error.main" : "text.main"}
-          fontWeight={isZeroUptime ? 700 : undefined}
-        >
-          {formatPrettyPercent(
-            ((validator.uptime ?? 0) / 100) as Ratio<number>,
-            0,
-            true
-          )}
-        </Text>
-      </TableRow>
+      {showUptime && (
+        <TableRow>
+          <Text
+            variant="body2"
+            color={isZeroUptime ? "error.main" : "text.main"}
+            fontWeight={isZeroUptime ? 700 : undefined}
+          >
+            {formatPrettyPercent(
+              ((validator.uptime ?? 0) / 100) as Ratio<number>,
+              0,
+              true
+            )}
+          </Text>
+        </TableRow>
+      )}
       <TableRow>
         <Text
           variant="body2"

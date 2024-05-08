@@ -1,7 +1,7 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Image, SkeletonCircle } from "@chakra-ui/react";
 
-import { useValidatorImage } from "lib/services/validatorService";
+import { useValidatorImage } from "lib/services/validator";
 import type { Nullable, Validator } from "lib/types";
 
 interface ValidatorImageProps {

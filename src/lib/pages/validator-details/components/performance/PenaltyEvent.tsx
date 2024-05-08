@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { ValidatorUptimeResponse } from "lib/services/validator";
+import type { ValidatorUptimeResponse } from "lib/services/types";
 import { SlashingEvent } from "lib/types";
 
 interface PenaltyEventProps {

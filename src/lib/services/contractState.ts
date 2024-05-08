@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import type { BechAddr32, ContractState, Option } from "lib/types";
-import { zPagination } from "lib/types/rest";
+import { zPagination } from "lib/types";
 import {
   libDecode,
   parseJsonStr,
