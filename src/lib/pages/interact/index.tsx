@@ -1,9 +1,13 @@
-import { Box, Button, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackToModuleInteraction } from "lib/amplitude";
-import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useMobile,
+  useMoveConfig,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
@@ -18,17 +22,18 @@ import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
-  FunctionSelectBody,
-  FunctionSelectPanel,
   InteractionTabs,
   ModuleSelectDrawer,
   ModuleSelectDrawerTrigger,
 } from "./component";
+import { InteractionBodySection } from "./component/InteractionBodySection";
+import { InteractionBodySectionMobile } from "./component/InteractionBodySectionMobile";
 
 export const Interact = () => {
   useMoveConfig({ shouldRedirect: true });
 
   const router = useRouter();
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const openNewTab = useOpenNewTab();
@@ -142,7 +147,10 @@ export const Interact = () => {
         display="grid"
         gridTemplateRows="auto auto 1fr"
       >
-        <PageHeader title=" Module Interactions" docHref="move/view-execute" />
+        <PageHeader
+          title={isMobile ? "View Module" : "Module Interactions"}
+          docHref="move/view-execute"
+        />
         <Flex
           alignItems="center"
           justifyContent="space-between"
@@ -152,7 +160,13 @@ export const Interact = () => {
           mb={8}
         >
           {module ? (
-            <>
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              alignItems={{ md: "center" }}
+              justifyContent={{ md: "space-between" }}
+              w="full"
+              gap={{ base: 4, md: 0 }}
+            >
               <Flex direction="column" gap={4}>
                 <LabelText label="Module Path" labelWeight={600}>
                   <Flex align="center" gap={1}>
@@ -173,7 +187,7 @@ export const Interact = () => {
                   </Text>
                 </LabelText>
               </Flex>
-              <Flex direction="column" gap={2}>
+              <Flex direction={{ base: "row", md: "column" }} gap={2}>
                 <ModuleSelectDrawerTrigger
                   triggerVariant="change-module"
                   buttonText="Change Module"
@@ -199,15 +213,21 @@ export const Interact = () => {
                   See Module
                 </Button>
               </Flex>
-            </>
+            </Flex>
           ) : (
-            <>
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              alignItems={{ md: "center" }}
+              justifyContent={{ md: "space-between" }}
+              w="full"
+              gap={4}
+            >
               <p>Select a module to interact with ...</p>
               <ModuleSelectDrawerTrigger
                 triggerVariant="select-module"
                 onOpen={onOpen}
               />
-            </>
+            </Flex>
           )}
           <ModuleSelectDrawer
             isOpen={isOpen}
@@ -216,26 +236,22 @@ export const Interact = () => {
             handleModuleSelect={handleModuleSelect}
           />
         </Flex>
-        <Grid
-          gap={8}
-          templateColumns="minmax(300px, 20%) 1fr"
-          overflow="hidden"
-        >
-          {/* Left side */}
-          <FunctionSelectPanel
-            module={module}
-            tab={selectedType}
-            setTab={setSelectedType}
-            selectedFn={selectedFn}
-            setSelectedFn={handleFunctionSelect}
-          />
-          {/* Right side */}
-          <FunctionSelectBody
+        {isMobile ? (
+          <InteractionBodySectionMobile
             module={module}
             selectedFn={selectedFn}
             openDrawer={onOpen}
           />
-        </Grid>
+        ) : (
+          <InteractionBodySection
+            module={module}
+            selectedType={selectedType}
+            setSelectedType={setSelectedType}
+            selectedFn={selectedFn}
+            handleFunctionSelect={handleFunctionSelect}
+            onOpen={onOpen}
+          />
+        )}
       </PageContainer>
       <Box px={{ base: "16px", md: "48px" }}>
         <ModuleSourceCode sourceCode={verificationData?.source} />

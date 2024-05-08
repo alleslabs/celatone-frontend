@@ -29,7 +29,7 @@ export const ModuleSelectDrawerTrigger = ({
 }: ModuleSelectDrawerTriggerProps) => (
   <Button
     {...buttonStyles[triggerVariant]}
-    ml="auto"
+    ml={{ md: "auto" }}
     onClick={() => {
       track(AmpEvent.USE_MODULE_SELECTION_DRAWER, {
         label: buttonText,

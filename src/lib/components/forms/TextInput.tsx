@@ -86,7 +86,7 @@ export const TextInput = ({
           {status?.message ? (
             getResponseMsg(status, helperText)
           ) : (
-            <Text color="text.dark" variant="body3">
+            <Text color="text.dark" variant="body3" wordBreak="break-word">
               {helperText}
             </Text>
           )}

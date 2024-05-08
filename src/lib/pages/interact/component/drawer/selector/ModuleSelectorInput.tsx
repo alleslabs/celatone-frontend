@@ -106,8 +106,9 @@ export const ModuleSelectorInput = ({
       bgColor="gray.800"
       p={4}
       mb={6}
-      gap={4}
+      gap={{ base: 2, md: 4 }}
       borderRadius={8}
+      direction={{ base: "column", md: "row" }}
     >
       <TextInput
         value={keyword}
@@ -122,9 +123,11 @@ export const ModuleSelectorInput = ({
         onKeyDown={handleKeydown}
         autoFocus
       />
-      <Flex gap={2}>
+      <Flex gap={2} w={{ base: "full", md: "auto" }} mt={{ base: 1, md: 0 }}>
         <Button
           variant="primary"
+          w={{ base: "full", md: "auto" }}
+          size={{ base: "sm", md: "md" }}
           onClick={handleSubmit}
           isDisabled={!keyword.length || isFetching}
           isLoading={isFetching}
@@ -133,6 +136,8 @@ export const ModuleSelectorInput = ({
         </Button>
         <Button
           variant="outline-white"
+          w={{ base: "full", md: "auto" }}
+          size={{ base: "sm", md: "md" }}
           onClick={() =>
             selectedAddress.address ? setMode("display") : closeModal()
           }
