@@ -7,7 +7,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 
@@ -28,7 +27,7 @@ import {
   useContractStore,
   usePublicProjectStore,
 } from "lib/providers/store";
-import { formatUserKey } from "lib/utils";
+import { changeFavicon, formatUserKey } from "lib/utils";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -59,39 +58,18 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
   const { setModalTheme } = useModalTheme();
 
-  const [currentChainName, setCurrentChainName] = useState<string>();
-  const [currentChainId, setCurrentChainId] = useState("");
+  const [states, setStates] = useState<AppContextInterface>();
 
   // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback((newChainId: string) => {
-    const config = CHAIN_CONFIGS[newChainId];
+    const chainConfig = CHAIN_CONFIGS[newChainId] ?? DEFAULT_CHAIN_CONFIG;
 
-    const theme = getTheme(config.chain);
-    // Change Favicon
-    const documentHead =
-      document.head || document.getElementsByTagName("head")[0];
+    const theme = getTheme(chainConfig.chain);
+    changeFavicon(theme.branding.favicon);
 
-    const newFavicon = document.createElement("link");
-    newFavicon.id = "favicon";
-    newFavicon.rel = "shortcut icon";
-    newFavicon.href = theme.branding.favicon;
-
-    const oldFavicon = document.getElementById("favicon");
-    if (oldFavicon) {
-      documentHead.removeChild(oldFavicon);
-    }
-    documentHead.appendChild(newFavicon);
-
-    setCurrentChainId(newChainId);
-    setCurrentChainName(config?.registryChainName);
-  }, []);
-
-  const states = useMemo<AppContextInterface>(() => {
-    const chainConfig = CHAIN_CONFIGS[currentChainId] ?? DEFAULT_CHAIN_CONFIG;
-
-    return {
+    setStates({
       availableChainIds: SUPPORTED_CHAIN_IDS,
-      currentChainId,
+      currentChainId: newChainId,
       chainConfig,
       indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
         headers: {
@@ -100,19 +78,22 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       }),
       constants: PROJECT_CONSTANTS,
       theme: getTheme(chainConfig.chain),
-    };
-  }, [currentChainId]);
+    });
+  }, []);
 
   useEffect(() => {
-    if (currentChainName) {
-      const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+    if (states?.chainConfig.registryChainName) {
+      const userKey = formatUserKey(
+        states?.chainConfig.registryChainName,
+        DEFAULT_ADDRESS
+      );
       setAccountUserKey(userKey);
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
     }
   }, [
-    currentChainName,
+    states?.chainConfig.registryChainName,
     setAccountUserKey,
     setCodeUserKey,
     setContractUserKey,
@@ -137,7 +118,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
   useNetworkChange(handleOnChainIdChange);
 
-  if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
+  if (states && !(states.currentChainId in CHAIN_CONFIGS))
     return <NetworkErrorState />;
 
   if (
@@ -145,7 +126,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
     !isProjectUserKeyExist() ||
-    !currentChainId
+    !states
   )
     return <LoadingOverlay />;
 
