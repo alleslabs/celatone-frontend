@@ -18,7 +18,7 @@ import {
   FilterInput,
 } from "lib/components/filter";
 import { CustomIcon } from "lib/components/icon";
-import { useProposalTypes } from "lib/services/wasm/proposal";
+import { useProposalTypes } from "lib/services/proposal";
 import type { ProposalType } from "lib/types";
 import { ProposalTypeCosmos } from "lib/types";
 

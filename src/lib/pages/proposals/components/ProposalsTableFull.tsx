@@ -11,7 +11,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import { useDebounce } from "lib/hooks";
-import { useProposals } from "lib/services/wasm/proposal";
+import { useProposals } from "lib/services/proposal";
 import type {
   BechAddr20,
   Option,

@@ -13,7 +13,7 @@ import { UploadSection } from "lib/components/upload/UploadSection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParams } from "lib/services/wasm/proposal";
+import { useUploadAccessParams } from "lib/services/proposal";
 import { AccessConfigPermission } from "lib/types";
 
 export const Upload = ({

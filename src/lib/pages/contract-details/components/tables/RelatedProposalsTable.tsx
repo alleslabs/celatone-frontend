@@ -4,7 +4,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
-import { useRelatedProposalsByContractAddress } from "lib/services/wasm/proposal";
+import { useRelatedProposalsByContractAddress } from "lib/services/proposal";
 import type { BechAddr32, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {

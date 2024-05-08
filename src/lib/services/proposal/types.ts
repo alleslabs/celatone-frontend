@@ -28,7 +28,7 @@ import type {
 import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
-import { mapProposalStatusLcdToProposalStatus } from "./helper";
+import { mapProposalStatusLcdToProposalStatus } from "./helpers";
 
 export interface MinDeposit {
   amount: U<Token<Big>>;

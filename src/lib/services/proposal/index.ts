@@ -1,12 +1,15 @@
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useCallback } from "react";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
-import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move/poolService";
-import { big, zProposalType } from "lib/types";
+import { useAssetInfos } from "../assetService";
+import { useMovePoolInfos } from "../move/poolService";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useLCDEndpoint,
+} from "lib/app-provider";
+import { big } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
@@ -15,8 +18,8 @@ import type {
   Option,
   ProposalParams,
   ProposalStatus,
+  ProposalStatusLcd,
   ProposalType,
-  ProposalValidatorVote,
   ProposalVotesInfo,
   ProposalVoteType,
   Token,
@@ -26,56 +29,36 @@ import {
   deexponentify,
   formatTokenWithValue,
   getTokenLabel,
-  parseWithError,
-  snakeToCamel,
 } from "lib/utils";
 
 import {
-  zProposalAnswerCountsResponse,
-  zProposalDataResponse,
-  zProposalParamsResponse,
-  zProposalsResponse,
-  zProposalVotesInfoResponse,
-  zProposalVotesResponse,
-  zRelatedProposalsResponse,
-} from "./types";
+  fetchGovDepositParams,
+  fetchGovUploadAccessParams,
+  fetchGovVotingParams,
+  getProposalAnswerCounts,
+  getProposalData,
+  getProposalParams,
+  getProposals,
+  getProposalsByAddress,
+  getProposalTypes,
+  getProposalValidatorVotes,
+  getProposalVotes,
+  getProposalVotesInfo,
+  getRelatedProposalsByContractAddress,
+} from "./api";
+import { getProposalDataLcd, getProposalsLcd } from "./lcd";
 import type {
-  DepositParams,
-  DepositParamsInternal,
   GovParams,
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
   ProposalsResponse,
+  ProposalsResponseItemLcd,
+  ProposalsResponseLcd,
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
   UploadAccess,
-  VotingParams,
-  VotingParamsInternal,
 } from "./types";
-
-const fetchGovDepositParams = (
-  lcdEndpoint: string
-): Promise<DepositParamsInternal> =>
-  axios
-    .get<{
-      deposit_params: DepositParams;
-    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
-    .then(({ data }) => snakeToCamel(data.deposit_params));
-
-const fetchGovVotingParams = (
-  lcdEndpoint: string
-): Promise<VotingParamsInternal> =>
-  axios
-    .get<{
-      voting_params: VotingParams;
-    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
-    .then(({ data }) => snakeToCamel(data.voting_params));
-
-const fetchGovUploadAccessParams = async (
-  lcdEndpoint: string
-): Promise<UploadAccess> =>
-  axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
@@ -146,13 +129,6 @@ export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
   );
 };
 
-const getProposalParams = async (
-  endpoint: string
-): Promise<ProposalParams<Coin>> =>
-  axios
-    .get(`${endpoint}/params`)
-    .then(({ data }) => parseWithError(zProposalParamsResponse, data));
-
 export const useProposalParams = () => {
   const endpoint = useBaseApiRoute("proposals");
   return useQuery<ProposalParams<Coin>>(
@@ -162,11 +138,6 @@ export const useProposalParams = () => {
   );
 };
 
-const getProposalTypes = async (endpoint: string) =>
-  axios
-    .get(`${endpoint}/types`)
-    .then(({ data }) => parseWithError(zProposalType.array(), data));
-
 export const useProposalTypes = () => {
   const endpoint = useBaseApiRoute("proposals");
   return useQuery<ProposalType[]>(
@@ -175,28 +146,6 @@ export const useProposalTypes = () => {
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
-
-const getProposals = async (
-  endpoint: string,
-  limit: number,
-  offset: number,
-  proposer: Option<BechAddr20>,
-  statuses: ProposalStatus[],
-  types: ProposalType[],
-  search: string
-): Promise<ProposalsResponse> =>
-  axios
-    .get(`${endpoint}`, {
-      params: {
-        limit,
-        offset,
-        proposer,
-        statuses: statuses.join(","),
-        types: types.join(","),
-        search,
-      },
-    })
-    .then(({ data }) => parseWithError(zProposalsResponse, data));
 
 export const useProposals = (
   limit: number,
@@ -234,20 +183,27 @@ export const useProposals = (
   );
 };
 
-const getProposalsByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  limit: number,
-  offset: number
-): Promise<ProposalsResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/proposals`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zProposalsResponse, data));
+export const useProposalsLcd = (
+  status?: Omit<ProposalStatusLcd, "DEPOSIT_FAILED" | "CANCELLED">
+) => {
+  const lcdEndpoint = useLCDEndpoint();
+
+  const query = useInfiniteQuery<ProposalsResponseLcd>(
+    [CELATONE_QUERY_KEYS.PROPOSALS_LCD, lcdEndpoint, status],
+    ({ pageParam }) => getProposalsLcd(lcdEndpoint, pageParam, status),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const { data, ...rest } = query;
+
+  return {
+    data: data?.pages.flatMap((page) => page.proposals),
+    ...rest,
+  };
+};
 
 export const useProposalsByAddress = (
   address: BechAddr,
@@ -268,24 +224,6 @@ export const useProposalsByAddress = (
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
-
-const getRelatedProposalsByContractAddress = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  limit: number,
-  offset: number
-): Promise<RelatedProposalsResponse> =>
-  axios
-    .get(
-      `${endpoint}/${encodeURIComponent(contractAddress)}/related-proposals`,
-      {
-        params: {
-          limit,
-          offset,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zRelatedProposalsResponse, data));
 
 export const useRelatedProposalsByContractAddress = (
   contractAddress: BechAddr32,
@@ -316,14 +254,6 @@ export const useRelatedProposalsByContractAddress = (
   );
 };
 
-const getProposalData = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalDataResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/info`)
-    .then(({ data }) => parseWithError(zProposalDataResponse, data));
-
 export const useProposalData = (id: number, enabled = true) => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -334,13 +264,19 @@ export const useProposalData = (id: number, enabled = true) => {
   );
 };
 
-const getProposalVotesInfo = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalVotesInfo> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/votes-info`)
-    .then(({ data }) => parseWithError(zProposalVotesInfoResponse, data));
+export const useProposalDataLcd = (id: string, enabled = true) => {
+  const lcdEndpoint = useLCDEndpoint();
+
+  return useQuery<ProposalsResponseItemLcd>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
+    async () => getProposalDataLcd(lcdEndpoint, id),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
+    }
+  );
+};
 
 export const useProposalVotesInfo = (id: number) => {
   const endpoint = useBaseApiRoute("proposals");
@@ -350,23 +286,6 @@ export const useProposalVotesInfo = (id: number) => {
     async () => getProposalVotesInfo(endpoint, id),
     { retry: 1, refetchOnWindowFocus: false }
   );
-};
-
-const getProposalVotes = async (
-  endpoint: string,
-  id: number,
-  limit: number,
-  offset: number,
-  answer: ProposalVoteType,
-  search: string
-): Promise<ProposalVotesResponse> => {
-  let url = `${endpoint}/${encodeURIComponent(id)}/votes?limit=${limit}&offset=${offset}`;
-  url = url.concat(search ? `&search=${encodeURIComponent(search)}` : "");
-  url = url.concat(answer ? `&answer=${encodeURIComponent(answer)}` : "");
-
-  return axios
-    .get(url)
-    .then(({ data }) => parseWithError(zProposalVotesResponse, data));
 };
 
 export const useProposalVotes = (
@@ -393,34 +312,6 @@ export const useProposalVotes = (
     { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
-
-const getProposalValidatorVotes = async (
-  endpoint: string,
-  id: number,
-  limit: number,
-  offset: number,
-  answer: ProposalVoteType,
-  search: string
-): Promise<ProposalValidatorVotesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
-      params: {
-        limit,
-        offset,
-        answer,
-        search,
-      },
-    })
-    .then(({ data }) => {
-      const parsed = parseWithError(zProposalVotesResponse, data);
-      return {
-        items: parsed.items.map<ProposalValidatorVote>((item, idx) => ({
-          ...item,
-          rank: idx + 1,
-        })),
-        total: parsed.total,
-      };
-    });
 
 export const useProposalValidatorVotes = (
   id: number,
@@ -451,14 +342,6 @@ export const useProposalValidatorVotes = (
   );
 };
 
-const getProposalAnswerCounts = async (
-  endpoint: string,
-  id: number
-): Promise<ProposalAnswerCountsResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(id)}/answer-counts`)
-    .then(({ data }) => parseWithError(zProposalAnswerCountsResponse, data));
-
 export const useProposalAnswerCounts = (
   id: number,
   validatorOnly = false
@@ -471,3 +354,6 @@ export const useProposalAnswerCounts = (
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
+
+export * from "./types";
+export * from "./helpers";

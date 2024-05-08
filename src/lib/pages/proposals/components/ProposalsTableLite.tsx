@@ -11,7 +11,7 @@ import {
   mapProposalStatusLcdToProposalStatus,
   useProposalDataLcd,
   useProposalsLcd,
-} from "lib/services/wasm/proposal";
+} from "lib/services/proposal";
 import { ProposalStatusLcd } from "lib/types";
 
 export const ProposalsTableLite = () => {
