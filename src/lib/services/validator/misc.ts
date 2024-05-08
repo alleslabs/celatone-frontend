@@ -1,18 +1,18 @@
 import axios from "axios";
 
-import { CURR_THEME } from "env";
 import type { Validator } from "lib/types";
 import { removeSpecialChars } from "lib/utils";
 
 export const resolveValIdentity = async (
   chainName: string,
-  validator: Validator
+  validator: Validator,
+  bgColor: string
 ): Promise<string> => {
   const githubUrl = `https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${chainName}/moniker/${validator.validatorAddress}.png`;
   const keybaseUrl = `https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${validator.identity}&fields=pictures`;
   const uiAvatarsUrl = `https://ui-avatars.com/api/?name=${removeSpecialChars(
     validator.moniker ?? ""
-  )}&background=${CURR_THEME.colors.secondary.main.replace("#", "")}&color=fff`;
+  )}&background=${bgColor.replace("#", "")}&color=fff`;
 
   return (
     axios
