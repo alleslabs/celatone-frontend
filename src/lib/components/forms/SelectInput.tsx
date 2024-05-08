@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Input,
   InputGroup,
@@ -133,12 +134,26 @@ export const SelectInput = <T extends string>({
               />
             </InputLeftElement>
           )}
+          {selectedOption?.chipContainerComponent && (
+            <InputLeftElement
+              pointerEvents="none"
+              w="fit-content"
+              h="full"
+              ml={4}
+            >
+              {selectedOption.chipContainerComponent}
+            </InputLeftElement>
+          )}
           <Input
             ref={inputRef}
             size={size}
             textAlign="start"
             type="button"
-            value={selected || placeholder}
+            value={
+              selectedOption?.chipContainerComponent
+                ? ""
+                : selected || placeholder
+            }
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
             pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
@@ -184,9 +199,16 @@ export const SelectInput = <T extends string>({
               }}
               disabled={disabled}
             >
-              {image && <Flex alignItems="center">{image}</Flex>}
-              {icon && <CustomIcon name={icon} color={iconColor} />}
-              {chipContainerComponent ?? label}
+              <Flex justifyContent="space-between" w="100%">
+                <Box>
+                  {image && <Flex alignItems="center">{image}</Flex>}
+                  {icon && <CustomIcon name={icon} color={iconColor} />}
+                  {chipContainerComponent ?? label}
+                </Box>
+                {selected === label && chipContainerComponent && (
+                  <CustomIcon name="check" color="gray.600" />
+                )}
+              </Flex>
             </SelectItem>
           )
         )}

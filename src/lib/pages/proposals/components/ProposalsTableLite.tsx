@@ -48,7 +48,7 @@ export const ProposalsTableLite = () => {
     const mapStatus = mapProposalStatusLcdToProposalStatus(status);
 
     return {
-      label: status === ProposalStatusLcd.ALL ? "All Status" : mapStatus,
+      label: mapStatus,
       value: status,
       disabled: false,
       chipContainerComponent: <StatusChip status={mapStatus} />,

@@ -23,7 +23,7 @@ export enum ProposalStatus {
 export const zProposalStatus = z.nativeEnum(ProposalStatus);
 
 export enum ProposalStatusLcd {
-  ALL = "ALL",
+  ALL = "ALL_STATUSES",
   PROPOSAL_STATUS_DEPOSIT_PERIOD = "PROPOSAL_STATUS_DEPOSIT_PERIOD",
   PROPOSAL_STATUS_VOTING_PERIOD = "PROPOSAL_STATUS_VOTING_PERIOD",
   PROPOSAL_STATUS_PASSED = "PROPOSAL_STATUS_PASSED",
