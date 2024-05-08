@@ -87,7 +87,11 @@ export const PoolIndex = () => {
         </Flex>
         <UserDocsLink href="osmosis/pool-list" isButton />
       </Flex>
-      <Tabs index={Object.values(TabIndex).indexOf(tabIndex)}>
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tabIndex)}
+        lazyBehavior="keepMounted"
+        isLazy
+      >
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={supportedPoolCount ?? 0}

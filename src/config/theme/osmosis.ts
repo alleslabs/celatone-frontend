@@ -1,6 +1,8 @@
-import type { ThemeConfig } from "./types";
+/* eslint-disable sonarjs/no-duplicate-string */
+import type { ComponentConfig, ThemeConfig } from "./types";
+import { generateTheme } from "./utils";
 
-export const OSMOSIS_THEME: ThemeConfig = {
+const OSMOSIS_BASE_THEME: ThemeConfig = {
   branding: {
     logo: "https://assets.alleslabs.dev/integrations/osmosis/logo.svg",
     favicon: "https://assets.alleslabs.dev/integrations/osmosis/favicon.ico",
@@ -26,11 +28,12 @@ export const OSMOSIS_THEME: ThemeConfig = {
       url: "https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap",
       name: "Inter, sans-serif",
     },
+    mono: {
+      url: "/font/main.css",
+      name: "PP Neue Montreal Mono Regular",
+    },
   },
   colors: {
-    gradient: {
-      main: "linear(55deg, #462ADF 0%,#5235EF 40%, #B72AAB 100%)",
-    },
     error: {
       main: "#FF666E",
       light: "#FF8086",
@@ -49,68 +52,47 @@ export const OSMOSIS_THEME: ThemeConfig = {
       dark: "#207966",
       background: "#102E28",
     },
-    background: {
-      main: "#090524",
-      overlay: "rgba(14, 9, 49, 0.7)",
-    },
     text: {
       main: "#F2F2F4",
-      dark: "#A09ACA",
-      disabled: "#736DA0",
+      dark: "#B0AADC",
+      disabled: "#8D87B8",
     },
     primary: {
+      lighter: "#A5A3FF",
+      light: "#8481F8",
       main: "#5235EF",
-      light: "#765CFF",
-      lighter: "#8481F8",
-      dark: "#462ADF",
-      darker: "#3A1FCA",
+      dark: "#3E21DB",
+      darker: "#260BB6",
       background: "#201865",
     },
     secondary: {
+      light: "#A5A3FF",
       main: "#8481F8",
-      light: "#9B99FF",
-      dark: "#6A67EA",
-      darker: "#5855DB",
-      background: "#2F306A",
+      dark: "#5235EF",
+      darker: "#462ADF",
+      background: "#201865",
     },
     accent: {
-      main: "#DD69D3",
-      light: "#E58BDD",
       lighter: "#ECACE7",
+      light: "#E58BDD",
+      main: "#DD69D3",
       dark: "#CA2EBD",
       darker: "#B72AAB",
-      background: "#431152",
+      background: "#711B75",
     },
     gray: {
       100: "#F2F2F4",
-      400: "#8D87B8",
-      500: "#736DA0",
-      600: "#5F588F",
-      700: "#464075",
-      800: "#282750",
-      900: "#140F34",
+      400: "#B0AADC",
+      500: "#8D87B8",
+      600: "#736DA0",
+      700: "#4B447B",
+      800: "#3C356D",
+      900: "#201B43",
     },
-  },
-  tag: {
-    signer: {
-      bg: "accent.darker",
-      color: "inherit",
+    background: {
+      main: "#140F34",
+      overlay: "rgba(14, 9, 49, 0.7)",
     },
-    related: {
-      bg: "primary.dark",
-      color: "text.main",
-    },
-  },
-  borderRadius: {
-    default: "8px",
-    iconButton: "36px",
-    viewButton: "0 0 8px 8px",
-    uploadButton: "50%",
-    tag: "full",
-    badge: "16px",
-    radio: "12px",
-    indicator: "2px",
-    stepper: "full",
   },
   jsonTheme: "pastel_on_dark",
   illustration: {
@@ -145,3 +127,77 @@ export const OSMOSIS_THEME: ThemeConfig = {
     reddit: "https://www.reddit.com/r/OsmosisLab/",
   },
 };
+
+const OSMOSIS_COMPONENT_CONFIG: ComponentConfig = {
+  button: {
+    primary: {
+      background: "primary.main",
+      color: "gray.100",
+      disabledBackground: "primary.background",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.dark",
+      activeBackground: "primary.light",
+    },
+    outlinePrimary: {
+      borderColor: "primary.light",
+      color: "primary.light",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.background",
+      activeBackground: "transparent",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "primary.darker",
+    },
+    votingPeriod: {
+      bg: "primary.dark",
+    },
+    failed: {
+      bg: "error.dark",
+    },
+    rejected: {
+      bg: "error.dark",
+    },
+    passed: {
+      bg: "success.dark",
+    },
+    cancelled: {
+      bg: "error.background",
+    },
+    depositFailed: {
+      bg: "gray.700",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
+    },
+  },
+  tag: {
+    signer: {
+      bg: "accent.darker",
+      color: "text.main",
+    },
+    related: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+  },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
+};
+
+export const OSMOSIS_THEME = generateTheme(
+  OSMOSIS_BASE_THEME,
+  OSMOSIS_COMPONENT_CONFIG
+);
