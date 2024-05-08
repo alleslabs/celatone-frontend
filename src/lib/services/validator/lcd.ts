@@ -30,5 +30,7 @@ export const getValidatorDataLcd = (
   validatorAddr: ValidatorAddr
 ) =>
   axios
-    .get(`${endpoint}/cosmos/staking/v1beta1/validators/${validatorAddr}`)
+    .get(
+      `${endpoint}/cosmos/staking/v1beta1/validators/${encodeURI(validatorAddr)}`
+    )
     .then(({ data }) => parseWithError(zValidatorResponseLcd, data).validator);

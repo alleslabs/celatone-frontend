@@ -111,11 +111,7 @@ export const useValidatorDataLcd = (
   const endpoint = useLcdEndpoint();
 
   return useQuery<ValidatorData>(
-    [
-      CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD,
-      endpoint,
-      validatorAddr,
-    ] as string[],
+    [CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD, endpoint, validatorAddr],
     async () => getValidatorDataLcd(endpoint, validatorAddr),
     {
       enabled: enabled && Boolean(validatorAddr),
@@ -246,7 +242,7 @@ export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
   const endpoint = useBaseApiRoute("validators");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint],
+    [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint, validatorAddr],
     async () => getHistoricalPowers(endpoint, validatorAddr),
     {
       retry: 1,
