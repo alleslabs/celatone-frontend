@@ -8,7 +8,6 @@ import Head from "next/head";
 import "@interchain-ui/react/styles";
 
 import { MobileGuard } from "lib/components/MobileGuard";
-import { NetworkGuard } from "lib/components/NetworkGuard";
 import { CelatoneSeo } from "lib/components/Seo";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
@@ -39,15 +38,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
       />
     </Head>
     <CelatoneSeo />
-    <NetworkGuard>
-      <Layout>
-        <MobileGuard>
-          <Component {...pageProps} />
-          <SpeedInsights />
-          <Analytics />
-        </MobileGuard>
-      </Layout>
-    </NetworkGuard>
+    <Layout>
+      <MobileGuard>
+        <Component {...pageProps} />
+        <SpeedInsights />
+        <Analytics />
+      </MobileGuard>
+    </Layout>
   </Providers>
 );
 
