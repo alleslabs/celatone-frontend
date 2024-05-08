@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
   useAccountStore,
@@ -14,6 +13,8 @@ import {
   usePublicProjectStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
+
+import { NetworkErrorState } from "./NetworkErrorState";
 
 interface NetworkGuardProps {
   children: ReactNode;

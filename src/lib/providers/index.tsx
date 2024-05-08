@@ -3,7 +3,7 @@ import { AppProvider, NavProvider } from "lib/app-provider";
 import { AmplitudeProvider } from "./amplitude";
 import { ChakraProvider } from "./chakra";
 import { ChainProvider } from "./cosmos-kit";
-import { NetworkGuard } from "./NetworkGuard";
+import { NetworkGuard } from "./network-guard";
 import { QueryClientProvider } from "./query-client";
 import { StoreProvider } from "./store";
 import { TxBroadcastProvider } from "./tx-broadcast";
