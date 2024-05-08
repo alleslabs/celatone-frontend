@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { NetworkErrorState } from "lib/components/state";
+import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
   useAccountStore,
