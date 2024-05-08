@@ -1,4 +1,30 @@
 /* Global Styling here */
+.app-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: #020617b3; /* default - background overlay */
+}
+.app-loader-spinner {
+  border: 4px solid #020617b3; /* default - background overlay */
+  border-top: 4px solid #334155; /* default - gray 700 */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 div[data-floating-ui-portal] {
   position: relative;
   z-index: 9999;

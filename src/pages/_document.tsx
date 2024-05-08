@@ -6,6 +6,7 @@ import Script from "next/script";
 import { DEFAULT_THEME } from "config/theme";
 import Meta from "lib/components/Meta";
 import { config } from "lib/styles/theme/config";
+import { fontHrefs } from "lib/styles/theme/fonts";
 
 class MyDocument extends Document {
   static getInitialProps(ctx: DocumentContext) {
@@ -16,16 +17,9 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* External heading font - Poppins, serif */}
-          <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap"
-            rel="stylesheet"
-          />
-          {/* External body font - Space Grotesk, sans-serif */}
-          <link
-            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
-            rel="stylesheet"
-          />
+          <link href={fontHrefs.heading} rel="stylesheet" />
+          <link href={fontHrefs.body} rel="stylesheet" />
+          <link href={fontHrefs.mono} rel="stylesheet" />
           <link
             id="favicon"
             rel="shortcut icon"

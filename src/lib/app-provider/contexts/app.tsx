@@ -18,7 +18,6 @@ import type { ProjectConstants } from "config/project";
 import { DEFAULT_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
 import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
@@ -128,7 +127,11 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     !isProjectUserKeyExist() ||
     !states
   )
-    return <LoadingOverlay />;
+    return (
+      <div className="app-loader">
+        <div className="app-loader-spinner" />
+      </div>
+    );
 
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 });
