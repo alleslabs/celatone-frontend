@@ -1,16 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useCelatoneApp,
-  useLCDEndpoint,
-} from "lib/app-provider";
-import { extractTxLogs, isTxHash } from "lib/utils";
+import { extractTxLogs } from "lib/utils";
 
 import type { TxData } from "./types";
 
-const getTxDataLcd = async (
+export const getTxDataLcd = async (
   endpoint: string,
   currentChainId: string,
   txHash: string
@@ -29,18 +23,4 @@ const getTxDataLcd = async (
     chainId: currentChainId,
     isTxFailed: Boolean(txResponse.code),
   };
-};
-
-export const useTxDataLcd = (txHash: string, enabled = true) => {
-  const lcdEndpoint = useLCDEndpoint();
-  const { currentChainId } = useCelatoneApp();
-
-  return useQuery<TxData>(
-    [CELATONE_QUERY_KEYS.TX_DATA_LCD, lcdEndpoint, txHash],
-    async () => getTxDataLcd(lcdEndpoint, currentChainId, txHash),
-    {
-      enabled: enabled && Boolean(txHash && isTxHash(txHash)),
-      refetchOnWindowFocus: false,
-    }
-  );
 };
