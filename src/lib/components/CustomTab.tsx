@@ -1,10 +1,10 @@
 import type { TabProps } from "@chakra-ui/react";
 import {
-  Skeleton,
-  Button,
-  useTab,
   Badge,
+  Button,
+  Skeleton,
   useMultiStyleConfig,
+  useTab,
 } from "@chakra-ui/react";
 
 import type { Nullish } from "lib/types";

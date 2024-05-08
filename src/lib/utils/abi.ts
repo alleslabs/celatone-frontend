@@ -1,6 +1,11 @@
 import { BCS } from "@initia/initia.js";
 
-import type { AbiFormData, ExposedFunction, Nullable } from "lib/types";
+import type {
+  AbiFormData,
+  ExposedFunction,
+  ModuleAbi,
+  Nullable,
+} from "lib/types";
 
 export const checkAvailability = (fn: ExposedFunction) =>
   fn.is_view || fn.is_entry;
@@ -19,7 +24,7 @@ const sortByAvailability = (a: ExposedFunction, b: ExposedFunction) => {
   return checkAvailability(a) ? -1 : 1;
 };
 
-export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
+const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   const functionMap = functions.reduce<{
     view: ExposedFunction[];
     execute: ExposedFunction[];
@@ -42,6 +47,18 @@ export const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   functionMap.execute.sort(sortByAvailability);
 
   return functionMap;
+};
+
+export const indexModuleAbi = (abi: string) => {
+  const parsedAbi = parseJsonABI<ModuleAbi>(abi);
+  const { view, execute } = splitViewExecuteFunctions(
+    parsedAbi.exposed_functions
+  );
+  return {
+    parsedAbi,
+    viewFunctions: view,
+    executeFunctions: execute,
+  };
 };
 
 export const getAbiInitialData = (length: number) =>
@@ -71,6 +88,10 @@ export const getArgType = (argType: string) =>
     .replace("0x1::decimal128::Decimal128", BCS.DECIMAL128)
     .replace("0x1::decimal256::Decimal256", BCS.DECIMAL256);
 
+const getChildType = (parentType: string, type: string) => {
+  const [pType, childType] = type.split(/<(.*)>/);
+  return pType === parentType ? childType : undefined;
+};
 const getArgValue = ({
   type,
   value,
@@ -81,13 +102,14 @@ const getArgValue = ({
   try {
     if (value === null) return null;
     if (type.startsWith("vector")) {
-      const [, elementType] = type.split(/<(.*)>/);
+      const elementType = getChildType("vector", type);
       const elements = getVectorElements(value);
       return elementType === "bool"
         ? elements.map((element) => element.toLowerCase() === "true")
         : elements;
     }
-    if (type === "bool") return value.toLowerCase() === "true";
+    if (type === "bool" || getChildType("0x1::option::Option", type) === "bool")
+      return value.toLowerCase() === "true";
     return value.trim();
   } catch (e) {
     return "";

@@ -13,47 +13,7 @@ export type ThemeConfig = {
       };
     };
   };
-  fonts: {
-    heading: {
-      url: string;
-      name: string;
-    };
-    body: {
-      url: string;
-      name: string;
-    };
-  };
   colors: {
-    gradient?: {
-      main: string;
-    };
-    error: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    warning: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    success: {
-      main: string;
-      light: string;
-      dark: string;
-      background: string;
-    };
-    background: {
-      main: string;
-      overlay: string;
-    };
-    text: {
-      main: string;
-      dark: string;
-      disabled: string;
-    };
     primary: {
       main: string;
       light: string;
@@ -86,43 +46,33 @@ export type ThemeConfig = {
       800: string;
       900: string;
     };
-  };
-  tag: {
-    signer: {
-      bg: string;
-      color: string;
+    text: {
+      main: string;
+      dark: string;
+      disabled: string;
     };
-    related: {
-      bg: string;
-      color: string;
+    background: {
+      main: string;
+      overlay: string;
     };
-  };
-  button?: {
-    primary?: {
+    success: {
+      main: string;
+      light: string;
+      dark: string;
       background: string;
-      color: string;
-      disabledBackground: string;
-      disabledColor: string;
-      hoverBackground: string;
-      activeBackground: string;
     };
-    outlinePrimary?: {
-      borderColor: string;
-      color: string;
-      disabledBorderColor: string;
-      disabledColor: string;
+    error: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
     };
-  };
-  borderRadius: {
-    default: string;
-    iconButton: string;
-    viewButton: string;
-    uploadButton: string;
-    tag: string;
-    badge: string;
-    radio: string;
-    indicator: string;
-    stepper: string;
+    warning: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
   };
   illustration: {
     "404": string;
@@ -150,5 +100,68 @@ export type ThemeConfig = {
     telegram?: string;
     reddit?: string;
     linkedin?: string;
+  };
+};
+
+export type ComponentConfig = {
+  button: {
+    primary: {
+      background: string;
+      color: string;
+      disabledBackground: string;
+      disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
+    };
+    outlinePrimary: {
+      borderColor: string;
+      color: string;
+      disabledBorderColor: string;
+      disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
+    };
+  };
+  proposalChip: {
+    depositPeriod: {
+      bg: string;
+    };
+    votingPeriod: {
+      bg: string;
+    };
+    failed: {
+      bg: string;
+    };
+    rejected: {
+      bg: string;
+    };
+    passed: {
+      bg: string;
+    };
+    cancelled: {
+      bg: string;
+    };
+    depositFailed: {
+      bg: string;
+    };
+  };
+  stepper: {
+    active: { bg: string; color: string };
+    disabled: { bg: string; color: string };
+  };
+  tag: {
+    signer: {
+      bg: string;
+      color: string;
+    };
+    related: {
+      bg: string;
+      color: string;
+    };
+  };
+  voteParticipations: {
+    voted: string;
+    votedAbstain: string;
+    didNotVote: string;
   };
 };

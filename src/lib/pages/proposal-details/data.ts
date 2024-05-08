@@ -1,8 +1,68 @@
+import { useMobile } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move";
-import { useProposalData } from "lib/services/proposalService";
-import type { Nullable, Option, ProposalData } from "lib/types";
-import { coinToTokenWithValue } from "lib/utils";
+import {
+  useProposalData,
+  useProposalParams,
+} from "lib/services/proposalService";
+import type { Nullable, Option, ProposalData, ProposalParams } from "lib/types";
+import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
+
+export const useDerivedProposalParams = (): {
+  data: Option<ProposalParams>;
+  isLoading: boolean;
+} => {
+  const isMobile = useMobile();
+  const { data, isLoading } = useProposalParams();
+  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
+    withPrices: !isMobile,
+  });
+  const { data: movePoolInfos, isLoading: isMovePoolInfosLoading } =
+    useMovePoolInfos({ withPrices: !isMobile });
+
+  if (isLoading || isAssetInfosLoading || isMovePoolInfosLoading || !data)
+    return {
+      data: undefined,
+      isLoading: isLoading || isAssetInfosLoading || isMovePoolInfosLoading,
+    };
+
+  return {
+    data: {
+      ...data,
+      minDeposit: data.minDeposit
+        .map((coin) =>
+          coinToTokenWithValue(
+            coin.denom,
+            coin.amount,
+            assetInfos,
+            movePoolInfos
+          )
+        )
+        .sort(compareTokenWithValues),
+      expeditedMinDeposit: data.expeditedMinDeposit
+        ?.map((coin) =>
+          coinToTokenWithValue(
+            coin.denom,
+            coin.amount,
+            assetInfos,
+            movePoolInfos
+          )
+        )
+        .sort(compareTokenWithValues),
+      emergencyMinDeposit: data.emergencyMinDeposit
+        ?.map((coin) =>
+          coinToTokenWithValue(
+            coin.denom,
+            coin.amount,
+            assetInfos,
+            movePoolInfos
+          )
+        )
+        .sort(compareTokenWithValues),
+    },
+    isLoading: false,
+  };
+};
 
 interface DerivedProposalDataResponse {
   data: Option<{

@@ -1,11 +1,14 @@
 import type { IconProps } from "@chakra-ui/react";
-import { Flex, Text, Image } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { AmpEvent, trackSocial, track } from "lib/amplitude";
+import { AmpEvent, track, trackSocial } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts/app";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
+
+import { InformationFooter } from "./InformationFooter";
 
 interface SocialMenuType {
   url: string;
@@ -91,30 +94,6 @@ const SocialMenuRender = ({
   );
 };
 
-const AllesFeedback = () => (
-  <Link
-    href="https://feedback.alleslabs.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    onClick={() => track(AmpEvent.FEEDBACK)}
-  >
-    <Flex
-      gap={1}
-      pr={2}
-      pl={1}
-      borderRadius={8}
-      align="center"
-      _hover={{ background: "gray.800" }}
-      transition="all 0.25s ease-in-out"
-    >
-      <CustomIcon name="feedback" color="gray.600" />
-      <Text variant="body3" color="text.dark">
-        Feedback
-      </Text>
-    </Flex>
-  </Link>
-);
-
 const IconLink = ({
   href,
   icon,
@@ -164,9 +143,10 @@ const IconLink = ({
 );
 
 const Footer = () => {
+  const isMobile = useMobile();
   const { theme } = useCelatoneApp();
-  const isThemed = theme.footer;
-  return isThemed ? (
+
+  return theme.footer ? (
     <Flex
       as="footer"
       direction={{ base: "column", md: "row" }}
@@ -184,7 +164,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image src={isThemed.logo} h={{ base: 6, md: 8 }} mr={2} />
+            <Image src={theme.footer.logo} h={{ base: 6, md: 8 }} mr={2} />
           </Link>
           <Flex mt={{ base: 2, md: 0 }}>
             <SocialMenuRender isThemed iconSize={5} />
@@ -195,7 +175,7 @@ const Footer = () => {
           color="gray.400"
           textAlign={{ base: "center", md: "left" }}
         >
-          {isThemed.description}
+          {theme.footer.description}
         </Text>
       </Flex>
       <Flex
@@ -214,10 +194,10 @@ const Footer = () => {
           />
         </Flex>
         <Flex gap={1}>
-          <AllesFeedback />
           <SocialMenuRender iconSize={4} />
         </Flex>
       </Flex>
+      {isMobile && <InformationFooter />}
     </Flex>
   ) : (
     <Flex
@@ -231,7 +211,6 @@ const Footer = () => {
     >
       <Flex direction="row" gap={1} align="center" mb={{ base: 2, md: 0 }}>
         <SocialMenuRender iconSize={5} />
-        <AllesFeedback />
       </Flex>
       <IconLink
         href="https://twitter.com/alleslabs"
@@ -239,6 +218,7 @@ const Footer = () => {
         text1="Made by"
         text2="Alles Labs"
       />
+      {isMobile && <InformationFooter />}
     </Flex>
   );
 };

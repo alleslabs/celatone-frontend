@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
 import { CustomIcon } from "../icon";
@@ -132,16 +132,12 @@ export const AssetsSection = ({
             />
           ) : (
             <>
-              <Flex
-                border="1px solid"
-                borderColor="gray.700"
-                borderRadius="8px"
-                direction="column"
-              >
+              <Flex direction="column">
                 <SupportedAssetTitle
                   supportedAssets={supportedAssets}
                   totalSupportedAssetsValue={totalSupportedAssetsValue}
                 />
+                <Divider borderColor="gray.700" />
                 {isMobile && (
                   <Flex pt={4} px={4} direction="column">
                     <Text variant="body2" color="text.dark">
@@ -162,19 +158,18 @@ export const AssetsSection = ({
                   isAccount={isAccount}
                   supportedAssets={supportedAssets}
                 />
+                {!supportedAssets.length && <Divider borderColor="gray.700" />}
               </Flex>
-              <Flex
-                border="1px solid"
-                borderColor="gray.700"
-                borderRadius="8px"
-                direction="column"
-                mt={2}
-              >
+              <Flex direction="column" mt={2}>
                 <UnsupportedAssetTitle unsupportedAssets={unsupportedAssets} />
+                <Divider borderColor="gray.700" />
                 <UnsupportedAssetSectionContent
                   isAccount={isAccount}
                   unsupportedAssets={unsupportedAssets}
                 />
+                {!unsupportedAssets.length && (
+                  <Divider borderColor="gray.700" />
+                )}
               </Flex>
             </>
           )}

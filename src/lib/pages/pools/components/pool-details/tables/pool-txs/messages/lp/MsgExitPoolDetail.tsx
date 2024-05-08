@@ -1,12 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolInfoText } from "../components/PoolInfoText";
+import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
 import { extractMsgType } from "lib/utils";
 import type { MsgExitPoolDetails } from "lib/utils/tx/types";
 
-import { PoolLPCard, LiquidityDivider, PoolAssetsGrid } from "./components";
+import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgExitPoolDetailProps {
   txHash: string;
@@ -49,7 +50,7 @@ export const MsgExitPoolDetail = ({
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
       />
-      <LiquidityDivider />
+      <DividerWithArrow />
       <PoolAssetsGrid
         txHash={txHash}
         msgIndex={msgIndex}

@@ -1,5 +1,6 @@
 import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
-import big, { type Big } from "big.js";
+import big from "big.js";
+import type Big from "big.js";
 
 import { TotalCardModal } from "../TotalCardModal";
 import { CustomIcon } from "lib/components/icon";

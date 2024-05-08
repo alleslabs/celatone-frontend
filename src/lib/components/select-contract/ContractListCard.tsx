@@ -1,11 +1,11 @@
 import {
-  Flex,
+  Badge,
   Button,
-  Text,
+  Flex,
   Menu,
   MenuButton,
   MenuList,
-  Badge,
+  Text,
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";

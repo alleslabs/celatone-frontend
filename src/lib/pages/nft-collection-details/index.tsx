@@ -13,7 +13,11 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useMobile,
+  useTierConfig,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -21,6 +25,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
@@ -139,16 +144,14 @@ const CollectionDetailsBody = ({
               Collection:
             </Text>
             <Tooltip label="View as Account Address">
-              <Flex>
-                <ExplorerLink
-                  value={collectionAddress}
-                  type="user_address"
-                  textFormat="normal"
-                  maxWidth="full"
-                  fixedHeight={false}
-                  ampCopierSection="collection-addresss-top"
-                />
-              </Flex>
+              <ExplorerLink
+                value={collectionAddress}
+                type="contract_address"
+                textFormat="normal"
+                maxWidth="full"
+                fixedHeight={false}
+                ampCopierSection="collection-addresss-top"
+              />
             </Tooltip>
           </Flex>
           <Flex gap={1} align="center">
@@ -245,6 +248,11 @@ const CollectionDetailsBody = ({
                 onClickMutateEvents={handleTabChange(TabIndex.MutateEvents)}
               />
             </Flex>
+            <UserDocsLink
+              title="What does an NFT Collection consist of?"
+              cta="Read more about NFT Collection"
+              href="move/nfts/collection-detail"
+            />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <CollectionSupplies
@@ -271,6 +279,7 @@ const CollectionDetailsBody = ({
 };
 
 const CollectionDetails = () => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 

@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 
 import { AmpEvent, trackAction } from "lib/amplitude";
 import {
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeQuery,
-  useCurrentChain,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -17,18 +17,18 @@ import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import {
+  jsonInputFormKey,
   MessageInputContent,
   MessageInputSwitch,
   MessageTabs,
   SchemaInputSection,
-  jsonInputFormKey,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
 import { CodeSelectSection } from "lib/components/select-code";
+import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { CodeIdInfoResponse } from "lib/services/code";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
+import { useCodeInfoLcd } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
@@ -120,20 +120,15 @@ export const MigrateContract = ({
     },
   });
 
-  const { refetch } = useLCDCodeInfo(codeId, {
+  const { refetch } = useCodeInfoLcd(codeId, {
     enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
-      const permission = data.code_info.instantiate_permission;
-      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+      const permission = data.codeInfo.instantiatePermission;
+      setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
       if (
-        resolvePermission(
-          address,
-          permission.permission,
-          permission.addresses,
-          permission.address
-        )
+        resolvePermission(address, permission.permission, permission.addresses)
       )
         setStatus({ state: "success" });
       else {
@@ -256,8 +251,8 @@ export const MigrateContract = ({
           setValue("codeId", code);
           resetMsgInputSchema();
         }}
-        setCodeHash={(data: CodeIdInfoResponse) => {
-          setValue("codeHash", data.code_info.data_hash.toLowerCase());
+        setCodeHash={(data: CodeInfoResponseLcd) => {
+          setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
         }}
         codeId={codeId}
       />

@@ -1,6 +1,7 @@
-import type { Big } from "big.js";
+import type Big from "big.js";
 
 import { TableContainer } from "lib/components/table";
+import { PoolType } from "lib/types";
 import type { PoolDetail, USD } from "lib/types";
 
 import { PoolAssetsTableHeader } from "./PoolAssetsTableHeader";
@@ -11,27 +12,28 @@ interface PoolAssetsTableProps {
   totalLiquidity: USD<Big>;
 }
 
-const TEMPLATE_COLUMNS = "minmax(300px, 1fr) 144px 144px minmax(300px, 1fr)";
-
 export const PoolAssetsTable = ({
   pool,
   totalLiquidity,
-}: PoolAssetsTableProps) => (
-  <TableContainer>
-    <PoolAssetsTableHeader
-      templateColumns={TEMPLATE_COLUMNS}
-      poolType={pool.type}
-      isSupported={pool.isSupported}
-    />
-    {pool.poolLiquidity.map((token, idx) => (
-      <PoolAssetsTableRow
-        key={`${token.denom}-token-row`}
-        templateColumns={TEMPLATE_COLUMNS}
-        token={token}
-        pool={pool}
-        totalLiquidity={totalLiquidity}
-        liquidityIndex={idx}
+}: PoolAssetsTableProps) => {
+  const templateColumns = `minmax(300px, 1fr) ${pool.type !== PoolType.COSMWASM ? "144px" : ""} 144px minmax(300px, 1fr)`;
+  return (
+    <TableContainer>
+      <PoolAssetsTableHeader
+        templateColumns={templateColumns}
+        poolType={pool.type}
+        isSupported={pool.isSupported}
       />
-    ))}
-  </TableContainer>
-);
+      {pool.poolLiquidity.map((token, idx) => (
+        <PoolAssetsTableRow
+          key={`${token.denom}-token-row`}
+          templateColumns={templateColumns}
+          token={token}
+          pool={pool}
+          totalLiquidity={totalLiquidity}
+          liquidityIndex={idx}
+        />
+      ))}
+    </TableContainer>
+  );
+};

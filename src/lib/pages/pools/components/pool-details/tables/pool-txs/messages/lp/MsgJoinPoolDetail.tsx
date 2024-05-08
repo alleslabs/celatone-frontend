@@ -1,12 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolInfoText } from "../components/PoolInfoText";
+import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
 import { extractMsgType } from "lib/utils";
 import type { MsgJoinPoolDetails } from "lib/utils/tx/types";
 
-import { PoolLPCard, LiquidityDivider, PoolAssetsGrid } from "./components";
+import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgJoinPoolDetailProps {
   txHash: string;
@@ -48,7 +49,7 @@ export const MsgJoinPoolDetail = ({
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
       />
-      <LiquidityDivider />
+      <DividerWithArrow />
       <PoolLPCard
         msgIndex={msgIndex}
         poolId={msg.pool_id}

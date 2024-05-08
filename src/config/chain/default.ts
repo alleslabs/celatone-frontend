@@ -1,8 +1,7 @@
-import { DEFAULT_THEME } from "config/theme";
-
 import type { ChainConfig } from "./types";
 
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
+  tier: "lite",
   chain: "",
   registryChainName: "",
   prettyName: "",
@@ -41,10 +40,5 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     gasAdjustment: 1.0,
     maxGasLimit: 0,
   },
-  explorerLink: {
-    validator: "",
-    proposal: "",
-  },
   extra: {},
-  theme: DEFAULT_THEME,
 };

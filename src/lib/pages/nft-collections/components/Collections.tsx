@@ -44,11 +44,13 @@ export const Collections = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
+  useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
+
   return (
     <>
       <Stack spacing={8}>
         <InputWithIcon
-          placeholder="Search with Collection Name"
+          placeholder="Search with Collection Name or Collection VM Address"
           value={searchKeyword}
           autoFocus
           onChange={(e) => setSearchKeyword(e.target.value)}
@@ -60,7 +62,7 @@ export const Collections = () => {
           isLoading={isLoading}
         />
       </Stack>
-      {!isLoading && collections && (
+      {!isLoading && collections && collections.total > 0 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

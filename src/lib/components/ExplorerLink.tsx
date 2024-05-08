@@ -1,11 +1,10 @@
-import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Text, Flex } from "@chakra-ui/react";
+import type { FlexProps, TextProps } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 
-import type { ExplorerConfig } from "config/chain/types";
 import { trackMintScan } from "lib/amplitude";
-import { type AddressReturnType } from "lib/app-provider";
+import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
-import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
@@ -24,14 +23,14 @@ export type LinkType =
   | "pool_id"
   | "proposal_id";
 
-interface ExplorerLinkProps extends BoxProps {
+interface ExplorerLinkProps extends FlexProps {
   value: string;
   type: LinkType;
   copyValue?: string;
+  externalLink?: string;
   showCopyOnHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
-  maxWidth?: string;
   textVariant?: TextProps["variant"];
   ampCopierSection?: string;
   openNewTab?: boolean;
@@ -40,15 +39,11 @@ interface ExplorerLinkProps extends BoxProps {
 
 export const getNavigationUrl = ({
   type,
-  explorerConfig,
   value,
-  lcdEndpoint,
   wasmEnabled = false,
 }: {
   type: ExplorerLinkProps["type"];
-  explorerConfig: ExplorerConfig;
   value: string;
-  lcdEndpoint: string;
   wasmEnabled?: boolean;
 }) => {
   let url = "";
@@ -63,9 +58,7 @@ export const getNavigationUrl = ({
       url = "/accounts";
       break;
     case "validator_address":
-      url =
-        explorerConfig.validator ||
-        `${lcdEndpoint}/cosmos/staking/v1beta1/validators`;
+      url = "/validators";
       break;
     case "code_id":
       url = "/codes";
@@ -112,7 +105,6 @@ const LinkRender = ({
   hrefLink,
   textValue,
   isEllipsis,
-  maxWidth,
   textVariant,
   openNewTab,
 }: {
@@ -121,7 +113,6 @@ const LinkRender = ({
   hrefLink: string;
   textValue: string;
   isEllipsis: boolean;
-  maxWidth: ExplorerLinkProps["maxWidth"];
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
@@ -129,11 +120,9 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
+      fontFamily="mono"
       color="secondary.main"
-      transition="all 0.25s ease-in-out"
-      _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
-      maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
@@ -142,7 +131,12 @@ const LinkRender = ({
   );
 
   return isInternal && !openNewTab ? (
-    <AppLink href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
+    <AppLink
+      href={hrefLink}
+      passHref
+      onClick={(e) => e.stopPropagation()}
+      style={{ overflow: "hidden" }}
+    >
       {textElement}
     </AppLink>
   ) : (
@@ -155,6 +149,7 @@ const LinkRender = ({
         if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
+      style={{ overflow: "hidden" }}
     >
       {textElement}
     </a>
@@ -162,93 +157,71 @@ const LinkRender = ({
 };
 
 export const ExplorerLink = ({
-  value,
   type,
+  value,
   copyValue,
+  externalLink,
   showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
-  maxWidth = "160px",
   textVariant = "body2",
   ampCopierSection,
   openNewTab,
   fixedHeight = true,
   ...componentProps
 }: ExplorerLinkProps) => {
+  const isMobile = useMobile();
   const { address } = useCurrentChain();
-  const lcdEndpoint = useBaseApiRoute("rest");
   const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
-  const {
-    chainConfig: { explorerLink: explorerConfig },
-  } = useCelatoneApp();
 
-  const isInternal =
-    type === "code_id" ||
-    type === "contract_address" ||
-    type === "user_address" ||
-    type === "tx_hash" ||
-    type === "block_height" ||
-    type === "pool_id" ||
-    type === "proposal_id";
-
-  const [hrefLink, textValue] = [
+  const [internalLink, textValue] = [
     getNavigationUrl({
       type,
-      explorerConfig,
       value: copyValue || value,
-      lcdEndpoint,
       wasmEnabled,
     }),
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
-  const readOnly = isReadOnly || !hrefLink;
-  const isMobile = useMobile();
+  const link = externalLink ?? internalLink;
+  const readOnly = isReadOnly || !link;
   // TODO: handle auto width
-  return (
-    <Box
+  return readOnly ? (
+    <Flex alignItems="center" {...componentProps}>
+      <Text variant="body2" color="text.disabled">
+        {textValue}
+      </Text>
+    </Flex>
+  ) : (
+    <Flex
+      className="copier-wrapper"
       display="inline-flex"
-      alignItems="center"
+      align="center"
+      h={fixedHeight ? "24px" : "auto"}
       transition="all 0.25s ease-in-out"
       _hover={{
-        ...(!readOnly && {
-          textDecoration: "underline",
-          textDecorationColor: "secondary.light",
-        }),
+        textDecoration: "underline",
+        textDecorationColor: "secondary.light",
       }}
       {...componentProps}
     >
-      {readOnly ? (
-        <Text variant="body2" color="text.disabled">
-          {textValue}
-        </Text>
-      ) : (
-        <Flex
-          className="copier-wrapper"
-          display={{ base: "inline-flex", md: "flex" }}
-          align="center"
-          h={fixedHeight ? "24px" : "auto"}
-        >
-          <LinkRender
-            type={type}
-            isInternal={isInternal}
-            hrefLink={hrefLink}
-            textValue={textValue}
-            isEllipsis={textFormat === "ellipsis"}
-            maxWidth={maxWidth}
-            textVariant={textVariant}
-            openNewTab={openNewTab}
-          />
-          <Copier
-            type={type}
-            value={copyValue || value}
-            copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-            display={showCopyOnHover && !isMobile ? "none" : "inline"}
-            ml={2}
-            amptrackSection={ampCopierSection}
-          />
-        </Flex>
-      )}
-    </Box>
+      <LinkRender
+        type={type}
+        isInternal={isUndefined(externalLink)}
+        hrefLink={link}
+        textValue={textValue}
+        isEllipsis={textFormat === "ellipsis"}
+        textVariant={textVariant}
+        openNewTab={openNewTab}
+      />
+      <Copier
+        type={type}
+        value={copyValue || value}
+        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
+        display={showCopyOnHover && !isMobile ? "none" : "inline"}
+        ml={2}
+        amptrackSection={ampCopierSection}
+      />
+    </Flex>
   );
 };

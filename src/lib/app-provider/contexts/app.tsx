@@ -3,12 +3,12 @@ import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import {
-  useCallback,
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
   createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 
 import { useNetworkChange } from "../hooks/useNetworkChange";
@@ -16,7 +16,7 @@ import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
 import { PROJECT_CONSTANTS } from "config/project";
 import type { ProjectConstants } from "config/project";
-import { DEFAULT_THEME } from "config/theme";
+import { DEFAULT_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
 import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -65,6 +65,23 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback((newChainId: string) => {
     const config = CHAIN_CONFIGS[newChainId];
+
+    const theme = getTheme(config.chain);
+    // Change Favicon
+    const documentHead =
+      document.head || document.getElementsByTagName("head")[0];
+
+    const newFavicon = document.createElement("link");
+    newFavicon.id = "favicon";
+    newFavicon.rel = "shortcut icon";
+    newFavicon.href = theme.branding.favicon;
+
+    const oldFavicon = document.getElementById("favicon");
+    if (oldFavicon) {
+      documentHead.removeChild(oldFavicon);
+    }
+    documentHead.appendChild(newFavicon);
+
     setCurrentChainId(newChainId);
     setCurrentChainName(config?.registryChainName);
   }, []);
@@ -82,7 +99,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
         },
       }),
       constants: PROJECT_CONSTANTS,
-      theme: chainConfig.theme,
+      theme: getTheme(chainConfig.chain),
     };
   }, [currentChainId]);
 

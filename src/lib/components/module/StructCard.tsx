@@ -2,11 +2,11 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  chakra,
   Flex,
   IconButton,
-  chakra,
-  Text,
   Tag,
+  Text,
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";

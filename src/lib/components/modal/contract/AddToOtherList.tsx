@@ -1,4 +1,4 @@
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 

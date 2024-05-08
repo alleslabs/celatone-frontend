@@ -3,10 +3,10 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
+  chakra,
   Flex,
   IconButton,
   Text,
-  chakra,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -15,8 +15,7 @@ import { LabelText } from "../LabelText";
 import { Tooltip } from "../Tooltip";
 import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { ExposedFunction } from "lib/types";
+import type { ExposedFunction, IndexedModule } from "lib/types";
 import {
   checkAvailability,
   getFirstQueryParam,
@@ -193,9 +192,9 @@ export const FunctionDetailCard = ({
                     </Flex>
 
                     <Tooltip
-                      isDisabled={!disabled}
                       bg="primary.dark"
                       label="Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+                      hidden={!disabled}
                     >
                       <Button
                         variant={getButtonStyle().variant}

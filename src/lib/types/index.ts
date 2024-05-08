@@ -4,6 +4,7 @@ export * from "./tx";
 export * from "./account";
 export * from "./addrs";
 export * from "./asset";
+export * from "./big";
 export * from "./block";
 export * from "./code";
 export * from "./common";

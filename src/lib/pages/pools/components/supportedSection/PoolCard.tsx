@@ -1,6 +1,5 @@
 import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
-import type { Big } from "big.js";
-import big from "big.js";
+import type Big from "big.js";
 import Link from "next/link";
 
 import { PoolHeader } from "../PoolHeader";
@@ -9,7 +8,8 @@ import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
-import type { USD, Pool, Token, U } from "lib/types";
+import { big } from "lib/types";
+import type { Pool, Token, U, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";

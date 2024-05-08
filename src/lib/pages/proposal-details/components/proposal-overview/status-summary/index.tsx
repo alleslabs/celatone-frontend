@@ -2,10 +2,11 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
 import type { ProposalOverviewProps } from "..";
-import { StatusChip } from "lib/components/table";
+import { ActiveDot } from "../../ActiveDot";
+import { ResultExplanation } from "../../ResultExplanation";
 import { ProposalStatus } from "lib/types";
 
-import { ActiveDot } from "./ActiveDot";
+import { SummaryStatusChip } from "./SummaryStatusChip";
 import { SummaryStatusTime } from "./SummaryStatusTime";
 
 const getStatusSummaryBorderColor = (
@@ -29,12 +30,17 @@ const getStatusSummaryBorderColor = (
   }
 };
 
-export const StatusSummary = ({ proposalData }: ProposalOverviewProps) => {
+export const StatusSummary = ({
+  proposalData,
+  ...props
+}: ProposalOverviewProps) => {
   const isOngoing =
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Flex
+      direction="column"
+      gap={2}
       p={4}
       bgColor="gray.900"
       border="1px solid"
@@ -47,15 +53,16 @@ export const StatusSummary = ({ proposalData }: ProposalOverviewProps) => {
         w="full"
         justify="space-between"
       >
-        <Flex align="center" gap={2}>
-          <ActiveDot status={proposalData.status} />
+        <Flex align="center" gap={2} whiteSpace="nowrap">
+          {isOngoing && <ActiveDot />}
           <Text variant="body1" textColor="text.main" fontWeight={700}>
             {isOngoing ? "Current" : "Final"} proposal result:
           </Text>
-          <StatusChip status={proposalData.status} />
+          <SummaryStatusChip proposalData={proposalData} {...props} />
         </Flex>
         <SummaryStatusTime proposalData={proposalData} />
       </Flex>
+      <ResultExplanation proposalData={proposalData} {...props} />
     </Flex>
   );
 };

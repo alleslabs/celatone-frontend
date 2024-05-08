@@ -1,16 +1,16 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, useToast, FormControl } from "@chakra-ui/react";
+import { Button, FormControl, useToast } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
-import { TextInput, NumberInput } from "lib/components/forms";
+import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import { useCodeInfoLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
 import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
 
@@ -55,24 +55,22 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useLCDCodeInfo(codeId, {
+  const { refetch, isFetching, isRefetching } = useCodeInfoLcd(codeId, {
     enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
       const { message, messageColor } = getPermissionHelper(
         address,
-        data.code_info.instantiate_permission.permission,
-        data.code_info.instantiate_permission.address
-          ? [data.code_info.instantiate_permission.address]
-          : data.code_info.instantiate_permission.addresses
+        data.codeInfo.instantiatePermission.permission,
+        data.codeInfo.instantiatePermission.addresses
       );
       setCodeIdStatus({
         state: "success",
-        message: `${message} (${data.code_info.instantiate_permission.permission})`,
+        message: `${message} (${data.codeInfo.instantiatePermission.permission})`,
         messageColor,
       });
-      setUploader(data.code_info.creator);
+      setUploader(data.codeInfo.creator);
       setUploaderStatus({ state: "success" });
     },
     onError() {
@@ -105,7 +103,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="bookmark" />,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
 
     reset();

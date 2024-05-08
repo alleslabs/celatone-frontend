@@ -1,4 +1,4 @@
-import { Text, Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 

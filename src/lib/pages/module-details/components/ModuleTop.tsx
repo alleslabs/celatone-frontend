@@ -4,8 +4,8 @@ import { useMemo } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  useCurrentChain,
   useConvertHexAddress,
+  useCurrentChain,
   useInternalNavigate,
   useMobile,
 } from "lib/app-provider";
@@ -15,13 +15,12 @@ import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import type { IndexedModule } from "lib/services/move/moduleService";
 import { UpgradePolicy } from "lib/types";
-import type { HexAddr } from "lib/types";
+import type { HexAddr, ModuleData } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
-  moduleData: IndexedModule;
+  moduleData: ModuleData;
   isVerified: boolean;
 }
 
@@ -77,12 +76,12 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
       <Breadcrumb
         items={[
           {
-            text: truncate(moduleData.parsedAbi.address),
-            href: `/accounts/${moduleData.parsedAbi.address}`,
+            text: truncate(moduleData.address),
+            href: `/accounts/${moduleData.address}`,
           },
           {
             text: "Modules",
-            href: `/accounts/${moduleData.parsedAbi.address}/modules`,
+            href: `/accounts/${moduleData.address}/modules`,
           },
           { text: moduleData.moduleName },
         ]}
@@ -138,7 +137,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
               Module Path:
             </Text>
             <CopyLink
-              value={`${moduleData.parsedAbi.address}::${moduleData.parsedAbi.name}`}
+              value={`${moduleData.address}::${moduleData.moduleName}`}
               amptrackSection="module_top"
               type="module_path"
             />

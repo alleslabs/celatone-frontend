@@ -1,12 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormControl } from "@chakra-ui/react";
-import type { EnumOptionsType, WidgetProps } from "@rjsf/utils";
-import { getTemplate, getUiOptions } from "@rjsf/utils";
+import type {
+  EnumOptionsType,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+  WidgetProps,
+} from "@rjsf/utils";
+import {
+  descriptionId,
+  enumOptionsIndexForValue,
+  enumOptionsValueForIndex,
+  getTemplate,
+} from "@rjsf/utils";
 import type { OptionsOrGroups } from "chakra-react-select";
 import { Select } from "chakra-react-select";
 import type React from "react";
-
-import { enumOptionsIndexForValue, enumOptionsValueForIndex } from "../utils";
 
 /**
  * chakra-react-select option base.
@@ -29,7 +38,13 @@ export interface SelectOptionBase<T = unknown> extends OptionBase {
  * @param props
  * @todo Multi select
  */
-const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
+const SelectWidget = <
+  T,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(
+  props: WidgetProps<T, S, F>
+) => {
   const {
     schema,
     id,
@@ -45,21 +60,20 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     onBlur,
     onFocus,
     // rawErrors = [],
-    uiSchema,
     registry,
   } = props;
-  const uiOptions = getUiOptions<T, F>(uiSchema);
   const { enumOptions, enumDisabled, emptyValue } = options;
 
-  const DescriptionFieldTemplate = getTemplate<"DescriptionFieldTemplate", T>(
+  const DescriptionFieldTemplate = getTemplate<
     "DescriptionFieldTemplate",
-    registry,
-    uiOptions
-  );
+    T,
+    S,
+    F
+  >("DescriptionFieldTemplate", registry, options);
 
-  const handleOnMultiChange = (e: any) => {
-    return onChange(
-      enumOptionsValueForIndex(
+  const handleOnMultiChange = (e: any) =>
+    onChange(
+      enumOptionsValueForIndex<S>(
         e.map((v: { value: any }) => {
           return v.value;
         }),
@@ -67,25 +81,27 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         emptyValue
       )
     );
-  };
 
   const handleOnChange = (e: any) =>
-    onChange(enumOptionsValueForIndex(e.value, enumOptions, emptyValue));
+    onChange(enumOptionsValueForIndex<S>(e.value, enumOptions, emptyValue));
 
   const handleOnBlur = ({ target }: React.FocusEvent<HTMLInputElement>) =>
-    onBlur(id, enumOptionsValueForIndex(target.value, enumOptions, emptyValue));
+    onBlur(
+      id,
+      enumOptionsValueForIndex<S>(target.value, enumOptions, emptyValue)
+    );
 
   const handleOnFocus = ({ target }: React.FocusEvent<HTMLInputElement>) =>
     onFocus(
       id,
-      enumOptionsValueForIndex(target.value, enumOptions, emptyValue)
+      enumOptionsValueForIndex<S>(target.value, enumOptions, emptyValue)
     );
 
   const valueLabelMap: any = {};
   const displayEnumOptions: OptionsOrGroups<any, any> = Array.isArray(
     enumOptions
   )
-    ? enumOptions.map((option: EnumOptionsType, index: number) => {
+    ? enumOptions.map((option: EnumOptionsType<S>, index: number) => {
         const { value: optionValue, label: optionLabel } = option;
         valueLabelMap[index] = optionLabel || String(optionValue);
         return {
@@ -98,8 +114,11 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
       })
     : [];
 
-  const isMultiple = multiple && Boolean(enumOptions);
-  const selectedIndex = enumOptionsIndexForValue(
+  const isMultiple =
+    typeof multiple !== "undefined" &&
+    multiple !== false &&
+    Boolean(enumOptions);
+  const selectedIndex = enumOptionsIndexForValue<S>(
     value,
     enumOptions,
     isMultiple
@@ -113,7 +132,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
       })
     : {
         label: valueLabelMap[selectedIndex as string] || "",
-        value: selectedIndex,
+        selectedIndex,
       };
 
   return (
@@ -127,8 +146,9 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     >
       {!!schema.description && (
         <DescriptionFieldTemplate
-          id={`${id}-description`}
+          id={descriptionId<T>(id)}
           description={schema.description}
+          schema={schema}
           registry={registry}
         />
       )}
@@ -159,12 +179,14 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
             ...provided,
             color: state.isDisabled ? "gray.700" : undefined,
           }),
-          option: (provided, state) => ({
+          option: (provided) => ({
             ...provided,
             color: "text.main",
-            bg: state.isSelected ? "gray.800" : "gray.900",
             _hover: {
               bg: "gray.700",
+            },
+            _selected: {
+              bg: "gray.800",
             },
           }),
         }}

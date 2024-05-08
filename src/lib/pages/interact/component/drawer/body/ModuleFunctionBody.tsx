@@ -1,5 +1,5 @@
 import type { FlexProps, GridItemProps } from "@chakra-ui/react";
-import { GridItem, Heading, Flex, Text } from "@chakra-ui/react";
+import { Flex, GridItem, Heading, Text } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 
 import { ModuleEmptyState, NoImageEmptyState } from "../../common";
@@ -8,8 +8,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { FunctionCard } from "lib/components/module/FunctionCard";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { ExposedFunction, Option } from "lib/types";
+import type { ExposedFunction, IndexedModule, Option } from "lib/types";
 
 const functionGridBaseStyle: FlexProps = {
   border: "1px solid",

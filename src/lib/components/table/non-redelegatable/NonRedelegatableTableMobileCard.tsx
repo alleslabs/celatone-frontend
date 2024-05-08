@@ -16,6 +16,7 @@ export const NonRedelegatablesTableMobileCard = ({
     direction="column"
     gap={2}
     w="full"
+    minW={0}
     borderTop="1px solid"
     borderTopColor="gray.700"
     pt={3}

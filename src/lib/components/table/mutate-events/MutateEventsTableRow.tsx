@@ -1,4 +1,4 @@
-import { Grid, Box, Text, Badge, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex, Grid, Text } from "@chakra-ui/react";
 
 import { RemarkRender } from "../RemarkRender";
 import { TableRow } from "../tableComponents";

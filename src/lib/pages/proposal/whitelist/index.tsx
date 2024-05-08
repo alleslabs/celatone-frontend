@@ -1,12 +1,12 @@
 import {
-  Flex,
-  Heading,
-  Text,
-  Grid,
-  GridItem,
-  Button,
   Alert,
   AlertDescription,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
@@ -20,10 +20,10 @@ import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
   AmpEvent,
+  track,
   trackUseDepositFill,
   trackUseSubmitProposal,
   trackUseWhitelistedAddress,
-  track,
 } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -42,8 +42,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import { useGetMaxLengthError } from "lib/hooks";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParams } from "lib/services/proposalService";
 import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";

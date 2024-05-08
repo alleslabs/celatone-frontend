@@ -1,11 +1,10 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
-import { DEFAULT_THEME } from "config/theme";
-
 import type { ChainConfigs } from "./types";
 
 export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
   "stargaze-1": {
+    tier: "full",
     chain: "stargaze",
     registryChainName: "stargaze",
     prettyName: "Stargaze",
@@ -33,6 +32,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
       },
       nft: {
         enabled: false,
@@ -46,14 +46,12 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/stargaze/validators",
-      proposal: "https://www.mintscan.io/stargaze/proposals",
+    extra: {
+      singleStakingDenom: "ustars",
     },
-    extra: {},
-    theme: DEFAULT_THEME,
   },
   "elgafar-1": {
+    tier: "full",
     chain: "stargaze",
     registryChainName: "stargazetestnet",
     prettyName: "Stargaze Testnet",
@@ -81,6 +79,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1",
       },
       nft: {
         enabled: false,
@@ -94,11 +93,8 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 50_000_000,
     },
-    explorerLink: {
-      validator: "https://testnet-explorer.publicawesome.dev/stargaze/staking",
-      proposal: "https://testnet-explorer.publicawesome.dev/stargaze/gov",
+    extra: {
+      singleStakingDenom: "ustars",
     },
-    extra: {},
-    theme: DEFAULT_THEME,
   },
 };

@@ -1,14 +1,13 @@
 import {
+  Flex,
   Input,
   InputGroup,
+  InputLeftElement,
   InputRightElement,
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
   useDisclosure,
-  Flex,
-  Image,
-  InputLeftElement,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
@@ -26,7 +25,7 @@ interface SelectInputProps<T extends string> {
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
-    image?: string;
+    image?: JSX.Element;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -34,7 +33,9 @@ interface SelectInputProps<T extends string> {
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
+  popoverBgColor?: string;
   size?: string | object;
+  disableMaxH?: boolean;
 }
 
 interface SelectItemProps {
@@ -69,28 +70,27 @@ export const SelectInput = <T extends string>({
   hasDivider = false,
   helperTextComponent,
   labelBgColor = "background.main",
+  popoverBgColor = "gray.900",
   size = "lg",
+  disableMaxH = false,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [selected, setSelected] = useState(
-    () => options.find((item) => item.value === initialSelected)?.label ?? ""
-  );
+  const [selected, setSelected] = useState("");
 
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
-    if (options.every((option) => !option.disabled)) {
-      setSelected(
-        () =>
-          options.find((item) => item.value === initialSelected)?.label ?? ""
-      );
-    }
+    setSelected(
+      options.find((item) => !item.disabled && item.value === initialSelected)
+        ?.label ?? ""
+    );
   }, [initialSelected, options]);
 
   return (
     <Popover
       placement="bottom-start"
+      strategy="fixed"
       isOpen={isOpen}
       onOpen={onOpen}
       onClose={onClose}
@@ -121,7 +121,7 @@ export const SelectInput = <T extends string>({
           <div className="form-label">{formLabel}</div>
           {selectedOption?.image && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
-              <Image boxSize={6} src={selectedOption.image} />
+              {selectedOption.image}
             </InputLeftElement>
           )}
           {selectedOption?.icon && (
@@ -149,10 +149,9 @@ export const SelectInput = <T extends string>({
       </PopoverTrigger>
       <PopoverContent
         border="unset"
-        bg="gray.900"
+        bg={popoverBgColor}
         w={inputRef.current?.clientWidth}
-        maxH={`${ITEM_HEIGHT * 4}px`}
-        overflow="scroll"
+        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
         borderRadius="8px"
         _focusVisible={{
           outline: "none",
@@ -174,7 +173,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {image && <Image boxSize={6} src={image} />}
+            <Flex alignItems="center">{image}</Flex>
             {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>

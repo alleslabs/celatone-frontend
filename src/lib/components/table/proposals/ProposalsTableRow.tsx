@@ -40,7 +40,9 @@ export const ProposalsTableRow = ({
     proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Grid
+      className="copier-wrapper"
       templateColumns={templateColumns}
+      onClick={() => onRowSelect(proposal.id)}
       minW="min-content"
       cursor="pointer"
       _hover={{
@@ -51,7 +53,6 @@ export const ProposalsTableRow = ({
               : "gray.900",
         },
       }}
-      onClick={() => onRowSelect(proposal.id)}
     >
       <TableRowFreeze left="0">
         <ExplorerLink

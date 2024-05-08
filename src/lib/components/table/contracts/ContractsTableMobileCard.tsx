@@ -53,7 +53,6 @@ export const ContractsTableMobileCard = ({
         <ExplorerLink
           value={contractInfo.contractAddress}
           type="contract_address"
-          showCopyOnHover
         />
       </Flex>
     }

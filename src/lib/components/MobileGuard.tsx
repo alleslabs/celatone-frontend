@@ -20,7 +20,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/txs`) ||
     pathName.includes(`/blocks`) ||
     pathName.includes(`/projects`) ||
-    pathName.includes(`/query`) ||
+    pathName.includes(`/interact-contract`) ||
     pathName.includes(`/404`) ||
     pathName.includes(`/proposals`) ||
     pathName.includes(`/nft-collections`) ||
@@ -28,7 +28,9 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/contracts`) ||
     pathName.includes(`/codes`) ||
     // move
-    pathName.includes(`/modules`);
+    pathName.includes(`/modules`) ||
+    // validators
+    pathName.includes(`/validators`);
 
   if (!isResponsive && isMobile) return <NoMobile />;
   return <>{children}</>;

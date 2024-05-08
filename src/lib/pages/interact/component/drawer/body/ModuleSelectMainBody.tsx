@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Flex, Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
@@ -12,8 +12,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { ModuleCard } from "lib/components/module/ModuleCard";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { Option } from "lib/types";
+import type { IndexedModule, Option } from "lib/types";
 
 import { ModuleFunctionBody } from "./ModuleFunctionBody";
 

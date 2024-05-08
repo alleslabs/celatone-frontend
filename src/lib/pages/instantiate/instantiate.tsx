@@ -9,17 +9,17 @@ import { useForm } from "react-hook-form";
 
 import {
   AmpEvent,
+  track,
   trackActionWithFunds,
   trackToInstantiate,
-  track,
 } from "lib/amplitude";
 import {
-  useFabricateFee,
-  useInstantiateTx,
-  useValidateAddress,
-  useSimulateFeeQuery,
   useCurrentChain,
   useExampleAddresses,
+  useFabricateFee,
+  useInstantiateTx,
+  useSimulateFeeQuery,
+  useValidateAddress,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
@@ -41,13 +41,15 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
+import { FooterCTA } from "lib/components/layouts";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { CodeIdInfoResponse } from "lib/services/code";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import { useCodeInfoLcd } from "lib/services/wasm/code";
+import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -59,7 +61,6 @@ import {
   resolvePermission,
 } from "lib/utils";
 
-import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
@@ -192,20 +193,15 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useLCDCodeInfo(codeId, {
+  const { refetch } = useCodeInfoLcd(codeId, {
     enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
-      const permission = data.code_info.instantiate_permission;
-      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+      const permission = data.codeInfo.instantiatePermission;
+      setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
       if (
-        resolvePermission(
-          address,
-          permission.permission,
-          permission.addresses,
-          permission.address
-        )
+        resolvePermission(address, permission.permission, permission.addresses)
       )
         setStatus({ state: "success" });
       else {
@@ -392,9 +388,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           DEPLOY NEW CONTRACT
         </Text>
         <Stepper mode="deploy" currentStep={2} />
-        <Heading as="h5" variant="h5" my={12}>
-          Instantiate new contract
-        </Heading>
+        <Flex direction="column" alignItems="center" my={12}>
+          <Heading as="h5" variant="h5">
+            Instantiate new contract
+          </Heading>
+          <UserDocsLink
+            isDevTool
+            mt={2}
+            cta="View Instantiate Guideline"
+            href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
+          />
+        </Flex>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"
           mb={6}
@@ -408,8 +412,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setValue("codeId", code);
             resetMsgInputSchema();
           }}
-          setCodeHash={(data: CodeIdInfoResponse) => {
-            setValue("codeHash", data.code_info.data_hash.toLowerCase());
+          setCodeHash={(data: CodeInfoResponseLcd) => {
+            setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
           }}
           codeId={codeId}
         />
@@ -520,10 +524,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           />
         </Flex>
       </WasmPageContainer>
-      <Footer
-        onInstantiate={proceed}
-        disabled={!enableInstantiate || !estimatedFee || isSimulating}
+      <FooterCTA
         loading={processing}
+        cancelButton={{
+          onClick: router.back,
+          leftIcon: <CustomIcon name="chevron-left" />,
+        }}
+        actionButton={{
+          isDisabled: !enableInstantiate || !estimatedFee || isSimulating,
+          onClick: proceed,
+        }}
+        actionLabel="Instantiate"
       />
     </>
   );

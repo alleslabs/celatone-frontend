@@ -25,7 +25,8 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return (
       <Text variant="body2">
-        Deposit ends in <Countdown endTime={proposalData.depositEndTime} />
+        Deposit ends in{" "}
+        <Countdown endTime={proposalData.depositEndTime} isString={false} />
       </Text>
     );
 
@@ -34,7 +35,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
       <Text variant="body2">
         Voting ends in{" "}
         {proposalData.votingEndTime ? (
-          <Countdown endTime={proposalData.votingEndTime} />
+          <Countdown endTime={proposalData.votingEndTime} isString={false} />
         ) : (
           "N/A"
         )}

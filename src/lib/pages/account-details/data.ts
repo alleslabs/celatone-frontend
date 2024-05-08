@@ -1,11 +1,11 @@
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountTableCounts } from "lib/services/accountService";
 import { useBalances } from "lib/services/balanceService";
-import { useCodesByAddress } from "lib/services/codeService";
 import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,
 } from "lib/services/contractService";
+import { useCodesByAddress } from "lib/services/wasm/code";
 import type {
   BechAddr,
   CodeInfo,

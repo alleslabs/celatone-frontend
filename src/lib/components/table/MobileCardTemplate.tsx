@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 interface MobileCardTemplateProps {
   topContent: ReactNode;
-  middleContent: ReactNode;
+  middleContent?: ReactNode;
   bottomContent?: ReactNode;
   onClick?: () => void;
 }
@@ -21,21 +21,31 @@ export const MobileCardTemplate = ({
     direction="column"
     gap={3}
     w="full"
+    minW={0}
     onClick={onClick}
   >
     <Flex align="center" justify="space-between">
       {topContent}
     </Flex>
-    <Flex
-      borderTop="1px solid"
-      borderBottom={bottomContent ? "1px solid" : "0px"}
-      borderColor="gray.700"
-      pt={3}
-      pb={bottomContent ? 3 : 0}
-      direction="column"
-    >
-      {middleContent}
-    </Flex>
-    {bottomContent && <Flex>{bottomContent}</Flex>}
+    {middleContent && (
+      <Flex
+        borderTop="1px solid"
+        borderColor="gray.700"
+        pt={3}
+        direction="column"
+      >
+        {middleContent}
+      </Flex>
+    )}
+    {bottomContent && (
+      <Flex
+        borderTop="1px solid"
+        borderColor="gray.700"
+        pt={3}
+        direction="column"
+      >
+        {bottomContent}
+      </Flex>
+    )}
   </Flex>
 );

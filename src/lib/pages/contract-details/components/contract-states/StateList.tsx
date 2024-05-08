@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { useMemo, type ChangeEvent, useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";

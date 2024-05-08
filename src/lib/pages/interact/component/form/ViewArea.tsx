@@ -19,11 +19,11 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useFunctionView } from "lib/services/move/moduleService";
 import type {
-  Option,
   AbiFormData,
   ExposedFunction,
   HexAddr,
   JsonDataType,
+  Option,
 } from "lib/types";
 import { getAbiInitialData, jsonPrettify } from "lib/utils";
 

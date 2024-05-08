@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -13,8 +13,9 @@ import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
 
@@ -138,10 +139,24 @@ export const DeployScript = () => {
         <Heading as="h4" variant="h4">
           Script
         </Heading>
-        <Text fontWeight={600} variant="body2" color="text.dark" mt={2} mb={12}>
+        <div
+          style={{
+            marginTop: "16px",
+            marginBottom: "48px",
+            textAlign: "center",
+            color: "var(--chakra-colors-text-dark)",
+          }}
+        >
           Upload a .mv file to deploy one-time use Script which execute
-          messages.
-        </Text>
+          messages.{" "}
+          <UserDocsLink
+            isDevTool
+            mt={0}
+            cta="Read more about Deploy Script"
+            href="initia/move/deploy-script"
+            isInline
+          />
+        </div>
         <ConnectWalletAlert
           subtitle="You need to connect your wallet to perform this action"
           mb={12}

@@ -1,11 +1,11 @@
 import {
   Box,
-  SimpleGrid,
-  Flex,
   Button,
-  Link,
-  Text,
+  Flex,
   Heading,
+  Link,
+  SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";

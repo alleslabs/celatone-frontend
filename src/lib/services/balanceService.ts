@@ -1,9 +1,10 @@
 import type { Coin } from "@cosmjs/stargate";
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import type { UseQueryResult } from "@tanstack/react-query";
 import type Big from "big.js";
-import big from "big.js";
 
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import { big } from "lib/types";
 import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,

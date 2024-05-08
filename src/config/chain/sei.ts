@@ -1,8 +1,6 @@
 import { wallets as compassWallets } from "@cosmos-kit/compass";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
-import { SEI_THEME } from "config/theme";
-
 import type { ChainConfigs } from "./types";
 
 /**
@@ -12,6 +10,7 @@ import type { ChainConfigs } from "./types";
  */
 export const SEI_CHAIN_CONFIGS: ChainConfigs = {
   "pacific-1": {
+    tier: "full",
     chain: "sei",
     registryChainName: "sei",
     prettyName: "Sei",
@@ -39,6 +38,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1beta1",
         hideOpenProposal: true,
       },
       nft: {
@@ -53,16 +53,13 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://mintscan.io/sei/validators",
-      proposal: "",
-    },
     extra: {
       disableAnyOfAddresses: true,
+      singleStakingDenom: "usei",
     },
-    theme: SEI_THEME,
   },
   "atlantic-2": {
+    tier: "full",
     chain: "sei",
     registryChainName: "seitestnet2",
     prettyName: "Sei Testnet2",
@@ -90,6 +87,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       },
       gov: {
         enabled: true,
+        version: "v1beta1",
         hideOpenProposal: true,
       },
       nft: {
@@ -104,13 +102,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://testnet.mintscan.io/sei-testnet/validators",
-      proposal: "https://testnet.mintscan.io/sei-testnet/proposals",
-    },
     extra: {
       disableAnyOfAddresses: true,
+      singleStakingDenom: "usei",
     },
-    theme: SEI_THEME,
   },
 };

@@ -3,7 +3,7 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TableRow, CodeNameCell, RemarkRender } from "lib/components/table";
+import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 

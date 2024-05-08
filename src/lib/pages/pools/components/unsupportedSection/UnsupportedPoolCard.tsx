@@ -1,12 +1,12 @@
 import {
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  Button,
+  chakra,
   Flex,
   IconButton,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  chakra,
   Text,
-  Button,
 } from "@chakra-ui/react";
 import Link from "next/link";
 

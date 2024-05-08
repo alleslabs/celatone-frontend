@@ -1,10 +1,10 @@
-import big from "big.js";
 import dayjs from "dayjs";
 import pluginDuration from "dayjs/plugin/duration";
 import pluginRelativeTime from "dayjs/plugin/relativeTime";
 import pluginUtc from "dayjs/plugin/utc";
 import plur from "plur";
 
+import { big } from "lib/types";
 import type { Option } from "lib/types";
 
 import { isNumeric } from "./number";
@@ -28,6 +28,10 @@ export const parseDateDefault = (dateOpt: Option<string>): Date =>
 
 export const formatUTC = (date: Date) =>
   dayjs.utc(date).format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
+
+export const formatHHmm = (date: Date) => dayjs.utc(date).format("HH:mm");
+
+export const formatMMMDD = (date: Date) => dayjs.utc(date).format("MMM DD");
 
 export const dateFromNow = (date: Date) => dayjs.utc(date).fromNow();
 

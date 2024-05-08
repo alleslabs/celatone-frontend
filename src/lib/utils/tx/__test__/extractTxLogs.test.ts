@@ -1,10 +1,10 @@
 import { extractTxLogs } from "../extractTxLogs";
 
 import {
-  fromLogs,
-  fromLogsTxFailed,
   fromEvents,
   fromEventsTxFailed,
+  fromLogs,
+  fromLogsTxFailed,
 } from "./extractTxLogs.example";
 
 describe("extractTxLogs", () => {

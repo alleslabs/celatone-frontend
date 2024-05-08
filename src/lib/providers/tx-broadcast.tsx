@@ -1,23 +1,11 @@
 import type { ProviderProps, ReactNode } from "react";
-import {
-  useEffect,
-  useCallback,
-  useMemo,
-  useContext,
-  useState,
-  createContext,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Observable } from "rxjs";
 
 import { TxModal } from "lib/components/tx";
+import { TxBroadcastContext } from "lib/hooks";
+import type { TxBroadcast } from "lib/hooks";
 import type { Nullable, TxResultRendering } from "lib/types";
-
-interface TxBroadcast {
-  broadcast: (nextStream: Observable<TxResultRendering>) => void;
-}
-const TxBroadcastContext = createContext<TxBroadcast>({
-  broadcast: () => null,
-});
 
 export const TxBroadcastProvider = ({ children }: { children: ReactNode }) => {
   const [stream, setStream] =
@@ -58,5 +46,3 @@ export const TxBroadcastProvider = ({ children }: { children: ReactNode }) => {
     </TxBroadcastContext.Provider>
   );
 };
-
-export const useTxBroadcast = () => useContext(TxBroadcastContext);

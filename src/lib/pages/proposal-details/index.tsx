@@ -2,42 +2,43 @@ import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import {
-  useProposalParams,
-  useProposalVotesInfo,
-} from "lib/services/proposalService";
+import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useProposalVotesInfo } from "lib/services/proposalService";
 
-import { ProposalTop, ProposalOverview, VoteDetail } from "./components";
-import { useDerivedProposalData } from "./data";
-import type { ProposalDetailsQueryParams } from "./type";
-import { zProposalDetailsQueryParams, TabIndex } from "./type";
+import { ProposalOverview, ProposalTop, VoteDetails } from "./components";
+import { useDerivedProposalData, useDerivedProposalParams } from "./data";
+import type { ProposalDetailsQueryParams } from "./types";
+import { TabIndex, zProposalDetailsQueryParams } from "./types";
+
+const InvalidProposal = () => <InvalidState title="Proposal does not exist" />;
 
 const ProposalDetailsBody = ({
-  id,
+  proposalId,
   tab,
-  // voteTab,
 }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
-  const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useDerivedProposalData(id);
+  const { data, isLoading } = useDerivedProposalData(proposalId);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
-    useProposalVotesInfo(id);
-  const { data: params, isLoading: isParamsLoading } = useProposalParams();
+    useProposalVotesInfo(proposalId);
+  const { data: params, isLoading: isParamsLoading } =
+    useDerivedProposalParams();
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
+      trackUseTab(nextTab);
       navigate({
-        pathname: "/proposals/[id]/[tab]",
+        pathname: "/proposals/[proposalId]/[tab]",
         query: {
-          id,
+          proposalId,
           tab: nextTab,
         },
         options: {
@@ -45,28 +46,12 @@ const ProposalDetailsBody = ({
         },
       });
     },
-    [id, tab, navigate]
+    [navigate, proposalId, tab]
   );
-
-  useEffect(() => {
-    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
-      navigate({
-        replace: true,
-        pathname: "/proposals/[id]/[tab]",
-        query: {
-          id,
-          tab: TabIndex.Overview,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    }
-  }, [router.isReady, tab, navigate, id]);
 
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="proposal information" />;
-  if (!data.info) return <InvalidState title="Proposal does not exist" />;
+  if (!data.info) return <InvalidProposal />;
 
   return (
     <>
@@ -85,7 +70,7 @@ const ProposalDetailsBody = ({
             Proposal Overview
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
-            Vote Detail
+            Voting Details
           </CustomTab>
         </TabList>
         <TabPanels>
@@ -96,9 +81,24 @@ const ProposalDetailsBody = ({
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
             />
+            <UserDocsLink
+              title="What is a Proposal?"
+              cta="Read more about Proposal Details"
+              href="general/proposals/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <VoteDetail />
+            <VoteDetails
+              proposalData={data.info}
+              votesInfo={votesInfo}
+              params={params}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+            />
+            <UserDocsLink
+              title="What is the CosmWasm proposal vote progress?"
+              cta="Read more about Vote Details"
+              href="general/proposals/detail-page#proposal-vote-details"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -111,10 +111,16 @@ const ProposalDetails = () => {
 
   const validated = zProposalDetailsQueryParams.safeParse(router.query);
 
+  useEffect(() => {
+    if (router.isReady && validated.success)
+      track(AmpEvent.TO_PROPOSAL_DETAILS, { tab: validated.data.tab });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
   return (
     <PageContainer>
       {!validated.success ? (
-        <InvalidState title="Proposal does not euuuxist" />
+        <InvalidProposal />
       ) : (
         <ProposalDetailsBody {...validated.data} />
       )}

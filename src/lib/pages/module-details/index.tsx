@@ -1,26 +1,21 @@
-import { Flex, Tabs, TabList, TabPanel, TabPanels } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { isNull } from "lodash";
 import { useRouter } from "next/router";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
+import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
-  type IndexedModule,
+  useModuleData,
+  useModuleTableCounts,
   useVerifyModule,
-  useModuleId,
-  useAccountModules,
-  useModuleHistoriesCount,
-  useModuleDetailsQuery,
 } from "lib/services/move/moduleService";
-import { useRelatedProposalsCountByModuleId } from "lib/services/proposalService";
-import { useModuleTxsCount } from "lib/services/txService";
-import type { Addr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
 
 import {
   FunctionTypeTabs,
@@ -28,53 +23,38 @@ import {
   ModuleFunctions,
   ModuleInfo,
   ModuleStructs,
-  ModuleTop,
   ModuleTables,
   ModuleTablesTabIndex,
+  ModuleTop,
 } from "./components";
-import { TabIndex } from "./types";
+import type { ModuleDetailsQueryParams } from "./types";
+import { TabIndex, zModuleDetailsQueryParams } from "./types";
 
 const mainTabHeaderId = "main-table-header";
 
-interface ModuleDetailsBodyProps {
-  moduleData: IndexedModule;
-}
-
 const InvalidModule = () => <InvalidState title="Module does not exist" />;
 
-export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
+const ModuleDetailsBody = ({
+  address,
+  moduleName,
+  tab,
+}: ModuleDetailsQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const formatAddresses = useFormatAddresses();
+  const { hex: vmAddress } = formatAddresses(address);
 
-  const { data: moduleId } = useModuleId(
-    moduleData.moduleName,
-    moduleData.address
+  const { data, isLoading } = useModuleData(vmAddress, moduleName);
+  const { data: moduleTableCounts } = useModuleTableCounts(
+    vmAddress,
+    moduleName
   );
-
-  const { data: moduleDetails, isLoading: moduleDetailsLoading } =
-    useModuleDetailsQuery(moduleId);
-
   const { data: verificationData, isLoading: verificationLoading } =
     useVerifyModule({
-      address: moduleData.address,
-      moduleName: moduleData.moduleName,
+      address: vmAddress,
+      moduleName,
     });
 
-  const { data: moduleTxsCount, refetch: refetchTxsCount } =
-    useModuleTxsCount(moduleId);
-  const { data: moduleHistoriesCount, refetch: refetchHistoriesCount } =
-    useModuleHistoriesCount(moduleId);
-  const {
-    data: moduleRelatedProposalsCount,
-    refetch: refetchRelatedProposalsCount,
-  } = useRelatedProposalsCountByModuleId(moduleId);
-  const refetchCount = () => {
-    refetchTxsCount();
-    refetchHistoriesCount();
-    refetchRelatedProposalsCount();
-  };
-
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const [overviewTabIndex, setOverviewTabIndex] = useState(
     ModuleTablesTabIndex.Transactions
   );
@@ -89,8 +69,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
       navigate({
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
-          address: moduleData.address,
-          moduleName: moduleData.moduleName,
+          address: vmAddress,
+          moduleName,
           tab: nextTab,
           ...(fnType && { type: fnType }),
         },
@@ -99,34 +79,11 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
         },
       });
     },
-    [moduleData.address, moduleData.moduleName, navigate, tab]
+    [vmAddress, moduleName, navigate, tab]
   );
 
   useEffect(() => {
-    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
-      navigate({
-        replace: true,
-        pathname: "/modules/[address]/[moduleName]/[tab]",
-        query: {
-          address: moduleData.address,
-          moduleName: moduleData.moduleName,
-          tab: TabIndex.Overview,
-        },
-        options: {
-          shallow: true,
-        },
-      });
-    }
-  }, [
-    router.isReady,
-    tab,
-    navigate,
-    moduleData.address,
-    moduleData.moduleName,
-  ]);
-
-  useEffect(() => {
-    if (router.isReady && tab && !verificationLoading)
+    if (router.isReady && !verificationLoading)
       track(AmpEvent.TO_MODULE_DETAILS, {
         tab,
         isVerified: Boolean(verificationData),
@@ -134,18 +91,18 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   }, [router.isReady, tab, verificationLoading, verificationData]);
 
   useEffect(() => {
-    if (moduleTxsCount === 0) {
+    if (moduleTableCounts?.txs === 0) {
       setOverviewTabIndex(ModuleTablesTabIndex.PublishedEvents);
       setTableTabIndex(ModuleTablesTabIndex.PublishedEvents);
     }
-  }, [moduleTxsCount]);
+  }, [moduleTableCounts?.txs]);
+
+  if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="module information" />;
 
   return (
     <>
-      <ModuleTop
-        isVerified={Boolean(verificationData)}
-        moduleData={moduleData}
-      />
+      <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -162,9 +119,9 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             Overview
           </CustomTab>
           <CustomTab
-            count={moduleData.parsedAbi.exposed_functions.length}
+            count={data.parsedAbi.exposed_functions.length}
             onClick={handleTabChange(TabIndex.Function, FunctionTypeTabs.ALL)}
-            isDisabled={!moduleData.parsedAbi.exposed_functions.length}
+            isDisabled={!data.parsedAbi.exposed_functions.length}
           >
             Functions
           </CustomTab>
@@ -172,9 +129,9 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
             Transactions & Histories
           </CustomTab>
           <CustomTab
-            count={moduleData.parsedAbi.structs.length}
+            count={data.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
-            isDisabled={!moduleData.parsedAbi.structs.length}
+            isDisabled={!data.parsedAbi.structs.length}
           >
             Structs
           </CustomTab>
@@ -183,12 +140,13 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
               <ModuleActions
-                viewFns={moduleData.viewFunctions.length}
-                executeFns={moduleData.executeFunctions.length}
+                viewFns={data.viewFunctions.length}
+                executeFns={data.executeFunctions.length}
                 allTxsCount={
-                  !isUndefined(moduleTxsCount) &&
-                  !isUndefined(moduleHistoriesCount)
-                    ? moduleTxsCount + moduleHistoriesCount
+                  moduleTableCounts &&
+                  !isNull(moduleTableCounts.txs) &&
+                  !isNull(moduleTableCounts.histories)
+                    ? moduleTableCounts.txs + moduleTableCounts.histories
                     : undefined
                 }
                 onSelectAction={(
@@ -202,19 +160,23 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 }}
               />
               <ModuleInfo
-                upgradePolicy={moduleData.upgradePolicy}
-                moduleDetails={moduleDetails}
+                vmAddress={data.address}
+                upgradePolicy={data.upgradePolicy}
+                transaction={data.recentPublishTransaction}
+                proposal={data.recentPublishProposal}
+                isRepublished={data.isRepublished}
+                blockHeight={data.recentPublishBlockHeight}
+                blockTimestamp={data.recentPublishBlockTimestamp}
                 verificationData={verificationData}
-                isLoading={moduleDetailsLoading}
               />
               <ModuleTables
-                address={moduleData.address}
-                moduleName={moduleData.moduleName}
-                moduleId={moduleId}
-                txsCount={moduleTxsCount}
-                historiesCount={moduleHistoriesCount}
-                refetchCount={refetchCount}
-                relatedProposalsCount={moduleRelatedProposalsCount}
+                vmAddress={data.address}
+                moduleName={data.moduleName}
+                txsCount={moduleTableCounts?.txs ?? undefined}
+                historiesCount={moduleTableCounts?.histories ?? undefined}
+                relatedProposalsCount={
+                  moduleTableCounts?.proposals ?? undefined
+                }
                 tab={overviewTabIndex}
                 setTab={setOverviewTabIndex}
                 onViewMore={(nextTab: ModuleTablesTabIndex) => {
@@ -223,31 +185,49 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
                 }}
               />
             </Flex>
+            <UserDocsLink
+              title="What is a move module?"
+              cta="Read more about Module"
+              href="move/modules/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
-              address={moduleData.address}
-              moduleName={moduleData.moduleName}
-              fns={moduleData.parsedAbi.exposed_functions}
-              viewFns={moduleData.viewFunctions}
-              executeFns={moduleData.executeFunctions}
+              address={data.address}
+              moduleName={data.moduleName}
+              fns={data.parsedAbi.exposed_functions}
+              viewFns={data.viewFunctions}
+              executeFns={data.executeFunctions}
+            />
+            <UserDocsLink
+              title="What is Module functions?"
+              cta="Read more about View and Execute Functions"
+              href="move/modules/detail-page#functions"
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleTables
-              address={moduleData.address}
-              moduleName={moduleData.moduleName}
-              moduleId={moduleId}
-              txsCount={moduleTxsCount}
-              historiesCount={moduleHistoriesCount}
-              refetchCount={refetchCount}
-              relatedProposalsCount={moduleRelatedProposalsCount}
+              vmAddress={data.address}
+              moduleName={data.moduleName}
+              txsCount={moduleTableCounts?.txs ?? undefined}
+              historiesCount={moduleTableCounts?.histories ?? undefined}
+              relatedProposalsCount={moduleTableCounts?.proposals ?? undefined}
               tab={tableTabIndex}
               setTab={setTableTabIndex}
             />
+            <UserDocsLink
+              title="What is Module Transaction?"
+              cta="Read more about transaction in module"
+              href="move/modules/detail-page#transactions-histories"
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleStructs structs={moduleData.parsedAbi.structs} />
+            <ModuleStructs structs={data.parsedAbi.structs} />
+            <UserDocsLink
+              title="What is Module Struct?"
+              cta="Read more about struct in module"
+              href="move/modules/detail-page#structs"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -257,22 +237,14 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
 
 export const ModuleDetails = () => {
   const router = useRouter();
+  const validated = zModuleDetailsQueryParams.safeParse(router.query);
 
-  const addr = getFirstQueryParam(router.query.address);
-  const moduleName = getFirstQueryParam(router.query.moduleName);
-
-  const { data, isLoading } = useAccountModules({
-    address: addr as Addr,
-    moduleName,
-  });
-
-  if (!router.isReady || isLoading) return <Loading />;
   return (
     <PageContainer>
-      {data === undefined ? (
+      {!validated.success ? (
         <InvalidModule />
       ) : (
-        <ModuleDetailsBody moduleData={data as IndexedModule} />
+        <ModuleDetailsBody {...validated.data} />
       )}
     </PageContainer>
   );

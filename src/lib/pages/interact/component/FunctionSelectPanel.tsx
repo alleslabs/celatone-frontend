@@ -4,16 +4,15 @@ import { useMemo, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { ExposedFunction, Option } from "lib/types";
+import type { ExposedFunction, IndexedModule, Option } from "lib/types";
 import { checkAvailability } from "lib/utils";
 
 import {
-  NoImageEmptyState,
-  ModuleContainer,
+  FunctionAccordion,
   InteractionTabs,
   InteractionTypeSwitch,
-  FunctionAccordion,
+  ModuleContainer,
+  NoImageEmptyState,
 } from "./common";
 
 const EmptyStateRender = ({ desc }: { desc: string }) => (

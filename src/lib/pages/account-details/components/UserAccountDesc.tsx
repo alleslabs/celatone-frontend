@@ -1,4 +1,4 @@
-import { Button, Flex, Text, Box } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 import Linkify from "react-linkify";

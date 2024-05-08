@@ -6,6 +6,7 @@ import type {
   BechAddr,
   Nullable,
   Option,
+  Ratio,
   TokenWithValue,
   Validator,
 } from "lib/types";
@@ -77,21 +78,23 @@ export interface Proposal {
   isExpedited: boolean;
 }
 
-export interface ProposalParams {
-  minDeposit: Coin[];
+export interface ProposalParams<
+  T extends Coin | TokenWithValue = TokenWithValue,
+> {
+  minDeposit: T[];
   minInitialDepositRatio: number;
   maxDepositPeriod: string;
   votingPeriod: string;
-  vetoThreshold: number;
-  quorum: number;
-  threshold: number;
+  vetoThreshold: Ratio<number>;
+  quorum: Ratio<number>;
+  threshold: Ratio<number>;
   // expedited
   expeditedVotingPeriod?: string;
-  expeditedThreshold?: number;
-  expeditedMinDeposit?: Coin[];
-  expeditedQuorum?: string; // only in sei
+  expeditedThreshold?: Ratio<number>;
+  expeditedMinDeposit?: T[];
+  expeditedQuorum?: Ratio<number>; // only in sei
   // emergency - only in initia
-  emergencyMinDeposit?: Coin[];
+  emergencyMinDeposit?: T[];
   emergencyTallyInterval?: string;
 }
 
@@ -112,6 +115,7 @@ interface Message {
 
 export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
   extends Proposal {
+  failedReason: string;
   createdHeight: Nullable<number>;
   createdTimestamp: Nullable<Date>;
   createdTxHash: Nullable<string>;
@@ -131,7 +135,7 @@ export interface ProposalVotesInfo {
   abstain: Big;
   no: Big;
   noWithVeto: Big;
-  totalVotingPower: Big;
+  totalVotingPower: Nullable<Big>;
 }
 
 export interface ProposalVote {
@@ -141,8 +145,22 @@ export interface ProposalVote {
   noWithVeto: number;
   yes: number;
   isVoteWeighted: boolean;
-  validator: Validator;
+  validator: Nullable<Validator>;
   voter: Nullable<BechAddr>;
   timestamp: Nullable<Date>;
   txHash: Nullable<string>;
+}
+
+export interface ProposalValidatorVote extends ProposalVote {
+  rank: number;
+}
+
+export enum ProposalVoteType {
+  ALL = "all",
+  YES = "yes",
+  NO = "no",
+  NO_WITH_VETO = "no_with_veto",
+  ABSTAIN = "abstain",
+  WEIGHTED = "weighted",
+  DID_NOT_VOTE = "did_not_vote", // only for validator votes
 }

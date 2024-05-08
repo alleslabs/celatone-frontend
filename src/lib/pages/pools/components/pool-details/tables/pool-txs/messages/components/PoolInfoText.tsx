@@ -7,7 +7,7 @@ interface PoolInfoTextProps {
 }
 
 export const PoolInfoText = ({ title, children }: PoolInfoTextProps) => (
-  <Flex direction="column" gap={1} minW="90px">
+  <Flex direction="column" gap={1} minW={0}>
     <Text variant="body2" textColor="gray.500" fontWeight={500}>
       {title}
     </Text>

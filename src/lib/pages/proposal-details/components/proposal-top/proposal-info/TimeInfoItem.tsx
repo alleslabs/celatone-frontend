@@ -1,7 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { ProposalStatus, type ProposalData } from "lib/types";
+import { ProposalStatus } from "lib/types";
+import type { ProposalData } from "lib/types";
 import { formatUTC } from "lib/utils";
 
 import { InfoItem } from "./InfoItem";
@@ -47,13 +48,20 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
   switch (data.status) {
     case ProposalStatus.DEPOSIT_PERIOD:
       return (
-        <InfoItem label="Deposit Start/End">
-          <Text variant="body2" color="text.dark">
-            {data.submitTime && data.depositEndTime
-              ? `${formatUTC(data.submitTime)} - ${formatUTC(data.depositEndTime)}`
-              : "N/A"}
-          </Text>
-        </InfoItem>
+        <>
+          <InfoItem label="Deposit Start">
+            <Text variant="body2" color="text.dark">
+              {data.submitTime ? `${formatUTC(data.submitTime)}` : "N/A"}
+            </Text>
+          </InfoItem>
+          <InfoItem label="Deposit End">
+            <Text variant="body2" color="text.dark">
+              {data.depositEndTime
+                ? `${formatUTC(data.depositEndTime)}`
+                : "N/A"}
+            </Text>
+          </InfoItem>
+        </>
       );
     case ProposalStatus.DEPOSIT_FAILED:
       return (
@@ -66,13 +74,18 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
       );
     case ProposalStatus.VOTING_PERIOD:
       return (
-        <InfoItem label="Voting Start/End">
-          <Text variant="body2" color="text.dark">
-            {data.votingTime && data.votingEndTime
-              ? `${formatUTC(data.votingTime)} - ${formatUTC(data.votingEndTime)}`
-              : "N/A"}
-          </Text>
-        </InfoItem>
+        <>
+          <InfoItem label="Voting Start">
+            <Text variant="body2" color="text.dark">
+              {data.votingTime ? `${formatUTC(data.votingTime)}` : "N/A"}
+            </Text>
+          </InfoItem>
+          <InfoItem label="Voting End">
+            <Text variant="body2" color="text.dark">
+              {data.votingEndTime ? `${formatUTC(data.votingEndTime)}` : "N/A"}
+            </Text>
+          </InfoItem>
+        </>
       );
     case ProposalStatus.PASSED:
     case ProposalStatus.FAILED:

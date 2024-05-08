@@ -1,13 +1,13 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Image, Flex } from "@chakra-ui/react";
+import { Flex, Image } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
 import type { Option } from "lib/types";
 
-const TokenImage = (props: ImageProps) => (
+const TokenImage = ({ boxSize = 5, ...props }: ImageProps) => (
   <Image
-    boxSize={5}
-    fallback={<NAToken />}
+    boxSize={boxSize}
+    fallback={<NAToken boxSize={boxSize} />}
     fallbackStrategy="beforeLoadOrError"
     {...props}
   />

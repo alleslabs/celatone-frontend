@@ -22,7 +22,6 @@ export const SupportedAssetSectionContent = ({
         justifyContent={{ base: "flex-start", md: "center" }}
         h="calc(100% - 45px)"
         minH={20}
-        px={4}
       >
         <Text variant="body2" color="text.dark">
           This {isAccount ? "address" : "contract"} does not hold any supported
@@ -33,11 +32,11 @@ export const SupportedAssetSectionContent = ({
 
   return (
     <Grid
-      p={4}
+      py={4}
       gridGap={4}
       gridTemplateColumns={{
         base: "1 fr",
-        md: onViewMore ? "repeat(3, 1fr)" : "repeat(4, 1fr)",
+        md: onViewMore ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
       }}
     >
       {supportedAssets.map((asset) => (

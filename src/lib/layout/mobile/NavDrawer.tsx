@@ -1,16 +1,16 @@
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
   DrawerContent,
-  Text,
-  DrawerOverlay,
-  useDisclosure,
-  Image,
-  Flex,
-  Box,
   DrawerHeader,
+  DrawerOverlay,
+  Flex,
   IconButton,
+  Image,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import type { MenuInfo } from "../navbar/types";
@@ -18,10 +18,10 @@ import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,
-  useWasmConfig,
-  useNftConfig,
   useMoveConfig,
+  useNftConfig,
   usePublicProjectConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
@@ -33,10 +33,10 @@ export const NavDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
+  const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
-  const govConfig = useGovConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
   const mobileMenu: MenuInfo[] = [
@@ -55,6 +55,20 @@ export const NavDrawer = () => {
           slug: "/blocks",
           icon: "block",
         },
+        ...(govConfig.enabled
+          ? [
+              {
+                name: "Validators",
+                slug: "/validators",
+                icon: "validator" as IconKeys,
+              },
+              {
+                name: "Proposals",
+                slug: "/proposals",
+                icon: "proposal" as IconKeys,
+              },
+            ]
+          : []),
         ...(wasmConfig.enabled
           ? [
               {
@@ -69,17 +83,8 @@ export const NavDrawer = () => {
               },
               {
                 name: "Query",
-                slug: "/query",
+                slug: "/interact-contract",
                 icon: "query" as IconKeys,
-              },
-            ]
-          : []),
-        ...(govConfig.enabled
-          ? [
-              {
-                name: "Proposal",
-                slug: "/proposals",
-                icon: "proposal" as IconKeys,
               },
             ]
           : []),

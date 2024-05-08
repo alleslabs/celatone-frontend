@@ -65,7 +65,7 @@ const Layout = ({ children }: LayoutProps) => {
           <GridItem
             bg={{ base: "background.main", md: "gray.900" }}
             area="subheader"
-            mb="1"
+            mb={1}
             py={{ base: 2, md: 0 }}
             px={{ base: 4, md: 0 }}
           >
@@ -75,6 +75,7 @@ const Layout = ({ children }: LayoutProps) => {
             bg={{ base: "background.main", md: "gray.900" }}
             area="nav"
             overflowY="auto"
+            mr={1}
           >
             <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
           </GridItem>

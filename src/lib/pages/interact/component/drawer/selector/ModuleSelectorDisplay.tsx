@@ -1,4 +1,4 @@
-import { Flex, Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
 import type { DisplayMode, SelectedAddress } from "../types";
@@ -26,22 +26,24 @@ export const ModuleSelectorDisplay = ({
     borderRadius={8}
     alignItems="center"
   >
-    <LabelText flex={1} label="Viewing Address">
-      <CopyLink
-        value={selectedAddress.address}
-        type="user_address"
-        w="fit-content"
-        showCopyOnHover
-      />
-    </LabelText>
-    <LabelText flex={1} label="Hex">
-      <CopyLink
-        value={selectedAddress.hex}
-        type="user_address"
-        w="fit-content"
-        showCopyOnHover
-      />
-    </LabelText>
+    <Flex flex={1}>
+      <LabelText label="Viewing Address">
+        <CopyLink
+          value={selectedAddress.address}
+          type="user_address"
+          showCopyOnHover
+        />
+      </LabelText>
+    </Flex>
+    <Flex flex={1}>
+      <LabelText label="Hex">
+        <CopyLink
+          value={selectedAddress.hex}
+          type="user_address"
+          showCopyOnHover
+        />
+      </LabelText>
+    </Flex>
     <Button
       variant="outline-white"
       size="sm"

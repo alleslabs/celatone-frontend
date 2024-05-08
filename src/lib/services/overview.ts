@@ -1,6 +1,8 @@
 import axios from "axios";
 import { z } from "zod";
 
+import { parseWithError } from "lib/utils";
+
 const zOverviewsStatsResponse = z
   .object({
     transaction_count: z.number().nonnegative(),
@@ -20,4 +22,4 @@ export const getOverviewsStats = async (
 ): Promise<OverviewsStats> =>
   axios
     .get(`${endpoint}/stats`)
-    .then(({ data }) => zOverviewsStatsResponse.parse(data));
+    .then(({ data }) => parseWithError(zOverviewsStatsResponse, data));

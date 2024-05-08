@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 
 import { usePublicProjectBySlug } from "lib/services/publicProjectService";
 import type {
+  Option,
+  PublicAccount,
   PublicCode,
   PublicContract,
   PublicDetail,
-  Option,
-  PublicAccount,
   PublicModule,
 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";

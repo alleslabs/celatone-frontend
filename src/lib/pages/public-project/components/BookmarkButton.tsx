@@ -1,4 +1,4 @@
-import { Flex, Button, useToast, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";

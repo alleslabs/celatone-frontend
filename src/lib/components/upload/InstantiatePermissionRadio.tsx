@@ -1,11 +1,11 @@
-import { Text, Box, Radio, RadioGroup, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Radio, RadioGroup, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
 import { AddressInput } from "../AddressInput";
 import { AssignMe } from "../AssignMe";
-import { AmpEvent, trackUseInstantiatePermission, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseInstantiatePermission } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { BechAddr, UploadSectionState } from "lib/types";

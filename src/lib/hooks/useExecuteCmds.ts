@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useSimulateFeeQuery, useDummyWallet } from "lib/app-provider";
+import { useDummyWallet, useSimulateFeeQuery } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";

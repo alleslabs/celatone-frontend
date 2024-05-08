@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import type { Option, PublicDetail } from "lib/types";

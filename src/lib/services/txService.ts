@@ -14,21 +14,15 @@ import {
   useMoveConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import {
-  getTxsCountByPoolId,
-  getTxsByPoolIdPagination,
-  getModuleTransactionsCountQueryDocument,
-} from "lib/query";
+import { getTxsByPoolIdPagination, getTxsCountByPoolId } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
+  BechAddr,
+  Message,
   Option,
+  PoolTxFilter,
   Transaction,
   TxFilters,
-  Message,
-  PoolTxFilter,
-  Nullable,
-  HexAddr,
-  BechAddr,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
@@ -42,18 +36,16 @@ import {
 import { usePoolTxExpression } from "./expression";
 import type {
   AccountTxsResponse,
-  ModuleTxsResponse,
+  BlockTxsResponse,
   TxResponse,
   TxsResponse,
-  BlockTxsResponse,
 } from "./tx";
 import {
   getTxs,
   getTxsByAddress,
-  queryTxData,
-  getTxsCountByAddress,
-  getTxsByModule,
   getTxsByBlockHeight,
+  getTxsCountByAddress,
+  queryTxData,
 } from "./tx";
 
 export interface TxData extends TxResponse {
@@ -316,68 +308,5 @@ export const useTxsByBlockHeight = (
       keepPreviousData: true,
       enabled: !!height,
     }
-  );
-};
-
-export const useModuleTxsCount = (moduleId: Option<Nullable<number>>) => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getModuleTransactionsCountQueryDocument, {
-        moduleId,
-      })
-      .then(
-        ({ module_transactions_aggregate }) =>
-          module_transactions_aggregate.aggregate?.count
-      );
-  };
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_TXS_COUNT, indexerGraphClient, moduleId],
-    queryFn,
-    {
-      enabled: Boolean(moduleId),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useTxsByModule = (
-  address: HexAddr,
-  moduleName: string,
-  offset: number,
-  limit: number
-) => {
-  const endpoint = useBaseApiRoute("move");
-  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
-  const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
-  const isInitia = useInitia();
-
-  return useQuery<ModuleTxsResponse>(
-    [
-      CELATONE_QUERY_KEYS.MODULE_TXS,
-      endpoint,
-      address,
-      moduleName,
-      limit,
-      offset,
-      isWasm,
-      isMove,
-    ],
-    async () =>
-      getTxsByModule(
-        endpoint,
-        address,
-        moduleName,
-        limit,
-        offset,
-        isWasm,
-        isMove,
-        isInitia
-      ),
-    { retry: 1, refetchOnWindowFocus: false }
   );
 };

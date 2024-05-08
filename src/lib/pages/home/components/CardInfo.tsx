@@ -1,7 +1,8 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Flex, Heading, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
+import { TooltipInfo } from "lib/components/Tooltip";
 import type { Option } from "lib/types";
 
 const cardProps: SystemStyleObject = {
@@ -43,11 +44,7 @@ export const CardInfo = ({
         <Text variant="body2" color="text.dark">
           {title}
         </Text>
-        <Tooltip label={tooltip}>
-          <Flex cursor="pointer">
-            <CustomIcon name="info-circle-solid" boxSize={3} color="gray.600" />
-          </Flex>
-        </Tooltip>
+        <TooltipInfo label={tooltip} iconVariant="solid" />
       </Flex>
       {isLoading ? (
         <Spinner size="md" />

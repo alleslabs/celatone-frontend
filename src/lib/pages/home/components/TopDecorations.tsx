@@ -20,6 +20,7 @@ export const TopDecorations = () => {
         h="480px"
         position="absolute"
         src={theme.illustration.overview?.secondary}
+        opacity={0.3}
         right={0}
         bottom={0}
         transform="translateX(40%) translateY(55%)"

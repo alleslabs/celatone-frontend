@@ -1,4 +1,4 @@
-import { Heading, Flex, Badge, Text } from "@chakra-ui/react";
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
@@ -11,6 +11,7 @@ import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { MySavedCodesTable } from "lib/components/table";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 
@@ -98,6 +99,12 @@ const SavedCodes = observer(() => {
         totalData={savedCodesCount}
         isLoading={isSavedCodesLoading}
         onRowSelect={onRowSelect}
+      />
+      <UserDocsLink
+        isDevTool
+        title="How to organize and save codes?"
+        cta="Read more about Saved Codes"
+        href="cosmwasm/codes/organize#saving-code-for-later-use"
       />
     </PageContainer>
   );

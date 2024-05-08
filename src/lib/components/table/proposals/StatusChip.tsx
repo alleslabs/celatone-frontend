@@ -10,27 +10,30 @@ const getBgColor = (
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
     case ProposalStatus.DEPOSIT_PERIOD:
-      return "secondary.darker";
+      return "proposalChip.depositPeriod.bg";
     case ProposalStatus.VOTING_PERIOD:
-      return "primary.dark";
+      return "proposalChip.votingPeriod.bg";
     case ProposalStatus.FAILED:
+      return "proposalChip.failed.bg";
     case ProposalStatus.REJECTED:
-      return "error.dark";
+      return "proposalChip.rejected.bg";
     case ProposalStatus.PASSED:
-      return "success.dark";
+      return "proposalChip.passed.bg";
     case ProposalStatus.CANCELLED:
-      return "error.background";
+      return "proposalChip.cancelled.bg";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
-      return "gray.700";
+      return "proposalChip.depositFailed.bg";
   }
 };
 
 export const StatusChip = ({
   status,
+  isTransparent = false,
   hasCloseBtn = false,
 }: {
   status: Proposal["status"];
+  isTransparent?: boolean;
   hasCloseBtn?: boolean;
 }) => {
   const formatStatus =
@@ -38,7 +41,11 @@ export const StatusChip = ({
       ? "Deposit Failed"
       : status.replace(/([A-Z])/g, " $1").trim();
   return (
-    <Tag bgColor={getBgColor(status)}>
+    <Tag
+      border="1px solid"
+      borderColor={getBgColor(status)}
+      bgColor={isTransparent ? "transparent" : getBgColor(status)}
+    >
       {formatStatus}
       {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
     </Tag>

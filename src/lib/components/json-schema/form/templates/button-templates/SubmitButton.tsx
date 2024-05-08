@@ -1,11 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button } from "@chakra-ui/react";
-import type { SubmitButtonProps } from "@rjsf/utils";
+import type {
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+  SubmitButtonProps,
+} from "@rjsf/utils";
 import { getSubmitButtonOptions } from "@rjsf/utils";
 
-export default function SubmitButton<T = any, F = any>({
-  uiSchema,
-}: SubmitButtonProps<T, F>) {
+export default function SubmitButton<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>({ uiSchema }: SubmitButtonProps<T, S, F>) {
   const {
     submitText,
     norender,

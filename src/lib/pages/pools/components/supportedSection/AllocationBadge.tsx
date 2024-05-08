@@ -1,14 +1,15 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import type { Big } from "big.js";
-import big from "big.js";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
+import { TokenImageRender } from "lib/components/token";
+import { big } from "lib/types";
 import type { Option, Ratio, Token, U, USD } from "lib/types";
 import {
-  getTokenLabel,
-  formatUTokenWithPrecision,
-  formatRatio,
   divWithDefault,
+  formatRatio,
+  formatUTokenWithPrecision,
+  getTokenLabel,
 } from "lib/utils";
 
 interface AllocationBadgeProps {
@@ -51,7 +52,10 @@ export const AllocationBadge = ({
       gap={2}
     >
       {denom && (
-        <Image boxSize={4} src={logo ?? getUndefinedTokenIcon(denom)} />
+        <TokenImageRender
+          logo={logo ?? getUndefinedTokenIcon(denom)}
+          boxSize={4}
+        />
       )}
       <Box w="full" minW="50px">
         <Text

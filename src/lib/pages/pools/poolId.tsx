@@ -2,19 +2,25 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  usePoolConfig,
+  useTierConfig,
+} from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
-  PoolTopSection,
   PoolAssets,
   PoolRelatedTxs,
+  PoolTopSection,
 } from "./components/pool-details";
 import { usePool } from "./data";
 
 export const PoolId = () => {
+  useTierConfig({ minTier: "full" });
   usePoolConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -32,6 +38,11 @@ export const PoolId = () => {
       <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />
+      <UserDocsLink
+        title="What is Osmosis liquidity pools?"
+        cta="Read more about Osmosis Pool Details"
+        href="osmosis/pool-detail"
+      />
     </PageContainer>
   );
 };

@@ -21,9 +21,11 @@ export const PoolAssetsTableHeader = ({
     sx={{ "> div": { color: "text.dark" } }}
   >
     <TableHeader>Asset</TableHeader>
-    <TableHeader textAlign="right">
-      {poolType === PoolType.STABLESWAP ? "Scaling Factor" : "Weight (%)"}
-    </TableHeader>
+    {poolType !== PoolType.COSMWASM && (
+      <TableHeader textAlign="right">
+        {poolType === PoolType.STABLESWAP ? "Scaling Factor" : "Weight (%)"}
+      </TableHeader>
+    )}
     <TableHeader textAlign="right">{isSupported && "Allocation"}</TableHeader>
     <TableHeader textAlign="right">Amount</TableHeader>
   </Grid>

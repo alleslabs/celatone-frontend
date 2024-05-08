@@ -22,7 +22,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const openPoolLcd = () => {
     trackUseViewJSON("pool_page_pool_lcd");
-    openNewTab(`${lcdEndpoint}/osmosis/gamm/v1beta1/pools/${pool.id}`);
+    openNewTab(`${lcdEndpoint}/osmosis/poolmanager/v1beta1/pools/${pool.id}`);
   };
   const openOsmosisPool = () => {
     trackWebsite(`${poolUrl}/${pool.id}`);

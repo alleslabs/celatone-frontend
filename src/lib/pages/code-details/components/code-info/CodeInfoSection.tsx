@@ -1,12 +1,11 @@
 import {
-  Heading,
-  Flex,
-  Text,
   Box,
-  Grid,
   Button,
+  Flex,
+  Grid,
+  Heading,
+  Text,
   useDisclosure,
-  Spinner,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
@@ -18,24 +17,23 @@ import { JsonSchemaModal } from "lib/components/json-schema";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { CodeData, Option } from "lib/types";
+import type { Code } from "lib/services/wasm/code";
+import type { Option } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
-  codeData: CodeData;
+  code: Code;
   chainId: string;
-  codeHash: Option<string>;
-  isCodeHashLoading: boolean;
   attached: boolean;
   toJsonSchemaTab: () => void;
 }
 
 const getMethodSpecificRender = (
-  codeProposalInfo: CodeData["proposal"],
-  codeTxInfo: Pick<CodeData, "hash" | "height" | "created">
+  proposal: Option<Code["proposal"]>,
+  transaction: Option<Code["transaction"]>
 ): { methodRender: JSX.Element; storedBlockRender: JSX.Element } => {
-  if (codeProposalInfo) {
-    const { height, created, proposalId } = codeProposalInfo;
+  if (proposal) {
+    const { height, created, proposalId } = proposal;
     return {
       methodRender: (
         <LabelText label="Proposal ID">
@@ -66,8 +64,9 @@ const getMethodSpecificRender = (
         ),
     };
   }
-  if (codeTxInfo.hash) {
-    const { hash, height, created } = codeTxInfo;
+
+  if (transaction) {
+    const { hash, height, created } = transaction;
     return {
       methodRender: (
         <LabelText label="Upload Transaction">
@@ -96,6 +95,7 @@ const getMethodSpecificRender = (
         ),
     };
   }
+
   /**
    * @todo Add genesis conditioning when the view table is available
    */
@@ -106,31 +106,26 @@ const getMethodSpecificRender = (
 };
 
 export const CodeInfoSection = ({
-  codeData,
+  code,
   chainId,
-  codeHash,
-  isCodeHashLoading,
   attached,
   toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const getAddressType = useGetAddressType();
   const {
-    hash,
-    height,
-    created,
+    codeId,
     proposal,
     uploader,
     instantiatePermission,
     permissionAddresses,
-  } = codeData;
+    transaction,
+    hash,
+  } = code;
+
   const { methodRender, storedBlockRender } = getMethodSpecificRender(
     proposal,
-    {
-      hash,
-      height,
-      created,
-    }
+    transaction
   );
   const uploaderType = getAddressType(uploader);
   const isMobile = useMobile();
@@ -194,36 +189,26 @@ export const CodeInfoSection = ({
         </LabelText>
         {!isMobile && (
           <LabelText label="JSON Schema">
-            {isCodeHashLoading ? (
-              <Spinner size="sm" ml={2} />
-            ) : (
-              <div>
-                {codeHash ? (
-                  <>
-                    <Button
-                      variant="outline-primary"
-                      p="8px 6px"
-                      leftIcon={
-                        attached ? undefined : (
-                          <CustomIcon name="upload" boxSize={4} />
-                        )
-                      }
-                      onClick={attached ? handleView : handleAttach}
-                    >
-                      {attached ? "View Schema" : "Attach"}
-                    </Button>
-                    <JsonSchemaModal
-                      isOpen={isOpen}
-                      onClose={onClose}
-                      codeId={codeData.codeId}
-                      codeHash={codeHash}
-                    />
-                  </>
-                ) : (
-                  "Fetch fail"
-                )}
-              </div>
-            )}
+            <div>
+              <Button
+                variant="outline-primary"
+                p="8px 6px"
+                leftIcon={
+                  attached ? undefined : (
+                    <CustomIcon name="upload" boxSize={4} />
+                  )
+                }
+                onClick={attached ? handleView : handleAttach}
+              >
+                {attached ? "View Schema" : "Attach"}
+              </Button>
+              <JsonSchemaModal
+                isOpen={isOpen}
+                onClose={onClose}
+                codeId={codeId}
+                codeHash={hash}
+              />
+            </div>
           </LabelText>
         )}
       </Grid>

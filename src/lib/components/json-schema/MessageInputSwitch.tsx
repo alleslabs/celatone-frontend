@@ -59,7 +59,7 @@ export const MessageInputSwitch = <
    * @todos current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
    */
   return (
-    <Tooltip label={tooltipLabel} isDisabled={!disabled}>
+    <Tooltip label={tooltipLabel} hidden={!disabled}>
       <div style={{ marginLeft: ml }}>
         <Flex
           border="1px solid var(--chakra-colors-gray-700)"

@@ -1,4 +1,4 @@
-import { Flex, Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { InstantiateButton } from "lib/components/button";

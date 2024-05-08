@@ -15,7 +15,7 @@ import {
 } from "lib/query";
 import { zBechAddr, zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
-import { parseTxHash, snakeToCamel } from "lib/utils";
+import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 
 const zNft = z
   .object({
@@ -56,10 +56,10 @@ export const getNfts = async (
         collectionAddress,
         limit: pageSize,
         offset,
-        search: `%${search}%`,
+        search,
       },
     })
-    .then(({ data: res }) => zNft.array().parse(res.data.nfts));
+    .then(({ data: res }) => parseWithError(zNft.array(), res.data.nfts));
 
 export const getNftsCountByAccount = async (
   indexer: string,
@@ -88,7 +88,7 @@ export const getNftByNftAddress = async (
       variables: { collectionAddress, nftAddress },
     })
     .then(({ data }) =>
-      zNftByNftAddressResponse.parse({ data: data.data.nfts[0] })
+      parseWithError(zNftByNftAddressResponse, { data: data.data.nfts[0] })
     );
 
 const zNftMintInfoResponse = z
@@ -118,7 +118,10 @@ export const getNftMintInfo = async (indexer: string, nftAddress: HexAddr32) =>
       variables: { nftAddress },
     })
     .then(({ data: res }) =>
-      zNftMintInfoResponse.parse(res.data.nft_transactions[0].transaction)
+      parseWithError(
+        zNftMintInfoResponse,
+        res.data.nft_transactions[0].transaction
+      )
     );
 
 export const zMetadata = z
@@ -140,7 +143,7 @@ export const zMetadata = z
 export type Metadata = z.infer<typeof zMetadata>;
 
 export const getMetadata = async (uri: string) =>
-  axios.get(uri).then(({ data }) => zMetadata.parse(data));
+  axios.get(uri).then(({ data }) => parseWithError(zMetadata, data));
 
 const zNftTransactionsResponse = z
   .object({
@@ -173,7 +176,10 @@ export const getNftTransactions = async (
       variables: { limit, offset, nftAddress },
     })
     .then(({ data: res }) =>
-      zNftTransactionsResponse.array().parse(res.data.nft_transactions)
+      parseWithError(
+        zNftTransactionsResponse.array(),
+        res.data.nft_transactions
+      )
     );
 
 export const getNftTransactionsCount = async (
@@ -217,7 +223,10 @@ export const getNftMutateEvents = async (
       variables: { limit, offset, nftAddress },
     })
     .then(({ data: res }) =>
-      zNftMutateEventsResponseItem.array().parse(res.data.nft_mutation_events)
+      parseWithError(
+        zNftMutateEventsResponseItem.array(),
+        res.data.nft_mutation_events
+      )
     );
 
 export const getNftMutateEventsCount = async (
@@ -260,7 +269,7 @@ export const getNftsByAccount = async (
       query: getNftsByAccountQuery,
       variables: { accountAddress, pageSize, offset, search },
     })
-    .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));
+    .then(({ data: res }) => parseWithError(zNftsByAccountResponse, res.data));
 
 export const getNftsByAccountByCollection = async (
   indexer: string,
@@ -281,4 +290,4 @@ export const getNftsByAccountByCollection = async (
         search,
       },
     })
-    .then(({ data: res }) => zNftsByAccountResponse.parse(res.data));
+    .then(({ data: res }) => parseWithError(zNftsByAccountResponse, res.data));

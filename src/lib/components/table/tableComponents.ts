@@ -41,6 +41,7 @@ const tableRowBaseStyle = {
   fontSize: "14px",
   fontWeight: 400,
   p: 4,
+  minW: 0,
   minH: "75px",
   display: "flex",
   alignItems: "center",
@@ -73,6 +74,6 @@ export const MobileTableContainer = chakra(SimpleGrid, {
     columns: 1,
     gap: 4,
     w: "full",
-    mt: 4,
+    my: 4,
   },
 });

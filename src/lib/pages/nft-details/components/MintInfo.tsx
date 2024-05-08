@@ -1,4 +1,4 @@
-import { Box, Stack, SimpleGrid, Heading } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Stack } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";

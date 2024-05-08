@@ -1,11 +1,11 @@
 import {
+  Button,
   Flex,
   Heading,
   TabList,
-  Tabs,
-  TabPanels,
   TabPanel,
-  Button,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -13,10 +13,11 @@ import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useGovConfig,
+  useInternalNavigate,
+  useMobile,
   useValidateAddress,
   useWasmConfig,
-  useMobile,
-  useInternalNavigate,
 } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";
@@ -26,6 +27,7 @@ import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBalances } from "lib/services/balanceService";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
@@ -52,6 +54,7 @@ const ContractDetailsBody = observer(
   ({ contractAddress, tab }: ContractDetailsBodyProps) => {
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
+    const gov = useGovConfig({ shouldRedirect: false });
 
     // ------------------------------------------//
     // ------------------QUERIES-----------------//
@@ -123,7 +126,10 @@ const ContractDetailsBody = observer(
             >
               Assets
             </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.Delegations)}>
+            <CustomTab
+              onClick={handleTabChange(TabIndex.Delegations)}
+              hidden={!gov.enabled}
+            >
               Delegations
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
@@ -151,15 +157,20 @@ const ContractDetailsBody = observer(
                       onViewMore={handleTabChange(TabIndex.Assets)}
                     />
                   </Flex>
-                  <Flex
-                    borderBottom={{ base: "0px", md: "1px solid" }}
-                    borderBottomColor={{ base: "transparent", md: "gray.700" }}
-                  >
-                    <DelegationsSection
-                      address={contractAddress}
-                      onViewMore={handleTabChange(TabIndex.Delegations)}
-                    />
-                  </Flex>
+                  {gov.enabled && (
+                    <Flex
+                      borderBottom={{ base: "0px", md: "1px solid" }}
+                      borderBottomColor={{
+                        base: "transparent",
+                        md: "gray.700",
+                      }}
+                    >
+                      <DelegationsSection
+                        address={contractAddress}
+                        onViewMore={handleTabChange(TabIndex.Delegations)}
+                      />
+                    </Flex>
+                  )}
                 </Flex>
                 {/* Query/Execute commands section */}
                 <CommandSection
@@ -224,18 +235,43 @@ const ContractDetailsBody = observer(
                 </Flex>
                 <ContractTables contractAddress={contractAddress} />
               </Flex>
+              <UserDocsLink
+                title="What is Contract in CosmWasm?"
+                cta="Read more about Contract Details"
+                href="cosmwasm/contracts/detail-page"
+              />
             </TabPanel>
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
+              <UserDocsLink
+                title="What is Supported and Unsupported Assets? "
+                cta="Read more about Assets"
+                href="cosmwasm/contracts/detail-page#assets"
+              />
             </TabPanel>
             <TabPanel px={0} pt={{ base: 0, md: 5 }}>
               <DelegationsSection address={contractAddress} />
+              <UserDocsLink
+                title="What is Delegations, Total Bonded, Rewards?"
+                cta="Read more about Delegations"
+                href="cosmwasm/contracts/detail-page#delegations"
+              />
             </TabPanel>
             <TabPanel px={0} pt={5}>
               <ContractTables contractAddress={contractAddress} />
+              <UserDocsLink
+                title="What is transactions related to the contract?"
+                cta="Read more about Transactions & Histories"
+                href="cosmwasm/contracts/detail-page#transactions-and-histories"
+              />
             </TabPanel>
             <TabPanel px={0} pt={5}>
               <ContractStates contractAddress={contractAddress} />
+              <UserDocsLink
+                title="What is contract states?"
+                cta="Read more about Contract States"
+                href="cosmwasm/contracts/detail-page#contract-states"
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

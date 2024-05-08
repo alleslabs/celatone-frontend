@@ -1,4 +1,4 @@
-import { Text, Grid, HStack } from "@chakra-ui/react";
+import { Grid, HStack, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { useGetAddressType } from "lib/app-provider";
@@ -16,6 +16,7 @@ interface CodesTableRowProps {
   templateColumns: string;
   onRowSelect: (codeId: number) => void;
   isReadOnly: boolean;
+  showCw2andContracts: boolean;
 }
 
 export const CodesTableRow = ({
@@ -23,6 +24,7 @@ export const CodesTableRow = ({
   templateColumns,
   onRowSelect,
   isReadOnly,
+  showCw2andContracts,
 }: CodesTableRowProps) => {
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
@@ -45,24 +47,28 @@ export const CodesTableRow = ({
       <TableRow>
         <CodeNameCell code={codeInfo} isReadOnly={isReadOnly} />
       </TableRow>
-      <TableRow>
-        <Text
-          color={cw2Info ? "text.main" : "text.disabled"}
-          wordBreak="break-all"
-        >
-          {cw2Info ?? "N/A"}
-        </Text>
-      </TableRow>
-      <TableRow justifyContent="center">
-        <Text
-          variant="body2"
-          onClick={(e) => e.stopPropagation()}
-          cursor="text"
-          color={codeInfo.contractCount ? "text.main" : "text.disabled"}
-        >
-          {codeInfo.contractCount ?? "N/A"}
-        </Text>
-      </TableRow>
+      {showCw2andContracts && (
+        <>
+          <TableRow>
+            <Text
+              color={cw2Info ? "text.main" : "text.disabled"}
+              wordBreak="break-all"
+            >
+              {cw2Info ?? "N/A"}
+            </Text>
+          </TableRow>
+          <TableRow justifyContent="center">
+            <Text
+              variant="body2"
+              onClick={(e) => e.stopPropagation()}
+              cursor="text"
+              color={codeInfo.contractCount ? "text.main" : "text.disabled"}
+            >
+              {codeInfo.contractCount ?? "N/A"}
+            </Text>
+          </TableRow>
+        </>
+      )}
       <TableRow>
         <ExplorerLink
           value={codeInfo.uploader}

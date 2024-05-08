@@ -1,11 +1,11 @@
 import {
   Heading,
-  ModalOverlay,
   Modal,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
+  ModalOverlay,
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";

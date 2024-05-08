@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Text, chakra, Flex } from "@chakra-ui/react";
+import { chakra, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";

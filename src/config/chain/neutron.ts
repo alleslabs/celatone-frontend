@@ -1,11 +1,10 @@
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
-import { DEFAULT_THEME } from "config/theme";
-
 import type { ChainConfigs } from "./types";
 
 export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
   "neutron-1": {
+    tier: "full",
     chain: "neutron",
     registryChainName: "neutron",
     prettyName: "Neutron",
@@ -46,14 +45,12 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
+    extra: {
+      isValidatorExternalLink: "https://www.mintscan.io/cosmos/validators",
     },
-    extra: { disableDelegation: true },
-    theme: DEFAULT_THEME,
   },
   "pion-1": {
+    tier: "full",
     chain: "neutron",
     registryChainName: "neutrontestnet",
     prettyName: "Neutron Testnet",
@@ -94,11 +91,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
+    extra: {
+      isValidatorExternalLink:
+        "https://www.mintscan.io/ics-testnet-provider/validators",
     },
-    extra: { disableDelegation: true },
-    theme: DEFAULT_THEME,
   },
 };

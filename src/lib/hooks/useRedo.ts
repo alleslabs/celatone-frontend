@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { ContractInteractionTabs } from "lib/types";
 import type { Msg, Option } from "lib/types";
-import { libEncode, camelToSnake } from "lib/utils";
+import { camelToSnake, libEncode } from "lib/utils";
 
 export const useRedo = () => {
   const navigate = useInternalNavigate();
@@ -19,8 +20,13 @@ export const useRedo = () => {
       if (type === "MsgExecuteContract") {
         const encodeMsg = libEncode(JSON.stringify(camelToSnake(msg)));
         navigate({
-          pathname: "/execute",
-          query: { chainName, contract: msg.contract, msg: encodeMsg },
+          pathname: "/interact-contract",
+          query: {
+            chainName,
+            selectedType: ContractInteractionTabs.Execute,
+            contract: msg.contract,
+            msg: encodeMsg,
+          },
         });
       } else if (
         type === "MsgInstantiateContract" ||

@@ -1,6 +1,6 @@
 import type { MainWalletBase } from "@cosmos-kit/core";
 
-import type { ThemeConfig } from "config/theme/types";
+import type { Nullable } from "lib/types";
 
 type FaucetConfig =
   | {
@@ -40,6 +40,7 @@ type PublicProjectConfig = { enabled: boolean };
 type GovConfig =
   | {
       enabled: true;
+      version: "v1beta1" | "v1";
       hideOpenProposal?: boolean;
       disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
@@ -50,12 +51,8 @@ type GovConfig =
 
 type NftConfig = { enabled: boolean };
 
-export interface ExplorerConfig {
-  validator: string;
-  proposal: string;
-}
-
 export interface ChainConfig {
+  tier: "lite" | "full";
   chain: string;
   registryChainName: string;
   prettyName: string;
@@ -80,12 +77,11 @@ export interface ChainConfig {
     gasAdjustment: number;
     maxGasLimit: number;
   };
-  explorerLink: ExplorerConfig;
   extra: {
     disableAnyOfAddresses?: boolean;
-    disableDelegation?: boolean;
+    singleStakingDenom?: string;
+    isValidatorExternalLink?: Nullable<string>;
   };
-  theme: ThemeConfig;
 }
 
 export interface ChainConfigs {

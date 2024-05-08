@@ -1,11 +1,11 @@
 import { ColorModeScript } from "@chakra-ui/react";
 import type { DocumentContext } from "next/document";
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
 import Script from "next/script";
 
-import { CURR_THEME } from "env";
+import { DEFAULT_THEME } from "config/theme";
 import Meta from "lib/components/Meta";
-import customTheme from "lib/styles/theme";
+import { config } from "lib/styles/theme/config";
 
 class MyDocument extends Document {
   static getInitialProps(ctx: DocumentContext) {
@@ -16,21 +16,25 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          {/* External heading font - Poppins, serif */}
           <link
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap"
             rel="stylesheet"
           />
+          {/* External body font - Space Grotesk, sans-serif */}
           <link
             href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
             rel="stylesheet"
           />
-          <link rel="shortcut icon" href={CURR_THEME.branding.favicon} />
+          <link
+            id="favicon"
+            rel="shortcut icon"
+            href={DEFAULT_THEME.branding.favicon}
+          />
           <Meta />
         </Head>
         <body>
-          <ColorModeScript
-            initialColorMode={customTheme.config?.initialColorMode}
-          />
+          <ColorModeScript initialColorMode={config.initialColorMode} />
           <Main />
           <NextScript />
           <Script

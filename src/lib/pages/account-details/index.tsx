@@ -11,9 +11,8 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { DelegationsSection } from "../../components/delegations";
-import { AmpEvent, trackUseTab, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
-  useCelatoneApp,
   useGovConfig,
   useInternalNavigate,
   useMoveConfig,
@@ -27,6 +26,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
@@ -69,11 +69,6 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const {
-    chainConfig: {
-      extra: { disableDelegation },
-    },
-  } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
   const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -168,7 +163,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             onClick={handleTabChange(TabIndex.Delegations, undefined)}
-            hidden={disableDelegation}
+            hidden={!gov.enabled}
           >
             Delegations
           </CustomTab>
@@ -241,8 +236,8 @@ const AccountDetailsBody = ({
             Resources
           </CustomTab>
           <CustomTab
-            count={modulesData?.length}
-            isDisabled={modulesData?.length === 0}
+            count={modulesData?.total}
+            isDisabled={modulesData?.total === 0}
             onClick={handleTabChange(TabIndex.Modules, undefined)}
             isLoading={isModulesLoading}
             hidden={!move.enabled}
@@ -308,10 +303,11 @@ const AccountDetailsBody = ({
                   onViewMore={handleTabChange(TabIndex.Assets, undefined)}
                 />
               </Flex>
-              {!disableDelegation && (
+              {gov.enabled && (
                 <Flex
                   borderBottom={{ base: "0px", md: "1px solid" }}
                   borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                  my={{ base: 0, md: 2 }}
                 >
                   <DelegationsSection
                     address={accountAddress}
@@ -387,8 +383,8 @@ const AccountDetailsBody = ({
                 />
                 <ModuleLists
                   address={accountAddress}
-                  totalCount={modulesData?.length}
-                  modules={modulesData}
+                  totalCount={modulesData?.total}
+                  modules={modulesData?.items}
                   isLoading={isModulesLoading}
                   onViewMore={handleTabChange(TabIndex.Modules, undefined)}
                 />
@@ -406,21 +402,46 @@ const AccountDetailsBody = ({
                 )}
               />
             )}
+            <UserDocsLink
+              title="What is an Account?"
+              cta="Read more about Account"
+              href="general/accounts/detail-page"
+            />
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <AssetsSection isAccount address={accountAddress} />
+            <UserDocsLink
+              title="What is Supported and Unsupported Assets?"
+              cta="Read more about Assets"
+              href="general/accounts/detail-page#assets"
+            />
           </TabPanel>
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <DelegationsSection address={accountAddress} />
+            <UserDocsLink
+              title="What is Delegations, Total Bonded, Rewards?"
+              cta="Read more about Delegations"
+              href="general/accounts/detail-page#staking"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <NftsSection address={hexAddress} totalData={nftsCount} />
+            <UserDocsLink
+              title="What is NFTs in the account?"
+              cta="Read more about NFTs in Account"
+              href="general/accounts/detail-page#nfts"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable
               address={accountAddress}
               scrollComponentId={tableHeaderId}
               refetchCount={refetchCounts}
+            />
+            <UserDocsLink
+              title="What is transactions related to the account?"
+              cta="Read more about Account Transactions"
+              href="general/accounts/detail-page#transactions"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -430,6 +451,11 @@ const AccountDetailsBody = ({
               totalData={tableCounts.codesCount ?? undefined}
               refetchCount={refetchCounts}
             />
+            <UserDocsLink
+              title="What is Stored Codes in the account?"
+              cta="Read more about Stored Codes in Account"
+              href="general/accounts/detail-page#codes"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <InstantiatedContractsTable
@@ -437,6 +463,11 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount ?? undefined}
               refetchCount={refetchCounts}
+            />
+            <UserDocsLink
+              title="What is contract instances in the account?"
+              cta="Read more about Contracts in Account"
+              href="general/accounts/detail-page#contracts"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -446,6 +477,11 @@ const AccountDetailsBody = ({
               totalData={tableCounts.contractsAdminCount ?? undefined}
               refetchCount={refetchCounts}
             />
+            <UserDocsLink
+              title="What is contract admins in the account?"
+              cta="Read more about Account Contract Admins"
+              href="general/accounts/detail-page#contracts-admin"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ResourceSection
@@ -454,13 +490,23 @@ const AccountDetailsBody = ({
               resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
             />
+            <UserDocsLink
+              title="What is resources?"
+              cta="Read more about Resources in Account"
+              href="general/accounts/detail-page#resources"
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
               address={accountAddress}
-              totalCount={modulesData?.length}
-              modules={modulesData}
+              totalCount={modulesData?.total}
+              modules={modulesData?.items}
               isLoading={isModulesLoading}
+            />
+            <UserDocsLink
+              title="What is modules?"
+              cta="Read more about Modules in Account"
+              href="general/accounts/detail-page#modules"
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -469,6 +515,11 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount ?? undefined}
               refetchCount={refetchCounts}
+            />
+            <UserDocsLink
+              title="What is Opened Proposals in the account?"
+              cta="Read more about Opened Proposals"
+              href="general/accounts/detail-page#proposals"
             />
           </TabPanel>
         </TabPanels>

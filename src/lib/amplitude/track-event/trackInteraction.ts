@@ -1,8 +1,7 @@
-import big from "big.js";
-
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
 import type { SearchResultType } from "lib/services/searchService";
+import { big } from "lib/types";
 import type { Addr, Option, Token } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
@@ -23,6 +22,15 @@ export const trackUseTab = (tab: string, section?: string, info?: string) =>
     section,
     info,
   });
+
+export const trackUseViewMore = (properties?: { [key: string]: string }) =>
+  amp.track(AmpEvent.USE_VIEW_MORE, properties);
+
+export const trackUseUpTime = (properties?: { [key: string]: string }) =>
+  amp.track(AmpEvent.USE_UPTIME, properties);
+
+export const trackSearchInput = (properties?: { [key: string]: string }) =>
+  amp.track(AmpEvent.USE_SEARCH_INPUT, properties);
 
 export const trackUseRadio = (radio: string, section?: string) =>
   amp.track(AmpEvent.USE_RADIO, {
@@ -77,6 +85,7 @@ export const trackUseExpand = ({
     | "module_interaction_function_accordion"
     | "module_interaction_selected_function_card"
     | "pool_tx_msg"
+    | "proposal_message_card"
     | "resources_detail_card"
     | "resources_by_account_card";
   info?: object;
@@ -171,7 +180,9 @@ export const trackUseFilter = (
   event:
     | AmpEvent.USE_FILTER_POOL_TYPE
     | AmpEvent.USE_FILTER_PROPOSALS_TYPE
-    | AmpEvent.USE_FILTER_PROPOSALS_STATUS,
+    | AmpEvent.USE_FILTER_PROPOSALS_STATUS
+    | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE
+    | AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
   filters: string[],
   action: string
 ) => amp.track(event, { action, filters });
@@ -187,8 +198,10 @@ export const trackUsePaginationNavigate = (
     currentPage,
   });
 
-export const trackUseSort = (order: "ascending" | "descending") =>
-  amp.track(AmpEvent.USE_SORT, { order });
+export const trackUseSort = (
+  sortBy: string,
+  order: "ascending" | "descending"
+) => amp.track(AmpEvent.USE_SORT, { sortBy, order });
 
 export const trackUseView = (view: string) =>
   amp.track(AmpEvent.USE_VIEW, { view });

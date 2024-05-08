@@ -1,19 +1,19 @@
 import {
+  Divider,
   Flex,
   Image,
-  Text,
-  Tabs,
   TabList,
-  TabPanels,
   TabPanel,
-  Divider,
+  TabPanels,
+  Tabs,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -22,6 +22,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useCollectionByCollectionAddress,
@@ -264,12 +265,18 @@ const NftDetailsBody = ({
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <UserDocsLink
+          title="What is a NFT?"
+          cta="Read more about NFT"
+          href="move/nfts/detail-page"
+        />
       </Flex>
     </>
   );
 };
 
 const NftDetails = observer(() => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zNftDetailQueryParams.safeParse(router.query);
 

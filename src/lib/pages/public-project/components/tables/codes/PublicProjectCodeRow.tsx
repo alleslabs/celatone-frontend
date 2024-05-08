@@ -1,8 +1,8 @@
-import { HStack, Grid, Text } from "@chakra-ui/react";
+import { Grid, HStack, Text } from "@chakra-ui/react";
 
 import {
-  useInternalNavigate,
   useGetAddressTypeByLength,
+  useInternalNavigate,
 } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";

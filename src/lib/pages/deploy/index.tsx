@@ -1,12 +1,5 @@
 import type { AlertProps } from "@chakra-ui/react";
-import {
-  Alert,
-  AlertDescription,
-  Flex,
-  Heading,
-  Button,
-  Text,
-} from "@chakra-ui/react";
+import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -22,6 +15,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import { AccessConfigPermission } from "lib/types";
@@ -92,9 +86,17 @@ const Deploy = () => {
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h5" variant="h5" my={12}>
-        Select Deploy Option
-      </Heading>
+      <Flex direction="column" alignItems="center" my={12}>
+        <Heading as="h5" variant="h5">
+          Select Deploy Option
+        </Heading>
+        <UserDocsLink
+          isDevTool
+          mt={2}
+          cta="Read more about Deploy Contract"
+          href="cosmwasm/upload-instantiate"
+        />
+      </Flex>
       <ConnectWalletAlert
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
@@ -121,16 +123,6 @@ const Deploy = () => {
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />
-      <Flex justify="center" w="100%" mt={8}>
-        <Button
-          onClick={() => {
-            router.back();
-          }}
-          variant="ghost-gray"
-        >
-          Cancel
-        </Button>
-      </Flex>
     </WasmPageContainer>
   );
 };

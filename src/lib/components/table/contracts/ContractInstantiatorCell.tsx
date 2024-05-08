@@ -2,7 +2,8 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { RemarkOperation, type ContractInfo } from "lib/types";
+import { RemarkOperation } from "lib/types";
+import type { ContractInfo } from "lib/types";
 
 interface ContractInstantiatorCellProps {
   contractInfo: ContractInfo;

@@ -1,13 +1,13 @@
 import {
-  Flex,
-  Heading,
-  Text,
   Alert,
+  AlertDescription,
+  Box,
+  Checkbox,
+  Flex,
   Grid,
   GridItem,
-  AlertDescription,
-  Checkbox,
-  Box,
+  Heading,
+  Text,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
@@ -18,16 +18,16 @@ import { useForm } from "react-hook-form";
 import { AssetBox, Footer } from "../components";
 import { InitialDeposit } from "../components/InitialDeposit";
 import {
-  SIDEBAR_STORE_CODE_DETAILS,
   PROPOSAL_STORE_CODE_TEXT,
+  SIDEBAR_STORE_CODE_DETAILS,
 } from "../constants";
 import { getAlert } from "../utils";
 import {
   AmpEvent,
+  track,
   trackUseDepositFill,
   trackUseSubmitProposal,
   trackUseUnpin,
-  track,
 } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -53,11 +53,10 @@ import { CodeHashBox } from "lib/components/upload/CodeHashBox";
 import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import { useGetMaxLengthError } from "lib/hooks";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParams } from "lib/services/proposalService";
 import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
-import { AccessType, AccessConfigPermission } from "lib/types";
+import { AccessConfigPermission, AccessType } from "lib/types";
 import {
   composeStoreCodeProposalMsg,
   getAmountToVote,
@@ -457,13 +456,7 @@ const StoreCodeProposal = () => {
                     label={PROPOSAL_STORE_CODE_TEXT.unpinTooltip}
                     maxW="440px"
                   >
-                    <div>
-                      <CustomIcon
-                        name="info-circle"
-                        boxSize="3"
-                        color="white"
-                      />
-                    </div>
+                    <CustomIcon name="info-circle" boxSize={3} color="white" />
                   </Tooltip>
                 </Flex>
 

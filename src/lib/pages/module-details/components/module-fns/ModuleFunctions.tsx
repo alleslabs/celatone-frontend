@@ -1,4 +1,4 @@
-import { Flex, Heading, Button, Accordion } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 
@@ -12,8 +12,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { ExposedFunction } from "lib/types";
+import type { ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
@@ -94,6 +93,7 @@ export const ModuleFunctions = ({
   const handleTabChange = useCallback(
     (nextTab: FunctionTypeTabs) => {
       if (nextTab === tab) return;
+      track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
       navigate({
         pathname: `/modules/[address]/[moduleName]/[tab]`,
         query: {
@@ -133,10 +133,7 @@ export const ModuleFunctions = ({
       >
         <FunctionTypeSwitch
           currentTab={tab}
-          onTabChange={(nextTab) => {
-            track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
-            handleTabChange(nextTab);
-          }}
+          onTabChange={handleTabChange}
           my={3}
           counts={[
             filteredFns.length,

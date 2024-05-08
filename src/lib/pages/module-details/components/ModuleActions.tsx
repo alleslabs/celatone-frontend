@@ -2,7 +2,8 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
 import { TabIndex } from "../types";
-import { CustomIcon, type IconKeys } from "lib/components/icon";
+import { CustomIcon } from "lib/components/icon";
+import type { IconKeys } from "lib/components/icon";
 import type { Option } from "lib/types";
 
 import { FunctionTypeTabs } from "./module-fns";

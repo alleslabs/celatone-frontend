@@ -3,13 +3,15 @@ import { Grid, Text } from "@chakra-ui/react";
 
 import { TableHeader, TableHeaderFreeze } from "../tableComponents";
 
+interface ProposalsTableHeaderProps {
+  templateColumns: GridProps["templateColumns"];
+  boxShadow: DividerProps["boxShadow"];
+}
+
 export const ProposalsTableHeader = ({
   templateColumns,
   boxShadow,
-}: {
-  templateColumns: GridProps["templateColumns"];
-  boxShadow: DividerProps["boxShadow"];
-}) => {
+}: ProposalsTableHeaderProps) => {
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
   return (
@@ -20,7 +22,9 @@ export const ProposalsTableHeader = ({
         boxShadow={boxShadow}
         color="gray.800"
       >
-        <Text color="text.main">Proposal Title/Type</Text>
+        <Text color="text.main" px={4}>
+          Proposal Title/Types
+        </Text>
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>
