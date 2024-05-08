@@ -1,9 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type {
-  QueryFunctionContext,
-  UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import {
@@ -13,17 +9,18 @@ import {
   useInitia,
   useLCDEndpoint,
   useMoveConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import type { BechAddr, Option, TxFilters } from "lib/types";
-import { extractTxLogs, isTxHash } from "lib/utils";
+import { extractTxLogs, isTxHash, parseDateOpt } from "lib/utils";
 
 import {
+  getTxData,
   getTxs,
   getTxsByAddress,
   getTxsByBlockHeight,
   getTxsCountByAddress,
-  queryTxData,
 } from "./api";
 import { getTxDataLcd } from "./lcd";
 import type {
@@ -38,37 +35,35 @@ export const useTxData = (
   enabled = true
 ): UseQueryResult<TxData> => {
   const { currentChainId } = useCelatoneApp();
-  const txsApiRoute = useBaseApiRoute("txs");
+  const tier = useTierConfig();
+  const apiEndpoint = useBaseApiRoute("txs");
+  const lcdEndpoint = useLCDEndpoint();
+
   const queryFn = useCallback(
-    async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
-      const txData = await queryTxData(queryKey[1], queryKey[2]);
-      const logs = extractTxLogs(txData);
+    async (hash: Option<string>) => {
+      const txData =
+        tier === "full"
+          ? await getTxData(apiEndpoint, hash)
+          : await getTxDataLcd(lcdEndpoint, hash);
+
+      const { tx_response: txResponse } = txData;
+
+      const logs = extractTxLogs(txResponse);
+
       return {
-        ...txData,
+        ...txResponse,
+        timestamp: parseDateOpt(txResponse.timestamp),
         logs,
         chainId: currentChainId,
-        isTxFailed: Boolean(txData.code),
+        isTxFailed: Boolean(txResponse.code),
       };
     },
-    [currentChainId]
+    [apiEndpoint, currentChainId, lcdEndpoint, tier]
   );
 
-  return useQuery({
-    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, txsApiRoute, txHash] as string[],
-    queryFn,
-    enabled: enabled && Boolean(txHash && isTxHash(txHash)),
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
-};
-
-export const useTxDataLcd = (txHash: string, enabled = true) => {
-  const lcdEndpoint = useLCDEndpoint();
-  const { currentChainId } = useCelatoneApp();
-
-  return useQuery<TxData>(
-    [CELATONE_QUERY_KEYS.TX_DATA_LCD, lcdEndpoint, txHash],
-    async () => getTxDataLcd(lcdEndpoint, currentChainId, txHash),
+  return useQuery(
+    [CELATONE_QUERY_KEYS.TX_DATA, apiEndpoint, txHash],
+    async () => queryFn(txHash),
     {
       enabled: enabled && Boolean(txHash && isTxHash(txHash)),
       refetchOnWindowFocus: false,

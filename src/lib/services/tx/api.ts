@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import type { BechAddr, Option, TxFilters } from "lib/types";
-import { camelToSnake, parseDateOpt, parseWithError } from "lib/utils";
+import { camelToSnake, parseWithError } from "lib/utils";
 
 import type { TxResponse } from "./types";
 import {
@@ -11,17 +11,13 @@ import {
   zTxsResponse,
 } from "./types";
 
-export const queryTxData = async (
+export const getTxData = async (
   txsApiRoute: string,
-  txHash: string
-): Promise<TxResponse> => {
-  const { data } = await axios.get(`${txsApiRoute}/${txHash.toUpperCase()}`);
-
-  return {
-    ...data.tx_response,
-    timestamp: parseDateOpt(data.tx_response.timestamp),
-  };
-};
+  txHash: Option<string>
+): Promise<TxResponse> =>
+  axios
+    .get(`${txsApiRoute}/${encodeURIComponent(txHash?.toUpperCase() ?? "")}`)
+    .then(({ data }) => data);
 
 export const getTxs = async (
   endpoint: string,
