@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 
 import { DotSeparator } from "lib/components/DotSeparator";
 import { TooltipInfo } from "lib/components/Tooltip";
@@ -20,13 +20,15 @@ const StatWithLabel = ({
   isLoading: boolean;
   tooltipLabel?: string;
 }) => (
-  <Flex gap={{ md: 2 }} direction={{ base: "column", md: "row" }}>
-    <Flex gap={1} alignItems="center">
-      <Text variant="body2" fontWeight={600} color="text.dark">
-        {label}
-      </Text>
-      {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
-    </Flex>
+  <Flex
+    gap={{ md: 2 }}
+    align="center"
+    direction={{ base: "column", md: "row" }}
+    flexGrow={{ base: 1, md: 0 }}
+  >
+    <Text variant="body2" fontWeight={600} color="text.dark">
+      {label} {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
+    </Text>
     {isLoading ? (
       <Spinner size="sm" />
     ) : (
@@ -74,11 +76,9 @@ export const ValidatorStats = ({
   const delegatorsCount = delegations ? String(delegations.total) : undefined;
 
   return (
-    <Box
-      display={{ base: "grid", md: "flex" }}
+    <Flex
       alignItems="center"
       gap={2}
-      gridTemplateColumns={`repeat(${singleStakingDenom ? 3 : 2}, 1fr)`}
       border={{ base: "1px solid", md: "0px" }}
       borderColor="gray.700"
       borderRadius={4}
@@ -109,6 +109,6 @@ export const ValidatorStats = ({
         value={delegatorsCount}
         isLoading={isDelegationsLoading}
       />
-    </Box>
+    </Flex>
   );
 };

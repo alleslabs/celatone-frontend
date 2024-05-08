@@ -11,7 +11,7 @@ import { useCallback } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { HexAddr, Nullish, Option } from "lib/types";
+import type { HexAddr, Option } from "lib/types";
 
 import { ModuleHistoryTable } from "./history";
 import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
@@ -24,26 +24,22 @@ export enum ModuleTablesTabIndex {
 }
 
 interface ModuleTablesProps {
-  address: HexAddr;
+  vmAddress: HexAddr;
   moduleName: string;
-  moduleId: Nullish<number>;
   txsCount: Option<number>;
   historiesCount: Option<number>;
   relatedProposalsCount: Option<number>;
-  refetchCount: () => void;
   tab: ModuleTablesTabIndex;
   setTab: (nextTab: ModuleTablesTabIndex) => void;
   onViewMore?: (nextTab: ModuleTablesTabIndex) => void;
 }
 
 export const ModuleTables = ({
-  address,
+  vmAddress,
   moduleName,
-  moduleId,
   txsCount,
   historiesCount,
   relatedProposalsCount,
-  refetchCount,
   tab,
   setTab,
   onViewMore,
@@ -116,19 +112,18 @@ export const ModuleTables = ({
         <TabPanels>
           <TabPanel p={0}>
             <ModuleTxsTable
-              address={address}
+              vmAddress={vmAddress}
               moduleName={moduleName}
               txCount={txsCount}
-              refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               onViewMore={handleOnViewMore(ModuleTablesTabIndex.Transactions)}
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleHistoryTable
-              moduleId={moduleId}
+              vmAddress={vmAddress}
+              moduleName={moduleName}
               historyCount={historiesCount}
-              refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               onViewMore={handleOnViewMore(
                 ModuleTablesTabIndex.PublishedEvents
@@ -137,9 +132,9 @@ export const ModuleTables = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleRelatedProposalsTable
-              moduleId={moduleId}
+              vmAddress={vmAddress}
+              moduleName={moduleName}
               relatedProposalsCount={relatedProposalsCount}
-              refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               onViewMore={handleOnViewMore(
                 ModuleTablesTabIndex.RelatedProposals

@@ -3,19 +3,18 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackToModuleInteraction } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { useOpenNewTab } from "lib/hooks";
-import type { IndexedModule } from "lib/services/move/moduleService";
 import {
-  useAccountModules,
+  useModuleByAddressLcd,
   useVerifyModule,
 } from "lib/services/move/moduleService";
-import type { Addr, ExposedFunction } from "lib/types";
+import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -27,6 +26,8 @@ import {
 } from "./component";
 
 export const Interact = () => {
+  useMoveConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -88,27 +89,25 @@ export const Interact = () => {
   const moduleNameParam = getFirstQueryParam(router.query.moduleName);
   const functionNameParam = getFirstQueryParam(router.query.functionName);
   const functionTypeParam = getFirstQueryParam(router.query.functionType);
-  const { refetch } = useAccountModules({
+  const { refetch } = useModuleByAddressLcd({
     address: addressParam as Addr,
     moduleName: moduleNameParam,
-    functionName: functionNameParam,
     options: {
       refetchOnWindowFocus: false,
       enabled: false,
       retry: false,
       onSuccess: (data) => {
-        if (!Array.isArray(data)) {
-          setModule(data);
-          if (functionNameParam) {
-            const fn = [...data.viewFunctions, ...data.executeFunctions].find(
-              (exposedFn) => exposedFn.name === functionNameParam
-            );
-            if (fn) {
-              handleSetSelectedType(fn.is_view ? "view" : "execute");
-              setSelectedFn(fn);
-            }
-          } else if (functionTypeParam)
-            handleSetSelectedType(functionTypeParam);
+        setModule(data);
+        if (functionNameParam) {
+          const fn = data.parsedAbi.exposed_functions.find(
+            (exposedFn) => exposedFn.name === functionNameParam
+          );
+          if (fn) {
+            handleSetSelectedType(fn.is_view ? "view" : "execute");
+            setSelectedFn(fn);
+          }
+        } else if (functionTypeParam) {
+          handleSetSelectedType(functionTypeParam);
         }
       },
     },

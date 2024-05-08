@@ -4,24 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import type Big from "big.js";
 import { useCallback } from "react";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-} from "lib/app-provider";
-import {
-  getRelatedProposalsByModuleIdPagination,
-  getRelatedProposalsCountByModuleId,
-} from "lib/query";
-import { createQueryFnWithTimeout } from "lib/query-utils";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import { big } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
   BechAddr32,
-  Nullish,
   Option,
-  Proposal,
   ProposalParams,
   ProposalStatus,
   ProposalType,
@@ -35,7 +24,6 @@ import {
   deexponentify,
   formatTokenWithValue,
   getTokenLabel,
-  parseDate,
 } from "lib/utils";
 
 import { useAssetInfos } from "./assetService";
@@ -165,81 +153,6 @@ export const useRelatedProposalsByContractAddress = (
       ),
     {
       retry: 1,
-      keepPreviousData: true,
-    }
-  );
-};
-
-export const useRelatedProposalsByModuleIdPagination = (
-  moduleId: Nullish<number>,
-  offset: number,
-  pageSize: number
-): UseQueryResult<Proposal[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getRelatedProposalsByModuleIdPagination, {
-        moduleId,
-        offset,
-        pageSize,
-      })
-      .then(({ module_proposals }) =>
-        module_proposals.map<Proposal>((proposal) => ({
-          id: proposal.proposal_id,
-          title: proposal.proposal.title,
-          status: proposal.proposal.status as ProposalStatus,
-          votingEndTime: parseDate(proposal.proposal.voting_end_time),
-          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
-          resolvedHeight: proposal.proposal.resolved_height ?? null,
-          // TODO: fix
-          types: [proposal.proposal.type as ProposalType],
-          proposer: proposal.proposal.account?.address as BechAddr,
-          isExpedited: Boolean(proposal.proposal.is_expedited),
-        }))
-      );
-  }, [indexerGraphClient, moduleId, offset, pageSize]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.PROPOSALS_BY_MODULE_ID,
-      moduleId,
-      indexerGraphClient,
-      offset,
-      pageSize,
-    ],
-    queryFn,
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useRelatedProposalsCountByModuleId = (
-  moduleId: Nullish<number>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getRelatedProposalsCountByModuleId, {
-        moduleId,
-      })
-      .then(
-        ({ module_proposals_aggregate }) =>
-          module_proposals_aggregate?.aggregate?.count
-      );
-  }, [indexerGraphClient, moduleId]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.PROPOSALS_COUNT_BY_MODULE_ID,
-      moduleId,
-      indexerGraphClient,
-    ],
-    createQueryFnWithTimeout(queryFn),
-    {
       keepPreviousData: true,
     }
   );

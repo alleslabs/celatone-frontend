@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useClearAdminTx } from "lib/app-provider";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import type { BechAddr32 } from "lib/types";
 
 interface ClearAdminModalProps {

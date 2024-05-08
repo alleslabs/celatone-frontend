@@ -2,13 +2,14 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useWasmConfig } from "lib/app-provider";
+import { useTierConfig, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 
 import { RecentContractsTable } from "./components/RecentContractsTable";
 
 const RecentContracts = () => {
+  useTierConfig({ minTier: "full" });
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
 

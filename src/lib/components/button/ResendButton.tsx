@@ -8,7 +8,7 @@ import {
   useResendTx,
   useSimulateFeeQuery,
 } from "lib/app-provider";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 

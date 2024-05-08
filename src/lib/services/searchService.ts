@@ -20,15 +20,15 @@ import {
 } from "lib/utils";
 
 import { useBlockData } from "./blockService";
-import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
-import { useAccountModules } from "./move/moduleService";
+import { useModuleByAddressLcd } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData } from "./proposalService";
 import { useTxData } from "./txService";
 import { useValidatorData } from "./validatorService";
+import { useCodeDataByCodeId } from "./wasm/code";
 
 export type SearchResultType =
   | "Code ID"
@@ -167,16 +167,16 @@ export const useSearchHandler = (
     [addr, functionName, isMove, isSomeValidAddress, moduleName]
   );
 
-  const { data: moduleData, isFetching: moduleFetching } = useAccountModules({
-    address: addr,
-    moduleName,
-    functionName: undefined,
-    options: {
-      enabled: enableModuleFetching,
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  });
+  const { data: moduleData, isFetching: moduleFetching } =
+    useModuleByAddressLcd({
+      address: addr,
+      moduleName: moduleName ?? "",
+      options: {
+        enabled: enableModuleFetching,
+        refetchOnWindowFocus: false,
+        retry: false,
+      },
+    });
 
   // TODO: handle module function later
 
