@@ -6,7 +6,7 @@ import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
-import type { TxData } from "lib/services/wasm/txs";
+import type { TxData } from "lib/services/tx";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxHeaderProps extends FlexProps {

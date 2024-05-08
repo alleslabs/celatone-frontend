@@ -3,7 +3,7 @@ import type { Coin } from "@cosmjs/stargate";
 
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { Loading } from "lib/components/Loading";
-import { useTxData } from "lib/services/wasm/txs";
+import { useTxData } from "lib/services/tx";
 import { big } from "lib/types";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";

@@ -8,7 +8,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { useTxData, useTxDataLcd } from "lib/services/wasm/txs";
+import { useTxData, useTxDataLcd } from "lib/services/tx";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";

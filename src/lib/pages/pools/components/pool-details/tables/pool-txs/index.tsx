@@ -4,7 +4,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
-import { useTxsByPoolIdPagination } from "lib/services/wasm/txs";
+import { useTxsByPoolIdPagination } from "lib/services/tx";
 import type { PoolDetail, PoolTxFilter } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";

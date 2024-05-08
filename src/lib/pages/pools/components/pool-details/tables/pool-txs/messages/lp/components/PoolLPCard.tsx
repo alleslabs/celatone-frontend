@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react";
 import { ErrorFetchingDetail, PoolAssetCard } from "../../components";
 import { getPoolDenom } from "../../utils";
 import { Loading } from "lib/components/Loading";
-import { useTxData } from "lib/services/wasm/txs";
+import { useTxData } from "lib/services/tx";
 import type { AssetInfos, Option } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { z } from "zod";
 
 import { zProposal, zProposalsResponseItem } from "../proposal";
-import { zTxsResponseItem } from "../wasm/txs";
+import { zTxsResponseItem } from "../tx";
 import type {
   AbiFormData,
   Addr,

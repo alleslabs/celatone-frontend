@@ -2,7 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
-import { useTxs } from "lib/services/wasm/txs";
+import { useTxs } from "lib/services/tx";
 
 interface TxsTableProps {
   isViewMore: boolean;

@@ -6,7 +6,7 @@ import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import { useTxData } from "lib/services/wasm/txs";
+import { useTxData } from "lib/services/tx";
 import type { AssetInfos, Option, PoolDetail } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
