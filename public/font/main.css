@@ -1,0 +1,25 @@
+ /* Celatone  */
+@font-face {
+  font-family: "PP Neue Montreal Regular";
+  src: url("./PPNeueMontreal-Regular.woff");
+  src: url("./PPNeueMontreal-Regular.woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal Mono Regular";
+  src: url("./PPNeueMontrealMono-Regular.woff");
+  src: url("./PPNeueMontrealMono-Regular.woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Initia */
+@font-face {
+  font-family: "Pilat Wide";
+  src: url("./PilatWide-Bold.woff");
+  src: url("./PilatWide-Bold.woff2");
+  font-weight: 600;
+  font-style: normal;
+}

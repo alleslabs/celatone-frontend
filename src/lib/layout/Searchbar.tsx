@@ -18,7 +18,6 @@ import {
 import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
-import { CURR_THEME } from "env";
 import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -393,7 +392,7 @@ const Searchbar = () => {
                   bg="background.main"
                   p={5}
                   justify="center"
-                  borderRadius={CURR_THEME.borderRadius.default}
+                  borderRadius="8px"
                 >
                   <Text variant="body2" color="text.dark">
                     Your result will display here

@@ -103,7 +103,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="bookmark" />,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
 
     reset();

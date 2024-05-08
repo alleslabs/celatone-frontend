@@ -27,7 +27,7 @@ export const VoteQuorumCircle = ({
     <Circle
       size={isCompact ? "64px" : "160px"}
       position="relative"
-      bgGradient={`conic(primary.main ${nonAbstainAngle}deg, secondary.main ${nonAbstainAngle}deg ${totalAngle}deg, gray.800 ${totalAngle}deg)`}
+      bgGradient={`conic(voteParticipations.voted ${nonAbstainAngle}deg, voteParticipations.votedAbstain ${nonAbstainAngle}deg ${totalAngle}deg, voteParticipations.didNotVote ${totalAngle}deg)`}
     >
       <Circle
         size={isCompact ? "64px" : "160px"}

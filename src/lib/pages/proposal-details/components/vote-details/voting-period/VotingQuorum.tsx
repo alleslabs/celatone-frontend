@@ -92,14 +92,14 @@ export const VotingQuorum = ({
               name="Voted"
               ratio={nonAbstainRatio}
               power={nonAbstain}
-              color="primary.main"
+              color="voteParticipations.voted"
               isCompact={isMobile}
             />
             <VpPercentCard
               name="Voted Abstain"
               ratio={abstainRatio}
               power={abstain}
-              color="secondary.main"
+              color="voteParticipations.votedAbstain"
               isCompact={isMobile}
             />
             <Divider
@@ -112,7 +112,7 @@ export const VotingQuorum = ({
               name="Did not vote"
               ratio={totalRatio ? ((1 - totalRatio) as Ratio<number>) : null}
               power={totalVotingPower ? totalVotingPower.minus(allVotes) : null}
-              color="gray.800"
+              color="voteParticipations.didNotVote"
               isCompact={isMobile}
             />
           </Flex>
