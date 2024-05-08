@@ -1,8 +1,8 @@
 import axios from "axios";
 import { z } from "zod";
 
+import { zTxsResponseItem } from "../tx";
 import { zProposal, zProposalsResponseItem } from "../wasm/proposal";
-import { zTxsResponseItem } from "../wasm/txs";
 import type {
   AbiFormData,
   Addr,

@@ -10,7 +10,7 @@ import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxsByAddress, useTxsCountByAddress } from "lib/services/wasm/txs";
+import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
 import type { BechAddr, Option, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";

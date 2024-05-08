@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import type { logs } from "@cosmjs/stargate";
 import { useState } from "react";
 
-import type { MsgBody } from "lib/services/wasm/txs";
+import type { MsgBody } from "lib/services/tx";
 import type { Option } from "lib/types";
 
 import { TxMsgDetails } from "./TxMsgDetails";

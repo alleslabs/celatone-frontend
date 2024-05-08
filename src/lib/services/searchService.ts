@@ -25,10 +25,10 @@ import { useModuleByAddressLcd } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
+import { useTxData } from "./tx";
 import { useValidatorData } from "./validatorService";
 import { useCodeDataByCodeId } from "./wasm/code";
 import { useProposalData } from "./wasm/proposal";
-import { useTxData } from "./wasm/txs";
 
 export type SearchResultType =
   | "Code ID"

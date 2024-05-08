@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import type { TxData } from "lib/services/wasm/txs";
+import type { TxData } from "lib/services/tx";
 
 import { TxMessage } from "./tx-message";
 

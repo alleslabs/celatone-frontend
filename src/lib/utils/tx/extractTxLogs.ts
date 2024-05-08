@@ -1,6 +1,6 @@
 import type { Event, logs } from "@cosmjs/stargate";
 
-import type { TxResponse } from "lib/services/wasm/txs";
+import type { TxResponse } from "lib/services/tx";
 
 export const extractTxLogs = (txData: TxResponse): logs.Log[] => {
   // Failed Tx - no logs

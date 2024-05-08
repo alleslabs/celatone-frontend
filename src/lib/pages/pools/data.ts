@@ -4,10 +4,7 @@ import { UPPERBOUND_COUNT } from "lib/data";
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
-import {
-  useTxsByPoolIdPagination,
-  useTxsCountByPoolId,
-} from "lib/services/wasm/txs";
+import { useTxsByPoolIdPagination, useTxsCountByPoolId } from "lib/services/tx";
 import { big } from "lib/types";
 import type {
   Option,
