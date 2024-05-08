@@ -120,6 +120,7 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
+      fontFamily="mono"
       color="secondary.main"
       className={isEllipsis ? "ellipsis" : undefined}
       pointerEvents={hrefLink ? "auto" : "none"}

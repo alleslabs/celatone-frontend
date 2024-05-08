@@ -32,13 +32,13 @@ export const ProgressBar = ({ value, max, isCompact }: ProgressBarProps) => {
           justifyContent="end"
         >
           {!isCompact && ratio >= 0.5 && (
-            <Text mr={1} variant="body2" fontWeight={500}>
+            <Text mr={1} variant="body2" color="gray.900" fontWeight={500}>
               {percent}
             </Text>
           )}
         </Flex>
         {!isCompact && ratio < 0.5 && (
-          <Text ml={1} variant="body2" fontWeight={500}>
+          <Text ml={1} variant="body2" color="gray.900" fontWeight={500}>
             {percent}
           </Text>
         )}

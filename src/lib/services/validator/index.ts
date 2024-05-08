@@ -1,3 +1,4 @@
+import { useToken } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
@@ -290,6 +291,7 @@ export const useValidatorImage = (
   const {
     chain: { chain_name: chainName },
   } = useCurrentChain();
+  const [secondaryMain] = useToken("colors", ["secondary.main"]);
 
   return useQuery({
     queryKey: [
@@ -301,7 +303,7 @@ export const useValidatorImage = (
     ],
     queryFn: async () => {
       if (!validator) return Promise.resolve("");
-      return resolveValIdentity(chainName, validator);
+      return resolveValIdentity(chainName, validator, secondaryMain);
     },
     retry: false,
     refetchOnWindowFocus: false,
