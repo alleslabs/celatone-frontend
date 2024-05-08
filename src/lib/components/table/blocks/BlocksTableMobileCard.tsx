@@ -39,7 +39,7 @@ export const BlocksTableMobileCard = ({
           <Flex direction="column" flex={{ base: 2, sm: 3 }}>
             <MobileLabel label="Block Hash" />
             <Flex h={6} align="end">
-              <Text variant="body2" color="text.main">
+              <Text variant="body2" color="text.main" fontFamily="mono">
                 {truncate(blockData.hash.toUpperCase())}
               </Text>
             </Flex>

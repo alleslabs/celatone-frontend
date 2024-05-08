@@ -52,7 +52,11 @@ export const VotingOverviewQuorum = ({
           label={
             <div>
               <Flex gap={2}>
-                <CustomIcon boxSize="10px" name="circle" color="primary.main" />
+                <CustomIcon
+                  boxSize="10px"
+                  name="circle"
+                  color="voteParticipations.voted"
+                />
                 <Text>
                   {nonAbstainRatio ? formatPrettyPercent(nonAbstainRatio) : "-"}{" "}
                   Vote response
@@ -62,7 +66,7 @@ export const VotingOverviewQuorum = ({
                 <CustomIcon
                   boxSize="10px"
                   name="circle"
-                  color="secondary.main"
+                  color="voteParticipations.votedAbstain"
                 />
                 <Text>
                   {abstainRatio ? formatPrettyPercent(abstainRatio) : "-"} Vote

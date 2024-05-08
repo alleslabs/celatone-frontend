@@ -46,7 +46,12 @@ export const BlocksTableRow = ({
         </ExplorerLink>
       </TableRow>
       <TableRow>
-        {truncate(blockData.hash.toUpperCase(), showProposer ? [6, 6] : [9, 9])}
+        <Text fontFamily="mono">
+          {truncate(
+            blockData.hash.toUpperCase(),
+            showProposer ? [6, 6] : [9, 9]
+          )}
+        </Text>
       </TableRow>
       {showProposer && (
         <TableRow>
