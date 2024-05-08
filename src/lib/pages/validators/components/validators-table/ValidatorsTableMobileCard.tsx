@@ -25,6 +25,7 @@ interface ValidatorsTableMobileCardProps {
   totalVotingPower: Big;
   minCommissionRate: number;
   denomToken: Option<TokenWithValue>;
+  showUptime: boolean;
 }
 export const ValidatorsTableMobileCard = ({
   validator,
@@ -32,6 +33,7 @@ export const ValidatorsTableMobileCard = ({
   totalVotingPower,
   minCommissionRate,
   denomToken,
+  showUptime,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 
@@ -101,35 +103,52 @@ export const ValidatorsTableMobileCard = ({
             </Text>
           </Flex>
           <Flex direction="column" flex="1">
-            <MobileLabel label="Uptime" />
-            <Text
-              variant="body2"
-              color={isZeroUptime ? "error.main" : "text.main"}
-              fontWeight={isZeroUptime ? 700 : undefined}
-            >
-              {formatPrettyPercent(
-                ((validator.uptime ?? 0) / 100) as Ratio<number>,
-                0,
-                true
-              )}
-            </Text>
-            <Text variant="body3" color="text.dark">
-              (Recent 100 blocks)
-            </Text>
+            {showUptime ? (
+              <>
+                <MobileLabel label="Uptime" />
+                <Text
+                  variant="body2"
+                  color={isZeroUptime ? "error.main" : "text.main"}
+                  fontWeight={isZeroUptime ? 700 : undefined}
+                >
+                  {formatPrettyPercent(
+                    ((validator.uptime ?? 0) / 100) as Ratio<number>,
+                    0,
+                    true
+                  )}
+                </Text>
+                <Text variant="body3" color="text.dark">
+                  (Recent 100 blocks)
+                </Text>
+              </>
+            ) : (
+              <>
+                <MobileLabel label="Commission" />
+                <Text
+                  variant="body2"
+                  color={isMinCommissionRate ? "success.main" : "text.main"}
+                  fontWeight={isMinCommissionRate ? 700 : undefined}
+                >
+                  {formatPrettyPercent(validator.commissionRate, 2, true)}
+                </Text>
+              </>
+            )}
           </Flex>
         </Flex>
       }
       bottomContent={
-        <Flex direction="column">
-          <MobileLabel label="Commission" />
-          <Text
-            variant="body2"
-            color={isMinCommissionRate ? "success.main" : "text.main"}
-            fontWeight={isMinCommissionRate ? 700 : undefined}
-          >
-            {formatPrettyPercent(validator.commissionRate, 2, true)}
-          </Text>
-        </Flex>
+        showUptime && (
+          <Flex direction="column">
+            <MobileLabel label="Commission" />
+            <Text
+              variant="body2"
+              color={isMinCommissionRate ? "success.main" : "text.main"}
+              fontWeight={isMinCommissionRate ? 700 : undefined}
+            >
+              {formatPrettyPercent(validator.commissionRate, 2, true)}
+            </Text>
+          </Flex>
+        )
       }
     />
   );

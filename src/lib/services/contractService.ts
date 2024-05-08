@@ -35,7 +35,7 @@ import type {
   ContractTableCounts,
   MigrationHistoriesResponse,
 } from "./contract";
-import { getCodeIdInfoLcd } from "./wasm/code";
+import { getCodeIdInfoLcd } from "./wasm/code/lcd";
 
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
