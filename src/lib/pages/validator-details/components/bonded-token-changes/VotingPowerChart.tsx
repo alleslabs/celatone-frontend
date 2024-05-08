@@ -8,7 +8,7 @@ import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
-import { useValidatorHistoricalPowers } from "lib/services/validatorService";
+import { useValidatorHistoricalPowers } from "lib/services/validator";
 import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 import {
   formatMMMDD,

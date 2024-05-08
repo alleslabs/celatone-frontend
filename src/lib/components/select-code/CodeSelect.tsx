@@ -6,8 +6,8 @@ import { PermissionChip } from "../PermissionChip";
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
+import type { CodeInfoResponseLcd } from "lib/services/types";
 import { useCodeInfoLcd } from "lib/services/wasm/code";
-import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 import { isId } from "lib/utils";
 

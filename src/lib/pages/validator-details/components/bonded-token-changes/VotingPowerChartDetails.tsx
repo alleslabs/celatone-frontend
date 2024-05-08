@@ -1,7 +1,7 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import type { HistoricalPowersResponse } from "lib/services/validator";
+import type { HistoricalPowersResponse } from "lib/services/types";
 import { big } from "lib/types";
 import type { AssetInfo, Option, Token, U } from "lib/types";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";

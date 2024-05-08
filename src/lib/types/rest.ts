@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { snakeToCamel } from "lib/utils";
+import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 
 export const zPagination = z
   .object({

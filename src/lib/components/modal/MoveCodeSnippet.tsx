@@ -24,8 +24,8 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
-  useRPCEndpoint,
+  useLcdEndpoint,
+  useRpcEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
@@ -71,8 +71,8 @@ const MoveCodeSnippet = ({
   const {
     chain: { daemon_name: daemonName },
   } = useCurrentChain();
-  const lcdEndpoint = useLCDEndpoint();
-  const rpcEndpoint = useRPCEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
+  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
     chainConfig: {

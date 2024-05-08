@@ -2,7 +2,7 @@ import { Badge, Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate } from "lib/components/table";
-import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/validator";
+import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/types";
 import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
