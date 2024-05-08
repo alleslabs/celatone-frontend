@@ -19,7 +19,7 @@ import {
   splitModule,
 } from "lib/utils";
 
-import { useBlockData } from "./blockService";
+import { useBlockData } from "./block";
 import { queryContract } from "./contract";
 import { useModuleByAddressLcd } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
@@ -27,7 +27,7 @@ import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData } from "./proposalService";
 import { useTxData } from "./tx";
-import { useValidatorData } from "./validatorService";
+import { useValidatorData } from "./validator";
 import { useCodeDataByCodeId } from "./wasm/code";
 
 export type SearchResultType =

@@ -8,7 +8,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { BlocksTable } from "lib/components/table/blocks";
-import { useValidatorProposedBlocks } from "lib/services/validatorService";
+import { useValidatorProposedBlocks } from "lib/services/validator";
 import type { ValidatorAddr } from "lib/types";
 
 const scrollComponentId = "proposed-block-table-header";

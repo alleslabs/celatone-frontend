@@ -7,7 +7,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useBlockData } from "lib/services/blockService";
+import { useBlockData } from "lib/services/block";
 
 import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
 import { zBlockDetailQueryParams } from "./types";

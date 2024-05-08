@@ -19,7 +19,6 @@ export const zValidator = z
     identity: val.identity ?? undefined,
     moniker: val.moniker ?? undefined,
   }));
-
 export type Validator = z.infer<typeof zValidator>;
 
 export const zValidatorData = z
@@ -41,7 +40,6 @@ export const zValidatorData = z
     ...snakeToCamel(val),
     website: formatUrl(website),
   }));
-
 export type ValidatorData = z.infer<typeof zValidatorData>;
 
 export enum BlockVote {

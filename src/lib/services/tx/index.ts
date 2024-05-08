@@ -7,7 +7,7 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useInitia,
-  useLCDEndpoint,
+  useLcdEndpoint,
   useMoveConfig,
   useTierConfig,
   useWasmConfig,
@@ -37,7 +37,7 @@ export const useTxData = (
   const { currentChainId } = useCelatoneApp();
   const tier = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
 
   const queryFn = useCallback(
     async (hash: Option<string>) => {
