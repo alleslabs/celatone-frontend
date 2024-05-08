@@ -65,7 +65,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         },
       }),
       constants: PROJECT_CONSTANTS,
-      theme: getTheme(chainConfig.chain),
+      theme,
     });
   }, []);
 
