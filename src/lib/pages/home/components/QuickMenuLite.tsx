@@ -3,7 +3,6 @@ import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { CURR_THEME } from "env";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -26,7 +25,7 @@ const cardProps = {
 
 const highlightCardProps = {
   ...baseCardProps,
-  bgGradient: CURR_THEME.colors.gradient?.main,
+  bgGradient: "primary.main",
 };
 
 interface ShortcutMetadata {
