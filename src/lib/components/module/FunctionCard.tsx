@@ -7,11 +7,11 @@ import { Tooltip } from "lib/components/Tooltip";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
-type CardVariant = "common" | "disabled" | "selected";
+type CardVariant = "common" | "disabled" | "selected" | "readonly";
 
 interface FunctionCardProps {
   variant?: CardVariant;
-  isSelected?: boolean;
+  isReadOnly?: boolean;
   exposedFn: ExposedFunction;
   onFunctionSelect: (fn: ExposedFunction) => void;
 }
@@ -35,12 +35,17 @@ const cardStyles: { [key in CardVariant]: FlexProps } = {
     cursor: "pointer",
     borderColor: "gray.600",
   },
+  readonly: {
+    bgColor: "gray.800",
+    borderColor: "transparent",
+  },
 };
 
 export const FunctionCard = ({
   variant = "common",
   exposedFn,
   onFunctionSelect,
+  isReadOnly = false,
 }: FunctionCardProps) => {
   const { is_view: isView, visibility, name } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
@@ -60,7 +65,9 @@ export const FunctionCard = ({
         flexDirection="column"
         gap={1}
         border="1px solid"
-        onClick={disabled ? undefined : () => onFunctionSelect(exposedFn)}
+        onClick={
+          disabled || isReadOnly ? undefined : () => onFunctionSelect(exposedFn)
+        }
         {...cardStyles[disabled ? "disabled" : variant]}
       >
         <Flex gap={1} justifyContent="space-between" w="full">

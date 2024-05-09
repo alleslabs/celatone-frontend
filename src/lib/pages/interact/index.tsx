@@ -10,7 +10,7 @@ import {
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
-import { ModuleSourceCode } from "lib/components/module";
+import { FunctionCard, ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { useOpenNewTab } from "lib/hooks";
@@ -22,12 +22,67 @@ import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
+  InteractionBodySection,
+  InteractionBodySectionMobile,
   InteractionTabs,
   ModuleSelectDrawer,
   ModuleSelectDrawerTrigger,
 } from "./component";
-import { InteractionBodySection } from "./component/InteractionBodySection";
-import { InteractionBodySectionMobile } from "./component/InteractionBodySectionMobile";
+import { SelectedFunctionCard } from "./component/SelectedFunctionCard";
+
+export const ZeroState = ({
+  onOpen,
+  isMobile,
+}: {
+  onOpen: () => void;
+  isMobile: boolean;
+}) => {
+  return (
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      alignItems={{ md: "center" }}
+      justifyContent={{ md: "space-between" }}
+      w="full"
+      gap={4}
+    >
+      <p>Select a module to interact with ...</p>
+      <ModuleSelectDrawerTrigger
+        triggerVariant="select-module"
+        onOpen={onOpen}
+      />
+      {isMobile && (
+        <Flex
+          borderTop="1px solid"
+          borderTopColor="gray.700"
+          pt={4}
+          direction="column"
+        >
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text>Selected Function</Text>
+            <Button
+              size="sm"
+              variant="ghost-gray"
+              leftIcon={<CustomIcon name="swap" boxSize={3} />}
+            >
+              Change
+            </Button>
+          </Flex>
+          <Flex
+            p={4}
+            borderRadius={8}
+            alignItems="center"
+            justifyContent="center"
+            bg="background.main"
+            color="text.dark"
+            mt={2}
+          >
+            Please select module first
+          </Flex>
+        </Flex>
+      )}
+    </Flex>
+  );
+};
 
 export const Interact = () => {
   useMoveConfig({ shouldRedirect: true });
@@ -213,21 +268,41 @@ export const Interact = () => {
                   See Module
                 </Button>
               </Flex>
+              {isMobile && selectedFn && (
+                <Flex
+                  borderTop="1px solid"
+                  borderTopColor="gray.700"
+                  pt={4}
+                  mt={2}
+                  direction="column"
+                  gap={4}
+                >
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text variant="body2" color="text.dark" fontWeight={600}>
+                      Selected Function
+                    </Text>
+                    <Button
+                      size="sm"
+                      variant="ghost-primary"
+                      leftIcon={<CustomIcon name="swap" boxSize={3} />}
+                    >
+                      Change
+                    </Button>
+                  </Flex>
+                  <FunctionCard
+                    variant="readonly"
+                    exposedFn={selectedFn}
+                    isReadOnly
+                    onFunctionSelect={() => {
+                      setSelectedFn(selectedFn);
+                    }}
+                  />
+                  <SelectedFunctionCard fn={selectedFn} />
+                </Flex>
+              )}
             </Flex>
           ) : (
-            <Flex
-              direction={{ base: "column", md: "row" }}
-              alignItems={{ md: "center" }}
-              justifyContent={{ md: "space-between" }}
-              w="full"
-              gap={4}
-            >
-              <p>Select a module to interact with ...</p>
-              <ModuleSelectDrawerTrigger
-                triggerVariant="select-module"
-                onOpen={onOpen}
-              />
-            </Flex>
+            <ZeroState onOpen={onOpen} isMobile={isMobile} />
           )}
           <ModuleSelectDrawer
             isOpen={isOpen}
