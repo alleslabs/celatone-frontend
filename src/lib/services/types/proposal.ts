@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { mapProposalStatusLcdToProposalStatus } from "../proposal/helpers";
 import {
   zBechAddr,
   zBig,
@@ -27,8 +28,6 @@ import type {
 } from "lib/types";
 import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
-
-import { mapProposalStatusLcdToProposalStatus } from "./helpers";
 
 export interface MinDeposit {
   amount: U<Token<Big>>;

@@ -12,8 +12,8 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import type { ProposalAnswerCountsResponse } from "lib/services/proposal";
 import { useProposalVotes } from "lib/services/proposal";
+import type { ProposalAnswerCountsResponse } from "lib/services/types";
 import { ProposalVoteType } from "lib/types";
 import type { Option, ProposalVote } from "lib/types";
 

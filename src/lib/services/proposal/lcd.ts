@@ -1,11 +1,16 @@
 import axios from "axios";
 
+import type {
+  ProposalsResponseItemLcd,
+  ProposalsResponseLcd,
+} from "../types/proposal";
+import {
+  zProposalsResponseItemLcd,
+  zProposalsResponseLcd,
+} from "../types/proposal";
 import type { Option } from "lib/types";
 import { ProposalStatusLcd } from "lib/types";
 import { parseWithError } from "lib/utils";
-
-import type { ProposalsResponseItemLcd, ProposalsResponseLcd } from "./types";
-import { zProposalsResponseItemLcd, zProposalsResponseLcd } from "./types";
 
 export const getProposalsLcd = async (
   endpoint: string,

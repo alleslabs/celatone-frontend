@@ -1,5 +1,27 @@
 import axios from "axios";
 
+import {
+  zProposalAnswerCountsResponse,
+  zProposalDataResponse,
+  zProposalParamsResponse,
+  zProposalsResponse,
+  zProposalVotesInfoResponse,
+  zProposalVotesResponse,
+  zRelatedProposalsResponse,
+} from "../types/proposal";
+import type {
+  DepositParams,
+  DepositParamsInternal,
+  ProposalAnswerCountsResponse,
+  ProposalDataResponse,
+  ProposalsResponse,
+  ProposalValidatorVotesResponse,
+  ProposalVotesResponse,
+  RelatedProposalsResponse,
+  UploadAccess,
+  VotingParams,
+  VotingParamsInternal,
+} from "../types/proposal";
 import { zProposalType } from "lib/types";
 import type {
   BechAddr,
@@ -15,29 +37,6 @@ import type {
   ProposalVoteType,
 } from "lib/types";
 import { parseWithError, snakeToCamel } from "lib/utils";
-
-import {
-  zProposalAnswerCountsResponse,
-  zProposalDataResponse,
-  zProposalParamsResponse,
-  zProposalsResponse,
-  zProposalVotesInfoResponse,
-  zProposalVotesResponse,
-  zRelatedProposalsResponse,
-} from "./types";
-import type {
-  DepositParams,
-  DepositParamsInternal,
-  ProposalAnswerCountsResponse,
-  ProposalDataResponse,
-  ProposalsResponse,
-  ProposalValidatorVotesResponse,
-  ProposalVotesResponse,
-  RelatedProposalsResponse,
-  UploadAccess,
-  VotingParams,
-  VotingParamsInternal,
-} from "./types";
 
 export const fetchGovDepositParams = (
   lcdEndpoint: string

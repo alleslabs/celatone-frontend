@@ -4,6 +4,18 @@ import { useCallback } from "react";
 
 import { useAssetInfos } from "../assetService";
 import { useMovePoolInfos } from "../move/poolService";
+import type {
+  GovParams,
+  ProposalAnswerCountsResponse,
+  ProposalDataResponse,
+  ProposalsResponse,
+  ProposalsResponseItemLcd,
+  ProposalsResponseLcd,
+  ProposalValidatorVotesResponse,
+  ProposalVotesResponse,
+  RelatedProposalsResponse,
+  UploadAccess,
+} from "../types/proposal";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -47,18 +59,6 @@ import {
   getRelatedProposalsByContractAddress,
 } from "./api";
 import { getProposalDataLcd, getProposalsLcd } from "./lcd";
-import type {
-  GovParams,
-  ProposalAnswerCountsResponse,
-  ProposalDataResponse,
-  ProposalsResponse,
-  ProposalsResponseItemLcd,
-  ProposalsResponseLcd,
-  ProposalValidatorVotesResponse,
-  ProposalVotesResponse,
-  RelatedProposalsResponse,
-  UploadAccess,
-} from "./types";
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
@@ -355,5 +355,4 @@ export const useProposalAnswerCounts = (
   );
 };
 
-export * from "./types";
 export * from "./helpers";

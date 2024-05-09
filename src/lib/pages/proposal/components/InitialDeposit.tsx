@@ -1,6 +1,6 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 
-import type { GovParams } from "lib/services/proposal";
+import type { GovParams } from "lib/services/types";
 import type { Option } from "lib/types";
 import { formatSeconds } from "lib/utils";
 

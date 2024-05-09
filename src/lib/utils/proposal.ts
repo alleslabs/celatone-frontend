@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { MinDeposit } from "lib/services/proposal";
+import type { MinDeposit } from "lib/services/types";
 import { big } from "lib/types";
 import type { Option } from "lib/types";
 
