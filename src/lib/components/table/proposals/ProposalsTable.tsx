@@ -26,8 +26,8 @@ export const ProposalsTable = ({
 
   const templateColumns =
     tier === "full"
-      ? "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 160px"
-      : "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 160px";
+      ? "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 180px"
+      : "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px";
   const boxShadow = "16px 0 32px -10px";
 
   return isMobile ? (

@@ -7,7 +7,7 @@ import { useMovePoolInfos } from "../move/poolService";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useLCDEndpoint,
+  useLcdEndpoint,
 } from "lib/app-provider";
 import { big } from "lib/types";
 import type {
@@ -186,7 +186,7 @@ export const useProposals = (
 export const useProposalsLcd = (
   status?: Omit<ProposalStatusLcd, "DEPOSIT_FAILED" | "CANCELLED">
 ) => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
 
   const query = useInfiniteQuery<ProposalsResponseLcd>(
     [CELATONE_QUERY_KEYS.PROPOSALS_LCD, lcdEndpoint, status],
@@ -265,7 +265,7 @@ export const useProposalData = (id: number, enabled = true) => {
 };
 
 export const useProposalDataLcd = (id: string, enabled = true) => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
 
   return useQuery<ProposalsResponseItemLcd>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
