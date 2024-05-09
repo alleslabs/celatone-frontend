@@ -1,37 +1,43 @@
 import axios from "axios";
 
 import {
-  zDelegationsResponse,
-  zRedelegationsResponse,
-  zStakingParamsResponse,
-  zUnbondingsResponse,
+  zDelegationsResponseLcd,
+  zRedelegationsResponseLcd,
+  zStakingParamsResponseLcd,
+  zUnbondingsResponseLcd,
 } from "lib/services/types";
 import { big } from "lib/types";
-import type { Addr } from "lib/types";
+import type { BechAddr } from "lib/types";
 
-export const getStakingParams = (endpoint: string) =>
+export const getStakingParamsLcd = (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/params`)
-    .then(({ data }) => zStakingParamsResponse.parse(data));
+    .then(({ data }) => zStakingParamsResponseLcd.parse(data));
 
-export const getDelegations = (endpoint: string, address: Addr) =>
+export const getDelegationsByAddressLcd = (
+  endpoint: string,
+  address: BechAddr
+) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/delegations/${encodeURI(address)}`)
     .then(({ data }) =>
-      zDelegationsResponse
+      zDelegationsResponseLcd
         .parse(data)
         .delegationResponses.sort((a, b) =>
           big(b.balance.amount).cmp(a.balance.amount)
         )
     );
 
-export const getUnbondings = (endpoint: string, address: Addr) =>
+export const getUnbondingsByAddressLcd = (
+  endpoint: string,
+  address: BechAddr
+) =>
   axios
     .get(
       `${endpoint}/cosmos/staking/v1beta1/delegators/${encodeURI(address)}/unbonding_delegations`
     )
     .then(({ data }) =>
-      zUnbondingsResponse
+      zUnbondingsResponseLcd
         .parse(data)
         .unbondingResponses.flatMap((unbonding) =>
           unbonding.entries.map((entry) => ({
@@ -43,13 +49,16 @@ export const getUnbondings = (endpoint: string, address: Addr) =>
         .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime())
     );
 
-export const getRedelegations = (endpoint: string, address: Addr) =>
+export const getRedelegationsByAddressLcd = (
+  endpoint: string,
+  address: BechAddr
+) =>
   axios
     .get(
       `${endpoint}/cosmos/staking/v1beta1/delegators/${encodeURI(address)}/redelegations`
     )
     .then(({ data }) =>
-      zRedelegationsResponse
+      zRedelegationsResponseLcd
         .parse(data)
         .redelegationResponses.flatMap((redelegation) =>
           redelegation.entries.map((entry) => ({
