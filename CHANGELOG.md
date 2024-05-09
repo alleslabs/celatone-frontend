@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
 - [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
 - [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
 - [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
@@ -59,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name
 - [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
 - [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
 - [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
