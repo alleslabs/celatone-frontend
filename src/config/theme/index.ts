@@ -1,3 +1,5 @@
+import { FALLBACK_CHAIN_CONFIG } from "config/chain";
+
 import { DEFAULT_THEME } from "./default";
 import { INITIA_THEME } from "./initia";
 // import { OSMOSIS_THEME } from "./osmosis";
@@ -16,4 +18,4 @@ export const getTheme = (chain: string) => {
   }
 };
 
-export * from "./default";
+export const FALLBACK_THEME = getTheme(FALLBACK_CHAIN_CONFIG.chain);

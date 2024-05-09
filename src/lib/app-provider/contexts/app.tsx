@@ -10,13 +10,17 @@ import {
 } from "react";
 
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
+import { CHAIN_CONFIGS, FALLBACK_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
 import { PROJECT_CONSTANTS } from "config/project";
 import type { ProjectConstants } from "config/project";
-import { DEFAULT_THEME, getTheme } from "config/theme";
+import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
-import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
+import {
+  FALLBACK_SUPPORTED_CHAIN_ID,
+  HASURA_ADMIN_SECRET,
+  SUPPORTED_CHAIN_IDS,
+} from "env";
 import { changeFavicon } from "lib/utils";
 
 interface AppProviderProps {
@@ -34,11 +38,15 @@ interface AppContextInterface {
 
 const DEFAULT_STATES: AppContextInterface = {
   availableChainIds: SUPPORTED_CHAIN_IDS,
-  currentChainId: "",
-  chainConfig: DEFAULT_CHAIN_CONFIG,
-  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer),
+  currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
+  chainConfig: FALLBACK_CHAIN_CONFIG,
+  indexerGraphClient: new GraphQLClient(FALLBACK_CHAIN_CONFIG.indexer, {
+    headers: {
+      "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
+    },
+  }),
   constants: PROJECT_CONSTANTS,
-  theme: DEFAULT_THEME,
+  theme: FALLBACK_THEME,
 };
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
@@ -50,7 +58,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback((newChainId: string) => {
-    const chainConfig = CHAIN_CONFIGS[newChainId] ?? DEFAULT_CHAIN_CONFIG;
+    const chainConfig = CHAIN_CONFIGS[newChainId] ?? FALLBACK_CHAIN_CONFIG;
 
     const theme = getTheme(chainConfig.chain);
     changeFavicon(theme.branding.favicon);

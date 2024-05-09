@@ -3,8 +3,7 @@ import { Flex, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { AmpEvent, track, trackSocial } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
-import { useCelatoneApp } from "lib/app-provider/contexts/app";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 

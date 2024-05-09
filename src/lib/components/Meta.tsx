@@ -1,12 +1,11 @@
-import { useCelatoneApp } from "lib/app-provider";
+import { capitalize } from "lodash";
+
+import { FALLBACK_CHAIN_CONFIG } from "config/chain";
+import { FALLBACK_THEME } from "config/theme";
 
 const Meta = () => {
-  const {
-    chainConfig: { prettyName },
-    theme,
-  } = useCelatoneApp();
-  const APP_NAME = theme.branding.seo.appName;
-  const title = `${prettyName} Explorer | ${theme.branding.seo.title}`;
+  const APP_NAME = FALLBACK_THEME.branding.seo.appName;
+  const title = `${capitalize(FALLBACK_CHAIN_CONFIG.chain)} Explorer | ${FALLBACK_THEME.branding.seo.title}`;
   return (
     <>
       <meta name="application-name" content={APP_NAME} />
@@ -15,30 +14,39 @@ const Meta = () => {
       <meta name="apple-mobile-web-app-title" content={APP_NAME} />
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="theme-color" content={theme.colors.background.main} />
+      <meta
+        name="theme-color"
+        content={FALLBACK_THEME.colors.background.main}
+      />
       <title>{title}</title>
-      <meta name="description" content={theme.branding.seo.description} />
+      <meta
+        name="description"
+        content={FALLBACK_THEME.branding.seo.description}
+      />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={title} />
       <meta
         property="og:description"
-        content={theme.branding.seo.description}
+        content={FALLBACK_THEME.branding.seo.description}
       />
-      <meta property="og:image" content={theme.branding.seo.image} />
+      <meta property="og:image" content={FALLBACK_THEME.branding.seo.image} />
 
       {/* Twitter */}
       <meta
         property="twitter:card"
-        content={theme.branding.seo.twitter.cardType}
+        content={FALLBACK_THEME.branding.seo.twitter.cardType}
       />
       <meta property="twitter:title" content={title} />
       <meta
         property="twitter:description"
-        content={theme.branding.seo.description}
+        content={FALLBACK_THEME.branding.seo.description}
       />
-      <meta property="twitter:image" content={theme.branding.seo.image} />
+      <meta
+        property="twitter:image"
+        content={FALLBACK_THEME.branding.seo.image}
+      />
     </>
   );
 };

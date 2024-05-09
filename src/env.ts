@@ -12,7 +12,7 @@ export const SUPPORTED_CHAIN_IDS: string[] = (() => {
 })();
 
 // Remark: We've already checked that the first element is not empty on the above code
-export const DEFAULT_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
+export const FALLBACK_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
 export const DUMMY_MNEMONIC = (() => {
   const mnemonic = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;

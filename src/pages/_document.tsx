@@ -3,7 +3,7 @@ import type { DocumentContext } from "next/document";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import Script from "next/script";
 
-import { DEFAULT_THEME } from "config/theme";
+import { FALLBACK_THEME } from "config/theme";
 import Meta from "lib/components/Meta";
 import { config } from "lib/styles/theme/config";
 import { fontHrefs } from "lib/styles/theme/fonts";
@@ -23,7 +23,7 @@ class MyDocument extends Document {
           <link
             id="favicon"
             rel="shortcut icon"
-            href={DEFAULT_THEME.branding.favicon}
+            href={FALLBACK_THEME.branding.favicon}
           />
           <Meta />
         </Head>

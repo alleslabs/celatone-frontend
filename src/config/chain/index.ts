@@ -1,3 +1,6 @@
+import { FALLBACK_SUPPORTED_CHAIN_ID } from "env";
+
+import { DEFAULT_CHAIN_CONFIG } from "./default";
 import { INITIA_CHAIN_CONFIGS } from "./initia";
 import { NEUTRON_CHAIN_CONFIGS } from "./neutron";
 import { OSMOSIS_CHAIN_CONFIGS } from "./osmosis";
@@ -17,3 +20,6 @@ export const CHAIN_CONFIGS: ChainConfigs = {
   ...TERRA_CHAIN_CONFIGS,
   ...INITIA_CHAIN_CONFIGS,
 };
+
+export const FALLBACK_CHAIN_CONFIG =
+  CHAIN_CONFIGS[FALLBACK_SUPPORTED_CHAIN_ID] ?? DEFAULT_CHAIN_CONFIG;
