@@ -5,7 +5,7 @@ import { useCurrentChain } from "./useCurrentChain";
 import { useCallback } from "react";
 import { useWalletClient } from "@cosmos-kit/react";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { useRPCEndpoint } from "./useRPCEndpoint";
+import { useRpcEndpoint } from "./useRpcEndpoint";
 import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
 
 type MergedWalletClient =
@@ -42,7 +42,7 @@ export const useGetSigningClient = () => {
     chain: { chain_id: chainId },
     getSigningCosmWasmClient,
   } = useCurrentChain();
-  const rpcEndpoint = useRPCEndpoint();
+  const rpcEndpoint = useRpcEndpoint();
 
   return async () => {
     if (walletClient && (await isLedger(walletClient, chainId))) {

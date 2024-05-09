@@ -2,7 +2,7 @@ import { useCelatoneApp } from "../contexts";
 
 import { useCurrentChain } from "./useCurrentChain";
 
-export const useLCDEndpoint = () => {
+export const useLcdEndpoint = () => {
   const { chainWallet } = useCurrentChain();
   const { chainConfig } = useCelatoneApp();
   const restRecord = chainWallet?.chainRecord.preferredEndpoints?.rest?.[0];

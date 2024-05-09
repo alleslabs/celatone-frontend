@@ -48,6 +48,7 @@ interface ValidatorsTableHeaderProps {
   setOrder: (value: ValidatorOrder) => void;
   isDesc: boolean;
   setIsDesc: (value: boolean) => void;
+  showUptime: boolean;
 }
 
 export const ValidatorsTableHeader = ({
@@ -58,6 +59,7 @@ export const ValidatorsTableHeader = ({
   setOrder,
   isDesc,
   setIsDesc,
+  showUptime,
 }: ValidatorsTableHeaderProps) => {
   const handleOrderChange = useCallback(
     (column: ValidatorOrder) => () => {
@@ -105,15 +107,17 @@ export const ValidatorsTableHeader = ({
           isDesc={isDesc}
         />
       </StyledTableHeader>
-      <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Uptime)}>
-        Uptime
-        <TooltipInfo label="Calculated from recent 100 blocks" />
-        <SortIcon
-          column={ValidatorOrder.Uptime}
-          order={order}
-          isDesc={isDesc}
-        />
-      </StyledTableHeader>
+      {showUptime && (
+        <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Uptime)}>
+          Uptime
+          <TooltipInfo label="Calculated from recent 100 blocks" />
+          <SortIcon
+            column={ValidatorOrder.Uptime}
+            order={order}
+            isDesc={isDesc}
+          />
+        </StyledTableHeader>
+      )}
       <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Commission)}>
         Commission
         <SortIcon

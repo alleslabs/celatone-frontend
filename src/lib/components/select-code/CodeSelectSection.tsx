@@ -5,7 +5,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { AmpEvent, track } from "lib/amplitude";
 import { ControllerInput } from "lib/components/forms";
 import type { FormStatus } from "lib/components/forms";
-import type { CodeInfoResponseLcd } from "lib/services/wasm/code";
+import type { CodeInfoResponseLcd } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { CodeSelect } from "./CodeSelect";

@@ -16,7 +16,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move";
-import { useValidatorData } from "lib/services/validatorService";
+import { useValidatorData } from "lib/services/validator";
 
 import {
   BondedTokenChanges,

@@ -4,3 +4,8 @@ export enum ValidatorOrder {
   Uptime = "uptime",
   Commission = "commission",
 }
+
+export interface ValidatorCounts {
+  activeCount: number;
+  inactiveCount: number;
+}
