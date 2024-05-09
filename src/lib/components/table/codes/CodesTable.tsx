@@ -1,6 +1,7 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import { ErrorFetching } from "lib/components/state";
 import type { CodeInfo, Option } from "lib/types";
 
 import { CodesTableHeader } from "./CodesTableHeader";
@@ -13,6 +14,7 @@ interface CodesTableProps {
   emptyState: JSX.Element;
   onRowSelect: (codeId: number) => void;
   isReadOnly?: boolean;
+  showCw2andContracts?: boolean;
 }
 
 export const CodesTable = ({
@@ -21,15 +23,15 @@ export const CodesTable = ({
   emptyState,
   onRowSelect,
   isReadOnly = false,
+  showCw2andContracts = true,
 }: CodesTableProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
-  if (!codes?.length) return emptyState;
+  if (!codes) return <ErrorFetching dataName="codes" />;
+  if (!codes.length) return emptyState;
 
-  const templateColumns = isReadOnly
-    ? "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px"
-    : "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
+  const templateColumns = `max(100px) minmax(250px, 1fr)${showCw2andContracts ? " minmax(200px, 1fr) max(100px)" : ""} max(160px) 150px ${!isReadOnly ? " 180px" : ""}`;
 
   return isMobile ? (
     <MobileTableContainer>
@@ -37,6 +39,7 @@ export const CodesTable = ({
         <CodesTableMobileCard
           key={code.id + code.uploader + code.name}
           codeInfo={code}
+          showCw2andContracts={showCw2andContracts}
         />
       ))}
     </MobileTableContainer>
@@ -45,6 +48,7 @@ export const CodesTable = ({
       <CodesTableHeader
         templateColumns={templateColumns}
         isReadOnly={isReadOnly}
+        showCw2andContracts={showCw2andContracts}
       />
       {codes.map((code) => (
         <CodesTableRow
@@ -53,6 +57,7 @@ export const CodesTable = ({
           templateColumns={templateColumns}
           onRowSelect={onRowSelect}
           isReadOnly={isReadOnly}
+          showCw2andContracts={showCw2andContracts}
         />
       ))}
     </TableContainer>

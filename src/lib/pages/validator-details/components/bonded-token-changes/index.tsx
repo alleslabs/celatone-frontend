@@ -5,7 +5,7 @@ import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle } from "lib/components/table";
-import { useValidatorDelegationRelatedTxs } from "lib/services/validatorService";
+import { useValidatorDelegationRelatedTxs } from "lib/services/validator";
 import type {
   AssetInfos,
   MovePoolInfos,

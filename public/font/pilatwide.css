@@ -1,8 +1,0 @@
-/* TODO: add another font face later */
-@font-face {
-  font-family: "Pilat Wide";
-  src: url("./PilatWide-Bold.woff");
-  src: url("./PilatWide-Bold.woff2");
-  font-weight: 600;
-  font-style: normal;
-}

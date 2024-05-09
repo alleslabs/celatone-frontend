@@ -8,7 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { PublicDescription } from "lib/components/PublicDescription";
 import { useCodeStore } from "lib/providers/store";
-import type { Code } from "lib/services/code";
+import type { Code } from "lib/services/types";
 import { AccessConfigPermission } from "lib/types";
 import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";

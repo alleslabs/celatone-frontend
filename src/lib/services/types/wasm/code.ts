@@ -1,43 +1,67 @@
-import axios from "axios";
 import { z } from "zod";
 
+import type { CodeInfo } from "lib/types";
 import {
   AccessConfigPermission,
   zBechAddr,
+  zPagination,
   zProjectInfo,
   zPublicCodeInfo,
 } from "lib/types";
-import type { BechAddr, BechAddr20, CodeInfo, Option } from "lib/types";
-import {
-  parseDate,
-  parseTxHash,
-  parseWithError,
-  snakeToCamel,
-} from "lib/utils";
+import { parseDate, parseTxHash, snakeToCamel } from "lib/utils";
 
-export interface CodeIdInfoResponse {
-  code_info: {
-    code_id: string;
-    creator: BechAddr;
-    data_hash: string;
-    instantiate_permission: {
-      permission: AccessConfigPermission;
-      address: BechAddr;
-      addresses: BechAddr[];
-    };
-  };
-  data: string;
-}
+export const zCodeInfoResponseLcd = z
+  .object({
+    code_info: z.object({
+      code_id: z.string(),
+      creator: zBechAddr,
+      data_hash: z.string(),
+      instantiate_permission: z.object({
+        permission: z.nativeEnum(AccessConfigPermission),
+        address: zBechAddr.optional(),
+        addresses: z.array(zBechAddr).default([]),
+      }),
+    }),
+  })
+  .transform(({ code_info: { instantiate_permission, ...rest } }) => ({
+    codeInfo: {
+      ...snakeToCamel(rest),
+      instantiatePermission: {
+        permission: instantiate_permission.permission,
+        addresses:
+          instantiate_permission.address &&
+          instantiate_permission.address !== ""
+            ? [instantiate_permission.address]
+            : instantiate_permission.addresses,
+      },
+    },
+  }));
+export type CodeInfoResponseLcd = z.infer<typeof zCodeInfoResponseLcd>;
 
-export const getCodeIdInfo = async (
-  endpoint: string,
-  id: number
-): Promise<CodeIdInfoResponse> => {
-  const { data } = await axios.get<CodeIdInfoResponse>(
-    `${endpoint}/cosmwasm/wasm/v1/code/${id}`
-  );
-  return data;
-};
+const zCodesResponseItemLcd = z
+  .object({
+    code_id: z.coerce.number(),
+    creator: zBechAddr,
+    instantiate_permission: z.object({
+      permission: z.nativeEnum(AccessConfigPermission),
+      addresses: z.array(zBechAddr),
+    }),
+  })
+  .transform<CodeInfo>((val) => ({
+    id: val.code_id,
+    cw2Contract: undefined,
+    cw2Version: undefined,
+    uploader: val.creator,
+    contractCount: undefined,
+    instantiatePermission: val.instantiate_permission.permission,
+    permissionAddresses: val.instantiate_permission.addresses,
+  }));
+
+export const zCodesResponseLcd = z.object({
+  code_infos: z.array(zCodesResponseItemLcd),
+  pagination: zPagination,
+});
+export type CodesResponseLcd = z.infer<typeof zCodesResponseLcd>;
 
 const zCodesResponseItem = z
   .object({
@@ -59,45 +83,11 @@ const zCodesResponseItem = z
     permissionAddresses: val.permission_addresses,
   }));
 
-const zCodesResponse = z.object({
+export const zCodesResponse = z.object({
   items: z.array(zCodesResponseItem),
   total: z.number().nonnegative(),
 });
-
 export type CodesResponse = z.infer<typeof zCodesResponse>;
-
-export const getCodes = async (
-  endpoint: string,
-  limit: number,
-  offset: number,
-  address: Option<BechAddr20>,
-  permission: Option<boolean>
-): Promise<CodesResponse> =>
-  axios
-    .get(`${endpoint}`, {
-      params: {
-        limit,
-        offset,
-        address,
-        permission,
-      },
-    })
-    .then(({ data }) => parseWithError(zCodesResponse, data));
-
-export const getCodesByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  limit: number,
-  offset: number
-): Promise<CodesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/wasm/codes`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => zCodesResponse.parse(data));
 
 const zCode = z
   .object({
@@ -149,25 +139,11 @@ const zCode = z
 
 export type Code = z.infer<typeof zCode>;
 
-const zCodeData = z
+export const zCodeData = z
   .object({
     info: zCode,
     project_info: zProjectInfo.nullable(),
     public_info: zPublicCodeInfo.nullable(),
   })
   .transform(snakeToCamel);
-
 export type CodeData = z.infer<typeof zCodeData>;
-
-export const getCodeDataByCodeId = async (
-  endpoint: string,
-  codeId: number,
-  isGov: boolean
-): Promise<CodeData> =>
-  axios
-    .get(`${endpoint}/${codeId}/info`, {
-      params: {
-        is_gov: isGov,
-      },
-    })
-    .then(({ data }) => parseWithError(zCodeData, data));

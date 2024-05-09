@@ -5,7 +5,7 @@ import { trackUseExpandAll, trackUseViewJSON } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { StructCard } from "lib/components/module/StructCard";
-import type { IndexedModule } from "lib/services/move/moduleService";
+import type { IndexedModule } from "lib/types";
 
 interface ModuleStructsProps {
   structs: IndexedModule["parsedAbi"]["structs"];

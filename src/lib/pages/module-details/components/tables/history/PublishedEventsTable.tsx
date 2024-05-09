@@ -3,7 +3,8 @@ import { TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer } from "lib/components/table";
-import type { ModuleHistory, Option } from "lib/types";
+import type { ModuleHistory } from "lib/services/move/module";
+import type { Option } from "lib/types";
 
 import { PublishedEventsTableHeader } from "./PublishedEventsTableHeader";
 import { PublishedEventsTableMobileCard } from "./PublishedEventsTableMobileCard";

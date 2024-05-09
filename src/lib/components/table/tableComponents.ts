@@ -74,6 +74,6 @@ export const MobileTableContainer = chakra(SimpleGrid, {
     columns: 1,
     gap: 4,
     w: "full",
-    mt: 4,
+    my: 4,
   },
 });

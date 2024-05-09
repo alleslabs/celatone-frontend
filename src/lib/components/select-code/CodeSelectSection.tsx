@@ -5,7 +5,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { AmpEvent, track } from "lib/amplitude";
 import { ControllerInput } from "lib/components/forms";
 import type { FormStatus } from "lib/components/forms";
-import type { LCDCodeInfoSuccessCallback } from "lib/services/codeService";
+import type { CodeInfoResponseLcd } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { CodeSelect } from "./CodeSelect";
@@ -16,7 +16,7 @@ interface CodeSelectSectionProps<T extends FieldValues> {
   control: Control<T>;
   error: Option<string>;
   onCodeSelect: (codeId: string) => void;
-  setCodeHash?: LCDCodeInfoSuccessCallback;
+  setCodeHash: (data: CodeInfoResponseLcd) => void;
   status: FormStatus;
 }
 

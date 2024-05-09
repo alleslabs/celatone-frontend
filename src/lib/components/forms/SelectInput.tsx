@@ -1,6 +1,5 @@
 import {
   Flex,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -26,7 +25,7 @@ interface SelectInputProps<T extends string> {
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
-    image?: string;
+    image?: JSX.Element;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -122,7 +121,7 @@ export const SelectInput = <T extends string>({
           <div className="form-label">{formLabel}</div>
           {selectedOption?.image && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
-              <Image boxSize={6} src={selectedOption.image} />
+              {selectedOption.image}
             </InputLeftElement>
           )}
           {selectedOption?.icon && (
@@ -174,7 +173,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {image && <Image boxSize={6} src={image} />}
+            <Flex alignItems="center">{image}</Flex>
             {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>

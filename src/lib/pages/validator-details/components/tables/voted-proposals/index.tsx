@@ -15,7 +15,7 @@ import { useDebounce } from "lib/hooks";
 import {
   useValidatorVotedProposals,
   useValidatorVotedProposalsAnswerCounts,
-} from "lib/services/validatorService";
+} from "lib/services/validator";
 import { ProposalVoteType } from "lib/types";
 import type { ValidatorAddr } from "lib/types";
 

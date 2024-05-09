@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { usePoolConfig } from "lib/app-provider";
+import { usePoolConfig, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -28,6 +28,7 @@ enum TabIndex {
 }
 
 export const PoolIndex = () => {
+  useTierConfig({ minTier: "full" });
   usePoolConfig({ shouldRedirect: true });
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
@@ -86,7 +87,11 @@ export const PoolIndex = () => {
         </Flex>
         <UserDocsLink href="osmosis/pool-list" isButton />
       </Flex>
-      <Tabs index={Object.values(TabIndex).indexOf(tabIndex)}>
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tabIndex)}
+        lazyBehavior="keepMounted"
+        isLazy
+      >
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={supportedPoolCount ?? 0}

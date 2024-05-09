@@ -40,16 +40,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
+- [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
+- [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
+- [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
+- [#903](https://github.com/alleslabs/celatone-frontend/pull/903) Prevent list pages in lite version
 - [#897](https://github.com/alleslabs/celatone-frontend/pull/897) Add config for lite version support
 
 ### Improvements
 
+- [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
+- [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
+- [#907](https://github.com/alleslabs/celatone-frontend/pull/907) Migrate mahalo and minitias from 2 to 3
+- [#905](https://github.com/alleslabs/celatone-frontend/pull/905) Refactor module related component for better readability
+- [#900](https://github.com/alleslabs/celatone-frontend/pull/900) Refactor module details info
+- [#899](https://github.com/alleslabs/celatone-frontend/pull/899) Refactor module details APIs
 - [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
 - [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Interact Contract
 - [#895](https://github.com/alleslabs/celatone-frontend/pull/895) Show collection address and creator on the collection list page
 
 ### Bug fixes
 
+- [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
+- [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
+- [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
 - [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
 
 ## v1.6.0

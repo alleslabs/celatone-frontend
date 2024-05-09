@@ -6,7 +6,7 @@ import {
   MobileLabel,
   RemarkRender,
 } from "lib/components/table";
-import type { ModuleHistory } from "lib/types";
+import type { ModuleHistory } from "lib/services/move/module";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { PolicyChanges } from "./PublishedEventsTableRow";

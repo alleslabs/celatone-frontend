@@ -5,7 +5,7 @@ import { TooltipInfo } from "lib/components/Tooltip";
 import {
   useValidatorDelegators,
   useValidatorStakingProvisions,
-} from "lib/services/validatorService";
+} from "lib/services/validator";
 import type { Option, Ratio, ValidatorAddr } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
@@ -20,14 +20,15 @@ const StatWithLabel = ({
   isLoading: boolean;
   tooltipLabel?: string;
 }) => (
-  <Flex gap={{ md: 2 }} direction={{ base: "column", md: "row" }} flex={1}>
-    <Flex gap={1} alignItems="center">
-      <Text variant="body2" fontWeight={600} color="text.dark">
-        {label}
-
-        {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
-      </Text>
-    </Flex>
+  <Flex
+    gap={{ md: 2 }}
+    align="center"
+    direction={{ base: "column", md: "row" }}
+    flexGrow={{ base: 1, md: 0 }}
+  >
+    <Text variant="body2" fontWeight={600} color="text.dark">
+      {label} {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
+    </Text>
     {isLoading ? (
       <Spinner size="sm" />
     ) : (

@@ -25,8 +25,8 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
-  useRPCEndpoint,
+  useLcdEndpoint,
+  useRpcEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { BechAddr32 } from "lib/types";
@@ -60,8 +60,8 @@ const WasmCodeSnippet = ({
     chain: { chain_name: chainName, daemon_name: daemonName },
   } = useCurrentChain();
   const isDisabled = !contractAddress || !message.length;
-  const lcdEndpoint = useLCDEndpoint();
-  const rpcEndpoint = useRPCEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
+  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
     chainConfig: {

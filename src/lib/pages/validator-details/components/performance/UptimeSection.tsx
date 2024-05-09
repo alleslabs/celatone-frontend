@@ -15,7 +15,7 @@ import { trackUseUpTime, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
-import type { ValidatorUptimeResponse } from "lib/services/validator";
+import type { ValidatorUptimeResponse } from "lib/services/types";
 import type { ComputedUptime, Ratio, ValidatorAddr } from "lib/types";
 import { formatRatio } from "lib/utils";
 
