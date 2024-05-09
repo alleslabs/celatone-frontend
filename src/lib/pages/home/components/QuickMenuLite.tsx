@@ -25,7 +25,7 @@ const cardProps = {
 
 const highlightCardProps = {
   ...baseCardProps,
-  bgGradient: "primary.main",
+  bgGradient: `linear(to-bl, primary.dark, primary.light)`,
 };
 
 interface ShortcutMetadata {
