@@ -1,19 +1,14 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zUtcDate, zValidator } from "lib/types";
+import { zCoin, zUtcDate, zValidator } from "lib/types";
 import type { BechAddr } from "lib/types";
 import { parseWithError, snakeToCamel } from "lib/utils";
 
 const zDelegations = z
   .object({
     is_validator: z.boolean(),
-    commissions: z.array(
-      z.object({
-        amount: z.string(),
-        denom: z.string(),
-      })
-    ),
+    commissions: z.array(zCoin),
     staking_params: z.object({
       bond_denoms: z.array(z.string()),
       max_entries: z.number(),
@@ -30,7 +25,7 @@ const zDelegations = z
         validator: zValidator,
       })
     ),
-    delegations_rewards: z.object({
+    delegation_rewards: z.object({
       rewards: z.array(
         z.object({
           reward: z.array(
@@ -42,23 +37,13 @@ const zDelegations = z
           validator: zValidator,
         })
       ),
-      total: z.array(
-        z.object({
-          amount: z.string(),
-          denom: z.string(),
-        })
-      ),
+      total: z.array(zCoin),
     }),
     unbondings: z.array(
       z.object({
         entries: z.array(
           z.object({
-            balance: z.array(
-              z.object({
-                amount: z.string(),
-                denom: z.string(),
-              })
-            ),
+            balance: z.array(zCoin),
             completion_time: zUtcDate,
           })
         ),
@@ -69,12 +54,7 @@ const zDelegations = z
       z.object({
         entries: z.array(
           z.object({
-            balance: z.array(
-              z.object({
-                amount: z.string(),
-                denom: z.string(),
-              })
-            ),
+            balance: z.array(zCoin),
             redelegation_entry: z.object({
               completion_time: zUtcDate,
             }),
@@ -86,33 +66,19 @@ const zDelegations = z
     ),
   })
   .transform((val) => ({
-    isValidator: val.is_validator,
-    commissions: val.commissions,
-    stakingParams: snakeToCamel(val.staking_params),
-    delegations: val.delegations.map((delegation) => ({
-      balance: delegation.balance,
-      validator: delegation.validator,
-    })),
-    delegationRewards: {
-      rewards: val.delegations_rewards.rewards.map((reward) => ({
-        reward: reward.reward,
-        validator: reward.validator,
-      })),
-      total: val.delegations_rewards.total,
-    },
+    ...snakeToCamel(val),
     unbondings: val.unbondings
-      .map((unbonding) =>
+      .flatMap((unbonding) =>
         unbonding.entries.map((entry) => ({
           validator: unbonding.validator,
           balance: entry.balance,
           completionTime: entry.completion_time,
         }))
       )
-      .flat()
       // TODO: Use API to sort unbondings
       .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
     redelegations: val.redelegations
-      .map((redelegation) =>
+      .flatMap((redelegation) =>
         redelegation.entries.map((entry) => ({
           balance: entry.balance,
           completionTime: entry.redelegation_entry.completion_time,
@@ -120,7 +86,6 @@ const zDelegations = z
           dstValidator: redelegation.validator_dst,
         }))
       )
-      .flat()
       // TODO: Use API to sort redelegations
       .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
   }));
