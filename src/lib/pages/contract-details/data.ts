@@ -2,7 +2,7 @@ import { useCodeStore, useContractStore } from "lib/providers/store";
 import {
   useContractDataByContractAddress,
   useMigrationHistoriesByContractAddress,
-} from "lib/services/contractService";
+} from "lib/services/wasm/contract";
 import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
 export const useContractData = (contractAddress: BechAddr32) => {

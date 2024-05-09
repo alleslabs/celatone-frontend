@@ -13,7 +13,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { useContractDetailByContractAddress } from "lib/services/contractService";
+import { useContractDetailByContractAddress } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32, LVPair } from "lib/types";
 import {
   formatSlugName,

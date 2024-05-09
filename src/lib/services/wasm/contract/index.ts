@@ -1,7 +1,8 @@
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
+import { getCodeIdInfoLcd } from "../code";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -16,6 +17,13 @@ import {
   getInstantiatedCountByUserQueryDocument,
   getInstantiatedListByUserQueryDocument,
 } from "lib/query";
+import type {
+  ContractData,
+  ContractDetail,
+  ContractsResponse,
+  ContractTableCounts,
+  MigrationHistoriesResponse,
+} from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr20, BechAddr32, Dict, Option } from "lib/types";
 
@@ -28,20 +36,7 @@ import {
   getContractTableCounts,
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
-} from "./contract";
-import type {
-  ContractData,
-  ContractsResponse,
-  ContractTableCounts,
-  MigrationHistoriesResponse,
-} from "./contract";
-import { getCodeIdInfoLcd } from "./wasm/code/lcd";
-
-export interface ContractDetail extends ContractLocalInfo {
-  codeId: number;
-  codeHash: string;
-  admin: Option<BechAddr>;
-}
+} from "./api";
 
 export const useContractDetailByContractAddress = (
   contractAddress: BechAddr32,
@@ -370,3 +365,5 @@ export const useContractsByCodeId = (
     }
   );
 };
+
+export * from "./api";

@@ -12,7 +12,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { ContractDetail } from "lib/services/contractService";
+import type { ContractDetail } from "lib/services/types";
 import { ContractInteractionTabs } from "lib/types";
 import type { BechAddr32, Coin } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";

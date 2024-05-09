@@ -18,8 +18,7 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import { queryData } from "lib/services/contract";
-import { useContractQueryMsgs } from "lib/services/contractService";
+import { queryData, useContractQueryMsgs } from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
   encode,

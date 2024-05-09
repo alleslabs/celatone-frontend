@@ -1,12 +1,6 @@
-import axios from "axios";
-import { z } from "zod";
+import z from "zod";
 
-import type {
-  BechAddr,
-  BechAddr32,
-  ContractInfo,
-  ContractMigrationHistory,
-} from "lib/types";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import {
   zBechAddr,
   zBechAddr32,
@@ -15,14 +9,26 @@ import {
   zPublicContractInfo,
   zUtcDate,
 } from "lib/types";
-import { encode, parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
+import type {
+  BechAddr,
+  ContractInfo,
+  ContractMigrationHistory,
+  Option,
+} from "lib/types";
+import { parseTxHash, snakeToCamel } from "lib/utils";
+
+export interface ContractDetail extends ContractLocalInfo {
+  codeId: number;
+  codeHash: string;
+  admin: Option<BechAddr>;
+}
 
 export interface ContractCw2Info {
   contract: string;
   version: string;
 }
 
-const zContractRest = z.object({
+export const zContractRest = z.object({
   address: zBechAddr32,
   contract_info: z.object({
     code_id: z.string(),
@@ -40,26 +46,6 @@ const zContractRest = z.object({
   }),
 });
 export type ContractRest = z.infer<typeof zContractRest>;
-
-export const queryData = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  msg: string
-) => {
-  const b64 = encode(msg);
-  const { data } = await axios.get(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
-  );
-  return data;
-};
-
-export const queryContract = async (
-  endpoint: string,
-  contractAddress: BechAddr32
-) =>
-  axios(`${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`).then(
-    ({ data }) => parseWithError(zContractRest, data)
-  );
 
 const zContractsResponseItem = z
   .object({
@@ -82,59 +68,12 @@ const zContractsResponseItem = z
     remark: val.remark,
   }));
 
-const zContractsResponse = z.object({
+export const zContractsResponse = z.object({
   items: z.array(zContractsResponseItem),
   total: z.number().nonnegative(),
 });
 
 export type ContractsResponse = z.infer<typeof zContractsResponse>;
-
-export const getContracts = async (
-  endpoint: string,
-  limit: number,
-  offset: number
-) =>
-  axios
-    .get(`${endpoint}`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zContractsResponse, data));
-
-export const getInstantiatedContractsByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  limit: number,
-  offset: number
-) =>
-  axios
-    .get(
-      `${endpoint}/${encodeURIComponent(address)}/wasm/instantiated-contracts`,
-      {
-        params: {
-          limit,
-          offset,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zContractsResponse, data));
-
-export const getAdminContractsByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  limit: number,
-  offset: number
-) =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/wasm/admin-contracts`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zContractsResponse, data));
 
 export const zContract = z
   .object({
@@ -156,7 +95,7 @@ export const zContract = z
   .transform(snakeToCamel);
 export type Contract = z.infer<typeof zContract>;
 
-const zContractData = z
+export const zContractData = z
   .object({
     project_info: zProjectInfo.nullable(),
     public_info: zPublicContractInfo.nullable(),
@@ -171,20 +110,7 @@ const zContractData = z
   }));
 export type ContractData = z.infer<typeof zContractData>;
 
-export const getContractDataByContractAddress = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  isGov: boolean
-) =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/info`, {
-      params: {
-        is_gov: isGov,
-      },
-    })
-    .then(({ data }) => parseWithError(zContractData, data));
-
-const zContractTableCounts = z
+export const zContractTableCounts = z
   .object({
     tx: z.number().nullish(),
     migration: z.number().nullish(),
@@ -192,19 +118,6 @@ const zContractTableCounts = z
   })
   .transform(snakeToCamel);
 export type ContractTableCounts = z.infer<typeof zContractTableCounts>;
-
-export const getContractTableCounts = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  isGov: boolean
-): Promise<ContractTableCounts> =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/table-counts`, {
-      params: {
-        is_gov: isGov,
-      },
-    })
-    .then(({ data }) => parseWithError(zContractTableCounts, data));
 
 const zMigrationHistoriesResponseItem = z
   .object({
@@ -227,7 +140,7 @@ const zMigrationHistoriesResponseItem = z
     timestamp: val.timestamp,
     uploader: val.uploader,
   }));
-const zMigrationHistoriesResponse = z.object({
+export const zMigrationHistoriesResponse = z.object({
   items: z.array(zMigrationHistoriesResponseItem),
 });
 
@@ -235,48 +148,10 @@ export type MigrationHistoriesResponse = z.infer<
   typeof zMigrationHistoriesResponse
 >;
 
-export const getMigrationHistoriesByContractAddress = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  limit: number,
-  offset: number
-) =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/migrations`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zMigrationHistoriesResponse, data));
-
-const zContractQueryMsgs = z
+export const zContractQueryMsgs = z
   .object({
     query: z.array(z.string()),
   })
   .transform((val) =>
     val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
   );
-
-export const getContractQueryMsgs = async (
-  endpoint: string,
-  contractAddress: BechAddr32
-) =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
-    .then(({ data }) => parseWithError(zContractQueryMsgs, data));
-
-export const getContractsByCodeId = async (
-  endpoint: string,
-  codeId: number,
-  limit: number,
-  offset: number
-): Promise<ContractsResponse> =>
-  axios
-    .get(`${endpoint}/${codeId}/contracts`, {
-      params: {
-        limit,
-        offset,
-      },
-    })
-    .then(({ data }) => parseWithError(zContractsResponse, data));

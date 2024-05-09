@@ -1,8 +1,8 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 
 import { useContractStore } from "lib/providers/store";
-import type { ContractsResponse } from "lib/services/contract";
-import { useContractsByCodeId } from "lib/services/contractService";
+import type { ContractsResponse } from "lib/services/types";
+import { useContractsByCodeId } from "lib/services/wasm/contract";
 import type { ContractInfo, Option } from "lib/types";
 
 export const useCodeContracts = (

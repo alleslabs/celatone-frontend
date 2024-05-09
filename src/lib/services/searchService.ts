@@ -20,7 +20,6 @@ import {
 } from "lib/utils";
 
 import { useBlockData } from "./block";
-import { queryContract } from "./contract";
 import { useModuleByAddressLcd } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
@@ -29,6 +28,7 @@ import { useProposalData } from "./proposal";
 import { useTxData } from "./tx";
 import { useValidatorData } from "./validator";
 import { useCodeDataByCodeId } from "./wasm/code";
+import { queryContract } from "./wasm/contract";
 
 export type SearchResultType =
   | "Code ID"

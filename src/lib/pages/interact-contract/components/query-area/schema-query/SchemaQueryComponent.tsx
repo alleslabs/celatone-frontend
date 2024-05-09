@@ -27,7 +27,7 @@ import {
   OutputMessageTabs,
 } from "lib/components/json-schema";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { queryData } from "lib/services/contract";
+import { queryData } from "lib/services/wasm/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
 import type {
