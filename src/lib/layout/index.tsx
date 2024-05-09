@@ -10,7 +10,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import MobileHeader from "./mobile/MobileHeader";
 import Navbar from "./navbar";
-import SubHeader from "./SubHeader";
+import SubHeader from "./subheader";
 
 type LayoutProps = {
   children: ReactNode;
