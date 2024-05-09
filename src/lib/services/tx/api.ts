@@ -1,15 +1,14 @@
 import axios from "axios";
 
-import type { BechAddr, Option, TxFilters } from "lib/types";
-import { camelToSnake, parseWithError } from "lib/utils";
-
-import type { TxResponse } from "./types";
+import type { TxResponse } from "../types/tx";
 import {
   zAccountTxsResponse,
   zBlockTxsResponse,
   zTxsCountResponse,
   zTxsResponse,
-} from "./types";
+} from "../types/tx";
+import type { BechAddr, Option, TxFilters } from "lib/types";
+import { camelToSnake, parseWithError } from "lib/utils";
 
 export const getTxData = async (
   txsApiRoute: string,

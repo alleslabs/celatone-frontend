@@ -2,6 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
+import type {
+  AccountTxsResponse,
+  BlockTxsResponse,
+  TxData,
+  TxsResponse,
+} from "../types/tx";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -23,12 +29,6 @@ import {
   getTxsCountByAddress,
 } from "./api";
 import { getTxDataLcd } from "./lcd";
-import type {
-  AccountTxsResponse,
-  BlockTxsResponse,
-  TxData,
-  TxsResponse,
-} from "./types";
 
 export const useTxData = (
   txHash: Option<string>,
@@ -216,4 +216,3 @@ export const useTxsCountByAddress = (
 };
 
 export * from "./gql";
-export * from "./types";
