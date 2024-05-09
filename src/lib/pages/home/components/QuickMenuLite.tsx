@@ -122,89 +122,89 @@ export const QuickMenuLite = () => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
 
-  const quickMenu = useMemo<ShortcutMetadata[]>(
-    () => [
-      ...(wasm.enabled
-        ? [
-            {
-              title: "Deploy a new contract",
-              subtitle: "Upload a new wasm code or instantiate a new contract",
-              slug: "deploy",
-              icon: "instantiate" as const,
-              isHighlight: true,
-              isDocument: false,
-            },
-            {
-              title: "Query",
-              subtitle: "Query and get contract state data",
-              slug: "query",
-              icon: "query" as const,
-              isHighlight: false,
-              isDocument: false,
-            },
-            {
-              title: "Execute",
-              subtitle: "Send transactions to contracts",
-              slug: "execute",
-              icon: "execute" as const,
-              isHighlight: false,
-              isDocument: false,
-            },
-            {
-              title: "Migrate",
-              subtitle: "Migrate contract to new code ID",
-              slug: "migrate",
-              icon: "migrate" as const,
-              isHighlight: false,
-              isDocument: false,
-            },
-            {
-              title: "User Guide",
-              subtitle: "View Celatone documents",
-              icon: "document" as const,
-              isHighlight: false,
-              isDocument: true,
-            },
-          ]
-        : []),
-      ...(move.enabled
-        ? [
-            {
-              title: "Publish / Republish",
-              subtitle: "Upload .mv files to publish new module",
-              slug: "publish-module",
-              icon: "add-new" as const,
-              isHighlight: true,
-              isDocument: false,
-            },
-            {
-              title: "View / Execute",
-              subtitle: "Interact with module's functions",
-              slug: "interact",
-              icon: "execute" as const,
-              isHighlight: false,
-              isDocument: false,
-            },
-            {
-              title: "Deploy Script",
-              subtitle: "Deploy one-time use Script",
-              slug: "deploy-script",
-              icon: "code" as const,
-              isHighlight: false,
-              isDocument: false,
-            },
-            {
-              title: "User Guide",
-              subtitle: "View Celatone documents",
-              icon: "document" as const,
-              isHighlight: false,
-              isDocument: true,
-            },
-          ]
-        : []),
-    ],
-    [wasm.enabled, move.enabled]
-  );
+  const quickMenu = useMemo<ShortcutMetadata[]>(() => {
+    const base = [];
+
+    if (wasm.enabled)
+      base.push(
+        {
+          title: "Deploy a new contract",
+          subtitle: "Upload a new wasm code or instantiate a new contract",
+          slug: "deploy",
+          icon: "instantiate" as const,
+          isHighlight: true,
+          isDocument: false,
+        },
+        {
+          title: "Query",
+          subtitle: "Query and get contract state data",
+          slug: "query",
+          icon: "query" as const,
+          isHighlight: false,
+          isDocument: false,
+        },
+        {
+          title: "Execute",
+          subtitle: "Send transactions to contracts",
+          slug: "execute",
+          icon: "execute" as const,
+          isHighlight: false,
+          isDocument: false,
+        },
+        {
+          title: "Migrate",
+          subtitle: "Migrate contract to new code ID",
+          slug: "migrate",
+          icon: "migrate" as const,
+          isHighlight: false,
+          isDocument: false,
+        },
+        {
+          title: "User Guide",
+          subtitle: "View Celatone documents",
+          icon: "document" as const,
+          isHighlight: false,
+          isDocument: true,
+        }
+      );
+
+    if (move.enabled)
+      base.push(
+        {
+          title: "Publish / Republish",
+          subtitle: "Upload .mv files to publish new module",
+          slug: "publish-module",
+          icon: "add-new" as const,
+          isHighlight: true,
+          isDocument: false,
+        },
+        {
+          title: "View / Execute",
+          subtitle: "Interact with module's functions",
+          slug: "interact",
+          icon: "execute" as const,
+          isHighlight: false,
+          isDocument: false,
+        },
+        {
+          title: "Deploy Script",
+          subtitle: "Deploy one-time use Script",
+          slug: "deploy-script",
+          icon: "code" as const,
+          isHighlight: false,
+          isDocument: false,
+        },
+        {
+          title: "User Guide",
+          subtitle: "View Celatone documents",
+          icon: "document" as const,
+          isHighlight: false,
+          isDocument: true,
+        }
+      );
+
+    return base;
+  }, [wasm.enabled, move.enabled]);
 
   return (
     <Grid templateColumns="1fr 2fr" gap={4}>

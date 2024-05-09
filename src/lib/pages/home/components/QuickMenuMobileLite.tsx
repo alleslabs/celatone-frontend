@@ -112,63 +112,59 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
   const gov = useGovConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
-  const quickMenu = useMemo<CardProps[]>(
-    () => [
-      ...(gov.enabled
-        ? [
-            {
-              title: "Validators",
-              slug: "validators",
-              icon: "admin" as const,
-              isDocument: false,
-            },
-            {
-              title: "Proposals",
-              slug: "proposals",
-              icon: "proposal" as const,
-              isDocument: false,
-            },
-          ]
-        : []),
-      ...(wasm.enabled
-        ? [
-            {
-              title: "Codes",
-              slug: "codes",
-              icon: "code" as const,
-              isDocument: false,
-            },
-          ]
-        : []),
-      ...(move.enabled
-        ? [
-            {
-              title: "0x1 Page",
-              slug: "/account/0x1",
-              icon: "hex" as IconKeys,
-              isDocument: false,
-            },
-          ]
-        : []),
-      ...(publicProject.enabled
-        ? [
-            {
-              title: "Public Projects",
-              slug: "projects",
-              icon: "public-project" as const,
-              isDocument: false,
-            },
-          ]
-        : []),
-      {
-        title: "User Guide",
-        subtitle: "View Celatone documents",
-        icon: "document" as const,
-        isDocument: true,
-      },
-    ],
-    [gov.enabled, wasm.enabled, move.enabled, publicProject.enabled]
-  );
+  const quickMenu = useMemo<CardProps[]>(() => {
+    const base = [];
+
+    if (gov.enabled)
+      base.push(
+        {
+          title: "Validators",
+          slug: "validators",
+          icon: "admin" as const,
+          isDocument: false,
+        },
+        {
+          title: "Proposals",
+          slug: "proposals",
+          icon: "proposal" as const,
+          isDocument: false,
+        }
+      );
+
+    if (wasm.enabled)
+      base.push({
+        title: "Codes",
+        slug: "codes",
+        icon: "code" as const,
+        isDocument: false,
+      });
+
+    if (move.enabled)
+      base.push({
+        title: "0x1 Page",
+        slug: "/account/0x1",
+        icon: "hex" as IconKeys,
+        isDocument: false,
+      });
+
+    if (publicProject.enabled)
+      base.push({
+        title: "Public Projects",
+        slug: "projects",
+        icon: "public-project" as const,
+        isDocument: false,
+      });
+
+    // default
+    base.push({
+      title: "User Guide",
+      subtitle: "View Celatone documents",
+      icon: "document" as const,
+      isDocument: true,
+    });
+
+    return base;
+  }, [gov.enabled, wasm.enabled, move.enabled, publicProject.enabled]);
 
   return (
     <Grid gap={4} pt={6}>

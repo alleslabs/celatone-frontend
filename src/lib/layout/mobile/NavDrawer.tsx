@@ -13,7 +13,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import type { MenuInfo } from "../navbar/types";
 import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
@@ -46,17 +45,17 @@ export const NavDrawer = () => {
 
   const navMenu =
     tier === "full"
-      ? (getNavDrawerFull(
+      ? getNavDrawerFull(
           govConfig.enabled,
           wasmConfig.enabled,
           moveConfig.enabled,
           nftConfig.enabled
-        ) as MenuInfo[])
-      : (getNavDrawerLite(
+        )
+      : getNavDrawerLite(
           govConfig.enabled,
           wasmConfig.enabled,
           moveConfig.enabled
-        ) as MenuInfo[]);
+        );
 
   if (publicProject.enabled) {
     navMenu.push({

@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
@@ -10,19 +11,12 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 
 import { getSubHeaderFull, getSubHeaderLite } from "./utils";
 
 const ACTIVE_COLOR = "primary.light";
-
-interface SubHeaderMenuInfo {
-  name: string;
-  slug: string;
-  icon: IconKeys;
-}
 
 const SubHeader = () => {
   const tier = useTierConfig();
@@ -34,23 +28,30 @@ const SubHeader = () => {
 
   const isCurrentPage = useIsCurrentPage();
 
-  const subMenu: SubHeaderMenuInfo[] =
-    tier === "full"
-      ? (getSubHeaderFull(
-          govConfig.enabled,
-          wasmConfig.enabled,
-          moveConfig.enabled,
-          nftConfig.enabled,
-          poolConfig.enabled
-        ) as SubHeaderMenuInfo[])
-      : (getSubHeaderLite(
-          govConfig.enabled,
-          wasmConfig.enabled
-        ) as SubHeaderMenuInfo[]);
+  const subHeaderMenu = useMemo(
+    () =>
+      tier === "full"
+        ? getSubHeaderFull(
+            govConfig.enabled,
+            wasmConfig.enabled,
+            moveConfig.enabled,
+            nftConfig.enabled,
+            poolConfig.enabled
+          )
+        : getSubHeaderLite(govConfig.enabled, wasmConfig.enabled),
+    [
+      tier,
+      govConfig.enabled,
+      wasmConfig.enabled,
+      moveConfig.enabled,
+      nftConfig.enabled,
+      poolConfig.enabled,
+    ]
+  );
 
   return (
     <Flex px={6} h="full">
-      {subMenu.map((item) => (
+      {subHeaderMenu.map((item) => (
         <AppLink
           href={item.slug}
           key={item.slug}

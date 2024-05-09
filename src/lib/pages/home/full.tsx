@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { CURR_THEME } from "env";
 import {
@@ -107,7 +107,7 @@ export const HomeFull = () => {
         </Flex>
       </Flex>
       {!isMobile && (
-        <section style={{ marginBottom: "48px" }}>
+        <Box as="section" mb="48px">
           <Flex gap={4} direction="column">
             <ConnectWalletAlert
               title={`Connect wallet to start using ${CURR_THEME.branding.seo.appName}`}
@@ -115,9 +115,9 @@ export const HomeFull = () => {
             />
             <DevShortcut />
           </Flex>
-        </section>
+        </Box>
       )}
-      <section style={{ marginBottom: "48px" }}>
+      <Box as="section" mb="48px">
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
         </Heading>
@@ -125,8 +125,8 @@ export const HomeFull = () => {
         {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
           <ViewMore onClick={toTxs} />
         )}
-      </section>
-      <section>
+      </Box>
+      <Box as="section">
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
@@ -134,7 +134,7 @@ export const HomeFull = () => {
         {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}
-      </section>
+      </Box>
     </PageContainer>
   );
 };

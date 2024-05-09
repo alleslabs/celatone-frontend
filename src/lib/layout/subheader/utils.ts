@@ -1,21 +1,33 @@
 import type { IconKeys } from "lib/components/icon";
 
-export const getSubHeaderLite = (isGov: boolean, isWasm: boolean) => [
-  { name: "Overview", slug: "/", icon: "home" },
-  isGov && [
-    {
-      name: "Validators",
-      slug: "/validators",
-      icon: "validator" as IconKeys,
-    },
-    {
-      name: "Proposals",
-      slug: "/proposals",
-      icon: "proposal" as IconKeys,
-    },
-  ],
-  isWasm && [{ name: "Codes", slug: "/codes", icon: "code" as IconKeys }],
-];
+import type { SubHeaderMenuInfo } from "./types";
+
+export const getSubHeaderLite = (isGov: boolean, isWasm: boolean) => {
+  const base: SubHeaderMenuInfo[] = [
+    { name: "Overview", slug: "/", icon: "home" },
+  ];
+
+  if (isGov) {
+    base.push(
+      {
+        name: "Validators",
+        slug: "/validators",
+        icon: "validator" as IconKeys,
+      },
+      { name: "Proposals", slug: "/proposals", icon: "proposal" as IconKeys }
+    );
+  }
+
+  if (isWasm) {
+    base.push({
+      name: "Codes",
+      slug: "/codes",
+      icon: "code" as IconKeys,
+    });
+  }
+
+  return base;
+};
 
 export const getSubHeaderFull = (
   isGov: boolean,
@@ -23,49 +35,57 @@ export const getSubHeaderFull = (
   isMove: boolean,
   isNft: boolean,
   isPool: boolean
-) => [
-  { name: "Overview", slug: "/", icon: "home" },
-  { name: "Transactions", slug: "/txs", icon: "file" },
-  { name: "Blocks", slug: "/blocks", icon: "block" },
-  isGov && [
-    {
-      name: "Validators",
-      slug: "/validators",
-      icon: "validator" as IconKeys,
-    },
-    {
-      name: "Proposals",
-      slug: "/proposals",
-      icon: "proposal" as IconKeys,
-    },
-  ],
-  isWasm && [
-    { name: "Codes", slug: "/codes", icon: "code" as IconKeys },
-    {
-      name: "Contracts",
-      slug: "/contracts",
-      icon: "contract-address" as IconKeys,
-    },
-  ],
-  isMove && [
-    {
+) => {
+  const base: SubHeaderMenuInfo[] = [
+    { name: "Overview", slug: "/", icon: "home" },
+    { name: "Transactions", slug: "/txs", icon: "file" },
+    { name: "Blocks", slug: "/blocks", icon: "block" },
+  ];
+
+  if (isGov)
+    base.push(
+      {
+        name: "Validators",
+        slug: "/validators",
+        icon: "validator" as IconKeys,
+      },
+      {
+        name: "Proposals",
+        slug: "/proposals",
+        icon: "proposal" as IconKeys,
+      }
+    );
+
+  if (isWasm)
+    base.push(
+      { name: "Codes", slug: "/codes", icon: "code" as IconKeys },
+      {
+        name: "Contracts",
+        slug: "/contracts",
+        icon: "contract-address" as IconKeys,
+      }
+    );
+
+  if (isMove)
+    base.push({
       name: "Modules",
       slug: "/modules",
       icon: "contract-address" as IconKeys,
-    },
-  ],
-  isNft && [
-    {
+    });
+
+  if (isNft)
+    base.push({
       name: "NFTs",
       slug: "/nft-collections",
       icon: "group" as IconKeys,
-    },
-  ],
-  isPool && [
-    {
+    });
+
+  if (isPool)
+    base.push({
       name: "Osmosis Pools",
       slug: "/pools",
       icon: "pool" as IconKeys,
-    },
-  ],
-];
+    });
+
+  return base;
+};
