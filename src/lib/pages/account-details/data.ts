@@ -1,6 +1,6 @@
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountTableCounts } from "lib/services/accountService";
-import { useBalances } from "lib/services/balanceService";
+import { useBalances } from "lib/services/bank";
 import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,

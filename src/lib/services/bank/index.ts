@@ -1,11 +1,18 @@
 import type { Coin } from "@cosmjs/stargate";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
-import type Big from "big.js";
+import big from "big.js";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
-import { big } from "lib/types";
-import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
+import { useAssetInfos } from "../assetService";
+import { useMovePoolInfos } from "../move";
+import type { BalanceInfos } from "../types";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useLcdEndpoint,
+  useTierConfig,
+} from "lib/app-provider";
+import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,
@@ -13,29 +20,26 @@ import {
   totalValueTokenWithValue,
 } from "lib/utils";
 
-import { useAssetInfos } from "./assetService";
-import { getBalances } from "./balance";
-import { useMovePoolInfos } from "./move";
-
-interface BalanceInfos {
-  supportedAssets: TokenWithValue[];
-  totalSupportedAssetsValue: Option<USD<Big>>;
-  unsupportedAssets: TokenWithValue[];
-  isLoading: boolean;
-  totalData: Option<number>;
-  error: Error;
-}
+import { getBalances } from "./api";
+import { getBalancesLcd } from "./lcd";
 
 export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
-  const endpoint = useBaseApiRoute("accounts");
+  const apiEndpoint = useBaseApiRoute("accounts");
+  const lcdEndpoint = useLcdEndpoint();
+  const isFullTier = useTierConfig() === "full";
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address],
-    async () => getBalances(endpoint, address),
+    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isFullTier],
+    async () =>
+      isFullTier
+        ? getBalances(endpoint, address)
+        : getBalancesLcd(endpoint, address),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
+// TODO: Implement the useBalanceInfos hook for lite tier
 export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,

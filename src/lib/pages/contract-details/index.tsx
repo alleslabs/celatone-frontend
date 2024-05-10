@@ -28,7 +28,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useBalances } from "lib/services/balanceService";
+import { useBalances } from "lib/services/bank";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
