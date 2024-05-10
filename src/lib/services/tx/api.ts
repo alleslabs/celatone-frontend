@@ -15,7 +15,7 @@ export const getTxData = async (
   txHash: string
 ): Promise<TxResponse> =>
   axios
-    .get(`${txsApiRoute}/${encodeURIComponent(txHash?.toUpperCase())}`)
+    .get(`${txsApiRoute}/${encodeURIComponent(txHash.toUpperCase())}`)
     .then(({ data }) => data);
 
 export const getTxs = async (
