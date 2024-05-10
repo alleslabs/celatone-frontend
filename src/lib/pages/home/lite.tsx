@@ -1,6 +1,5 @@
 import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
@@ -12,6 +11,7 @@ export const HomeLite = () => {
   const isMobile = useMobile();
   const {
     chainConfig: { prettyName },
+    theme,
   } = useCelatoneApp();
 
   // TODO: replace with latest block height data from lcd
@@ -81,7 +81,7 @@ export const HomeLite = () => {
           <Flex gap={4} direction="column">
             {!isMobile && (
               <ConnectWalletAlert
-                title={`Connect wallet to start using ${CURR_THEME.branding.seo.appName}`}
+                title={`Connect wallet to start using ${theme.branding.seo.appName}`}
                 subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
               />
             )}

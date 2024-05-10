@@ -9,7 +9,7 @@ import { getPoolDenom } from "../utils";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import { useTxData } from "lib/services/txService";
+import { useTxData } from "lib/services/tx";
 import { useValidatorDataLcd } from "lib/services/validator";
 import type { AssetInfos, Option, PoolDetail } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
