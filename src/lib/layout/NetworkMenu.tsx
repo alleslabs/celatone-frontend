@@ -49,7 +49,12 @@ export const NetworkMenu = () => {
           <CustomIcon name="chevron-down" color="gray.600" />
         </Flex>
       </MenuButton>
-      <MenuList zIndex="dropdown">
+      <MenuList
+        zIndex="dropdown"
+        maxH={{ base: "435px", md: "640px" }}
+        overflowY="scroll"
+        boxShadow="0px 20px 30px 10px var(--chakra-colors-background-main)"
+      >
         {availableChainIds.map((chainId) => (
           <MenuItem
             key={chainId}

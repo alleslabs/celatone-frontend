@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import {
@@ -6,68 +7,47 @@ import {
   useMoveConfig,
   useNftConfig,
   usePoolConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 
-interface SubHeaderMenuInfo {
-  name: string;
-  slug: string;
-  icon: IconKeys;
-}
+import { getSubHeaderFull, getSubHeaderLite } from "./utils";
+
+const ACTIVE_COLOR = "primary.light";
 
 const SubHeader = () => {
+  const tier = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
 
-  const subHeaderMenu: SubHeaderMenuInfo[] = [
-    { name: "Overview", slug: "/", icon: "home" },
-    { name: "Transactions", slug: "/txs", icon: "file" },
-    { name: "Blocks", slug: "/blocks", icon: "block" },
-  ];
-
-  if (govConfig.enabled)
-    subHeaderMenu.push(
-      { name: "Validators", slug: "/validators", icon: "validator" },
-      { name: "Proposals", slug: "/proposals", icon: "proposal" }
-    );
-
-  if (wasmConfig.enabled)
-    subHeaderMenu.push(
-      { name: "Codes", slug: "/codes", icon: "code" },
-      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
-    );
-
-  if (moveConfig.enabled)
-    subHeaderMenu.push({
-      name: "Modules",
-      slug: "/modules",
-      icon: "contract-address",
-    });
-
-  if (nftConfig.enabled)
-    subHeaderMenu.push({
-      name: "NFTs",
-      slug: "/nft-collections",
-      icon: "group",
-    });
-
-  if (poolConfig.enabled)
-    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
-
   const isCurrentPage = useIsCurrentPage();
 
-  const activeColor = "primary.light";
-
-  const trackOnClick = (tab: string) => {
-    track(AmpEvent.USE_TOPBAR, { tab });
-  };
+  const subHeaderMenu = useMemo(
+    () =>
+      tier === "full"
+        ? getSubHeaderFull(
+            govConfig.enabled,
+            wasmConfig.enabled,
+            moveConfig.enabled,
+            nftConfig.enabled,
+            poolConfig.enabled
+          )
+        : getSubHeaderLite(govConfig.enabled, wasmConfig.enabled),
+    [
+      tier,
+      govConfig.enabled,
+      wasmConfig.enabled,
+      moveConfig.enabled,
+      nftConfig.enabled,
+      poolConfig.enabled,
+    ]
+  );
 
   return (
     <Flex px={6} h="full">
@@ -75,7 +55,7 @@ const SubHeader = () => {
         <AppLink
           href={item.slug}
           key={item.slug}
-          onClick={() => trackOnClick(item.name)}
+          onClick={() => track(AmpEvent.USE_TOPBAR, { tab: item.name })}
         >
           <Flex
             alignItems="center"
@@ -83,29 +63,31 @@ const SubHeader = () => {
             gap={2}
             h="full"
             borderBottomWidth={2}
-            borderColor={isCurrentPage(item.slug) ? activeColor : "transparent"}
+            borderColor={
+              isCurrentPage(item.slug) ? ACTIVE_COLOR : "transparent"
+            }
             transition="all 0.25s ease-in-out"
-            _hover={{ borderColor: activeColor }}
+            _hover={{ borderColor: ACTIVE_COLOR }}
             sx={{
               _hover: {
                 "> svg, > p": {
-                  color: activeColor,
+                  color: ACTIVE_COLOR,
                   transition: "all .25s ease-in-out",
                 },
                 borderBottomWidth: 2,
-                borderColor: activeColor,
+                borderColor: ACTIVE_COLOR,
               },
             }}
           >
             <CustomIcon
               boxSize={3}
               name={item.icon}
-              color={isCurrentPage(item.slug) ? activeColor : "gray.600"}
+              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "gray.600"}
             />
             <Text
               variant="body2"
               fontWeight={700}
-              color={isCurrentPage(item.slug) ? activeColor : "text.dark"}
+              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.dark"}
             >
               {item.name}
             </Text>
