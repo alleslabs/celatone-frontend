@@ -8,14 +8,13 @@ import {
   zProposalsResponseItemLcd,
   zProposalsResponseLcd,
 } from "../types/proposal";
-import type { Option } from "lib/types";
-import { ProposalStatusLcd } from "lib/types";
+import type { Option, ProposalStatus } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getProposalsLcd = async (
   endpoint: string,
   paginationKey: Option<string>,
-  status?: Omit<ProposalStatusLcd, "DEPOSIT_FAILED" | "CANCELLED">
+  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
 ): Promise<ProposalsResponseLcd> =>
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals`, {
@@ -23,8 +22,9 @@ export const getProposalsLcd = async (
         "pagination.limit": 10,
         "pagination.reverse": true,
         "pagination.key": paginationKey,
-        ...(status &&
-          status !== ProposalStatusLcd.ALL && { proposal_status: status }),
+        ...(status && {
+          proposal_status: `PROPOSAL_STATUS_${status.replace(/([a-z])([A-Z]+)/g, "$1_$2").toUpperCase()}`,
+        }),
       },
     })
     .then(({ data }) => parseWithError(zProposalsResponseLcd, data));

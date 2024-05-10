@@ -30,7 +30,6 @@ import type {
   Option,
   ProposalParams,
   ProposalStatus,
-  ProposalStatusLcd,
   ProposalType,
   ProposalVotesInfo,
   ProposalVoteType,
@@ -184,7 +183,7 @@ export const useProposals = (
 };
 
 export const useProposalsLcd = (
-  status?: Omit<ProposalStatusLcd, "DEPOSIT_FAILED" | "CANCELLED">
+  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
 ) => {
   const lcdEndpoint = useLcdEndpoint();
 
@@ -354,5 +353,3 @@ export const useProposalAnswerCounts = (
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
-
-export * from "./helpers";
