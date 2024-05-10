@@ -5,7 +5,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move";
-import type { TxData } from "lib/services/txService";
+import type { TxData } from "lib/services/types";
 import {
   coinToTokenWithValue,
   formatInteger,
