@@ -38,7 +38,7 @@ export const useCommissionsByValidatorAddressLcd = (
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.COMMISSION_BY_VALIDATOR_ADDRESS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.COMMISSIONS_BY_VALIDATOR_ADDRESS_LCD, endpoint],
     () => {
       if (isUndefined(valAddr))
         throw new Error("Validator address is undefined");
