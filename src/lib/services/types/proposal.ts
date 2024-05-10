@@ -236,7 +236,7 @@ export type ProposalAnswerCountsResponse = z.infer<
 
 export const zProposalsResponseItemLcd = z
   .object({
-    id: z.string(),
+    id: z.coerce.number(),
     messages: z
       .object({
         "@type": z.string(),
@@ -260,7 +260,7 @@ export const zProposalsResponseItemLcd = z
     title: z.string(),
     summary: z.string(),
     proposer: zBechAddr,
-    expedited: z.boolean().nullable(),
+    expedited: z.boolean().default(false),
   })
   .transform<Proposal>((val) => ({
     ...snakeToCamel(val),
@@ -268,7 +268,7 @@ export const zProposalsResponseItemLcd = z
     status: mapProposalStatusLcdToProposalStatus(val.status),
     resolvedHeight: null,
     types: [],
-    isExpedited: val.expedited ?? false,
+    isExpedited: val.expedited,
   }));
 export type ProposalsResponseItemLcd = z.infer<
   typeof zProposalsResponseItemLcd

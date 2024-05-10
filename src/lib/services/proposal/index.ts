@@ -62,7 +62,7 @@ import { getProposalDataLcd, getProposalsLcd } from "./lcd";
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
-  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
+  const endpoint = useBaseApiRoute("cosmwasm");
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
@@ -70,7 +70,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
     () =>
       Promise.all([
         fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(cosmwasmEndpoint),
+        fetchGovUploadAccessParams(endpoint),
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
@@ -107,7 +107,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [assetInfos, cosmwasmEndpoint, lcdEndpoint, movePoolInfos]
+    [assetInfos, endpoint, lcdEndpoint, movePoolInfos]
   );
 
   return useQuery(
@@ -121,10 +121,10 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
+  const endpoint = useBaseApiRoute("cosmwasm");
   return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, cosmwasmEndpoint],
-    () => fetchGovUploadAccessParams(cosmwasmEndpoint),
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, endpoint],
+    () => fetchGovUploadAccessParams(endpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };
