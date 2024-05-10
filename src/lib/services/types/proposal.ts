@@ -260,6 +260,7 @@ export const zProposalsResponseItemLcd = z
     title: z.string(),
     summary: z.string(),
     proposer: zBechAddr,
+    expedited: z.boolean().nullable(),
   })
   .transform<Proposal>((val) => ({
     ...snakeToCamel(val),
@@ -267,7 +268,7 @@ export const zProposalsResponseItemLcd = z
     status: mapProposalStatusLcdToProposalStatus(val.status),
     resolvedHeight: null,
     types: [],
-    isExpedited: false,
+    isExpedited: val.expedited ?? false,
   }));
 export type ProposalsResponseItemLcd = z.infer<
   typeof zProposalsResponseItemLcd
