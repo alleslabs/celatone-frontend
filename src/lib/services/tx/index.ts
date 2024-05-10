@@ -39,12 +39,16 @@ export const useTxData = (
   const apiEndpoint = useBaseApiRoute("txs");
   const lcdEndpoint = useLcdEndpoint();
 
+  const endpoint = tier === "full" ? apiEndpoint : lcdEndpoint;
+
   const queryFn = useCallback(
     async (hash: Option<string>) => {
+      if (!hash) throw new Error("CELATONE_QUERY_KEYS.TX_DATA is undefined");
+
       const txData =
         tier === "full"
-          ? await getTxData(apiEndpoint, hash)
-          : await getTxDataLcd(lcdEndpoint, hash);
+          ? await getTxData(endpoint, hash)
+          : await getTxDataLcd(endpoint, hash);
 
       const { tx_response: txResponse } = txData;
 
@@ -58,11 +62,11 @@ export const useTxData = (
         isTxFailed: Boolean(txResponse.code),
       };
     },
-    [apiEndpoint, currentChainId, lcdEndpoint, tier]
+    [endpoint, currentChainId, tier]
   );
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TX_DATA, apiEndpoint, txHash],
+    [CELATONE_QUERY_KEYS.TX_DATA, endpoint, txHash],
     async () => queryFn(txHash),
     {
       enabled: enabled && Boolean(txHash && isTxHash(txHash)),
