@@ -3,7 +3,7 @@ import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
-import { AmpEvent, trackUseFilter } from "lib/amplitude";
+import { useTierConfig } from "lib/app-provider";
 import {
   DropdownContainer,
   FilterChip,
@@ -12,6 +12,7 @@ import {
 } from "lib/components/filter";
 import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
+import { toggleItem } from "lib/utils";
 
 export interface ProposalStatusFilterProps extends InputProps {
   result: ProposalStatus | ProposalStatus[] | undefined;
@@ -20,8 +21,6 @@ export interface ProposalStatusFilterProps extends InputProps {
   placeholder?: string;
   setResult: (option: ProposalStatus | ProposalStatus[] | undefined) => void;
 }
-
-const OPTIONS = Object.values(ProposalStatus);
 
 export const ProposalStatusFilter = forwardRef<
   HTMLInputElement,
@@ -37,10 +36,20 @@ export const ProposalStatusFilter = forwardRef<
     }: ProposalStatusFilterProps,
     ref
   ) => {
+    const tier = useTierConfig();
     const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
+
+    const OPTIONS =
+      tier === "full"
+        ? Object.values(ProposalStatus)
+        : Object.values(ProposalStatus).filter(
+            (status) =>
+              status !== ProposalStatus.DEPOSIT_FAILED &&
+              status !== ProposalStatus.CANCELLED
+          );
 
     const dropdownValue = useMemo(
       () =>
@@ -49,38 +58,8 @@ export const ProposalStatusFilter = forwardRef<
               threshold: matchSorter.rankings.CONTAINS,
             })
           : OPTIONS,
-      [keyword]
+      [keyword, OPTIONS]
     );
-
-    const selectOption = (option: ProposalStatus | undefined) => {
-      if (inputRef.current) {
-        setKeyword("");
-      }
-
-      if (typeof result === "string" || !result || !option) {
-        if (typeof result === "string") {
-          trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-          setResult(option);
-
-          return;
-        }
-
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, "", "remove");
-        setResult(option);
-
-        return;
-      }
-
-      if (result.includes(option)) {
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
-        setResult(result.filter((value) => value !== option));
-
-        return;
-      }
-
-      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-      setResult([...result, option]);
-    };
 
     useOutsideClick({
       ref: boxRef,
@@ -104,14 +83,14 @@ export const ProposalStatusFilter = forwardRef<
               {typeof result === "string" ? (
                 <FilterChip
                   chipComponent={<StatusChip status={result} hasCloseBtn />}
-                  onSelect={() => selectOption(undefined)}
+                  onSelect={() => setResult(undefined)}
                 />
               ) : (
                 result?.map((option: ProposalStatus) => (
                   <FilterChip
                     key={option}
                     chipComponent={<StatusChip status={option} hasCloseBtn />}
-                    onSelect={() => selectOption(option)}
+                    onSelect={() => setResult(toggleItem(result, option))}
                   />
                 ))
               )}
@@ -128,9 +107,15 @@ export const ProposalStatusFilter = forwardRef<
               <FilterDropdownItem
                 key={option}
                 filterDropdownComponent={<StatusChip status={option} />}
-                onSelect={() => selectOption(option)}
                 result={result}
                 option={option}
+                setIsDropdown={setIsDropdown}
+                setKeyword={setKeyword}
+                setResult={(opt) =>
+                  setResult(
+                    opt as ProposalStatus | ProposalStatus[] | undefined
+                  )
+                }
               />
             ))}
           </DropdownContainer>

@@ -2,6 +2,8 @@ import { Flex, ListItem, Text } from "@chakra-ui/react";
 import type { CSSProperties, ReactNode } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, trackUseFilter } from "lib/amplitude";
+import { toggleItem } from "lib/utils";
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
@@ -14,24 +16,54 @@ interface FilterDropdownItemProps {
   result: string | string[] | undefined;
   option: string;
   filterDropdownComponent: ReactNode;
-  onSelect: () => void;
+  setIsDropdown: (isDropdown: boolean) => void;
+  setKeyword: (keyword: string) => void;
+  setResult: (option: string | string[] | undefined) => void;
 }
 
 export const FilterDropdownItem = ({
   result,
   option,
   filterDropdownComponent,
-  onSelect,
+  setIsDropdown,
+  setKeyword,
+  setResult,
 }: FilterDropdownItemProps) => {
   const isOptionSelected =
     typeof result === "string" ? result === option : result?.includes(option);
+
+  const selectOption = () => {
+    setKeyword("");
+
+    if (typeof result === "string" || !result || !option) {
+      setIsDropdown(false);
+
+      if (typeof result === "string") {
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+        setResult(option);
+        return;
+      }
+
+      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
+      setResult(option);
+      return;
+    }
+
+    if (result.includes(option)) {
+      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
+    } else {
+      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+    }
+
+    setResult(toggleItem(result, option));
+  };
 
   return (
     <ListItem
       style={listItemProps}
       _hover={{ bg: "gray.800" }}
       transition="all 0.25s ease-in-out"
-      onClick={onSelect}
+      onClick={selectOption}
     >
       <Flex alignItems="center" justifyContent="space-between">
         <Text wordBreak="break-all" lineHeight="1.2">

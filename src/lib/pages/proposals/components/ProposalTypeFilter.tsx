@@ -125,9 +125,11 @@ export const ProposalTypeFilter = forwardRef<
               <FilterDropdownItem
                 key={cosmosType}
                 filterDropdownComponent={cosmosType}
-                onSelect={() => selectOption(cosmosType)}
                 result={result}
                 option={cosmosType}
+                setIsDropdown={setIsDropdown}
+                setKeyword={setKeyword}
+                setResult={(opt) => setResult(opt as ProposalType[])}
               />
             ))}
             {cosmosTypes.length && <Divider borderColor="gray.700" />}
@@ -136,9 +138,11 @@ export const ProposalTypeFilter = forwardRef<
               <FilterDropdownItem
                 key={generalType}
                 filterDropdownComponent={generalType}
-                onSelect={() => selectOption(generalType)}
                 result={result}
                 option={generalType}
+                setIsDropdown={setIsDropdown}
+                setKeyword={setKeyword}
+                setResult={(opt) => setResult(opt as ProposalType[])}
               />
             ))}
           </DropdownContainer>

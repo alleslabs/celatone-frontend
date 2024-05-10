@@ -1,5 +1,4 @@
 import { Flex, FormLabel, Input } from "@chakra-ui/react";
-import { useEffect } from "react";
 import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
 import { DropdownChevron } from "../DropdownChevron";
@@ -29,12 +28,6 @@ export const FilterInput = ({
   setKeyword,
   chipContainerComponent,
 }: FilterInputProps) => {
-  useEffect(() => {
-    if (typeof result !== "string") return;
-
-    setIsDropdown(false);
-  }, [result, setIsDropdown]);
-
   const multiSelectPlaceholder = result && result.length > 0 ? "" : placeholder;
   const singleSelectPlaceholder = result ? "" : placeholder;
   const inputPlaceholder =
