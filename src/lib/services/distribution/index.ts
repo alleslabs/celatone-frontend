@@ -1,40 +1,51 @@
 import { useQuery } from "@tanstack/react-query";
+import { isUndefined } from "lodash";
 
 import {
   CELATONE_QUERY_KEYS,
   useGovConfig,
   useLcdEndpoint,
 } from "lib/app-provider";
-import type { BechAddr, ValidatorAddr } from "lib/types";
+import type { BechAddr, Option, ValidatorAddr } from "lib/types";
 
 import {
-  getCommissionByValidatorAddressLcd,
+  getCommissionsByValidatorAddressLcd,
   getDelegationRewardsByAddressLcd,
 } from "./lcd";
 
-export const useDelegationRewardsByAddressLcd = (address: BechAddr) => {
+export const useDelegationRewardsByAddressLcd = (
+  address: BechAddr,
+  enabled: boolean
+) => {
   const endpoint = useLcdEndpoint();
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS_LCD, endpoint],
     () => getDelegationRewardsByAddressLcd(endpoint, address),
     {
-      enabled,
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useCommissionByValidatorAddressLcd = (valAddr: ValidatorAddr) => {
+export const useCommissionsByValidatorAddressLcd = (
+  valAddr: Option<ValidatorAddr>,
+  enabled: boolean
+) => {
   const endpoint = useLcdEndpoint();
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.COMMISSION_BY_VALIDATOR_ADDRESS_LCD, endpoint],
-    () => getCommissionByValidatorAddressLcd(endpoint, valAddr),
+    () => {
+      if (isUndefined(valAddr))
+        throw new Error("Validator address is undefined");
+      return getCommissionsByValidatorAddressLcd(endpoint, valAddr);
+    },
     {
-      enabled,
+      enabled: enabled && gov.enabled && !isUndefined(valAddr),
       refetchOnWindowFocus: false,
     }
   );

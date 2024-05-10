@@ -12,7 +12,7 @@ import type { BechAddr } from "lib/types";
 export const getStakingParamsLcd = (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/params`)
-    .then(({ data }) => zStakingParamsResponseLcd.parse(data));
+    .then(({ data }) => zStakingParamsResponseLcd.parse(data).params);
 
 export const getDelegationsByAddressLcd = (
   endpoint: string,

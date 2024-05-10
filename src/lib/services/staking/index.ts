@@ -8,7 +8,7 @@ import {
 } from "lib/app-provider";
 import type { BechAddr } from "lib/types";
 
-import { getDelegationsByAddress } from "./api";
+import { getDelegationData } from "./api";
 import {
   getDelegationsByAddressLcd,
   getRedelegationsByAddressLcd,
@@ -16,71 +16,80 @@ import {
   getUnbondingsByAddressLcd,
 } from "./lcd";
 
-export const useStakingParamsLcd = () => {
+export const useStakingParamsLcd = (enabled: boolean) => {
   const endpoint = useLcdEndpoint();
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.STAKING_PARAMS_LCD, endpoint],
     () => getStakingParamsLcd(endpoint),
     {
-      enabled,
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useDelegationsByAddressLcd = (address: BechAddr) => {
+export const useDelegationsByAddressLcd = (
+  address: BechAddr,
+  enabled: boolean
+) => {
   const endpoint = useLcdEndpoint();
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS_LCD, endpoint],
     () => getDelegationsByAddressLcd(endpoint, address),
     {
-      enabled,
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useUnbondingsByAddressLcd = (address: BechAddr) => {
+export const useUnbondingsByAddressLcd = (
+  address: BechAddr,
+  enabled: boolean
+) => {
   const endpoint = useLcdEndpoint();
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.UNBONDINGS_BY_ADDRESS_LCD, endpoint],
     () => getUnbondingsByAddressLcd(endpoint, address),
     {
-      enabled,
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useRedelegationsByAddressLcd = (address: BechAddr) => {
+export const useRedelegationsByAddressLcd = (
+  address: BechAddr,
+  enabled: boolean
+) => {
   const endpoint = useLcdEndpoint();
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.REDELEGATIONS_BY_ADDRESS_LCD, endpoint],
     () => getRedelegationsByAddressLcd(endpoint, address),
     {
-      enabled,
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useDelegationsByAddress = (address: BechAddr) => {
+export const useDelegationData = (address: BechAddr, enabled: boolean) => {
   const endpoint = useBaseApiRoute("accounts");
-  const { enabled } = useGovConfig({ shouldRedirect: false });
+  const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS, endpoint, address],
-    () => getDelegationsByAddress(endpoint, address),
+    () => getDelegationData(endpoint, address),
     {
-      enabled,
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );

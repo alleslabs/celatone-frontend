@@ -6,19 +6,15 @@ import { formatSeconds, snakeToCamel } from "lib/utils";
 export const zStakingParamsResponseLcd = z
   .object({
     params: z.object({
-      unbonding_time: z.string(), // e.g. "1209600s"
+      unbonding_time: z.string().transform((val) => formatSeconds(val)), // e.g. "1209600s"
       max_validators: z.number(),
       max_entries: z.number(),
       historical_entries: z.number(),
-      bond_denoms: z.string(),
+      bond_denom: z.string(),
       min_commission_rate: z.string(),
-      min_self_delegation: z.string(),
     }),
   })
-  .transform(({ params }) => ({
-    ...snakeToCamel(params),
-    unbondingTime: formatSeconds(params.unbonding_time),
-  }));
+  .transform(snakeToCamel);
 
 export const zDelegationsResponseLcd = z
   .object({
@@ -79,14 +75,14 @@ export const zRedelegationsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zDelegations = z
+export const zDelegationData = z
   .object({
     is_validator: z.boolean(),
     commissions: z.array(zCoin),
     staking_params: z.object({
       bond_denoms: z.array(z.string()),
       max_entries: z.number(),
-      unbonding_time: z.string(),
+      unbonding_time: z.string().transform((val) => formatSeconds(val)),
     }),
     delegations: z.array(
       z.object({
@@ -163,4 +159,4 @@ export const zDelegations = z
       // TODO: Use API to sort redelegations
       .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
   }));
-export type Delegations = z.infer<typeof zDelegations>;
+export type DelegationData = z.infer<typeof zDelegationData>;

@@ -15,7 +15,7 @@ export const zDelegationRewardsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zCommissionResponseLcd = z.object({
+export const zCommissionsResponseLcd = z.object({
   commission: z.object({
     commission: z.array(zCoin),
   }),

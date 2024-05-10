@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import {
-  zCommissionResponseLcd,
+  zCommissionsResponseLcd,
   zDelegationRewardsResponseLcd,
 } from "lib/services/types";
 import type { BechAddr, ValidatorAddr } from "lib/types";
@@ -16,7 +16,7 @@ export const getDelegationRewardsByAddressLcd = (
     )
     .then(({ data }) => zDelegationRewardsResponseLcd.parse(data));
 
-export const getCommissionByValidatorAddressLcd = (
+export const getCommissionsByValidatorAddressLcd = (
   endpoint: string,
   valAddr: ValidatorAddr
 ) =>
@@ -24,4 +24,4 @@ export const getCommissionByValidatorAddressLcd = (
     .get(
       `${endpoint}/cosmos/distribution/v1beta1/validators/${encodeURI(valAddr)}/commission`
     )
-    .then(({ data }) => zCommissionResponseLcd.parse(data));
+    .then(({ data }) => zCommissionsResponseLcd.parse(data).commission);
