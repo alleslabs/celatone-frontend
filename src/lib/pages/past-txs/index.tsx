@@ -17,7 +17,7 @@ import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useDebounce } from "lib/hooks";
-import { useTxsByAddress, useTxsCountByAddress } from "lib/services/txService";
+import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
 import type { Option, TxFilters } from "lib/types";
 
 interface PastTxsState {

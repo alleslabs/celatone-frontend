@@ -2,7 +2,7 @@
 import type { logs } from "@cosmjs/stargate";
 
 import type { TypeUrl } from "lib/data";
-import type { TxResponse } from "lib/services/tx";
+import type { TxResponse } from "lib/services/types";
 import { parseDate } from "lib/utils/date";
 
 type TestCase = { txData: TxResponse; result: logs.Log[] };

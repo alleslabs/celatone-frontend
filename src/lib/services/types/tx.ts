@@ -1,20 +1,16 @@
 import type { Event, logs } from "@cosmjs/stargate";
-import axios from "axios";
 import type { CompactBitArray } from "cosmjs-types/cosmos/crypto/multisig/v1beta1/multisig";
 import type { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import type { Any } from "cosmjs-types/google/protobuf/any";
 import { z } from "zod";
 
 import type { TypeUrl } from "lib/data";
-import type { BechAddr, Fee, Option, Transaction, TxFilters } from "lib/types";
+import type { Fee, Option, Transaction } from "lib/types";
 import { MsgFurtherAction, zBechAddr, zUtcDate } from "lib/types";
 import {
-  camelToSnake,
   getActionMsgType,
   getMsgFurtherAction,
-  parseDateOpt,
   parseTxHash,
-  parseWithError,
   snakeToCamel,
 } from "lib/utils";
 
@@ -88,17 +84,10 @@ export interface TxResponse {
   events: Event[];
 }
 
-export const queryTxData = async (
-  txsApiRoute: string,
-  txHash: string
-): Promise<TxResponse> => {
-  const { data } = await axios.get(`${txsApiRoute}/${txHash.toUpperCase()}`);
-
-  return {
-    ...data.tx_response,
-    timestamp: parseDateOpt(data.tx_response.timestamp),
-  };
-};
+export interface TxData extends TxResponse {
+  chainId: string;
+  isTxFailed: boolean;
+}
 
 const zBaseTxsResponseItem = z.object({
   height: z.number().nonnegative(),
@@ -151,31 +140,11 @@ export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
   })
 );
 
-const zTxsResponse = z.object({
+export const zTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
   total: z.number().nonnegative(),
 });
 export type TxsResponse = z.infer<typeof zTxsResponse>;
-
-export const getTxs = async (
-  endpoint: string,
-  limit: number,
-  offset: number,
-  isWasm: boolean,
-  isMove: boolean,
-  isInitia: boolean
-) =>
-  axios
-    .get(`${endpoint}`, {
-      params: {
-        limit,
-        offset,
-        is_wasm: isWasm,
-        is_move: isMove,
-        is_initia: isInitia,
-      },
-    })
-    .then(({ data }) => parseWithError(zTxsResponse, data));
 
 const zAccountTxsResponseItem = zBaseTxsResponseItem
   .extend({
@@ -223,92 +192,19 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
     isInstantiate: val.is_instantiate ?? false,
   }));
 
-const zAccountTxsResponse = z.object({
+export const zAccountTxsResponse = z.object({
   items: z.array(zAccountTxsResponseItem),
 });
 export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 
-export const getTxsByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  search: Option<string>,
-  isSigner: Option<boolean>,
-  txFilters: TxFilters,
-  limit: number,
-  offset: number,
-  isWasm: boolean,
-  isMove: boolean,
-  isInitia: boolean
-) => {
-  const filterParams = camelToSnake<TxFilters>(txFilters);
-
-  return axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/txs`, {
-      params: {
-        limit,
-        offset,
-        is_wasm: isWasm,
-        is_move: isMove,
-        is_initia: isInitia,
-        ...filterParams,
-        ...(isSigner !== undefined && { is_signer: isSigner }),
-        ...(search !== undefined && { search }),
-      },
-    })
-    .then(({ data }) => parseWithError(zAccountTxsResponse, data));
-};
-
-const zBlockTxsResponse = z.object({
+export const zBlockTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
   total: z.number().nonnegative(),
 });
 export type BlockTxsResponse = z.infer<typeof zBlockTxsResponse>;
 
-export const getTxsByBlockHeight = async (
-  endpoint: string,
-  height: number,
-  limit: number,
-  offset: number,
-  isWasm: boolean,
-  isMove: boolean,
-  isInitia: boolean
-) =>
-  axios
-    .get(`${endpoint}/${height}/txs`, {
-      params: {
-        limit,
-        offset,
-        is_wasm: isWasm,
-        is_move: isMove,
-        is_initia: isInitia,
-      },
-    })
-    .then(({ data }) => parseWithError(zBlockTxsResponse, data));
-
-const zTxsCountResponse = z
+export const zTxsCountResponse = z
   .object({
     count: z.number().nullish(),
   })
   .transform((val) => val.count);
-
-export const getTxsCountByAddress = async (
-  endpoint: string,
-  address: BechAddr,
-  search: Option<string>,
-  isSigner: Option<boolean>,
-  txFilters: TxFilters,
-  isWasm: boolean
-) => {
-  const filterParams = camelToSnake<TxFilters>(txFilters);
-
-  return axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/txs-count`, {
-      params: {
-        ...filterParams,
-        is_wasm: isWasm, // only for `searching` contract txs
-        ...(isSigner !== undefined && { is_signer: isSigner }),
-        ...(search !== undefined && { search }),
-      },
-    })
-    .then(({ data }) => parseWithError(zTxsCountResponse, data));
-};
