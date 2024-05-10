@@ -11,27 +11,34 @@ const listItemProps: CSSProperties = {
 };
 
 interface FilterDropdownItemProps {
-  isOptionSelected: boolean;
+  result: string | string[] | undefined;
+  option: string;
   filterDropdownComponent: ReactNode;
   onSelect: () => void;
 }
 
 export const FilterDropdownItem = ({
-  isOptionSelected,
+  result,
+  option,
   filterDropdownComponent,
   onSelect,
-}: FilterDropdownItemProps) => (
-  <ListItem
-    style={listItemProps}
-    _hover={{ bg: "gray.800" }}
-    transition="all 0.25s ease-in-out"
-    onClick={onSelect}
-  >
-    <Flex alignItems="center" justifyContent="space-between">
-      <Text wordBreak="break-all" lineHeight="1.2">
-        {filterDropdownComponent}
-      </Text>
-      {isOptionSelected && <CustomIcon name="check" color="gray.600" />}
-    </Flex>
-  </ListItem>
-);
+}: FilterDropdownItemProps) => {
+  const isOptionSelected =
+    typeof result === "string" ? result === option : result?.includes(option);
+
+  return (
+    <ListItem
+      style={listItemProps}
+      _hover={{ bg: "gray.800" }}
+      transition="all 0.25s ease-in-out"
+      onClick={onSelect}
+    >
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text wordBreak="break-all" lineHeight="1.2">
+          {filterDropdownComponent}
+        </Text>
+        {isOptionSelected && <CustomIcon name="check" color="gray.600" />}
+      </Flex>
+    </ListItem>
+  );
+};

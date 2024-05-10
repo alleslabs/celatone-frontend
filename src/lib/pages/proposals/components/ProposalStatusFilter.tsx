@@ -1,7 +1,6 @@
 import type { InputProps } from "@chakra-ui/react";
 import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import type { Dispatch, SetStateAction } from "react";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
@@ -15,11 +14,11 @@ import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
 
 export interface ProposalStatusFilterProps extends InputProps {
-  result: ProposalStatus[];
+  result: ProposalStatus | ProposalStatus[] | undefined;
   minW?: string;
   label?: string;
   placeholder?: string;
-  setResult: Dispatch<SetStateAction<ProposalStatus[]>>;
+  setResult: (option: ProposalStatus | ProposalStatus[] | undefined) => void;
 }
 
 const OPTIONS = Object.values(ProposalStatus);
@@ -53,20 +52,34 @@ export const ProposalStatusFilter = forwardRef<
       [keyword]
     );
 
-    const isOptionSelected = (option: ProposalStatus) =>
-      result.some((selectedOption) => selectedOption === option);
-
-    const selectOption = (option: ProposalStatus) => {
+    const selectOption = (option: ProposalStatus | undefined) => {
       if (inputRef.current) {
         setKeyword("");
       }
+
+      if (typeof result === "string" || !result || !option) {
+        if (typeof result === "string") {
+          trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+          setResult(option);
+
+          return;
+        }
+
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, "", "remove");
+        setResult(option);
+
+        return;
+      }
+
       if (result.includes(option)) {
         trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
-        setResult((prevState) => prevState.filter((value) => value !== option));
-      } else {
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-        setResult((prevState) => [...prevState, option]);
+        setResult(result.filter((value) => value !== option));
+
+        return;
       }
+
+      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+      setResult([...result, option]);
     };
 
     useOutsideClick({
@@ -88,13 +101,20 @@ export const ProposalStatusFilter = forwardRef<
           setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>
-              {result.map((option: ProposalStatus) => (
+              {typeof result === "string" ? (
                 <FilterChip
-                  key={option}
-                  chipComponent={<StatusChip status={option} hasCloseBtn />}
-                  onSelect={() => selectOption(option)}
+                  chipComponent={<StatusChip status={result} hasCloseBtn />}
+                  onSelect={() => selectOption(undefined)}
                 />
-              ))}
+              ) : (
+                result?.map((option: ProposalStatus) => (
+                  <FilterChip
+                    key={option}
+                    chipComponent={<StatusChip status={option} hasCloseBtn />}
+                    onSelect={() => selectOption(option)}
+                  />
+                ))
+              )}
             </Flex>
           }
         />
@@ -108,8 +128,9 @@ export const ProposalStatusFilter = forwardRef<
               <FilterDropdownItem
                 key={option}
                 filterDropdownComponent={<StatusChip status={option} />}
-                isOptionSelected={isOptionSelected(option)}
                 onSelect={() => selectOption(option)}
+                result={result}
+                option={option}
               />
             ))}
           </DropdownContainer>
