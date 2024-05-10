@@ -1,17 +1,9 @@
-import type { Coin } from "@cosmjs/stargate";
 import { z } from "zod";
 
-import { zPagination } from "lib/types";
+import { zCoin, zPagination } from "lib/types";
 import type { Option, TokenWithValue, USD } from "lib/types";
 
-export const zBalancesResponse = z
-  .array(
-    z.object({
-      amount: z.string(),
-      denom: z.string(),
-    })
-  )
-  .transform<Coin[]>((balances) => balances);
+export const zBalancesResponse = z.array(zCoin);
 
 export const zBalancesReponseLcd = z.object({
   balances: zBalancesResponse,

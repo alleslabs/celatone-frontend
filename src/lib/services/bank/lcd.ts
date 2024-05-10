@@ -1,8 +1,7 @@
-import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
 import { zBalancesReponseLcd } from "../types";
-import type { BechAddr, Nullable } from "lib/types";
+import type { BechAddr, Coin, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getBalancesLcd = async (

@@ -1,7 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
-import big from "big.js";
 
 import { useAssetInfos } from "../assetService";
 import { useMovePoolInfos } from "../move";
@@ -12,6 +11,7 @@ import {
   useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
+import { big } from "lib/types";
 import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -39,7 +39,6 @@ export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
   );
 };
 
-// TODO: Implement the useBalanceInfos hook for lite tier
 export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: true,
