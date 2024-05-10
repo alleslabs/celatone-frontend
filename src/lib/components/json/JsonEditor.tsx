@@ -6,8 +6,7 @@ import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
-
-import { CURR_THEME } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 
 interface JsonEditorProps {
   value: string;
@@ -25,12 +24,13 @@ const JsonEditor = ({
   showLines,
 }: JsonEditorProps) => {
   const editorRef = useRef<AceEditor>(null);
+  const { theme } = useCelatoneApp();
 
   return (
     <AceEditor
       ref={editorRef}
       mode="json"
-      theme={CURR_THEME.jsonTheme}
+      theme={theme.jsonTheme}
       fontSize="14px"
       readOnly={readOnly}
       style={{

@@ -7,7 +7,7 @@ const INITIA_BASE_THEME: ThemeConfig = {
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
     seo: {
       appName: "Initia",
-      title: "Initia Explorer | Powered by Celatone",
+      title: "Initia Scan powered by Celatone",
       description:
         "Explore Initia's layered ecosystem effortlessly, bridging Web2 to Web3, while delving into sovereign applications.",
       image: "https://assets.alleslabs.dev/integrations/initia/cover.jpg",
@@ -15,20 +15,6 @@ const INITIA_BASE_THEME: ThemeConfig = {
         handle: "@initiafnd",
         cardType: "summary_large_image",
       },
-    },
-  },
-  fonts: {
-    heading: {
-      url: "/font/main.css",
-      name: "Pilat Wide, serif",
-    },
-    body: {
-      url: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap",
-      name: "Manrope, sans-serif",
-    },
-    mono: {
-      url: "/font/main.css",
-      name: "PP Neue Montreal Mono Regular",
     },
   },
   colors: {

@@ -3,7 +3,7 @@ import type { Router } from "next/router";
 import type { ParsedUrlQueryInput } from "node:querystring";
 import { useCallback } from "react";
 
-import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
+import { FALLBACK_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
 export interface NavigationArgs {
@@ -32,7 +32,7 @@ export const useInternalNavigate = () => {
               getFirstQueryParam(router.query.network)
             )
               ? router.query.network
-              : DEFAULT_SUPPORTED_CHAIN_ID,
+              : FALLBACK_SUPPORTED_CHAIN_ID,
             ...query,
           },
         },

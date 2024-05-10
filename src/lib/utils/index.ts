@@ -12,6 +12,7 @@ export * from "./descriptionAndName";
 export * from "./executeTags";
 export * from "./extractActionValue";
 export * from "./extractMsgType";
+export * from "./favicon";
 export * from "./fee";
 export * from "./format";
 export * from "./formatter";
