@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#919](https://github.com/alleslabs/celatone-frontend/pull/919) Remove singleStakingDenom config and use from lcd instead
 - [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
 - [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
