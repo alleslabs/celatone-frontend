@@ -1,17 +1,17 @@
 import { Image } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 
 // TODO: Handle different chains decoration rendering
-export const TopDecorations = () =>
-  CURR_THEME.illustration.overview.main ? (
+export const TopDecorations = () => {
+  const { theme } = useCelatoneApp();
+  return theme.illustration.overview.main ? (
     <>
       <Image
         w="700px"
         h="700px"
         position="absolute"
-        opacity={0.3}
-        src={CURR_THEME.illustration.overview.main}
+        src={theme.illustration.overview.main}
         transform="translateX(-50%) translateY(-47%)"
         zIndex={0}
       />
@@ -19,7 +19,7 @@ export const TopDecorations = () =>
         w="480px"
         h="480px"
         position="absolute"
-        src={CURR_THEME.illustration.overview?.secondary}
+        src={theme.illustration.overview?.secondary}
         opacity={0.3}
         right={0}
         bottom={0}
@@ -28,3 +28,4 @@ export const TopDecorations = () =>
       />
     </>
   ) : null;
+};

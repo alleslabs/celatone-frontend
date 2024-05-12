@@ -20,7 +20,6 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { CURR_THEME } from "env";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -67,6 +66,7 @@ const WasmCodeSnippet = ({
     chainConfig: {
       gas: { gasPrice },
     },
+    theme,
   } = useCelatoneApp();
 
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
@@ -248,7 +248,7 @@ execute();
                       <AceEditor
                         readOnly
                         mode={item.mode}
-                        theme={CURR_THEME.jsonTheme}
+                        theme={theme.jsonTheme}
                         fontSize="14px"
                         style={{
                           width: "100%",
