@@ -9,6 +9,7 @@ import type {
   SelectedAddress,
 } from "../types";
 import { AmpEvent, track } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { ModuleCard } from "lib/components/module/ModuleCard";
@@ -22,6 +23,16 @@ interface ModuleSelectBodyProps {
   mode: DisplayMode;
   handleModuleSelect: ModuleSelectFunction;
   closeModal: () => void;
+  setStep: Dispatch<SetStateAction<"select-module" | "select-fn">>;
+}
+
+interface RenderModulesProps {
+  selectedAddress: SelectedAddress;
+  modulesLength: number;
+  filtered: IndexedModule[];
+  selectedModule: Option<IndexedModule>;
+  setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
+  setStep: Dispatch<SetStateAction<"select-module" | "select-fn">>;
 }
 
 const RenderModules = ({
@@ -30,15 +41,11 @@ const RenderModules = ({
   filtered,
   selectedModule,
   setSelectedModule,
-}: {
-  selectedAddress: SelectedAddress;
-  modulesLength: number;
-  filtered: IndexedModule[];
-  selectedModule: Option<IndexedModule>;
-  setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
-}) => {
+  setStep,
+}: RenderModulesProps) => {
   if (!modulesLength)
     return <NoImageEmptyState desc="This address does not have any modules." />;
+
   return filtered?.length ? (
     <>
       {filtered.map((module) => (
@@ -48,6 +55,7 @@ const RenderModules = ({
           module={module}
           selectedModule={selectedModule}
           setSelectedModule={setSelectedModule}
+          setStep={setStep}
         />
       ))}
     </>
@@ -62,7 +70,9 @@ export const ModuleSelectMainBody = ({
   modules,
   handleModuleSelect,
   closeModal,
+  setStep,
 }: ModuleSelectBodyProps) => {
+  const isMobile = useMobile();
   const [keyword, setKeyword] = useState("");
   const [selectedModule, setSelectedModule] = useState<IndexedModule>();
 
@@ -73,11 +83,11 @@ export const ModuleSelectMainBody = ({
 
   return (
     <Grid
-      templateAreas={`"panel main""button button"`}
+      templateAreas={isMobile ? `"panel"` : `"panel main""button button"`}
       columnGap={4}
       rowGap={6}
-      templateColumns="minmax(300px, 20%) 1fr"
-      templateRows="1fr auto"
+      templateColumns={isMobile ? "1fr" : "minmax(300px, 20%) 1fr"}
+      templateRows={isMobile ? "1fr" : "1fr auto"}
       position="relative"
       overflow="hidden"
       pointerEvents={mode === "input" ? "none" : undefined}
@@ -121,30 +131,35 @@ export const ModuleSelectMainBody = ({
             filtered={filteredModules}
             selectedModule={selectedModule}
             setSelectedModule={setSelectedModule}
+            setStep={setStep}
           />
         </Flex>
       </GridItem>
-      <ModuleFunctionBody
-        area="main"
-        module={selectedModule}
-        handleModuleSelect={handleModuleSelect}
-        closeModal={closeModal}
-      />
-      <GridItem area="button" justifySelf="flex-end">
-        <Button
-          size="md"
-          onClick={() => {
-            if (selectedModule) {
-              track(AmpEvent.USE_MODULE_SELECTION_MODULE);
-              handleModuleSelect(selectedModule);
-              closeModal();
-            }
-          }}
-          isDisabled={!selectedModule}
-        >
-          Select this module
-        </Button>
-      </GridItem>
+      {!isMobile && (
+        <>
+          <ModuleFunctionBody
+            area="main"
+            module={selectedModule}
+            handleModuleSelect={handleModuleSelect}
+            closeModal={closeModal}
+          />
+          <GridItem area="button" justifySelf="flex-end">
+            <Button
+              size="md"
+              onClick={() => {
+                if (selectedModule) {
+                  track(AmpEvent.USE_MODULE_SELECTION_MODULE);
+                  handleModuleSelect(selectedModule);
+                  closeModal();
+                }
+              }}
+              isDisabled={!selectedModule}
+            >
+              Select this module
+            </Button>
+          </GridItem>
+        </>
+      )}
     </Grid>
   );
 };

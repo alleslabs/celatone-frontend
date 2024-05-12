@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Grid, Text } from "@chakra-ui/react";
+import type { Dispatch, SetStateAction } from "react";
 import { useMemo } from "react";
 
 import { AppLink } from "../AppLink";
@@ -15,6 +16,8 @@ interface ModuleCardProps {
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
+  setStep?: Dispatch<SetStateAction<"select-module" | "select-fn">>;
+  isReadOnly?: boolean;
 }
 
 export const ModuleCard = ({
@@ -22,6 +25,8 @@ export const ModuleCard = ({
   module,
   selectedModule,
   setSelectedModule,
+  setStep,
+  isReadOnly = false,
 }: ModuleCardProps) => {
   const { data: isVerified } = useVerifyModule({
     address: selectedAddress,
@@ -46,6 +51,9 @@ export const ModuleCard = ({
             executeCount: module.executeFunctions.length,
           });
           setSelectedModule?.(module);
+          if (!isReadOnly && setStep) {
+            setStep("select-fn");
+          }
         }}
         gap={1}
         templateColumns="20px 1fr auto"

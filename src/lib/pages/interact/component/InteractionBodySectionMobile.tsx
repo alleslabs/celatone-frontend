@@ -24,11 +24,19 @@ export const InteractionBodySectionMobile = ({
         fn={selectedFn}
       />
     ) : (
-      <>
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        p={8}
+        border="1px solid"
+        borderColor="gray.700"
+        borderRadius={4}
+      >
         <EmptyState
           imageWidth="80px"
           imageVariant="empty"
-          message={`Initiate your Module interactions by choosing a module and its associated function. ${"\n"} This section will showcase the input or response type required for the functions.`}
+          message="Initiate your Module interactions by choosing a module and its associated function. This section will showcase the input or response type required for the functions."
           textVariant="body2"
           my={0}
           py={4}
@@ -36,7 +44,7 @@ export const InteractionBodySectionMobile = ({
         <Button variant="primary" onClick={openDrawer}>
           Select Module
         </Button>
-      </>
+      </Flex>
     )}
   </Flex>
 );
