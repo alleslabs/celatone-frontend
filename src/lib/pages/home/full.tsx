@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
 import {
   useCelatoneApp,
   useInternalNavigate,
@@ -38,6 +37,7 @@ export const HomeFull = () => {
   const navigate = useInternalNavigate();
   const {
     chainConfig: { prettyName },
+    theme,
   } = useCelatoneApp();
 
   const { data: overviewsStats, isLoading } = useOverviewsStats();
@@ -110,7 +110,7 @@ export const HomeFull = () => {
         <Box as="section" mb="48px">
           <Flex gap={4} direction="column">
             <ConnectWalletAlert
-              title={`Connect wallet to start using ${CURR_THEME.branding.seo.appName}`}
+              title={`Connect wallet to start using ${theme.branding.seo.appName}`}
               subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
             />
             <DevShortcut />
