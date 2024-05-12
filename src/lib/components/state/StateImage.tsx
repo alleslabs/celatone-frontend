@@ -1,16 +1,9 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 
-import { CURR_THEME } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 
 export type ImageVariant = "error" | "not-found" | "empty" | "disconnected";
-
-const imageSourceMap: Record<ImageVariant, string> = {
-  error: CURR_THEME.illustration.error,
-  "not-found": CURR_THEME.illustration.searchNotFound,
-  empty: CURR_THEME.illustration.searchEmpty,
-  disconnected: CURR_THEME.illustration.disconnected,
-};
 
 interface StateImageProps {
   imageVariant: ImageVariant;
@@ -20,10 +13,19 @@ interface StateImageProps {
 export const StateImage = ({
   imageVariant,
   imageWidth = "200px",
-}: StateImageProps) => (
-  <Image
-    src={imageSourceMap[imageVariant]}
-    alt="result not found"
-    width={imageWidth}
-  />
-);
+}: StateImageProps) => {
+  const { theme } = useCelatoneApp();
+  const imageSourceMap: Record<ImageVariant, string> = {
+    error: theme.illustration.error,
+    "not-found": theme.illustration.searchNotFound,
+    empty: theme.illustration.searchEmpty,
+    disconnected: theme.illustration.disconnected,
+  };
+  return (
+    <Image
+      src={imageSourceMap[imageVariant]}
+      alt={`result ${imageVariant}`}
+      width={imageWidth}
+    />
+  );
+};

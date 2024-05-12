@@ -13,20 +13,6 @@ export type ThemeConfig = {
       };
     };
   };
-  fonts: {
-    heading: {
-      url: string;
-      name: string;
-    };
-    body: {
-      url: string;
-      name: string;
-    };
-    mono: {
-      url: string;
-      name: string;
-    };
-  };
   colors: {
     primary: {
       main: string;

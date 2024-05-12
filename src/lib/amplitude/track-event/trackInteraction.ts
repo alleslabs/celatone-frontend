@@ -183,7 +183,7 @@ export const trackUseFilter = (
     | AmpEvent.USE_FILTER_PROPOSALS_STATUS
     | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE
     | AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
-  filters: string[],
+  filters: string | string[] | undefined,
   action: string
 ) => amp.track(event, { action, filters });
 

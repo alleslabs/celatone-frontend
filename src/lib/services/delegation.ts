@@ -30,7 +30,7 @@ const zDelegations = z
         validator: zValidator,
       })
     ),
-    delegations_rewards: z.object({
+    delegation_rewards: z.object({
       rewards: z.array(
         z.object({
           reward: z.array(
@@ -94,11 +94,11 @@ const zDelegations = z
       validator: delegation.validator,
     })),
     delegationRewards: {
-      rewards: val.delegations_rewards.rewards.map((reward) => ({
+      rewards: val.delegation_rewards.rewards.map((reward) => ({
         reward: reward.reward,
         validator: reward.validator,
       })),
-      total: val.delegations_rewards.total,
+      total: val.delegation_rewards.total,
     },
     unbondings: val.unbondings
       .map((unbonding) =>

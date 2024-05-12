@@ -143,7 +143,7 @@ export const ProposalsTableFull = () => {
           <ProposalStatusFilter
             label="Filter by Status"
             result={statuses}
-            setResult={setStatuses}
+            setResult={(option) => setStatuses(option as ProposalStatus[])}
             placeholder="All Status"
           />
           <ProposalTypeFilter

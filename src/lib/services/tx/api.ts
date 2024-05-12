@@ -12,10 +12,10 @@ import { camelToSnake, parseWithError } from "lib/utils";
 
 export const getTxData = async (
   txsApiRoute: string,
-  txHash: Option<string>
+  txHash: string
 ): Promise<TxResponse> =>
   axios
-    .get(`${txsApiRoute}/${encodeURIComponent(txHash?.toUpperCase() ?? "")}`)
+    .get(`${txsApiRoute}/${encodeURIComponent(txHash.toUpperCase())}`)
     .then(({ data }) => data);
 
 export const getTxs = async (

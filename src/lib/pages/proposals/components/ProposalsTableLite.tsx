@@ -1,25 +1,20 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { SelectInput } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { ProposalsTable, StatusChip } from "lib/components/table";
+import { ProposalsTable } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
-import {
-  mapProposalStatusLcdToProposalStatus,
-  useProposalDataLcd,
-  useProposalsLcd,
-} from "lib/services/proposal";
-import { ProposalStatusLcd } from "lib/types";
+import { useProposalDataLcd, useProposalsLcd } from "lib/services/proposal";
+import type { ProposalStatus } from "lib/types";
+
+import { ProposalStatusFilter } from "./ProposalStatusFilter";
 
 export const ProposalsTableLite = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
-  const [proposalStatus, setProposalStatus] = useState<ProposalStatusLcd>(
-    ProposalStatusLcd.ALL
-  );
+  const [status, setStatus] = useState<ProposalStatus>();
 
   const {
     data: proposalsData,
@@ -28,7 +23,7 @@ export const ProposalsTableLite = () => {
     hasNextPage,
     isLoading: isProposalsLoading,
     isFetchingNextPage,
-  } = useProposalsLcd(proposalStatus);
+  } = useProposalsLcd(status);
 
   const { data: proposalData, isLoading: isProposalDataLoading } =
     useProposalDataLcd(debouncedSearch);
@@ -44,22 +39,11 @@ export const ProposalsTableLite = () => {
     proposals &&
     proposals.length > 1;
 
-  const options = Object.values(ProposalStatusLcd).map((status) => {
-    const mapStatus = mapProposalStatusLcdToProposalStatus(status);
-
-    return {
-      label: mapStatus,
-      value: status,
-      disabled: false,
-      chipContainerComponent: <StatusChip status={mapStatus} />,
-    };
-  });
-
   return (
     <>
       <Grid
         mt={8}
-        mb={{ base: 6, md: 8 }}
+        mb={{ base: 10, md: 8 }}
         gridTemplateColumns={{ base: "1fr", md: "1fr 370px" }}
         gap={{ base: 4, md: 6 }}
       >
@@ -73,13 +57,11 @@ export const ProposalsTableLite = () => {
           />
         </GridItem>
         <GridItem>
-          <SelectInput<ProposalStatusLcd>
-            formLabel="Filter by Status"
-            options={options}
-            onChange={setProposalStatus}
-            placeholder=""
-            initialSelected={proposalStatus}
-            disableMaxH
+          <ProposalStatusFilter
+            label="Filter by Status"
+            result={status}
+            setResult={(option) => setStatus(option as ProposalStatus)}
+            placeholder="All Status"
           />
         </GridItem>
       </Grid>

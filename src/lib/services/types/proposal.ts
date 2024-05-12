@@ -1,12 +1,11 @@
+import { capitalize } from "lodash";
 import { z } from "zod";
 
-import { mapProposalStatusLcdToProposalStatus } from "../proposal/helpers";
 import {
   zBechAddr,
   zBig,
   zCoin,
   zProposalStatus,
-  zProposalStatusLcd,
   zProposalType,
   zRatio,
   zUtcDate,
@@ -19,6 +18,7 @@ import type {
   Proposal,
   ProposalData,
   ProposalParams,
+  ProposalStatus,
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
@@ -236,7 +236,7 @@ export type ProposalAnswerCountsResponse = z.infer<
 
 export const zProposalsResponseItemLcd = z
   .object({
-    id: z.string(),
+    id: z.coerce.number(),
     messages: z
       .object({
         "@type": z.string(),
@@ -244,7 +244,7 @@ export const zProposalsResponseItemLcd = z
       .passthrough()
       .array()
       .nullable(),
-    status: zProposalStatusLcd,
+    status: z.string(),
     final_tally_result: z.object({
       yes_count: z.string(),
       no_count: z.string(),
@@ -260,14 +260,19 @@ export const zProposalsResponseItemLcd = z
     title: z.string(),
     summary: z.string(),
     proposer: zBechAddr,
+    expedited: z.boolean().optional().default(false),
   })
   .transform<Proposal>((val) => ({
     ...snakeToCamel(val),
     id: Number(val.id),
-    status: mapProposalStatusLcdToProposalStatus(val.status),
+    status: val.status
+      .replace("PROPOSAL_STATUS_", "")
+      .split("_")
+      .map((term: string) => capitalize(term.toLowerCase()))
+      .join("") as ProposalStatus,
     resolvedHeight: null,
     types: [],
-    isExpedited: false,
+    isExpedited: val.expedited,
   }));
 export type ProposalsResponseItemLcd = z.infer<
   typeof zProposalsResponseItemLcd

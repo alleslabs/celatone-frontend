@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Input,
   InputGroup,
@@ -22,7 +21,6 @@ interface SelectInputProps<T extends string> {
   formLabel?: string;
   options: {
     label: string;
-    chipContainerComponent?: JSX.Element;
     value: T;
     disabled: boolean;
     icon?: IconKeys;
@@ -134,26 +132,12 @@ export const SelectInput = <T extends string>({
               />
             </InputLeftElement>
           )}
-          {selectedOption?.chipContainerComponent && (
-            <InputLeftElement
-              pointerEvents="none"
-              w="fit-content"
-              h="full"
-              ml={4}
-            >
-              {selectedOption.chipContainerComponent}
-            </InputLeftElement>
-          )}
           <Input
             ref={inputRef}
             size={size}
             textAlign="start"
             type="button"
-            value={
-              selectedOption?.chipContainerComponent
-                ? ""
-                : selected || placeholder
-            }
+            value={selected || placeholder}
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
             pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
@@ -178,40 +162,22 @@ export const SelectInput = <T extends string>({
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
-        overflow="hidden"
       >
-        {options.map(
-          ({
-            label,
-            value,
-            disabled,
-            icon,
-            iconColor,
-            image,
-            chipContainerComponent,
-          }) => (
-            <SelectItem
-              key={value}
-              onSelect={() => {
-                setSelected(label);
-                onChange(value);
-                onClose();
-              }}
-              disabled={disabled}
-            >
-              <Flex justifyContent="space-between" w="100%">
-                <Box>
-                  {image && <Flex alignItems="center">{image}</Flex>}
-                  {icon && <CustomIcon name={icon} color={iconColor} />}
-                  {chipContainerComponent ?? label}
-                </Box>
-                {selected === label && chipContainerComponent && (
-                  <CustomIcon name="check" color="gray.600" />
-                )}
-              </Flex>
-            </SelectItem>
-          )
-        )}
+        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
+          <SelectItem
+            key={value}
+            onSelect={() => {
+              setSelected(label);
+              onChange(value);
+              onClose();
+            }}
+            disabled={disabled}
+          >
+            <Flex alignItems="center">{image}</Flex>
+            {icon && <CustomIcon name={icon} color={iconColor} />}
+            {label}
+          </SelectItem>
+        ))}
         {helperTextComponent && (
           <Flex
             px={4}

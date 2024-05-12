@@ -19,20 +19,6 @@ const SEI_BASE_THEME: ThemeConfig = {
       },
     },
   },
-  fonts: {
-    heading: {
-      url: "https://fonts.cdnfonts.com/css/satoshi?styles=135009,135005,135007,135002,135000",
-      name: "Satoshi, sans-serif",
-    },
-    body: {
-      url: "https://fonts.cdnfonts.com/css/satoshi?styles=135009,135005,135007,135002,135000",
-      name: "Satoshi, sans-serif",
-    },
-    mono: {
-      url: "/font/main.css",
-      name: "PP Neue Montreal Mono Regular",
-    },
-  },
   colors: {
     error: {
       main: "#FF666E",

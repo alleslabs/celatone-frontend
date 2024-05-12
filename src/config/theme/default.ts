@@ -17,20 +17,6 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       },
     },
   },
-  fonts: {
-    heading: {
-      url: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap",
-      name: "Poppins, serif",
-    },
-    body: {
-      url: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
-      name: "Space Grotesk, sans-serif",
-    },
-    mono: {
-      url: "/font/main.css",
-      name: "PP Neue Montreal Mono Regular",
-    },
-  },
   colors: {
     primary: {
       lighter: "#E0F1FB",

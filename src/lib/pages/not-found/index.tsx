@@ -2,13 +2,14 @@ import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { CURR_THEME } from "env";
 import { AmpEvent, track } from "lib/amplitude";
+import { useCelatoneApp } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import PageContainer from "lib/components/PageContainer";
 
 const NotFoundPage = () => {
   const router = useRouter();
+  const { theme } = useCelatoneApp();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_NOT_FOUND);
@@ -28,7 +29,7 @@ const NotFoundPage = () => {
         mt={6}
       >
         <Image
-          src={CURR_THEME.illustration["404"]}
+          src={theme.illustration["404"]}
           alt="page not found"
           width="404px"
         />
