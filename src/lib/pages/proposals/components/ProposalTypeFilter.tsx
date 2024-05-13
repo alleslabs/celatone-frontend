@@ -130,6 +130,7 @@ export const ProposalTypeFilter = forwardRef<
                 setIsDropdown={setIsDropdown}
                 setKeyword={setKeyword}
                 setResult={(opt) => setResult(opt as ProposalType[])}
+                isMulti
               />
             ))}
             {cosmosTypes.length && <Divider borderColor="gray.700" />}
@@ -143,6 +144,7 @@ export const ProposalTypeFilter = forwardRef<
                 setIsDropdown={setIsDropdown}
                 setKeyword={setKeyword}
                 setResult={(opt) => setResult(opt as ProposalType[])}
+                isMulti
               />
             ))}
           </DropdownContainer>

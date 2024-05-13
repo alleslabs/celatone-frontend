@@ -14,7 +14,7 @@ import { ProposalStatusFilter } from "./ProposalStatusFilter";
 export const ProposalsTableLite = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
-  const [status, setStatus] = useState<ProposalStatus>();
+  const [status, setStatus] = useState<ProposalStatus[]>([]);
 
   const {
     data: proposalsData,
@@ -23,7 +23,7 @@ export const ProposalsTableLite = () => {
     hasNextPage,
     isLoading: isProposalsLoading,
     isFetchingNextPage,
-  } = useProposalsLcd(status);
+  } = useProposalsLcd(status[0]);
 
   const { data: proposalData, isLoading: isProposalDataLoading } =
     useProposalDataLcd(debouncedSearch);
@@ -60,7 +60,7 @@ export const ProposalsTableLite = () => {
           <ProposalStatusFilter
             label="Filter by Status"
             result={status}
-            setResult={(option) => setStatus(option as ProposalStatus)}
+            setResult={setStatus}
             placeholder="All Status"
           />
         </GridItem>

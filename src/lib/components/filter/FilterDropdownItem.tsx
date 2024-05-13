@@ -13,16 +13,18 @@ const listItemProps: CSSProperties = {
 };
 
 interface FilterDropdownItemProps {
-  result: string | string[] | undefined;
+  result: string[];
+  isMulti: boolean;
   option: string;
   filterDropdownComponent: ReactNode;
   setIsDropdown: (isDropdown: boolean) => void;
   setKeyword: (keyword: string) => void;
-  setResult: (option: string | string[] | undefined) => void;
+  setResult: (option: string[]) => void;
 }
 
 export const FilterDropdownItem = ({
   result,
+  isMulti,
   option,
   filterDropdownComponent,
   setIsDropdown,
@@ -35,17 +37,21 @@ export const FilterDropdownItem = ({
   const selectOption = () => {
     setKeyword("");
 
-    if (typeof result === "string" || !result || !option) {
+    if (!isMulti) {
       setIsDropdown(false);
 
-      if (typeof result === "string") {
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-        setResult(option);
+      if (result[0] === option) {
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
+
+        setResult([]);
+
         return;
       }
 
-      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
-      setResult(option);
+      trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+
+      setResult([option]);
+
       return;
     }
 

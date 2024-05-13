@@ -15,11 +15,11 @@ import { ProposalStatus } from "lib/types";
 import { toggleItem } from "lib/utils";
 
 export interface ProposalStatusFilterProps extends InputProps {
-  result: ProposalStatus | ProposalStatus[] | undefined;
+  result: ProposalStatus[];
   minW?: string;
   label?: string;
   placeholder?: string;
-  setResult: (option: ProposalStatus | ProposalStatus[] | undefined) => void;
+  setResult: (option: ProposalStatus[]) => void;
 }
 
 export const ProposalStatusFilter = forwardRef<
@@ -41,15 +41,15 @@ export const ProposalStatusFilter = forwardRef<
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
+    const isFullTier = tier === "full";
 
-    const OPTIONS =
-      tier === "full"
-        ? Object.values(ProposalStatus)
-        : Object.values(ProposalStatus).filter(
-            (status) =>
-              status !== ProposalStatus.DEPOSIT_FAILED &&
-              status !== ProposalStatus.CANCELLED
-          );
+    const OPTIONS = isFullTier
+      ? Object.values(ProposalStatus)
+      : Object.values(ProposalStatus).filter(
+          (status) =>
+            status !== ProposalStatus.DEPOSIT_FAILED &&
+            status !== ProposalStatus.CANCELLED
+        );
 
     const dropdownValue = useMemo(
       () =>
@@ -83,7 +83,7 @@ export const ProposalStatusFilter = forwardRef<
               {typeof result === "string" ? (
                 <FilterChip
                   chipComponent={<StatusChip status={result} hasCloseBtn />}
-                  onSelect={() => setResult(undefined)}
+                  onSelect={() => setResult([])}
                 />
               ) : (
                 result?.map((option: ProposalStatus) => (
@@ -111,11 +111,8 @@ export const ProposalStatusFilter = forwardRef<
                 option={option}
                 setIsDropdown={setIsDropdown}
                 setKeyword={setKeyword}
-                setResult={(opt) =>
-                  setResult(
-                    opt as ProposalStatus | ProposalStatus[] | undefined
-                  )
-                }
+                setResult={(opt) => setResult(opt as ProposalStatus[])}
+                isMulti={isFullTier}
               />
             ))}
           </DropdownContainer>
