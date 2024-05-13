@@ -48,7 +48,7 @@ export const MsgLockTokensDetail = ({
   );
 
   const msgEvents = txData.logs.find(
-    (log) => log.msg_index === msgIndex
+    (log) => log.msgIndex === msgIndex
   )?.events;
   const lockId = msgEvents
     ?.find((event) => event.type === "add_tokens_to_lock")

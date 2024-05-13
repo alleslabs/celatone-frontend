@@ -220,3 +220,4 @@ export const useTxsCountByAddress = (
 };
 
 export * from "./gql";
+export * from "./lcd";

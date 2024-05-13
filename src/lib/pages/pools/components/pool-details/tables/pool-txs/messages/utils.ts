@@ -1,3 +1,4 @@
+import type { Log } from "lib/services/types";
 import type { Message } from "lib/types";
 import { extractTxDetails } from "lib/utils";
 
@@ -14,7 +15,12 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
 
   // eslint-disable-next-line complexity
   msgs.forEach((msg, index) => {
-    const { type, detail, log } = msg;
+    const { type, detail, log } = msg as unknown as {
+      type: string;
+      detail: { [key: string]: unknown };
+      log: Log;
+    };
+
     switch (type) {
       case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
       case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":

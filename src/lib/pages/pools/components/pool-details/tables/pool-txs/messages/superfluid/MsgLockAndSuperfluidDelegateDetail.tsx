@@ -59,7 +59,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
   if (!txData) return <ErrorFetchingDetail />;
 
   const msgEvents = txData.logs.find(
-    (log) => log.msg_index === msgIndex
+    (log) => log.msgIndex === msgIndex
   )?.events;
 
   const lockId = msgEvents

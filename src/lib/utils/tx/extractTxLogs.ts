@@ -1,8 +1,6 @@
-import type { Event, logs } from "@cosmjs/stargate";
+import type { Event, Log, TxResponse } from "lib/services/types";
 
-import type { TxResponse } from "lib/services/types";
-
-export const extractTxLogs = (txData: TxResponse): logs.Log[] => {
+export const extractTxLogs = (txData: TxResponse): Log[] => {
   // Failed Tx - no logs
   if (txData.code !== 0) return [];
 
@@ -10,16 +8,20 @@ export const extractTxLogs = (txData: TxResponse): logs.Log[] => {
   if (txData.logs.length > 0) return txData.logs;
 
   // post Cosmos SDK 0.50
-  const msgLogs = txData.tx.body.messages.map((_, index) => ({
-    msg_index: index,
-    log: "",
-    events: [] as Event[],
-  }));
+  const msgLogs =
+    txData.tx.body.messages?.map((_, index) => ({
+      msgIndex: index,
+      log: "",
+      events: [] as Event[],
+    })) || [];
+
   txData.events.forEach((event) => {
     const index = event.attributes.find(
       (attr) => attr.key === "msg_index"
     )?.value;
+
     if (index) msgLogs[Number(index)].events.push(event);
   });
+
   return msgLogs;
 };
