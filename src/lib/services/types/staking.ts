@@ -65,7 +65,7 @@ export const zRedelegationsResponseLcd = z
               creation_height: z.coerce.number(),
               completion_time: zUtcDate,
               initial_balance: z.string(),
-              share_dst: z.string(),
+              shares_dst: z.string(),
             }),
             balance: z.string(),
           })
