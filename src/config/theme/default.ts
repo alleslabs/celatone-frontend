@@ -172,7 +172,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
     votedAbstain: "primary.darker",
     didNotVote: "gray.700",
   },
-  latestBlocks: {
+  recentBlocks: {
     signed: "primary.dark",
     proposed: "primary.light",
     missed: "error.dark",

@@ -53,19 +53,19 @@ export const RecentBlocksLegends = ({
   <Flex direction={{ base: "column", md: "row" }}>
     <LegendItem
       label="Signed Blocks"
-      color="latestBlocks.signed"
+      color="recentBlocks.signed"
       value={signed}
       ratio={signedRatio}
     />
     <LegendItem
       label="Proposed Blocks"
-      color="latestBlocks.proposed"
+      color="recentBlocks.proposed"
       value={proposed}
       ratio={proposedRatio}
     />
     <LegendItem
       label="Missed Blocks"
-      color="latestBlocks.missed"
+      color="recentBlocks.missed"
       value={missed}
       ratio={missedRatio}
     />

@@ -181,7 +181,7 @@ const OSMOSIS_COMPONENT_CONFIG: ComponentConfig = {
     votedAbstain: "primary.darker",
     didNotVote: "gray.700",
   },
-  latestBlocks: {
+  recentBlocks: {
     signed: "primary.main",
     proposed: "secondary.darker",
     missed: "error.dark",

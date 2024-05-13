@@ -178,7 +178,7 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
     votedAbstain: "accent.darker",
     didNotVote: "gray.700",
   },
-  latestBlocks: {
+  recentBlocks: {
     signed: "secondary.main",
     proposed: "primary.main",
     missed: "error.dark",

@@ -170,7 +170,7 @@ const INITIA_COMPONENT_CONFIG: ComponentConfig = {
     votedAbstain: "primary.darker",
     didNotVote: "gray.700",
   },
-  latestBlocks: {
+  recentBlocks: {
     signed: "primary.darker",
     proposed: "primary.lighter",
     missed: "error.dark",
