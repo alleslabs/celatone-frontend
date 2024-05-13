@@ -51,21 +51,21 @@ export const useAccountDelegationInfosLcd = (
       withPrices: true,
     });
 
-  const { data: stakingParams, isLoading: isStakingParamsLoading } =
+  const { data: stakingParams, isFetching: isStakingParamsLoading } =
     useStakingParamsLcd(enabled);
-  const { data: delegations, isLoading: isDelegationsLoading } =
+  const { data: delegations, isFetching: isDelegationsLoading } =
     useDelegationsByAddressLcd(address, enabled);
-  const { data: unbondings, isLoading: isUnbondingsLoading } =
+  const { data: unbondings, isFetching: isUnbondingsLoading } =
     useUnbondingsByAddressLcd(address, enabled);
-  const { data: redelegations, isLoading: isRedelegationsLoading } =
+  const { data: redelegations, isFetching: isRedelegationsLoading } =
     useRedelegationsByAddressLcd(address, enabled);
-  const { data: rewards, isLoading: isRewardsLoading } =
+  const { data: rewards, isFetching: isRewardsLoading } =
     useDelegationRewardsByAddressLcd(address, enabled);
 
-  const { data: commissions, isLoading: isCommissionsLoading } =
+  const { data: commissions, isFetching: isCommissionsLoading } =
     useCommissionsByValidatorAddressLcd(valAddr, enabled);
 
-  const { data: validators, isLoading: isValidatorsLoading } =
+  const { data: validators, isFetching: isValidatorsLoading } =
     useValidatorsLcd();
   const validatorsMap = useMemo(
     () =>

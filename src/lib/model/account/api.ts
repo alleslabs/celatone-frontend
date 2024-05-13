@@ -29,7 +29,7 @@ export const useAccountDelegationInfosApi = (
       withPrices: true,
     });
 
-  const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
+  const { data: accountDelegations, isFetching: isLoadingAccountDelegations } =
     useDelegationData(address, enabled);
 
   const isLoading =

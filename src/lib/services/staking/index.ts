@@ -38,7 +38,7 @@ export const useDelegationsByAddressLcd = (
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS_LCD, endpoint, address],
     () => getDelegationsByAddressLcd(endpoint, address),
     {
       enabled: enabled && gov.enabled,
@@ -55,7 +55,7 @@ export const useUnbondingsByAddressLcd = (
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.UNBONDINGS_BY_ADDRESS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.UNBONDINGS_BY_ADDRESS_LCD, endpoint, address],
     () => getUnbondingsByAddressLcd(endpoint, address),
     {
       enabled: enabled && gov.enabled,
@@ -72,7 +72,7 @@ export const useRedelegationsByAddressLcd = (
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.REDELEGATIONS_BY_ADDRESS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.REDELEGATIONS_BY_ADDRESS_LCD, endpoint, address],
     () => getRedelegationsByAddressLcd(endpoint, address),
     {
       enabled: enabled && gov.enabled,

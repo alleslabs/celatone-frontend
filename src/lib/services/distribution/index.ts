@@ -21,7 +21,7 @@ export const useDelegationRewardsByAddressLcd = (
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS_LCD, endpoint, address],
     () => getDelegationRewardsByAddressLcd(endpoint, address),
     {
       enabled: enabled && gov.enabled,
@@ -38,7 +38,11 @@ export const useCommissionsByValidatorAddressLcd = (
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.COMMISSIONS_BY_VALIDATOR_ADDRESS_LCD, endpoint],
+    [
+      CELATONE_QUERY_KEYS.COMMISSIONS_BY_VALIDATOR_ADDRESS_LCD,
+      endpoint,
+      valAddr,
+    ],
     () => {
       if (isUndefined(valAddr))
         throw new Error("Validator address is undefined");

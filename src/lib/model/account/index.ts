@@ -1,4 +1,4 @@
-import type Big from "big.js";
+import type { Big } from "big.js";
 
 import { useGovConfig, useInitia } from "lib/app-provider";
 import { useBalanceInfos } from "lib/services/bank";

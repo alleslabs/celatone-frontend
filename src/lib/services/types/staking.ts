@@ -86,24 +86,14 @@ export const zDelegationData = z
     }),
     delegations: z.array(
       z.object({
-        balance: z.array(
-          z.object({
-            amount: z.string(),
-            denom: z.string(),
-          })
-        ),
+        balance: z.array(zCoin),
         validator: zValidator,
       })
     ),
     delegation_rewards: z.object({
       rewards: z.array(
         z.object({
-          reward: z.array(
-            z.object({
-              amount: z.string(),
-              denom: z.string(),
-            })
-          ),
+          reward: z.array(zCoin),
           validator: zValidator,
         })
       ),
@@ -145,7 +135,6 @@ export const zDelegationData = z
           completionTime: entry.completion_time,
         }))
       )
-      // TODO: Use API to sort unbondings
       .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
     redelegations: val.redelegations
       .flatMap((redelegation) =>
@@ -156,7 +145,6 @@ export const zDelegationData = z
           dstValidator: redelegation.validator_dst,
         }))
       )
-      // TODO: Use API to sort redelegations
       .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
   }));
 export type DelegationData = z.infer<typeof zDelegationData>;

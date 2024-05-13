@@ -8,11 +8,12 @@ import {
 } from "lib/services/types";
 import { big } from "lib/types";
 import type { BechAddr } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 export const getStakingParamsLcd = (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/params`)
-    .then(({ data }) => zStakingParamsResponseLcd.parse(data).params);
+    .then(({ data }) => parseWithError(zStakingParamsResponseLcd, data).params);
 
 export const getDelegationsByAddressLcd = (
   endpoint: string,
@@ -21,11 +22,9 @@ export const getDelegationsByAddressLcd = (
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/delegations/${encodeURI(address)}`)
     .then(({ data }) =>
-      zDelegationsResponseLcd
-        .parse(data)
-        .delegationResponses.sort((a, b) =>
-          big(b.balance.amount).cmp(a.balance.amount)
-        )
+      parseWithError(zDelegationsResponseLcd, data).delegationResponses.sort(
+        (a, b) => big(b.balance.amount).cmp(a.balance.amount)
+      )
     );
 
 export const getUnbondingsByAddressLcd = (
@@ -37,8 +36,7 @@ export const getUnbondingsByAddressLcd = (
       `${endpoint}/cosmos/staking/v1beta1/delegators/${encodeURI(address)}/unbonding_delegations`
     )
     .then(({ data }) =>
-      zUnbondingsResponseLcd
-        .parse(data)
+      parseWithError(zUnbondingsResponseLcd, data)
         .unbondingResponses.flatMap((unbonding) =>
           unbonding.entries.map((entry) => ({
             delegatorAddress: unbonding.delegatorAddress,
@@ -58,8 +56,7 @@ export const getRedelegationsByAddressLcd = (
       `${endpoint}/cosmos/staking/v1beta1/delegators/${encodeURI(address)}/redelegations`
     )
     .then(({ data }) =>
-      zRedelegationsResponseLcd
-        .parse(data)
+      parseWithError(zRedelegationsResponseLcd, data)
         .redelegationResponses.flatMap((redelegation) =>
           redelegation.entries.map((entry) => ({
             ...redelegation.redelegation,

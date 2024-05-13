@@ -5,6 +5,7 @@ import {
   zDelegationRewardsResponseLcd,
 } from "lib/services/types";
 import type { BechAddr, ValidatorAddr } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 export const getDelegationRewardsByAddressLcd = (
   endpoint: string,
@@ -14,7 +15,7 @@ export const getDelegationRewardsByAddressLcd = (
     .get(
       `${endpoint}/cosmos/distribution/v1beta1/delegators/${encodeURI(address)}/rewards`
     )
-    .then(({ data }) => zDelegationRewardsResponseLcd.parse(data));
+    .then(({ data }) => parseWithError(zDelegationRewardsResponseLcd, data));
 
 export const getCommissionsByValidatorAddressLcd = (
   endpoint: string,
@@ -24,4 +25,6 @@ export const getCommissionsByValidatorAddressLcd = (
     .get(
       `${endpoint}/cosmos/distribution/v1beta1/validators/${encodeURI(valAddr)}/commission`
     )
-    .then(({ data }) => zCommissionsResponseLcd.parse(data).commission);
+    .then(
+      ({ data }) => parseWithError(zCommissionsResponseLcd, data).commission
+    );
