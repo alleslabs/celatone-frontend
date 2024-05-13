@@ -18,14 +18,14 @@ interface BlockProps {
 
 const Block = forwardRef<HTMLDivElement, BlockProps>(
   ({ height, vote }, ref) => {
-    let backgroundColor = "primary.main";
+    let backgroundColor = "latestBlocks.signed";
     let voteLabel = "Signed";
 
     if (vote === BlockVote.PROPOSE) {
-      backgroundColor = "secondary.main";
+      backgroundColor = "latestBlocks.proposed";
       voteLabel = "Proposed";
     } else if (vote === BlockVote.ABSTAIN) {
-      backgroundColor = "error.dark";
+      backgroundColor = "latestBlocks.missed";
       voteLabel = "Missed";
     }
 

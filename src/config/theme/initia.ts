@@ -171,8 +171,8 @@ const INITIA_COMPONENT_CONFIG: ComponentConfig = {
     didNotVote: "gray.700",
   },
   latestBlocks: {
-    signed: "primary.main",
-    proposed: "accent.light",
+    signed: "primary.darker",
+    proposed: "primary.lighter",
     missed: "error.dark",
   },
 };

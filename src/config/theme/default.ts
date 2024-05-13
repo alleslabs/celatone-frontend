@@ -173,8 +173,8 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
     didNotVote: "gray.700",
   },
   latestBlocks: {
-    signed: "primary.main",
-    proposed: "accent.dark",
+    signed: "primary.dark",
+    proposed: "primary.light",
     missed: "error.dark",
   },
 };
