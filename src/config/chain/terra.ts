@@ -48,9 +48,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uluna",
-    },
+    extra: {},
   },
   "phoenix-1": {
     tier: "full",
@@ -96,9 +94,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uluna",
-    },
+    extra: {},
   },
   "pisco-1": {
     tier: "full",
@@ -144,8 +140,6 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uluna",
-    },
+    extra: {},
   },
 };

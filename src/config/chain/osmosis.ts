@@ -49,9 +49,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uosmo",
-    },
+    extra: {},
   },
   "osmo-test-5": {
     tier: "full",
@@ -100,9 +98,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uosmo",
-    },
+    extra: {},
   },
   localosmosis: {
     tier: "full",
@@ -150,8 +146,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uosmo",
-    },
+    extra: {},
   },
 };
