@@ -19,7 +19,7 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import type { BechAddr, Option, TxFilters } from "lib/types";
-import { extractTxLogs, isTxHash, parseDateOpt } from "lib/utils";
+import { extractTxLogs, isTxHash, parseDateOpt, snakeToCamel } from "lib/utils";
 
 import {
   getTxData,
@@ -38,31 +38,33 @@ export const useTxData = (
   const tier = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
   const lcdEndpoint = useLcdEndpoint();
+  const isFullTier = tier === "full";
 
-  const endpoint = tier === "full" ? apiEndpoint : lcdEndpoint;
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   const queryFn = useCallback(
     async (hash: Option<string>) => {
       if (!hash) throw new Error("CELATONE_QUERY_KEYS.TX_DATA is undefined");
 
-      const txData =
-        tier === "full"
-          ? await getTxData(endpoint, hash)
-          : await getTxDataLcd(endpoint, hash);
+      const txData = isFullTier
+        ? await getTxData(endpoint, hash)
+        : await getTxDataLcd(endpoint, hash);
 
       const { tx_response: txResponse } = txData;
 
       const logs = extractTxLogs(txResponse);
 
+      const payload = snakeToCamel(txResponse);
+
       return {
-        ...txResponse,
+        ...payload,
         timestamp: parseDateOpt(txResponse.timestamp),
         logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txResponse.code),
       };
     },
-    [endpoint, currentChainId, tier]
+    [currentChainId, endpoint, isFullTier]
   );
 
   return useQuery(
