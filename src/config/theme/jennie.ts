@@ -50,14 +50,14 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       light: "#FFB1E7",
       lighter: "#FFD6F3",
       dark: "#E06FB5",
-      darker: "#DB57A8",
+      darker: "#CA2B8D",
       background: "#651546",
     },
     secondary: {
       main: "#FFB1E7",
       light: "#FFD6F3",
       dark: "#E06FB5",
-      darker: "#DB57A8",
+      darker: "#CA2B8D",
       background: "#651546",
     },
     accent: {
@@ -66,7 +66,7 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       lighter: "#A3DBF5",
       dark: "#15AFF8",
       darker: "#008FD7",
-      background: "#005881",
+      background: "#004666",
     },
     gray: {
       100: "#F5F5F5",

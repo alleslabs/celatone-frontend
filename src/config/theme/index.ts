@@ -3,6 +3,7 @@ import { FALLBACK_CHAIN_CONFIG } from "config/chain";
 import { DEFAULT_THEME } from "./default";
 import { INITIA_THEME } from "./initia";
 // import { OSMOSIS_THEME } from "./osmosis";
+// import { JENNIE_THEME } from "./jennie";
 import { SEI_THEME } from "./sei";
 
 export const getTheme = (chain: string) => {
@@ -13,6 +14,7 @@ export const getTheme = (chain: string) => {
       return SEI_THEME;
     case "initia":
       return INITIA_THEME;
+    // return JENNIE_THEME;
     default:
       return DEFAULT_THEME;
   }
