@@ -178,6 +178,11 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
     votedAbstain: "accent.darker",
     didNotVote: "gray.700",
   },
+  latestBlocks: {
+    signed: "primary.main",
+    proposed: "secondary.main",
+    missed: "error.dark",
+  },
 };
 
 export const SEI_THEME = generateTheme(SEI_BASE_THEME, SEI_COMPONENT_CONFIG);

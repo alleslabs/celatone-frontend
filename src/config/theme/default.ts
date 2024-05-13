@@ -172,6 +172,11 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
     votedAbstain: "primary.darker",
     didNotVote: "gray.700",
   },
+  latestBlocks: {
+    signed: "primary.main",
+    proposed: "accent.dark",
+    missed: "error.dark",
+  },
 };
 
 export const DEFAULT_THEME = generateTheme(
