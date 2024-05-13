@@ -8,7 +8,7 @@ import { TableTitle } from "../table";
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { useOpenAssetTab } from "lib/hooks";
-import { useBalanceInfos } from "lib/services/balanceService";
+import { useBalanceInfos } from "lib/services/bank";
 import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
