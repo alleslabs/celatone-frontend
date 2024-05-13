@@ -1,3 +1,4 @@
+export * from "./bank";
 export * from "./block";
 export * from "./distribution";
 export * from "./staking";
