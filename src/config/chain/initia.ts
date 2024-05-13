@@ -294,4 +294,147 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
+  "initiation-1": {
+    tier: "full",
+    chain: "initia",
+    registryChainName: "initia",
+    prettyName: "Initia",
+    lcd: "https://lcd.initiation-1.initia.xyz",
+    rpc: "https://rpc.initiation-1.initia.xyz",
+    indexer: "https://initiation-1-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+        // url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "https://compiler.initiation-1.initia.xyz/contracts/verify",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: true,
+        version: "v1",
+        hideOpenProposal: true,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom: "uinit",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {},
+  },
+  "minimove-1": {
+    tier: "full",
+    chain: "initia",
+    registryChainName: "minimove",
+    prettyName: "Minimove",
+    lcd: "https://lcd.minimove-1.initia.xyz",
+    rpc: "https://rpc.minimove-1.initia.xyz",
+    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: false,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom:
+          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {
+      isValidatorExternalLink: null,
+    },
+  },
+  "miniwasm-1": {
+    tier: "full",
+    chain: "initia",
+    registryChainName: "miniwasm",
+    prettyName: "Miniwasm",
+    lcd: "https://lcd.miniwasm-1.initia.xyz",
+    rpc: "https://rpc.miniwasm-1.initia.xyz:443",
+    indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      move: {
+        enabled: false,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: false,
+      },
+      nft: {
+        enabled: false,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom:
+          "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {
+      isValidatorExternalLink: null,
+    },
+  },
 };
