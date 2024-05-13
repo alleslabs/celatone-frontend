@@ -240,44 +240,47 @@ export const initiatestnet: Chain[] = [
     key_algos: ["secp256k1"],
     slip44: 118,
     fees: {
-      fee_tokens:[
+      fee_tokens: [
         {
           denom: "uinit",
           fixed_min_gas_price: 0.15,
           low_gas_price: 0.15,
           average_gas_price: 0.15,
-          high_gas_price: 0.4
+          high_gas_price: 0.4,
         },
         {
-          denom: "ueth"
+          denom: "ueth",
         },
         {
-          denom: "uusdc"
+          denom: "uusdc",
         },
         {
-          denom: "utia"
-        }
+          denom: "utia",
+        },
       ],
     },
     staking: {
       staking_tokens: [
         {
-          denom: "uinit"
+          denom: "uinit",
         },
         {
-          denom: "move/dbf06c48af3984ec6d9ae8a9aa7dbb0bb1e784aa9b8c4a5681af660cf8558d7d"
+          denom:
+            "move/dbf06c48af3984ec6d9ae8a9aa7dbb0bb1e784aa9b8c4a5681af660cf8558d7d",
         },
         {
-          denom: "move/a2b0d3c8e53e379ede31f3a361ff02716d50ec53c6b65b8c48a81d5b06548200"
+          denom:
+            "move/a2b0d3c8e53e379ede31f3a361ff02716d50ec53c6b65b8c48a81d5b06548200",
         },
         {
-          denom: "move/b134ae6786f10ef74294e627d2519b63b7c742a6735f98682929fea9a84744d2"
-        }
-      ]
+          denom:
+            "move/b134ae6786f10ef74294e627d2519b63b7c742a6735f98682929fea9a84744d2",
+        },
+      ],
     },
     logo_URIs: {
       png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
-      svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg"
+      svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
     },
     apis: {
       rpc: [
@@ -307,20 +310,22 @@ export const initiatestnet: Chain[] = [
     fees: {
       fee_tokens: [
         {
-          denom: "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
+          denom:
+            "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
           fixed_min_gas_price: 0.15,
           low_gas_price: 0.15,
           average_gas_price: 0.15,
-          high_gas_price: 0.4
+          high_gas_price: 0.4,
         },
         {
-          denom: "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
+          denom:
+            "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
           fixed_min_gas_price: 0.15,
           low_gas_price: 0.15,
           average_gas_price: 0.15,
-          high_gas_price: 0.4
-        }
-      ]
+          high_gas_price: 0.4,
+        },
+      ],
     },
     staking: {
       staking_tokens: [],
@@ -357,19 +362,21 @@ export const initiatestnet: Chain[] = [
     fees: {
       fee_tokens: [
         {
-          denom: "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
+          denom:
+            "l2/2588fd87a8e081f6a557f43ff14f05dddf5e34cb27afcefd6eaf81f1daea30d0",
           fixed_min_gas_price: 0.15,
           low_gas_price: 0.15,
           average_gas_price: 0.15,
-          high_gas_price: 0.4
+          high_gas_price: 0.4,
         },
         {
-          denom: "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
+          denom:
+            "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
           fixed_min_gas_price: 0.15,
           low_gas_price: 0.15,
           average_gas_price: 0.15,
-          high_gas_price: 0.4
-        }
+          high_gas_price: 0.4,
+        },
       ],
     },
     staking: {
