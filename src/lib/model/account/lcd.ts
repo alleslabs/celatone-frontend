@@ -66,7 +66,7 @@ export const useAccountDelegationInfosLcd = (
     useCommissionsByValidatorAddressLcd(valAddr, enabled);
 
   const { data: validators, isFetching: isValidatorsLoading } =
-    useValidatorsLcd();
+    useValidatorsLcd(enabled);
   const validatorsMap = useMemo(
     () =>
       validators?.reduce<Record<ValidatorAddr, ValidatorData>>(

@@ -74,13 +74,14 @@ export const useValidators = (
   );
 };
 
-export const useValidatorsLcd = () => {
+export const useValidatorsLcd = (enabled = true) => {
   const endpoint = useLcdEndpoint();
 
   return useQuery<ValidatorData[]>(
     [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
     async () => getValidatorsLcd(endpoint),
     {
+      enabled,
       retry: 1,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
