@@ -7,61 +7,9 @@ import {
   zPagination,
   zProjectInfo,
   zPublicCodeInfo,
+  zUtcDate,
 } from "lib/types";
-import { parseDate, parseTxHash, snakeToCamel } from "lib/utils";
-
-export const zCodeInfoResponseLcd = z
-  .object({
-    code_info: z.object({
-      code_id: z.string(),
-      creator: zBechAddr,
-      data_hash: z.string(),
-      instantiate_permission: z.object({
-        permission: z.nativeEnum(AccessConfigPermission),
-        address: zBechAddr.optional(),
-        addresses: z.array(zBechAddr).default([]),
-      }),
-    }),
-  })
-  .transform(({ code_info: { instantiate_permission, ...rest } }) => ({
-    codeInfo: {
-      ...snakeToCamel(rest),
-      instantiatePermission: {
-        permission: instantiate_permission.permission,
-        addresses:
-          instantiate_permission.address &&
-          instantiate_permission.address !== ""
-            ? [instantiate_permission.address]
-            : instantiate_permission.addresses,
-      },
-    },
-  }));
-export type CodeInfoResponseLcd = z.infer<typeof zCodeInfoResponseLcd>;
-
-const zCodesResponseItemLcd = z
-  .object({
-    code_id: z.coerce.number(),
-    creator: zBechAddr,
-    instantiate_permission: z.object({
-      permission: z.nativeEnum(AccessConfigPermission),
-      addresses: z.array(zBechAddr),
-    }),
-  })
-  .transform<CodeInfo>((val) => ({
-    id: val.code_id,
-    cw2Contract: undefined,
-    cw2Version: undefined,
-    uploader: val.creator,
-    contractCount: undefined,
-    instantiatePermission: val.instantiate_permission.permission,
-    permissionAddresses: val.instantiate_permission.addresses,
-  }));
-
-export const zCodesResponseLcd = z.object({
-  code_infos: z.array(zCodesResponseItemLcd),
-  pagination: zPagination,
-});
-export type CodesResponseLcd = z.infer<typeof zCodesResponseLcd>;
+import { parseTxHash, snakeToCamel } from "lib/utils";
 
 const zCodesResponseItem = z
   .object({
@@ -89,6 +37,30 @@ export const zCodesResponse = z.object({
 });
 export type CodesResponse = z.infer<typeof zCodesResponse>;
 
+const zCodesResponseItemLcd = z
+  .object({
+    code_id: z.coerce.number(),
+    creator: zBechAddr,
+    instantiate_permission: z.object({
+      permission: z.nativeEnum(AccessConfigPermission),
+      addresses: z.array(zBechAddr),
+    }),
+  })
+  .transform<CodeInfo>((val) => ({
+    id: val.code_id,
+    cw2Contract: undefined,
+    cw2Version: undefined,
+    uploader: val.creator,
+    contractCount: undefined,
+    instantiatePermission: val.instantiate_permission.permission,
+    permissionAddresses: val.instantiate_permission.addresses,
+  }));
+
+export const zCodesResponseLcd = z.object({
+  code_infos: z.array(zCodesResponseItemLcd),
+  pagination: zPagination,
+});
+
 const zCode = z
   .object({
     code_id: z.number().positive(),
@@ -101,42 +73,22 @@ const zCode = z
       .object({
         id: z.number().positive(),
         height: z.number().positive(),
-        created: z.string(),
+        created: zUtcDate,
       })
       .nullable(),
     transaction: z
       .object({
         height: z.number(),
         hash: z.string(),
-        created: z.string(),
+        created: zUtcDate,
       })
       .nullable(),
     uploader: zBechAddr,
   })
   .transform((val) => ({
-    codeId: val.code_id,
-    cw2Contract: val.cw2_contract,
-    cw2Version: val.cw2_version,
+    ...snakeToCamel(val),
     hash: parseTxHash(val.hash),
-    instantiatePermission: val.instantiate_permission,
-    permissionAddresses: val.permission_addresses,
-    proposal: val.proposal
-      ? {
-          proposalId: val.proposal.id,
-          height: val.proposal.height,
-          created: parseDate(val.proposal.created),
-        }
-      : undefined,
-    transaction: val.transaction
-      ? {
-          height: val.transaction.height,
-          hash: parseTxHash(val.transaction.hash),
-          created: parseDate(val.transaction.created),
-        }
-      : undefined,
-    uploader: val.uploader,
   }));
-
 export type Code = z.infer<typeof zCode>;
 
 export const zCodeData = z
@@ -147,3 +99,35 @@ export const zCodeData = z
   })
   .transform(snakeToCamel);
 export type CodeData = z.infer<typeof zCodeData>;
+
+export const zCodeInfoResponseLcd = z
+  .object({
+    code_info: z.object({
+      code_id: z.coerce.number(),
+      creator: zBechAddr,
+      data_hash: z.string(),
+      instantiate_permission: z.object({
+        permission: z.nativeEnum(AccessConfigPermission),
+        address: zBechAddr.optional(),
+        addresses: z.array(zBechAddr).default([]),
+      }),
+    }),
+  })
+  .transform<Code>(
+    ({
+      code_info: { code_id, creator, data_hash, instantiate_permission },
+    }) => ({
+      codeId: code_id,
+      cw2Contract: null,
+      cw2Version: null,
+      hash: parseTxHash(data_hash),
+      instantiatePermission: instantiate_permission.permission,
+      permissionAddresses:
+        instantiate_permission.address && instantiate_permission.address !== ""
+          ? [instantiate_permission.address]
+          : instantiate_permission.addresses,
+      proposal: null,
+      transaction: null,
+      uploader: creator,
+    })
+  );

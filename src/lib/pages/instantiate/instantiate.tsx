@@ -48,8 +48,8 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import type { CodeInfoResponseLcd } from "lib/services/types";
-import { useCodeInfoLcd } from "lib/services/wasm/code";
+import type { Code } from "lib/services/types";
+import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -193,15 +193,18 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useCodeInfoLcd(codeId, {
+  const { refetch } = useCodeByCodeIdLcd(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
-      const permission = data.codeInfo.instantiatePermission;
-      setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
+      setValue("codeHash", data.hash.toLowerCase());
       if (
-        resolvePermission(address, permission.permission, permission.addresses)
+        resolvePermission(
+          address,
+          data.instantiatePermission,
+          data.permissionAddresses
+        )
       )
         setStatus({ state: "success" });
       else {
@@ -323,7 +326,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
-        refetch();
+        if (isId(codeId)) refetch();
+        else setStatus({ state: "error", message: "Invalid Code ID" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -412,9 +416,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setValue("codeId", code);
             resetMsgInputSchema();
           }}
-          setCodeHash={(data: CodeInfoResponseLcd) => {
-            setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
-          }}
+          setCodeHash={(data: Code) =>
+            setValue("codeHash", data.hash.toLowerCase())
+          }
           codeId={codeId}
         />
         <form style={{ width: "100%" }}>

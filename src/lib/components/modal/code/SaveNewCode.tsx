@@ -10,9 +10,13 @@ import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useCodeInfoLcd } from "lib/services/wasm/code";
+import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
-import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
+import {
+  getNameAndDescriptionDefault,
+  getPermissionHelper,
+  isId,
+} from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
@@ -55,30 +59,33 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useCodeInfoLcd(codeId, {
-    enabled: false,
-    retry: false,
-    cacheTime: 0,
-    onSuccess(data) {
-      const { message, messageColor } = getPermissionHelper(
-        address,
-        data.codeInfo.instantiatePermission.permission,
-        data.codeInfo.instantiatePermission.addresses
-      );
-      setCodeIdStatus({
-        state: "success",
-        message: `${message} (${data.codeInfo.instantiatePermission.permission})`,
-        messageColor,
-      });
-      setUploader(data.codeInfo.creator);
-      setUploaderStatus({ state: "success" });
-    },
-    onError() {
-      setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
-      setUploader("Not Found");
-      setUploaderStatus({ state: "error" });
-    },
-  });
+  const { refetch, isFetching, isRefetching } = useCodeByCodeIdLcd(
+    Number(codeId),
+    {
+      enabled: false,
+      retry: false,
+      cacheTime: 0,
+      onSuccess(data) {
+        const { message, messageColor } = getPermissionHelper(
+          address,
+          data.instantiatePermission,
+          data.permissionAddresses
+        );
+        setCodeIdStatus({
+          state: "success",
+          message: `${message} (${data.instantiatePermission})`,
+          messageColor,
+        });
+        setUploader(data.uploader);
+        setUploaderStatus({ state: "success" });
+      },
+      onError() {
+        setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+        setUploader("Not Found");
+        setUploaderStatus({ state: "error" });
+      },
+    }
+  );
 
   /* CALLBACK */
   const reset = () => {
@@ -132,7 +139,8 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
         });
       } else {
         const timer = setTimeout(() => {
-          refetch();
+          if (isId(codeId)) refetch();
+          else setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
         }, 500);
 
         return () => clearTimeout(timer);

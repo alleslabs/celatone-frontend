@@ -27,8 +27,8 @@ import {
 import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import type { CodeInfoResponseLcd } from "lib/services/types";
-import { useCodeInfoLcd } from "lib/services/wasm/code";
+import type { Code } from "lib/services/types";
+import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
@@ -120,15 +120,18 @@ export const MigrateContract = ({
     },
   });
 
-  const { refetch } = useCodeInfoLcd(codeId, {
+  const { refetch } = useCodeByCodeIdLcd(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
-      const permission = data.codeInfo.instantiatePermission;
-      setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
+      setValue("codeHash", data.hash.toLowerCase());
       if (
-        resolvePermission(address, permission.permission, permission.addresses)
+        resolvePermission(
+          address,
+          data.instantiatePermission,
+          data.permissionAddresses
+        )
       )
         setStatus({ state: "success" });
       else {
@@ -199,7 +202,8 @@ export const MigrateContract = ({
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
-        refetch();
+        if (isId(codeId)) refetch();
+        else setStatus({ state: "error", message: "Invalid Code ID" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -251,9 +255,9 @@ export const MigrateContract = ({
           setValue("codeId", code);
           resetMsgInputSchema();
         }}
-        setCodeHash={(data: CodeInfoResponseLcd) => {
-          setValue("codeHash", data.codeInfo.dataHash.toLowerCase());
-        }}
+        setCodeHash={(data: Code) =>
+          setValue("codeHash", data.hash.toLowerCase())
+        }
         codeId={codeId}
       />
       <Flex align="center" justify="space-between" mt={12} mb={6}>

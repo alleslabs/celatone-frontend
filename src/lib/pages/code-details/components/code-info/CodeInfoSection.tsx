@@ -33,13 +33,13 @@ const getMethodSpecificRender = (
   transaction: Option<Code["transaction"]>
 ): { methodRender: JSX.Element; storedBlockRender: JSX.Element } => {
   if (proposal) {
-    const { height, created, proposalId } = proposal;
+    const { id, height, created } = proposal;
     return {
       methodRender: (
         <LabelText label="Proposal ID">
           <ExplorerLink
             type="proposal_id"
-            value={proposalId.toString()}
+            value={id.toString()}
             showCopyOnHover
           />
         </LabelText>
