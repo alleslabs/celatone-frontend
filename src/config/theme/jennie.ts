@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { ComponentConfig, ThemeConfig } from "./types";
 import { generateTheme } from "./utils";
 
@@ -168,6 +169,11 @@ const JENNIE_COMPONENT_CONFIG: ComponentConfig = {
     voted: "primary.main",
     votedAbstain: "primary.darker",
     didNotVote: "gray.700",
+  },
+  recentBlocks: {
+    signed: "accent.darker",
+    proposed: "accent.lighter",
+    missed: "error.dark",
   },
 };
 
