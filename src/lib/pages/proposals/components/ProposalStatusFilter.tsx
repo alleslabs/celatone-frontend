@@ -70,35 +70,20 @@ export const ProposalStatusFilter = forwardRef<
     const selectOption = (option: ProposalStatus) => {
       setKeyword("");
 
-      if (!isMulti) {
-        setIsDropdown(false);
-
-        if (result[0] === option) {
-          trackUseFilter(
-            AmpEvent.USE_FILTER_PROPOSALS_STATUS,
-            result,
-            "remove"
-          );
-
-          setResult([]);
-
-          return;
-        }
-
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-
-        setResult([option]);
-
-        return;
-      }
-
       if (result.includes(option)) {
         trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
       } else {
         trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
       }
 
-      setResult(toggleItem(result, option));
+      if (!isMulti) {
+        setIsDropdown(false);
+
+        if (result[0] === option) setResult([]);
+        else setResult([option]);
+      } else {
+        setResult(toggleItem(result, option));
+      }
     };
 
     useOutsideClick({
