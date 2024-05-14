@@ -1,4 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -47,7 +48,9 @@ const InteractContractBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const { data: code } = useCodeInfoLcd(codeId?.toString() ?? "");
+  const { data: code } = useCodeInfoLcd(codeId?.toString() ?? "", {
+    enabled: !isUndefined(codeId),
+  });
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//

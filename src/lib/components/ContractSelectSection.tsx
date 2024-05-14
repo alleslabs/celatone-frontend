@@ -158,6 +158,7 @@ export const ContractSelectSection = observer(
     });
 
     const { refetch, isFetching } = useContractLcd(contractAddress, {
+      enabled: !!contractAddress,
       onSuccess: (data) => {
         successCallback?.(data);
         reset({

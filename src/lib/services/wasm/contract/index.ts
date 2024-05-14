@@ -128,7 +128,11 @@ export const useContractLcd = (
   return useQuery<ContractLcd>(
     [CELATONE_QUERY_KEYS.CONTRACT_LCD, endpoint, contractAddress],
     async () => getContractLcd(endpoint, contractAddress),
-    options
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      ...options,
+    }
   );
 };
 
@@ -192,7 +196,11 @@ export const useContractQueryLcd = (
   return useQuery<JsonDataType>(
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_LCD, endpoint, contractAddress, msg],
     async () => getContractQueryLcd(endpoint, contractAddress, msg),
-    options
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      ...options,
+    }
   );
 };
 

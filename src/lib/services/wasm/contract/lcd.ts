@@ -11,11 +11,11 @@ export const getContractQueryLcd = (
 ): JsonDataType =>
   axios
     .get(
-      `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${encode(msg)}`
+      `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/smart/${encode(msg)}`
     )
     .then(({ data }) => data);
 
 export const getContractLcd = (endpoint: string, contractAddress: BechAddr32) =>
-  axios(`${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`).then(
-    ({ data }) => parseWithError(zContractLcd, data)
-  );
+  axios(
+    `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}`
+  ).then(({ data }) => parseWithError(zContractLcd, data));
