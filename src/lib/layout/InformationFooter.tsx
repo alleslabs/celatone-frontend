@@ -3,9 +3,11 @@ import { Flex, Skeleton, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { AmpEvent, trackWebsite } from "lib/amplitude";
+import { useTierConfig } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
+import { useLatestBlock } from "lib/services/block";
 import { useOverviewsStats } from "lib/services/overviewService";
 
 const FOOTER_BUTTONS = [
@@ -25,7 +27,13 @@ const FOOTER_BUTTONS = [
 ];
 
 export const InformationFooter = () => {
-  const { data: overviewsStats, isLoading } = useOverviewsStats();
+  const isFullTier = useTierConfig() === "full";
+  const { data: overviewsStats, isLoading: isLoadingFull } =
+    useOverviewsStats(isFullTier);
+  const { data: latestHeight, isLoading: isLoadingLite } = useLatestBlock();
+
+  const latest = isFullTier ? overviewsStats?.latestBlock : latestHeight;
+  const isLoading = isFullTier ? isLoadingFull : isLoadingLite;
 
   return (
     <Flex
@@ -47,9 +55,9 @@ export const InformationFooter = () => {
         <Flex gap={1} py={1} px={2} align="center">
           <CustomIcon name="block" color="gray.600" boxSize={3} />
           <Text variant="body3" color="text.dark">
-            {overviewsStats?.latestBlock ?? "N/A"}
+            {latest ?? "N/A"}
           </Text>
-          {overviewsStats && (
+          {latest && (
             <Flex
               w={2}
               h={2}

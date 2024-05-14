@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
 - [#919](https://github.com/alleslabs/celatone-frontend/pull/919) Remove singleStakingDenom config and use from lcd instead
 - [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
 - [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
