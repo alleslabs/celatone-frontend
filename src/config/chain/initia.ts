@@ -246,54 +246,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       isValidatorExternalLink: null,
     },
   },
-  "stone-13": {
-    tier: "full",
-    chain: "initia",
-    registryChainName: "initiatestnet13",
-    prettyName: "Initia Testnet 13",
-    lcd: "https://lcd.stone-13.initia.xyz",
-    rpc: "https://rpc.stone-13.initia.xyz:443",
-    indexer: "https://stone-13-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...initiaWallets, ...keplrWallets],
-    features: {
-      faucet: {
-        enabled: true,
-        url: process.env.NEXT_PUBLIC_INITIA_TESTNET_FAUCET_URL ?? "",
-      },
-      wasm: {
-        enabled: false,
-      },
-      move: {
-        enabled: true,
-        moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "https://stone-compiler.initia.tech/contracts/verify",
-      },
-      pool: {
-        enabled: false,
-      },
-      publicProject: {
-        enabled: true,
-      },
-      gov: {
-        enabled: true,
-        version: "v1",
-        hideOpenProposal: true,
-      },
-      nft: {
-        enabled: true,
-      },
-    },
-    gas: {
-      gasPrice: {
-        tokenPerGas: 0.151,
-        denom: "uinit",
-      },
-      gasAdjustment: 1.5,
-      maxGasLimit: 25_000_000,
-    },
-    extra: {},
-  },
   "initiation-1": {
     tier: "full",
     chain: "initia",
@@ -344,7 +296,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "minimove-1": {
     tier: "full",
     chain: "initia",
-    registryChainName: "minimovetestnet1",
+    registryChainName: "minitiamovetestnet1",
     prettyName: "Minimove",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz",
@@ -392,7 +344,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "miniwasm-1": {
     tier: "full",
     chain: "initia",
-    registryChainName: "miniwasmtestnet1",
+    registryChainName: "minitiawasmtestnet1",
     prettyName: "Miniwasm",
     lcd: "https://lcd.miniwasm-1.initia.xyz",
     rpc: "https://rpc.miniwasm-1.initia.xyz:443",
