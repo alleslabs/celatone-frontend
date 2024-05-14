@@ -1,6 +1,7 @@
 import axios from "axios";
 
-import { zAddressTxsResponseLcd } from "../types";
+import { zTxsByAddressResponseLcd } from "../types";
+import type { BechAddr20, BechAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getTxDataLcd = async (endpoint: string, txHash: string) =>
@@ -8,9 +9,22 @@ export const getTxDataLcd = async (endpoint: string, txHash: string) =>
     .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURIComponent(txHash)}`)
     .then(({ data }) => data);
 
-export const getTxsByAddressLcd = async (endpoint: string, address: string) =>
+export const getTxsByContractAddressLcd = async (
+  endpoint: string,
+  address: BechAddr32
+) =>
   axios
     .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs?events=wasm._contract_address=%27${encodeURIComponent(address)}%27&order_by=2`
+      `${endpoint}/cosmos/tx/v1beta1/txs?events=wasm._contract_address=%27${encodeURI(address)}%27&order_by=2`
     )
-    .then(({ data }) => parseWithError(zAddressTxsResponseLcd, data));
+    .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
+
+export const getTxsByAccountAddressLcd = async (
+  endpoint: string,
+  address: BechAddr20
+) =>
+  axios
+    .get(
+      `${endpoint}/cosmos/tx/v1beta1/txs?events=message.sender=%27${encodeURI(address)}%27&order_by=2`
+    )
+    .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));

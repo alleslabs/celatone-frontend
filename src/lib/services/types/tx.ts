@@ -249,9 +249,9 @@ export const zTxsCountResponse = z
   })
   .transform((val) => val.count);
 
-export const zAddressTxsResponseLcd = z.object({
+export const zTxsByAddressResponseLcd = z.object({
   tx_responses: z.array(zTxResponse),
   pagination: zPagination.nullable(),
   total: z.string(),
 });
-export type AddressTxsResponseLcd = z.infer<typeof zAddressTxsResponseLcd>;
+export type TxsByAddressResponse = z.infer<typeof zTxsByAddressResponseLcd>;
