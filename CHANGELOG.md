@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
 - [#920](https://github.com/alleslabs/celatone-frontend/pull/920) Support lite version contract with new folder structure
 - [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Proposals page lite version with LCD endpoint
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page lite version with LCD endpoint
