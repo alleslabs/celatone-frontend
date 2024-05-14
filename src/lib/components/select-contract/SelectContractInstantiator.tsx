@@ -30,7 +30,7 @@ import {
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { queryContract } from "lib/services/contract";
+import { queryContract } from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";

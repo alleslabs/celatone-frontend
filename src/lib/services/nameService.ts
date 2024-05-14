@@ -13,9 +13,9 @@ import {
 } from "lib/app-provider";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
-import { queryContract } from "./contract";
 import type { ICNSNamesResponse } from "./ns";
 import { queryAddressByICNSName, queryICNSNamesByAddress } from "./ns";
+import { queryContract } from "./wasm/contract";
 
 export const useICNSNamesByAddress = (
   address: Option<BechAddr>

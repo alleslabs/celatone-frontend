@@ -8,7 +8,7 @@ import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useAdminByContractAddresses } from "lib/services/contractService";
+import { useAdminByContractAddresses } from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
 import type { BechAddr32, ContractInfo } from "lib/types";
 import { formatSlugName } from "lib/utils";

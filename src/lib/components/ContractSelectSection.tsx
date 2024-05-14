@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
-import type { ContractDetail } from "lib/services/contractService";
-import { useContractDetailByContractAddress } from "lib/services/contractService";
+import type { ContractDetail } from "lib/services/types";
+import { useContractDetailByContractAddress } from "lib/services/wasm/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 

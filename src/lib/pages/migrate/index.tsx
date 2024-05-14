@@ -17,8 +17,8 @@ import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
-import { useContractDetailByContractAddress } from "lib/services/contractService";
 import { useUploadAccessParams } from "lib/services/proposalService";
+import { useContractDetailByContractAddress } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
