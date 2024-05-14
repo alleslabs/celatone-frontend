@@ -3,6 +3,7 @@ import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
+import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import { useTierConfig } from "lib/app-provider";
 import {
   DropdownContainer,
@@ -20,6 +21,7 @@ export interface ProposalStatusFilterProps extends InputProps {
   label?: string;
   placeholder?: string;
   setResult: (option: ProposalStatus[]) => void;
+  isMulti: boolean;
 }
 
 export const ProposalStatusFilter = forwardRef<
@@ -33,6 +35,7 @@ export const ProposalStatusFilter = forwardRef<
       setResult,
       placeholder,
       label,
+      isMulti,
     }: ProposalStatusFilterProps,
     ref
   ) => {
@@ -60,6 +63,43 @@ export const ProposalStatusFilter = forwardRef<
           : OPTIONS,
       [keyword, OPTIONS]
     );
+
+    const isOptionSelected = (option: ProposalStatus) =>
+      result.some((selectedOption) => selectedOption === option);
+
+    const selectOption = (option: ProposalStatus) => {
+      setKeyword("");
+
+      if (!isMulti) {
+        setIsDropdown(false);
+
+        if (result[0] === option) {
+          trackUseFilter(
+            AmpEvent.USE_FILTER_PROPOSALS_STATUS,
+            result,
+            "remove"
+          );
+
+          setResult([]);
+
+          return;
+        }
+
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+
+        setResult([option]);
+
+        return;
+      }
+
+      if (result.includes(option)) {
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
+      } else {
+        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
+      }
+
+      setResult(toggleItem(result, option));
+    };
 
     useOutsideClick({
       ref: boxRef,
@@ -107,12 +147,8 @@ export const ProposalStatusFilter = forwardRef<
               <FilterDropdownItem
                 key={option}
                 filterDropdownComponent={<StatusChip status={option} />}
-                result={result}
-                option={option}
-                setIsDropdown={setIsDropdown}
-                setKeyword={setKeyword}
-                setResult={(opt) => setResult(opt as ProposalStatus[])}
-                isMulti={isFullTier}
+                onSelect={() => selectOption(option)}
+                isOptionSelected={isOptionSelected(option)}
               />
             ))}
           </DropdownContainer>
