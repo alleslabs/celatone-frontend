@@ -365,5 +365,3 @@ export const useContractsByCodeId = (
     }
   );
 };
-
-export * from "./api";
