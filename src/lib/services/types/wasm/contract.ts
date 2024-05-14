@@ -1,6 +1,6 @@
 import z from "zod";
 
-import type { ContractLocalInfo } from "lib/stores/contract";
+import type { ContractInfo, ContractMigrationHistory } from "lib/types";
 import {
   zBechAddr,
   zBechAddr32,
@@ -9,31 +9,19 @@ import {
   zPublicContractInfo,
   zUtcDate,
 } from "lib/types";
-import type {
-  BechAddr,
-  ContractInfo,
-  ContractMigrationHistory,
-  Option,
-} from "lib/types";
-import { parseTxHash, snakeToCamel } from "lib/utils";
-
-export interface ContractDetail extends ContractLocalInfo {
-  codeId: number;
-  codeHash: string;
-  admin: Option<BechAddr>;
-}
+import { getDefaultDate, parseTxHash, snakeToCamel } from "lib/utils";
 
 export interface ContractCw2Info {
   contract: string;
   version: string;
 }
 
-export const zContractRest = z.object({
+const zContractRest = z.object({
   address: zBechAddr32,
   contract_info: z.object({
     code_id: z.string(),
     creator: zBechAddr,
-    admin: zBechAddr,
+    admin: z.string(),
     label: z.string(),
     created: z
       .object({
@@ -97,18 +85,46 @@ export type Contract = z.infer<typeof zContract>;
 
 export const zContractData = z
   .object({
+    contract: zContract,
+    contract_rest: zContractRest.nullable(),
     project_info: zProjectInfo.nullable(),
     public_info: zPublicContractInfo.nullable(),
-    contract: zContract.nullable(),
-    contract_rest: zContractRest.nullable(),
   })
   .transform((value) => ({
-    projectInfo: value.project_info,
-    publicInfo: value.public_info,
     contract: value.contract,
     contractRest: value.contract_rest,
+    projectInfo: value.project_info,
+    publicInfo: value.public_info,
   }));
 export type ContractData = z.infer<typeof zContractData>;
+
+export const zContractLcd = zContractRest.transform<
+  Pick<ContractData, "contract" | "contractRest">
+>((val) => ({
+  contract: {
+    address: val.address,
+    admin: val.contract_info.admin.length
+      ? zBechAddr.parse(val.contract_info.admin)
+      : null,
+    codeId: Number(val.contract_info.code_id),
+    // TODO: make optional - get from code
+    codeHash: "",
+    createdHeight: Number(val.contract_info.created?.block_height),
+    // TODO: make optional
+    createdTimestamp: getDefaultDate(),
+    cw2Contract: null,
+    cw2Version: null,
+    // TODO: make optional - get from histories
+    initMsg: "",
+    initProposalId: null,
+    initProposalTitle: null,
+    initTxHash: null,
+    instantiator: val.contract_info.creator,
+    label: val.contract_info.label,
+  },
+  contractRest: val,
+}));
+export type ContractLcd = z.infer<typeof zContractLcd>;
 
 export const zContractTableCounts = z
   .object({

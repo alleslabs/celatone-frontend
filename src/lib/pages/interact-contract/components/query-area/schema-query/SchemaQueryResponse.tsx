@@ -13,7 +13,7 @@ interface SchemaQueryResponseProps {
   msgSchema: SchemaInfo;
   resSchema: SchemaInfo;
   timestamp: Option<Date>;
-  isRefetching: boolean;
+  isLoading: boolean;
 }
 
 const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
@@ -39,9 +39,9 @@ export const SchemaQueryResponse = ({
   msgSchema,
   resSchema,
   timestamp,
-  isRefetching,
+  isLoading,
 }: SchemaQueryResponseProps) => {
-  if (isRefetching)
+  if (isLoading)
     return (
       <Flex
         borderRadius={8}

@@ -12,13 +12,11 @@ import {
   GridItem,
   Text,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
-import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -27,7 +25,7 @@ import {
   OutputMessageTabs,
 } from "lib/components/json-schema";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { queryData } from "lib/services/wasm/contract";
+import { useContractQueryLcd } from "lib/services/wasm/contract";
 import type { Activity } from "lib/stores/contract";
 import type { SchemaInfo } from "lib/stores/schema";
 import type {
@@ -58,7 +56,6 @@ interface SchemaQueryComponentProps {
   msgSchema: SchemaInfo;
   resSchema: SchemaInfo;
   contractAddress: BechAddr32;
-  lcdEndpoint: string;
   walletAddress: Option<BechAddr20>;
   initialMsg: JsonDataType;
   opened: boolean;
@@ -69,7 +66,6 @@ export const SchemaQueryComponent = ({
   msgSchema,
   resSchema,
   contractAddress,
-  lcdEndpoint,
   walletAddress,
   initialMsg,
   opened,
@@ -83,54 +79,42 @@ export const SchemaQueryComponent = ({
   const [queryError, setQueryError] = useState("");
   const [timestamp, setTimestamp] = useState<Date>();
 
-  // TODO: Abstract query
-  const {
-    refetch,
-    isFetching: queryFetching,
-    isRefetching: queryRefetching,
-  } = useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACT_QUERY,
-      lcdEndpoint,
-      contractAddress,
-      msgSchema.title,
-      msg,
-    ],
-    async () => queryData(lcdEndpoint, contractAddress, msg),
-    {
-      enabled: !msgSchema.inputRequired && opened,
-      retry: false,
-      cacheTime: 0,
-      onSuccess(data) {
-        const currentDate = getCurrentDate();
-        setQueryError("");
-        setRes(JSON.stringify(data.data, null, 2));
-        setTimestamp(currentDate);
-        addActivity({
-          type: "query",
-          action: msgSchema.title ?? "Unknown",
-          sender: walletAddress,
-          contractAddress,
-          msg: encode(msg),
-          timestamp: currentDate,
-        });
-        trackActionQuery(
-          AmpEvent.ACTION_QUERY,
-          "schema",
-          Boolean(msgSchema.inputRequired)
-        );
-      },
-      onError(err: AxiosError<RpcQueryError>) {
-        setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
-        setTimestamp(undefined);
-        setRes("");
-      },
-    }
-  );
+  const { refetch, isFetching } = useContractQueryLcd(contractAddress, msg, {
+    enabled: !msgSchema.inputRequired && opened,
+    retry: false,
+    cacheTime: 0,
+    onSuccess: (data) => {
+      const currentDate = getCurrentDate();
+      setQueryError("");
+      setRes(JSON.stringify(data, null, 2));
+      setTimestamp(currentDate);
+      addActivity({
+        type: "query",
+        action: msgSchema.title ?? "Unknown",
+        sender: walletAddress,
+        contractAddress,
+        msg: encode(msg),
+        timestamp: currentDate,
+      });
+    },
+    onError: (err) => {
+      setQueryError(
+        (err as AxiosError<RpcQueryError>).response?.data.message ||
+          DEFAULT_RPC_ERROR
+      );
+      setTimestamp(undefined);
+      setRes("");
+    },
+  });
 
   const handleQuery = useCallback(() => {
+    trackActionQuery(
+      AmpEvent.ACTION_QUERY,
+      "schema",
+      Boolean(msgSchema.inputRequired)
+    );
     refetch();
-  }, [refetch]);
+  }, [msgSchema.inputRequired, refetch]);
 
   useEffect(() => {
     if (isNonEmptyJsonData(initialMsg)) {
@@ -187,7 +171,7 @@ export const SchemaQueryComponent = ({
                   size="sm"
                   onClick={handleQuery}
                   isDisabled={jsonValidate(msg) !== null}
-                  isLoading={queryFetching || queryRefetching}
+                  isLoading={isFetching}
                   leftIcon={<CustomIcon name="query" />}
                   ml="auto"
                 >
@@ -227,7 +211,7 @@ export const SchemaQueryComponent = ({
               msgSchema={msgSchema}
               resSchema={resSchema}
               timestamp={timestamp}
-              isRefetching={queryFetching || queryRefetching}
+              isLoading={isFetching}
             />
             {!msgSchema.inputRequired ? (
               <Flex gap={2} justify="flex-start" mt={3}>
@@ -257,7 +241,7 @@ export const SchemaQueryComponent = ({
                       track(AmpEvent.USE_JSON_QUERY_AGAIN);
                     }}
                     isDisabled={jsonValidate(msg) !== null}
-                    isLoading={queryFetching || queryRefetching}
+                    isLoading={isFetching}
                     leftIcon={<CustomIcon name="query" />}
                     ml="auto"
                   >

@@ -1,16 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import { zBechAddr32, zValidatorAddr } from "lib/types";
 import type { BechAddr, Option } from "lib/types";
+import { zBechAddr32, zValidatorAddr } from "lib/types";
 import {
   isHexModuleAddress,
   isHexWalletAddress,
@@ -28,7 +25,7 @@ import { useProposalData } from "./proposalService";
 import { useTxData } from "./tx";
 import { useValidatorData } from "./validator";
 import { useCodeDataByCodeId } from "./wasm/code";
-import { queryContract } from "./wasm/contract";
+import { useContractLcd } from "./wasm/contract";
 
 export type SearchResultType =
   | "Code ID"
@@ -70,23 +67,23 @@ export const useSearchHandler = (
       },
     },
   } = useCelatoneApp();
-  const lcdEndpoint = useBaseApiRoute("rest");
   const {
     chain: { bech32_prefix: bech32Prefix },
   } = useCurrentChain();
+
   const getAddressType = useGetAddressType();
-  const { isSomeValidAddress, validateValidatorAddress } = useValidateAddress();
+  const {
+    validateContractAddress,
+    validateValidatorAddress,
+    isSomeValidAddress,
+  } = useValidateAddress();
   const addressType = getAddressType(debouncedKeyword);
 
   // Contract
-  const { data: contractData, isFetching: contractFetching } = useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
-    async () => {
-      const contractAddr = zBechAddr32.parse(debouncedKeyword);
-      return queryContract(lcdEndpoint, contractAddr);
-    },
+  const { data: contractData, isFetching: contractFetching } = useContractLcd(
+    zBechAddr32.parse(debouncedKeyword),
     {
-      enabled: isWasm && Boolean(debouncedKeyword),
+      enabled: isWasm && validateContractAddress(debouncedKeyword) === null,
       refetchOnWindowFocus: false,
       retry: false,
     }

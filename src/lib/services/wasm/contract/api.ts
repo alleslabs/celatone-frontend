@@ -1,39 +1,18 @@
 import axios from "axios";
 
-import {
-  zContractData,
-  zContractQueryMsgs,
-  zContractRest,
-  zContractsResponse,
-  zContractTableCounts,
-  zMigrationHistoriesResponse,
-} from "lib/services/types/";
 import type {
   ContractsResponse,
   ContractTableCounts,
 } from "lib/services/types/";
+import {
+  zContractData,
+  zContractQueryMsgs,
+  zContractsResponse,
+  zContractTableCounts,
+  zMigrationHistoriesResponse,
+} from "lib/services/types/";
 import type { BechAddr, BechAddr32 } from "lib/types";
-import { encode, parseWithError } from "lib/utils";
-
-export const queryData = async (
-  endpoint: string,
-  contractAddress: BechAddr32,
-  msg: string
-) => {
-  const b64 = encode(msg);
-  const { data } = await axios.get(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
-  );
-  return data;
-};
-
-export const queryContract = async (
-  endpoint: string,
-  contractAddress: BechAddr32
-) =>
-  axios(`${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`).then(
-    ({ data }) => parseWithError(zContractRest, data)
-  );
+import { parseWithError } from "lib/utils";
 
 export const getContracts = async (
   endpoint: string,
@@ -82,7 +61,7 @@ export const getAdminContractsByAddress = async (
     })
     .then(({ data }) => parseWithError(zContractsResponse, data));
 
-export const getContractDataByContractAddress = async (
+export const getContractData = async (
   endpoint: string,
   contractAddress: BechAddr32,
   isGov: boolean
