@@ -40,12 +40,12 @@ export const useBlockData = (height: number, enabled = true) => {
   );
 };
 
-export const useLatestBlock = () => {
+export const useLatestBlockLcd = () => {
   const { currentChainId } = useCelatoneApp();
   const endpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT, endpoint, currentChainId],
+    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, endpoint, currentChainId],
     async () => getLatestBlockLcd(endpoint),
     {
       retry: false,
