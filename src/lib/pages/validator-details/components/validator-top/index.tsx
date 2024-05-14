@@ -38,6 +38,7 @@ export const ValidatorTop = ({
       </Flex>
       <Flex direction="column" w="full" gap={{ base: 2, md: 1 }}>
         <ValidatorTitle info={info} />
+        {/* // TODO: Support LCD data */}
         <ValidatorStats
           validatorAddress={info.validatorAddress}
           commissionRate={info.commissionRate}

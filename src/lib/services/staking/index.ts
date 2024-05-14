@@ -32,7 +32,7 @@ export const useStakingParamsLcd = (enabled: boolean) => {
 
 export const useDelegationsByAddressLcd = (
   address: BechAddr,
-  enabled: boolean
+  enabled = true
 ) => {
   const endpoint = useLcdEndpoint();
   const gov = useGovConfig({ shouldRedirect: false });
