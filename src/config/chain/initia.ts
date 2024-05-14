@@ -297,7 +297,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "initiation-1": {
     tier: "full",
     chain: "initia",
-    registryChainName: "initia",
+    registryChainName: "initiatestnet1",
     prettyName: "Initia",
     lcd: "https://lcd.initiation-1.initia.xyz",
     rpc: "https://rpc.initiation-1.initia.xyz",
@@ -306,7 +306,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     features: {
       faucet: {
         enabled: false,
-        // url: process.env.NEXT_PUBLIC_INITIA_DEVNET_FAUCET_URL ?? "",
       },
       wasm: {
         enabled: false,
@@ -345,7 +344,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "minimove-1": {
     tier: "full",
     chain: "initia",
-    registryChainName: "minimove",
+    registryChainName: "minimovetestnet1",
     prettyName: "Minimove",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz",
@@ -393,7 +392,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "miniwasm-1": {
     tier: "full",
     chain: "initia",
-    registryChainName: "miniwasm",
+    registryChainName: "miniwasmtestnet1",
     prettyName: "Miniwasm",
     lcd: "https://lcd.miniwasm-1.initia.xyz",
     rpc: "https://rpc.miniwasm-1.initia.xyz:443",

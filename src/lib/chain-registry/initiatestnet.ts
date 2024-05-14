@@ -229,7 +229,7 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "initia",
+    chain_name: "initiatestnet1",
     status: "live",
     network_type: "testnet",
     pretty_name: "Initia",
@@ -297,7 +297,7 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "minimove",
+    chain_name: "minimovetestnet1",
     status: "live",
     network_type: "testnet",
     pretty_name: "Minimove",
@@ -349,7 +349,7 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "miniwasm",
+    chain_name: "miniwasmtestnet1",
     status: "live",
     network_type: "testnet",
     pretty_name: "Miniwasm",
@@ -524,7 +524,7 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "initia",
+    chain_name: "initiatestnet1",
     assets: [
       {
         description: "The native token of Initia",
@@ -547,7 +547,7 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "minimove",
+    chain_name: "minimovetestnet1",
     assets: [
       {
         description: "The native token of Initia",
@@ -571,7 +571,7 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "miniwasm",
+    chain_name: "miniwasmtestnet1",
     assets: [
       {
         description: "The native token of Initia",
