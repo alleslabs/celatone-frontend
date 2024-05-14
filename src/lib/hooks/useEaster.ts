@@ -6,7 +6,7 @@ import { useCelatoneApp } from "lib/app-provider";
 export const useEaster = (keyword: string) => {
   const { currentChainId, setTheme } = useCelatoneApp();
   useEffect(() => {
-    if (currentChainId === "mahalo-3" && keyword === "jennie")
+    if (currentChainId === "initiation-1" && keyword === "jennie")
       setTheme(JENNIE_THEME);
   }, [currentChainId, keyword, setTheme]);
 };
