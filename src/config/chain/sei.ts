@@ -55,7 +55,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       disableAnyOfAddresses: true,
-      singleStakingDenom: "usei",
     },
   },
   "atlantic-2": {
@@ -104,7 +103,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       disableAnyOfAddresses: true,
-      singleStakingDenom: "usei",
     },
   },
 };

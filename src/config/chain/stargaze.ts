@@ -46,9 +46,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "ustars",
-    },
+    extra: {},
   },
   "elgafar-1": {
     tier: "full",
@@ -93,8 +91,6 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 50_000_000,
     },
-    extra: {
-      singleStakingDenom: "ustars",
-    },
+    extra: {},
   },
 };
