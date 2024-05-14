@@ -39,11 +39,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#919](https://github.com/alleslabs/celatone-frontend/pull/919) Remove singleStakingDenom config and use from lcd instead
-- [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
-- [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
+- [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
+- [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
+- [#920](https://github.com/alleslabs/celatone-frontend/pull/920) Support lite version contract with new folder structure
+- [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Proposals page lite version with LCD endpoint
+- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page lite version with LCD endpoint
 - [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
-- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
 - [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
 - [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
 - [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
@@ -53,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
+- [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
 - [#907](https://github.com/alleslabs/celatone-frontend/pull/907) Migrate mahalo and minitias from 2 to 3
