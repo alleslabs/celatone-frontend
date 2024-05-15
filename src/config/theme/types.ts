@@ -164,4 +164,9 @@ export type ComponentConfig = {
     votedAbstain: string;
     didNotVote: string;
   };
+  recentBlocks: {
+    signed: string;
+    proposed: string;
+    missed: string;
+  };
 };

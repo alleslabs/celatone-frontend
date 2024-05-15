@@ -1,5 +1,6 @@
 import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
@@ -95,6 +96,9 @@ export const VotingPowerOverview = ({
   totalVotingPower,
   selfVotingPower,
 }: VotingPowerOverviewProps) => {
+  const tier = useTierConfig();
+  const isFullTier = tier === "full";
+  const isMobile = useMobile();
   const assetInfo = singleStakingDenom
     ? assetInfos?.[singleStakingDenom]
     : undefined;
@@ -138,48 +142,79 @@ export const VotingPowerOverview = ({
       rounded={8}
       w="100%"
     >
-      <Flex direction="column" gap={1}>
-        <Flex minH="36px" alignItems="center">
-          <Heading variant="h6" as="h6" color="text.main">
-            Voting Power
-          </Heading>
-        </Flex>
-        <ValueWithIcon icon="vote" value={votingPowerPercent} />
-        <Flex gap={2} alignItems="center" mt={1}>
-          <Flex direction="column">
-            <Text fontWeight={700} variant="body1">
-              {votingPowerAmount}
-              {singleStakingDenom && (
-                <span
-                  style={{
-                    fontWeight: "400",
-                  }}
-                >
-                  {` ${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`}
-                </span>
-              )}
-            </Text>
-            {singleStakingDenom && (
-              <Text variant="body2" color="text.dark">
-                ({votingPowerValueFormatted})
+      <Grid
+        gridTemplateColumns={
+          isFullTier
+            ? "1fr"
+            : "minmax(300px, 300px) minmax(200px, 200px) minmax(200px, 200px)"
+        }
+        alignItems="center"
+        gap={4}
+      >
+        <Flex direction="column" gap={1}>
+          <Flex minH="36px" alignItems="center">
+            <Heading variant="h6" as="h6" color="text.main">
+              Voting Power
+            </Heading>
+          </Flex>
+          <ValueWithIcon icon="vote" value={votingPowerPercent} />
+          <Flex gap={2} alignItems="center" mt={1}>
+            <Flex direction="column">
+              <Text fontWeight={700} variant="body1">
+                {votingPowerAmount}
+                {singleStakingDenom && (
+                  <span
+                    style={{
+                      fontWeight: "400",
+                    }}
+                  >
+                    {` ${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`}
+                  </span>
+                )}
               </Text>
+              {singleStakingDenom && (
+                <Text variant="body2" color="text.dark">
+                  ({votingPowerValueFormatted})
+                </Text>
+              )}
+            </Flex>
+            {singleStakingDenom && (
+              <TokenImageRender
+                boxSize={7}
+                logo={
+                  assetInfo?.logo ?? getUndefinedTokenIcon(singleStakingDenom)
+                }
+              />
             )}
           </Flex>
-          {singleStakingDenom && (
-            <TokenImageRender
-              boxSize={7}
-              logo={
-                assetInfo?.logo ?? getUndefinedTokenIcon(singleStakingDenom)
-              }
-            />
-          )}
         </Flex>
-      </Flex>
+        {!isFullTier && !isMobile && (
+          <>
+            <VotingPowerDetail
+              label="Self-Bonded"
+              ratio={selfVotingPowerRatio}
+              amount={selfVotingPower as U<Token<Big>>}
+              denom={singleStakingDenom}
+              assetInfo={assetInfo}
+            />
+            <VotingPowerDetail
+              label="From Delegators"
+              ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
+              amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
+              denom={singleStakingDenom}
+              assetInfo={assetInfo}
+            />
+          </>
+        )}
+      </Grid>
       <Grid
         borderTop="1px solid"
         borderTopColor="gray.700"
         pt={4}
-        display={{ base: "none", md: "grid" }}
+        display={{
+          base: isFullTier ? "none" : "grid",
+          md: isFullTier ? "grid" : "none",
+        }}
         gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
         gap={4}
       >
