@@ -35,15 +35,12 @@ export const getInstantiatedContractsByAddress = async (
   offset: number
 ) =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(address)}/wasm/instantiated-contracts`,
-      {
-        params: {
-          limit,
-          offset,
-        },
-      }
-    )
+    .get(`${endpoint}/${encodeURI(address)}/wasm/instantiated-contracts`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
     .then(({ data }) => parseWithError(zContractsResponse, data));
 
 export const getAdminContractsByAddress = async (
@@ -53,7 +50,7 @@ export const getAdminContractsByAddress = async (
   offset: number
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/wasm/admin-contracts`, {
+    .get(`${endpoint}/${encodeURI(address)}/wasm/admin-contracts`, {
       params: {
         limit,
         offset,
@@ -67,7 +64,7 @@ export const getContractData = async (
   isGov: boolean
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/info`, {
+    .get(`${endpoint}/${encodeURI(contractAddress)}/info`, {
       params: {
         is_gov: isGov,
       },
@@ -80,7 +77,7 @@ export const getContractTableCounts = async (
   isGov: boolean
 ): Promise<ContractTableCounts> =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/table-counts`, {
+    .get(`${endpoint}/${encodeURI(contractAddress)}/table-counts`, {
       params: {
         is_gov: isGov,
       },
@@ -94,7 +91,7 @@ export const getMigrationHistoriesByContractAddress = async (
   offset: number
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/migrations`, {
+    .get(`${endpoint}/${encodeURI(contractAddress)}/migrations`, {
       params: {
         limit,
         offset,
@@ -107,7 +104,7 @@ export const getContractQueryMsgs = async (
   contractAddress: BechAddr32
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(contractAddress)}/query-msgs`)
+    .get(`${endpoint}/${encodeURI(contractAddress)}/query-msgs`)
     .then(({ data }) => parseWithError(zContractQueryMsgs, data));
 
 export const getContractsByCodeId = async (
@@ -117,7 +114,7 @@ export const getContractsByCodeId = async (
   offset: number
 ): Promise<ContractsResponse> =>
   axios
-    .get(`${endpoint}/${codeId}/contracts`, {
+    .get(`${endpoint}/${encodeURIComponent(codeId)}/contracts`, {
       params: {
         limit,
         offset,

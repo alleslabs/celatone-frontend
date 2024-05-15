@@ -90,11 +90,9 @@ export const zContractData = z
     project_info: zProjectInfo.nullable(),
     public_info: zPublicContractInfo.nullable(),
   })
-  .transform((value) => ({
-    contract: value.contract,
-    contractRest: value.contract_rest,
-    projectInfo: value.project_info,
-    publicInfo: value.public_info,
+  .transform(({ contract_rest, ...rest }) => ({
+    ...snakeToCamel(rest),
+    contractRest: contract_rest,
   }));
 export type ContractData = z.infer<typeof zContractData>;
 
@@ -146,16 +144,7 @@ const zMigrationHistoriesResponseItem = z
     timestamp: zUtcDate,
     uploader: zBechAddr,
   })
-  .transform<ContractMigrationHistory>((val) => ({
-    codeId: val.code_id,
-    cw2Contract: val.cw2_contract,
-    cw2Version: val.cw2_version,
-    height: val.height,
-    remark: val.remark,
-    sender: val.sender,
-    timestamp: val.timestamp,
-    uploader: val.uploader,
-  }));
+  .transform<ContractMigrationHistory>(snakeToCamel);
 export const zMigrationHistoriesResponse = z.object({
   items: z.array(zMigrationHistoriesResponseItem),
 });
