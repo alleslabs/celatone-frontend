@@ -82,7 +82,11 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
         lazyBehavior="keepMounted"
-        my={{ base: 0, md: 8 }}
+        my={8}
+        borderTop={{
+          base: "1px solid var(--chakra-colors-gray-700)",
+          md: "none",
+        }}
       >
         {!isMobile && (
           <TabList
