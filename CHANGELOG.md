@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
 - [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name
 - [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
 - [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported

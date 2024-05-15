@@ -129,7 +129,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             )}
           </Flex>
           <Flex
-            mt={{ base: 2, md: 0 }}
+            mt={{ base: 2, md: 2 }}
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
           >
@@ -164,12 +164,13 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             gap={{ base: 0, md: 2 }}
             direction={{ base: "column", md: "row" }}
           >
-            <Text {...baseTextStyle} color="text.main">
+            <Text {...baseTextStyle} color="text.main" mt="1px">
               Friends:
             </Text>
             <Flex gap={1}>
               {moduleData.parsedAbi.friends.length ? (
                 <Flex
+                  display="inline"
                   sx={{
                     "> p:last-child > span": {
                       display: "none",
@@ -177,7 +178,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
                   }}
                 >
                   {moduleData.parsedAbi.friends.map((item) => (
-                    <Text key={item} {...baseTextStyle}>
+                    <Text key={item} {...baseTextStyle} display="inline-flex">
                       {item}
                       <span>,&nbsp;</span>
                     </Text>
