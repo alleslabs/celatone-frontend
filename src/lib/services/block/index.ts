@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useLcdEndpoint,
+} from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
 import type { BlockData } from "lib/types";
 
 import { getBlockData, getBlocks } from "./api";
+import { getLatestBlockLcd } from "./lcd";
 
 export const useBlocks = (
   limit: number,
@@ -30,6 +35,20 @@ export const useBlockData = (height: number, enabled = true) => {
       enabled,
       retry: false,
       refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useLatestBlockLcd = () => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, endpoint],
+    async () => getLatestBlockLcd(endpoint),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      cacheTime: 0,
     }
   );
 };
