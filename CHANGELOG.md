@@ -40,9 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
-- [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
-- [#920](https://github.com/alleslabs/celatone-frontend/pull/920) Support lite version contract with new folder structure
-- [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Proposals page lite version with LCD endpoint
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page lite version with LCD endpoint
 - [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
 - [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
