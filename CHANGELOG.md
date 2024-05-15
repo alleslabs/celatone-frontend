@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
 - [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
 - [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
-- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page lite version with LCD endpoint
+- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Support transaction details page lite version with LCD endpoint
 - [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
 - [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
 - [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
@@ -57,7 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
 - [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
