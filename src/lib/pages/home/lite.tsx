@@ -53,7 +53,7 @@ export const HomeLite = () => {
             {isLoading ? (
               <Spinner size="md" />
             ) : (
-              <Flex>
+              <Flex gap={2} alignItems="center" justifyContent="center">
                 {latestHeight && (
                   <Flex
                     w={2}

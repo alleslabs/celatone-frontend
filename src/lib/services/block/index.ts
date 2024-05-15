@@ -4,7 +4,6 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
   useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
@@ -41,11 +40,10 @@ export const useBlockData = (height: number, enabled = true) => {
 };
 
 export const useLatestBlockLcd = () => {
-  const { currentChainId } = useCelatoneApp();
   const endpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, endpoint, currentChainId],
+    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, endpoint],
     async () => getLatestBlockLcd(endpoint),
     {
       retry: false,
