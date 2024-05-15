@@ -16,7 +16,7 @@ import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
-import { useCodeDataByCodeId } from "lib/services/wasm/code";
+import { useCodeData } from "lib/services/wasm/code";
 
 import { CodeContractsTable, CodeInfoSection } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
@@ -40,7 +40,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const { getSchemaByCodeHash } = useSchemaStore();
 
   const { currentChainId } = useCelatoneApp();
-  const { data, isLoading } = useCodeDataByCodeId(codeId);
+  const { data, isLoading } = useCodeData(codeId);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });

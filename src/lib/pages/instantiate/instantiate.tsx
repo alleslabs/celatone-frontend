@@ -49,7 +49,7 @@ import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
-import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -193,7 +193,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useCodeByCodeIdLcd(Number(codeId), {
+  const { refetch } = useCodeLcd(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,

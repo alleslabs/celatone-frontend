@@ -10,7 +10,7 @@ import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
 import {
   getNameAndDescriptionDefault,
@@ -59,33 +59,30 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useCodeByCodeIdLcd(
-    Number(codeId),
-    {
-      enabled: false,
-      retry: false,
-      cacheTime: 0,
-      onSuccess(data) {
-        const { message, messageColor } = getPermissionHelper(
-          address,
-          data.instantiatePermission,
-          data.permissionAddresses
-        );
-        setCodeIdStatus({
-          state: "success",
-          message: `${message} (${data.instantiatePermission})`,
-          messageColor,
-        });
-        setUploader(data.uploader);
-        setUploaderStatus({ state: "success" });
-      },
-      onError() {
-        setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
-        setUploader("Not Found");
-        setUploaderStatus({ state: "error" });
-      },
-    }
-  );
+  const { refetch, isFetching, isRefetching } = useCodeLcd(Number(codeId), {
+    enabled: false,
+    retry: false,
+    cacheTime: 0,
+    onSuccess(data) {
+      const { message, messageColor } = getPermissionHelper(
+        address,
+        data.instantiatePermission,
+        data.permissionAddresses
+      );
+      setCodeIdStatus({
+        state: "success",
+        message: `${message} (${data.instantiatePermission})`,
+        messageColor,
+      });
+      setUploader(data.uploader);
+      setUploaderStatus({ state: "success" });
+    },
+    onError() {
+      setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+      setUploader("Not Found");
+      setUploaderStatus({ state: "error" });
+    },
+  });
 
   /* CALLBACK */
   const reset = () => {

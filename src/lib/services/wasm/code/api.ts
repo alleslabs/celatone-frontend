@@ -38,7 +38,7 @@ export const getCodesByAddress = async (
     })
     .then(({ data }) => zCodesResponse.parse(data));
 
-export const getCodeDataByCodeId = async (
+export const getCodeData = async (
   endpoint: string,
   codeId: number,
   isGov: boolean

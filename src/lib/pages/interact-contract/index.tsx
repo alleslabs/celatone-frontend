@@ -13,7 +13,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr32, Coin } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
@@ -48,7 +48,7 @@ const InteractContractBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const { data: code } = useCodeByCodeIdLcd(codeId ?? 0, {
+  const { data: code } = useCodeLcd(codeId ?? 0, {
     enabled: !isUndefined(codeId),
   });
 

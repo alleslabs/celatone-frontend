@@ -7,7 +7,7 @@ import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
-import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
+import { useCodeLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 import { isId } from "lib/utils";
 
@@ -29,7 +29,7 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const name = getCodeLocalInfo(Number(codeId))?.name;
-  const { data } = useCodeByCodeIdLcd(Number(codeId), {
+  const { data } = useCodeLcd(Number(codeId), {
     enabled: isId(codeId),
     onSuccess: setCodeHash,
   });

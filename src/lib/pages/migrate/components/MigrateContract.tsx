@@ -28,7 +28,7 @@ import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
-import { useCodeByCodeIdLcd } from "lib/services/wasm/code";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
@@ -120,7 +120,7 @@ export const MigrateContract = ({
     },
   });
 
-  const { refetch } = useCodeByCodeIdLcd(Number(codeId), {
+  const { refetch } = useCodeLcd(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,

@@ -10,8 +10,8 @@ import {
 import type { Code, CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
 
-import { getCodeDataByCodeId, getCodes, getCodesByAddress } from "./api";
-import { getCodeByCodeIdLcd, getCodesLcd } from "./lcd";
+import { getCodeData, getCodes, getCodesByAddress } from "./api";
+import { getCodeLcd, getCodesLcd } from "./lcd";
 
 export const useCodes = (
   limit: number,
@@ -42,13 +42,13 @@ export const useCodesLcd = () => {
   );
 };
 
-export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
+export const useCodeData = (codeId: number, enabled = true) => {
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
   const endpoint = useBaseApiRoute("codes");
 
   return useQuery<CodeData>(
     [CELATONE_QUERY_KEYS.CODE_DATA, endpoint, codeId, isGov],
-    async () => getCodeDataByCodeId(endpoint, codeId, isGov),
+    async () => getCodeData(endpoint, codeId, isGov),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -57,7 +57,7 @@ export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
   );
 };
 
-export const useCodeByCodeIdLcd = (
+export const useCodeLcd = (
   codeId: number,
   options?: Omit<UseQueryOptions<Code>, "queryKey">
 ) => {
@@ -65,7 +65,7 @@ export const useCodeByCodeIdLcd = (
 
   return useQuery<Code>(
     [CELATONE_QUERY_KEYS.CODE_DATA_LCD, endpoint, codeId],
-    async () => getCodeByCodeIdLcd(endpoint, codeId),
+    async () => getCodeLcd(endpoint, codeId),
     options
   );
 };
