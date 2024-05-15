@@ -44,6 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#920](https://github.com/alleslabs/celatone-frontend/pull/920) Support lite version contract with new folder structure
 - [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Proposals page lite version with LCD endpoint
 - [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page lite version with LCD endpoint
+- [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
+- [#924](https://github.com/alleslabs/celatone-frontend/pull/924) Add Initia initiation-1 & minitia networks
+- [#919](https://github.com/alleslabs/celatone-frontend/pull/919) Remove singleStakingDenom config and use from lcd instead
+- [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
+- [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
 - [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
 - [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
 - [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list

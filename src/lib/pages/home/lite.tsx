@@ -3,7 +3,7 @@ import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
-import { useOverviewsStats } from "lib/services/overviewService";
+import { useLatestBlockLcd } from "lib/services/block";
 
 import { QuickMenuLite, QuickMenuMobileLite } from "./components";
 
@@ -14,8 +14,7 @@ export const HomeLite = () => {
     theme,
   } = useCelatoneApp();
 
-  // TODO: replace with latest block height data from lcd
-  const { data: overviewsStats, isLoading } = useOverviewsStats();
+  const { data: latestHeight, isLoading } = useLatestBlockLcd();
 
   return (
     <PageContainer display="flex" alignItems="center">
@@ -54,8 +53,8 @@ export const HomeLite = () => {
             {isLoading ? (
               <Spinner size="md" />
             ) : (
-              <Flex>
-                {overviewsStats && (
+              <Flex gap={2} alignItems="center" justifyContent="center">
+                {latestHeight && (
                   <Flex
                     w={2}
                     h={2}
@@ -71,7 +70,7 @@ export const HomeLite = () => {
                   />
                 )}
                 <Heading as="h5" variant="h5">
-                  {overviewsStats?.latestBlock.toString() ?? "N/A"}
+                  {latestHeight?.toString() ?? "N/A"}
                 </Heading>
               </Flex>
             )}
