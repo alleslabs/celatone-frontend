@@ -7,10 +7,14 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import { useProposalDataLcd, useProposalsLcd } from "lib/services/proposal";
+import type { ProposalStatus } from "lib/types";
+
+import { ProposalStatusFilter } from "./ProposalStatusFilter";
 
 export const ProposalsTableLite = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
+  const [status, setStatus] = useState<ProposalStatus[]>([]);
 
   const {
     data: proposalsData,
@@ -19,7 +23,7 @@ export const ProposalsTableLite = () => {
     hasNextPage,
     isLoading: isProposalsLoading,
     isFetchingNextPage,
-  } = useProposalsLcd("");
+  } = useProposalsLcd(status[0]);
 
   const { data: proposalData, isLoading: isProposalDataLoading } =
     useProposalDataLcd(debouncedSearch);
@@ -53,12 +57,13 @@ export const ProposalsTableLite = () => {
           />
         </GridItem>
         <GridItem>
-          {/* <ProposalStatusFilter
+          <ProposalStatusFilter
             label="Filter by Status"
             result={status}
             setResult={setStatus}
             placeholder="All Status"
-          /> */}
+            isMulti={false}
+          />
         </GridItem>
       </Grid>
       <ProposalsTable
