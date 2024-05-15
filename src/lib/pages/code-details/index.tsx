@@ -8,6 +8,7 @@ import {
   useCelatoneApp,
   useInternalNavigate,
   useMobile,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -21,6 +22,7 @@ import { useCodeData } from "lib/services/wasm/code";
 import { CodeContractsTable, CodeInfoSection } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
+import { useCodeDataLcd } from "./data";
 import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
 const codeTabId = "codeDetailsTab";
@@ -34,18 +36,15 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const isMobile = useMobile();
+  const isFullTier = useTierConfig() === "full";
 
-  const router = useRouter();
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
 
   const { currentChainId } = useCelatoneApp();
-  const { data, isLoading } = useCodeData(codeId);
-
-  useEffect(() => {
-    if (router.isReady) track(AmpEvent.TO_CODE_DETAILS, { tab });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  const resApi = useCodeData(codeId, isFullTier);
+  const resLcd = useCodeDataLcd(codeId, !isFullTier);
+  const { data, isLoading } = isFullTier ? resApi : resLcd;
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -137,6 +136,12 @@ const CodeDetails = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const validated = zCodeDetailsQueryParams.safeParse(router.query);
+
+  useEffect(() => {
+    if (router.isReady && validated.success)
+      track(AmpEvent.TO_CODE_DETAILS, { tab: validated.data.tab });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
   return (
     <PageContainer>

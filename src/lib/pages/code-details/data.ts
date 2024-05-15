@@ -2,8 +2,26 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 
 import { useContractStore } from "lib/providers/store";
 import type { ContractsResponse } from "lib/services/types";
+import { useCodeLcd } from "lib/services/wasm/code";
 import { useContractsByCodeId } from "lib/services/wasm/contract";
 import type { ContractInfo, Option } from "lib/types";
+
+export const useCodeDataLcd = (codeId: number, enabled: boolean) => {
+  const { data, isLoading } = useCodeLcd(codeId, {
+    enabled,
+  });
+
+  return {
+    data: data
+      ? {
+          info: data,
+          projectInfo: null,
+          publicInfo: null,
+        }
+      : undefined,
+    isLoading,
+  };
+};
 
 export const useCodeContracts = (
   codeId: number,

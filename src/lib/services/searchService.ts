@@ -24,7 +24,7 @@ import { usePoolByPoolId } from "./poolService";
 import { useProposalData } from "./proposalService";
 import { useTxData } from "./tx";
 import { useValidatorData } from "./validator";
-import { useCodeData } from "./wasm/code";
+import { useCodeLcd } from "./wasm/code";
 import { useContractLcd } from "./wasm/contract";
 
 export type SearchResultType =
@@ -117,9 +117,11 @@ export const useSearchHandler = (
   }, [isAddr, contractData, icnsAddressData]);
 
   // Code
-  const { data: codeData, isFetching: codeFetching } = useCodeData(
+  const { data: codeData, isFetching: codeFetching } = useCodeLcd(
     Number(debouncedKeyword),
-    isWasm && isId(debouncedKeyword)
+    {
+      enabled: isWasm && isId(debouncedKeyword),
+    }
   );
 
   // Tx

@@ -63,7 +63,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     enabled: false,
     retry: false,
     cacheTime: 0,
-    onSuccess(data) {
+    onSuccess: (data) => {
       const { message, messageColor } = getPermissionHelper(
         address,
         data.instantiatePermission,
@@ -77,7 +77,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setUploader(data.uploader);
       setUploaderStatus({ state: "success" });
     },
-    onError() {
+    onError: () => {
       setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
       setUploader("Not Found");
       setUploaderStatus({ state: "error" });

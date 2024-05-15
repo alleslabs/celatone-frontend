@@ -61,12 +61,16 @@ export const useCodeLcd = (
   codeId: number,
   options?: Omit<UseQueryOptions<Code>, "queryKey">
 ) => {
-  const endpoint = useBaseApiRoute("rest");
+  const endpoint = useLcdEndpoint();
 
   return useQuery<Code>(
     [CELATONE_QUERY_KEYS.CODE_DATA_LCD, endpoint, codeId],
     async () => getCodeLcd(endpoint, codeId),
-    options
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      ...options,
+    }
   );
 };
 

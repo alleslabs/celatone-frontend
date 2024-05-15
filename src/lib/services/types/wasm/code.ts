@@ -79,7 +79,7 @@ const zCode = z
     transaction: z
       .object({
         height: z.number(),
-        hash: z.string(),
+        hash: z.string().transform((val) => parseTxHash(val).toUpperCase()),
         created: zUtcDate,
       })
       .nullable(),
