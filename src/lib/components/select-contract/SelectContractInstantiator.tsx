@@ -13,16 +13,13 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import { useState } from "react";
 import type { KeyboardEvent } from "react";
+import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
   useExampleAddresses,
   useMobile,
   useValidateAddress,
@@ -30,7 +27,7 @@ import {
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { queryContract } from "lib/services/contract";
+import { useContractLcd } from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
@@ -45,11 +42,12 @@ export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
+  const isMobile = useMobile();
   const { contract: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
 
+  const [listSlug, setListSlug] = useState("");
   const [searchContract, setSearchContract] = useState<BechAddr32>(
     "" as BechAddr32
   );
@@ -57,14 +55,10 @@ export const SelectContractInstantiator = ({
 
   const { getContractLists } = useContractStore();
 
-  const isMobile = useMobile();
-
   // TODO - Revisit false case
   const { instantiatedListInfo, isLoading } = useInstantiatedByMe(true);
   const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
-
-  const lcdEndpoint = useBaseApiRoute("rest");
 
   const resetOnClose = () => {
     setListSlug("");
@@ -79,23 +73,18 @@ export const SelectContractInstantiator = ({
     resetOnClose();
   };
 
-  // TODO: Abstract query
-  const { refetch, isFetching, isRefetching } = useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, searchContract],
-    async () => queryContract(lcdEndpoint, searchContract),
-    {
-      enabled: false,
-      retry: false,
-      cacheTime: 0,
-      refetchOnReconnect: false,
-      onSuccess() {
-        onSelectThenClose(searchContract);
-      },
-      onError(err: AxiosError<RpcQueryError>) {
-        setInvalid(err.response?.data.message || DEFAULT_RPC_ERROR);
-      },
-    }
-  );
+  const { refetch, isFetching, isRefetching } = useContractLcd(searchContract, {
+    enabled: false,
+    retry: false,
+    cacheTime: 0,
+    refetchOnReconnect: false,
+    onSuccess: () => onSelectThenClose(searchContract),
+    onError: (err) =>
+      setInvalid(
+        (err as AxiosError<RpcQueryError>).response?.data.message ||
+          DEFAULT_RPC_ERROR
+      ),
+  });
 
   const handleListSelect = (slug: string) => {
     setListSlug(slug);

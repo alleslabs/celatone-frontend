@@ -2,9 +2,8 @@ import type { IconProps } from "@chakra-ui/react";
 import { Flex, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { CURR_THEME } from "env";
 import { AmpEvent, track, trackSocial } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 
@@ -49,48 +48,50 @@ const socialSequence = {
   linkedin: 6,
 };
 
-const themedSocial: SocialMenuType[] = Object.entries(
-  CURR_THEME.socialMedia ?? {}
-).reduce<SocialMenuType[]>((acc, curr) => {
-  if (curr[0] in socialSequence) {
-    acc[socialSequence[curr[0] as keyof typeof socialSequence]] = {
-      url: curr[1],
-      icon: curr[0] as IconKeys,
-      slug: curr[0],
-    };
-  }
-  return acc;
-}, []);
-
 const SocialMenuRender = ({
   isThemed,
   iconSize,
 }: {
   isThemed?: boolean;
   iconSize: IconProps["boxSize"];
-}) => (
-  <>
-    {(isThemed ? themedSocial : socialMenu).map((item) => (
-      <Link
-        key={`${isThemed ? "themed" : "social"}-${item.slug}`}
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => {
-          trackSocial(item.url);
-        }}
-      >
-        <Flex
-          borderRadius="8px"
-          transition="all 0.25s ease-in-out"
-          _hover={{ backgroundColor: "gray.800" }}
+}) => {
+  const { theme } = useCelatoneApp();
+  const themedSocial: SocialMenuType[] = Object.entries(
+    theme.socialMedia ?? {}
+  ).reduce<SocialMenuType[]>((acc, curr) => {
+    if (curr[0] in socialSequence) {
+      acc[socialSequence[curr[0] as keyof typeof socialSequence]] = {
+        url: curr[1],
+        icon: curr[0] as IconKeys,
+        slug: curr[0],
+      };
+    }
+    return acc;
+  }, []);
+  return (
+    <>
+      {(isThemed ? themedSocial : socialMenu).map((item) => (
+        <Link
+          key={`${isThemed ? "themed" : "social"}-${item.slug}`}
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            trackSocial(item.url);
+          }}
         >
-          <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
-        </Flex>
-      </Link>
-    ))}
-  </>
-);
+          <Flex
+            borderRadius="8px"
+            transition="all 0.25s ease-in-out"
+            _hover={{ backgroundColor: "gray.800" }}
+          >
+            <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
+          </Flex>
+        </Link>
+      ))}
+    </>
+  );
+};
 
 const IconLink = ({
   href,
@@ -142,7 +143,9 @@ const IconLink = ({
 
 const Footer = () => {
   const isMobile = useMobile();
-  return CURR_THEME.footer ? (
+  const { theme } = useCelatoneApp();
+
+  return theme.footer ? (
     <Flex
       as="footer"
       direction={{ base: "column", md: "row" }}
@@ -156,11 +159,11 @@ const Footer = () => {
       <Flex direction="column" gap={2} align={{ base: "center", md: "start" }}>
         <Flex direction={{ base: "column", md: "row" }} gap={1} align="center">
           <Link
-            href={CURR_THEME.socialMedia?.website ?? ""}
+            href={theme.socialMedia?.website ?? ""}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image src={CURR_THEME.footer.logo} h={{ base: 6, md: 8 }} mr={2} />
+            <Image src={theme.footer.logo} h={{ base: 6, md: 8 }} mr={2} />
           </Link>
           <Flex mt={{ base: 2, md: 0 }}>
             <SocialMenuRender isThemed iconSize={5} />
@@ -171,7 +174,7 @@ const Footer = () => {
           color="gray.400"
           textAlign={{ base: "center", md: "left" }}
         >
-          {CURR_THEME.footer.description}
+          {theme.footer.description}
         </Text>
       </Flex>
       <Flex

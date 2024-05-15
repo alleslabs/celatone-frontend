@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
+import { FALLBACK_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
 import { useInternalNavigate } from "./useInternalNavigate";
@@ -31,7 +31,7 @@ export const useNetworkChange = (
         navigate({
           pathname: "/404",
           query: {
-            network: DEFAULT_SUPPORTED_CHAIN_ID,
+            network: FALLBACK_SUPPORTED_CHAIN_ID,
           },
         });
       } else if (networkRoute !== networkRef.current) {
@@ -47,7 +47,7 @@ export const useNetworkChange = (
         query: {
           network: SUPPORTED_CHAIN_IDS.includes(networkRoute)
             ? networkRoute
-            : DEFAULT_SUPPORTED_CHAIN_ID,
+            : FALLBACK_SUPPORTED_CHAIN_ID,
         },
       });
     }

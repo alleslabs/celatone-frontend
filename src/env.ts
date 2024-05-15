@@ -1,10 +1,3 @@
-import {
-  DEFAULT_THEME,
-  INITIA_THEME,
-  OSMOSIS_THEME,
-  SEI_THEME,
-} from "config/theme";
-
 export const SUPPORTED_CHAIN_IDS: string[] = (() => {
   const chainIds = process.env.NEXT_PUBLIC_SUPPORTED_CHAIN_IDS?.split(",");
   if (!chainIds)
@@ -19,7 +12,7 @@ export const SUPPORTED_CHAIN_IDS: string[] = (() => {
 })();
 
 // Remark: We've already checked that the first element is not empty on the above code
-export const DEFAULT_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
+export const FALLBACK_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
 export const DUMMY_MNEMONIC = (() => {
   const mnemonic = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
@@ -33,20 +26,6 @@ export const DUMMY_MNEMONIC = (() => {
 
 export const CELATONE_API_OVERRIDE =
   process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;
-
-// CURRENT THEME CONFIG
-export const CURR_THEME = (() => {
-  switch (process.env.NEXT_PUBLIC_THEME) {
-    case "osmosis":
-      return OSMOSIS_THEME;
-    case "sei":
-      return SEI_THEME;
-    case "initia":
-      return INITIA_THEME;
-    default:
-      return DEFAULT_THEME;
-  }
-})();
 
 export const HASURA_ADMIN_SECRET =
   process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";

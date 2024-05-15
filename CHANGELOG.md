@@ -39,6 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
+- [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
+- [#924](https://github.com/alleslabs/celatone-frontend/pull/924) Add Initia initiation-1 & minitia networks
+- [#919](https://github.com/alleslabs/celatone-frontend/pull/919) Remove singleStakingDenom config and use from lcd instead
+- [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
+- [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
+- [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
+- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
+- [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
 - [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
 - [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
 - [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
@@ -47,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
 - [#907](https://github.com/alleslabs/celatone-frontend/pull/907) Migrate mahalo and minitias from 2 to 3
@@ -59,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name
 - [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
 - [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
 - [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment

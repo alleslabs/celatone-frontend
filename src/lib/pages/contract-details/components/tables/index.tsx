@@ -9,7 +9,7 @@ import {
 
 import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { useContractTableCounts } from "lib/services/contractService";
+import { useContractTableCounts } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 
 import { MigrationTable } from "./migration";

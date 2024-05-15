@@ -20,7 +20,7 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TotalValue } from "lib/components/TotalValue";
-import type { Contract } from "lib/services/contract";
+import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import { ContractInteractionTabs } from "lib/types";
 import type {

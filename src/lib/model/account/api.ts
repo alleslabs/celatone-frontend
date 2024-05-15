@@ -1,67 +1,26 @@
-import type Big from "big.js";
-
-import { useGovConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
-import { useBalanceInfos } from "lib/services/balanceService";
-import { useDelegationsByAddress } from "lib/services/delegationService";
 import { useMovePoolInfos } from "lib/services/move";
-import { big } from "lib/types";
+import { useDelegationData } from "lib/services/staking";
 import type {
   BechAddr,
   Delegation,
-  Option,
   Redelegation,
-  StakingParams,
   TokenWithValue,
   Unbonding,
-  USD,
 } from "lib/types";
 import {
   addTokenWithValue,
   coinToTokenWithValue,
   compareTokenWithValues,
-  formatSeconds,
-  totalValueTokenWithValue,
 } from "lib/utils";
 
-interface UserDelegationsData {
-  isLoading: boolean;
-  stakingParams: Option<StakingParams>;
-  isValidator: Option<boolean>;
-  totalBonded: Option<Record<string, TokenWithValue>>;
-  totalDelegations: Option<Record<string, TokenWithValue>>;
-  delegations: Option<Delegation[]>;
-  totalUnbondings: Option<Record<string, TokenWithValue>>;
-  unbondings: Option<Unbonding[]>;
-  totalRewards: Option<Record<string, TokenWithValue>>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
-  redelegations: Option<Redelegation[]>;
-  totalCommission: Option<Record<string, TokenWithValue>>;
-}
+import type { DelegationInfos } from "./types";
+import { calBonded } from "./utils";
 
-// ------------------------------------------//
-// ----------------DELEGATIONS---------------//
-// ------------------------------------------//
-
-const calBonded = (
-  totalDelegations: Option<Record<string, TokenWithValue>>,
-  totalUnbondings: Option<Record<string, TokenWithValue>>
+export const useAccountDelegationInfosApi = (
+  address: BechAddr,
+  enabled: boolean
 ) => {
-  if (!totalDelegations || !totalUnbondings) return undefined;
-
-  return Object.keys(totalDelegations).reduce<Record<string, TokenWithValue>>(
-    (total, denom) => ({
-      ...total,
-      [denom]: addTokenWithValue(
-        totalUnbondings[denom],
-        totalDelegations[denom]
-      ),
-    }),
-    {}
-  );
-};
-
-export const useAccountDelegationInfos = (address: BechAddr) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -70,35 +29,38 @@ export const useAccountDelegationInfos = (address: BechAddr) => {
       withPrices: true,
     });
 
-  const { data: accountDelegations, isLoading: isLoadingAccountDelegations } =
-    useDelegationsByAddress(address);
+  const { data: accountDelegations, isFetching: isLoadingAccountDelegations } =
+    useDelegationData(address, enabled);
 
   const isLoading =
     isLoadingAccountDelegations ||
     isLoadingAssetInfos ||
     isLoadingMovePoolInfos;
 
-  const data: UserDelegationsData = {
+  const data: DelegationInfos = {
     isLoading,
     stakingParams: undefined,
     isValidator: undefined,
+    isTotalBondedLoading: isLoading,
     totalBonded: undefined,
+    isDelegationsLoading: isLoading,
     totalDelegations: undefined,
     delegations: undefined,
+    isUnbondingsLoading: isLoading,
     totalUnbondings: undefined,
     unbondings: undefined,
+    isRewardsLoading: isLoading,
     totalRewards: undefined,
     rewards: undefined,
+    isRedelegationsLoading: isLoading,
     redelegations: undefined,
-    totalCommission: undefined,
+    isCommissionsLoading: isLoading,
+    totalCommissions: undefined,
   };
 
   if (accountDelegations) {
     data.stakingParams = {
       ...accountDelegations.stakingParams,
-      unbondingTime: formatSeconds(
-        accountDelegations.stakingParams.unbondingTime
-      ),
       bondDenoms: accountDelegations.stakingParams.bondDenoms.map((denom) =>
         coinToTokenWithValue(denom, "0", assetInfos, movePoolInfos)
       ),
@@ -214,7 +176,7 @@ export const useAccountDelegationInfos = (address: BechAddr) => {
       })
     );
 
-    data.totalCommission = accountDelegations.commissions.reduce<
+    data.totalCommissions = accountDelegations.commissions.reduce<
       Record<string, TokenWithValue>
     >(
       (commission, raw) => ({
@@ -233,41 +195,4 @@ export const useAccountDelegationInfos = (address: BechAddr) => {
   }
 
   return data;
-};
-
-export const useAccountTotalValue = (address: BechAddr) => {
-  const defaultValue = big(0) as USD<Big>;
-
-  const gov = useGovConfig({ shouldRedirect: false });
-  const {
-    totalSupportedAssetsValue = defaultValue,
-    isLoading: isLoadingTotalSupportedAssetsValue,
-  } = useBalanceInfos(address);
-  const {
-    isLoading,
-    stakingParams,
-    totalBonded,
-    totalRewards,
-    totalCommission,
-  } = useAccountDelegationInfos(address);
-
-  if (!gov.enabled)
-    return {
-      totalAccountValue: totalSupportedAssetsValue,
-      isLoading: false,
-    };
-
-  if (isLoading || isLoadingTotalSupportedAssetsValue)
-    return { totalAccountValue: undefined, isLoading: true };
-
-  if (!stakingParams || !totalBonded || !totalRewards || !totalCommission)
-    return { totalAccountValue: undefined, isLoading: false };
-
-  return {
-    totalAccountValue: totalSupportedAssetsValue
-      .add(totalValueTokenWithValue(totalBonded, defaultValue))
-      .add(totalValueTokenWithValue(totalRewards, defaultValue))
-      .add(totalValueTokenWithValue(totalCommission, defaultValue)) as USD<Big>,
-    isLoading: false,
-  };
 };

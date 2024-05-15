@@ -2,11 +2,12 @@ import { TableContainer } from "@chakra-ui/react";
 import { Fragment } from "react";
 
 import { ValidatorOrder } from "../../types";
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { useInitia, useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 import { useAssetInfos } from "lib/services/assetService";
+import { useStakingParamsLcd } from "lib/services/staking";
 import type { ValidatorsResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
@@ -40,14 +41,13 @@ export const ValidatorsTable = ({
   showUptime = true,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
-  const {
-    chainConfig: {
-      extra: { singleStakingDenom },
-    },
-  } = useCelatoneApp();
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const isInitia = useInitia();
 
-  if (isLoading) return <Loading />;
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: stakingParams, isFetching: isStakingParamsLoading } =
+    useStakingParamsLcd(!isInitia);
+
+  if (isLoading || isStakingParamsLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="validators" />;
   if (!data.total)
     return (
@@ -59,8 +59,8 @@ export const ValidatorsTable = ({
     );
 
   const displayDividers = order === ValidatorOrder.VotingPower && isDesc;
-  const denomToken = singleStakingDenom
-    ? coinToTokenWithValue(singleStakingDenom, "0", assetInfos)
+  const denomToken = stakingParams?.bondDenom
+    ? coinToTokenWithValue(stakingParams.bondDenom, "0", assetInfos)
     : undefined;
 
   const templateColumns = `${isActive ? "64px " : ""}3fr 2fr ${showUptime ? "110px" : ""} 110px`;

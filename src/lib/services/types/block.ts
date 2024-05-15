@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import type { Block, BlockData, Validator } from "lib/types";
 import { zUtcDate, zValidatorAddr } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import { parseTxHash, snakeToCamel } from "lib/utils";
 
 const zNullableValidator = z.nullable(
   z
@@ -58,3 +58,15 @@ export const zBlockDataResponse = z
     gasUsed: val.gas_used,
     gasLimit: val.gas_limit,
   }));
+
+export const zBlockLcd = z
+  .object({
+    block: z.object({
+      header: z.object({
+        chain_id: z.string(),
+        height: z.coerce.number(),
+        // TODO: Fill in the rest of the block fields
+      }),
+    }),
+  })
+  .transform(snakeToCamel);

@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { ComponentConfig, ThemeConfig } from "./types";
 import { generateTheme } from "./utils";
 
@@ -7,7 +8,7 @@ const INITIA_BASE_THEME: ThemeConfig = {
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
     seo: {
       appName: "Initia",
-      title: "Initia Explorer | Powered by Celatone",
+      title: "Initia Scan powered by Celatone",
       description:
         "Explore Initia's layered ecosystem effortlessly, bridging Web2 to Web3, while delving into sovereign applications.",
       image: "https://assets.alleslabs.dev/integrations/initia/cover.jpg",
@@ -15,20 +16,6 @@ const INITIA_BASE_THEME: ThemeConfig = {
         handle: "@initiafnd",
         cardType: "summary_large_image",
       },
-    },
-  },
-  fonts: {
-    heading: {
-      url: "/font/main.css",
-      name: "Pilat Wide, serif",
-    },
-    body: {
-      url: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap",
-      name: "Manrope, sans-serif",
-    },
-    mono: {
-      url: "/font/main.css",
-      name: "PP Neue Montreal Mono Regular",
     },
   },
   colors: {
@@ -182,6 +169,11 @@ const INITIA_COMPONENT_CONFIG: ComponentConfig = {
     voted: "primary.main",
     votedAbstain: "primary.darker",
     didNotVote: "gray.700",
+  },
+  recentBlocks: {
+    signed: "primary.darker",
+    proposed: "primary.lighter",
+    missed: "error.dark",
   },
 };
 
