@@ -15,7 +15,7 @@ import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import { useContractListByAdmin } from "lib/services/contractService";
+import { useContractListByAdmin } from "lib/services/wasm/contract";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr32 } from "lib/types";
 import { getCurrentDate } from "lib/utils";
