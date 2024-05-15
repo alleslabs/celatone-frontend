@@ -15,7 +15,9 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
+  useInitia,
   useLcdEndpoint,
+  useTierConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
@@ -32,6 +34,7 @@ import {
   getValidatorData,
   getValidatorDelegationRelatedTxs,
   getValidatorDelegators,
+  getValidatorDelegatorsLcd,
   getValidatorProposedBlocks,
   getValidators,
   getValidatorStakingProvisions,
@@ -136,10 +139,17 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
 };
 
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
-  const endpoint = useBaseApiRoute("validators");
+  const tier = useTierConfig();
+  const isFullTier = tier === "full";
+  const isInitia = useInitia();
+  const apiEndpoint = useBaseApiRoute("validators");
+  const lcdEndpoint = useLcdEndpoint();
+  const endpoint = isFullTier || isInitia ? apiEndpoint : lcdEndpoint;
 
   const queryFn = async () =>
-    getValidatorDelegators(endpoint, validatorAddress);
+    isFullTier || isInitia
+      ? getValidatorDelegators(endpoint, validatorAddress)
+      : getValidatorDelegatorsLcd(endpoint, validatorAddress);
 
   return useQuery(
     [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],
