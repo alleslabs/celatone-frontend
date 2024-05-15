@@ -1,15 +1,15 @@
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import {
-  useContractDataByContractAddress,
+  useContractData,
   useMigrationHistoriesByContractAddress,
-} from "lib/services/contractService";
+} from "lib/services/wasm/contract";
 import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
-export const useContractData = (contractAddress: BechAddr32) => {
+export const useContractDataWithLocalInfos = (contractAddress: BechAddr32) => {
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
 
-  const result = useContractDataByContractAddress(contractAddress);
+  const result = useContractData(contractAddress);
 
   const codeLocalInfo = result.data?.contract
     ? getCodeLocalInfo(Number(result.data.contract.codeId))
