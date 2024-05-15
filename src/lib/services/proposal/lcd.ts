@@ -1,13 +1,13 @@
 import axios from "axios";
 
-import type {
-  ProposalsResponseItemLcd,
-  ProposalsResponseLcd,
-} from "../types/proposal";
 import {
   zProposalsResponseItemLcd,
   zProposalsResponseLcd,
-} from "../types/proposal";
+} from "lib/services/types";
+import type {
+  ProposalsResponseItemLcd,
+  ProposalsResponseLcd,
+} from "lib/services/types";
 import type { Option, ProposalStatus } from "lib/types";
 import { parseWithError } from "lib/utils";
 

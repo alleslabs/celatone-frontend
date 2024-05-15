@@ -8,7 +8,7 @@ import {
   zProposalVotesInfoResponse,
   zProposalVotesResponse,
   zRelatedProposalsResponse,
-} from "../types/proposal";
+} from "lib/services/types";
 import type {
   DepositParams,
   DepositParamsInternal,
@@ -21,7 +21,7 @@ import type {
   UploadAccess,
   VotingParams,
   VotingParamsInternal,
-} from "../types/proposal";
+} from "lib/services/types";
 import { zProposalType } from "lib/types";
 import type {
   BechAddr,
