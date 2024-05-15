@@ -1,5 +1,5 @@
 import { useContractStore } from "lib/providers/store";
-import { useContracts } from "lib/services/contractService";
+import { useContracts } from "lib/services/wasm/contract";
 import type { ContractInfo } from "lib/types";
 
 export const useRecentContracts = (

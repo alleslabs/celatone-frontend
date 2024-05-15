@@ -4,7 +4,7 @@ import { useCurrentChain, useGetAddressType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { Contract, ContractRest } from "lib/services/contract";
+import type { Contract, ContractRest } from "lib/services/types";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Nullable, Option } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
