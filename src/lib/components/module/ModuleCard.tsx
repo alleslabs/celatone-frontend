@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 import { useMemo } from "react";
 
 import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
+import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import { useVerifyModule } from "lib/services/move/moduleService";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
 
@@ -16,7 +16,7 @@ interface ModuleCardProps {
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
-  setStep?: Dispatch<SetStateAction<"select-module" | "select-fn">>;
+  setStep?: (step: ModuleInteractionMobileStep) => void;
 }
 
 export const ModuleCard = ({
@@ -37,7 +37,7 @@ export const ModuleCard = ({
       executeCount: clickedModule.executeFunctions.length,
     });
     setSelectedModule?.(clickedModule);
-    setStep?.("select-fn");
+    setStep?.(ModuleInteractionMobileStep.SelectFunction);
   };
 
   const card = useMemo(

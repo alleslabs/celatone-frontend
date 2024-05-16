@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import { ModuleInteractionMobileStep } from "../../types";
 import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -33,6 +34,8 @@ interface ModuleSelectDrawerMobileProps {
   onClose: () => void;
   hexAddress: Option<HexAddr>;
   handleModuleSelect: ModuleSelectFunction;
+  step: ModuleInteractionMobileStep;
+  setStep: (step: ModuleInteractionMobileStep) => void;
 }
 
 export const ModuleSelectDrawerMobile = ({
@@ -40,6 +43,8 @@ export const ModuleSelectDrawerMobile = ({
   onClose,
   hexAddress,
   handleModuleSelect,
+  step,
+  setStep,
 }: ModuleSelectDrawerMobileProps) => {
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
@@ -51,11 +56,6 @@ export const ModuleSelectDrawerMobile = ({
   });
   const [modules, setModules] = useState<IndexedModule[]>();
   const [selectedModule, setSelectedModule] = useState<IndexedModule>();
-
-  const [step, setStep] = useState<"select-module" | "select-fn">(
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-    "select-module"
-  );
 
   const { refetch } = useModulesByAddressLcd({
     address: selectedAddress.hex,
@@ -96,7 +96,7 @@ export const ModuleSelectDrawerMobile = ({
     <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
       <DrawerOverlay />
       <DrawerContent h="90%">
-        {step === "select-module" ? (
+        {step === ModuleInteractionMobileStep.SelectModule ? (
           <>
             <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
               <CustomIcon
@@ -145,7 +145,9 @@ export const ModuleSelectDrawerMobile = ({
                 boxSize={6}
                 color="gray.600"
                 cursor="pointer"
-                onClick={() => setStep("select-module")}
+                onClick={() =>
+                  setStep(ModuleInteractionMobileStep.SelectModule)
+                }
               />
               <Heading as="h5" variant="h5">
                 Select Function
@@ -161,7 +163,9 @@ export const ModuleSelectDrawerMobile = ({
                         Selected Module
                       </Heading>
                       <Button
-                        onClick={() => setStep("select-module")}
+                        onClick={() =>
+                          setStep(ModuleInteractionMobileStep.SelectModule)
+                        }
                         size="sm"
                         px={1}
                         variant="ghost-primary"

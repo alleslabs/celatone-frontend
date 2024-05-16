@@ -1,12 +1,6 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackToModuleInteraction } from "lib/amplitude";
@@ -37,6 +31,73 @@ import {
 } from "./component";
 import { ModuleSelectDrawerMobile } from "./component/drawer/ModuleSelectDrawerMobile";
 import { SelectedFunctionCard } from "./component/SelectedFunctionCard";
+import { ModuleInteractionMobileStep } from "./types";
+
+const FunctionSection = ({
+  selectedFn,
+  setSelectedFn,
+  isZeroState,
+  handleDrawerOpen,
+}: {
+  selectedFn?: ExposedFunction;
+  setSelectedFn?: Dispatch<SetStateAction<ExposedFunction | undefined>>;
+  isZeroState?: boolean;
+  handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
+}) => {
+  return (
+    <Flex
+      borderTop="1px solid"
+      borderTopColor="gray.700"
+      pt={4}
+      mt={2}
+      direction="column"
+      gap={4}
+    >
+      <Flex direction="column" gap={2}>
+        <Flex gap={2} alignItems="center">
+          <Text as="h6" variant="h6" fontWeight={600}>
+            Selected Function
+          </Text>
+          <Button
+            size="sm"
+            variant={isZeroState ? "ghost-gray" : "ghost-primary"}
+            leftIcon={<CustomIcon name="swap" boxSize={3} />}
+            px={1}
+            onClick={() =>
+              handleDrawerOpen?.(ModuleInteractionMobileStep.SelectFunction)
+            }
+          >
+            Change
+          </Button>
+        </Flex>
+        {selectedFn && setSelectedFn && (
+          <FunctionCard
+            variant="readonly"
+            exposedFn={selectedFn}
+            isReadOnly
+            onFunctionSelect={() => {
+              setSelectedFn(selectedFn);
+            }}
+          />
+        )}
+      </Flex>
+      {selectedFn ? (
+        <SelectedFunctionCard fn={selectedFn} />
+      ) : (
+        <Flex
+          p={4}
+          borderRadius={8}
+          alignItems="center"
+          justifyContent="center"
+          bg="background.main"
+          color="text.dark"
+        >
+          Please select module first
+        </Flex>
+      )}
+    </Flex>
+  );
+};
 
 export const ZeroState = ({
   onOpen,
@@ -58,38 +119,7 @@ export const ZeroState = ({
         triggerVariant="select-module"
         onOpen={onOpen}
       />
-      {isMobile && (
-        <Flex
-          borderTop="1px solid"
-          borderTopColor="gray.700"
-          pt={4}
-          direction="column"
-        >
-          <Flex justifyContent="space-between" alignItems="center">
-            <Heading as="h6" variant="h6" fontWeight={600}>
-              Selected Function
-            </Heading>
-            <Button
-              size="sm"
-              variant="ghost-gray"
-              leftIcon={<CustomIcon name="swap" boxSize={3} />}
-            >
-              Change
-            </Button>
-          </Flex>
-          <Flex
-            p={4}
-            borderRadius={8}
-            alignItems="center"
-            justifyContent="center"
-            bg="background.main"
-            color="text.dark"
-            mt={2}
-          >
-            Please select module first
-          </Flex>
-        </Flex>
-      )}
+      {isMobile && <FunctionSection isZeroState />}
     </Flex>
   );
 };
@@ -100,14 +130,21 @@ export const Interact = () => {
   const router = useRouter();
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const openNewTab = useOpenNewTab();
 
+  const openNewTab = useOpenNewTab();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const [module, setModule] = useState<IndexedModule>();
   const [selectedType, setSelectedType] = useState<InteractionTabs>(
     InteractionTabs.VIEW_MODULE
   );
   const [selectedFn, setSelectedFn] = useState<ExposedFunction>();
+
+  const [step, setStep] = useState(ModuleInteractionMobileStep.SelectModule);
+
+  const handleDrawerOpen = (selectedStep: ModuleInteractionMobileStep) => {
+    setStep(selectedStep);
+    onOpen();
+  };
 
   const handleSetSelectedType = (type: string) =>
     setSelectedType(
@@ -233,7 +270,11 @@ export const Interact = () => {
               gap={{ base: 4, md: 0 }}
             >
               <Flex direction="column" gap={4}>
-                <LabelText label="Module Path" labelWeight={600}>
+                <LabelText
+                  label="Module Path"
+                  labelWeight={600}
+                  labelColor="text.main"
+                >
                   <Flex align="center" gap={1}>
                     <Text variant="body1">{module.address.toString()}</Text>
                     <CustomIcon
@@ -246,7 +287,11 @@ export const Interact = () => {
                     </Text>
                   </Flex>
                 </LabelText>
-                <LabelText label="Friends" labelWeight={600}>
+                <LabelText
+                  label="Friends"
+                  labelWeight={600}
+                  labelColor="text.main"
+                >
                   <Text variant="body2" color="gray.400">
                     {JSON.stringify(module.parsedAbi.friends)}
                   </Text>
@@ -256,7 +301,9 @@ export const Interact = () => {
                 <ModuleSelectDrawerTrigger
                   triggerVariant="change-module"
                   buttonText="Change Module"
-                  onOpen={onOpen}
+                  onOpen={() =>
+                    handleDrawerOpen(ModuleInteractionMobileStep.SelectModule)
+                  }
                 />
                 <Button
                   variant="ghost-gray"
@@ -279,39 +326,11 @@ export const Interact = () => {
                 </Button>
               </Flex>
               {isMobile && selectedFn && (
-                <Flex
-                  borderTop="1px solid"
-                  borderTopColor="gray.700"
-                  pt={4}
-                  mt={2}
-                  direction="column"
-                  gap={4}
-                >
-                  <Flex direction="column" gap={2}>
-                    <Flex gap={2} alignItems="center">
-                      <Heading as="h6" variant="h6" fontWeight={600}>
-                        Selected Function
-                      </Heading>
-                      <Button
-                        size="sm"
-                        variant="ghost-primary"
-                        leftIcon={<CustomIcon name="swap" boxSize={3} />}
-                        px={1}
-                      >
-                        Change
-                      </Button>
-                    </Flex>
-                    <FunctionCard
-                      variant="readonly"
-                      exposedFn={selectedFn}
-                      isReadOnly
-                      onFunctionSelect={() => {
-                        setSelectedFn(selectedFn);
-                      }}
-                    />
-                  </Flex>
-                  <SelectedFunctionCard fn={selectedFn} />
-                </Flex>
+                <FunctionSection
+                  selectedFn={selectedFn}
+                  setSelectedFn={setSelectedFn}
+                  handleDrawerOpen={handleDrawerOpen}
+                />
               )}
             </Flex>
           ) : (
@@ -323,6 +342,8 @@ export const Interact = () => {
               onClose={onClose}
               hexAddress={module?.address}
               handleModuleSelect={handleModuleSelect}
+              step={step}
+              setStep={setStep}
             />
           ) : (
             <ModuleSelectDrawer

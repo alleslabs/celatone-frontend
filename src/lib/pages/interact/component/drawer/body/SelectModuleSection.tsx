@@ -6,12 +6,13 @@ import { NoImageEmptyState } from "../../common";
 import type { SelectedAddress } from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge, ModuleCard } from "lib/components/module";
+import type { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import type { IndexedModule, Option } from "lib/types";
 
 interface SelectModuleSectionProps {
   selectedAddress: SelectedAddress;
   modules: IndexedModule[];
-  setStep?: Dispatch<SetStateAction<"select-module" | "select-fn">>;
+  setStep?: (step: ModuleInteractionMobileStep) => void;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
 }
@@ -22,7 +23,7 @@ interface RenderModulesProps {
   filtered: IndexedModule[];
   selectedModule: Option<IndexedModule>;
   setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
-  setStep?: Dispatch<SetStateAction<"select-module" | "select-fn">>;
+  setStep?: (step: ModuleInteractionMobileStep) => void;
 }
 
 const RenderModules = ({
