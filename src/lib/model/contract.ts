@@ -4,7 +4,7 @@ import { useContractStore } from "lib/providers/store";
 import {
   useInstantiatedCountByUserQuery,
   useInstantiatedListByUserQuery,
-} from "lib/services/contractService";
+} from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";

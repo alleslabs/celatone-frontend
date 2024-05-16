@@ -1,4 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -12,9 +13,9 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { ContractDetail } from "lib/services/contractService";
-import { ContractInteractionTabs } from "lib/types";
+import { useCodeInfoLcd } from "lib/services/wasm/code";
 import type { BechAddr32, Coin } from "lib/types";
+import { ContractInteractionTabs } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
 import {
@@ -43,7 +44,13 @@ const InteractContractBody = ({
   const [initialMsg, setInitialMsg] = useState("");
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeId, setCodeId] = useState<number>();
-  const [codeHash, setCodeHash] = useState<string>();
+
+  // ------------------------------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
+  const { data: code } = useCodeInfoLcd(codeId?.toString() ?? "", {
+    enabled: !isUndefined(codeId),
+  });
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
@@ -96,7 +103,6 @@ const InteractContractBody = ({
   useEffect(() => {
     setContractAddress(contract);
     setCodeId(undefined);
-    setCodeHash(undefined);
 
     if (!msg) {
       setInitialMsg("");
@@ -127,10 +133,7 @@ const InteractContractBody = ({
         mode="all-lists"
         contractAddress={contract}
         onContractSelect={onContractSelect}
-        successCallback={(data: ContractDetail) => {
-          setCodeHash(data.codeHash);
-          setCodeId(data.codeId);
-        }}
+        successCallback={(data) => setCodeId(data.contract.codeId)}
       />
       <Flex gap={4} align="center" mt={8} mb={4}>
         <Heading variant="h6" as="h6" minW={40} mr={2}>
@@ -150,7 +153,7 @@ const InteractContractBody = ({
             contractAddress={contractAddress}
             initialMsg={initialMsg}
             codeId={codeId}
-            codeHash={codeHash}
+            codeHash={code?.codeInfo.dataHash}
           />
         }
         executeContent={
@@ -159,7 +162,7 @@ const InteractContractBody = ({
             initialMsg={initialMsg}
             initialFunds={initialFunds}
             codeId={codeId}
-            codeHash={codeHash}
+            codeHash={code?.codeInfo.dataHash}
           />
         }
       />

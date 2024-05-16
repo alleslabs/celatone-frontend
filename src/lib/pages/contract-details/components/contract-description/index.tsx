@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { PublicDescription } from "lib/components/PublicDescription";
-import type { Contract } from "lib/services/contract";
+import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Nullable, Option, PublicContractInfo } from "lib/types";
 

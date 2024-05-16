@@ -2,7 +2,7 @@ import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { trackUseExpandAll } from "lib/amplitude";
-import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { UploadSchema } from "lib/components/json-schema";
@@ -31,7 +31,6 @@ export const SchemaQuery = ({
 }: SchemaQueryProps) => {
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
-  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { getSchemaByCodeHash } = useSchemaStore();
   const fullSchema = getSchemaByCodeHash(codeHash);
@@ -148,7 +147,6 @@ export const SchemaQuery = ({
               msgSchema={msg}
               resSchema={res}
               contractAddress={contractAddress}
-              lcdEndpoint={lcdEndpoint}
               walletAddress={address}
               initialMsg={resolveInitialMsg(initialMsg, msg)}
               addActivity={addActivity}
