@@ -13,11 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import {
-  useCurrentChain,
-  useInternalNavigate,
-  useMobile,
-} from "lib/app-provider";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -27,8 +23,8 @@ import {
   RemoveContractModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import { ContractInteractionTabs } from "lib/types";
 import type { ContractInfo, LVPair, Option } from "lib/types";
+import { ContractInteractionTabs } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
@@ -59,7 +55,6 @@ export const ContractsTableRowCTA = ({
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
-  const isMobile = useMobile();
   return withCTA ? (
     <>
       <TableRow>
@@ -201,35 +196,33 @@ export const ContractsTableRowCTA = ({
           </Flex>
         </TableRow>
       )}
-      {!isMobile && (
-        <TableRow>
-          <Box onClick={(e) => e.stopPropagation()}>
-            {contractInfo.lists ? (
-              <AddToOtherListModal
-                contractLocalInfo={contractInfo}
-                triggerElement={
-                  <StyledIconButton
-                    aria-label="button"
-                    icon={<CustomIcon name="bookmark-solid" />}
-                    variant="ghost-primary"
-                  />
-                }
-              />
-            ) : (
-              <SaveContractDetailsModal
-                contractLocalInfo={contractInfo}
-                triggerElement={
-                  <StyledIconButton
-                    aria-label="button"
-                    icon={<CustomIcon name="bookmark" />}
-                    variant="ghost-gray"
-                  />
-                }
-              />
-            )}
-          </Box>
-        </TableRow>
-      )}
+      <TableRow>
+        <Box onClick={(e) => e.stopPropagation()}>
+          {contractInfo.lists ? (
+            <AddToOtherListModal
+              contractLocalInfo={contractInfo}
+              triggerElement={
+                <StyledIconButton
+                  aria-label="button"
+                  icon={<CustomIcon name="bookmark-solid" />}
+                  variant="ghost-primary"
+                />
+              }
+            />
+          ) : (
+            <SaveContractDetailsModal
+              contractLocalInfo={contractInfo}
+              triggerElement={
+                <StyledIconButton
+                  aria-label="button"
+                  icon={<CustomIcon name="bookmark" />}
+                  variant="ghost-gray"
+                />
+              }
+            />
+          )}
+        </Box>
+      </TableRow>
     </>
   );
 };

@@ -19,7 +19,11 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useCodeData } from "lib/services/wasm/code";
 
-import { CodeContractsTable, CodeInfoSection } from "./components/code-info";
+import {
+  CodeContractsTableFull,
+  CodeContractsTableLite,
+  CodeInfoSection,
+} from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
 import { useCodeDataLcd } from "./data";
@@ -111,7 +115,11 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               attached={!!jsonSchema}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
-            <CodeContractsTable codeId={codeId} />
+            {isFullTier ? (
+              <CodeContractsTableFull codeId={codeId} />
+            ) : (
+              <CodeContractsTableLite codeId={codeId} />
+            )}
             <UserDocsLink
               title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
