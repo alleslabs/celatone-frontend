@@ -14,8 +14,11 @@ import type {
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useCurrentChain,
+  useInitia,
   useLcdEndpoint,
+  useTierConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
@@ -39,7 +42,12 @@ import {
   getValidatorVotedProposals,
   getValidatorVotedProposalsAnswerCounts,
 } from "./api";
-import { getValidatorDataLcd, getValidatorsLcd } from "./lcd";
+import {
+  getValidatorDataLcd,
+  getValidatorDelegatorsLcd,
+  getValidatorsLcd,
+  getValidatorStakingProvisionsLcd,
+} from "./lcd";
 import { resolveValIdentity } from "./misc";
 
 export const useValidators = (
@@ -76,10 +84,11 @@ export const useValidators = (
 
 export const useValidatorsLcd = (enabled = true) => {
   const endpoint = useLcdEndpoint();
+  const isInitia = useInitia();
 
   return useQuery<ValidatorData[]>(
     [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
-    async () => getValidatorsLcd(endpoint),
+    async () => getValidatorsLcd(endpoint, isInitia),
     {
       enabled,
       retry: 1,
@@ -123,11 +132,22 @@ export const useValidatorDataLcd = (
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
-  const endpoint = useBaseApiRoute("validators");
+  const tier = useTierConfig();
+  const isFullTier = tier === "full";
+  const apiEndpoint = useBaseApiRoute("validators");
+  const lcdEndpoint = useLcdEndpoint();
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+
+  const {
+    chainConfig: { chain },
+  } = useCelatoneApp();
 
   return useQuery<StakingProvisionsResponse>(
     [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
-    async () => getValidatorStakingProvisions(endpoint),
+    async () =>
+      isFullTier
+        ? getValidatorStakingProvisions(endpoint)
+        : getValidatorStakingProvisionsLcd(endpoint, chain),
     {
       enabled,
       retry: 1,
@@ -136,10 +156,17 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
 };
 
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
-  const endpoint = useBaseApiRoute("validators");
+  const tier = useTierConfig();
+  const isFullTier = tier === "full";
+  const isInitia = useInitia();
+  const apiEndpoint = useBaseApiRoute("validators");
+  const lcdEndpoint = useLcdEndpoint();
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   const queryFn = async () =>
-    getValidatorDelegators(endpoint, validatorAddress);
+    isFullTier
+      ? getValidatorDelegators(endpoint, validatorAddress)
+      : getValidatorDelegatorsLcd(endpoint, validatorAddress, isInitia);
 
   return useQuery(
     [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],

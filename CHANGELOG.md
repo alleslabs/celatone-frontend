@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version
 - [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
 - [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
 - [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
