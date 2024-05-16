@@ -16,12 +16,16 @@ import { big } from "lib/types";
 import type { Nullable, ValidatorAddr, ValidatorData } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getValidatorsLcd = async (endpoint: string) => {
+export const getValidatorsLcd = async (endpoint: string, isInitia: boolean) => {
   const result: ValidatorData[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
+    const route = isInitia
+      ? "initia/mstaking/v1/validators"
+      : "cosmos/staking/v1beta1/validators";
+
     const res = await axios
-      .get(`${endpoint}/cosmos/staking/v1beta1/validators`, {
+      .get(`${endpoint}/${route}`, {
         params: { "pagination.key": paginationKey, "pagination.limit": "1000" },
       })
       .then(({ data }) => parseWithError(zValidatorsResponseLcd, data));
