@@ -13,7 +13,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useCodeInfoLcd } from "lib/services/wasm/code";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr32, Coin } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
@@ -48,7 +48,7 @@ const InteractContractBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const { data: code } = useCodeInfoLcd(codeId?.toString() ?? "", {
+  const { data: code } = useCodeLcd(codeId ?? 0, {
     enabled: !isUndefined(codeId),
   });
 
@@ -153,7 +153,7 @@ const InteractContractBody = ({
             contractAddress={contractAddress}
             initialMsg={initialMsg}
             codeId={codeId}
-            codeHash={code?.codeInfo.dataHash}
+            codeHash={code?.hash}
           />
         }
         executeContent={
@@ -162,7 +162,7 @@ const InteractContractBody = ({
             initialMsg={initialMsg}
             initialFunds={initialFunds}
             codeId={codeId}
-            codeHash={code?.codeInfo.dataHash}
+            codeHash={code?.hash}
           />
         }
       />
