@@ -17,7 +17,6 @@ interface ModuleCardProps {
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
   setStep?: Dispatch<SetStateAction<"select-module" | "select-fn">>;
-  isReadOnly?: boolean;
 }
 
 export const ModuleCard = ({
@@ -26,12 +25,20 @@ export const ModuleCard = ({
   selectedModule,
   setSelectedModule,
   setStep,
-  isReadOnly = false,
 }: ModuleCardProps) => {
   const { data: isVerified } = useVerifyModule({
     address: selectedAddress,
     moduleName: module.moduleName,
   });
+
+  const handleModuleClick = (clickedModule: IndexedModule) => {
+    track(AmpEvent.USE_MODULE_CARD, {
+      viewCount: clickedModule.viewFunctions.length,
+      executeCount: clickedModule.executeFunctions.length,
+    });
+    setSelectedModule?.(clickedModule);
+    setStep?.("select-fn");
+  };
 
   const card = useMemo(
     () => (
@@ -45,16 +52,7 @@ export const ModuleCard = ({
         p={4}
         alignItems="center"
         cursor="pointer"
-        onClick={() => {
-          track(AmpEvent.USE_MODULE_CARD, {
-            viewCount: module.viewFunctions.length,
-            executeCount: module.executeFunctions.length,
-          });
-          setSelectedModule?.(module);
-          if (!isReadOnly && setStep) {
-            setStep("select-fn");
-          }
-        }}
+        onClick={() => handleModuleClick(module)}
         gap={1}
         templateColumns="20px 1fr auto"
         _hover={{

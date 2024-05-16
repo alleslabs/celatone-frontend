@@ -1,4 +1,11 @@
-import { Box, Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -28,6 +35,7 @@ import {
   ModuleSelectDrawer,
   ModuleSelectDrawerTrigger,
 } from "./component";
+import { ModuleSelectDrawerMobile } from "./component/drawer/ModuleSelectDrawerMobile";
 import { SelectedFunctionCard } from "./component/SelectedFunctionCard";
 
 export const ZeroState = ({
@@ -58,7 +66,9 @@ export const ZeroState = ({
           direction="column"
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <Text>Selected Function</Text>
+            <Heading as="h6" variant="h6" fontWeight={600}>
+              Selected Function
+            </Heading>
             <Button
               size="sm"
               variant="ghost-gray"
@@ -277,26 +287,29 @@ export const Interact = () => {
                   direction="column"
                   gap={4}
                 >
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text variant="body2" color="text.dark" fontWeight={600}>
-                      Selected Function
-                    </Text>
-                    <Button
-                      size="sm"
-                      variant="ghost-primary"
-                      leftIcon={<CustomIcon name="swap" boxSize={3} />}
-                    >
-                      Change
-                    </Button>
+                  <Flex direction="column" gap={2}>
+                    <Flex gap={2} alignItems="center">
+                      <Heading as="h6" variant="h6" fontWeight={600}>
+                        Selected Function
+                      </Heading>
+                      <Button
+                        size="sm"
+                        variant="ghost-primary"
+                        leftIcon={<CustomIcon name="swap" boxSize={3} />}
+                        px={1}
+                      >
+                        Change
+                      </Button>
+                    </Flex>
+                    <FunctionCard
+                      variant="readonly"
+                      exposedFn={selectedFn}
+                      isReadOnly
+                      onFunctionSelect={() => {
+                        setSelectedFn(selectedFn);
+                      }}
+                    />
                   </Flex>
-                  <FunctionCard
-                    variant="readonly"
-                    exposedFn={selectedFn}
-                    isReadOnly
-                    onFunctionSelect={() => {
-                      setSelectedFn(selectedFn);
-                    }}
-                  />
                   <SelectedFunctionCard fn={selectedFn} />
                 </Flex>
               )}
@@ -304,12 +317,21 @@ export const Interact = () => {
           ) : (
             <ZeroState onOpen={onOpen} isMobile={isMobile} />
           )}
-          <ModuleSelectDrawer
-            isOpen={isOpen}
-            onClose={onClose}
-            hexAddress={module?.address}
-            handleModuleSelect={handleModuleSelect}
-          />
+          {isMobile ? (
+            <ModuleSelectDrawerMobile
+              isOpen={isOpen}
+              onClose={onClose}
+              hexAddress={module?.address}
+              handleModuleSelect={handleModuleSelect}
+            />
+          ) : (
+            <ModuleSelectDrawer
+              isOpen={isOpen}
+              onClose={onClose}
+              hexAddress={module?.address}
+              handleModuleSelect={handleModuleSelect}
+            />
+          )}
         </Flex>
         {isMobile ? (
           <InteractionBodySectionMobile

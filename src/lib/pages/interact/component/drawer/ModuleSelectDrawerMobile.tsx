@@ -1,0 +1,194 @@
+import {
+  Button,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  Heading,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
+import { ModuleEmptyState } from "../common";
+import { useConvertHexAddress } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
+import { ModuleCard } from "lib/components/module";
+import { useModulesByAddressLcd } from "lib/services/move/moduleService";
+import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
+import { isHexWalletAddress } from "lib/utils";
+
+import { SelectFunctionSection, SelectModuleSection } from "./body";
+import { ModuleSelector } from "./selector";
+import type {
+  DisplayMode,
+  ModuleSelectFunction,
+  SelectedAddress,
+} from "./types";
+
+interface ModuleSelectDrawerMobileProps {
+  isOpen: boolean;
+  onClose: () => void;
+  hexAddress: Option<HexAddr>;
+  handleModuleSelect: ModuleSelectFunction;
+}
+
+export const ModuleSelectDrawerMobile = ({
+  isOpen,
+  onClose,
+  hexAddress,
+  handleModuleSelect,
+}: ModuleSelectDrawerMobileProps) => {
+  const { convertHexWalletAddress, convertHexModuleAddress } =
+    useConvertHexAddress();
+
+  const [mode, setMode] = useState<DisplayMode>("input");
+  const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>({
+    address: "" as BechAddr,
+    hex: "" as HexAddr,
+  });
+  const [modules, setModules] = useState<IndexedModule[]>();
+  const [selectedModule, setSelectedModule] = useState<IndexedModule>();
+
+  const [step, setStep] = useState<"select-module" | "select-fn">(
+    // eslint-disable-next-line sonarjs/no-duplicate-string
+    "select-module"
+  );
+
+  const { refetch } = useModulesByAddressLcd({
+    address: selectedAddress.hex,
+    options: {
+      refetchOnWindowFocus: false,
+      enabled: false,
+      retry: false,
+      onSuccess: (data) => {
+        setModules(data);
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (hexAddress) {
+      setMode("display");
+      setSelectedAddress({
+        address: isHexWalletAddress(hexAddress)
+          ? convertHexWalletAddress(hexAddress)
+          : convertHexModuleAddress(hexAddress),
+        hex: hexAddress,
+      });
+    } else {
+      setMode("input");
+      setSelectedAddress({
+        address: "" as BechAddr,
+        hex: "" as HexAddr,
+      });
+      setModules(undefined);
+    }
+  }, [convertHexWalletAddress, convertHexModuleAddress, hexAddress]);
+
+  useEffect(() => {
+    if (isOpen && selectedAddress.hex) refetch();
+  }, [isOpen, refetch, selectedAddress.hex]);
+
+  return (
+    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+      <DrawerOverlay />
+      <DrawerContent h="90%">
+        {step === "select-module" ? (
+          <>
+            <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+              <CustomIcon
+                name="contract-address"
+                boxSize={6}
+                color="gray.600"
+              />
+              <Heading as="h5" variant="h5">
+                Select Module
+              </Heading>
+            </DrawerHeader>
+            <DrawerCloseButton color="text.dark" />
+            <DrawerBody p={6}>
+              <Flex h="full" direction="column">
+                <ModuleSelector
+                  mode={mode}
+                  selectedAddress={selectedAddress}
+                  setSelectedAddress={setSelectedAddress}
+                  setModules={setModules}
+                  setMode={setMode}
+                  handleModuleSelect={handleModuleSelect}
+                  closeModal={onClose}
+                />
+                {modules ? (
+                  <SelectModuleSection
+                    selectedAddress={selectedAddress}
+                    modules={modules}
+                    selectedModule={selectedModule}
+                    setSelectedModule={setSelectedModule}
+                    setStep={setStep}
+                  />
+                ) : (
+                  <ModuleEmptyState
+                    description="Available functions for selected modules will display here"
+                    hasImage
+                  />
+                )}
+              </Flex>
+            </DrawerBody>
+          </>
+        ) : (
+          <>
+            <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+              <CustomIcon
+                name="chevron-left"
+                boxSize={6}
+                color="gray.600"
+                cursor="pointer"
+                onClick={() => setStep("select-module")}
+              />
+              <Heading as="h5" variant="h5">
+                Select Function
+              </Heading>
+            </DrawerHeader>
+            <DrawerCloseButton color="text.dark" />
+            <DrawerBody p={6}>
+              <Flex h="full" direction="column">
+                {selectedModule && (
+                  <>
+                    <Flex alignItems="center" gap={2} mb={2}>
+                      <Heading as="h6" variant="h6" fontWeight={600}>
+                        Selected Module
+                      </Heading>
+                      <Button
+                        onClick={() => setStep("select-module")}
+                        size="sm"
+                        px={1}
+                        variant="ghost-primary"
+                        leftIcon={<CustomIcon name="swap" boxSize={3} />}
+                      >
+                        Change
+                      </Button>
+                    </Flex>
+                    <ModuleCard
+                      selectedAddress={selectedAddress.address}
+                      module={selectedModule}
+                      selectedModule={selectedModule}
+                    />
+                  </>
+                )}
+                <Divider mt={6} mb={2} />
+                <SelectFunctionSection
+                  area="main"
+                  module={selectedModule}
+                  handleModuleSelect={handleModuleSelect}
+                  closeModal={onClose}
+                />
+              </Flex>
+            </DrawerBody>
+          </>
+        )}
+      </DrawerContent>
+    </Drawer>
+  );
+};
