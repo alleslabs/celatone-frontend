@@ -13,9 +13,10 @@ interface ContractsTableProps {
   isLoading: boolean;
   emptyState: JSX.Element;
   onRowSelect: (contract: BechAddr32) => void;
+  showTag?: boolean;
+  showLastUpdate?: boolean;
   isReadOnly?: boolean;
   withCTA?: CTAInfo;
-  withoutTag?: boolean;
 }
 
 export const ContractsTable = ({
@@ -23,9 +24,10 @@ export const ContractsTable = ({
   isLoading,
   emptyState,
   onRowSelect,
+  showTag = true,
+  showLastUpdate = true,
   isReadOnly = false,
   withCTA,
-  withoutTag,
 }: ContractsTableProps) => {
   const isMobile = useMobile();
 
@@ -34,13 +36,11 @@ export const ContractsTable = ({
 
   let templateColumns: string;
   if (isReadOnly)
-    templateColumns =
-      "minmax(160px, 300px) minmax(300px, 3fr) minmax(200px, 2fr) 1fr";
-  else if (withoutTag)
-    templateColumns = "160px minmax(300px, 3fr)  250px 300px 80px";
+    templateColumns = `minmax(160px, 300px) minmax(300px, 3fr) minmax(200px, 2fr)${showLastUpdate ? " 1fr" : ""}`;
+  else if (!showTag)
+    templateColumns = `160px minmax(300px, 3fr)${showLastUpdate ? " 250px 300px" : ""} 80px`;
   else
-    templateColumns =
-      "160px minmax(300px, 3fr) minmax(200px, 2fr) 150px 260px 80px";
+    templateColumns = `160px minmax(300px, 3fr) minmax(200px, 2fr)${showLastUpdate ? " 150px 260px" : ""} 80px`;
 
   return isMobile ? (
     <MobileTableContainer>
@@ -55,6 +55,7 @@ export const ContractsTable = ({
           }
           contractInfo={contractInfo}
           onRowSelect={onRowSelect}
+          showLastUpdate={showLastUpdate}
         />
       ))}
     </MobileTableContainer>
@@ -62,9 +63,10 @@ export const ContractsTable = ({
     <TableContainer pb={6}>
       <ContractsTableHeader
         templateColumns={templateColumns}
+        showTag={showTag}
+        showLastUpdate={showLastUpdate}
         isReadOnly={isReadOnly}
         withCTA={withCTA}
-        withoutTag={withoutTag}
       />
       {contracts.map((contractInfo) => (
         <ContractsTableRow
@@ -78,9 +80,10 @@ export const ContractsTable = ({
           contractInfo={contractInfo}
           templateColumns={templateColumns}
           onRowSelect={onRowSelect}
+          showTag={showTag}
+          showLastUpdate={showLastUpdate}
           isReadOnly={isReadOnly}
           withCTA={withCTA}
-          withoutTag={withoutTag}
         />
       ))}
     </TableContainer>

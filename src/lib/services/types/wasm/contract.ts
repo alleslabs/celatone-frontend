@@ -5,6 +5,7 @@ import {
   zBechAddr,
   zBechAddr32,
   zContractHistoryRemark,
+  zPagination,
   zProjectInfo,
   zPublicContractInfo,
   zUtcDate,
@@ -62,6 +63,29 @@ export const zContractsResponse = z.object({
 });
 
 export type ContractsResponse = z.infer<typeof zContractsResponse>;
+
+const zContractsResponseItemLcd = zBechAddr32.transform<ContractInfo>(
+  (val) => ({
+    contractAddress: val,
+    label: "",
+    admin: undefined,
+    instantiator: undefined,
+    latestUpdated: undefined,
+    latestUpdater: undefined,
+    remark: undefined,
+  })
+);
+
+export const zContractsResponseLcd = z
+  .object({
+    contracts: z.array(zContractsResponseItemLcd).default([]), // by code id case
+    contract_addresses: z.array(zContractsResponseItemLcd).optional(),
+    pagination: zPagination,
+  })
+  .transform((val) => ({
+    contracts: val.contract_addresses ?? val.contracts,
+    pagination: val.pagination,
+  }));
 
 export const zContract = z
   .object({
