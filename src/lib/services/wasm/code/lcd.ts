@@ -20,5 +20,5 @@ export const getCodesLcd = async (
 
 export const getCodeLcd = async (endpoint: string, codeId: number) =>
   axios
-    .get(`${endpoint}/cosmwasm/wasm/v1/code/${codeId}`)
+    .get(`${endpoint}/cosmwasm/wasm/v1/code/${encodeURIComponent(codeId)}`)
     .then(({ data }) => parseWithError(zCodeInfoResponseLcd, data));

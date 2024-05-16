@@ -120,7 +120,7 @@ export const zCodeInfoResponseLcd = z
       codeId: code_id,
       cw2Contract: null,
       cw2Version: null,
-      hash: parseTxHash(data_hash),
+      hash: data_hash,
       instantiatePermission: instantiate_permission.permission,
       permissionAddresses:
         instantiate_permission.address && instantiate_permission.address !== ""
