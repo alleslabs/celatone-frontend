@@ -9,6 +9,7 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useGovConfig,
   useInitia,
   useMoveConfig,
 } from "lib/app-provider";
@@ -267,10 +268,18 @@ export const useModules = (
 
 export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
   const endpoint = useBaseApiRoute("modules");
+  const govConfig = useGovConfig({ shouldRedirect: false });
 
   return useQuery<ModuleData>(
-    [CELATONE_QUERY_KEYS.MODULE_DATA, endpoint, vmAddress, moduleName],
-    async () => getModuleData(endpoint, vmAddress, moduleName),
+    [
+      CELATONE_QUERY_KEYS.MODULE_DATA,
+      endpoint,
+      vmAddress,
+      moduleName,
+      govConfig.enabled,
+    ],
+    async () =>
+      getModuleData(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -283,10 +292,18 @@ export const useModuleTableCounts = (
   moduleName: string
 ) => {
   const endpoint = useBaseApiRoute("modules");
+  const govConfig = useGovConfig({ shouldRedirect: false });
 
   return useQuery<ModuleTableCountsResponse>(
-    [CELATONE_QUERY_KEYS.MODULE_TABLE_COUNTS, endpoint, vmAddress, moduleName],
-    async () => getModuleTableCounts(endpoint, vmAddress, moduleName),
+    [
+      CELATONE_QUERY_KEYS.MODULE_TABLE_COUNTS,
+      endpoint,
+      vmAddress,
+      moduleName,
+      govConfig.enabled,
+    ],
+    async () =>
+      getModuleTableCounts(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
       retry: 1,
       refetchOnWindowFocus: false,
