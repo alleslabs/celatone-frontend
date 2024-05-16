@@ -147,10 +147,14 @@ export const CodeInfoSection = ({
       <Heading as="h6" variant="h6" mb={6}>
         Code Info
       </Heading>
-      <Flex flexWrap={isMobile ? "wrap" : "nowrap"} gap={isMobile ? 6 : 12}>
+      <Flex
+        flexWrap={isMobile ? "wrap" : "nowrap"}
+        gap={isMobile ? 6 : 12}
+        minH="100px"
+      >
         <CodeInfoLabelText label="Network">{chainId}</CodeInfoLabelText>
         <CodeInfoLabelText label="Uploaded by">
-          <Flex direction="column" gap={1}>
+          <Flex direction="column" gap={1} w="150px">
             <ExplorerLink
               type={uploaderType}
               value={uploader}
