@@ -31,7 +31,7 @@ const highlightCardProps = {
 interface ShortcutMetadata {
   title: string;
   subtitle: string;
-  slug?: string;
+  slug: string;
   icon: IconKeys;
   isHighlight: boolean;
   isDocument: boolean;
@@ -161,6 +161,7 @@ export const QuickMenuLite = () => {
         {
           title: "User Guide",
           subtitle: "View Celatone documents",
+          slug: "wasm-user-guide",
           icon: "document" as const,
           isHighlight: false,
           isDocument: true,
@@ -197,6 +198,7 @@ export const QuickMenuLite = () => {
           title: "User Guide",
           subtitle: "View Celatone documents",
           icon: "document" as const,
+          slug: "move-user-guide",
           isHighlight: false,
           isDocument: true,
         }
@@ -229,11 +231,7 @@ export const QuickMenuLite = () => {
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </Link>
               ) : (
-                <AppLink
-                  href={`/${item.slug}`}
-                  key={item.slug}
-                  style={{ height: "100%" }}
-                >
+                <AppLink href={`/${item.slug}`} style={{ height: "100%" }}>
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </AppLink>
               )}
