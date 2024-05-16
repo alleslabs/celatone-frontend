@@ -1,6 +1,5 @@
 import axios from "axios";
 
-import type { ValidatorDelegatorsResponse } from "lib/services/types";
 import {
   zBlocksResponse,
   zHistoricalPowersResponse,
@@ -58,20 +57,6 @@ export const getValidatorDelegators = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
     .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
-
-export const getValidatorDelegatorsLcd = async (
-  endpoint: string,
-  validatorAddress: ValidatorAddr
-): Promise<ValidatorDelegatorsResponse> =>
-  axios
-    .get(
-      `${endpoint}/cosmos/staking/v1beta1/validators/${encodeURI(validatorAddress)}/delegations?pagination.limit=1&pagination.count_total=true`
-    )
-    .then(({ data }) =>
-      parseWithError(zValidatorDelegatorsResponse, {
-        total: Number(data.pagination.total),
-      })
-    );
 
 export const getValidatorVotedProposalsAnswerCounts = async (
   endpoint: string,

@@ -14,6 +14,7 @@ import type {
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useCurrentChain,
   useInitia,
   useLcdEndpoint,
@@ -34,7 +35,6 @@ import {
   getValidatorData,
   getValidatorDelegationRelatedTxs,
   getValidatorDelegators,
-  getValidatorDelegatorsLcd,
   getValidatorProposedBlocks,
   getValidators,
   getValidatorStakingProvisions,
@@ -42,7 +42,12 @@ import {
   getValidatorVotedProposals,
   getValidatorVotedProposalsAnswerCounts,
 } from "./api";
-import { getValidatorDataLcd, getValidatorsLcd } from "./lcd";
+import {
+  getValidatorDataLcd,
+  getValidatorDelegatorsLcd,
+  getValidatorsLcd,
+  getValidatorStakingProvisionsLcd,
+} from "./lcd";
 import { resolveValIdentity } from "./misc";
 
 export const useValidators = (
@@ -126,11 +131,22 @@ export const useValidatorDataLcd = (
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
-  const endpoint = useBaseApiRoute("validators");
+  const tier = useTierConfig();
+  const isFullTier = tier === "full";
+  const apiEndpoint = useBaseApiRoute("validators");
+  const lcdEndpoint = useLcdEndpoint();
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+
+  const {
+    chainConfig: { chain },
+  } = useCelatoneApp();
 
   return useQuery<StakingProvisionsResponse>(
     [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
-    async () => getValidatorStakingProvisions(endpoint),
+    async () =>
+      isFullTier
+        ? getValidatorStakingProvisions(endpoint)
+        : getValidatorStakingProvisionsLcd(endpoint, chain),
     {
       enabled,
       retry: 1,
@@ -144,12 +160,12 @@ export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
   const isInitia = useInitia();
   const apiEndpoint = useBaseApiRoute("validators");
   const lcdEndpoint = useLcdEndpoint();
-  const endpoint = isFullTier || isInitia ? apiEndpoint : lcdEndpoint;
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   const queryFn = async () =>
-    isFullTier || isInitia
+    isFullTier
       ? getValidatorDelegators(endpoint, validatorAddress)
-      : getValidatorDelegatorsLcd(endpoint, validatorAddress);
+      : getValidatorDelegatorsLcd(endpoint, validatorAddress, isInitia);
 
   return useQuery(
     [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],

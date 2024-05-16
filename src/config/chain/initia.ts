@@ -56,7 +56,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "mahalo-3": {
-    tier: "full",
+    tier: "lite",
     chain: "initia",
     registryChainName: "initiadevnet3",
     prettyName: "Initia Closed Testnet 3",
