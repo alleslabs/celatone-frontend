@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
 - [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
 - [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
 - [#924](https://github.com/alleslabs/celatone-frontend/pull/924) Add Initia initiation-1 & minitia networks
