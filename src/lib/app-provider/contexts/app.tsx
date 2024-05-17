@@ -34,6 +34,7 @@ interface AppContextInterface {
   indexerGraphClient: GraphQLClient;
   constants: ProjectConstants;
   theme: ThemeConfig;
+  setTheme: (newTheme: ThemeConfig) => void;
 }
 
 const DEFAULT_STATES: AppContextInterface = {
@@ -47,6 +48,7 @@ const DEFAULT_STATES: AppContextInterface = {
   }),
   constants: PROJECT_CONSTANTS,
   theme: FALLBACK_THEME,
+  setTheme: () => {},
 };
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
@@ -74,6 +76,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       }),
       constants: PROJECT_CONSTANTS,
       theme,
+      setTheme: (newTheme: ThemeConfig) =>
+        setStates((prev) => ({ ...prev, theme: newTheme })),
     });
   }, []);
 
