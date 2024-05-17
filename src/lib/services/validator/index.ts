@@ -84,11 +84,10 @@ export const useValidators = (
 
 export const useValidatorsLcd = (enabled = true) => {
   const endpoint = useLcdEndpoint();
-  const isInitia = useInitia();
 
   return useQuery<ValidatorData[]>(
     [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
-    async () => getValidatorsLcd(endpoint, isInitia),
+    async () => getValidatorsLcd(endpoint),
     {
       enabled,
       retry: 1,
@@ -143,7 +142,7 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
   } = useCelatoneApp();
 
   return useQuery<StakingProvisionsResponse>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint],
+    [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint, chain],
     async () =>
       isFullTier
         ? getValidatorStakingProvisions(endpoint)
@@ -169,7 +168,12 @@ export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
       : getValidatorDelegatorsLcd(endpoint, validatorAddress, isInitia);
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS, endpoint, validatorAddress],
+    [
+      CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS,
+      endpoint,
+      validatorAddress,
+      isInitia,
+    ],
     createQueryFnWithTimeout(queryFn, 10000),
     { retry: false }
   );

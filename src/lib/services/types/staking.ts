@@ -2,9 +2,9 @@ import { z } from "zod";
 
 import {
   zAddr,
+  zBechAddr,
   zBig,
   zCoin,
-  zHexAddr20,
   zUtcDate,
   zValidator,
   zValidatorAddr,
@@ -57,7 +57,7 @@ export const zMintParamsResponseLcd = z
       }),
       weighted_developer_rewards_receivers: z.array(
         z.object({
-          address: zHexAddr20,
+          address: zBechAddr,
           weight: zBig,
         })
       ),

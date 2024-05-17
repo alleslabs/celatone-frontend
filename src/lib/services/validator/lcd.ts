@@ -16,16 +16,12 @@ import { big } from "lib/types";
 import type { Nullable, ValidatorAddr, ValidatorData } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getValidatorsLcd = async (endpoint: string, isInitia: boolean) => {
+export const getValidatorsLcd = async (endpoint: string) => {
   const result: ValidatorData[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
-    const route = isInitia
-      ? "initia/mstaking/v1/validators"
-      : "cosmos/staking/v1beta1/validators";
-
     const res = await axios
-      .get(`${endpoint}/${route}`, {
+      .get(`${endpoint}/cosmos/staking/v1beta1/validators`, {
         params: { "pagination.key": paginationKey, "pagination.limit": "1000" },
       })
       .then(({ data }) => parseWithError(zValidatorsResponseLcd, data));
@@ -77,7 +73,7 @@ export const getValidatorStakingProvisionsLcd = async (
     if (epochIndentifier === "week")
       return { stakingProvisions: epochStakingProvisions.mul(52) };
 
-    return { stakingProvisions: big(0) };
+    throw new Error("Unsupported epoch identifier");
   }
 
   const [distParams, annualProvisions] = await Promise.all([
@@ -102,9 +98,12 @@ export const getValidatorDelegatorsLcd = async (
     : "cosmos/staking/v1beta1/validators";
 
   return axios
-    .get(
-      `${endpoint}/${route}/${encodeURI(validatorAddress)}/delegations?pagination.limit=1&pagination.count_total=true`
-    )
+    .get(`${endpoint}/${route}/${encodeURI(validatorAddress)}/delegations`, {
+      params: {
+        "pagination.limit": "1",
+        "pagination.count_total": "true",
+      },
+    })
     .then(({ data }) =>
       parseWithError(zValidatorDelegatorsResponse, {
         total: Number(data.pagination.total),

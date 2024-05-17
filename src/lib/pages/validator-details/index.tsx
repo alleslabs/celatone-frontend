@@ -14,8 +14,7 @@ import { zValidatorDetailsQueryParams } from "./types";
 const ValidatorDetails = () => {
   const router = useRouter();
   useGovConfig({ shouldRedirect: true });
-  const tier = useTierConfig();
-  const isFullTier = tier === "full";
+  const isFullTier = useTierConfig() === "full";
 
   const validated = zValidatorDetailsQueryParams.safeParse(router.query);
 
