@@ -1,7 +1,7 @@
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import { CTASection } from "../CTASection";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -26,6 +26,8 @@ export const CodeTopInfo = ({
   projectInfo,
   publicInfo,
 }: CodeTopInfoProps) => {
+  const isFullTier = useTierConfig() === "full";
+
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
 
@@ -109,21 +111,23 @@ export const CodeTopInfo = ({
               type="code_hash"
             />
           </Flex>
-          <Flex
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text fontWeight={500} color="text.dark" variant="body2">
-              CW2 Info:
-            </Text>
-            <Text
-              color={cw2Info ? "text.main" : "text.disabled"}
-              variant="body2"
-              wordBreak="break-all"
+          {isFullTier && (
+            <Flex
+              gap={{ base: 0, md: 2 }}
+              direction={{ base: "column", md: "row" }}
             >
-              {cw2Info ?? "N/A"}
-            </Text>
-          </Flex>
+              <Text fontWeight={500} color="text.dark" variant="body2">
+                CW2 Info:
+              </Text>
+              <Text
+                color={cw2Info ? "text.main" : "text.disabled"}
+                variant="body2"
+                wordBreak="break-all"
+              >
+                {cw2Info ?? "N/A"}
+              </Text>
+            </Flex>
+          )}
           {publicInfo && <GitHubLink github={publicInfo.github} />}
         </Flex>
         <Flex direction="column" gap={1}>
