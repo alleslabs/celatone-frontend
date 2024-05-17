@@ -26,7 +26,7 @@ export const ActivitiesTable = ({
   if (isLoading) return <Loading withBorder />;
   if (!activities || !activities.length) return emptyState;
 
-  const templateColumns = `190px minmax(360px, 1fr) minmax(360px, 1fr) 280px`;
+  const templateColumns = `190px minmax(360px, 1fr) 160px 280px`;
 
   return isMobile ? (
     <MobileTableContainer>

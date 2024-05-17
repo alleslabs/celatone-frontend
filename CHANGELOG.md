@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
+- [#921](https://github.com/alleslabs/celatone-frontend/pull/921) Add theme
 - [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
@@ -75,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
 - [#932](https://github.com/alleslabs/celatone-frontend/pull/932) Add isGov in module details
 - [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name
 - [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
