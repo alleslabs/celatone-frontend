@@ -242,8 +242,7 @@ export const zProposalsResponseItemLcd = z
         "@type": z.string(),
       })
       .passthrough()
-      .array()
-      .nullable(),
+      .array(),
     status: z.string(),
     final_tally_result: z.object({
       yes_count: z.string(),
@@ -264,7 +263,6 @@ export const zProposalsResponseItemLcd = z
   })
   .transform<Proposal>((val) => ({
     ...snakeToCamel(val),
-    id: Number(val.id),
     status: val.status
       .replace("PROPOSAL_STATUS_", "")
       .split("_")
