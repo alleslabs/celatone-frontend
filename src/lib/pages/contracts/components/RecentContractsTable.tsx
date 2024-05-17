@@ -54,7 +54,7 @@ export const RecentContractsTable = observer(() => {
           )
         }
         onRowSelect={onRowSelect}
-        withoutTag
+        showTag={false}
       />
       {data && data.total > 10 && (
         <Pagination

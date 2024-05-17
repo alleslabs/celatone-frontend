@@ -275,14 +275,24 @@ export const Interact = () => {
                   labelWeight={600}
                   labelColor="text.main"
                 >
-                  <Flex align="center" gap={1}>
-                    <Text variant="body1">{module.address.toString()}</Text>
+                  <Flex align="center" gap={1} display="inline">
+                    <Text
+                      variant="body1"
+                      display="inline-flex"
+                      wordBreak="break-all"
+                    >
+                      {module.address.toString()}
+                    </Text>
                     <CustomIcon
                       name="chevron-right"
                       color="gray.600"
                       boxSize={3}
                     />
-                    <Text variant="body1" fontWeight={700}>
+                    <Text
+                      variant="body1"
+                      fontWeight={700}
+                      display="inline-flex"
+                    >
                       {module.moduleName}
                     </Text>
                   </Flex>
@@ -307,6 +317,7 @@ export const Interact = () => {
                 />
                 <Button
                   variant="ghost-gray"
+                  size={{ base: "sm", md: "md" }}
                   rightIcon={
                     <CustomIcon name="launch" boxSize={3} color="text.dark" />
                   }

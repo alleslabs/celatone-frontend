@@ -1,5 +1,5 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -26,7 +26,11 @@ import {
   getInstantiatedContractsByAddress,
   getMigrationHistoriesByContractAddress,
 } from "./api";
-import { getContractLcd, getContractQueryLcd } from "./lcd";
+import {
+  getContractLcd,
+  getContractQueryLcd,
+  getContractsByCodeIdLcd,
+} from "./lcd";
 
 export const useContracts = (
   limit: number,
@@ -176,12 +180,25 @@ export const useContractsByCodeId = (
   const endpoint = useBaseApiRoute("codes");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, limit, offset],
+    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, codeId, limit, offset],
     async () => getContractsByCodeId(endpoint, codeId, limit, offset),
     {
       retry: 1,
       refetchOnWindowFocus: false,
       ...options,
+    }
+  );
+};
+
+export const useContractsByCodeIdLcd = (codeId: number) => {
+  const endpoint = useLcdEndpoint();
+
+  return useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_LCD, endpoint, codeId],
+    ({ pageParam }) => getContractsByCodeIdLcd(endpoint, codeId, pageParam),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
     }
   );
 };

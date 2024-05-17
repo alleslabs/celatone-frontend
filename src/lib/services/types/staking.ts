@@ -1,6 +1,14 @@
 import { z } from "zod";
 
-import { zAddr, zCoin, zUtcDate, zValidator, zValidatorAddr } from "lib/types";
+import {
+  zAddr,
+  zBechAddr,
+  zBig,
+  zCoin,
+  zUtcDate,
+  zValidator,
+  zValidatorAddr,
+} from "lib/types";
 import { formatSeconds, snakeToCamel } from "lib/utils";
 
 export const zStakingParamsResponseLcd = z
@@ -13,6 +21,54 @@ export const zStakingParamsResponseLcd = z
       bond_denom: z.string(),
       min_commission_rate: z.string(),
     }),
+  })
+  .transform(snakeToCamel);
+
+export const zDistributionParamsResponseLcd = z
+  .object({
+    params: z.object({
+      community_tax: zBig,
+      base_proposer_reward: zBig,
+      bonus_proposer_reward: zBig,
+      withdraw_addr_enabled: z.boolean(),
+    }),
+  })
+  .transform(snakeToCamel);
+
+export const zAnnualProvisionsResponseLcd = z
+  .object({
+    annual_provisions: zBig,
+  })
+  .transform(snakeToCamel);
+
+export const zMintParamsResponseLcd = z
+  .object({
+    params: z.object({
+      mint_denom: z.string(),
+      genesis_epoch_provisions: zBig,
+      epoch_identifier: z.string(),
+      reduction_period_in_epochs: zBig,
+      reduction_factor: zBig,
+      distribution_proportions: z.object({
+        staking: zBig,
+        pool_incentives: zBig,
+        developer_rewards: zBig,
+        community_pool: zBig,
+      }),
+      weighted_developer_rewards_receivers: z.array(
+        z.object({
+          address: zBechAddr,
+          weight: zBig,
+        })
+      ),
+      minting_rewards_distribution_start_epoch: zBig,
+    }),
+  })
+  .transform(snakeToCamel);
+
+export const zEpochProvisionsResponseLcd = z
+  .object({
+    epoch_provisions: zBig,
   })
   .transform(snakeToCamel);
 

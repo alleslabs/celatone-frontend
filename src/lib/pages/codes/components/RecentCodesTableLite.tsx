@@ -1,15 +1,14 @@
-import { Alert, AlertDescription } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { useRecentCodesLcd } from "../data";
 import { useInternalNavigate } from "lib/app-provider";
+import { AlertPaginationLcd } from "lib/components/AlertPaginationLcd";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
 
 export const RecentCodesTableLite = observer(() => {
   const navigate = useInternalNavigate();
-
   const {
     data,
     error,
@@ -27,13 +26,7 @@ export const RecentCodesTableLite = observer(() => {
 
   return (
     <>
-      {data && !!error && (
-        <Alert variant="error" alignItems="center">
-          <AlertDescription wordBreak="break-word">
-            Error fetching data from LCD. Please refresh to try again.
-          </AlertDescription>
-        </Alert>
-      )}
+      {data && !!error && <AlertPaginationLcd />}
       <CodesTable
         codes={data}
         isLoading={isLoading}

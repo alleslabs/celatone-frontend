@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { TableContainer } from "@chakra-ui/react";
 import { Fragment } from "react";
 
@@ -27,6 +28,7 @@ interface ValidatorsTableProps {
   setIsDesc: (value: boolean) => void;
   scrollComponentId: string;
   showUptime?: boolean;
+  isSearching?: boolean;
 }
 
 export const ValidatorsTable = ({
@@ -39,6 +41,7 @@ export const ValidatorsTable = ({
   setIsDesc,
   scrollComponentId,
   showUptime = true,
+  isSearching = false,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
   const isInitia = useInitia();
@@ -52,8 +55,12 @@ export const ValidatorsTable = ({
   if (!data.total)
     return (
       <EmptyState
-        imageVariant="empty"
-        message={`This network does not have any ${isActive ? "active" : "inactive"} validators.`}
+        imageVariant={isSearching ? "not-found" : "empty"}
+        message={
+          isSearching
+            ? `No matches found. Please double-check your input and select correct network.`
+            : `This network does not have any ${isActive ? "active" : "inactive"} validators.`
+        }
         withBorder
       />
     );
