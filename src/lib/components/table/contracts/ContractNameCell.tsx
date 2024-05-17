@@ -25,7 +25,11 @@ export const ContractNameCell = ({
   return (
     <EditableCell
       initialValue={contractLocalInfo.name}
-      defaultValue={contractLocalInfo.label}
+      defaultValue={
+        contractLocalInfo.label.length > 0
+          ? contractLocalInfo.label
+          : "Untitled"
+      }
       maxLength={constants.maxContractNameLength}
       tooltip={contractLocalInfo.description}
       isReadOnly={isReadOnly}

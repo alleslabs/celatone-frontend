@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#933](https://github.com/alleslabs/celatone-frontend/pull/933) Support lite version for code details contract list
+- [#929](https://github.com/alleslabs/celatone-frontend/pull/929) Support lite version for code details page
 - [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
 - [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
 - [#924](https://github.com/alleslabs/celatone-frontend/pull/924) Add Initia initiation-1 & minitia networks
@@ -70,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
+- [#932](https://github.com/alleslabs/celatone-frontend/pull/932) Add isGov in module details
 - [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name
 - [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
 - [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported

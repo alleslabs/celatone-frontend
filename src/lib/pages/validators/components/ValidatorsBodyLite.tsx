@@ -76,6 +76,7 @@ export const ValidatorsBodyLite = ({
       setIsDesc={setIsDesc}
       scrollComponentId={scrollComponentId}
       showUptime={false}
+      isSearch={!!search}
     />
   );
 };

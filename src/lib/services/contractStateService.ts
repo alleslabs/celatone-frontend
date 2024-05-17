@@ -13,7 +13,7 @@ export const useContractStates = (
 
   return useInfiniteQuery(
     [
-      CELATONE_QUERY_KEYS.CONTRACT_STATE,
+      CELATONE_QUERY_KEYS.CONTRACT_STATES,
       baseEndpoint,
       contractAddress,
       numStatesToLoad,

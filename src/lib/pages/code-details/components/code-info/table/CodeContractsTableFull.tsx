@@ -9,12 +9,12 @@ import type { BechAddr32 } from "lib/types";
 
 import { NoContracts } from "./NoContracts";
 
-interface CodeContractsTableProps {
+interface CodeContractsTableFullProps {
   codeId: number;
 }
 
-export const CodeContractsTable = observer(
-  ({ codeId }: CodeContractsTableProps) => {
+export const CodeContractsTableFull = observer(
+  ({ codeId }: CodeContractsTableFullProps) => {
     const navigate = useInternalNavigate();
     const onRowSelect = (contract: BechAddr32) =>
       navigate({
