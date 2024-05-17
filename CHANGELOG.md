@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version
+- [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
 - [#933](https://github.com/alleslabs/celatone-frontend/pull/933) Support lite version for code details contract list
 - [#929](https://github.com/alleslabs/celatone-frontend/pull/929) Support lite version for code details page
 - [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
@@ -48,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
 - [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
 - [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
-- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Transaction details page list version with LCD endpoint
+- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Support transaction details page lite version with LCD endpoint
 - [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
 - [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
 - [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
