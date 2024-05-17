@@ -75,7 +75,7 @@ export const ValidatorsBodyFull = ({
         isDesc={isDesc}
         setIsDesc={setIsDesc}
         scrollComponentId={scrollComponentId}
-        isSearch={!!search}
+        isSearching={!!search}
       />
       {data && data.total > 10 && (
         <Pagination

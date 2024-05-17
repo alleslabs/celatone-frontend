@@ -28,7 +28,7 @@ interface ValidatorsTableProps {
   setIsDesc: (value: boolean) => void;
   scrollComponentId: string;
   showUptime?: boolean;
-  isSearch?: boolean;
+  isSearching?: boolean;
 }
 
 export const ValidatorsTable = ({
@@ -41,7 +41,7 @@ export const ValidatorsTable = ({
   setIsDesc,
   scrollComponentId,
   showUptime = true,
-  isSearch = false,
+  isSearching = false,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
   const isInitia = useInitia();
@@ -55,9 +55,9 @@ export const ValidatorsTable = ({
   if (!data.total)
     return (
       <EmptyState
-        imageVariant={isSearch ? "not-found" : "empty"}
+        imageVariant={isSearching ? "not-found" : "empty"}
         message={
-          isSearch
+          isSearching
             ? `No matches found. Please double-check your input and select correct network.`
             : `This network does not have any ${isActive ? "active" : "inactive"} validators.`
         }
