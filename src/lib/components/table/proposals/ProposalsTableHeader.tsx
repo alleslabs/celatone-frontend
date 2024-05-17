@@ -13,7 +13,7 @@ export const ProposalsTableHeader = ({
   templateColumns,
   boxShadow,
 }: ProposalsTableHeaderProps) => {
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
@@ -32,7 +32,7 @@ export const ProposalsTableHeader = ({
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>
-      {tier === "full" && <TableHeader>Resolved Block Height</TableHeader>}
+      {isFullTier && <TableHeader>Resolved Block Height</TableHeader>}
       <TableHeader>Proposed By</TableHeader>
     </Grid>
   );

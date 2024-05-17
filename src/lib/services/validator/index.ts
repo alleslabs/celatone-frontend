@@ -131,8 +131,7 @@ export const useValidatorDataLcd = (
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
-  const tier = useTierConfig();
-  const isFullTier = tier === "full";
+  const isFullTier = useTierConfig() === "full";
   const apiEndpoint = useBaseApiRoute("validators");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
@@ -155,8 +154,7 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
 };
 
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
-  const tier = useTierConfig();
-  const isFullTier = tier === "full";
+  const isFullTier = useTierConfig() === "full";
   const isInitia = useInitia();
   const apiEndpoint = useBaseApiRoute("validators");
   const lcdEndpoint = useLcdEndpoint();

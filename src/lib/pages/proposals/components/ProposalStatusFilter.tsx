@@ -39,12 +39,11 @@ export const ProposalStatusFilter = forwardRef<
     }: ProposalStatusFilterProps,
     ref
   ) => {
-    const tier = useTierConfig();
     const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
-    const isFullTier = tier === "full";
+    const isFullTier = useTierConfig() === "full";
 
     const OPTIONS = isFullTier
       ? Object.values(ProposalStatus)

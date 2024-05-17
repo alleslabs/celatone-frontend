@@ -34,7 +34,7 @@ export const getProposalDataLcd = async (
   id: string
 ): Promise<ProposalsResponseItemLcd> =>
   axios
-    .get(`${endpoint}/cosmos/gov/v1/proposals/${id}`)
+    .get(`${endpoint}/cosmos/gov/v1/proposals/${encodeURI(id)}`)
     .then(({ data }) =>
       parseWithError(zProposalsResponseItemLcd, data.proposal)
     );
