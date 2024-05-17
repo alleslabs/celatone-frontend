@@ -15,7 +15,7 @@ import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 export interface ContractLocalInfo {
   contractAddress: BechAddr32;
   instantiator: Option<BechAddr>;
-  label: string;
+  label: string; // NOTE: if empty means no label provided
   name?: string;
   description?: string;
   tags?: string[];

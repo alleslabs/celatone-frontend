@@ -7,16 +7,11 @@ import {
   useGovConfig,
   useLcdEndpoint,
 } from "lib/app-provider";
-import type {
-  CodeData,
-  CodeInfoResponseLcd,
-  CodesResponse,
-} from "lib/services/types";
+import type { Code, CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
-import { isId } from "lib/utils";
 
-import { getCodeDataByCodeId, getCodes, getCodesByAddress } from "./api";
-import { getCodeIdInfoLcd, getCodesLcd } from "./lcd";
+import { getCodeData, getCodes, getCodesByAddress } from "./api";
+import { getCodeLcd, getCodesLcd } from "./lcd";
 
 export const useCodes = (
   limit: number,
@@ -47,13 +42,13 @@ export const useCodesLcd = () => {
   );
 };
 
-export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
+export const useCodeData = (codeId: number, enabled = true) => {
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
   const endpoint = useBaseApiRoute("codes");
 
   return useQuery<CodeData>(
     [CELATONE_QUERY_KEYS.CODE_DATA, endpoint, codeId, isGov],
-    async () => getCodeDataByCodeId(endpoint, codeId, isGov),
+    async () => getCodeData(endpoint, codeId, isGov),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -62,21 +57,20 @@ export const useCodeDataByCodeId = (codeId: number, enabled = true) => {
   );
 };
 
-export const useCodeInfoLcd = (
-  codeId: string,
-  options?: Omit<UseQueryOptions<CodeInfoResponseLcd>, "queryKey">
+export const useCodeLcd = (
+  codeId: number,
+  options?: Omit<UseQueryOptions<Code>, "queryKey">
 ) => {
-  const endpoint = useBaseApiRoute("rest");
+  const endpoint = useLcdEndpoint();
 
-  const queryFn = async () => {
-    if (!isId(codeId)) throw new Error("Invalid code ID");
-    return getCodeIdInfoLcd(endpoint, Number(codeId));
-  };
-
-  return useQuery<CodeInfoResponseLcd>(
-    [CELATONE_QUERY_KEYS.CODE_INFO_LCD, endpoint, codeId],
-    queryFn,
-    options
+  return useQuery<Code>(
+    [CELATONE_QUERY_KEYS.CODE_DATA_LCD, endpoint, codeId],
+    async () => getCodeLcd(endpoint, codeId),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      ...options,
+    }
   );
 };
 
@@ -95,3 +89,4 @@ export const useCodesByAddress = (
 };
 
 export * from "./gql";
+export * from "./lcd";

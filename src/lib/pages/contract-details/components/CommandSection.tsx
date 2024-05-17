@@ -21,7 +21,7 @@ import {
 import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useContractQueryMsgs } from "lib/services/contractService";
+import { useContractQueryMsgs } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 

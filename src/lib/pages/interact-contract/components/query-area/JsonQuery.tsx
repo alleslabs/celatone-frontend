@@ -1,15 +1,10 @@
 import { Box, ButtonGroup, Flex, Spacer, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
 import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCurrentChain,
-} from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import { SubmitButton } from "lib/components/button";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -18,8 +13,10 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import { queryData } from "lib/services/contract";
-import { useContractQueryMsgs } from "lib/services/contractService";
+import {
+  useContractQueryLcd,
+  useContractQueryMsgs,
+} from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
   encode,
@@ -44,7 +41,6 @@ interface JsonQueryProps {
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const { data: queryCmds = [], isFetching: isCmdsFetching } =
     useContractQueryMsgs(contractAddress);
-  const lcdEndpoint = useBaseApiRoute("rest");
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
 
@@ -56,37 +52,28 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     setRes("");
   }, [contractAddress, initialMsg]);
 
-  // TODO: Abstract query
-  const {
-    refetch,
-    isFetching: queryFetching,
-    isRefetching: queryRefetching,
-  } = useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_QUERY, lcdEndpoint, contractAddress, msg],
-    async () => queryData(lcdEndpoint, contractAddress, msg),
-    {
-      enabled: false,
-      retry: false,
-      cacheTime: 0,
-      onSettled() {
-        setMsg(jsonPrettify(msg));
-      },
-      onSuccess(data) {
-        setRes(JSON.stringify(data.data, null, 2));
-        addActivity({
-          type: "query",
-          action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address,
-          contractAddress,
-          msg: encode(msg),
-          timestamp: getCurrentDate(),
-        });
-      },
-      onError(err: AxiosError<RpcQueryError>) {
-        setRes(err.response?.data.message || DEFAULT_RPC_ERROR);
-      },
-    }
-  );
+  const { refetch, isFetching } = useContractQueryLcd(contractAddress, msg, {
+    enabled: false,
+    retry: false,
+    cacheTime: 0,
+    onSettled: () => setMsg(jsonPrettify(msg)),
+    onSuccess: (data) => {
+      setRes(JSON.stringify(data, null, 2));
+      addActivity({
+        type: "query",
+        action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
+        sender: address,
+        contractAddress,
+        msg: encode(msg),
+        timestamp: getCurrentDate(),
+      });
+    },
+    onError: (err) =>
+      setRes(
+        (err as AxiosError<RpcQueryError>).response?.data.message ||
+          DEFAULT_RPC_ERROR
+      ),
+  });
 
   const handleQuery = () => {
     trackActionQuery(AmpEvent.ACTION_QUERY, "json-input", true);
@@ -152,7 +139,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
             </Flex>
             <SubmitButton
               text="Query"
-              isLoading={queryFetching || queryRefetching}
+              isLoading={isFetching}
               onSubmit={handleQuery}
               isDisabled={isButtonDisabled}
             />

@@ -6,7 +6,7 @@ import { useClampText } from "use-clamp-text";
 import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditContractDetailsModal } from "lib/components/modal";
-import type { Contract } from "lib/services/contract";
+import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Nullable, Option, PublicContractInfo } from "lib/types";
 

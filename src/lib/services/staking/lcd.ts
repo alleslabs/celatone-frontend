@@ -1,7 +1,11 @@
 import axios from "axios";
 
 import {
+  zAnnualProvisionsResponseLcd,
   zDelegationsResponseLcd,
+  zDistributionParamsResponseLcd,
+  zEpochProvisionsResponseLcd,
+  zMintParamsResponseLcd,
   zRedelegationsResponseLcd,
   zStakingParamsResponseLcd,
   zUnbondingsResponseLcd,
@@ -66,3 +70,36 @@ export const getRedelegationsByAddressLcd = (
         )
         .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime())
     );
+
+export const getDistributionParamsLcd = (endpoint: string) =>
+  axios
+    .get(`${endpoint}/cosmos/distribution/v1beta1/params`)
+    .then(({ data }) => parseWithError(zDistributionParamsResponseLcd, data));
+
+export const getAnnualProvisionsLcd = (endpoint: string, chain: string) => {
+  if (chain === "sei")
+    return {
+      annualProvisions: big(0),
+    };
+
+  return axios
+    .get(`${endpoint}/cosmos/mint/v1beta1/annual_provisions`)
+    .then(({ data }) => parseWithError(zAnnualProvisionsResponseLcd, data));
+};
+
+export const getMintParamsLcd = (endpoint: string, chain: string) =>
+  axios
+    .get(
+      `${endpoint}/${chain === "osmosis" ? chain : "cosmos"}/mint/v1beta1/params`
+    )
+    .then(({ data }) => parseWithError(zMintParamsResponseLcd, data));
+
+export const getEpochProvisionsLcd = (endpoint: string, chain: string) => {
+  if (chain !== "osmosis") {
+    throw new Error("Unsupported chain");
+  }
+
+  return axios
+    .get(`${endpoint}/osmosis/mint/v1beta1/epoch_provisions`)
+    .then(({ data }) => parseWithError(zEpochProvisionsResponseLcd, data));
+};

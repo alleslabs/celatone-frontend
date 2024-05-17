@@ -96,8 +96,7 @@ export const VotingPowerOverview = ({
   totalVotingPower,
   selfVotingPower,
 }: VotingPowerOverviewProps) => {
-  const tier = useTierConfig();
-  const isFullTier = tier === "full";
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
   const assetInfo = singleStakingDenom
     ? assetInfos?.[singleStakingDenom]
