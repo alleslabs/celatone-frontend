@@ -124,7 +124,7 @@ export const VotingPowerOverview = ({
           assetInfo.price as USD<number>
         )
       )
-    : undefined;
+    : "N/A";
 
   const selfVotingPowerRatio = divWithDefault(
     selfVotingPower,

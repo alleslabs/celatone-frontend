@@ -34,7 +34,6 @@ import {
   getHistoricalPowers,
   getValidatorData,
   getValidatorDelegationRelatedTxs,
-  getValidatorDelegators,
   getValidatorProposedBlocks,
   getValidators,
   getValidatorStakingProvisions,
@@ -131,8 +130,7 @@ export const useValidatorDataLcd = (
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
-  const tier = useTierConfig();
-  const isFullTier = tier === "full";
+  const isFullTier = useTierConfig() === "full";
   const apiEndpoint = useBaseApiRoute("validators");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
@@ -155,17 +153,11 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
 };
 
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
-  const tier = useTierConfig();
-  const isFullTier = tier === "full";
   const isInitia = useInitia();
-  const apiEndpoint = useBaseApiRoute("validators");
-  const lcdEndpoint = useLcdEndpoint();
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = useLcdEndpoint();
 
   const queryFn = async () =>
-    isFullTier
-      ? getValidatorDelegators(endpoint, validatorAddress)
-      : getValidatorDelegatorsLcd(endpoint, validatorAddress, isInitia);
+    getValidatorDelegatorsLcd(endpoint, validatorAddress, isInitia);
 
   return useQuery(
     [

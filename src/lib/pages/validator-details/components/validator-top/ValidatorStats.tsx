@@ -22,7 +22,7 @@ const StatWithLabel = ({
 }) => (
   <Flex
     gap={{ md: 2 }}
-    align="center"
+    align={{ md: "center" }}
     direction={{ base: "column", md: "row" }}
     flexGrow={{ base: 1, md: 0 }}
   >
