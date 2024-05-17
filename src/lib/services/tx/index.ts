@@ -35,10 +35,9 @@ export const useTxData = (
   enabled = true
 ): UseQueryResult<TxData> => {
   const { currentChainId } = useCelatoneApp();
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   const apiEndpoint = useBaseApiRoute("txs");
   const lcdEndpoint = useLcdEndpoint();
-  const isFullTier = tier === "full";
 
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 

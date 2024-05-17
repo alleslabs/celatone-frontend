@@ -97,7 +97,7 @@ const SEI_BASE_THEME: ThemeConfig = {
     },
   },
   footer: {
-    logo: "https://www.sei.io/_next/static/media/logo-light.1249fa55.svg",
+    logo: "https://assets.alleslabs.dev/integrations/sei/logo-sei.png",
     description:
       "A Smart Contract Explorer for Sei | Explore, deploy, execute, and query smart contracts on Sei from a user-friendly web UI",
     iconStyle: "rounded",
@@ -177,6 +177,11 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
     voted: "accent.main",
     votedAbstain: "accent.darker",
     didNotVote: "gray.700",
+  },
+  recentBlocks: {
+    signed: "secondary.main",
+    proposed: "primary.main",
+    missed: "error.dark",
   },
 };
 

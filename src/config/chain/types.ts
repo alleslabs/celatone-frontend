@@ -79,7 +79,6 @@ export interface ChainConfig {
   };
   extra: {
     disableAnyOfAddresses?: boolean;
-    singleStakingDenom?: string;
     isValidatorExternalLink?: Nullable<string>;
   };
 }

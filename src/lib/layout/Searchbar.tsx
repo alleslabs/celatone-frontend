@@ -27,6 +27,7 @@ import {
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+import { useEaster } from "lib/hooks";
 import type {
   ResultMetadata,
   SearchResultType,
@@ -328,6 +329,8 @@ const Searchbar = () => {
     ref: boxRef,
     handler: onClose,
   });
+
+  useEaster(keyword);
 
   return isMobile ? (
     <>

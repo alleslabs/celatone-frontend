@@ -11,7 +11,7 @@ import { ProposalsTableLite } from "./components/ProposalsTableLite";
 const Proposals = () => {
   useGovConfig({ shouldRedirect: true });
   const isMobile = useMobile();
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
 
   return (
     <PageContainer>
@@ -27,7 +27,7 @@ const Proposals = () => {
           {!isMobile && <NewProposalButton />}
         </Flex>
       </Flex>
-      {tier === "full" ? <ProposalsTableFull /> : <ProposalsTableLite />}
+      {isFullTier ? <ProposalsTableFull /> : <ProposalsTableLite />}
     </PageContainer>
   );
 };

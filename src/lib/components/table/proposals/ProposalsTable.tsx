@@ -18,16 +18,15 @@ export const ProposalsTable = ({
   isLoading,
   emptyState,
 }: ProposalsTableProps) => {
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;
   if (!proposals?.length) return emptyState;
 
-  const templateColumns =
-    tier === "full"
-      ? "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 180px"
-      : "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px";
+  const templateColumns = isFullTier
+    ? "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 180px"
+    : "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px";
   const boxShadow = "16px 0 32px -10px";
 
   return isMobile ? (

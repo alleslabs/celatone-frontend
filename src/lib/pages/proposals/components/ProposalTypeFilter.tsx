@@ -68,6 +68,9 @@ export const ProposalTypeFilter = forwardRef<
 
     if (!proposalTypes) return null;
 
+    const isOptionSelected = (option: ProposalType) =>
+      result.some((selectedOption) => selectedOption === option);
+
     const selectOption = (option: ProposalType) => {
       if (inputRef.current) {
         setKeyword("");
@@ -125,11 +128,8 @@ export const ProposalTypeFilter = forwardRef<
               <FilterDropdownItem
                 key={cosmosType}
                 filterDropdownComponent={cosmosType}
-                result={result}
-                option={cosmosType}
-                setIsDropdown={setIsDropdown}
-                setKeyword={setKeyword}
-                setResult={(opt) => setResult(opt as ProposalType[])}
+                isOptionSelected={isOptionSelected(cosmosType)}
+                onSelect={() => selectOption(cosmosType)}
               />
             ))}
             {cosmosTypes.length && <Divider borderColor="gray.700" />}
@@ -138,11 +138,8 @@ export const ProposalTypeFilter = forwardRef<
               <FilterDropdownItem
                 key={generalType}
                 filterDropdownComponent={generalType}
-                result={result}
-                option={generalType}
-                setIsDropdown={setIsDropdown}
-                setKeyword={setKeyword}
-                setResult={(opt) => setResult(opt as ProposalType[])}
+                isOptionSelected={isOptionSelected(generalType)}
+                onSelect={() => selectOption(generalType)}
               />
             ))}
           </DropdownContainer>

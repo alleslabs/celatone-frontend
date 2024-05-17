@@ -253,7 +253,6 @@ export const zProposalsResponseItemLcd = z
   })
   .transform<Proposal>((val) => ({
     ...snakeToCamel(val),
-    id: Number(val.id),
     status: val.status
       .replace("PROPOSAL_STATUS_", "")
       .split("_")

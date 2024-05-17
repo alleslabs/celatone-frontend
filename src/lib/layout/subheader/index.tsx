@@ -19,7 +19,7 @@ import { getSubHeaderFull, getSubHeaderLite } from "./utils";
 const ACTIVE_COLOR = "primary.light";
 
 const SubHeader = () => {
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
@@ -30,7 +30,7 @@ const SubHeader = () => {
 
   const subHeaderMenu = useMemo(
     () =>
-      tier === "full"
+      isFullTier
         ? getSubHeaderFull(
             govConfig.enabled,
             wasmConfig.enabled,
@@ -40,7 +40,7 @@ const SubHeader = () => {
           )
         : getSubHeaderLite(govConfig.enabled, wasmConfig.enabled),
     [
-      tier,
+      isFullTier,
       govConfig.enabled,
       wasmConfig.enabled,
       moveConfig.enabled,

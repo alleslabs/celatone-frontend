@@ -25,7 +25,7 @@ export const ProposalsTableRow = ({
   templateColumns,
   boxShadow,
 }: ProposalsTableRowProps) => {
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   const navigate = useInternalNavigate();
 
   const onRowSelect = (proposalId: number) =>
@@ -87,7 +87,7 @@ export const ProposalsTableRow = ({
           status={proposal.status}
         />
       </TableRow>
-      {tier === "full" && (
+      {isFullTier && (
         <TableRow>
           <StopPropagationBox>
             <ResolvedHeight

@@ -15,7 +15,7 @@ import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 import type { ICNSNamesResponse } from "./ns";
 import { queryAddressByICNSName, queryICNSNamesByAddress } from "./ns";
-import { queryContract } from "./wasm/contract";
+import { getContractLcd } from "./wasm/contract/lcd";
 
 export const useICNSNamesByAddress = (
   address: Option<BechAddr>
@@ -74,7 +74,7 @@ export const useAddressByICNSName = (
     );
     let addressType = getAddressType(icnsAddress);
     if (addressType === "contract_address") {
-      const contractData = await queryContract(
+      const contractData = await getContractLcd(
         lcdEndpoint,
         icnsAddress as BechAddr32
       );

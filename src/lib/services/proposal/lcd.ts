@@ -1,13 +1,13 @@
 import axios from "axios";
 
-import type {
-  ProposalsResponseItemLcd,
-  ProposalsResponseLcd,
-} from "../types/proposal";
 import {
   zProposalsResponseItemLcd,
   zProposalsResponseLcd,
-} from "../types/proposal";
+} from "lib/services/types";
+import type {
+  ProposalsResponseItemLcd,
+  ProposalsResponseLcd,
+} from "lib/services/types";
 import type { Option, ProposalStatus } from "lib/types";
 import { parseWithError } from "lib/utils";
 
@@ -34,7 +34,7 @@ export const getProposalDataLcd = async (
   id: string
 ): Promise<ProposalsResponseItemLcd> =>
   axios
-    .get(`${endpoint}/cosmos/gov/v1/proposals/${id}`)
+    .get(`${endpoint}/cosmos/gov/v1/proposals/${encodeURI(id)}`)
     .then(({ data }) =>
       parseWithError(zProposalsResponseItemLcd, data.proposal)
     );

@@ -202,7 +202,8 @@ const zModuleDataResponse = zBaseModuleLcd
     recent_publish_transaction: z.string().nullable(),
     recent_publish_proposal: zProposal
       .pick({ id: true, title: true })
-      .nullable(),
+      .nullish()
+      .default(null),
     recent_publish_block_height: z.number().nonnegative(),
     recent_publish_block_timestamp: zUtcDate,
     is_republished: z.boolean(),
@@ -218,18 +219,21 @@ const zModuleDataResponse = zBaseModuleLcd
 export const getModuleData = async (
   endpoint: string,
   vmAddress: HexAddr,
-  moduleName: string
+  moduleName: string,
+  isGov: boolean
 ): Promise<ModuleData> =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/info`
-    )
+    .get(`${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/info`, {
+      params: {
+        is_gov: isGov,
+      },
+    })
     .then(({ data }) => parseWithError(zModuleDataResponse, data));
 
 const zModuleTableCountsResponse = z.object({
   txs: z.number().nonnegative().nullable(),
   histories: z.number().nonnegative().nullable(),
-  proposals: z.number().nonnegative().nullable(),
+  proposals: z.number().nonnegative().nullish().default(null),
 });
 export type ModuleTableCountsResponse = z.infer<
   typeof zModuleTableCountsResponse
@@ -238,11 +242,17 @@ export type ModuleTableCountsResponse = z.infer<
 export const getModuleTableCounts = async (
   endpoint: string,
   vmAddress: HexAddr,
-  moduleName: string
+  moduleName: string,
+  isGov: boolean
 ): Promise<ModuleTableCountsResponse> =>
   axios
     .get(
-      `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/table-counts`
+      `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/table-counts`,
+      {
+        params: {
+          is_gov: isGov,
+        },
+      }
     )
     .then(({ data }) => parseWithError(zModuleTableCountsResponse, data));
 

@@ -69,6 +69,7 @@ export const ActivitiesTableRow = ({
                   textDecoration: "underline",
                   color: "secondary.light",
                 }}
+                wordBreak="break-word"
               >
                 {tokenId}
               </Text>

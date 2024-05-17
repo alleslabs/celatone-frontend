@@ -28,7 +28,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useBalances } from "lib/services/balanceService";
+import { useBalances } from "lib/services/bank";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
@@ -38,7 +38,7 @@ import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { ContractTables } from "./components/tables";
-import { useContractData } from "./data";
+import { useContractDataWithLocalInfos } from "./data";
 import { TabIndex, zContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
@@ -64,7 +64,7 @@ const ContractDetailsBody = observer(
       contractLocalInfo,
       data: contractData,
       isLoading,
-    } = useContractData(contractAddress);
+    } = useContractDataWithLocalInfos(contractAddress);
 
     const { data: balances, isLoading: isBalancesLoading } =
       useBalances(contractAddress);
