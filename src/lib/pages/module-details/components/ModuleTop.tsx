@@ -87,112 +87,47 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
         ]}
       />
       <Flex
-        justify="space-between"
-        mt={{ base: 3, md: 6 }}
-        direction={{ base: "column", md: "row" }}
-        gap={{ md: 4 }}
+        justifyContent="space-between"
+        w="full"
+        alignItems="center"
+        mt={5}
+        mb={3}
       >
         <Flex
-          direction="column"
-          textOverflow="ellipsis"
-          gap={{ base: 2, md: 1 }}
+          gap={1}
+          align={{ base: "start", md: "center" }}
+          maxW={{ md: "640px" }}
         >
-          <Flex
-            gap={1}
-            align={{ base: "start", md: "center" }}
-            maxW={{ md: "670px" }}
+          <CustomIcon
+            name="contract-address"
+            boxSize={5}
+            color="secondary.main"
+          />
+          <Heading
+            as="h5"
+            mt={{ base: 1, md: 0 }}
+            ml={{ base: 1, md: 0 }}
+            variant={{ base: "h6", md: "h5" }}
+            className={!isMobile ? "ellipsis" : ""}
           >
-            <CustomIcon
-              name="contract-address"
-              boxSize={5}
-              color="secondary.main"
-            />
-            <Heading
-              as="h5"
-              mt={{ base: 1, md: 0 }}
-              ml={{ base: 1, md: 0 }}
-              variant={{ base: "h6", md: "h5" }}
-              className={!isMobile ? "ellipsis" : ""}
-            >
-              {moduleData.moduleName}
-            </Heading>
-            {isVerified && (
-              <Tooltip label="This module's verification is supported by its provided source code.">
-                <Flex>
-                  <CustomIcon
-                    name="check-circle-solid"
-                    boxSize={5}
-                    color="success.main"
-                  />
-                </Flex>
-              </Tooltip>
-            )}
-          </Flex>
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text {...baseTextStyle} color="text.main">
-              Module Path:
-            </Text>
-            <CopyLink
-              value={`${moduleData.address}::${moduleData.moduleName}`}
-              amptrackSection="module_top"
-              type="module_path"
-            />
-          </Flex>
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text {...baseTextStyle} color="text.main">
-              Creator:
-            </Text>
-            <ExplorerLink
-              value={moduleAddress}
-              ampCopierSection="module_top"
-              textFormat="normal"
-              maxWidth="fit-content"
-              type="user_address"
-              fixedHeight={false}
-            />
-          </Flex>
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text {...baseTextStyle} color="text.main">
-              Friends:
-            </Text>
-            <Flex gap={1}>
-              {moduleData.parsedAbi.friends.length ? (
-                <Flex
-                  sx={{
-                    "> p:last-child > span": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  {moduleData.parsedAbi.friends.map((item) => (
-                    <Text key={item} {...baseTextStyle}>
-                      {item}
-                      <span>,&nbsp;</span>
-                    </Text>
-                  ))}
-                </Flex>
-              ) : (
-                <Text {...baseTextStyle}>-</Text>
-              )}
-            </Flex>
-          </Flex>
+            {moduleData.moduleName}
+          </Heading>
+          {isVerified && (
+            <Tooltip label="This module's verification is supported by its provided source code.">
+              <Flex>
+                <CustomIcon
+                  name="check-circle-solid"
+                  boxSize={5}
+                  color="success.main"
+                />
+              </Flex>
+            </Tooltip>
+          )}
         </Flex>
         <Flex
-          gap={{ base: 2, md: 4 }}
-          mt={{ base: 8, md: 0 }}
+          gap={{ base: 2, md: 3 }}
           w={{ base: "full", md: "auto" }}
+          justifyContent="end"
         >
           {!isMobile && (
             <>
@@ -272,6 +207,69 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             iconGap={2}
             w={{ base: "full", md: "auto" }}
           />
+        </Flex>
+      </Flex>
+      <Flex direction="column" textOverflow="ellipsis" gap={{ base: 2, md: 1 }}>
+        <Flex
+          mt={{ base: 2, md: 2 }}
+          gap={{ base: 0, md: 2 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text {...baseTextStyle} color="text.main">
+            Module Path:
+          </Text>
+          <CopyLink
+            value={`${moduleData.address}::${moduleData.moduleName}`}
+            amptrackSection="module_top"
+            type="module_path"
+          />
+        </Flex>
+        <Flex
+          mt={{ base: 2, md: 0 }}
+          gap={{ base: 0, md: 2 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text {...baseTextStyle} color="text.main">
+            Creator:
+          </Text>
+          <ExplorerLink
+            value={moduleAddress}
+            ampCopierSection="module_top"
+            textFormat="normal"
+            maxWidth="fit-content"
+            type="user_address"
+            fixedHeight={false}
+          />
+        </Flex>
+        <Flex
+          mt={{ base: 2, md: 0 }}
+          gap={{ base: 0, md: 2 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text {...baseTextStyle} color="text.main" mt="1px">
+            Friends:
+          </Text>
+          <Flex gap={1} wordBreak="break-all">
+            {moduleData.parsedAbi.friends.length ? (
+              <Flex
+                display="inline"
+                sx={{
+                  "> p:last-child > span": {
+                    display: "none",
+                  },
+                }}
+              >
+                {moduleData.parsedAbi.friends.map((item) => (
+                  <Text key={item} {...baseTextStyle} display="inline-flex">
+                    {item}
+                    <span>,&nbsp;</span>
+                  </Text>
+                ))}
+              </Flex>
+            ) : (
+              <Text {...baseTextStyle}>-</Text>
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

@@ -25,7 +25,7 @@ export const NftList = ({
   if (!nfts.length) return emptyState;
 
   return (
-    <SimpleGrid gap={6} columns={{ base: 2, lg: 3, xl: 5, "2xl": 6 }} mt={8}>
+    <SimpleGrid gap={6} columns={{ base: 2, lg: 3, xl: 5 }} mt={8}>
       {nfts.map((nft) => (
         <NftCard
           key={nft.tokenId + nft.uri}
