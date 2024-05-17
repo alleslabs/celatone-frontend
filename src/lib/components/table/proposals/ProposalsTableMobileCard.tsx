@@ -20,7 +20,7 @@ export interface ProposalsTableMobileCardProps {
 export const ProposalsTableMobileCard = ({
   proposal,
 }: ProposalsTableMobileCardProps) => {
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   const navigate = useInternalNavigate();
 
   const onCardSelect = (proposalId: number) =>
@@ -63,7 +63,7 @@ export const ProposalsTableMobileCard = ({
               status={proposal.status}
             />
           </Flex>
-          {tier === "lite" && (
+          {!isFullTier && (
             <Flex direction="column" flex="1">
               <MobileLabel label="Proposed by" />
               <Proposer proposer={proposal.proposer} />
@@ -72,7 +72,7 @@ export const ProposalsTableMobileCard = ({
         </Flex>
       }
       bottomContent={
-        tier === "full" && (
+        isFullTier && (
           <>
             <Flex direction="column" flex="1">
               <MobileLabel label="Resolved Block Height" />
