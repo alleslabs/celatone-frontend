@@ -21,14 +21,14 @@ interface NetworkGuardProps {
 }
 
 export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
-  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { isHydrated, currentChainId, chainConfig } = useCelatoneApp();
   const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
 
   useEffect(() => {
-    if (chainConfig.registryChainName) {
+    if (isHydrated) {
       const userKey = formatUserKey(
         chainConfig.registryChainName,
         DEFAULT_ADDRESS
@@ -39,6 +39,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
       setProjectUserKey(userKey);
     }
   }, [
+    isHydrated,
     chainConfig.registryChainName,
     setAccountUserKey,
     setCodeUserKey,
@@ -46,10 +47,11 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setProjectUserKey,
   ]);
 
-  if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
+  if (isHydrated && !(currentChainId in CHAIN_CONFIGS))
     return <NetworkErrorState />;
 
   if (
+    !isHydrated ||
     !isAccountUserKeyExist() ||
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||

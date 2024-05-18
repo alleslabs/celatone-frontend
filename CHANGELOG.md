@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Add isHydrated in app context for redirect behaviors
 - [#921](https://github.com/alleslabs/celatone-frontend/pull/921) Add theme
 - [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
