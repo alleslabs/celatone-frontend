@@ -1,24 +1,8 @@
-import { graphql } from "lib/gql";
+import { gql } from "graphql-request";
 
-export const getModuleIdByNameAndVmAddressQueryDocument = graphql(`
-  query getModuleIdByNameAndVmAddressQuery(
-    $name: String!
-    $vmAddress: String!
-  ) {
-    modules(
-      where: {
-        name: { _eq: $name }
-        vm_address: { vm_address: { _eq: $vmAddress } }
-      }
-    ) {
-      id
-    }
-  }
-`);
-
-export const getModuleHistoriesQueryDocument = graphql(`
+export const getModuleHistoriesQueryDocument = gql`
   query getModuleHistoriesQuery(
-    $moduleId: Int!
+    $moduleId: String!
     $pageSize: Int!
     $offset: Int!
   ) {
@@ -36,20 +20,20 @@ export const getModuleHistoriesQueryDocument = graphql(`
       upgrade_policy
     }
   }
-`);
+`;
 
-export const getModuleHistoriesCountQueryDocument = graphql(`
-  query getModuleHistoriesCountQuery($moduleId: Int!) {
+export const getModuleHistoriesCountQueryDocument = gql`
+  query getModuleHistoriesCountQuery($moduleId: String!) {
     module_histories_aggregate(where: { module_id: { _eq: $moduleId } }) {
       aggregate {
         count
       }
     }
   }
-`);
+`;
 
-export const getModuleInitialPublishInfoQueryDocument = graphql(`
-  query getModuleInitialPublishInfoQuery($moduleId: Int!, $isGov: Boolean!) {
+export const getModuleInitialPublishInfoQueryDocument = gql`
+  query getModuleInitialPublishInfoQuery($moduleId: String!, $isGov: Boolean!) {
     modules(where: { id: { _eq: $moduleId } }) {
       publisher_vm_address: vm_address {
         vm_address
@@ -77,4 +61,4 @@ export const getModuleInitialPublishInfoQueryDocument = graphql(`
       }
     }
   }
-`);
+`;

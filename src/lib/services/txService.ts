@@ -4,6 +4,7 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useCallback } from "react";
 
 import {
@@ -24,7 +25,6 @@ import type {
   BechAddr,
   HexAddr,
   Message,
-  Nullable,
   Option,
   PoolTxFilter,
   Transaction,
@@ -319,23 +319,24 @@ export const useTxsByBlockHeight = (
   );
 };
 
-export const useModuleTxsCount = (moduleId: Option<Nullable<number>>) => {
-  const { indexerGraphClient } = useCelatoneApp();
+export const useModuleTxsCount = (moduleId: string) => {
+  const { chainConfig } = useCelatoneApp();
 
-  const queryFn = async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getModuleTransactionsCountQueryDocument, {
-        moduleId,
+  const queryFn = async () =>
+    axios
+      .post(chainConfig.indexer, {
+        query: getModuleTransactionsCountQueryDocument,
+        variables: {
+          moduleId,
+        },
       })
-      .then(
-        ({ module_transactions_aggregate }) =>
-          module_transactions_aggregate.aggregate?.count
+      .then<number>(
+        ({ data: res }) =>
+          res.data.module_transactions_aggregate.aggregate.count
       );
-  };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_TXS_COUNT, indexerGraphClient, moduleId],
+    [CELATONE_QUERY_KEYS.MODULE_TXS_COUNT, chainConfig.indexer, moduleId],
     queryFn,
     {
       enabled: Boolean(moduleId),

@@ -14,7 +14,6 @@ import {
   useAccountModules,
   useModuleDetailsQuery,
   useModuleHistoriesCount,
-  useModuleId,
   useVerifyModule,
 } from "lib/services/move/moduleService";
 import type { IndexedModule } from "lib/services/move/moduleService";
@@ -47,10 +46,8 @@ export const ModuleDetailsBody = ({ moduleData }: ModuleDetailsBodyProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
 
-  const { data: moduleId } = useModuleId(
-    moduleData.moduleName,
-    moduleData.address
-  );
+  // HACK: format moduleId to match the module id in the backend
+  const moduleId = `${moduleData.address}::${moduleData.moduleName}`;
 
   const { data: moduleDetails, isLoading: moduleDetailsLoading } =
     useModuleDetailsQuery(moduleId);

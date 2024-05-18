@@ -1,8 +1,8 @@
-import { graphql } from "lib/gql";
+import { gql } from "graphql-request";
 
-export const getRelatedProposalsByModuleIdPagination = graphql(`
+export const getRelatedProposalsByModuleIdPagination = gql`
   query getRelatedProposalsByModuleIdPagination(
-    $moduleId: Int!
+    $moduleId: String!
     $offset: Int!
     $pageSize: Int!
   ) {
@@ -27,14 +27,14 @@ export const getRelatedProposalsByModuleIdPagination = graphql(`
       proposal_id
     }
   }
-`);
+`;
 
-export const getRelatedProposalsCountByModuleId = graphql(`
-  query getRelatedProposalsCountByModuleId($moduleId: Int!) {
+export const getRelatedProposalsCountByModuleId = gql`
+  query getRelatedProposalsCountByModuleId($moduleId: String!) {
     module_proposals_aggregate(where: { module_id: { _eq: $moduleId } }) {
       aggregate {
         count
       }
     }
   }
-`);
+`;

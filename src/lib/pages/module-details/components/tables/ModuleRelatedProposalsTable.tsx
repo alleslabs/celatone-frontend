@@ -5,10 +5,10 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable, ViewMore } from "lib/components/table";
 import { useRelatedProposalsByModuleIdPagination } from "lib/services/proposalService";
-import type { Nullish, Option } from "lib/types";
+import type { Option } from "lib/types";
 
 interface ModuleRelatedProposalsTableProps {
-  moduleId: Nullish<number>;
+  moduleId: string;
   scrollComponentId: string;
   relatedProposalsCount: Option<number>;
   refetchCount: () => void;
