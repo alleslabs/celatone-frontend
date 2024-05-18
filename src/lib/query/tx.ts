@@ -108,3 +108,13 @@ export const getModuleTransactionsCountQueryDocument = gql`
     }
   }
 `;
+
+export const getModuleTransactionsCountQueryDocumentOld = gql`
+  query getModuleTransactionsCountQuery($moduleId: Int!) {
+    module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;

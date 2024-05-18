@@ -16,8 +16,12 @@ import {
 } from "lib/app-provider";
 import {
   getModuleHistoriesCountQueryDocument,
+  getModuleHistoriesCountQueryDocumentOld,
   getModuleHistoriesQueryDocument,
+  getModuleHistoriesQueryDocumentOld,
+  getModuleIdByNameAndVmAddressQueryDocument,
   getModuleInitialPublishInfoQueryDocument,
+  getModuleInitialPublishInfoQueryDocumentOld,
 } from "lib/query";
 import type {
   AbiFormData,
@@ -244,6 +248,46 @@ export const useDecodeModule = ({
 };
 
 // HACK: add interface for response
+const INITIATION_1 = "initiation-1";
+
+interface ModuleId {
+  data: {
+    modules: {
+      id: number;
+    }[];
+  };
+}
+
+export const useModuleId = ({ moduleId }: { moduleId: string }) => {
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const queryFn = async () => {
+    if (currentChainId === INITIATION_1) return moduleId;
+
+    const [vmAddress, name] = moduleId.split("::");
+    return axios
+      .post<ModuleId>(chainConfig.indexer, {
+        query: getModuleIdByNameAndVmAddressQueryDocument,
+        variables: { name, vmAddress },
+      })
+      .then(
+        ({
+          data: {
+            data: { modules },
+          },
+        }) => modules[0]?.id ?? 0
+      );
+  };
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_ID, chainConfig.indexer, moduleId],
+    queryFn,
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
 interface ModuleHistoriesResponse {
   data: {
     module_histories: {
@@ -266,13 +310,17 @@ export const useModuleHistoriesByPagination = ({
   offset: number;
   pageSize: number;
 }): UseQueryResult<ModuleHistory[]> => {
-  const { chainConfig } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { data: id, isLoading } = useModuleId({ moduleId });
 
   const queryFn = async () =>
     axios
       .post<ModuleHistoriesResponse>(chainConfig.indexer, {
-        query: getModuleHistoriesQueryDocument,
-        variables: { moduleId, pageSize: pageSize + 1, offset },
+        query:
+          currentChainId === INITIATION_1
+            ? getModuleHistoriesQueryDocument
+            : getModuleHistoriesQueryDocumentOld,
+        variables: { moduleId: id, pageSize: pageSize + 1, offset },
       })
       .then(({ data: res }) =>
         res.data.module_histories
@@ -299,7 +347,7 @@ export const useModuleHistoriesByPagination = ({
     ],
     queryFn,
     {
-      enabled: Boolean(moduleId),
+      enabled: Boolean(moduleId) && !isLoading,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -307,13 +355,17 @@ export const useModuleHistoriesByPagination = ({
 };
 
 export const useModuleHistoriesCount = (moduleId: string) => {
-  const { chainConfig } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { data: id, isLoading } = useModuleId({ moduleId });
 
   const queryFn = async () =>
     axios
       .post(chainConfig.indexer, {
-        query: getModuleHistoriesCountQueryDocument,
-        variables: { moduleId },
+        query:
+          currentChainId === INITIATION_1
+            ? getModuleHistoriesCountQueryDocument
+            : getModuleHistoriesCountQueryDocumentOld,
+        variables: { moduleId: id },
       })
       .then<number>(
         ({ data: res }) => res.data.module_histories_aggregate.aggregate?.count
@@ -323,7 +375,7 @@ export const useModuleHistoriesCount = (moduleId: string) => {
     [CELATONE_QUERY_KEYS.MODULE_HISTORIES_COUNT, chainConfig.indexer, moduleId],
     queryFn,
     {
-      enabled: Boolean(moduleId),
+      enabled: Boolean(moduleId) && !isLoading,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -342,14 +394,18 @@ export interface ModuleInitialPublishInfo {
 export const useModuleDetailsQuery = (
   moduleId: string
 ): UseQueryResult<ModuleInitialPublishInfo> => {
-  const { chainConfig } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { data: id, isLoading } = useModuleId({ moduleId });
 
   const queryFn = async () =>
     axios
       .post(chainConfig.indexer, {
-        query: getModuleInitialPublishInfoQueryDocument,
-        variables: { moduleId, isGov },
+        query:
+          currentChainId === INITIATION_1
+            ? getModuleInitialPublishInfoQueryDocument
+            : getModuleInitialPublishInfoQueryDocumentOld,
+        variables: { moduleId: id, isGov },
       })
       .then<ModuleInitialPublishInfo>(({ data: res }) => {
         const target = res.data.modules[0];
@@ -370,7 +426,7 @@ export const useModuleDetailsQuery = (
     [CELATONE_QUERY_KEYS.MODULE_DETAILS, chainConfig.indexer, moduleId],
     queryFn,
     {
-      enabled: Boolean(moduleId),
+      enabled: Boolean(moduleId) && !isLoading,
       refetchOnWindowFocus: false,
     }
   );

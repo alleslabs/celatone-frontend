@@ -9,10 +9,13 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
 } from "lib/app-provider";
 import {
   getRelatedProposalsByModuleIdPagination,
+  getRelatedProposalsByModuleIdPaginationOld,
   getRelatedProposalsCountByModuleId,
+  getRelatedProposalsCountByModuleIdOld,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import { big } from "lib/types";
@@ -39,7 +42,7 @@ import {
 } from "lib/utils";
 
 import { useAssetInfos } from "./assetService";
-import { useMovePoolInfos } from "./move";
+import { useModuleId, useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
   ProposalAnswerCountsResponse,
@@ -196,13 +199,19 @@ export const useRelatedProposalsByModuleIdPagination = (
   offset: number,
   pageSize: number
 ): UseQueryResult<Proposal[]> => {
-  const { chainConfig } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { data: id, isLoading } = useModuleId({ moduleId });
+
   const queryFn = useCallback(
     async () =>
       axios
         .post<RelatedProposalByModuleIdResponse>(chainConfig.indexer, {
-          query: getRelatedProposalsByModuleIdPagination,
-          variables: { moduleId, offset, pageSize },
+          query:
+            currentChainId === "initiation-1"
+              ? getRelatedProposalsByModuleIdPagination
+              : getRelatedProposalsByModuleIdPaginationOld,
+          variables: { moduleId: id, offset, pageSize },
         })
         .then(({ data: res }) =>
           res.data.module_proposals.map<Proposal>((proposal) => ({
@@ -218,7 +227,7 @@ export const useRelatedProposalsByModuleIdPagination = (
             isExpedited: Boolean(proposal.proposal.is_expedited),
           }))
         ),
-    [chainConfig.indexer, moduleId, offset, pageSize]
+    [chainConfig.indexer, currentChainId, id, offset, pageSize]
   );
 
   return useQuery(
@@ -231,6 +240,7 @@ export const useRelatedProposalsByModuleIdPagination = (
     ],
     queryFn,
     {
+      enabled: isGov && !isLoading,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -240,19 +250,25 @@ export const useRelatedProposalsByModuleIdPagination = (
 export const useRelatedProposalsCountByModuleId = (
   moduleId: string
 ): UseQueryResult<Option<number>> => {
-  const { chainConfig } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { data: id, isLoading } = useModuleId({ moduleId });
+
   const queryFn = useCallback(
     async () =>
       axios
         .post(chainConfig.indexer, {
-          query: getRelatedProposalsCountByModuleId,
-          variables: { moduleId },
+          query:
+            currentChainId === "initiation-1"
+              ? getRelatedProposalsCountByModuleId
+              : getRelatedProposalsCountByModuleIdOld,
+          variables: { moduleId: id },
         })
         .then<number>(
           ({ data: res }) =>
             res.data.module_proposals_aggregate?.aggregate?.count
         ),
-    [chainConfig.indexer, moduleId]
+    [chainConfig.indexer, currentChainId, id]
   );
 
   return useQuery(
@@ -263,6 +279,7 @@ export const useRelatedProposalsCountByModuleId = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
+      enabled: isGov && !isLoading,
       keepPreviousData: true,
     }
   );
