@@ -337,7 +337,7 @@ const Searchbar = () => {
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement="top">
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent ref={boxRef}>
           <DrawerBody overflowY="scroll" p={2} m={2}>
             <FormControl>
               <Flex mb={4}>
