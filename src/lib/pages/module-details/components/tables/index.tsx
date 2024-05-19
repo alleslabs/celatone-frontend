@@ -11,7 +11,7 @@ import { useCallback } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { HexAddr, Nullish, Option } from "lib/types";
+import type { HexAddr, Option } from "lib/types";
 
 import { ModuleHistoryTable } from "./history";
 import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
@@ -26,7 +26,7 @@ export enum ModuleTablesTabIndex {
 interface ModuleTablesProps {
   address: HexAddr;
   moduleName: string;
-  moduleId: Nullish<number>;
+  moduleId: string;
   txsCount: Option<number>;
   historiesCount: Option<number>;
   relatedProposalsCount: Option<number>;

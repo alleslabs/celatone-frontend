@@ -43,7 +43,7 @@ export const ModulesTable = ({
       />
       {modules.map((module) => (
         <ModulesTableRow
-          key={module.name}
+          key={module.address + module.name}
           moduleInfo={module}
           templateColumns={templateColumns}
           isPublishedModules={isPublishedModules}

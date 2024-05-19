@@ -5,6 +5,7 @@ import type {
 } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import axios from "axios";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -15,9 +16,12 @@ import {
 } from "lib/app-provider";
 import {
   getModuleHistoriesCountQueryDocument,
+  getModuleHistoriesCountQueryDocumentOld,
   getModuleHistoriesQueryDocument,
+  getModuleHistoriesQueryDocumentOld,
   getModuleIdByNameAndVmAddressQueryDocument,
   getModuleInitialPublishInfoQueryDocument,
+  getModuleInitialPublishInfoQueryDocumentOld,
 } from "lib/query";
 import type {
   AbiFormData,
@@ -28,6 +32,7 @@ import type {
   ModuleHistory,
   Nullable,
   Option,
+  Remark,
   ResponseABI,
   RpcQueryError,
   UpgradePolicy,
@@ -242,100 +247,135 @@ export const useDecodeModule = ({
   );
 };
 
-export const useModuleId = (moduleName: string, vmAddress: HexAddr) => {
-  const { indexerGraphClient } = useCelatoneApp();
+// HACK: add interface for response
+const INITIATION_1 = "initiation-1";
+
+interface ModuleId {
+  data: {
+    modules: {
+      id: number;
+    }[];
+  };
+}
+
+export const useModuleId = ({ moduleId }: { moduleId: string }) => {
+  const { currentChainId, chainConfig } = useCelatoneApp();
   const queryFn = async () => {
-    return indexerGraphClient
-      .request(getModuleIdByNameAndVmAddressQueryDocument, {
-        name: moduleName,
-        vmAddress,
+    if (currentChainId === INITIATION_1) return moduleId;
+
+    const [vmAddress, name] = moduleId.split("::");
+    return axios
+      .post<ModuleId>(chainConfig.indexer, {
+        query: getModuleIdByNameAndVmAddressQueryDocument,
+        variables: { name, vmAddress },
       })
-      .then<Nullable<number>>(({ modules }) => modules[0]?.id ?? null);
+      .then(
+        ({
+          data: {
+            data: { modules },
+          },
+        }) => modules[0]?.id ?? 0
+      );
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_ID, indexerGraphClient, moduleName, vmAddress],
+    [CELATONE_QUERY_KEYS.MODULE_ID, chainConfig.indexer, moduleId],
     queryFn,
     {
-      enabled: Boolean(moduleName && vmAddress),
       retry: 1,
       refetchOnWindowFocus: false,
     }
   );
 };
+
+interface ModuleHistoriesResponse {
+  data: {
+    module_histories: {
+      remark: Remark;
+      upgrade_policy: UpgradePolicy;
+      block: {
+        height: number;
+        timestamp: string;
+      };
+    }[];
+  };
+}
 
 export const useModuleHistoriesByPagination = ({
   moduleId,
   offset,
   pageSize,
 }: {
-  moduleId: Option<Nullable<number>>;
+  moduleId: string;
   offset: number;
   pageSize: number;
 }): UseQueryResult<ModuleHistory[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { data: id, isLoading } = useModuleId({ moduleId });
 
-  const queryFn = async () => {
-    if (!moduleId) return [];
-    return indexerGraphClient
-      .request(getModuleHistoriesQueryDocument, {
-        moduleId,
-        pageSize: pageSize + 1,
-        offset,
+  const queryFn = async () =>
+    axios
+      .post<ModuleHistoriesResponse>(chainConfig.indexer, {
+        query:
+          currentChainId === INITIATION_1
+            ? getModuleHistoriesQueryDocument
+            : getModuleHistoriesQueryDocumentOld,
+        variables: { moduleId: id, pageSize: pageSize + 1, offset },
       })
-      .then(({ module_histories }) =>
-        module_histories
+      .then(({ data: res }) =>
+        res.data.module_histories
           .map<ModuleHistory>((history, idx) => ({
             remark: history.remark,
             upgradePolicy: history.upgrade_policy,
             height: history.block.height,
             timestamp: parseDate(history.block.timestamp),
             previousPolicy:
-              idx === module_histories.length - 1
+              idx === res.data.module_histories.length - 1
                 ? undefined
-                : module_histories[idx + 1].upgrade_policy,
+                : res.data.module_histories[idx + 1].upgrade_policy,
           }))
           .slice(0, pageSize)
       );
-  };
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.MODULE_HISTORIES,
-      indexerGraphClient,
+      chainConfig.indexer,
       moduleId,
       pageSize,
       offset,
     ],
     queryFn,
     {
-      enabled: Boolean(moduleId),
+      enabled: Boolean(moduleId) && !isLoading,
       retry: 1,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useModuleHistoriesCount = (moduleId: Option<Nullable<number>>) => {
-  const { indexerGraphClient } = useCelatoneApp();
+export const useModuleHistoriesCount = (moduleId: string) => {
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { data: id, isLoading } = useModuleId({ moduleId });
 
-  const queryFn = async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getModuleHistoriesCountQueryDocument, {
-        moduleId,
+  const queryFn = async () =>
+    axios
+      .post(chainConfig.indexer, {
+        query:
+          currentChainId === INITIATION_1
+            ? getModuleHistoriesCountQueryDocument
+            : getModuleHistoriesCountQueryDocumentOld,
+        variables: { moduleId: id },
       })
-      .then(
-        ({ module_histories_aggregate }) =>
-          module_histories_aggregate.aggregate?.count
+      .then<number>(
+        ({ data: res }) => res.data.module_histories_aggregate.aggregate?.count
       );
-  };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_HISTORIES_COUNT, indexerGraphClient, moduleId],
+    [CELATONE_QUERY_KEYS.MODULE_HISTORIES_COUNT, chainConfig.indexer, moduleId],
     queryFn,
     {
-      enabled: Boolean(moduleId),
+      enabled: Boolean(moduleId) && !isLoading,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -352,17 +392,23 @@ export interface ModuleInitialPublishInfo {
 }
 
 export const useModuleDetailsQuery = (
-  moduleId: Option<Nullable<number>>
+  moduleId: string
 ): UseQueryResult<ModuleInitialPublishInfo> => {
-  const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainId, chainConfig } = useCelatoneApp();
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { data: id, isLoading } = useModuleId({ moduleId });
 
-  const queryFn = async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getModuleInitialPublishInfoQueryDocument, { moduleId, isGov })
-      .then<ModuleInitialPublishInfo>(({ modules }) => {
-        const target = modules[0];
+  const queryFn = async () =>
+    axios
+      .post(chainConfig.indexer, {
+        query:
+          currentChainId === INITIATION_1
+            ? getModuleInitialPublishInfoQueryDocument
+            : getModuleInitialPublishInfoQueryDocumentOld,
+        variables: { moduleId: id, isGov },
+      })
+      .then<ModuleInitialPublishInfo>(({ data: res }) => {
+        const target = res.data.modules[0];
         if (!target) throw new Error(`Cannot find module with id ${moduleId}`);
         return {
           publisherVmAddress: target.publisher_vm_address.vm_address as HexAddr,
@@ -375,13 +421,12 @@ export const useModuleDetailsQuery = (
           initProposalTitle: target.module_proposals?.[0]?.proposal.title,
         };
       });
-  };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_DETAILS, indexerGraphClient, moduleId],
+    [CELATONE_QUERY_KEYS.MODULE_DETAILS, chainConfig.indexer, moduleId],
     queryFn,
     {
-      enabled: Boolean(moduleId),
+      enabled: Boolean(moduleId) && !isLoading,
       refetchOnWindowFocus: false,
     }
   );

@@ -1,6 +1,7 @@
 import type { Coin } from "@cosmjs/amino";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import type Big from "big.js";
 import { useCallback } from "react";
 
@@ -8,10 +9,13 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useGovConfig,
 } from "lib/app-provider";
 import {
   getRelatedProposalsByModuleIdPagination,
+  getRelatedProposalsByModuleIdPaginationOld,
   getRelatedProposalsCountByModuleId,
+  getRelatedProposalsCountByModuleIdOld,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
 import { big } from "lib/types";
@@ -19,7 +23,6 @@ import type {
   BechAddr,
   BechAddr20,
   BechAddr32,
-  Nullish,
   Option,
   Proposal,
   ProposalParams,
@@ -39,7 +42,7 @@ import {
 } from "lib/utils";
 
 import { useAssetInfos } from "./assetService";
-import { useMovePoolInfos } from "./move";
+import { useModuleId, useMovePoolInfos } from "./move";
 import type {
   DepositParamsInternal,
   ProposalAnswerCountsResponse,
@@ -170,46 +173,74 @@ export const useRelatedProposalsByContractAddress = (
   );
 };
 
+// HACK: add interface for response
+interface RelatedProposalByModuleIdResponse {
+  data: {
+    module_proposals: {
+      proposal_id: number;
+      proposal: {
+        title: string;
+        status: string;
+        voting_end_time: string;
+        deposit_end_time: string;
+        resolved_height: number | null;
+        type: string;
+        is_expedited: boolean;
+        account: {
+          address: string;
+        };
+      };
+    }[];
+  };
+}
+
 export const useRelatedProposalsByModuleIdPagination = (
-  moduleId: Nullish<number>,
+  moduleId: string,
   offset: number,
   pageSize: number
 ): UseQueryResult<Proposal[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getRelatedProposalsByModuleIdPagination, {
-        moduleId,
-        offset,
-        pageSize,
-      })
-      .then(({ module_proposals }) =>
-        module_proposals.map<Proposal>((proposal) => ({
-          id: proposal.proposal_id,
-          title: proposal.proposal.title,
-          status: proposal.proposal.status as ProposalStatus,
-          votingEndTime: parseDate(proposal.proposal.voting_end_time),
-          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
-          resolvedHeight: proposal.proposal.resolved_height ?? null,
-          // TODO: fix
-          types: [proposal.proposal.type as ProposalType],
-          proposer: proposal.proposal.account?.address as BechAddr,
-          isExpedited: Boolean(proposal.proposal.is_expedited),
-        }))
-      );
-  }, [indexerGraphClient, moduleId, offset, pageSize]);
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { data: id, isLoading } = useModuleId({ moduleId });
+
+  const queryFn = useCallback(
+    async () =>
+      axios
+        .post<RelatedProposalByModuleIdResponse>(chainConfig.indexer, {
+          query:
+            currentChainId === "initiation-1"
+              ? getRelatedProposalsByModuleIdPagination
+              : getRelatedProposalsByModuleIdPaginationOld,
+          variables: { moduleId: id, offset, pageSize },
+        })
+        .then(({ data: res }) =>
+          res.data.module_proposals.map<Proposal>((proposal) => ({
+            id: proposal.proposal_id,
+            title: proposal.proposal.title,
+            status: proposal.proposal.status as ProposalStatus,
+            votingEndTime: parseDate(proposal.proposal.voting_end_time),
+            depositEndTime: parseDate(proposal.proposal.deposit_end_time),
+            resolvedHeight: proposal.proposal.resolved_height ?? null,
+            // TODO: fix
+            types: [proposal.proposal.type as ProposalType],
+            proposer: proposal.proposal.account?.address as BechAddr,
+            isExpedited: Boolean(proposal.proposal.is_expedited),
+          }))
+        ),
+    [chainConfig.indexer, currentChainId, id, offset, pageSize]
+  );
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.PROPOSALS_BY_MODULE_ID,
       moduleId,
-      indexerGraphClient,
+      chainConfig.indexer,
       offset,
       pageSize,
     ],
     queryFn,
     {
+      enabled: isGov && !isLoading,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -217,29 +248,38 @@ export const useRelatedProposalsByModuleIdPagination = (
 };
 
 export const useRelatedProposalsCountByModuleId = (
-  moduleId: Nullish<number>
+  moduleId: string
 ): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    if (!moduleId) throw new Error("Module id not found");
-    return indexerGraphClient
-      .request(getRelatedProposalsCountByModuleId, {
-        moduleId,
-      })
-      .then(
-        ({ module_proposals_aggregate }) =>
-          module_proposals_aggregate?.aggregate?.count
-      );
-  }, [indexerGraphClient, moduleId]);
+  const { currentChainId, chainConfig } = useCelatoneApp();
+  const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
+  const { data: id, isLoading } = useModuleId({ moduleId });
+
+  const queryFn = useCallback(
+    async () =>
+      axios
+        .post(chainConfig.indexer, {
+          query:
+            currentChainId === "initiation-1"
+              ? getRelatedProposalsCountByModuleId
+              : getRelatedProposalsCountByModuleIdOld,
+          variables: { moduleId: id },
+        })
+        .then<number>(
+          ({ data: res }) =>
+            res.data.module_proposals_aggregate?.aggregate?.count
+        ),
+    [chainConfig.indexer, currentChainId, id]
+  );
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.PROPOSALS_COUNT_BY_MODULE_ID,
+      chainConfig.indexer,
       moduleId,
-      indexerGraphClient,
     ],
     createQueryFnWithTimeout(queryFn),
     {
+      enabled: isGov && !isLoading,
       keepPreviousData: true,
     }
   );

@@ -7,12 +7,12 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
-import type { Nullish, Option } from "lib/types";
+import type { Option } from "lib/types";
 
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
 interface ModuleHistoryTableProps {
-  moduleId: Nullish<number>;
+  moduleId: string;
   historyCount: Option<number>;
   scrollComponentId?: string;
   refetchCount: () => void;

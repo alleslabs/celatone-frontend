@@ -1,3 +1,5 @@
+import { gql } from "graphql-request";
+
 import { graphql } from "lib/gql";
 
 export const getTxsByPoolIdPagination = graphql(`
@@ -97,7 +99,17 @@ export const getBlockTransactionCountByHeightQueryDocument = graphql(`
   }
 `);
 
-export const getModuleTransactionsCountQueryDocument = graphql(`
+export const getModuleTransactionsCountQueryDocument = gql`
+  query getModuleTransactionsCountQuery($moduleId: String!) {
+    module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
+export const getModuleTransactionsCountQueryDocumentOld = gql`
   query getModuleTransactionsCountQuery($moduleId: Int!) {
     module_transactions_aggregate(where: { module_id: { _eq: $moduleId } }) {
       aggregate {
@@ -105,4 +117,4 @@ export const getModuleTransactionsCountQueryDocument = graphql(`
       }
     }
   }
-`);
+`;
