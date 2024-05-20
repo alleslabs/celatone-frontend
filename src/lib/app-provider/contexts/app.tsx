@@ -28,6 +28,7 @@ interface AppProviderProps {
 }
 
 interface AppContextInterface {
+  isHydrated: boolean;
   availableChainIds: string[];
   currentChainId: string;
   chainConfig: ChainConfig;
@@ -38,6 +39,7 @@ interface AppContextInterface {
 }
 
 const DEFAULT_STATES: AppContextInterface = {
+  isHydrated: false,
   availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
   chainConfig: FALLBACK_CHAIN_CONFIG,
@@ -66,6 +68,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     changeFavicon(theme.branding.favicon);
 
     setStates({
+      isHydrated: true,
       availableChainIds: SUPPORTED_CHAIN_IDS,
       currentChainId: newChainId,
       chainConfig,
