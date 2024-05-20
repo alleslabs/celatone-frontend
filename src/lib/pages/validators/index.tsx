@@ -24,7 +24,7 @@ const SCROLL_COMPONENT_ID = "validator-table-header";
 const Validators = () => {
   const router = useRouter();
   const isMobile = useMobile();
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   useGovConfig({ shouldRedirect: true });
 
   const [isActive, setIsActive] = useState(true);
@@ -64,7 +64,7 @@ const Validators = () => {
               setOrder={setOrder}
               isDesc={isDesc}
               setIsDesc={setIsDesc}
-              allowUptime={tier === "full"}
+              allowUptime={isFullTier}
             />
           )}
           <InputWithIcon
@@ -84,7 +84,7 @@ const Validators = () => {
         </Flex>
       </PageHeaderContainer>
       <PageContainer>
-        {tier === "full" ? (
+        {isFullTier ? (
           <ValidatorsBodyFull
             isActive={isActive}
             setCounts={setCounts}

@@ -11,7 +11,7 @@ import {
   TableTitle,
   ViewMore,
 } from "lib/components/table";
-import { useProposalsByAddress } from "lib/services/proposalService";
+import { useProposalsByAddress } from "lib/services/proposal";
 import type { BechAddr, Option } from "lib/types";
 
 interface OpenedProposalsTableProps {

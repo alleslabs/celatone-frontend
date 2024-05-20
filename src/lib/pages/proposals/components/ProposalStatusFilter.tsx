@@ -1,10 +1,10 @@
 import type { InputProps } from "@chakra-ui/react";
 import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import type { Dispatch, SetStateAction } from "react";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
+import { useTierConfig } from "lib/app-provider";
 import {
   DropdownContainer,
   FilterChip,
@@ -13,16 +13,16 @@ import {
 } from "lib/components/filter";
 import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
+import { toggleItem } from "lib/utils";
 
 export interface ProposalStatusFilterProps extends InputProps {
   result: ProposalStatus[];
   minW?: string;
   label?: string;
   placeholder?: string;
-  setResult: Dispatch<SetStateAction<ProposalStatus[]>>;
+  setResult: (option: ProposalStatus[]) => void;
+  isMulti: boolean;
 }
-
-const OPTIONS = Object.values(ProposalStatus);
 
 export const ProposalStatusFilter = forwardRef<
   HTMLInputElement,
@@ -35,6 +35,7 @@ export const ProposalStatusFilter = forwardRef<
       setResult,
       placeholder,
       label,
+      isMulti,
     }: ProposalStatusFilterProps,
     ref
   ) => {
@@ -42,6 +43,15 @@ export const ProposalStatusFilter = forwardRef<
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
+    const isFullTier = useTierConfig() === "full";
+
+    const OPTIONS = isFullTier
+      ? Object.values(ProposalStatus)
+      : Object.values(ProposalStatus).filter(
+          (status) =>
+            status !== ProposalStatus.DEPOSIT_FAILED &&
+            status !== ProposalStatus.CANCELLED
+        );
 
     const dropdownValue = useMemo(
       () =>
@@ -50,22 +60,28 @@ export const ProposalStatusFilter = forwardRef<
               threshold: matchSorter.rankings.CONTAINS,
             })
           : OPTIONS,
-      [keyword]
+      [keyword, OPTIONS]
     );
 
     const isOptionSelected = (option: ProposalStatus) =>
       result.some((selectedOption) => selectedOption === option);
 
     const selectOption = (option: ProposalStatus) => {
-      if (inputRef.current) {
-        setKeyword("");
-      }
+      setKeyword("");
+
       if (result.includes(option)) {
         trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
-        setResult((prevState) => prevState.filter((value) => value !== option));
       } else {
         trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-        setResult((prevState) => [...prevState, option]);
+      }
+
+      if (!isMulti) {
+        setIsDropdown(false);
+
+        if (result[0] === option) setResult([]);
+        else setResult([option]);
+      } else {
+        setResult(toggleItem(result, option));
       }
     };
 
@@ -92,7 +108,7 @@ export const ProposalStatusFilter = forwardRef<
                 <FilterChip
                   key={option}
                   chipComponent={<StatusChip status={option} hasCloseBtn />}
-                  onSelect={() => selectOption(option)}
+                  onSelect={() => setResult(toggleItem(result, option))}
                 />
               ))}
             </Flex>

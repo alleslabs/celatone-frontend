@@ -1,15 +1,32 @@
-import type { Coin } from "@cosmjs/amino";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import type Big from "big.js";
 import { useCallback } from "react";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import { useAssetInfos } from "../assetService";
+import { useMovePoolInfos } from "../move/poolService";
+import type {
+  GovParams,
+  ProposalAnswerCountsResponse,
+  ProposalDataResponse,
+  ProposalsResponse,
+  ProposalsResponseItemLcd,
+  ProposalsResponseLcd,
+  ProposalValidatorVotesResponse,
+  ProposalVotesResponse,
+  RelatedProposalsResponse,
+  UploadAccess,
+} from "../types/proposal";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useLcdEndpoint,
+} from "lib/app-provider";
 import { big } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
   BechAddr32,
+  Coin,
   Option,
   ProposalParams,
   ProposalStatus,
@@ -17,7 +34,6 @@ import type {
   ProposalVotesInfo,
   ProposalVoteType,
   Token,
-  U,
 } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -26,19 +42,6 @@ import {
   getTokenLabel,
 } from "lib/utils";
 
-import { useAssetInfos } from "./assetService";
-import { useMovePoolInfos } from "./move";
-import type {
-  DepositParamsInternal,
-  ProposalAnswerCountsResponse,
-  ProposalDataResponse,
-  ProposalsResponse,
-  ProposalValidatorVotesResponse,
-  ProposalVotesResponse,
-  RelatedProposalsResponse,
-  UploadAccess,
-  VotingParamsInternal,
-} from "./proposal";
 import {
   fetchGovDepositParams,
   fetchGovUploadAccessParams,
@@ -53,7 +56,95 @@ import {
   getProposalVotes,
   getProposalVotesInfo,
   getRelatedProposalsByContractAddress,
-} from "./proposal";
+} from "./api";
+import { getProposalDataLcd, getProposalsLcd } from "./lcd";
+
+export const useGovParams = (): UseQueryResult<GovParams> => {
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const endpoint = useBaseApiRoute("cosmwasm");
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
+
+  const queryFn = useCallback(
+    () =>
+      Promise.all([
+        fetchGovDepositParams(lcdEndpoint),
+        fetchGovUploadAccessParams(endpoint),
+        fetchGovVotingParams(lcdEndpoint),
+      ]).then<GovParams>((params) => {
+        const minDepositParam = params[0].minDeposit[0];
+        const minDepositToken = coinToTokenWithValue(
+          minDepositParam.denom,
+          minDepositParam.amount,
+          assetInfos,
+          movePoolInfos
+        );
+        const minDepositAmount = deexponentify(
+          minDepositToken.amount,
+          minDepositToken.precision
+        ).toFixed() as Token;
+
+        return {
+          depositParams: {
+            ...params[0],
+            minDeposit: {
+              ...minDepositParam,
+              amount: minDepositToken.amount,
+              formattedAmount: minDepositAmount,
+              formattedDenom: getTokenLabel(
+                minDepositToken.denom,
+                minDepositToken.symbol
+              ),
+              formattedToken: formatTokenWithValue(minDepositToken),
+              precision: minDepositToken.precision ?? 0,
+            },
+            minInitialDeposit: big(params[0].minInitialDepositRatio)
+              .times(minDepositAmount)
+              .toFixed(2) as Token,
+          },
+          uploadAccess: params[1],
+          votingParams: params[2],
+        };
+      }),
+    [assetInfos, endpoint, lcdEndpoint, movePoolInfos]
+  );
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint, assetInfos],
+    queryFn,
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
+  const endpoint = useBaseApiRoute("cosmwasm");
+  return useQuery(
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, endpoint],
+    () => fetchGovUploadAccessParams(endpoint),
+    { keepPreviousData: true, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalParams = () => {
+  const endpoint = useBaseApiRoute("proposals");
+  return useQuery<ProposalParams<Coin>>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
+    async () => getProposalParams(endpoint),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useProposalTypes = () => {
+  const endpoint = useBaseApiRoute("proposals");
+  return useQuery<ProposalType[]>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
+    async () => getProposalTypes(endpoint),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
 
 export const useProposals = (
   limit: number,
@@ -91,22 +182,26 @@ export const useProposals = (
   );
 };
 
-export const useProposalParams = () => {
-  const endpoint = useBaseApiRoute("proposals");
-  return useQuery<ProposalParams<Coin>>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
-    async () => getProposalParams(endpoint),
-    { retry: 1, refetchOnWindowFocus: false }
-  );
-};
+export const useProposalsLcd = (
+  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
+) => {
+  const lcdEndpoint = useLcdEndpoint();
 
-export const useProposalTypes = () => {
-  const endpoint = useBaseApiRoute("proposals");
-  return useQuery<ProposalType[]>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
-    async () => getProposalTypes(endpoint),
-    { retry: 1, refetchOnWindowFocus: false }
+  const query = useInfiniteQuery<ProposalsResponseLcd>(
+    [CELATONE_QUERY_KEYS.PROPOSALS_LCD, lcdEndpoint, status],
+    ({ pageParam }) => getProposalsLcd(lcdEndpoint, pageParam, status),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
   );
+
+  const { data, ...rest } = query;
+
+  return {
+    data: data?.pages.flatMap((page) => page.proposals),
+    ...rest,
+  };
 };
 
 export const useProposalsByAddress = (
@@ -158,96 +253,6 @@ export const useRelatedProposalsByContractAddress = (
   );
 };
 
-export interface MinDeposit {
-  amount: U<Token<Big>>;
-  denom: string;
-  formattedAmount: Token;
-  formattedDenom: string;
-  formattedToken: string;
-  precision: number;
-}
-
-interface DepositParamsReturn
-  extends Omit<DepositParamsInternal, "minDeposit"> {
-  minDeposit: MinDeposit;
-  minInitialDeposit: Token;
-}
-
-export interface GovParams {
-  depositParams: DepositParamsReturn;
-  uploadAccess: UploadAccess;
-  votingParams: VotingParamsInternal;
-}
-
-export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
-  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
-
-  const queryFn = useCallback(
-    () =>
-      Promise.all([
-        fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(cosmwasmEndpoint),
-        fetchGovVotingParams(lcdEndpoint),
-      ]).then<GovParams>((params) => {
-        const minDepositParam = params[0].minDeposit[0];
-        const minDepositToken = coinToTokenWithValue(
-          minDepositParam.denom,
-          minDepositParam.amount,
-          assetInfos,
-          movePoolInfos
-        );
-        const minDepositAmount = deexponentify(
-          minDepositToken.amount,
-          minDepositToken.precision
-        ).toFixed() as Token;
-
-        return {
-          depositParams: {
-            ...params[0],
-            minDeposit: {
-              ...minDepositParam,
-              amount: minDepositToken.amount,
-              formattedAmount: minDepositAmount,
-              formattedDenom: getTokenLabel(
-                minDepositToken.denom,
-                minDepositToken.symbol
-              ),
-              formattedToken: formatTokenWithValue(minDepositToken),
-              precision: minDepositToken.precision ?? 0,
-            },
-            minInitialDeposit: big(params[0].minInitialDepositRatio)
-              .times(minDepositAmount)
-              .toFixed(2) as Token,
-          },
-          uploadAccess: params[1],
-          votingParams: params[2],
-        };
-      }),
-    [assetInfos, cosmwasmEndpoint, lcdEndpoint, movePoolInfos]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint, assetInfos],
-    queryFn,
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
-  return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, cosmwasmEndpoint],
-    () => fetchGovUploadAccessParams(cosmwasmEndpoint),
-    { keepPreviousData: true, refetchOnWindowFocus: false }
-  );
-};
-
 export const useProposalData = (id: number, enabled = true) => {
   const endpoint = useBaseApiRoute("proposals");
 
@@ -255,6 +260,20 @@ export const useProposalData = (id: number, enabled = true) => {
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
     async () => getProposalData(endpoint, id),
     { retry: 1, enabled }
+  );
+};
+
+export const useProposalDataLcd = (id: string, enabled = true) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  return useQuery<ProposalsResponseItemLcd>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
+    async () => getProposalDataLcd(lcdEndpoint, id),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
+    }
   );
 };
 

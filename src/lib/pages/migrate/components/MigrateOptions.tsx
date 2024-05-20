@@ -4,7 +4,7 @@ import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { UploadAccess } from "lib/services/proposal";
+import type { UploadAccess } from "lib/services/types";
 import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
