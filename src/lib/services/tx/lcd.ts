@@ -14,9 +14,12 @@ export const getTxsByContractAddressLcd = async (
   address: BechAddr32
 ) =>
   axios
-    .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs?events=wasm._contract_address=%27${encodeURI(address)}%27&order_by=2`
-    )
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        events: `wasm._contract_address=%27${encodeURI(address)}%27`,
+        order_by: 2,
+      },
+    })
     .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
 
 export const getTxsByAccountAddressLcd = async (
@@ -24,7 +27,10 @@ export const getTxsByAccountAddressLcd = async (
   address: BechAddr20
 ) =>
   axios
-    .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs?events=message.sender=%27${encodeURI(address)}%27&order_by=2`
-    )
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        events: `message.sender=%27${encodeURI(address)}%27`,
+        order_by: 2,
+      },
+    })
     .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
