@@ -269,7 +269,7 @@ export const zProposalsResponseItemLcd = z
       .map((term: string) => capitalize(term.toLowerCase()))
       .join("") as ProposalStatus,
     resolvedHeight: null,
-    types: [],
+    types: val.messages.map((msg) => msg["@type"]),
     isExpedited: val.expedited,
   }));
 export type ProposalsResponseItemLcd = z.infer<
