@@ -19,7 +19,6 @@ import type { BechAddr, BechAddr32, JsonDataType } from "lib/types";
 import {
   getAdminContractsByAddress,
   getContractData,
-  getContractQueryMsgs,
   getContracts,
   getContractsByCodeId,
   getContractTableCounts,
@@ -29,6 +28,7 @@ import {
 import {
   getContractLcd,
   getContractQueryLcd,
+  getContractQueryMsgs,
   getContractsByCodeIdLcd,
 } from "./lcd";
 
@@ -157,7 +157,7 @@ export const useContractTableCounts = (contractAddress: BechAddr32) => {
 };
 
 export const useContractQueryMsgs = (contractAddress: BechAddr32) => {
-  const endpoint = useBaseApiRoute("contracts");
+  const endpoint = useLcdEndpoint();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, endpoint, contractAddress],
