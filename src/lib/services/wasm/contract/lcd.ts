@@ -56,7 +56,6 @@ export const getContractQueryMsgs = async (
     .catch(({ response }) => {
       const resMsg = response.data.message as string;
 
-      // Check if Sylvia framework
       const sylviaRegex =
         /Messages supported by this contract: (.*?): query wasm contract failed/;
       const contentMatch = sylviaRegex.exec(resMsg);
@@ -64,12 +63,15 @@ export const getContractQueryMsgs = async (
       if (contentMatch && contentMatch[1]) {
         const content = contentMatch[1].split(",");
         const cmds = content.map((each) => each.trim());
+
         return { query: cmds };
       }
+
       const matches = resMsg.match(/`(.*?)`/g);
       const cmds = matches
         ? matches.slice(1).map((match) => match.replace(/`/g, ""))
         : [];
+
       return { query: cmds };
     });
 
