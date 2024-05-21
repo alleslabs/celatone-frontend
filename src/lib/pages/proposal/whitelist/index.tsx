@@ -43,7 +43,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
-import { useGovParams } from "lib/services/proposalService";
+import { useGovParams } from "lib/services/proposal";
 import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";

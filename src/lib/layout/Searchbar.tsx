@@ -27,6 +27,7 @@ import {
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+import { useEaster } from "lib/hooks";
 import type {
   ResultMetadata,
   SearchResultType,
@@ -329,6 +330,8 @@ const Searchbar = () => {
     handler: onClose,
   });
 
+  useEaster(keyword);
+
   return isMobile ? (
     <>
       <Button variant="outline-gray" size="sm" onClick={onOpen}>
@@ -336,7 +339,7 @@ const Searchbar = () => {
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement="top">
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent ref={boxRef}>
           <DrawerBody overflowY="scroll" p={2} m={2}>
             <FormControl>
               <Flex mb={4}>

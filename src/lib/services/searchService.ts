@@ -21,7 +21,7 @@ import { useModuleByAddressLcd } from "./move/moduleService";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
-import { useProposalData } from "./proposalService";
+import { useProposalData } from "./proposal";
 import { useTxData } from "./tx";
 import { useValidatorData } from "./validator";
 import { useCodeLcd } from "./wasm/code";

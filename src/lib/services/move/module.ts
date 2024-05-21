@@ -1,8 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { zProposal, zProposalsResponseItem } from "../proposal";
-import { zTxsResponseItem } from "../types";
+import { zProposal, zProposalsResponseItem, zTxsResponseItem } from "../types";
 import type {
   AbiFormData,
   Addr,

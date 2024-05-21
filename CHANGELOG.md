@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
+- [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Support proposals page lite version with LCD endpoint
 - [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version
 - [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
 - [#933](https://github.com/alleslabs/celatone-frontend/pull/933) Support lite version for code details contract list
@@ -61,6 +62,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
+- [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Add isHydrated in app context for redirect behaviors
+- [#921](https://github.com/alleslabs/celatone-frontend/pull/921) Add theme
 - [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
 - [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
 - [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
@@ -74,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Fix mobile search not focusable
 - [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
 - [#932](https://github.com/alleslabs/celatone-frontend/pull/932) Add isGov in module details
 - [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name

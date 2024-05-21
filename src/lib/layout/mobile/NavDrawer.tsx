@@ -32,7 +32,7 @@ import { usePublicProjectStore } from "lib/providers/store";
 import { getNavDrawerFull, getNavDrawerLite } from "./utils";
 
 export const NavDrawer = () => {
-  const tier = useTierConfig();
+  const isFullTier = useTierConfig() === "full";
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
@@ -43,19 +43,18 @@ export const NavDrawer = () => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const navMenu =
-    tier === "full"
-      ? getNavDrawerFull(
-          govConfig.enabled,
-          wasmConfig.enabled,
-          moveConfig.enabled,
-          nftConfig.enabled
-        )
-      : getNavDrawerLite(
-          govConfig.enabled,
-          wasmConfig.enabled,
-          moveConfig.enabled
-        );
+  const navMenu = isFullTier
+    ? getNavDrawerFull(
+        govConfig.enabled,
+        wasmConfig.enabled,
+        moveConfig.enabled,
+        nftConfig.enabled
+      )
+    : getNavDrawerLite(
+        govConfig.enabled,
+        wasmConfig.enabled,
+        moveConfig.enabled
+      );
 
   if (publicProject.enabled) {
     navMenu.push({

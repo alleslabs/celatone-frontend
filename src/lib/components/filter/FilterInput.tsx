@@ -2,14 +2,11 @@ import { Flex, FormLabel, Input } from "@chakra-ui/react";
 import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
 import { DropdownChevron } from "../DropdownChevron";
-import type { ProposalStatus, ProposalType } from "lib/types";
 import { mergeRefs } from "lib/utils";
-
-type Result = ProposalType | ProposalStatus;
 
 interface FilterInputProps {
   keyword: string;
-  result: Result[];
+  result: string[];
   isDropdown: boolean;
   chipContainerComponent: JSX.Element;
   inputRef: RefObject<HTMLInputElement>;
@@ -49,7 +46,7 @@ export const FilterInput = ({
         autoComplete="off"
         size="lg"
         minW="150px"
-        placeholder={result.length ? "" : placeholder}
+        placeholder={result.length > 0 ? "" : placeholder}
         ref={mergeRefs([inputRef, ref])}
         maxLength={36}
         style={{ border: 0, maxHeight: "54px" }}
