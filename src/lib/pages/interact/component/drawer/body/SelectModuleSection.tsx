@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
 import { NoImageEmptyState } from "../../common";
@@ -14,7 +13,7 @@ interface SelectModuleSectionProps {
   modules: IndexedModule[];
   setStep?: (step: ModuleInteractionMobileStep) => void;
   selectedModule: Option<IndexedModule>;
-  setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
+  setSelectedModule: (module: IndexedModule) => void;
 }
 
 interface RenderModulesProps {
@@ -22,7 +21,7 @@ interface RenderModulesProps {
   modulesLength: number;
   filtered: IndexedModule[];
   selectedModule: Option<IndexedModule>;
-  setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
+  setSelectedModule: (module: IndexedModule) => void;
   setStep?: (step: ModuleInteractionMobileStep) => void;
 }
 
