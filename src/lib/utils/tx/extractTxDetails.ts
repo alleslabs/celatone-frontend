@@ -1,6 +1,5 @@
 import { snakeCase } from "snake-case";
 
-import { camelToSnake } from "../formatter";
 import type { TypeUrl } from "lib/data";
 import type { Log } from "lib/services/types";
 import type { MessageResponse, Option } from "lib/types";
@@ -37,33 +36,21 @@ export const extractTxDetails = <T extends TypeUrl>(
       return {
         type,
         ...msgBody,
-        code_id: findAttr(camelToSnake(log), "store_code", "code_id"),
+        code_id: findAttr(log, "store_code", "code_id"),
       } as MsgReturnType<T>;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       return {
         type,
         ...msgBody,
-        contract_address: findAttr(
-          camelToSnake(log),
-          "instantiate",
-          "_contract_address"
-        ),
+        contract_address: findAttr(log, "instantiate", "_contract_address"),
       } as MsgReturnType<T>;
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       return {
         type,
         ...msgBody,
-        proposal_id: findAttr(
-          camelToSnake(log),
-          "submit_proposal",
-          "proposal_id"
-        ),
-        proposal_type: findAttr(
-          camelToSnake(log),
-          "submit_proposal",
-          "proposal_type"
-        ),
+        proposal_id: findAttr(log, "submit_proposal", "proposal_id"),
+        proposal_type: findAttr(log, "submit_proposal", "proposal_type"),
       } as MsgReturnType<T>;
     default:
       return { type, ...msgBody } as MsgReturnType<T>;

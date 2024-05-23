@@ -14,7 +14,6 @@ import { useMovePoolInfos } from "lib/services/move";
 import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import {
-  camelToSnake,
   coinToTokenWithValue,
   extractMsgType,
   formatTokenWithValue,
@@ -60,10 +59,7 @@ export const TxMsgExpand = ({
               and stored as{" "}
               <ExplorerLink
                 type="code_id"
-                value={
-                  findAttribute([camelToSnake(log)], "store_code", "code_id")
-                    .value
-                }
+                value={findAttribute([log], "store_code", "code_id").value}
                 showCopyOnHover
                 fontSize="24px"
                 textVariant="body1"
@@ -83,11 +79,7 @@ export const TxMsgExpand = ({
             <ExplorerLink
               type="contract_address"
               value={
-                findAttribute(
-                  [camelToSnake(log)],
-                  "instantiate",
-                  "_contract_address"
-                ).value
+                findAttribute([log], "instantiate", "_contract_address").value
               }
               showCopyOnHover
               textVariant="body1"
@@ -114,11 +106,7 @@ export const TxMsgExpand = ({
             <ExplorerLink
               type="contract_address"
               value={
-                findAttribute(
-                  [camelToSnake(log)],
-                  "instantiate",
-                  "_contract_address"
-                ).value
+                findAttribute([log], "instantiate", "_contract_address").value
               }
               showCopyOnHover
               textVariant="body1"
@@ -262,11 +250,7 @@ export const TxMsgExpand = ({
               <ExplorerLink
                 type="proposal_id"
                 value={
-                  findAttribute(
-                    [camelToSnake(log)],
-                    "submit_proposal",
-                    "proposal_id"
-                  ).value
+                  findAttribute([log], "submit_proposal", "proposal_id").value
                 }
                 showCopyOnHover
                 textVariant="body1"

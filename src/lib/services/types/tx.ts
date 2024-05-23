@@ -96,13 +96,11 @@ const zEvent = z.object({
 });
 export type Event = z.infer<typeof zEvent>;
 
-const zLog = z
-  .object({
-    msg_index: z.number(),
-    log: z.string(),
-    events: z.array(zEvent),
-  })
-  .transform(snakeToCamel);
+const zLog = z.object({
+  msg_index: z.number(),
+  log: z.string(),
+  events: z.array(zEvent),
+});
 export type Log = z.infer<typeof zLog>;
 
 const zTxResponse = z
@@ -121,7 +119,10 @@ const zTxResponse = z
     timestamp: zUtcDate.optional(),
     events: z.array(zEvent),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    logs: val.logs,
+  }));
 export type TxResponse = z.infer<typeof zTxResponse>;
 
 export interface TxData extends TxResponse {

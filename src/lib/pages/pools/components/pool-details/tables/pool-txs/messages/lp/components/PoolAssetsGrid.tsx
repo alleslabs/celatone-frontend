@@ -33,7 +33,7 @@ export const PoolAssetsGrid = ({
   if (txHash && isLoading) return <Loading withBorder={false} />;
 
   const msgEvents = txData?.logs.find(
-    (log) => log.msgIndex === msgIndex
+    (log) => log.msg_index === msgIndex
   )?.events;
   const receivedEvent = msgEvents?.find(
     (event) => event.type === "coin_received"

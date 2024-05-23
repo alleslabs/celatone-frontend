@@ -261,7 +261,7 @@ export const fromLogs: TestCase = {
           },
         ],
         log: "",
-        msgIndex: 0,
+        msg_index: 0,
       },
     ],
     rawLog:
@@ -354,7 +354,7 @@ export const fromLogs: TestCase = {
         },
       ],
       log: "",
-      msgIndex: 0,
+      msg_index: 0,
     },
   ],
 };
@@ -799,7 +799,7 @@ export const fromEvents: TestCase = {
   },
   result: [
     {
-      msgIndex: 0,
+      msg_index: 0,
       log: "",
       events: [
         {

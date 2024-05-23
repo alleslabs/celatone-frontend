@@ -34,7 +34,7 @@ export const PoolLPCard = ({
   const poolDenom = getPoolDenom(poolId);
 
   const msgEvents = txData?.logs.find(
-    (log) => log.msgIndex === msgIndex
+    (log) => log.msg_index === msgIndex
   )?.events;
   const eventShareAmount = msgEvents
     ?.find(

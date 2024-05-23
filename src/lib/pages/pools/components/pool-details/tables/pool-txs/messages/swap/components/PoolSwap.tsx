@@ -63,7 +63,7 @@ export const PoolSwap = ({
   if (!txData) return <ErrorFetchingDetail />;
 
   const msgEvents = txData.logs.find(
-    (log) => log.msgIndex === msgIndex
+    (log) => log.msg_index === msgIndex
   )?.events;
 
   const { inAsset, outAsset } = getAssets(exactInput, msgEvents);
