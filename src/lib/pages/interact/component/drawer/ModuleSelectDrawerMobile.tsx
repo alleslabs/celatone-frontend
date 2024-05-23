@@ -1,6 +1,5 @@
 import {
   Button,
-  Divider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -9,6 +8,7 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -162,9 +162,9 @@ export const ModuleSelectDrawerMobile = ({
                 {selectedModule && (
                   <>
                     <Flex alignItems="center" gap={2} mb={2}>
-                      <Heading as="h6" variant="h6" fontWeight={600}>
+                      <Text variant="body2" fontWeight={600} color="text.dark">
                         Selected Module
-                      </Heading>
+                      </Text>
                       <Button
                         onClick={() =>
                           setStep(ModuleInteractionMobileStep.SelectModule)
@@ -174,17 +174,17 @@ export const ModuleSelectDrawerMobile = ({
                         variant="ghost-primary"
                         leftIcon={<CustomIcon name="swap" boxSize={3} />}
                       >
-                        Change
+                        Change Module
                       </Button>
                     </Flex>
                     <ModuleCard
                       selectedAddress={selectedAddress.address}
                       module={selectedModule}
                       selectedModule={selectedModule}
+                      readOnly
                     />
                   </>
                 )}
-                <Divider mt={6} mb={2} />
                 <SelectFunctionSection
                   area="main"
                   module={selectedModule}

@@ -65,8 +65,8 @@ export const FunctionCard = ({
         flexDirection="column"
         gap={1}
         border="1px solid"
-        onClick={
-          disabled || isReadOnly ? undefined : () => onFunctionSelect(exposedFn)
+        onClick={() =>
+          disabled || isReadOnly ? null : onFunctionSelect(exposedFn)
         }
         {...cardStyles[disabled ? "disabled" : variant]}
       >

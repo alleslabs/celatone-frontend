@@ -17,6 +17,7 @@ interface ModuleCardProps {
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
   setStep?: (step: ModuleInteractionMobileStep) => void;
+  readOnly?: boolean;
 }
 
 export const ModuleCard = ({
@@ -25,6 +26,7 @@ export const ModuleCard = ({
   selectedModule,
   setSelectedModule,
   setStep,
+  readOnly = false,
 }: ModuleCardProps) => {
   const { data: isVerified } = useVerifyModule({
     address: selectedAddress,
@@ -51,13 +53,17 @@ export const ModuleCard = ({
         }
         p={4}
         alignItems="center"
-        cursor="pointer"
-        onClick={() => handleModuleClick(module)}
+        cursor={readOnly ? "default" : "pointer"}
         gap={1}
         templateColumns="20px 1fr auto"
-        _hover={{
-          bg: "gray.700",
-        }}
+        onClick={() => (readOnly ? null : handleModuleClick(module))}
+        _hover={
+          readOnly
+            ? {}
+            : {
+                bg: "gray.700",
+              }
+        }
         transition=".25s all ease-out"
       >
         <CustomIcon name="contract-address" color="primary.main" boxSize={3} />
@@ -90,7 +96,7 @@ export const ModuleCard = ({
     ]
   );
 
-  return setSelectedModule ? (
+  return setSelectedModule || readOnly ? (
     card
   ) : (
     <AppLink href={`/modules/${module.address}/${module.moduleName}`}>

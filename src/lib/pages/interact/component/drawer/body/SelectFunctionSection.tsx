@@ -101,6 +101,11 @@ export const SelectFunctionSection = ({
               {module.moduleName}
             </Heading>
           )}
+          {isMobile && (
+            <Heading as="h6" variant="h6" fontWeight={600} mt={6}>
+              Select View Function
+            </Heading>
+          )}
           <InputWithIcon
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -109,7 +114,11 @@ export const SelectFunctionSection = ({
             my={4}
             amptrackSection="module-select-drawer-function-search"
           />
-          <Flex gap={6} h={maxHeight} minH={{ base: 40, md: "auto" }}>
+          <Flex
+            gap={6}
+            h={{ base: "auto", md: maxHeight }}
+            minH={{ base: 40, md: "auto" }}
+          >
             <Flex
               flex={{ base: 1, md: 0.5 }}
               p={{ base: 0, md: 4 }}
@@ -118,15 +127,17 @@ export const SelectFunctionSection = ({
               gap={3}
               {...functionGridBaseStyle}
             >
-              <Flex alignItems="center" gap={1}>
-                <Text variant="body2" fontWeight={600} color="text.dark">
-                  View Functions
-                </Text>
-                <CountBadge
-                  count={module.viewFunctions.length}
-                  variant="view"
-                />
-              </Flex>
+              {!isMobile && (
+                <Flex alignItems="center" gap={1}>
+                  <Text variant="body2" fontWeight={600} color="text.dark">
+                    View Functions
+                  </Text>
+                  <CountBadge
+                    count={module.viewFunctions.length}
+                    variant="view"
+                  />
+                </Flex>
+              )}
               <Flex direction="column" gap={3} overflow="scroll">
                 <RenderFunctions
                   exposedFnsLength={module.viewFunctions.length}

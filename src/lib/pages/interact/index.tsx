@@ -67,7 +67,7 @@ const FunctionSection = ({
               handleDrawerOpen?.(ModuleInteractionMobileStep.SelectFunction)
             }
           >
-            Change
+            Change Function
           </Button>
         </Flex>
         {selectedFn && setSelectedFn && (
