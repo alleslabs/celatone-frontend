@@ -36,6 +36,8 @@ interface ModuleSelectDrawerMobileProps {
   handleModuleSelect: ModuleSelectFunction;
   step: ModuleInteractionMobileStep;
   setStep: (step: ModuleInteractionMobileStep) => void;
+  selectedModule: Option<IndexedModule>;
+  setSelectedModule: (module: IndexedModule) => void;
 }
 
 export const ModuleSelectDrawerMobile = ({
@@ -45,6 +47,8 @@ export const ModuleSelectDrawerMobile = ({
   handleModuleSelect,
   step,
   setStep,
+  selectedModule,
+  setSelectedModule,
 }: ModuleSelectDrawerMobileProps) => {
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
@@ -55,7 +59,6 @@ export const ModuleSelectDrawerMobile = ({
     hex: "" as HexAddr,
   });
   const [modules, setModules] = useState<IndexedModule[]>();
-  const [selectedModule, setSelectedModule] = useState<IndexedModule>();
 
   const { refetch } = useModulesByAddressLcd({
     address: selectedAddress.hex,

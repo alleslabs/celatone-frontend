@@ -140,6 +140,7 @@ export const Interact = () => {
   const [selectedFn, setSelectedFn] = useState<ExposedFunction>();
 
   const [step, setStep] = useState(ModuleInteractionMobileStep.SelectModule);
+  const [selectedModule, setSelectedModule] = useState<IndexedModule>();
 
   const handleDrawerOpen = (selectedStep: ModuleInteractionMobileStep) => {
     setStep(selectedStep);
@@ -154,16 +155,16 @@ export const Interact = () => {
     );
 
   const handleModuleSelect = useCallback(
-    (selectedModule: IndexedModule, fn?: ExposedFunction) => {
-      setModule(selectedModule);
+    (selectedModuleInput: IndexedModule, fn?: ExposedFunction) => {
+      setModule(selectedModuleInput);
       setSelectedFn(fn);
       handleSetSelectedType(fn?.is_view ?? true ? "view" : "execute");
 
       navigate({
         pathname: "/interact",
         query: {
-          address: selectedModule.address,
-          moduleName: selectedModule.moduleName,
+          address: selectedModuleInput.address,
+          moduleName: selectedModuleInput.moduleName,
           ...(fn && { functionName: fn.name }),
         },
         options: { shallow: true },
@@ -240,6 +241,14 @@ export const Interact = () => {
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (!module || !isMobile || !router.isReady) return;
+
+    setSelectedModule(module);
+    handleDrawerOpen(ModuleInteractionMobileStep.SelectFunction);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, module]);
 
   return (
     <>
@@ -355,6 +364,8 @@ export const Interact = () => {
               handleModuleSelect={handleModuleSelect}
               step={step}
               setStep={setStep}
+              selectedModule={selectedModule}
+              setSelectedModule={setSelectedModule}
             />
           ) : (
             <ModuleSelectDrawer
