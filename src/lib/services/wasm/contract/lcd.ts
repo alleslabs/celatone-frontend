@@ -6,7 +6,7 @@ import {
   zContractsResponseLcd,
 } from "lib/services/types";
 import type { BechAddr32, JsonDataType, Option } from "lib/types";
-import { encode, parseWithError } from "lib/utils";
+import { encode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryLcd = (
   endpoint: string,
@@ -47,7 +47,7 @@ export const getContractQueryMsgs = async (
   contractAddress: BechAddr32
 ) => {
   const msg = '{"": {}}';
-  const encodedMsg = Buffer.from(msg).toString("base64");
+  const encodedMsg = libEncode(msg);
 
   const data = await axios
     .get(
