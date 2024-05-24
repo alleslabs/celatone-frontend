@@ -42,7 +42,7 @@ export const getContractsByCodeIdLcd = (
     )
     .then(({ data }) => parseWithError(zContractsResponseLcd, data));
 
-export const getContractQueryMsgs = async (
+export const getContractQueryMsgsLcd = async (
   endpoint: string,
   contractAddress: BechAddr32
 ) => {

@@ -15,7 +15,7 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {
   useContractQueryLcd,
-  useContractQueryMsgs,
+  useContractQueryMsgsLcd,
 } from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
@@ -40,7 +40,7 @@ interface JsonQueryProps {
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const { data: queryCmds = [], isFetching: isCmdsFetching } =
-    useContractQueryMsgs(contractAddress);
+    useContractQueryMsgsLcd(contractAddress);
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
 

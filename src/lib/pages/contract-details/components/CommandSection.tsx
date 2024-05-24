@@ -21,7 +21,7 @@ import {
 import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useContractQueryMsgs } from "lib/services/wasm/contract";
+import { useContractQueryMsgsLcd } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 
@@ -96,7 +96,7 @@ export const CommandSection = observer(
     const attached = Boolean(jsonSchema);
 
     const { isFetching: isQueryCmdsFetching, data: queryCmds = [] } =
-      useContractQueryMsgs(contractAddress);
+      useContractQueryMsgsLcd(contractAddress);
     const { isFetching: isExecuteCmdsFetching, execCmds } =
       useExecuteCmds(contractAddress);
 
