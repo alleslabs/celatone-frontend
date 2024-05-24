@@ -68,8 +68,9 @@ const RenderCmds = ({
             cmd={cmd}
             onClickCmd={() => {
               navigate({
-                pathname: `/${type}`,
+                pathname: `/interact-contract`,
                 query: {
+                  selectedType: type,
                   contract: contractAddress,
                   msg: encode(jsonPrettify(msg)),
                 },
