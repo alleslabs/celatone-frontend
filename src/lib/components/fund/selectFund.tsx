@@ -62,7 +62,6 @@ export const SelectFund = ({
             setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
           }
           assetOptions={assetOptions}
-          initialSelected={field.denom}
           labelBgColor={labelBgColor}
           amountInput={
             <ControllerInput
