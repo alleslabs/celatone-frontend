@@ -11,46 +11,45 @@ import {
   useBaseApiRoute,
   useGovConfig,
   useInitia,
+  useLcdEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import type {
-  AbiFormData,
-  Addr,
-  ExposedFunction,
-  HexAddr,
-  IndexedModule,
-  ModuleAbi,
-  ModuleData,
-  Nullable,
-  Option,
-  RpcQueryError,
-  UpgradePolicy,
-} from "lib/types";
-import { truncate } from "lib/utils";
-
-import type {
+  DecodeModuleQueryResponse,
   ModuleHistoriesResponse,
   ModuleRelatedProposalsResponse,
   ModulesResponse,
   ModuleTableCountsResponse,
   ModuleTxsResponse,
   ModuleVerificationInternal,
-} from "./module";
+} from "lib/services/types";
+import type {
+  AbiFormData,
+  Addr,
+  ExposedFunction,
+  HexAddr,
+  IndexedModule,
+  ModuleData,
+  Nullable,
+  Option,
+  RpcQueryError,
+} from "lib/types";
+import { truncate } from "lib/utils";
+
 import {
   decodeModule,
   decodeScript,
   getFunctionView,
-  getModuleByAddressLcd,
   getModuleData,
   getModuleHistories,
   getModuleRelatedProposals,
   getModules,
   getModulesByAddress,
-  getModulesByAddressLcd,
   getModuleTableCounts,
   getModuleTxs,
   getModuleVerificationStatus,
-} from "./module";
+} from "./api";
+import { getModuleByAddressLcd, getModulesByAddressLcd } from "./lcd";
 
 export const useModuleByAddressLcd = ({
   address,
@@ -74,25 +73,27 @@ export const useModuleByAddressLcd = ({
 
 export const useModulesByAddressLcd = ({
   address,
-
   options = {},
 }: {
-  address: Addr;
-  options?: Omit<UseQueryOptions<IndexedModule[]>, "queryKey">;
+  address: Option<Addr>;
+  options?: Omit<UseQueryOptions<{ items: IndexedModule[] }>, "queryKey">;
 }) => {
-  const baseEndpoint = useBaseApiRoute("rest");
-  const queryFn = () => getModulesByAddressLcd(baseEndpoint, address);
+  const lcdEndpoint = useLcdEndpoint();
+  const queryFn = () => {
+    if (!address) throw new Error("address is undefined");
+    return getModulesByAddressLcd(lcdEndpoint, address);
+  };
 
-  return useQuery<IndexedModule[]>(
-    [CELATONE_QUERY_KEYS.ACCOUNT_MODULES, baseEndpoint, address],
+  return useQuery<{ items: IndexedModule[] }>(
+    [CELATONE_QUERY_KEYS.ACCOUNT_MODULES, lcdEndpoint, address],
     queryFn,
     options
   );
 };
 
-export const useModulesByAddress = (address: Option<Addr>) => {
+export const useModulesByAddress = (address: Option<Addr>, enabled = true) => {
   const endpoint = useBaseApiRoute("accounts");
-  const { enabled } = useMoveConfig({ shouldRedirect: false });
+  const { enabled: moveEnabled } = useMoveConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, endpoint, address],
@@ -101,7 +102,7 @@ export const useModulesByAddress = (address: Option<Addr>) => {
       return getModulesByAddress(endpoint, address);
     },
     {
-      enabled,
+      enabled: enabled && moveEnabled,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
@@ -170,11 +171,6 @@ export const useFunctionView = ({
     }
   );
 };
-export interface DecodeModuleQueryResponse {
-  abi: ModuleAbi;
-  modulePath: string;
-  currentPolicy: Option<UpgradePolicy>;
-}
 
 export const useDecodeModule = ({
   base64EncodedFile,
@@ -212,15 +208,6 @@ export const useDecodeModule = ({
     options
   );
 };
-
-export interface ModuleInitialPublishInfo {
-  publisherVmAddress: HexAddr;
-  createdHeight: Option<number>;
-  createdTime: Option<Date>;
-  initTxHash: Option<string>;
-  initProposalId: Option<number>;
-  initProposalTitle: Option<string>;
-}
 
 export const useDecodeScript = ({
   base64EncodedFile,

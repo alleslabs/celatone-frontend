@@ -17,7 +17,7 @@ import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useFunctionView } from "lib/services/move/moduleService";
+import { useFunctionView } from "lib/services/move";
 import type {
   AbiFormData,
   ExposedFunction,

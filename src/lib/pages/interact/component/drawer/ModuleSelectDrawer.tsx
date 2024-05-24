@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useModulesByAddressLcd } from "lib/services/move/moduleService";
+import { useModulesByAddressLcd } from "lib/services/move/";
 import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
@@ -54,7 +54,7 @@ export const ModuleSelectDrawer = ({
       refetchOnWindowFocus: false,
       enabled: false,
       retry: false,
-      onSuccess: (data) => setModules(data),
+      onSuccess: ({ items }) => setModules(items),
     },
   });
 

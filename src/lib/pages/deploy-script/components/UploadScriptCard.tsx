@@ -5,7 +5,7 @@ import type { FileState } from "..";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import { useDecodeScript } from "lib/services/move/moduleService";
+import { useDecodeScript } from "lib/services/move";
 import type { ExposedFunction, Option } from "lib/types";
 
 const DEFAULT_TEMP_FILE = {

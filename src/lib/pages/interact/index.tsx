@@ -10,10 +10,7 @@ import { ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { useOpenNewTab } from "lib/hooks";
-import {
-  useModuleByAddressLcd,
-  useVerifyModule,
-} from "lib/services/move/moduleService";
+import { useModuleByAddressLcd, useVerifyModule } from "lib/services/move";
 import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 

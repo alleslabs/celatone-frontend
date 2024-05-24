@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
-import { useVerifyModule } from "lib/services/move/moduleService";
+import { useVerifyModule } from "lib/services/move";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";

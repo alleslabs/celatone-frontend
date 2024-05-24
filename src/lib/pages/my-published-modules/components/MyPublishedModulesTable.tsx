@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import {
   DisconnectedState,
@@ -8,18 +8,25 @@ import {
   ErrorFetching,
 } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
-import { useModulesByAddress } from "lib/services/move/moduleService";
+import { useModulesByAddress, useModulesByAddressLcd } from "lib/services/move";
 import type { ModuleInfo, Option } from "lib/types";
 
 export const MyPublishedModulesTable = () => {
   const [keyword, setKeyword] = useState("");
   const { address } = useCurrentChain();
+  const isFullTier = useTierConfig() === "full";
+
+  const fullData = useModulesByAddress(address, isFullTier);
+  const liteData = useModulesByAddressLcd({
+    address,
+    options: { enabled: !isFullTier },
+  });
 
   const {
     data,
     isFetching: isModulesLoading,
     error,
-  } = useModulesByAddress(address);
+  } = isFullTier ? fullData : liteData;
 
   const filteredPublishedModules: Option<ModuleInfo[]> = useMemo(() => {
     if (!keyword) return data?.items;

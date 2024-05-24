@@ -2,7 +2,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { ModuleSourceCode } from "lib/components/module";
-import type { ModuleVerificationInternal } from "lib/services/move/module";
+import type { ModuleVerificationInternal } from "lib/services/types";
 import type {
   HexAddr,
   Nullable,

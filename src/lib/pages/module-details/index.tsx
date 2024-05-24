@@ -15,7 +15,7 @@ import {
   useModuleData,
   useModuleTableCounts,
   useVerifyModule,
-} from "lib/services/move/moduleService";
+} from "lib/services/move";
 
 import {
   FunctionTypeTabs,

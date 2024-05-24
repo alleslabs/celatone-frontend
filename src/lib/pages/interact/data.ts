@@ -38,7 +38,7 @@ export const useSearchModules = ({
         refetchOnWindowFocus: false,
         enabled: false,
         retry: false,
-        onSuccess: onModulesSuccess,
+        onSuccess: ({ items }) => onModulesSuccess(items),
         onError,
       },
     });
