@@ -86,7 +86,8 @@ export const SelectInput = <T extends string>({
       options.find((item) => !item.disabled && item.value === initialSelected)
         ?.label ?? ""
     );
-  }, [initialSelected, options]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialSelected]);
 
   return (
     <Popover
@@ -163,6 +164,7 @@ export const SelectInput = <T extends string>({
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
+        overflow="scroll"
       >
         {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
