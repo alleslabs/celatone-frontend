@@ -1,3 +1,4 @@
+import type { Log } from "@cosmjs/stargate/build/logs";
 import { z } from "zod";
 
 import type { Transaction } from "lib/types";
@@ -99,12 +100,13 @@ const zEvent = z.object({
 });
 export type Event = z.infer<typeof zEvent>;
 
-const zLog = z.object({
-  msg_index: z.number(),
-  log: z.string(),
-  events: z.array(zEvent),
-});
-export type Log = z.infer<typeof zLog>;
+const zLog = z
+  .object({
+    msg_index: z.number(),
+    log: z.string(),
+    events: z.array(zEvent),
+  })
+  .transform<Log>((val) => val);
 
 const zTxResponse = z
   .object({

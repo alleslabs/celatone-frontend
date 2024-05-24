@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
+import type { Log } from "@cosmjs/stargate/build/logs";
 import { useState } from "react";
 
-import type { Log } from "lib/services/types";
 import type { MessageResponse, Option } from "lib/types";
 
 import { TxMsgDetails } from "./TxMsgDetails";

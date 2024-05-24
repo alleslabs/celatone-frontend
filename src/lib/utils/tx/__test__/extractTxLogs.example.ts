@@ -1,6 +1,8 @@
 /* eslint-disable sonarjs/no-duplicate-string */
+import type { Log } from "@cosmjs/stargate/build/logs";
+
 import type { TypeUrl } from "lib/data";
-import type { Log, TxResponse } from "lib/services/types";
+import type { TxResponse } from "lib/services/types";
 import { parseDate } from "lib/utils/date";
 
 type TestCase = { txData: TxResponse; result: Log[] };
