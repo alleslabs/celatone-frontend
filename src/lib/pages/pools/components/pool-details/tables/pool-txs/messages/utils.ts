@@ -17,7 +17,7 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
   msgs.forEach((msg, index) => {
     const { type, detail, log } = msg as unknown as {
       type: string;
-      detail: { [key: string]: unknown };
+      detail: Record<string, unknown>;
       log: Log;
     };
 

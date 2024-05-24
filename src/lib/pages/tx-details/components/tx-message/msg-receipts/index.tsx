@@ -2192,7 +2192,7 @@ export const generateReceipts = (
     default:
       return Object.entries(body).map((entry) =>
         getGenericValueEntry(
-          entry as [string, string | { [k: string]: unknown }],
+          entry as [string, Record<string, unknown>],
           getAddressType
         )
       );

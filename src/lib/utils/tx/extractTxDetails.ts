@@ -2,12 +2,12 @@ import { snakeCase } from "snake-case";
 
 import type { TypeUrl } from "lib/data";
 import type { Log } from "lib/services/types";
-import type { MessageResponse, Option } from "lib/types";
+import type { Option } from "lib/types";
 
 import { findAttr } from "./findAttr";
 import type { MsgReturnType } from "./types";
 
-type MsgBodyWithoutType = Omit<MessageResponse, "@type">;
+type MsgBodyWithoutType = Record<string, unknown>;
 
 const transformKeyToSnake = (obj: MsgBodyWithoutType): MsgBodyWithoutType => {
   return Object.entries(obj).reduce((acc, entry) => {

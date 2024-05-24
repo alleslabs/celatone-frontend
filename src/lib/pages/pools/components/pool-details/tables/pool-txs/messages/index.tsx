@@ -43,7 +43,7 @@ export const PoolMsgAction = ({
 }) => {
   const { type, detail, log } = msg as unknown as {
     type: string;
-    detail: { [key: string]: unknown };
+    detail: Record<string, unknown>;
     log: Log;
   };
 
@@ -185,7 +185,7 @@ export const PoolMsgDetail = ({
 }) => {
   const { type, detail, log } = msg as unknown as {
     type: string;
-    detail: { [key: string]: unknown };
+    detail: Record<string, unknown>;
     log: Log;
   };
 

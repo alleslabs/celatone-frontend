@@ -16,6 +16,8 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
+import { zAny } from "./protobuf";
+
 // ----------------------------------------
 // --------------AuthInfo------------------
 // ----------------------------------------
@@ -24,7 +26,8 @@ const zModeInfoMulti = z.object({
     extraBitsStored: z.number(),
     elems: z.array(z.number()),
   }),
-  modeInfos: z.array(z.object({})),
+  // TODO: circular dependency
+  modeInfos: z.array(z.object({})), // zModeInfo
 });
 
 const zModeInfoSingle = z.object({
@@ -68,8 +71,8 @@ const zTxBody = z
     messages: z.array(zMessageResponse).nullable(),
     memo: z.string(),
     timeout_height: z.string(),
-    extension_options: z.any().array(),
-    non_critical_extension_options: z.any().array(),
+    extension_options: zAny.array(),
+    non_critical_extension_options: zAny.array(),
   })
   .transform(snakeToCamel);
 export type TxBody = z.infer<typeof zTxBody>;
@@ -256,3 +259,7 @@ export const zTxsByAddressResponseLcd = z.object({
   total: z.string(),
 });
 export type TxsByAddressResponse = z.infer<typeof zTxsByAddressResponseLcd>;
+
+export const zTxByHashResponseLcd = z.object({
+  tx_response: zTxResponse,
+});

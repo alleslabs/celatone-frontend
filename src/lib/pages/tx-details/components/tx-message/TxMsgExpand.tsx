@@ -130,13 +130,7 @@ export const TxMsgExpand = ({
         <Flex display="inline">
           Execute{" "}
           <span style={{ fontWeight: 700 }}>
-            {
-              Object.keys(
-                body.msg as {
-                  [key: string]: unknown;
-                }
-              )[0]
-            }
+            {Object.keys(body.msg as Record<string, unknown>)[0]}
           </span>{" "}
           on{" "}
           <ExplorerLink

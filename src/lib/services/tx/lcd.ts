@@ -1,13 +1,13 @@
 import axios from "axios";
 
-import { zTxsByAddressResponseLcd } from "../types";
+import { zTxByHashResponseLcd, zTxsByAddressResponseLcd } from "../types";
 import type { BechAddr20, BechAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getTxDataLcd = async (endpoint: string, txHash: string) =>
   axios
-    .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURIComponent(txHash)}`)
-    .then(({ data }) => data);
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
+    .then(({ data }) => parseWithError(zTxByHashResponseLcd, data));
 
 export const getTxsByContractAddressLcd = async (
   endpoint: string,
