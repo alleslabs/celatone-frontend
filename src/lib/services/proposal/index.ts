@@ -14,7 +14,6 @@ import type {
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
-  UploadAccess,
 } from "../types/proposal";
 import {
   CELATONE_QUERY_KEYS,
@@ -43,9 +42,6 @@ import {
 } from "lib/utils";
 
 import {
-  fetchGovDepositParams,
-  fetchGovUploadAccessParams,
-  fetchGovVotingParams,
   getProposalAnswerCounts,
   getProposalData,
   getProposalParams,
@@ -57,20 +53,25 @@ import {
   getProposalVotesInfo,
   getRelatedProposalsByContractAddress,
 } from "./api";
-import { getProposalDataLcd, getProposalsLcd } from "./lcd";
+import {
+  getDepositParamsLcd,
+  getProposalDataLcd,
+  getProposalsLcd,
+  getUploadAccessParamsLcd,
+  getVotingParamsLcd,
+} from "./lcd";
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
-  const endpoint = useBaseApiRoute("cosmwasm");
+  const lcdEndpoint = useLcdEndpoint();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const queryFn = useCallback(
     () =>
       Promise.all([
-        fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(endpoint),
-        fetchGovVotingParams(lcdEndpoint),
+        getDepositParamsLcd(lcdEndpoint),
+        getUploadAccessParamsLcd(lcdEndpoint),
+        getVotingParamsLcd(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
         const minDepositToken = coinToTokenWithValue(
@@ -106,7 +107,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [assetInfos, endpoint, lcdEndpoint, movePoolInfos]
+    [assetInfos, lcdEndpoint, movePoolInfos]
   );
 
   return useQuery(
@@ -119,11 +120,11 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
   );
 };
 
-export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const endpoint = useBaseApiRoute("cosmwasm");
+export const useUploadAccessParams = () => {
+  const endpoint = useLcdEndpoint();
   return useQuery(
     [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, endpoint],
-    () => fetchGovUploadAccessParams(endpoint),
+    () => getUploadAccessParamsLcd(endpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };

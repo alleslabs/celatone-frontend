@@ -38,7 +38,7 @@ const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data: uploadAccess, isFetching } = useUploadAccessParams();
+  const { data: UploadAccessParams, isFetching } = useUploadAccessParams();
   const {
     proceed,
     formData,
@@ -135,7 +135,7 @@ const Migrate = () => {
         return (
           <MigrateOptions
             isAdmin={admin === address}
-            uploadAccess={uploadAccess}
+            UploadAccessParams={UploadAccessParams}
             uploadHandler={() => {
               setValue("migrateStep", "upload_new_code");
             }}

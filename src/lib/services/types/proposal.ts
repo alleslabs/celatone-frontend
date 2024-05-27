@@ -2,6 +2,7 @@ import { capitalize } from "lodash";
 import { z } from "zod";
 
 import {
+  AccessConfigPermission,
   zBechAddr,
   zBig,
   zCoin,
@@ -12,7 +13,6 @@ import {
   zValidator,
 } from "lib/types";
 import type {
-  AccessConfigPermission,
   BechAddr,
   Coin,
   Proposal,
@@ -22,7 +22,6 @@ import type {
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
-  SnakeToCamelCaseNested,
   Token,
   U,
 } from "lib/types";
@@ -38,44 +37,71 @@ export interface MinDeposit {
   precision: number;
 }
 
-interface DepositParamsReturn
-  extends Omit<DepositParamsInternal, "minDeposit"> {
+export const zDepositParamsLcd = z
+  .object({
+    min_deposit: zCoin.array(),
+    max_deposit_period: z.string(),
+    min_expedited_deposit: zCoin.array(),
+    min_initial_deposit_ratio: z.string(),
+  })
+  .transform(snakeToCamel);
+type DepositParamsLcd = z.infer<typeof zDepositParamsLcd>;
+
+export interface DepositParams extends Omit<DepositParamsLcd, "minDeposit"> {
   minDeposit: MinDeposit;
   minInitialDeposit: Token;
 }
 
-export interface GovParams {
-  depositParams: DepositParamsReturn;
-  uploadAccess: UploadAccess;
-  votingParams: VotingParamsInternal;
-}
+export const zVotingParamsLcd = z
+  .object({
+    voting_period: z.string(),
+    proposal_voting_periods: z
+      .object({
+        proposal_type: z.string(),
+        voting_period: z.string(),
+      })
+      .array(),
+    expedited_voting_period: z.string(),
+  })
+  .transform(snakeToCamel);
+type VotingParamsLcd = z.infer<typeof zVotingParamsLcd>;
 
-export interface DepositParams {
-  min_deposit: Coin[];
-  max_deposit_period: string;
-  min_expedited_deposit: Coin[];
-  min_initial_deposit_ratio: string;
-}
+const zUploadAccessParams = z.object({
+  permission: z.nativeEnum(AccessConfigPermission),
+  addresses: zBechAddr.array(),
+});
 
-export type DepositParamsInternal = SnakeToCamelCaseNested<DepositParams>;
-
-interface ProposalVotingPeriod {
-  proposal_type: string;
-  voting_period: string;
-}
-
-export interface VotingParams {
-  voting_period: string;
-  proposal_voting_periods: ProposalVotingPeriod[];
-  expedited_voting_period: string;
-}
-
-export type VotingParamsInternal = SnakeToCamelCaseNested<VotingParams>;
-
-export interface UploadAccess {
+export interface UploadAccessParams {
   permission: AccessConfigPermission;
-  address: BechAddr;
-  addresses?: BechAddr[];
+  addresses: BechAddr[];
+}
+
+export const zUploadAccesParamsLcd = z
+  .object({
+    params: z.object({
+      code_upload_access: zUploadAccessParams,
+    }),
+  })
+  .transform(snakeToCamel)
+  .transform<UploadAccessParams>((val) => val.params.codeUploadAccess);
+
+export const zUploadAccessParamsSubspaceLcd = z
+  .object({
+    params: z.object({
+      subspace: z.literal("wasm"),
+      key: z.literal("uploadAccess"),
+      value: z
+        .string()
+        .transform((val) => JSON.parse(val))
+        .pipe(zUploadAccessParams),
+    }),
+  })
+  .transform<UploadAccessParams>((val) => val.params.value);
+
+export interface GovParams {
+  depositParams: DepositParams;
+  uploadAccess: UploadAccessParams;
+  votingParams: VotingParamsLcd;
 }
 
 export const zProposalParamsResponse = z
