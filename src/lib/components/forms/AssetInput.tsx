@@ -16,7 +16,7 @@ interface AssetInputProps {
   setCurrencyValue: (newVal: string) => void;
   amountInput: JSX.Element;
   assetOptions: AssetOptions[];
-  initialSelected: string;
+  initialSelected?: string;
   labelBgColor?: string;
 }
 
