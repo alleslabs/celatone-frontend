@@ -6,7 +6,6 @@ import type {
 } from "lib/services/types/";
 import {
   zContractData,
-  zContractQueryMsgs,
   zContractsResponse,
   zContractTableCounts,
   zMigrationHistoriesResponse,
@@ -98,14 +97,6 @@ export const getMigrationHistoriesByContractAddress = async (
       },
     })
     .then(({ data }) => parseWithError(zMigrationHistoriesResponse, data));
-
-export const getContractQueryMsgs = async (
-  endpoint: string,
-  contractAddress: BechAddr32
-) =>
-  axios
-    .get(`${endpoint}/${encodeURI(contractAddress)}/query-msgs`)
-    .then(({ data }) => parseWithError(zContractQueryMsgs, data));
 
 export const getContractsByCodeId = async (
   endpoint: string,
