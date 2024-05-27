@@ -1,0 +1,7 @@
+
+{
+    "sheetId": "1D36dp0EwTqKk0RzpDmrHIufkBTGcWL5MbS3VFPKXVzk",
+    "sheetName": "Localization",
+    "locales": ["en"],
+    "translationsPath": "src/lib/lang"
+  }
