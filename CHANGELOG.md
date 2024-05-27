@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
+- [#939](https://github.com/alleslabs/celatone-frontend/pull/939) Migrate contract query msgs from api to LCD
 - [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Support proposals page lite version with LCD endpoint
 - [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version
 - [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
@@ -78,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#941](https://github.com/alleslabs/celatone-frontend/pull/941) Fix contract interaction routing
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Fix mobile search not focusable
 - [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
 - [#932](https://github.com/alleslabs/celatone-frontend/pull/932) Add isGov in module details
