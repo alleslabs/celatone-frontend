@@ -17,7 +17,7 @@ import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParams } from "lib/services/proposal";
+import { useUploadAccessParams } from "lib/services/wasm/code";
 import { useContractLcd } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
@@ -38,7 +38,7 @@ const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data: uploadAccess, isFetching } = useUploadAccessParams();
+  const { data: uploadAccessParams, isFetching } = useUploadAccessParams();
   const {
     proceed,
     formData,
@@ -135,7 +135,7 @@ const Migrate = () => {
         return (
           <MigrateOptions
             isAdmin={admin === address}
-            uploadAccess={uploadAccess}
+            uploadAccessParams={uploadAccessParams}
             uploadHandler={() => {
               setValue("migrateStep", "upload_new_code");
             }}

@@ -17,7 +17,7 @@ import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useUploadAccessParams } from "lib/services/proposal";
+import { useUploadAccessParams } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 
 const getAlertContent = (

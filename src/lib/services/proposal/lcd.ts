@@ -1,8 +1,10 @@
 import axios from "axios";
 
 import {
+  zDepositParamsLcd,
   zProposalsResponseItemLcd,
   zProposalsResponseLcd,
+  zVotingParamsLcd,
 } from "lib/services/types";
 import type {
   ProposalsResponseItemLcd,
@@ -10,6 +12,16 @@ import type {
 } from "lib/services/types";
 import type { Option, ProposalStatus } from "lib/types";
 import { parseWithError } from "lib/utils";
+
+export const getDepositParamsLcd = (lcdEndpoint: string) =>
+  axios
+    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
+    .then(({ data }) => parseWithError(zDepositParamsLcd, data));
+
+export const getVotingParamsLcd = (lcdEndpoint: string) =>
+  axios
+    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
+    .then(({ data }) => parseWithError(zVotingParamsLcd, data));
 
 export const getProposalsLcd = async (
   endpoint: string,
