@@ -253,7 +253,11 @@ export const useModules = (
   );
 };
 
-export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
+export const useModuleData = (
+  vmAddress: HexAddr,
+  moduleName: string,
+  enabled = true
+): UseQueryResult => {
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
 
@@ -270,6 +274,7 @@ export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

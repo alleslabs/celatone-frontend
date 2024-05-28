@@ -1,10 +1,11 @@
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import type { UseQueryResult } from "@tanstack/react-query";
 import { isNull } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -12,10 +13,12 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
+  useModuleByAddressLcd,
   useModuleData,
   useModuleTableCounts,
   useVerifyModule,
 } from "lib/services/move";
+import type { ModuleData } from "lib/types";
 
 import {
   FunctionTypeTabs,
@@ -23,7 +26,8 @@ import {
   ModuleFunctions,
   ModuleInfo,
   ModuleStructs,
-  ModuleTables,
+  ModuleTablesFull,
+  ModuleTablesLite,
   ModuleTablesTabIndex,
   ModuleTop,
 } from "./components";
@@ -44,7 +48,17 @@ const ModuleDetailsBody = ({
   const formatAddresses = useFormatAddresses();
   const { hex: vmAddress } = formatAddresses(address);
 
-  const { data, isLoading } = useModuleData(vmAddress, moduleName);
+  const isFullTier = useTierConfig() === "full";
+  const fullData = useModuleData(vmAddress, moduleName, isFullTier);
+  const liteData = useModuleByAddressLcd({
+    address: vmAddress,
+    moduleName,
+    options: { enabled: !isFullTier },
+  });
+  const { data, isLoading } = (
+    isFullTier ? fullData : liteData
+  ) as UseQueryResult<ModuleData>;
+
   const { data: moduleTableCounts } = useModuleTableCounts(
     vmAddress,
     moduleName
@@ -169,21 +183,25 @@ const ModuleDetailsBody = ({
                 blockTimestamp={data.recentPublishBlockTimestamp}
                 verificationData={verificationData}
               />
-              <ModuleTables
-                vmAddress={data.address}
-                moduleName={data.moduleName}
-                txsCount={moduleTableCounts?.txs ?? undefined}
-                historiesCount={moduleTableCounts?.histories ?? undefined}
-                relatedProposalsCount={
-                  moduleTableCounts?.proposals ?? undefined
-                }
-                tab={overviewTabIndex}
-                setTab={setOverviewTabIndex}
-                onViewMore={(nextTab: ModuleTablesTabIndex) => {
-                  handleTabChange(TabIndex.TxsHistories)();
-                  setTableTabIndex(nextTab);
-                }}
-              />
+              {isFullTier ? (
+                <ModuleTablesFull
+                  vmAddress={data.address}
+                  moduleName={data.moduleName}
+                  txsCount={moduleTableCounts?.txs ?? undefined}
+                  historiesCount={moduleTableCounts?.histories ?? undefined}
+                  relatedProposalsCount={
+                    moduleTableCounts?.proposals ?? undefined
+                  }
+                  tab={overviewTabIndex}
+                  setTab={setOverviewTabIndex}
+                  onViewMore={(nextTab: ModuleTablesTabIndex) => {
+                    handleTabChange(TabIndex.TxsHistories)();
+                    setTableTabIndex(nextTab);
+                  }}
+                />
+              ) : (
+                <ModuleTablesLite />
+              )}
             </Flex>
             <UserDocsLink
               title="What is a move module?"
@@ -206,7 +224,7 @@ const ModuleDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleTables
+            <ModuleTablesFull
               vmAddress={data.address}
               moduleName={data.moduleName}
               txsCount={moduleTableCounts?.txs ?? undefined}

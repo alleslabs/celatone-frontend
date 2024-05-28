@@ -42,3 +42,6 @@ export const getModulesByAddressLcd = async (
     items: result.sort((a, b) => a.moduleName.localeCompare(b.moduleName)),
   };
 };
+
+// export const getModuleTxsLcd = async (endpoint: string) =>
+//   axios.get(`${endpoint}`);
