@@ -6,6 +6,7 @@ import { enableStaticRendering } from "mobx-react-lite";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import "@interchain-ui/react/styles";
+import "../lib/lang/i18n.config";
 
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
