@@ -2,13 +2,12 @@ import type { Log } from "@cosmjs/stargate/build/logs";
 import { snakeCase } from "snake-case";
 
 import type { TypeUrl } from "lib/data";
-import type { MsgBody } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { findAttr } from "./findAttr";
 import type { MsgReturnType } from "./types";
 
-type MsgBodyWithoutType = Omit<MsgBody, "@type">;
+type MsgBodyWithoutType = Record<string, unknown>;
 
 const transformKeyToSnake = (obj: MsgBodyWithoutType): MsgBodyWithoutType => {
   return Object.entries(obj).reduce((acc, entry) => {
