@@ -15,6 +15,7 @@ import type {
   ProposalVotesResponse,
   RelatedProposalsResponse,
 } from "../types/proposal";
+import { getUploadAccessParamsLcd } from "../wasm/code";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -57,7 +58,6 @@ import {
   getDepositParamsLcd,
   getProposalDataLcd,
   getProposalsLcd,
-  getUploadAccessParamsLcd,
   getVotingParamsLcd,
 } from "./lcd";
 
@@ -117,15 +117,6 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
       keepPreviousData: true,
       refetchOnWindowFocus: false,
     }
-  );
-};
-
-export const useUploadAccessParams = () => {
-  const endpoint = useLcdEndpoint();
-  return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, endpoint],
-    () => getUploadAccessParamsLcd(endpoint),
-    { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };
 

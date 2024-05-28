@@ -11,14 +11,14 @@ import { resolvePermission } from "lib/utils";
 
 interface MigrateOptionsProps {
   isAdmin: boolean;
-  UploadAccessParams: Option<UploadAccessParams>;
+  uploadAccessParams: Option<UploadAccessParams>;
   uploadHandler: () => void;
   existHandler: () => void;
 }
 
 export const MigrateOptions = ({
   isAdmin,
-  UploadAccessParams,
+  uploadAccessParams,
   uploadHandler,
   existHandler,
 }: MigrateOptionsProps) => {
@@ -27,11 +27,11 @@ export const MigrateOptions = ({
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
   const isPermissionedNetwork =
-    UploadAccessParams?.permission !== AccessConfigPermission.EVERYBODY;
+    uploadAccessParams?.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = resolvePermission(
     address,
-    UploadAccessParams?.permission,
-    UploadAccessParams?.addresses
+    uploadAccessParams?.permission,
+    uploadAccessParams?.addresses
   );
   return (
     <>

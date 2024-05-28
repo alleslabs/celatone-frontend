@@ -2,7 +2,6 @@ import { capitalize } from "lodash";
 import { z } from "zod";
 
 import {
-  AccessConfigPermission,
   zBechAddr,
   zBig,
   zCoin,
@@ -13,7 +12,6 @@ import {
   zValidator,
 } from "lib/types";
 import type {
-  BechAddr,
   Coin,
   Proposal,
   ProposalData,
@@ -27,6 +25,8 @@ import type {
 } from "lib/types";
 import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+
+import type { UploadAccessParams } from "./wasm";
 
 export interface MinDeposit {
   amount: U<Token<Big>>;
@@ -65,38 +65,6 @@ export const zVotingParamsLcd = z
   })
   .transform(snakeToCamel);
 type VotingParamsLcd = z.infer<typeof zVotingParamsLcd>;
-
-const zUploadAccessParams = z.object({
-  permission: z.nativeEnum(AccessConfigPermission),
-  addresses: zBechAddr.array(),
-});
-
-export interface UploadAccessParams {
-  permission: AccessConfigPermission;
-  addresses: BechAddr[];
-}
-
-export const zUploadAccesParamsLcd = z
-  .object({
-    params: z.object({
-      code_upload_access: zUploadAccessParams,
-    }),
-  })
-  .transform(snakeToCamel)
-  .transform<UploadAccessParams>((val) => val.params.codeUploadAccess);
-
-export const zUploadAccessParamsSubspaceLcd = z
-  .object({
-    params: z.object({
-      subspace: z.literal("wasm"),
-      key: z.literal("uploadAccess"),
-      value: z
-        .string()
-        .transform((val) => JSON.parse(val))
-        .pipe(zUploadAccessParams),
-    }),
-  })
-  .transform<UploadAccessParams>((val) => val.params.value);
 
 export interface GovParams {
   depositParams: DepositParams;

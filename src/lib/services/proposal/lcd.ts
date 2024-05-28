@@ -4,14 +4,11 @@ import {
   zDepositParamsLcd,
   zProposalsResponseItemLcd,
   zProposalsResponseLcd,
-  zUploadAccesParamsLcd,
-  zUploadAccessParamsSubspaceLcd,
   zVotingParamsLcd,
 } from "lib/services/types";
 import type {
   ProposalsResponseItemLcd,
   ProposalsResponseLcd,
-  UploadAccessParams,
 } from "lib/services/types";
 import type { Option, ProposalStatus } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -25,19 +22,6 @@ export const getVotingParamsLcd = (lcdEndpoint: string) =>
   axios
     .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
     .then(({ data }) => parseWithError(zVotingParamsLcd, data));
-
-export const getUploadAccessParamsLcd = async (
-  lcdEndpoint: string
-): Promise<UploadAccessParams> => {
-  const res = await axios.get(`${lcdEndpoint}/cosmwasm/wasm/v1/codes/params`);
-  const validated = zUploadAccesParamsLcd.safeParse(res.data);
-  if (res.status === 200 && validated.success) return validated.data;
-
-  const res2 = await axios.get(`${lcdEndpoint}/wasm/v1beta1/params`);
-  const validated2 = zUploadAccessParamsSubspaceLcd.safeParse(res2.data);
-  if (res2.status === 200 && validated2.success) return validated2.data;
-  throw new Error("Failed to fetch upload access params");
-};
 
 export const getProposalsLcd = async (
   endpoint: string,
