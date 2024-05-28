@@ -1,8 +1,27 @@
 import axios from "axios";
 
-import { zCodeInfoResponseLcd, zCodesResponseLcd } from "lib/services/types";
+import type { UploadAccessParams } from "lib/services/types";
+import {
+  zCodeInfoResponseLcd,
+  zCodesResponseLcd,
+  zUploadAccessParamsLcd,
+  zUploadAccessParamsSubspaceLcd,
+} from "lib/services/types";
 import type { Option } from "lib/types";
 import { parseWithError } from "lib/utils";
+
+export const getUploadAccessParamsLcd = async (
+  lcdEndpoint: string
+): Promise<UploadAccessParams> => {
+  const res = await axios.get(`${lcdEndpoint}/cosmwasm/wasm/v1/codes/params`);
+  const validated = zUploadAccessParamsLcd.safeParse(res.data);
+  if (res.status === 200 && validated.success) return validated.data;
+
+  const res2 = await axios.get(`${lcdEndpoint}/wasm/v1beta1/params`);
+  const validated2 = zUploadAccessParamsSubspaceLcd.safeParse(res2.data);
+  if (res2.status === 200 && validated2.success) return validated2.data;
+  throw new Error("Failed to fetch upload access params");
+};
 
 export const getCodesLcd = async (
   endpoint: string,
