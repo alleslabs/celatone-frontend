@@ -5,6 +5,7 @@ import {
   zBechAddr,
   zBig,
   zCoin,
+  zMessageResponse,
   zProposalStatus,
   zProposalType,
   zRatio,
@@ -134,13 +135,7 @@ export const zProposalDataResponse = z.object({
       created_timestamp: zUtcDate.nullable(),
       created_tx_hash: z.string().nullable(),
       description: z.string(),
-      messages: z
-        .object({
-          "@type": z.string(),
-        })
-        .passthrough()
-        .array()
-        .nullable(),
+      messages: z.array(zMessageResponse).nullable(),
       metadata: z.string(),
       proposal_deposits: z
         .object({
@@ -237,12 +232,7 @@ export type ProposalAnswerCountsResponse = z.infer<
 export const zProposalsResponseItemLcd = z
   .object({
     id: z.coerce.number(),
-    messages: z
-      .object({
-        "@type": z.string(),
-      })
-      .passthrough()
-      .array(),
+    messages: z.array(zMessageResponse).nullable(),
     status: z.string(),
     final_tally_result: z.object({
       yes_count: z.string(),
@@ -269,7 +259,7 @@ export const zProposalsResponseItemLcd = z
       .map((term: string) => capitalize(term.toLowerCase()))
       .join("") as ProposalStatus,
     resolvedHeight: null,
-    types: val.messages.map((msg) => msg["@type"]),
+    types: val.messages?.map((msg) => msg["@type"]) ?? [],
     isExpedited: val.expedited,
   }));
 export type ProposalsResponseItemLcd = z.infer<

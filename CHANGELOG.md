@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
+- [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
 - [#939](https://github.com/alleslabs/celatone-frontend/pull/939) Migrate contract query msgs from api to LCD
 - [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Support proposals page lite version with LCD endpoint
 - [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version

@@ -34,7 +34,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
     withPrices: true,
   });
 
-  const feeCoin = txData.tx.auth_info.fee?.amount[0];
+  const feeCoin = txData.tx.authInfo?.fee?.amount[0];
   const feeToken = feeCoin
     ? coinToTokenWithValue(
         feeCoin.denom,
@@ -64,9 +64,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
         )}
       </LabelText>
       <LabelText label="Gas Used/Wanted">
-        {`${formatInteger(txData.gas_used)}/${formatInteger(
-          txData.gas_wanted
-        )}`}
+        {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
       <LabelText label="Memo">
         {txData.tx.body.memo || (

@@ -24,3 +24,4 @@ export * from "./time";
 export * from "./upload";
 export * from "./validator";
 export * from "./wallet";
+export * from "./message";

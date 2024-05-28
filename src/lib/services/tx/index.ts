@@ -19,7 +19,7 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import type { BechAddr, Option, TxFilters } from "lib/types";
-import { extractTxLogs, isTxHash, parseDateOpt } from "lib/utils";
+import { extractTxLogs, isTxHash, snakeToCamel } from "lib/utils";
 
 import {
   getTxData,
@@ -53,15 +53,16 @@ export const useTxData = (
 
       const logs = extractTxLogs(txResponse);
 
+      const payload = snakeToCamel(txResponse);
+
       return {
-        ...txResponse,
-        timestamp: parseDateOpt(txResponse.timestamp),
+        ...payload,
         logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txResponse.code),
       };
     },
-    [endpoint, currentChainId, isFullTier]
+    [currentChainId, endpoint, isFullTier]
   );
 
   return useQuery(
