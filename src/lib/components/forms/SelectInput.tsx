@@ -81,7 +81,7 @@ export const SelectInput = <T extends string>({
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
-    if (initialSelected) return;
+    if (!initialSelected) return;
 
     setSelected(
       options.find((item) => !item.disabled && item.value === initialSelected)
