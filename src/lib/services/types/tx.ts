@@ -69,7 +69,7 @@ export type AuthInfo = z.infer<typeof zAuthInfo>;
 // ----------------------------------------
 const zTxBody = z
   .object({
-    messages: z.array(zMessageResponse).nullable(),
+    messages: z.array(zMessageResponse),
     memo: z.string(),
     timeout_height: z.string(),
     extension_options: zAny.array(),
