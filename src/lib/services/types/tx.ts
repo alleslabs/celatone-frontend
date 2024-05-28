@@ -2,8 +2,8 @@ import type { Log } from "@cosmjs/stargate/build/logs";
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import type {
   ModeInfo,
-  ModeInfo_Multi,
-  ModeInfo_Single,
+  ModeInfo_Multi as ModeInfoMulti,
+  ModeInfo_Single as ModeInfoSingle,
 } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
@@ -32,11 +32,11 @@ import { zAny } from "./protobuf";
 
 let zModeInfo: z.ZodType<ModeInfo>;
 
-const zModeInfoSingle: z.ZodType<ModeInfo_Single> = z.object({
+const zModeInfoSingle: z.ZodType<ModeInfoSingle> = z.object({
   mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
 });
 
-const zModeInfoMulti: z.ZodType<ModeInfo_Multi> = z.object({
+const zModeInfoMulti: z.ZodType<ModeInfoMulti> = z.object({
   bitarray: z.object({
     extraBitsStored: z.number(),
     elems: zUint8Schema,
