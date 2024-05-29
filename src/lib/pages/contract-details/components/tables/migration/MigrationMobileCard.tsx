@@ -1,6 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { useGetAddressType, useInternalNavigate } from "lib/app-provider";
+import {
+  useGetAddressType,
+  useInternalNavigate,
+  useTierConfig,
+} from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   CodeNameCell,
@@ -15,6 +19,7 @@ interface MigrationMobileCardProps {
   history: ContractMigrationHistory;
 }
 export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
+  const isFullTier = useTierConfig() === "full";
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
   const navigate = useInternalNavigate();
@@ -50,34 +55,40 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
               }}
             />
           </Flex>
-          <Flex direction="column">
-            <MobileLabel variant="body3" label="CW2 Info" />
-            <Text
-              variant="body2"
-              color={cw2Info ? "text.main" : "text.disabled"}
-              wordBreak="break-all"
-            >
-              {cw2Info ?? "N/A"}
-            </Text>
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel variant="body3" label="Remark" />
-            <RemarkRender {...history.remark} />
-          </Flex>
+          {isFullTier && (
+            <>
+              <Flex direction="column">
+                <MobileLabel variant="body3" label="CW2 Info" />
+                <Text
+                  variant="body2"
+                  color={cw2Info ? "text.main" : "text.disabled"}
+                  wordBreak="break-all"
+                >
+                  {cw2Info ?? "N/A"}
+                </Text>
+              </Flex>
+              <Flex direction="column">
+                <MobileLabel variant="body3" label="Remark" />
+                <RemarkRender {...history.remark} />
+              </Flex>
+            </>
+          )}
         </Flex>
       }
       bottomContent={
         <Flex w="full" direction="column" gap={3}>
           <Flex>
-            <Flex flex="1" direction="column">
-              <MobileLabel label="Sender" />
-              <ExplorerLink
-                type={getAddressType(history.sender)}
-                value={history.sender}
-                textFormat="truncate"
-                showCopyOnHover
-              />
-            </Flex>
+            {isFullTier && (
+              <Flex flex="1" direction="column">
+                <MobileLabel label="Sender" />
+                <ExplorerLink
+                  type={getAddressType(history.sender)}
+                  value={history.sender}
+                  textFormat="truncate"
+                  showCopyOnHover
+                />
+              </Flex>
+            )}
             <Flex flex="1" direction="column">
               <MobileLabel label="Block Height" />
               <ExplorerLink
@@ -87,12 +98,14 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
               />
             </Flex>
           </Flex>
-          <Flex direction="column">
-            <Text variant="body3">{formatUTC(history.timestamp)}</Text>
-            <Text variant="body3" color="text.dark">
-              ({dateFromNow(history.timestamp)})
-            </Text>
-          </Flex>
+          {isFullTier && (
+            <Flex direction="column">
+              <Text variant="body3">{formatUTC(history.timestamp)}</Text>
+              <Text variant="body3" color="text.dark">
+                ({dateFromNow(history.timestamp)})
+              </Text>
+            </Flex>
+          )}
         </Flex>
       }
     />

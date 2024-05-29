@@ -1,4 +1,4 @@
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -24,6 +24,7 @@ export const MigrationTable = ({
   totalData,
   refetchCount,
 }: MigrationTableProps) => {
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
   const {
     pagesQuantity,
@@ -58,8 +59,9 @@ export const MigrationTable = ({
       />
     );
 
-  const templateColumns =
-    "90px minmax(300px, 1fr) minmax(220px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
+  const templateColumns = isFullTier
+    ? "90px minmax(300px, 1fr) minmax(220px, 1fr) repeat(2, max(150px)) max(232px) max(180px)"
+    : "90px minmax(300px, 1fr) 140px";
 
   return (
     <>
