@@ -1,30 +1,34 @@
 import axios from "axios";
 
-import { zModuleLcdReturn, zModulesLcdReturn } from "lib/services/types";
+import {
+  zModuleLcdReturn,
+  zModulesLcdReturn,
+  zTxsByAddressResponseLcd,
+} from "lib/services/types";
 import type { Addr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getModuleByAddressLcd = async (
   baseEndpoint: string,
-  address: Addr,
+  vmAddress: Addr,
   moduleName: string
 ): Promise<IndexedModule> =>
   axios
     .get(
-      `${baseEndpoint}/initia/move/v1/accounts/${encodeURIComponent(address)}/modules/${encodeURIComponent(moduleName)}`
+      `${baseEndpoint}/initia/move/v1/accounts/${encodeURIComponent(vmAddress)}/modules/${encodeURIComponent(moduleName)}`
     )
     .then(({ data }) => parseWithError(zModuleLcdReturn, data).module);
 
 export const getModulesByAddressLcd = async (
   endpoint: string,
-  address: Addr
+  vmAddress: Addr
 ): Promise<{ items: IndexedModule[] }> => {
   const result: IndexedModule[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
     const res = await axios
       .get(
-        `${endpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules`,
+        `${endpoint}/initia/move/v1/accounts/${encodeURI(vmAddress)}/modules`,
         {
           params: {
             "pagination.key": paginationKey ?? "",
@@ -43,5 +47,20 @@ export const getModulesByAddressLcd = async (
   };
 };
 
-// export const getModuleTxsLcd = async (endpoint: string) =>
-//   axios.get(`${endpoint}`);
+export const getModuleTxsLcd = async (
+  endpoint: string,
+  vmAddress: Addr,
+  moduleName: string,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        query: `execute.module_addr='${vmAddress}' AND execute.module_name='${moduleName}'`,
+        order_by: 2,
+        page: offset,
+        limit,
+      },
+    })
+    .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));

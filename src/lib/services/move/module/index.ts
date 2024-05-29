@@ -49,7 +49,11 @@ import {
   getModuleTxs,
   getModuleVerificationStatus,
 } from "./api";
-import { getModuleByAddressLcd, getModulesByAddressLcd } from "./lcd";
+import {
+  getModuleByAddressLcd,
+  getModulesByAddressLcd,
+  getModuleTxsLcd,
+} from "./lcd";
 
 export const useModuleByAddressLcd = ({
   address,
@@ -326,6 +330,28 @@ export const useModuleTxs = (
     async () =>
       getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
     { retry: 1, refetchOnWindowFocus: false, ...options }
+  );
+};
+
+export const useModuleTxsLcd = (
+  vmAddress: HexAddr,
+  moduleName: string,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.MODULE_TXS_LCD,
+      endpoint,
+      vmAddress,
+      moduleName,
+      limit,
+      offset,
+    ],
+    async () => getModuleTxsLcd(endpoint, vmAddress, moduleName, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
