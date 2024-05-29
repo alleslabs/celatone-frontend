@@ -1,4 +1,10 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
+import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
+import type {
+  ModeInfo,
+  ModeInfo_Multi as ModeInfoMulti,
+  ModeInfo_Single as ModeInfoSingle,
+} from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
 import type { Transaction } from "lib/types";
@@ -8,6 +14,7 @@ import {
   zCoin,
   zMessageResponse,
   zPagination,
+  zUint8Schema,
   zUtcDate,
 } from "lib/types";
 import {
@@ -22,20 +29,22 @@ import { zAny } from "./protobuf";
 // ----------------------------------------
 // --------------AuthInfo------------------
 // ----------------------------------------
-const zModeInfoMulti = z.object({
+
+let zModeInfo: z.ZodType<ModeInfo>;
+
+const zModeInfoSingle: z.ZodType<ModeInfoSingle> = z.object({
+  mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
+});
+
+const zModeInfoMulti: z.ZodType<ModeInfoMulti> = z.object({
   bitarray: z.object({
     extraBitsStored: z.number(),
-    elems: z.array(z.number()),
+    elems: zUint8Schema,
   }),
-  // TODO: circular dependency
-  modeInfos: z.array(z.object({})), // zModeInfo
+  modeInfos: z.lazy(() => z.array(zModeInfo)),
 });
 
-const zModeInfoSingle = z.object({
-  mode: z.string(),
-});
-
-const zModeInfo = z.object({
+zModeInfo = z.object({
   single: zModeInfoSingle.optional(),
   multi: zModeInfoMulti.optional(),
 });
