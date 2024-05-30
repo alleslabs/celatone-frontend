@@ -14,7 +14,13 @@ import type {
   ContractTableCounts,
   MigrationHistoriesResponse,
 } from "lib/services/types";
-import type { BechAddr, BechAddr32, JsonDataType } from "lib/types";
+import type {
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
+  JsonDataType,
+  Option,
+} from "lib/types";
 
 import {
   getAdminContractsByAddress,
@@ -30,6 +36,7 @@ import {
   getContractQueryLcd,
   getContractQueryMsgsLcd,
   getContractsByCodeIdLcd,
+  getInstantiatedContractsByAddressLcd,
 } from "./lcd";
 
 export const useContracts = (
@@ -218,6 +225,23 @@ export const useContractQueryLcd = (
       refetchOnWindowFocus: false,
       ...options,
     }
+  );
+};
+
+export const useInstantiatedContractsByAddressLcd = (
+  address: Option<BechAddr20>,
+  enabled = false
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS_LCD,
+      endpoint,
+      address,
+    ],
+    async () => getInstantiatedContractsByAddressLcd(endpoint, address),
+    { enabled: Boolean(address) && enabled, refetchOnWindowFocus: false }
   );
 };
 
