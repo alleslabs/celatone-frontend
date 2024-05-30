@@ -6,7 +6,7 @@ import {
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import type { BechAddr, Option } from "lib/types";
+import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
 import {
   isHexModuleAddress,
@@ -23,6 +23,10 @@ import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData } from "./proposal";
 import { useTxData } from "./tx";
+import {
+  useAddressByInitiaUsername,
+  useInitiaUsernameByAddress,
+} from "./username";
 import { useValidatorData } from "./validator";
 import { useCodeLcd } from "./wasm/code";
 import { useContractLcd } from "./wasm/contract";
@@ -44,18 +48,25 @@ export interface ResultMetadata {
     address: Option<BechAddr>;
     bech32Prefix: string;
   };
+  initiaUsername: {
+    username: Option<string>;
+    address: Option<Addr>;
+    bech32Prefix: string;
+  };
+}
+
+interface SearchHandlerResponse {
+  results: SearchResultType[];
+  isLoading: boolean;
+  metadata: ResultMetadata;
 }
 
 // eslint-disable-next-line complexity
 export const useSearchHandler = (
   keyword: string,
   resetHandlerStates: () => void
-): {
-  results: SearchResultType[];
-  isLoading: boolean;
-  metadata: ResultMetadata;
   // eslint-disable-next-line sonarjs/cognitive-complexity
-} => {
+): SearchHandlerResponse => {
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {
@@ -104,18 +115,41 @@ export const useSearchHandler = (
     isAddr ? (debouncedKeyword as BechAddr) : icnsAddressData?.address
   );
 
+  // Initia Username
+  const {
+    data: initiaUsernameAddrData,
+    isFetching: initiaUsernameAddrFetching,
+  } = useAddressByInitiaUsername(debouncedKeyword);
+
+  const { data: initiaUsername, isFetching: initiaUsernameFetching } =
+    useInitiaUsernameByAddress(
+      isAddr ? (debouncedKeyword as HexAddr) : initiaUsernameAddrData?.address,
+      isMove
+    );
+
+  // console.log("keyword", debouncedKeyword);
+  // console.log("initiaUsername", initiaUsername?.username);
+  // console.log("initiaUsernameAddrData", initiaUsernameAddrData?.address);
+
   const addressResult = useMemo(() => {
     if (isAddr) {
+      // eslint-disable-next-line sonarjs/no-duplicate-string
       return contractData ? "Contract Address" : "Account Address";
     }
-    return (
-      icnsAddressData?.address &&
-      (icnsAddressData.addressType === "contract_address"
-        ? "Contract Address"
-        : "Account Address")
-    );
-  }, [isAddr, contractData, icnsAddressData]);
 
+    if (icnsAddressData?.address)
+      return (
+        icnsAddressData.address &&
+        (icnsAddressData.addressType === "contract_address"
+          ? "Contract Address"
+          : "Account Address")
+      );
+
+    if (initiaUsernameAddrData?.address) return "Account Address";
+
+    return false;
+  }, [isAddr, icnsAddressData, initiaUsernameAddrData, contractData]);
+  // console.log("test", addressResult, initiaUsernameAddrData);
   // Code
   const { data: codeData, isFetching: codeFetching } = useCodeLcd(
     Number(debouncedKeyword),
@@ -205,6 +239,8 @@ export const useSearchHandler = (
       contractFetching ||
       blockFetching ||
       icnsAddressFetching ||
+      initiaUsernameAddrFetching ||
+      initiaUsernameFetching ||
       poolFetching ||
       proposalFetching ||
       validatorFetching,
@@ -214,6 +250,13 @@ export const useSearchHandler = (
         address: isAddr
           ? (debouncedKeyword as BechAddr)
           : icnsAddressData?.address,
+        bech32Prefix,
+      },
+      initiaUsername: {
+        username: initiaUsername?.username,
+        address: isAddr
+          ? (debouncedKeyword as Addr)
+          : initiaUsernameAddrData?.address,
         bech32Prefix,
       },
     },

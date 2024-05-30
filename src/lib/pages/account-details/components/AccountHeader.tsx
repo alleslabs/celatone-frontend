@@ -1,4 +1,11 @@
-import { Flex, Heading, IconButton, Image, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+  Skeleton,
+  Text,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { useMobile, useMoveConfig } from "lib/app-provider";
@@ -13,6 +20,8 @@ import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/account";
+import { useInitiaUsernameByAddress } from "lib/services/username";
+import type { AccountLocalInfo } from "lib/stores/account";
 import type { BechAddr, HexAddr, Option } from "lib/types";
 
 interface AccounHeaderProps {
@@ -21,6 +30,80 @@ interface AccounHeaderProps {
   hexAddress: HexAddr;
 }
 
+const AccountTitle = ({
+  accountData,
+  accountLocalInfo,
+  hexAddress,
+}: {
+  accountData: Option<AccountData>;
+  accountLocalInfo: Option<AccountLocalInfo>;
+  hexAddress: HexAddr;
+}) => {
+  const move = useMoveConfig({ shouldRedirect: false });
+  const { data, isLoading, isFetching } = useInitiaUsernameByAddress(
+    hexAddress,
+    move.enabled
+  );
+
+  const handleDisplayName = () => {
+    if (accountLocalInfo?.name) return accountLocalInfo.name;
+    if (accountData?.publicInfo?.name) return accountData?.publicInfo?.name;
+    if (accountData?.icns?.primaryName) return accountData?.icns?.primaryName;
+    if (move.enabled && data?.username) return data?.username;
+    return "Account Details";
+  };
+
+  const handleIcon = () => {
+    const altText =
+      accountData?.projectInfo?.name ?? accountData?.icns?.primaryName;
+
+    if (accountData?.projectInfo?.logo || accountData?.icns?.primaryName)
+      return (
+        <Image
+          src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"
+          borderRadius="full"
+          alt={altText}
+          width={7}
+          height={7}
+        />
+      );
+
+    if (move.enabled && data?.username)
+      return (
+        <Image
+          src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+          borderRadius="full"
+          alt={altText}
+          width={6}
+          height={6}
+          mr={1}
+        />
+      );
+
+    return <CustomIcon name="wallet" boxSize={5} color="secondary.main" />;
+  };
+
+  if (isLoading && isFetching)
+    return (
+      <Skeleton
+        h={6}
+        w={32}
+        borderRadius={4}
+        startColor="gray.500"
+        endColor="gray.700"
+      />
+    );
+
+  return (
+    <Flex gap={1} align="center">
+      {handleIcon()}
+      <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
+        {handleDisplayName()}
+      </Heading>
+    </Flex>
+  );
+};
+
 export const AccountHeader = observer(
   ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
@@ -28,10 +111,6 @@ export const AccountHeader = observer(
 
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
-    const displayName =
-      accountLocalInfo?.name ??
-      accountData?.publicInfo?.name ??
-      (accountData?.icns?.primaryName || "Account Details");
 
     const isMobile = useMobile();
 
@@ -43,29 +122,11 @@ export const AccountHeader = observer(
       >
         <Flex direction="column" gap={2} w={{ base: "full", lg: "auto" }}>
           <Flex gap={4} align="center" minH="36px">
-            <Flex gap={1} align="center">
-              {accountData?.projectInfo?.logo ||
-              accountData?.icns?.primaryName ? (
-                <Image
-                  src={
-                    accountData?.projectInfo?.logo ??
-                    "https://celatone-api.alleslabs.dev/images/entities/icns"
-                  }
-                  borderRadius="full"
-                  alt={
-                    accountData?.projectInfo?.name ??
-                    accountData?.icns?.primaryName
-                  }
-                  width={7}
-                  height={7}
-                />
-              ) : (
-                <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
-              )}
-              <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-                {displayName}
-              </Heading>
-            </Flex>
+            <AccountTitle
+              accountData={accountData}
+              accountLocalInfo={accountLocalInfo}
+              hexAddress={hexAddress}
+            />
             {!isMobile && (
               <>
                 {isSaved && accountLocalInfo ? (
