@@ -8,12 +8,16 @@ interface TransactionsTableWithWalletProps {
   transactions: Option<Transaction[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
+  showActions: boolean;
+  showRelations: boolean;
 }
 
 export const TransactionsTableWithWallet = ({
   transactions,
   isLoading,
   emptyState,
+  showActions,
+  showRelations,
 }: TransactionsTableWithWalletProps) => {
   const { address } = useCurrentChain();
   return !address ? (
@@ -26,8 +30,8 @@ export const TransactionsTableWithWallet = ({
       transactions={transactions}
       isLoading={isLoading}
       emptyState={emptyState}
-      showAction
-      showRelations
+      showAction={showActions}
+      showRelations={showRelations}
     />
   );
 };

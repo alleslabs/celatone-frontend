@@ -16,7 +16,7 @@ export enum MsgFurtherAction {
 }
 
 export interface Message {
-  detail: object;
+  detail?: object;
   log: Option<Log>;
   type: string;
 }
