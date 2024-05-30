@@ -18,6 +18,7 @@ interface ResendButtonProps {
 
 const formatMsgs = (messages: Message[]) =>
   messages.reduce((acc: EncodeObject[], msg: Message) => {
+    // TODO: revisit if detail is undefined
     const detail = msg.detail as Msg;
     acc.push({
       typeUrl: msg.type,
