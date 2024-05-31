@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
 - [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
 - [#943](https://github.com/alleslabs/celatone-frontend/pull/943) Support lite version for params
 - [#939](https://github.com/alleslabs/celatone-frontend/pull/939) Migrate contract query msgs from api to LCD
