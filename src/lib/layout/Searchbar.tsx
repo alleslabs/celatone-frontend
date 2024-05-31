@@ -136,8 +136,6 @@ const ResultItem = ({
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
 
-  // const move = useMoveConfig({ shouldRedirect: false });
-
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>

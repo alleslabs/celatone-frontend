@@ -127,10 +127,6 @@ export const useSearchHandler = (
       isMove
     );
 
-  // console.log("keyword", debouncedKeyword);
-  // console.log("initiaUsername", initiaUsername?.username);
-  // console.log("initiaUsernameAddrData", initiaUsernameAddrData?.address);
-
   const addressResult = useMemo(() => {
     if (isAddr) {
       // eslint-disable-next-line sonarjs/no-duplicate-string
@@ -149,7 +145,6 @@ export const useSearchHandler = (
 
     return false;
   }, [isAddr, icnsAddressData, initiaUsernameAddrData, contractData]);
-  // console.log("test", addressResult, initiaUsernameAddrData);
   // Code
   const { data: codeData, isFetching: codeFetching } = useCodeLcd(
     Number(debouncedKeyword),
