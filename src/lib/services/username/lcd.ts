@@ -1,4 +1,4 @@
-import { zHexAddr } from "lib/types";
+import { zBechAddr } from "lib/types";
 import type { Addr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
@@ -24,5 +24,5 @@ export const getAddressByInitiaUsername = async (
   const client = createInitiaUsernamesClient(endpoint, USERNAME_MODULE);
   return client
     .getAddress(username)
-    .then((data) => (data ? parseWithError(zHexAddr, data) : data));
+    .then((data) => (data ? parseWithError(zBechAddr, data) : null));
 };

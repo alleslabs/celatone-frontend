@@ -6,7 +6,7 @@ import {
   useGetAddressType,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
+import type { Addr, BechAddr, Option } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
 import {
   isHexModuleAddress,
@@ -123,7 +123,7 @@ export const useSearchHandler = (
 
   const { data: initiaUsername, isFetching: initiaUsernameFetching } =
     useInitiaUsernameByAddress(
-      isAddr ? (debouncedKeyword as HexAddr) : initiaUsernameAddrData?.address,
+      isAddr ? (debouncedKeyword as Addr) : initiaUsernameAddrData?.address,
       isMove
     );
 
