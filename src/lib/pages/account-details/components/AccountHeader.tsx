@@ -68,7 +68,7 @@ const AccountTitle = ({
         />
       );
 
-    if (move.enabled && data?.username)
+    if (move.enabled && data?.username && !accountLocalInfo?.name)
       return (
         <Image
           src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
@@ -80,6 +80,8 @@ const AccountTitle = ({
         />
       );
 
+    if (accountLocalInfo?.name)
+      return <CustomIcon name="bookmark" boxSize={5} color="secondary.main" />;
     return <CustomIcon name="wallet" boxSize={5} color="secondary.main" />;
   };
 
@@ -108,6 +110,7 @@ export const AccountHeader = observer(
   ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
     const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
+    const { data } = useInitiaUsernameByAddress(hexAddress, move.enabled);
 
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
@@ -206,6 +209,25 @@ export const AccountHeader = observer(
                   amptrackSection="account_top"
                   type="user_address"
                 />
+              </Flex>
+            )}
+            {accountLocalInfo?.name && (
+              <Flex
+                mt={{ base: 1, md: 0 }}
+                direction={{ base: "column", md: "row" }}
+                alignItems="center"
+              >
+                <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
+                  Initia Username:
+                </Text>
+                <Image
+                  src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+                  borderRadius="full"
+                  width={4}
+                  height={4}
+                  mr={1}
+                />
+                <Text variant="body2">{data?.username}</Text>
               </Flex>
             )}
           </Flex>
