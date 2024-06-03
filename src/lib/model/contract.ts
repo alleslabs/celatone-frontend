@@ -19,13 +19,13 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { address } = useCurrentChain();
   const isFullTier = useTierConfig() === "full";
 
-  const fullData = useInstantiatedListByAddress(address, enable && isFullTier);
-  const liteData = useInstantiatedContractsByAddressLcd(
+  const resApi = useInstantiatedListByAddress(address, enable && isFullTier);
+  const resLcd = useInstantiatedContractsByAddressLcd(
     address,
     enable && !isFullTier
   );
 
-  const { data: contracts = [], isLoading } = isFullTier ? fullData : liteData;
+  const { data: contracts = [], isLoading } = isFullTier ? resApi : resLcd;
   const { getContractLocalInfo } = useContractStore();
 
   return {
@@ -47,9 +47,9 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useCurrentChain();
   const isFullTier = useTierConfig() === "full";
-  const fullData = useInstantiatedCountByAddress(address);
-  const liteData = useInstantiatedContractsByAddressLcd(address, !isFullTier);
-  const count = isFullTier ? fullData.data : liteData.data?.length ?? 0;
+  const resApi = useInstantiatedCountByAddress(address);
+  const resLcd = useInstantiatedContractsByAddressLcd(address, !isFullTier);
+  const count = isFullTier ? resApi.data : resLcd.data?.length ?? 0;
 
   return {
     contracts: Array.from({ length: count ?? 0 }, () => ({
