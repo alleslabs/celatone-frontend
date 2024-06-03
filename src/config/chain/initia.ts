@@ -60,7 +60,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "initiatestnet",
     prettyName: "Initia",
-    lcd: "https://rpc.initiation-1.initia.xyz",
+    lcd: "https://lcd.initiation-1.initia.xyz",
     rpc: "https://rpc.initiation-1.initia.xyz",
     indexer: "https://initiation-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
