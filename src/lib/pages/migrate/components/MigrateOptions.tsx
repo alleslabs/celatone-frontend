@@ -4,21 +4,21 @@ import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { UploadAccess } from "lib/services/types";
+import type { UploadAccessParams } from "lib/services/types";
 import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
 interface MigrateOptionsProps {
   isAdmin: boolean;
-  uploadAccess: Option<UploadAccess>;
+  uploadAccessParams: Option<UploadAccessParams>;
   uploadHandler: () => void;
   existHandler: () => void;
 }
 
 export const MigrateOptions = ({
   isAdmin,
-  uploadAccess,
+  uploadAccessParams,
   uploadHandler,
   existHandler,
 }: MigrateOptionsProps) => {
@@ -27,11 +27,11 @@ export const MigrateOptions = ({
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
   const isPermissionedNetwork =
-    uploadAccess?.permission !== AccessConfigPermission.EVERYBODY;
+    uploadAccessParams?.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = resolvePermission(
     address,
-    uploadAccess?.permission,
-    uploadAccess?.addresses
+    uploadAccessParams?.permission,
+    uploadAccessParams?.addresses
   );
   return (
     <>

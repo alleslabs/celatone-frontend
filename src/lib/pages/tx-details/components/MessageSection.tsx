@@ -43,9 +43,9 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
         <Heading as="h6" variant="h6">
           Messages
         </Heading>
-        <Badge>{messages?.length}</Badge>
+        <Badge>{messages.length}</Badge>
       </Flex>
-      {messages?.map((msg, idx) => (
+      {messages.map((msg, idx) => (
         <TxMessage
           key={JSON.stringify(msg) + idx.toString()}
           msgBody={msg}

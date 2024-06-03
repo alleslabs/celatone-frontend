@@ -337,6 +337,7 @@ export const PoolMsgDetail = ({
       );
     }
     default:
+      // TODO: revisit if detail is undefined
       return <Text h={20}>{JSON.stringify(msg.detail)}</Text>;
   }
 };

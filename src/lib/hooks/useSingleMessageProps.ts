@@ -140,6 +140,7 @@ const executeSingleMsgProps = (
   if (messages.length > 1) {
     if (
       messages.some((msg) => {
+        // TODO: revisit if detail is undefined
         const msgDetail = msg.detail as DetailExecute;
         return msgDetail.contract !== detail.contract;
       })
@@ -246,6 +247,7 @@ const sendSingleMsgProps = (
 
   const uniqueAddressLength = new Set(
     messages.map((msg) => {
+      // TODO: revisit if detail is undefined
       const msgDetail = msg.detail as DetailSend;
       return msgDetail.toAddress;
     })

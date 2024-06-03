@@ -11,7 +11,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     prettyName: "Terra Testnet Lite",
     lcd: "https://terra-testnet-api.polkachu.com",
     rpc: "https://terra-testnet-rpc.polkachu.com:443",
-    indexer: "https://pisco-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "",
     wallets: [...staionWallets, ...keplrWallets],
     features: {
       faucet: {

@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import type { Log } from "@cosmjs/stargate/build/logs";
+import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 
 import type { TypeUrl } from "lib/data";
 import type { TxResponse } from "lib/services/types";
@@ -287,7 +288,7 @@ export const fromLogs: TestCase = {
           {
             modeInfo: {
               single: {
-                mode: "SIGN_MODE_DIRECT",
+                mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
             publicKey: {
@@ -480,7 +481,7 @@ export const fromLogsTxFailed: TestCase = {
           {
             modeInfo: {
               single: {
-                mode: "SIGN_MODE_DIRECT",
+                mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
             publicKey: {
@@ -766,7 +767,7 @@ export const fromEvents: TestCase = {
           {
             modeInfo: {
               single: {
-                mode: "SIGN_MODE_DIRECT",
+                mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
             publicKey: {
@@ -1039,7 +1040,7 @@ export const fromEventsTxFailed: TestCase = {
           {
             modeInfo: {
               single: {
-                mode: "SIGN_MODE_DIRECT",
+                mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
             publicKey: {

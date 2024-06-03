@@ -18,7 +18,7 @@ import { MyStoredCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
-import { useUploadAccessParams } from "lib/services/proposal";
+import { useUploadAccessParams } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 
 import { ProposalButton } from "./components/ProposalButton";

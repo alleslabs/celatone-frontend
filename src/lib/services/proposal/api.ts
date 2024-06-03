@@ -10,17 +10,12 @@ import {
   zRelatedProposalsResponse,
 } from "lib/services/types";
 import type {
-  DepositParams,
-  DepositParamsInternal,
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
   ProposalsResponse,
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
-  UploadAccess,
-  VotingParams,
-  VotingParamsInternal,
 } from "lib/services/types";
 import { zProposalType } from "lib/types";
 import type {
@@ -36,30 +31,7 @@ import type {
   ProposalVotesInfo,
   ProposalVoteType,
 } from "lib/types";
-import { parseWithError, snakeToCamel } from "lib/utils";
-
-export const fetchGovDepositParams = (
-  lcdEndpoint: string
-): Promise<DepositParamsInternal> =>
-  axios
-    .get<{
-      deposit_params: DepositParams;
-    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
-    .then(({ data }) => snakeToCamel(data.deposit_params));
-
-export const fetchGovVotingParams = (
-  lcdEndpoint: string
-): Promise<VotingParamsInternal> =>
-  axios
-    .get<{
-      voting_params: VotingParams;
-    }>(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
-    .then(({ data }) => snakeToCamel(data.voting_params));
-
-export const fetchGovUploadAccessParams = async (
-  lcdEndpoint: string
-): Promise<UploadAccess> =>
-  axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);
+import { parseWithError } from "lib/utils";
 
 export const getProposalParams = async (
   endpoint: string
