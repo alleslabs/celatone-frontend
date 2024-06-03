@@ -9,7 +9,7 @@ import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
-  history: ContractMigrationHistory;
+  history: Partial<ContractMigrationHistory>;
 }
 
 export const MigrationRow = ({
@@ -25,18 +25,20 @@ export const MigrationRow = ({
       <TableRow>
         <ExplorerLink
           type="code_id"
-          value={history.codeId.toString()}
+          value={history.codeId?.toString() ?? "N/A"}
           showCopyOnHover
         />
       </TableRow>
       <TableRow>
-        <CodeNameCell
-          code={{
-            id: history.codeId,
-            uploader: history.uploader,
-            name: history.codeName,
-          }}
-        />
+        {history.codeId && history.uploader && (
+          <CodeNameCell
+            code={{
+              id: history.codeId,
+              uploader: history.uploader,
+              name: history.codeName,
+            }}
+          />
+        )}
       </TableRow>
       {isFullTier && (
         <>
@@ -51,7 +53,7 @@ export const MigrationRow = ({
           <TableRow>
             <ExplorerLink
               type={getAddressType(history.sender)}
-              value={history.sender}
+              value={history.sender ?? "N/A"}
               textFormat="truncate"
               showCopyOnHover
             />
@@ -60,12 +62,12 @@ export const MigrationRow = ({
       )}
       <TableRow>
         <ExplorerLink
-          value={history.height.toString()}
+          value={history.height?.toString() ?? "N/A"}
           type="block_height"
           showCopyOnHover
         />
       </TableRow>
-      {isFullTier && (
+      {isFullTier && history?.timestamp && history.remark && (
         <>
           <TableRow>
             <Flex

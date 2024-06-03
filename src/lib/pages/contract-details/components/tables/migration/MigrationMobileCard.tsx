@@ -16,7 +16,7 @@ import type { ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationMobileCardProps {
-  history: ContractMigrationHistory;
+  history: Partial<ContractMigrationHistory>;
 }
 export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
   const isFullTier = useTierConfig() === "full";
@@ -28,7 +28,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
       onClick={() =>
         navigate({
           pathname: "/codes/[codeId]",
-          query: { codeId: history.codeId.toString() },
+          query: { codeId: history.codeId?.toString() },
         })
       }
       topContent={
@@ -37,7 +37,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
             <MobileLabel label="Code ID" variant="body2" />
             <ExplorerLink
               type="code_id"
-              value={history.codeId.toString()}
+              value={history.codeId?.toString() ?? "N/A"}
               showCopyOnHover
             />
           </Flex>
@@ -47,15 +47,17 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
         <Flex direction="column" gap={3}>
           <Flex direction="column">
             <MobileLabel variant="body3" label="Code Name" />
-            <CodeNameCell
-              code={{
-                id: history.codeId,
-                uploader: history.uploader,
-                name: history.codeName,
-              }}
-            />
+            {history.codeId && history.uploader && (
+              <CodeNameCell
+                code={{
+                  id: history.codeId,
+                  uploader: history.uploader,
+                  name: history.codeName,
+                }}
+              />
+            )}
           </Flex>
-          {isFullTier && (
+          {isFullTier && history.remark && (
             <>
               <Flex direction="column">
                 <MobileLabel variant="body3" label="CW2 Info" />
@@ -78,7 +80,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
       bottomContent={
         <Flex w="full" direction="column" gap={3}>
           <Flex>
-            {isFullTier && (
+            {isFullTier && history.sender && (
               <Flex flex="1" direction="column">
                 <MobileLabel label="Sender" />
                 <ExplorerLink
@@ -92,13 +94,13 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
             <Flex flex="1" direction="column">
               <MobileLabel label="Block Height" />
               <ExplorerLink
-                value={history.height.toString()}
+                value={history.height?.toString() ?? "N/A"}
                 type="block_height"
                 showCopyOnHover
               />
             </Flex>
           </Flex>
-          {isFullTier && (
+          {isFullTier && history.timestamp && (
             <Flex direction="column">
               <Text variant="body3">{formatUTC(history.timestamp)}</Text>
               <Text variant="body3" color="text.dark">

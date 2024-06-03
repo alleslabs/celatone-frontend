@@ -4,6 +4,7 @@ import {
   zContractLcd,
   zContractQueryMsgs,
   zContractsResponseLcd,
+  zMigrationHistoriesResponseLcd,
 } from "lib/services/types";
 import type { BechAddr32, JsonDataType, Option } from "lib/types";
 import { encode, libEncode, parseWithError } from "lib/utils";
@@ -76,3 +77,22 @@ export const getContractQueryMsgsLcd = async (
 
   return parseWithError(zContractQueryMsgs, data);
 };
+
+export const getMigrationHistoriesByContractAddressLcd = async (
+  endpoint: string,
+  contractAddress: BechAddr32,
+  limit: number,
+  paginationKey: Option<string>
+) =>
+  axios
+    .get(
+      `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/history`,
+      {
+        params: {
+          "pagination.limit": limit,
+          "pagination.reverse": true,
+          "pagination.key": paginationKey,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zMigrationHistoriesResponseLcd, data));

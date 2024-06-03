@@ -29,7 +29,7 @@ export interface ContractMigrationHistory {
   codeId: number;
   codeName?: string;
   sender: BechAddr;
-  height: number;
+  height: Nullable<number>;
   timestamp: Date;
   remark: ContractHistoryRemark;
   uploader: BechAddr;

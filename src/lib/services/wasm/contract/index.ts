@@ -6,10 +6,10 @@ import {
   useBaseApiRoute,
   useGovConfig,
   useLcdEndpoint,
+  useTierConfig,
 } from "lib/app-provider";
 import type {
   ContractData,
-  ContractLcd,
   ContractsResponse,
   ContractTableCounts,
   MigrationHistoriesResponse,
@@ -30,6 +30,7 @@ import {
   getContractQueryLcd,
   getContractQueryMsgsLcd,
   getContractsByCodeIdLcd,
+  getMigrationHistoriesByContractAddressLcd,
 } from "./lcd";
 
 export const useContracts = (
@@ -52,7 +53,8 @@ export const useContracts = (
 export const useMigrationHistoriesByContractAddress = (
   contractAddress: BechAddr32,
   offset: number,
-  limit: number
+  limit: number,
+  options?: UseQueryOptions<MigrationHistoriesResponse>
 ) => {
   const endpoint = useBaseApiRoute("contracts");
 
@@ -74,6 +76,34 @@ export const useMigrationHistoriesByContractAddress = (
     {
       keepPreviousData: true,
       retry: 1,
+      ...options,
+    }
+  );
+};
+
+export const useMigrationHistoriesByContractAddressLcd = (
+  contractAddress: BechAddr32,
+  limit: number
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useInfiniteQuery(
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS_LCD,
+      endpoint,
+      contractAddress,
+      limit,
+    ],
+    ({ pageParam }) =>
+      getMigrationHistoriesByContractAddressLcd(
+        endpoint,
+        contractAddress,
+        limit,
+        pageParam
+      ),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -112,35 +142,30 @@ export const useAdminContractsByAddress = (
   );
 };
 
-export const useContractData = (contractAddress: BechAddr32) => {
-  const endpoint = useBaseApiRoute("contracts");
+export const useContractData = (
+  contractAddress: BechAddr32,
+  options?: UseQueryOptions<ContractData>
+) => {
+  const isFullTier = useTierConfig() === "full";
+  const apiEndpoint = useBaseApiRoute("contracts");
+  const lcdEndpoint = useLcdEndpoint();
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
   return useQuery<ContractData>(
     [CELATONE_QUERY_KEYS.CONTRACT_DATA, endpoint, contractAddress, isGov],
-    async () => getContractData(endpoint, contractAddress, isGov),
-    { retry: 1, refetchOnWindowFocus: false }
+    async () =>
+      isFullTier
+        ? getContractData(endpoint, contractAddress, isGov)
+        : getContractLcd(endpoint, contractAddress),
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
-export const useContractLcd = (
+export const useContractTableCounts = (
   contractAddress: BechAddr32,
-  options?: UseQueryOptions<ContractLcd>
+  options?: UseQueryOptions<ContractTableCounts>
 ) => {
-  const endpoint = useLcdEndpoint();
-
-  return useQuery<ContractLcd>(
-    [CELATONE_QUERY_KEYS.CONTRACT_LCD, endpoint, contractAddress],
-    async () => getContractLcd(endpoint, contractAddress),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      ...options,
-    }
-  );
-};
-
-export const useContractTableCounts = (contractAddress: BechAddr32) => {
   const endpoint = useBaseApiRoute("contracts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
@@ -152,7 +177,7 @@ export const useContractTableCounts = (contractAddress: BechAddr32) => {
       isGov,
     ],
     async () => getContractTableCounts(endpoint, contractAddress, isGov),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 

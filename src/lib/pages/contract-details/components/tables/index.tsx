@@ -18,16 +18,22 @@ import { TxsTable } from "./TxsTable";
 
 interface ContractTablesProps {
   contractAddress: BechAddr32;
+  onViewMore?: () => void;
 }
 
 const tableHeaderId = "contractDetailsTableHeader";
 
-export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
+export const ContractTables = ({
+  contractAddress,
+  onViewMore,
+}: ContractTablesProps) => {
   const isFullTier = useTierConfig() === "full";
 
   const gov = useGovConfig({ shouldRedirect: false });
-  const { data, refetch: refetchCount } =
-    useContractTableCounts(contractAddress);
+  const { data, refetch: refetchCount } = useContractTableCounts(
+    contractAddress,
+    { enabled: isFullTier }
+  );
 
   return (
     <Flex direction="column" gap={6}>
@@ -73,6 +79,7 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
               scrollComponentId={tableHeaderId}
               totalData={data?.migration ?? undefined}
               refetchCount={refetchCount}
+              onViewMore={onViewMore}
             />
           </TabPanel>
           <TabPanel p={0}>

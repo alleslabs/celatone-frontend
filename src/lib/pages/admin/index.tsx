@@ -23,7 +23,7 @@ import { TextInput } from "lib/components/forms";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
@@ -107,7 +107,7 @@ const UpdateAdmin = () => {
   /**
    * @remarks Contract admin validation
    */
-  useContractLcd(contractAddressParam, {
+  useContractData(contractAddressParam, {
     onSuccess: (data) => {
       if (data.contract.admin !== address) onContractPathChange();
     },
