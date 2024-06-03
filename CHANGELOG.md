@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#949](https://github.com/alleslabs/celatone-frontend/pull/949) Support lite version for instantited by me
 - [#948](https://github.com/alleslabs/celatone-frontend/pull/948) Support lite version for past txs
 - [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
 - [#943](https://github.com/alleslabs/celatone-frontend/pull/943) Support lite version for params
