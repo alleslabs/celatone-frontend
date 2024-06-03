@@ -34,7 +34,7 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
               boxSize={4}
             />
             <AlertDescription wordBreak="break-word">
-              {txData.raw_log}
+              {txData.rawLog}
             </AlertDescription>
           </Flex>
         </Alert>
@@ -47,7 +47,7 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
       </Flex>
       {messages.map((msg, idx) => (
         <TxMessage
-          key={msg.type + msg.value + idx.toString()}
+          key={JSON.stringify(msg) + idx.toString()}
           msgBody={msg}
           log={logs[idx]}
           isSingleMsg={messages.length === 1}
