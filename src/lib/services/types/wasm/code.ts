@@ -11,6 +11,34 @@ import {
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
+const zUploadAccessParams = z.object({
+  permission: z.nativeEnum(AccessConfigPermission),
+  addresses: zBechAddr.array(),
+});
+export type UploadAccessParams = z.infer<typeof zUploadAccessParams>;
+
+export const zUploadAccessParamsLcd = z
+  .object({
+    params: z.object({
+      code_upload_access: zUploadAccessParams,
+    }),
+  })
+  .transform(snakeToCamel)
+  .transform<UploadAccessParams>((val) => val.params.codeUploadAccess);
+
+export const zUploadAccessParamsSubspaceLcd = z
+  .object({
+    params: z.object({
+      subspace: z.literal("wasm"),
+      key: z.literal("uploadAccess"),
+      value: z
+        .string()
+        .transform((val) => JSON.parse(val))
+        .pipe(zUploadAccessParams),
+    }),
+  })
+  .transform<UploadAccessParams>((val) => val.params.value);
+
 const zCodesResponseItem = z
   .object({
     id: z.number().nonnegative(),

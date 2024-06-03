@@ -1,93 +1,210 @@
-import type { Event, logs } from "@cosmjs/stargate";
-import type { CompactBitArray } from "cosmjs-types/cosmos/crypto/multisig/v1beta1/multisig";
-import type { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
-import type { Any } from "cosmjs-types/google/protobuf/any";
+import type { Log } from "@cosmjs/stargate/build/logs";
+import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
+import type {
+  ModeInfo,
+  ModeInfo_Multi as ModeInfoMulti,
+  ModeInfo_Single as ModeInfoSingle,
+} from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
-import type { TypeUrl } from "lib/data";
-import type { Fee, Option, Transaction } from "lib/types";
-import { MsgFurtherAction, zBechAddr, zUtcDate } from "lib/types";
+import type { BechAddr, Message, Transaction } from "lib/types";
 import {
+  ActionMsgType,
+  MsgFurtherAction,
+  zBechAddr,
+  zCoin,
+  zMessageResponse,
+  zUint8Schema,
+  zUtcDate,
+} from "lib/types";
+import {
+  extractTxLogs,
   getActionMsgType,
   getMsgFurtherAction,
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
 
+import { zAny } from "./protobuf";
+
 // ----------------------------------------
 // --------------AuthInfo------------------
 // ----------------------------------------
-interface AuthInfo {
-  signer_infos: SignerInfo[];
-  fee?: Fee;
-}
 
-interface SignerInfo {
-  public_key?: { "@type": string; key: string };
-  mode_info?: ModeInfo;
-  sequence: string;
-}
+let zModeInfo: z.ZodType<ModeInfo>;
 
-interface ModeInfo {
-  single?: ModeInfoSingle | undefined;
-  multi?: ModeInfoMulti | undefined;
-}
+const zModeInfoSingle: z.ZodType<ModeInfoSingle> = z.object({
+  mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
+});
 
-interface ModeInfoSingle {
-  mode: keyof typeof SignMode;
-}
+const zModeInfoMulti: z.ZodType<ModeInfoMulti> = z.object({
+  bitarray: z.object({
+    extraBitsStored: z.number(),
+    elems: zUint8Schema,
+  }),
+  modeInfos: z.lazy(() => z.array(zModeInfo)),
+});
 
-// Revisit Multisig Info
-interface ModeInfoMulti {
-  bitarray?: CompactBitArray;
-  modeInfos: ModeInfo[];
-}
+zModeInfo = z.object({
+  single: zModeInfoSingle.optional(),
+  multi: zModeInfoMulti.optional(),
+});
+
+const zSignerInfo = z
+  .object({
+    public_key: z.object({
+      "@type": z.string(),
+      key: z.string(),
+    }),
+    mode_info: zModeInfo.optional(),
+    sequence: z.string(),
+  })
+  .transform(snakeToCamel);
+
+const zAuthInfo = z
+  .object({
+    signer_infos: z.array(zSignerInfo),
+    fee: z.object({
+      amount: z.array(zCoin),
+      gas_limit: z.string(),
+      payer: z.string(),
+      granter: z.string(),
+    }),
+  })
+  .transform(snakeToCamel);
+export type AuthInfo = z.infer<typeof zAuthInfo>;
 
 // ----------------------------------------
 // -----------------Tx---------------------
 // ----------------------------------------
-export interface MsgBody {
-  "@type": TypeUrl;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
+const zTxBody = z
+  .object({
+    messages: z.array(zMessageResponse),
+    memo: z.string(),
+    timeout_height: z.string(),
+    extension_options: zAny.array(),
+    non_critical_extension_options: zAny.array(),
+  })
+  .transform(snakeToCamel);
+export type TxBody = z.infer<typeof zTxBody>;
 
-export interface TxBody {
-  messages: MsgBody[];
-  memo: string;
-  timeout_height: string;
-  // Revisit extension options
-  extension_options: Any[];
-  non_critical_extension_options: Any[];
-}
+const zTx = z
+  .object({
+    "@type": z.string(),
+    body: zTxBody,
+    auth_info: zAuthInfo,
+    signatures: z.array(z.string()),
+  })
+  .transform(snakeToCamel);
+export type Tx = z.infer<typeof zTx>;
 
-export interface Tx {
-  "@type": string;
-  body: TxBody;
-  auth_info: AuthInfo;
-  signatures: string[];
-}
+const zEventAttribute = z.object({
+  key: z.string(),
+  value: z.string(),
+  index: z.boolean().optional(),
+});
 
-export interface TxResponse {
-  height: string;
-  txhash: string;
-  codespace: string;
-  code: number;
-  data: string;
-  raw_log: string;
-  logs: logs.Log[];
-  info: string;
-  gas_wanted: string;
-  gas_used: string;
-  tx: Tx;
-  timestamp: Option<Date>;
-  events: Event[];
-}
+const zEvent = z.object({
+  type: z.string(),
+  attributes: z.array(zEventAttribute),
+});
+export type Event = z.infer<typeof zEvent>;
+
+const zLog = z
+  .object({
+    msg_index: z.number(),
+    log: z.string(),
+    events: z.array(zEvent),
+  })
+  .transform<Log>((val) => val);
+
+const zTxResponse = z
+  .object({
+    height: z.string(),
+    txhash: z.string(),
+    codespace: z.string(),
+    code: z.number(),
+    data: z.string(),
+    raw_log: z.string(),
+    logs: z.array(zLog),
+    info: z.string(),
+    gas_wanted: z.string(),
+    gas_used: z.string(),
+    tx: zTx,
+    timestamp: zUtcDate,
+    events: z.array(zEvent),
+  })
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    logs: val.logs,
+  }));
+export type TxResponse = z.infer<typeof zTxResponse>;
 
 export interface TxData extends TxResponse {
   chainId: string;
   isTxFailed: boolean;
 }
+
+export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
+  (val) => {
+    const txBody = val.tx.body;
+    const message = txBody.messages[0];
+    const sender = (message?.sender ||
+      message?.signer ||
+      message?.fromAddress ||
+      "") as BechAddr;
+
+    const logs = extractTxLogs(val);
+
+    const messages = txBody.messages.map<Message>((msg, idx) => ({
+      log: logs[idx],
+      type: msg["@type"],
+    }));
+
+    return {
+      hash: val.txhash,
+      messages,
+      sender,
+      isSigner: true,
+      height: Number(val.height),
+      created: val.timestamp,
+      success: val.code === 0,
+      // TODO: implement below later
+      actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+      furtherAction: MsgFurtherAction.NONE,
+      isIbc: false,
+      isOpinit: false,
+      isInstantiate: false,
+    };
+  }
+);
+
+export const zTxsByAddressResponseLcd = z
+  .object({
+    tx_responses: z.array(zTxsResponseItemFromLcd),
+    total: z.coerce.number(),
+  })
+  .transform((val) => ({
+    items: val.tx_responses,
+    total: val.total,
+  }));
+
+export const zTxsByHashResponseLcd = z
+  .object({
+    tx_response: zTxsResponseItemFromLcd,
+  })
+  .transform((val) => ({
+    items: [val.tx_response],
+    total: 1,
+  }));
+
+export const zTxByHashResponseLcd = z
+  .object({
+    tx_response: zTxResponse,
+  })
+  .transform((val) => ({
+    txResponse: val.tx_response,
+  }));
 
 const zBaseTxsResponseItem = z.object({
   height: z.number().nonnegative(),

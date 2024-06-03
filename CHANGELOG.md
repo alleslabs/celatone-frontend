@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
+- [#948](https://github.com/alleslabs/celatone-frontend/pull/948) Support lite version for past txs
+- [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
+- [#943](https://github.com/alleslabs/celatone-frontend/pull/943) Support lite version for params
 - [#939](https://github.com/alleslabs/celatone-frontend/pull/939) Migrate contract query msgs from api to LCD
 - [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Support proposals page lite version with LCD endpoint
 - [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version
@@ -63,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#947](https://github.com/alleslabs/celatone-frontend/pull/947) Add zod type for sign mode infos
 - [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Add isHydrated in app context for redirect behaviors
 - [#921](https://github.com/alleslabs/celatone-frontend/pull/921) Add theme
@@ -79,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card
 - [#941](https://github.com/alleslabs/celatone-frontend/pull/941) Fix contract interaction routing
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Fix mobile search not focusable
 - [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
