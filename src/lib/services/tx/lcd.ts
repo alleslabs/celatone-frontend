@@ -21,8 +21,8 @@ export const getTxsByHashLcd = async (endpoint: string, txHash: string) =>
 export const getTxsByContractAddressLcd = async (
   endpoint: string,
   address: BechAddr32,
-  offset: number,
-  limit: number
+  limit: number,
+  offset: number
 ) =>
   axios
     .get(
@@ -40,8 +40,8 @@ export const getTxsByContractAddressLcd = async (
 export const getTxsByAccountAddressLcd = async (
   endpoint: string,
   address: BechAddr20,
-  offset: number,
-  limit: number
+  limit: number,
+  offset: number
 ) =>
   axios
     .get(

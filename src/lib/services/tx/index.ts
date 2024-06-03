@@ -234,31 +234,43 @@ export const useTxsCountByAddress = (
 
 export const useTxsByContractAddressLcd = (
   address: BechAddr32,
-  offset: number,
-  limit: number
+  limit: number,
+  offset: number
 ) => {
   const endpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_LCD, endpoint, address],
-    async () => getTxsByContractAddressLcd(endpoint, address, offset, limit),
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_LCD,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    async () => getTxsByContractAddressLcd(endpoint, address, limit, offset),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
 export const useTxsByAccountAddressLcd = (
   address: Option<BechAddr20>,
-  offset: number,
-  limit: number
+  limit: number,
+  offset: number
 ) => {
   const endpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_BY_ACCOUNT_ADDRESS_LCD, endpoint, address],
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ACCOUNT_ADDRESS_LCD,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
     async () => {
       if (!address)
         throw new Error("address is undefined (useTxsByAccountAddressLcd)");
-      return getTxsByAccountAddressLcd(endpoint, address, offset, limit);
+      return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
     },
     { retry: 1, refetchOnWindowFocus: false }
   );
@@ -267,8 +279,8 @@ export const useTxsByAccountAddressLcd = (
 export const useTxsByAddressLcd = (
   address: Option<BechAddr20>,
   search: string,
-  offset: number,
   limit: number,
+  offset: number,
   options: Pick<UseQueryOptions<TxsResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useLcdEndpoint();
@@ -286,7 +298,7 @@ export const useTxsByAddressLcd = (
       );
 
     if (!address) throw new Error("address is undefined (useTxsByAddressLcd)");
-    return getTxsByAccountAddressLcd(endpoint, address, offset, limit);
+    return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
   }, [address, endpoint, limit, offset, search, validateContractAddress]);
 
   return useQuery(

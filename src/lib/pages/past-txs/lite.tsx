@@ -42,8 +42,8 @@ export const PastTxsLite = () => {
   const { data, isLoading } = useTxsByAddressLcd(
     address,
     debouncedSearch,
-    offset,
     pageSize,
+    offset,
     {
       onSuccess: ({ total }) => setTotalData(total),
     }
