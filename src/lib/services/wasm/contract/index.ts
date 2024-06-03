@@ -240,7 +240,13 @@ export const useInstantiatedContractsByAddressLcd = (
       endpoint,
       address,
     ],
-    async () => getInstantiatedContractsByAddressLcd(endpoint, address),
+    async () => {
+      if (!address)
+        throw new Error(
+          "address not found (getInstantiatedContractsByAddressLcd)"
+        );
+      return getInstantiatedContractsByAddressLcd(endpoint, address);
+    },
     { enabled: Boolean(address) && enabled, refetchOnWindowFocus: false }
   );
 };

@@ -81,12 +81,9 @@ export const getContractQueryMsgsLcd = async (
 
 export const getInstantiatedContractsByAddressLcd = (
   endpoint: string,
-  address: Option<BechAddr20>
-) => {
-  if (!address)
-    throw new Error("address not found (getInstantiatedContractsByAddressLcd)");
-
-  return axios
+  address: BechAddr20
+) =>
+  axios
     .get(
       `${endpoint}/cosmwasm/wasm/v1/contracts/creator/${encodeURI(address)}`,
       {
@@ -107,4 +104,3 @@ export const getInstantiatedContractsByAddressLcd = (
         label: "",
       }));
     });
-};
