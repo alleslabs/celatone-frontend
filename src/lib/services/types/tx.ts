@@ -7,17 +7,18 @@ import type {
 } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
-import type { Transaction } from "lib/types";
+import type { BechAddr, Message, Transaction } from "lib/types";
 import {
+  ActionMsgType,
   MsgFurtherAction,
   zBechAddr,
   zCoin,
   zMessageResponse,
-  zPagination,
   zUint8Schema,
   zUtcDate,
 } from "lib/types";
 import {
+  extractTxLogs,
   getActionMsgType,
   getMsgFurtherAction,
   parseTxHash,
@@ -130,7 +131,7 @@ const zTxResponse = z
     gas_wanted: z.string(),
     gas_used: z.string(),
     tx: zTx,
-    timestamp: zUtcDate.optional(),
+    timestamp: zUtcDate,
     events: z.array(zEvent),
   })
   .transform((val) => ({
@@ -143,6 +144,67 @@ export interface TxData extends TxResponse {
   chainId: string;
   isTxFailed: boolean;
 }
+
+export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
+  (val) => {
+    const txBody = val.tx.body;
+    const message = txBody.messages[0];
+    const sender = (message?.sender ||
+      message?.signer ||
+      message?.fromAddress ||
+      "") as BechAddr;
+
+    const logs = extractTxLogs(val);
+
+    const messages = txBody.messages.map<Message>((msg, idx) => ({
+      log: logs[idx],
+      type: msg["@type"],
+    }));
+
+    return {
+      hash: val.txhash,
+      messages,
+      sender,
+      isSigner: true,
+      height: Number(val.height),
+      created: val.timestamp,
+      success: val.code === 0,
+      // TODO: implement below later
+      actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+      furtherAction: MsgFurtherAction.NONE,
+      isIbc: false,
+      isOpinit: false,
+      isInstantiate: false,
+    };
+  }
+);
+
+export const zTxsByAddressResponseLcd = z
+  .object({
+    tx_responses: z.array(zTxsResponseItemFromLcd),
+    total: z.coerce.number(),
+  })
+  .transform((val) => ({
+    items: val.tx_responses,
+    total: val.total,
+  }));
+
+export const zTxsByHashResponseLcd = z
+  .object({
+    tx_response: zTxsResponseItemFromLcd,
+  })
+  .transform((val) => ({
+    items: [val.tx_response],
+    total: 1,
+  }));
+
+export const zTxByHashResponseLcd = z
+  .object({
+    tx_response: zTxResponse,
+  })
+  .transform((val) => ({
+    txResponse: val.tx_response,
+  }));
 
 const zBaseTxsResponseItem = z.object({
   height: z.number().nonnegative(),
@@ -263,14 +325,3 @@ export const zTxsCountResponse = z
     count: z.number().nullish(),
   })
   .transform((val) => val.count);
-
-export const zTxsByAddressResponseLcd = z.object({
-  tx_responses: z.array(zTxResponse),
-  pagination: zPagination.nullable(),
-  total: z.string(),
-});
-export type TxsByAddressResponse = z.infer<typeof zTxsByAddressResponseLcd>;
-
-export const zTxByHashResponseLcd = z.object({
-  tx_response: zTxResponse,
-});
