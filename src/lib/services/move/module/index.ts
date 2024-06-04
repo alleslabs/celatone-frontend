@@ -80,7 +80,8 @@ export const useModulesByAddressLcd = ({
 }) => {
   const lcdEndpoint = useLcdEndpoint();
   const queryFn = () => {
-    if (!address) throw new Error("address is undefined");
+    if (!address)
+      throw new Error("address is undefined (useModulesByAddressLcd)");
     return getModulesByAddressLcd(lcdEndpoint, address);
   };
 
