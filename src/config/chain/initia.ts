@@ -45,11 +45,12 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.151,
-        denom: "uinit",
+        tokenPerGas: 0.15,
+        denom:
+          "move/944f8dd8dc49f96c25fea9849f16436dcfa6d564eec802f3ef7f8b3ea85368ff",
       },
       gasAdjustment: 1.5,
-      maxGasLimit: 25_000_000,
+      maxGasLimit: 200_000_000,
     },
     extra: {},
   },
