@@ -28,6 +28,14 @@ export const initiatestnet: Chain[] = [
           high_gas_price: 0.4,
         },
         {
+          denom:
+            "move/944f8dd8dc49f96c25fea9849f16436dcfa6d564eec802f3ef7f8b3ea85368ff",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.15,
+          average_gas_price: 0.15,
+          high_gas_price: 0.4,
+        },
+        {
           denom: "ueth",
         },
         {
@@ -42,6 +50,10 @@ export const initiatestnet: Chain[] = [
       staking_tokens: [
         {
           denom: "uinit",
+        },
+        {
+          denom:
+            "move/944f8dd8dc49f96c25fea9849f16436dcfa6d564eec802f3ef7f8b3ea85368ff",
         },
         {
           denom:
@@ -485,6 +497,35 @@ export const initiatestnetAssets: AssetList[] = [
         logo_URIs: {
           png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
           svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
+        },
+      },
+      {
+        description: "The gas token of Initia",
+        denom_units: [
+          {
+            denom:
+              "move/944f8dd8dc49f96c25fea9849f16436dcfa6d564eec802f3ef7f8b3ea85368ff",
+            exponent: 0,
+          },
+          {
+            denom: "GAS",
+            exponent: 6,
+          },
+        ],
+        base: "move/944f8dd8dc49f96c25fea9849f16436dcfa6d564eec802f3ef7f8b3ea85368ff",
+        display: "GAS",
+        name: "Gas Token",
+        symbol: "GAS",
+        coingecko_id: "",
+        images: [
+          {
+            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/GAS.png",
+            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/GAS.svg",
+          },
+        ],
+        logo_URIs: {
+          png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/GAS.png",
+          svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/GAS.svg",
         },
       },
       {
