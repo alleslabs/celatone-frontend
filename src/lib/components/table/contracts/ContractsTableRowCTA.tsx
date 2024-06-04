@@ -13,7 +13,11 @@ import {
 } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useInternalNavigate,
+  useTierConfig,
+} from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -52,6 +56,7 @@ export const ContractsTableRowCTA = ({
   showLastUpdate = true,
 }: ContractsTableRowCTAProps) => {
   const { address } = useCurrentChain();
+  const isFullTier = useTierConfig() === "full";
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
@@ -77,11 +82,13 @@ export const ContractsTableRowCTA = ({
               Query
             </Button>
           </AppLink>
-          <AppLink href={`/migrate?contract=${contractInfo.contractAddress}`}>
-            <Button variant="outline-gray" size="sm" isDisabled={!isAdmin}>
-              Migrate
-            </Button>
-          </AppLink>
+          {isFullTier && (
+            <AppLink href={`/migrate?contract=${contractInfo.contractAddress}`}>
+              <Button variant="outline-gray" size="sm" isDisabled={!isAdmin}>
+                Migrate
+              </Button>
+            </AppLink>
+          )}
         </Flex>
       </TableRow>
       <TableRow>
@@ -123,35 +130,41 @@ export const ContractsTableRowCTA = ({
                 </MenuItem>
               }
             />
-            <MenuItem
-              icon={<CustomIcon name="admin" boxSize="16px" color="gray.600" />}
-              onClick={() => {
-                navigate({
-                  pathname: "/admin",
-                  query: { contract: contractInfo.contractAddress },
-                });
-              }}
-              isDisabled={!isAdmin}
-            >
-              Update Admin
-            </MenuItem>
-            <ClearAdminModal
-              contractAddress={contractInfo.contractAddress}
-              triggerElement={
+            {isFullTier && (
+              <>
                 <MenuItem
                   icon={
-                    <CustomIcon
-                      name="admin-clear"
-                      boxSize="16px"
-                      color="gray.600"
-                    />
+                    <CustomIcon name="admin" boxSize="16px" color="gray.600" />
                   }
+                  onClick={() => {
+                    navigate({
+                      pathname: "/admin",
+                      query: { contract: contractInfo.contractAddress },
+                    });
+                  }}
                   isDisabled={!isAdmin}
                 >
-                  Clear Admin
+                  Update Admin
                 </MenuItem>
-              }
-            />
+                <ClearAdminModal
+                  contractAddress={contractInfo.contractAddress}
+                  triggerElement={
+                    <MenuItem
+                      icon={
+                        <CustomIcon
+                          name="admin-clear"
+                          boxSize="16px"
+                          color="gray.600"
+                        />
+                      }
+                      isDisabled={!isAdmin}
+                    >
+                      Clear Admin
+                    </MenuItem>
+                  }
+                />
+              </>
+            )}
             {!!withCTA.removingContractList && (
               <>
                 <MenuDivider />
