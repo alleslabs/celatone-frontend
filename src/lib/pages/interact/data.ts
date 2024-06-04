@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import {
   useModuleByAddressLcd,
-  useModulesByAddressLcd,
-} from "lib/services/move";
+  useModulesByAddress,
+} from "lib/services/move/module";
 import type { Addr, IndexedModule, Option } from "lib/types";
 
 export const useSearchModules = ({
@@ -32,15 +32,11 @@ export const useSearchModules = ({
       },
     });
   const { refetch: refetchModules, isFetching: isModulesFetching } =
-    useModulesByAddressLcd({
+    useModulesByAddress({
       address,
-      options: {
-        refetchOnWindowFocus: false,
-        enabled: false,
-        retry: false,
-        onSuccess: ({ items }) => onModulesSuccess(items),
-        onError,
-      },
+      enabled: false,
+      onSuccess: ({ items }) => onModulesSuccess(items),
+      onError,
     });
 
   const refetch = useMemo(

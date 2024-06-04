@@ -17,7 +17,7 @@ import {
 } from "lib/utils";
 
 import { useBlockData } from "./block";
-import { useModuleByAddressLcd } from "./move";
+import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";

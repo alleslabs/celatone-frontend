@@ -32,11 +32,11 @@ const zIndexedModuleLcd = zBaseModuleLcd.transform<IndexedModule>((val) => ({
   ...indexModuleAbi(val.abi),
 }));
 
-export const zModuleLcdReturn = z.object({
+export const zModuleResponseLcd = z.object({
   module: zIndexedModuleLcd,
 });
 
-export const zModulesLcdReturn = z.object({
+export const zModulesResponseLcd = z.object({
   modules: z.array(zIndexedModuleLcd),
   pagination: zPagination,
 });

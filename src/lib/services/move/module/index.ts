@@ -13,8 +13,10 @@ import {
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
+  useTierConfig,
 } from "lib/app-provider";
 import type {
+  AccountModulesResponse,
   DecodeModuleQueryResponse,
   ModuleHistoriesResponse,
   ModuleRelatedProposalsResponse,
@@ -65,47 +67,48 @@ export const useModuleByAddressLcd = ({
     getModuleByAddressLcd(baseEndpoint, address, moduleName);
 
   return useQuery<IndexedModule>(
-    [CELATONE_QUERY_KEYS.ACCOUNT_MODULE, baseEndpoint, address, moduleName],
+    [
+      CELATONE_QUERY_KEYS.MODULE_BY_ADDRESS_LCD,
+      baseEndpoint,
+      address,
+      moduleName,
+    ],
     queryFn,
     options
   );
 };
 
-export const useModulesByAddressLcd = ({
+export const useModulesByAddress = ({
   address,
-  options = {},
+  enabled = true,
+  onSuccess,
+  onError,
 }: {
   address: Option<Addr>;
-  options?: Omit<UseQueryOptions<{ items: IndexedModule[] }>, "queryKey">;
+  enabled?: boolean;
+  onSuccess?: (data: AccountModulesResponse) => void;
+  onError?: (err: AxiosError<RpcQueryError>) => void;
 }) => {
+  const isFullTier = useTierConfig() === "full";
+  const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
-  const queryFn = () => {
-    if (!address)
-      throw new Error("address is undefined (useModulesByAddressLcd)");
-    return getModulesByAddressLcd(lcdEndpoint, address);
-  };
-
-  return useQuery<{ items: IndexedModule[] }>(
-    [CELATONE_QUERY_KEYS.ACCOUNT_MODULES, lcdEndpoint, address],
-    queryFn,
-    options
-  );
-};
-
-export const useModulesByAddress = (address: Option<Addr>, enabled = true) => {
-  const endpoint = useBaseApiRoute("accounts");
-  const { enabled: moveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
     [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, endpoint, address],
     async () => {
-      if (!address) throw new Error("address is undefined");
-      return getModulesByAddress(endpoint, address);
+      if (!address)
+        throw new Error("address is undefined (useModulesByAddress)");
+      return isFullTier
+        ? getModulesByAddress(endpoint, address)
+        : getModulesByAddressLcd(endpoint, address);
     },
     {
-      enabled: enabled && moveEnabled,
+      enabled,
+      retry: 0,
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
+      onSuccess,
+      onError,
     }
   );
 };
