@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
-  useLcdEndpoint,
+  useInitia,
   useValidateAddress,
 } from "lib/app-provider";
 import type { Addr, Option } from "lib/types";
@@ -13,13 +13,11 @@ export const useInitiaUsernameByAddress = (
   address: Option<Addr>,
   enabled = true
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
-
   const { isSomeValidAddress } = useValidateAddress();
-
+  const isInitia = useInitia();
   const queryFn = async () => {
     if (!address) throw new Error("address is undefined");
-    const username = await getInitiaUsernameByAddress(lcdEndpoint, address);
+    const username = await getInitiaUsernameByAddress(address);
     if (username === null) {
       throw new Error("No username found for the given address");
     }
@@ -27,11 +25,11 @@ export const useInitiaUsernameByAddress = (
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.INITIA_USERNAME_BY_ADDRESS, lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.INITIA_USERNAME_BY_ADDRESS, address],
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled: enabled && address && isSomeValidAddress(address),
+      enabled: enabled && isInitia && address && isSomeValidAddress(address),
       retry: 1,
     }
   );
@@ -41,22 +39,21 @@ export const useAddressByInitiaUsername = (
   username: string,
   enabled = true
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
-
+  const isInitia = useInitia();
   const queryFn = async () => {
     // if (!username) throw new Error("address is undefined");
-    const address = await getAddressByInitiaUsername(lcdEndpoint, username);
+    const address = await getAddressByInitiaUsername(username);
     if (address === null) {
       throw new Error("No username found for the given address");
     }
     return { address };
   };
   return useQuery(
-    [CELATONE_QUERY_KEYS.ADDRESS_BY_INITIA_USERNAME, lcdEndpoint, username],
+    [CELATONE_QUERY_KEYS.ADDRESS_BY_INITIA_USERNAME, username],
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled,
+      enabled: enabled && isInitia,
       retry: 1,
     }
   );
