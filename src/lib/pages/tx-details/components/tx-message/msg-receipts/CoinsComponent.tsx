@@ -37,7 +37,7 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
   return (
     <Flex direction="column" w="full">
       {hasSupportedTokens && (
-        <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"}>
+        <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr" : "1fr 1fr"}>
           {supportedTokens.slice(0, showMore ? undefined : 2).map((token) => (
             <TokenCard
               key={token.denom}
