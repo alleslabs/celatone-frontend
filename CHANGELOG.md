@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#956](https://github.com/alleslabs/celatone-frontend/pull/956) Add landlord-1 network
 - [#954](https://github.com/alleslabs/celatone-frontend/pull/954) Add gas token for initiation-1
 - [#949](https://github.com/alleslabs/celatone-frontend/pull/949) Support lite version for instantited by me
 - [#948](https://github.com/alleslabs/celatone-frontend/pull/948) Support lite version for past txs

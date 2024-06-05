@@ -462,6 +462,91 @@ export const initiatestnet: Chain[] = [
       svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/tucana/images/TUCANA.svg",
     },
   },
+  {
+    $schema: CHAIN_SCHEMA,
+    chain_name: "civitiatestnet",
+    chain_id: "landlord-1",
+    website: "https://www.civitia.xyz/",
+    pretty_name: "Civitia",
+    status: "live",
+    network_type: "testnet",
+    bech32_prefix: "init",
+    daemon_name: "minitiad",
+    node_home: NODE_HOME_MINITIA,
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom:
+            "l2/afaa3f4e1717c75712f8e8073e41f051a4e516cd25daa82d948c4729388edefd",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.15,
+          average_gas_price: 0.15,
+          high_gas_price: 0.4,
+        },
+      ],
+    },
+    staking: {
+      staking_tokens: [],
+    },
+    codebase: {
+      git_repo: "https://github.com/initia-labs/minimove",
+      recommended_version: "v0.2.12",
+      compatible_versions: ["v0.2.12", "main"],
+      binaries: {
+        "linux/amd64":
+          "https://initia.s3.ap-southeast-1.amazonaws.com/minimove-1/minimove_v0.2.12_Linux_x86_64.tar.gz",
+        "linux/arm64":
+          "https://initia.s3.ap-southeast-1.amazonaws.com/minimove-1/minimove_v0.2.12_Linux_aarch64.tar.gz",
+        "darwin/amd64":
+          "https://initia.s3.ap-southeast-1.amazonaws.com/minimove-1/minimove_v0.2.12_Darwin_x86_64.tar.gz",
+        "darwin/arm64":
+          "https://initia.s3.ap-southeast-1.amazonaws.com/minimove-1/minimove_v0.2.12_Darwin_aarch64.tar.gz",
+      },
+      genesis: {
+        genesis_url:
+          "https://maze-rpc-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz/genesis",
+      },
+      versions: [],
+    },
+    peers: {
+      seeds: [],
+      persistent_peers: [],
+    },
+    apis: {
+      rpc: [
+        {
+          address:
+            "https://maze-rpc-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz",
+          provider: "Foundation",
+        },
+      ],
+      rest: [
+        {
+          address:
+            "https://maze-rest-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz",
+          provider: "Foundation",
+        },
+      ],
+    },
+    explorers: [
+      {
+        kind: "initia scan",
+        url: "https://explorer.testnet.initia.xyz/landlord-1",
+      },
+    ],
+    images: [
+      {
+        png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/civitia.png",
+        svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/civitia.svg",
+      },
+    ],
+    logo_URIs: {
+      png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/civitia.png",
+      svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/civitia.svg",
+    },
+  },
 ];
 
 const ASSETLIST_SCHEMA = "../assetlist.schema.json";
@@ -1138,6 +1223,41 @@ export const initiatestnetAssets: AssetList[] = [
         logo_URIs: {
           png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/tucana/images/TUCANA-PERP.png",
           svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/tucana/images/TUCANA-PERP.svg",
+        },
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "civitiatestnet",
+    assets: [
+      {
+        description: "The native token of Initia",
+        denom_units: [
+          {
+            denom:
+              "l2/afaa3f4e1717c75712f8e8073e41f051a4e516cd25daa82d948c4729388edefd",
+            exponent: 0,
+          },
+          {
+            denom: "INIT",
+            exponent: 6,
+          },
+        ],
+        base: "l2/afaa3f4e1717c75712f8e8073e41f051a4e516cd25daa82d948c4729388edefd",
+        display: "INIT",
+        name: "Initia Native Token",
+        symbol: "INIT",
+        coingecko_id: "",
+        images: [
+          {
+            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/INIT.png",
+            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/INIT.svg",
+          },
+        ],
+        logo_URIs: {
+          png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/INIT.png",
+          svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/INIT.svg",
         },
       },
     ],
