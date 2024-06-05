@@ -464,7 +464,7 @@ export const initiatestnet: Chain[] = [
   },
   {
     $schema: CHAIN_SCHEMA,
-    chain_name: "civitia",
+    chain_name: "civitiatestnet",
     chain_id: "landlord-1",
     website: "https://www.civitia.xyz/",
     pretty_name: "Civitia",
@@ -1229,7 +1229,7 @@ export const initiatestnetAssets: AssetList[] = [
   },
   {
     $schema: ASSETLIST_SCHEMA,
-    chain_name: "civitia",
+    chain_name: "civitiatestnet",
     assets: [
       {
         description: "The native token of Initia",
