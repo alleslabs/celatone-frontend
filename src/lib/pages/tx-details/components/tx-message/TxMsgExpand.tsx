@@ -89,7 +89,7 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             type="code_id"
-            value={body.code_id}
+            value={body.code_id as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -116,7 +116,7 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             type="code_id"
-            value={body.code_id}
+            value={body.code_id as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -129,10 +129,13 @@ export const TxMsgExpand = ({
       content = (
         <Flex display="inline">
           Execute{" "}
-          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg)[0]}</span> on{" "}
+          <span style={{ fontWeight: 700 }}>
+            {Object.keys(body.msg as Record<string, unknown>)[0]}
+          </span>{" "}
+          on{" "}
           <ExplorerLink
             type="contract_address"
-            value={body.contract}
+            value={body.contract as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
@@ -147,7 +150,7 @@ export const TxMsgExpand = ({
           Migrate{" "}
           <ExplorerLink
             type="contract_address"
-            value={body.contract}
+            value={body.contract as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
@@ -155,7 +158,7 @@ export const TxMsgExpand = ({
           to Code ID{" "}
           <ExplorerLink
             type="code_id"
-            value={body.code_id}
+            value={body.code_id as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -170,15 +173,15 @@ export const TxMsgExpand = ({
           Update admin on{" "}
           <ExplorerLink
             type="contract_address"
-            value={body.contract}
+            value={body.contract as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.new_admin)}
-            value={body.new_admin}
+            type={getAddressType(body.new_admin as string)}
+            value={body.new_admin as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_admin"
@@ -193,7 +196,7 @@ export const TxMsgExpand = ({
           Clear admin on{" "}
           <ExplorerLink
             type="contract_address"
-            value={body.contract}
+            value={body.contract as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
@@ -204,7 +207,7 @@ export const TxMsgExpand = ({
     case "/cosmos.bank.v1beta1.MsgSend":
       {
         const toAddress = body.to_address as BechAddr;
-        const singleCoin = body.amount[0] as Coin;
+        const singleCoin = (body.amount as Coin[])[0];
         const singleToken = coinToTokenWithValue(
           singleCoin.denom,
           singleCoin.amount,
@@ -212,7 +215,9 @@ export const TxMsgExpand = ({
           movePoolInfos
         );
         const assetText =
-          body.amount.length > 1 ? "assets" : formatTokenWithValue(singleToken);
+          (body.amount as Coin[]).length > 1
+            ? "assets"
+            : formatTokenWithValue(singleToken);
         msgIcon = "send";
         content = (
           <Flex display="inline">
@@ -232,7 +237,7 @@ export const TxMsgExpand = ({
       msgIcon = "submit-proposal";
       content = (
         <Flex display="inline">
-          Submit Proposal {body.is_expedited && " Expedited "}
+          Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
           {log && (
             <>
               ID{" "}
@@ -261,7 +266,7 @@ export const TxMsgExpand = ({
           on proposal ID{" "}
           <ExplorerLink
             type="proposal_id"
-            value={body.proposal_id}
+            value={body.proposal_id as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_proposal"
@@ -275,16 +280,16 @@ export const TxMsgExpand = ({
         <Flex display="inline">
           Delegate by{" "}
           <ExplorerLink
-            type={getAddressType(body.delegator_address)}
-            value={body.delegator_address}
+            type={getAddressType(body.delegator_address as string)}
+            value={body.delegator_address as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_delegator"
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.validator_address)}
-            value={body.validator_address}
+            type={getAddressType(body.validator_address as string)}
+            value={body.validator_address as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_validator"

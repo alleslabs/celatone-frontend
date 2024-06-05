@@ -24,24 +24,18 @@ export const TokenCard = ({
   amptrackSection,
   ...cardProps
 }: TokenCardProps) => (
-  <Tooltip label={`Token ID: ${token.denom}`} maxW="240px" textAlign="center">
-    <Flex
-      className="copier-wrapper"
-      direction="column"
-      minH="101px"
-      gap={2}
-      p={3}
-      background="gray.900"
-      borderRadius="8px"
-      {...cardProps}
-    >
-      <Flex
-        gap={1}
-        alignItems="center"
-        borderBottom="1px solid"
-        borderBottomColor="gray.700"
-        pb={2}
-      >
+  <Flex
+    className="copier-wrapper"
+    direction="column"
+    minH="101px"
+    gap={2}
+    p={3}
+    background="gray.900"
+    borderRadius="8px"
+    {...cardProps}
+  >
+    <Tooltip label={`Token ID: ${token.denom}`} textAlign="center">
+      <Flex gap={1} alignItems="center">
         <TokenImageRender
           logo={token.logo}
           alt={getTokenLabel(token.denom, token.symbol)}
@@ -64,15 +58,19 @@ export const TokenCard = ({
           amptrackSection={amptrackSection}
         />
       </Flex>
-
-      <Flex direction="column">
-        <Text fontWeight={700} variant="body2">
-          {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
-        </Text>
-        <Text variant="body3" color="text.dark">
-          {!isUndefined(token.value) ? `(${formatPrice(token.value)})` : "N/A"}
-        </Text>
-      </Flex>
+    </Tooltip>
+    <Flex
+      direction="column"
+      borderTop="1px solid"
+      borderTopColor="gray.700"
+      pt={2}
+    >
+      <Text fontWeight={700} variant="body2">
+        {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
+      </Text>
+      <Text variant="body3" color="text.dark">
+        {!isUndefined(token.value) ? `(${formatPrice(token.value)})` : "N/A"}
+      </Text>
     </Flex>
-  </Tooltip>
+  </Flex>
 );

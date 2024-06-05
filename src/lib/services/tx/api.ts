@@ -1,22 +1,19 @@
 import axios from "axios";
 
-import type { TxResponse } from "../types/tx";
 import {
   zAccountTxsResponse,
   zBlockTxsResponse,
+  zTxByHashResponseLcd,
   zTxsCountResponse,
   zTxsResponse,
 } from "../types/tx";
 import type { BechAddr, Option, TxFilters } from "lib/types";
 import { camelToSnake, parseWithError } from "lib/utils";
 
-export const getTxData = async (
-  txsApiRoute: string,
-  txHash: string
-): Promise<TxResponse> =>
+export const getTxData = async (txsApiRoute: string, txHash: string) =>
   axios
-    .get(`${txsApiRoute}/${encodeURIComponent(txHash.toUpperCase())}`)
-    .then(({ data }) => data);
+    .get(`${txsApiRoute}/${encodeURI(txHash.toUpperCase())}`)
+    .then(({ data }) => parseWithError(zTxByHashResponseLcd, data));
 
 export const getTxs = async (
   endpoint: string,

@@ -38,6 +38,6 @@ export interface ContractMigrationHistory {
 }
 
 export enum ContractInteractionTabs {
-  Query = "Query",
-  Execute = "Execute",
+  Query = "query",
+  Execute = "execute",
 }

@@ -16,10 +16,17 @@ import {
   useLcdEndpoint,
   useMoveConfig,
   useTierConfig,
+  useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
-import type { BechAddr, Option, TxFilters } from "lib/types";
-import { extractTxLogs, isTxHash, parseDateOpt } from "lib/utils";
+import type {
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
+  Option,
+  TxFilters,
+} from "lib/types";
+import { extractTxLogs, isTxHash, snakeToCamel } from "lib/utils";
 
 import {
   getTxData,
@@ -28,7 +35,12 @@ import {
   getTxsByBlockHeight,
   getTxsCountByAddress,
 } from "./api";
-import { getTxDataLcd } from "./lcd";
+import {
+  getTxDataLcd,
+  getTxsByAccountAddressLcd,
+  getTxsByContractAddressLcd,
+  getTxsByHashLcd,
+} from "./lcd";
 
 export const useTxData = (
   txHash: Option<string>,
@@ -49,19 +61,20 @@ export const useTxData = (
         ? await getTxData(endpoint, hash)
         : await getTxDataLcd(endpoint, hash);
 
-      const { tx_response: txResponse } = txData;
+      const { txResponse } = txData;
 
       const logs = extractTxLogs(txResponse);
 
+      const payload = snakeToCamel(txResponse);
+
       return {
-        ...txResponse,
-        timestamp: parseDateOpt(txResponse.timestamp),
+        ...payload,
         logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txResponse.code),
       };
     },
-    [endpoint, currentChainId, isFullTier]
+    [currentChainId, endpoint, isFullTier]
   );
 
   return useQuery(
@@ -204,7 +217,8 @@ export const useTxsCountByAddress = (
       JSON.stringify(txFilters),
     ],
     async () => {
-      if (!address) throw new Error("address is undefined");
+      if (!address)
+        throw new Error("address is undefined (useTxsCountByAddress)");
       return getTxsCountByAddress(
         endpoint,
         address,
@@ -215,6 +229,89 @@ export const useTxsCountByAddress = (
       );
     },
     { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useTxsByContractAddressLcd = (
+  address: BechAddr32,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_LCD,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    async () => getTxsByContractAddressLcd(endpoint, address, limit, offset),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useTxsByAccountAddressLcd = (
+  address: Option<BechAddr20>,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ACCOUNT_ADDRESS_LCD,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    async () => {
+      if (!address)
+        throw new Error("address is undefined (useTxsByAccountAddressLcd)");
+      return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
+    },
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useTxsByAddressLcd = (
+  address: Option<BechAddr20>,
+  search: string,
+  limit: number,
+  offset: number,
+  options: Pick<UseQueryOptions<TxsResponse>, "onSuccess"> = {}
+) => {
+  const endpoint = useLcdEndpoint();
+  const { validateContractAddress } = useValidateAddress();
+
+  const queryfn = useCallback(() => {
+    if (isTxHash(search)) return getTxsByHashLcd(endpoint, search);
+
+    if (!validateContractAddress(search))
+      return getTxsByContractAddressLcd(
+        endpoint,
+        search as BechAddr32,
+        offset,
+        limit
+      );
+
+    if (!address) throw new Error("address is undefined (useTxsByAddressLcd)");
+    return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
+  }, [address, endpoint, limit, offset, search, validateContractAddress]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_LCD,
+      endpoint,
+      address,
+      search,
+      offset,
+      limit,
+    ],
+    queryfn,
+    { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };
 

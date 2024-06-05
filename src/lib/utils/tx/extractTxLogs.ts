@@ -1,8 +1,8 @@
-import type { Event, logs } from "@cosmjs/stargate";
+import type { Log } from "@cosmjs/stargate/build/logs";
 
-import type { TxResponse } from "lib/services/types";
+import type { Event, TxResponse } from "lib/services/types";
 
-export const extractTxLogs = (txData: TxResponse): logs.Log[] => {
+export const extractTxLogs = (txData: TxResponse): Log[] => {
   // Failed Tx - no logs
   if (txData.code !== 0) return [];
 

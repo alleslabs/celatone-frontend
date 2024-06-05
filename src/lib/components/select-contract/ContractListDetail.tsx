@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import InputWithIcon from "../InputWithIcon";
 import { ContractsTable } from "../table";
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
@@ -88,11 +88,13 @@ export const ContractListDetail = ({
   onContractSelect,
   isReadOnly = false,
 }: ContractListDetailProps) => {
-  const { data: admins = {} } = useAdminByContractAddresses(
-    isReadOnly
+  const isFullTier = useTierConfig() === "full";
+  const dataFull = useAdminByContractAddresses(
+    isReadOnly || !isFullTier
       ? []
       : contractListInfo.contracts.map((contract) => contract.contractAddress)
   );
+  const { data: admins = {} } = isFullTier ? dataFull : {};
 
   const [searchKeyword, setSearchKeyword] = useState("");
   const [tagFilter, setTagFilter] = useState<string[]>([]);

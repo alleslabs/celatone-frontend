@@ -1,4 +1,5 @@
 import { Text } from "@chakra-ui/react";
+import type { Log } from "@cosmjs/stargate/build/logs";
 
 import type { AssetInfos, Message, Option, PoolDetail } from "lib/types";
 import { extractTxDetails } from "lib/utils";
@@ -40,7 +41,13 @@ export const PoolMsgAction = ({
   assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }) => {
-  const { type, detail, log } = msg;
+  // TODO: fix this type casting
+  const { type, detail, log } = msg as unknown as {
+    type: string;
+    detail: Record<string, unknown>;
+    log: Log;
+  };
+
   switch (type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
@@ -177,7 +184,13 @@ export const PoolMsgDetail = ({
   isOpened: boolean;
   ampCopierSection?: string;
 }) => {
-  const { type, detail, log } = msg;
+  // TODO: fix this type casting
+  const { type, detail, log } = msg as unknown as {
+    type: string;
+    detail: Record<string, unknown>;
+    log: Log;
+  };
+
   switch (type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
@@ -324,6 +337,7 @@ export const PoolMsgDetail = ({
       );
     }
     default:
+      // TODO: revisit if detail is undefined
       return <Text h={20}>{JSON.stringify(msg.detail)}</Text>;
   }
 };
