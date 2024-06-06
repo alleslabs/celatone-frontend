@@ -63,6 +63,7 @@ const zValidatorInfoLcd = z
     isActive: val.status === "BOND_STATUS_BONDED",
     votingPower: val.tokens,
     website: val.description.website,
+    consensusPubkey: val.consensus_pubkey,
   }));
 
 export const zValidatorResponseLcd = z.object({

@@ -1,6 +1,6 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useTierConfig } from "lib/app-provider";
 import { LabelText } from "lib/components/LabelText";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { BlockData } from "lib/types";
@@ -12,6 +12,7 @@ interface BlockInfoProps {
 
 export const BlockInfo = ({ blockData }: BlockInfoProps) => {
   const { currentChainId } = useCelatoneApp();
+  const isFullTier = useTierConfig() === "full";
   return (
     <Box mb={12}>
       <Flex mb={6} justifyContent="space-between">
@@ -24,11 +25,14 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
           <LabelText flex="1" label="Network">
             {currentChainId}
           </LabelText>
-          <LabelText flex="1" label="Gas (Used/Wanted)">
-            {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${
-              blockData.gasLimit ? formatInteger(blockData.gasLimit) : 0
-            }`}
-          </LabelText>
+
+          {isFullTier && (
+            <LabelText flex="1" label="Gas (Used/Wanted)">
+              {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${
+                blockData.gasLimit ? formatInteger(blockData.gasLimit) : 0
+              }`}
+            </LabelText>
+          )}
         </Flex>
         <LabelText label="Proposed by" flex="1" minW={0}>
           <ValidatorBadge

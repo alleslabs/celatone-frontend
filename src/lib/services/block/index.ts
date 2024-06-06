@@ -10,7 +10,7 @@ import type { BlocksResponse } from "lib/services/types";
 import type { BlockData } from "lib/types";
 
 import { getBlockData, getBlocks } from "./api";
-import { getLatestBlockLcd } from "./lcd";
+import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
 
 export const useBlocks = (
   limit: number,
@@ -33,6 +33,19 @@ export const useBlockData = (height: number, enabled = true) => {
     async () => getBlockData(endpoint, height),
     {
       enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useBlockDataLcd = (height: number) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, endpoint, height],
+    async () => getBlockDataLcd(endpoint, height),
+    {
       retry: false,
       refetchOnWindowFocus: false,
     }

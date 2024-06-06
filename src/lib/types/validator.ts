@@ -39,6 +39,11 @@ export const zValidatorData = z
   .transform(({ website, ...val }) => ({
     ...snakeToCamel(val),
     website: formatUrl(website),
+    // TODO: add from api
+    consensusPubkey: {
+      "@type": "",
+      key: "",
+    },
   }));
 export type ValidatorData = z.infer<typeof zValidatorData>;
 

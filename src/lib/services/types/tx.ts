@@ -88,9 +88,8 @@ const zTxBody = z
   .transform(snakeToCamel);
 export type TxBody = z.infer<typeof zTxBody>;
 
-const zTx = z
+export const zTx = z
   .object({
-    "@type": z.string(),
     body: zTxBody,
     auth_info: zAuthInfo,
     signatures: z.array(z.string()),
