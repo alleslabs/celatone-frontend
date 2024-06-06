@@ -1,5 +1,5 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useResourcesByAddress } from "lib/services/move";
+import { useResourcesByAddress } from "lib/services/move/resourceService";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 interface SupplyData {

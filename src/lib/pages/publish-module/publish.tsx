@@ -20,7 +20,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { useTxBroadcast } from "lib/hooks";
-import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
 

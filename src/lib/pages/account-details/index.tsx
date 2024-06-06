@@ -29,7 +29,7 @@ import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/accountService";
-import { useModulesByAddress } from "lib/services/move/moduleService";
+import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
 import { useNftsCountByAccount } from "lib/services/nft";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
@@ -90,7 +90,7 @@ const AccountDetailsBody = ({
   } = useAccountDetailsTableCounts(accountAddress);
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
-    useModulesByAddress(accountAddress);
+    useModulesByAddress({ address: accountAddress });
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddress(accountAddress);
   // nft
