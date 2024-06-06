@@ -6,6 +6,7 @@ import type {
   AccountTxsResponse,
   BlockTxsResponse,
   TxData,
+  TxsByAddressResponseLcd,
   TxsResponse,
 } from "../types/tx";
 import {
@@ -119,7 +120,8 @@ export const useTxsByAddress = (
   isSigner: Option<boolean>,
   txFilters: TxFilters,
   offset: number,
-  limit: number
+  limit: number,
+  options: UseQueryOptions<AccountTxsResponse> = {}
 ) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
@@ -154,7 +156,7 @@ export const useTxsByAddress = (
         isInitia
       );
     },
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -235,11 +237,12 @@ export const useTxsCountByAddress = (
 export const useTxsByContractAddressLcd = (
   address: BechAddr32,
   limit: number,
-  offset: number
+  offset: number,
+  options: UseQueryOptions<TxsByAddressResponseLcd> = {}
 ) => {
   const endpoint = useLcdEndpoint();
 
-  return useQuery(
+  return useQuery<TxsByAddressResponseLcd>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_LCD,
       endpoint,
@@ -248,7 +251,7 @@ export const useTxsByContractAddressLcd = (
       offset,
     ],
     async () => getTxsByContractAddressLcd(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 

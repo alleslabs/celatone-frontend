@@ -1,9 +1,10 @@
+import { useTierConfig } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxsByAddress } from "lib/services/tx";
+import { useTxsByAddress, useTxsByContractAddressLcd } from "lib/services/tx";
 import type { BechAddr32, Option } from "lib/types";
 
 interface TxsTableProps {
@@ -19,7 +20,10 @@ export const TxsTable = ({
   totalData,
   refetchCount,
 }: TxsTableProps) => {
+  const isFullTier = useTierConfig() === "full";
+
   const {
+    setTotalData,
     pagesQuantity,
     currentPage,
     setCurrentPage,
@@ -35,14 +39,28 @@ export const TxsTable = ({
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddress(
+  const txsByAddressFull = useTxsByAddress(
     contractAddress,
     undefined,
     undefined,
     DEFAULT_TX_FILTERS,
     offset,
-    pageSize
+    pageSize,
+    { enabled: isFullTier }
   );
+  const txsByAddressLite = useTxsByContractAddressLcd(
+    contractAddress,
+    pageSize,
+    offset,
+    {
+      enabled: !isFullTier,
+      onSuccess: ({ total }) => setTotalData(total),
+    }
+  );
+
+  const { data, isLoading, error } = isFullTier
+    ? txsByAddressFull
+    : txsByAddressLite;
 
   return (
     <>
