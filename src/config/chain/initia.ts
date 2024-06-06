@@ -56,7 +56,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "initiation-1": {
-    tier: "lite",
+    tier: "full",
     chain: "initia",
     registryChainName: "initiatestnet",
     prettyName: "Initia",
