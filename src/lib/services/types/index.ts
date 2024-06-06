@@ -7,3 +7,4 @@ export * from "./staking";
 export * from "./validator";
 export * from "./wasm";
 export * from "./tx";
+export * from "./move";

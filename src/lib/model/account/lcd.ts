@@ -6,7 +6,7 @@ import {
   useCommissionsByValidatorAddressLcd,
   useDelegationRewardsByAddressLcd,
 } from "lib/services/distribution";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   useDelegationsByAddressLcd,
   useRedelegationsByAddressLcd,

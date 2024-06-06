@@ -4,9 +4,11 @@ import {
   zContractLcd,
   zContractQueryMsgs,
   zContractsResponseLcd,
+  zInstantiatedContractsLcd,
   zMigrationHistoriesResponseLcd,
 } from "lib/services/types";
-import type { BechAddr32, JsonDataType, Option } from "lib/types";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { BechAddr20, BechAddr32, JsonDataType, Option } from "lib/types";
 import { encode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryLcd = (
@@ -96,3 +98,28 @@ export const getMigrationHistoriesByContractAddressLcd = async (
       }
     )
     .then(({ data }) => parseWithError(zMigrationHistoriesResponseLcd, data));
+export const getInstantiatedContractsByAddressLcd = (
+  endpoint: string,
+  address: BechAddr20
+) =>
+  axios
+    .get(
+      `${endpoint}/cosmwasm/wasm/v1/contracts/creator/${encodeURI(address)}`,
+      {
+        params: {
+          "pagination.limit": 100,
+        },
+      }
+    )
+    .then(({ data }) => {
+      const { contractAddresses } = parseWithError(
+        zInstantiatedContractsLcd,
+        data
+      );
+
+      return contractAddresses.map<ContractLocalInfo>((contractAddress) => ({
+        contractAddress,
+        instantiator: address,
+        label: "",
+      }));
+    });

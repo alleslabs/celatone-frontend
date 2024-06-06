@@ -222,3 +222,9 @@ export const zMigrationHistoriesResponseLcd = z.object({
 export type MigrationHistoriesResponseLcd = z.infer<
   typeof zMigrationHistoriesResponseLcd
 >;
+
+export const zInstantiatedContractsLcd = z
+  .object({
+    contract_addresses: zBechAddr32.array(),
+  })
+  .transform(snakeToCamel);

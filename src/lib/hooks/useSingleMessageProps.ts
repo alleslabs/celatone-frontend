@@ -6,7 +6,7 @@ import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   AssetInfos,
@@ -140,6 +140,7 @@ const executeSingleMsgProps = (
   if (messages.length > 1) {
     if (
       messages.some((msg) => {
+        // TODO: revisit if detail is undefined
         const msgDetail = msg.detail as DetailExecute;
         return msgDetail.contract !== detail.contract;
       })
@@ -246,6 +247,7 @@ const sendSingleMsgProps = (
 
   const uniqueAddressLength = new Set(
     messages.map((msg) => {
+      // TODO: revisit if detail is undefined
       const msgDetail = msg.detail as DetailSend;
       return msgDetail.toAddress;
     })

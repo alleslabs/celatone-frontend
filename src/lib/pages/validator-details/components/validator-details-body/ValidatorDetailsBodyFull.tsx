@@ -17,7 +17,7 @@ import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import { useStakingParamsLcd } from "lib/services/staking";
 import { useValidatorData } from "lib/services/validator";
 
