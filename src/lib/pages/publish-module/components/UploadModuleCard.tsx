@@ -10,7 +10,7 @@ import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import { useDecodeModule } from "lib/services/move";
+import { useDecodeModule } from "lib/services/move/module";
 import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option, UpgradePolicy } from "lib/types";
 

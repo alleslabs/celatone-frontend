@@ -37,7 +37,7 @@ export const getModulesByAddress = async (
   address: Addr
 ): Promise<AccountModulesResponse> =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(address)}/move/modules`)
+    .get(`${endpoint}/${encodeURI(address)}/move/modules`)
     .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
 export const getModuleVerificationStatus = async (
@@ -46,9 +46,7 @@ export const getModuleVerificationStatus = async (
   moduleName: string
 ): Promise<Nullable<ModuleVerificationInternal>> =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(address)}/${encodeURIComponent(moduleName)}`
-    )
+    .get(`${endpoint}/${encodeURI(address)}/${encodeURI(moduleName)}`)
     .then(({ data }) => parseWithError(zModuleVerificationInternal, data))
     .catch(() => null);
 
@@ -122,7 +120,7 @@ export const getModuleTableCounts = async (
 ): Promise<ModuleTableCountsResponse> =>
   axios
     .get(
-      `${endpoint}/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/table-counts`,
+      `${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/table-counts`,
       {
         params: {
           is_gov: isGov,
@@ -141,7 +139,7 @@ export const getModuleTxs = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/txs`,
+      `${endpoint}/modules/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/txs`,
       {
         params: {
           limit,
@@ -161,7 +159,7 @@ export const getModuleHistories = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/histories`,
+      `${endpoint}/modules/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/histories`,
       {
         params: {
           limit,
@@ -180,7 +178,7 @@ export const getModuleRelatedProposals = async (
 ) =>
   axios
     .get(
-      `${endpoint}/modules/${encodeURIComponent(vmAddress)}/${encodeURIComponent(moduleName)}/related-proposals`,
+      `${endpoint}/modules/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/related-proposals`,
       {
         params: {
           limit,

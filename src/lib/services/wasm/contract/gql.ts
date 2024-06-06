@@ -16,7 +16,7 @@ import {
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr20, BechAddr32, Dict, Option } from "lib/types";
 
-export const useInstantiatedCountByUserQuery = (
+export const useInstantiatedCountByAddress = (
   walletAddr: Option<BechAddr20>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -25,7 +25,7 @@ export const useInstantiatedCountByUserQuery = (
   const queryFn = useCallback(async () => {
     if (!walletAddr)
       throw new Error(
-        "Wallet address not found (useInstantiatedCountByUserQuery)"
+        "Wallet address not found (useInstantiatedCountByAddress)"
       );
 
     return indexerGraphClient
@@ -38,8 +38,8 @@ export const useInstantiatedCountByUserQuery = (
   return useQuery(
     [
       CELATONE_QUERY_KEYS.INSTANTIATED_COUNT_BY_WALLET_ADDRESS,
-      walletAddr,
       indexerGraphClient,
+      walletAddr,
     ],
     queryFn,
     {
@@ -49,14 +49,15 @@ export const useInstantiatedCountByUserQuery = (
   );
 };
 
-export const useInstantiatedListByUserQuery = (
-  walletAddr: Option<BechAddr20>
+export const useInstantiatedListByAddress = (
+  walletAddr: Option<BechAddr20>,
+  enabled = false
 ): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!walletAddr)
       throw new Error(
-        "Wallet address not found (useInstantiatedListByUserQuery)"
+        "Wallet address not found (useInstantiatedListByAddress)"
       );
 
     return indexerGraphClient
@@ -75,11 +76,11 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(
     [
       CELATONE_QUERY_KEYS.INSTANTIATED_LIST_BY_WALLET_ADDRESS,
-      walletAddr,
       indexerGraphClient,
+      walletAddr,
     ],
     queryFn,
-    { enabled: Boolean(walletAddr), refetchOnWindowFocus: false }
+    { enabled: Boolean(walletAddr) && enabled, refetchOnWindowFocus: false }
   );
 };
 

@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import type { Big } from "big.js";
 
 import { useAssetInfos } from "../assetService";
-import { useMovePoolInfos } from "../move";
+import { useMovePoolInfos } from "../move/poolService";
 import type { BalanceInfos } from "../types";
 import {
   CELATONE_QUERY_KEYS,

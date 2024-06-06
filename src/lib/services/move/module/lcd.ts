@@ -1,6 +1,7 @@
 import axios from "axios";
 
-import { zModuleLcdReturn, zModulesLcdReturn } from "lib/services/types";
+import type { AccountModulesResponse } from "lib/services/types";
+import { zModuleResponseLcd, zModulesResponseLcd } from "lib/services/types";
 import type { Addr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
@@ -13,12 +14,12 @@ export const getModuleByAddressLcd = async (
     .get(
       `${endpoint}/initia/move/v1/accounts/${encodeURIComponent(vmAddress)}/modules/${encodeURIComponent(moduleName)}`
     )
-    .then(({ data }) => parseWithError(zModuleLcdReturn, data).module);
+    .then(({ data }) => parseWithError(zModuleResponseLcd, data).module);
 
 export const getModulesByAddressLcd = async (
   endpoint: string,
   vmAddress: Addr
-): Promise<{ items: IndexedModule[] }> => {
+): Promise<AccountModulesResponse> => {
   const result: IndexedModule[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
@@ -31,7 +32,7 @@ export const getModulesByAddressLcd = async (
           },
         }
       )
-      .then(({ data }) => parseWithError(zModulesLcdReturn, data));
+      .then(({ data }) => parseWithError(zModulesResponseLcd, data));
     result.push(...res.modules);
     if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
@@ -40,5 +41,6 @@ export const getModulesByAddressLcd = async (
 
   return {
     items: result.sort((a, b) => a.moduleName.localeCompare(b.moduleName)),
+    total: result.length,
   };
 };

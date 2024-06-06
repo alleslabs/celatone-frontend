@@ -17,7 +17,7 @@ import {
   useModuleData,
   useModuleTableCounts,
   useVerifyModule,
-} from "lib/services/move";
+} from "lib/services/move/module";
 import type { ModuleData } from "lib/types";
 
 import {

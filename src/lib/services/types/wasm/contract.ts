@@ -184,3 +184,9 @@ export const zContractQueryMsgs = z
   .transform((val) =>
     val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
   );
+
+export const zInstantiatedContractsLcd = z
+  .object({
+    contract_addresses: zBechAddr32.array(),
+  })
+  .transform(snakeToCamel);
