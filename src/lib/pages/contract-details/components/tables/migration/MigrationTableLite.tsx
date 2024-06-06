@@ -33,7 +33,7 @@ export const MigrationTableLite = ({
     isFetchingNextPage,
   } = useMigrationHistoriesLcd(contractAddress, 10);
 
-  const isLoadNext = hasNextPage && !isLoading && data && data.length > 1;
+  const isLoadNext = hasNextPage && !isLoading;
   const templateColumns = "90px minmax(300px, 1fr) 140px";
 
   if (isLoading) return <Loading />;

@@ -20,8 +20,8 @@ export interface ContractCw2Info {
 
 const zContractCreated = z
   .object({
-    block_height: z.string(),
-    tx_index: z.string(),
+    block_height: z.coerce.number(),
+    tx_index: z.coerce.number(),
   })
   .nullable();
 
@@ -187,30 +187,19 @@ export const zContractQueryMsgs = z
     val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
   );
 
-const zMigrationHistoriesResponseItemMsg = z.object({
-  owner: zBechAddr,
-  code_id: z.number().positive(),
-});
-
 export const zMigrationHistoriesResponseItemLcd = z
   .object({
     operation: z.nativeEnum(RemarkOperation),
     code_id: z.coerce.number().positive(),
     updated: zContractCreated,
-    msg: zMigrationHistoriesResponseItemMsg,
   })
-  .transform<
-    Pick<
-      ContractMigrationHistory,
-      "codeId" | "codeName" | "height" | "sender" | "uploader"
-    >
-  >((val) => ({
-    codeId: val.code_id,
-    codeName: undefined,
-    height: Number(val.updated?.block_height),
-    sender: val.msg.owner,
-    uploader: val.msg.owner,
-  }));
+  .transform<Pick<ContractMigrationHistory, "codeId" | "codeName" | "height">>(
+    (val) => ({
+      codeId: val.code_id,
+      codeName: undefined,
+      height: Number(val.updated?.block_height),
+    })
+  );
 export type MigrationHistoriesResponseItemLcd = z.infer<
   typeof zMigrationHistoriesResponseItemLcd
 >;
