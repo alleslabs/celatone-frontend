@@ -30,8 +30,16 @@ import {
   ModuleTablesTabIndex,
   ModuleTop,
 } from "./components";
-import type { ModuleDetailsQueryParams } from "./types";
-import { TabIndex, zModuleDetailsQueryParams } from "./types";
+import type {
+  ModuleDetailsLiteQueryParams,
+  ModuleDetailsQueryParams,
+} from "./types";
+import {
+  TabIndex,
+  TabIndexLite,
+  zModuleDetailsLiteQueryParams,
+  zModuleDetailsQueryParams,
+} from "./types";
 
 const mainTabHeaderId = "main-table-header";
 
@@ -41,7 +49,7 @@ const ModuleDetailsBody = ({
   address,
   moduleName,
   tab,
-}: ModuleDetailsQueryParams) => {
+}: ModuleDetailsQueryParams | ModuleDetailsLiteQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
@@ -77,7 +85,7 @@ const ModuleDetailsBody = ({
   );
 
   const handleTabChange = useCallback(
-    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
+    (nextTab: TabIndex | TabIndexLite, fnType?: FunctionTypeTabs) => () => {
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
@@ -118,7 +126,7 @@ const ModuleDetailsBody = ({
     <>
       <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
       <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
+        index={Object.values(isFullTier ? TabIndex : TabIndexLite).indexOf(tab)}
         isLazy
         lazyBehavior="keepMounted"
       >
@@ -223,22 +231,26 @@ const ModuleDetailsBody = ({
               href="move/modules/detail-page#functions"
             />
           </TabPanel>
-          <TabPanel p={0}>
-            <ModuleTables
-              vmAddress={data.address}
-              moduleName={data.moduleName}
-              txsCount={moduleTableCounts?.txs ?? undefined}
-              historiesCount={moduleTableCounts?.histories ?? undefined}
-              relatedProposalsCount={moduleTableCounts?.proposals ?? undefined}
-              tab={tableTabIndex}
-              setTab={setTableTabIndex}
-            />
-            <UserDocsLink
-              title="What is Module Transaction?"
-              cta="Read more about transaction in module"
-              href="move/modules/detail-page#transactions-histories"
-            />
-          </TabPanel>
+          {isFullTier && (
+            <TabPanel p={0}>
+              <ModuleTables
+                vmAddress={data.address}
+                moduleName={data.moduleName}
+                txsCount={moduleTableCounts?.txs ?? undefined}
+                historiesCount={moduleTableCounts?.histories ?? undefined}
+                relatedProposalsCount={
+                  moduleTableCounts?.proposals ?? undefined
+                }
+                tab={tableTabIndex}
+                setTab={setTableTabIndex}
+              />
+              <UserDocsLink
+                title="What is Module Transaction?"
+                cta="Read more about transaction in module"
+                href="move/modules/detail-page#transactions-histories"
+              />
+            </TabPanel>
+          )}
           <TabPanel p={0}>
             <ModuleStructs structs={data.parsedAbi.structs} />
             <UserDocsLink
@@ -255,7 +267,10 @@ const ModuleDetailsBody = ({
 
 export const ModuleDetails = () => {
   const router = useRouter();
-  const validated = zModuleDetailsQueryParams.safeParse(router.query);
+  const isFullTier = useTierConfig() === "full";
+  const validated = isFullTier
+    ? zModuleDetailsQueryParams.safeParse(router.query)
+    : zModuleDetailsLiteQueryParams.safeParse(router.query);
 
   return (
     <PageContainer>
