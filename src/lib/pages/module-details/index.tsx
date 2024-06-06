@@ -26,8 +26,7 @@ import {
   ModuleFunctions,
   ModuleInfo,
   ModuleStructs,
-  ModuleTablesFull,
-  ModuleTablesLite,
+  ModuleTables,
   ModuleTablesTabIndex,
   ModuleTop,
 } from "./components";
@@ -140,9 +139,11 @@ const ModuleDetailsBody = ({
           >
             Functions
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
-            Transactions & Histories
-          </CustomTab>
+          {isFullTier && (
+            <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
+              Transactions & Histories
+            </CustomTab>
+          )}
           <CustomTab
             count={data.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
@@ -184,8 +185,8 @@ const ModuleDetailsBody = ({
                 blockTimestamp={data.recentPublishBlockTimestamp}
                 verificationData={verificationData}
               />
-              {isFullTier ? (
-                <ModuleTablesFull
+              {isFullTier && (
+                <ModuleTables
                   vmAddress={data.address}
                   moduleName={data.moduleName}
                   txsCount={moduleTableCounts?.txs ?? undefined}
@@ -200,8 +201,6 @@ const ModuleDetailsBody = ({
                     setTableTabIndex(nextTab);
                   }}
                 />
-              ) : (
-                <ModuleTablesLite />
               )}
             </Flex>
             <UserDocsLink
@@ -225,7 +224,7 @@ const ModuleDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ModuleTablesFull
+            <ModuleTables
               vmAddress={data.address}
               moduleName={data.moduleName}
               txsCount={moduleTableCounts?.txs ?? undefined}

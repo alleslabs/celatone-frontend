@@ -1,10 +1,6 @@
 import axios from "axios";
 
-import {
-  zModuleLcdReturn,
-  zModulesLcdReturn,
-  zTxsByAddressResponseLcd,
-} from "lib/services/types";
+import { zModuleLcdReturn, zModulesLcdReturn } from "lib/services/types";
 import type { Addr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
@@ -46,21 +42,3 @@ export const getModulesByAddressLcd = async (
     items: result.sort((a, b) => a.moduleName.localeCompare(b.moduleName)),
   };
 };
-
-export const getModuleTxsLcd = async (
-  endpoint: string,
-  vmAddress: Addr,
-  moduleName: string,
-  limit: number,
-  offset: number
-) =>
-  axios
-    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
-      params: {
-        query: `execute.module_addr='${vmAddress}' AND execute.module_name='${moduleName}'`,
-        order_by: 2,
-        page: offset,
-        limit,
-      },
-    })
-    .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));

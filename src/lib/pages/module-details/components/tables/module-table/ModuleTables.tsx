@@ -15,7 +15,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import type { HexAddr, Option } from "lib/types";
 
 import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
-import { ModuleTxsTableFull } from "./ModuleTxsTableFull";
+import { ModuleTxsTable } from "./ModuleTxsTable";
 
 export enum ModuleTablesTabIndex {
   Transactions = "transactions",
@@ -23,7 +23,7 @@ export enum ModuleTablesTabIndex {
   RelatedProposals = "related-proposals",
 }
 
-interface ModuleTablesFullProps {
+interface ModuleTablesProps {
   vmAddress: HexAddr;
   moduleName: string;
   txsCount: Option<number>;
@@ -36,7 +36,7 @@ interface ModuleTablesFullProps {
 
 const tableHeaderId = "moduleDetailsTableHeader";
 
-export const ModuleTablesFull = ({
+export const ModuleTables = ({
   vmAddress,
   moduleName,
   txsCount,
@@ -45,7 +45,7 @@ export const ModuleTablesFull = ({
   tab,
   setTab,
   onViewMore,
-}: ModuleTablesFullProps) => {
+}: ModuleTablesProps) => {
   const gov = useGovConfig({ shouldRedirect: false });
 
   const handleOnViewMore = useCallback(
@@ -112,7 +112,7 @@ export const ModuleTablesFull = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <ModuleTxsTableFull
+            <ModuleTxsTable
               vmAddress={vmAddress}
               moduleName={moduleName}
               txCount={txsCount}

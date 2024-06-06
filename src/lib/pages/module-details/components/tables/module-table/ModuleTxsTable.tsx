@@ -8,7 +8,7 @@ import { TransactionsTable, ViewMore } from "lib/components/table";
 import { useModuleTxs } from "lib/services/move";
 import type { HexAddr, Option } from "lib/types";
 
-interface ModuleTxsTableFullProps {
+interface ModuleTxsTableProps {
   vmAddress: HexAddr;
   moduleName: string;
   txCount: Option<number>;
@@ -16,13 +16,13 @@ interface ModuleTxsTableFullProps {
   scrollComponentId?: string;
 }
 
-export const ModuleTxsTableFull = ({
+export const ModuleTxsTable = ({
   vmAddress,
   moduleName,
   txCount,
   onViewMore,
   scrollComponentId,
-}: ModuleTxsTableFullProps) => {
+}: ModuleTxsTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
