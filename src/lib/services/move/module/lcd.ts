@@ -7,25 +7,25 @@ import { parseWithError } from "lib/utils";
 
 export const getModuleByAddressLcd = async (
   endpoint: string,
-  vmAddress: Addr,
+  address: Addr,
   moduleName: string
 ): Promise<IndexedModule> =>
   axios
     .get(
-      `${endpoint}/initia/move/v1/accounts/${encodeURIComponent(vmAddress)}/modules/${encodeURIComponent(moduleName)}`
+      `${endpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules/${encodeURI(moduleName)}`
     )
     .then(({ data }) => parseWithError(zModuleResponseLcd, data).module);
 
 export const getModulesByAddressLcd = async (
   endpoint: string,
-  vmAddress: Addr
+  address: Addr
 ): Promise<AccountModulesResponse> => {
   const result: IndexedModule[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
     const res = await axios
       .get(
-        `${endpoint}/initia/move/v1/accounts/${encodeURI(vmAddress)}/modules`,
+        `${endpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules`,
         {
           params: {
             "pagination.key": paginationKey ?? "",

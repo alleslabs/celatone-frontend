@@ -69,7 +69,7 @@ const ModuleDetailsBody = ({
   const { data: moduleTableCounts } = useModuleTableCounts(
     vmAddress,
     moduleName,
-    { enabled: isFullTier }
+    isFullTier
   );
   const { data: verificationData, isLoading: verificationLoading } =
     useVerifyModule({

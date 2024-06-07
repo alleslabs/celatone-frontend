@@ -255,7 +255,7 @@ export const useModuleData = (
   vmAddress: HexAddr,
   moduleName: string,
   enabled = true
-): UseQueryResult => {
+) => {
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
 
@@ -280,7 +280,7 @@ export const useModuleData = (
 export const useModuleTableCounts = (
   vmAddress: HexAddr,
   moduleName: string,
-  options: UseQueryOptions<ModuleTableCountsResponse> = {}
+  enabled = true
 ) => {
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
@@ -298,7 +298,7 @@ export const useModuleTableCounts = (
     {
       retry: 1,
       refetchOnWindowFocus: false,
-      ...options,
+      enabled,
     }
   );
 };
