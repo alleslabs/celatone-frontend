@@ -47,7 +47,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
         <Flex direction="column" gap={3}>
           <Flex direction="column">
             <MobileLabel variant="body3" label="Code Name" />
-            {history.codeId && history.uploader && (
+            {history.codeId && (
               <CodeNameCell
                 code={{
                   id: history.codeId,
