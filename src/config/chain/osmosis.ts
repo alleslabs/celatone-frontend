@@ -4,7 +4,7 @@ import type { ChainConfigs } from "./types";
 
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
   "osmosis-1": {
-    tier: "lite",
+    tier: "full",
     chain: "osmosis",
     registryChainName: "osmosis",
     prettyName: "Osmosis",
