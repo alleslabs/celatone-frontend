@@ -54,7 +54,8 @@ import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePer
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
-import { useGovParams } from "lib/services/proposal";
+import { useGovParamsDeprecated } from "lib/model/proposal";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
 import { AccessConfigPermission, AccessType } from "lib/types";
 import {
@@ -95,10 +96,11 @@ const StoreCodeProposal = () => {
   const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress } = useCurrentChain();
   const fabricateFee = useFabricateFee();
-  const { data: govParams } = useGovParams();
+  const { data: govParams } = useGovParamsDeprecated();
+  const { data: uploadAccessParams } = useUploadAccessParamsLcd();
   const minDeposit = govParams?.depositParams.minDeposit;
   const isPermissionless =
-    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
+    uploadAccessParams?.permission === AccessConfigPermission.EVERYBODY;
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();

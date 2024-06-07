@@ -1,27 +1,22 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
-import { useAssetInfos } from "../assetService";
-import { useMovePoolInfos } from "../move/poolService";
 import type {
-  GovParams,
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
+  ProposalDataResponseLcd,
   ProposalsResponse,
-  ProposalsResponseItemLcd,
   ProposalsResponseLcd,
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
 } from "../types/proposal";
-import { getUploadAccessParamsLcd } from "../wasm/code";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useLcdEndpoint,
+  useTierConfig,
 } from "lib/app-provider";
-import { big } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
@@ -33,14 +28,7 @@ import type {
   ProposalType,
   ProposalVotesInfo,
   ProposalVoteType,
-  Token,
 } from "lib/types";
-import {
-  coinToTokenWithValue,
-  deexponentify,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
 
 import {
   getProposalAnswerCounts,
@@ -55,76 +43,24 @@ import {
   getRelatedProposalsByContractAddress,
 } from "./api";
 import {
-  getDepositParamsLcd,
   getProposalDataLcd,
+  getProposalParamsLcd,
   getProposalsLcd,
-  getVotingParamsLcd,
 } from "./lcd";
 
-export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useLcdEndpoint();
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
-
-  const queryFn = useCallback(
-    () =>
-      Promise.all([
-        getDepositParamsLcd(lcdEndpoint),
-        getUploadAccessParamsLcd(lcdEndpoint),
-        getVotingParamsLcd(lcdEndpoint),
-      ]).then<GovParams>((params) => {
-        const minDepositParam = params[0].minDeposit[0];
-        const minDepositToken = coinToTokenWithValue(
-          minDepositParam.denom,
-          minDepositParam.amount,
-          assetInfos,
-          movePoolInfos
-        );
-        const minDepositAmount = deexponentify(
-          minDepositToken.amount,
-          minDepositToken.precision
-        ).toFixed() as Token;
-
-        return {
-          depositParams: {
-            ...params[0],
-            minDeposit: {
-              ...minDepositParam,
-              amount: minDepositToken.amount,
-              formattedAmount: minDepositAmount,
-              formattedDenom: getTokenLabel(
-                minDepositToken.denom,
-                minDepositToken.symbol
-              ),
-              formattedToken: formatTokenWithValue(minDepositToken),
-              precision: minDepositToken.precision ?? 0,
-            },
-            minInitialDeposit: big(params[0].minInitialDepositRatio)
-              .times(minDepositAmount)
-              .toFixed(2) as Token,
-          },
-          uploadAccess: params[1],
-          votingParams: params[2],
-        };
-      }),
-    [assetInfos, lcdEndpoint, movePoolInfos]
-  );
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint, assetInfos],
-    queryFn,
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
 export const useProposalParams = () => {
-  const endpoint = useBaseApiRoute("proposals");
+  const tier = useTierConfig();
+  const endpointApi = useBaseApiRoute("proposals");
+  const endpointLcd = useLcdEndpoint();
+
+  const [endpoint, queryFn] =
+    tier === "full"
+      ? [endpointApi, getProposalParams]
+      : [endpointLcd, getProposalParamsLcd];
+
   return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
-    async () => getProposalParams(endpoint),
+    async () => queryFn(endpoint),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -258,7 +194,7 @@ export const useProposalData = (id: number, enabled = true) => {
 export const useProposalDataLcd = (id: string, enabled = true) => {
   const lcdEndpoint = useLcdEndpoint();
 
-  return useQuery<ProposalsResponseItemLcd>(
+  return useQuery<ProposalDataResponseLcd>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
     async () => getProposalDataLcd(lcdEndpoint, id),
     {

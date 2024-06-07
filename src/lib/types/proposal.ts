@@ -126,7 +126,7 @@ export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
   resolvedTimestamp: Nullable<Date>;
   submitTime: Date;
   totalDeposit: Nullable<T[]>;
-  version: string;
+  version: string; // TODO: remove
   votingTime: Nullable<Date>;
 }
 
