@@ -19,7 +19,7 @@ export const MigrationTableLite = ({
   const isMobile = useMobile();
   const { data, error, isLoading } = useMigrationHistoriesLcd(contractAddress);
 
-  const templateColumns = "90px 320px 140px";
+  const templateColumns = "90px 320px minmax(140px, 1fr)";
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="migration histories" />;
