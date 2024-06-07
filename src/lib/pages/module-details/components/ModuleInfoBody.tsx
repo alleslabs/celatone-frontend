@@ -29,7 +29,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
     );
   }
 
-  if (recentPublishProposal && recentPublishProposal.id) {
+  if (recentPublishProposal) {
     return (
       <LabelText
         label={`${labelPrefix} Proposal ID`}
