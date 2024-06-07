@@ -2,16 +2,12 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
+import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState, ErrorFetching } from "lib/components/state";
-import {
-  ContractsTable,
-  MobileTitle,
-  TableTitle,
-  ViewMore,
-} from "lib/components/table";
+import { AccountDetailEmptyState, ErrorFetching } from "lib/components/state";
+import { ContractsTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountContracts } from "lib/pages/account-details/data";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
@@ -82,45 +78,47 @@ export const InstantiatedContractsTable = observer(
             onViewMore={onViewMore}
           />
         ) : (
-          <>
-            <TableTitle
-              title="Contract Instances"
-              count={totalData}
-              helperText="This account instantiated the following contracts"
-              mb={2}
-            />
+          <AccountSectionWrapper
+            totalData={totalData}
+            title="Contract Instances"
+            helperText="This account instantiated the following contracts"
+            hasHelperText={!!contracts?.length}
+          >
             <ContractsTable
               contracts={contracts}
               isLoading={isLoading}
               emptyState={
                 !contracts ? (
-                  <ErrorFetching dataName="contracts" />
-                ) : (
-                  <EmptyState
-                    message="No contracts have been instantiated by this account before."
+                  <ErrorFetching
+                    dataName="contracts"
                     withBorder
+                    my={2}
+                    hasBorderTop={false}
                   />
+                ) : (
+                  <AccountDetailEmptyState message="No contracts have been instantiated by this account before." />
                 )
               }
               onRowSelect={onRowSelect}
             />
-          </>
+          </AccountSectionWrapper>
         )}
-        {!!totalData &&
-          (onViewMore
-            ? totalData > 5 && !isMobile && <ViewMore onClick={onViewMore} />
-            : totalData > 10 && (
-                <Pagination
-                  currentPage={currentPage}
-                  pagesQuantity={pagesQuantity}
-                  offset={offset}
-                  totalData={totalData}
-                  scrollComponentId={scrollComponentId}
-                  pageSize={pageSize}
-                  onPageChange={onPageChange}
-                  onPageSizeChange={onPageSizeChange}
-                />
-              ))}
+        {!contracts ||
+          (!!totalData &&
+            (onViewMore
+              ? totalData > 5 && !isMobile && <ViewMore onClick={onViewMore} />
+              : totalData > 10 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    pagesQuantity={pagesQuantity}
+                    offset={offset}
+                    totalData={totalData}
+                    scrollComponentId={scrollComponentId}
+                    pageSize={pageSize}
+                    onPageChange={onPageChange}
+                    onPageSizeChange={onPageSizeChange}
+                  />
+                )))}
       </Box>
     );
   }

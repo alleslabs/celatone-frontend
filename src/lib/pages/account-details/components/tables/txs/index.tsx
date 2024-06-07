@@ -4,14 +4,17 @@ import { useEffect, useMemo, useState } from "react";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import type { EmptyStateProps } from "lib/components/state";
-import { EmptyState, ErrorFetching } from "lib/components/state";
+import {
+  AccountDetailEmptyState,
+  EmptyState,
+  ErrorFetching,
+} from "lib/components/state";
 import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
-import type { BechAddr, Option, TxFilters } from "lib/types";
+import type { BechAddr, Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
@@ -23,15 +26,43 @@ interface TxsTableProps {
   onViewMore?: () => void;
 }
 
-const getEmptyStateProps = (selectedFilters: string[]): EmptyStateProps =>
-  selectedFilters.length
-    ? {
-        imageVariant: "not-found",
-        message: "No past transaction matches found with your input.",
+const getEmptyState = ({
+  transactions,
+  selectedFilters,
+}: {
+  transactions:
+    | {
+        items: Transaction[];
       }
-    : {
-        message: "No transactions have been submitted by this account before.",
-      };
+    | undefined;
+  selectedFilters: string[];
+}) => {
+  if (!transactions) {
+    return (
+      <ErrorFetching
+        dataName="transactions"
+        withBorder
+        my={2}
+        hasBorderTop={false}
+      />
+    );
+  }
+  if (selectedFilters.length)
+    return (
+      <EmptyState
+        withBorder
+        imageVariant="not-found"
+        message="No past transaction matches found with your input."
+      />
+    );
+
+  return (
+    <AccountDetailEmptyState
+      message="No transactions have been submitted by this account before."
+      pt={4}
+    />
+  );
+};
 
 export const TxsTable = ({
   address,
@@ -147,16 +178,7 @@ export const TxsTable = ({
             <TransactionsTable
               transactions={transactions?.items}
               isLoading={isLoading || isTxCountLoading}
-              emptyState={
-                !transactions ? (
-                  <ErrorFetching dataName="transactions" />
-                ) : (
-                  <EmptyState
-                    withBorder
-                    {...getEmptyStateProps(selectedFilters)}
-                  />
-                )
-              }
+              emptyState={getEmptyState({ transactions, selectedFilters })}
               showRelations
             />
           )}

@@ -4,3 +4,4 @@ export * from "./ErrorFetching";
 export * from "./InvalidState";
 export * from "./StateImage";
 export * from "./ZeroState";
+export * from "./AccountDetailEmptyState";

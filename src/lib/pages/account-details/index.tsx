@@ -1,12 +1,5 @@
 /* eslint-disable complexity */
-import {
-  Flex,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -23,11 +16,12 @@ import {
 import { AssetsSection } from "lib/components/asset";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
-import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
+import { useAccountDelegationInfos } from "lib/model/account";
+import { useAccountStore } from "lib/providers/store";
 import { useAccountData } from "lib/services/accountService";
 import { useModulesByAddress } from "lib/services/move/moduleService";
 import { useResourcesByAddress } from "lib/services/move/resourceService";
@@ -38,6 +32,7 @@ import { truncate } from "lib/utils";
 import { AccountHeader } from "./components/AccountHeader";
 import { ModuleLists } from "./components/modules";
 import { NftsOverview, NftsSection } from "./components/nfts";
+import { PublicAccountDesc } from "./components/PublicAccountDesc";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
   AdminContractsTable,
@@ -82,12 +77,16 @@ const AccountDetailsBody = ({
   // ------------------QUERIES-----------------//
   // ------------------------------------------//
   const { data: accountData } = useAccountData(accountAddress);
-
+  const { getAccountLocalInfo } = useAccountStore();
+  const accountLocalInfo = getAccountLocalInfo(accountAddress);
   const {
     tableCounts,
     refetchCounts,
     isLoading: isLoadingAccountTableCounts,
   } = useAccountDetailsTableCounts(accountAddress);
+  // gov
+  const { isTotalBondedLoading, totalBonded } =
+    useAccountDelegationInfos(accountAddress);
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
     useModulesByAddress(accountAddress);
@@ -96,6 +95,11 @@ const AccountDetailsBody = ({
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
     useNftsCountByAccount(hexAddress);
+
+  const hasTotalBonded =
+    !isTotalBondedLoading &&
+    totalBonded &&
+    Object.keys(totalBonded).length === 0;
 
   // ------------------------------------------//
   // -----------------CALLBACKS----------------//
@@ -164,6 +168,7 @@ const AccountDetailsBody = ({
           <CustomTab
             onClick={handleTabChange(TabIndex.Delegations, undefined)}
             hidden={!gov.enabled}
+            isDisabled={hasTotalBonded}
           >
             Delegations
           </CustomTab>
@@ -259,66 +264,45 @@ const AccountDetailsBody = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Flex direction="column" gap={4}>
+            {(accountData?.publicInfo || accountLocalInfo) && (
               <Flex
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 4, md: 6 }}
                 mt={{ base: 0, md: 8 }}
               >
                 {accountData?.publicInfo?.description && (
-                  <Flex
-                    direction="column"
-                    bg="gray.900"
-                    maxW="100%"
-                    borderRadius="8px"
-                    py={4}
-                    px={4}
-                    flex="1"
-                  >
-                    <Flex alignItems="center" gap={1} minH="32px">
-                      <CustomIcon
-                        name="website"
-                        ml={0}
-                        mb={2}
-                        color="gray.600"
-                      />
-                      <Text variant="body2" fontWeight={500} color="text.dark">
-                        Public Account Description
-                      </Text>
-                    </Flex>
-                    <Text variant="body2" color="text.main" mb={1}>
-                      {accountData.publicInfo.description}
-                    </Text>
-                  </Flex>
+                  <PublicAccountDesc
+                    description={accountData?.publicInfo?.description}
+                  />
                 )}
-                <UserAccountDesc address={accountAddress} />
+                {accountLocalInfo?.description && (
+                  <UserAccountDesc accountLocalInfo={accountLocalInfo} />
+                )}
               </Flex>
+            )}
+            <Flex
+              mt={{ base: 4 }}
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
+            >
+              <AssetsSection
+                isAccount
+                address={accountAddress}
+                onViewMore={handleTabChange(TabIndex.Assets, undefined)}
+              />
+            </Flex>
+            {gov.enabled && (
               <Flex
+                mt={{ base: 4, md: 8 }}
                 borderBottom={{ base: "0px", md: "1px solid" }}
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
               >
-                <AssetsSection
-                  isAccount
+                <DelegationsSection
                   address={accountAddress}
-                  onViewMore={handleTabChange(TabIndex.Assets, undefined)}
+                  onViewMore={handleTabChange(TabIndex.Delegations, undefined)}
                 />
               </Flex>
-              {gov.enabled && (
-                <Flex
-                  borderBottom={{ base: "0px", md: "1px solid" }}
-                  borderBottomColor={{ base: "transparent", md: "gray.700" }}
-                  my={{ base: 0, md: 2 }}
-                >
-                  <DelegationsSection
-                    address={accountAddress}
-                    onViewMore={handleTabChange(
-                      TabIndex.Delegations,
-                      undefined
-                    )}
-                  />
-                </Flex>
-              )}
-            </Flex>
+            )}
             {nft.enabled && (
               <NftsOverview
                 totalCount={nftsCount}

@@ -42,8 +42,14 @@ export const SingleBondRadioCard = ({
   token,
   isLoading,
 }: SingleBondRadioCardProps) => (
-  <Flex alignItems="center" gap={2} justifyContent="space-between">
-    <Flex direction="column" gap={1}>
+  <Flex
+    direction={{ base: "column", md: "row" }}
+    alignItems={{ base: "flex-start", md: "center" }}
+    gap={{ base: 1, md: 2 }}
+    justifyContent="space-between"
+    w="full"
+  >
+    <Flex direction="column" gap={1} alignItems="flex-start">
       <Text variant="body2" textColor="gray.400" fontWeight={500}>
         {value}
       </Text>

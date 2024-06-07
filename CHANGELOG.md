@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
 - [#947](https://github.com/alleslabs/celatone-frontend/pull/947) Add zod type for sign mode infos
 - [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Add isHydrated in app context for redirect behaviors

@@ -28,6 +28,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
@@ -69,6 +70,8 @@ const ContractDetailsBody = observer(
     const { data: balances, isLoading: isBalancesLoading } =
       useBalances(contractAddress);
 
+    const { isTotalBondedLoading, totalBonded } =
+      useAccountDelegationInfos(contractAddress);
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
     // ------------------------------------------//
@@ -95,6 +98,12 @@ const ContractDetailsBody = observer(
     if (contractData.contract === null) return <InvalidContract />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
+
+    const hasTotalBonded =
+      !isTotalBondedLoading &&
+      totalBonded &&
+      Object.keys(totalBonded).length === 0;
+
     return (
       <>
         <ContractTop
@@ -129,6 +138,7 @@ const ContractDetailsBody = observer(
             <CustomTab
               onClick={handleTabChange(TabIndex.Delegations)}
               hidden={!gov.enabled}
+              isDisabled={hasTotalBonded}
             >
               Delegations
             </CustomTab>
@@ -143,10 +153,17 @@ const ContractDetailsBody = observer(
             <TabPanel p={0} pt={{ base: 0, md: 8 }}>
               <Flex flexDirection="column" gap={8}>
                 <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
-                  <ContractDesc
-                    publicInfo={publicInfo}
-                    contract={contract}
-                    contractLocalInfo={contractLocalInfo}
+                  {(publicInfo || contractLocalInfo) && (
+                    <ContractDesc
+                      publicInfo={publicInfo}
+                      contract={contract}
+                      contractLocalInfo={contractLocalInfo}
+                    />
+                  )}
+                  <CommandSection
+                    contractAddress={contractAddress}
+                    codeHash={contract.codeHash}
+                    codeId={contract.codeId}
                   />
                   <Flex
                     borderBottom={{ base: "0px", md: "1px solid" }}
@@ -172,12 +189,7 @@ const ContractDetailsBody = observer(
                     </Flex>
                   )}
                 </Flex>
-                {/* Query/Execute commands section */}
-                <CommandSection
-                  contractAddress={contractAddress}
-                  codeHash={contract.codeHash}
-                  codeId={contract.codeId}
-                />
+
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (

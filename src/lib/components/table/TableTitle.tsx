@@ -5,7 +5,7 @@ interface TableTitleProps extends BoxProps {
   title: string;
   count?: number;
   showCount?: boolean;
-  helperText?: string;
+  helperText?: string | undefined;
   isSmall?: boolean;
 }
 
@@ -35,8 +35,10 @@ export const TableTitle = ({
         </Badge>
       )}
     </Flex>
-    <Text variant="body2" textColor="text.dark" fontWeight={600}>
-      {helperText}
-    </Text>
+    {helperText?.length && (
+      <Text variant="body2" textColor="text.dark" fontWeight={600}>
+        {helperText}
+      </Text>
+    )}
   </Box>
 );
