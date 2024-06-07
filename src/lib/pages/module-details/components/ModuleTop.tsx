@@ -8,6 +8,7 @@ import {
   useCurrentChain,
   useInternalNavigate,
   useMobile,
+  useTierConfig,
 } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
@@ -16,11 +17,11 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
-import type { HexAddr, ModuleData } from "lib/types";
+import type { HexAddr, IndexedModule } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
-  moduleData: ModuleData;
+  moduleData: IndexedModule;
   isVerified: boolean;
 }
 
@@ -35,6 +36,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
+  const isFullTier = useTierConfig() === "full";
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
 
@@ -224,23 +226,25 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             type="module_path"
           />
         </Flex>
-        <Flex
-          mt={{ base: 2, md: 0 }}
-          gap={{ base: 0, md: 2 }}
-          direction={{ base: "column", md: "row" }}
-        >
-          <Text {...baseTextStyle} color="text.main">
-            Creator:
-          </Text>
-          <ExplorerLink
-            value={moduleAddress}
-            ampCopierSection="module_top"
-            textFormat="normal"
-            maxWidth="fit-content"
-            type="user_address"
-            fixedHeight={false}
-          />
-        </Flex>
+        {isFullTier && (
+          <Flex
+            mt={{ base: 2, md: 0 }}
+            gap={{ base: 0, md: 2 }}
+            direction={{ base: "column", md: "row" }}
+          >
+            <Text {...baseTextStyle} color="text.main">
+              Creator:
+            </Text>
+            <ExplorerLink
+              value={moduleAddress}
+              ampCopierSection="module_top"
+              textFormat="normal"
+              maxWidth="fit-content"
+              type="user_address"
+              fixedHeight={false}
+            />
+          </Flex>
+        )}
         <Flex
           mt={{ base: 2, md: 0 }}
           gap={{ base: 0, md: 2 }}

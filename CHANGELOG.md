@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
 - [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
 - [#956](https://github.com/alleslabs/celatone-frontend/pull/956) Add landlord-1 network
 - [#954](https://github.com/alleslabs/celatone-frontend/pull/954) Add gas token for initiation-1
