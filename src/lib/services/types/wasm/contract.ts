@@ -171,6 +171,10 @@ const zMigrationHistoriesResponseItem = z
     uploader: zBechAddr,
   })
   .transform<ContractMigrationHistory>(snakeToCamel);
+export type MigrationHistoriesResponseItem = z.infer<
+  typeof zMigrationHistoriesResponseItem
+>;
+
 export const zMigrationHistoriesResponse = z.object({
   items: z.array(zMigrationHistoriesResponseItem),
 });

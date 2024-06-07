@@ -89,28 +89,21 @@ export const useMigrationHistoriesByContractAddress = (
 };
 
 export const useMigrationHistoriesByContractAddressLcd = (
-  contractAddress: BechAddr32,
-  limit: number
+  contractAddress: BechAddr32
 ) => {
   const endpoint = useLcdEndpoint();
 
-  return useInfiniteQuery(
+  return useQuery(
     [
       CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS_LCD,
       endpoint,
       contractAddress,
-      limit,
     ],
-    ({ pageParam }) =>
-      getMigrationHistoriesByContractAddressLcd(
-        endpoint,
-        contractAddress,
-        limit,
-        pageParam
-      ),
+    async () =>
+      getMigrationHistoriesByContractAddressLcd(endpoint, contractAddress),
     {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
+      retry: 1,
+      keepPreviousData: true,
     }
   );
 };

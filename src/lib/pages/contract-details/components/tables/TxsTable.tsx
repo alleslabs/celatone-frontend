@@ -74,7 +74,7 @@ export const TxsTable = ({
             <EmptyState
               withBorder
               imageVariant="empty"
-              message="This contract does not have any transactions"
+              message="This contract does not have any transactions or the transactions are too old and pruned from LCD."
             />
           )
         }

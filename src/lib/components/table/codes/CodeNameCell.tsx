@@ -8,7 +8,7 @@ import { useCodeStore } from "lib/providers/store";
 import type { CodeLocalInfo } from "lib/stores/code";
 
 interface CodeNameCellProps {
-  code: CodeLocalInfo;
+  code: Partial<CodeLocalInfo>;
   isReadOnly?: boolean;
 }
 
@@ -22,7 +22,10 @@ export const CodeNameCell = ({
 
   const onSave = (inputValue?: string) => {
     track(AmpEvent.USE_QUICK_EDIT_CODE);
-    updateCodeInfo(code.id, code.uploader, inputValue);
+
+    if (code.id && code.uploader)
+      updateCodeInfo(code.id, code.uploader, inputValue);
+
     toast({
       title: "New Code Name Saved",
       status: "success",

@@ -9,7 +9,6 @@ interface MigrationTableProps {
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
-  onViewMore?: () => void;
 }
 
 export const MigrationTable = ({
@@ -17,7 +16,6 @@ export const MigrationTable = ({
   scrollComponentId,
   totalData,
   refetchCount,
-  onViewMore,
 }: MigrationTableProps) => {
   const isFullTier = useTierConfig() === "full";
 
@@ -29,9 +27,6 @@ export const MigrationTable = ({
       refetchCount={refetchCount}
     />
   ) : (
-    <MigrationTableLite
-      contractAddress={contractAddress}
-      onViewMore={onViewMore}
-    />
+    <MigrationTableLite contractAddress={contractAddress} />
   );
 };

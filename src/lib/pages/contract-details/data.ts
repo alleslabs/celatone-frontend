@@ -1,5 +1,4 @@
 import { useCodeStore, useContractStore } from "lib/providers/store";
-import type { MigrationHistoriesResponseItemLcd } from "lib/services/types";
 import {
   useContractData,
   useMigrationHistoriesByContractAddress,
@@ -50,25 +49,18 @@ export const useMigrationHistories = (
   };
 };
 
-export const useMigrationHistoriesLcd = (
-  contractAddress: BechAddr32,
-  limit: number
-) => {
-  const { data, ...res } = useMigrationHistoriesByContractAddressLcd(
-    contractAddress,
-    limit
-  );
+export const useMigrationHistoriesLcd = (contractAddress: BechAddr32) => {
+  const { data, ...res } =
+    useMigrationHistoriesByContractAddressLcd(contractAddress);
 
   const { getCodeLocalInfo } = useCodeStore();
 
   return {
     data: data
-      ? data.pages.flatMap((page) =>
-          page.entries.map<MigrationHistoriesResponseItemLcd>((migration) => ({
-            ...migration,
-            codeName: getCodeLocalInfo(migration.codeId)?.name,
-          }))
-        )
+      ? data.entries.map((migration) => ({
+          ...migration,
+          codeName: getCodeLocalInfo(migration.codeId)?.name,
+        }))
       : undefined,
     ...res,
   };

@@ -234,10 +234,7 @@ const ContractDetailsBody = observer(
                     </Flex>
                   </Flex>
                 </Flex>
-                <ContractTables
-                  contractAddress={contractAddress}
-                  onViewMore={handleTabChange(TabIndex.TxsHistories)}
-                />
+                <ContractTables contractAddress={contractAddress} />
               </Flex>
               <UserDocsLink
                 title="What is Contract in CosmWasm?"

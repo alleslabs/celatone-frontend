@@ -18,15 +18,11 @@ import { TxsTable } from "./TxsTable";
 
 interface ContractTablesProps {
   contractAddress: BechAddr32;
-  onViewMore?: () => void;
 }
 
 const tableHeaderId = "contractDetailsTableHeader";
 
-export const ContractTables = ({
-  contractAddress,
-  onViewMore,
-}: ContractTablesProps) => {
+export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
   const isFullTier = useTierConfig() === "full";
 
   const gov = useGovConfig({ shouldRedirect: false });
@@ -79,7 +75,6 @@ export const ContractTables = ({
               scrollComponentId={tableHeaderId}
               totalData={data?.migration ?? undefined}
               refetchCount={refetchCount}
-              onViewMore={onViewMore}
             />
           </TabPanel>
           <TabPanel p={0}>

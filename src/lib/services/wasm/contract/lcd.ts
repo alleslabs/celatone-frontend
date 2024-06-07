@@ -1,5 +1,9 @@
 import axios from "axios";
 
+import type {
+  MigrationHistoriesResponseItemLcd,
+  MigrationHistoriesResponseLcd,
+} from "lib/services/types";
 import {
   zContractLcd,
   zContractQueryMsgs,
@@ -8,7 +12,13 @@ import {
   zMigrationHistoriesResponseLcd,
 } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { BechAddr20, BechAddr32, JsonDataType, Option } from "lib/types";
+import type {
+  BechAddr20,
+  BechAddr32,
+  JsonDataType,
+  Nullable,
+  Option,
+} from "lib/types";
 import { encode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryLcd = (
@@ -82,22 +92,39 @@ export const getContractQueryMsgsLcd = async (
 
 export const getMigrationHistoriesByContractAddressLcd = async (
   endpoint: string,
-  contractAddress: BechAddr32,
-  limit: number,
-  paginationKey: Option<string>
-) =>
-  axios
-    .get(
-      `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/history`,
-      {
-        params: {
-          "pagination.limit": limit,
-          "pagination.reverse": true,
-          "pagination.key": paginationKey,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zMigrationHistoriesResponseLcd, data));
+  contractAddress: BechAddr32
+): Promise<MigrationHistoriesResponseLcd> => {
+  const entries: MigrationHistoriesResponseItemLcd[] = [];
+
+  const fetchFn = async (paginationKey: Nullable<string>) => {
+    const res = await axios
+      .get(
+        `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/history`,
+        {
+          params: {
+            "pagination.reverse": true,
+            "pagination.key": paginationKey,
+          },
+        }
+      )
+      .then(({ data }) => parseWithError(zMigrationHistoriesResponseLcd, data));
+
+    entries.push(...res.entries);
+
+    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
+  };
+
+  await fetchFn(null);
+
+  return {
+    entries,
+    pagination: {
+      nextKey: null,
+      total: entries.length,
+    },
+  };
+};
+
 export const getInstantiatedContractsByAddressLcd = (
   endpoint: string,
   address: BechAddr20

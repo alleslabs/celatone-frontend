@@ -30,7 +30,7 @@ export const MigrationRow = ({
         />
       </TableRow>
       <TableRow>
-        {history.codeId && history.uploader && (
+        {history.codeId && (
           <CodeNameCell
             code={{
               id: history.codeId,
