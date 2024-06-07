@@ -1,5 +1,4 @@
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import type { UseQueryResult } from "@tanstack/react-query";
 import { isNull } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -18,7 +17,6 @@ import {
   useModuleTableCounts,
   useVerifyModule,
 } from "lib/services/move/module";
-import type { ModuleData } from "lib/types";
 
 import {
   FunctionTypeTabs,
@@ -30,16 +28,8 @@ import {
   ModuleTablesTabIndex,
   ModuleTop,
 } from "./components";
-import type {
-  ModuleDetailsLiteQueryParams,
-  ModuleDetailsQueryParams,
-} from "./types";
-import {
-  TabIndex,
-  TabIndexLite,
-  zModuleDetailsLiteQueryParams,
-  zModuleDetailsQueryParams,
-} from "./types";
+import type { ModuleDetailsQueryParams } from "./types";
+import { TabIndex, zModuleDetailsQueryParams } from "./types";
 
 const mainTabHeaderId = "main-table-header";
 
@@ -49,22 +39,22 @@ const ModuleDetailsBody = ({
   address,
   moduleName,
   tab,
-}: ModuleDetailsQueryParams | ModuleDetailsLiteQueryParams) => {
+}: ModuleDetailsQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
   const { hex: vmAddress } = formatAddresses(address);
 
   const isFullTier = useTierConfig() === "full";
+  const currentTab =
+    !isFullTier && tab === TabIndex.TxsHistories ? TabIndex.Overview : tab;
   const fullData = useModuleData(vmAddress, moduleName, isFullTier);
   const liteData = useModuleByAddressLcd({
     address: vmAddress,
     moduleName,
     options: { enabled: !isFullTier },
   });
-  const { data, isLoading } = (
-    isFullTier ? fullData : liteData
-  ) as UseQueryResult<ModuleData>;
+  const { data, isLoading } = isFullTier ? fullData : liteData;
 
   const { data: moduleTableCounts } = useModuleTableCounts(
     vmAddress,
@@ -85,8 +75,8 @@ const ModuleDetailsBody = ({
   );
 
   const handleTabChange = useCallback(
-    (nextTab: TabIndex | TabIndexLite, fnType?: FunctionTypeTabs) => () => {
-      if (nextTab === tab) return;
+    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
+      if (nextTab === currentTab) return;
       trackUseTab(nextTab);
       navigate({
         pathname: "/modules/[address]/[moduleName]/[tab]",
@@ -101,16 +91,16 @@ const ModuleDetailsBody = ({
         },
       });
     },
-    [vmAddress, moduleName, navigate, tab]
+    [vmAddress, moduleName, navigate, currentTab]
   );
 
   useEffect(() => {
     if (router.isReady && !verificationLoading)
       track(AmpEvent.TO_MODULE_DETAILS, {
-        tab,
+        currentTab,
         isVerified: Boolean(verificationData),
       });
-  }, [router.isReady, tab, verificationLoading, verificationData]);
+  }, [router.isReady, currentTab, verificationLoading, verificationData]);
 
   useEffect(() => {
     if (moduleTableCounts?.txs === 0) {
@@ -119,6 +109,10 @@ const ModuleDetailsBody = ({
     }
   }, [moduleTableCounts?.txs]);
 
+  const tabIndex = isFullTier
+    ? Object.values(TabIndex)
+    : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
+
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="module information" />;
 
@@ -126,7 +120,7 @@ const ModuleDetailsBody = ({
     <>
       <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
       <Tabs
-        index={Object.values(isFullTier ? TabIndex : TabIndexLite).indexOf(tab)}
+        index={tabIndex.indexOf(currentTab)}
         isLazy
         lazyBehavior="keepMounted"
       >
@@ -184,14 +178,8 @@ const ModuleDetailsBody = ({
                 }}
               />
               <ModuleInfo
-                vmAddress={data.address}
-                upgradePolicy={data.upgradePolicy}
-                transaction={data.recentPublishTransaction}
-                proposal={data.recentPublishProposal}
-                isRepublished={data.isRepublished}
-                blockHeight={data.recentPublishBlockHeight}
-                blockTimestamp={data.recentPublishBlockTimestamp}
                 verificationData={verificationData}
+                moduleData={data}
               />
               {isFullTier && (
                 <ModuleTables
@@ -267,10 +255,7 @@ const ModuleDetailsBody = ({
 
 export const ModuleDetails = () => {
   const router = useRouter();
-  const isFullTier = useTierConfig() === "full";
-  const validated = isFullTier
-    ? zModuleDetailsQueryParams.safeParse(router.query)
-    : zModuleDetailsLiteQueryParams.safeParse(router.query);
+  const validated = zModuleDetailsQueryParams.safeParse(router.query);
 
   return (
     <PageContainer>

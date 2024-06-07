@@ -61,7 +61,7 @@ export const useModuleByAddressLcd = ({
   address: Addr;
   moduleName: string;
   options?: Omit<UseQueryOptions<IndexedModule>, "queryKey">;
-}): UseQueryResult => {
+}) => {
   const endpoint = useLcdEndpoint();
   const queryFn = () => getModuleByAddressLcd(endpoint, address, moduleName);
 
