@@ -1,6 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { useGetAddressType, useInternalNavigate } from "lib/app-provider";
+import {
+  useGetAddressType,
+  useInternalNavigate,
+  useTierConfig,
+} from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   CodeNameCell,
@@ -8,13 +12,14 @@ import {
   MobileLabel,
   RemarkRender,
 } from "lib/components/table";
-import type { ContractMigrationHistory } from "lib/types";
+import type { BechAddr, ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationMobileCardProps {
   history: ContractMigrationHistory;
 }
 export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
+  const isFullTier = useTierConfig() === "full";
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
   const navigate = useInternalNavigate();
@@ -45,54 +50,71 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
             <CodeNameCell
               code={{
                 id: history.codeId,
-                uploader: history.uploader,
+                // TODO: fix by handle uploader undefined
+                uploader: history.uploader ?? ("" as BechAddr),
                 name: history.codeName,
               }}
             />
           </Flex>
-          <Flex direction="column">
-            <MobileLabel variant="body3" label="CW2 Info" />
-            <Text
-              variant="body2"
-              color={cw2Info ? "text.main" : "text.disabled"}
-              wordBreak="break-all"
-            >
-              {cw2Info ?? "N/A"}
-            </Text>
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel variant="body3" label="Remark" />
-            <RemarkRender {...history.remark} />
-          </Flex>
+          {isFullTier && (
+            <>
+              <Flex direction="column">
+                <MobileLabel variant="body3" label="CW2 Info" />
+                <Text
+                  variant="body2"
+                  color={cw2Info ? "text.main" : "text.disabled"}
+                  wordBreak="break-all"
+                >
+                  {cw2Info ?? "N/A"}
+                </Text>
+              </Flex>
+              <Flex direction="column">
+                <MobileLabel variant="body3" label="Remark" />
+                {history.remark ? <RemarkRender {...history.remark} /> : "N/A"}
+              </Flex>
+            </>
+          )}
         </Flex>
       }
       bottomContent={
         <Flex w="full" direction="column" gap={3}>
           <Flex>
-            <Flex flex="1" direction="column">
-              <MobileLabel label="Sender" />
-              <ExplorerLink
-                type={getAddressType(history.sender)}
-                value={history.sender}
-                textFormat="truncate"
-                showCopyOnHover
-              />
-            </Flex>
+            {isFullTier && (
+              <Flex flex="1" direction="column">
+                <MobileLabel label="Sender" />
+                {history.sender ? (
+                  <ExplorerLink
+                    type={getAddressType(history.sender)}
+                    value={history.sender}
+                    textFormat="truncate"
+                    showCopyOnHover
+                  />
+                ) : (
+                  "N/A"
+                )}
+              </Flex>
+            )}
             <Flex flex="1" direction="column">
               <MobileLabel label="Block Height" />
-              <ExplorerLink
-                value={history.height.toString()}
-                type="block_height"
-                showCopyOnHover
-              />
+              {history.height ? (
+                <ExplorerLink
+                  value={history.height.toString()}
+                  type="block_height"
+                  showCopyOnHover
+                />
+              ) : (
+                "N/A"
+              )}
             </Flex>
           </Flex>
-          <Flex direction="column">
-            <Text variant="body3">{formatUTC(history.timestamp)}</Text>
-            <Text variant="body3" color="text.dark">
-              ({dateFromNow(history.timestamp)})
-            </Text>
-          </Flex>
+          {isFullTier && history.timestamp && (
+            <Flex direction="column">
+              <Text variant="body3">{formatUTC(history.timestamp)}</Text>
+              <Text variant="body3" color="text.dark">
+                ({dateFromNow(history.timestamp)})
+              </Text>
+            </Flex>
+          )}
         </Flex>
       }
     />
