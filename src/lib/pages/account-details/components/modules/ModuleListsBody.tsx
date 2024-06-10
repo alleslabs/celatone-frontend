@@ -3,7 +3,11 @@ import { useMemo } from "react";
 
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
-import { EmptyState, ErrorFetching } from "lib/components/state";
+import {
+  AccountDetailEmptyState,
+  EmptyState,
+  ErrorFetching,
+} from "lib/components/state";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
@@ -31,9 +35,19 @@ export const ModuleListsBody = ({
 
   if (isLoading) return <Loading />;
 
-  if (!modules) return <ErrorFetching dataName="modules" />;
+  if (!modules)
+    return (
+      <ErrorFetching
+        dataName="modules"
+        withBorder
+        my={2}
+        hasBorderTop={false}
+      />
+    );
   if (!modules.length)
-    return <EmptyState message="No modules are on this account." withBorder />;
+    return (
+      <AccountDetailEmptyState message="No modules are on this account." />
+    );
 
   if (!filteredModules?.length)
     return (
