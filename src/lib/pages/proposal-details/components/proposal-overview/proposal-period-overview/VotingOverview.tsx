@@ -1,6 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-import type { ProposalOverviewProps } from "../..";
+import type { ProposalOverviewProps } from "..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
