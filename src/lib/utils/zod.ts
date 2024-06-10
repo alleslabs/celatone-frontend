@@ -8,7 +8,7 @@ export const parseWithError = <T, S extends ZodTypeDef, U>(
     return zod.parse(data);
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.error("Zod parsing error: ", (e as ZodError).format());
+    console.error("Zod parsing error: ", (e as ZodError).errors);
     throw e;
   }
 };
