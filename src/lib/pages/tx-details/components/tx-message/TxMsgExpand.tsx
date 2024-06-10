@@ -234,10 +234,11 @@ export const TxMsgExpand = ({
       }
       break;
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
+    case "/cosmos.gov.v1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
         <Flex gap={1}>
-          Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
+          Submit Proposal {(body.isExpedited as boolean) && " Expedited "}
           {log && (
             <>
               ID{" "}
