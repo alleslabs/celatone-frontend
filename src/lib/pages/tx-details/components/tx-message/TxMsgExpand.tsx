@@ -51,7 +51,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgStoreCode":
       msgIcon = "upload";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Upload Wasm{" "}
           {log && (
             <>
@@ -73,7 +73,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
       msgIcon = "instantiate";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Instantiate{" "}
           {log && (
             <ExplorerLink
@@ -100,7 +100,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       msgIcon = "instantiate";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Instantiate2{" "}
           {log && (
             <ExplorerLink
@@ -127,7 +127,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
       msgIcon = "execute";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Execute{" "}
           <span style={{ fontWeight: 700 }}>
             {Object.keys(body.msg as Record<string, unknown>)[0]}
@@ -146,7 +146,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
       msgIcon = "migrate";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Migrate{" "}
           <ExplorerLink
             type="contract_address"
@@ -169,7 +169,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
       msgIcon = "admin-edit";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Update admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -192,7 +192,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
       msgIcon = "admin-clear";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Clear admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -220,7 +220,7 @@ export const TxMsgExpand = ({
             : formatTokenWithValue(singleToken);
         msgIcon = "send";
         content = (
-          <Flex display="inline-flex" gap={1}>
+          <Flex gap={1}>
             Send {assetText} to{" "}
             <ExplorerLink
               type={getAddressType(toAddress)}
@@ -236,7 +236,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
           {log && (
             <>
@@ -258,7 +258,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1beta1.MsgVote":
       msgIcon = "vote";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Vote{" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
@@ -277,7 +277,7 @@ export const TxMsgExpand = ({
     case "/cosmos.staking.v1beta1.MsgDelegate":
       msgIcon = "delegate";
       content = (
-        <Flex display="inline-flex" gap={1}>
+        <Flex gap={1}>
           Delegate by{" "}
           <ExplorerLink
             type={getAddressType(body.delegatorAddress as string)}
