@@ -74,20 +74,24 @@ export const MigrationRow = ({
           "N/A"
         )}
       </TableRow>
-      {isFullTier && history.timestamp && history.remark && (
+      {isFullTier && (
         <>
           <TableRow>
-            <Flex
-              direction="column"
-              fontSize="12px"
-              sx={{ "& p + p": { color: "text.dark", mt: "2px" } }}
-            >
-              <p>{formatUTC(history.timestamp)}</p>
-              <p>({dateFromNow(history.timestamp)})</p>
-            </Flex>
+            {history.timestamp ? (
+              <Flex
+                direction="column"
+                fontSize="12px"
+                sx={{ "& p + p": { color: "text.dark", mt: "2px" } }}
+              >
+                <p>{formatUTC(history.timestamp)}</p>
+                <p>({dateFromNow(history.timestamp)})</p>
+              </Flex>
+            ) : (
+              "N/A"
+            )}
           </TableRow>
           <TableRow>
-            <RemarkRender {...history.remark} />
+            {history.remark ? <RemarkRender {...history.remark} /> : "N/A"}
           </TableRow>
         </>
       )}

@@ -56,7 +56,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
               }}
             />
           </Flex>
-          {isFullTier && history.remark && (
+          {isFullTier && (
             <>
               <Flex direction="column">
                 <MobileLabel variant="body3" label="CW2 Info" />
@@ -70,7 +70,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
               </Flex>
               <Flex direction="column">
                 <MobileLabel variant="body3" label="Remark" />
-                <RemarkRender {...history.remark} />
+                {history.remark ? <RemarkRender {...history.remark} /> : "N/A"}
               </Flex>
             </>
           )}
@@ -79,15 +79,19 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
       bottomContent={
         <Flex w="full" direction="column" gap={3}>
           <Flex>
-            {isFullTier && history.sender && (
+            {isFullTier && (
               <Flex flex="1" direction="column">
                 <MobileLabel label="Sender" />
-                <ExplorerLink
-                  type={getAddressType(history.sender)}
-                  value={history.sender}
-                  textFormat="truncate"
-                  showCopyOnHover
-                />
+                {history.sender ? (
+                  <ExplorerLink
+                    type={getAddressType(history.sender)}
+                    value={history.sender}
+                    textFormat="truncate"
+                    showCopyOnHover
+                  />
+                ) : (
+                  "N/A"
+                )}
               </Flex>
             )}
             <Flex flex="1" direction="column">
