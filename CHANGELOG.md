@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#961](https://github.com/alleslabs/celatone-frontend/pull/961) Add and refactor proposal related lcd endpoints
 - [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
 - [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
 - [#956](https://github.com/alleslabs/celatone-frontend/pull/956) Add landlord-1 network
@@ -89,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#962](https://github.com/alleslabs/celatone-frontend/pull/962) Fix tx msg expand
+- [#965](https://github.com/alleslabs/celatone-frontend/pull/965) Add search not found state in module detail
 - [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card
 - [#941](https://github.com/alleslabs/celatone-frontend/pull/941) Fix contract interaction routing
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Fix mobile search not focusable

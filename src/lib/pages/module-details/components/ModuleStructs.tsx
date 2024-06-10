@@ -5,6 +5,7 @@ import { trackUseExpandAll, trackUseViewJSON } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { StructCard } from "lib/components/module/StructCard";
+import { EmptyState } from "lib/components/state";
 import type { IndexedModule } from "lib/types";
 
 interface ModuleStructsProps {
@@ -107,11 +108,20 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
         index={expandedIndexes}
         onChange={updateExpandedIndexes}
       >
-        <Flex direction="column" gap={4}>
-          {filteredStructs.map((item) => (
-            <StructCard struct={item} key={item.name} />
-          ))}
-        </Flex>
+        {filteredStructs.length ? (
+          <Flex direction="column" gap={4}>
+            {filteredStructs.map((item) => (
+              <StructCard struct={item} key={item.name} />
+            ))}
+          </Flex>
+        ) : (
+          <EmptyState
+            my={0}
+            imageVariant="not-found"
+            message="No structs match your search keyword."
+            withBorder
+          />
+        )}
       </Accordion>
     </Flex>
   );

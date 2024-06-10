@@ -13,10 +13,10 @@ import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { getCodeData, getCodes, getCodesByAddress } from "./api";
 import { getCodeLcd, getCodesLcd, getUploadAccessParamsLcd } from "./lcd";
 
-export const useUploadAccessParams = () => {
+export const useUploadAccessParamsLcd = () => {
   const endpoint = useLcdEndpoint();
   return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, endpoint],
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS_LCD, endpoint],
     () => getUploadAccessParamsLcd(endpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
