@@ -34,3 +34,6 @@ export type Addr = z.infer<typeof zAddr>;
 
 export const zValidatorAddr = z.string().brand("ValidatorAddr");
 export type ValidatorAddr = z.infer<typeof zValidatorAddr>;
+
+export const zConsensusAddr = z.string().brand("ConsensusAddr");
+export type ConsensusAddr = z.infer<typeof zConsensusAddr>;

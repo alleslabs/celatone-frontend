@@ -1,11 +1,4 @@
-import { Ripemd160, sha256 } from "@cosmjs/crypto";
-import {
-  fromBase64,
-  fromBech32,
-  fromHex,
-  toBech32,
-  toHex,
-} from "@cosmjs/encoding";
+import { fromBech32, fromHex, toBech32, toHex } from "@cosmjs/encoding";
 
 import type { AddressReturnType } from "lib/app-provider";
 import type { BechAddr, HexAddr, Option } from "lib/types";
@@ -48,21 +41,3 @@ export const hexToBech32Address = (
   const strip = padHexAddress(hexAddr, length).slice(2);
   return toBech32(prefix, fromHex(strip)) as BechAddr;
 };
-
-export function consensusPubkeyToHexAddress(consensusPubkey?: {
-  "@type": string;
-  key: string;
-}) {
-  if (!consensusPubkey) return "";
-  const raw = "";
-  if (consensusPubkey["@type"] === "/cosmos.crypto.ed25519.PubKey") {
-    const pubkey = fromBase64(consensusPubkey.key);
-    if (pubkey) return toHex(sha256(pubkey)).slice(0, 40).toUpperCase();
-  }
-
-  if (consensusPubkey["@type"] === "/cosmos.crypto.secp256k1.PubKey") {
-    const pubkey = fromBase64(consensusPubkey.key);
-    if (pubkey) return toHex(new Ripemd160().update(sha256(pubkey)).digest());
-  }
-  return raw;
-}

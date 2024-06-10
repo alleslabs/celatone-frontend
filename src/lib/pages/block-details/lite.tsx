@@ -16,11 +16,11 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
       <Breadcrumb
         items={[
           { text: "Blocks", href: "/blocks" },
-          { text: data.block.height.toString() },
+          { text: data.height.toString() },
         ]}
       />
-      <BlockDetailsTop blockData={data.block} />
-      <BlockInfo blockData={data.block} />
+      <BlockDetailsTop blockData={data} />
+      <BlockInfo blockData={data} />
       <BlockTxsTableLite height={height} />
       <UserDocsLink
         title="What is a block?"
