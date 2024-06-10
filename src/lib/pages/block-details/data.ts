@@ -22,13 +22,14 @@ export const useBlockDataWithValidatorLcd = (
       (validator) =>
         validator.consensusAddress === blockData.proposerConsensusAddr
     );
-    if (!found) return null;
 
-    return {
-      validatorAddress: found.validatorAddress,
-      moniker: found.moniker,
-      identity: found.identity,
-    };
+    return found
+      ? {
+          validatorAddress: found.validatorAddress,
+          moniker: found.moniker,
+          identity: found.identity,
+        }
+      : null;
   }, [blockData, validators]);
 
   return {
