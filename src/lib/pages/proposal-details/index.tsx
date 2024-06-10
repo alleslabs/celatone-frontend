@@ -1,11 +1,115 @@
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
-import { AmpEvent, track } from "lib/amplitude";
+import { AmpEvent, track, trackUseTab } from "lib/amplitude";
+import { useGovConfig, useInternalNavigate, useMobile } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { ErrorFetching } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useDerivedProposalParams } from "lib/model/proposal";
+import { useProposalVotesInfo } from "lib/services/proposal";
 
-import { InvalidProposal, ProposalDetailsBody } from "./components";
-import { zProposalDetailsQueryParams } from "./types";
+import {
+  InvalidProposal,
+  ProposalOverview,
+  ProposalTop,
+  VoteDetails,
+} from "./components";
+import { useDerivedProposalData } from "./data";
+import type { ProposalDetailsQueryParams } from "./types";
+import { TabIndex, zProposalDetailsQueryParams } from "./types";
+
+const ProposalDetailsBody = ({
+  proposalId,
+  tab,
+}: ProposalDetailsQueryParams) => {
+  useGovConfig({ shouldRedirect: true });
+
+  const isMobile = useMobile();
+  const navigate = useInternalNavigate();
+  const { data, isLoading } = useDerivedProposalData(proposalId);
+  const { data: votesInfo, isLoading: isVotesInfoLoading } =
+    useProposalVotesInfo(proposalId);
+  const { data: params, isLoading: isParamsLoading } =
+    useDerivedProposalParams(!isMobile);
+
+  const handleTabChange = useCallback(
+    (nextTab: TabIndex) => () => {
+      if (nextTab === tab) return;
+      trackUseTab(nextTab);
+      navigate({
+        pathname: "/proposals/[proposalId]/[tab]",
+        query: {
+          proposalId,
+          tab: nextTab,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [navigate, proposalId, tab]
+  );
+
+  if (isLoading) return <Loading />;
+  if (!data) return <ErrorFetching dataName="proposal information" />;
+  if (!data.info) return <InvalidProposal />;
+
+  return (
+    <>
+      <ProposalTop proposalData={data.info} />
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          borderBottom="1px solid"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
+          <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
+            Proposal Overview
+          </CustomTab>
+          <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
+            Voting Details
+          </CustomTab>
+        </TabList>
+        <TabPanels>
+          <TabPanel p={0}>
+            <ProposalOverview
+              proposalData={data.info}
+              votesInfo={votesInfo}
+              params={params}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+            />
+            <UserDocsLink
+              title="What is a Proposal?"
+              cta="Read more about Proposal Details"
+              href="general/proposals/detail-page"
+            />
+          </TabPanel>
+          <TabPanel p={0}>
+            <VoteDetails
+              proposalData={data.info}
+              votesInfo={votesInfo}
+              params={params}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+            />
+            <UserDocsLink
+              title="What is the CosmWasm proposal vote progress?"
+              cta="Read more about Vote Details"
+              href="general/proposals/detail-page#proposal-vote-details"
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </>
+  );
+};
 
 const ProposalDetails = () => {
   const router = useRouter();
