@@ -34,6 +34,8 @@ interface ModuleTablesProps {
   onViewMore?: (nextTab: ModuleTablesTabIndex) => void;
 }
 
+const tableHeaderId = "moduleDetailsTableHeader";
+
 export const ModuleTables = ({
   vmAddress,
   moduleName,
@@ -44,7 +46,6 @@ export const ModuleTables = ({
   setTab,
   onViewMore,
 }: ModuleTablesProps) => {
-  const tableHeaderId = "moduleDetailsTableHeader";
   const gov = useGovConfig({ shouldRedirect: false });
 
   const handleOnViewMore = useCallback(

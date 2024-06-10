@@ -6,13 +6,13 @@ import type { Addr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getModuleByAddressLcd = async (
-  baseEndpoint: string,
+  endpoint: string,
   address: Addr,
   moduleName: string
 ): Promise<IndexedModule> =>
   axios
     .get(
-      `${baseEndpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules/${encodeURI(moduleName)}`
+      `${endpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules/${encodeURI(moduleName)}`
     )
     .then(({ data }) => parseWithError(zModuleResponseLcd, data).module);
 
