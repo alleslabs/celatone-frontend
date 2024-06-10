@@ -13,7 +13,7 @@ import { UploadSection } from "lib/components/upload/UploadSection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParams } from "lib/services/wasm/code";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 
 export const Upload = ({
@@ -24,7 +24,7 @@ export const Upload = ({
   const router = useRouter();
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useUploadAccessParams();
+  const { data, isLoading } = useUploadAccessParamsLcd();
   const {
     proceed,
     formData,

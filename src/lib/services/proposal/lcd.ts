@@ -1,27 +1,21 @@
 import axios from "axios";
 
 import {
-  zDepositParamsLcd,
-  zProposalsResponseItemLcd,
+  zProposalDataResponseLcd,
+  zProposalParamsResponseLcd,
   zProposalsResponseLcd,
-  zVotingParamsLcd,
 } from "lib/services/types";
 import type {
-  ProposalsResponseItemLcd,
+  ProposalDataResponseLcd,
   ProposalsResponseLcd,
 } from "lib/services/types";
 import type { Option, ProposalStatus } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getDepositParamsLcd = (lcdEndpoint: string) =>
+export const getProposalParamsLcd = (lcdEndpoint: string) =>
   axios
-    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
-    .then(({ data }) => parseWithError(zDepositParamsLcd, data));
-
-export const getVotingParamsLcd = (lcdEndpoint: string) =>
-  axios
-    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
-    .then(({ data }) => parseWithError(zVotingParamsLcd, data));
+    .get(`${lcdEndpoint}/cosmos/gov/v1/params/deposit`)
+    .then(({ data }) => parseWithError(zProposalParamsResponseLcd, data).param);
 
 export const getProposalsLcd = async (
   endpoint: string,
@@ -44,9 +38,9 @@ export const getProposalsLcd = async (
 export const getProposalDataLcd = async (
   endpoint: string,
   id: string
-): Promise<ProposalsResponseItemLcd> =>
+): Promise<ProposalDataResponseLcd> =>
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals/${encodeURI(id)}`)
     .then(({ data }) =>
-      parseWithError(zProposalsResponseItemLcd, data.proposal)
+      parseWithError(zProposalDataResponseLcd, data.proposal)
     );
