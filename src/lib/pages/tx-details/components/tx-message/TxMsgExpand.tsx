@@ -51,7 +51,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgStoreCode":
       msgIcon = "upload";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Upload Wasm{" "}
           {log && (
             <>
@@ -73,7 +73,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
       msgIcon = "instantiate";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Instantiate{" "}
           {log && (
             <ExplorerLink
@@ -89,7 +89,7 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -100,7 +100,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       msgIcon = "instantiate";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Instantiate2{" "}
           {log && (
             <ExplorerLink
@@ -116,7 +116,7 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -127,7 +127,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
       msgIcon = "execute";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Execute{" "}
           <span style={{ fontWeight: 700 }}>
             {Object.keys(body.msg as Record<string, unknown>)[0]}
@@ -146,7 +146,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
       msgIcon = "migrate";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Migrate{" "}
           <ExplorerLink
             type="contract_address"
@@ -158,7 +158,7 @@ export const TxMsgExpand = ({
           to Code ID{" "}
           <ExplorerLink
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -169,7 +169,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
       msgIcon = "admin-edit";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Update admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -180,8 +180,8 @@ export const TxMsgExpand = ({
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.new_admin as string)}
-            value={body.new_admin as string}
+            type={getAddressType(body.newAdmin as string)}
+            value={body.newAdmin as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_admin"
@@ -192,7 +192,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
       msgIcon = "admin-clear";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Clear admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -206,7 +206,7 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.to_address as BechAddr;
+        const toAddress = body.toAddress as BechAddr;
         const singleCoin = (body.amount as Coin[])[0];
         const singleToken = coinToTokenWithValue(
           singleCoin.denom,
@@ -220,7 +220,7 @@ export const TxMsgExpand = ({
             : formatTokenWithValue(singleToken);
         msgIcon = "send";
         content = (
-          <Flex display="inline">
+          <Flex display="inline-flex" gap={1}>
             Send {assetText} to{" "}
             <ExplorerLink
               type={getAddressType(toAddress)}
@@ -236,7 +236,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
           {log && (
             <>
@@ -258,7 +258,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1beta1.MsgVote":
       msgIcon = "vote";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Vote{" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
@@ -266,7 +266,7 @@ export const TxMsgExpand = ({
           on proposal ID{" "}
           <ExplorerLink
             type="proposal_id"
-            value={body.proposal_id as string}
+            value={body.proposalId as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_proposal"
@@ -277,19 +277,19 @@ export const TxMsgExpand = ({
     case "/cosmos.staking.v1beta1.MsgDelegate":
       msgIcon = "delegate";
       content = (
-        <Flex display="inline">
+        <Flex display="inline-flex" gap={1}>
           Delegate by{" "}
           <ExplorerLink
-            type={getAddressType(body.delegator_address as string)}
-            value={body.delegator_address as string}
+            type={getAddressType(body.delegatorAddress as string)}
+            value={body.delegatorAddress as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_delegator"
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.validator_address as string)}
-            value={body.validator_address as string}
+            type={getAddressType(body.validatorAddress as string)}
+            value={body.validatorAddress as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_validator"
