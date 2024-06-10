@@ -3,8 +3,10 @@ import { z } from "zod";
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import { formatUrl } from "lib/utils/formatter/url";
 
+import type { BechAddr20, ValidatorAddr } from "./addrs";
 import { zBechAddr20, zValidatorAddr } from "./addrs";
 import { zBig } from "./big";
+import type { Nullable, Option } from "./common";
 import { zRatio } from "./currency";
 import type { Ratio } from "./currency";
 
@@ -21,6 +23,26 @@ export const zValidator = z
   }));
 export type Validator = z.infer<typeof zValidator>;
 
+export type ValidatorData = {
+  rank: Nullable<number>;
+  validatorAddress: ValidatorAddr;
+  accountAddress: BechAddr20;
+  identity: string;
+  moniker: string;
+  details: string;
+  commissionRate: Ratio<number>;
+  // NOTE: consensusPubkey is present only in the lcd response
+  consensusPubkey: Option<{
+    "@type": string;
+    key: string;
+  }>;
+  isJailed: boolean;
+  isActive: boolean;
+  votingPower: Big;
+  uptime?: number;
+  website: string;
+};
+
 export const zValidatorData = z
   .object({
     rank: z.number().nullable(),
@@ -36,16 +58,11 @@ export const zValidatorData = z
     uptime: z.number().optional(),
     website: z.string(),
   })
-  .transform(({ website, ...val }) => ({
+  .transform<ValidatorData>(({ website, ...val }) => ({
     ...snakeToCamel(val),
     website: formatUrl(website),
-    // TODO: add from api
-    consensusPubkey: {
-      "@type": "",
-      key: "",
-    },
+    consensusPubkey: undefined,
   }));
-export type ValidatorData = z.infer<typeof zValidatorData>;
 
 export enum BlockVote {
   PROPOSE = "PROPOSE",

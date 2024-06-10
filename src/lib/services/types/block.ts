@@ -102,7 +102,6 @@ export const zBlockDataResponseLcd = zBlockLcd
     block: BlockData;
     transactions: Transaction[];
     pagination: Pagination;
-    rawProposerAddress: string;
   }>((val) => {
     // 1. Create Tx Hashes
     const txHashes = val.block.data.txs.map(createTxHash);
@@ -144,6 +143,7 @@ export const zBlockDataResponseLcd = zBlockLcd
       height: val.block.header.height,
       timestamp: val.block.header.time,
       proposer: null, // NOTE: Will be filled in the next step
+      proposerAddress: val.block.header.proposerAddress,
       gasLimit: undefined,
       gasUsed: undefined,
     };
@@ -152,7 +152,6 @@ export const zBlockDataResponseLcd = zBlockLcd
       block,
       transactions,
       pagination: val.pagination,
-      rawProposerAddress: val.block.header.proposerAddress,
     };
   });
 

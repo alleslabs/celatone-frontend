@@ -21,10 +21,13 @@ export const useBlockDataWithValidatorLcd = (
   const validator = useMemo<Nullable<Validator>>(() => {
     if (!blockData || !validators) return null;
 
+    const { proposerAddress } = blockData.block;
+    if (!proposerAddress) return null;
+
     const found = validators.find(
       (each) =>
         consensusPubkeyToHexAddress(each.consensusPubkey) ===
-        toHex(fromBase64(blockData.rawProposerAddress)).toUpperCase()
+        toHex(fromBase64(proposerAddress)).toUpperCase()
     );
     if (!found) return null;
     return {
@@ -43,7 +46,6 @@ export const useBlockDataWithValidatorLcd = (
           },
           transactions: blockData.transactions,
           pagination: blockData.pagination,
-          rawProposerAddress: blockData.rawProposerAddress,
         }
       : undefined,
     isLoading: isLoadingBlockData || isLoadingValidators,
