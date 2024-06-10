@@ -4,12 +4,12 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useGetAddressType, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
-import type { ContractMigrationHistory } from "lib/types";
+import type { BechAddr, ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
-  history: Partial<ContractMigrationHistory>;
+  history: ContractMigrationHistory;
 }
 
 export const MigrationRow = ({
@@ -25,20 +25,19 @@ export const MigrationRow = ({
       <TableRow>
         <ExplorerLink
           type="code_id"
-          value={history.codeId?.toString() ?? "N/A"}
+          value={history.codeId.toString()}
           showCopyOnHover
         />
       </TableRow>
       <TableRow>
-        {history.codeId && (
-          <CodeNameCell
-            code={{
-              id: history.codeId,
-              uploader: history.uploader,
-              name: history.codeName,
-            }}
-          />
-        )}
+        <CodeNameCell
+          code={{
+            id: history.codeId,
+            // TODO: fix by handle uploader undefined
+            uploader: history.uploader ?? ("" as BechAddr),
+            name: history.codeName,
+          }}
+        />
       </TableRow>
       {isFullTier && (
         <>
@@ -51,23 +50,31 @@ export const MigrationRow = ({
             </Text>
           </TableRow>
           <TableRow>
-            <ExplorerLink
-              type={getAddressType(history.sender)}
-              value={history.sender ?? "N/A"}
-              textFormat="truncate"
-              showCopyOnHover
-            />
+            {history.sender ? (
+              <ExplorerLink
+                type={getAddressType(history.sender)}
+                value={history.sender}
+                textFormat="truncate"
+                showCopyOnHover
+              />
+            ) : (
+              "N/A"
+            )}
           </TableRow>
         </>
       )}
       <TableRow>
-        <ExplorerLink
-          value={history.height?.toString() ?? "N/A"}
-          type="block_height"
-          showCopyOnHover
-        />
+        {history.height ? (
+          <ExplorerLink
+            value={history.height.toString()}
+            type="block_height"
+            showCopyOnHover
+          />
+        ) : (
+          "N/A"
+        )}
       </TableRow>
-      {isFullTier && history?.timestamp && history.remark && (
+      {isFullTier && history.timestamp && history.remark && (
         <>
           <TableRow>
             <Flex

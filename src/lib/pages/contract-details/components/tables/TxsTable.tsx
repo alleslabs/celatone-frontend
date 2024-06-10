@@ -39,28 +39,21 @@ export const TxsTable = ({
     },
   });
 
-  const txsByAddressFull = useTxsByAddress(
+  const resApi = useTxsByAddress(
     contractAddress,
     undefined,
     undefined,
     DEFAULT_TX_FILTERS,
-    offset,
     pageSize,
+    offset,
     { enabled: isFullTier }
   );
-  const txsByAddressLite = useTxsByContractAddressLcd(
-    contractAddress,
-    pageSize,
-    offset,
-    {
-      enabled: !isFullTier,
-      onSuccess: ({ total }) => setTotalData(total),
-    }
-  );
+  const resLcd = useTxsByContractAddressLcd(contractAddress, pageSize, offset, {
+    enabled: !isFullTier,
+    onSuccess: ({ total }) => setTotalData(total),
+  });
 
-  const { data, isLoading, error } = isFullTier
-    ? txsByAddressFull
-    : txsByAddressLite;
+  const { data, isLoading, error } = isFullTier ? resApi : resLcd;
 
   return (
     <>
@@ -74,7 +67,11 @@ export const TxsTable = ({
             <EmptyState
               withBorder
               imageVariant="empty"
-              message="This contract does not have any transactions, or they are too old and have been pruned from the LCD."
+              message={
+                isFullTier
+                  ? "This contract does not have any transactions."
+                  : "This contract does not have any transactions, or they are too old and have been pruned from the LCD."
+              }
             />
           )
         }

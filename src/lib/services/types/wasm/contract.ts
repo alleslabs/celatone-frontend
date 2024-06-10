@@ -197,13 +197,17 @@ export const zMigrationHistoriesResponseItemLcd = z
     code_id: z.coerce.number().positive(),
     updated: zContractCreated,
   })
-  .transform<Pick<ContractMigrationHistory, "codeId" | "codeName" | "height">>(
-    (val) => ({
-      codeId: val.code_id,
-      codeName: undefined,
-      height: Number(val.updated?.block_height),
-    })
-  );
+  .transform<ContractMigrationHistory>((val) => ({
+    codeId: val.code_id,
+    codeName: undefined,
+    height: val.updated ? Number(val.updated.block_height) : null,
+    timestamp: null,
+    uploader: null,
+    remark: null,
+    sender: null,
+    cw2Contract: null,
+    cw2Version: null,
+  }));
 export type MigrationHistoriesResponseItemLcd = z.infer<
   typeof zMigrationHistoriesResponseItemLcd
 >;

@@ -61,18 +61,12 @@ export const useModuleByAddressLcd = ({
   address: Addr;
   moduleName: string;
   options?: Omit<UseQueryOptions<IndexedModule>, "queryKey">;
-}): UseQueryResult => {
-  const baseEndpoint = useBaseApiRoute("rest");
-  const queryFn = () =>
-    getModuleByAddressLcd(baseEndpoint, address, moduleName);
+}) => {
+  const endpoint = useLcdEndpoint();
+  const queryFn = () => getModuleByAddressLcd(endpoint, address, moduleName);
 
   return useQuery<IndexedModule>(
-    [
-      CELATONE_QUERY_KEYS.MODULE_BY_ADDRESS_LCD,
-      baseEndpoint,
-      address,
-      moduleName,
-    ],
+    [CELATONE_QUERY_KEYS.MODULE_BY_ADDRESS_LCD, endpoint, address, moduleName],
     queryFn,
     options
   );
@@ -257,7 +251,11 @@ export const useModules = (
   );
 };
 
-export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
+export const useModuleData = (
+  vmAddress: HexAddr,
+  moduleName: string,
+  enabled = true
+) => {
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
 
@@ -274,13 +272,15 @@ export const useModuleData = (vmAddress: HexAddr, moduleName: string) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
 
 export const useModuleTableCounts = (
   vmAddress: HexAddr,
-  moduleName: string
+  moduleName: string,
+  enabled = true
 ) => {
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
@@ -298,6 +298,7 @@ export const useModuleTableCounts = (
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

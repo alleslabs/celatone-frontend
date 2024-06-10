@@ -12,11 +12,11 @@ import {
   MobileLabel,
   RemarkRender,
 } from "lib/components/table";
-import type { ContractMigrationHistory } from "lib/types";
+import type { BechAddr, ContractMigrationHistory } from "lib/types";
 import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationMobileCardProps {
-  history: Partial<ContractMigrationHistory>;
+  history: ContractMigrationHistory;
 }
 export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
   const isFullTier = useTierConfig() === "full";
@@ -28,7 +28,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
       onClick={() =>
         navigate({
           pathname: "/codes/[codeId]",
-          query: { codeId: history.codeId?.toString() },
+          query: { codeId: history.codeId.toString() },
         })
       }
       topContent={
@@ -37,7 +37,7 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
             <MobileLabel label="Code ID" variant="body2" />
             <ExplorerLink
               type="code_id"
-              value={history.codeId?.toString() ?? "N/A"}
+              value={history.codeId.toString()}
               showCopyOnHover
             />
           </Flex>
@@ -47,15 +47,14 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
         <Flex direction="column" gap={3}>
           <Flex direction="column">
             <MobileLabel variant="body3" label="Code Name" />
-            {history.codeId && (
-              <CodeNameCell
-                code={{
-                  id: history.codeId,
-                  uploader: history.uploader,
-                  name: history.codeName,
-                }}
-              />
-            )}
+            <CodeNameCell
+              code={{
+                id: history.codeId,
+                // TODO: fix by handle uploader undefined
+                uploader: history.uploader ?? ("" as BechAddr),
+                name: history.codeName,
+              }}
+            />
           </Flex>
           {isFullTier && history.remark && (
             <>
@@ -93,11 +92,15 @@ export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
             )}
             <Flex flex="1" direction="column">
               <MobileLabel label="Block Height" />
-              <ExplorerLink
-                value={history.height?.toString() ?? "N/A"}
-                type="block_height"
-                showCopyOnHover
-              />
+              {history.height ? (
+                <ExplorerLink
+                  value={history.height.toString()}
+                  type="block_height"
+                  showCopyOnHover
+                />
+              ) : (
+                "N/A"
+              )}
             </Flex>
           </Flex>
           {isFullTier && history.timestamp && (

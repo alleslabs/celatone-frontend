@@ -28,11 +28,11 @@ export interface ContractInfo extends ContractLocalInfo {
 export interface ContractMigrationHistory {
   codeId: number;
   codeName?: string;
-  sender: BechAddr;
+  sender: Nullable<BechAddr>;
   height: Nullable<number>;
-  timestamp: Date;
-  remark: ContractHistoryRemark;
-  uploader: BechAddr;
+  timestamp: Nullable<Date>;
+  remark: Nullable<ContractHistoryRemark>;
+  uploader: Nullable<BechAddr>;
   cw2Contract: Nullable<string>;
   cw2Version: Nullable<string>;
 }

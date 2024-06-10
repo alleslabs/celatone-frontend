@@ -119,8 +119,8 @@ export const useTxsByAddress = (
   search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
-  offset: number,
   limit: number,
+  offset: number,
   options: UseQueryOptions<AccountTxsResponse> = {}
 ) => {
   const endpoint = useBaseApiRoute("accounts");

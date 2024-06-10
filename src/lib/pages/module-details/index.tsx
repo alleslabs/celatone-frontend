@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -12,6 +12,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
+  useModuleByAddressLcd,
   useModuleData,
   useModuleTableCounts,
   useVerifyModule,
@@ -44,10 +45,21 @@ const ModuleDetailsBody = ({
   const formatAddresses = useFormatAddresses();
   const { hex: vmAddress } = formatAddresses(address);
 
-  const { data, isLoading } = useModuleData(vmAddress, moduleName);
+  const isFullTier = useTierConfig() === "full";
+  const currentTab =
+    !isFullTier && tab === TabIndex.TxsHistories ? TabIndex.Overview : tab;
+  const fullData = useModuleData(vmAddress, moduleName, isFullTier);
+  const liteData = useModuleByAddressLcd({
+    address: vmAddress,
+    moduleName,
+    options: { enabled: !isFullTier },
+  });
+  const { data, isLoading } = isFullTier ? fullData : liteData;
+
   const { data: moduleTableCounts } = useModuleTableCounts(
     vmAddress,
-    moduleName
+    moduleName,
+    isFullTier
   );
   const { data: verificationData, isLoading: verificationLoading } =
     useVerifyModule({
@@ -64,7 +76,7 @@ const ModuleDetailsBody = ({
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
-      if (nextTab === tab) return;
+      if (nextTab === currentTab) return;
       trackUseTab(nextTab);
       navigate({
         pathname: "/modules/[address]/[moduleName]/[tab]",
@@ -79,16 +91,16 @@ const ModuleDetailsBody = ({
         },
       });
     },
-    [vmAddress, moduleName, navigate, tab]
+    [vmAddress, moduleName, navigate, currentTab]
   );
 
   useEffect(() => {
     if (router.isReady && !verificationLoading)
       track(AmpEvent.TO_MODULE_DETAILS, {
-        tab,
+        currentTab,
         isVerified: Boolean(verificationData),
       });
-  }, [router.isReady, tab, verificationLoading, verificationData]);
+  }, [router.isReady, currentTab, verificationLoading, verificationData]);
 
   useEffect(() => {
     if (moduleTableCounts?.txs === 0) {
@@ -97,6 +109,10 @@ const ModuleDetailsBody = ({
     }
   }, [moduleTableCounts?.txs]);
 
+  const tabIndex = isFullTier
+    ? Object.values(TabIndex)
+    : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
+
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="module information" />;
 
@@ -104,7 +120,7 @@ const ModuleDetailsBody = ({
     <>
       <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
       <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
+        index={tabIndex.indexOf(currentTab)}
         isLazy
         lazyBehavior="keepMounted"
       >
@@ -125,9 +141,11 @@ const ModuleDetailsBody = ({
           >
             Functions
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
-            Transactions & Histories
-          </CustomTab>
+          {isFullTier && (
+            <CustomTab onClick={handleTabChange(TabIndex.TxsHistories)}>
+              Transactions & Histories
+            </CustomTab>
+          )}
           <CustomTab
             count={data.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
@@ -160,30 +178,26 @@ const ModuleDetailsBody = ({
                 }}
               />
               <ModuleInfo
-                vmAddress={data.address}
-                upgradePolicy={data.upgradePolicy}
-                transaction={data.recentPublishTransaction}
-                proposal={data.recentPublishProposal}
-                isRepublished={data.isRepublished}
-                blockHeight={data.recentPublishBlockHeight}
-                blockTimestamp={data.recentPublishBlockTimestamp}
                 verificationData={verificationData}
+                moduleData={data}
               />
-              <ModuleTables
-                vmAddress={data.address}
-                moduleName={data.moduleName}
-                txsCount={moduleTableCounts?.txs ?? undefined}
-                historiesCount={moduleTableCounts?.histories ?? undefined}
-                relatedProposalsCount={
-                  moduleTableCounts?.proposals ?? undefined
-                }
-                tab={overviewTabIndex}
-                setTab={setOverviewTabIndex}
-                onViewMore={(nextTab: ModuleTablesTabIndex) => {
-                  handleTabChange(TabIndex.TxsHistories)();
-                  setTableTabIndex(nextTab);
-                }}
-              />
+              {isFullTier && (
+                <ModuleTables
+                  vmAddress={data.address}
+                  moduleName={data.moduleName}
+                  txsCount={moduleTableCounts?.txs ?? undefined}
+                  historiesCount={moduleTableCounts?.histories ?? undefined}
+                  relatedProposalsCount={
+                    moduleTableCounts?.proposals ?? undefined
+                  }
+                  tab={overviewTabIndex}
+                  setTab={setOverviewTabIndex}
+                  onViewMore={(nextTab: ModuleTablesTabIndex) => {
+                    handleTabChange(TabIndex.TxsHistories)();
+                    setTableTabIndex(nextTab);
+                  }}
+                />
+              )}
             </Flex>
             <UserDocsLink
               title="What is a move module?"
@@ -205,22 +219,26 @@ const ModuleDetailsBody = ({
               href="move/modules/detail-page#functions"
             />
           </TabPanel>
-          <TabPanel p={0}>
-            <ModuleTables
-              vmAddress={data.address}
-              moduleName={data.moduleName}
-              txsCount={moduleTableCounts?.txs ?? undefined}
-              historiesCount={moduleTableCounts?.histories ?? undefined}
-              relatedProposalsCount={moduleTableCounts?.proposals ?? undefined}
-              tab={tableTabIndex}
-              setTab={setTableTabIndex}
-            />
-            <UserDocsLink
-              title="What is Module Transaction?"
-              cta="Read more about transaction in module"
-              href="move/modules/detail-page#transactions-histories"
-            />
-          </TabPanel>
+          {isFullTier && (
+            <TabPanel p={0}>
+              <ModuleTables
+                vmAddress={data.address}
+                moduleName={data.moduleName}
+                txsCount={moduleTableCounts?.txs ?? undefined}
+                historiesCount={moduleTableCounts?.histories ?? undefined}
+                relatedProposalsCount={
+                  moduleTableCounts?.proposals ?? undefined
+                }
+                tab={tableTabIndex}
+                setTab={setTableTabIndex}
+              />
+              <UserDocsLink
+                title="What is Module Transaction?"
+                cta="Read more about transaction in module"
+                href="move/modules/detail-page#transactions-histories"
+              />
+            </TabPanel>
+          )}
           <TabPanel p={0}>
             <ModuleStructs structs={data.parsedAbi.structs} />
             <UserDocsLink

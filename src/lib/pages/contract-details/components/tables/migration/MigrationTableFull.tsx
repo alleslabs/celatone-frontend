@@ -67,31 +67,16 @@ export const MigrationTableFull = ({
     <>
       {isMobile ? (
         <MobileTableContainer>
-          {data.items.map((history, idx) => (
-            <MigrationMobileCard
-              key={
-                history.codeId +
-                history.remark.operation +
-                history.remark.type +
-                history.remark.value +
-                idx.toString()
-              }
-              history={history}
-            />
+          {data.items.map((history) => (
+            <MigrationMobileCard key={history.codeId} history={history} />
           ))}
         </MobileTableContainer>
       ) : (
         <TableContainer>
           <MigrationHeader templateColumns={templateColumns} />
-          {data.items.map((history, idx) => (
+          {data.items.map((history) => (
             <MigrationRow
-              key={
-                history.codeId +
-                history.remark.operation +
-                history.remark.type +
-                history.remark.value +
-                idx.toString()
-              }
+              key={history.codeId}
               history={history}
               templateColumns={templateColumns}
             />
