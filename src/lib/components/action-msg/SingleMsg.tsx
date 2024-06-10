@@ -50,7 +50,7 @@ export const SingleMsg = ({
             // TODO: add `ampCopierSection` later
           />
           {index < tokens.length - 2 && <Text>, </Text>}
-          {index === tokens.length - 2 && <Text>and</Text>}
+          {index === tokens.length - 2 && <Text ml={1}>and</Text>}
         </Flex>
       ))}
       {/* Tags  */}
