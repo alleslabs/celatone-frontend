@@ -88,6 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#965](https://github.com/alleslabs/celatone-frontend/pull/965) Add search not found state in module detail
 - [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card
 - [#941](https://github.com/alleslabs/celatone-frontend/pull/941) Fix contract interaction routing
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Fix mobile search not focusable
