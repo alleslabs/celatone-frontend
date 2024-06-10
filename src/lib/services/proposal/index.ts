@@ -50,13 +50,13 @@ import {
 
 export const useProposalParams = () => {
   const tier = useTierConfig();
-  const endpointApi = useBaseApiRoute("proposals");
-  const endpointLcd = useLcdEndpoint();
+  const apiEndpoint = useBaseApiRoute("proposals");
+  const lcdEndpoint = useLcdEndpoint();
 
   const [endpoint, queryFn] =
     tier === "full"
-      ? [endpointApi, getProposalParams]
-      : [endpointLcd, getProposalParamsLcd];
+      ? [apiEndpoint, getProposalParams]
+      : [lcdEndpoint, getProposalParamsLcd];
 
   return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],

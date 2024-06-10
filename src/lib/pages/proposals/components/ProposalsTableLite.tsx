@@ -26,7 +26,7 @@ export const ProposalsTableLite = () => {
     isFetchingNextPage,
   } = useProposalsLcd(status[0]);
 
-  const { data: proposalData, isFetching: isProposalDataLoading } =
+  const { data: proposalData, isFetching: isProposalDataFetching } =
     useProposalDataLcd(debouncedSearch, isPositiveInt(debouncedSearch));
 
   const proposal = proposalData ? [proposalData] : [];
@@ -36,7 +36,7 @@ export const ProposalsTableLite = () => {
   const isLoadNext =
     hasNextPage &&
     !isProposalsLoading &&
-    !isProposalDataLoading &&
+    !isProposalDataFetching &&
     proposals &&
     proposals.length > 1;
 
@@ -69,7 +69,7 @@ export const ProposalsTableLite = () => {
       </Grid>
       <ProposalsTable
         proposals={proposals}
-        isLoading={isProposalsLoading || isProposalDataLoading}
+        isLoading={isProposalsLoading || isProposalDataFetching}
         emptyState={
           proposalsError ? (
             <ErrorFetching dataName="proposals" />
