@@ -43,14 +43,14 @@ export const SingleMsg = ({
         {type} {text1}
       </Text>
       {tokens?.map((token: TokenWithValue, index: number) => (
-        <Flex gap={1}>
+        <Flex>
           <MsgToken
             key={index.toString() + token.denom}
             token={token}
             // TODO: add `ampCopierSection` later
-          />{" "}
-          {index === tokens.length - 2 && <Text>and</Text>}
+          />
           {index < tokens.length - 2 && <Text>, </Text>}
+          {index === tokens.length - 2 && <Text>and</Text>}
         </Flex>
       ))}
       {/* Tags  */}
