@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#966](https://github.com/alleslabs/celatone-frontend/pull/966) Support lite version for proposal details
 - [#961](https://github.com/alleslabs/celatone-frontend/pull/961) Add and refactor proposal related lcd endpoints
 - [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
 - [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint

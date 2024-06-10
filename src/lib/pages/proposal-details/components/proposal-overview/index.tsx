@@ -18,13 +18,12 @@ export interface ProposalOverviewProps {
   votesInfo: Option<ProposalVotesInfo>;
   params: Option<ProposalParams>;
   isLoading: boolean;
+  isDepositsLoading: boolean;
 }
 
 export const ProposalOverview = ({
   proposalData,
-  votesInfo,
-  params,
-  isLoading,
+  ...props
 }: ProposalOverviewProps) => (
   <Grid
     gridTemplateColumns={{ base: "1fr", xl: "2fr minmax(360px, 1fr)" }}
@@ -33,24 +32,14 @@ export const ProposalOverview = ({
   >
     <GridItem>
       <Flex direction="column" gap={8}>
-        <StatusSummary
-          proposalData={proposalData}
-          votesInfo={votesInfo}
-          params={params}
-          isLoading={isLoading}
-        />
+        <StatusSummary proposalData={proposalData} {...props} />
         <ProposalDescription description={proposalData.description} />
         <ProposalMetadata metadata={proposalData.metadata} />
         <ProposalMessages messages={proposalData.messages} />
       </Flex>
     </GridItem>
     <GridItem>
-      <ProposalPeriodOverview
-        proposalData={proposalData}
-        votesInfo={votesInfo}
-        params={params}
-        isLoading={isLoading}
-      />
+      <ProposalPeriodOverview proposalData={proposalData} {...props} />
     </GridItem>
   </Grid>
 );
