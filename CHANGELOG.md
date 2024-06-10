@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
+- [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
+- [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
+- [#956](https://github.com/alleslabs/celatone-frontend/pull/956) Add landlord-1 network
+- [#954](https://github.com/alleslabs/celatone-frontend/pull/954) Add gas token for initiation-1
 - [#949](https://github.com/alleslabs/celatone-frontend/pull/949) Support lite version for instantited by me
 - [#948](https://github.com/alleslabs/celatone-frontend/pull/948) Support lite version for past txs
 - [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
@@ -67,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#959](https://github.com/alleslabs/celatone-frontend/pull/959) Update @cosmos-kit/react to v2.15.0 and friends
 - [#947](https://github.com/alleslabs/celatone-frontend/pull/947) Add zod type for sign mode infos
 - [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
 - [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Add isHydrated in app context for redirect behaviors

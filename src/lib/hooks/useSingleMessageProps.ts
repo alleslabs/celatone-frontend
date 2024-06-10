@@ -6,7 +6,7 @@ import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   AssetInfos,

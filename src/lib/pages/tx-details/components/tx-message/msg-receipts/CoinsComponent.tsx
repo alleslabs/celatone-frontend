@@ -8,7 +8,7 @@ import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { TokenCard } from "lib/components/token/TokenCard";
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import { coinToTokenWithValue, filterSupportedTokens } from "lib/utils";
 
 interface CoinsComponentProps {

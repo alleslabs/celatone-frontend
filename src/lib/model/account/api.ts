@@ -1,5 +1,5 @@
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import { useDelegationData } from "lib/services/staking";
 import type {
   BechAddr,

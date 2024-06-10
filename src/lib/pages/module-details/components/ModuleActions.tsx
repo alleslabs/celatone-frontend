@@ -2,6 +2,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
 import { TabIndex } from "../types";
+import { useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import type { Option } from "lib/types";
@@ -15,6 +16,7 @@ interface ActionInfo {
   count: Option<number>;
   onClick: MouseEventHandler<HTMLDivElement>;
   disabled: boolean;
+  hidden: Option<boolean>;
 }
 
 interface ModuleActionsProps {
@@ -30,6 +32,8 @@ export const ModuleActions = ({
   allTxsCount,
   onSelectAction,
 }: ModuleActionsProps) => {
+  const isFulTier = useTierConfig() === "full";
+
   const actionList: ActionInfo[] = [
     {
       icon: "query" as IconKeys,
@@ -38,6 +42,7 @@ export const ModuleActions = ({
       count: viewFns,
       onClick: () => onSelectAction(TabIndex.Function, FunctionTypeTabs.VIEW),
       disabled: viewFns === 0,
+      hidden: false,
     },
     {
       icon: "execute" as IconKeys,
@@ -47,6 +52,7 @@ export const ModuleActions = ({
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabs.EXECUTE),
       disabled: executeFns === 0,
+      hidden: false,
     },
     {
       icon: "list" as IconKeys,
@@ -55,6 +61,7 @@ export const ModuleActions = ({
       count: allTxsCount,
       onClick: () => onSelectAction(TabIndex.TxsHistories),
       disabled: allTxsCount === 0,
+      hidden: !isFulTier,
     },
   ];
 
@@ -74,6 +81,7 @@ export const ModuleActions = ({
           w="full"
           alignItems="center"
           justifyContent="space-between"
+          display={item.hidden ? "none" : "flex"}
           {...(item.disabled
             ? {
                 bg: "gray.900",

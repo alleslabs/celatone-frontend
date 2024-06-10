@@ -8,7 +8,7 @@ import {
   ErrorFetching,
 } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
-import { useModulesByAddress } from "lib/services/move/moduleService";
+import { useModulesByAddress } from "lib/services/move/module";
 import type { ModuleInfo, Option } from "lib/types";
 
 export const MyPublishedModulesTable = () => {
@@ -19,7 +19,7 @@ export const MyPublishedModulesTable = () => {
     data,
     isFetching: isModulesLoading,
     error,
-  } = useModulesByAddress(address);
+  } = useModulesByAddress({ address });
 
   const filteredPublishedModules: Option<ModuleInfo[]> = useMemo(() => {
     if (!keyword) return data?.items;

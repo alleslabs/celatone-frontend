@@ -1,4 +1,4 @@
-import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
+import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { UpgradePolicy } from "lib/types";
 
