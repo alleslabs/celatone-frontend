@@ -23,6 +23,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -111,6 +112,9 @@ const CollectionDetailsBody = ({
 
   return (
     <>
+      <CelatoneSeo
+        pageName={`Collection – ${name.length > 20 ? displayCollectionName : name}`}
+      />
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },

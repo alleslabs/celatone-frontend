@@ -6,6 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useTierConfig, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { RecentCodesTableFull } from "./components/RecentCodesTableFull";
 import { RecentCodesTableLite } from "./components/RecentCodesTableLite";
@@ -21,6 +22,7 @@ const RecentCodes = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Codes" />
       <PageHeader
         title="Codes"
         subtitle="This page displays all codes on this network sorted by recency"

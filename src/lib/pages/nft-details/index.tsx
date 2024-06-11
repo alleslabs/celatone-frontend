@@ -20,6 +20,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -78,6 +79,7 @@ const NftDetailsBody = ({
 
   return (
     <>
+      <CelatoneSeo pageName={tokenId ? `NFT – ${tokenId}` : "NFT Detail"} />
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },

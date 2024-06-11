@@ -7,6 +7,7 @@ import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useProposalVotesInfo } from "lib/services/proposal";
@@ -55,6 +56,11 @@ const ProposalDetailsBody = ({
 
   return (
     <>
+      <CelatoneSeo
+        pageName={
+          data.info.id ? `Proposal #${data.info.id}` : "Proposal Detail"
+        }
+      />
       <ProposalTop proposalData={data.info} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}

@@ -8,6 +8,7 @@ import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -17,6 +18,7 @@ import {
   useModuleTableCounts,
   useVerifyModule,
 } from "lib/services/move/module";
+import { truncate } from "lib/utils";
 
 import {
   FunctionTypeTabs,
@@ -118,6 +120,13 @@ const ModuleDetailsBody = ({
 
   return (
     <>
+      <CelatoneSeo
+        pageName={
+          data.moduleName
+            ? `${truncate(data.address)}::${data.moduleName} (Module)`
+            : "Module Detail"
+        }
+      />
       <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
       <Tabs
         index={tabIndex.indexOf(currentTab)}

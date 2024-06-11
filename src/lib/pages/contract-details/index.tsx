@@ -26,11 +26,12 @@ import { CustomIcon } from "lib/components/icon";
 import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBalances } from "lib/services/bank";
 import type { BechAddr32 } from "lib/types";
-import { jsonPrettify } from "lib/utils";
+import { jsonPrettify, truncate } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
@@ -97,6 +98,7 @@ const ContractDetailsBody = observer(
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
     return (
       <>
+        <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />
         <ContractTop
           contractAddress={contractAddress}
           projectInfo={projectInfo}

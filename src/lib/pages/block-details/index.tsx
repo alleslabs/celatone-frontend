@@ -5,6 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBlockData } from "lib/services/block";
@@ -25,6 +26,7 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
   if (!blockData) return <InvalidBlock />;
   return (
     <>
+      <CelatoneSeo pageName={`Block #${blockData.height.toString()}`} />
       <Breadcrumb
         items={[
           { text: "Blocks", href: "/blocks" },
