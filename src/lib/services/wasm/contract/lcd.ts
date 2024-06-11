@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import type {
+  ContractCw2Info,
   MigrationHistoriesResponseItemLcd,
   MigrationHistoriesResponseLcd,
 } from "lib/services/types";
@@ -19,7 +20,7 @@ import type {
   Nullable,
   Option,
 } from "lib/types";
-import { encode, libEncode, parseWithError } from "lib/utils";
+import { encode, libDecode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryLcd = (
   endpoint: string,
@@ -150,3 +151,13 @@ export const getInstantiatedContractsByAddressLcd = (
         label: "",
       }));
     });
+
+export const getContractCw2InfoLcd = async (
+  endpoint: string,
+  contractAddress: BechAddr32
+) =>
+  axios
+    .get(
+      `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
+    )
+    .then(({ data }) => JSON.parse(libDecode(data.data)) as ContractCw2Info);

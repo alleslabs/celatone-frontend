@@ -35,6 +35,7 @@ export interface ContractMigrationHistory {
   uploader: Nullable<BechAddr>;
   cw2Contract: Nullable<string>;
   cw2Version: Nullable<string>;
+  msg: string;
 }
 
 export enum ContractInteractionTabs {

@@ -1,16 +1,61 @@
+import type { UseQueryResult } from "@tanstack/react-query";
+
+import { useTierConfig } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
+import type { ContractData } from "lib/services/types";
+import { useCodeLcd } from "lib/services/wasm/code";
 import {
+  useContractCw2Info,
   useContractData,
   useMigrationHistoriesByContractAddress,
   useMigrationHistoriesByContractAddressLcd,
 } from "lib/services/wasm/contract";
 import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
+const useContractDataLcd = (
+  contractData: UseQueryResult<ContractData>,
+  contractAddress: BechAddr32
+) => {
+  const isFullTier = useTierConfig() === "full";
+
+  const { data: code } = useCodeLcd(
+    Number(contractData.data?.contract.codeId),
+    {
+      enabled: !isFullTier && !!contractData.data?.contract.codeId,
+    }
+  );
+  const { data: cw2Info } = useContractCw2Info(contractAddress, !isFullTier);
+  const { data: migrationHistories } =
+    useMigrationHistoriesByContractAddressLcd(contractAddress, !isFullTier);
+
+  return !isFullTier && contractData.data
+    ? {
+        ...contractData,
+        data: {
+          ...contractData.data,
+          contract: {
+            ...contractData.data.contract,
+            codeHash: code?.hash ?? "",
+            cw2Contract: cw2Info?.contract ?? null,
+            cw2Version: cw2Info?.version ?? null,
+            initMsg:
+              migrationHistories?.entries.find(
+                (history) =>
+                  history.remark?.operation ===
+                  "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT"
+              )?.msg ?? "",
+          },
+        },
+      }
+    : contractData;
+};
+
 export const useContractDataWithLocalInfos = (contractAddress: BechAddr32) => {
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
 
-  const result = useContractData(contractAddress);
+  let result = useContractData(contractAddress);
+  result = useContractDataLcd(result, contractAddress);
 
   const codeLocalInfo = result.data?.contract
     ? getCodeLocalInfo(Number(result.data.contract.codeId))
