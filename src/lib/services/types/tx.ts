@@ -7,18 +7,22 @@ import type {
 } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
-import type { Message, Transaction } from "lib/types";
+import type {
+  Message,
+  Transaction,
+  TransactionWithSignerPubkey,
+} from "lib/types";
 import {
   ActionMsgType,
   MsgFurtherAction,
   zBechAddr,
   zCoin,
   zMessageResponse,
+  zPubkey,
   zUint8Schema,
   zUtcDate,
 } from "lib/types";
 import {
-  extractSender,
   extractTxLogs,
   getActionMsgType,
   getMsgFurtherAction,
@@ -53,10 +57,7 @@ zModeInfo = z.object({
 
 const zSignerInfo = z
   .object({
-    public_key: z.object({
-      "@type": z.string(),
-      key: z.string(),
-    }),
+    public_key: zPubkey,
     mode_info: zModeInfo.optional(),
     sequence: z.string(),
   })
@@ -145,11 +146,9 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
-  (val) => {
+export const zTxsResponseItemFromLcd =
+  zTxResponse.transform<TransactionWithSignerPubkey>((val) => {
     const txBody = val.tx.body;
-    const message = txBody.messages[0];
-    const sender = extractSender(message);
 
     const logs = extractTxLogs(val);
 
@@ -161,7 +160,7 @@ export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
     return {
       hash: val.txhash,
       messages,
-      sender,
+      signerPubkey: val.tx.authInfo.signerInfos[0].publicKey,
       isSigner: true,
       height: Number(val.height),
       created: val.timestamp,
@@ -173,8 +172,7 @@ export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
       isOpinit: false,
       isInstantiate: false,
     };
-  }
-);
+  });
 
 export const zTxsByAddressResponseLcd = z
   .object({

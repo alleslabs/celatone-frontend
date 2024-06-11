@@ -4,8 +4,7 @@ import type {
   Block,
   BlockData,
   Message,
-  Pagination,
-  Transaction,
+  TransactionWithSignerPubkey,
   Validator,
 } from "lib/types";
 import {
@@ -15,12 +14,7 @@ import {
   zUtcDate,
   zValidatorAddr,
 } from "lib/types";
-import {
-  createTxHash,
-  extractSender,
-  parseTxHash,
-  snakeToCamel,
-} from "lib/utils";
+import { createTxHash, parseTxHash, snakeToCamel } from "lib/utils";
 
 import { zTx } from "./tx";
 
@@ -105,8 +99,7 @@ export const zBlockDataResponseLcd = zBlockLcd
   .transform<{
     block: BlockData;
     rawProposerConsensusAddress: string;
-    transactions: Transaction[];
-    pagination: Pagination;
+    transactions: TransactionWithSignerPubkey[];
   }>((val) => {
     // 1. Create Tx Hashes
     const txHashes = val.block.data.txs.map(createTxHash);
@@ -114,8 +107,6 @@ export const zBlockDataResponseLcd = zBlockLcd
     // 2. Parse Tx to Transaction
     const transactions = val.txs.map((tx, idx) => {
       const txBody = tx.body;
-      const message = txBody.messages[0];
-      const sender = extractSender(message);
 
       const messages = txBody.messages.map<Message>((msg) => ({
         log: undefined,
@@ -125,7 +116,7 @@ export const zBlockDataResponseLcd = zBlockLcd
       return {
         hash: txHashes[idx],
         messages,
-        sender,
+        signerPubkey: tx.authInfo.signerInfos[0].publicKey,
         isSigner: true,
         height: val.block.header.height,
         created: val.block.header.time,
@@ -153,6 +144,5 @@ export const zBlockDataResponseLcd = zBlockLcd
       block,
       rawProposerConsensusAddress: val.block.header.proposerAddress,
       transactions,
-      pagination: val.pagination,
     };
   });

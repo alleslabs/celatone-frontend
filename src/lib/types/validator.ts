@@ -3,6 +3,7 @@ import { z } from "zod";
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import { formatUrl } from "lib/utils/formatter/url";
 
+import { zPubkey } from "./account";
 import { zBechAddr20, zConsensusAddr, zValidatorAddr } from "./addrs";
 import { zBig } from "./big";
 import type { Ratio } from "./currency";
@@ -43,10 +44,7 @@ export const zValidatorData = z
   }));
 export type ValidatorData = z.infer<typeof zValidatorData>;
 
-export const zConsensusPubkey = z.object({
-  "@type": z.string(),
-  key: z.string(),
-});
+export const zConsensusPubkey = zPubkey;
 export type ConsensusPubkey = z.infer<typeof zConsensusPubkey>;
 
 export enum BlockVote {

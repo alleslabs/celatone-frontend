@@ -8,8 +8,11 @@ import {
   useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
-import type { BlockData } from "lib/types";
-import { convertRawConsensusAddrToConsensusAddr } from "lib/utils";
+import type { BlockData, ConsensusAddr, Transaction } from "lib/types";
+import {
+  convertAccountPubkeyToAccountAddress,
+  convertRawConsensusAddrToConsensusAddr,
+} from "lib/utils";
 
 import { getBlockData, getBlocks } from "./api";
 import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
@@ -47,19 +50,25 @@ export const useBlockDataLcd = (height: number) => {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
 
-  return useQuery(
+  return useQuery<{
+    block: BlockData;
+    proposerConsensusAddress: ConsensusAddr;
+    transactions: Transaction[];
+  }>(
     [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, endpoint, height],
     async () => {
-      const { rawProposerConsensusAddress, ...rest } = await getBlockDataLcd(
-        endpoint,
-        height
-      );
+      const { rawProposerConsensusAddress, transactions, ...rest } =
+        await getBlockDataLcd(endpoint, height);
       return {
         ...rest,
-        proposerConsensusAddr: convertRawConsensusAddrToConsensusAddr(
+        proposerConsensusAddress: convertRawConsensusAddrToConsensusAddr(
           rawProposerConsensusAddress,
           prefix
         ),
+        transactions: transactions.map<Transaction>((tx) => ({
+          ...tx,
+          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        })),
       };
     },
     {

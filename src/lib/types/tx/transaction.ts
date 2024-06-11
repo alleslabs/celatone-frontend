@@ -1,7 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import { z } from "zod";
 
-import type { BechAddr, Option } from "lib/types";
+import type { BechAddr, Option, Pubkey } from "lib/types";
 
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
@@ -40,6 +40,10 @@ export interface Transaction {
   isInstantiate: boolean;
   isOpinit: boolean;
 }
+
+export type TransactionWithSignerPubkey = Omit<Transaction, "sender"> & {
+  signerPubkey: Pubkey;
+};
 
 /* Filter for INITIA */
 export interface InitiaTxFilters {

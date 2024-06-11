@@ -20,7 +20,7 @@ export const useBlockDataWithValidatorLcd = (
 
     const found = validators.find(
       (validator) =>
-        validator.consensusAddress === blockData.proposerConsensusAddr
+        validator.consensusAddress === blockData.proposerConsensusAddress
     );
 
     return found
