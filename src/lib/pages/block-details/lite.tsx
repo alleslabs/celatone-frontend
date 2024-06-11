@@ -1,6 +1,6 @@
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
-import { InvalidState } from "lib/components/state";
+import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useLatestBlockLcd } from "lib/services/block";
 
@@ -14,7 +14,15 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
 
   if (isLoading) return <Loading withBorder />;
   if (latestHeight && latestHeight > height && !data)
-    return <InvalidState title="This block is too old and pruned from LCD" />;
+    return (
+      <EmptyState
+        heading="This block is too old and has been pruned from LCD"
+        message="Due to the LCD pruning the old blocks, this block's information cannot be retrieved."
+        imageVariant="not-found"
+        textVariant="body2"
+        withBorder
+      />
+    );
   if (!data) return <InvalidBlock />;
   return (
     <>
