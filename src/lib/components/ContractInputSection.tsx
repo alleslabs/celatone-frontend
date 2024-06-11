@@ -88,7 +88,7 @@ export const ContractInputSection = ({
           onContractSelect(debouncedKeyword as BechAddr32);
           setIsChangeContract(false);
         }}
-        isDisabled={!!debouncedKeyword || !isPermissionAllowed}
+        isDisabled={!debouncedKeyword || !isPermissionAllowed}
       >
         Submit
       </Button>
