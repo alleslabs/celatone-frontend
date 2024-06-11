@@ -14,6 +14,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCTA } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
+import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
@@ -150,6 +151,7 @@ const Migrate = () => {
   if (isFetching) return <Loading withBorder={false} />;
   return (
     <>
+      <CelatoneSeo pageName="Migrate Contract" />
       <WasmPageContainer>
         {firstStep ? (
           <Box w="full" mb={6}>

@@ -11,6 +11,7 @@ import {
 } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useCodeLcd } from "lib/services/wasm/code";
@@ -123,6 +124,7 @@ const InteractContractBody = ({
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Query / Execute Contracts" />
       <Flex align="center" justify="space-between" w="full" mt={1} mb={8}>
         <Heading variant="h5" as="h5" alignSelf="flex-start">
           {isMobile ? "Query" : "Contract Interactions"}

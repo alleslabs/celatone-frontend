@@ -13,6 +13,7 @@ import { useCallback, useEffect } from "react";
 import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useCurrentChain,
   useGovConfig,
   useInternalNavigate,
   useMoveConfig,
@@ -25,6 +26,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -118,8 +120,18 @@ const AccountDetailsBody = ({
     [accountAddress, hexAddress, navigate, tabParam]
   );
 
+  const { address } = useCurrentChain();
+
+  let pageTitle = "Account Detail";
+  if (address === accountAddress) {
+    pageTitle = "Your Account Detail";
+  } else if (hexAddress === "0x1") {
+    pageTitle = "0x1 Page";
+  } else pageTitle = `Account - ${truncate(accountAddress)}`;
+
   return (
     <>
+      <CelatoneSeo pageName={pageTitle} />
       <Flex direction="column" mb={6}>
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb

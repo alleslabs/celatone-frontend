@@ -14,6 +14,7 @@ import {
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { MyStoredCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
@@ -67,6 +68,7 @@ const StoredCodes = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="My Stored Codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex align="center">
           <Heading

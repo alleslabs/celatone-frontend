@@ -7,6 +7,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -63,6 +64,7 @@ export const PastTxsLite = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Past Transactions" />
       <Flex justifyContent="space-between" alignItems="center">
         <Heading
           variant="h5"

@@ -20,6 +20,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
@@ -169,6 +170,7 @@ const UpdateAdmin = () => {
 
   return (
     <WasmPageContainer>
+      <CelatoneSeo pageName="Update Admin" />
       <Flex direction="column" alignItems="center" mb={6}>
         <Heading as="h5" variant="h5">
           Update Admin

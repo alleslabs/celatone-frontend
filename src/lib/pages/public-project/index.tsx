@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import { usePublicProjectConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { AllProject } from "./components/AllProject";
 
@@ -18,6 +19,7 @@ export const AllPublicProjectsPage = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Public Projects" />
       <Flex direction="column" alignItems="center" gap={8}>
         <Flex justifyContent="space-between" w="full" alignItems="center">
           <Heading
