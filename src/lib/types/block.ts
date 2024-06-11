@@ -7,7 +7,6 @@ export interface Block {
   timestamp: Date;
   txCount: number;
   proposer: Nullable<Validator>;
-  proposerAddress?: string; // Base64
 }
 
 export interface BlockData extends Omit<Block, "txCount"> {

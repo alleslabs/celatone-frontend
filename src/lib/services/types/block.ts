@@ -100,6 +100,7 @@ export const zBlockDataResponseLcd = zBlockLcd
   .transform(snakeToCamel)
   .transform<{
     block: BlockData;
+    rawProposerConsensusAddress: string;
     transactions: Transaction[];
     pagination: Pagination;
   }>((val) => {
@@ -143,16 +144,14 @@ export const zBlockDataResponseLcd = zBlockLcd
       height: val.block.header.height,
       timestamp: val.block.header.time,
       proposer: null, // NOTE: Will be filled in the next step
-      proposerAddress: val.block.header.proposerAddress,
       gasLimit: undefined,
       gasUsed: undefined,
     };
 
     return {
       block,
+      rawProposerConsensusAddress: val.block.header.proposerAddress,
       transactions,
       pagination: val.pagination,
     };
   });
-
-export type BlockDataResponseLcd = z.infer<typeof zBlockDataResponseLcd>;

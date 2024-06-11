@@ -4,10 +4,12 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCurrentChain,
   useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
 import type { BlockData } from "lib/types";
+import { convertRawConsensusAddrToConsensusAddr } from "lib/utils";
 
 import { getBlockData, getBlocks } from "./api";
 import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
@@ -41,10 +43,25 @@ export const useBlockData = (height: number, enabled = true) => {
 
 export const useBlockDataLcd = (height: number) => {
   const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, endpoint, height],
-    async () => getBlockDataLcd(endpoint, height),
+    async () => {
+      const { rawProposerConsensusAddress, ...rest } = await getBlockDataLcd(
+        endpoint,
+        height
+      );
+      return {
+        ...rest,
+        proposerConsensusAddr: convertRawConsensusAddrToConsensusAddr(
+          rawProposerConsensusAddress,
+          prefix
+        ),
+      };
+    },
     {
       retry: false,
       refetchOnWindowFocus: false,
