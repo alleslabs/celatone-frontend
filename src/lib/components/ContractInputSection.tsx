@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -34,7 +34,7 @@ export const ContractInputSection = ({
   const { contractAddress } = watch();
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
 
-  const { data, isFetching } = useContractLcd(debouncedKeyword as BechAddr32, {
+  const { data, isFetching } = useContractData(debouncedKeyword as BechAddr32, {
     enabled: !!debouncedKeyword,
   });
   const isPermissionAllowed = data?.contract.admin === address;

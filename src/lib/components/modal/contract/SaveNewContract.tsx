@@ -13,7 +13,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32, LVPair } from "lib/types";
 import {
   formatSlugName,
@@ -88,7 +88,7 @@ export function SaveNewContractModal({
     });
   };
 
-  const { refetch } = useContractLcd(contractAddressState as BechAddr32, {
+  const { refetch } = useContractData(contractAddressState as BechAddr32, {
     onSuccess: (data) => {
       const contractLocalInfo = getContractLocalInfo(contractAddressState);
       reset({

@@ -2,6 +2,7 @@ import { useCodeStore, useContractStore } from "lib/providers/store";
 import {
   useContractData,
   useMigrationHistoriesByContractAddress,
+  useMigrationHistoriesByContractAddressLcd,
 } from "lib/services/wasm/contract";
 import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
@@ -43,6 +44,23 @@ export const useMigrationHistories = (
             codeName: getCodeLocalInfo(migration.codeId)?.name,
           })),
         }
+      : undefined,
+    ...res,
+  };
+};
+
+export const useMigrationHistoriesLcd = (contractAddress: BechAddr32) => {
+  const { data, ...res } =
+    useMigrationHistoriesByContractAddressLcd(contractAddress);
+
+  const { getCodeLocalInfo } = useCodeStore();
+
+  return {
+    data: data
+      ? data.entries.map((migration) => ({
+          ...migration,
+          codeName: getCodeLocalInfo(migration.codeId)?.name,
+        }))
       : undefined,
     ...res,
   };
