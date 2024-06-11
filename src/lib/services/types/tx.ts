@@ -187,6 +187,7 @@ export const zTxsByAddressResponseLcd = z
     items: val.tx_responses,
     total: val.total,
   }));
+export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
 
 export const zTxsByHashResponseLcd = z
   .object({
