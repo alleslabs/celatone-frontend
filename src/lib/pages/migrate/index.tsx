@@ -205,7 +205,6 @@ const Migrate = () => {
             leftIcon: <CustomIcon name="chevron-left" />,
             onClick: () => {
               handleBack();
-              router.back();
             },
           }}
           actionButton={{
