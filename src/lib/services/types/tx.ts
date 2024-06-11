@@ -7,7 +7,7 @@ import type {
 } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
-import type { BechAddr, Message, Transaction } from "lib/types";
+import type { Message, Transaction } from "lib/types";
 import {
   ActionMsgType,
   MsgFurtherAction,
@@ -18,6 +18,7 @@ import {
   zUtcDate,
 } from "lib/types";
 import {
+  extractSender,
   extractTxLogs,
   getActionMsgType,
   getMsgFurtherAction,
@@ -148,10 +149,7 @@ export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
   (val) => {
     const txBody = val.tx.body;
     const message = txBody.messages[0];
-    const sender = (message?.sender ||
-      message?.signer ||
-      message?.fromAddress ||
-      "") as BechAddr;
+    const sender = extractSender(message);
 
     const logs = extractTxLogs(val);
 

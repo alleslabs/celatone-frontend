@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import type {
-  BechAddr,
   Block,
   BlockData,
   Message,
@@ -16,7 +15,12 @@ import {
   zUtcDate,
   zValidatorAddr,
 } from "lib/types";
-import { createTxHash, parseTxHash, snakeToCamel } from "lib/utils";
+import {
+  createTxHash,
+  extractSender,
+  parseTxHash,
+  snakeToCamel,
+} from "lib/utils";
 
 import { zTx } from "./tx";
 
@@ -111,10 +115,7 @@ export const zBlockDataResponseLcd = zBlockLcd
     const transactions = val.txs.map((tx, idx) => {
       const txBody = tx.body;
       const message = txBody.messages[0];
-      const sender = (message?.sender ||
-        message?.signer ||
-        message?.fromAddress ||
-        "") as BechAddr;
+      const sender = extractSender(message);
 
       const messages = txBody.messages.map<Message>((msg) => ({
         log: undefined,
