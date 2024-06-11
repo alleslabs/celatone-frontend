@@ -24,7 +24,7 @@ export const DepositorsTable = ({
 
   if (isPruned)
     return (
-      <EmptyState message="The proposal has ended, and the depositor list is already pruned." />
+      <EmptyState message="The proposal has ended, and the depositor list is already pruned from the LCD." />
     );
 
   if (depositors.length === 0)
