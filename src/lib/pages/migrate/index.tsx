@@ -18,8 +18,8 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParams } from "lib/services/wasm/code";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -39,7 +39,7 @@ const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data: uploadAccessParams, isFetching } = useUploadAccessParams();
+  const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
   const {
     proceed,
     formData,
@@ -83,7 +83,7 @@ const Migrate = () => {
     [codeIdParam, firstStep, navigate]
   );
 
-  useContractLcd(contractAddress, {
+  useContractData(contractAddress, {
     onSuccess: (data) => {
       if (data.contract.admin === address) {
         setValue("admin", data.contract.admin);

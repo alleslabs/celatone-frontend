@@ -135,11 +135,9 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                     {!isMobile && <DotSeparator />}
                   </Flex>
                 )}
-                {proposalData.createdTimestamp && (
-                  <Text variant="body2" color="text.dark">
-                    {formatUTC(proposalData.createdTimestamp)}
-                  </Text>
-                )}
+                <Text variant="body2" color="text.dark">
+                  {formatUTC(proposalData.submitTime)}
+                </Text>
               </Flex>
             </Flex>
           </Flex>

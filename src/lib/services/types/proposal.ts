@@ -21,57 +21,9 @@ import type {
   ProposalValidatorVote,
   ProposalVote,
   ProposalVotesInfo,
-  Token,
-  U,
 } from "lib/types";
 import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
-
-import type { UploadAccessParams } from "./wasm";
-
-export interface MinDeposit {
-  amount: U<Token<Big>>;
-  denom: string;
-  formattedAmount: Token;
-  formattedDenom: string;
-  formattedToken: string;
-  precision: number;
-}
-
-export const zDepositParamsLcd = z
-  .object({
-    min_deposit: zCoin.array(),
-    max_deposit_period: z.string(),
-    min_expedited_deposit: zCoin.array(),
-    min_initial_deposit_ratio: z.string(),
-  })
-  .transform(snakeToCamel);
-type DepositParamsLcd = z.infer<typeof zDepositParamsLcd>;
-
-export interface DepositParams extends Omit<DepositParamsLcd, "minDeposit"> {
-  minDeposit: MinDeposit;
-  minInitialDeposit: Token;
-}
-
-export const zVotingParamsLcd = z
-  .object({
-    voting_period: z.string(),
-    proposal_voting_periods: z
-      .object({
-        proposal_type: z.string(),
-        voting_period: z.string(),
-      })
-      .array(),
-    expedited_voting_period: z.string(),
-  })
-  .transform(snakeToCamel);
-type VotingParamsLcd = z.infer<typeof zVotingParamsLcd>;
-
-export interface GovParams {
-  depositParams: DepositParams;
-  uploadAccess: UploadAccessParams;
-  votingParams: VotingParamsLcd;
-}
 
 export const zProposalParamsResponse = z
   .object({
@@ -92,6 +44,10 @@ export const zProposalParamsResponse = z
     emergency_tally_interval: z.string().optional(),
   })
   .transform<ProposalParams<Coin>>(snakeToCamel);
+
+export const zProposalParamsResponseLcd = z.object({
+  param: zProposalParamsResponse,
+});
 
 export const zProposal = z.object({
   deposit_end_time: zUtcDate,
@@ -223,7 +179,7 @@ export type ProposalAnswerCountsResponse = z.infer<
   typeof zProposalAnswerCountsResponse
 >;
 
-export const zProposalsResponseItemLcd = z
+export const zProposalDataResponseLcd = z
   .object({
     id: z.coerce.number(),
     messages: z.array(zMessageResponse).nullable(),
@@ -245,7 +201,7 @@ export const zProposalsResponseItemLcd = z
     proposer: zBechAddr,
     expedited: z.boolean().optional().default(false),
   })
-  .transform<Proposal>((val) => ({
+  .transform<ProposalData<Coin>>((val) => ({
     ...snakeToCamel(val),
     status: val.status
       .replace("PROPOSAL_STATUS_", "")
@@ -255,13 +211,20 @@ export const zProposalsResponseItemLcd = z
     resolvedHeight: null,
     types: val.messages?.map((msg) => msg["@type"]) ?? [],
     isExpedited: val.expedited,
+    failedReason: "",
+    createdHeight: null,
+    createdTimestamp: null,
+    createdTxHash: null,
+    description: val.summary,
+    proposalDeposits: [],
+    resolvedTimestamp: null,
+    version: "v1",
+    votingTime: null,
   }));
-export type ProposalsResponseItemLcd = z.infer<
-  typeof zProposalsResponseItemLcd
->;
+export type ProposalDataResponseLcd = z.infer<typeof zProposalDataResponseLcd>;
 
 export const zProposalsResponseLcd = z.object({
-  proposals: z.array(zProposalsResponseItemLcd),
+  proposals: z.array(zProposalDataResponseLcd),
   pagination: zPagination,
 });
 export type ProposalsResponseLcd = z.infer<typeof zProposalsResponseLcd>;

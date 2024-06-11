@@ -96,6 +96,7 @@ const ContractDetailsBody = observer(
     if (contractData.contract === null) return <InvalidContract />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
+
     return (
       <>
         <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />

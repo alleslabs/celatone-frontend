@@ -3,21 +3,25 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useGovConfig, useInternalNavigate } from "lib/app-provider";
+import { useGovConfig, useInternalNavigate, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { ErrorFetching, InvalidState } from "lib/components/state";
+import { ErrorFetching } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useDerivedProposalParams } from "lib/model/proposal";
 import { useProposalVotesInfo } from "lib/services/proposal";
 
-import { ProposalOverview, ProposalTop, VoteDetails } from "./components";
-import { useDerivedProposalData, useDerivedProposalParams } from "./data";
+import {
+  InvalidProposal,
+  ProposalOverview,
+  ProposalTop,
+  VoteDetails,
+} from "./components";
+import { useDerivedProposalData } from "./data";
 import type { ProposalDetailsQueryParams } from "./types";
 import { TabIndex, zProposalDetailsQueryParams } from "./types";
-
-const InvalidProposal = () => <InvalidState title="Proposal does not exist" />;
 
 const ProposalDetailsBody = ({
   proposalId,
@@ -25,12 +29,13 @@ const ProposalDetailsBody = ({
 }: ProposalDetailsQueryParams) => {
   useGovConfig({ shouldRedirect: true });
 
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useDerivedProposalData(proposalId);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useProposalVotesInfo(proposalId);
   const { data: params, isLoading: isParamsLoading } =
-    useDerivedProposalParams();
+    useDerivedProposalParams(!isMobile);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {

@@ -74,8 +74,8 @@ export const PastTxsFull = () => {
     debouncedSearch,
     pastTxsState.isSigner,
     pastTxsState.filters,
-    offset,
-    pageSize
+    pageSize,
+    offset
   );
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {

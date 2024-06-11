@@ -25,7 +25,7 @@ import { useProposalData } from "./proposal";
 import { useTxData } from "./tx";
 import { useValidatorData } from "./validator";
 import { useCodeLcd } from "./wasm/code";
-import { useContractLcd } from "./wasm/contract";
+import { useContractData } from "./wasm/contract";
 
 export type SearchResultType =
   | "Code ID"
@@ -80,7 +80,7 @@ export const useSearchHandler = (
   const addressType = getAddressType(debouncedKeyword);
 
   // Contract
-  const { data: contractData, isFetching: contractFetching } = useContractLcd(
+  const { data: contractData, isFetching: contractFetching } = useContractData(
     zBechAddr32.parse(debouncedKeyword),
     {
       enabled: isWasm && validateContractAddress(debouncedKeyword) === null,

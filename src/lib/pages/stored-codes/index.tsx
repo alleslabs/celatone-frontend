@@ -19,7 +19,7 @@ import { MyStoredCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
-import { useUploadAccessParams } from "lib/services/wasm/code";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 
 import { ProposalButton } from "./components/ProposalButton";
@@ -50,7 +50,8 @@ const StoredCodes = observer(() => {
     storedCodes: stored,
     isStoredCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
-  const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
+  const { data, isFetching: isUploadAccessFetching } =
+    useUploadAccessParamsLcd();
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;

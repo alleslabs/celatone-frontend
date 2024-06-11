@@ -1,9 +1,10 @@
+import { useTierConfig } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxsByAddress } from "lib/services/tx";
+import { useTxsByAddress, useTxsByContractAddressLcd } from "lib/services/tx";
 import type { BechAddr32, Option } from "lib/types";
 
 interface TxsTableProps {
@@ -19,7 +20,10 @@ export const TxsTable = ({
   totalData,
   refetchCount,
 }: TxsTableProps) => {
+  const isFullTier = useTierConfig() === "full";
+
   const {
+    setTotalData,
     pagesQuantity,
     currentPage,
     setCurrentPage,
@@ -35,14 +39,21 @@ export const TxsTable = ({
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddress(
+  const resApi = useTxsByAddress(
     contractAddress,
     undefined,
     undefined,
     DEFAULT_TX_FILTERS,
+    pageSize,
     offset,
-    pageSize
+    { enabled: isFullTier }
   );
+  const resLcd = useTxsByContractAddressLcd(contractAddress, pageSize, offset, {
+    enabled: !isFullTier,
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+
+  const { data, isLoading, error } = isFullTier ? resApi : resLcd;
 
   return (
     <>
@@ -56,7 +67,11 @@ export const TxsTable = ({
             <EmptyState
               withBorder
               imageVariant="empty"
-              message="This contract does not have any transactions"
+              message={
+                isFullTier
+                  ? "This contract does not have any transactions."
+                  : "This contract does not have any transactions, or they are too old and have been pruned from the LCD."
+              }
             />
           )
         }
