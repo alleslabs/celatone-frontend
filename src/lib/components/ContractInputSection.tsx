@@ -37,20 +37,20 @@ export const ContractInputSection = ({
   const { data, isFetching } = useContractLcd(debouncedKeyword as BechAddr32, {
     enabled: !!debouncedKeyword,
   });
+  const isPermissionAllowed = data?.contract.admin === address;
 
   const handleInputStatus = (): FormStatus | undefined => {
     if (isFetching) return { state: "loading" };
     if (!data)
       return {
         state: "error",
-        message: "This contract address does not exist",
+        message: "Invalid contract address",
       };
-    if (data.contract.admin === address)
+    if (isPermissionAllowed)
       return {
         state: "success",
         message: "You have admin access to this contract",
       };
-
     return {
       state: "error",
       message: "Your wallet does not have admin access to this contract",
@@ -88,7 +88,7 @@ export const ContractInputSection = ({
           onContractSelect(debouncedKeyword as BechAddr32);
           setIsChangeContract(false);
         }}
-        isDisabled={isFetching || !data}
+        isDisabled={!!debouncedKeyword || !isPermissionAllowed}
       >
         Submit
       </Button>
@@ -139,6 +139,7 @@ export const ContractInputSection = ({
         leftIcon={<CustomIcon name="swap" boxSize="12px" />}
         onClick={() => {
           setValue("contractAddress", "");
+          setDebouncedKeyword("");
           setIsChangeContract(true);
         }}
       >
