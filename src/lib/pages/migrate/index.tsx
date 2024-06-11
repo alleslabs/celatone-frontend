@@ -203,9 +203,7 @@ const Migrate = () => {
         <FooterCTA
           cancelButton={{
             leftIcon: <CustomIcon name="chevron-left" />,
-            onClick: () => {
-              handleBack();
-            },
+            onClick: () => handleBack(),
           }}
           actionButton={{
             isDisabled: isDisabledProcess,
