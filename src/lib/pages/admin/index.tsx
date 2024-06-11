@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -194,10 +194,12 @@ const UpdateAdmin = () => {
           onContractSelect={(contract) => onContractPathChange(contract)}
         />
       ) : (
-        <ContractInputSection
-          contract={contractAddressParam}
-          onContractSelect={(contract) => onContractPathChange(contract)}
-        />
+        <Box w="full" mb={12}>
+          <ContractInputSection
+            contract={contractAddressParam}
+            onContractSelect={(contract) => onContractPathChange(contract)}
+          />
+        </Box>
       )}
       <TextInput
         variant="fixed-floating"
@@ -206,7 +208,6 @@ const UpdateAdmin = () => {
         value={adminAddress}
         setInputState={setAdminAddress}
         status={adminFormStatus}
-        mt={8}
       />
       <Flex
         fontSize="14px"
