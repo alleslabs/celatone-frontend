@@ -43,9 +43,8 @@ export const SingleMsg = ({
         {type} {text1}
       </Text>
       {tokens?.map((token: TokenWithValue, index: number) => (
-        <Flex>
+        <Flex key={token.denom}>
           <MsgToken
-            key={token.denom}
             token={token}
             // TODO: add `ampCopierSection` later
           />
