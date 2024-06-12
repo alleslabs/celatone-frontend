@@ -14,6 +14,7 @@ import { RelationChip } from "./RelationChip";
 interface TransactionsTableRowProps {
   transaction: Transaction;
   templateColumns: string;
+  showSuccess: boolean;
   showRelations: boolean;
   showTimestamp: boolean;
   showAction: boolean;
@@ -22,6 +23,7 @@ interface TransactionsTableRowProps {
 export const TransactionsTableRow = ({
   transaction,
   templateColumns,
+  showSuccess,
   showRelations,
   showTimestamp,
   showAction,
@@ -62,13 +64,15 @@ export const TransactionsTableRow = ({
             )}
           </>
         </TableRow>
-        <TableRow>
-          {transaction.success ? (
-            <CustomIcon name="check" color="success.main" />
-          ) : (
-            <CustomIcon name="close" color="error.main" />
-          )}
-        </TableRow>
+        {showSuccess && (
+          <TableRow>
+            {transaction.success ? (
+              <CustomIcon name="check" color="success.main" />
+            ) : (
+              <CustomIcon name="close" color="error.main" />
+            )}
+          </TableRow>
+        )}
         <TableRow>
           <ActionMessages transaction={transaction} />
         </TableRow>
@@ -85,14 +89,20 @@ export const TransactionsTableRow = ({
           />
         </TableRow>
         {showTimestamp && (
-          <TableRow>
-            <Flex direction="column" gap={1}>
-              <Text variant="body3">{formatUTC(transaction.created)}</Text>
-              <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(transaction.created)})`}
-              </Text>
-            </Flex>
-          </TableRow>
+          <>
+            {transaction.created ? (
+              <TableRow>
+                <Flex direction="column" gap={1}>
+                  <Text variant="body3">{formatUTC(transaction.created)}</Text>
+                  <Text variant="body3" color="text.dark">
+                    {`(${dateFromNow(transaction.created)})`}
+                  </Text>
+                </Flex>
+              </TableRow>
+            ) : (
+              <TableRow>N/A</TableRow>
+            )}
+          </>
         )}
         {showAction && (
           <TableRow>
