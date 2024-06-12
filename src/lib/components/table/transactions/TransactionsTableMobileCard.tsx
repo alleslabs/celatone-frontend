@@ -13,11 +13,13 @@ import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableMobileCardProps {
   transaction: Transaction;
+  showSuccess: boolean;
   showRelations: boolean;
   showTimestamp: boolean;
 }
 export const TransactionsTableMobileCard = ({
   transaction,
+  showSuccess,
   showRelations,
   showTimestamp,
 }: TransactionsTableMobileCardProps) => {
@@ -33,10 +35,14 @@ export const TransactionsTableMobileCard = ({
       topContent={
         <>
           <Flex align="center" gap={2}>
-            {transaction.success ? (
-              <CustomIcon name="check" color="success.main" />
-            ) : (
-              <CustomIcon name="close" color="error.main" />
+            {showSuccess && (
+              <>
+                {transaction.success ? (
+                  <CustomIcon name="check" color="success.main" />
+                ) : (
+                  <CustomIcon name="close" color="error.main" />
+                )}
+              </>
             )}
             <ExplorerLink
               value={transaction.hash.toLocaleUpperCase()}

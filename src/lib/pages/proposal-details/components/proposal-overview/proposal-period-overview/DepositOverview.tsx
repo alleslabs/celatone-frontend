@@ -17,6 +17,7 @@ const DepositOverviewBody = ({
   proposalData,
   params,
   isLoading,
+  isDepositsLoading,
 }: Omit<ProposalOverviewProps, "votesInfo">) => {
   const navigate = useInternalNavigate();
 
@@ -45,11 +46,13 @@ const DepositOverviewBody = ({
         <DepositBar
           deposit={proposalData.totalDeposit}
           minDeposit={minDeposit}
+          isDepositOrVoting
           isCompact
         />
       )}
       <DepositList
         proposalDeposits={proposalData.proposalDeposits.slice(0, 5)}
+        isDepositsLoading={isDepositsLoading}
       />
       {proposalData.proposalDeposits.length > 0 && (
         <Button

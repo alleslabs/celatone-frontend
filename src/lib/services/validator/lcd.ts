@@ -6,18 +6,21 @@ import {
   getEpochProvisionsLcd,
   getMintParamsLcd,
 } from "../staking/lcd";
-import type { ValidatorDelegatorsResponse } from "lib/services/types";
+import type {
+  ValidatorDelegatorsResponse,
+  ValidatorInfoLcd,
+} from "lib/services/types";
 import {
   zValidatorDelegatorsResponse,
   zValidatorResponseLcd,
   zValidatorsResponseLcd,
 } from "lib/services/types";
 import { big } from "lib/types";
-import type { Nullable, ValidatorAddr, ValidatorData } from "lib/types";
+import type { Nullable, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getValidatorsLcd = async (endpoint: string) => {
-  const result: ValidatorData[] = [];
+  const result: ValidatorInfoLcd[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
     const res = await axios

@@ -1,7 +1,7 @@
 import router from "next/router";
 
 import type { GetAddressTypeByLengthFn } from "lib/app-provider";
-import { useGetAddressTypeByLength } from "lib/app-provider";
+import { useGetAddressTypeByLength, useTierConfig } from "lib/app-provider";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/providers/store";
@@ -55,6 +55,7 @@ const instantiateSingleMsgProps = (
   isInstantiate2: boolean,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
+  // TODO: need to handle undefined case
   const detail = messages[0].detail as DetailInstantiate;
   // TODO - revisit, instantiate detail response when query from contract transaction table doesn't contain contract addr
   const contractAddress =
@@ -598,10 +599,15 @@ export const useSingleActionMsgProps = (
   messages: Message[],
   singleMsg: Option<boolean>
 ): SingleMsgProps => {
+  const isFullTier = useTierConfig() === "full";
   const { getContractLocalInfo } = useContractStore();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
   const getAddressTypeByLength = useGetAddressTypeByLength();
+
+  // HACK: to prevent the error when message.detail is undefined
+  // TODO: revist and support custom message detail on lite tier later
+  if (!isFullTier) return otherMessageSingleMsgProps(isSuccess, messages, type);
 
   switch (type) {
     case "MsgExecuteContract":

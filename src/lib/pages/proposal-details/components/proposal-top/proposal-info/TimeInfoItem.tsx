@@ -51,14 +51,12 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
         <>
           <InfoItem label="Deposit Start">
             <Text variant="body2" color="text.dark">
-              {data.submitTime ? `${formatUTC(data.submitTime)}` : "N/A"}
+              {formatUTC(data.submitTime)}
             </Text>
           </InfoItem>
           <InfoItem label="Deposit End">
             <Text variant="body2" color="text.dark">
-              {data.depositEndTime
-                ? `${formatUTC(data.depositEndTime)}`
-                : "N/A"}
+              {formatUTC(data.depositEndTime)}
             </Text>
           </InfoItem>
         </>

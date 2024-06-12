@@ -29,6 +29,7 @@ import type {
   ValidatorAddr,
   ValidatorData,
 } from "lib/types";
+import { convertConsensusPubkeyToConsensusAddr } from "lib/utils";
 
 import {
   getHistoricalPowers,
@@ -83,10 +84,22 @@ export const useValidators = (
 
 export const useValidatorsLcd = (enabled = true) => {
   const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
 
   return useQuery<ValidatorData[]>(
     [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
-    async () => getValidatorsLcd(endpoint),
+    async () => {
+      const res = await getValidatorsLcd(endpoint);
+      return res.map((val) => ({
+        ...val,
+        consensusAddress: convertConsensusPubkeyToConsensusAddr(
+          val.consensusPubkey,
+          prefix
+        ),
+      }));
+    },
     {
       enabled,
       retry: 1,
@@ -117,10 +130,22 @@ export const useValidatorDataLcd = (
   enabled = true
 ) => {
   const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
 
   return useQuery<ValidatorData>(
     [CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD, endpoint, validatorAddr],
-    async () => getValidatorDataLcd(endpoint, validatorAddr),
+    async () => {
+      const res = await getValidatorDataLcd(endpoint, validatorAddr);
+      return {
+        ...res,
+        consensusAddress: convertConsensusPubkeyToConsensusAddr(
+          res.consensusPubkey,
+          prefix
+        ),
+      };
+    },
     {
       enabled: enabled && Boolean(validatorAddr),
       retry: 1,
