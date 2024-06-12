@@ -1,8 +1,9 @@
 import { Button, Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
+import { useDebounce } from "lib/hooks";
 import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { truncate } from "lib/utils";
@@ -32,15 +33,18 @@ export const ContractInputSection = ({
     },
   });
   const { contractAddress } = watch();
-  const [debouncedKeyword, setDebouncedKeyword] = useState("");
+  const debouncedKeyword = useDebounce(contractAddress);
 
   const { data, isFetching } = useContractData(debouncedKeyword as BechAddr32, {
     enabled: !!debouncedKeyword,
   });
-  const isPermissionAllowed = data?.contract.admin === address;
+  const isPermissionAllowed =
+    contractAddress && data?.contract.admin === address;
 
-  const handleInputStatus = (): FormStatus | undefined => {
+  const handleInputStatus = useMemo((): FormStatus | undefined => {
     if (isFetching) return { state: "loading" };
+    if (!contractAddress) return undefined;
+
     if (!data)
       return {
         state: "error",
@@ -51,19 +55,14 @@ export const ContractInputSection = ({
         state: "success",
         message: "You have admin access to this contract",
       };
-    return {
-      state: "error",
-      message: "Your wallet does not have admin access to this contract",
-    };
-  };
+    if (!isPermissionAllowed)
+      return {
+        state: "error",
+        message: "Your wallet does not have admin access to this contract",
+      };
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedKeyword(contractAddress);
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [contractAddress]);
+    return undefined;
+  }, [isFetching, data, isPermissionAllowed, contractAddress]);
 
   useEffect(() => {
     if (!contract) return;
@@ -81,14 +80,14 @@ export const ContractInputSection = ({
         helperText="Input must be the contract that you have admin access"
         variant="fixed-floating"
         size="md"
-        status={debouncedKeyword ? handleInputStatus() : undefined}
+        status={debouncedKeyword ? handleInputStatus : undefined}
       />
       <Button
         onClick={() => {
           onContractSelect(debouncedKeyword as BechAddr32);
           setIsChangeContract(false);
         }}
-        isDisabled={!debouncedKeyword || !isPermissionAllowed}
+        isDisabled={!isPermissionAllowed}
       >
         Submit
       </Button>
@@ -139,7 +138,6 @@ export const ContractInputSection = ({
         leftIcon={<CustomIcon name="swap" boxSize="12px" />}
         onClick={() => {
           setValue("contractAddress", "");
-          setDebouncedKeyword("");
           setIsChangeContract(true);
         }}
       >
