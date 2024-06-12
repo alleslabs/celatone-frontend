@@ -10,9 +10,10 @@ import { useBlockDataWithValidatorLcd } from "./data";
 
 export const BlockDetailsLite = ({ height }: { height: number }) => {
   const { data, isLoading } = useBlockDataWithValidatorLcd(height);
-  const { data: latestHeight } = useLatestBlockLcd();
+  const { data: latestHeight, isLoading: isLatestHeightLoading } =
+    useLatestBlockLcd();
 
-  if (isLoading) return <Loading withBorder />;
+  if (isLoading || isLatestHeightLoading) return <Loading withBorder />;
   if (latestHeight && latestHeight > height && !data)
     return (
       <EmptyState

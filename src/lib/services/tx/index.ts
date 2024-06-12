@@ -7,7 +7,7 @@ import type {
   BlockTxsResponse,
   TxData,
   TxsResponse,
-} from "../types/tx";
+} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
