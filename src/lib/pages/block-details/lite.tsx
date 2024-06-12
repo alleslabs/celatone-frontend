@@ -16,7 +16,7 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
   if (latestHeight && latestHeight > height && !data)
     return (
       <EmptyState
-        heading="This block is too old and has been pruned from LCD"
+        heading={`Block ${height} is too old and has been pruned from LCD`}
         message="Due to the LCD pruning the old blocks, this block's information cannot be retrieved."
         imageVariant="not-found"
         textVariant="body2"
