@@ -12,7 +12,7 @@ import {
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
-import type { AccountData } from "lib/services/account";
+import type { AccountData } from "lib/services/types";
 import type { BechAddr, HexAddr, Option } from "lib/types";
 
 interface AccounHeaderProps {
