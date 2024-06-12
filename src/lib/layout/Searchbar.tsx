@@ -136,17 +136,17 @@ const ResultItem = ({
           }}
         >
           <Text variant="body2">{metadata.icns.address || value}</Text>
-          {metadata.icns.icnsNames?.primary_name && (
+          {metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
                 <PrimaryNameMark />
                 <Text variant="body3" color="text.dark">
-                  {metadata.icns.icnsNames.primary_name}
+                  {metadata.icns.icnsNames.primaryName}
                 </Text>
               </Flex>
               {value !== metadata.icns.address &&
                 normalizedIcnsValue !==
-                  metadata.icns.icnsNames?.primary_name && (
+                  metadata.icns.icnsNames?.primaryName && (
                   <Text
                     variant="body3"
                     color="text.dark"
