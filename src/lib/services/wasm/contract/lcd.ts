@@ -1,11 +1,11 @@
 import axios from "axios";
 
 import type {
-  ContractCw2Info,
   MigrationHistoriesResponseItemLcd,
   MigrationHistoriesResponseLcd,
 } from "lib/services/types";
 import {
+  zContractCw2InfoLcd,
   zContractLcd,
   zContractQueryMsgs,
   zContractsResponseLcd,
@@ -20,7 +20,7 @@ import type {
   Nullable,
   Option,
 } from "lib/types";
-import { encode, libDecode, libEncode, parseWithError } from "lib/utils";
+import { encode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryLcd = (
   endpoint: string,
@@ -160,4 +160,4 @@ export const getContractCw2InfoLcd = async (
     .get(
       `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
     )
-    .then(({ data }) => JSON.parse(libDecode(data.data)) as ContractCw2Info);
+    .then(({ data }) => parseWithError(zContractCw2InfoLcd, data));

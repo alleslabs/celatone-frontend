@@ -11,12 +11,7 @@ import {
   zRemarkOperation,
   zUtcDate,
 } from "lib/types";
-import { parseTxHash, snakeToCamel } from "lib/utils";
-
-export interface ContractCw2Info {
-  contract: string;
-  version: string;
-}
+import { decode, parseTxHash, snakeToCamel } from "lib/utils";
 
 const zContractCreated = z.object({
   block_height: z.coerce.number(),
@@ -224,3 +219,9 @@ export const zInstantiatedContractsLcd = z
     contract_addresses: zBechAddr32.array(),
   })
   .transform(snakeToCamel);
+
+export const zContractCw2InfoLcd = z
+  .object({
+    data: z.string(),
+  })
+  .transform((val) => JSON.parse(decode(val.data)));
