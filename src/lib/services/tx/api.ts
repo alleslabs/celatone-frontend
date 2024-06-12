@@ -6,7 +6,7 @@ import {
   zTxByHashResponseLcd,
   zTxsCountResponse,
   zTxsResponse,
-} from "../types/tx";
+} from "../types";
 import type { BechAddr, Option, TxFilters } from "lib/types";
 import { camelToSnake, parseWithError } from "lib/utils";
 

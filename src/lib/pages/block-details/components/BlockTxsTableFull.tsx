@@ -10,7 +10,7 @@ interface BlockTxsTableProps {
   height: number;
 }
 
-export const BlockTxsTable = ({ height }: BlockTxsTableProps) => {
+export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
   const {
     pagesQuantity,
     setTotalData,
@@ -43,6 +43,7 @@ export const BlockTxsTable = ({ height }: BlockTxsTableProps) => {
             withBorder
           />
         }
+        showSuccess
         showRelations={false}
         showTimestamp={false}
       />

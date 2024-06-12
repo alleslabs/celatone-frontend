@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#958](https://github.com/alleslabs/celatone-frontend/pull/958) Support lite version for block index page
 - [#951](https://github.com/alleslabs/celatone-frontend/pull/951) Support contract details lite version with LCD endpoint
 - [#961](https://github.com/alleslabs/celatone-frontend/pull/961) Add and refactor proposal related lcd endpoints
 - [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
@@ -72,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
 - [#963](https://github.com/alleslabs/celatone-frontend/pull/963) Add separator between token in tx message
 - [#959](https://github.com/alleslabs/celatone-frontend/pull/959) Update @cosmos-kit/react to v2.15.0 and friends
 - [#947](https://github.com/alleslabs/celatone-frontend/pull/947) Add zod type for sign mode infos
