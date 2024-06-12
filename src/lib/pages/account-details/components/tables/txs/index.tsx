@@ -75,8 +75,8 @@ export const TxsTable = ({
     undefined,
     isSigner,
     filters,
-    offset,
-    onViewMore ? 5 : pageSize
+    onViewMore ? 5 : pageSize,
+    offset
   );
 
   const handleOnIsSignerChange = (value: Option<boolean>) => {

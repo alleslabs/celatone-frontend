@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
-import type { ContractLcd } from "lib/services/types";
-import { useContractLcd } from "lib/services/wasm/contract";
+import type { ContractData } from "lib/services/types";
+import { useContractData } from "lib/services/wasm/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
@@ -37,7 +37,7 @@ interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
   contractAddress: BechAddr32;
   onContractSelect: (contract: BechAddr32) => void;
-  successCallback?: (data: ContractLcd) => void;
+  successCallback?: (data: ContractData) => void;
 }
 
 const modeStyle = (mode: string) => {
@@ -157,7 +157,7 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const { refetch, isFetching } = useContractLcd(contractAddress, {
+    const { refetch, isFetching } = useContractData(contractAddress, {
       enabled: !!contractAddress,
       onSuccess: (data) => {
         successCallback?.(data);
