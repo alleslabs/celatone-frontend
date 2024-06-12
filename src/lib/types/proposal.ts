@@ -103,14 +103,22 @@ export interface ProposalDeposit<
 > {
   amount: T[];
   depositor: BechAddr;
-  timestamp: Date;
-  txHash: string;
+  timestamp?: Date;
+  txHash?: string;
 }
 
 // TODO: combine with MsgBody in services/tx.ts
 interface Message {
   "@type": string;
   [key: string]: unknown;
+}
+
+export interface ProposalVotesInfo {
+  yes: Big;
+  abstain: Big;
+  no: Big;
+  noWithVeto: Big;
+  totalVotingPower: Nullable<Big>;
 }
 
 export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
@@ -125,17 +133,9 @@ export interface ProposalData<T extends Coin | TokenWithValue = TokenWithValue>
   proposalDeposits: ProposalDeposit<T>[];
   resolvedTimestamp: Nullable<Date>;
   submitTime: Date;
-  totalDeposit: Nullable<T[]>;
-  version: string; // TODO: remove
+  totalDeposit: T[];
   votingTime: Nullable<Date>;
-}
-
-export interface ProposalVotesInfo {
-  yes: Big;
-  abstain: Big;
-  no: Big;
-  noWithVeto: Big;
-  totalVotingPower: Nullable<Big>;
+  finalTallyResult: ProposalVotesInfo;
 }
 
 export interface ProposalVote {

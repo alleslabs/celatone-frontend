@@ -27,7 +27,7 @@ export const ProposalsTableLite = () => {
   } = useProposalsLcd(status[0]);
 
   const { data: proposalData, isFetching: isProposalDataFetching } =
-    useProposalDataLcd(debouncedSearch, isPositiveInt(debouncedSearch));
+    useProposalDataLcd(Number(debouncedSearch), isPositiveInt(debouncedSearch));
 
   const proposal = proposalData ? [proposalData] : [];
   const proposals =

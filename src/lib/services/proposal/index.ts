@@ -23,6 +23,7 @@ import type {
   BechAddr32,
   Coin,
   Option,
+  ProposalDeposit,
   ProposalParams,
   ProposalStatus,
   ProposalType,
@@ -44,8 +45,10 @@ import {
 } from "./api";
 import {
   getProposalDataLcd,
+  getProposalDepositsLcd,
   getProposalParamsLcd,
   getProposalsLcd,
+  getProposalVotesInfoLcd,
 } from "./lcd";
 
 export const useProposalParams = () => {
@@ -191,7 +194,7 @@ export const useProposalData = (id: number, enabled = true) => {
   );
 };
 
-export const useProposalDataLcd = (id: string, enabled = true) => {
+export const useProposalDataLcd = (id: number, enabled = true) => {
   const lcdEndpoint = useLcdEndpoint();
 
   return useQuery<ProposalDataResponseLcd>(
@@ -205,13 +208,34 @@ export const useProposalDataLcd = (id: string, enabled = true) => {
   );
 };
 
-export const useProposalVotesInfo = (id: number) => {
-  const endpoint = useBaseApiRoute("proposals");
+export const useProposalDepositsLcd = (id: number, enabled = true) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  return useQuery<ProposalDeposit<Coin>[]>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_LCD, lcdEndpoint, id],
+    async () => getProposalDepositsLcd(lcdEndpoint, id),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
+    }
+  );
+};
+
+export const useProposalVotesInfo = (id: number, enabled: boolean) => {
+  const tier = useTierConfig();
+  const apiEndpoint = useBaseApiRoute("proposals");
+  const lcdEndpoint = useLcdEndpoint();
+
+  const [endpoint, queryFn] =
+    tier === "full"
+      ? [apiEndpoint, getProposalVotesInfo]
+      : [lcdEndpoint, getProposalVotesInfoLcd];
 
   return useQuery<ProposalVotesInfo>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
-    async () => getProposalVotesInfo(endpoint, id),
-    { retry: 1, refetchOnWindowFocus: false }
+    async () => queryFn(endpoint, id),
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
 
@@ -271,13 +295,13 @@ export const useProposalValidatorVotes = (
 
 export const useProposalAnswerCounts = (
   id: number,
-  validatorOnly = false
+  enabled: boolean
 ): UseQueryResult<ProposalAnswerCountsResponse> => {
   const endpoint = useBaseApiRoute("proposals");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id, validatorOnly],
+    [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id],
     async () => getProposalAnswerCounts(endpoint, id),
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
