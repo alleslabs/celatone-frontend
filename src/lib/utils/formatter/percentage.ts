@@ -1,4 +1,5 @@
-import type { Big, BigSource } from "big.js";
+import { Big } from "big.js";
+import type { BigSource } from "big.js";
 
 import { big } from "lib/types";
 import type { Percent, Ratio } from "lib/types";
@@ -41,5 +42,5 @@ export const formatPrettyPercent = (
   if (percent > 0 && percent < lowestPercent) return `<${lowestPercent}%`;
 
   const rounded = big(percent).round(fp);
-  return `${fixedFp ? rounded.toFixed(fp) : rounded.toNumber()}%`;
+  return `${fixedFp ? rounded.toFixed(fp, Big.roundDown) : rounded.toNumber()}%`;
 };

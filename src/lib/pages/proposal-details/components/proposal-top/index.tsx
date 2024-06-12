@@ -1,6 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
@@ -18,13 +18,14 @@ interface ProposalTopProps {
 }
 
 export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
 
   const isDepositOrVoting =
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
-    <Flex direction="column" mb={6} gap={5}>
+    <Flex direction="column" gap={5}>
       <Breadcrumb
         items={[
           {
@@ -114,37 +115,42 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 </Text>
               )}
             </Flex>
-            <Flex>
+            {proposalData.createdHeight ? (
               <Flex
                 gap={{ base: 0, md: 2 }}
                 direction={{ base: "column", md: "row" }}
                 alignItems={{ base: "flex-start", md: "center" }}
               >
-                {proposalData.createdHeight && (
-                  <Flex gap={2} alignItems="center">
-                    <Text color="text.dark" variant="body2" fontWeight={500}>
-                      Created Height:
-                    </Text>
-                    <ExplorerLink
-                      type="block_height"
-                      value={proposalData.createdHeight.toString()}
-                      showCopyOnHover
-                    >
-                      {proposalData.createdHeight.toString()}
-                    </ExplorerLink>
-                    {!isMobile && <DotSeparator />}
-                  </Flex>
-                )}
+                <Flex gap={2} alignItems="center">
+                  <Text color="text.dark" variant="body2" fontWeight={500}>
+                    Created Height:
+                  </Text>
+                  <ExplorerLink
+                    type="block_height"
+                    value={proposalData.createdHeight.toString()}
+                    showCopyOnHover
+                  >
+                    {proposalData.createdHeight.toString()}
+                  </ExplorerLink>
+                  {!isMobile && <DotSeparator />}
+                </Flex>
                 <Text variant="body2" color="text.dark">
                   {formatUTC(proposalData.submitTime)}
                 </Text>
               </Flex>
-            </Flex>
+            ) : (
+              <Text color="text.dark" variant="body2">
+                <span style={{ fontWeight: 500 }}>Created Time: </span>
+                {formatUTC(proposalData.submitTime)}
+              </Text>
+            )}
           </Flex>
         </Flex>
         <ViewProposalJson id={proposalData.id} status={proposalData.status} />
       </Flex>
-      <ProposalInfo data={proposalData} />
+      {(isFullTier || isDepositOrVoting) && (
+        <ProposalInfo data={proposalData} />
+      )}
     </Flex>
   );
 };
