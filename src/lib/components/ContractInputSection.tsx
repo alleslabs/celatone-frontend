@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, SkeletonText } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -123,13 +123,17 @@ export const ContractInputSection = ({
                 showCopyOnHover
               />
             ) : (
-              <Spinner size="sm" />
+              <SkeletonText size="sm" noOfLines={1} skeletonHeight={4} />
             )}
           </LabelText>
         </GridItem>
         <GridItem>
           <LabelText label="Contract Name">
-            {!isFetching ? data?.contract.label : <Spinner size="sm" />}
+            {!isFetching ? (
+              data?.contract.label
+            ) : (
+              <SkeletonText size="sm" noOfLines={1} skeletonHeight={4} />
+            )}
           </LabelText>
         </GridItem>
       </Grid>
