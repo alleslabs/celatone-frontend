@@ -272,14 +272,14 @@ export const useInstantiatedContractsByAddressLcd = (
   );
 };
 
-export const useContractCw2Info = (
+export const useContractCw2InfoLcd = (
   contractAddress: BechAddr32,
   enabled = true
 ) => {
   const endpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO, endpoint, contractAddress],
+    [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_LCD, endpoint, contractAddress],
     async () => getContractCw2InfoLcd(endpoint, contractAddress),
     { retry: 1, refetchOnWindowFocus: false, enabled }
   );

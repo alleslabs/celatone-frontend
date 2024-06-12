@@ -12,8 +12,10 @@ export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS",
 }
 
+export const zRemarkOperation = z.nativeEnum(RemarkOperation);
+
 export const zContractHistoryRemark = zRemark.extend({
-  operation: z.nativeEnum(RemarkOperation),
+  operation: zRemarkOperation,
 });
 
 export type ContractHistoryRemark = z.infer<typeof zContractHistoryRemark>;
@@ -35,7 +37,7 @@ export interface ContractMigrationHistory {
   uploader: Nullable<BechAddr>;
   cw2Contract: Nullable<string>;
   cw2Version: Nullable<string>;
-  msg: string;
+  msg?: string;
 }
 
 export enum ContractInteractionTabs {

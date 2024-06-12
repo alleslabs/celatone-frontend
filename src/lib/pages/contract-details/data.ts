@@ -5,11 +5,12 @@ import { useCodeStore, useContractStore } from "lib/providers/store";
 import type { ContractData } from "lib/services/types";
 import { useCodeLcd } from "lib/services/wasm/code";
 import {
-  useContractCw2Info,
+  useContractCw2InfoLcd,
   useContractData,
   useMigrationHistoriesByContractAddress,
   useMigrationHistoriesByContractAddressLcd,
 } from "lib/services/wasm/contract";
+import { RemarkOperation } from "lib/types";
 import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
 const useContractDataLcd = (
@@ -24,7 +25,7 @@ const useContractDataLcd = (
       enabled: !isFullTier && !!contractData.data?.contract.codeId,
     }
   );
-  const { data: cw2Info } = useContractCw2Info(contractAddress, !isFullTier);
+  const { data: cw2Info } = useContractCw2InfoLcd(contractAddress, !isFullTier);
   const { data: migrationHistories } =
     useMigrationHistoriesByContractAddressLcd(contractAddress, !isFullTier);
 
@@ -42,7 +43,7 @@ const useContractDataLcd = (
               migrationHistories?.entries.find(
                 (history) =>
                   history.remark?.operation ===
-                  "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT"
+                  RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
               )?.msg ?? "",
           },
         },

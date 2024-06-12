@@ -2,13 +2,13 @@ import z from "zod";
 
 import type { ContractInfo, ContractMigrationHistory } from "lib/types";
 import {
-  RemarkOperation,
   zBechAddr,
   zBechAddr32,
   zContractHistoryRemark,
   zPagination,
   zProjectInfo,
   zPublicContractInfo,
+  zRemarkOperation,
   zUtcDate,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
@@ -135,7 +135,7 @@ export const zContractLcd = zContractRest.transform<ContractData>((val) => ({
     createdTimestamp: null,
     cw2Contract: null,
     cw2Version: null,
-    initMsg: "", // TODO: Get
+    initMsg: "",
     initProposalId: null,
     initProposalTitle: null,
     initTxHash: null,
@@ -167,10 +167,7 @@ const zMigrationHistoriesResponseItem = z
     timestamp: zUtcDate,
     uploader: zBechAddr,
   })
-  .transform<ContractMigrationHistory>((val) => ({
-    ...snakeToCamel(val),
-    msg: "",
-  }));
+  .transform<ContractMigrationHistory>(snakeToCamel);
 
 export const zMigrationHistoriesResponse = z.object({
   items: z.array(zMigrationHistoriesResponseItem),
@@ -190,7 +187,7 @@ export const zContractQueryMsgs = z
 
 export const zMigrationHistoriesResponseItemLcd = z
   .object({
-    operation: z.nativeEnum(RemarkOperation),
+    operation: zRemarkOperation,
     code_id: z.coerce.number().positive(),
     updated: zContractCreated,
     msg: z.object({}).passthrough(),

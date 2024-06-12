@@ -158,6 +158,6 @@ export const getContractCw2InfoLcd = async (
 ) =>
   axios
     .get(
-      `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
+      `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
     )
     .then(({ data }) => JSON.parse(libDecode(data.data)) as ContractCw2Info);
