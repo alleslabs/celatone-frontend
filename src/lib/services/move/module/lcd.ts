@@ -28,7 +28,7 @@ export const getModulesByAddressLcd = async (
         `${endpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules`,
         {
           params: {
-            "pagination.key": paginationKey ?? "",
+            "pagination.key": paginationKey,
           },
         }
       )

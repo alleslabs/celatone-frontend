@@ -14,13 +14,7 @@ import type {
   ContractTableCounts,
   MigrationHistoriesResponse,
 } from "lib/services/types";
-import type {
-  BechAddr,
-  BechAddr20,
-  BechAddr32,
-  JsonDataType,
-  Option,
-} from "lib/types";
+import type { BechAddr, BechAddr32, JsonDataType, Option } from "lib/types";
 
 import {
   getAdminContractsByAddress,
@@ -250,7 +244,7 @@ export const useContractQueryLcd = (
 };
 
 export const useInstantiatedContractsByAddressLcd = (
-  address: Option<BechAddr20>,
+  address: Option<BechAddr>,
   enabled = false
 ) => {
   const endpoint = useLcdEndpoint();

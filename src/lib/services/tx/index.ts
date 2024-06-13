@@ -307,7 +307,7 @@ export const useTxsByAccountAddressLcd = (
 
 export const useTxsByAddressLcd = (
   address: Option<BechAddr20>,
-  search: string,
+  search: Option<string>,
   limit: number,
   offset: number,
   options: UseQueryOptions<TxsResponse> = {}
@@ -320,9 +320,9 @@ export const useTxsByAddressLcd = (
 
   const queryfn = useCallback(async () => {
     const txs = await (async () => {
-      if (isTxHash(search)) return getTxsByHashLcd(endpoint, search);
+      if (search && isTxHash(search)) return getTxsByHashLcd(endpoint, search);
 
-      if (!validateContractAddress(search))
+      if (search && !validateContractAddress(search))
         return getTxsByContractAddressLcd(
           endpoint,
           search as BechAddr32,
