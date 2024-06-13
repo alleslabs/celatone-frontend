@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import type {
+  ContractCw2InfoLcd,
   MigrationHistoriesResponseItemLcd,
   MigrationHistoriesResponseLcd,
 } from "lib/services/types";
@@ -155,7 +156,7 @@ export const getInstantiatedContractsByAddressLcd = (
 export const getContractCw2InfoLcd = async (
   endpoint: string,
   contractAddress: BechAddr32
-) =>
+): Promise<ContractCw2InfoLcd> =>
   axios
     .get(
       `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/raw/Y29udHJhY3RfaW5mbw%3D%3D`

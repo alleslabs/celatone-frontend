@@ -224,4 +224,12 @@ export const zContractCw2InfoLcd = z
   .object({
     data: z.string(),
   })
-  .transform((val) => JSON.parse(decode(val.data)));
+  .transform((val) => JSON.parse(decode(val.data)))
+  .pipe(
+    z.object({
+      contract: z.string(),
+      version: z.string(),
+    })
+  );
+
+export type ContractCw2InfoLcd = z.infer<typeof zContractCw2InfoLcd>;
