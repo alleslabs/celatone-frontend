@@ -11,7 +11,7 @@ import { useMemo, useState } from "react";
 
 import { AmpEvent, track, trackContractStatesLoad } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { useContractStates } from "lib/services/contractStateService";
+import { useContractStatesLcd } from "lib/services/wasm/contractState";
 import type { BechAddr32 } from "lib/types";
 import { groupContractStatesByFirstIndex } from "lib/utils";
 
@@ -29,7 +29,7 @@ interface ContractStatesProps {
   contractAddress: BechAddr32;
 }
 
-const NUM_STATES_TO_LOAD = 100;
+const limit = 100;
 
 export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
   const {
@@ -39,7 +39,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useContractStates(contractAddress, NUM_STATES_TO_LOAD);
+  } = useContractStatesLcd(contractAddress, limit);
 
   const [selectedNamespace, setSelectedNamespace] = useState("all");
   const [keyword, setKeyword] = useState("");
@@ -95,7 +95,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           Contract States
         </Heading>
         <StateLoader
-          numStatesToLoad={NUM_STATES_TO_LOAD}
+          numStatesToLoad={limit}
           isLoading={isFetching || isFetchingNextPage}
           totalData={totalData}
           isCompleted={!hasNextPage}

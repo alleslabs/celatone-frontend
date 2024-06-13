@@ -1,8 +1,7 @@
 import axios from "axios";
-import { z } from "zod";
 
+import { zResponseContractStates } from "lib/services/types";
 import type { BechAddr32, ContractState, Option } from "lib/types";
-import { zPagination } from "lib/types";
 import {
   libDecode,
   parseJsonStr,
@@ -10,29 +9,22 @@ import {
   parseWithError,
 } from "lib/utils";
 
-const zResponseContractState = z.object({
-  key: z.string(),
-  value: z.string(),
-});
-
-const zResponseContractStates = z.object({
-  models: zResponseContractState.array(),
-  pagination: zPagination,
-});
-
-export const getContractStates = async (
-  baseEndpoint: string,
+export const getContractStatesLcd = async (
+  endpoint: string,
   contractAddress: BechAddr32,
-  numStatesToLoad: number,
+  limit: number,
   paginationKey: Option<string>
 ) => {
   const states = await axios
-    .get(`${baseEndpoint}/${contractAddress}/states`, {
-      params: {
-        limit: numStatesToLoad,
-        "pagination.key": paginationKey,
-      },
-    })
+    .get(
+      `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/state`,
+      {
+        params: {
+          limit,
+          "pagination.key": paginationKey,
+        },
+      }
+    )
     .then(({ data }) => parseWithError(zResponseContractStates, data));
 
   const parsedStates = states.models.map<ContractState>((model) => ({

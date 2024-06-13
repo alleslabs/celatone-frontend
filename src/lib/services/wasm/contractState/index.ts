@@ -1,26 +1,26 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useLcdEndpoint } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 
-import { getContractStates } from "./contractState";
+import { getContractStatesLcd } from "./lcd";
 
-export const useContractStates = (
+export const useContractStatesLcd = (
   contractAddress: BechAddr32,
   numStatesToLoad: number
 ) => {
-  const baseEndpoint = useBaseApiRoute("contracts");
+  const lcdEndpoint = useLcdEndpoint();
 
   return useInfiniteQuery(
     [
-      CELATONE_QUERY_KEYS.CONTRACT_STATES,
-      baseEndpoint,
+      CELATONE_QUERY_KEYS.CONTRACT_STATES_LCD,
+      lcdEndpoint,
       contractAddress,
       numStatesToLoad,
     ],
     ({ pageParam }) =>
-      getContractStates(
-        baseEndpoint,
+      getContractStatesLcd(
+        lcdEndpoint,
         contractAddress,
         numStatesToLoad,
         pageParam
