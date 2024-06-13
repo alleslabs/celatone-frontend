@@ -2,21 +2,16 @@ import z from "zod";
 
 import type { ContractInfo, ContractMigrationHistory } from "lib/types";
 import {
-  RemarkOperation,
   zBechAddr,
   zBechAddr32,
   zContractHistoryRemark,
   zPagination,
   zProjectInfo,
   zPublicContractInfo,
+  zRemarkOperation,
   zUtcDate,
 } from "lib/types";
-import { getDefaultDate, parseTxHash, snakeToCamel } from "lib/utils";
-
-export interface ContractCw2Info {
-  contract: string;
-  version: string;
-}
+import { decode, parseTxHash, snakeToCamel } from "lib/utils";
 
 const zContractCreated = z.object({
   block_height: z.coerce.number(),
@@ -30,7 +25,7 @@ const zContractRest = z.object({
     creator: zBechAddr,
     admin: z.string(),
     label: z.string(),
-    created: zContractCreated,
+    created: zContractCreated.nullable(),
     ibc_port_id: z.string(),
     extension: z.string().nullable(),
   }),
@@ -94,8 +89,8 @@ export const zContract = z
     admin: zBechAddr.nullable(),
     code_id: z.number().positive(),
     code_hash: z.string().transform(parseTxHash),
-    created_height: z.number(),
-    created_timestamp: zUtcDate,
+    created_height: z.number().nullable(),
+    created_timestamp: zUtcDate.nullable(),
     cw2_contract: z.string().nullable(),
     cw2_version: z.string().nullable(),
     init_msg: z.string(),
@@ -128,14 +123,13 @@ export const zContractLcd = zContractRest.transform<ContractData>((val) => ({
       ? zBechAddr.parse(val.contract_info.admin)
       : null,
     codeId: Number(val.contract_info.code_id),
-    // TODO: make optional - get from code
     codeHash: "",
-    createdHeight: Number(val.contract_info.created.block_height),
-    // TODO: make optional
-    createdTimestamp: getDefaultDate(),
+    createdHeight: val.contract_info.created
+      ? Number(val.contract_info.created.block_height)
+      : null,
+    createdTimestamp: null,
     cw2Contract: null,
     cw2Version: null,
-    // TODO: make optional - get from histories
     initMsg: "",
     initProposalId: null,
     initProposalTitle: null,
@@ -188,9 +182,10 @@ export const zContractQueryMsgs = z
 
 export const zMigrationHistoriesResponseItemLcd = z
   .object({
-    operation: z.nativeEnum(RemarkOperation),
+    operation: zRemarkOperation,
     code_id: z.coerce.number().positive(),
     updated: zContractCreated,
+    msg: z.object({}).passthrough(),
   })
   .transform<ContractMigrationHistory>((val) => ({
     codeId: val.code_id,
@@ -198,10 +193,14 @@ export const zMigrationHistoriesResponseItemLcd = z
     height: Number(val.updated.block_height),
     timestamp: null,
     uploader: null,
-    remark: null,
+    remark: {
+      operation: val.operation,
+      type: null,
+    },
     sender: null,
     cw2Contract: null,
     cw2Version: null,
+    msg: JSON.stringify(val.msg),
   }));
 export type MigrationHistoriesResponseItemLcd = z.infer<
   typeof zMigrationHistoriesResponseItemLcd
@@ -220,3 +219,17 @@ export const zInstantiatedContractsLcd = z
     contract_addresses: zBechAddr32.array(),
   })
   .transform(snakeToCamel);
+
+export const zContractCw2InfoLcd = z
+  .object({
+    data: z.string(),
+  })
+  .transform((val) => JSON.parse(decode(val.data)))
+  .pipe(
+    z.object({
+      contract: z.string(),
+      version: z.string(),
+    })
+  );
+
+export type ContractCw2InfoLcd = z.infer<typeof zContractCw2InfoLcd>;

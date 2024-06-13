@@ -32,6 +32,7 @@ import {
   getMigrationHistoriesByContractAddress,
 } from "./api";
 import {
+  getContractCw2InfoLcd,
   getContractLcd,
   getContractQueryLcd,
   getContractQueryMsgsLcd,
@@ -89,7 +90,8 @@ export const useMigrationHistoriesByContractAddress = (
 };
 
 export const useMigrationHistoriesByContractAddressLcd = (
-  contractAddress: BechAddr32
+  contractAddress: BechAddr32,
+  enabled = true
 ) => {
   const endpoint = useLcdEndpoint();
 
@@ -104,6 +106,7 @@ export const useMigrationHistoriesByContractAddressLcd = (
     {
       retry: 1,
       keepPreviousData: true,
+      enabled,
     }
   );
 };
@@ -266,6 +269,19 @@ export const useInstantiatedContractsByAddressLcd = (
       return getInstantiatedContractsByAddressLcd(endpoint, address);
     },
     { enabled: Boolean(address) && enabled, refetchOnWindowFocus: false }
+  );
+};
+
+export const useContractCw2InfoLcd = (
+  contractAddress: BechAddr32,
+  enabled = true
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_LCD, endpoint, contractAddress],
+    async () => getContractCw2InfoLcd(endpoint, contractAddress),
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
 

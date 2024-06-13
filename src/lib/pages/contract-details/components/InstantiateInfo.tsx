@@ -164,15 +164,27 @@ export const InstantiateInfo = ({
       <LabelText
         flex="1"
         label="Instantiated Block Height"
-        helperText1={formatUTC(contract.createdTimestamp)}
-        helperText2={dateFromNow(contract.createdTimestamp)}
+        helperText1={
+          contract.createdTimestamp
+            ? formatUTC(contract.createdTimestamp)
+            : undefined
+        }
+        helperText2={
+          contract.createdTimestamp
+            ? dateFromNow(contract.createdTimestamp)
+            : undefined
+        }
       >
-        <ExplorerLink
-          type="block_height"
-          value={contract.createdHeight.toString()}
-          showCopyOnHover
-          fixedHeight
-        />
+        {contract.createdHeight ? (
+          <ExplorerLink
+            type="block_height"
+            value={contract.createdHeight.toString()}
+            showCopyOnHover
+            fixedHeight
+          />
+        ) : (
+          "N/A"
+        )}
       </LabelText>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         <LabelText
