@@ -31,7 +31,7 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
-import { useResourcesByAddress } from "lib/services/move/resourceService";
+import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import { useNftsCountByAccount } from "lib/services/nft";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -94,7 +94,7 @@ const AccountDetailsBody = ({
   const { data: modulesData, isFetching: isModulesLoading } =
     useModulesByAddress({ address: accountAddress });
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useResourcesByAddress(accountAddress);
+    useResourcesByAddressLcd(accountAddress);
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
     useNftsCountByAccount(hexAddress);
