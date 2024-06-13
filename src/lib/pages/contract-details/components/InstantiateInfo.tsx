@@ -161,25 +161,31 @@ export const InstantiateInfo = ({
         )}
       </Flex>
       <Divider border="1px solid" borderColor="gray.700" />
-      {contract.createdTimestamp && (
-        <LabelText
-          flex="1"
-          label="Instantiated Block Height"
-          helperText1={formatUTC(contract.createdTimestamp)}
-          helperText2={dateFromNow(contract.createdTimestamp)}
-        >
-          {contract.createdHeight ? (
-            <ExplorerLink
-              type="block_height"
-              value={contract.createdHeight.toString()}
-              showCopyOnHover
-              fixedHeight
-            />
-          ) : (
-            "N/A"
-          )}
-        </LabelText>
-      )}
+      <LabelText
+        flex="1"
+        label="Instantiated Block Height"
+        helperText1={
+          contract.createdTimestamp
+            ? formatUTC(contract.createdTimestamp)
+            : undefined
+        }
+        helperText2={
+          contract.createdTimestamp
+            ? dateFromNow(contract.createdTimestamp)
+            : undefined
+        }
+      >
+        {contract.createdHeight ? (
+          <ExplorerLink
+            type="block_height"
+            value={contract.createdHeight.toString()}
+            showCopyOnHover
+            fixedHeight
+          />
+        ) : (
+          "N/A"
+        )}
+      </LabelText>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         <LabelText
           flex="1"
