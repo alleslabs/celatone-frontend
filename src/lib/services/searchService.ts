@@ -4,6 +4,7 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
+  useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
 import type { BechAddr, Option } from "lib/types";
@@ -21,9 +22,9 @@ import { useBlockData } from "./block";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByICNSNameLcd, useICNSNamesByAddressLcd } from "./name";
 import { usePoolByPoolId } from "./poolService";
-import { useProposalData } from "./proposal";
+import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData } from "./tx";
-import { useValidatorData } from "./validator";
+import { useValidatorData, useValidatorDataLcd } from "./validator";
 import { useCodeLcd } from "./wasm/code";
 import { useContractData } from "./wasm/contract";
 
@@ -56,6 +57,7 @@ export const useSearchHandler = (
   metadata: ResultMetadata;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 } => {
+  const isFullTier = useTierConfig() === "full";
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {
@@ -129,28 +131,57 @@ export const useSearchHandler = (
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
 
   // Block
-  const { data: blockData, isFetching: blockFetching } = useBlockData(
+  const blockApi = useBlockData(
     Number(debouncedKeyword),
-    isPosDecimal(debouncedKeyword)
+    isPosDecimal(debouncedKeyword) && isFullTier
   );
+  const blockLcd = useBlockData(
+    Number(debouncedKeyword),
+    isPosDecimal(debouncedKeyword) && !isFullTier
+  );
+  const { data: blockData, isFetching: blockFetching } = isFullTier
+    ? blockApi
+    : blockLcd;
 
   // Proposal
-  const { data: proposalData, isFetching: proposalFetching } = useProposalData(
-    Number(debouncedKeyword),
-    isGov && isId(debouncedKeyword)
-  );
+  const { data: proposalApiData, isFetching: proposalApiIsFetching } =
+    useProposalData(
+      Number(debouncedKeyword),
+      isGov && isId(debouncedKeyword) && isFullTier
+    );
+  const { data: proposalLcdData, isFetching: proposalLcdIsFetching } =
+    useProposalDataLcd(
+      Number(debouncedKeyword),
+      isGov && isId(debouncedKeyword) && !isFullTier
+    );
+  const [proposalData, proposalFetching] = isFullTier
+    ? [proposalApiData, proposalApiIsFetching]
+    : [
+        proposalLcdData
+          ? {
+              info: proposalLcdData,
+            }
+          : undefined,
+        proposalLcdIsFetching,
+      ];
 
   // Validator
-  const { data: validatorData, isFetching: validatorFetching } =
-    useValidatorData(
-      zValidatorAddr.parse(debouncedKeyword),
-      isGov && validateValidatorAddress(debouncedKeyword) === null
-    );
+  const validatorApi = useValidatorData(
+    zValidatorAddr.parse(debouncedKeyword),
+    isGov && validateValidatorAddress(debouncedKeyword) === null && isFullTier
+  );
+  const validatorLcd = useValidatorDataLcd(
+    zValidatorAddr.parse(debouncedKeyword),
+    isGov && validateValidatorAddress(debouncedKeyword) === null && !isFullTier
+  );
+  const { data: validatorData, isFetching: validatorFetching } = isFullTier
+    ? validatorApi
+    : validatorLcd;
 
   // Pool
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
-    isPool && isId(debouncedKeyword)
+    isPool && isId(debouncedKeyword) && isFullTier
   );
 
   // Move
