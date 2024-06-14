@@ -9,7 +9,7 @@ import {
 } from "lib/app-provider";
 import type { BechAddr, Option } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
-import type { ICNSNamesByAddress } from "lib/types/name";
+import type { IcnsNamesByAddress } from "lib/types/name";
 import {
   isHexModuleAddress,
   isHexWalletAddress,
@@ -20,7 +20,7 @@ import {
 
 import { useBlockData } from "./block";
 import { useModuleByAddressLcd } from "./move/module";
-import { useAddressByICNSNameLcd, useICNSNamesByAddressLcd } from "./name";
+import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData } from "./tx";
@@ -41,7 +41,7 @@ export type SearchResultType =
 
 export interface ResultMetadata {
   icns: {
-    icnsNames: Option<ICNSNamesByAddress>;
+    icnsNames: Option<IcnsNamesByAddress>;
     address: Option<BechAddr>;
     bech32Prefix: string;
   };
@@ -100,12 +100,12 @@ export const useSearchHandler = (
 
   // ICNS
   const { data: icnsAddressData, isFetching: icnsAddressFetching } =
-    useAddressByICNSNameLcd(debouncedKeyword);
+    useAddressByIcnsNameLcd(debouncedKeyword);
   // provide ICNS metadata result
   const address = (
     isAddr ? debouncedKeyword : icnsAddressData?.address
   ) as BechAddr;
-  const { data: icnsNames } = useICNSNamesByAddressLcd(address);
+  const { data: icnsNames } = useIcnsNamesByAddressLcd(address);
 
   const addressResult = useMemo(() => {
     if (isAddr) {

@@ -1,13 +1,13 @@
 import axios from "axios";
 
 import type { BechAddr } from "lib/types";
-import { zAddressByICNSName, zICNSNamesByAddress } from "lib/types/name";
+import { zAddressByIcnsName, zIcnsNamesByAddress } from "lib/types/name";
 import { encode, parseWithError } from "lib/utils";
 
 const icnsResolverAddress =
   "osmo1xk0s8xgktn9x5vwcgtjdxqzadg88fgn33p8u9cnpdxwemvxscvast52cdd";
 
-export const getICNSNamesByAddressLcd = async (
+export const getIcnsNamesByAddressLcd = async (
   endpoint: string,
   address: BechAddr
 ) => {
@@ -23,10 +23,10 @@ export const getICNSNamesByAddressLcd = async (
     .get(
       `${endpoint}/cosmwasm/wasm/v1/contract/${icnsResolverAddress}/smart/${encoded}`
     )
-    .then(({ data }) => parseWithError(zICNSNamesByAddress, data));
+    .then(({ data }) => parseWithError(zIcnsNamesByAddress, data));
 };
 
-export const getAddressByICNSNameLcd = async (
+export const getAddressByIcnsNameLcd = async (
   endpoint: string,
   name: string,
   bech32Prefix: string
@@ -39,5 +39,5 @@ export const getAddressByICNSNameLcd = async (
     .get(
       `${endpoint}/cosmwasm/wasm/v1/contract/${icnsResolverAddress}/smart/${encoded}`
     )
-    .then(({ data }) => parseWithError(zAddressByICNSName, data));
+    .then(({ data }) => parseWithError(zAddressByIcnsName, data));
 };

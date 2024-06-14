@@ -9,16 +9,16 @@ import {
 } from "lib/app-provider";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
-import { getAddressByICNSNameLcd, getICNSNamesByAddressLcd } from "./lcd";
+import { getAddressByIcnsNameLcd, getIcnsNamesByAddressLcd } from "./lcd";
 
-export const useICNSNamesByAddressLcd = (address: Option<BechAddr>) => {
+export const useIcnsNamesByAddressLcd = (address: Option<BechAddr>) => {
   const endpoint = useLcdEndpoint();
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(address);
 
   const queryFn = async () => {
     if (!address) throw new Error("address is undefined");
-    const icnsNames = await getICNSNamesByAddressLcd(endpoint, address);
+    const icnsNames = await getIcnsNamesByAddressLcd(endpoint, address);
     const primaryIndex = icnsNames.names.indexOf(icnsNames.primaryName);
 
     if (primaryIndex > -1) {
@@ -41,7 +41,7 @@ export const useICNSNamesByAddressLcd = (address: Option<BechAddr>) => {
   );
 };
 
-export const useAddressByICNSNameLcd = (name: string) => {
+export const useAddressByIcnsNameLcd = (name: string) => {
   const lcdEndpoint = useLcdEndpoint();
   const getAddressType = useGetAddressType();
   const {
@@ -51,7 +51,7 @@ export const useAddressByICNSNameLcd = (name: string) => {
   const queryFn = async () => {
     // Strip bech32 prefix to allow searching with .prefix (e.g. example.osmo)
     const [stripPrefixName] = name.split(`.${bech32Prefix}`);
-    const { address: icnsAddress } = await getAddressByICNSNameLcd(
+    const { address: icnsAddress } = await getAddressByIcnsNameLcd(
       lcdEndpoint,
       stripPrefixName,
       bech32Prefix
