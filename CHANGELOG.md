@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint
+- [#970](https://github.com/alleslabs/celatone-frontend/pull/970) Support account details lite version
 - [#964](https://github.com/alleslabs/celatone-frontend/pull/964) Support migrate page lite version with LCD
 - [#966](https://github.com/alleslabs/celatone-frontend/pull/966) Support lite version for proposal details
 - [#958](https://github.com/alleslabs/celatone-frontend/pull/958) Support lite version for block index page

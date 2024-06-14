@@ -15,7 +15,7 @@ import {
 } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
-  BechAddr20,
+  BechAddr,
   BechAddr32,
   JsonDataType,
   Nullable,
@@ -129,7 +129,7 @@ export const getMigrationHistoriesByContractAddressLcd = async (
 
 export const getInstantiatedContractsByAddressLcd = (
   endpoint: string,
-  address: BechAddr20
+  address: BechAddr
 ) =>
   axios
     .get(
