@@ -89,7 +89,6 @@ const nextConfig = {
 
 const moduleExports = {
   ...nextConfig,
-
   sentry: {
     hideSourceMaps: true,
     tunnelRoute: "/sentry",
