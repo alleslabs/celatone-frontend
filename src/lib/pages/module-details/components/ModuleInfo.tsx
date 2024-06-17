@@ -2,37 +2,19 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { ModuleSourceCode } from "lib/components/module";
-import type { ModuleVerificationInternal } from "lib/services/move/module";
-import type {
-  HexAddr,
-  Nullable,
-  Option,
-  Proposal,
-  UpgradePolicy,
-} from "lib/types";
+import type { ModuleVerificationInternal } from "lib/services/types";
+import type { ModuleData, Nullable, Option } from "lib/types";
 
 import { ModuleInfoBody } from "./ModuleInfoBody";
 
 export interface ModuleInfoProps {
-  vmAddress: HexAddr;
-  upgradePolicy: UpgradePolicy;
-  transaction: Nullable<string>;
-  proposal: Nullable<Pick<Proposal, "id" | "title">>;
-  isRepublished: boolean;
-  blockHeight: number;
-  blockTimestamp: Date;
   verificationData: Option<Nullable<ModuleVerificationInternal>>;
+  moduleData: Partial<ModuleData>;
 }
 
 export const ModuleInfo = ({
-  vmAddress,
-  upgradePolicy,
-  transaction,
-  proposal,
-  isRepublished,
-  blockHeight,
-  blockTimestamp,
   verificationData,
+  moduleData,
 }: ModuleInfoProps) => (
   <Flex flexDirection="column" gap={4}>
     <Flex justifyContent="space-between" alignItems="center" w="full">
@@ -49,15 +31,7 @@ export const ModuleInfo = ({
         </Flex>
       )}
     </Flex>
-    <ModuleInfoBody
-      vmAddress={vmAddress}
-      upgradePolicy={upgradePolicy}
-      transaction={transaction}
-      proposal={proposal}
-      isRepublished={isRepublished}
-      blockHeight={blockHeight}
-      blockTimestamp={blockTimestamp}
-    />
+    <ModuleInfoBody moduleData={moduleData} />
     <ModuleSourceCode sourceCode={verificationData?.source} />
   </Flex>
 );

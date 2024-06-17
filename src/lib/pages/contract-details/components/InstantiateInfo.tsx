@@ -1,6 +1,10 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
-import { useCurrentChain, useGetAddressType } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useGetAddressType,
+  useTierConfig,
+} from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -98,6 +102,7 @@ export const InstantiateInfo = ({
   contractRest,
   codeLocalInfo,
 }: InstantiateInfoProps) => {
+  const isFullTier = useTierConfig() === "full";
   const getAddressType = useGetAddressType();
   const {
     chain: { chain_id: chainId },
@@ -159,15 +164,27 @@ export const InstantiateInfo = ({
       <LabelText
         flex="1"
         label="Instantiated Block Height"
-        helperText1={formatUTC(contract.createdTimestamp)}
-        helperText2={dateFromNow(contract.createdTimestamp)}
+        helperText1={
+          contract.createdTimestamp
+            ? formatUTC(contract.createdTimestamp)
+            : undefined
+        }
+        helperText2={
+          contract.createdTimestamp
+            ? dateFromNow(contract.createdTimestamp)
+            : undefined
+        }
       >
-        <ExplorerLink
-          type="block_height"
-          value={contract.createdHeight.toString()}
-          showCopyOnHover
-          fixedHeight
-        />
+        {contract.createdHeight ? (
+          <ExplorerLink
+            type="block_height"
+            value={contract.createdHeight.toString()}
+            showCopyOnHover
+            fixedHeight
+          />
+        ) : (
+          "N/A"
+        )}
       </LabelText>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         <LabelText
@@ -182,9 +199,11 @@ export const InstantiateInfo = ({
             fixedHeight
           />
         </LabelText>
-        <Flex flex="1">
-          <InitRender {...contract} />
-        </Flex>
+        {isFullTier && (
+          <Flex flex="1">
+            <InitRender {...contract} />
+          </Flex>
+        )}
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         {contractRest?.contract_info.ibc_port_id && (

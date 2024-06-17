@@ -10,6 +10,7 @@ import {
   useInternalNavigate,
   useMoveConfig,
   useNftConfig,
+  useTierConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -22,9 +23,9 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useAccountStore } from "lib/providers/store";
-import { useAccountData } from "lib/services/accountService";
-import { useModulesByAddress } from "lib/services/move/moduleService";
-import { useResourcesByAddress } from "lib/services/move/resourceService";
+import { useAccountData } from "lib/services/account";
+import { useModulesByAddress } from "lib/services/move/module";
+import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import { useNftsCountByAccount } from "lib/services/nft";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -72,6 +73,7 @@ const AccountDetailsBody = ({
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
+  const isFullTier = useTierConfig() === "full";
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -89,9 +91,9 @@ const AccountDetailsBody = ({
     useAccountDelegationInfos(accountAddress);
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
-    useModulesByAddress(accountAddress);
+    useModulesByAddress({ address: accountAddress });
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useResourcesByAddress(accountAddress);
+    useResourcesByAddressLcd(accountAddress);
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
     useNftsCountByAccount(hexAddress);
@@ -177,7 +179,7 @@ const AccountDetailsBody = ({
             isDisabled={nftsCount === 0}
             onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
             isLoading={isNftsCountLoading}
-            hidden={!nft.enabled}
+            hidden={!nft.enabled || !isFullTier}
           >
             NFTs
           </CustomTab>
@@ -200,7 +202,7 @@ const AccountDetailsBody = ({
               tableCounts.codesCount ?? undefined
             )}
             isLoading={isLoadingAccountTableCounts}
-            hidden={!wasm.enabled}
+            hidden={!wasm.enabled || !isFullTier}
           >
             Codes
           </CustomTab>
@@ -224,7 +226,7 @@ const AccountDetailsBody = ({
               tableCounts.contractsAdminCount ?? undefined
             )}
             isLoading={isLoadingAccountTableCounts}
-            hidden={!wasm.enabled}
+            hidden={!wasm.enabled || !isFullTier}
           >
             Admins
           </CustomTab>
@@ -257,7 +259,7 @@ const AccountDetailsBody = ({
               tableCounts.proposalsCount ?? undefined
             )}
             isLoading={isLoadingAccountTableCounts}
-            hidden={!gov.enabled}
+            hidden={!gov.enabled || !isFullTier}
           >
             Proposals
           </CustomTab>
@@ -303,7 +305,7 @@ const AccountDetailsBody = ({
                 />
               </Flex>
             )}
-            {nft.enabled && (
+            {nft.enabled && isFullTier && (
               <NftsOverview
                 totalCount={nftsCount}
                 userAddress={hexAddress}
@@ -321,16 +323,18 @@ const AccountDetailsBody = ({
             />
             {wasm.enabled && (
               <>
-                <StoredCodesTable
-                  address={accountAddress}
-                  scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.codesCount ?? undefined}
-                  refetchCount={refetchCounts}
-                  onViewMore={handleTabChange(
-                    TabIndex.Codes,
-                    tableCounts.codesCount ?? undefined
-                  )}
-                />
+                {isFullTier && (
+                  <StoredCodesTable
+                    address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.codesCount ?? undefined}
+                    refetchCount={refetchCounts}
+                    onViewMore={handleTabChange(
+                      TabIndex.Codes,
+                      tableCounts.codesCount ?? undefined
+                    )}
+                  />
+                )}
                 <InstantiatedContractsTable
                   address={accountAddress}
                   scrollComponentId={tableHeaderId}
@@ -341,16 +345,18 @@ const AccountDetailsBody = ({
                     tableCounts.contractsCount ?? undefined
                   )}
                 />
-                <AdminContractsTable
-                  address={accountAddress}
-                  scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.contractsAdminCount ?? undefined}
-                  refetchCount={refetchCounts}
-                  onViewMore={handleTabChange(
-                    TabIndex.Admins,
-                    tableCounts.contractsAdminCount ?? undefined
-                  )}
-                />
+                {isFullTier && (
+                  <AdminContractsTable
+                    address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.contractsAdminCount ?? undefined}
+                    refetchCount={refetchCounts}
+                    onViewMore={handleTabChange(
+                      TabIndex.Admins,
+                      tableCounts.contractsAdminCount ?? undefined
+                    )}
+                  />
+                )}
               </>
             )}
             {move.enabled && (
@@ -374,7 +380,7 @@ const AccountDetailsBody = ({
                 />
               </>
             )}
-            {gov.enabled && (
+            {gov.enabled && isFullTier && (
               <OpenedProposalsTable
                 address={accountAddress}
                 scrollComponentId={tableHeaderId}

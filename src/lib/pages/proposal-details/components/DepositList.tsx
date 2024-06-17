@@ -2,17 +2,23 @@ import { Flex } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { Loading } from "lib/components/Loading";
 import type { ProposalDeposit } from "lib/types";
 
 import { DepositAmounts } from "./DepositAmounts";
 
 interface DepositListProps {
   proposalDeposits: ProposalDeposit[];
+  isDepositsLoading: boolean;
 }
 
-export const DepositList = ({ proposalDeposits }: DepositListProps) => {
+export const DepositList = ({
+  proposalDeposits,
+  isDepositsLoading,
+}: DepositListProps) => {
   const isMobile = useMobile();
 
+  if (isDepositsLoading) return <Loading />;
   return (
     <div>
       {proposalDeposits.map((deposit, index) => (

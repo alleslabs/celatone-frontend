@@ -45,6 +45,7 @@ export const PastTxsLite = () => {
     pageSize,
     offset,
     {
+      enabled: !!address,
       onSuccess: ({ total }) => setTotalData(total),
     }
   );

@@ -5,7 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import { useModuleHistories } from "lib/services/move/moduleService";
+import { useModuleHistories } from "lib/services/move/module";
 import type { HexAddr, Option } from "lib/types";
 
 import { PublishedEventsTable } from "./PublishedEventsTable";

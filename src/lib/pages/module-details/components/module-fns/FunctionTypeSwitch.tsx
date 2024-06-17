@@ -72,12 +72,15 @@ export const FunctionTypeSwitch = ({
           </Heading>
         </MotionBox>
       ))}
+
       <MotionBox
         h="calc(100% - 8px)"
         w={{ base: "33%", md: "128px" }}
         position="absolute"
         borderRadius="2px"
-        backgroundColor="primary.dark"
+        backgroundColor={
+          counts[activeIndex] === 0 ? "primary.darker" : "primary.dark"
+        }
         animate={{
           left:
             activeIndex === 0

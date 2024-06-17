@@ -2,7 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
-import { useModules } from "lib/services/move";
+import { useModules } from "lib/services/move/module";
 
 export const RecentModulesTable = () => {
   const {

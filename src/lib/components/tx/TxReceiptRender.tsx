@@ -64,7 +64,7 @@ const ReceiptRow = ({ title, value, html }: TxReceipt) => (
         wordBreak="break-word"
         color={value === null ? "gray.600" : "text.main"}
       >
-        {value === null ? String(value) : value}
+        {String(value)}
       </Text>
     )}
   </Flex>

@@ -7,7 +7,6 @@ import {
 import type { ReactNode } from "react";
 
 import { ProposalStepper } from "../proposal-stepper";
-import { ProposalStatus } from "lib/types";
 import type { ProposalData } from "lib/types";
 
 interface VoteDetailsAccordionItemProps {
@@ -35,13 +34,7 @@ export const VoteDetailsAccordionItem = ({
     <AccordionPanel
       bg="transparent"
       p={0}
-      pt={
-        step === 1 &&
-        proposalData.status !== ProposalStatus.DEPOSIT_PERIOD &&
-        proposalData.status !== ProposalStatus.VOTING_PERIOD
-          ? 0
-          : 3
-      }
+      pt={3}
       pb={step === 1 ? 0 : 4}
       borderTop="1px solid"
       borderColor="gray.700"

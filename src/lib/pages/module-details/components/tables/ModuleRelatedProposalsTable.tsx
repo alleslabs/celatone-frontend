@@ -2,7 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable, ViewMore } from "lib/components/table";
-import { useModuleRelatedProposals } from "lib/services/move";
+import { useModuleRelatedProposals } from "lib/services/move/module";
 import type { HexAddr, Option } from "lib/types";
 
 interface ModuleRelatedProposalsTableProps {

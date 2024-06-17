@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -10,11 +10,13 @@ import {
   useGetAddressType,
   useInternalNavigate,
   useSimulateFeeQuery,
+  useTierConfig,
   useUpdateAdminTx,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -23,7 +25,7 @@ import { TextInput } from "lib/components/forms";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
@@ -32,6 +34,7 @@ const UpdateAdmin = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { address } = useCurrentChain();
+  const isFullTier = useTierConfig() === "full";
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAddressType = useGetAddressType();
   const navigate = useInternalNavigate();
@@ -107,7 +110,7 @@ const UpdateAdmin = () => {
   /**
    * @remarks Contract admin validation
    */
-  useContractLcd(contractAddressParam, {
+  useContractData(contractAddressParam, {
     onSuccess: (data) => {
       if (data.contract.admin !== address) onContractPathChange();
     },
@@ -184,11 +187,20 @@ const UpdateAdmin = () => {
         mb={6}
         subtitle="You need to connect your wallet to perform this action"
       />
-      <ContractSelectSection
-        mode="only-admin"
-        contractAddress={contractAddressParam}
-        onContractSelect={(contract) => onContractPathChange(contract)}
-      />
+      {isFullTier ? (
+        <ContractSelectSection
+          mode="only-admin"
+          contractAddress={contractAddressParam}
+          onContractSelect={(contract) => onContractPathChange(contract)}
+        />
+      ) : (
+        <Box w="full" mb={12}>
+          <ContractInputSection
+            contract={contractAddressParam}
+            onContractSelect={(contract) => onContractPathChange(contract)}
+          />
+        </Box>
+      )}
       <TextInput
         variant="fixed-floating"
         label="New Admin Address"

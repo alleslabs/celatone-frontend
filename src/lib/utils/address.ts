@@ -1,7 +1,15 @@
-import { fromBech32, fromHex, toBech32, toHex } from "@cosmjs/encoding";
+import { Ripemd160, sha256 } from "@cosmjs/crypto";
+import {
+  fromBase64,
+  fromBech32,
+  fromHex,
+  toBech32,
+  toHex,
+} from "@cosmjs/encoding";
 
 import type { AddressReturnType } from "lib/app-provider";
-import type { BechAddr, HexAddr, Option } from "lib/types";
+import { zBechAddr20 } from "lib/types";
+import type { BechAddr, HexAddr, Option, Pubkey } from "lib/types";
 
 import { sha256Hex } from "./sha256";
 
@@ -40,4 +48,23 @@ export const hexToBech32Address = (
 ): BechAddr => {
   const strip = padHexAddress(hexAddr, length).slice(2);
   return toBech32(prefix, fromHex(strip)) as BechAddr;
+};
+
+export const convertAccountPubkeyToAccountAddress = (
+  accountPubkey: Pubkey,
+  prefix: string
+) => {
+  if (accountPubkey["@type"] === "/cosmos.crypto.ed25519.PubKey") {
+    const pubkey = fromBase64(accountPubkey.key);
+    const data = fromHex(toHex(sha256(pubkey)).slice(0, 40));
+    return zBechAddr20.parse(toBech32(prefix, data));
+  }
+
+  if (accountPubkey["@type"] === "/cosmos.crypto.secp256k1.PubKey") {
+    const pubkey = fromBase64(accountPubkey.key);
+    const data = new Ripemd160().update(sha256(pubkey)).digest();
+    return zBechAddr20.parse(toBech32(prefix, data));
+  }
+
+  return zBechAddr20.parse("");
 };
