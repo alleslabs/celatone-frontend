@@ -52,7 +52,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     extra: {},
   },
   "osmo-test-5": {
-    tier: "full",
+    tier: "lite",
     chain: "osmosis",
     registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",

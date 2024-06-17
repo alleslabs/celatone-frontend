@@ -77,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#972](https://github.com/alleslabs/celatone-frontend/pull/972) Change osmo-test-5 and tomcat-1 to lite for testing
 - [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
 - [#963](https://github.com/alleslabs/celatone-frontend/pull/963) Add separator between token in tx message
 - [#959](https://github.com/alleslabs/celatone-frontend/pull/959) Update @cosmos-kit/react to v2.15.0 and friends

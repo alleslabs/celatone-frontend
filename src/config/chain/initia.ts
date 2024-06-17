@@ -7,54 +7,6 @@ const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
-  "tomcat-1-lite": {
-    tier: "lite",
-    chain: "initia",
-    registryChainName: "blackwingtestnet",
-    prettyName: "Blackwing Testnet Lite",
-    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
-    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
-    indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
-    wallets: [...initiaWallets, ...keplrWallets],
-    features: {
-      faucet: {
-        enabled: false,
-      },
-      wasm: {
-        enabled: false,
-      },
-      move: {
-        enabled: true,
-        moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
-      },
-      pool: {
-        enabled: false,
-      },
-      publicProject: {
-        enabled: true,
-      },
-      gov: {
-        enabled: false,
-      },
-      nft: {
-        enabled: true,
-      },
-    },
-    gas: {
-      gasPrice: {
-        tokenPerGas: 0.151,
-        denom:
-          "l2/aee375e9d0b181f0d9d3a49f9a3d1d6b05d62b0ac81f8c92b9282afa4213d884",
-      },
-      gasAdjustment: 1.5,
-      maxGasLimit: 25_000_000,
-    },
-    extra: {
-      isValidatorExternalLink: null,
-    },
-  },
   "initiation-1": {
     tier: "full",
     chain: "initia",
@@ -199,7 +151,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "tomcat-1": {
-    tier: "full",
+    tier: "lite",
     chain: "initia",
     registryChainName: "blackwingtestnet",
     prettyName: "Blackwing",
