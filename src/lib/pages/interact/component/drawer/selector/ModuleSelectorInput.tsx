@@ -121,7 +121,6 @@ export const ModuleSelectorInput = ({
         variant="fixed-floating"
         labelBgColor="gray.800"
         onKeyDown={handleKeydown}
-        autoFocus
       />
       <Flex gap={2} w={{ base: "full", md: "auto" }} mt={{ base: 1, md: 0 }}>
         <Button
