@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
+  useLcdEndpoint,
   useMoveConfig,
 } from "lib/app-provider";
 import type {
@@ -14,7 +14,7 @@ import type {
 } from "lib/types";
 import { truncate } from "lib/utils";
 
-import { getAccountResources } from "./resource";
+import { getAccountResourcesLcd } from "./lcd";
 
 export interface ResourcesByAddressReturn {
   groupedByOwner: ResourceGroupByAccount[];
@@ -22,14 +22,14 @@ export interface ResourcesByAddressReturn {
   totalCount: number;
 }
 
-export const useResourcesByAddress = (
+export const useResourcesByAddressLcd = (
   address: Addr
 ): UseQueryResult<ResourcesByAddressReturn> => {
-  const endpoint = useBaseApiRoute("accounts");
+  const endpoint = useLcdEndpoint();
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
   const queryFn: QueryFunction<ResourcesByAddressReturn> = () =>
-    getAccountResources(endpoint, address).then((resources) => {
+    getAccountResourcesLcd(endpoint, address).then((resources) => {
       const groupedByOwner = resources.items.reduce<
         Record<string, ResourceGroupByAccount>
       >((acc, resource) => {

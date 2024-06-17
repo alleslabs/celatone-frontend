@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 
 import type { VoteDetailsProps } from "..";
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposal";
@@ -50,11 +50,16 @@ const ContentContainer = ({
 const scrollComponentId = "voting-period";
 
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
+  const isFullTier = useTierConfig() === "full";
+
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();
 
-  const { data: answers } = useProposalAnswerCounts(proposalData.id);
+  const { data: answers } = useProposalAnswerCounts(
+    proposalData.id,
+    isFullTier
+  );
 
   const isProposalResolved = !isNull(proposalData.resolvedHeight);
 
@@ -114,79 +119,81 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         <ContentContainer transparent={isMobile}>
           <VotingThreshold proposalData={proposalData} {...props} />
         </ContentContainer>
-        <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
-          {/* Validator Votes */}
-          <GridItem>
-            <ContentContainer>
-              <Flex alignItems="center" justifyContent="space-between">
-                <TableTitle
-                  title="Validator Votes"
-                  mb={0}
-                  count={answers?.validator.totalValidators}
-                />
-                <Button
-                  variant="ghost-primary"
-                  onClick={() => toggleDisclosure("validator")}
-                  rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                  isDisabled={!answers?.validator.totalValidators}
-                >
-                  {isMobile ? "View" : "View Details"}
-                </Button>
-              </Flex>
-              {isProposalResolved && (
-                <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
-                  <CustomIcon
-                    name="alert-circle-solid"
-                    boxSize={4}
-                    color="secondary.main"
+        {isFullTier && (
+          <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
+            {/* Validator Votes */}
+            <GridItem>
+              <ContentContainer>
+                <Flex alignItems="center" justifyContent="space-between">
+                  <TableTitle
+                    title="Validator Votes"
+                    mb={0}
+                    count={answers?.validator.totalValidators}
                   />
-                  <AlertDescription>
-                    Please note that the displayed ranking is in real-time and
-                    may not accurately reflect the final vote results when the
-                    voting period ends.
-                  </AlertDescription>
-                </Alert>
-              )}
-              <ValidatorVotesTable
-                id={proposalData.id}
-                answers={answers?.validator}
-                fullVersion={false}
-                isProposalResolved={isProposalResolved}
-                onViewMore={
-                  isMobile ? () => toggleDisclosure("validator") : undefined
-                }
-              />
-            </ContentContainer>
-          </GridItem>
-          {/* Recent Votes */}
-          <GridItem>
-            <ContentContainer>
-              <Flex alignItems="center" justifyContent="space-between">
-                <TableTitle
-                  title="Recent Votes"
-                  mb={0}
-                  count={answers?.all.total}
+                  <Button
+                    variant="ghost-primary"
+                    onClick={() => toggleDisclosure("validator")}
+                    rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                    isDisabled={!answers?.validator.totalValidators}
+                  >
+                    {isMobile ? "View" : "View Details"}
+                  </Button>
+                </Flex>
+                {isProposalResolved && (
+                  <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
+                    <CustomIcon
+                      name="alert-circle-solid"
+                      boxSize={4}
+                      color="secondary.main"
+                    />
+                    <AlertDescription>
+                      Please note that the displayed ranking is in real-time and
+                      may not accurately reflect the final vote results when the
+                      voting period ends.
+                    </AlertDescription>
+                  </Alert>
+                )}
+                <ValidatorVotesTable
+                  id={proposalData.id}
+                  answers={answers?.validator}
+                  fullVersion={false}
+                  isProposalResolved={isProposalResolved}
+                  onViewMore={
+                    isMobile ? () => toggleDisclosure("validator") : undefined
+                  }
                 />
-                <Button
-                  variant="ghost-primary"
-                  onClick={() => toggleDisclosure("all")}
-                  rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                  isDisabled={!answers?.all.total}
-                >
-                  {isMobile ? "View" : "View Details"}
-                </Button>
-              </Flex>
-              <ProposalVotesTable
-                id={proposalData.id}
-                answers={answers?.all}
-                fullVersion={false}
-                onViewMore={
-                  isMobile ? () => toggleDisclosure("all") : undefined
-                }
-              />
-            </ContentContainer>
-          </GridItem>
-        </Grid>
+              </ContentContainer>
+            </GridItem>
+            {/* Recent Votes */}
+            <GridItem>
+              <ContentContainer>
+                <Flex alignItems="center" justifyContent="space-between">
+                  <TableTitle
+                    title="Recent Votes"
+                    mb={0}
+                    count={answers?.all.total}
+                  />
+                  <Button
+                    variant="ghost-primary"
+                    onClick={() => toggleDisclosure("all")}
+                    rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                    isDisabled={!answers?.all.total}
+                  >
+                    {isMobile ? "View" : "View Details"}
+                  </Button>
+                </Flex>
+                <ProposalVotesTable
+                  id={proposalData.id}
+                  answers={answers?.all}
+                  fullVersion={false}
+                  onViewMore={
+                    isMobile ? () => toggleDisclosure("all") : undefined
+                  }
+                />
+              </ContentContainer>
+            </GridItem>
+          </Grid>
+        )}
       </Flex>
       <ValidatorVotesPanel
         answers={answers?.validator}

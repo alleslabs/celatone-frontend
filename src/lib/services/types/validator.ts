@@ -1,12 +1,13 @@
 import { z } from "zod";
 
-import type { ValidatorData } from "lib/types";
+import type { ConsensusPubkey, ValidatorData } from "lib/types";
 import {
   BlockVote,
   SlashingEvent,
   zBechAddr,
   zBig,
   zCoin,
+  zConsensusPubkey,
   zPagination,
   zProposalStatus,
   zProposalType,
@@ -20,10 +21,7 @@ import { parseTxHash, snakeToCamel, valoperToAddr } from "lib/utils";
 const zValidatorInfoLcd = z
   .object({
     operator_address: zValidatorAddr,
-    consensus_pubkey: z.object({
-      "@type": z.string(),
-      key: z.string(),
-    }),
+    consensus_pubkey: zConsensusPubkey,
     jailed: z.boolean(),
     status: z.enum([
       "BOND_STATUS_BONDED",
@@ -51,7 +49,11 @@ const zValidatorInfoLcd = z
     }),
     min_self_delegation: z.string(),
   })
-  .transform<ValidatorData>((val) => ({
+  .transform<
+    Omit<ValidatorData, "consensusAddress"> & {
+      consensusPubkey: ConsensusPubkey;
+    }
+  >((val) => ({
     rank: null,
     validatorAddress: val.operator_address,
     accountAddress: valoperToAddr(val.operator_address),
@@ -63,7 +65,9 @@ const zValidatorInfoLcd = z
     isActive: val.status === "BOND_STATUS_BONDED",
     votingPower: val.tokens,
     website: val.description.website,
+    consensusPubkey: val.consensus_pubkey,
   }));
+export type ValidatorInfoLcd = z.infer<typeof zValidatorInfoLcd>;
 
 export const zValidatorResponseLcd = z.object({
   validator: zValidatorInfoLcd,

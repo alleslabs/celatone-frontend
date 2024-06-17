@@ -7,13 +7,18 @@ import type {
 } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
-import type { BechAddr, Message, Transaction } from "lib/types";
+import type {
+  Message,
+  Transaction,
+  TransactionWithSignerPubkey,
+} from "lib/types";
 import {
   ActionMsgType,
   MsgFurtherAction,
   zBechAddr,
   zCoin,
   zMessageResponse,
+  zPubkey,
   zUint8Schema,
   zUtcDate,
 } from "lib/types";
@@ -52,10 +57,7 @@ zModeInfo = z.object({
 
 const zSignerInfo = z
   .object({
-    public_key: z.object({
-      "@type": z.string(),
-      key: z.string(),
-    }),
+    public_key: zPubkey,
     mode_info: zModeInfo.optional(),
     sequence: z.string(),
   })
@@ -88,9 +90,8 @@ const zTxBody = z
   .transform(snakeToCamel);
 export type TxBody = z.infer<typeof zTxBody>;
 
-const zTx = z
+export const zTx = z
   .object({
-    "@type": z.string(),
     body: zTxBody,
     auth_info: zAuthInfo,
     signatures: z.array(z.string()),
@@ -145,14 +146,9 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
-  (val) => {
+export const zTxsResponseItemFromLcd =
+  zTxResponse.transform<TransactionWithSignerPubkey>((val) => {
     const txBody = val.tx.body;
-    const message = txBody.messages[0];
-    const sender = (message?.sender ||
-      message?.signer ||
-      message?.fromAddress ||
-      "") as BechAddr;
 
     const logs = extractTxLogs(val);
 
@@ -164,7 +160,7 @@ export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
     return {
       hash: val.txhash,
       messages,
-      sender,
+      signerPubkey: val.tx.authInfo.signerInfos[0].publicKey,
       isSigner: true,
       height: Number(val.height),
       created: val.timestamp,
@@ -176,8 +172,7 @@ export const zTxsResponseItemFromLcd = zTxResponse.transform<Transaction>(
       isOpinit: false,
       isInstantiate: false,
     };
-  }
-);
+  });
 
 export const zTxsByAddressResponseLcd = z
   .object({
@@ -188,6 +183,7 @@ export const zTxsByAddressResponseLcd = z
     items: val.tx_responses,
     total: val.total,
   }));
+export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
 
 export const zTxsByHashResponseLcd = z
   .object({

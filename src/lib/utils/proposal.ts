@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { MinDeposit } from "lib/services/types";
+import type { GovParams } from "lib/model/proposal";
 import { big } from "lib/types";
 import type { Option } from "lib/types";
 
@@ -8,7 +8,7 @@ import { d2Formatter } from "./formatter";
 
 export const getAmountToVote = (
   initialDeposit: Coin,
-  minDeposit: Option<MinDeposit>
+  minDeposit: Option<GovParams["depositParams"]["minDeposit"]>
 ) => {
   const minDepositAmount = big(minDeposit?.formattedAmount || 0);
 

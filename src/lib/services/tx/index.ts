@@ -7,11 +7,12 @@ import type {
   BlockTxsResponse,
   TxData,
   TxsResponse,
-} from "../types/tx";
+} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useCurrentChain,
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
@@ -24,9 +25,15 @@ import type {
   BechAddr20,
   BechAddr32,
   Option,
+  Transaction,
   TxFilters,
 } from "lib/types";
-import { extractTxLogs, isTxHash, snakeToCamel } from "lib/utils";
+import {
+  convertAccountPubkeyToAccountAddress,
+  extractTxLogs,
+  isTxHash,
+  snakeToCamel,
+} from "lib/utils";
 
 import {
   getTxData,
@@ -118,8 +125,9 @@ export const useTxsByAddress = (
   search: Option<string>,
   isSigner: Option<boolean>,
   txFilters: TxFilters,
+  limit: number,
   offset: number,
-  limit: number
+  options: UseQueryOptions<AccountTxsResponse> = {}
 ) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
@@ -154,7 +162,7 @@ export const useTxsByAddress = (
         isInitia
       );
     },
-    { retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -235,11 +243,32 @@ export const useTxsCountByAddress = (
 export const useTxsByContractAddressLcd = (
   address: BechAddr32,
   limit: number,
-  offset: number
+  offset: number,
+  options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
 
-  return useQuery(
+  const queryfn = useCallback(
+    () =>
+      getTxsByContractAddressLcd(endpoint, address, limit, offset).then(
+        (txs) => ({
+          items: txs.items.map<Transaction>((tx) => ({
+            ...tx,
+            sender: convertAccountPubkeyToAccountAddress(
+              tx.signerPubkey,
+              prefix
+            ),
+          })),
+          total: txs.total,
+        })
+      ),
+    [address, endpoint, limit, offset, prefix]
+  );
+
+  return useQuery<TxsResponse>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_LCD,
       endpoint,
@@ -247,8 +276,8 @@ export const useTxsByContractAddressLcd = (
       limit,
       offset,
     ],
-    async () => getTxsByContractAddressLcd(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
+    queryfn,
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -278,37 +307,59 @@ export const useTxsByAccountAddressLcd = (
 
 export const useTxsByAddressLcd = (
   address: Option<BechAddr20>,
-  search: string,
+  search: Option<string>,
   limit: number,
   offset: number,
-  options: Pick<UseQueryOptions<TxsResponse>, "onSuccess"> = {}
+  options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const endpoint = useLcdEndpoint();
   const { validateContractAddress } = useValidateAddress();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
 
-  const queryfn = useCallback(() => {
-    if (isTxHash(search)) return getTxsByHashLcd(endpoint, search);
+  const queryfn = useCallback(async () => {
+    const txs = await (async () => {
+      if (search && isTxHash(search)) return getTxsByHashLcd(endpoint, search);
 
-    if (!validateContractAddress(search))
-      return getTxsByContractAddressLcd(
-        endpoint,
-        search as BechAddr32,
-        offset,
-        limit
-      );
+      if (search && !validateContractAddress(search))
+        return getTxsByContractAddressLcd(
+          endpoint,
+          search as BechAddr32,
+          limit,
+          offset
+        );
 
-    if (!address) throw new Error("address is undefined (useTxsByAddressLcd)");
-    return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
-  }, [address, endpoint, limit, offset, search, validateContractAddress]);
+      if (!address)
+        throw new Error("address is undefined (useTxsByAddressLcd)");
+      return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
+    })();
 
-  return useQuery(
+    return {
+      items: txs.items.map<Transaction>((tx) => ({
+        ...tx,
+        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+      })),
+      total: txs.total,
+    };
+  }, [
+    address,
+    endpoint,
+    limit,
+    offset,
+    prefix,
+    search,
+    validateContractAddress,
+  ]);
+
+  return useQuery<TxsResponse>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_LCD,
       endpoint,
       address,
       search,
-      offset,
       limit,
+      offset,
     ],
     queryfn,
     { ...options, retry: 1, refetchOnWindowFocus: false }

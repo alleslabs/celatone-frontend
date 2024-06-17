@@ -17,7 +17,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
-import { useAccountType } from "lib/services/accountService";
+import { useAccountType } from "lib/services/account";
 import type { BechAddr } from "lib/types";
 import { AccountType } from "lib/types";
 

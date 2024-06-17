@@ -1,5 +1,5 @@
 import type { GridItemProps } from "@chakra-ui/react";
-import { SlideFade } from "@chakra-ui/react";
+import { Flex, SlideFade } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { AccordionStepperItem } from "../AccordionStepperItem";
@@ -55,17 +55,19 @@ export const AccordionTx = ({
       onMouseLeave={() => setShowButton(false)}
     >
       <AccordionStepperItem />
-      <SingleActionMsg
-        messages={[message]}
-        type={extractMsgType(message.type)}
-        success
-        singleMsg
-      />
-      {allowFurtherAction && isSigner && (
-        <SlideFade in={showButton} offsetY="20px">
-          <RenderButton message={message} />
-        </SlideFade>
-      )}
+      <Flex gap={1} alignItems="center">
+        <SingleActionMsg
+          messages={[message]}
+          type={extractMsgType(message.type)}
+          success
+          singleMsg
+        />
+        {allowFurtherAction && isSigner && (
+          <SlideFade in={showButton} offsetY="20px">
+            <RenderButton message={message} />
+          </SlideFade>
+        )}
+      </Flex>
     </TableRow>
   );
 };

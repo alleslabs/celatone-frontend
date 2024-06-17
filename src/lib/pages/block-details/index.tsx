@@ -2,44 +2,25 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { Breadcrumb } from "lib/components/Breadcrumb";
-import { Loading } from "lib/components/Loading";
+import { useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state";
-import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useBlockData } from "lib/services/block";
 
-import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
+import { InvalidBlock } from "./components/InvalidBlock";
+import { BlockDetailsFull } from "./full";
+import { BlockDetailsLite } from "./lite";
 import { zBlockDetailQueryParams } from "./types";
-
-const InvalidBlock = () => <InvalidState title="Block does not exist" />;
 
 interface BlockDetailsBodyProps {
   height: number;
 }
 
 const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
-  const { data: blockData, isLoading } = useBlockData(height);
+  const isFullTier = useTierConfig() === "full";
 
-  if (isLoading) return <Loading withBorder />;
-  if (!blockData) return <InvalidBlock />;
-  return (
-    <>
-      <Breadcrumb
-        items={[
-          { text: "Blocks", href: "/blocks" },
-          { text: blockData.height.toString() },
-        ]}
-      />
-      <BlockDetailsTop blockData={blockData} />
-      <BlockInfo blockData={blockData} />
-      <BlockTxsTable height={height} />
-      <UserDocsLink
-        title="What is a block?"
-        cta="Read more about Block"
-        href="general/blocks/detail-page"
-      />
-    </>
+  return isFullTier ? (
+    <BlockDetailsFull height={height} />
+  ) : (
+    <BlockDetailsLite height={height} />
   );
 };
 

@@ -7,7 +7,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 
-import { useGovConfig } from "lib/app-provider";
+import { useGovConfig, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { useContractTableCounts } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
@@ -20,12 +20,16 @@ interface ContractTablesProps {
   contractAddress: BechAddr32;
 }
 
+const tableHeaderId = "contractDetailsTableHeader";
+
 export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
-  const tableHeaderId = "contractDetailsTableHeader";
+  const isFullTier = useTierConfig() === "full";
 
   const gov = useGovConfig({ shouldRedirect: false });
-  const { data, refetch: refetchCount } =
-    useContractTableCounts(contractAddress);
+  const { data, refetch: refetchCount } = useContractTableCounts(
+    contractAddress,
+    { enabled: isFullTier }
+  );
 
   return (
     <Flex direction="column" gap={6}>
@@ -49,7 +53,7 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
             count={data?.relatedProposal}
             isDisabled={data?.relatedProposal === 0}
             whiteSpace="nowrap"
-            hidden={!gov.enabled}
+            hidden={!gov.enabled || !isFullTier}
           >
             Related Proposals
           </CustomTab>

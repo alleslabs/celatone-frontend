@@ -43,7 +43,8 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
-import { useGovParams } from "lib/services/proposal";
+import { useGovParamsDeprecated } from "lib/model/proposal";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
@@ -72,7 +73,8 @@ const ProposalToWhitelist = () => {
     chainConfig: { prettyName },
   } = useCelatoneApp();
   const fabricateFee = useFabricateFee();
-  const { data: govParams } = useGovParams();
+  const { data: govParams } = useGovParamsDeprecated();
+  const { data: uploadAccessParams } = useUploadAccessParamsLcd();
   const submitProposalTx = useSubmitWhitelistProposalTx();
   const { broadcast } = useTxBroadcast();
   const {
@@ -98,7 +100,7 @@ const ProposalToWhitelist = () => {
 
   const minDeposit = govParams?.depositParams.minDeposit;
   const isPermissionless =
-    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
+    uploadAccessParams?.permission === AccessConfigPermission.EVERYBODY;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -128,11 +130,11 @@ const ProposalToWhitelist = () => {
         title,
         description,
         changesValue: JSON.stringify({
-          ...govParams?.uploadAccess,
+          ...uploadAccessParams,
           permission: !isPermissionless
             ? AccessConfigPermission.ANY_OF_ADDRESSES
             : AccessConfigPermission.EVERYBODY,
-          addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
+          addresses: uploadAccessParams?.addresses?.concat(addressesArray),
         }),
         initialDeposit,
         proposer: walletAddress,
@@ -142,12 +144,12 @@ const ProposalToWhitelist = () => {
   }, [
     addressesArray,
     description,
-    govParams?.uploadAccess,
     initialDeposit,
-    minDeposit,
-    title,
-    walletAddress,
     isPermissionless,
+    minDeposit?.precision,
+    title,
+    uploadAccessParams,
+    walletAddress,
   ]);
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
@@ -335,7 +337,7 @@ const ProposalToWhitelist = () => {
                             addressObj.address === addresses[idx].address
                         ) && "You already input this address",
                       whitelisted: () =>
-                        govParams?.uploadAccess.addresses?.includes(
+                        uploadAccessParams?.addresses?.includes(
                           addresses[idx].address
                         )
                           ? "This address is already included in whitelist"

@@ -1,5 +1,5 @@
 export * from "./txs";
 export * from "./AdminContractsTable";
-export * from "./InstantiatedContractsTable";
+export * from "./instantiated-contracts";
 export * from "./OpenedProposalsTable";
 export * from "./StoredCodesTable";

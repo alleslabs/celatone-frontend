@@ -27,7 +27,7 @@ import {
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
@@ -73,18 +73,21 @@ export const SelectContractInstantiator = ({
     resetOnClose();
   };
 
-  const { refetch, isFetching, isRefetching } = useContractLcd(searchContract, {
-    enabled: false,
-    retry: false,
-    cacheTime: 0,
-    refetchOnReconnect: false,
-    onSuccess: () => onSelectThenClose(searchContract),
-    onError: (err) =>
-      setInvalid(
-        (err as AxiosError<RpcQueryError>).response?.data.message ||
-          DEFAULT_RPC_ERROR
-      ),
-  });
+  const { refetch, isFetching, isRefetching } = useContractData(
+    searchContract,
+    {
+      enabled: false,
+      retry: false,
+      cacheTime: 0,
+      refetchOnReconnect: false,
+      onSuccess: () => onSelectThenClose(searchContract),
+      onError: (err) =>
+        setInvalid(
+          (err as AxiosError<RpcQueryError>).response?.data.message ||
+            DEFAULT_RPC_ERROR
+        ),
+    }
+  );
 
   const handleListSelect = (slug: string) => {
     setListSlug(slug);

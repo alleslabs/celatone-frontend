@@ -4,7 +4,7 @@ import { DepositBar } from "../../deposit-bar";
 import { DepositList } from "../../DepositList";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import type { ProposalOverviewProps } from "../../proposal-overview";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { TableTitle } from "lib/components/table";
 import { TooltipInfo } from "lib/components/Tooltip";
@@ -17,13 +17,18 @@ export const DepositPeriodSection = ({
   proposalData,
   params,
   isLoading,
+  isDepositsLoading,
 }: ProposalOverviewProps) => {
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
 
   if (isLoading) return <Loading my={0} />;
   if (!params) return <ErrorFetchingProposalInfos isParamsOnly />;
 
   const { minDeposit } = extractParams(params, proposalData.isExpedited);
+  const isDepositOrVoting =
+    proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
+    proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Flex
       direction="column"
@@ -35,15 +40,16 @@ export const DepositPeriodSection = ({
     >
       {isMobile ? (
         <>
-          {(proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
-            proposalData.status === ProposalStatus.VOTING_PERIOD) && (
-            <DepositBar
-              deposit={proposalData.totalDeposit}
-              minDeposit={minDeposit}
-              isCompact
-            />
-          )}
-          <DepositList proposalDeposits={proposalData.proposalDeposits} />
+          <DepositBar
+            deposit={proposalData.totalDeposit}
+            minDeposit={minDeposit}
+            isDepositOrVoting={isDepositOrVoting}
+            isCompact
+          />
+          <DepositList
+            proposalDeposits={proposalData.proposalDeposits}
+            isDepositsLoading={isDepositsLoading}
+          />
         </>
       ) : (
         <>
@@ -52,32 +58,39 @@ export const DepositPeriodSection = ({
               title="Depositors"
               mb={0}
               count={proposalData.proposalDeposits.length}
+              showCount={isFullTier || isDepositOrVoting}
             />
-            {(proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
-              proposalData.status === ProposalStatus.VOTING_PERIOD) && (
-              <Flex gap={1} align="center">
-                <Text
-                  variant="body2"
-                  color="text.dark"
-                  fontWeight={500}
-                  whiteSpace="nowrap"
-                  lineHeight={1.8}
-                >
-                  Total Deposited
-                </Text>
-                <TooltipInfo
-                  label="After reaching the total deposit amount, the proposal proceeds to the voting period."
-                  h="full"
-                />
-                <DepositBar
-                  deposit={proposalData.totalDeposit}
-                  minDeposit={minDeposit}
-                  isCompact={false}
-                />
-              </Flex>
-            )}
+            <Flex
+              gap={1}
+              align="center"
+              marginLeft={isDepositOrVoting ? 0 : "auto"}
+            >
+              <Text
+                variant="body2"
+                color="text.dark"
+                fontWeight={500}
+                whiteSpace="nowrap"
+                lineHeight={1.8}
+              >
+                Total Deposited
+              </Text>
+              <TooltipInfo
+                label="After reaching the total deposit amount, the proposal proceeds to the voting period."
+                h="full"
+              />
+              <DepositBar
+                deposit={proposalData.totalDeposit}
+                minDeposit={minDeposit}
+                isDepositOrVoting={isDepositOrVoting}
+                isCompact={false}
+              />
+            </Flex>
           </Grid>
-          <DepositorsTable depositors={proposalData.proposalDeposits} />
+          <DepositorsTable
+            depositors={proposalData.proposalDeposits}
+            isDepositsLoading={isDepositsLoading}
+            isPruned={!isFullTier && !isDepositOrVoting}
+          />
         </>
       )}
     </Flex>

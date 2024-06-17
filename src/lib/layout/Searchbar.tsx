@@ -24,6 +24,7 @@ import {
   useCelatoneApp,
   useInternalNavigate,
   useMobile,
+  useTierConfig,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -159,17 +160,17 @@ const ResultItem = ({
           <Text variant="body2">
             {metadata.icns.address || metadata.initiaUsername.address || value}
           </Text>
-          {metadata.icns.icnsNames?.primary_name && (
+          {metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
                 <PrimaryNameMark />
                 <Text variant="body3" color="text.dark">
-                  {metadata.icns.icnsNames.primary_name}
+                  {metadata.icns.icnsNames.primaryName}
                 </Text>
               </Flex>
               {value !== metadata.icns.address &&
                 normalizedIcnsValue !==
-                  metadata.icns.icnsNames?.primary_name && (
+                  metadata.icns.icnsNames?.primaryName && (
                   <Text
                     variant="body3"
                     color="text.dark"
@@ -258,22 +259,25 @@ const getPlaceholder = ({
   isPool,
   isMove,
   isGov,
+  isFullTier,
 }: {
   isWasm: boolean;
   isPool: boolean;
   isMove: boolean;
   isGov: boolean;
+  isFullTier: boolean;
 }) => {
   const govText = isGov ? " / Validator Address / Proposal ID" : "";
   const wasmText = isWasm ? " / Code ID / Contract Address" : "";
   const moveText = isMove ? " / Module Path" : "";
-  const poolText = isPool ? " / Pool ID" : "";
+  const poolText = isPool && isFullTier ? " / Pool ID" : "";
 
   return `Search by Account Address / Tx Hash / Block${govText}${wasmText}${moveText}${poolText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const Searchbar = () => {
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const {
@@ -438,7 +442,7 @@ const Searchbar = () => {
               )}
             </FormControl>
             <Text variant="body3" color="text.dark" textAlign="center" mt={2}>
-              {getPlaceholder({ isWasm, isPool, isMove, isGov })}
+              {getPlaceholder({ isWasm, isPool, isMove, isGov, isFullTier })}
             </Text>
           </DrawerBody>
         </DrawerContent>
@@ -492,7 +496,7 @@ const Searchbar = () => {
           ) : (
             <StyledListItem p={4}>
               <Text color="text.disabled" variant="body2" fontWeight={500}>
-                {getPlaceholder({ isWasm, isPool, isMove, isGov })}
+                {getPlaceholder({ isWasm, isPool, isMove, isGov, isFullTier })}
               </Text>
             </StyledListItem>
           )}

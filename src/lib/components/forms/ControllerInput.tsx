@@ -98,6 +98,7 @@ export const ControllerInput = <T extends FieldValues>({
           maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
+          pr={status ? "2rem" : 0}
         />
         <InputRightElement h="full">
           {status && getStatusIcon(status.state)}
