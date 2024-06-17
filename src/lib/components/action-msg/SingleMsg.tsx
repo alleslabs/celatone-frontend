@@ -1,4 +1,4 @@
-import { Tag, Text } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { snakeCase } from "snake-case";
 
 import type { LinkType } from "lib/components/ExplorerLink";
@@ -43,11 +43,13 @@ export const SingleMsg = ({
         {type} {text1}
       </Text>
       {tokens?.map((token: TokenWithValue, index: number) => (
-        <MsgToken
-          key={index.toString() + token.denom}
-          token={token}
-          // TODO: add `ampCopierSection` later
-        />
+        <Flex key={token.denom}>
+          <MsgToken
+            token={token}
+            // TODO: add `ampCopierSection` later
+          />
+          {index < tokens.length - 2 ? <Text>,</Text> : <Text ml={1}>and</Text>}
+        </Flex>
       ))}
       {/* Tags  */}
       {tags?.map((tag, index: number) => (

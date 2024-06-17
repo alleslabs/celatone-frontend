@@ -5,7 +5,7 @@ import { capitalize } from "lodash";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { RemarkRender, TableRow } from "lib/components/table";
-import type { ModuleHistory } from "lib/services/move/module";
+import type { ModuleHistory } from "lib/services/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface PublishedEventsTableRowProps {

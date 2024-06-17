@@ -8,6 +8,7 @@ import {
   useCurrentChain,
   useInternalNavigate,
   useMobile,
+  useTierConfig,
 } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
@@ -16,11 +17,11 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
-import type { HexAddr, ModuleData } from "lib/types";
+import type { HexAddr, IndexedModule } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
-  moduleData: ModuleData;
+  moduleData: IndexedModule;
   isVerified: boolean;
 }
 
@@ -31,25 +32,20 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-const useModuleAddress = (moduleData: ModuleData) => {
+const ModuleCta = ({ moduleData }: { moduleData: IndexedModule }) => {
+  const isMobile = useMobile();
+  const navigate = useInternalNavigate();
+  const { address } = useCurrentChain();
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
 
-  return useMemo(() => {
+  const moduleAddress = useMemo(() => {
     if (isHexWalletAddress(moduleData.address))
       return convertHexWalletAddress(moduleData.address as HexAddr);
     if (isHexModuleAddress(moduleData.address))
       return convertHexModuleAddress(moduleData.address as HexAddr);
     return moduleData.address;
   }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
-};
-
-const ModuleCta = ({ moduleData }: { moduleData: ModuleData }) => {
-  const isMobile = useMobile();
-  const navigate = useInternalNavigate();
-
-  const { address } = useCurrentChain();
-  const moduleAddress = useModuleAddress(moduleData);
 
   const { canRepublish, republishRemark } = useMemo(() => {
     // cannot republish if upgrade policy is IMMUTABLE
@@ -163,7 +159,17 @@ const ModuleCta = ({ moduleData }: { moduleData: ModuleData }) => {
 
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
-  const moduleAddress = useModuleAddress(moduleData);
+  const isFullTier = useTierConfig() === "full";
+  const { convertHexWalletAddress, convertHexModuleAddress } =
+    useConvertHexAddress();
+
+  const moduleAddress = useMemo(() => {
+    if (isHexWalletAddress(moduleData.address))
+      return convertHexWalletAddress(moduleData.address as HexAddr);
+    if (isHexModuleAddress(moduleData.address))
+      return convertHexModuleAddress(moduleData.address as HexAddr);
+    return moduleData.address;
+  }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
 
   return (
     <Flex direction="column">
@@ -236,23 +242,25 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             type="module_path"
           />
         </Flex>
-        <Flex
-          mt={{ base: 2, md: 0 }}
-          gap={{ base: 0, md: 2 }}
-          direction={{ base: "column", md: "row" }}
-        >
-          <Text {...baseTextStyle} color="text.main">
-            Creator:
-          </Text>
-          <ExplorerLink
-            value={moduleAddress}
-            ampCopierSection="module_top"
-            textFormat="normal"
-            maxWidth="fit-content"
-            type="user_address"
-            fixedHeight={false}
-          />
-        </Flex>
+        {isFullTier && (
+          <Flex
+            mt={{ base: 2, md: 0 }}
+            gap={{ base: 0, md: 2 }}
+            direction={{ base: "column", md: "row" }}
+          >
+            <Text {...baseTextStyle} color="text.main">
+              Creator:
+            </Text>
+            <ExplorerLink
+              value={moduleAddress}
+              ampCopierSection="module_top"
+              textFormat="normal"
+              maxWidth="fit-content"
+              type="user_address"
+              fixedHeight={false}
+            />
+          </Flex>
+        )}
         <Flex
           mt={{ base: 2, md: 0 }}
           gap={{ base: 0, md: 2 }}

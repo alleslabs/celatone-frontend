@@ -7,9 +7,11 @@ import { trackToMigrate } from "lib/amplitude";
 import {
   useCurrentChain,
   useInternalNavigate,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCTA } from "lib/components/layouts";
@@ -17,8 +19,8 @@ import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParams } from "lib/services/wasm/code";
-import { useContractLcd } from "lib/services/wasm/contract";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -38,7 +40,8 @@ const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data: uploadAccessParams, isFetching } = useUploadAccessParams();
+  const isFullTier = useTierConfig() === "full";
+  const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
   const {
     proceed,
     formData,
@@ -82,7 +85,7 @@ const Migrate = () => {
     [codeIdParam, firstStep, navigate]
   );
 
-  useContractLcd(contractAddress, {
+  useContractData(contractAddress, {
     onSuccess: (data) => {
       if (data.contract.admin === address) {
         setValue("admin", data.contract.admin);
@@ -180,11 +183,18 @@ const Migrate = () => {
           subtitle="You need to connect your wallet to perform this action"
         />
         {/* Select Migrate Contract modal */}
-        <ContractSelectSection
-          mode="only-admin"
-          contractAddress={contractAddress}
-          onContractSelect={onContractSelect}
-        />
+        {isFullTier ? (
+          <ContractSelectSection
+            mode="only-admin"
+            contractAddress={contractAddress}
+            onContractSelect={onContractSelect}
+          />
+        ) : (
+          <ContractInputSection
+            contract={contractAddress}
+            onContractSelect={onContractSelect}
+          />
+        )}
         <Box mt={12} w="full">
           {renderBody()}
         </Box>
@@ -193,7 +203,7 @@ const Migrate = () => {
         <FooterCTA
           cancelButton={{
             leftIcon: <CustomIcon name="chevron-left" />,
-            onClick: router.back,
+            onClick: handleBack,
           }}
           actionButton={{
             isDisabled: isDisabledProcess,

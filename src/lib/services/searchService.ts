@@ -4,10 +4,12 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
+  useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
 import type { BechAddr, Option } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
+import type { IcnsNamesByAddress } from "lib/types/name";
 import {
   isHexModuleAddress,
   isHexWalletAddress,
@@ -17,15 +19,14 @@ import {
 } from "lib/utils";
 
 import { useBlockData } from "./block";
-import { useModuleByAddressLcd } from "./move/moduleService";
-import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
-import type { ICNSNamesResponse } from "./ns";
+import { useModuleByAddressLcd } from "./move/module";
+import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { usePoolByPoolId } from "./poolService";
-import { useProposalData } from "./proposal";
+import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData } from "./tx";
-import { useValidatorData } from "./validator";
+import { useValidatorData, useValidatorDataLcd } from "./validator";
 import { useCodeLcd } from "./wasm/code";
-import { useContractLcd } from "./wasm/contract";
+import { useContractData } from "./wasm/contract";
 
 export type SearchResultType =
   | "Code ID"
@@ -40,7 +41,7 @@ export type SearchResultType =
 
 export interface ResultMetadata {
   icns: {
-    icnsNames: Option<ICNSNamesResponse>;
+    icnsNames: Option<IcnsNamesByAddress>;
     address: Option<BechAddr>;
     bech32Prefix: string;
   };
@@ -56,6 +57,7 @@ export const useSearchHandler = (
   metadata: ResultMetadata;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 } => {
+  const isFullTier = useTierConfig() === "full";
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {
@@ -80,7 +82,7 @@ export const useSearchHandler = (
   const addressType = getAddressType(debouncedKeyword);
 
   // Contract
-  const { data: contractData, isFetching: contractFetching } = useContractLcd(
+  const { data: contractData, isFetching: contractFetching } = useContractData(
     zBechAddr32.parse(debouncedKeyword),
     {
       enabled: isWasm && validateContractAddress(debouncedKeyword) === null,
@@ -98,11 +100,12 @@ export const useSearchHandler = (
 
   // ICNS
   const { data: icnsAddressData, isFetching: icnsAddressFetching } =
-    useAddressByICNSName(debouncedKeyword);
+    useAddressByIcnsNameLcd(debouncedKeyword);
   // provide ICNS metadata result
-  const { data: icnsNames } = useICNSNamesByAddress(
-    isAddr ? (debouncedKeyword as BechAddr) : icnsAddressData?.address
-  );
+  const address = (
+    isAddr ? debouncedKeyword : icnsAddressData?.address
+  ) as BechAddr;
+  const { data: icnsNames } = useIcnsNamesByAddressLcd(address);
 
   const addressResult = useMemo(() => {
     if (isAddr) {
@@ -128,28 +131,57 @@ export const useSearchHandler = (
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
 
   // Block
-  const { data: blockData, isFetching: blockFetching } = useBlockData(
+  const blockApi = useBlockData(
     Number(debouncedKeyword),
-    isPosDecimal(debouncedKeyword)
+    isPosDecimal(debouncedKeyword) && isFullTier
   );
+  const blockLcd = useBlockData(
+    Number(debouncedKeyword),
+    isPosDecimal(debouncedKeyword) && !isFullTier
+  );
+  const { data: blockData, isFetching: blockFetching } = isFullTier
+    ? blockApi
+    : blockLcd;
 
   // Proposal
-  const { data: proposalData, isFetching: proposalFetching } = useProposalData(
-    Number(debouncedKeyword),
-    isGov && isId(debouncedKeyword)
-  );
+  const { data: proposalApiData, isFetching: proposalApiIsFetching } =
+    useProposalData(
+      Number(debouncedKeyword),
+      isGov && isId(debouncedKeyword) && isFullTier
+    );
+  const { data: proposalLcdData, isFetching: proposalLcdIsFetching } =
+    useProposalDataLcd(
+      Number(debouncedKeyword),
+      isGov && isId(debouncedKeyword) && !isFullTier
+    );
+  const [proposalData, proposalFetching] = isFullTier
+    ? [proposalApiData, proposalApiIsFetching]
+    : [
+        proposalLcdData
+          ? {
+              info: proposalLcdData,
+            }
+          : undefined,
+        proposalLcdIsFetching,
+      ];
 
   // Validator
-  const { data: validatorData, isFetching: validatorFetching } =
-    useValidatorData(
-      zValidatorAddr.parse(debouncedKeyword),
-      isGov && validateValidatorAddress(debouncedKeyword) === null
-    );
+  const validatorApi = useValidatorData(
+    zValidatorAddr.parse(debouncedKeyword),
+    isGov && validateValidatorAddress(debouncedKeyword) === null && isFullTier
+  );
+  const validatorLcd = useValidatorDataLcd(
+    zValidatorAddr.parse(debouncedKeyword),
+    isGov && validateValidatorAddress(debouncedKeyword) === null && !isFullTier
+  );
+  const { data: validatorData, isFetching: validatorFetching } = isFullTier
+    ? validatorApi
+    : validatorLcd;
 
   // Pool
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
-    isPool && isId(debouncedKeyword)
+    isPool && isId(debouncedKeyword) && isFullTier
   );
 
   // Move
@@ -211,9 +243,7 @@ export const useSearchHandler = (
     metadata: {
       icns: {
         icnsNames,
-        address: isAddr
-          ? (debouncedKeyword as BechAddr)
-          : icnsAddressData?.address,
+        address,
         bech32Prefix,
       },
     },

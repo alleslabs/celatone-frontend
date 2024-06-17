@@ -46,7 +46,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/ad2344d0c17127cc6bce67e360f43cd6c5fa09a7b5f6f9b7b80f9dc3e0c4876e",
+          "l2/aee375e9d0b181f0d9d3a49f9a3d1d6b05d62b0ac81f8c92b9282afa4213d884",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
@@ -381,6 +381,54 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom: "utuc",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {
+      isValidatorExternalLink: null,
+    },
+  },
+  "landlord-1": {
+    tier: "full",
+    chain: "initia",
+    registryChainName: "civitiatestnet",
+    prettyName: "Civitia",
+    lcd: "https://maze-rest-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz",
+    indexer: "https://landlord-1-graphql.alleslabs.dev/v1/graphql",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: false,
+      },
+      move: {
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
+        decodeApi: INITIA_DECODER,
+        verify: "",
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: false,
+      },
+      nft: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom:
+          "l2/afaa3f4e1717c75712f8e8073e41f051a4e516cd25daa82d948c4729388edefd",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,

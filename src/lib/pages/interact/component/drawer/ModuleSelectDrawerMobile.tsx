@@ -17,7 +17,7 @@ import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ModuleCard } from "lib/components/module";
-import { useModulesByAddressLcd } from "lib/services/move/moduleService";
+import { useModulesByAddress } from "lib/services/move/module";
 import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
@@ -60,16 +60,10 @@ export const ModuleSelectDrawerMobile = ({
   });
   const [modules, setModules] = useState<IndexedModule[]>();
 
-  const { refetch } = useModulesByAddressLcd({
+  const { refetch } = useModulesByAddress({
     address: selectedAddress.hex,
-    options: {
-      refetchOnWindowFocus: false,
-      enabled: false,
-      retry: false,
-      onSuccess: (data) => {
-        setModules(data);
-      },
-    },
+    enabled: false,
+    onSuccess: ({ items }) => setModules(items),
   });
 
   useEffect(() => {

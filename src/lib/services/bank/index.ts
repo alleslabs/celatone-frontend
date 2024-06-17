@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import type { Big } from "big.js";
 
 import { useAssetInfos } from "../assetService";
-import { useMovePoolInfos } from "../move";
+import { useMovePoolInfos } from "../move/poolService";
 import type { BalanceInfos } from "../types";
 import {
   CELATONE_QUERY_KEYS,
@@ -25,9 +25,9 @@ import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
 
 export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
+  const isFullTier = useTierConfig() === "full";
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
-  const isFullTier = useTierConfig() === "full";
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
@@ -36,7 +36,7 @@ export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
       isFullTier
         ? getBalances(endpoint, address)
         : getBalancesLcd(endpoint, address),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

@@ -271,7 +271,6 @@ export const fromLogs: TestCase = {
       '[{"events":[{"type":"message","attributes":[{"key":"action","value":"/cosmwasm.wasm.v1.MsgMigrateContract"},{"key":"module","value":"wasm"},{"key":"sender","value":"osmo18rf2vketuhfvrw0n986mghms33ahm884wsrfsj"}]},{"type":"migrate","attributes":[{"key":"code_id","value":"17"},{"key":"_contract_address","value":"osmo1cvtzwsj8lam9at8vfgxfnveyzjne8eecqjnsh6k3jvt3l7ve6zms3wtpd0"}]}]}]',
     timestamp: parseDate("2023-06-29T06:09:47Z"),
     tx: {
-      "@type": "/cosmos.tx.v1beta1.Tx",
       authInfo: {
         fee: {
           amount: [
@@ -464,7 +463,6 @@ export const fromLogsTxFailed: TestCase = {
       "failed to execute message; message index: 0: was (1000uosmo), need (400000000uosmo): minimum deposit is too small",
     timestamp: parseDate("2022-09-06T09:03:15Z"),
     tx: {
-      "@type": "/cosmos.tx.v1beta1.Tx",
       authInfo: {
         fee: {
           amount: [
@@ -750,7 +748,6 @@ export const fromEvents: TestCase = {
     rawLog: "",
     timestamp: parseDate("2024-01-16T16:51:20Z"),
     tx: {
-      "@type": "/cosmos.tx.v1beta1.Tx",
       authInfo: {
         fee: {
           amount: [
@@ -1023,7 +1020,6 @@ export const fromEventsTxFailed: TestCase = {
       "failed to execute message; message index: 0: VM failure: status OUT_OF_GAS of type Execution, location=0000000000000000000000002ab506311ffe3aaf8871f84a7ba8a685e025dbba::ed25519, function=1, code_offset=12",
     timestamp: parseDate("2024-01-26T07:05:00Z"),
     tx: {
-      "@type": "/cosmos.tx.v1beta1.Tx",
       authInfo: {
         fee: {
           amount: [

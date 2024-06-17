@@ -32,6 +32,7 @@ export interface VoteDetailsProps {
   votesInfo: Option<ProposalVotesInfo>;
   params: Option<ProposalParams>;
   isLoading: boolean;
+  isDepositsLoading: boolean;
 }
 
 export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {

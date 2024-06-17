@@ -34,7 +34,7 @@ export const StatusSummary = ({
   proposalData,
   ...props
 }: ProposalOverviewProps) => {
-  const isOngoing =
+  const isDepositOrVoting =
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
@@ -54,9 +54,9 @@ export const StatusSummary = ({
         justify="space-between"
       >
         <Flex align="center" gap={2} whiteSpace="nowrap">
-          {isOngoing && <ActiveDot />}
+          {isDepositOrVoting && <ActiveDot />}
           <Text variant="body1" textColor="text.main" fontWeight={700}>
-            {isOngoing ? "Current" : "Final"} proposal result:
+            {isDepositOrVoting ? "Current" : "Final"} proposal result:
           </Text>
           <SummaryStatusChip proposalData={proposalData} {...props} />
         </Flex>

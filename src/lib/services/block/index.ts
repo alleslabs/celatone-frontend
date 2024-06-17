@@ -4,13 +4,18 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCurrentChain,
   useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
-import type { BlockData } from "lib/types";
+import type { BlockData, ConsensusAddr, Transaction } from "lib/types";
+import {
+  convertAccountPubkeyToAccountAddress,
+  convertRawConsensusAddrToConsensusAddr,
+} from "lib/utils";
 
 import { getBlockData, getBlocks } from "./api";
-import { getLatestBlockLcd } from "./lcd";
+import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
 
 export const useBlocks = (
   limit: number,
@@ -33,6 +38,40 @@ export const useBlockData = (height: number, enabled = true) => {
     async () => getBlockData(endpoint, height),
     {
       enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useBlockDataLcd = (height: number) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  return useQuery<{
+    block: BlockData;
+    proposerConsensusAddress: ConsensusAddr;
+    transactions: Transaction[];
+  }>(
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, endpoint, height],
+    async () => {
+      const { rawProposerConsensusAddress, transactions, ...rest } =
+        await getBlockDataLcd(endpoint, height);
+      return {
+        ...rest,
+        proposerConsensusAddress: convertRawConsensusAddrToConsensusAddr(
+          rawProposerConsensusAddress,
+          prefix
+        ),
+        transactions: transactions.map<Transaction>((tx) => ({
+          ...tx,
+          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        })),
+      };
+    },
+    {
       retry: false,
       refetchOnWindowFocus: false,
     }
