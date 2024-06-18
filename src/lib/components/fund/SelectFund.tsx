@@ -74,6 +74,7 @@ export const SelectFund = ({
               labelBgColor={labelBgColor}
             />
           }
+          initialSelected={field.denom}
         />
       ))}
       <Button

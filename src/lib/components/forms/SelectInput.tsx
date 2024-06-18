@@ -84,8 +84,7 @@ export const SelectInput = <T extends string>({
     if (!initialSelected) return;
 
     setSelected(
-      options.find((item) => !item.disabled && item.value === initialSelected)
-        ?.label ?? ""
+      options.find((item) => item.value === initialSelected)?.label ?? ""
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialSelected]);
