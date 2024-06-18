@@ -20,6 +20,7 @@ import {
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   BechAddr,
   BechAddr20,
@@ -361,7 +362,7 @@ export const useTxsByAddressLcd = (
       limit,
       offset,
     ],
-    queryfn,
+    createQueryFnWithTimeout(queryfn, 20000),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };

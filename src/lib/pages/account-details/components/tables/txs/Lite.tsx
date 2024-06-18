@@ -72,7 +72,7 @@ export const TxsTableLite = ({
                   <EmptyState
                     withBorder
                     imageVariant="empty"
-                    message="There are no transactions on this account or prune from LCD."
+                    message="There are no transactions on this account, or they have been pruned from the LCD."
                   />
                 )
               }
