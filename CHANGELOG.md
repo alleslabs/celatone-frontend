@@ -78,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
 - [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
 - [#963](https://github.com/alleslabs/celatone-frontend/pull/963) Add separator between token in tx message
 - [#959](https://github.com/alleslabs/celatone-frontend/pull/959) Update @cosmos-kit/react to v2.15.0 and friends
@@ -99,6 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#978](https://github.com/alleslabs/celatone-frontend/pull/978) Fix republish module description notice
+- [#977](https://github.com/alleslabs/celatone-frontend/pull/977) Fix block query in search
 - [#962](https://github.com/alleslabs/celatone-frontend/pull/962) Fix tx msg expand
 - [#965](https://github.com/alleslabs/celatone-frontend/pull/965) Add search not found state in module detail
 - [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card

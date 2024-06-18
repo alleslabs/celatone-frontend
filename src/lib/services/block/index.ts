@@ -44,7 +44,7 @@ export const useBlockData = (height: number, enabled = true) => {
   );
 };
 
-export const useBlockDataLcd = (height: number) => {
+export const useBlockDataLcd = (height: number, enabled = true) => {
   const endpoint = useLcdEndpoint();
   const {
     chain: { bech32_prefix: prefix },
@@ -74,6 +74,7 @@ export const useBlockDataLcd = (height: number) => {
     {
       retry: false,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
