@@ -9,6 +9,7 @@ import {
   useCelatoneApp,
   useExampleAddresses,
   useMoveConfig,
+  useTierConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -17,7 +18,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
-import { useAccountType } from "lib/services/account";
+import { useAccountType, useAccountTypeLcd } from "lib/services/account";
 import type { BechAddr } from "lib/types";
 import { AccountType } from "lib/types";
 
@@ -48,6 +49,7 @@ export function SaveNewAccountModal({
   publicDescription,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
+  const isFullTier = useTierConfig() === "full";
   const { user: exampleUserAddress } = useExampleAddresses();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddresses = useFormatAddresses();
@@ -94,7 +96,7 @@ export function SaveNewAccountModal({
     setStatus({ state: "error", message });
   };
 
-  const { refetch } = useAccountType(addressState, {
+  const { refetch: refetchLite } = useAccountTypeLcd(addressState, {
     enabled: false,
     onSuccess: (type) => {
       if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
@@ -108,6 +110,23 @@ export function SaveNewAccountModal({
       setErrorStatus(err.message);
     },
   });
+
+  const { refetch: refetchFull } = useAccountType(addressState, {
+    enabled: false,
+    onSuccess: (type) => {
+      if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
+      else {
+        setErrorStatus("You need to save contract through Contract page.");
+        setIsContract(true);
+      }
+    },
+    onError: (err) => {
+      resetForm(false);
+      setErrorStatus(err.message);
+    },
+  });
+
+  const refetch = isFullTier ? refetchFull : refetchLite;
 
   useEffect(() => {
     if (addressState.trim().length === 0) {
