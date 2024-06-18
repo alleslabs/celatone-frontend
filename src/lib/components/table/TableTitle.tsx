@@ -5,7 +5,7 @@ interface TableTitleProps extends BoxProps {
   title: string;
   count?: number;
   showCount?: boolean;
-  helperText?: string | undefined;
+  helperText?: string;
   isSmall?: boolean;
 }
 

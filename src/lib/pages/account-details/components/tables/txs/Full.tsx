@@ -1,14 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
+import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import {
-  AccountDetailEmptyState,
-  EmptyState,
-  ErrorFetching,
-} from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
@@ -24,11 +21,7 @@ const getEmptyState = ({
   transactions,
   selectedFilters,
 }: {
-  transactions:
-    | {
-        items: Transaction[];
-      }
-    | undefined;
+  transactions: Option<Transaction[]>;
   selectedFilters: string[];
 }) => {
   if (!transactions) {
@@ -51,7 +44,7 @@ const getEmptyState = ({
     );
 
   return (
-    <AccountDetailEmptyState
+    <AccountDetailsEmptyState
       message="No transactions have been submitted by this account before."
       pt={4}
     />
@@ -172,7 +165,10 @@ export const TxsTableFull = ({
             <TransactionsTable
               transactions={transactions?.items}
               isLoading={isLoading || isTxCountLoading}
-              emptyState={getEmptyState({ transactions, selectedFilters })}
+              emptyState={getEmptyState({
+                transactions: transactions?.items,
+                selectedFilters,
+              })}
               showRelations
             />
           )}

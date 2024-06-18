@@ -1,17 +1,17 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
-export interface AccountDetailEmptyStateProps {
+export interface AccountDetailsEmptyStateProps {
   message: string;
   textVariant?: TextProps["variant"];
   pt?: FlexProps["pt"];
 }
 
-export const AccountDetailEmptyState = ({
+export const AccountDetailsEmptyState = ({
   message,
   textVariant = "body1",
   pt = 2,
-}: AccountDetailEmptyStateProps) => (
+}: AccountDetailsEmptyStateProps) => (
   <Flex
     alignItems="flex-start"
     flexDir="column"

@@ -2,11 +2,11 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { AccountDetailEmptyState } from "lib/components/state";
 import { CodesTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
 import type { BechAddr, Option } from "lib/types";
@@ -88,7 +88,7 @@ export const StoredCodesTable = observer(
               codes={codes}
               isLoading={isLoading}
               emptyState={
-                <AccountDetailEmptyState message="No codes have been stored by this account before." />
+                <AccountDetailsEmptyState message="No codes have been stored by this account before." />
               }
               onRowSelect={onRowSelect}
             />

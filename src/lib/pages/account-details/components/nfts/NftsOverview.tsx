@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
-import { AccountDetailEmptyState } from "lib/components/state";
 import { MobileTitle, ViewMore } from "lib/components/table";
 import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
@@ -39,7 +39,7 @@ export const NftsOverview = ({
               nfts={data?.nfts}
               isLoading={isFetching}
               emptyState={
-                <AccountDetailEmptyState message="No NFTs are held by this account." />
+                <AccountDetailsEmptyState message="No NFTs are held by this account." />
               }
               showCollection
             />

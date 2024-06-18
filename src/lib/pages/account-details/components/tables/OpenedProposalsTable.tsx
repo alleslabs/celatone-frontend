@@ -1,11 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { AccountDetailEmptyState, ErrorFetching } from "lib/components/state";
+import { ErrorFetching } from "lib/components/state";
 import { MobileTitle, ProposalsTable, ViewMore } from "lib/components/table";
 import { useProposalsByAddress } from "lib/services/proposal";
 import type { BechAddr, Option } from "lib/types";
@@ -84,7 +85,7 @@ export const OpenedProposalsTable = ({
                   hasBorderTop={false}
                 />
               ) : (
-                <AccountDetailEmptyState message="No proposals have been opened by this account before." />
+                <AccountDetailsEmptyState message="No proposals have been opened by this account before." />
               )
             }
           />

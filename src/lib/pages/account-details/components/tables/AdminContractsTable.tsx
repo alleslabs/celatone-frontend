@@ -2,11 +2,12 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { AccountDetailEmptyState, ErrorFetching } from "lib/components/state";
+import { ErrorFetching } from "lib/components/state";
 import { ContractsTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountAdminContracts } from "lib/pages/account-details/data";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
@@ -96,7 +97,7 @@ export const AdminContractsTable = observer(
                     hasBorderTop={false}
                   />
                 ) : (
-                  <AccountDetailEmptyState message="This account does not have any admin access for any contracts." />
+                  <AccountDetailsEmptyState message="This account does not have any admin access for any contracts." />
                 )
               }
               onRowSelect={onRowSelect}

@@ -1,10 +1,11 @@
 import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource";
-import { AccountDetailEmptyState, ErrorFetching } from "lib/components/state";
+import { ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import type { BechAddr, Option, ResourceGroup } from "lib/types";
 import { scrollToTop } from "lib/utils";
@@ -54,7 +55,7 @@ export const ResourceOverviewBody = ({
     );
   if (!resourcesByName.length)
     return (
-      <AccountDetailEmptyState message="No resources are stored on this account." />
+      <AccountDetailsEmptyState message="No resources are stored on this account." />
     );
 
   return (

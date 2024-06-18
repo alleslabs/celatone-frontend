@@ -1,13 +1,10 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { useMemo } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
-import {
-  AccountDetailEmptyState,
-  EmptyState,
-  ErrorFetching,
-} from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 interface ModuleListsBodyProps {
@@ -46,7 +43,7 @@ export const ModuleListsBody = ({
     );
   if (!modules.length)
     return (
-      <AccountDetailEmptyState message="No modules are on this account." />
+      <AccountDetailsEmptyState message="No modules are on this account." />
     );
 
   if (!filteredModules?.length)
