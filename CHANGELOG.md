@@ -99,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#979](https://github.com/alleslabs/celatone-frontend/pull/979) Pass through block in search in lite
 - [#975](https://github.com/alleslabs/celatone-frontend/pull/975) Fix view function lite ver and add proposal alert
 - [#977](https://github.com/alleslabs/celatone-frontend/pull/977) Fix block query in search
 - [#962](https://github.com/alleslabs/celatone-frontend/pull/962) Fix tx msg expand
