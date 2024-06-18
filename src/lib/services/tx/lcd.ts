@@ -44,14 +44,22 @@ export const getTxsByAccountAddressLcd = async (
   offset: number
 ) =>
   axios
-    .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs?events=message.sender=%27${encodeURI(address)}%27`,
-      {
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        order_by: 2,
+        limit,
+        page: offset / limit + 1,
+        query: `message.sender='${encodeURI(address)}'`,
+      },
+    })
+    .catch(() =>
+      axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
         params: {
           order_by: 2,
           limit,
           page: offset / limit + 1,
+          events: `message.sender='${encodeURI(address)}'`,
         },
-      }
+      })
     )
     .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
