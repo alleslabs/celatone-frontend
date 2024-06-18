@@ -7,7 +7,7 @@ import {
   useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, BechAddr, Option } from "lib/types";
+import type { Addr, BechAddr, Nullish, Option } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 import {
@@ -50,8 +50,8 @@ export interface ResultMetadata {
     bech32Prefix: string;
   };
   initiaUsername: {
-    username: Option<string>;
-    address: Option<Addr>;
+    username: Nullish<string>;
+    address: Nullish<Addr>;
     bech32Prefix: string;
   };
 }

@@ -5,22 +5,21 @@ import {
   useInitia,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, Option } from "lib/types";
+import type { Addr, Nullish } from "lib/types";
 
 import { getAddressByInitiaUsername, getInitiaUsernameByAddress } from "./lcd";
 
 export const useInitiaUsernameByAddress = (
-  address: Option<Addr>,
+  address: Nullish<Addr>,
   enabled = true
 ) => {
   const { isSomeValidAddress } = useValidateAddress();
   const isInitia = useInitia();
   const queryFn = async () => {
-    if (!address) throw new Error("address is undefined");
+    if (!address)
+      throw new Error("address is undefined (useInitiaUsernameByAddress)");
+
     const username = await getInitiaUsernameByAddress(address);
-    if (username === null) {
-      throw new Error("No username found for the given address");
-    }
     return { username };
   };
 
@@ -29,7 +28,8 @@ export const useInitiaUsernameByAddress = (
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled: enabled && isInitia && address && isSomeValidAddress(address),
+      enabled:
+        !!enabled && !!isInitia && !!address && isSomeValidAddress(address),
       retry: 1,
     }
   );
@@ -41,11 +41,7 @@ export const useAddressByInitiaUsername = (
 ) => {
   const isInitia = useInitia();
   const queryFn = async () => {
-    // if (!username) throw new Error("address is undefined");
     const address = await getAddressByInitiaUsername(username);
-    if (address === null) {
-      throw new Error("No username found for the given address");
-    }
     return { address };
   };
   return useQuery(
@@ -53,7 +49,7 @@ export const useAddressByInitiaUsername = (
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled: enabled && isInitia,
+      enabled: !!enabled && !!isInitia,
       retry: 1,
     }
   );

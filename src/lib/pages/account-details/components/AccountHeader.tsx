@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Heading,
-  IconButton,
-  Image,
-  Skeleton,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, IconButton, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { useMobile, useMoveConfig } from "lib/app-provider";
@@ -21,90 +14,15 @@ import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/types";
 import { useInitiaUsernameByAddress } from "lib/services/username";
-import type { AccountLocalInfo } from "lib/stores/account";
 import type { BechAddr, HexAddr, Option } from "lib/types";
+
+import { AccountTitle } from "./AccountTitle";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
   accountAddress: BechAddr;
   hexAddress: HexAddr;
 }
-
-const AccountTitle = ({
-  accountData,
-  accountLocalInfo,
-  hexAddress,
-}: {
-  accountData: Option<AccountData>;
-  accountLocalInfo: Option<AccountLocalInfo>;
-  hexAddress: HexAddr;
-}) => {
-  const move = useMoveConfig({ shouldRedirect: false });
-  const { data, isLoading, isFetching } = useInitiaUsernameByAddress(
-    hexAddress,
-    move.enabled
-  );
-
-  const handleDisplayName = () => {
-    if (accountLocalInfo?.name) return accountLocalInfo.name;
-    if (accountData?.publicInfo?.name) return accountData?.publicInfo?.name;
-    if (accountData?.icns?.primaryName) return accountData?.icns?.primaryName;
-    if (move.enabled && data?.username) return data?.username;
-    return "Account Details";
-  };
-
-  const handleIcon = () => {
-    const altText =
-      accountData?.projectInfo?.name ?? accountData?.icns?.primaryName;
-
-    if (accountData?.projectInfo?.logo || accountData?.icns?.primaryName)
-      return (
-        <Image
-          src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"
-          borderRadius="full"
-          alt={altText}
-          width={7}
-          height={7}
-        />
-      );
-
-    if (move.enabled && data?.username && !accountLocalInfo?.name)
-      return (
-        <Image
-          src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
-          borderRadius="full"
-          alt={altText}
-          width={6}
-          height={6}
-          mr={1}
-        />
-      );
-
-    if (accountLocalInfo?.name)
-      return <CustomIcon name="bookmark" boxSize={5} color="secondary.main" />;
-    return <CustomIcon name="wallet" boxSize={5} color="secondary.main" />;
-  };
-
-  if (isLoading && isFetching)
-    return (
-      <Skeleton
-        h={6}
-        w={32}
-        borderRadius={4}
-        startColor="gray.500"
-        endColor="gray.700"
-      />
-    );
-
-  return (
-    <Flex gap={1} align="center">
-      {handleIcon()}
-      <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-        {handleDisplayName()}
-      </Heading>
-    </Flex>
-  );
-};
 
 export const AccountHeader = observer(
   ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
@@ -212,11 +130,7 @@ export const AccountHeader = observer(
               </Flex>
             )}
             {accountLocalInfo?.name && (
-              <Flex
-                mt={{ base: 1, md: 0 }}
-                direction={{ base: "column", md: "row" }}
-                alignItems="center"
-              >
+              <Flex mt={{ base: 1, md: 0 }} alignItems="center">
                 <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
                   Initia Username:
                 </Text>

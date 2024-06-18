@@ -104,23 +104,21 @@ const getRouteOptions = (
   }
 };
 
-const InitiaUsername = ({ username }: { username: string }) => {
-  return (
-    <Flex gap={1} align="center" flexWrap="wrap">
-      <Flex gap={1} align="center">
-        <Image
-          src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
-          borderRadius="full"
-          width={4}
-          height={4}
-        />
-        <Text variant="body3" color="text.dark">
-          {username}
-        </Text>
-      </Flex>
+const InitiaUsername = ({ username }: { username: string }) => (
+  <Flex gap={1} align="center" flexWrap="wrap">
+    <Flex gap={1} align="center">
+      <Image
+        src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+        borderRadius="full"
+        width={4}
+        height={4}
+      />
+      <Text variant="body3" color="text.dark">
+        {username}
+      </Text>
     </Flex>
-  );
-};
+  </Flex>
+);
 
 const ResultItem = ({
   index,
@@ -312,15 +310,19 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
+      const getQueryValue = () => {
+        if (type === "Module Path") {
+          return splitModule(keyword) as [Addr, string];
+        }
+        return (
+          metadata.icns.address || metadata.initiaUsername.address || keyword
+        );
+      };
+
       trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
-        const queryValues =
-          type === "Module Path"
-            ? (splitModule(keyword) as [Addr, string])
-            : metadata.icns.address ||
-              metadata.initiaUsername.address ||
-              keyword;
+        const queryValues = getQueryValue();
         navigate({
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
