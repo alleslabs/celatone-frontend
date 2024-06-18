@@ -36,11 +36,8 @@ export const HomeLite = () => {
           borderBottom={{ base: "1px solid", md: "0px" }}
           borderColor="gray.700"
         >
-          <Heading as="h4" variant="h4">
-            <Text as="span" color="accent.main">
-              {prettyName}
-            </Text>{" "}
-            Overview
+          <Heading as="h4" variant="h4" color="accent.main">
+            {prettyName}
           </Heading>
           <Flex
             alignItems={{ base: "start", md: "end" }}

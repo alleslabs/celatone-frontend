@@ -8,6 +8,7 @@ import {
   Flex,
   FormControl,
   IconButton,
+  Image,
   List,
   ListItem,
   Spinner,
@@ -47,6 +48,7 @@ const StyledListItem = chakra(ListItem, {
     bg: "gray.900",
   },
 });
+
 interface ResultItemProps {
   index: number;
   type: SearchResultType;
@@ -102,6 +104,22 @@ const getRouteOptions = (
   }
 };
 
+const InitiaUsername = ({ username }: { username: string }) => (
+  <Flex gap={1} align="center" flexWrap="wrap">
+    <Flex gap={1} align="center">
+      <Image
+        src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+        borderRadius="full"
+        width={4}
+        height={4}
+      />
+      <Text variant="body3" color="text.dark">
+        {username}
+      </Text>
+    </Flex>
+  </Flex>
+);
+
 const ResultItem = ({
   index,
   type,
@@ -116,6 +134,7 @@ const ResultItem = ({
   const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
+
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
@@ -136,7 +155,9 @@ const ResultItem = ({
             onClose?.();
           }}
         >
-          <Text variant="body2">{metadata.icns.address || value}</Text>
+          <Text variant="body2">
+            {metadata.icns.address || metadata.initiaUsername.address || value}
+          </Text>
           {metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
@@ -162,6 +183,9 @@ const ResultItem = ({
                   </Text>
                 )}
             </Flex>
+          )}
+          {metadata.initiaUsername?.username && (
+            <InitiaUsername username={metadata.initiaUsername.username} />
           )}
         </Flex>
       )}
@@ -286,13 +310,19 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
+      const getQueryValue = () => {
+        if (type === "Module Path") {
+          return splitModule(keyword) as [Addr, string];
+        }
+        return (
+          metadata.icns.address || metadata.initiaUsername.address || keyword
+        );
+      };
+
       trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
-        const queryValues =
-          type === "Module Path"
-            ? (splitModule(keyword) as [Addr, string])
-            : metadata.icns.address || keyword;
+        const queryValues = getQueryValue();
         navigate({
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
@@ -301,7 +331,13 @@ const Searchbar = () => {
         onClose();
       }
     },
-    [keyword, metadata.icns.address, navigate, onClose]
+    [
+      keyword,
+      metadata.icns.address,
+      metadata.initiaUsername.address,
+      navigate,
+      onClose,
+    ]
   );
 
   const handleOnKeyEnter = useCallback(
