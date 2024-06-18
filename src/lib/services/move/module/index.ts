@@ -147,13 +147,13 @@ export const useFunctionView = ({
   onSuccess?: (data: string) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }): UseQueryResult<string> => {
-  const baseEndpoint = useBaseApiRoute("rest");
+  const lcdEndpoint = useLcdEndpoint();
   const queryFn: QueryFunction<string> = () =>
-    getFunctionView(baseEndpoint, moduleAddress, moduleName, fn, abiData);
+    getFunctionView(lcdEndpoint, moduleAddress, moduleName, fn, abiData);
   return useQuery(
     [
       CELATONE_QUERY_KEYS.FUNCTION_VIEW,
-      baseEndpoint,
+      lcdEndpoint,
       moduleAddress,
       moduleName,
       fn.name,
