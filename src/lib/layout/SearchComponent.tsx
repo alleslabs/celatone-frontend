@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import {
   Button,
   Flex,
@@ -17,56 +16,44 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
-import type { ChangeEvent, KeyboardEvent } from "react";
-import { useCallback, useRef, useState } from "react";
+import type { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
   useInternalNavigate,
+  useIsMac,
   useMobile,
-  // useTierConfig,
+  useTierConfig,
 } from "lib/app-provider";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
-import { EmptyState } from "lib/components/state";
 import { useEaster } from "lib/hooks";
-import type {
-  ResultMetadata,
-  SearchResultType,
-} from "lib/services/searchService";
+import type { SearchResultType } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Addr, Nullable, Option } from "lib/types";
+import type { Addr, Option } from "lib/types";
 import { splitModule } from "lib/utils";
 
-interface ResultItemProps {
-  index: number;
-  type: SearchResultType;
-  value: string;
-  cursor: Option<number>;
-  metadata: ResultMetadata;
-  setCursor: (index: Option<number>) => void;
-  handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
-  onClose?: () => void;
-}
+import { getRouteOptions, SearchResultRenderer } from "./SearchResultRenderer";
 
 const getZeroState = ({
   isWasm,
   isPool,
   isMove,
   isGov,
+  isFullTier,
 }: {
   isWasm: boolean;
   isPool: boolean;
   isMove: boolean;
   isGov: boolean;
+  isFullTier: boolean;
 }) => {
   const starter = ["Account Address", "TX Hash", "Block Height"];
   const govText = isGov ? ["Validator Address", "Proposal ID"] : [];
   const wasmText = isWasm ? ["Code ID", "Contract Address"] : [];
   const moveText = isMove ? ["Module Path"] : [];
-  const poolText = isPool ? ["Pool ID"] : [];
+  const poolText = isPool && isFullTier ? ["Pool ID"] : [];
 
   const supportedItemsType = starter.concat(
     govText,
@@ -97,36 +84,6 @@ const getZeroState = ({
   );
 };
 
-// const getResult = () => (
-//   <Flex direction="column" gap={3}>
-//     <Text variant="body2" color="text.dark">
-//       5 Matched results...
-//     </Text>
-//     <Flex
-//       py={1}
-//       px={2}
-//       gap={3}
-//       alignItems="center"
-//       borderRadius={8}
-//       cursor="pointer"
-//       transition="all 0.25s ease-in-out"
-//       _hover={{
-//         background: "gray.700",
-//       }}
-//     >
-//       <CustomIcon name="code" />
-//       <Flex alignItems="center" gap={1}>
-//         <Text variant="body2" color="text.main">
-//           123
-//         </Text>
-//         <Text variant="body2" color="text.dark">
-//           - Code
-//         </Text>
-//       </Flex>
-//     </Flex>
-//   </Flex>
-// );
-
 const getNextCursor = (
   key: string,
   current: Option<number>,
@@ -149,191 +106,11 @@ const generateQueryObject = (params: string[], value: string | string[]) =>
     ? { [params[0]]: value }
     : params.reduce((acc, curr, idx) => ({ ...acc, [curr]: value[idx] }), {});
 
-const getRouteOptions = (
-  type: Option<SearchResultType>
-): Nullable<{ pathname: string; query: string[] }> => {
-  switch (type) {
-    case "Account Address":
-      return {
-        pathname: "/accounts/[accountAddress]",
-        query: ["accountAddress"],
-      };
-    case "Transaction Hash":
-      return { pathname: "/txs/[txHash]", query: ["txHash"] };
-    case "Code ID":
-      return { pathname: "/codes/[codeId]", query: ["codeId"] };
-    case "Contract Address":
-      return {
-        pathname: "/contracts/[contractAddress]",
-        query: ["contractAddress"],
-      };
-    case "Block":
-      return { pathname: "/blocks/[height]", query: ["height"] };
-    case "Proposal ID":
-      return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
-    case "Validator Address":
-      return {
-        pathname: "/validators/[validatorAddress]",
-        query: ["validatorAddress"],
-      };
-    case "Pool ID":
-      return { pathname: "/pools/[poolId]", query: ["poolId"] };
-    case "Module Path":
-      return {
-        pathname: "/modules/[address]/[moduleName]",
-        query: ["address", "moduleName"],
-      };
-    default:
-      return null;
-  }
-};
-
-const getIcon = (type: Option<SearchResultType>) => {
-  switch (type) {
-    case "Account Address":
-      return "admin" as IconKeys;
-    case "Transaction Hash":
-      return "file" as IconKeys;
-    case "Code ID":
-      return "code" as IconKeys;
-    case "Contract Address":
-    case "Module Path":
-      return "contract-address" as IconKeys;
-    case "Block":
-      return "block" as IconKeys;
-    case "Proposal ID":
-      return "proposal" as IconKeys;
-    case "Validator Address":
-      return "validator" as IconKeys;
-    case "Pool ID":
-      return "pool" as IconKeys;
-    default:
-      return "list" as IconKeys;
-  }
-};
-
-const ResultItem = ({
-  index,
-  type,
-  value,
-  cursor,
-  metadata,
-  setCursor,
-  handleSelectResult,
-  onClose,
-}: ResultItemProps) => {
-  const route = getRouteOptions(type)?.pathname;
-  const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
-    ? value
-    : `${value}.${metadata.icns.bech32Prefix}`;
-  return (
-    <Flex id={`item-${index}`}>
-      {route && (
-        <Flex
-          p={2}
-          w="full"
-          gap={3}
-          alignItems={
-            metadata.icns.icnsNames?.primaryName ? "flex-start" : "center"
-          }
-          borderRadius="8px"
-          _hover={{ bg: "gray.700", cursor: "pointer" }}
-          cursor="pointer"
-          transition="all 0.25s ease-in-out"
-          bg={index === cursor ? "gray.700" : undefined}
-          onMouseMove={() => index !== cursor && setCursor(index)}
-          onClick={() => {
-            handleSelectResult(type, true);
-            onClose?.();
-          }}
-        >
-          <CustomIcon name={getIcon(type)} color="gray.600" />
-          <Flex direction="column">
-            <Text variant="body2">{metadata.icns.address || value}</Text>
-            {metadata.icns.icnsNames?.primaryName && (
-              <Flex gap={1} align="center" flexWrap="wrap">
-                <Flex gap={1} align="center">
-                  <PrimaryNameMark />
-                  <Text variant="body3" color="text.dark">
-                    {metadata.icns.icnsNames.primaryName}
-                  </Text>
-                </Flex>
-                {value !== metadata.icns.address &&
-                  normalizedIcnsValue !==
-                    metadata.icns.icnsNames?.primaryName && (
-                    <Text
-                      variant="body3"
-                      color="text.dark"
-                      _before={{
-                        content: '"/"',
-                        fontSize: "12px",
-                        color: "text.dark",
-                        mr: 1,
-                      }}
-                    >
-                      {normalizedIcnsValue}
-                    </Text>
-                  )}
-              </Flex>
-            )}
-          </Flex>
-          <Text variant="body2" fontWeight={500} color="text.disabled">
-            <span>–</span> {type}
-          </Text>
-        </Flex>
-      )}
-    </Flex>
-  );
-};
-
-const ResultRender = ({
-  results,
-  keyword,
-  cursor,
-  metadata,
-  setCursor,
-  handleSelectResult,
-  onClose,
-}: {
-  results: SearchResultType[];
-  keyword: string;
-  cursor: Option<number>;
-  metadata: ResultMetadata;
-  setCursor: (index: Option<number>) => void;
-  handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
-  onClose?: () => void;
-}) => (
-  <>
-    {!results.length ? (
-      <EmptyState
-        imageVariant="not-found"
-        textVariant="body2"
-        message="Matches not found. Please check your spelling or make sure you have
-          selected the correct network."
-      />
-    ) : (
-      results.map((type, index) => (
-        <ResultItem
-          key={type}
-          index={index}
-          type={type}
-          value={keyword}
-          cursor={cursor}
-          metadata={metadata}
-          setCursor={setCursor}
-          handleSelectResult={handleSelectResult}
-          onClose={onClose}
-        />
-      ))
-    )}
-  </>
-);
-
 export const SearchComponent = () => {
-  // const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
+  const isMac = useIsMac();
+  const isFullTier = useTierConfig() === "full";
   const navigate = useInternalNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     currentChainId,
     chainConfig: {
@@ -348,9 +125,28 @@ export const SearchComponent = () => {
 
   const boxRef = useRef<HTMLDivElement>(null);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [keyword, setKeyword] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
+
+  useEffect(() => {
+    const openSearchHandler = (event: KeyboardEvent) => {
+      const specialKey = isMac ? event.metaKey : event.ctrlKey;
+      if (event.key === "k" && specialKey) {
+        event.preventDefault();
+        if (isOpen) {
+          onClose();
+        } else {
+          onOpen();
+        }
+      }
+    };
+    document.addEventListener("keydown", openSearchHandler);
+    return () => {
+      document.removeEventListener("keydown", openSearchHandler);
+    };
+  }, [isMac, isOpen, onClose, onOpen]);
 
   const { results, isLoading, metadata } = useSearchHandler(keyword, () =>
     setIsTyping(false)
@@ -365,13 +161,20 @@ export const SearchComponent = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
+      const getQueryValue = () => {
+        if (type === "Module Path")
+          return splitModule(keyword) as [Addr, string];
+        if (type === "Account Address")
+          return (
+            metadata.icns.address || metadata.initiaUsername.address || keyword
+          );
+        return keyword;
+      };
+
       trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
-        const queryValues =
-          type === "Module Path"
-            ? (splitModule(keyword) as [Addr, string])
-            : metadata.icns.address || keyword;
+        const queryValues = getQueryValue();
         navigate({
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
@@ -380,11 +183,17 @@ export const SearchComponent = () => {
         onClose();
       }
     },
-    [keyword, metadata.icns.address, navigate, onClose]
+    [
+      keyword,
+      metadata.icns.address,
+      metadata.initiaUsername.address,
+      navigate,
+      onClose,
+    ]
   );
 
   const handleOnKeyEnter = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
+    (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (!results.length) return;
       switch (e.key) {
         case "ArrowUp":
@@ -520,7 +329,7 @@ export const SearchComponent = () => {
                         {results.length} Matched results...
                       </Text>
                     )}
-                    <ResultRender
+                    <SearchResultRenderer
                       results={results}
                       keyword={keyword}
                       cursor={cursor}
@@ -533,7 +342,7 @@ export const SearchComponent = () => {
               </>
             ) : (
               <Flex justifyContent="center">
-                {getZeroState({ isWasm, isPool, isMove, isGov })}
+                {getZeroState({ isWasm, isPool, isMove, isGov, isFullTier })}
               </Flex>
             )}
           </ModalBody>
