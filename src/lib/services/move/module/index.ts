@@ -177,7 +177,7 @@ export const useDecodeModule = ({
   base64EncodedFile: string;
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
-  const baseEndpoint = useBaseApiRoute("rest");
+  const endpoint = useLcdEndpoint();
   const move = useMoveConfig({ shouldRedirect: false });
 
   const queryFn = async (): Promise<DecodeModuleQueryResponse> => {
@@ -186,7 +186,7 @@ export const useDecodeModule = ({
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
     const currentPolicy = await getModuleByAddressLcd(
-      baseEndpoint,
+      endpoint,
       abi.address as HexAddr,
       abi.name
     )
@@ -198,7 +198,7 @@ export const useDecodeModule = ({
   return useQuery(
     [
       CELATONE_QUERY_KEYS.MODULE_DECODE,
-      baseEndpoint,
+      endpoint,
       move.enabled,
       base64EncodedFile,
     ],
@@ -214,11 +214,11 @@ export const useDecodeScript = ({
   base64EncodedFile: string;
   options?: Omit<UseQueryOptions<ExposedFunction>, "queryKey">;
 }): UseQueryResult<ExposedFunction> => {
-  const lcd = useBaseApiRoute("rest");
+  const endpoint = useLcdEndpoint();
 
   const queryFn = async (): Promise<ExposedFunction> => {
     const fn = await decodeScript(
-      `${lcd}/initia/move/v1/script/abi`,
+      `${endpoint}/initia/move/v1/script/abi`,
       base64EncodedFile
     );
     return {
@@ -231,7 +231,7 @@ export const useDecodeScript = ({
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, lcd, base64EncodedFile],
+    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, endpoint, base64EncodedFile],
     queryFn,
     options
   );
