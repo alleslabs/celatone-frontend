@@ -1,13 +1,13 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useCurrentChain, useWasmConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
@@ -39,7 +39,7 @@ export const PastTxsLite = () => {
     },
   });
 
-  const { data, isLoading } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressLcd(
     address,
     debouncedSearch,
     pageSize,
@@ -61,6 +61,29 @@ export const PastTxsLite = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearch, setCurrentPage]);
+
+  const handleTransactionTableWithWalletEmptyState = useCallback(() => {
+    if (search.trim().length > 0)
+      return (
+        <EmptyState
+          imageVariant="not-found"
+          message={`No past transaction matches found with your input. You can search with transaction hash${
+            wasm.enabled ? ", and contract address" : ""
+          }.`}
+          withBorder
+        />
+      );
+
+    if (error) return <ErrorFetching dataName="transactions" />;
+
+    return (
+      <EmptyState
+        imageVariant="empty"
+        message="Past transactions will display here."
+        withBorder
+      />
+    );
+  }, [search, error, wasm]);
 
   return (
     <PageContainer>
@@ -90,23 +113,7 @@ export const PastTxsLite = () => {
       <TransactionsTableWithWallet
         transactions={data?.items}
         isLoading={isLoading}
-        emptyState={
-          search.trim().length > 0 ? (
-            <EmptyState
-              imageVariant="not-found"
-              message={`No past transaction matches found with your input. You can search with transaction hash${
-                wasm.enabled ? ", and contract address" : ""
-              }.`}
-              withBorder
-            />
-          ) : (
-            <EmptyState
-              imageVariant="empty"
-              message="Past transactions will display here."
-              withBorder
-            />
-          )
-        }
+        emptyState={handleTransactionTableWithWalletEmptyState()}
         showActions={false}
         showRelations={false}
       />

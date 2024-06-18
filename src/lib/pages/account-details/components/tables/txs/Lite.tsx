@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { ErrorFetching } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import {
   MobileTitle,
   TableTitle,
@@ -38,7 +38,7 @@ export const TxsTableLite = ({
     },
   });
 
-  const { data, isLoading } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressLcd(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,
@@ -65,7 +65,17 @@ export const TxsTableLite = ({
             <TransactionsTable
               transactions={data?.items}
               isLoading={isLoading}
-              emptyState={<ErrorFetching dataName="transactions" />}
+              emptyState={
+                error ? (
+                  <ErrorFetching dataName="transactions" />
+                ) : (
+                  <EmptyState
+                    withBorder
+                    imageVariant="empty"
+                    message="There are no transactions on this account or prune from LCD."
+                  />
+                )
+              }
               showRelations={false}
             />
           )}
