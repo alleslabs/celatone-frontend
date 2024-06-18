@@ -129,7 +129,7 @@ export const AccountHeader = observer(
                 />
               </Flex>
             )}
-            {accountLocalInfo?.name && (
+            {accountLocalInfo?.name && data?.username && (
               <Flex mt={{ base: 1, md: 0 }} alignItems="center">
                 <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
                   Initia Username:
@@ -141,7 +141,7 @@ export const AccountHeader = observer(
                   height={4}
                   mr={1}
                 />
-                <Text variant="body2">{data?.username}</Text>
+                <Text variant="body2">{data.username}</Text>
               </Flex>
             )}
           </Flex>
