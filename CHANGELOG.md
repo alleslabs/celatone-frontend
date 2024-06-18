@@ -99,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#979](https://github.com/alleslabs/celatone-frontend/pull/979) Fix txs detail receiver overflow screen
 - [#978](https://github.com/alleslabs/celatone-frontend/pull/978) Fix republish module description notice
 - [#975](https://github.com/alleslabs/celatone-frontend/pull/975) Fix view function lite ver and add proposal alert
 - [#977](https://github.com/alleslabs/celatone-frontend/pull/977) Fix block query in search
