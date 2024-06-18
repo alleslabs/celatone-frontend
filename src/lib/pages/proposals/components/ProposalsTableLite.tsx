@@ -1,4 +1,4 @@
-import { Alert, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Alert, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
@@ -77,12 +77,9 @@ export const ProposalsTableLite = () => {
             <span style={{ fontWeight: 700 }}> Cancelled</span> proposals are
             pruned from the network; thus, cannot be shown or searched here.
           </Text>
-          <CustomIcon
-            name="close"
-            right={-1}
-            cursor="pointer"
-            onClick={() => setShowAlert(false)}
-          />
+          <Button variant="ghost-gray" onClick={() => setShowAlert(false)}>
+            Dismiss
+          </Button>
         </Alert>
       )}
       <ProposalsTable
