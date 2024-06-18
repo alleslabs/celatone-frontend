@@ -1,4 +1,5 @@
 export * from "./address";
+export * from "./array";
 export * from "./assetValue";
 export * from "./base64";
 export * from "./bech32";
@@ -36,6 +37,6 @@ export * from "./truncate";
 export * from "./tx";
 export * from "./txHash";
 export * from "./validate";
+export * from "./validator";
 export * from "./window";
 export * from "./zod";
-export * from "./array";

@@ -49,16 +49,14 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
           <CustomTab count={data?.migration} isDisabled={data?.migration === 0}>
             Migrations
           </CustomTab>
-          {isFullTier && (
-            <CustomTab
-              count={data?.relatedProposal}
-              isDisabled={data?.relatedProposal === 0}
-              whiteSpace="nowrap"
-              hidden={!gov.enabled}
-            >
-              Related Proposals
-            </CustomTab>
-          )}
+          <CustomTab
+            count={data?.relatedProposal}
+            isDisabled={data?.relatedProposal === 0}
+            whiteSpace="nowrap"
+            hidden={!gov.enabled || !isFullTier}
+          >
+            Related Proposals
+          </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>

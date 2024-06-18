@@ -1,6 +1,7 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Alert, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
@@ -13,6 +14,7 @@ import { isPositiveInt } from "lib/utils";
 import { ProposalStatusFilter } from "./ProposalStatusFilter";
 
 export const ProposalsTableLite = () => {
+  const [showAlert, setShowAlert] = useState(true);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
   const [status, setStatus] = useState<ProposalStatus[]>([]);
@@ -27,7 +29,7 @@ export const ProposalsTableLite = () => {
   } = useProposalsLcd(status[0]);
 
   const { data: proposalData, isFetching: isProposalDataFetching } =
-    useProposalDataLcd(debouncedSearch, isPositiveInt(debouncedSearch));
+    useProposalDataLcd(Number(debouncedSearch), isPositiveInt(debouncedSearch));
 
   const proposal = proposalData ? [proposalData] : [];
   const proposals =
@@ -67,6 +69,19 @@ export const ProposalsTableLite = () => {
           />
         </GridItem>
       </Grid>
+      {showAlert && (
+        <Alert variant="info" gap={4}>
+          <CustomIcon boxSize={4} name="info-circle-solid" />
+          <Text variant="body2" color="text.dark" w="full">
+            <span style={{ fontWeight: 700 }}>Deposit Failed</span> and
+            <span style={{ fontWeight: 700 }}> Cancelled</span> proposals are
+            pruned from the network; thus, cannot be shown or searched here.
+          </Text>
+          <Button variant="ghost-gray" onClick={() => setShowAlert(false)}>
+            Dismiss
+          </Button>
+        </Alert>
+      )}
       <ProposalsTable
         proposals={proposals}
         isLoading={isProposalsLoading || isProposalDataFetching}

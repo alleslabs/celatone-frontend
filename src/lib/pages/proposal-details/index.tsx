@@ -11,7 +11,6 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDerivedProposalParams } from "lib/model/proposal";
-import { useProposalVotesInfo } from "lib/services/proposal";
 
 import {
   InvalidProposal,
@@ -19,7 +18,7 @@ import {
   ProposalTop,
   VoteDetails,
 } from "./components";
-import { useDerivedProposalData } from "./data";
+import { useDerivedProposalData, useDerivedProposalVotesInfo } from "./data";
 import type { ProposalDetailsQueryParams } from "./types";
 import { TabIndex, zProposalDetailsQueryParams } from "./types";
 
@@ -31,9 +30,10 @@ const ProposalDetailsBody = ({
 
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useDerivedProposalData(proposalId);
+  const { data, isLoading, isDepositsLoading } =
+    useDerivedProposalData(proposalId);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
-    useProposalVotesInfo(proposalId);
+    useDerivedProposalVotesInfo(proposalId, data, isLoading);
   const { data: params, isLoading: isParamsLoading } =
     useDerivedProposalParams(!isMobile);
 
@@ -57,16 +57,16 @@ const ProposalDetailsBody = ({
 
   if (isLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="proposal information" />;
-  if (!data.info) return <InvalidProposal />;
+
+  const { info } = data;
+  if (info === null) return <InvalidProposal />;
 
   return (
     <>
       <CelatoneSeo
-        pageName={
-          data.info.id ? `Proposal #${data.info.id}` : "Proposal Detail"
-        }
+        pageName={info.id ? `Proposal #${info.id}` : "Proposal Detail"}
       />
-      <ProposalTop proposalData={data.info} />
+      <ProposalTop proposalData={info} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
@@ -87,10 +87,11 @@ const ProposalDetailsBody = ({
         <TabPanels>
           <TabPanel p={0}>
             <ProposalOverview
-              proposalData={data.info}
+              proposalData={info}
               votesInfo={votesInfo}
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
+              isDepositsLoading={isDepositsLoading}
             />
             <UserDocsLink
               title="What is a Proposal?"
@@ -100,10 +101,11 @@ const ProposalDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetails
-              proposalData={data.info}
+              proposalData={info}
               votesInfo={votesInfo}
               params={params}
               isLoading={isVotesInfoLoading || isParamsLoading}
+              isDepositsLoading={isDepositsLoading}
             />
             <UserDocsLink
               title="What is the CosmWasm proposal vote progress?"

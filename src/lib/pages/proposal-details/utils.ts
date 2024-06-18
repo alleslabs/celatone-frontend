@@ -1,8 +1,6 @@
 import type Big from "big.js";
 
-import { big } from "lib/types";
 import type {
-  Nullable,
   ProposalParams,
   ProposalVotesInfo,
   Ratio,
@@ -10,6 +8,7 @@ import type {
   TokenWithValue,
   U,
 } from "lib/types";
+import { big } from "lib/types";
 import { divWithDefault } from "lib/utils";
 
 export const normalizeVotesInfo = ({
@@ -77,14 +76,14 @@ export const extractParams = (
 });
 
 export const mapDeposit = (
-  deposit: Nullable<TokenWithValue[]>,
+  deposit: TokenWithValue[],
   minDeposit: TokenWithValue[]
 ) =>
-  minDeposit.map((min) => {
-    const current: TokenWithValue = deposit?.find(
-      (token) => token.denom === min.denom
+  deposit.map((current) => {
+    const min: TokenWithValue = minDeposit.find(
+      (token) => token.denom === current.denom
     ) ?? {
-      ...min,
+      ...current,
       amount: big(0) as U<Token<Big>>,
     };
 

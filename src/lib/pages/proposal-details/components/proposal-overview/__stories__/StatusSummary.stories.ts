@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type Big from "big.js";
+import Big from "big.js";
 import dayjs from "dayjs";
 
 import { StatusSummary } from "../status-summary";
@@ -51,8 +51,14 @@ const data: Omit<
       value: undefined,
     },
   ],
-  version: "v1",
   votingTime: null,
+  finalTallyResult: {
+    yes: Big(0),
+    abstain: Big(0),
+    no: Big(0),
+    noWithVeto: Big(0),
+    totalVotingPower: null,
+  },
 };
 
 const params: ProposalParams = {

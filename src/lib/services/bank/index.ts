@@ -25,9 +25,9 @@ import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
 
 export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
+  const isFullTier = useTierConfig() === "full";
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
-  const isFullTier = useTierConfig() === "full";
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
@@ -36,7 +36,7 @@ export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
       isFullTier
         ? getBalances(endpoint, address)
         : getBalancesLcd(endpoint, address),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

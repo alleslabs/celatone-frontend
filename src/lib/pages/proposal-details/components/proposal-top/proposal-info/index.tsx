@@ -13,12 +13,13 @@ interface ProposalStatusProps {
 
 export const ProposalInfo = ({ data }: ProposalStatusProps) => (
   <Flex
-    background="gray.900"
-    borderRadius="8px"
+    direction={{ base: "column", lg: "row" }}
+    gap={{ base: 3, lg: 8 }}
     px={4}
     py={3}
-    gap={{ base: 3, lg: 8 }}
-    direction={{ base: "column", lg: "row" }}
+    mb={6}
+    borderRadius="8px"
+    background="gray.900"
   >
     <InfoItem label="Proposal Status">
       <Flex minW="110px">

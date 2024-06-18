@@ -40,6 +40,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#968](https://github.com/alleslabs/celatone-frontend/pull/968) Add custom meta title for each page
+- [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
+- [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint
+- [#970](https://github.com/alleslabs/celatone-frontend/pull/970) Support account details lite version
+- [#964](https://github.com/alleslabs/celatone-frontend/pull/964) Support migrate page lite version with LCD
+- [#966](https://github.com/alleslabs/celatone-frontend/pull/966) Support lite version for proposal details
+- [#958](https://github.com/alleslabs/celatone-frontend/pull/958) Support lite version for block index page
 - [#951](https://github.com/alleslabs/celatone-frontend/pull/951) Support contract details lite version with LCD endpoint
 - [#961](https://github.com/alleslabs/celatone-frontend/pull/961) Add and refactor proposal related lcd endpoints
 - [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
@@ -73,6 +79,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
+- [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
 - [#963](https://github.com/alleslabs/celatone-frontend/pull/963) Add separator between token in tx message
 - [#959](https://github.com/alleslabs/celatone-frontend/pull/959) Update @cosmos-kit/react to v2.15.0 and friends
 - [#947](https://github.com/alleslabs/celatone-frontend/pull/947) Add zod type for sign mode infos
@@ -92,6 +100,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#978](https://github.com/alleslabs/celatone-frontend/pull/978) Fix republish module description notice
+- [#975](https://github.com/alleslabs/celatone-frontend/pull/975) Fix view function lite ver and add proposal alert
+- [#977](https://github.com/alleslabs/celatone-frontend/pull/977) Fix block query in search
 - [#962](https://github.com/alleslabs/celatone-frontend/pull/962) Fix tx msg expand
 - [#965](https://github.com/alleslabs/celatone-frontend/pull/965) Add search not found state in module detail
 - [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card
@@ -209,6 +220,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#969](https://github.com/alleslabs/celatone-frontend/pull/969) Fix contract data lcd missing data
 - [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
 - [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
 - [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline
