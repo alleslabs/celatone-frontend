@@ -18,7 +18,7 @@ import {
   splitModule,
 } from "lib/utils";
 
-import { useBlockData } from "./block";
+import { useBlockData, useBlockDataLcd } from "./block";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { usePoolByPoolId } from "./poolService";
@@ -164,7 +164,7 @@ export const useSearchHandler = (
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && isFullTier
   );
-  const blockLcd = useBlockData(
+  const blockLcd = useBlockDataLcd(
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && !isFullTier
   );
