@@ -98,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#978](https://github.com/alleslabs/celatone-frontend/pull/978) Fix republish module description notice
 - [#962](https://github.com/alleslabs/celatone-frontend/pull/962) Fix tx msg expand
 - [#965](https://github.com/alleslabs/celatone-frontend/pull/965) Add search not found state in module detail
 - [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card
