@@ -1,6 +1,7 @@
-import { Box } from "@chakra-ui/react";
+import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
@@ -21,6 +22,7 @@ export const TxsTableLite = ({
   onViewMore,
 }: TxsTableProps) => {
   const isMobile = useMobile();
+  const isFullTier = useTierConfig() === "full";
 
   const {
     pagesQuantity,
@@ -59,8 +61,24 @@ export const TxsTableLite = ({
           onViewMore={onViewMore}
         />
       ) : (
-        <>
-          <TableTitle title="Transactions" count={txsCount} mb={0} />
+        <Flex direction="column" gap={6}>
+          <TableTitle
+            title="Transactions"
+            count={txsCount}
+            mb={0}
+            showCount={isFullTier}
+          />
+          <Alert variant="warning" gap={3}>
+            <CustomIcon
+              name="alert-circle-solid"
+              boxSize={4}
+              color="warning.main"
+            />
+            <AlertDescription>
+              Please note that account transactions are queried from the LCD and
+              may have pruned transactions that will not be displayed.
+            </AlertDescription>
+          </Alert>
           {!isMobileOverview && (
             <TransactionsTable
               transactions={data?.items}
@@ -101,7 +119,7 @@ export const TxsTableLite = ({
                     }}
                   />
                 ))}
-        </>
+        </Flex>
       )}
     </Box>
   );
