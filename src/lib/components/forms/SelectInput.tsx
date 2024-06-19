@@ -86,8 +86,7 @@ export const SelectInput = <T extends string>({
     setSelected(
       options.find((item) => item.value === initialSelected)?.label ?? ""
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialSelected]);
+  }, [initialSelected, options, setSelected]);
 
   return (
     <Popover
