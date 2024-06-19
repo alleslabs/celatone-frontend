@@ -179,7 +179,7 @@ const AccountDetailsBody = ({
             NFTs
           </CustomTab>
           <CustomTab
-            count={tableCounts.txsCount}
+            count={isFullTier ? tableCounts.txsCount : undefined}
             isDisabled={tableCounts.txsCount === 0}
             onClick={handleTabChange(
               TabIndex.Txs,
