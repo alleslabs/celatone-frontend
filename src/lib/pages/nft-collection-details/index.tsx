@@ -109,12 +109,19 @@ const CollectionDetailsBody = ({
   const displayCollectionName =
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
+  const getCollectionName = () => {
+    if (!name.length) return "Untitled Collection";
+    return isMobile ? displayCollectionName : name;
+  };
+
   return (
     <>
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
-          { text: isMobile ? displayCollectionName : name },
+          {
+            text: getCollectionName(),
+          },
         ]}
       />
       <Flex
