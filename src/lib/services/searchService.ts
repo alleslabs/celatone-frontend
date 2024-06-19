@@ -18,7 +18,7 @@ import {
   splitModule,
 } from "lib/utils";
 
-import { useBlockData, useBlockDataLcd } from "./block";
+import { useBlockData } from "./block";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { usePoolByPoolId } from "./poolService";
@@ -164,13 +164,10 @@ export const useSearchHandler = (
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && isFullTier
   );
-  const blockLcd = useBlockDataLcd(
-    Number(debouncedKeyword),
-    isPosDecimal(debouncedKeyword) && !isFullTier
-  );
-  const { data: blockData, isFetching: blockFetching } = isFullTier
-    ? blockApi
-    : blockLcd;
+  const { foundBlock, isFetching: blockFetching } = useMemo(() => {
+    if (!isFullTier) return { foundBlock: true, isFetching: false };
+    return { foundBlock: blockApi.data, isFetching: blockApi.isFetching };
+  }, [blockApi, isFullTier]);
 
   // Proposal
   const { data: proposalApiData, isFetching: proposalApiIsFetching } =
@@ -254,7 +251,7 @@ export const useSearchHandler = (
       moduleData && "Module Path",
       txData && "Transaction Hash",
       codeData && "Code ID",
-      blockData && "Block",
+      foundBlock && "Block",
       proposalData?.info && "Proposal ID",
       validatorData && "Validator Address",
       poolData && "Pool ID",
