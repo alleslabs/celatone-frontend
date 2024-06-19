@@ -131,8 +131,15 @@ const CollectionDetailsBody = ({
           minW={{ md: "680px" }}
           maxW="full"
         >
-          <Heading as="h5" variant="h5" mb={1} className="ellipsis">
-            {name}
+          <Heading
+            as="h5"
+            variant="h5"
+            mb={1}
+            className="ellipsis"
+            color={name.length ? "text.main" : "text.disabled"}
+            fontWeight={name.length ? "600" : "300"}
+          >
+            {name.length ? name : "Untitled Collection"}
           </Heading>
           <Flex
             mt={{ base: 2, md: 0 }}
