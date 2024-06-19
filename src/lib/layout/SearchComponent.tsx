@@ -126,9 +126,11 @@ export const SearchComponent = () => {
   const boxRef = useRef<HTMLDivElement>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [keyword, setKeyword] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
+  const [isKeywordCleared, setIsKeywordCleared] = useState(false);
 
   useEffect(() => {
     const openSearchHandler = (event: KeyboardEvent) => {
@@ -210,11 +212,19 @@ export const SearchComponent = () => {
           e.currentTarget.blur();
           handleSelectResult(results[cursor ?? 0]);
           break;
+        case "Escape":
+          if (keyword.length > 0) {
+            setKeyword("");
+            setIsKeywordCleared(true);
+          } else if (isKeywordCleared) {
+            onClose();
+          }
+          break;
         default:
           break;
       }
     },
-    [cursor, handleSelectResult, results]
+    [cursor, handleSelectResult, isKeywordCleared, keyword, onClose, results]
   );
 
   useOutsideClick({
@@ -285,10 +295,9 @@ export const SearchComponent = () => {
                 size="lg"
                 placeholder="Enter your keyword..."
                 style={{ maxHeight: "54px", border: "none" }}
-                mr={24}
+                pr={28}
                 value={keyword}
                 onChange={handleSearchChange}
-                // onFocus={onOpen}
                 onKeyDown={handleOnKeyEnter}
                 autoComplete="off"
               />
