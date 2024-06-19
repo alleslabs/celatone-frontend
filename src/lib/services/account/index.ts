@@ -19,9 +19,9 @@ export const useAccountData = (
   address: BechAddr
 ): UseQueryResult<AccountData> => {
   const isFullTier = useTierConfig() === "full";
-  const lcdEndpoint = useLcdEndpoint();
   const apiEndpoint = useBaseApiRoute("accounts");
-  const endpoint = isFullTier ? lcdEndpoint : apiEndpoint;
+  const lcdEndpoint = useLcdEndpoint();
+  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_DATA, endpoint, address],
