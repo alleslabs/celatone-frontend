@@ -26,14 +26,15 @@ export const getAccountTypeLcd = async (
   endpoint: string,
   address: BechAddr
 ) => {
-  const accountTypeLcd = await axios
-    .get(`${endpoint}/cosmos/auth/v1beta1/accounts/${address}`)
-    .then((res) => parseWithError(zAccountTypeLcd, res.data));
-
-  const isContract = await axios
-    .get(`${endpoint}/cosmwasm/wasm/v1/contract/${address}`)
-    .then(() => true)
-    .catch(() => false);
+  const [accountTypeLcd, isContract] = await Promise.all([
+    axios
+      .get(`${endpoint}/cosmos/auth/v1beta1/accounts/${encodeURI(address)}`)
+      .then(({ data }) => parseWithError(zAccountTypeLcd, data)),
+    axios
+      .get(`${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(address)}`)
+      .then(() => true)
+      .catch(() => false),
+  ]);
 
   return isContract ? AccountType.ContractAccount : accountTypeLcd;
 };

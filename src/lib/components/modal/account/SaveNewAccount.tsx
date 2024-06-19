@@ -96,34 +96,29 @@ export function SaveNewAccountModal({
     setStatus({ state: "error", message });
   };
 
+  const onSuccess = (type: AccountType) => {
+    if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
+    else {
+      setErrorStatus("You need to save contract through Contract page.");
+      setIsContract(true);
+    }
+  };
+
+  const onError = (err: Error) => {
+    resetForm(false);
+    setErrorStatus(err.message);
+  };
+
   const { refetch: refetchLite } = useAccountTypeLcd(addressState, {
     enabled: false,
-    onSuccess: (type) => {
-      if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
-      else {
-        setErrorStatus("You need to save contract through Contract page.");
-        setIsContract(true);
-      }
-    },
-    onError: (err) => {
-      resetForm(false);
-      setErrorStatus(err.message);
-    },
+    onSuccess,
+    onError,
   });
 
   const { refetch: refetchFull } = useAccountType(addressState, {
     enabled: false,
-    onSuccess: (type) => {
-      if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
-      else {
-        setErrorStatus("You need to save contract through Contract page.");
-        setIsContract(true);
-      }
-    },
-    onError: (err) => {
-      resetForm(false);
-      setErrorStatus(err.message);
-    },
+    onSuccess,
+    onError,
   });
 
   const refetch = isFullTier ? refetchFull : refetchLite;
