@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { zProjectInfo, zPublicAccountInfo } from "lib/types";
+import { AccountTypeLcd, zProjectInfo, zPublicAccountInfo } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 const zIcns = z.object({
@@ -29,3 +29,11 @@ export const zAccountTableCounts = z
   .transform(snakeToCamel);
 
 export type AccountTableCounts = z.infer<typeof zAccountTableCounts>;
+
+export const zAccountTypeLcd = z
+  .object({
+    account: z.object({
+      "@type": z.nativeEnum(AccountTypeLcd),
+    }),
+  })
+  .transform((data) => data.account["@type"]);
