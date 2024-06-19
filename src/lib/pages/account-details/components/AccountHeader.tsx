@@ -13,7 +13,6 @@ import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/types";
-import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { BechAddr, HexAddr, Option } from "lib/types";
 
 import { AccountTitle } from "./AccountTitle";
@@ -22,18 +21,28 @@ interface AccounHeaderProps {
   accountData: Option<AccountData>;
   accountAddress: BechAddr;
   hexAddress: HexAddr;
+  data?: {
+    username: string | null;
+  };
+  isLoading?: boolean;
+  isFetching?: boolean;
 }
 
 export const AccountHeader = observer(
-  ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
+  ({
+    accountData,
+    accountAddress,
+    hexAddress,
+    data,
+    isLoading,
+    isFetching,
+  }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
-    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
-    const { data } = useInitiaUsernameByAddress(hexAddress, move.enabled);
+    const isMobile = useMobile();
 
+    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
-
-    const isMobile = useMobile();
 
     return (
       <Flex
@@ -46,7 +55,9 @@ export const AccountHeader = observer(
             <AccountTitle
               accountData={accountData}
               accountLocalInfo={accountLocalInfo}
-              hexAddress={hexAddress}
+              data={data}
+              isLoading={isLoading}
+              isFetching={isFetching}
             />
             {!isMobile && (
               <>

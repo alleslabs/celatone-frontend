@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
@@ -35,6 +35,7 @@ import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import { useNftsCountByAccount } from "lib/services/nft";
+import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -123,17 +124,36 @@ const AccountDetailsBody = ({
   );
 
   const { address } = useCurrentChain();
+  const { data, isLoading, isFetching } = useInitiaUsernameByAddress(
+    hexAddress,
+    move.enabled
+  );
 
-  let pageTitle = "Account Detail";
-  if (address === accountAddress) {
-    pageTitle = "Your Account Detail";
-  } else if (hexAddress === "0x1") {
-    pageTitle = "0x1 Page";
-  } else pageTitle = `Account - ${truncate(accountAddress)}`;
+  const getPageTitle = useMemo(() => {
+    switch (true) {
+      case address === accountAddress:
+        return "Your Account Detail";
+      case hexAddress === "0x1":
+        return "0x1 Page";
+      case !!accountData?.icns?.primaryName:
+        return `${accountData.icns.primaryName} (Account)`;
+      case !!data?.username && move.enabled:
+        return `${data.username} (Account)`;
+      default:
+        return `Account - ${truncate(accountAddress)}`;
+    }
+  }, [
+    accountAddress,
+    accountData?.icns?.primaryName,
+    address,
+    data?.username,
+    hexAddress,
+    move.enabled,
+  ]);
 
   return (
     <>
-      <CelatoneSeo pageName={pageTitle} />
+      <CelatoneSeo pageName={getPageTitle} />
       <Flex direction="column" mb={6}>
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
@@ -152,6 +172,9 @@ const AccountDetailsBody = ({
           accountData={accountData}
           accountAddress={accountAddress}
           hexAddress={hexAddress}
+          data={data}
+          isLoading={isLoading}
+          isFetching={isFetching}
         />
       </Flex>
       <Tabs

@@ -113,7 +113,11 @@ const CollectionDetailsBody = ({
   return (
     <>
       <CelatoneSeo
-        pageName={`Collection – ${name.length > 20 ? displayCollectionName : name}`}
+        pageName={
+          name.length > 0
+            ? `Collection – ${name.length > 20 ? displayCollectionName : name}`
+            : "NFT Collection Detail"
+        }
       />
       <Breadcrumb
         items={[

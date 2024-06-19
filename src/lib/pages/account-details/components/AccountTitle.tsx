@@ -3,24 +3,27 @@ import { Flex, Heading, Image, Skeleton } from "@chakra-ui/react";
 import { useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { AccountData } from "lib/services/types";
-import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { AccountLocalInfo } from "lib/stores/account";
-import type { HexAddr, Option } from "lib/types";
+import type { Option } from "lib/types";
+
+interface AccountTitleProps {
+  accountData: Option<AccountData>;
+  accountLocalInfo: Option<AccountLocalInfo>;
+  data?: {
+    username: string | null;
+  };
+  isLoading?: boolean;
+  isFetching?: boolean;
+}
 
 export const AccountTitle = ({
   accountData,
   accountLocalInfo,
-  hexAddress,
-}: {
-  accountData: Option<AccountData>;
-  accountLocalInfo: Option<AccountLocalInfo>;
-  hexAddress: HexAddr;
-}) => {
+  data,
+  isLoading,
+  isFetching,
+}: AccountTitleProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
-  const { data, isLoading, isFetching } = useInitiaUsernameByAddress(
-    hexAddress,
-    move.enabled
-  );
 
   const handleDisplayName = () => {
     if (accountLocalInfo?.name) return accountLocalInfo.name;

@@ -96,7 +96,7 @@ const ProjectDetail = () => {
       <CelatoneSeo
         pageName={
           projectDetail?.name
-            ? `${projectDetail.name} (Public Projects)`
+            ? `${projectDetail.name} (Public Project)`
             : "Public Project Detail"
         }
       />

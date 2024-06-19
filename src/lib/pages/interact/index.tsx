@@ -137,7 +137,7 @@ export const Interact = () => {
 
   return (
     <>
-      <CelatoneSeo pageName="View / Execute Modules" />
+      <CelatoneSeo pageName="View / Execute Module" />
       <PageContainer
         overflow="hidden"
         minH="unset"
