@@ -79,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#982](https://github.com/alleslabs/celatone-frontend/pull/982) Support Icns in account osmosis lite version
 - [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
 - [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
 - [#963](https://github.com/alleslabs/celatone-frontend/pull/963) Add separator between token in tx message
