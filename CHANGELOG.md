@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#976](https://github.com/alleslabs/celatone-frontend/pull/976) Support save accounts in lite version
+- [#944](https://github.com/alleslabs/celatone-frontend/pull/944) Fix asset input selector
 - [#979](https://github.com/alleslabs/celatone-frontend/pull/979) Fix txs detail receiver overflow screen
 - [#980](https://github.com/alleslabs/celatone-frontend/pull/980) Pass through block in search in lite
 - [#981](https://github.com/alleslabs/celatone-frontend/pull/981) Fix useAccountData
