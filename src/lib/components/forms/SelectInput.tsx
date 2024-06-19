@@ -86,7 +86,7 @@ export const SelectInput = <T extends string>({
     setSelected(
       options.find((item) => item.value === initialSelected)?.label ?? ""
     );
-  }, [initialSelected, options, setSelected]);
+  }, [initialSelected, options]);
 
   return (
     <Popover
