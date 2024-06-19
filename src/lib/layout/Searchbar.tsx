@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   Button,
   chakra,
@@ -16,7 +17,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
 import { trackUseMainSearch } from "lib/amplitude";
@@ -131,6 +132,18 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
+  const isAccountAddress = type === "Account Address";
+  const displayValue = useMemo(() => {
+    if (isAccountAddress) {
+      return metadata.icns.address || metadata.initiaUsername.address || value;
+    }
+    return value;
+  }, [
+    isAccountAddress,
+    metadata.icns.address,
+    metadata.initiaUsername.address,
+    value,
+  ]);
   const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
@@ -155,9 +168,7 @@ const ResultItem = ({
             onClose?.();
           }}
         >
-          <Text variant="body2">
-            {metadata.icns.address || metadata.initiaUsername.address || value}
-          </Text>
+          <Text variant="body2">{displayValue}</Text>
           {metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
@@ -184,7 +195,7 @@ const ResultItem = ({
                 )}
             </Flex>
           )}
-          {metadata.initiaUsername?.username && (
+          {isAccountAddress && metadata.initiaUsername?.username && (
             <InitiaUsername username={metadata.initiaUsername.username} />
           )}
         </Flex>
@@ -314,9 +325,12 @@ const Searchbar = () => {
         if (type === "Module Path") {
           return splitModule(keyword) as [Addr, string];
         }
-        return (
-          metadata.icns.address || metadata.initiaUsername.address || keyword
-        );
+        if (type === "Account Address")
+          return (
+            metadata.icns.address || metadata.initiaUsername.address || keyword
+          );
+
+        return keyword;
       };
 
       trackUseMainSearch(isClick, type);
