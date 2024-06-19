@@ -100,7 +100,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             </Flex>
             <Flex direction="column" flex={1} minW="fit-content">
               <Text color="text.dark" variant="body2">
-                Collection
+                Collection Address
               </Text>
               <ExplorerLink
                 value={collectionInfo.collectionAddress}

@@ -148,7 +148,7 @@ const CollectionDetailsBody = ({
             alignItems={{ base: "start", md: "center" }}
           >
             <Text color="text.dark" variant="body2">
-              Collection:
+              Collection Address:
             </Text>
             <Tooltip label="View as Account Address">
               <ExplorerLink
