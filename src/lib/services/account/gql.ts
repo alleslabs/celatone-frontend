@@ -18,7 +18,7 @@ export const useAccountType = (
   const queryFn = useCallback(async () => {
     if (!address)
       throw new Error(
-        "Error fetching account type: failed to retrieve address."
+        "Fetching account type: failed to retrieve address. (useAccountType)"
       );
     return indexerGraphClient
       .request(getAccountTypeByAddressQueryDocument, {
