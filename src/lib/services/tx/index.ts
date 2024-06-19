@@ -282,30 +282,6 @@ export const useTxsByContractAddressLcd = (
   );
 };
 
-export const useTxsByAccountAddressLcd = (
-  address: Option<BechAddr20>,
-  limit: number,
-  offset: number
-) => {
-  const endpoint = useLcdEndpoint();
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.TXS_BY_ACCOUNT_ADDRESS_LCD,
-      endpoint,
-      address,
-      limit,
-      offset,
-    ],
-    async () => {
-      if (!address)
-        throw new Error("address is undefined (useTxsByAccountAddressLcd)");
-      return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
-    },
-    { retry: 1, refetchOnWindowFocus: false }
-  );
-};
-
 export const useTxsByAddressLcd = (
   address: Option<BechAddr20>,
   search: Option<string>,

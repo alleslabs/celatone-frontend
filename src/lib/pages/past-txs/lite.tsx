@@ -1,6 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useCurrentChain, useWasmConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -12,6 +12,39 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
 import { useTxsByAddressLcd } from "lib/services/tx";
+
+interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
+  search: string;
+  wasm: ReturnType<typeof useWasmConfig>;
+  error: unknown;
+}
+
+const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
+  search,
+  wasm,
+  error,
+}: PastTxsLiteTransactionsTableWithWalletEmptyStateProps) => {
+  if (search.trim().length > 0)
+    return (
+      <EmptyState
+        imageVariant="not-found"
+        message={`No past transaction matches found with your input. You can search with transaction hash${
+          wasm.enabled ? ", and contract address" : ""
+        }.`}
+        withBorder
+      />
+    );
+
+  if (error) return <ErrorFetching dataName="transactions" />;
+
+  return (
+    <EmptyState
+      imageVariant="empty"
+      message="Past transactions will display here."
+      withBorder
+    />
+  );
+};
 
 export const PastTxsLite = () => {
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -62,29 +95,6 @@ export const PastTxsLite = () => {
     setCurrentPage(1);
   }, [debouncedSearch, setCurrentPage]);
 
-  const handleTransactionTableWithWalletEmptyState = useCallback(() => {
-    if (search.trim().length > 0)
-      return (
-        <EmptyState
-          imageVariant="not-found"
-          message={`No past transaction matches found with your input. You can search with transaction hash${
-            wasm.enabled ? ", and contract address" : ""
-          }.`}
-          withBorder
-        />
-      );
-
-    if (error) return <ErrorFetching dataName="transactions" />;
-
-    return (
-      <EmptyState
-        imageVariant="empty"
-        message="Past transactions will display here."
-        withBorder
-      />
-    );
-  }, [search, error, wasm]);
-
   return (
     <PageContainer>
       <Flex justifyContent="space-between" alignItems="center">
@@ -113,7 +123,13 @@ export const PastTxsLite = () => {
       <TransactionsTableWithWallet
         transactions={data?.items}
         isLoading={isLoading}
-        emptyState={handleTransactionTableWithWalletEmptyState()}
+        emptyState={
+          <PastTxsLiteTransactionsTableWithWalletEmptyState
+            search={search}
+            wasm={wasm}
+            error={error}
+          />
+        }
         showActions={false}
         showRelations={false}
       />
