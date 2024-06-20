@@ -147,10 +147,12 @@ export const zProposalVotesInfoResponse = z
 export const zProposalVotesInfoResponseLcd = z
   .tuple([
     z.object({
-      yes_count: zBig,
-      abstain_count: zBig,
-      no_count: zBig,
-      no_with_veto_count: zBig,
+      tally: z.object({
+        yes_count: zBig,
+        abstain_count: zBig,
+        no_count: zBig,
+        no_with_veto_count: zBig,
+      }),
     }),
     z.object({
       pool: z.object({
@@ -160,10 +162,10 @@ export const zProposalVotesInfoResponseLcd = z
     }),
   ])
   .transform<ProposalVotesInfo>(([tally, pool]) => ({
-    yes: tally.yes_count,
-    abstain: tally.abstain_count,
-    no: tally.no_count,
-    noWithVeto: tally.no_with_veto_count,
+    yes: tally.tally.yes_count,
+    abstain: tally.tally.abstain_count,
+    no: tally.tally.no_count,
+    noWithVeto: tally.tally.no_with_veto_count,
     totalVotingPower: pool.pool.bonded_tokens,
   }));
 
@@ -232,8 +234,8 @@ export const zProposalDataResponseLcd = z
     submit_time: zUtcDate,
     deposit_end_time: zUtcDate,
     total_deposit: zCoin.array(),
-    voting_start_time: zUtcDate,
-    voting_end_time: zUtcDate,
+    voting_start_time: zUtcDate.nullable(),
+    voting_end_time: zUtcDate.nullable(),
     metadata: z.string(),
     title: z.string(),
     summary: z.string(),
