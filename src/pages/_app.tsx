@@ -38,6 +38,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
       />
     </Head>
     <CelatoneSeo />
+    <div className="marquee">
+      <p>
+        Bug bash version 🐞 Bug bash version 🐞 Bug bash version 🐞 Bug bash
+        version 🐞 Bug bash version 🐞 Bug bash version 🐞 Bug bash version 🐞
+        Bug bash version 🐞 Bug bash version 🐞 Bug bash version 🐞 Bug bash
+        version 🐞 Bug bash version 🐞 Bug bash version 🐞 Bug bash version 🐞
+      </p>
+    </div>
     <Layout>
       <MobileGuard>
         <Component {...pageProps} />
