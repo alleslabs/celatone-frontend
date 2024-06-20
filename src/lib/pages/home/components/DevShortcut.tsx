@@ -43,7 +43,7 @@ export const DevShortcut = () => {
             {
               title: "Query",
               subtitle: "Query and get contract state data",
-              slug: "query",
+              slug: "interact-contract",
               icon: "query" as const,
             },
             {
