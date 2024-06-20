@@ -132,7 +132,8 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
-  const isAccountAddress = type === "Account Address";
+  const isAccountAddress =
+    type === "Account Address" || type === "Contract Address";
   const displayValue = useMemo(() => {
     if (isAccountAddress) {
       return metadata.icns.address || metadata.initiaUsername.address || value;
@@ -169,7 +170,7 @@ const ResultItem = ({
           }}
         >
           <Text variant="body2">{displayValue}</Text>
-          {metadata.icns.icnsNames?.primaryName && (
+          {isAccountAddress && metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
                 <PrimaryNameMark />
