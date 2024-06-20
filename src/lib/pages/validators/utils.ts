@@ -18,7 +18,8 @@ export const compareValidator =
     let isLower = true;
     if (order === ValidatorOrder.Commission)
       isLower = a.commissionRate < b.commissionRate;
-    else if (order === ValidatorOrder.Moniker) isLower = a.moniker < b.moniker;
+    else if (order === ValidatorOrder.Moniker)
+      isLower = a.moniker.toLowerCase() < b.moniker.toLowerCase();
     else
       isLower = a.votingPower.eq(b.votingPower)
         ? a.moniker > b.moniker
