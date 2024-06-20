@@ -111,7 +111,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                   ))}
                 </Flex>
               ) : (
-                <Text variant="body2" color="text.dark" mt="1px">
+                <Text variant="body2" color="text.dark" mt="3px">
                   (No Message)
                 </Text>
               )}
