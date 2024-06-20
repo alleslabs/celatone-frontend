@@ -20,6 +20,6 @@ export const DepositorsTableHeader = ({
         <TableHeader>Timestamp</TableHeader>
       </>
     )}
-    <TableHeader textAlign="right">Deposited Amount</TableHeader>
+    <TableHeader>Deposited Amount</TableHeader>
   </Grid>
 );

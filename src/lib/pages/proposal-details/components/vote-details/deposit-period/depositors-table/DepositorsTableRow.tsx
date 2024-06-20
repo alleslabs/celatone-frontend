@@ -62,7 +62,7 @@ export const DepositorsTableRow = ({
         </TableRow>
       </>
     )}
-    <TableRow justifyContent="flex-end">
+    <TableRow>
       <DepositAmounts deposit={proposalDeposit} />
     </TableRow>
   </Grid>

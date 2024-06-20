@@ -20,7 +20,7 @@ export const DepositorsTable = ({
   showTransaction,
   isPruned,
 }: DepositorsTableProps) => {
-  const templateColumns = `1.5fr ${showTransaction ? "1.5fr 2fr " : ""}1fr`;
+  const templateColumns = showTransaction ? "1.5fr 1.5fr 2fr 1fr" : "240px 1fr";
 
   if (isDepositsLoading) return <Loading />;
 
