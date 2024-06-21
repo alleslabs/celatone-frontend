@@ -37,18 +37,16 @@ const RenderModules = ({
     return <NoImageEmptyState desc="This address does not have any modules." />;
 
   return filtered?.length ? (
-    <>
-      {filtered.map((module) => (
-        <ModuleCard
-          key={module.moduleName}
-          selectedAddress={selectedAddress.address}
-          module={module}
-          selectedModule={selectedModule}
-          setSelectedModule={setSelectedModule}
-          setStep={setStep}
-        />
-      ))}
-    </>
+    filtered.map((module) => (
+      <ModuleCard
+        key={module.moduleName}
+        selectedAddress={selectedAddress.address}
+        module={module}
+        selectedModule={selectedModule}
+        setSelectedModule={setSelectedModule}
+        setStep={setStep}
+      />
+    ))
   ) : (
     <NoImageEmptyState desc="No matching module found." />
   );
