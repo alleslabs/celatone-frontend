@@ -15,17 +15,16 @@ import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/types";
 import type { BechAddr, HexAddr, Option } from "lib/types";
 
+import type { InitiaUsernameDataResponse } from "./AccountTitle";
 import { AccountTitle } from "./AccountTitle";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
   accountAddress: BechAddr;
   hexAddress: HexAddr;
-  data?: {
-    username: string | null;
-  };
-  isLoading?: boolean;
-  isFetching?: boolean;
+  initiaUsernameData: Option<InitiaUsernameDataResponse>;
+  isInitiaUsernameDataLoading: boolean;
+  isInitiaUsernameDataFetching: boolean;
 }
 
 export const AccountHeader = observer(
@@ -33,9 +32,9 @@ export const AccountHeader = observer(
     accountData,
     accountAddress,
     hexAddress,
-    data,
-    isLoading,
-    isFetching,
+    initiaUsernameData,
+    isInitiaUsernameDataLoading,
+    isInitiaUsernameDataFetching,
   }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
     const isMobile = useMobile();
@@ -55,9 +54,9 @@ export const AccountHeader = observer(
             <AccountTitle
               accountData={accountData}
               accountLocalInfo={accountLocalInfo}
-              data={data}
-              isLoading={isLoading}
-              isFetching={isFetching}
+              initiaUsernameData={initiaUsernameData}
+              isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+              isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
             />
             {!isMobile && (
               <>
@@ -140,7 +139,7 @@ export const AccountHeader = observer(
                 />
               </Flex>
             )}
-            {accountLocalInfo?.name && data?.username && (
+            {accountLocalInfo?.name && initiaUsernameData?.username && (
               <Flex mt={{ base: 1, md: 0 }} alignItems="center">
                 <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
                   Initia Username:
@@ -152,7 +151,7 @@ export const AccountHeader = observer(
                   height={4}
                   mr={1}
                 />
-                <Text variant="body2">{data.username}</Text>
+                <Text variant="body2">{initiaUsernameData.username}</Text>
               </Flex>
             )}
           </Flex>

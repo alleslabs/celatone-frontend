@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import { capitalize, isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -139,7 +139,7 @@ const InteractContractBody = ({
       />
       <Flex gap={4} align="center" mt={8} mb={4}>
         <Heading variant="h6" as="h6" minW={40} mr={2}>
-          {selectedType} Message
+          {capitalize(selectedType)} Message
         </Heading>
         {!isMobile && (
           <InteractionTypeSwitch

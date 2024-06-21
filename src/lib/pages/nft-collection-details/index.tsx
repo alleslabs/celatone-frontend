@@ -110,6 +110,11 @@ const CollectionDetailsBody = ({
   const displayCollectionName =
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
+  const getCollectionName = () => {
+    if (!name.length) return "Untitled Collection";
+    return isMobile ? displayCollectionName : name;
+  };
+
   return (
     <>
       <CelatoneSeo
@@ -122,7 +127,9 @@ const CollectionDetailsBody = ({
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
-          { text: isMobile ? displayCollectionName : name },
+          {
+            text: getCollectionName(),
+          },
         ]}
       />
       <Flex
@@ -139,8 +146,15 @@ const CollectionDetailsBody = ({
           minW={{ md: "680px" }}
           maxW="full"
         >
-          <Heading as="h5" variant="h5" mb={1} className="ellipsis">
-            {name}
+          <Heading
+            as="h5"
+            variant="h5"
+            mb={1}
+            className="ellipsis"
+            color={name.length ? "text.main" : "text.disabled"}
+            fontWeight={name.length ? "600" : "300"}
+          >
+            {name.length ? name : "Untitled Collection"}
           </Heading>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -149,7 +163,7 @@ const CollectionDetailsBody = ({
             alignItems={{ base: "start", md: "center" }}
           >
             <Text color="text.dark" variant="body2">
-              Collection:
+              Collection Address:
             </Text>
             <Tooltip label="View as Account Address">
               <ExplorerLink

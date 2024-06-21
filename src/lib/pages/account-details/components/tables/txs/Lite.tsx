@@ -1,9 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { ErrorFetching } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import {
   MobileTitle,
   TableTitle,
@@ -21,6 +22,7 @@ export const TxsTableLite = ({
   onViewMore,
 }: TxsTableProps) => {
   const isMobile = useMobile();
+  const isFullTier = useTierConfig() === "full";
 
   const {
     pagesQuantity,
@@ -38,7 +40,7 @@ export const TxsTableLite = ({
     },
   });
 
-  const { data, isLoading } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressLcd(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,
@@ -57,15 +59,42 @@ export const TxsTableLite = ({
           title="Transactions"
           count={txsCount}
           onViewMore={onViewMore}
+          showCount={isFullTier}
         />
       ) : (
-        <>
-          <TableTitle title="Transactions" count={txsCount} mb={0} />
+        <Flex direction="column" gap={6}>
+          <TableTitle
+            title="Transactions"
+            count={txsCount}
+            mb={0}
+            showCount={isFullTier}
+          />
+          <Alert variant="warning" gap={3}>
+            <CustomIcon
+              name="alert-circle-solid"
+              boxSize={4}
+              color="warning.main"
+            />
+            <AlertDescription>
+              Please note that account transactions are queried from the LCD and
+              may have pruned transactions that will not be displayed.
+            </AlertDescription>
+          </Alert>
           {!isMobileOverview && (
             <TransactionsTable
               transactions={data?.items}
               isLoading={isLoading}
-              emptyState={<ErrorFetching dataName="transactions" />}
+              emptyState={
+                error ? (
+                  <ErrorFetching dataName="transactions" />
+                ) : (
+                  <EmptyState
+                    withBorder
+                    imageVariant="empty"
+                    message="There are no transactions on this account, or they have been pruned from the LCD."
+                  />
+                )
+              }
               showRelations={false}
             />
           )}
@@ -91,7 +120,7 @@ export const TxsTableLite = ({
                     }}
                   />
                 ))}
-        </>
+        </Flex>
       )}
     </Box>
   );

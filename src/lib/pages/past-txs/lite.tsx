@@ -8,14 +8,47 @@ import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
 import { useTxsByAddressLcd } from "lib/services/tx";
 
+interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
+  search: string;
+  isWasmEnabled: boolean;
+  error: unknown;
+}
+
+const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
+  search,
+  isWasmEnabled,
+  error,
+}: PastTxsLiteTransactionsTableWithWalletEmptyStateProps) => {
+  if (search.trim().length > 0)
+    return (
+      <EmptyState
+        imageVariant="not-found"
+        message={`No past transaction matches found with your input. You can search with transaction hash${
+          isWasmEnabled ? ", and contract address" : ""
+        }.`}
+        withBorder
+      />
+    );
+
+  if (error) return <ErrorFetching dataName="transactions" />;
+
+  return (
+    <EmptyState
+      imageVariant="empty"
+      message="Past transactions will display here."
+      withBorder
+    />
+  );
+};
+
 export const PastTxsLite = () => {
-  const wasm = useWasmConfig({ shouldRedirect: false });
+  const isWasmEnabled = useWasmConfig({ shouldRedirect: false }).enabled;
   const {
     address,
     chain: { chain_id: chainId },
@@ -40,7 +73,7 @@ export const PastTxsLite = () => {
     },
   });
 
-  const { data, isLoading } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressLcd(
     address,
     debouncedSearch,
     pageSize,
@@ -81,7 +114,7 @@ export const PastTxsLite = () => {
       <Flex my={8}>
         <InputWithIcon
           placeholder={`Search with Transaction Hash${
-            wasm.enabled ? " or Contract Address" : ""
+            isWasmEnabled ? " or Contract Address" : ""
           }`}
           value={search}
           onChange={handleOnSearchChange}
@@ -93,21 +126,11 @@ export const PastTxsLite = () => {
         transactions={data?.items}
         isLoading={isLoading}
         emptyState={
-          search.trim().length > 0 ? (
-            <EmptyState
-              imageVariant="not-found"
-              message={`No past transaction matches found with your input. You can search with transaction hash${
-                wasm.enabled ? ", and contract address" : ""
-              }.`}
-              withBorder
-            />
-          ) : (
-            <EmptyState
-              imageVariant="empty"
-              message="Past transactions will display here."
-              withBorder
-            />
-          )
+          <PastTxsLiteTransactionsTableWithWalletEmptyState
+            search={search}
+            isWasmEnabled={isWasmEnabled}
+            error={error}
+          />
         }
         showActions={false}
         showRelations={false}

@@ -79,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#983](https://github.com/alleslabs/celatone-frontend/pull/983) Add fallback for collection names that are empty string
 - [#982](https://github.com/alleslabs/celatone-frontend/pull/982) Support Icns in account osmosis lite version
 - [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
 - [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
@@ -101,6 +102,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#985](https://github.com/alleslabs/celatone-frontend/pull/985) Fix proposal details lite version bugs
+- [#987](https://github.com/alleslabs/celatone-frontend/pull/987) Fix bug bash (query redirection, module button color, modal open/close, migration contract radio button, txs count in account detail)
+- [#989](https://github.com/alleslabs/celatone-frontend/pull/989) Change tomcat endpoints
+- [#984](https://github.com/alleslabs/celatone-frontend/pull/984) Exclude non block number from searching block in lite
+- [#974](https://github.com/alleslabs/celatone-frontend/pull/974) Fix tx by account addr lcd to support new cosmos sdk
+- [#976](https://github.com/alleslabs/celatone-frontend/pull/976) Support save accounts in lite version
+- [#944](https://github.com/alleslabs/celatone-frontend/pull/944) Fix asset input selector
 - [#979](https://github.com/alleslabs/celatone-frontend/pull/979) Fix txs detail receiver overflow screen
 - [#980](https://github.com/alleslabs/celatone-frontend/pull/980) Pass through block in search in lite
 - [#981](https://github.com/alleslabs/celatone-frontend/pull/981) Fix useAccountData

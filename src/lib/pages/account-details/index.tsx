@@ -124,10 +124,11 @@ const AccountDetailsBody = ({
   );
 
   const { address } = useCurrentChain();
-  const { data, isLoading, isFetching } = useInitiaUsernameByAddress(
-    hexAddress,
-    move.enabled
-  );
+  const {
+    data: initiaUsernameData,
+    isLoading: isInitiaUsernameDataLoading,
+    isFetching: isInitiaUsernameDataFetching,
+  } = useInitiaUsernameByAddress(hexAddress, move.enabled);
 
   const getPageTitle = useMemo(() => {
     switch (true) {
@@ -137,8 +138,8 @@ const AccountDetailsBody = ({
         return "0x1 Page";
       case !!accountData?.icns?.primaryName:
         return `${accountData.icns.primaryName} (Account)`;
-      case !!data?.username && move.enabled:
-        return `${data.username} (Account)`;
+      case !!initiaUsernameData?.username && move.enabled:
+        return `${initiaUsernameData.username} (Account)`;
       default:
         return `Account - ${truncate(accountAddress)}`;
     }
@@ -146,7 +147,7 @@ const AccountDetailsBody = ({
     accountAddress,
     accountData?.icns?.primaryName,
     address,
-    data?.username,
+    initiaUsernameData?.username,
     hexAddress,
     move.enabled,
   ]);
@@ -172,9 +173,9 @@ const AccountDetailsBody = ({
           accountData={accountData}
           accountAddress={accountAddress}
           hexAddress={hexAddress}
-          data={data}
-          isLoading={isLoading}
-          isFetching={isFetching}
+          initiaUsernameData={initiaUsernameData}
+          isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+          isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
         />
       </Flex>
       <Tabs
@@ -214,7 +215,7 @@ const AccountDetailsBody = ({
             NFTs
           </CustomTab>
           <CustomTab
-            count={tableCounts.txsCount}
+            count={isFullTier ? tableCounts.txsCount : undefined}
             isDisabled={tableCounts.txsCount === 0}
             onClick={handleTabChange(
               TabIndex.Txs,
