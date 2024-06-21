@@ -244,7 +244,7 @@ export const MigrateContract = ({
   return (
     <>
       <Heading as="h6" variant="h6" mb={4}>
-        To Code ID
+        Migrate to Code ID
       </Heading>
       <CodeSelectSection
         name="codeId"
