@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useTierConfig } from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import type { FormStatus } from "lib/components/forms";
 import type { Code } from "lib/services/types";
@@ -29,29 +30,32 @@ export const CodeSelectSection = <T extends FieldValues>({
   setCodeHash,
   status,
 }: CodeSelectSectionProps<T>) => {
+  const isFullTier = useTierConfig() === "full";
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
-    "select-existing"
+    isFullTier ? "select-existing" : "fill-manually"
   );
 
   return (
     <>
-      <RadioGroup
-        onChange={(nextVal: "select-existing" | "fill-manually") => {
-          track(
-            nextVal === "fill-manually"
-              ? AmpEvent.USE_CODE_FILL
-              : AmpEvent.USE_CODE_SELECT
-          );
-          setMethod(nextVal);
-        }}
-        value={method}
-        w="100%"
-      >
-        <Flex justify="space-around">
-          <Radio value="select-existing">Select from your code</Radio>
-          <Radio value="fill-manually">Fill Code ID manually</Radio>
-        </Flex>
-      </RadioGroup>
+      {isFullTier && (
+        <RadioGroup
+          onChange={(nextVal: "select-existing" | "fill-manually") => {
+            track(
+              nextVal === "fill-manually"
+                ? AmpEvent.USE_CODE_FILL
+                : AmpEvent.USE_CODE_SELECT
+            );
+            setMethod(nextVal);
+          }}
+          value={method}
+          w="100%"
+        >
+          <Flex justify="space-around">
+            <Radio value="select-existing">Select from your code</Radio>
+            <Radio value="fill-manually">Fill Code ID manually</Radio>
+          </Flex>
+        </RadioGroup>
+      )}
       <form style={{ width: "100%" }}>
         {method === "select-existing" ? (
           <CodeSelect

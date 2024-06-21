@@ -175,7 +175,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
             item={{
               title: "Query",
               subtitle: "Query and get contract state data",
-              slug: "query",
+              slug: "interact-contract",
               icon: "query" as const,
               isDocument: false,
             }}

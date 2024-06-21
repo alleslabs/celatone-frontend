@@ -32,7 +32,6 @@ export const ButtonSection = ({
       .find((r) => r.title === "Tx Hash")
       ?.value?.toString();
     openTxTab(txHash);
-    onClose?.();
   };
 
   const openProposalExplorer = () => {
