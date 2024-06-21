@@ -22,6 +22,8 @@ const getResolvedPrefix = (status: ProposalStatus) => {
 };
 
 export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
+  const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
+
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return (
       <Text variant="body2">
@@ -46,9 +48,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
     <Text variant="body2" color="text.dark">
       {getResolvedPrefix(proposalData.status)}
       {" at "}
-      {proposalData.resolvedTimestamp
-        ? formatUTC(proposalData.resolvedTimestamp)
-        : "N/A"}
+      {endTime ? formatUTC(endTime) : "N/A"}
     </Text>
   );
 };

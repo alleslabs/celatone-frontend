@@ -59,6 +59,7 @@ export const TxsTableLite = ({
           title="Transactions"
           count={txsCount}
           onViewMore={onViewMore}
+          showCount={isFullTier}
         />
       ) : (
         <Flex direction="column" gap={6}>
