@@ -101,7 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#988](https://github.com/alleslabs/celatone-frontend/pull/988) Fix
+- [#988](https://github.com/alleslabs/celatone-frontend/pull/988) Fix total asset value and assets in json
 - [#984](https://github.com/alleslabs/celatone-frontend/pull/984) Exclude non block number from searching block in lite
 - [#974](https://github.com/alleslabs/celatone-frontend/pull/974) Fix tx by account addr lcd to support new cosmos sdk
 - [#976](https://github.com/alleslabs/celatone-frontend/pull/976) Support save accounts in lite version
