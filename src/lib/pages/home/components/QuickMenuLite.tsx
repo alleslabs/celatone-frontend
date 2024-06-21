@@ -145,7 +145,7 @@ export const QuickMenuLite = () => {
         {
           title: "Execute",
           subtitle: "Send transactions to contracts",
-          slug: "execute",
+          slug: "interact-contract?selectedType=execute",
           icon: "execute" as const,
           isHighlight: false,
           isDocument: false,
