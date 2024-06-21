@@ -12,8 +12,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "blackwingtestnet",
     prettyName: "Blackwing Testnet Lite",
-    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
-    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
+    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
     indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
@@ -203,8 +203,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "blackwingtestnet",
     prettyName: "Blackwing",
-    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
-    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
+    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
     indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
