@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   FormControl,
-  Input,
   Kbd,
   List,
   Modal,
@@ -28,6 +27,7 @@ import {
   useTierConfig,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { useEaster } from "lib/hooks";
 import type { SearchResultType } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
@@ -265,7 +265,7 @@ export const SearchComponent = () => {
           </Flex>
           <Flex pb={1} borderRadius={4}>
             <span>
-              <Kbd>⌘</Kbd> <Kbd>K</Kbd>
+              <Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd> <Kbd>K</Kbd>
             </span>
           </Flex>
         </Flex>
@@ -289,13 +289,14 @@ export const SearchComponent = () => {
             borderBottomColor="gray.700"
           >
             <FormControl ref={boxRef} zIndex={3}>
-              <Input
+              <InputWithIcon
                 w="100%"
                 minW="200px"
                 size="lg"
                 placeholder="Enter your keyword..."
                 style={{ maxHeight: "54px", border: "none" }}
                 pr={28}
+                pl={10}
                 value={keyword}
                 onChange={handleSearchChange}
                 onKeyDown={handleOnKeyEnter}
@@ -311,7 +312,13 @@ export const SearchComponent = () => {
               {currentChainId}
             </Tag>
           </ModalHeader>
-          <ModalBody px={3}>
+          <ModalBody
+            px={3}
+            minH={{ base: "80vh", md: "460px" }}
+            display={results.length > 0 ? "block" : "flex"}
+            justifyContent="center"
+            alignItems="center"
+          >
             {keyword.length > 0 ? (
               <>
                 {isLoading || isTyping ? (

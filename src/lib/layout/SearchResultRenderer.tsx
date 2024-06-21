@@ -107,7 +107,9 @@ const DisplayResult = ({
           direction={{ base: "column", md: "row" }}
         >
           <Text variant="body2" color="text.dark" wordBreak="break-all">
-            ({metadata.initiaUsername.address})
+            {metadata.initiaUsername.username
+              ? `(${metadata.initiaUsername.address})`
+              : metadata.initiaUsername.address}
           </Text>
           <Text
             variant="body2"
@@ -148,7 +150,9 @@ const DisplayResult = ({
           direction={{ base: "column", md: "row" }}
         >
           <Text variant="body2" color="text.dark" wordBreak="break-all">
-            ({metadata.icns.address})
+            {metadata.icns.icnsNames.primaryName
+              ? `(${metadata.icns.address})`
+              : metadata.icns.address}
           </Text>
           <Text
             variant="body2"
@@ -161,8 +165,30 @@ const DisplayResult = ({
       </Flex>
     );
 
+  if (
+    type === "Account Address" ||
+    type === "Contract Address" ||
+    type === "Validator Address" ||
+    type === "Transaction Hash" ||
+    type === "Module Path"
+  )
+    return (
+      <Flex gap={{ base: 0, md: 1 }} direction={{ base: "column", md: "row" }}>
+        <Text variant="body2" wordBreak="break-all">
+          {value}
+        </Text>
+        <Text
+          variant="body2"
+          fontWeight={{ base: "auto", md: 500 }}
+          color="text.disabled"
+        >
+          <span>–</span> {type}
+        </Text>
+      </Flex>
+    );
+
   return (
-    <Flex gap={{ base: 0, md: 1 }} direction={{ base: "column", md: "row" }}>
+    <Flex gap={1}>
       <Text variant="body2" wordBreak="break-all">
         {value}
       </Text>
