@@ -71,7 +71,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
             <Flex
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
-              align={{ base: "start", md: "center" }}
+              align="start"
             >
               <Text
                 variant="body2"
@@ -79,6 +79,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 fontWeight={500}
                 whiteSpace="nowrap"
                 lineHeight="24px"
+                mt="1px"
               >
                 Proposal Messages:
               </Text>
@@ -110,7 +111,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                   ))}
                 </Flex>
               ) : (
-                <Text variant="body2" color="text.dark">
+                <Text variant="body2" color="text.dark" mt="3px">
                   (No Message)
                 </Text>
               )}
