@@ -89,4 +89,6 @@ export const getProposalVotesInfoLcd = async (
       `${endpoint}/cosmos/gov/v1/proposals/${encodeURIComponent(id)}/tally`
     ),
     axios.get(`${endpoint}/cosmos/staking/v1beta1/pool`),
-  ]).then((data) => parseWithError(zProposalVotesInfoResponseLcd, data));
+  ]).then(([tallyRes, poolRes]) =>
+    parseWithError(zProposalVotesInfoResponseLcd, [tallyRes.data, poolRes.data])
+  );

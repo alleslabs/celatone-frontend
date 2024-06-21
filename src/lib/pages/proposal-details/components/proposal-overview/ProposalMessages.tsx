@@ -69,7 +69,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
         >
           {messages.map((item, i) => (
             <ProposalMessageCard
-              key={`msg-${JSON.stringify(item)}`}
+              key={`msg-${i.toString()}-${JSON.stringify(item)}`}
               header={`[${i}] ${item["@type"]}`}
               jsonString={jsonPrettify(JSON.stringify(item))}
             />

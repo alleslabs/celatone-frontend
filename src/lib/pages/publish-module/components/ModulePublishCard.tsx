@@ -77,8 +77,8 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
       </Flex>
       <Grid templateColumns="1fr 1fr 1fr" columnGap={4}>
         <Button
-          rightIcon={<CustomIcon name="launch" boxSize={3} color="text.main" />}
-          variant="outline-white"
+          rightIcon={<CustomIcon name="launch" boxSize={3} />}
+          variant="primary"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
               label: "See Module",
