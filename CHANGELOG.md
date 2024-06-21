@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#989](https://github.com/alleslabs/celatone-frontend/pull/989) Change tomcat endpoints
 - [#984](https://github.com/alleslabs/celatone-frontend/pull/984) Exclude non block number from searching block in lite
 - [#974](https://github.com/alleslabs/celatone-frontend/pull/974) Fix tx by account addr lcd to support new cosmos sdk
 - [#976](https://github.com/alleslabs/celatone-frontend/pull/976) Support save accounts in lite version
