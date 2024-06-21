@@ -10,16 +10,18 @@ import { DepositorsTableRow } from "./DepositorsTableRow";
 interface DepositorsTableProps {
   depositors: ProposalDeposit[];
   isDepositsLoading: boolean;
+  showTransaction: boolean;
   isPruned: boolean;
 }
-
-const templateColumns = `1.5fr 1.5fr 2fr 1fr`;
 
 export const DepositorsTable = ({
   depositors,
   isDepositsLoading,
+  showTransaction,
   isPruned,
 }: DepositorsTableProps) => {
+  const templateColumns = showTransaction ? "1.5fr 1.5fr 2fr 1fr" : "240px 1fr";
+
   if (isDepositsLoading) return <Loading />;
 
   if (isPruned)
@@ -32,12 +34,16 @@ export const DepositorsTable = ({
 
   return (
     <TableContainer>
-      <DepositorsTableHeader templateColumns={templateColumns} />
+      <DepositorsTableHeader
+        templateColumns={templateColumns}
+        showTransaction={showTransaction}
+      />
       {depositors.map((each) => (
         <DepositorsTableRow
           key={each.depositor}
           proposalDeposit={each}
           templateColumns={templateColumns}
+          showTransaction={showTransaction}
         />
       ))}
     </TableContainer>

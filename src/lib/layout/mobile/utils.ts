@@ -34,7 +34,7 @@ export const getNavDrawerLite = (
             },
             {
               name: "Query",
-              slug: "/query",
+              slug: "/interact-contract",
               icon: "query" as IconKeys,
             },
           ]

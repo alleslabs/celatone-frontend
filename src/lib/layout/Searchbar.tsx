@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   Button,
   chakra,
@@ -8,6 +9,7 @@ import {
   Flex,
   FormControl,
   IconButton,
+  Image,
   List,
   ListItem,
   Spinner,
@@ -15,7 +17,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
 import { trackUseMainSearch } from "lib/amplitude";
@@ -47,6 +49,7 @@ const StyledListItem = chakra(ListItem, {
     bg: "gray.900",
   },
 });
+
 interface ResultItemProps {
   index: number;
   type: SearchResultType;
@@ -102,6 +105,22 @@ const getRouteOptions = (
   }
 };
 
+const InitiaUsername = ({ username }: { username: string }) => (
+  <Flex gap={1} align="center" flexWrap="wrap">
+    <Flex gap={1} align="center">
+      <Image
+        src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+        borderRadius="full"
+        width={4}
+        height={4}
+      />
+      <Text variant="body3" color="text.dark">
+        {username}
+      </Text>
+    </Flex>
+  </Flex>
+);
+
 const ResultItem = ({
   index,
   type,
@@ -113,9 +132,23 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
+  const isAccountAddress =
+    type === "Account Address" || type === "Contract Address";
+  const displayValue = useMemo(() => {
+    if (isAccountAddress) {
+      return metadata.icns.address || metadata.initiaUsername.address || value;
+    }
+    return value;
+  }, [
+    isAccountAddress,
+    metadata.icns.address,
+    metadata.initiaUsername.address,
+    value,
+  ]);
   const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
+
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
@@ -136,8 +169,8 @@ const ResultItem = ({
             onClose?.();
           }}
         >
-          <Text variant="body2">{metadata.icns.address || value}</Text>
-          {metadata.icns.icnsNames?.primaryName && (
+          <Text variant="body2">{displayValue}</Text>
+          {isAccountAddress && metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
                 <PrimaryNameMark />
@@ -162,6 +195,9 @@ const ResultItem = ({
                   </Text>
                 )}
             </Flex>
+          )}
+          {isAccountAddress && metadata.initiaUsername?.username && (
+            <InitiaUsername username={metadata.initiaUsername.username} />
           )}
         </Flex>
       )}
@@ -286,13 +322,22 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
+      const getQueryValue = () => {
+        if (type === "Module Path") {
+          return splitModule(keyword) as [Addr, string];
+        }
+        if (type === "Account Address")
+          return (
+            metadata.icns.address || metadata.initiaUsername.address || keyword
+          );
+
+        return keyword;
+      };
+
       trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
-        const queryValues =
-          type === "Module Path"
-            ? (splitModule(keyword) as [Addr, string])
-            : metadata.icns.address || keyword;
+        const queryValues = getQueryValue();
         navigate({
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
@@ -301,7 +346,13 @@ const Searchbar = () => {
         onClose();
       }
     },
-    [keyword, metadata.icns.address, navigate, onClose]
+    [
+      keyword,
+      metadata.icns.address,
+      metadata.initiaUsername.address,
+      navigate,
+      onClose,
+    ]
   );
 
   const handleOnKeyEnter = useCallback(

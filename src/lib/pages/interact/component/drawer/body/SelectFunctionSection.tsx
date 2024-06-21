@@ -96,14 +96,13 @@ export const SelectFunctionSection = ({
     >
       {module ? (
         <>
-          {!isMobile && (
-            <Heading as="h6" variant="h6" fontWeight={600}>
-              {module.moduleName}
-            </Heading>
-          )}
-          {isMobile && (
+          {isMobile ? (
             <Heading as="h6" variant="h6" fontWeight={600} mt={6}>
               Select View Function
+            </Heading>
+          ) : (
+            <Heading as="h6" variant="h6" fontWeight={600}>
+              {module.moduleName}
             </Heading>
           )}
           <InputWithIcon

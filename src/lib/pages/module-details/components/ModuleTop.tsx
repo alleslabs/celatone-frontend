@@ -17,7 +17,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
-import type { HexAddr, IndexedModule } from "lib/types";
+import type { Addr, HexAddr, IndexedModule } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
@@ -32,20 +32,16 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-const ModuleCta = ({ moduleData }: { moduleData: IndexedModule }) => {
+const ModuleCta = ({
+  moduleData,
+  moduleAddress,
+}: {
+  moduleData: IndexedModule;
+  moduleAddress: Addr;
+}) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
-  const { convertHexWalletAddress, convertHexModuleAddress } =
-    useConvertHexAddress();
-
-  const moduleAddress = useMemo(() => {
-    if (isHexWalletAddress(moduleData.address))
-      return convertHexWalletAddress(moduleData.address as HexAddr);
-    if (isHexModuleAddress(moduleData.address))
-      return convertHexModuleAddress(moduleData.address as HexAddr);
-    return moduleData.address;
-  }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
 
   const { canRepublish, republishRemark } = useMemo(() => {
     // cannot republish if upgrade policy is IMMUTABLE
@@ -160,6 +156,7 @@ const ModuleCta = ({ moduleData }: { moduleData: IndexedModule }) => {
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
   const isFullTier = useTierConfig() === "full";
+
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
 
@@ -225,7 +222,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             </Tooltip>
           )}
         </Flex>
-        {!isMobile && <ModuleCta moduleData={moduleData} />}
+        {!isMobile && (
+          <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />
+        )}
       </Flex>
       <Flex direction="column" textOverflow="ellipsis" gap={{ base: 2, md: 1 }}>
         <Flex
@@ -292,7 +291,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
           </Flex>
         </Flex>
       </Flex>
-      {isMobile && <ModuleCta moduleData={moduleData} />}
+      {isMobile && (
+        <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />
+      )}
     </Flex>
   );
 };

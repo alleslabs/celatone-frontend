@@ -43,61 +43,59 @@ const FunctionSection = ({
   setSelectedFn?: Dispatch<SetStateAction<ExposedFunction | undefined>>;
   isZeroState?: boolean;
   handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
-}) => {
-  return (
-    <Flex
-      borderTop="1px solid"
-      borderTopColor="gray.700"
-      pt={4}
-      mt={2}
-      direction="column"
-      gap={4}
-    >
-      <Flex direction="column" gap={2}>
-        <Flex gap={2} alignItems="center">
-          <Text as="h6" variant="h6" fontWeight={600}>
-            Selected Function
-          </Text>
-          <Button
-            size="sm"
-            variant={isZeroState ? "ghost-gray" : "ghost-primary"}
-            leftIcon={<CustomIcon name="swap" boxSize={3} />}
-            px={1}
-            onClick={() =>
-              handleDrawerOpen?.(ModuleInteractionMobileStep.SelectFunction)
-            }
-          >
-            Change Function
-          </Button>
-        </Flex>
-        {selectedFn && setSelectedFn && (
-          <FunctionCard
-            variant="readonly"
-            exposedFn={selectedFn}
-            isReadOnly
-            onFunctionSelect={() => {
-              setSelectedFn(selectedFn);
-            }}
-          />
-        )}
-      </Flex>
-      {selectedFn ? (
-        <SelectedFunctionCard fn={selectedFn} />
-      ) : (
-        <Flex
-          p={4}
-          borderRadius={8}
-          alignItems="center"
-          justifyContent="center"
-          bg="background.main"
-          color="text.dark"
+}) => (
+  <Flex
+    borderTop="1px solid"
+    borderTopColor="gray.700"
+    pt={4}
+    mt={2}
+    direction="column"
+    gap={4}
+  >
+    <Flex direction="column" gap={2}>
+      <Flex gap={2} alignItems="center">
+        <Text as="h6" variant="h6" fontWeight={600}>
+          Selected Function
+        </Text>
+        <Button
+          size="sm"
+          variant={isZeroState ? "ghost-gray" : "ghost-primary"}
+          leftIcon={<CustomIcon name="swap" boxSize={3} />}
+          px={1}
+          onClick={() =>
+            handleDrawerOpen?.(ModuleInteractionMobileStep.SelectFunction)
+          }
         >
-          Please select module first
-        </Flex>
+          Change Function
+        </Button>
+      </Flex>
+      {selectedFn && setSelectedFn && (
+        <FunctionCard
+          variant="readonly"
+          exposedFn={selectedFn}
+          isReadOnly
+          onFunctionSelect={() => {
+            setSelectedFn(selectedFn);
+          }}
+        />
       )}
     </Flex>
-  );
-};
+    {selectedFn ? (
+      <SelectedFunctionCard fn={selectedFn} />
+    ) : (
+      <Flex
+        p={4}
+        borderRadius={8}
+        alignItems="center"
+        justifyContent="center"
+        bg="background.main"
+        color="text.dark"
+      >
+        Please select module first
+      </Flex>
+    )}
+  </Flex>
+);
 
 export const ZeroState = ({
   onOpen,
@@ -105,24 +103,19 @@ export const ZeroState = ({
 }: {
   onOpen: () => void;
   isMobile: boolean;
-}) => {
-  return (
-    <Flex
-      direction={{ base: "column", md: "row" }}
-      alignItems={{ md: "center" }}
-      justifyContent={{ md: "space-between" }}
-      w="full"
-      gap={4}
-    >
-      <p>Select a module to interact with ...</p>
-      <ModuleSelectDrawerTrigger
-        triggerVariant="select-module"
-        onOpen={onOpen}
-      />
-      {isMobile && <FunctionSection isZeroState />}
-    </Flex>
-  );
-};
+}) => (
+  <Flex
+    direction={{ base: "column", md: "row" }}
+    alignItems={{ md: "center" }}
+    justifyContent={{ md: "space-between" }}
+    w="full"
+    gap={4}
+  >
+    <p>Select a module to interact with ...</p>
+    <ModuleSelectDrawerTrigger triggerVariant="select-module" onOpen={onOpen} />
+    {isMobile && <FunctionSection isZeroState />}
+  </Flex>
+);
 
 export const Interact = () => {
   useMoveConfig({ shouldRedirect: true });

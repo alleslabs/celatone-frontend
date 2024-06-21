@@ -71,6 +71,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
           textFormat="normal"
           maxWidth="full"
           ampCopierSection="tx_msg_receipts"
+          wordBreak="break-word"
         />
       );
   }

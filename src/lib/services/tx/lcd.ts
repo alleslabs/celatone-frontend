@@ -43,15 +43,29 @@ export const getTxsByAccountAddressLcd = async (
   limit: number,
   offset: number
 ) =>
-  axios
-    .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs?events=message.sender=%27${encodeURI(address)}%27`,
-      {
-        params: {
-          order_by: 2,
-          limit,
-          page: offset / limit + 1,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
+  Promise.allSettled([
+    axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        order_by: 2,
+        limit,
+        page: offset / limit + 1,
+        query: `message.sender='${encodeURI(address)}'`,
+      },
+    }),
+    axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        order_by: 2,
+        limit,
+        page: offset / limit + 1,
+        events: `message.sender='${encodeURI(address)}'`,
+      },
+    }),
+  ]).then(([queryParam, eventsParam]) => {
+    if (queryParam.status === "fulfilled")
+      return parseWithError(zTxsByAddressResponseLcd, queryParam.value.data);
+
+    if (eventsParam.status === "fulfilled")
+      return parseWithError(zTxsByAddressResponseLcd, eventsParam.value.data);
+
+    throw new Error("No data found (getTxsByAccountAddressLcd)");
+  });

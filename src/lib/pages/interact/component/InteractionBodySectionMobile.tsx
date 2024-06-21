@@ -36,13 +36,13 @@ export const InteractionBodySectionMobile = ({
         <EmptyState
           imageWidth="80px"
           imageVariant="empty"
-          message="Initiate your Module interactions by choosing its associated function."
+          message={`Initiate your Module interactions by choosing its associated ${!module ? "module" : "function"}.`}
           textVariant="body2"
           my={0}
           py={4}
         />
         <Button variant="primary" onClick={openDrawer}>
-          Select Function
+          {!module ? "Select Module" : "Select Function"}
         </Button>
       </Flex>
     )}
