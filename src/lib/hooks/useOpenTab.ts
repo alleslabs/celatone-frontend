@@ -1,6 +1,11 @@
 import { useCallback } from "react";
 
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useCelatoneApp,
+  useLcdEndpoint,
+  useTierConfig,
+} from "lib/app-provider";
 import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
 
@@ -18,13 +23,19 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
 };
 
 export const useOpenAssetTab = () => {
-  const endpoint = useBaseApiRoute("accounts");
+  const isFullTier = useTierConfig() === "full";
+  const apiEndpoint = useBaseApiRoute("accounts");
+  const lcdEndpoint = useLcdEndpoint();
 
   return useCallback(
     (walletAddr: string) => {
-      openNewTab(`${endpoint}/${walletAddr}/balances`);
+      openNewTab(
+        isFullTier
+          ? `${apiEndpoint}/${walletAddr}/balances`
+          : `${lcdEndpoint}/cosmos/bank/v1beta1/balances/${walletAddr}?pagination.limit=1000`
+      );
     },
-    [endpoint]
+    [apiEndpoint, isFullTier, lcdEndpoint]
   );
 };
 

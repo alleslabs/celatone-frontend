@@ -8,7 +8,6 @@ import {
   useCurrentChain,
   useInternalNavigate,
   useMobile,
-  useTierConfig,
 } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
@@ -155,7 +154,6 @@ const ModuleCta = ({
 
 export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   const isMobile = useMobile();
-  const isFullTier = useTierConfig() === "full";
 
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
@@ -241,25 +239,23 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             type="module_path"
           />
         </Flex>
-        {isFullTier && (
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text {...baseTextStyle} color="text.main">
-              Creator:
-            </Text>
-            <ExplorerLink
-              value={moduleAddress}
-              ampCopierSection="module_top"
-              textFormat="normal"
-              maxWidth="fit-content"
-              type="user_address"
-              fixedHeight={false}
-            />
-          </Flex>
-        )}
+        <Flex
+          mt={{ base: 2, md: 0 }}
+          gap={{ base: 0, md: 2 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text {...baseTextStyle} color="text.main">
+            Creator:
+          </Text>
+          <ExplorerLink
+            value={moduleAddress}
+            ampCopierSection="module_top"
+            textFormat="normal"
+            maxWidth="fit-content"
+            type="user_address"
+            fixedHeight={false}
+          />
+        </Flex>
         <Flex
           mt={{ base: 2, md: 0 }}
           gap={{ base: 0, md: 2 }}
