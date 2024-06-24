@@ -56,6 +56,8 @@ export interface ChainConfig {
   chain: string;
   registryChainName: string;
   prettyName: string;
+  logoUrl?: string;
+  networkType: "mainnet" | "testnet";
   lcd: string;
   rpc: string;
   indexer: string;

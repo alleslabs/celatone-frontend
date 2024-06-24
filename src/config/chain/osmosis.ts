@@ -2,12 +2,16 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
 import type { ChainConfigs } from "./types";
 
+const OSMOSIS_LOGO =
+  "https://assets.alleslabs.dev/integrations/chains/osmo.png";
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
   "osmosis-1": {
     tier: "full",
     chain: "osmosis",
     registryChainName: "osmosis",
     prettyName: "Osmosis",
+    networkType: "mainnet",
+    logoUrl: OSMOSIS_LOGO,
     lcd: "https://lcd.osmosis.zone",
     rpc: "https://rpc.osmosis.zone:443",
     indexer: "https://osmosis-1-graphql.alleslabs.dev/v1/graphql",
@@ -56,6 +60,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     chain: "osmosis",
     registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",
+    networkType: "testnet",
+    logoUrl: OSMOSIS_LOGO,
     lcd: "https://lcd.osmotest5.osmosis.zone",
     rpc: "https://osmosis-testnet-rpc.polkachu.com:443",
     indexer: "",
@@ -105,6 +111,8 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     chain: "osmosis",
     registryChainName: "localosmosis",
     prettyName: "Local Osmosis",
+    networkType: "testnet",
+    logoUrl: OSMOSIS_LOGO,
     lcd: "http://localhost/rest",
     rpc: "http://localhost:80/rpc/",
     indexer: "http://localhost/hasura/v1/graphql",
