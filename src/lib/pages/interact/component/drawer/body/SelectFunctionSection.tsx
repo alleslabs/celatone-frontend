@@ -5,16 +5,14 @@ import { useCallback, useMemo, useState } from "react";
 import { ModuleEmptyState, NoImageEmptyState } from "../../common";
 import type { ModuleSelectFunction } from "../types";
 import { AmpEvent, track } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { FunctionCard } from "lib/components/module/FunctionCard";
 import type { ExposedFunction, IndexedModule, Option } from "lib/types";
 
 const functionGridBaseStyle: FlexProps = {
-  border: "1px solid",
   borderRadius: 8,
-  borderColor: "gray.700",
-  p: 4,
   direction: "column",
 };
 
@@ -51,12 +49,13 @@ interface ModuleFunctionBodyProps extends GridItemProps {
   closeModal: () => void;
 }
 
-export const ModuleFunctionBody = ({
+export const SelectFunctionSection = ({
   module,
   handleModuleSelect,
   closeModal,
   ...gridItemProps
 }: ModuleFunctionBodyProps) => {
+  const isMobile = useMobile();
   const [keyword, setKeyword] = useState("");
   const [filteredView, filteredExecute] = useMemo(
     () => [
@@ -88,15 +87,24 @@ export const ModuleFunctionBody = ({
   return (
     <GridItem
       gap={4}
+      p={{ base: 0, md: 4 }}
+      border={{ base: 0, md: "1px solid" }}
+      borderColor={{ base: "transparent", md: "gray.700" }}
       {...functionGridBaseStyle}
       {...gridItemProps}
       overflow="hidden"
     >
       {module ? (
         <>
-          <Heading as="h6" variant="h6" fontWeight={600}>
-            {module.moduleName}
-          </Heading>
+          {isMobile ? (
+            <Heading as="h6" variant="h6" fontWeight={600} mt={6}>
+              Select View Function
+            </Heading>
+          ) : (
+            <Heading as="h6" variant="h6" fontWeight={600}>
+              {module.moduleName}
+            </Heading>
+          )}
           <InputWithIcon
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -105,17 +113,30 @@ export const ModuleFunctionBody = ({
             my={4}
             amptrackSection="module-select-drawer-function-search"
           />
-          <Flex gap={6} h={maxHeight}>
-            <Flex flex={0.5} gap={3} {...functionGridBaseStyle}>
-              <Flex alignItems="center" gap={1}>
-                <Text variant="body2" fontWeight={600} color="text.dark">
-                  View Functions
-                </Text>
-                <CountBadge
-                  count={module.viewFunctions.length}
-                  variant="view"
-                />
-              </Flex>
+          <Flex
+            gap={6}
+            h={{ base: "auto", md: maxHeight }}
+            minH={{ base: 40, md: "auto" }}
+          >
+            <Flex
+              flex={{ base: 1, md: 0.5 }}
+              p={{ base: 0, md: 4 }}
+              border={{ base: 0, md: "1px solid" }}
+              borderColor={{ base: "transparent", md: "gray.700" }}
+              gap={3}
+              {...functionGridBaseStyle}
+            >
+              {!isMobile && (
+                <Flex alignItems="center" gap={1}>
+                  <Text variant="body2" fontWeight={600} color="text.dark">
+                    View Functions
+                  </Text>
+                  <CountBadge
+                    count={module.viewFunctions.length}
+                    variant="view"
+                  />
+                </Flex>
+              )}
               <Flex direction="column" gap={3} overflow="scroll">
                 <RenderFunctions
                   exposedFnsLength={module.viewFunctions.length}
@@ -124,24 +145,33 @@ export const ModuleFunctionBody = ({
                 />
               </Flex>
             </Flex>
-            <Flex flex={0.5} gap={3} {...functionGridBaseStyle}>
-              <Flex alignItems="center" gap={1}>
-                <Text variant="body2" fontWeight={600} color="text.dark">
-                  Execute Functions
-                </Text>
-                <CountBadge
-                  count={module.executeFunctions.length}
-                  variant="execute"
-                />
+            {!isMobile && (
+              <Flex
+                flex={0.5}
+                gap={3}
+                p={4}
+                border="1px solid"
+                borderColor="gray.700"
+                {...functionGridBaseStyle}
+              >
+                <Flex alignItems="center" gap={1}>
+                  <Text variant="body2" fontWeight={600} color="text.dark">
+                    Execute Functions
+                  </Text>
+                  <CountBadge
+                    count={module.executeFunctions.length}
+                    variant="execute"
+                  />
+                </Flex>
+                <Flex direction="column" gap={3} overflow="scroll">
+                  <RenderFunctions
+                    exposedFnsLength={module.executeFunctions.length}
+                    filtered={filteredExecute}
+                    onFunctionSelect={onFunctionSelect}
+                  />
+                </Flex>
               </Flex>
-              <Flex direction="column" gap={3} overflow="scroll">
-                <RenderFunctions
-                  exposedFnsLength={module.executeFunctions.length}
-                  filtered={filteredExecute}
-                  onFunctionSelect={onFunctionSelect}
-                />
-              </Flex>
-            </Flex>
+            )}
           </Flex>
         </>
       ) : (

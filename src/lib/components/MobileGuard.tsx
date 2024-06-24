@@ -29,6 +29,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/codes`) ||
     // move
     pathName.includes(`/modules`) ||
+    pathName.includes(`/interact`) ||
     // validators
     pathName.includes(`/validators`);
 

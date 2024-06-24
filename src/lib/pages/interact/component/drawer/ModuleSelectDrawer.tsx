@@ -17,7 +17,7 @@ import { useModulesByAddress } from "lib/services/move/module";
 import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
-import { ModuleSelectMainBody } from "./body";
+import { DrawerBodyDesktop } from "./body";
 import { ModuleSelector } from "./selector";
 import type {
   DisplayMode,
@@ -100,7 +100,7 @@ export const ModuleSelectDrawer = ({
               closeModal={onClose}
             />
             {modules ? (
-              <ModuleSelectMainBody
+              <DrawerBodyDesktop
                 selectedAddress={selectedAddress}
                 mode={mode}
                 modules={modules}
