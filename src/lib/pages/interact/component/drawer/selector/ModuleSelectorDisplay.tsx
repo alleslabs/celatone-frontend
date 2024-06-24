@@ -62,7 +62,6 @@ export const ModuleSelectorDisplay = ({
         </>
       ) : (
         <>
-          {" "}
           <Flex flex={1}>
             <LabelText label="Viewing Address">
               <CopyLink

@@ -16,7 +16,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
-import type { Addr, HexAddr, IndexedModule } from "lib/types";
+import type { Addr, IndexedModule } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
@@ -160,9 +160,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
 
   const moduleAddress = useMemo(() => {
     if (isHexWalletAddress(moduleData.address))
-      return convertHexWalletAddress(moduleData.address as HexAddr);
+      return convertHexWalletAddress(moduleData.address);
     if (isHexModuleAddress(moduleData.address))
-      return convertHexModuleAddress(moduleData.address as HexAddr);
+      return convertHexModuleAddress(moduleData.address);
     return moduleData.address;
   }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
 

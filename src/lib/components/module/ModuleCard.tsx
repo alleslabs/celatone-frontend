@@ -57,13 +57,7 @@ export const ModuleCard = ({
         gap={1}
         templateColumns="20px 1fr auto"
         onClick={() => (readOnly ? null : handleModuleClick(module))}
-        _hover={
-          readOnly
-            ? {}
-            : {
-                bg: "gray.700",
-              }
-        }
+        _hover={{ bg: readOnly ? "unset" : "gray.700" }}
         transition=".25s all ease-out"
       >
         <CustomIcon name="contract-address" color="primary.main" boxSize={3} />

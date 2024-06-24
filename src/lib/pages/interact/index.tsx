@@ -97,7 +97,7 @@ const FunctionSection = ({
   </Flex>
 );
 
-export const ZeroState = ({
+const ZeroState = ({
   onOpen,
   isMobile,
 }: {
@@ -283,7 +283,7 @@ export const Interact = () => {
                       display="inline-flex"
                       wordBreak="break-all"
                     >
-                      {module.address.toString()}
+                      {module.address}
                     </Text>
                     <CustomIcon
                       name="chevron-right"
