@@ -89,16 +89,18 @@ const DisplayResult = ({
   metadata,
   value,
   type,
+  isAccountAddress,
 }: {
   metadata: ResultMetadata;
   value: string;
   type: SearchResultType;
+  isAccountAddress: boolean;
 }) => {
   const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
 
-  if (type === "Account Address" && metadata.initiaUsername.address)
+  if (isAccountAddress && metadata.initiaUsername.address)
     return (
       <Flex direction="column">
         <Text variant="body2">{metadata.initiaUsername.username}</Text>
@@ -122,7 +124,7 @@ const DisplayResult = ({
       </Flex>
     );
 
-  if (type === "Account Address" && metadata.icns.icnsNames?.primaryName)
+  if (isAccountAddress && metadata.icns.icnsNames?.primaryName)
     return (
       <Flex direction="column">
         <Flex gap={1}>
@@ -166,8 +168,7 @@ const DisplayResult = ({
     );
 
   if (
-    type === "Account Address" ||
-    type === "Contract Address" ||
+    isAccountAddress ||
     type === "Validator Address" ||
     type === "Transaction Hash" ||
     type === "Module Path"
@@ -214,6 +215,8 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
+  const isAccountAddress =
+    type === "Account Address" || type === "Contract Address";
 
   return (
     <Flex id={`item-${index}`}>
@@ -234,7 +237,7 @@ const ResultItem = ({
             onClose?.();
           }}
         >
-          {type === "Account Address" && metadata.initiaUsername?.username ? (
+          {isAccountAddress && metadata.initiaUsername?.username ? (
             <Image
               src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
               borderRadius="full"
@@ -244,7 +247,12 @@ const ResultItem = ({
           ) : (
             <CustomIcon name={getIcon(type)} color="gray.600" />
           )}
-          <DisplayResult metadata={metadata} value={value} type={type} />
+          <DisplayResult
+            metadata={metadata}
+            value={value}
+            type={type}
+            isAccountAddress={isAccountAddress}
+          />
         </Flex>
       )}
     </Flex>

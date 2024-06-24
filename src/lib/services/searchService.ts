@@ -165,9 +165,10 @@ export const useSearchHandler = (
     isPosDecimal(debouncedKeyword) && isFullTier
   );
   const { foundBlock, isFetching: blockFetching } = useMemo(() => {
-    if (!isFullTier) return { foundBlock: true, isFetching: false };
+    if (isPosDecimal(debouncedKeyword) && !isFullTier)
+      return { foundBlock: true, isFetching: false };
     return { foundBlock: blockApi.data, isFetching: blockApi.isFetching };
-  }, [blockApi, isFullTier]);
+  }, [blockApi.data, blockApi.isFetching, debouncedKeyword, isFullTier]);
 
   // Proposal
   const { data: proposalApiData, isFetching: proposalApiIsFetching } =

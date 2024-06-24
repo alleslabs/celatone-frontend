@@ -278,7 +278,8 @@ export const SearchComponent = () => {
       >
         <ModalOverlay />
         <ModalContent
-          w={{ base: "90%", md: "800px" }}
+          w={{ base: "100%", md: "800px" }}
+          h={{ base: "100%", md: "auto" }}
           bg="gray.800"
           maxW="100vw"
         >
@@ -289,19 +290,37 @@ export const SearchComponent = () => {
             borderBottomColor="gray.700"
           >
             <FormControl ref={boxRef} zIndex={3}>
-              <InputWithIcon
-                w="100%"
-                minW="200px"
-                size="lg"
-                placeholder="Enter your keyword..."
-                style={{ maxHeight: "54px", border: "none" }}
-                pr={28}
-                pl={10}
-                value={keyword}
-                onChange={handleSearchChange}
-                onKeyDown={handleOnKeyEnter}
-                autoComplete="off"
-              />
+              <Flex alignItems="center">
+                {isMobile && (
+                  <Flex
+                    p={1}
+                    borderRadius={8}
+                    bgColor="gray.700"
+                    ml={3}
+                    onClick={onClose}
+                    cursor="pointer"
+                  >
+                    <CustomIcon
+                      name="chevron-left"
+                      color="text.dark"
+                      boxSize={4}
+                    />
+                  </Flex>
+                )}
+                <InputWithIcon
+                  w="100%"
+                  minW="200px"
+                  size="lg"
+                  placeholder="Enter your keyword..."
+                  style={{ maxHeight: "54px", border: "none" }}
+                  pr={28}
+                  pl={10}
+                  value={keyword}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleOnKeyEnter}
+                  autoComplete="off"
+                />
+              </Flex>
             </FormControl>
             <Tag
               variant="accent-darker"
@@ -315,7 +334,6 @@ export const SearchComponent = () => {
           <ModalBody
             px={3}
             minH={{ base: "80vh", md: "460px" }}
-            display={results.length > 0 ? "block" : "flex"}
             justifyContent="center"
             alignItems="center"
           >
@@ -328,6 +346,7 @@ export const SearchComponent = () => {
                     direction="column"
                     justifyContent="center"
                     alignItems="center"
+                    minH="360px"
                   >
                     <Spinner color="gray.600" size="sm" />
                     <Text

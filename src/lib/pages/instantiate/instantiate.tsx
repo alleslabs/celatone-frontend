@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import type { RJSFValidationError } from "@rjsf/utils";
@@ -19,6 +19,7 @@ import {
   useFabricateFee,
   useInstantiateTx,
   useSimulateFeeQuery,
+  useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
@@ -97,6 +98,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
+  const isFullTier = useTierConfig() === "full";
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -407,20 +409,27 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           subtitle="You need to connect your wallet to perform this action"
           mb={6}
         />
-        <CodeSelectSection
-          name="codeId"
-          control={control}
-          status={status}
-          error={formErrors.codeId?.message}
-          onCodeSelect={(code: string) => {
-            setValue("codeId", code);
-            resetMsgInputSchema();
-          }}
-          setCodeHash={(data: Code) =>
-            setValue("codeHash", data.hash.toLowerCase())
-          }
-          codeId={codeId}
-        />
+        <Box w="100%">
+          {!isFullTier && (
+            <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+              Code ID
+            </Heading>
+          )}
+          <CodeSelectSection
+            name="codeId"
+            control={control}
+            status={status}
+            error={formErrors.codeId?.message}
+            onCodeSelect={(code: string) => {
+              setValue("codeId", code);
+              resetMsgInputSchema();
+            }}
+            setCodeHash={(data: Code) =>
+              setValue("codeHash", data.hash.toLowerCase())
+            }
+            codeId={codeId}
+          />
+        </Box>
         <form style={{ width: "100%" }}>
           <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
             Label

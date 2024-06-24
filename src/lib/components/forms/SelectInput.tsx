@@ -29,7 +29,7 @@ interface SelectInputProps<T extends string> {
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
-  initialSelected: string;
+  initialSelected?: string;
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
@@ -81,9 +81,10 @@ export const SelectInput = <T extends string>({
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
+    if (!initialSelected) return;
+
     setSelected(
-      options.find((item) => !item.disabled && item.value === initialSelected)
-        ?.label ?? ""
+      options.find((item) => item.value === initialSelected)?.label ?? ""
     );
   }, [initialSelected, options]);
 
@@ -162,6 +163,7 @@ export const SelectInput = <T extends string>({
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
+        overflow="scroll"
       >
         {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
