@@ -1,6 +1,6 @@
 import { Flex, Image } from "@chakra-ui/react";
 
-import Searchbar from "../Searchbar";
+import { SearchComponent } from "../SearchComponent";
 import { useCelatoneApp } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 
@@ -32,7 +32,7 @@ const MobileHeader = () => {
         />
       </AppLink>
       <Flex gap={2}>
-        <Searchbar />
+        <SearchComponent />
         <NavDrawer />
       </Flex>
     </Flex>
