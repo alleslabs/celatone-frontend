@@ -19,7 +19,7 @@ interface MigrationMobileCardProps {
   history: ContractMigrationHistory;
 }
 export const MigrationMobileCard = ({ history }: MigrationMobileCardProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
   const navigate = useInternalNavigate();

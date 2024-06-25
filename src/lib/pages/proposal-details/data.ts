@@ -27,7 +27,7 @@ interface DerivedProposalDataResponse {
 export const useDerivedProposalData = (
   id: number
 ): DerivedProposalDataResponse => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const { data: dataApi, isLoading: isApiLoading } = useProposalData(
     id,
     isFullTier

@@ -43,7 +43,7 @@ export const ProposalStatusFilter = forwardRef<
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
-    const isFullTier = useTierConfig() === "full";
+    const { isFullTier } = useTierConfig();
 
     const OPTIONS = isFullTier
       ? Object.values(ProposalStatus)

@@ -19,7 +19,7 @@ import { getSubHeaderFull, getSubHeaderLite } from "./utils";
 const ACTIVE_COLOR = "primary.light";
 
 const SubHeader = () => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });

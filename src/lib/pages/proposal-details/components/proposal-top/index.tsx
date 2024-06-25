@@ -18,7 +18,7 @@ interface ProposalTopProps {
 }
 
 export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
 
   const isDepositOrVoting =

@@ -1,4 +1,4 @@
-import { useTierConfig } from "lib/app-provider";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import type { BechAddr32, Option } from "lib/types";
 
 import { MigrationTableFull } from "./MigrationTableFull";
@@ -16,17 +16,16 @@ export const MigrationTable = ({
   scrollComponentId,
   totalData,
   refetchCount,
-}: MigrationTableProps) => {
-  const isFullTier = useTierConfig() === "full";
-
-  return isFullTier ? (
-    <MigrationTableFull
-      contractAddress={contractAddress}
-      scrollComponentId={scrollComponentId}
-      totalData={totalData}
-      refetchCount={refetchCount}
-    />
-  ) : (
-    <MigrationTableLite contractAddress={contractAddress} />
-  );
-};
+}: MigrationTableProps) => (
+  <TierSwitcher
+    full={
+      <MigrationTableFull
+        contractAddress={contractAddress}
+        scrollComponentId={scrollComponentId}
+        totalData={totalData}
+        refetchCount={refetchCount}
+      />
+    }
+    lite={<MigrationTableLite contractAddress={contractAddress} />}
+  />
+);

@@ -5,7 +5,7 @@ import { useInternalNavigate } from "./useInternalNavigate";
 
 const TierMap: Record<ChainConfig["tier"], number> = {
   lite: 0,
-  // new metric 1
+  newmetric: 1,
   full: 2,
 };
 
@@ -26,7 +26,12 @@ export const useTierConfig = (
   if (TierMap[tier] < TierMap[minTier])
     navigate({ pathname: "/", replace: true });
 
-  return tier;
+  return {
+    tier,
+    isFullTier: tier === "full",
+    isLiteTier: tier === "lite",
+    isNewMetricTier: tier === "newmetric",
+  };
 };
 
 type Features = ChainConfig["features"];

@@ -50,7 +50,7 @@ const ContentContainer = ({
 const scrollComponentId = "voting-period";
 
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const isMobile = useMobile();
   const validatorVoteDisclosure = useDisclosure();

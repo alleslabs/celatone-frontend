@@ -32,7 +32,7 @@ import { usePublicProjectStore } from "lib/providers/store";
 import { getNavDrawerFull, getNavDrawerLite } from "./utils";
 
 export const NavDrawer = () => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });

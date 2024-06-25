@@ -32,7 +32,7 @@ export const ModuleActions = ({
   allTxsCount,
   onSelectAction,
 }: ModuleActionsProps) => {
-  const isFulTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const actionList: ActionInfo[] = [
     {
@@ -61,7 +61,7 @@ export const ModuleActions = ({
       count: allTxsCount,
       onClick: () => onSelectAction(TabIndex.TxsHistories),
       disabled: allTxsCount === 0,
-      hidden: !isFulTier,
+      hidden: !isFullTier,
     },
   ];
 

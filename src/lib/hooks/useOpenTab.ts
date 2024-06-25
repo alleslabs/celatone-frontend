@@ -23,7 +23,7 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
 };
 
 export const useOpenAssetTab = () => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
 

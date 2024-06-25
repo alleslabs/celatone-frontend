@@ -12,7 +12,7 @@ interface BlockInfoProps {
 
 export const BlockInfo = ({ blockData }: BlockInfoProps) => {
   const { currentChainId } = useCelatoneApp();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   return (
     <Box mb={12}>
       <Flex mb={6} justifyContent="space-between">
