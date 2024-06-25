@@ -44,12 +44,11 @@ export const useCommissionsByValidatorAddressLcd = (
       valAddr,
     ],
     () => {
-      if (isUndefined(valAddr))
-        throw new Error("Validator address is undefined");
+      if (isUndefined(valAddr)) return { commission: [] };
       return getCommissionsByValidatorAddressLcd(endpoint, valAddr);
     },
     {
-      enabled: enabled && gov.enabled && !isUndefined(valAddr),
+      enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
     }
   );
