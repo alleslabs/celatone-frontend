@@ -83,7 +83,7 @@ export const useModulesByAddress = ({
   onSuccess?: (data: AccountModulesResponse) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;

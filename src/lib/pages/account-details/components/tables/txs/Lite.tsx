@@ -22,7 +22,7 @@ export const TxsTableLite = ({
   onViewMore,
 }: TxsTableProps) => {
   const isMobile = useMobile();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const {
     pagesQuantity,

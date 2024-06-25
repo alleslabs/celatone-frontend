@@ -18,7 +18,7 @@ export const ProposalsTable = ({
   isLoading,
   emptyState,
 }: ProposalsTableProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
 
   if (isLoading) return <Loading />;

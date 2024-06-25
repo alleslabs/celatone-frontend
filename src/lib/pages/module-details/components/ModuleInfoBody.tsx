@@ -50,7 +50,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 export const ModuleInfoBody = ({
   moduleData,
 }: Omit<ModuleInfoProps, "verificationData">) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const {
     address,
     upgradePolicy,

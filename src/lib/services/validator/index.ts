@@ -155,7 +155,7 @@ export const useValidatorDataLcd = (
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("validators");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;

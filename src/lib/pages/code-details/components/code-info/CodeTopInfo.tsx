@@ -26,7 +26,7 @@ export const CodeTopInfo = ({
   projectInfo,
   publicInfo,
 }: CodeTopInfoProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);

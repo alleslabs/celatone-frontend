@@ -9,13 +9,21 @@ import { HomeLite } from "./lite";
 
 const Home = () => {
   const router = useRouter();
-  const tier = useTierConfig({ minTier: "lite" });
+  const { tier } = useTierConfig({ minTier: "lite" });
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_OVERVIEW);
   }, [router.isReady]);
 
-  return tier === "lite" ? <HomeLite /> : <HomeFull />;
+  switch (tier) {
+    case "full":
+      return <HomeFull />;
+    case "newmetric":
+      return <HomeLite />;
+    case "lite":
+    default:
+      return <HomeLite />;
+  }
 };
 
 export default Home;

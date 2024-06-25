@@ -39,7 +39,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const { address } = useCurrentChain();
 
   const navMenu: MenuInfo[] = isFullTier

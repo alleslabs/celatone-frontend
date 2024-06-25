@@ -20,7 +20,7 @@ export const TxsTable = ({
   totalData,
   refetchCount,
 }: TxsTableProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const {
     setTotalData,

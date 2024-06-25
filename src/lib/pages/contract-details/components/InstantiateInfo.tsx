@@ -102,7 +102,7 @@ export const InstantiateInfo = ({
   contractRest,
   codeLocalInfo,
 }: InstantiateInfoProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const getAddressType = useGetAddressType();
   const {
     chain: { chain_id: chainId },

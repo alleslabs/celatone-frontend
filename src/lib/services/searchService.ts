@@ -68,7 +68,7 @@ export const useSearchHandler = (
   resetHandlerStates: () => void
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ): SearchHandlerResponse => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {

@@ -30,7 +30,7 @@ export const CodeSelectSection = <T extends FieldValues>({
   setCodeHash,
   status,
 }: CodeSelectSectionProps<T>) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
     isFullTier ? "select-existing" : "fill-manually"
   );

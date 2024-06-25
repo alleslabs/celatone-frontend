@@ -17,7 +17,7 @@ interface InstantiatedByMeState {
 
 export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { address } = useCurrentChain();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const resApi = useInstantiatedListByAddress(address, enable && isFullTier);
   const resLcd = useInstantiatedContractsByAddressLcd(
@@ -46,7 +46,7 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useCurrentChain();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const resApi = useInstantiatedCountByAddress(address);
   const resLcd = useInstantiatedContractsByAddressLcd(address, !isFullTier);
   const count = isFullTier ? resApi.data : resLcd.data?.length ?? 0;

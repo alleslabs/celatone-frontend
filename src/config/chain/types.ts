@@ -52,7 +52,7 @@ type GovConfig =
 type NftConfig = { enabled: boolean };
 
 export interface ChainConfig {
-  tier: "lite" | "full";
+  tier: "lite" | "newmetric" | "full";
   chain: string;
   registryChainName: string;
   prettyName: string;

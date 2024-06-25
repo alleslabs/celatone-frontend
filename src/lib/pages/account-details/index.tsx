@@ -78,7 +78,7 @@ const AccountDetailsBody = ({
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
