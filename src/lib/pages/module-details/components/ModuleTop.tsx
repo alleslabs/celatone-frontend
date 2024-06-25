@@ -8,7 +8,6 @@ import {
   useCurrentChain,
   useInternalNavigate,
   useMobile,
-  useTierConfig,
 } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyButton } from "lib/components/copy";
@@ -17,7 +16,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
-import type { HexAddr, IndexedModule } from "lib/types";
+import type { Addr, IndexedModule } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
@@ -32,21 +31,16 @@ const baseTextStyle: TextProps = {
   whiteSpace: "nowrap",
 };
 
-export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
+const ModuleCta = ({
+  moduleData,
+  moduleAddress,
+}: {
+  moduleData: IndexedModule;
+  moduleAddress: Addr;
+}) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
-  const isFullTier = useTierConfig() === "full";
-  const { convertHexWalletAddress, convertHexModuleAddress } =
-    useConvertHexAddress();
-
-  const moduleAddress = useMemo(() => {
-    if (isHexWalletAddress(moduleData.address))
-      return convertHexWalletAddress(moduleData.address as HexAddr);
-    if (isHexModuleAddress(moduleData.address))
-      return convertHexModuleAddress(moduleData.address as HexAddr);
-    return moduleData.address;
-  }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
 
   const { canRepublish, republishRemark } = useMemo(() => {
     // cannot republish if upgrade policy is IMMUTABLE
@@ -74,6 +68,105 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
   }, [moduleData.upgradePolicy, moduleAddress, address]);
 
   return (
+    <Flex
+      gap={{ base: 2, md: 3 }}
+      w={{ base: "full", md: "auto" }}
+      justifyContent={{ md: "end" }}
+      mt={{ base: 4, md: 0 }}
+    >
+      <Button
+        variant="outline-white"
+        w={{ base: "full", md: "auto" }}
+        leftIcon={<CustomIcon name="query" mr={0} />}
+        size={{ base: "sm", md: "md" }}
+        onClick={() => {
+          track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
+            label: "view",
+          });
+          navigate({
+            pathname: "/interact",
+            query: {
+              address: moduleData.address,
+              moduleName: moduleData.moduleName,
+              functionType: "view",
+            },
+          });
+        }}
+      >
+        View
+      </Button>
+      {!isMobile && (
+        <>
+          <Button
+            variant="outline-white"
+            leftIcon={<CustomIcon name="execute" mr={0} />}
+            onClick={() => {
+              track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
+                label: "execute",
+              });
+              navigate({
+                pathname: "/interact",
+                query: {
+                  address: moduleData.address,
+                  moduleName: moduleData.moduleName,
+                  functionType: "execute",
+                },
+              });
+            }}
+          >
+            Execute
+          </Button>
+          <Tooltip
+            variant="primary-light"
+            label={republishRemark}
+            closeOnClick={false}
+          >
+            <Button
+              isDisabled={!canRepublish}
+              variant="outline-white"
+              leftIcon={<CustomIcon name="migrate" mr={0} />}
+              onClick={() => {
+                track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
+                  label: "republish",
+                });
+                navigate({
+                  pathname: "/publish-module",
+                });
+              }}
+            >
+              Republish
+            </Button>
+          </Tooltip>
+        </>
+      )}
+      <CopyButton
+        w={{ base: "full", md: "auto" }}
+        size={{ base: "sm", md: "md" }}
+        amptrackSection="[Module Detail CTA] Copy ABI "
+        value={moduleData.abi}
+        variant="outline-primary"
+        buttonText="Copy ABI"
+        iconGap={2}
+      />
+    </Flex>
+  );
+};
+
+export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
+  const isMobile = useMobile();
+
+  const { convertHexWalletAddress, convertHexModuleAddress } =
+    useConvertHexAddress();
+
+  const moduleAddress = useMemo(() => {
+    if (isHexWalletAddress(moduleData.address))
+      return convertHexWalletAddress(moduleData.address);
+    if (isHexModuleAddress(moduleData.address))
+      return convertHexModuleAddress(moduleData.address);
+    return moduleData.address;
+  }, [convertHexModuleAddress, convertHexWalletAddress, moduleData.address]);
+
+  return (
     <Flex direction="column">
       <Breadcrumb
         items={[
@@ -91,9 +184,10 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
       <Flex
         justifyContent="space-between"
         w="full"
-        alignItems="center"
+        alignItems={{ base: "start", md: "center" }}
         mt={5}
         mb={3}
+        direction={{ base: "column", md: "row" }}
       >
         <Flex
           gap={1}
@@ -126,90 +220,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             </Tooltip>
           )}
         </Flex>
-        <Flex
-          gap={{ base: 2, md: 3 }}
-          w={{ base: "full", md: "auto" }}
-          justifyContent="end"
-        >
-          {!isMobile && (
-            <>
-              <Button
-                variant="outline-white"
-                w={{ base: "full", md: "auto" }}
-                leftIcon={<CustomIcon name="query" mr={0} />}
-                size={{ base: "sm", md: "md" }}
-                onClick={() => {
-                  track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
-                    label: "view",
-                  });
-                  navigate({
-                    pathname: "/interact",
-                    query: {
-                      address: moduleData.address,
-                      moduleName: moduleData.moduleName,
-                      functionType: "view",
-                    },
-                  });
-                }}
-              >
-                View
-              </Button>
-              <Button
-                variant="outline-white"
-                w={{ base: "full", md: "auto" }}
-                leftIcon={<CustomIcon name="execute" mr={0} />}
-                size={{ base: "sm", md: "md" }}
-                onClick={() => {
-                  track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
-                    label: "execute",
-                  });
-                  navigate({
-                    pathname: "/interact",
-                    query: {
-                      address: moduleData.address,
-                      moduleName: moduleData.moduleName,
-                      functionType: "execute",
-                    },
-                  });
-                }}
-              >
-                Execute
-              </Button>
-              <Tooltip
-                variant="primary-light"
-                label={republishRemark}
-                closeOnClick={false}
-              >
-                <Button
-                  isDisabled={!canRepublish}
-                  variant="outline-white"
-                  w={{ base: "full", md: "auto" }}
-                  leftIcon={<CustomIcon name="migrate" mr={0} />}
-                  size={{ base: "sm", md: "md" }}
-                  onClick={() => {
-                    track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
-                      label: "republish",
-                    });
-                    navigate({
-                      pathname: "/publish-module",
-                    });
-                  }}
-                >
-                  Republish
-                </Button>
-              </Tooltip>
-            </>
-          )}
-          <CopyButton
-            amptrackSection="[Module Detail CTA] Copy ABI "
-            value={moduleData.abi}
-            variant="outline-primary"
-            size={{ base: "sm", md: "md" }}
-            buttonText="Copy ABI"
-            iconGap={2}
-            w={{ base: "full", md: "auto" }}
-          />
-        </Flex>
+        {!isMobile && (
+          <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />
+        )}
       </Flex>
       <Flex direction="column" textOverflow="ellipsis" gap={{ base: 2, md: 1 }}>
         <Flex
@@ -226,25 +239,23 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
             type="module_path"
           />
         </Flex>
-        {isFullTier && (
-          <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
-          >
-            <Text {...baseTextStyle} color="text.main">
-              Creator:
-            </Text>
-            <ExplorerLink
-              value={moduleAddress}
-              ampCopierSection="module_top"
-              textFormat="normal"
-              maxWidth="fit-content"
-              type="user_address"
-              fixedHeight={false}
-            />
-          </Flex>
-        )}
+        <Flex
+          mt={{ base: 2, md: 0 }}
+          gap={{ base: 0, md: 2 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text {...baseTextStyle} color="text.main">
+            Creator:
+          </Text>
+          <ExplorerLink
+            value={moduleAddress}
+            ampCopierSection="module_top"
+            textFormat="normal"
+            maxWidth="fit-content"
+            type="user_address"
+            fixedHeight={false}
+          />
+        </Flex>
         <Flex
           mt={{ base: 2, md: 0 }}
           gap={{ base: 0, md: 2 }}
@@ -276,6 +287,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
           </Flex>
         </Flex>
       </Flex>
+      {isMobile && (
+        <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />
+      )}
     </Flex>
   );
 };

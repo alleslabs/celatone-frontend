@@ -118,6 +118,11 @@ export const getNavDrawerFull = (
               slug: "/account/0x1",
               icon: "hex" as IconKeys,
             },
+            {
+              name: "View Module",
+              slug: "/interact",
+              icon: "query" as IconKeys,
+            },
           ]
         : []),
       ...(isNft
