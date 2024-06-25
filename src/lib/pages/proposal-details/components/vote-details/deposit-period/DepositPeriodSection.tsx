@@ -89,6 +89,7 @@ export const DepositPeriodSection = ({
           <DepositorsTable
             depositors={proposalData.proposalDeposits}
             isDepositsLoading={isDepositsLoading}
+            showTransaction={isFullTier}
             isPruned={!isFullTier && !isDepositOrVoting}
           />
         </>

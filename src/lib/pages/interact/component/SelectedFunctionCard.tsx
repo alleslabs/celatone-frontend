@@ -2,6 +2,7 @@ import { Button, Divider, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { trackUseExpand } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
@@ -13,15 +14,25 @@ interface SelectedFunctionCardProps {
 }
 
 export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
+  const isMobile = useMobile();
   const [expand, setExpand] = useState(false);
   return (
     <Flex direction="column" bg="gray.900" borderRadius="8px">
-      <Flex align="center" justify="space-between" p={4} borderRadius="8px">
+      <Flex
+        align="center"
+        justify="space-between"
+        p={{ base: 0, md: 4 }}
+        borderRadius="8px"
+      >
         <Flex gap={8} h="full">
-          <LabelText label="Selected function" labelWeight={700}>
-            {fn.name}
-          </LabelText>
-          <Divider orientation="vertical" borderColor="gray.700" />
+          {!isMobile && (
+            <>
+              <LabelText label="Selected function" labelWeight={700}>
+                {fn.name}
+              </LabelText>
+              <Divider orientation="vertical" borderColor="gray.700" />
+            </>
+          )}
           <LabelText label="Visibility" labelWeight={700}>
             <Flex
               align="center"
@@ -92,7 +103,8 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
           duration: "0.25",
           ease: "easeInOut",
         }}
-        p={`0 16px ${expand ? "16px" : 0}`}
+        p={{ base: 0, md: `0 16px ${expand ? "16px" : 0}` }}
+        mt={{ base: 3, md: 0 }}
         gap={3}
       >
         <LabelText label="generic_type_params" labelWeight={700}>
