@@ -25,7 +25,8 @@ interface SelectInputProps<T extends string> {
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
-    image?: JSX.Element;
+    image?: ReactNode;
+    trailingNode?: ReactNode;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -36,6 +37,7 @@ interface SelectInputProps<T extends string> {
   popoverBgColor?: string;
   size?: string | object;
   disableMaxH?: boolean;
+  headerComponent?: ReactNode;
 }
 
 interface SelectItemProps {
@@ -56,6 +58,7 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     _hover={{ bg: "gray.800" }}
     transition="all 0.25s ease-in-out"
     _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+    justifyContent="space-between"
   >
     {children}
   </Flex>
@@ -73,6 +76,7 @@ export const SelectInput = <T extends string>({
   popoverBgColor = "gray.900",
   size = "lg",
   disableMaxH = false,
+  headerComponent,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -100,6 +104,7 @@ export const SelectInput = <T extends string>({
       <PopoverTrigger>
         <InputGroup
           sx={{
+            alignItems: "center",
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
@@ -151,7 +156,8 @@ export const SelectInput = <T extends string>({
       <PopoverContent
         border="unset"
         bg={popoverBgColor}
-        w={inputRef.current?.clientWidth}
+        minW={inputRef.current?.clientWidth}
+        w="100%"
         maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
         borderRadius="8px"
         _focusVisible={{
@@ -165,21 +171,35 @@ export const SelectInput = <T extends string>({
         }}
         overflow="scroll"
       >
-        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
-          <SelectItem
-            key={value}
-            onSelect={() => {
-              setSelected(label);
-              onChange(value);
-              onClose();
-            }}
-            disabled={disabled}
-          >
-            <Flex alignItems="center">{image}</Flex>
-            {icon && <CustomIcon name={icon} color={iconColor} />}
-            {label}
-          </SelectItem>
-        ))}
+        {headerComponent}
+        {options.map(
+          ({
+            label,
+            value,
+            disabled,
+            icon,
+            iconColor,
+            image,
+            trailingNode,
+          }) => (
+            <SelectItem
+              key={value}
+              onSelect={() => {
+                setSelected(label);
+                onChange(value);
+                onClose();
+              }}
+              disabled={disabled}
+            >
+              <Flex gap={2} alignItems="center">
+                <Flex alignItems="center">{image}</Flex>
+                {icon && <CustomIcon name={icon} color={iconColor} />}
+                {label}
+              </Flex>
+              {trailingNode}
+            </SelectItem>
+          )
+        )}
         {helperTextComponent && (
           <Flex
             px={4}
