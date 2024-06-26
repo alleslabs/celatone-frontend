@@ -36,7 +36,7 @@ export const PoolId = () => {
   if (!pool) return navigate({ pathname: `/pools` });
   return (
     <PageContainer>
-      <CelatoneSeo pageName={pool.id ? `Pool #${pool.id}` : "Pool Detail"} />
+      <CelatoneSeo pageName={pool.id ? `Pool #${pool.id}` : "Pool Details"} />
       <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />

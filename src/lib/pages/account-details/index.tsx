@@ -130,7 +130,7 @@ const AccountDetailsBody = ({
     isFetching: isInitiaUsernameDataFetching,
   } = useInitiaUsernameByAddress(hexAddress, move.enabled);
 
-  const getPageTitle = useMemo(() => {
+  const pageTitle = useMemo(() => {
     switch (true) {
       case address === accountAddress:
         return "Your Account Detail";
@@ -154,7 +154,7 @@ const AccountDetailsBody = ({
 
   return (
     <>
-      <CelatoneSeo pageName={getPageTitle} />
+      <CelatoneSeo pageName={pageTitle} />
       <Flex direction="column" mb={6}>
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
