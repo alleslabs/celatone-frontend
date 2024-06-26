@@ -7,6 +7,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { AccountZeroState, EmptyState } from "lib/components/state";
 import { SavedAccountsTable } from "lib/components/table";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -47,6 +48,7 @@ const SavedAccounts = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Saved Accounts" />
       <Flex alignItems="center" justifyContent="space-between" mb={8}>
         <Flex direction="column">
           <Flex alignItems="center">

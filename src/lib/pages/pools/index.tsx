@@ -15,6 +15,7 @@ import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { usePoolConfig, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import { PoolType } from "lib/types";
@@ -76,6 +77,7 @@ export const PoolIndex = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Pools" />
       <Flex justifyContent="space-between" alignItems="center">
         <Flex direction="column">
           <Heading variant="h5" as="h5" minH="36px">

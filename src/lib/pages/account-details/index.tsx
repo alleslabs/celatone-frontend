@@ -8,11 +8,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useCurrentChain,
   useGovConfig,
   useInternalNavigate,
   useMoveConfig,
@@ -26,6 +27,7 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -33,6 +35,7 @@ import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import { useNftsCountByAccount } from "lib/services/nft";
+import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -120,8 +123,38 @@ const AccountDetailsBody = ({
     [accountAddress, hexAddress, navigate, tabParam]
   );
 
+  const { address } = useCurrentChain();
+  const {
+    data: initiaUsernameData,
+    isLoading: isInitiaUsernameDataLoading,
+    isFetching: isInitiaUsernameDataFetching,
+  } = useInitiaUsernameByAddress(hexAddress, move.enabled);
+
+  const pageTitle = useMemo(() => {
+    switch (true) {
+      case address === accountAddress:
+        return "Your Account Detail";
+      case hexAddress === "0x1":
+        return "0x1 Page";
+      case !!accountData?.icns?.primaryName:
+        return `${accountData.icns.primaryName} (Account)`;
+      case !!initiaUsernameData?.username && move.enabled:
+        return `${initiaUsernameData.username} (Account)`;
+      default:
+        return `Account - ${truncate(accountAddress)}`;
+    }
+  }, [
+    accountAddress,
+    accountData?.icns?.primaryName,
+    address,
+    initiaUsernameData?.username,
+    hexAddress,
+    move.enabled,
+  ]);
+
   return (
     <>
+      <CelatoneSeo pageName={pageTitle} />
       <Flex direction="column" mb={6}>
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
@@ -140,6 +173,9 @@ const AccountDetailsBody = ({
           accountData={accountData}
           accountAddress={accountAddress}
           hexAddress={hexAddress}
+          initiaUsernameData={initiaUsernameData}
+          isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+          isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
         />
       </Flex>
       <Tabs

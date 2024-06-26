@@ -6,6 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useIsConnected } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { MyPublishedModulesTable } from "./components/MyPublishedModulesTable";
 
@@ -21,6 +22,7 @@ export const MyPublishedModules = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="My Published Modules" />
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Flex direction="column">
           <Heading as="h5" variant="h5" minH="36px">

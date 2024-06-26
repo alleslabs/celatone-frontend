@@ -3,6 +3,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 
 import { ProposalsTableFull } from "./components/ProposalsTableFull";
@@ -15,6 +16,7 @@ const Proposals = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Proposals" />
       <Flex justify="space-between" alignItems="center">
         <Heading as="h5" variant="h5">
           Proposals

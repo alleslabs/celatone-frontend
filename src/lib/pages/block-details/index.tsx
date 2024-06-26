@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { InvalidBlock } from "./components/InvalidBlock";
 import { BlockDetailsFull } from "./full";
@@ -17,10 +18,15 @@ interface BlockDetailsBodyProps {
 const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
   const isFullTier = useTierConfig() === "full";
 
-  return isFullTier ? (
-    <BlockDetailsFull height={height} />
-  ) : (
-    <BlockDetailsLite height={height} />
+  return (
+    <>
+      <CelatoneSeo pageName={`Block #${height.toString()}`} />
+      {isFullTier ? (
+        <BlockDetailsFull height={height} />
+      ) : (
+        <BlockDetailsLite height={height} />
+      )}
+    </>
   );
 };
 

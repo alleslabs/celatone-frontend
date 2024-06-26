@@ -12,6 +12,7 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -92,6 +93,13 @@ const ProjectDetail = () => {
   if (isLoading) return <Loading withBorder />;
   return (
     <PageContainer>
+      <CelatoneSeo
+        pageName={
+          projectDetail?.name
+            ? `${projectDetail.name} (Public Project)`
+            : "Public Project Detail"
+        }
+      />
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
