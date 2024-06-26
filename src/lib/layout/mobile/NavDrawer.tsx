@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { NetworkMenu } from "../NetworkMenu";
+import { NetworkMenu } from "../network-selector/NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,

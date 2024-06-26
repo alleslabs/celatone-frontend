@@ -5,7 +5,7 @@ import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
 
-import { NetworkMenu } from "./NetworkMenu";
+import { NetworkMenu } from "./network-selector/NetworkMenu";
 import Searchbar from "./Searchbar";
 
 const Header = () => {
