@@ -1,6 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
+import { EmptyState } from "../state";
 import { TableTitle } from "../table";
 import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
@@ -12,6 +13,7 @@ interface DelegationInfoProps {
   redelegationCount: number;
   onClickToggle?: MouseEventHandler<HTMLButtonElement> | undefined;
   onViewMore?: () => void;
+  hasTotalBonded?: boolean;
 }
 
 export const DelegationInfo = ({
@@ -20,10 +22,10 @@ export const DelegationInfo = ({
   redelegationCount,
   onClickToggle,
   onViewMore,
+  hasTotalBonded = true,
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
-
   return (
     <>
       {isMobileOverview ? (
@@ -49,52 +51,61 @@ export const DelegationInfo = ({
       ) : (
         <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
           <TableTitle title="Delegations" mb={0} showCount={false} />
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            alignItems={{ base: "start", md: "center" }}
-            justify="space-between"
-            overflowX="scroll"
-            overflowY="hidden"
-          >
+          {hasTotalBonded ? (
             <Flex
-              gap={{ base: 4, md: 8 }}
               direction={{ base: "column", md: "row" }}
-              w="full"
+              alignItems={{ base: "start", md: "center" }}
+              justify="space-between"
+              overflowX="scroll"
+              overflowY="hidden"
             >
-              {totalBondedCard}
-              {otherInfoCards}
-            </Flex>
-            {onViewMore ? (
-              <Button
-                variant="ghost-gray"
-                minW="fit-content"
-                rightIcon={<CustomIcon name="chevron-right" />}
-                onClick={() => {
-                  trackUseViewMore();
-                  onViewMore();
-                }}
-              >
-                View Delegation Info
-              </Button>
-            ) : (
               <Flex
-                w={{ base: "full", md: "auto" }}
-                justify={{ base: "center", md: "inherit" }}
-                mt={{ base: 6, md: 0 }}
+                gap={{ base: 4, md: 8 }}
+                direction={{ base: "column", md: "row" }}
+                w="full"
               >
+                {totalBondedCard}
+                {otherInfoCards}
+              </Flex>
+              {onViewMore ? (
                 <Button
                   variant="ghost-gray"
                   minW="fit-content"
-                  leftIcon={<CustomIcon name="history" />}
                   rightIcon={<CustomIcon name="chevron-right" />}
-                  isDisabled={!redelegationCount}
-                  onClick={onClickToggle}
+                  onClick={() => {
+                    trackUseViewMore();
+                    onViewMore();
+                  }}
                 >
-                  See Active Redelegations ({redelegationCount})
+                  View Delegation Info
                 </Button>
-              </Flex>
-            )}
-          </Flex>
+              ) : (
+                <Flex
+                  w={{ base: "full", md: "auto" }}
+                  justify={{ base: "center", md: "inherit" }}
+                  mt={{ base: 6, md: 0 }}
+                >
+                  <Button
+                    variant="ghost-gray"
+                    minW="fit-content"
+                    leftIcon={<CustomIcon name="history" />}
+                    rightIcon={<CustomIcon name="chevron-right" />}
+                    isDisabled={!redelegationCount}
+                    onClick={onClickToggle}
+                  >
+                    See Active Redelegations ({redelegationCount})
+                  </Button>
+                </Flex>
+              )}
+            </Flex>
+          ) : (
+            <EmptyState
+              alignItems="flex-start"
+              message="No assets were delegated to any validators."
+              my={0}
+              py={0}
+            />
+          )}
         </Flex>
       )}
     </>

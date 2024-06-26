@@ -22,7 +22,11 @@ export const ContractDesc = ({
   const isMobile = useMobile();
 
   return (
-    <Flex direction={{ base: "column", md: "row" }} gap={{ base: 4, md: 6 }}>
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      gap={{ base: 4, md: 6 }}
+      mb={{ base: 0, md: 4 }}
+    >
       {publicInfo?.description && (
         <PublicDescription
           title="Public Contract Description"
@@ -31,7 +35,7 @@ export const ContractDesc = ({
           icon={<CustomIcon name="public-project" color="gray.600" />}
         />
       )}
-      {!isMobile && (
+      {!isMobile && contractLocalInfo && (
         <UserContractDesc
           publicInfo={publicInfo}
           contract={contract}

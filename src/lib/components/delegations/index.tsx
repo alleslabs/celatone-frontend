@@ -2,6 +2,7 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { TableTitle } from "../table";
 import { AmpEvent, track } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
@@ -52,7 +53,18 @@ export const DelegationsSection = ({
   }, [onClose, router.query.accountAddress]);
 
   if (isLoading) return <Loading />;
-  if (!stakingParams) return <ErrorFetching dataName="delegation data" />;
+  if (!stakingParams)
+    return (
+      <Flex direction="column">
+        <TableTitle title="Delegations" mb={2} showCount={false} />
+        <ErrorFetching
+          dataName="delegation data"
+          withBorder
+          my={2}
+          hasBorderTop={false}
+        />
+      </Flex>
+    );
 
   const redelegationCount = redelegations?.length ?? 0;
 
@@ -73,6 +85,7 @@ export const DelegationsSection = ({
         transition="all 0.25s ease-in-out"
       >
         <DelegationInfo
+          hasTotalBonded={totalBonded && Object.keys(totalBonded).length > 0}
           totalBondedCard={
             <TotalCard
               title="Total Bonded"
