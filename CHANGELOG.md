@@ -104,6 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#995](https://github.com/alleslabs/celatone-frontend/pull/995) Remove unnecessary retries and refetch on window focus
 - [#988](https://github.com/alleslabs/celatone-frontend/pull/988) Fix total asset value and assets in json
 - [#991](https://github.com/alleslabs/celatone-frontend/pull/991) Fix code select section heading label
 - [#986](https://github.com/alleslabs/celatone-frontend/pull/986) Fix bugbash lite version (creator, sorting name in validator)
