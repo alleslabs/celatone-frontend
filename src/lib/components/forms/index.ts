@@ -1,4 +1,4 @@
-export * from "./AssetInput";
+export * from "./assetInput/AssetInput";
 export * from "./ControllerInput";
 export * from "./ControllerTextarea";
 export * from "./FilterByPermission";
