@@ -30,6 +30,10 @@ interface ControllerInputProps<T extends FieldValues>
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
+  cta?: {
+    label: string;
+    onClick: (changeValue?: (...event: string[]) => void) => void;
+  };
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -48,6 +52,7 @@ export const ControllerInput = <T extends FieldValues>({
   autoFocus,
   cursor,
   helperAction,
+  cta,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -66,6 +71,17 @@ export const ControllerInput = <T extends FieldValues>({
 
   const isError = isTouched && !!error;
   const isRequired = "required" in rules;
+  const inputPaddingRight = () => {
+    if (status) {
+      return "2rem";
+    }
+
+    if (cta) {
+      return "3rem";
+    }
+
+    return 0;
+  };
 
   return (
     <FormControl
@@ -98,10 +114,21 @@ export const ControllerInput = <T extends FieldValues>({
           maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
-          pr={status ? "2rem" : 0}
+          pr={inputPaddingRight()}
         />
-        <InputRightElement h="full">
+        <InputRightElement h="full" pr={cta ? 3 : 0}>
           {status && getStatusIcon(status.state)}
+          {cta && (
+            <Text
+              bg="background.main"
+              variant="body2"
+              color="accent.main"
+              onClick={() => cta.onClick(field.onChange)}
+              cursor="pointer"
+            >
+              {cta.label}
+            </Text>
+          )}
         </InputRightElement>
       </InputGroup>
       <Flex gap={1} alignItems="center" mt={1} justifyContent="space-between">

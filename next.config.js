@@ -11,6 +11,16 @@ const nextConfig = {
   eslint: {
     dirs: ["src"],
   },
+  images: {
+    domains: [
+      "raw.githubusercontent.com",
+      "i.ibb.co",
+      "pbs.twimg.com",
+      "github.com",
+      "app.osmosis.zone",
+      "imagedelivery.net",
+    ],
+  },
   webpack: (config, { webpack }) => {
     config.plugins.push(
       new webpack.DefinePlugin({
