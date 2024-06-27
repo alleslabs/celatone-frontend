@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
 - [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint
 - [#970](https://github.com/alleslabs/celatone-frontend/pull/970) Support account details lite version
