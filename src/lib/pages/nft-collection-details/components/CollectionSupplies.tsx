@@ -67,7 +67,7 @@ export const CollectionSupplies = ({
         }
         showCollection={false}
       />
-      {!isLoading && nfts && (
+      {!isLoading && nfts && nfts.length > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
