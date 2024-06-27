@@ -80,7 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
+- [#996](https://github.com/alleslabs/celatone-frontend/pull/996) Allow disable voting period tally config
 - [#983](https://github.com/alleslabs/celatone-frontend/pull/983) Add fallback for collection names that are empty string
 - [#982](https://github.com/alleslabs/celatone-frontend/pull/982) Support Icns in account osmosis lite version
 - [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
