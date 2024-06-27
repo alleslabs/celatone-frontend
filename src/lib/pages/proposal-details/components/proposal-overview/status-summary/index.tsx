@@ -37,8 +37,7 @@ export const StatusSummary = ({
   ...props
 }: ProposalOverviewProps) => {
   const gov = useGovConfig({ shouldRedirect: false });
-  const disableVotingPeriodTally =
-    gov.enabled && !!gov.disableVotingPeriodTally;
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
   const isDepositOrVoting =
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
