@@ -2,6 +2,7 @@
 import { SkeletonText, Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 
+import { useGovConfig } from "lib/app-provider";
 import {
   extractParams,
   mapDeposit,
@@ -20,6 +21,7 @@ import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent, formatTokenWithValueList } from "lib/utils";
 
 import { ErrorFetchingProposalInfos } from "./ErrorFetchingProposalInfos";
+import { NoVotingPeriodTallyExplanation } from "./NoVotingPeriodTally";
 import { ViewFailedReason } from "./ViewFailedReason";
 
 const Passed = () => (
@@ -66,12 +68,25 @@ export interface ResultExplanationProps {
   isLoading: boolean;
 }
 
+// eslint-disable-next-line complexity
 export const ResultExplanation = ({
   proposalData,
   params,
   votesInfo,
   isLoading,
 }: ResultExplanationProps) => {
+  const gov = useGovConfig({ shouldRedirect: false });
+  if (
+    gov.enabled &&
+    gov.disableVotingPeriodTally &&
+    proposalData.status === ProposalStatus.VOTING_PERIOD
+  )
+    return (
+      <Text variant="body2">
+        <NoVotingPeriodTallyExplanation />
+      </Text>
+    );
+
   if (proposalData.status === ProposalStatus.DEPOSIT_FAILED)
     return (
       <Text variant="body2">

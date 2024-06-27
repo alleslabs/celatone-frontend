@@ -87,6 +87,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         version: "v1",
         hideOpenProposal: true,
+        disableVotingPeriodTally: true,
       },
       nft: {
         enabled: true,
