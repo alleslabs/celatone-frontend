@@ -4,18 +4,16 @@ import type { HexAddr, HexAddr32 } from "lib/types";
 import { isHexModuleAddress, isTxHash } from "lib/utils";
 
 export const useCollectionsExpression = (search = "") =>
-  useMemo(
-    () =>
-      search.trim().length > 0
-        ? {
-            _or: [
-              { name: { _iregex: search } },
-              { vm_address: { vm_address: { _eq: search } } },
-            ],
-          }
-        : {},
-    [search]
-  );
+  useMemo(() => {
+    if (search.trim().length === 0) return {};
+
+    return {
+      _or: [
+        { name: { _iregex: search } },
+        { id: { _eq: search.toLowerCase() } },
+      ],
+    };
+  }, [search]);
 
 export const useCollectionActivitiesExpression = (
   collectionAddress: HexAddr32,
@@ -26,7 +24,7 @@ export const useCollectionActivitiesExpression = (
 
   const tokenIdSearch = {
     nft: isNftAddress
-      ? { vm_address: { vm_address: { _eq: search.toLowerCase() } } }
+      ? { nft_id: { _eq: search.toLowerCase() } }
       : { token_id: { _iregex: search } },
   };
   const txHashSearch = {
@@ -41,7 +39,7 @@ export const useCollectionActivitiesExpression = (
 
   return useMemo(
     () => ({
-      collection: { vm_address: { vm_address: { _eq: collectionAddress } } },
+      collection_id: { _eq: collectionAddress },
       _and: search ? searchOption : {},
     }),
     [collectionAddress, search, searchOption]
@@ -60,7 +58,7 @@ export const useNftsExpression = (collectionAddress: HexAddr32, search = "") =>
       _or: [
         { token_id: { _iregex: search } },
         ...(isHexModuleAddress(search)
-          ? [{ vm_address: { vm_address: { _eq: search } } }]
+          ? [{ id: { _eq: search.toLowerCase() } }]
           : []),
       ],
     };
@@ -82,17 +80,17 @@ export const useNftsByAccountExpression = (
       _or: [
         { token_id: { _iregex: search } },
         ...(isHexModuleAddress(search)
-          ? [{ vm_address: { vm_address: { _eq: search } } }]
+          ? [{ id: { _eq: search.toLowerCase() } }]
           : []),
       ],
     };
 
     const collectionExpression = {
-      collection: { _eq: collectionAddress },
+      collection: { _eq: collectionAddress?.toLowerCase() },
     };
 
     return {
-      vmAddressByOwner: { vm_address: { _eq: accountAddress } },
+      owner: { _eq: accountAddress },
       is_burned: { _eq: false },
       ...(collectionAddress ? collectionExpression : {}),
       ...(search.trim().length > 0 ? orExpression : {}),
