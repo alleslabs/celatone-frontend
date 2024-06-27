@@ -66,9 +66,7 @@ export const useNftsExpression = (collectionAddress: HexAddr32, search = "") =>
     };
 
     return {
-      collectionByCollection: {
-        vm_address: { vm_address: { _eq: collectionAddress } },
-      },
+      collection: { _eq: collectionAddress },
       is_burned: { _eq: false },
       ...(search.trim().length > 0 ? orExpression : {}),
     };
@@ -90,9 +88,7 @@ export const useNftsByAccountExpression = (
     };
 
     const collectionExpression = {
-      collectionByCollection: {
-        vm_address: { vm_address: { _eq: collectionAddress } },
-      },
+      collection: { _eq: collectionAddress },
     };
 
     return {

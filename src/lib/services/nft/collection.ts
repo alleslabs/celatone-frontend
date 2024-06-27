@@ -128,31 +128,19 @@ export const getCollectionTotalBurnedCount = async (
 
 const zCollectionCreatorResponse = z
   .object({
-    collections: z
+    collection_transactions: z
       .object({
-        collection_transactions: z
-          .object({
-            transaction: z.object({
-              block: z.object({ height: z.number(), timestamp: zUtcDate }),
-              hash: z.string(),
-            }),
-          })
-          .array(),
-        vmAddressByCreator: z.object({ vm_address: zHexAddr }),
+        block: z.object({ height: z.number(), timestamp: zUtcDate }),
+        transaction: z.object({ hash: z.string() }),
+        collection: z.object({ creator: zHexAddr }),
       })
       .array(),
   })
   .transform((val) => ({
-    creatorAddress: val.collections[0].vmAddressByCreator.vm_address,
-    height:
-      val.collections[0].collection_transactions[0].transaction.block.height,
-    timestamp:
-      val.collections[0].collection_transactions[0].transaction.block.timestamp,
-    txhash:
-      val.collections[0].collection_transactions[0].transaction.hash.replace(
-        "\\x",
-        ""
-      ),
+    creatorAddress: val.collection_transactions[0].collection.creator,
+    height: val.collection_transactions[0].block.height,
+    timestamp: val.collection_transactions[0].block.timestamp,
+    txhash: parseTxHash(val.collection_transactions[0].transaction.hash),
   }));
 export type CollectionCreatorResponse = z.infer<
   typeof zCollectionCreatorResponse

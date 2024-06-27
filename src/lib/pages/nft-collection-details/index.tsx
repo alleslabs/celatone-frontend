@@ -31,7 +31,6 @@ import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
-  useCollectionTotalBurnedCount,
   useNfts,
 } from "lib/services/nft";
 import { isHexModuleAddress } from "lib/utils";
@@ -61,8 +60,6 @@ const CollectionDetailsBody = ({
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: totalBurnedCount = 0 } =
-    useCollectionTotalBurnedCount(collectionAddress);
   const { data: nfts, isLoading: isNftLoading } = useNfts(
     collectionAddress,
     6,
@@ -106,6 +103,7 @@ const CollectionDetailsBody = ({
     isUnlimited,
     royalty,
   } = collectionInfos;
+  const totalBurned = totalMinted - currentSupply;
 
   const displayCollectionName =
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
@@ -247,7 +245,7 @@ const CollectionDetailsBody = ({
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Flex direction="column" gap={10}>
               <CollectionSupplyInfo
-                totalBurned={totalBurnedCount}
+                totalBurned={totalBurned}
                 totalMinted={totalMinted}
                 currentSupply={currentSupply}
                 maxSupply={maxSupply}

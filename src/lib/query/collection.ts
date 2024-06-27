@@ -68,21 +68,20 @@ export const getCollectionTotalBurnedCountQuery = gql`
 
 export const getCollectionCreatorQuery = gql`
   query getCollectionCreatorQuery($vmAddress: String!) {
-    collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
-      vmAddressByCreator {
-        vm_address
+    collection_transactions(
+      where: { collection_id: { _eq: $vmAddress } }
+      limit: 1
+      order_by: { block_height: asc, transaction: { block_index: asc } }
+    ) {
+      block {
+        height
+        timestamp
       }
-      collection_transactions(
-        order_by: { block_height: asc }
-        where: { is_collection_create: { _eq: true } }
-      ) {
-        transaction {
-          hash
-          block {
-            height
-            timestamp
-          }
-        }
+      transaction {
+        hash
+      }
+      collection {
+        creator
       }
     }
   }

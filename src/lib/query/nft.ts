@@ -4,9 +4,7 @@ export const getNftQuery = gql`
   query getNftQuery($collectionAddress: String!, $nftAddress: String!) {
     nfts(
       where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $collectionAddress } }
-        }
+        collection: { { _eq: $collectionAddress } }}
         vm_address: { vm_address: { _eq: $nftAddress } }
       }
     ) {
@@ -14,13 +12,9 @@ export const getNftQuery = gql`
       uri
       description
       is_burned
-      vmAddressByOwner {
-        vm_address
-      }
+      owner
+      collection
       collectionByCollection {
-        vm_address {
-          vm_address
-        }
         name
       }
     }
@@ -63,16 +57,10 @@ export const getNftsQuery = gql`
       uri
       description
       is_burned
-      vmAddressByOwner {
-        vm_address
-      }
-      vm_address {
-        vm_address
-      }
+      owner
+      id
+      collection
       collectionByCollection {
-        vm_address {
-          vm_address
-        }
         name
       }
     }
@@ -81,9 +69,7 @@ export const getNftsQuery = gql`
 
 export const getNftTransactionsCountQuery = gql`
   query getNftTransactionsCountQuery($nftAddress: String!) {
-    nft_transactions_aggregate(
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
-    ) {
+    nft_transactions_aggregate(where: { nft_id: { _eq: $nftAddress } }) {
       aggregate {
         count
       }
@@ -101,7 +87,7 @@ export const getNftTransactionsQuery = gql`
     nft_transactions(
       offset: $offset
       limit: $limit
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+      where: { nft_id: { _eq: $nftAddress } }
       order_by: [
         { block_height: desc }
         { nft: { token_id: desc } }
@@ -133,7 +119,7 @@ export const getNftMutateEventsQuery = gql`
     nft_mutation_events(
       limit: $limit
       offset: $offset
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+      where: { nft_id: { _eq: $nftAddress } }
       order_by: { block_height: desc }
     ) {
       old_value
@@ -149,9 +135,7 @@ export const getNftMutateEventsQuery = gql`
 
 export const getNftMutateEventsCountQuery = gql`
   query getNftMutateEventsCountQuery($nftAddress: String!) {
-    nft_mutation_events_aggregate(
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
-    ) {
+    nft_mutation_events_aggregate(where: { nft_id: { _eq: $nftAddress } }) {
       aggregate {
         count
       }
@@ -175,18 +159,12 @@ export const getNftsByAccountQuery = gql`
       uri
       is_burned
       description
+      collection
       collectionByCollection {
-        vm_address {
-          vm_address
-        }
         name
       }
-      vmAddressByOwner {
-        vm_address
-      }
-      vm_address {
-        vm_address
-      }
+      owner
+      id
     }
     nfts_aggregate(where: $expression) {
       aggregate {
@@ -199,10 +177,7 @@ export const getNftsByAccountQuery = gql`
 export const getNftsCountByAccountQuery = gql`
   query getNftsCountByAccountQuery($accountAddress: String!) {
     nfts_aggregate(
-      where: {
-        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-        is_burned: { _eq: false }
-      }
+      where: { owner: { _eq: $accountAddress }, is_burned: { _eq: false } }
     ) {
       aggregate {
         count

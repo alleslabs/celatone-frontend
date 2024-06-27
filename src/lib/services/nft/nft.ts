@@ -22,10 +22,10 @@ const zNft = z
     token_id: z.string(),
     description: z.string().optional(),
     is_burned: z.boolean(),
-    vmAddressByOwner: z.object({ vm_address: zHexAddr }),
-    vm_address: z.object({ vm_address: zHexAddr32 }).optional(),
+    owner: zHexAddr,
+    id: zHexAddr32,
+    collection: zHexAddr32,
     collectionByCollection: z.object({
-      vm_address: z.object({ vm_address: zHexAddr32 }),
       name: z.string(),
     }),
   })
@@ -34,9 +34,9 @@ const zNft = z
     tokenId: val.token_id,
     description: val.description,
     isBurned: val.is_burned,
-    ownerAddress: val.vmAddressByOwner?.vm_address,
-    nftAddress: val.vm_address?.vm_address,
-    collectionAddress: val.collectionByCollection.vm_address.vm_address,
+    ownerAddress: val.owner,
+    nftAddress: val.id,
+    collectionAddress: val.collection,
     collectionName: val.collectionByCollection.name,
   }));
 export type Nft = z.infer<typeof zNft>;
