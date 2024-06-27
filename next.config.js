@@ -19,6 +19,7 @@ const nextConfig = {
       "github.com",
       "app.osmosis.zone",
       "imagedelivery.net",
+      "list.initia.tech",
     ],
   },
   webpack: (config, { webpack }) => {

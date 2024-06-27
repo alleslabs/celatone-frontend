@@ -22,7 +22,7 @@ import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
-interface ControllerInputProps<T extends FieldValues>
+export interface ControllerInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
@@ -118,7 +118,7 @@ export const ControllerInput = <T extends FieldValues>({
         />
         <InputRightElement h="full" pr={cta ? 3 : 0}>
           {status && getStatusIcon(status.state)}
-          {cta && (
+          {cta && !error && (
             <Text
               bg="background.main"
               variant="body2"

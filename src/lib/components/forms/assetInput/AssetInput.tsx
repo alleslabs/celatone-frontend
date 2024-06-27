@@ -1,11 +1,12 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Button, Grid, InputGroup, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 
 import { CustomIcon } from "../../icon";
 
 import { AssetInputFormatOptionLabel } from "./AssetInputFormatOptionLabel";
 import { AssetInputMenuList } from "./AssetInputMenuList";
+import { AssetInputNoOptionsMessage } from "./AssetInputNoOptionsMessage";
 import { AssetInputOption } from "./AssetInputOption";
 
 export interface AssetOption {
@@ -48,6 +49,7 @@ const styles = {
   menu: (provided: SystemStyleObject) => ({
     ...provided,
     width: "427px",
+    zIndex: 99,
   }),
 };
 
@@ -67,8 +69,7 @@ export const AssetInput = ({
       w="full"
       mb={4}
     >
-      <InputGroup
-        zIndex={1}
+      <Box
         sx={{
           "& .form-label": {
             fontSize: "12px",
@@ -78,8 +79,8 @@ export const AssetInput = ({
             position: "absolute",
             ml: 3,
             px: 1,
-            zIndex: 2,
             top: -2,
+            zIndex: 9,
           },
         }}
       >
@@ -99,9 +100,20 @@ export const AssetInput = ({
           components={{
             Option: AssetInputOption,
             MenuList: AssetInputMenuList,
+            NoOptionsMessage: AssetInputNoOptionsMessage,
+          }}
+          filterOption={(
+            candidate: { label: string; value: string },
+            input: string
+          ) => {
+            if (input) {
+              return candidate.label.toLowerCase().includes(input);
+            }
+
+            return true;
           }}
         />
-      </InputGroup>
+      </Box>
       {AmountInput}
       <Button
         w="56px"

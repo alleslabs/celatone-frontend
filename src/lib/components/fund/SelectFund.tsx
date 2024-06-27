@@ -47,6 +47,10 @@ export const SelectFund = ({
   });
 
   const selectedAssets = assetsSelect.map((asset) => asset.denom);
+  const assetInfosMap = assetInfos?.reduce((acc, asset) => {
+    acc.set(asset.id, asset);
+    return acc;
+  }, new Map());
   const balanceMap = balances?.reduce((acc, balance) => {
     acc.set(balance.denom, balance);
     return acc;
@@ -106,12 +110,44 @@ export const SelectFund = ({
     return [...assetInfosInBalance, ...assetInfosNotInBalance];
   }, [assetInfos, balanceMap, selectedAssets, handleGetFormattedBalance]);
 
-  const rules = {
-    pattern: {
-      value: /^[0-9]+([.][0-9]{0,6})?$/i,
-      message: 'Invalid amount. e.g. "100.00"',
+  const handleControllerInputProps = useCallback(
+    (idx: number) => {
+      if (!assetsSelect[idx]) return {};
+
+      const { formatted } = handleGetFormattedBalance(
+        balanceMap?.get(selectedAssets[idx]),
+        selectedAssets[idx]
+      );
+      const isSelected = balanceMap?.get(selectedAssets[idx]);
+      const overBalance = Number(assetsSelect[idx].amount) > Number(formatted);
+
+      return {
+        helperAction: !overBalance && isSelected && (
+          <Text variant="body3" color="text.dark" w="100%">
+            Balance: {formatted}
+          </Text>
+        ),
+        cta: !overBalance &&
+          isSelected && {
+            label: "MAX",
+            onClick: (changeValue: (value: string) => void) => {
+              changeValue?.(formatted);
+            },
+          },
+        error:
+          isSelected && overBalance
+            ? `Not enough ${assetInfosMap.get(selectedAssets[idx])?.symbol} in your wallet`
+            : undefined,
+      };
     },
-  };
+    [
+      assetsSelect,
+      balanceMap,
+      selectedAssets,
+      assetInfosMap,
+      handleGetFormattedBalance,
+    ]
+  );
 
   return (
     <>
@@ -127,37 +163,14 @@ export const SelectFund = ({
           initialSelected={field.denom}
           amountInput={
             <ControllerInput
+              {...handleControllerInputProps(idx)}
               name={`${ASSETS_SELECT}.${idx}.amount`}
               control={control}
               label="Amount"
               variant="fixed-floating"
               type="number"
-              rules={rules}
               labelBgColor={labelBgColor}
               placeholder="0.00"
-              helperAction={
-                balanceMap?.get(selectedAssets[idx]) && (
-                  <Text variant="body3" color="text.dark" w="100%">
-                    Balance:{" "}
-                    {handleGetFormattedBalance(
-                      balanceMap.get(selectedAssets[idx]),
-                      selectedAssets[idx]
-                    ).formatted ?? ""}
-                  </Text>
-                )
-              }
-              cta={
-                balanceMap?.get(selectedAssets[idx]) && {
-                  label: "MAX",
-                  onClick: (changeValue) =>
-                    changeValue?.(
-                      handleGetFormattedBalance(
-                        balanceMap?.get(selectedAssets[idx]),
-                        selectedAssets[idx]
-                      ).formatted ?? ""
-                    ),
-                }
-              }
             />
           }
         />
