@@ -1,6 +1,7 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
+import { useNftsByAccountExpression, useNftsExpression } from "../expression";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
@@ -24,7 +25,6 @@ import {
   getNftMutateEventsCount,
   getNfts,
   getNftsByAccount,
-  getNftsByAccountByCollection,
   getNftsCountByAccount,
   getNftTransactions,
   getNftTransactionsCount,
@@ -37,6 +37,8 @@ export const useNfts = (
   search = ""
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const expression = useNftsExpression(collectionAddress, search);
+
   return useQuery<Nft[]>(
     [
       CELATONE_QUERY_KEYS.NFTS,
@@ -45,9 +47,9 @@ export const useNfts = (
       offset,
       pageSize,
       search,
+      expression,
     ],
-    async () =>
-      getNfts(chainConfig.indexer, collectionAddress, pageSize, offset, search),
+    async () => getNfts(chainConfig.indexer, pageSize, offset, expression),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -206,6 +208,12 @@ export const useNftsByAccountByCollection = (
   options: Pick<UseQueryOptions<NftsByAccountResponse>, "onSuccess"> = {}
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const expression = useNftsByAccountExpression(
+    accountAddress,
+    collectionAddress,
+    search
+  );
+
   return useQuery<NftsByAccountResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
@@ -217,22 +225,7 @@ export const useNftsByAccountByCollection = (
       collectionAddress,
     ],
     async () =>
-      !collectionAddress
-        ? getNftsByAccount(
-            chainConfig.indexer,
-            accountAddress,
-            pageSize,
-            offset,
-            search
-          )
-        : getNftsByAccountByCollection(
-            chainConfig.indexer,
-            accountAddress,
-            pageSize,
-            offset,
-            search,
-            collectionAddress
-          ),
+      getNftsByAccount(chainConfig.indexer, pageSize, offset, expression),
     {
       retry: 1,
       refetchOnWindowFocus: false,

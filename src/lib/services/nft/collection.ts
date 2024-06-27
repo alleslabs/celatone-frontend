@@ -53,12 +53,12 @@ export const getCollections = async (
   indexer: string,
   offset: number,
   pageSize: number,
-  search?: string
+  expression: object
 ) =>
   axios
     .post(indexer, {
       query: getCollectionsQuery,
-      variables: { offset, pageSize, search },
+      variables: { offset, pageSize, expression },
     })
     .then(({ data: res }) => parseWithError(zCollectionsResponse, res.data));
 

@@ -1,7 +1,10 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCollectionActivitiesExpression } from "../expression";
+import {
+  useCollectionActivitiesExpression,
+  useCollectionsExpression,
+} from "../expression";
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
@@ -32,6 +35,8 @@ export const useCollections = (
   options?: Pick<UseQueryOptions<CollectionsResponse>, "onSuccess">
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const expression = useCollectionsExpression(search);
+
   return useQuery<CollectionsResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS,
@@ -40,7 +45,8 @@ export const useCollections = (
       offset,
       search,
     ],
-    async () => getCollections(chainConfig.indexer, offset, pageSize, search),
+    async () =>
+      getCollections(chainConfig.indexer, offset, pageSize, expression),
     {
       retry: 1,
       refetchOnWindowFocus: false,
