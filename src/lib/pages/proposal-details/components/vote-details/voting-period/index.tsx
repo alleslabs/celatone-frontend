@@ -11,11 +11,13 @@ import { isNull } from "lodash";
 import type { ReactNode } from "react";
 
 import type { VoteDetailsProps } from "..";
+import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposal";
+import { ProposalStatus } from "lib/types";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
@@ -50,9 +52,11 @@ const ContentContainer = ({
 const scrollComponentId = "voting-period";
 
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
-  const isFullTier = useTierConfig() === "full";
-
   const isMobile = useMobile();
+  const isFullTier = useTierConfig() === "full";
+  const gov = useGovConfig({ shouldRedirect: false });
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
+
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();
 
@@ -111,14 +115,21 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         transition="all 0.25s ease-in-out"
         gap={4}
       >
-        {/* Voting Participations */}
-        <ContentContainer transparent={isMobile}>
-          <VotingQuorum proposalData={proposalData} {...props} />
-        </ContentContainer>
-        {/* Voting Results */}
-        <ContentContainer transparent={isMobile}>
-          <VotingThreshold proposalData={proposalData} {...props} />
-        </ContentContainer>
+        {proposalData.status === ProposalStatus.VOTING_PERIOD &&
+        disableVotingPeriodTally ? (
+          <NoVotingPeriodTallyAlert />
+        ) : (
+          <>
+            {/* Voting Participations */}
+            <ContentContainer transparent={isMobile}>
+              <VotingQuorum proposalData={proposalData} {...props} />
+            </ContentContainer>
+            {/* Voting Results */}
+            <ContentContainer transparent={isMobile}>
+              <VotingThreshold proposalData={proposalData} {...props} />
+            </ContentContainer>
+          </>
+        )}
         {isFullTier && (
           <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
             {/* Validator Votes */}
