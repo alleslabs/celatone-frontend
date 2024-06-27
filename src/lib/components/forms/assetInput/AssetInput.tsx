@@ -107,11 +107,14 @@ export const AssetInput = ({
             input: string
           ) => {
             if (input) {
-              return candidate.label.toLowerCase().includes(input);
+              return candidate.label
+                .toLowerCase()
+                .includes(input.toLowerCase());
             }
 
             return true;
           }}
+          menuPortalTarget={document.body}
         />
       </Box>
       {AmountInput}
