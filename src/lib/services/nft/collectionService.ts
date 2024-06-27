@@ -24,7 +24,6 @@ import {
   getCollectionMutateEventsCount,
   getCollections,
   getCollectionsByAccount,
-  getCollectionTotalBurnedCount,
   getCollectionUniqueHoldersCount,
 } from "./collection";
 
@@ -43,7 +42,7 @@ export const useCollections = (
       chainConfig.indexer,
       pageSize,
       offset,
-      search,
+      expression,
     ],
     async () =>
       getCollections(chainConfig.indexer, offset, pageSize, expression),
@@ -67,23 +66,6 @@ export const useCollectionByCollectionAddress = (
     ],
     async () =>
       getCollectionByCollectionAddress(chainConfig.indexer, collectionAddress),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useCollectionTotalBurnedCount = (collectionAddress: HexAddr32) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>(
-    [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_TOTAL_BURNED,
-      chainConfig.indexer,
-      collectionAddress,
-    ],
-    async () =>
-      getCollectionTotalBurnedCount(chainConfig.indexer, collectionAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
