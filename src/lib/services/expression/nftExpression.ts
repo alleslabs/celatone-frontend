@@ -40,7 +40,7 @@ export const useCollectionActivitiesExpression = (
   return useMemo(
     () => ({
       collection_id: { _eq: collectionAddress },
-      _and: search ? searchOption : {},
+      ...(search ? { _and: searchOption } : {}),
     }),
     [collectionAddress, search, searchOption]
   );

@@ -1,5 +1,4 @@
 import { Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
 
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -158,14 +157,14 @@ export const CollectionInfoSection = ({
           icon="list"
           content={activities}
           onClick={onClickActivities}
-          isDisabled={isUndefined(activities)}
+          isDisabled={activities === 0}
         />
         <InfoCard
           title="Mutate Events"
           icon="migrate"
           content={mutateEventes}
           onClick={onClickMutateEvents}
-          isDisabled={isUndefined(mutateEventes)}
+          isDisabled={mutateEventes === 0}
         />
       </Flex>
     </Flex>
