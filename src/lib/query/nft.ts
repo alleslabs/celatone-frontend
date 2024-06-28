@@ -47,12 +47,7 @@ export const getNftMintInfoQuery = gql`
 
 export const getNftsQuery = gql`
   query getNftsQuery($limit: Int!, $offset: Int!, $expression: nfts_bool_exp!) {
-    nfts(
-      limit: $limit
-      offset: $offset
-      order_by: { token_id: asc }
-      where: $expression
-    ) {
+    nfts(limit: $limit, offset: $offset, where: $expression) {
       token_id
       uri
       description

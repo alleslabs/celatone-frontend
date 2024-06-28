@@ -49,7 +49,7 @@ export const getCollectionCreatorQuery = gql`
   query getCollectionCreatorQuery($vmAddress: String!) {
     collection_transactions(
       where: { collection_id: { _eq: $vmAddress } }
-      limit: 10
+      limit: 1
       order_by: { block_height: asc, transaction: { block_index: asc } }
     ) {
       block {
