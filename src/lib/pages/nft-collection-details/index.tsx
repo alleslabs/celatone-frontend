@@ -68,9 +68,9 @@ const CollectionDetailsBody = ({
 
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
-  const { data: activitiesCount = 0 } =
+  const { data: activitiesCount } =
     useCollectionActivitiesCount(collectionAddress);
-  const { data: mutateEventsCount = 0 } =
+  const { data: mutateEventsCount } =
     useCollectionMutateEventsCount(collectionAddress);
 
   const handleTabChange = useCallback(
@@ -229,14 +229,14 @@ const CollectionDetailsBody = ({
           <CustomTab
             count={activitiesCount}
             onClick={handleTabChange(TabIndex.Activities)}
-            isDisabled={!activitiesCount}
+            isDisabled={activitiesCount === 0}
           >
             Activities
           </CustomTab>
           <CustomTab
             count={mutateEventsCount}
             onClick={handleTabChange(TabIndex.MutateEvents)}
-            isDisabled={!mutateEventsCount}
+            isDisabled={mutateEventsCount === 0}
           >
             Mutate Events
           </CustomTab>
@@ -288,8 +288,8 @@ const CollectionDetailsBody = ({
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <CollectionMutateEvents
-              totalCount={mutateEventsCount}
               collectionAddress={collectionAddress}
+              totalCount={mutateEventsCount ?? 0}
             />
           </TabPanel>
         </TabPanels>
