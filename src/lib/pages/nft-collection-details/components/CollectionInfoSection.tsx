@@ -15,8 +15,8 @@ interface CollectionInfoSectionProps {
   collectionName: string;
   desc: string;
   uri: string;
-  activities: number;
-  mutateEventes: number;
+  activities?: number;
+  mutateEventes?: number;
   royalty: number;
   onClickActivities: () => void;
   onClickMutateEvents: () => void;
@@ -157,14 +157,14 @@ export const CollectionInfoSection = ({
           icon="list"
           content={activities}
           onClick={onClickActivities}
-          isDisabled={!activities}
+          isDisabled={activities === 0}
         />
         <InfoCard
           title="Mutate Events"
           icon="migrate"
           content={mutateEventes}
           onClick={onClickMutateEvents}
-          isDisabled={!mutateEventes}
+          isDisabled={mutateEventes === 0}
         />
       </Flex>
     </Flex>
