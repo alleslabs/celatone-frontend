@@ -4,7 +4,7 @@ export const getNftQuery = gql`
   query getNftQuery($collectionAddress: String!, $nftAddress: String!) {
     nfts(
       where: {
-        collection: { { _eq: $collectionAddress } }}
+        collection: { _eq: $collectionAddress }
         vm_address: { vm_address: { _eq: $nftAddress } }
       }
     ) {
@@ -13,6 +13,7 @@ export const getNftQuery = gql`
       description
       is_burned
       owner
+      id
       collection
       collectionByCollection {
         name
