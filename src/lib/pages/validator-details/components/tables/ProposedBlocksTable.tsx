@@ -67,14 +67,14 @@ export const ProposedBlocksTable = ({
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
     </Flex>
   ) : (
-    <Flex direction="column" gap={6}>
+    <Flex direction="column" gap={4} mt={4}>
       <TableTitle
         id={scrollComponentId}
         title="Proposed Blocks"
         count={data?.total ?? 0}
         helperText={
           onViewMore
-            ? ""
+            ? undefined
             : "Display the proposed blocks by this validator within the last 30 days"
         }
         mb={0}

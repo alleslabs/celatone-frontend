@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
+- [#968](https://github.com/alleslabs/celatone-frontend/pull/968) Add custom meta title for each page
+- [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
 - [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint
 - [#970](https://github.com/alleslabs/celatone-frontend/pull/970) Support account details lite version
@@ -79,6 +81,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#996](https://github.com/alleslabs/celatone-frontend/pull/996) Allow disable voting period tally config
+- [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
 - [#983](https://github.com/alleslabs/celatone-frontend/pull/983) Add fallback for collection names that are empty string
 - [#982](https://github.com/alleslabs/celatone-frontend/pull/982) Support Icns in account osmosis lite version
 - [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
@@ -102,6 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#995](https://github.com/alleslabs/celatone-frontend/pull/995) Remove unnecessary retries and refetch on window focus
 - [#988](https://github.com/alleslabs/celatone-frontend/pull/988) Fix total asset value and assets in json
 - [#991](https://github.com/alleslabs/celatone-frontend/pull/991) Fix code select section heading label
 - [#986](https://github.com/alleslabs/celatone-frontend/pull/986) Fix bugbash lite version (creator, sorting name in validator)

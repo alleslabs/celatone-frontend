@@ -2,12 +2,15 @@ import { DefaultSeo } from "next-seo";
 
 import { useCelatoneApp } from "lib/app-provider";
 
-export const CelatoneSeo = () => {
+export const CelatoneSeo = ({ pageName }: { pageName?: string }) => {
   const {
     chainConfig: { prettyName },
     theme,
   } = useCelatoneApp();
-  const title = `${prettyName} Explorer | ${theme.branding.seo.title}`;
+
+  const title = pageName?.length
+    ? `${pageName} | ${prettyName} Explorer | ${theme.branding.seo.title}`
+    : `${prettyName} Explorer | ${theme.branding.seo.title}`;
 
   return (
     <DefaultSeo

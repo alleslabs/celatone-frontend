@@ -5,6 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useTierConfig, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { RecentContractsTable } from "./components/RecentContractsTable";
 
@@ -19,6 +20,7 @@ const RecentContracts = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Contracts" />
       <PageHeader
         title="Contracts"
         subtitle="This page displays all contracts on this network sorted by recency"

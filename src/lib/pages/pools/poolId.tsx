@@ -9,6 +9,7 @@ import {
 } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -35,6 +36,7 @@ export const PoolId = () => {
   if (!pool) return navigate({ pathname: `/pools` });
   return (
     <PageContainer>
+      <CelatoneSeo pageName={pool.id ? `Pool #${pool.id}` : "Pool Details"} />
       <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />

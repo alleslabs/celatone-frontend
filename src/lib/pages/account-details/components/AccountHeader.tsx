@@ -13,27 +13,35 @@ import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountData } from "lib/services/types";
-import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { BechAddr, HexAddr, Option } from "lib/types";
 
+import type { InitiaUsernameDataResponse } from "./AccountTitle";
 import { AccountTitle } from "./AccountTitle";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
   accountAddress: BechAddr;
   hexAddress: HexAddr;
+  initiaUsernameData: Option<InitiaUsernameDataResponse>;
+  isInitiaUsernameDataLoading: boolean;
+  isInitiaUsernameDataFetching: boolean;
 }
 
 export const AccountHeader = observer(
-  ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
+  ({
+    accountData,
+    accountAddress,
+    hexAddress,
+    initiaUsernameData,
+    isInitiaUsernameDataLoading,
+    isInitiaUsernameDataFetching,
+  }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
-    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
-    const { data } = useInitiaUsernameByAddress(hexAddress, move.enabled);
+    const isMobile = useMobile();
 
+    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
-
-    const isMobile = useMobile();
 
     return (
       <Flex
@@ -46,7 +54,9 @@ export const AccountHeader = observer(
             <AccountTitle
               accountData={accountData}
               accountLocalInfo={accountLocalInfo}
-              hexAddress={hexAddress}
+              initiaUsernameData={initiaUsernameData}
+              isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+              isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
             />
             {!isMobile && (
               <>
@@ -129,7 +139,7 @@ export const AccountHeader = observer(
                 />
               </Flex>
             )}
-            {accountLocalInfo?.name && data?.username && (
+            {accountLocalInfo?.name && initiaUsernameData?.username && (
               <Flex mt={{ base: 1, md: 0 }} alignItems="center">
                 <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
                   Initia Username:
@@ -141,7 +151,7 @@ export const AccountHeader = observer(
                   height={4}
                   mr={1}
                 />
-                <Text variant="body2">{data.username}</Text>
+                <Text variant="body2">{initiaUsernameData.username}</Text>
               </Flex>
             )}
           </Flex>

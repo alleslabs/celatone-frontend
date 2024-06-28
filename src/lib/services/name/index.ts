@@ -15,7 +15,6 @@ export const useIcnsNamesByAddressLcd = (address: Option<BechAddr>) => {
   const endpoint = useLcdEndpoint();
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(address);
-
   const queryFn = async () => {
     if (!address) throw new Error("address is undefined");
     const icnsNames = await getIcnsNamesByAddressLcd(endpoint, address);
@@ -47,7 +46,6 @@ export const useAddressByIcnsNameLcd = (name: string) => {
   const {
     chain: { bech32_prefix: bech32Prefix },
   } = useCurrentChain();
-
   const queryFn = async () => {
     // Strip bech32 prefix to allow searching with .prefix (e.g. example.osmo)
     const [stripPrefixName] = name.split(`.${bech32Prefix}`);

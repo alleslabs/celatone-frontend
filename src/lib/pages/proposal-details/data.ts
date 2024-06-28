@@ -1,4 +1,4 @@
-import { useTierConfig } from "lib/app-provider";
+import { useGovConfig, useTierConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
@@ -124,10 +124,16 @@ export const useDerivedProposalVotesInfo = (
   proposalData: DerivedProposalDataResponse["data"],
   isProposalDataLoading: boolean
 ): DerivedProposalVotesInfoResponse => {
+  const gov = useGovConfig({ shouldRedirect: false });
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
+
   const isVotingPeriod =
     proposalData?.info?.status === ProposalStatus.VOTING_PERIOD;
 
-  const { data, isLoading } = useProposalVotesInfo(id, isVotingPeriod);
+  const { data, isFetching } = useProposalVotesInfo(
+    id,
+    isVotingPeriod && !disableVotingPeriodTally
+  );
 
   if (!isVotingPeriod) {
     return {
@@ -138,6 +144,6 @@ export const useDerivedProposalVotesInfo = (
 
   return {
     data,
-    isLoading,
+    isLoading: isFetching,
   };
 };

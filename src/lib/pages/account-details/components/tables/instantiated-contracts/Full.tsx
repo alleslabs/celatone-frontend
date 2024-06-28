@@ -1,16 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import AccountSectionWrapper from "../../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import {
-  ContractsTable,
-  MobileTitle,
-  TableTitle,
-  ViewMore,
-} from "lib/components/table";
+import { ContractsTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountContracts } from "lib/pages/account-details/data";
 import type { BechAddr32 } from "lib/types";
 
@@ -74,13 +70,12 @@ export const InstantiatedContractsTableFull = ({
           onViewMore={onViewMore}
         />
       ) : (
-        <>
-          <TableTitle
-            title="Contract Instances"
-            count={totalData}
-            helperText="This account instantiated the following contracts"
-            mb={2}
-          />
+        <AccountSectionWrapper
+          totalData={totalData}
+          title="Contract Instances"
+          helperText="This account instantiated the following contracts"
+          hasHelperText={!!contracts?.length}
+        >
           <ContractsTable
             contracts={contracts}
             isLoading={isLoading}
@@ -96,7 +91,7 @@ export const InstantiatedContractsTableFull = ({
             }
             onRowSelect={onRowSelect}
           />
-        </>
+        </AccountSectionWrapper>
       )}
       {!!totalData &&
         (onViewMore

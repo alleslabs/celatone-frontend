@@ -8,6 +8,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { useDebounce } from "lib/hooks";
 
 import {
@@ -40,6 +41,7 @@ const Validators = () => {
 
   return (
     <>
+      <CelatoneSeo pageName="Validators" />
       <PageHeaderContainer bgColor="transparent">
         <PageHeader
           title="Validators"

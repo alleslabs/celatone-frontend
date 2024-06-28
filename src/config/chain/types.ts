@@ -44,6 +44,7 @@ type GovConfig =
       hideOpenProposal?: boolean;
       disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
+      disableVotingPeriodTally?: boolean;
     }
   | {
       enabled: false;

@@ -1,9 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
-import { EmptyState } from "lib/components/state";
-import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
+import { MobileTitle, ViewMore } from "lib/components/table";
 import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
@@ -26,23 +27,27 @@ export const NftsOverview = ({
       {isMobile ? (
         <MobileTitle title="NFTs" count={totalCount} onViewMore={onViewMore} />
       ) : (
-        <>
-          <TableTitle title="NFTs" showCount count={totalCount} />
-          <NftList
-            nfts={data?.nfts}
-            isLoading={isFetching}
-            emptyState={
-              <EmptyState
-                message="No NFTs are held by this account."
-                withBorder
-              />
-            }
-            showCollection
-          />
-          {onViewMore && !!totalCount && totalCount > 5 && (
-            <ViewMore onClick={onViewMore} />
-          )}
-        </>
+        <AccountSectionWrapper title="NFTs" totalData={totalCount}>
+          <Flex
+            direction="column"
+            borderBottom={data?.nfts?.length ? "1px solid" : "0px"}
+            borderBottomColor="gray.700"
+            mb={data?.nfts?.length ?? 12}
+            pb={data?.nfts?.length ?? 8}
+          >
+            <NftList
+              nfts={data?.nfts}
+              isLoading={isFetching}
+              emptyState={
+                <AccountDetailsEmptyState message="No NFTs are held by this account." />
+              }
+              showCollection
+            />
+            {onViewMore && !!totalCount && totalCount > 5 && (
+              <ViewMore onClick={onViewMore} />
+            )}
+          </Flex>
+        </AccountSectionWrapper>
       )}
     </Box>
   );

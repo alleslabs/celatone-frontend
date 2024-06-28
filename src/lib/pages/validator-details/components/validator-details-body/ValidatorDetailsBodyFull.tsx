@@ -14,6 +14,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
@@ -69,6 +70,13 @@ export const ValidatorDetailsBodyFull = ({
 
   return (
     <>
+      <CelatoneSeo
+        pageName={
+          data.info.moniker
+            ? `${data.info.moniker} (Validator)`
+            : "Validator Detail"
+        }
+      />
       <PageHeaderContainer bgColor="transparent">
         <ValidatorTop
           info={data.info}
