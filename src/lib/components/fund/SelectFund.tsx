@@ -171,6 +171,9 @@ export const SelectFund = ({
               type="number"
               labelBgColor={labelBgColor}
               placeholder="0.00"
+              onKeyDown={(e) => {
+                if (e.key === "-") e.preventDefault();
+              }}
             />
           }
         />

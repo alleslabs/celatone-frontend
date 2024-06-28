@@ -1,6 +1,7 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
 import { Box, Button, Grid, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
+import { useEffect, useState } from "react";
 
 import { CustomIcon } from "../../icon";
 
@@ -49,7 +50,6 @@ const styles = {
   menu: (provided: SystemStyleObject) => ({
     ...provided,
     width: "427px",
-    zIndex: 99,
   }),
 };
 
@@ -61,6 +61,13 @@ export const AssetInput = ({
   assetOptions,
   initialSelected,
 }: AssetInputProps) => {
+  const [selected, setSelected] = useState("");
+
+  useEffect(() => {
+    if (!initialSelected) return;
+    setSelected(initialSelected);
+  }, [initialSelected]);
+
   return (
     <Grid
       templateColumns="140px 1fr auto"
@@ -80,7 +87,7 @@ export const AssetInput = ({
             ml: 3,
             px: 1,
             top: -2,
-            zIndex: 9,
+            zIndex: 1,
           },
         }}
       >
@@ -92,13 +99,15 @@ export const AssetInput = ({
           defaultValue={assetOptions.find(
             (item) => item.value === initialSelected
           )}
-          onChange={(selected) =>
-            setCurrencyValue((selected as AssetOption).value)
-          }
+          onChange={(value) => {
+            const currentValue = (value as AssetOption).value;
+            setSelected(currentValue);
+            setCurrencyValue(currentValue);
+          }}
           formatOptionLabel={AssetInputFormatOptionLabel}
           chakraStyles={styles}
           components={{
-            Option: AssetInputOption,
+            Option: (props) => AssetInputOption(props, selected),
             MenuList: AssetInputMenuList,
             NoOptionsMessage: AssetInputNoOptionsMessage,
           }}
