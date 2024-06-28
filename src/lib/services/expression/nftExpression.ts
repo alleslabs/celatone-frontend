@@ -22,11 +22,9 @@ export const useCollectionActivitiesExpression = (
   const isNftAddress = isHexModuleAddress(search);
   const isHash = isTxHash(search);
 
-  const tokenIdSearch = {
-    nft: isNftAddress
-      ? { nft_id: { _eq: search.toLowerCase() } }
-      : { token_id: { _iregex: search } },
-  };
+  const tokenIdSearch = isNftAddress
+    ? { nft_id: { _eq: search.toLowerCase() } }
+    : { nft: { token_id: { _iregex: search } } };
   const txHashSearch = {
     transaction: {
       hash: {
