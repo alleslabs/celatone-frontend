@@ -8,8 +8,9 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
+import { DndContext } from "@dnd-kit/core";
 import { observer } from "mobx-react-lite";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
@@ -17,6 +18,7 @@ import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
 
 import { NetworkCard } from "./NetworkCard";
+import { SortableList } from "./SortableList";
 
 interface AccordionNetworkListProps {
   title: string;
@@ -60,9 +62,14 @@ const AccordionNetworkList = ({
   </AccordionItem>
 );
 
+export const ItemTypes = {
+  CARD: "card",
+};
+
 export const NetworkMenuBody = observer(
   ({ currentChainId, keyword }: NetworkMenuBodyProps) => {
     const { availableChainIds } = useCelatoneApp();
+
     const filteredChains = useCallback(
       (type: string) =>
         useMemo(() => {
@@ -103,8 +110,10 @@ export const NetworkMenuBody = observer(
       !filteredMainnetChains.length &&
       !filteredTestnetChains.length;
 
+    const [items, setItems] = useState(filteredPinnedNetworks);
+
     return (
-      <>
+      <DndContext>
         <Accordion
           variant="transparent"
           allowMultiple
@@ -122,16 +131,36 @@ export const NetworkMenuBody = observer(
               </Flex>
             </AccordionButton>
             <AccordionPanel p={0}>
-              <Flex direction="column" gap={2}>
-                {filteredPinnedNetworks.map((network) => (
-                  <NetworkCard
-                    key={network.chainId}
-                    image={CHAIN_CONFIGS[network.chainId]?.logoUrl}
-                    chainId={network.chainId}
-                    isSelected={network.chainId === currentChainId}
-                  />
-                ))}
-              </Flex>
+              {/* TODO: sortable network pin */}
+              <SortableList
+                items={items}
+                onChange={setItems}
+                renderItem={
+                  () => null
+                  // <SortableItem id={network.id}>
+                  //   {network.id}
+                  //   <NetworkCard
+                  //     key={network.chainId}
+                  //     image={CHAIN_CONFIGS[network.chainId]?.logoUrl}
+                  //     chainId={network.chainId}
+                  //     isSelected={network.chainId === currentChainId}
+                  //   />
+                  //   <DragHandle />
+                  // </SortableItem>
+                }
+              />
+              {/* <SortableContext items={filteredPinnedNetworks}>
+                <Flex direction="column" gap={1}>
+                  {filteredPinnedNetworks.map((network) => (
+                    <NetworkCard
+                      key={network.chainId}
+                      image={CHAIN_CONFIGS[network.chainId]?.logoUrl}
+                      chainId={network.chainId}
+                      isSelected={network.chainId === currentChainId}
+                    />
+                  ))}
+                </Flex>
+              </SortableContext> */}
             </AccordionPanel>
           </AccordionItem>
           {filteredPinnedNetworks.length > 0 && (
@@ -171,7 +200,7 @@ export const NetworkMenuBody = observer(
 Please check your keyword."
           />
         )}
-      </>
+      </DndContext>
     );
   }
 );

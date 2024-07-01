@@ -33,6 +33,7 @@ export const NetworkCard = observer(
         name: CHAIN_CONFIGS[chainId]?.prettyName,
         chainId,
         logo: image || fallbackImage,
+        id: "",
       });
       toast({
         title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
@@ -55,12 +56,11 @@ export const NetworkCard = observer(
         py={2}
         gap={4}
         borderRadius={8}
-        cursor="pointer"
         transition="all 0.25s ease-in-out"
         background={isSelected ? "gray.700" : "transparent"}
         _hover={{
           background: !isSelected && "gray.800",
-          "> .icon-container": {
+          "> .icon-wrapper > .icon-container": {
             opacity: 1,
           },
         }}
@@ -93,33 +93,42 @@ export const NetworkCard = observer(
             </Text>
           </Flex>
         </Flex>
-        {isNetworkPinned(chainId) ? (
+        <Flex className="icon-wrapper" gap={2}>
           <Flex
-            className="icon-container"
             align="center"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleRemove();
-            }}
+            className="icon-container"
+            opacity={0}
+            _hover={{ opacity: 1, transition: "opacity 0.25s ease-in-out" }}
           >
-            <CustomIcon name="pin-solid" className="pin-network-icon" />
+            <CustomIcon name="drag" color="gray.600" />
           </Flex>
-        ) : (
-          <Flex
-            className="icon-container"
-            align="center"
-            onClick={(e) => {
-              if (chainId) {
+          {isNetworkPinned(chainId) ? (
+            <Flex
+              className="icon-container"
+              align="center"
+              onClick={(e) => {
                 e.stopPropagation();
-                handleSave();
-              }
-            }}
-            sx={{ opacity: 0, transition: "opacity 0.25s ease-in-out" }}
-          >
-            <CustomIcon name="pin" className="pin-network-icon" />
-          </Flex>
-        )}
-        {/* <CustomIcon name="pin-solid" /> */}
+                handleRemove();
+              }}
+            >
+              <CustomIcon name="pin-solid" />
+            </Flex>
+          ) : (
+            <Flex
+              className="icon-container"
+              align="center"
+              onClick={(e) => {
+                if (chainId) {
+                  e.stopPropagation();
+                  handleSave();
+                }
+              }}
+              sx={{ opacity: 0, transition: "opacity 0.25s ease-in-out" }}
+            >
+              <CustomIcon name="pin" />
+            </Flex>
+          )}
+        </Flex>
       </Flex>
     );
   }
