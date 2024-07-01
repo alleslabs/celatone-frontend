@@ -89,8 +89,7 @@ export const zModulePublishInfoResponse = z
     recent_publish_transaction: z.string().nullable(),
     recent_publish_proposal: zProposal
       .pick({ id: true, title: true })
-      .nullish()
-      .default(null),
+      .nullish(),
     recent_publish_block_height: z.number().nonnegative(),
     recent_publish_block_timestamp: zUtcDate,
     is_republished: z.boolean(),
@@ -105,7 +104,7 @@ export const zModulePublishInfoResponse = z
 export const zModuleTableCountsResponse = z.object({
   txs: z.number().nonnegative().nullable(),
   histories: z.number().nonnegative().nullable(),
-  proposals: z.number().nonnegative().nullish().default(null),
+  proposals: z.number().nonnegative().nullish(),
 });
 export type ModuleTableCountsResponse = z.infer<
   typeof zModuleTableCountsResponse

@@ -105,11 +105,14 @@ export const getModulePublishInfo = async (
   isGov: boolean
 ): Promise<ModulePublishInfo> =>
   axios
-    .get(`${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/info`, {
-      params: {
-        is_gov: isGov,
-      },
-    })
+    .get(
+      `${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/publish_info`,
+      {
+        params: {
+          is_gov: isGov,
+        },
+      }
+    )
     .then(({ data }) => parseWithError(zModulePublishInfoResponse, data));
 
 export const getModuleTableCounts = async (

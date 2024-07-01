@@ -33,7 +33,7 @@ export interface ModuleInfo
 
 export interface ModulePublishInfo {
   recentPublishTransaction: Nullable<string>;
-  recentPublishProposal: Nullable<Pick<Proposal, "id" | "title">>;
+  recentPublishProposal?: Nullable<Pick<Proposal, "id" | "title">>;
   recentPublishBlockHeight: number;
   recentPublishBlockTimestamp: Date;
   isRepublished: boolean;
