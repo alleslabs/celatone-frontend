@@ -8,8 +8,8 @@ import type {
 } from "lib/services/types";
 import {
   zAccountModulesResponse,
-  zModuleDataResponse,
   zModuleHistoriesResponse,
+  zModulePublishInfoResponse,
   zModuleRelatedProposalsResponse,
   zModulesResponse,
   zModuleTableCountsResponse,
@@ -22,7 +22,7 @@ import type {
   ExposedFunction,
   HexAddr,
   ModuleAbi,
-  ModuleData,
+  ModulePublishInfo,
   Nullable,
 } from "lib/types";
 import {
@@ -98,19 +98,19 @@ export const getModules = async (
     })
     .then(({ data }) => parseWithError(zModulesResponse, data));
 
-export const getModuleData = async (
+export const getModulePublishInfo = async (
   endpoint: string,
   vmAddress: HexAddr,
   moduleName: string,
   isGov: boolean
-): Promise<ModuleData> =>
+): Promise<ModulePublishInfo> =>
   axios
     .get(`${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/info`, {
       params: {
         is_gov: isGov,
       },
     })
-    .then(({ data }) => parseWithError(zModuleDataResponse, data));
+    .then(({ data }) => parseWithError(zModulePublishInfoResponse, data));
 
 export const getModuleTableCounts = async (
   endpoint: string,

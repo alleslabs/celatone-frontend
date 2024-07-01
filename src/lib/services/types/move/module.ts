@@ -6,8 +6,8 @@ import type {
   HexAddr,
   IndexedModule,
   ModuleAbi,
-  ModuleData,
   ModuleInfo,
+  ModulePublishInfo,
   Option,
 } from "lib/types";
 import {
@@ -84,8 +84,8 @@ export const zModulesResponse = z.object({
 });
 export type ModulesResponse = z.infer<typeof zModulesResponse>;
 
-export const zModuleDataResponse = zBaseModuleLcd
-  .extend({
+export const zModulePublishInfoResponse = z
+  .object({
     recent_publish_transaction: z.string().nullable(),
     recent_publish_proposal: zProposal
       .pick({ id: true, title: true })
@@ -95,9 +95,8 @@ export const zModuleDataResponse = zBaseModuleLcd
     recent_publish_block_timestamp: zUtcDate,
     is_republished: z.boolean(),
   })
-  .transform<ModuleData>((val) => ({
+  .transform<ModulePublishInfo>((val) => ({
     ...snakeToCamel(val),
-    ...indexModuleAbi(val.abi),
     recentPublishTransaction: val.recent_publish_transaction
       ? parseTxHash(val.recent_publish_transaction)
       : null,
