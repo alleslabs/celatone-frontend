@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   useCollectionActivitiesExpression,
+  useCollectionActivitiesExpressionOld,
   useCollectionsExpression,
 } from "../expression";
 import {
@@ -142,7 +143,7 @@ export const useCollectionActivities = (
     collectionAddress,
     search
   );
-  const expressionOld = useCollectionActivitiesExpression(
+  const expressionOld = useCollectionActivitiesExpressionOld(
     collectionAddress,
     search
   );
