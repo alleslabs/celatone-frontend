@@ -17,7 +17,7 @@ const UploadIndex = () => {
     txFee: undefined,
   });
 
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(true);
 
   return completed ? (
     <UploadComplete txResult={txInfo} />
