@@ -5,7 +5,11 @@ import {
   useCollectionActivitiesExpression,
   useCollectionsExpression,
 } from "../expression";
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useCelatoneApp,
+  useCurrentChain,
+} from "lib/app-provider";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
 import type {
@@ -26,6 +30,19 @@ import {
   getCollectionsByAccount,
   getCollectionUniqueHoldersCount,
 } from "./collection";
+import {
+  getCollectionActivitiesCountOld,
+  getCollectionActivitiesOld,
+  getCollectionByCollectionAddressOld,
+  getCollectionCreatorOld,
+  getCollectionMutateEventsCountOld,
+  getCollectionMutateEventsOld,
+  getCollectionsByAccountOld,
+  getCollectionsOld,
+  getCollectionUniqueHoldersCountOld,
+} from "./collectionOld";
+
+const INITIATION_CHAIN_ID = "initiation-1";
 
 export const useCollections = (
   pageSize: number,
@@ -34,6 +51,9 @@ export const useCollections = (
   options?: Pick<UseQueryOptions<CollectionsResponse>, "onSuccess">
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   const expression = useCollectionsExpression(search);
 
   return useQuery<CollectionsResponse>(
@@ -45,7 +65,9 @@ export const useCollections = (
       expression,
     ],
     async () =>
-      getCollections(chainConfig.indexer, offset, pageSize, expression),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollections(chainConfig.indexer, offset, pageSize, expression)
+        : getCollectionsOld(chainConfig.indexer, offset, pageSize, search),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -58,6 +80,9 @@ export const useCollectionByCollectionAddress = (
   collectionAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<CollectionByCollectionAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
@@ -65,7 +90,15 @@ export const useCollectionByCollectionAddress = (
       collectionAddress,
     ],
     async () =>
-      getCollectionByCollectionAddress(chainConfig.indexer, collectionAddress),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionByCollectionAddress(
+            chainConfig.indexer,
+            collectionAddress
+          )
+        : getCollectionByCollectionAddressOld(
+            chainConfig.indexer,
+            collectionAddress
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -75,13 +108,19 @@ export const useCollectionByCollectionAddress = (
 
 export const useCollectionCreator = (collectionAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<CollectionCreatorResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_CREATOR,
       chainConfig.indexer,
       collectionAddress,
     ],
-    async () => getCollectionCreator(chainConfig.indexer, collectionAddress),
+    async () =>
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionCreator(chainConfig.indexer, collectionAddress)
+        : getCollectionCreatorOld(chainConfig.indexer, collectionAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -96,7 +135,14 @@ export const useCollectionActivities = (
   search?: string
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   const expression = useCollectionActivitiesExpression(
+    collectionAddress,
+    search
+  );
+  const expressionOld = useCollectionActivitiesExpression(
     collectionAddress,
     search
   );
@@ -108,14 +154,22 @@ export const useCollectionActivities = (
       offset,
       pageSize,
       expression,
+      expressionOld,
     ],
     async () =>
-      getCollectionActivities(
-        chainConfig.indexer,
-        pageSize,
-        offset,
-        expression
-      ),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionActivities(
+            chainConfig.indexer,
+            pageSize,
+            offset,
+            expression
+          )
+        : getCollectionActivitiesOld(
+            chainConfig.indexer,
+            pageSize,
+            offset,
+            expressionOld
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -125,6 +179,9 @@ export const useCollectionActivities = (
 
 export const useCollectionActivitiesCount = (collectionAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_COUNT,
@@ -132,7 +189,12 @@ export const useCollectionActivitiesCount = (collectionAddress: HexAddr32) => {
       collectionAddress,
     ],
     async () =>
-      getCollectionActivitiesCount(chainConfig.indexer, collectionAddress),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionActivitiesCount(chainConfig.indexer, collectionAddress)
+        : getCollectionActivitiesCountOld(
+            chainConfig.indexer,
+            collectionAddress
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -146,6 +208,9 @@ export const useCollectionMutateEvents = (
   offset: number
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<MutateEvent[]>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS,
@@ -155,12 +220,19 @@ export const useCollectionMutateEvents = (
       pageSize,
     ],
     async () =>
-      getCollectionMutateEvents(
-        chainConfig.indexer,
-        collectionAddress,
-        pageSize,
-        offset
-      ),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionMutateEvents(
+            chainConfig.indexer,
+            collectionAddress,
+            pageSize,
+            offset
+          )
+        : getCollectionMutateEventsOld(
+            chainConfig.indexer,
+            collectionAddress,
+            pageSize,
+            offset
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -172,6 +244,9 @@ export const useCollectionMutateEventsCount = (
   collectionAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS_COUNT,
@@ -179,7 +254,12 @@ export const useCollectionMutateEventsCount = (
       collectionAddress,
     ],
     async () =>
-      getCollectionMutateEventsCount(chainConfig.indexer, collectionAddress),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionMutateEventsCount(chainConfig.indexer, collectionAddress)
+        : getCollectionMutateEventsCountOld(
+            chainConfig.indexer,
+            collectionAddress
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -191,6 +271,9 @@ export const useCollectionUniqueHoldersCount = (
   collectionAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_UNIQUE_HOLDERS_COUNT,
@@ -198,7 +281,15 @@ export const useCollectionUniqueHoldersCount = (
       collectionAddress,
     ],
     async () =>
-      getCollectionUniqueHoldersCount(chainConfig.indexer, collectionAddress),
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionUniqueHoldersCount(
+            chainConfig.indexer,
+            collectionAddress
+          )
+        : getCollectionUniqueHoldersCountOld(
+            chainConfig.indexer,
+            collectionAddress
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -208,13 +299,19 @@ export const useCollectionUniqueHoldersCount = (
 
 export const useCollectionsByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   return useQuery<CollectionsByAccountResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
       chainConfig.indexer,
       accountAddress,
     ],
-    async () => getCollectionsByAccount(chainConfig.indexer, accountAddress),
+    async () =>
+      chainId === INITIATION_CHAIN_ID
+        ? getCollectionsByAccount(chainConfig.indexer, accountAddress)
+        : getCollectionsByAccountOld(chainConfig.indexer, accountAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
