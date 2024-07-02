@@ -8,7 +8,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useInternalNavigate } from "lib/app-provider";
@@ -17,27 +16,15 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
+import { VerifyPublishCodeModal } from "lib/components/modal";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
 import { feeFromStr } from "lib/utils";
 
-import {
-  UploadCompletedModal,
-  VerifyPublishCode,
-  VerifyPublishCodeCompleted,
-  VerifyPublishCodeFailed,
-} from "./modals";
-
 interface UploadCompleteProps {
   txResult: StoreCodeTxInternalResult;
-}
-
-enum VerifyState {
-  VerifyStatePublishCode = "verifyPublishCode",
-  VerifyStatePublishCodeCompleted = "verifyPublishCodeCompleted",
-  VerifyStatePublishCodeFailed = "verifyPublishCodeFailed",
 }
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
@@ -46,34 +33,15 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [verifyState, setVerifyState] = useState<VerifyState>(
-    VerifyState.VerifyStatePublishCode
-  );
-
-  const handleOnSubmitVerifyPublishCode = () => {
-    // TODO: Implement verification logic (POST)
-    // // Case 1: Verification success
-    setVerifyState(VerifyState.VerifyStatePublishCodeCompleted);
-    setTimeout(() => {
-      onClose();
-    }, 3000);
-  };
 
   return (
     <>
-      <UploadCompletedModal isOpen={isOpen} onClose={onClose}>
-        {verifyState === VerifyState.VerifyStatePublishCode && (
-          <VerifyPublishCode
-            onSubmitVerifyPublishCode={handleOnSubmitVerifyPublishCode}
-          />
-        )}
-        {verifyState === VerifyState.VerifyStatePublishCodeCompleted && (
-          <VerifyPublishCodeCompleted />
-        )}
-        {verifyState === VerifyState.VerifyStatePublishCodeFailed && (
-          <VerifyPublishCodeFailed onClose={onClose} />
-        )}
-      </UploadCompletedModal>
+      <VerifyPublishCodeModal
+        isOpen={isOpen}
+        onClose={onClose}
+        codeId={txResult.codeId}
+        codeHash={txResult.codeHash}
+      />
       <WasmPageContainer>
         <Heading variant="h6" as="h6" color="text.dark" mb={3}>
           Deploy new contract

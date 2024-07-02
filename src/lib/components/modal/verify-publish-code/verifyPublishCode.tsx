@@ -9,25 +9,63 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { sortBy } from "lodash";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { ControllerInput, SelectInput } from "lib/components/forms";
+import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import { useDockerImageTag } from "lib/services/docker-image";
+
+import { VerifyPublishCodeSelectInput } from "./verifyPublishCodeSelectInput";
 
 interface VerifyPublishCodeProps {
+  codeId: string;
+  codeHash: string;
+  contractAddress?: string;
   onSubmitVerifyPublishCode: () => void;
 }
 
 export const VerifyPublishCode = ({
+  codeId,
+  codeHash,
+  contractAddress,
   onSubmitVerifyPublishCode,
 }: VerifyPublishCodeProps) => {
+  const { data: rustOptimizer } = useDockerImageTag(
+    "cosmwasm",
+    "rust-optimizer"
+  );
+  const { data: rustOptimizerArm64 } = useDockerImageTag(
+    "cosmwasm",
+    "rust-optimizer-arm64"
+  );
+
+  const options = useMemo(() => {
+    const rustOptimizerResult =
+      rustOptimizer?.results.map((result) => ({
+        label: `cosmwasm/optimizer:${result.name}`,
+        value: result.digest,
+        version: result.name,
+      })) ?? [];
+    const rustOptimizerArm64Result =
+      rustOptimizerArm64?.results.map((result) => ({
+        label: `cosmwasm/optimizer-arm64:${result.name}`,
+        value: result.digest,
+        version: result.name,
+      })) ?? [];
+
+    const results = [...rustOptimizerResult, ...rustOptimizerArm64Result];
+
+    return sortBy(results, ["version"]).reverse();
+  }, [rustOptimizer, rustOptimizerArm64]);
+
   const {
     control,
     handleSubmit,
-    // watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: zodResolver(
       z.object({
@@ -48,7 +86,7 @@ export const VerifyPublishCode = ({
             /^[^\\/:*?"<>|]+$/,
             'Filename cannot contain any of the following characters: \\ / : * ? " < > |'
           ),
-        compilerVersion: z.string(),
+        compilerVersion: z.string().min(1),
       })
     ),
     defaultValues: {
@@ -58,8 +96,6 @@ export const VerifyPublishCode = ({
       compilerVersion: "",
     },
   });
-  // const { githubRepository, commitHash, wasmFileName, compilerVersion } =
-  //   watch();
 
   return (
     <>
@@ -72,7 +108,7 @@ export const VerifyPublishCode = ({
         </Flex>
       </ModalHeader>
       <ModalCloseButton color="gray.400" />
-      <ModalBody overflow="overlay">
+      <ModalBody>
         <Flex direction="column" gap={6}>
           <Flex direction="column" gap={1}>
             <Text variant="body2">
@@ -99,17 +135,24 @@ export const VerifyPublishCode = ({
                 <Text fontWeight={500} color="text.dark" variant="body2">
                   Code ID:
                 </Text>
-                <ExplorerLink type="code_id" value="1234" showCopyOnHover />
+                <ExplorerLink type="code_id" value={codeId} showCopyOnHover />
+                {contractAddress && (
+                  <Text>
+                    (via{" "}
+                    <ExplorerLink
+                      type="tx_hash"
+                      value={contractAddress}
+                      showCopyOnHover
+                    />
+                    )
+                  </Text>
+                )}
               </Flex>
               <Flex gap={2} alignItems="center">
                 <Text fontWeight={500} color="text.dark" variant="body2">
                   Code Hash:
                 </Text>
-                <ExplorerLink
-                  type="tx_hash"
-                  value="8DA5A3...E4E5D899"
-                  showCopyOnHover
-                />
+                <ExplorerLink type="tx_hash" value={codeHash} showCopyOnHover />
               </Flex>
             </Flex>
             <ControllerInput
@@ -155,28 +198,17 @@ export const VerifyPublishCode = ({
                 .wasm
               </Text>
             </Flex>
-            <SelectInput
-              formLabel="Compiler Version"
-              options={[
-                {
-                  label: "Rust 1.55.0",
-                  value: "rust-1.55.0",
-                  disabled: false,
-                },
-                {
-                  label: "Rust 1.54.0",
-                  value: "rust-1.54.0",
-                  disabled: false,
-                },
-              ]}
-              onChange={() => null}
-              placeholder="Select or input the compiler version"
-              initialSelected="rust-1.55.0"
-              labelBgColor="gray.800"
-              isRequired
+            <VerifyPublishCodeSelectInput
+              name="compilerVersion"
+              control={control}
+              options={options}
             />
           </Flex>
-          <Button onClick={handleSubmit(onSubmitVerifyPublishCode)}>
+          <Button
+            variant="primary"
+            onClick={handleSubmit(onSubmitVerifyPublishCode)}
+            isDisabled={!isValid}
+          >
             Verify & Publish
           </Button>
           <Text variant="body2" color="text.dark" textAlign="center">
