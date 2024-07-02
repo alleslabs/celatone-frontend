@@ -31,7 +31,7 @@ import type {
   ExposedFunction,
   HexAddr,
   IndexedModule,
-  ModuleData,
+  ModulePublishInfo,
   Nullable,
   Option,
   RpcQueryError,
@@ -42,8 +42,8 @@ import {
   decodeModule,
   decodeScript,
   getFunctionView,
-  getModuleData,
   getModuleHistories,
+  getModulePublishInfo,
   getModuleRelatedProposals,
   getModules,
   getModulesByAddress,
@@ -251,7 +251,7 @@ export const useModules = (
   );
 };
 
-export const useModuleData = (
+export const useModulePublishInfo = (
   vmAddress: HexAddr,
   moduleName: string,
   enabled = true
@@ -259,7 +259,7 @@ export const useModuleData = (
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
 
-  return useQuery<ModuleData>(
+  return useQuery<ModulePublishInfo>(
     [
       CELATONE_QUERY_KEYS.MODULE_DATA,
       endpoint,
@@ -268,7 +268,7 @@ export const useModuleData = (
       govConfig.enabled,
     ],
     async () =>
-      getModuleData(endpoint, vmAddress, moduleName, govConfig.enabled),
+      getModulePublishInfo(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
       retry: 1,
       refetchOnWindowFocus: false,

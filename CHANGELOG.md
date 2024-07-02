@@ -88,6 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1001](https://github.com/alleslabs/celatone-frontend/pull/1001) Support pre and post db schema on nft & collection queries
+- [#1000](https://github.com/alleslabs/celatone-frontend/pull/1000) Query module info from lcd directly
 - [#998](https://github.com/alleslabs/celatone-frontend/pull/998) Use expression on Nft query
 - [#996](https://github.com/alleslabs/celatone-frontend/pull/996) Allow disable voting period tally config
 - [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
