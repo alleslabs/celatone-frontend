@@ -4,11 +4,29 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Box,
   Divider,
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import { DndContext } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { findIndex } from "lodash";
 import { observer } from "mobx-react-lite";
 import { useCallback, useMemo, useState } from "react";
 
@@ -18,7 +36,6 @@ import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
 
 import { NetworkCard } from "./NetworkCard";
-import { SortableList } from "./SortableList";
 
 interface AccordionNetworkListProps {
   title: string;
@@ -64,6 +81,34 @@ const AccordionNetworkList = ({
 
 export const ItemTypes = {
   CARD: "card",
+};
+
+const SortableItem = ({
+  chainId,
+  currentChainId,
+}: {
+  chainId: string;
+  currentChainId: string;
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: chainId,
+    });
+
+  const style = {
+    transform: transform ? CSS.Transform.toString(transform) : "none",
+    transition: transition || "transform 250ms ease",
+  };
+
+  return (
+    <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <NetworkCard
+        image={CHAIN_CONFIGS[chainId]?.logoUrl}
+        chainId={chainId}
+        isSelected={chainId === currentChainId}
+      />
+    </Box>
+  );
 };
 
 export const NetworkMenuBody = observer(
@@ -112,8 +157,33 @@ export const NetworkMenuBody = observer(
 
     const [items, setItems] = useState(filteredPinnedNetworks);
 
+    const sensors = useSensors(
+      useSensor(PointerSensor),
+      useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
+      })
+    );
+
+    const handleDragEnd = (event: DragEndEvent) => {
+      const { active, over } = event;
+
+      if (active.id !== over?.id) {
+        setItems((newItems) => {
+          const oldIndex = findIndex(
+            items,
+            (item) => item.chainId === active.id
+          );
+          const newIndex = findIndex(
+            items,
+            (item) => item.chainId === over?.id
+          );
+          return arrayMove(newItems, oldIndex, newIndex);
+        });
+      }
+    };
+
     return (
-      <DndContext>
+      <>
         <Accordion
           variant="transparent"
           allowMultiple
@@ -131,36 +201,25 @@ export const NetworkMenuBody = observer(
               </Flex>
             </AccordionButton>
             <AccordionPanel p={0}>
-              {/* TODO: sortable network pin */}
-              <SortableList
-                items={items}
-                onChange={setItems}
-                renderItem={
-                  () => null
-                  // <SortableItem id={network.id}>
-                  //   {network.id}
-                  //   <NetworkCard
-                  //     key={network.chainId}
-                  //     image={CHAIN_CONFIGS[network.chainId]?.logoUrl}
-                  //     chainId={network.chainId}
-                  //     isSelected={network.chainId === currentChainId}
-                  //   />
-                  //   <DragHandle />
-                  // </SortableItem>
-                }
-              />
-              {/* <SortableContext items={filteredPinnedNetworks}>
-                <Flex direction="column" gap={1}>
-                  {filteredPinnedNetworks.map((network) => (
-                    <NetworkCard
-                      key={network.chainId}
-                      image={CHAIN_CONFIGS[network.chainId]?.logoUrl}
-                      chainId={network.chainId}
-                      isSelected={network.chainId === currentChainId}
+              {/* // TODO: Implement DND */}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={items}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {items.map((item) => (
+                    <SortableItem
+                      key={item.chainId}
+                      chainId={item.chainId}
+                      currentChainId={currentChainId}
                     />
                   ))}
-                </Flex>
-              </SortableContext> */}
+                </SortableContext>
+              </DndContext>
             </AccordionPanel>
           </AccordionItem>
           {filteredPinnedNetworks.length > 0 && (
@@ -200,7 +259,7 @@ export const NetworkMenuBody = observer(
 Please check your keyword."
           />
         )}
-      </DndContext>
+      </>
     );
   }
 );
