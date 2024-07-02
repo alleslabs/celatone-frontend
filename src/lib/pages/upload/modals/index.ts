@@ -1,3 +1,4 @@
 export * from "./uploadCompletedModal";
 export * from "./verifyPublishCode";
-export * from "./verifyPublishCodeComplete";
+export * from "./verifyPublishCodeCompleted";
+export * from "./verifyPublishCodeFailed";

@@ -26,7 +26,8 @@ import { feeFromStr } from "lib/utils";
 import {
   UploadCompletedModal,
   VerifyPublishCode,
-  VerifyPublishCodeComplete,
+  VerifyPublishCodeCompleted,
+  VerifyPublishCodeFailed,
 } from "./modals";
 
 interface UploadCompleteProps {
@@ -35,7 +36,7 @@ interface UploadCompleteProps {
 
 enum VerifyState {
   VerifyStatePublishCode = "verifyPublishCode",
-  VerifyStatePublishCodeComplete = "verifyPublishCodeComplete",
+  VerifyStatePublishCodeCompleted = "verifyPublishCodeCompleted",
   VerifyStatePublishCodeFailed = "verifyPublishCodeFailed",
 }
 
@@ -46,12 +47,16 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const attached = Boolean(schema);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [verifyState, setVerifyState] = useState<VerifyState>(
-    VerifyState.VerifyStatePublishCodeComplete
+    VerifyState.VerifyStatePublishCode
   );
 
   const handleOnSubmitVerifyPublishCode = () => {
-    // Case success
-    setVerifyState(VerifyState.VerifyStatePublishCodeComplete);
+    // TODO: Implement verification logic (POST)
+    // // Case 1: Verification success
+    setVerifyState(VerifyState.VerifyStatePublishCodeCompleted);
+    setTimeout(() => {
+      onClose();
+    }, 3000);
   };
 
   return (
@@ -62,8 +67,11 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             onSubmitVerifyPublishCode={handleOnSubmitVerifyPublishCode}
           />
         )}
-        {verifyState === VerifyState.VerifyStatePublishCodeComplete && (
-          <VerifyPublishCodeComplete />
+        {verifyState === VerifyState.VerifyStatePublishCodeCompleted && (
+          <VerifyPublishCodeCompleted />
+        )}
+        {verifyState === VerifyState.VerifyStatePublishCodeFailed && (
+          <VerifyPublishCodeFailed onClose={onClose} />
         )}
       </UploadCompletedModal>
       <WasmPageContainer>
