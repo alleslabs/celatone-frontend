@@ -1,11 +1,22 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-import { useMemo } from "react";
+import type { BigSource } from "big.js";
+import { sortBy } from "lodash";
+import { useCallback, useMemo } from "react";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 
+import { useCurrentChain } from "lib/app-provider";
+import type { AssetOption } from "lib/components/forms";
 import { AssetInput, ControllerInput } from "lib/components/forms";
-import { useAssetInfoList } from "lib/services/assetService";
+import { useAssetInfoList, useAssetInfos } from "lib/services/assetService";
+import { useBalances } from "lib/services/bank";
+import type { BechAddr20, Token, U, USD } from "lib/types";
+import {
+  coinToTokenWithValue,
+  formatPrice,
+  formatUTokenWithPrecision,
+} from "lib/utils";
 
 import { ASSETS_SELECT } from "./data";
 import type { AttachFundsState } from "./types";
@@ -26,30 +37,117 @@ export const SelectFund = ({
   assetsSelect,
   labelBgColor,
 }: SelectFundProps) => {
+  const { address } = useCurrentChain();
+  const { data: balances } = useBalances(address as BechAddr20);
   const { data: assetInfos = [] } = useAssetInfoList({ assetType: "native" });
+  const { data: assetInfosWithPrices } = useAssetInfos({ withPrices: true });
   const { fields, append, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,
   });
 
   const selectedAssets = assetsSelect.map((asset) => asset.denom);
+  const assetInfosMap = assetInfos?.reduce((acc, asset) => {
+    acc.set(asset.id, asset);
+    return acc;
+  }, new Map());
+  const balanceMap = balances?.reduce((acc, balance) => {
+    acc.set(balance.denom, balance);
+    return acc;
+  }, new Map());
 
-  const assetOptions = useMemo(
-    () =>
-      assetInfos.map((asset) => ({
-        label: asset.symbol,
-        value: asset.id,
-        disabled: selectedAssets.includes(asset.id),
-      })),
-    [assetInfos, selectedAssets]
+  const handleGetFormattedBalance = useCallback(
+    (balance: Coin, denom: string) => {
+      const token = coinToTokenWithValue(
+        denom,
+        balance?.amount ?? "0",
+        assetInfosWithPrices,
+        undefined
+      );
+
+      const formatted = formatUTokenWithPrecision(
+        token.amount as U<Token<BigSource>>,
+        token.precision ?? 0,
+        true,
+        token.amount.toNumber() > 999 ? 6 : undefined
+      );
+
+      const price = formatPrice(token.value as USD<BigSource>);
+
+      return { formatted, price };
+    },
+    [assetInfosWithPrices]
   );
 
-  const rules = {
-    pattern: {
-      value: /^[0-9]+([.][0-9]{0,6})?$/i,
-      message: 'Invalid amount. e.g. "100.00"',
+  const assetOptions = useMemo(() => {
+    const assetInfosInBalance: AssetOption[] = [];
+    const assetInfosNotInBalance: AssetOption[] = [];
+
+    sortBy(assetInfos, ["symbol"]).forEach((asset) => {
+      const balance = balanceMap?.get(asset.id) ?? undefined;
+
+      const { formatted, price } = handleGetFormattedBalance(balance, asset.id);
+
+      if (balanceMap?.has(asset.id)) {
+        assetInfosInBalance.push({
+          label: asset.symbol,
+          value: asset.id,
+          formatted,
+          price,
+          logo: asset.logo,
+          isDisabled: selectedAssets.includes(asset.id),
+        });
+      } else {
+        assetInfosNotInBalance.push({
+          label: asset.symbol,
+          value: asset.id,
+          logo: asset.logo,
+          isDisabled: true,
+        });
+      }
+    });
+
+    return [...assetInfosInBalance, ...assetInfosNotInBalance];
+  }, [assetInfos, balanceMap, selectedAssets, handleGetFormattedBalance]);
+
+  const handleControllerInputProps = useCallback(
+    (idx: number) => {
+      if (!assetsSelect[idx]) return {};
+
+      const { formatted } = handleGetFormattedBalance(
+        balanceMap?.get(selectedAssets[idx]),
+        selectedAssets[idx]
+      );
+      const isSelected = balanceMap?.get(selectedAssets[idx]);
+      const overBalance = Number(assetsSelect[idx].amount) > Number(formatted);
+
+      return {
+        helperAction: !overBalance && isSelected && (
+          <Text variant="body3" color="text.dark" w="100%">
+            Balance: {formatted}
+          </Text>
+        ),
+        cta: !overBalance &&
+          isSelected && {
+            label: "MAX",
+            onClick: (changeValue: (value: string) => void) => {
+              changeValue?.(formatted);
+            },
+          },
+        error:
+          isSelected && overBalance
+            ? `Not enough ${assetInfosMap.get(selectedAssets[idx])?.symbol} in your wallet`
+            : undefined,
+      };
     },
-  };
+    [
+      assetsSelect,
+      balanceMap,
+      selectedAssets,
+      assetInfosMap,
+      handleGetFormattedBalance,
+    ]
+  );
 
   return (
     <>
@@ -63,16 +161,19 @@ export const SelectFund = ({
           }
           assetOptions={assetOptions}
           initialSelected={field.denom}
-          labelBgColor={labelBgColor}
           amountInput={
             <ControllerInput
+              {...handleControllerInputProps(idx)}
               name={`${ASSETS_SELECT}.${idx}.amount`}
               control={control}
               label="Amount"
               variant="fixed-floating"
               type="number"
-              rules={rules}
               labelBgColor={labelBgColor}
+              placeholder="0.00"
+              onKeyDown={(e) => {
+                if (e.key === "-") e.preventDefault();
+              }}
             />
           }
         />

@@ -15,7 +15,8 @@ const WasmPageContainer = ({ children, boxProps }: WasmPageContainerProps) => (
     w={540}
     mx="auto"
     minH="inherit"
-    py={12}
+    pt={12}
+    pb={36}
     {...boxProps}
   >
     {children}

@@ -317,7 +317,6 @@ export const ExecuteBox = ({
               control={control}
               setValue={setValue}
               attachFundsOption={attachFundsOption}
-              labelBgColor="gray.900"
               showLabel={false}
             />
           </GridItem>
