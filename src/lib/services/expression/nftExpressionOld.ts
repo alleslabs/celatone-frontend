@@ -61,7 +61,9 @@ export const useNftsExpressionOld = (
     };
 
     return {
-      collection: { _eq: collectionAddress },
+      collectionByCollection: {
+        vm_address: { vm_address: { _eq: collectionAddress } },
+      },
       is_burned: { _eq: false },
       ...(search.trim().length > 0 ? orExpression : {}),
     };
@@ -73,6 +75,10 @@ export const useNftsByAccountExpressionOld = (
   search = ""
 ) =>
   useMemo(() => {
+    const orExpression = {
+      _or: [{ token_id: { _iregex: search } }],
+    };
+
     const collectionExpression = collectionAddress
       ? [
           {
@@ -82,13 +88,11 @@ export const useNftsByAccountExpressionOld = (
           },
         ]
       : [];
-    const orExpression = {
-      _or: [{ token_id: { _iregex: search } }, ...collectionExpression],
-    };
 
     return {
       vmAddressByOwner: { vm_address: { _eq: accountAddress } },
       is_burned: { _eq: false },
+      ...(collectionAddress ? collectionExpression : {}),
       ...(search.trim().length > 0 ? orExpression : {}),
     };
   }, [accountAddress, collectionAddress, search]);

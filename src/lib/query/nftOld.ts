@@ -28,26 +28,12 @@ export const getNftQueryOld = gql`
 `;
 
 export const getNftsQueryOld = gql`
-  query getNftsQuery(
-    $limit: Int!
-    $offset: Int!
-    $collectionAddress: String!
-    $search: String
-  ) {
+  query getNftsQuery($limit: Int!, $offset: Int!, $expression: nfts_bool_exp!) {
     nfts(
       limit: $limit
       offset: $offset
       order_by: { token_id: asc }
-      where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $collectionAddress } }
-        }
-        is_burned: { _eq: false }
-        _or: [
-          { token_id: { _iregex: $search } }
-          { vm_address: { vm_address: { _eq: $search } } }
-        ]
-      }
+      where: $expression
     ) {
       token_id
       uri

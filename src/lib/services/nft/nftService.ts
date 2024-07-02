@@ -76,13 +76,7 @@ export const useNfts = (
     async () =>
       chainId === INITIATION_CHAIN_ID
         ? getNfts(chainConfig.indexer, pageSize, offset, expression)
-        : getNftsOld(
-            chainConfig.indexer,
-            collectionAddress,
-            pageSize,
-            offset,
-            search
-          ),
+        : getNftsOld(chainConfig.indexer, pageSize, offset, expression),
     {
       retry: 1,
       refetchOnWindowFocus: false,

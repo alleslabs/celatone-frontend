@@ -43,19 +43,17 @@ const zNft = z
 
 export const getNftsOld = async (
   indexer: string,
-  collectionAddress: HexAddr32,
   pageSize: number,
   offset: number,
-  search: string
+  expression: object
 ) =>
   axios
     .post(indexer, {
       query: getNftsQueryOld,
       variables: {
-        collectionAddress,
         limit: pageSize,
         offset,
-        search,
+        expression,
       },
     })
     .then(({ data: res }) => parseWithError(zNft.array(), res.data.nfts));
