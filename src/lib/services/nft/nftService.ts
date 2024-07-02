@@ -314,7 +314,6 @@ export const useNftsByAccountByCollection = (
         ? getNftsByAccount(chainConfig.indexer, pageSize, offset, expression)
         : getNftsByAccountOld(
             chainConfig.indexer,
-            accountAddress,
             pageSize,
             offset,
             expression

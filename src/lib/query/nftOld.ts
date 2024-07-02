@@ -151,7 +151,6 @@ export const getNftMutateEventsCountQueryOld = gql`
 
 export const getNftsByAccountQueryOld = gql`
   query getNftsByAccountQuery(
-    $accountAddress: String!
     $pageSize: Int!
     $offset: Int!
     $expression: nfts_bool_exp!
