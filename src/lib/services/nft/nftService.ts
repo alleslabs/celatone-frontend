@@ -1,7 +1,12 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { useNftsByAccountExpression, useNftsExpression } from "../expression";
+import {
+  useNftsByAccountExpression,
+  useNftsByAccountExpressionOld,
+  useNftsExpression,
+  useNftsExpressionOld,
+} from "../expression";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
@@ -53,7 +58,10 @@ export const useNfts = (
   const {
     chain: { chain_id: chainId },
   } = useCurrentChain();
-  const expression = useNftsExpression(collectionAddress, search);
+  const expressionNew = useNftsExpression(collectionAddress, search);
+  const expressionOld = useNftsExpressionOld(collectionAddress, search);
+  const expression =
+    chainId === INITIATION_CHAIN_ID ? expressionNew : expressionOld;
 
   return useQuery<Nft[]>(
     [
@@ -278,11 +286,18 @@ export const useNftsByAccountByCollection = (
   const {
     chain: { chain_id: chainId },
   } = useCurrentChain();
-  const expression = useNftsByAccountExpression(
+  const expressionNew = useNftsByAccountExpression(
     accountAddress,
     collectionAddress,
     search
   );
+  const expressionOld = useNftsByAccountExpressionOld(
+    accountAddress,
+    collectionAddress,
+    search
+  );
+  const expression =
+    chainId === INITIATION_CHAIN_ID ? expressionNew : expressionOld;
 
   return useQuery<NftsByAccountResponse>(
     [
@@ -291,8 +306,8 @@ export const useNftsByAccountByCollection = (
       accountAddress,
       pageSize,
       offset,
-      search,
       collectionAddress,
+      expression,
     ],
     async () =>
       chainId === INITIATION_CHAIN_ID
@@ -302,7 +317,7 @@ export const useNftsByAccountByCollection = (
             accountAddress,
             pageSize,
             offset,
-            search
+            expression
           ),
     {
       retry: 1,

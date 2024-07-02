@@ -204,11 +204,11 @@ export const getNftsByAccountOld = async (
   accountAddress: HexAddr,
   pageSize: number,
   offset: number,
-  search: string
+  expression: object
 ) =>
   axios
     .post(indexer, {
       query: getNftsByAccountQueryOld,
-      variables: { accountAddress, pageSize, offset, search },
+      variables: { accountAddress, pageSize, offset, expression },
     })
     .then(({ data: res }) => parseWithError(zNftsByAccountResponse, res.data));

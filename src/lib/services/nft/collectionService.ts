@@ -5,6 +5,7 @@ import {
   useCollectionActivitiesExpression,
   useCollectionActivitiesExpressionOld,
   useCollectionsExpression,
+  useCollectionsExpressionOld,
 } from "../expression";
 import {
   CELATONE_QUERY_KEYS,
@@ -55,7 +56,10 @@ export const useCollections = (
   const {
     chain: { chain_id: chainId },
   } = useCurrentChain();
-  const expression = useCollectionsExpression(search);
+  const expressionNew = useCollectionsExpression(search);
+  const expressionOld = useCollectionsExpressionOld(search);
+  const expression =
+    chainId === INITIATION_CHAIN_ID ? expressionNew : expressionOld;
 
   return useQuery<CollectionsResponse>(
     [
@@ -68,7 +72,7 @@ export const useCollections = (
     async () =>
       chainId === INITIATION_CHAIN_ID
         ? getCollections(chainConfig.indexer, offset, pageSize, expression)
-        : getCollectionsOld(chainConfig.indexer, offset, pageSize, search),
+        : getCollectionsOld(chainConfig.indexer, offset, pageSize, expression),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -139,7 +143,7 @@ export const useCollectionActivities = (
   const {
     chain: { chain_id: chainId },
   } = useCurrentChain();
-  const expression = useCollectionActivitiesExpression(
+  const expressionNew = useCollectionActivitiesExpression(
     collectionAddress,
     search
   );
@@ -147,6 +151,9 @@ export const useCollectionActivities = (
     collectionAddress,
     search
   );
+  const expression =
+    chainId === INITIATION_CHAIN_ID ? expressionNew : expressionOld;
+
   return useQuery<Activity[]>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES,
@@ -155,7 +162,6 @@ export const useCollectionActivities = (
       offset,
       pageSize,
       expression,
-      expressionOld,
     ],
     async () =>
       chainId === INITIATION_CHAIN_ID
@@ -169,7 +175,7 @@ export const useCollectionActivities = (
             chainConfig.indexer,
             pageSize,
             offset,
-            expressionOld
+            expression
           ),
     {
       retry: 1,

@@ -1,16 +1,15 @@
 import { gql } from "graphql-request";
 
 export const getCollectionsQueryOld = gql`
-  query getCollectionsQuery($offset: Int!, $pageSize: Int!, $search: String) {
+  query getCollectionsQuery(
+    $offset: Int!
+    $pageSize: Int!
+    $expression: collections_bool_exp!
+  ) {
     collections(
       limit: $pageSize
       offset: $offset
-      where: {
-        _or: [
-          { name: { _iregex: $search } }
-          { vm_address: { vm_address: { _eq: $search } } }
-        ]
-      }
+      where: $expression
       order_by: { name: asc }
     ) {
       name
@@ -23,7 +22,7 @@ export const getCollectionsQueryOld = gql`
         vm_address
       }
     }
-    collections_aggregate(where: { name: { _iregex: $search } }) {
+    collections_aggregate(where: $expression) {
       aggregate {
         count
       }
