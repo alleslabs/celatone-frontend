@@ -3,19 +3,22 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { ModuleSourceCode } from "lib/components/module";
 import type { ModuleVerificationInternal } from "lib/services/types";
-import type { ModuleData, Nullable, Option } from "lib/types";
+import type {
+  IndexedModule,
+  ModulePublishInfo,
+  Nullish,
+  Option,
+} from "lib/types";
 
 import { ModuleInfoBody } from "./ModuleInfoBody";
 
 export interface ModuleInfoProps {
-  verificationData: Option<Nullable<ModuleVerificationInternal>>;
-  moduleData: Partial<ModuleData>;
+  indexedModule: IndexedModule;
+  modulePublishInfo: Option<ModulePublishInfo>;
+  verificationData: Nullish<ModuleVerificationInternal>;
 }
 
-export const ModuleInfo = ({
-  verificationData,
-  moduleData,
-}: ModuleInfoProps) => (
+export const ModuleInfo = ({ verificationData, ...props }: ModuleInfoProps) => (
   <Flex flexDirection="column" gap={4}>
     <Flex justifyContent="space-between" alignItems="center" w="full">
       <Heading as="h6" variant="h6" fontWeight={600}>
@@ -31,7 +34,7 @@ export const ModuleInfo = ({
         </Flex>
       )}
     </Flex>
-    <ModuleInfoBody moduleData={moduleData} />
+    <ModuleInfoBody {...props} />
     <ModuleSourceCode sourceCode={verificationData?.source} />
   </Flex>
 );
