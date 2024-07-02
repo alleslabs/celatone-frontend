@@ -86,6 +86,9 @@ dependencies:
   '@graphql-typed-document-node/core':
     specifier: ^3.2.0
     version: 3.2.0(graphql@16.8.1)
+  '@hookform/resolvers':
+    specifier: ^3.6.0
+    version: 3.6.0(react-hook-form@7.49.3)
   '@initia/initia.js':
     specifier: 0.2.5
     version: 0.2.5
@@ -4938,6 +4941,14 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.8.1
+    dev: false
+
+  /@hookform/resolvers@3.6.0(react-hook-form@7.49.3):
+    resolution: {integrity: sha512-UBcpyOX3+RR+dNnqBd0lchXpoL8p4xC21XP8H6Meb8uve5Br1GCnmg0PcBoKKqPKgGu9GHQ/oygcmPrQhetwqw==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.49.3(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:

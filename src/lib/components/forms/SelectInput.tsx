@@ -36,6 +36,7 @@ interface SelectInputProps<T extends string> {
   popoverBgColor?: string;
   size?: string | object;
   disableMaxH?: boolean;
+  isRequired?: boolean;
 }
 
 interface SelectItemProps {
@@ -73,6 +74,7 @@ export const SelectInput = <T extends string>({
   popoverBgColor = "gray.900",
   size = "lg",
   disableMaxH = false,
+  isRequired,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -116,6 +118,12 @@ export const SelectInput = <T extends string>({
               zIndex: 2,
               bg: labelBgColor,
               top: -2,
+
+              "::after": {
+                content: isRequired ? '"* (Required)"' : '""',
+                color: "error.main",
+                ml: 1,
+              },
             },
           }}
         >

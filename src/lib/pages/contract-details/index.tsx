@@ -6,6 +6,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -25,6 +26,7 @@ import { DelegationsSection } from "lib/components/delegations";
 import { CustomIcon } from "lib/components/icon";
 import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
+import { VerifyPublishCodeModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
@@ -57,6 +59,7 @@ const ContractDetailsBody = observer(
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
     const gov = useGovConfig({ shouldRedirect: false });
+    const { isOpen, onClose, onOpen } = useDisclosure();
 
     // ------------------------------------------//
     // ------------------QUERIES-----------------//
@@ -107,6 +110,13 @@ const ContractDetailsBody = observer(
 
     return (
       <>
+        <VerifyPublishCodeModal
+          isOpen={isOpen}
+          onClose={onClose}
+          codeId={contract.codeId.toString()}
+          codeHash={contract.codeHash}
+          contractAddress={contractAddress}
+        />
         <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />
         <ContractTop
           contractAddress={contractAddress}
@@ -162,6 +172,9 @@ const ContractDetailsBody = observer(
                       contractLocalInfo={contractLocalInfo}
                     />
                   )}
+                  <Flex>
+                    <Button onClick={onOpen}>Verfiy Code</Button>
+                  </Flex>
                   <CommandSection
                     contractAddress={contractAddress}
                     codeHash={contract.codeHash}

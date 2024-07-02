@@ -69,6 +69,7 @@
     "@emotion/styled": "^11.11.0",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@hookform/resolvers": "^3.6.0",
     "@initia/initia.js": "0.2.5",
     "@initia/initia.proto": "0.2.0",
     "@initia/utils": "0.62.0",

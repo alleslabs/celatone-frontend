@@ -6,3 +6,4 @@ export * from "./ActionModal";
 export * from "./NoMobile";
 export * from "./RedoModal";
 export * from "./UnsupportedTokensModal";
+export * from "./verify-publish-code";
