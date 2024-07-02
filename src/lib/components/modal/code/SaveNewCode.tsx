@@ -10,9 +10,13 @@ import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
-import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
+import {
+  getNameAndDescriptionDefault,
+  getPermissionHelper,
+  isId,
+} from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
@@ -55,27 +59,25 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useLCDCodeInfo(codeId, {
+  const { refetch, isFetching, isRefetching } = useCodeLcd(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,
-    onSuccess(data) {
+    onSuccess: (data) => {
       const { message, messageColor } = getPermissionHelper(
         address,
-        data.code_info.instantiate_permission.permission,
-        data.code_info.instantiate_permission.address
-          ? [data.code_info.instantiate_permission.address]
-          : data.code_info.instantiate_permission.addresses
+        data.instantiatePermission,
+        data.permissionAddresses
       );
       setCodeIdStatus({
         state: "success",
-        message: `${message} (${data.code_info.instantiate_permission.permission})`,
+        message: `${message} (${data.instantiatePermission})`,
         messageColor,
       });
-      setUploader(data.code_info.creator);
+      setUploader(data.uploader);
       setUploaderStatus({ state: "success" });
     },
-    onError() {
+    onError: () => {
       setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
       setUploader("Not Found");
       setUploaderStatus({ state: "error" });
@@ -105,7 +107,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="bookmark" />,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
 
     reset();
@@ -134,7 +136,8 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
         });
       } else {
         const timer = setTimeout(() => {
-          refetch();
+          if (isId(codeId)) refetch();
+          else setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
         }, 500);
 
         return () => clearTimeout(timer);

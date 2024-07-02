@@ -19,8 +19,9 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { DecodeModuleQueryResponse } from "lib/services/move/moduleService";
+import { CelatoneSeo } from "lib/components/Seo";
+import { useTxBroadcast } from "lib/hooks";
+import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
 
@@ -208,6 +209,7 @@ export const PublishModule = ({
 
   return (
     <>
+      <CelatoneSeo pageName="Publish / Republish Modules" />
       <PageContainer p={0}>
         <Box minH="inherit" maxW="1440px" mx="auto">
           <Grid

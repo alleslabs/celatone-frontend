@@ -8,6 +8,7 @@ const INITIA_DECODER =
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "initiation-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "initiatestnet",
     prettyName: "Initia",
@@ -38,6 +39,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         version: "v1",
         hideOpenProposal: true,
+        disableVotingPeriodTally: true,
       },
       nft: {
         enabled: true,
@@ -55,6 +57,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     extra: {},
   },
   "minimove-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "minimovetestnet",
     prettyName: "Minimove",
@@ -102,6 +105,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "miniwasm-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "miniwasmtestnet",
     prettyName: "Miniwasm",
@@ -148,11 +152,12 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "tomcat-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "blackwingtestnet",
     prettyName: "Blackwing",
-    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
-    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ue1-prod.newmetric.xyz",
+    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
     indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
@@ -195,6 +200,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "init-ai-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "initaitestnet",
     prettyName: "INIT AI",
@@ -242,6 +248,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "burrito-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "noontestnet",
     prettyName: "Noon",
@@ -289,6 +296,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "birdee-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "tucanatestnet",
     prettyName: "Tucana",
@@ -335,6 +343,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "landlord-1": {
+    tier: "full",
     chain: "initia",
     registryChainName: "civitiatestnet",
     prettyName: "Civitia",

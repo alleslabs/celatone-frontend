@@ -1,12 +1,14 @@
-import type { ThemeConfig } from "./types";
+/* eslint-disable sonarjs/no-duplicate-string */
+import type { ComponentConfig, ThemeConfig } from "./types";
+import { generateTheme } from "./utils";
 
-export const INITIA_THEME: ThemeConfig = {
+const INITIA_BASE_THEME: ThemeConfig = {
   branding: {
     logo: "https://assets.alleslabs.dev/integrations/initia/logo.png",
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
     seo: {
       appName: "Initia",
-      title: "Initia Explorer | Powered by Celatone",
+      title: "Initia Scan powered by Celatone",
       description:
         "Explore Initia's layered ecosystem effortlessly, bridging Web2 to Web3, while delving into sovereign applications.",
       image: "https://assets.alleslabs.dev/integrations/initia/cover.jpg",
@@ -16,20 +18,7 @@ export const INITIA_THEME: ThemeConfig = {
       },
     },
   },
-  fonts: {
-    heading: {
-      url: "/font/pilatwide.css",
-      name: "Pilat Wide, serif",
-    },
-    body: {
-      url: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap",
-      name: "Manrope, sans-serif",
-    },
-  },
   colors: {
-    gradient: {
-      main: "linear(to-tr, #15AFF8, #5FC1EE)",
-    },
     error: {
       main: "#FF666E",
       light: "#FF8086",
@@ -90,37 +79,6 @@ export const INITIA_THEME: ThemeConfig = {
       900: "#151617",
     },
   },
-  tag: {
-    signer: {
-      bg: "primary.darker",
-      color: "text.main",
-    },
-    related: {
-      bg: "accent.darker",
-      color: "inherit",
-    },
-  },
-  button: {
-    primary: {
-      background: "#F5F5F5",
-      color: "#151617",
-      disabledBackground: "#A1A6AA",
-      disabledColor: "#151617",
-      hoverBackground: "#B7B7B7",
-      activeBackground: "#B7B7B7",
-    },
-  },
-  borderRadius: {
-    default: "4px",
-    iconButton: "36px",
-    viewButton: "0 0 8px 8px",
-    uploadButton: "50%",
-    tag: "full",
-    badge: "16px",
-    radio: "12px",
-    indicator: "2px",
-    stepper: "full",
-  },
   jsonTheme: "monokai",
   illustration: {
     "404":
@@ -144,3 +102,82 @@ export const INITIA_THEME: ThemeConfig = {
     twitter: "https://twitter.com/initiaFND",
   },
 };
+
+const INITIA_COMPONENT_CONFIG: ComponentConfig = {
+  button: {
+    primary: {
+      background: "gray.100",
+      color: "gray.900",
+      disabledBackground: "gray.500",
+      disabledColor: "gray.900",
+      hoverBackground: "gray.400",
+      activeBackground: "gray.400",
+    },
+    outlinePrimary: {
+      borderColor: "primary.light",
+      color: "primary.light",
+      disabledBorderColor: "gray.700",
+      disabledColor: "gray.600",
+      hoverBackground: "primary.background",
+      activeBackground: "transparent",
+    },
+  },
+  proposalChip: {
+    depositPeriod: {
+      bg: "secondary.darker",
+    },
+    votingPeriod: {
+      bg: "primary.dark",
+    },
+    failed: {
+      bg: "error.dark",
+    },
+    rejected: {
+      bg: "error.dark",
+    },
+    passed: {
+      bg: "success.dark",
+    },
+    cancelled: {
+      bg: "error.background",
+    },
+    depositFailed: {
+      bg: "gray.700",
+    },
+  },
+  stepper: {
+    active: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+    disabled: {
+      bg: "gray.500",
+      color: "background.main",
+    },
+  },
+  tag: {
+    signer: {
+      bg: "primary.darker",
+      color: "text.main",
+    },
+    related: {
+      bg: "accent.darker",
+      color: "text.main",
+    },
+  },
+  voteParticipations: {
+    voted: "primary.main",
+    votedAbstain: "primary.darker",
+    didNotVote: "gray.700",
+  },
+  recentBlocks: {
+    signed: "primary.darker",
+    proposed: "primary.lighter",
+    missed: "error.dark",
+  },
+};
+
+export const INITIA_THEME = generateTheme(
+  INITIA_BASE_THEME,
+  INITIA_COMPONENT_CONFIG
+);

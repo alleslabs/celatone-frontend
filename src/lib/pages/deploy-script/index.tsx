@@ -13,9 +13,10 @@ import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
 
@@ -135,6 +136,7 @@ export const DeployScript = () => {
 
   return (
     <>
+      <CelatoneSeo pageName="Deploy Script" />
       <WasmPageContainer>
         <Heading as="h4" variant="h4">
           Script

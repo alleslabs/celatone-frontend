@@ -21,7 +21,7 @@ import {
 import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useContractQueryMsgs } from "lib/services/contractService";
+import { useContractQueryMsgsLcd } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 
@@ -68,8 +68,9 @@ const RenderCmds = ({
             cmd={cmd}
             onClickCmd={() => {
               navigate({
-                pathname: `/${type}`,
+                pathname: `/interact-contract`,
                 query: {
+                  selectedType: type,
                   contract: contractAddress,
                   msg: encode(jsonPrettify(msg)),
                 },
@@ -96,7 +97,7 @@ export const CommandSection = observer(
     const attached = Boolean(jsonSchema);
 
     const { isFetching: isQueryCmdsFetching, data: queryCmds = [] } =
-      useContractQueryMsgs(contractAddress);
+      useContractQueryMsgsLcd(contractAddress);
     const { isFetching: isExecuteCmdsFetching, execCmds } =
       useExecuteCmds(contractAddress);
 

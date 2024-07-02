@@ -17,6 +17,7 @@ import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 interface ContractsTableMobileCardProps {
   contractInfo: ContractInfo;
   onRowSelect: (contract: BechAddr32) => void;
+  showLastUpdate: boolean;
 }
 
 const InstantiatorRemark = ({
@@ -44,6 +45,7 @@ const InstantiatorRemark = ({
 export const ContractsTableMobileCard = ({
   contractInfo,
   onRowSelect,
+  showLastUpdate,
 }: ContractsTableMobileCardProps) => (
   <MobileCardTemplate
     onClick={() => onRowSelect(contractInfo.contractAddress)}
@@ -57,26 +59,28 @@ export const ContractsTableMobileCard = ({
       </Flex>
     }
     middleContent={
-      <Flex gap={3} direction="column" w="full">
-        <div>
-          <MobileLabel label="Contract Name" />
-          <Text
-            variant="body2"
-            maxW="full"
-            color="text.main"
-            wordBreak="break-all"
-          >
-            {contractInfo.name ?? contractInfo.label}
-          </Text>
-        </div>
-        <div>
-          <InstantiatorRemark remark={contractInfo.remark} />
-          <ContractInstantiatorCell
-            contractInfo={contractInfo}
-            isReadOnly={false}
-          />
-        </div>
-      </Flex>
+      showLastUpdate && (
+        <Flex gap={3} direction="column" w="full">
+          <div>
+            <MobileLabel label="Contract Name" />
+            <Text
+              variant="body2"
+              maxW="full"
+              color="text.main"
+              wordBreak="break-all"
+            >
+              {contractInfo.name ?? contractInfo.label}
+            </Text>
+          </div>
+          <div>
+            <InstantiatorRemark remark={contractInfo.remark} />
+            <ContractInstantiatorCell
+              contractInfo={contractInfo}
+              isReadOnly={false}
+            />
+          </div>
+        </Flex>
+      )
     }
     bottomContent={
       contractInfo.latestUpdated ? (

@@ -3,9 +3,10 @@ import type { DocumentContext } from "next/document";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import Script from "next/script";
 
-import { CURR_THEME } from "env";
+import { FALLBACK_THEME } from "config/theme";
 import Meta from "lib/components/Meta";
-import customTheme from "lib/styles/theme";
+import { config } from "lib/styles/theme/config";
+import { fontHrefs } from "lib/styles/theme/fonts";
 
 class MyDocument extends Document {
   static getInitialProps(ctx: DocumentContext) {
@@ -16,15 +17,18 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link href={CURR_THEME.fonts.body.url} rel="stylesheet" />
-          <link href={CURR_THEME.fonts.heading.url} rel="stylesheet" />
-          <link rel="shortcut icon" href={CURR_THEME.branding.favicon} />
+          <link href={fontHrefs.heading} rel="stylesheet" />
+          <link href={fontHrefs.body} rel="stylesheet" />
+          <link href={fontHrefs.mono} rel="stylesheet" />
+          <link
+            id="favicon"
+            rel="shortcut icon"
+            href={FALLBACK_THEME.branding.favicon}
+          />
           <Meta />
         </Head>
         <body>
-          <ColorModeScript
-            initialColorMode={customTheme.config?.initialColorMode}
-          />
+          <ColorModeScript initialColorMode={config.initialColorMode} />
           <Main />
           <NextScript />
           <Script

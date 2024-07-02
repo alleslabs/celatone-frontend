@@ -20,13 +20,12 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { CURR_THEME } from "env";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
-  useRPCEndpoint,
+  useLcdEndpoint,
+  useRpcEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
@@ -72,13 +71,14 @@ const MoveCodeSnippet = ({
   const {
     chain: { daemon_name: daemonName },
   } = useCurrentChain();
-  const lcdEndpoint = useLCDEndpoint();
-  const rpcEndpoint = useRPCEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
+  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
     chainConfig: {
       gas: { gasPrice },
     },
+    theme,
   } = useCelatoneApp();
 
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
@@ -290,7 +290,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                       <AceEditor
                         readOnly
                         mode={item.mode}
-                        theme={CURR_THEME.jsonTheme}
+                        theme={theme.jsonTheme}
                         fontSize="14px"
                         style={{
                           width: "100%",

@@ -1,3 +1,4 @@
 export * from "./BlockDetailsTop";
 export * from "./BlockInfo";
-export * from "./BlockTxsTable";
+export * from "./BlockTxsTableLite";
+export * from "./BlockTxsTableFull";

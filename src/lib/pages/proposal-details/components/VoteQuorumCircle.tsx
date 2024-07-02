@@ -1,4 +1,5 @@
 import { Circle, Heading, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 
 import type { Nullable, Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
@@ -27,7 +28,7 @@ export const VoteQuorumCircle = ({
     <Circle
       size={isCompact ? "64px" : "160px"}
       position="relative"
-      bgGradient={`conic(primary.main ${nonAbstainAngle}deg, secondary.main ${nonAbstainAngle}deg ${totalAngle}deg, gray.800 ${totalAngle}deg)`}
+      bgGradient={`conic(voteParticipations.voted ${nonAbstainAngle}deg, voteParticipations.votedAbstain ${nonAbstainAngle}deg ${totalAngle}deg, voteParticipations.didNotVote ${totalAngle}deg)`}
     >
       <Circle
         size={isCompact ? "64px" : "160px"}
@@ -64,7 +65,7 @@ export const VoteQuorumCircle = ({
           fontWeight={600}
           color={totalRatio ? "text.main" : "text.dark"}
         >
-          {totalRatio ? formatPrettyPercent(totalRatio, 1) : "N/A"}
+          {!isNull(totalRatio) ? formatPrettyPercent(totalRatio, 1) : "N/A"}
         </Heading>
       </Circle>
     </Circle>

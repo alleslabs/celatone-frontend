@@ -1,25 +1,23 @@
-import type { ChangeEvent } from "react";
-
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable, ViewMore } from "lib/components/table";
-import { useRelatedProposalsByModuleIdPagination } from "lib/services/proposalService";
-import type { Option } from "lib/types";
+import { useModuleRelatedProposals } from "lib/services/move/module";
+import type { HexAddr, Option } from "lib/types";
 
 interface ModuleRelatedProposalsTableProps {
-  moduleId: string;
+  vmAddress: HexAddr;
+  moduleName: string;
   scrollComponentId: string;
   relatedProposalsCount: Option<number>;
-  refetchCount: () => void;
   onViewMore?: () => void;
 }
 
 export const ModuleRelatedProposalsTable = ({
-  moduleId,
+  vmAddress,
+  moduleName,
   scrollComponentId,
   relatedProposalsCount,
-  refetchCount,
   onViewMore,
 }: ModuleRelatedProposalsTableProps) => {
   const {
@@ -29,6 +27,7 @@ export const ModuleRelatedProposalsTable = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
     total: relatedProposalsCount,
     initialState: {
@@ -42,28 +41,20 @@ export const ModuleRelatedProposalsTable = ({
     data: relatedProposals,
     isLoading,
     error,
-  } = useRelatedProposalsByModuleIdPagination(
-    moduleId,
+  } = useModuleRelatedProposals(
+    vmAddress,
+    moduleName,
+    onViewMore ? 5 : pageSize,
     offset,
-    onViewMore ? 5 : pageSize
+    {
+      onSuccess: (data) => setTotalData(data.total),
+    }
   );
-
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
 
   return (
     <>
       <ProposalsTable
-        proposals={relatedProposals}
+        proposals={relatedProposals?.items}
         isLoading={isLoading}
         emptyState={
           error ? (
@@ -87,8 +78,12 @@ export const ModuleRelatedProposalsTable = ({
                 totalData={relatedProposalsCount}
                 scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
               />
             ))}
     </>

@@ -2,12 +2,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { TxsTable } from "./components/TxsTable";
 
 const Txs = () => {
+  useTierConfig({ minTier: "full" });
+
   const router = useRouter();
 
   useEffect(() => {
@@ -16,6 +20,7 @@ const Txs = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Transactions" />
       <PageHeader
         title="Transactions"
         subtitle="This page displays all transactions on this network sorted by

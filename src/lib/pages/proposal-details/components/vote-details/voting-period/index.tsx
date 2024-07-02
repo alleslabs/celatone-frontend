@@ -11,11 +11,13 @@ import { isNull } from "lodash";
 import type { ReactNode } from "react";
 
 import type { VoteDetailsProps } from "..";
+import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
-import { useProposalAnswerCounts } from "lib/services/proposalService";
+import { useProposalAnswerCounts } from "lib/services/proposal";
+import { ProposalStatus } from "lib/types";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
 
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
@@ -51,10 +53,17 @@ const scrollComponentId = "voting-period";
 
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
+  const isFullTier = useTierConfig() === "full";
+  const gov = useGovConfig({ shouldRedirect: false });
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
+
   const validatorVoteDisclosure = useDisclosure();
   const allVoteDisclosure = useDisclosure();
 
-  const { data: answers } = useProposalAnswerCounts(proposalData.id);
+  const { data: answers } = useProposalAnswerCounts(
+    proposalData.id,
+    isFullTier
+  );
 
   const isProposalResolved = !isNull(proposalData.resolvedHeight);
 
@@ -106,87 +115,96 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         transition="all 0.25s ease-in-out"
         gap={4}
       >
-        {/* Voting Participations */}
-        <ContentContainer transparent={isMobile}>
-          <VotingQuorum proposalData={proposalData} {...props} />
-        </ContentContainer>
-        {/* Voting Results */}
-        <ContentContainer transparent={isMobile}>
-          <VotingThreshold proposalData={proposalData} {...props} />
-        </ContentContainer>
-        <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
-          {/* Validator Votes */}
-          <GridItem>
-            <ContentContainer>
-              <Flex alignItems="center" justifyContent="space-between">
-                <TableTitle
-                  title="Validator Votes"
-                  mb={0}
-                  count={answers?.validator.totalValidators}
-                />
-                <Button
-                  variant="ghost-primary"
-                  onClick={() => toggleDisclosure("validator")}
-                  rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                  isDisabled={!answers?.validator.totalValidators}
-                >
-                  {isMobile ? "View" : "View Details"}
-                </Button>
-              </Flex>
-              {isProposalResolved && (
-                <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
-                  <CustomIcon
-                    name="alert-circle-solid"
-                    boxSize={4}
-                    color="secondary.main"
+        {proposalData.status === ProposalStatus.VOTING_PERIOD &&
+        disableVotingPeriodTally ? (
+          <NoVotingPeriodTallyAlert />
+        ) : (
+          <>
+            {/* Voting Participations */}
+            <ContentContainer transparent={isMobile}>
+              <VotingQuorum proposalData={proposalData} {...props} />
+            </ContentContainer>
+            {/* Voting Results */}
+            <ContentContainer transparent={isMobile}>
+              <VotingThreshold proposalData={proposalData} {...props} />
+            </ContentContainer>
+          </>
+        )}
+        {isFullTier && (
+          <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
+            {/* Validator Votes */}
+            <GridItem>
+              <ContentContainer>
+                <Flex alignItems="center" justifyContent="space-between">
+                  <TableTitle
+                    title="Validator Votes"
+                    mb={0}
+                    count={answers?.validator.totalValidators}
                   />
-                  <AlertDescription>
-                    Please note that the displayed ranking is in real-time and
-                    may not accurately reflect the final vote results when the
-                    voting period ends.
-                  </AlertDescription>
-                </Alert>
-              )}
-              <ValidatorVotesTable
-                id={proposalData.id}
-                answers={answers?.validator}
-                fullVersion={false}
-                isProposalResolved={isProposalResolved}
-                onViewMore={
-                  isMobile ? () => toggleDisclosure("validator") : undefined
-                }
-              />
-            </ContentContainer>
-          </GridItem>
-          {/* Recent Votes */}
-          <GridItem>
-            <ContentContainer>
-              <Flex alignItems="center" justifyContent="space-between">
-                <TableTitle
-                  title="Recent Votes"
-                  mb={0}
-                  count={answers?.all.total}
+                  <Button
+                    variant="ghost-primary"
+                    onClick={() => toggleDisclosure("validator")}
+                    rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                    isDisabled={!answers?.validator.totalValidators}
+                  >
+                    {isMobile ? "View" : "View Details"}
+                  </Button>
+                </Flex>
+                {isProposalResolved && (
+                  <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
+                    <CustomIcon
+                      name="alert-circle-solid"
+                      boxSize={4}
+                      color="secondary.main"
+                    />
+                    <AlertDescription>
+                      Please note that the displayed ranking is in real-time and
+                      may not accurately reflect the final vote results when the
+                      voting period ends.
+                    </AlertDescription>
+                  </Alert>
+                )}
+                <ValidatorVotesTable
+                  id={proposalData.id}
+                  answers={answers?.validator}
+                  fullVersion={false}
+                  isProposalResolved={isProposalResolved}
+                  onViewMore={
+                    isMobile ? () => toggleDisclosure("validator") : undefined
+                  }
                 />
-                <Button
-                  variant="ghost-primary"
-                  onClick={() => toggleDisclosure("all")}
-                  rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                  isDisabled={!answers?.all.total}
-                >
-                  {isMobile ? "View" : "View Details"}
-                </Button>
-              </Flex>
-              <ProposalVotesTable
-                id={proposalData.id}
-                answers={answers?.all}
-                fullVersion={false}
-                onViewMore={
-                  isMobile ? () => toggleDisclosure("all") : undefined
-                }
-              />
-            </ContentContainer>
-          </GridItem>
-        </Grid>
+              </ContentContainer>
+            </GridItem>
+            {/* Recent Votes */}
+            <GridItem>
+              <ContentContainer>
+                <Flex alignItems="center" justifyContent="space-between">
+                  <TableTitle
+                    title="Recent Votes"
+                    mb={0}
+                    count={answers?.all.total}
+                  />
+                  <Button
+                    variant="ghost-primary"
+                    onClick={() => toggleDisclosure("all")}
+                    rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+                    isDisabled={!answers?.all.total}
+                  >
+                    {isMobile ? "View" : "View Details"}
+                  </Button>
+                </Flex>
+                <ProposalVotesTable
+                  id={proposalData.id}
+                  answers={answers?.all}
+                  fullVersion={false}
+                  onViewMore={
+                    isMobile ? () => toggleDisclosure("all") : undefined
+                  }
+                />
+              </ContentContainer>
+            </GridItem>
+          </Grid>
+        )}
       </Flex>
       <ValidatorVotesPanel
         answers={answers?.validator}

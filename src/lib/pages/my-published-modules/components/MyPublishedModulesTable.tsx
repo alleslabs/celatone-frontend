@@ -8,38 +8,26 @@ import {
   ErrorFetching,
 } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
-import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useModulesByAddress } from "lib/services/move/moduleService";
+import { useModulesByAddress } from "lib/services/move/module";
+import type { ModuleInfo, Option } from "lib/types";
 
 export const MyPublishedModulesTable = () => {
   const [keyword, setKeyword] = useState("");
   const { address } = useCurrentChain();
 
   const {
-    data: modulesData,
+    data,
     isFetching: isModulesLoading,
     error,
-  } = useModulesByAddress(address);
+  } = useModulesByAddress({ address });
 
-  const formatAddresses = useFormatAddresses();
-  const mappedModules = modulesData?.map((module) => {
-    return {
-      address: formatAddresses(module.address).address,
-      name: module.moduleName,
-      functions: {
-        view: module.viewFunctions.length,
-        execute: module.executeFunctions.length,
-      },
-    };
-  });
+  const filteredPublishedModules: Option<ModuleInfo[]> = useMemo(() => {
+    if (!keyword) return data?.items;
 
-  const filteredPublishedModules = useMemo(() => {
-    if (!keyword) return mappedModules;
-
-    return mappedModules?.filter((module) =>
-      module.name?.toLowerCase().includes(keyword.toLowerCase())
+    return data?.items.filter((module) =>
+      module.moduleName?.toLowerCase().includes(keyword.toLowerCase())
     );
-  }, [keyword, mappedModules]);
+  }, [keyword, data?.items]);
 
   const emptyState = () => {
     if (error) return <ErrorFetching dataName="published modules" />;

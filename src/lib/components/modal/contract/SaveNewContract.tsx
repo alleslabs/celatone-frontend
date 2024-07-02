@@ -13,7 +13,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import { useContractDetailByContractAddress } from "lib/services/contractService";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32, LVPair } from "lib/types";
 import {
   formatSlugName,
@@ -88,15 +88,14 @@ export function SaveNewContractModal({
     });
   };
 
-  const { refetch } = useContractDetailByContractAddress(
-    contractAddressState as BechAddr32,
-    (data) => {
+  const { refetch } = useContractData(contractAddressState as BechAddr32, {
+    onSuccess: (data) => {
       const contractLocalInfo = getContractLocalInfo(contractAddressState);
       reset({
         contractAddress: contractAddressState,
-        instantiator: data.instantiator,
-        label: data.label,
-        name: contractLocalInfo?.name ?? data.label,
+        instantiator: data.contract.instantiator,
+        label: data.contract.label,
+        name: contractLocalInfo?.name ?? data.contract.label,
         description: getNameAndDescriptionDefault(
           contractLocalInfo?.description
         ),
@@ -113,14 +112,14 @@ export function SaveNewContractModal({
         message: "Valid Contract Address",
       });
     },
-    (err) => {
+    onError: (err) => {
       resetForm(false);
       setStatus({
         state: "error",
-        message: err.message,
+        message: (err as Error).message,
       });
-    }
-  );
+    },
+  });
 
   useEffect(() => {
     if (contractAddressState.trim().length === 0) {

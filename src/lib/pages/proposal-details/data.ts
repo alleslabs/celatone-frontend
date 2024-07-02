@@ -1,80 +1,59 @@
-import { useMobile } from "lib/app-provider";
+import { useGovConfig, useTierConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   useProposalData,
-  useProposalParams,
-} from "lib/services/proposalService";
-import type { Nullable, Option, ProposalData, ProposalParams } from "lib/types";
-import { coinToTokenWithValue, compareTokenWithValues } from "lib/utils";
-
-export const useDerivedProposalParams = (): {
-  data: Option<ProposalParams>;
-  isLoading: boolean;
-} => {
-  const isMobile = useMobile();
-  const { data, isLoading } = useProposalParams();
-  const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
-    withPrices: !isMobile,
-  });
-  const { data: movePoolInfos, isLoading: isMovePoolInfosLoading } =
-    useMovePoolInfos({ withPrices: !isMobile });
-
-  if (isLoading || isAssetInfosLoading || isMovePoolInfosLoading || !data)
-    return {
-      data: undefined,
-      isLoading: isLoading || isAssetInfosLoading || isMovePoolInfosLoading,
-    };
-
-  return {
-    data: {
-      ...data,
-      minDeposit: data.minDeposit
-        .map((coin) =>
-          coinToTokenWithValue(
-            coin.denom,
-            coin.amount,
-            assetInfos,
-            movePoolInfos
-          )
-        )
-        .sort(compareTokenWithValues),
-      expeditedMinDeposit: data.expeditedMinDeposit
-        ?.map((coin) =>
-          coinToTokenWithValue(
-            coin.denom,
-            coin.amount,
-            assetInfos,
-            movePoolInfos
-          )
-        )
-        .sort(compareTokenWithValues),
-      emergencyMinDeposit: data.emergencyMinDeposit
-        ?.map((coin) =>
-          coinToTokenWithValue(
-            coin.denom,
-            coin.amount,
-            assetInfos,
-            movePoolInfos
-          )
-        )
-        .sort(compareTokenWithValues),
-    },
-    isLoading: false,
-  };
-};
+  useProposalDataLcd,
+  useProposalDepositsLcd,
+  useProposalVotesInfo,
+} from "lib/services/proposal";
+import type {
+  Nullable,
+  Option,
+  ProposalData,
+  ProposalVotesInfo,
+} from "lib/types";
+import { ProposalStatus } from "lib/types";
+import { coinToTokenWithValue } from "lib/utils";
 
 interface DerivedProposalDataResponse {
   data: Option<{
     info: Nullable<ProposalData>;
   }>;
   isLoading: boolean;
+  isDepositsLoading: boolean;
 }
 
 export const useDerivedProposalData = (
   id: number
 ): DerivedProposalDataResponse => {
-  const { data, isLoading } = useProposalData(id);
+  const isFullTier = useTierConfig() === "full";
+  const { data: dataApi, isLoading: isApiLoading } = useProposalData(
+    id,
+    isFullTier
+  );
+  const { data: dataLcd, isLoading: isLcdLoading } = useProposalDataLcd(
+    id,
+    !isFullTier
+  );
+  const { data: dataDepositsLcd, isLoading: isDepositsLcdLoading } =
+    useProposalDepositsLcd(id, !isFullTier);
+
+  const [data, isLoading, isDepositsLoading] = isFullTier
+    ? [dataApi, isApiLoading, isApiLoading]
+    : [
+        dataLcd
+          ? {
+              info: {
+                ...dataLcd,
+                proposalDeposits: dataDepositsLcd ?? [],
+              },
+            }
+          : undefined,
+        isLcdLoading,
+        isDepositsLcdLoading,
+      ];
+
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({
     withPrices: false,
   });
@@ -85,12 +64,15 @@ export const useDerivedProposalData = (
     return {
       data: undefined,
       isLoading: isLoading || isAssetInfosLoading || isMovePoolInfosLoading,
+      isDepositsLoading:
+        isDepositsLoading || isAssetInfosLoading || isMovePoolInfosLoading,
     };
 
   if (!data)
     return {
       data: undefined,
       isLoading: false,
+      isDepositsLoading: false,
     };
 
   if (!data.info)
@@ -99,6 +81,7 @@ export const useDerivedProposalData = (
         info: null,
       },
       isLoading: false,
+      isDepositsLoading: false,
     };
 
   return {
@@ -128,5 +111,39 @@ export const useDerivedProposalData = (
       },
     },
     isLoading: false,
+    isDepositsLoading,
+  };
+};
+
+interface DerivedProposalVotesInfoResponse {
+  data: Option<ProposalVotesInfo>;
+  isLoading: boolean;
+}
+export const useDerivedProposalVotesInfo = (
+  id: number,
+  proposalData: DerivedProposalDataResponse["data"],
+  isProposalDataLoading: boolean
+): DerivedProposalVotesInfoResponse => {
+  const gov = useGovConfig({ shouldRedirect: false });
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
+
+  const isVotingPeriod =
+    proposalData?.info?.status === ProposalStatus.VOTING_PERIOD;
+
+  const { data, isFetching } = useProposalVotesInfo(
+    id,
+    isVotingPeriod && !disableVotingPeriodTally
+  );
+
+  if (!isVotingPeriod) {
+    return {
+      data: proposalData?.info?.finalTallyResult,
+      isLoading: isProposalDataLoading,
+    };
+  }
+
+  return {
+    data,
+    isLoading: isFetching,
   };
 };

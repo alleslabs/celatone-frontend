@@ -1,4 +1,5 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 
 import { AmpEvent, track } from "lib/amplitude";
 import type { IconKeys } from "lib/components/icon";
@@ -7,7 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 interface InfoCardProps {
   title: string;
   icon: IconKeys;
-  content: number;
+  content?: number;
   onClick: () => void;
   isDisabled: boolean;
 }
@@ -47,9 +48,11 @@ export const InfoCard = ({
         <Text variant="body1" color="text.dark" fontWeight={600}>
           {title}
         </Text>
-        <Heading as="h6" variant="h6" fontWeight={600}>
-          {content}
-        </Heading>
+        {!isUndefined(content) && (
+          <Heading as="h6" variant="h6" fontWeight={600}>
+            {content}
+          </Heading>
+        )}
       </Flex>
     </Flex>
     <CustomIcon name="chevron-right" color="gray.600" />

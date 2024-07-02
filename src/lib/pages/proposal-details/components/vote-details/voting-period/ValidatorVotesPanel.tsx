@@ -3,7 +3,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
-import type { ProposalAnswerCountsResponse } from "lib/services/proposal";
+import type { ProposalAnswerCountsResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { ValidatorVotesTable } from "./validator-votes-table";

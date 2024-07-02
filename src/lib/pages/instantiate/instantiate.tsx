@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import type { RJSFValidationError } from "@rjsf/utils";
@@ -19,6 +19,7 @@ import {
   useFabricateFee,
   useInstantiateTx,
   useSimulateFeeQuery,
+  useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
@@ -41,14 +42,16 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
+import { FooterCTA } from "lib/components/layouts";
 import { CodeSelectSection } from "lib/components/select-code";
+import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import type { CodeIdInfoResponse } from "lib/services/code";
-import { useLCDCodeInfo } from "lib/services/codeService";
+import type { Code } from "lib/services/types";
+import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -60,7 +63,6 @@ import {
   resolvePermission,
 } from "lib/utils";
 
-import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
@@ -97,6 +99,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
+  const isFullTier = useTierConfig() === "full";
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -193,19 +196,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useLCDCodeInfo(codeId, {
+  const { refetch } = useCodeLcd(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,
-    onSuccess(data) {
-      const permission = data.code_info.instantiate_permission;
-      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+    onSuccess: (data) => {
+      setValue("codeHash", data.hash.toLowerCase());
       if (
         resolvePermission(
           address,
-          permission.permission,
-          permission.addresses,
-          permission.address
+          data.instantiatePermission,
+          data.permissionAddresses
         )
       )
         setStatus({ state: "success" });
@@ -217,7 +218,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         });
       }
     },
-    onError() {
+    onError: () => {
       setStatus({ state: "error", message: "This code ID does not exist" });
       setSimulateError("");
     },
@@ -328,7 +329,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
-        refetch();
+        if (isId(codeId)) refetch();
+        else setStatus({ state: "error", message: "Invalid Code ID" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -389,6 +391,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   return (
     <>
       <WasmPageContainer>
+        <CelatoneSeo pageName="Instantiate Contract" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
@@ -408,20 +411,27 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           subtitle="You need to connect your wallet to perform this action"
           mb={6}
         />
-        <CodeSelectSection
-          name="codeId"
-          control={control}
-          status={status}
-          error={formErrors.codeId?.message}
-          onCodeSelect={(code: string) => {
-            setValue("codeId", code);
-            resetMsgInputSchema();
-          }}
-          setCodeHash={(data: CodeIdInfoResponse) => {
-            setValue("codeHash", data.code_info.data_hash.toLowerCase());
-          }}
-          codeId={codeId}
-        />
+        <Box w="100%">
+          {!isFullTier && (
+            <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+              Code ID
+            </Heading>
+          )}
+          <CodeSelectSection
+            name="codeId"
+            control={control}
+            status={status}
+            error={formErrors.codeId?.message}
+            onCodeSelect={(code: string) => {
+              setValue("codeId", code);
+              resetMsgInputSchema();
+            }}
+            setCodeHash={(data: Code) =>
+              setValue("codeHash", data.hash.toLowerCase())
+            }
+            codeId={codeId}
+          />
+        </Box>
         <form style={{ width: "100%" }}>
           <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
             Label
@@ -529,10 +539,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           />
         </Flex>
       </WasmPageContainer>
-      <Footer
-        onInstantiate={proceed}
-        disabled={!enableInstantiate || !estimatedFee || isSimulating}
+      <FooterCTA
         loading={processing}
+        cancelButton={{
+          onClick: router.back,
+          leftIcon: <CustomIcon name="chevron-left" />,
+        }}
+        actionButton={{
+          isDisabled: !enableInstantiate || !estimatedFee || isSimulating,
+          onClick: proceed,
+        }}
+        actionLabel="Instantiate"
       />
     </>
   );

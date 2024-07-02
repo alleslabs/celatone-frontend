@@ -4,8 +4,10 @@ import { useInternalNavigate } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { ContractInteractionTabs } from "lib/types";
 import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -21,6 +23,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
     <WasmPageContainer>
+      <CelatoneSeo pageName="Instantiate Contract" />
       <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
         Instantiate Complete!
@@ -76,8 +79,11 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/execute",
-              query: { contract: txInfo.contractAddress },
+              pathname: "/interact-contract",
+              query: {
+                selectedType: ContractInteractionTabs.Execute,
+                contract: txInfo.contractAddress,
+              },
             })
           }
         >
@@ -88,8 +94,11 @@ const Completed = ({ txInfo }: CompletedProps) => {
           variant="outline-gray"
           onClick={() =>
             navigate({
-              pathname: "/query",
-              query: { contract: txInfo.contractAddress },
+              pathname: "/interact-contract",
+              query: {
+                selectedType: ContractInteractionTabs.Query,
+                contract: txInfo.contractAddress,
+              },
             })
           }
         >

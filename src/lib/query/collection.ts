@@ -1,21 +1,24 @@
 import { gql } from "graphql-request";
 
 export const getCollectionsQuery = gql`
-  query getCollectionsQuery($offset: Int!, $pageSize: Int!, $search: String) {
+  query getCollectionsQuery(
+    $offset: Int!
+    $pageSize: Int!
+    $expression: collections_bool_exp!
+  ) {
     collections(
       limit: $pageSize
       offset: $offset
-      where: { name: { _iregex: $search } }
+      where: $expression
       order_by: { name: asc }
     ) {
       name
       uri
       description
-      vm_address {
-        vm_address
-      }
+      id
+      creator
     }
-    collections_aggregate(where: { name: { _iregex: $search } }) {
+    collections_aggregate(where: $expression) {
       aggregate {
         count
       }
@@ -25,7 +28,7 @@ export const getCollectionsQuery = gql`
 
 export const getCollectionByCollectionAddressQuery = gql`
   query getCollectionByCollectionAddressQuery($vmAddress: String!) {
-    collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
+    collections(where: { id: { _eq: $vmAddress } }) {
       name
       uri
       description
@@ -42,40 +45,22 @@ export const getCollectionByCollectionAddressQuery = gql`
   }
 `;
 
-export const getCollectionTotalBurnedCountQuery = gql`
-  query getCollectionTotalBurnedCountQuery($vmAddress: String!) {
-    nfts_aggregate(
-      where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $vmAddress } }
-        }
-        is_burned: { _eq: true }
-      }
-    ) {
-      aggregate {
-        count
-      }
-    }
-  }
-`;
-
 export const getCollectionCreatorQuery = gql`
   query getCollectionCreatorQuery($vmAddress: String!) {
-    collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
-      vmAddressByCreator {
-        vm_address
+    collection_transactions(
+      where: { collection_id: { _eq: $vmAddress } }
+      limit: 1
+      order_by: { block_height: asc, transaction: { block_index: asc } }
+    ) {
+      block {
+        height
+        timestamp
       }
-      collection_transactions(
-        order_by: { block_height: asc }
-        where: { is_collection_create: { _eq: true } }
-      ) {
-        transaction {
-          hash
-          block {
-            height
-            timestamp
-          }
-        }
+      transaction {
+        hash
+      }
+      collection {
+        creator
       }
     }
   }
@@ -84,7 +69,7 @@ export const getCollectionCreatorQuery = gql`
 export const getCollectionActivitiesCountQuery = gql`
   query getCollectionActivitiesCountQuery($vmAddress: String!) {
     collection_transactions_aggregate(
-      where: { collection: { vm_address: { vm_address: { _eq: $vmAddress } } } }
+      where: { collection_id: { _eq: $vmAddress } }
     ) {
       aggregate {
         count
@@ -96,7 +81,7 @@ export const getCollectionActivitiesCountQuery = gql`
 export const getCollectionMutateEventsCountQuery = gql`
   query getCollectionMutateEventsCountQuery($vmAddress: String!) {
     collection_mutation_events_aggregate(
-      where: { collection: { vm_address: { vm_address: { _eq: $vmAddress } } } }
+      where: { collection_id: { _eq: $vmAddress } }
     ) {
       aggregate {
         count
@@ -108,11 +93,7 @@ export const getCollectionMutateEventsCountQuery = gql`
 export const getCollectionUniqueHoldersCountQuery = gql`
   query getCollectionUniqueHoldersCountQuery($vmAddress: String!) {
     nfts_aggregate(
-      where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $vmAddress } }
-        }
-      }
+      where: { collection: { _eq: $vmAddress } }
       distinct_on: owner
     ) {
       aggregate {
@@ -150,11 +131,9 @@ export const getCollectionActivitiesQuery = gql`
       is_nft_burn
       is_nft_mint
       is_nft_transfer
+      nft_id
       nft {
         token_id
-        vm_address {
-          vm_address
-        }
       }
       is_collection_create
     }
@@ -170,9 +149,7 @@ export const getCollectionMutateEventsQuery = gql`
     collection_mutation_events(
       limit: $pageSize
       offset: $offset
-      where: {
-        collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
-      }
+      where: { collection_id: { _eq: $collectionAddress } }
       order_by: { block_height: desc }
     ) {
       mutated_field_name
@@ -189,21 +166,14 @@ export const getCollectionMutateEventsQuery = gql`
 export const getCollectionsByAccountQuery = gql`
   query getCollectionsByAccountQuery($accountAddress: String!) {
     collections(
-      where: {
-        nfts: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }
-      }
+      where: { nfts: { owner: { _eq: $accountAddress } } }
       order_by: { name: asc }
     ) {
       name
       uri
-      vm_address {
-        vm_address
-      }
+      id
       nfts_aggregate(
-        where: {
-          vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-          is_burned: { _eq: false }
-        }
+        where: { owner: { _eq: $accountAddress }, is_burned: { _eq: false } }
       ) {
         aggregate {
           count

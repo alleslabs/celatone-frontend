@@ -2,12 +2,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { RecentBlocksTable } from "./components/RecentBlocksTable";
 
 const BlocksPage = () => {
+  useTierConfig({ minTier: "full" });
+
   const router = useRouter();
 
   useEffect(() => {
@@ -16,6 +20,7 @@ const BlocksPage = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Blocks" />
       <PageHeader
         title="Blocks"
         subtitle="This page displays all blocks on this network sorted by recency"

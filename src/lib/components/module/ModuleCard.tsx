@@ -5,9 +5,9 @@ import { useMemo } from "react";
 import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import { useVerifyModule } from "lib/services/move/moduleService";
-import type { BechAddr, Option } from "lib/types";
+import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
+import { useVerifyModule } from "lib/services/move/module";
+import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
 
@@ -16,6 +16,8 @@ interface ModuleCardProps {
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
+  setStep?: (step: ModuleInteractionMobileStep) => void;
+  readOnly?: boolean;
 }
 
 export const ModuleCard = ({
@@ -23,11 +25,22 @@ export const ModuleCard = ({
   module,
   selectedModule,
   setSelectedModule,
+  setStep,
+  readOnly = false,
 }: ModuleCardProps) => {
   const { data: isVerified } = useVerifyModule({
     address: selectedAddress,
     moduleName: module.moduleName,
   });
+
+  const handleModuleClick = (clickedModule: IndexedModule) => {
+    track(AmpEvent.USE_MODULE_CARD, {
+      viewCount: clickedModule.viewFunctions.length,
+      executeCount: clickedModule.executeFunctions.length,
+    });
+    setSelectedModule?.(clickedModule);
+    setStep?.(ModuleInteractionMobileStep.SelectFunction);
+  };
 
   const card = useMemo(
     () => (
@@ -40,19 +53,11 @@ export const ModuleCard = ({
         }
         p={4}
         alignItems="center"
-        cursor="pointer"
-        onClick={() => {
-          track(AmpEvent.USE_MODULE_CARD, {
-            viewCount: module.viewFunctions.length,
-            executeCount: module.executeFunctions.length,
-          });
-          setSelectedModule?.(module);
-        }}
+        cursor={readOnly ? "default" : "pointer"}
         gap={1}
         templateColumns="20px 1fr auto"
-        _hover={{
-          bg: "gray.700",
-        }}
+        onClick={() => (readOnly ? null : handleModuleClick(module))}
+        _hover={{ bg: readOnly ? "unset" : "gray.700" }}
         transition=".25s all ease-out"
       >
         <CustomIcon name="contract-address" color="primary.main" boxSize={3} />
@@ -85,7 +90,7 @@ export const ModuleCard = ({
     ]
   );
 
-  return setSelectedModule ? (
+  return setSelectedModule || readOnly ? (
     card
   ) : (
     <AppLink href={`/modules/${module.address}/${module.moduleName}`}>

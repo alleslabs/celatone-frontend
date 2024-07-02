@@ -2,15 +2,15 @@ import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { Dispatch, SetStateAction } from "react";
 
-import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
   useMoveConfig,
   usePublicProjectConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
-import { StorageKeys, UNDEFINED_ICON_LIST } from "lib/data";
+import { StorageKeys } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
@@ -21,8 +21,11 @@ import {
   getDeviceSubmenuWasm,
   getDevSubmenuMove,
   getDevSubmenuWasm,
+  getPublicProjectsSubmenu,
   getWalletSubSectionMove,
   getWalletSubSectionWasm,
+  getYourAccountSubmenu,
+  getYourAccountSubmenuLite,
 } from "./utils";
 
 interface NavbarProps {
@@ -36,78 +39,91 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-
+  const isFullTier = useTierConfig() === "full";
   const { address } = useCurrentChain();
 
-  const navMenu: MenuInfo[] = [
-    {
-      category: "Your Account",
-      slug: "your-account",
-      submenu: [
+  const navMenu: MenuInfo[] = isFullTier
+    ? [
         {
-          name: "Past Transactions",
-          slug: "/past-txs",
-          icon: "history" as IconKeys,
+          category: "Your Account",
+          slug: "your-account",
+          submenu: [...getYourAccountSubmenu(address)],
         },
-        {
-          name: "Your Account Details",
-          slug: `/accounts/${address}`,
-          icon: "admin" as IconKeys,
-          isDisable: !address,
-          tooltipText:
-            "You need to connect wallet to view your account details.",
-          trackEvent: () => track(AmpEvent.USE_TO_YOUR_ACCOUNT),
-        },
-      ],
-    },
-    ...(publicProject.enabled
-      ? [
-          {
-            category: "Public Projects",
-            slug: StorageKeys.ProjectSidebar,
-            submenu: [
-              ...getSavedPublicProjects().map((list) => ({
-                name: list.name,
-                slug: `/projects/${list.slug}`,
-                logo: list.logo || UNDEFINED_ICON_LIST[0],
-              })),
+        ...(publicProject.enabled
+          ? getPublicProjectsSubmenu(
+              publicProject.enabled,
+              getSavedPublicProjects()
+            )
+          : []),
+        ...(move.enabled || wasm.enabled
+          ? [
               {
-                name: "View All Projects",
-                slug: "/projects",
-                icon: "public-project" as IconKeys,
-              },
-            ],
-          },
-        ]
-      : []),
-    ...(move.enabled || wasm.enabled
-      ? [
-          {
-            category: "Developer Tools",
-            slug: StorageKeys.DevSidebar,
-            submenu: [
-              ...getDevSubmenuMove(move.enabled),
-              ...getDevSubmenuWasm(wasm.enabled),
-            ],
-            subSection: [
-              ...getWalletSubSectionMove(move.enabled),
-              ...getWalletSubSectionWasm(wasm.enabled),
-              {
-                category: "This Device",
+                category: "Developer Tools",
+                slug: StorageKeys.DevSidebar,
                 submenu: [
+                  ...getDevSubmenuMove(move.enabled),
+                  ...getDevSubmenuWasm(wasm.enabled),
+                ],
+                subSection: [
+                  ...getWalletSubSectionMove(move.enabled),
+                  ...getWalletSubSectionWasm(wasm.enabled),
                   {
-                    name: "Saved Accounts",
-                    slug: "/saved-accounts",
-                    icon: "admin" as IconKeys,
+                    category: "This Device",
+                    submenu: [
+                      {
+                        name: "Saved Accounts",
+                        slug: "/saved-accounts",
+                        icon: "admin" as IconKeys,
+                      },
+                      ...getDeviceSubmenuWasm(wasm.enabled),
+                    ],
                   },
-                  ...getDeviceSubmenuWasm(wasm.enabled),
                 ],
               },
-            ],
-          },
-        ]
-      : []),
-  ];
+            ]
+          : []),
+      ]
+    : [
+        {
+          category: "Your Account",
+          slug: "your-account",
+          submenu: [
+            ...getYourAccountSubmenu(address),
+            ...getYourAccountSubmenuLite(wasm.enabled, move.enabled),
+          ],
+        },
+        ...(publicProject.enabled
+          ? getPublicProjectsSubmenu(
+              publicProject.enabled,
+              getSavedPublicProjects()
+            )
+          : []),
+        ...(move.enabled || wasm.enabled
+          ? [
+              {
+                category: "Developer Tools",
+                slug: StorageKeys.DevSidebar,
+                submenu: [
+                  ...getDevSubmenuMove(move.enabled),
+                  ...getDevSubmenuWasm(wasm.enabled),
+                ],
+                subSection: [
+                  {
+                    category: "This Device",
+                    submenu: [
+                      {
+                        name: "Saved Accounts",
+                        slug: "/saved-accounts",
+                        icon: "admin" as IconKeys,
+                      },
+                      ...getDeviceSubmenuWasm(wasm.enabled),
+                    ],
+                  },
+                ],
+              },
+            ]
+          : []),
+      ];
 
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">

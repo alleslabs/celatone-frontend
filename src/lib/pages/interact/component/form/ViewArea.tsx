@@ -17,7 +17,7 @@ import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useFunctionView } from "lib/services/move/moduleService";
+import { useFunctionView } from "lib/services/move/module";
 import type {
   AbiFormData,
   ExposedFunction,
@@ -76,7 +76,7 @@ export const ViewArea = ({
     Object.values(abiData.typeArgs).some((v) => !v.length) || !!abiErrors.length
   );
   return (
-    <Grid templateColumns="1fr 1fr" gap={6}>
+    <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={6} w="full">
       <GridItem>
         <AbiForm
           fn={fn}

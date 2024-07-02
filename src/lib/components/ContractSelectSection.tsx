@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
-import type { ContractDetail } from "lib/services/contractService";
-import { useContractDetailByContractAddress } from "lib/services/contractService";
+import type { ContractData } from "lib/services/types";
+import { useContractData } from "lib/services/wasm/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
@@ -37,7 +37,7 @@ interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
   contractAddress: BechAddr32;
   onContractSelect: (contract: BechAddr32) => void;
-  successCallback?: (data: ContractDetail) => void;
+  successCallback?: (data: ContractData) => void;
 }
 
 const modeStyle = (mode: string) => {
@@ -157,20 +157,18 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const { refetch, isFetching } = useContractDetailByContractAddress(
-      contractAddress,
-      (data) => {
+    const { refetch, isFetching } = useContractData(contractAddress, {
+      enabled: !!contractAddress,
+      onSuccess: (data) => {
         successCallback?.(data);
         reset({
           isValid: true,
-          instantiator: data.instantiator,
-          label: data.label,
+          instantiator: data.contract.instantiator,
+          label: data.contract.label,
         });
       },
-      () => {
-        reset(defaultValues);
-      }
-    );
+      onError: () => reset(defaultValues),
+    });
 
     useEffect(() => {
       if (!contractLocalInfo) {

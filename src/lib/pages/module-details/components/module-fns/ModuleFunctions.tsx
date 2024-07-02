@@ -12,8 +12,8 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { ExposedFunction } from "lib/types";
+import { EmptyState } from "lib/components/state";
+import type { ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
@@ -48,16 +48,25 @@ const FunctionAccordions = ({
     index={expandedIndexes}
     onChange={updateExpandedIndexes}
   >
-    <Flex direction="column" gap={{ base: 2, md: 4 }}>
-      {fns.map((fn) => (
-        <FunctionDetailCard
-          exposedFn={fn}
-          key={fn.name}
-          address={address}
-          moduleName={moduleName}
-        />
-      ))}
-    </Flex>
+    {fns.length ? (
+      <Flex direction="column" gap={{ base: 2, md: 4 }}>
+        {fns.map((fn) => (
+          <FunctionDetailCard
+            exposedFn={fn}
+            key={fn.name}
+            address={address}
+            moduleName={moduleName}
+          />
+        ))}
+      </Flex>
+    ) : (
+      <EmptyState
+        my={0}
+        imageVariant="not-found"
+        message="No functions match your search keyword."
+        withBorder
+      />
+    )}
   </Accordion>
 );
 

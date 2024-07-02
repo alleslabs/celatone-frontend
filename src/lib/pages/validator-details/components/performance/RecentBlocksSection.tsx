@@ -6,7 +6,7 @@ import { useNavContext } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
-import { useValidatorUptime } from "lib/services/validatorService";
+import { useValidatorUptime } from "lib/services/validator";
 import { BlockVote } from "lib/types";
 import type { ValidatorAddr } from "lib/types";
 import { formatUTC } from "lib/utils";
@@ -18,14 +18,14 @@ interface BlockProps {
 
 const Block = forwardRef<HTMLDivElement, BlockProps>(
   ({ height, vote }, ref) => {
-    let backgroundColor = "primary.main";
+    let backgroundColor = "recentBlocks.signed";
     let voteLabel = "Signed";
 
     if (vote === BlockVote.PROPOSE) {
-      backgroundColor = "secondary.main";
+      backgroundColor = "recentBlocks.proposed";
       voteLabel = "Proposed";
     } else if (vote === BlockVote.ABSTAIN) {
-      backgroundColor = "error.dark";
+      backgroundColor = "recentBlocks.missed";
       voteLabel = "Missed";
     }
 

@@ -1,17 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState, ErrorFetching } from "lib/components/state";
-import {
-  MobileTitle,
-  ProposalsTable,
-  TableTitle,
-  ViewMore,
-} from "lib/components/table";
-import { useProposalsByAddress } from "lib/services/proposalService";
+import { ErrorFetching } from "lib/components/state";
+import { MobileTitle, ProposalsTable, ViewMore } from "lib/components/table";
+import { useProposalsByAddress } from "lib/services/proposal";
 import type { BechAddr, Option } from "lib/types";
 
 interface OpenedProposalsTableProps {
@@ -75,27 +72,24 @@ export const OpenedProposalsTable = ({
           onViewMore={onViewMore}
         />
       ) : (
-        <>
-          <TableTitle
-            title="Opened Proposals"
-            count={totalData}
-            mb={{ base: 0, md: 2 }}
-          />
+        <AccountSectionWrapper title="Opened Proposals" totalData={totalData}>
           <ProposalsTable
             proposals={proposals?.items}
             isLoading={isLoading}
             emptyState={
               !proposals ? (
-                <ErrorFetching dataName="proposals" />
-              ) : (
-                <EmptyState
-                  message="No proposals have been opened by this account before."
+                <ErrorFetching
+                  dataName="proposals"
                   withBorder
+                  my={2}
+                  hasBorderTop={false}
                 />
+              ) : (
+                <AccountDetailsEmptyState message="No proposals have been opened by this account before." />
               )
             }
           />
-        </>
+        </AccountSectionWrapper>
       )}
       {!!totalData &&
         (onViewMore

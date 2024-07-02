@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
   Heading,
   Text,
   useDisclosure,
@@ -10,16 +9,17 @@ import {
 import { useCallback } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useGetAddressType, useMobile } from "lib/app-provider";
+import { useGetAddressType, useMobile, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { JsonSchemaModal } from "lib/components/json-schema";
-import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { Code } from "lib/services/code";
+import type { Code } from "lib/services/types";
 import type { Option } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
+
+import { CodeInfoLabelText } from "./CodeInfoLabelText";
 
 interface CodeInfoSectionProps {
   code: Code;
@@ -33,16 +33,16 @@ const getMethodSpecificRender = (
   transaction: Option<Code["transaction"]>
 ): { methodRender: JSX.Element; storedBlockRender: JSX.Element } => {
   if (proposal) {
-    const { height, created, proposalId } = proposal;
+    const { id, height, created } = proposal;
     return {
       methodRender: (
-        <LabelText label="Proposal ID">
+        <CodeInfoLabelText label="Proposal ID">
           <ExplorerLink
             type="proposal_id"
-            value={proposalId.toString()}
+            value={id.toString()}
             showCopyOnHover
           />
-        </LabelText>
+        </CodeInfoLabelText>
       ),
       storedBlockRender:
         height && created ? (
@@ -69,9 +69,9 @@ const getMethodSpecificRender = (
     const { hash, height, created } = transaction;
     return {
       methodRender: (
-        <LabelText label="Upload Transaction">
+        <CodeInfoLabelText label="Upload Transaction">
           <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
-        </LabelText>
+        </CodeInfoLabelText>
       ),
       storedBlockRender:
         height && created ? (
@@ -100,7 +100,7 @@ const getMethodSpecificRender = (
    * @todo Add genesis conditioning when the view table is available
    */
   return {
-    methodRender: <LabelText label="Created on">N/A</LabelText>,
+    methodRender: <CodeInfoLabelText label="Created on">N/A</CodeInfoLabelText>,
     storedBlockRender: <Text variant="body2">N/A</Text>,
   };
 };
@@ -111,6 +111,8 @@ export const CodeInfoSection = ({
   attached,
   toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
+  const isFullTier = useTierConfig() === "full";
+
   const { isOpen, onClose, onOpen } = useDisclosure();
   const getAddressType = useGetAddressType();
   const {
@@ -145,17 +147,14 @@ export const CodeInfoSection = ({
       <Heading as="h6" variant="h6" mb={6}>
         Code Info
       </Heading>
-      <Grid
-        templateColumns={{
-          base: "1fr 1fr",
-          md: "repeat(6, 1fr)",
-        }}
-        columnGap={12}
-        rowGap={{ base: 6, md: 0 }}
+      <Flex
+        flexWrap={isMobile ? "wrap" : "nowrap"}
+        gap={isMobile ? 6 : 12}
+        minH="100px"
       >
-        <LabelText label="Network">{chainId}</LabelText>
-        <LabelText label="Uploaded by">
-          <Flex direction="column" gap={1}>
+        <CodeInfoLabelText label="Network">{chainId}</CodeInfoLabelText>
+        <CodeInfoLabelText label="Uploaded by">
+          <Flex direction="column" gap={1} w="150px">
             <ExplorerLink
               type={uploaderType}
               value={uploader}
@@ -165,9 +164,9 @@ export const CodeInfoSection = ({
               {getAddressTypeText(uploaderType)}
             </Text>
           </Flex>
-        </LabelText>
-        {methodRender}
-        <LabelText label="Instantiate Permission">
+        </CodeInfoLabelText>
+        {isFullTier && methodRender}
+        <CodeInfoLabelText label="Instantiate Permission">
           <Flex direction="column" gap={1}>
             <PermissionChip
               instantiatePermission={instantiatePermission}
@@ -178,17 +177,23 @@ export const CodeInfoSection = ({
               amptrackSection="code_details"
             />
           </Flex>
-        </LabelText>
-        <LabelText
-          label="Stored on block"
-          gridColumn={{ base: "1 / span 2", md: "5 / span 1" }}
-        >
-          <Flex direction="column" gap={1}>
-            {storedBlockRender}
-          </Flex>
-        </LabelText>
+        </CodeInfoLabelText>
+        {isFullTier && (
+          <CodeInfoLabelText
+            label="Stored on block"
+            gridColumn={{ base: "1 / span 2", md: "5 / span 1" }}
+          >
+            <Flex direction="column" gap={1}>
+              {storedBlockRender}
+            </Flex>
+          </CodeInfoLabelText>
+        )}
         {!isMobile && (
-          <LabelText label="JSON Schema">
+          <CodeInfoLabelText
+            label="JSON Schema"
+            w={{ base: "full" }}
+            maxW={{ md: "fit-content" }}
+          >
             <div>
               <Button
                 variant="outline-primary"
@@ -209,9 +214,9 @@ export const CodeInfoSection = ({
                 codeHash={hash}
               />
             </div>
-          </LabelText>
+          </CodeInfoLabelText>
         )}
-      </Grid>
+      </Flex>
     </Box>
   );
 };

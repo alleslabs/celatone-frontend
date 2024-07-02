@@ -6,6 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { feeFromStr } from "lib/utils";
@@ -23,6 +24,7 @@ export const PublishCompleted = ({
   resetState,
 }: PublishCompletedProps) => (
   <WasmPageContainer>
+    <CelatoneSeo pageName="Publish / Republish Modules" />
     <CustomIcon boxSize={8} color="success.main" name="check-circle-solid" />
     <Heading as="h4" variant="h4" mt={4} mb={2}>
       {modules.length} {plur("module", modules.length)} published!

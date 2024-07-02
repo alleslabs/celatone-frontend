@@ -11,6 +11,7 @@ interface TransactionsTableProps {
   transactions: Option<Transaction[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
+  showSuccess?: boolean;
   showRelations: boolean;
   showTimestamp?: boolean;
   showAction?: boolean;
@@ -20,6 +21,7 @@ export const TransactionsTable = ({
   transactions,
   isLoading,
   emptyState,
+  showSuccess = true,
   showRelations,
   showTimestamp = true,
   showAction = false,
@@ -29,11 +31,17 @@ export const TransactionsTable = ({
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
-  const templateColumns = `40px 190px 48px minmax(360px, 1fr) ${
-    showRelations ? "100px " : ""
-  }max(190px) ${showTimestamp ? "max(230px) " : ""}${
-    showAction ? "100px " : ""
-  }`;
+  const columns: string[] = [
+    "32px",
+    "190px",
+    ...(showSuccess ? ["48px"] : []),
+    "minmax(380px, 1fr)",
+    ...(showRelations ? ["90px"] : []),
+    "max(180px)",
+    ...(showTimestamp ? ["max(228px)"] : []),
+    ...(showAction ? ["100px"] : []),
+  ];
+  const templateColumns: string = columns.join(" ");
 
   return isMobile ? (
     <MobileTableContainer>
@@ -41,6 +49,7 @@ export const TransactionsTable = ({
         <TransactionsTableMobileCard
           key={transaction.hash}
           transaction={transaction}
+          showSuccess={showSuccess}
           showRelations={showRelations}
           showTimestamp={showTimestamp}
         />
@@ -50,6 +59,7 @@ export const TransactionsTable = ({
     <TableContainer>
       <TransactionsTableHeader
         templateColumns={templateColumns}
+        showSuccess={showSuccess}
         showRelations={showRelations}
         showTimestamp={showTimestamp}
         showAction={showAction}
@@ -59,6 +69,7 @@ export const TransactionsTable = ({
           key={transaction.hash}
           transaction={transaction}
           templateColumns={templateColumns}
+          showSuccess={showSuccess}
           showRelations={showRelations}
           showTimestamp={showTimestamp}
           showAction={showAction}

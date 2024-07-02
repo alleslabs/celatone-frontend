@@ -1,4 +1,3 @@
-import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
@@ -6,24 +5,24 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import { useModuleHistoriesByPagination } from "lib/services/move/moduleService";
-import type { Option } from "lib/types";
+import { useModuleHistories } from "lib/services/move/module";
+import type { HexAddr, Option } from "lib/types";
 
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
 interface ModuleHistoryTableProps {
-  moduleId: string;
+  vmAddress: HexAddr;
+  moduleName: string;
   historyCount: Option<number>;
   scrollComponentId?: string;
-  refetchCount: () => void;
   onViewMore?: () => void;
 }
 
 export const ModuleHistoryTable = ({
-  moduleId,
+  vmAddress,
+  moduleName,
   historyCount,
   scrollComponentId,
-  refetchCount,
   onViewMore,
 }: ModuleHistoryTableProps) => {
   const { currentChainId } = useCelatoneApp();
@@ -35,6 +34,7 @@ export const ModuleHistoryTable = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
     total: historyCount,
     initialState: {
@@ -48,23 +48,15 @@ export const ModuleHistoryTable = ({
     data: moduleHistories,
     isLoading,
     error,
-  } = useModuleHistoriesByPagination({
-    moduleId,
+  } = useModuleHistories(
+    vmAddress,
+    moduleName,
+    onViewMore ? 5 : pageSize,
     offset,
-    pageSize: onViewMore ? 5 : pageSize,
-  });
-
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
+  );
 
   useEffect(() => {
     if (!onViewMore) setPageSize(10);
@@ -74,10 +66,10 @@ export const ModuleHistoryTable = ({
   return (
     <>
       <PublishedEventsTable
-        moduleHistories={moduleHistories}
+        moduleHistories={moduleHistories?.items}
         isLoading={isLoading}
         emptyState={
-          !moduleId || error ? (
+          error ? (
             <ErrorFetching dataName="module published events history" />
           ) : (
             <EmptyState
@@ -98,8 +90,12 @@ export const ModuleHistoryTable = ({
                 offset={offset}
                 totalData={historyCount}
                 pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={(e) => {
+                  const size = Number(e.target.value);
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
                 scrollComponentId={scrollComponentId}
               />
             ))}

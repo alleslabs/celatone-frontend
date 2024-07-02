@@ -1,16 +1,15 @@
 import { Flex } from "@chakra-ui/react";
-import type { logs } from "@cosmjs/stargate";
+import type { Log } from "@cosmjs/stargate/build/logs";
 import { useState } from "react";
 
-import type { MsgBody } from "lib/services/tx";
-import type { Option } from "lib/types";
+import type { MessageResponse, Option } from "lib/types";
 
 import { TxMsgDetails } from "./TxMsgDetails";
 import { TxMsgExpand } from "./TxMsgExpand";
 
 export interface TxMsgData {
-  msgBody: MsgBody;
-  log: Option<logs.Log>;
+  msgBody: MessageResponse;
+  log: Option<Log>;
   isSingleMsg?: boolean;
 }
 

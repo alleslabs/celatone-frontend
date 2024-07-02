@@ -44,6 +44,7 @@ type GovConfig =
       hideOpenProposal?: boolean;
       disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
+      disableVotingPeriodTally?: boolean;
     }
   | {
       enabled: false;
@@ -52,6 +53,7 @@ type GovConfig =
 type NftConfig = { enabled: boolean };
 
 export interface ChainConfig {
+  tier: "lite" | "full";
   chain: string;
   registryChainName: string;
   prettyName: string;
@@ -78,7 +80,6 @@ export interface ChainConfig {
   };
   extra: {
     disableAnyOfAddresses?: boolean;
-    singleStakingDenom?: string;
     isValidatorExternalLink?: Nullable<string>;
   };
 }

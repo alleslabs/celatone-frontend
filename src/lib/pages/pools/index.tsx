@@ -12,9 +12,10 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { usePoolConfig } from "lib/app-provider";
+import { usePoolConfig, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import { PoolType } from "lib/types";
@@ -28,6 +29,7 @@ enum TabIndex {
 }
 
 export const PoolIndex = () => {
+  useTierConfig({ minTier: "full" });
   usePoolConfig({ shouldRedirect: true });
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
@@ -75,6 +77,7 @@ export const PoolIndex = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Pools" />
       <Flex justifyContent="space-between" alignItems="center">
         <Flex direction="column">
           <Heading variant="h5" as="h5" minH="36px">
@@ -86,7 +89,11 @@ export const PoolIndex = () => {
         </Flex>
         <UserDocsLink href="osmosis/pool-list" isButton />
       </Flex>
-      <Tabs index={Object.values(TabIndex).indexOf(tabIndex)}>
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tabIndex)}
+        lazyBehavior="keepMounted"
+        isLazy
+      >
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={supportedPoolCount ?? 0}

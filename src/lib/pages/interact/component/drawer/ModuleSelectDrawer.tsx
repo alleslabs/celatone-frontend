@@ -13,12 +13,11 @@ import { useEffect, useState } from "react";
 import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useAccountModules } from "lib/services/move/moduleService";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { BechAddr, HexAddr, Option } from "lib/types";
+import { useModulesByAddress } from "lib/services/move/module";
+import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
-import { ModuleSelectMainBody } from "./body";
+import { DrawerBodyDesktop } from "./body";
 import { ModuleSelector } from "./selector";
 import type {
   DisplayMode,
@@ -49,18 +48,10 @@ export const ModuleSelectDrawer = ({
   });
   const [modules, setModules] = useState<IndexedModule[]>();
 
-  const { refetch } = useAccountModules({
+  const { refetch } = useModulesByAddress({
     address: selectedAddress.hex,
-    moduleName: undefined,
-    functionName: undefined,
-    options: {
-      refetchOnWindowFocus: false,
-      enabled: false,
-      retry: false,
-      onSuccess: (data) => {
-        if (Array.isArray(data)) setModules(data);
-      },
-    },
+    enabled: false,
+    onSuccess: ({ items }) => setModules(items),
   });
 
   useEffect(() => {
@@ -109,7 +100,7 @@ export const ModuleSelectDrawer = ({
               closeModal={onClose}
             />
             {modules ? (
-              <ModuleSelectMainBody
+              <DrawerBodyDesktop
                 selectedAddress={selectedAddress}
                 mode={mode}
                 modules={modules}

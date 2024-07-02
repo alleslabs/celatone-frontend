@@ -21,11 +21,14 @@ export const NftList = ({
   showCollection,
 }: NftListProps) => {
   if (isLoading) return <Loading />;
-  if (!nfts) return <ErrorFetching dataName="NFTs" />;
+  if (!nfts)
+    return (
+      <ErrorFetching dataName="NFTs" withBorder my={2} hasBorderTop={false} />
+    );
   if (!nfts.length) return emptyState;
 
   return (
-    <SimpleGrid gap={6} columns={{ base: 2, lg: 3, xl: 5, "2xl": 6 }} mt={8}>
+    <SimpleGrid gap={6} columns={{ base: 2, lg: 3, xl: 5 }} mt={4} mb={8}>
       {nfts.map((nft) => (
         <NftCard
           key={nft.tokenId + nft.uri}

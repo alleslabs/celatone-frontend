@@ -5,8 +5,8 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move";
-import type { TxData } from "lib/services/txService";
+import { useMovePoolInfos } from "lib/services/move/poolService";
+import type { TxData } from "lib/services/types";
 import {
   coinToTokenWithValue,
   formatInteger,
@@ -34,7 +34,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
     withPrices: true,
   });
 
-  const feeCoin = txData.tx.auth_info.fee?.amount[0];
+  const feeCoin = txData.tx.authInfo?.fee?.amount[0];
   const feeToken = feeCoin
     ? coinToTokenWithValue(
         feeCoin.denom,
@@ -64,9 +64,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
         )}
       </LabelText>
       <LabelText label="Gas Used/Wanted">
-        {`${formatInteger(txData.gas_used)}/${formatInteger(
-          txData.gas_wanted
-        )}`}
+        {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
       <LabelText label="Memo">
         {txData.tx.body.memo || (

@@ -1,11 +1,13 @@
+import { useTierConfig } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
-import { useAccountTableCounts } from "lib/services/accountService";
-import { useBalances } from "lib/services/balanceService";
-import { useCodesByAddress } from "lib/services/codeService";
+import { useAccountTableCounts } from "lib/services/account";
+import { useBalances } from "lib/services/bank";
+import { useCodesByAddress } from "lib/services/wasm/code";
 import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,
-} from "lib/services/contractService";
+  useInstantiatedContractsByAddressLcd,
+} from "lib/services/wasm/contract";
 import type {
   BechAddr,
   CodeInfo,
@@ -34,12 +36,28 @@ interface AccountDetailsTableCounts {
 export const useAccountDetailsTableCounts = (
   address: BechAddr
 ): AccountDetailsTableCounts => {
+  const isFullTier = useTierConfig() === "full";
   const {
     data,
     refetch,
     isLoading: isLoadingAccountTableCounts,
-  } = useAccountTableCounts(address);
+  } = useAccountTableCounts(address, { enabled: isFullTier });
   const { data: balances, isLoading: isBalancesLoading } = useBalances(address);
+
+  if (!isFullTier) {
+    return {
+      tableCounts: {
+        codesCount: undefined,
+        contractsAdminCount: undefined,
+        contractsCount: undefined,
+        txsCount: undefined,
+        proposalsCount: undefined,
+        assetsCount: balances?.length,
+      },
+      isLoading: isBalancesLoading,
+      refetchCounts: refetch,
+    };
+  }
 
   return {
     tableCounts: {
@@ -84,6 +102,33 @@ export const useAccountContracts = (
       description: localInfo?.description,
       tags: localInfo?.tags,
       lists: localInfo?.lists,
+    };
+  });
+  return {
+    contracts: data,
+    isLoading,
+  };
+};
+
+export const useAccountContractsLcd = (address: BechAddr): AccountContracts => {
+  const { data: contracts, isLoading } = useInstantiatedContractsByAddressLcd(
+    address,
+    true
+  );
+  const { getContractLocalInfo } = useContractStore();
+  const data = contracts?.map<ContractInfo>((contract) => {
+    const localInfo = getContractLocalInfo(contract.contractAddress);
+
+    return {
+      ...contract,
+      name: localInfo?.name,
+      description: localInfo?.description,
+      tags: localInfo?.tags,
+      lists: localInfo?.lists,
+      admin: undefined,
+      latestUpdated: undefined,
+      latestUpdater: undefined,
+      remark: undefined,
     };
   });
   return {

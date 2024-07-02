@@ -7,8 +7,9 @@ import { useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { useTxData } from "lib/services/txService";
+import { useTxData } from "lib/services/tx";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
@@ -18,14 +19,10 @@ const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
   const isMobile = useMobile();
-  const {
-    data: txData,
-    isLoading: txLoading,
-    isFetching: txFetching,
-  } = useTxData(hashParam);
+  const { data, isLoading } = useTxData(hashParam);
 
   useEffect(() => {
-    if (router.isReady && !(txLoading && txFetching)) {
+    if (router.isReady && !isLoading) {
       const mapTxFailed = {
         true: "fail",
         false: "success",
@@ -33,28 +30,29 @@ const TxDetails = () => {
       };
       track(AmpEvent.TO_TRANSACTION_DETAILS, {
         tx_status:
-          mapTxFailed[String(txData?.isTxFailed) as keyof typeof mapTxFailed],
+          mapTxFailed[String(data?.isTxFailed) as keyof typeof mapTxFailed],
       });
     }
-  }, [router.isReady, txData, txLoading, txFetching]);
+  }, [router.isReady, data, isLoading]);
 
-  if ((txLoading && txFetching) || !hashParam) return <Loading withBorder />;
+  if (isLoading || !hashParam) return <Loading withBorder />;
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName={`TxHash – ${truncate(data?.txhash)}`} />
       <Breadcrumb
         items={[
           { text: "Transactions", href: "/txs" },
-          { text: truncate(txData?.txhash) },
+          { text: truncate(data?.txhash) },
         ]}
       />
-      {txData ? (
+      {data ? (
         <>
-          <TxHeader mt={2} txData={txData} />
-          {isMobile && <TxInfoMobile txData={txData} />}
+          <TxHeader mt={2} txData={data} />
+          {isMobile && <TxInfoMobile txData={data} />}
           <Flex my={{ base: 0, md: 12 }} justify="space-between">
-            {!isMobile && <TxInfo txData={txData} />}
-            <MessageSection txData={txData} />
+            {!isMobile && <TxInfo txData={data} />}
+            <MessageSection txData={data} />
           </Flex>
         </>
       ) : (

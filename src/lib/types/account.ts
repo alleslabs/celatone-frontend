@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export enum AccountType {
   BaseAccount = "BaseAccount",
   InterchainAccount = "InterchainAccount",
@@ -10,3 +12,15 @@ export enum AccountType {
   PermanentLockedAccount = "PermanentLockedAccount",
   BaseVestingAccount = "BaseVestingAccount",
 }
+
+export enum AccountTypeLcd {
+  BaseAccount = "/cosmos.auth.v1beta1.BaseAccount",
+  ModuleAccount = "/cosmos.auth.v1beta1.ModuleAccount",
+}
+
+export const zPubkey = z.object({
+  "@type": z.string(),
+  key: z.string(),
+});
+
+export type Pubkey = z.infer<typeof zPubkey>;

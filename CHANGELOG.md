@@ -43,6 +43,109 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.7.0
+
+### Features
+
+- [#968](https://github.com/alleslabs/celatone-frontend/pull/968) Add custom meta title for each page
+- [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
+- [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
+- [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint
+- [#970](https://github.com/alleslabs/celatone-frontend/pull/970) Support account details lite version
+- [#964](https://github.com/alleslabs/celatone-frontend/pull/964) Support migrate page lite version with LCD
+- [#966](https://github.com/alleslabs/celatone-frontend/pull/966) Support lite version for proposal details
+- [#958](https://github.com/alleslabs/celatone-frontend/pull/958) Support lite version for block index page
+- [#951](https://github.com/alleslabs/celatone-frontend/pull/951) Support contract details lite version with LCD endpoint
+- [#961](https://github.com/alleslabs/celatone-frontend/pull/961) Add and refactor proposal related lcd endpoints
+- [#952](https://github.com/alleslabs/celatone-frontend/pull/952) Support module details page lite version with LCD endpoint
+- [#940](https://github.com/alleslabs/celatone-frontend/pull/940) Support my published modules page lite version with LCD endpoint
+- [#956](https://github.com/alleslabs/celatone-frontend/pull/956) Add landlord-1 network
+- [#954](https://github.com/alleslabs/celatone-frontend/pull/954) Add gas token for initiation-1
+- [#949](https://github.com/alleslabs/celatone-frontend/pull/949) Support lite version for instantited by me
+- [#948](https://github.com/alleslabs/celatone-frontend/pull/948) Support lite version for past txs
+- [#923](https://github.com/alleslabs/celatone-frontend/pull/923) Add get txs by contact and account addr lcd
+- [#943](https://github.com/alleslabs/celatone-frontend/pull/943) Support lite version for params
+- [#939](https://github.com/alleslabs/celatone-frontend/pull/939) Migrate contract query msgs from api to LCD
+- [#910](https://github.com/alleslabs/celatone-frontend/pull/910) Support proposals page lite version with LCD endpoint
+- [#930](https://github.com/alleslabs/celatone-frontend/pull/930) Add validator details stats to support lite version
+- [#928](https://github.com/alleslabs/celatone-frontend/pull/928) Add validator details page lite version
+- [#933](https://github.com/alleslabs/celatone-frontend/pull/933) Support lite version for code details contract list
+- [#929](https://github.com/alleslabs/celatone-frontend/pull/929) Support lite version for code details page
+- [#925](https://github.com/alleslabs/celatone-frontend/pull/925) Move contracts service to new folder structure
+- [#926](https://github.com/alleslabs/celatone-frontend/pull/926) Add latest height query
+- [#924](https://github.com/alleslabs/celatone-frontend/pull/924) Add Initia initiation-1 & minitia networks
+- [#919](https://github.com/alleslabs/celatone-frontend/pull/919) Remove singleStakingDenom config and use from lcd instead
+- [#918](https://github.com/alleslabs/celatone-frontend/pull/918) Support lite version for delegation informations
+- [#916](https://github.com/alleslabs/celatone-frontend/pull/916) Support lite version balances
+- [#773](https://github.com/alleslabs/celatone-frontend/pull/773) Make theme switchable per network
+- [#906](https://github.com/alleslabs/celatone-frontend/pull/906) Support transaction details page lite version with LCD endpoint
+- [#898](https://github.com/alleslabs/celatone-frontend/pull/898) Adjust navigation and overview page for lite version
+- [#912](https://github.com/alleslabs/celatone-frontend/pull/912) Support lite version validator list
+- [#901](https://github.com/alleslabs/celatone-frontend/pull/901) Support lite version recent codes
+- [#902](https://github.com/alleslabs/celatone-frontend/pull/902) Add publish/republish tag to modules table
+- [#903](https://github.com/alleslabs/celatone-frontend/pull/903) Prevent list pages in lite version
+- [#897](https://github.com/alleslabs/celatone-frontend/pull/897) Add config for lite version support
+
+### Improvements
+
+- [#1001](https://github.com/alleslabs/celatone-frontend/pull/1001) Support pre and post db schema on nft & collection queries
+- [#1000](https://github.com/alleslabs/celatone-frontend/pull/1000) Query module info from lcd directly
+- [#998](https://github.com/alleslabs/celatone-frontend/pull/998) Use expression on Nft query
+- [#996](https://github.com/alleslabs/celatone-frontend/pull/996) Allow disable voting period tally config
+- [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
+- [#983](https://github.com/alleslabs/celatone-frontend/pull/983) Add fallback for collection names that are empty string
+- [#982](https://github.com/alleslabs/celatone-frontend/pull/982) Support Icns in account osmosis lite version
+- [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
+- [#967](https://github.com/alleslabs/celatone-frontend/pull/967) Utilize consensus address for better consistency
+- [#963](https://github.com/alleslabs/celatone-frontend/pull/963) Add separator between token in tx message
+- [#959](https://github.com/alleslabs/celatone-frontend/pull/959) Update @cosmos-kit/react to v2.15.0 and friends
+- [#947](https://github.com/alleslabs/celatone-frontend/pull/947) Add zod type for sign mode infos
+- [#917](https://github.com/alleslabs/celatone-frontend/pull/917) Update filter selection input to support multiple use case
+- [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Add isHydrated in app context for redirect behaviors
+- [#921](https://github.com/alleslabs/celatone-frontend/pull/921) Add theme
+- [#922](https://github.com/alleslabs/celatone-frontend/pull/922) Adjust color for latest blocks
+- [#826](https://github.com/alleslabs/celatone-frontend/pull/826) Apply dynamic component theme generation
+- [#795](https://github.com/alleslabs/celatone-frontend/pull/795) Rebranding
+- [#907](https://github.com/alleslabs/celatone-frontend/pull/907) Migrate mahalo and minitias from 2 to 3
+- [#905](https://github.com/alleslabs/celatone-frontend/pull/905) Refactor module related component for better readability
+- [#900](https://github.com/alleslabs/celatone-frontend/pull/900) Refactor module details info
+- [#899](https://github.com/alleslabs/celatone-frontend/pull/899) Refactor module details APIs
+- [#866](https://github.com/alleslabs/celatone-frontend/pull/866) Update upload code CTA to sticky bar
+- [#872](https://github.com/alleslabs/celatone-frontend/pull/872) Change Query/Execute page to Interact Contract
+- [#895](https://github.com/alleslabs/celatone-frontend/pull/895) Show collection address and creator on the collection list page
+
+### Bug fixes
+
+- [#995](https://github.com/alleslabs/celatone-frontend/pull/995) Remove unnecessary retries and refetch on window focus
+- [#988](https://github.com/alleslabs/celatone-frontend/pull/988) Fix total asset value and assets in json
+- [#991](https://github.com/alleslabs/celatone-frontend/pull/991) Fix code select section heading label
+- [#986](https://github.com/alleslabs/celatone-frontend/pull/986) Fix bugbash lite version (creator, sorting name in validator)
+- [#985](https://github.com/alleslabs/celatone-frontend/pull/985) Fix proposal details lite version bugs
+- [#987](https://github.com/alleslabs/celatone-frontend/pull/987) Fix bug bash (query redirection, module button color, modal open/close, migration contract radio button, txs count in account detail)
+- [#989](https://github.com/alleslabs/celatone-frontend/pull/989) Change tomcat endpoints
+- [#984](https://github.com/alleslabs/celatone-frontend/pull/984) Exclude non block number from searching block in lite
+- [#974](https://github.com/alleslabs/celatone-frontend/pull/974) Fix tx by account addr lcd to support new cosmos sdk
+- [#976](https://github.com/alleslabs/celatone-frontend/pull/976) Support save accounts in lite version
+- [#944](https://github.com/alleslabs/celatone-frontend/pull/944) Fix asset input selector
+- [#979](https://github.com/alleslabs/celatone-frontend/pull/979) Fix txs detail receiver overflow screen
+- [#980](https://github.com/alleslabs/celatone-frontend/pull/980) Pass through block in search in lite
+- [#981](https://github.com/alleslabs/celatone-frontend/pull/981) Fix useAccountData
+- [#978](https://github.com/alleslabs/celatone-frontend/pull/978) Fix republish module description notice
+- [#975](https://github.com/alleslabs/celatone-frontend/pull/975) Fix view function lite ver and add proposal alert
+- [#977](https://github.com/alleslabs/celatone-frontend/pull/977) Fix block query in search
+- [#962](https://github.com/alleslabs/celatone-frontend/pull/962) Fix tx msg expand
+- [#965](https://github.com/alleslabs/celatone-frontend/pull/965) Add search not found state in module detail
+- [#946](https://github.com/alleslabs/celatone-frontend/pull/946) Fix token card
+- [#941](https://github.com/alleslabs/celatone-frontend/pull/941) Fix contract interaction routing
+- [#936](https://github.com/alleslabs/celatone-frontend/pull/936) Fix mobile search not focusable
+- [#931](https://github.com/alleslabs/celatone-frontend/pull/931) Fix minor module related ui
+- [#932](https://github.com/alleslabs/celatone-frontend/pull/932) Add isGov in module details
+- [#915](https://github.com/alleslabs/celatone-frontend/pull/915) Fix delegation rewards field name
+- [#911](https://github.com/alleslabs/celatone-frontend/pull/911) Fix validator top flex
+- [#909](https://github.com/alleslabs/celatone-frontend/pull/909) Remove module arbitrary policy as it is no longer supported
+- [#904](https://github.com/alleslabs/celatone-frontend/pull/904) Fix wasm page container text alignment
+- [#893](https://github.com/alleslabs/celatone-frontend/pull/893) Fix validator list percent
+
 ## v1.6.0
 
 ### Features
@@ -147,6 +250,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#969](https://github.com/alleslabs/celatone-frontend/pull/969) Fix contract data lcd missing data
 - [#942](https://github.com/alleslabs/celatone-frontend/pull/942) Fix asset input
 - [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
 - [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header

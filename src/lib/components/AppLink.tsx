@@ -2,7 +2,7 @@ import { Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
+import { FALLBACK_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
 export const AppLink = ({
@@ -16,7 +16,7 @@ export const AppLink = ({
     getFirstQueryParam(router.query.network)
   )
     ? router.query.network
-    : DEFAULT_SUPPORTED_CHAIN_ID;
+    : FALLBACK_SUPPORTED_CHAIN_ID;
 
   return (
     <Link {...linkProps} href={`/${network}${componentHref}`}>

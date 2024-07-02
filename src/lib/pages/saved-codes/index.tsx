@@ -10,6 +10,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { MySavedCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
@@ -54,6 +55,7 @@ const SavedCodes = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Saved Codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex direction="column">
           <Flex align="center">

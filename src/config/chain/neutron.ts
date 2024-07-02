@@ -4,6 +4,7 @@ import type { ChainConfigs } from "./types";
 
 export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
   "neutron-1": {
+    tier: "full",
     chain: "neutron",
     registryChainName: "neutron",
     prettyName: "Neutron",
@@ -49,6 +50,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "pion-1": {
+    tier: "full",
     chain: "neutron",
     registryChainName: "neutrontestnet",
     prettyName: "Neutron Testnet",

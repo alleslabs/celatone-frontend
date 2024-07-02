@@ -13,12 +13,17 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useMobile } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useMobile,
+  useTierConfig,
+} from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -26,7 +31,6 @@ import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
-  useCollectionTotalBurnedCount,
   useNfts,
 } from "lib/services/nft";
 import { isHexModuleAddress } from "lib/utils";
@@ -56,8 +60,6 @@ const CollectionDetailsBody = ({
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: totalBurnedCount = 0 } =
-    useCollectionTotalBurnedCount(collectionAddress);
   const { data: nfts, isLoading: isNftLoading } = useNfts(
     collectionAddress,
     6,
@@ -66,9 +68,9 @@ const CollectionDetailsBody = ({
 
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
-  const { data: activitiesCount = 0 } =
+  const { data: activitiesCount } =
     useCollectionActivitiesCount(collectionAddress);
-  const { data: mutateEventsCount = 0 } =
+  const { data: mutateEventsCount } =
     useCollectionMutateEventsCount(collectionAddress);
 
   const handleTabChange = useCallback(
@@ -101,16 +103,31 @@ const CollectionDetailsBody = ({
     isUnlimited,
     royalty,
   } = collectionInfos;
+  const totalBurned = totalMinted - currentSupply;
 
   const displayCollectionName =
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
+  const getCollectionName = () => {
+    if (!name.length) return "Untitled Collection";
+    return isMobile ? displayCollectionName : name;
+  };
+
   return (
     <>
+      <CelatoneSeo
+        pageName={
+          name.length > 0
+            ? `Collection – ${name.length > 20 ? displayCollectionName : name}`
+            : "NFT Collection Detail"
+        }
+      />
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
-          { text: isMobile ? displayCollectionName : name },
+          {
+            text: getCollectionName(),
+          },
         ]}
       />
       <Flex
@@ -127,8 +144,15 @@ const CollectionDetailsBody = ({
           minW={{ md: "680px" }}
           maxW="full"
         >
-          <Heading as="h5" variant="h5" mb={1} className="ellipsis">
-            {name}
+          <Heading
+            as="h5"
+            variant="h5"
+            mb={1}
+            className="ellipsis"
+            color={name.length ? "text.main" : "text.disabled"}
+            fontWeight={name.length ? "600" : "300"}
+          >
+            {name.length ? name : "Untitled Collection"}
           </Heading>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -137,19 +161,17 @@ const CollectionDetailsBody = ({
             alignItems={{ base: "start", md: "center" }}
           >
             <Text color="text.dark" variant="body2">
-              Collection:
+              Collection Address:
             </Text>
             <Tooltip label="View as Account Address">
-              <Flex>
-                <ExplorerLink
-                  value={collectionAddress}
-                  type="user_address"
-                  textFormat="normal"
-                  maxWidth="full"
-                  fixedHeight={false}
-                  ampCopierSection="collection-addresss-top"
-                />
-              </Flex>
+              <ExplorerLink
+                value={collectionAddress}
+                type="contract_address"
+                textFormat="normal"
+                maxWidth="full"
+                fixedHeight={false}
+                ampCopierSection="collection-addresss-top"
+              />
             </Tooltip>
           </Flex>
           <Flex gap={1} align="center">
@@ -207,14 +229,14 @@ const CollectionDetailsBody = ({
           <CustomTab
             count={activitiesCount}
             onClick={handleTabChange(TabIndex.Activities)}
-            isDisabled={!activitiesCount}
+            isDisabled={activitiesCount === 0}
           >
             Activities
           </CustomTab>
           <CustomTab
             count={mutateEventsCount}
             onClick={handleTabChange(TabIndex.MutateEvents)}
-            isDisabled={!mutateEventsCount}
+            isDisabled={mutateEventsCount === 0}
           >
             Mutate Events
           </CustomTab>
@@ -223,7 +245,7 @@ const CollectionDetailsBody = ({
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Flex direction="column" gap={10}>
               <CollectionSupplyInfo
-                totalBurned={totalBurnedCount}
+                totalBurned={totalBurned}
                 totalMinted={totalMinted}
                 currentSupply={currentSupply}
                 maxSupply={maxSupply}
@@ -266,8 +288,8 @@ const CollectionDetailsBody = ({
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <CollectionMutateEvents
-              totalCount={mutateEventsCount}
               collectionAddress={collectionAddress}
+              totalCount={mutateEventsCount ?? 0}
             />
           </TabPanel>
         </TabPanels>
@@ -277,6 +299,7 @@ const CollectionDetailsBody = ({
 };
 
 const CollectionDetails = () => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 

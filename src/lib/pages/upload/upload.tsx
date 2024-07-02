@@ -6,11 +6,15 @@ import { AmpEvent, track } from "lib/amplitude";
 import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { CustomIcon } from "lib/components/icon";
+import { FooterCTA } from "lib/components/layouts";
+import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useUploadAccessParams } from "lib/services/proposalService";
+import { useUploadCode } from "lib/hooks";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 
 export const Upload = ({
@@ -21,7 +25,18 @@ export const Upload = ({
   const router = useRouter();
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useUploadAccessParams();
+  const { data, isLoading } = useUploadAccessParamsLcd();
+  const {
+    proceed,
+    formData,
+    estimatedFee,
+    setEstimatedFee,
+    shouldNotSimulate,
+    setDefaultBehavior,
+    simulateStatus,
+    isSimulating,
+    isDisabledProcess,
+  } = useUploadCode(onComplete, false);
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
@@ -38,27 +53,49 @@ export const Upload = ({
   }, [enableUpload, isLoading, navigate, router.isReady]);
 
   return (
-    <WasmPageContainer>
-      <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
-        DEPLOY NEW CONTRACT
-      </Text>
-      <Stepper mode="deploy" currentStep={1} />
-      <Flex direction="column" alignItems="center" my={12}>
-        <Heading as="h5" variant="h5">
-          Upload Wasm file
-        </Heading>
-        <UserDocsLink
-          isDevTool
-          mt={2}
-          cta="View Upload Guideline"
-          href="cosmwasm/upload-instantiate#upload-wasm-to-store-code"
+    <>
+      <WasmPageContainer>
+        <CelatoneSeo pageName="Upload Wasm File" />
+        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+          DEPLOY NEW CONTRACT
+        </Text>
+        <Stepper mode="deploy" currentStep={1} />
+        <Flex direction="column" alignItems="center" my={12}>
+          <Heading as="h5" variant="h5">
+            Upload Wasm file
+          </Heading>
+          <UserDocsLink
+            isDevTool
+            mt={2}
+            cta="View Upload Guideline"
+            href="cosmwasm/upload-instantiate#upload-wasm-to-store-code"
+          />
+        </Flex>
+        <ConnectWalletAlert
+          subtitle="You need to connect your wallet first"
+          mb={12}
         />
-      </Flex>
-      <ConnectWalletAlert
-        subtitle="You need to connect your wallet first"
-        mb={12}
+        <UploadSection
+          formData={formData}
+          estimatedFee={estimatedFee}
+          setEstimatedFee={setEstimatedFee}
+          shouldNotSimulate={shouldNotSimulate}
+          setDefaultBehavior={setDefaultBehavior}
+          simulateStatus={simulateStatus}
+          isSimulating={isSimulating}
+        />
+      </WasmPageContainer>
+      <FooterCTA
+        cancelButton={{
+          leftIcon: <CustomIcon name="chevron-left" />,
+          onClick: router.back,
+        }}
+        actionButton={{
+          isDisabled: isDisabledProcess,
+          onClick: proceed,
+        }}
+        actionLabel="Upload"
       />
-      <UploadSection handleBack={router.back} onComplete={onComplete} />
-    </WasmPageContainer>
+    </>
   );
 };

@@ -20,13 +20,12 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { CURR_THEME } from "env";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
-  useRPCEndpoint,
+  useLcdEndpoint,
+  useRpcEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { BechAddr32 } from "lib/types";
@@ -60,13 +59,14 @@ const WasmCodeSnippet = ({
     chain: { chain_name: chainName, daemon_name: daemonName },
   } = useCurrentChain();
   const isDisabled = !contractAddress || !message.length;
-  const lcdEndpoint = useLCDEndpoint();
-  const rpcEndpoint = useRPCEndpoint();
+  const lcdEndpoint = useLcdEndpoint();
+  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
     chainConfig: {
       gas: { gasPrice },
     },
+    theme,
   } = useCelatoneApp();
 
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
@@ -248,7 +248,7 @@ execute();
                       <AceEditor
                         readOnly
                         mode={item.mode}
-                        theme={CURR_THEME.jsonTheme}
+                        theme={theme.jsonTheme}
                         fontSize="14px"
                         style={{
                           width: "100%",

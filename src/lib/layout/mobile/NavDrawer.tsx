@@ -13,7 +13,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import type { MenuInfo } from "../navbar/types";
 import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
@@ -21,6 +20,7 @@ import {
   useMoveConfig,
   useNftConfig,
   usePublicProjectConfig,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -29,94 +29,35 @@ import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
+import { getNavDrawerFull, getNavDrawerLite } from "./utils";
+
 export const NavDrawer = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const isCurrentPage = useIsCurrentPage();
-  const { getSavedPublicProjects } = usePublicProjectStore();
+  const isFullTier = useTierConfig() === "full";
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
   const nftConfig = useNftConfig({ shouldRedirect: false });
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
 
-  const mobileMenu: MenuInfo[] = [
-    {
-      category: "Overview",
-      slug: "overview",
-      submenu: [
-        { name: "Overview", slug: "/", icon: "home" },
-        {
-          name: "Transactions",
-          slug: "/txs",
-          icon: "file",
-        },
-        {
-          name: "Blocks",
-          slug: "/blocks",
-          icon: "block",
-        },
-        ...(govConfig.enabled
-          ? [
-              {
-                name: "Validators",
-                slug: "/validators",
-                icon: "validator" as IconKeys,
-              },
-              {
-                name: "Proposals",
-                slug: "/proposals",
-                icon: "proposal" as IconKeys,
-              },
-            ]
-          : []),
-        ...(wasmConfig.enabled
-          ? [
-              {
-                name: "Codes",
-                slug: "/codes",
-                icon: "code" as IconKeys,
-              },
-              {
-                name: "Contracts",
-                slug: "/contracts",
-                icon: "contract-address" as IconKeys,
-              },
-              {
-                name: "Query",
-                slug: "/query",
-                icon: "query" as IconKeys,
-              },
-            ]
-          : []),
-        ...(moveConfig.enabled
-          ? [
-              {
-                name: "Modules",
-                slug: "/modules",
-                icon: "contract-address" as IconKeys,
-              },
-              {
-                name: "0x1 Page",
-                slug: "/account/0x1",
-                icon: "hex" as IconKeys,
-              },
-            ]
-          : []),
-        ...(nftConfig.enabled
-          ? [
-              {
-                name: "NFT Collections",
-                slug: "/nft-collections",
-                icon: "group" as IconKeys,
-              },
-            ]
-          : []),
-      ],
-    },
-  ];
+  const isCurrentPage = useIsCurrentPage();
+  const { getSavedPublicProjects } = usePublicProjectStore();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const navMenu = isFullTier
+    ? getNavDrawerFull(
+        govConfig.enabled,
+        wasmConfig.enabled,
+        moveConfig.enabled,
+        nftConfig.enabled
+      )
+    : getNavDrawerLite(
+        govConfig.enabled,
+        wasmConfig.enabled,
+        moveConfig.enabled
+      );
 
   if (publicProject.enabled) {
-    mobileMenu.push({
+    navMenu.push({
       category: "Public Projects",
       slug: "public-projects",
       submenu: [
@@ -156,7 +97,7 @@ export const NavDrawer = () => {
             </Flex>
           </DrawerHeader>
           <DrawerBody overflowY="scroll" px={4}>
-            {mobileMenu.map((item) => (
+            {navMenu.map((item) => (
               <Box
                 pb={4}
                 mb={4}

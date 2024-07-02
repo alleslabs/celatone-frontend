@@ -5,8 +5,8 @@ import { useWatch } from "react-hook-form";
 import { SelectInput } from "lib/components/forms";
 
 import { ASSETS_JSON_STR, ASSETS_SELECT, ATTACH_FUNDS_OPTION } from "./data";
-import { JsonFund } from "./jsonFund";
-import { SelectFund } from "./selectFund";
+import { JsonFund } from "./JsonFund";
+import { SelectFund } from "./SelectFund";
 import type { AttachFundsState } from "./types";
 import { AttachFundsType } from "./types";
 

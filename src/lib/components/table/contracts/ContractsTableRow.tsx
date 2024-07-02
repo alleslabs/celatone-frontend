@@ -14,18 +14,20 @@ interface ContractsTableRowProps {
   contractInfo: ContractInfo;
   templateColumns: string;
   onRowSelect: (contract: BechAddr32) => void;
+  showTag: boolean;
+  showLastUpdate: boolean;
   isReadOnly: boolean;
   withCTA?: CTAInfo;
-  withoutTag?: boolean;
 }
 
 export const ContractsTableRow = ({
   contractInfo,
   templateColumns,
   onRowSelect,
+  showTag,
+  showLastUpdate,
   isReadOnly,
   withCTA,
-  withoutTag,
 }: ContractsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
@@ -51,20 +53,27 @@ export const ContractsTableRow = ({
       />
     </TableRow>
 
-    {!withoutTag && (
+    {showTag && (
       <TableRow>
         <TagsCell contractLocalInfo={contractInfo} isReadOnly={isReadOnly} />
       </TableRow>
     )}
-    <TableRow>
-      <ContractInstantiatorCell
-        contractInfo={contractInfo}
-        isReadOnly={isReadOnly}
-      />
-    </TableRow>
+
+    {showLastUpdate && (
+      <TableRow>
+        <ContractInstantiatorCell
+          contractInfo={contractInfo}
+          isReadOnly={isReadOnly}
+        />
+      </TableRow>
+    )}
 
     {!isReadOnly && (
-      <ContractsTableRowCTA contractInfo={contractInfo} withCTA={withCTA} />
+      <ContractsTableRowCTA
+        contractInfo={contractInfo}
+        withCTA={withCTA}
+        showLastUpdate={showLastUpdate}
+      />
     )}
   </Grid>
 );

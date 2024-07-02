@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
@@ -43,10 +43,12 @@ export const CollectionSupplies = ({
     debouncedSearch
   );
 
+  useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
+
   return (
     <Box mt="32px" gap="40px">
       <InputWithIcon
-        placeholder="Search with Token ID"
+        placeholder="Search with Token ID or NFT VM Address"
         value={searchKeyword}
         autoFocus
         onChange={(e) => setSearchKeyword(e.target.value)}
@@ -65,7 +67,7 @@ export const CollectionSupplies = ({
         }
         showCollection={false}
       />
-      {!isLoading && nfts && (
+      {!isLoading && nfts && nfts.length !== 0 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

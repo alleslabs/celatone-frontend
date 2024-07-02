@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import {
   Button,
   chakra,
@@ -8,6 +9,7 @@ import {
   Flex,
   FormControl,
   IconButton,
+  Image,
   List,
   ListItem,
   Spinner,
@@ -15,19 +17,20 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
-import { CURR_THEME } from "env";
 import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
   useInternalNavigate,
   useMobile,
+  useTierConfig,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+import { useEaster } from "lib/hooks";
 import type {
   ResultMetadata,
   SearchResultType,
@@ -46,6 +49,7 @@ const StyledListItem = chakra(ListItem, {
     bg: "gray.900",
   },
 });
+
 interface ResultItemProps {
   index: number;
   type: SearchResultType;
@@ -101,6 +105,22 @@ const getRouteOptions = (
   }
 };
 
+const InitiaUsername = ({ username }: { username: string }) => (
+  <Flex gap={1} align="center" flexWrap="wrap">
+    <Flex gap={1} align="center">
+      <Image
+        src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+        borderRadius="full"
+        width={4}
+        height={4}
+      />
+      <Text variant="body3" color="text.dark">
+        {username}
+      </Text>
+    </Flex>
+  </Flex>
+);
+
 const ResultItem = ({
   index,
   type,
@@ -112,9 +132,23 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
+  const isAccountAddress =
+    type === "Account Address" || type === "Contract Address";
+  const displayValue = useMemo(() => {
+    if (isAccountAddress) {
+      return metadata.icns.address || metadata.initiaUsername.address || value;
+    }
+    return value;
+  }, [
+    isAccountAddress,
+    metadata.icns.address,
+    metadata.initiaUsername.address,
+    value,
+  ]);
   const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
+
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
@@ -135,18 +169,18 @@ const ResultItem = ({
             onClose?.();
           }}
         >
-          <Text variant="body2">{metadata.icns.address || value}</Text>
-          {metadata.icns.icnsNames?.primary_name && (
+          <Text variant="body2">{displayValue}</Text>
+          {isAccountAddress && metadata.icns.icnsNames?.primaryName && (
             <Flex gap={1} align="center" flexWrap="wrap">
               <Flex gap={1} align="center">
                 <PrimaryNameMark />
                 <Text variant="body3" color="text.dark">
-                  {metadata.icns.icnsNames.primary_name}
+                  {metadata.icns.icnsNames.primaryName}
                 </Text>
               </Flex>
               {value !== metadata.icns.address &&
                 normalizedIcnsValue !==
-                  metadata.icns.icnsNames?.primary_name && (
+                  metadata.icns.icnsNames?.primaryName && (
                   <Text
                     variant="body3"
                     color="text.dark"
@@ -161,6 +195,9 @@ const ResultItem = ({
                   </Text>
                 )}
             </Flex>
+          )}
+          {isAccountAddress && metadata.initiaUsername?.username && (
+            <InitiaUsername username={metadata.initiaUsername.username} />
           )}
         </Flex>
       )}
@@ -232,22 +269,25 @@ const getPlaceholder = ({
   isPool,
   isMove,
   isGov,
+  isFullTier,
 }: {
   isWasm: boolean;
   isPool: boolean;
   isMove: boolean;
   isGov: boolean;
+  isFullTier: boolean;
 }) => {
   const govText = isGov ? " / Validator Address / Proposal ID" : "";
   const wasmText = isWasm ? " / Code ID / Contract Address" : "";
   const moveText = isMove ? " / Module Path" : "";
-  const poolText = isPool ? " / Pool ID" : "";
+  const poolText = isPool && isFullTier ? " / Pool ID" : "";
 
   return `Search by Account Address / Tx Hash / Block${govText}${wasmText}${moveText}${poolText}`;
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const Searchbar = () => {
+  const isFullTier = useTierConfig() === "full";
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const {
@@ -282,13 +322,22 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
+      const getQueryValue = () => {
+        if (type === "Module Path") {
+          return splitModule(keyword) as [Addr, string];
+        }
+        if (type === "Account Address")
+          return (
+            metadata.icns.address || metadata.initiaUsername.address || keyword
+          );
+
+        return keyword;
+      };
+
       trackUseMainSearch(isClick, type);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
-        const queryValues =
-          type === "Module Path"
-            ? (splitModule(keyword) as [Addr, string])
-            : metadata.icns.address || keyword;
+        const queryValues = getQueryValue();
         navigate({
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
@@ -297,7 +346,13 @@ const Searchbar = () => {
         onClose();
       }
     },
-    [keyword, metadata.icns.address, navigate, onClose]
+    [
+      keyword,
+      metadata.icns.address,
+      metadata.initiaUsername.address,
+      navigate,
+      onClose,
+    ]
   );
 
   const handleOnKeyEnter = useCallback(
@@ -329,6 +384,8 @@ const Searchbar = () => {
     ref: boxRef,
     handler: onClose,
   });
+
+  useEaster(keyword);
 
   return isMobile ? (
     <>
@@ -393,7 +450,7 @@ const Searchbar = () => {
                   bg="background.main"
                   p={5}
                   justify="center"
-                  borderRadius={CURR_THEME.borderRadius.default}
+                  borderRadius="8px"
                 >
                   <Text variant="body2" color="text.dark">
                     Your result will display here
@@ -402,7 +459,7 @@ const Searchbar = () => {
               )}
             </FormControl>
             <Text variant="body3" color="text.dark" textAlign="center" mt={2}>
-              {getPlaceholder({ isWasm, isPool, isMove, isGov })}
+              {getPlaceholder({ isWasm, isPool, isMove, isGov, isFullTier })}
             </Text>
           </DrawerBody>
         </DrawerContent>
@@ -456,7 +513,7 @@ const Searchbar = () => {
           ) : (
             <StyledListItem p={4}>
               <Text color="text.disabled" variant="body2" fontWeight={500}>
-                {getPlaceholder({ isWasm, isPool, isMove, isGov })}
+                {getPlaceholder({ isWasm, isPool, isMove, isGov, isFullTier })}
               </Text>
             </StyledListItem>
           )}

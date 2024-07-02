@@ -16,7 +16,7 @@ import { TableRow } from "../tableComponents";
 import {
   useCurrentChain,
   useInternalNavigate,
-  useMobile,
+  useTierConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -28,6 +28,7 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import type { ContractInfo, LVPair, Option } from "lib/types";
+import { ContractInteractionTabs } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
@@ -55,10 +56,10 @@ export const ContractsTableRowCTA = ({
   showLastUpdate = true,
 }: ContractsTableRowCTAProps) => {
   const { address } = useCurrentChain();
+  const isFullTier = useTierConfig() === "full";
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
-  const isMobile = useMobile();
   return withCTA ? (
     <>
       <TableRow>
@@ -67,21 +68,27 @@ export const ContractsTableRowCTA = ({
           justifyContent="flex-end"
           onClick={(e) => e.stopPropagation()}
         >
-          <AppLink href={`/execute?contract=${contractInfo.contractAddress}`}>
+          <AppLink
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}&contract=${contractInfo.contractAddress}`}
+          >
             <Button variant="outline-gray" size="sm">
               Execute
             </Button>
           </AppLink>
-          <AppLink href={`/query?contract=${contractInfo.contractAddress}`}>
+          <AppLink
+            href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${contractInfo.contractAddress}`}
+          >
             <Button variant="outline-gray" size="sm">
               Query
             </Button>
           </AppLink>
-          <AppLink href={`/migrate?contract=${contractInfo.contractAddress}`}>
-            <Button variant="outline-gray" size="sm" isDisabled={!isAdmin}>
-              Migrate
-            </Button>
-          </AppLink>
+          {isFullTier && (
+            <AppLink href={`/migrate?contract=${contractInfo.contractAddress}`}>
+              <Button variant="outline-gray" size="sm" isDisabled={!isAdmin}>
+                Migrate
+              </Button>
+            </AppLink>
+          )}
         </Flex>
       </TableRow>
       <TableRow>
@@ -123,35 +130,41 @@ export const ContractsTableRowCTA = ({
                 </MenuItem>
               }
             />
-            <MenuItem
-              icon={<CustomIcon name="admin" boxSize="16px" color="gray.600" />}
-              onClick={() => {
-                navigate({
-                  pathname: "/admin",
-                  query: { contract: contractInfo.contractAddress },
-                });
-              }}
-              isDisabled={!isAdmin}
-            >
-              Update Admin
-            </MenuItem>
-            <ClearAdminModal
-              contractAddress={contractInfo.contractAddress}
-              triggerElement={
+            {isFullTier && (
+              <>
                 <MenuItem
                   icon={
-                    <CustomIcon
-                      name="admin-clear"
-                      boxSize="16px"
-                      color="gray.600"
-                    />
+                    <CustomIcon name="admin" boxSize="16px" color="gray.600" />
                   }
+                  onClick={() => {
+                    navigate({
+                      pathname: "/admin",
+                      query: { contract: contractInfo.contractAddress },
+                    });
+                  }}
                   isDisabled={!isAdmin}
                 >
-                  Clear Admin
+                  Update Admin
                 </MenuItem>
-              }
-            />
+                <ClearAdminModal
+                  contractAddress={contractInfo.contractAddress}
+                  triggerElement={
+                    <MenuItem
+                      icon={
+                        <CustomIcon
+                          name="admin-clear"
+                          boxSize="16px"
+                          color="gray.600"
+                        />
+                      }
+                      isDisabled={!isAdmin}
+                    >
+                      Clear Admin
+                    </MenuItem>
+                  }
+                />
+              </>
+            )}
             {!!withCTA.removingContractList && (
               <>
                 <MenuDivider />
@@ -196,35 +209,33 @@ export const ContractsTableRowCTA = ({
           </Flex>
         </TableRow>
       )}
-      {!isMobile && (
-        <TableRow>
-          <Box onClick={(e) => e.stopPropagation()}>
-            {contractInfo.lists ? (
-              <AddToOtherListModal
-                contractLocalInfo={contractInfo}
-                triggerElement={
-                  <StyledIconButton
-                    aria-label="button"
-                    icon={<CustomIcon name="bookmark-solid" />}
-                    variant="ghost-primary"
-                  />
-                }
-              />
-            ) : (
-              <SaveContractDetailsModal
-                contractLocalInfo={contractInfo}
-                triggerElement={
-                  <StyledIconButton
-                    aria-label="button"
-                    icon={<CustomIcon name="bookmark" />}
-                    variant="ghost-gray"
-                  />
-                }
-              />
-            )}
-          </Box>
-        </TableRow>
-      )}
+      <TableRow>
+        <Box onClick={(e) => e.stopPropagation()}>
+          {contractInfo.lists ? (
+            <AddToOtherListModal
+              contractLocalInfo={contractInfo}
+              triggerElement={
+                <StyledIconButton
+                  aria-label="button"
+                  icon={<CustomIcon name="bookmark-solid" />}
+                  variant="ghost-primary"
+                />
+              }
+            />
+          ) : (
+            <SaveContractDetailsModal
+              contractLocalInfo={contractInfo}
+              triggerElement={
+                <StyledIconButton
+                  aria-label="button"
+                  icon={<CustomIcon name="bookmark" />}
+                  variant="ghost-gray"
+                />
+              }
+            />
+          )}
+        </Box>
+      </TableRow>
     </>
   );
 };

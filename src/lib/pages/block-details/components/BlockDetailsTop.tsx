@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import { trackUseViewJSON } from "lib/amplitude";
-import { useBaseApiRoute } from "lib/app-provider";
+import { useLcdEndpoint } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
@@ -30,12 +30,12 @@ interface BlockDetailsTopProps {
 
 export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const endpoint = useLcdEndpoint();
 
   const openLcdPage = () => {
     trackUseViewJSON("Block Details");
     openNewTab(
-      `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
+      `${endpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
     );
   };
 

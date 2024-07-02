@@ -1,4 +1,4 @@
-import { Divider, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 interface MobileCardTemplateProps {
@@ -30,16 +30,22 @@ export const MobileCardTemplate = ({
     {middleContent && (
       <Flex
         borderTop="1px solid"
-        borderBottom={bottomContent ? "1px solid" : "0px"}
         borderColor="gray.700"
         pt={3}
-        pb={bottomContent ? 3 : 0}
         direction="column"
       >
         {middleContent}
       </Flex>
     )}
-    {!middleContent && <Divider color="gray.700" size="1px" />}
-    {bottomContent && <Flex>{bottomContent}</Flex>}
+    {bottomContent && (
+      <Flex
+        borderTop="1px solid"
+        borderColor="gray.700"
+        pt={3}
+        direction="column"
+      >
+        {bottomContent}
+      </Flex>
+    )}
   </Flex>
 );

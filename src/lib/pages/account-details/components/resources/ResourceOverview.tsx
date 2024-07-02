@@ -1,7 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
+import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
-import { MobileTitle, TableTitle } from "lib/components/table";
+import { MobileTitle } from "lib/components/table";
 import type { BechAddr, Option, ResourceGroup } from "lib/types";
 
 import { ResourceOverviewBody } from "./ResourceOverviewBody";
@@ -32,19 +33,19 @@ export const ResourceOverview = ({
           onViewMore={onViewMore}
         />
       ) : (
-        <>
-          <TableTitle
-            title="Resources"
-            helperText="Resources stored in this account"
-            showCount={false}
-          />
+        <AccountSectionWrapper
+          title="Resources"
+          showCount={false}
+          helperText="This account stored the following resources"
+          hasHelperText={!!resourcesByName?.length}
+        >
           <ResourceOverviewBody
             address={address}
             resourcesByName={resourcesByName}
             isLoading={isLoading}
             onViewMore={onViewMore}
           />
-        </>
+        </AccountSectionWrapper>
       )}
     </Box>
   );

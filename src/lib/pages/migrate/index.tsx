@@ -7,15 +7,21 @@ import { trackToMigrate } from "lib/amplitude";
 import {
   useCurrentChain,
   useInternalNavigate,
+  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { CustomIcon } from "lib/components/icon";
+import { FooterCTA } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
+import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useContractDetailByContractAddress } from "lib/services/contractService";
-import { useUploadAccessParams } from "lib/services/proposalService";
+import { useUploadCode } from "lib/hooks";
+import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -35,7 +41,19 @@ const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { data: uploadAccess, isFetching } = useUploadAccessParams();
+  const isFullTier = useTierConfig() === "full";
+  const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
+  const {
+    proceed,
+    formData,
+    estimatedFee,
+    setEstimatedFee,
+    shouldNotSimulate,
+    setDefaultBehavior,
+    simulateStatus,
+    isSimulating,
+    isDisabledProcess,
+  } = useUploadCode(undefined, true);
 
   const { address = "" } = useCurrentChain();
 
@@ -68,21 +86,20 @@ const Migrate = () => {
     [codeIdParam, firstStep, navigate]
   );
 
-  useContractDetailByContractAddress(
-    contractAddress,
-    (data) => {
-      if (data.admin === address) {
-        setValue("admin", data.admin);
+  useContractData(contractAddress, {
+    onSuccess: (data) => {
+      if (data.contract.admin === address) {
+        setValue("admin", data.contract.admin);
       } else {
         setValue("admin", defaultValues.admin);
         setValue("contractAddress", defaultValues.contractAddress);
       }
     },
-    () => {
+    onError: () => {
       setValue("admin", defaultValues.admin);
       setValue("contractAddress", defaultValues.contractAddress);
-    }
-  );
+    },
+  });
 
   useEffect(() => {
     setValue("contractAddress", contractAddressParam);
@@ -106,13 +123,23 @@ const Migrate = () => {
           />
         );
       case "upload_new_code":
-        return <UploadNewCode handleBack={handleBack} />;
+        return (
+          <UploadNewCode
+            formData={formData}
+            estimatedFee={estimatedFee}
+            setEstimatedFee={setEstimatedFee}
+            shouldNotSimulate={shouldNotSimulate}
+            setDefaultBehavior={setDefaultBehavior}
+            simulateStatus={simulateStatus}
+            isSimulating={isSimulating}
+          />
+        );
       case "migrate_options":
       default:
         return (
           <MigrateOptions
             isAdmin={admin === address}
-            uploadAccess={uploadAccess}
+            uploadAccessParams={uploadAccessParams}
             uploadHandler={() => {
               setValue("migrateStep", "upload_new_code");
             }}
@@ -126,45 +153,68 @@ const Migrate = () => {
 
   if (isFetching) return <Loading withBorder={false} />;
   return (
-    <WasmPageContainer>
-      {firstStep ? (
-        <Box w="full" mb={6}>
-          <Text
-            variant="body1"
-            color="text.dark"
-            textAlign="center"
-            mb={3}
-            fontWeight={700}
-          >
-            MIGRATE CONTRACT
-          </Text>
-          <Stepper mode="migrate" currentStep={1} />
-          <Heading as="h5" variant="h5" textAlign="center" mt={12}>
-            Migrate Contract
-          </Heading>
+    <>
+      <CelatoneSeo pageName="Migrate Contract" />
+      <WasmPageContainer>
+        {firstStep ? (
+          <Box w="full" mb={6}>
+            <Text
+              variant="body1"
+              color="text.dark"
+              textAlign="center"
+              mb={3}
+              fontWeight={700}
+            >
+              MIGRATE CONTRACT
+            </Text>
+            <Stepper mode="migrate" currentStep={1} />
+            <Heading as="h5" variant="h5" textAlign="center" mt={12}>
+              Migrate Contract
+            </Heading>
+          </Box>
+        ) : (
+          <Box w="full" mb={12}>
+            <Heading as="h5" variant="h5" textAlign="center" my={3}>
+              Migrate Contract
+            </Heading>
+            <Stepper mode="migrate" currentStep={2} />
+          </Box>
+        )}
+        <ConnectWalletAlert
+          mb={6}
+          subtitle="You need to connect your wallet to perform this action"
+        />
+        {/* Select Migrate Contract modal */}
+        {isFullTier ? (
+          <ContractSelectSection
+            mode="only-admin"
+            contractAddress={contractAddress}
+            onContractSelect={onContractSelect}
+          />
+        ) : (
+          <ContractInputSection
+            contract={contractAddress}
+            onContractSelect={onContractSelect}
+          />
+        )}
+        <Box mt={12} w="full">
+          {renderBody()}
         </Box>
-      ) : (
-        <Box w="full" mb={12}>
-          <Heading as="h5" variant="h5" textAlign="center" my={3}>
-            Migrate Contract
-          </Heading>
-          <Stepper mode="migrate" currentStep={2} />
-        </Box>
+      </WasmPageContainer>
+      {migrateStep === "upload_new_code" && (
+        <FooterCTA
+          cancelButton={{
+            leftIcon: <CustomIcon name="chevron-left" />,
+            onClick: handleBack,
+          }}
+          actionButton={{
+            isDisabled: isDisabledProcess,
+            onClick: proceed,
+          }}
+          actionLabel="Upload"
+        />
       )}
-      <ConnectWalletAlert
-        mb={6}
-        subtitle="You need to connect your wallet to perform this action"
-      />
-      {/* Select Migrate Contract modal */}
-      <ContractSelectSection
-        mode="only-admin"
-        contractAddress={contractAddress}
-        onContractSelect={onContractSelect}
-      />
-      <Box mt={12} w="full">
-        {renderBody()}
-      </Box>
-    </WasmPageContainer>
+    </>
   );
 };
 

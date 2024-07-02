@@ -10,7 +10,6 @@ import {
   getCollectionMutateEventsQuery,
   getCollectionsByAccountQuery,
   getCollectionsQuery,
-  getCollectionTotalBurnedCountQuery,
   getCollectionUniqueHoldersCountQuery,
 } from "lib/query";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
@@ -20,15 +19,17 @@ import { parseTxHash, parseWithError } from "lib/utils";
 const zCollection = z
   .object({
     name: z.string(),
-    vm_address: z.object({ vm_address: zHexAddr32 }),
+    id: zHexAddr32,
     uri: z.string(),
     description: z.string(),
+    creator: zHexAddr32,
   })
   .transform((val) => ({
     description: val.description,
     uri: val.uri,
     name: val.name,
-    collectionAddress: val.vm_address.vm_address,
+    collectionAddress: val.id,
+    creator: val.creator,
   }));
 export type Collection = z.infer<typeof zCollection>;
 
@@ -51,12 +52,12 @@ export const getCollections = async (
   indexer: string,
   offset: number,
   pageSize: number,
-  search?: string
+  expression: object
 ) =>
   axios
     .post(indexer, {
       query: getCollectionsQuery,
-      variables: { offset, pageSize, search },
+      variables: { offset, pageSize, expression },
     })
     .then(({ data: res }) => parseWithError(zCollectionsResponse, res.data));
 
@@ -107,50 +108,21 @@ export const getCollectionByCollectionAddress = async (
       })
     );
 
-const zTotalBurnedResponse = z
-  .object({
-    nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
-  })
-  .transform<number>((val) => val.nfts_aggregate.aggregate.count);
-
-export const getCollectionTotalBurnedCount = async (
-  indexer: string,
-  collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
-      query: getCollectionTotalBurnedCountQuery,
-      variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data }) => parseWithError(zTotalBurnedResponse, data.data));
-
 const zCollectionCreatorResponse = z
   .object({
-    collections: z
+    collection_transactions: z
       .object({
-        collection_transactions: z
-          .object({
-            transaction: z.object({
-              block: z.object({ height: z.number(), timestamp: zUtcDate }),
-              hash: z.string(),
-            }),
-          })
-          .array(),
-        vmAddressByCreator: z.object({ vm_address: zHexAddr }),
+        block: z.object({ height: z.number(), timestamp: zUtcDate }),
+        transaction: z.object({ hash: z.string() }),
+        collection: z.object({ creator: zHexAddr }),
       })
       .array(),
   })
   .transform((val) => ({
-    creatorAddress: val.collections[0].vmAddressByCreator.vm_address,
-    height:
-      val.collections[0].collection_transactions[0].transaction.block.height,
-    timestamp:
-      val.collections[0].collection_transactions[0].transaction.block.timestamp,
-    txhash:
-      val.collections[0].collection_transactions[0].transaction.hash.replace(
-        "\\x",
-        ""
-      ),
+    creatorAddress: val.collection_transactions[0].collection.creator,
+    height: val.collection_transactions[0].block.height,
+    timestamp: val.collection_transactions[0].block.timestamp,
+    txhash: parseTxHash(val.collection_transactions[0].transaction.hash),
   }));
 export type CollectionCreatorResponse = z.infer<
   typeof zCollectionCreatorResponse
@@ -178,10 +150,10 @@ const zActivity = z
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
     is_nft_transfer: z.boolean(),
+    nft_id: zHexAddr.optional().nullable(),
     nft: z
       .object({
         token_id: z.string(),
-        vm_address: z.object({ vm_address: zHexAddr }),
       })
       .optional()
       .nullable(),
@@ -194,7 +166,7 @@ const zActivity = z
     isNftMint: data.is_nft_mint,
     isNftTransfer: data.is_nft_transfer,
     tokenId: data.nft?.token_id,
-    nftAddress: data.nft?.vm_address.vm_address,
+    nftAddress: data.nft_id,
     isCollectionCreate: data.is_collection_create,
   }));
 export type Activity = z.infer<typeof zActivity>;
@@ -325,13 +297,13 @@ export const getCollectionUniqueHoldersCount = async (
 const zCollectionsByAccountResponse = z
   .object({
     name: z.string(),
-    vm_address: z.object({ vm_address: zHexAddr32 }),
+    id: zHexAddr32,
     uri: z.string(),
     nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
   })
   .transform((val) => ({
     collectionName: val.name,
-    collectionAddress: val.vm_address.vm_address,
+    collectionAddress: val.id,
     uri: val.uri,
     hold: val.nfts_aggregate.aggregate.count,
   }))

@@ -1,11 +1,11 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
+import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { MobileTitle, TableTitle, ViewMore } from "lib/components/table";
-import type { IndexedModule } from "lib/services/move/moduleService";
-import type { BechAddr, Option } from "lib/types";
+import { MobileTitle, ViewMore } from "lib/components/table";
+import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";
 
@@ -36,33 +36,41 @@ export const ModuleLists = ({
           onViewMore={onViewMore}
         />
       ) : (
-        <>
-          <TableTitle
-            title="Module Instances"
-            helperText="Modules are ‘smart contracts’ deployed by this account"
-            count={totalCount}
-          />
-          {!onViewMore && (
-            <InputWithIcon
-              placeholder="Search with Module Name"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              size={{ base: "md", md: "lg" }}
-              my={4}
-              amptrackSection="account-detail-module-name-search"
+        <AccountSectionWrapper
+          title="Module Instances"
+          showCount={false}
+          helperText="This account deployed the following modules"
+          hasHelperText={!!modules?.length}
+        >
+          <Flex
+            direction="column"
+            borderBottom={modules?.length ? "1px solid" : "0px"}
+            borderBottomColor="gray.700"
+            mb={modules?.length ?? 12}
+            pb={modules?.length ?? 6}
+          >
+            {!onViewMore && (
+              <InputWithIcon
+                placeholder="Search with Module Name"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                size={{ base: "md", md: "lg" }}
+                my={4}
+                amptrackSection="account-detail-module-name-search"
+              />
+            )}
+            <ModuleListsBody
+              address={address}
+              keyword={keyword}
+              modules={modules}
+              isLoading={isLoading}
+              onViewMore={onViewMore}
             />
-          )}
-          <ModuleListsBody
-            address={address}
-            keyword={keyword}
-            modules={modules}
-            isLoading={isLoading}
-            onViewMore={onViewMore}
-          />
-          {onViewMore && !!totalCount && totalCount > 9 && (
-            <ViewMore onClick={onViewMore} />
-          )}
-        </>
+            {onViewMore && !!totalCount && totalCount > 9 && (
+              <ViewMore onClick={onViewMore} />
+            )}
+          </Flex>
+        </AccountSectionWrapper>
       )}
     </Box>
   );

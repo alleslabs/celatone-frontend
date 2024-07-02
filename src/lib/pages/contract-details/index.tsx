@@ -26,11 +26,13 @@ import { CustomIcon } from "lib/components/icon";
 import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useBalances } from "lib/services/balanceService";
+import { useAccountDelegationInfos } from "lib/model/account";
+import { useBalances } from "lib/services/bank";
 import type { BechAddr32 } from "lib/types";
-import { jsonPrettify } from "lib/utils";
+import { jsonPrettify, truncate } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
@@ -38,7 +40,7 @@ import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { ContractTables } from "./components/tables";
-import { useContractData } from "./data";
+import { useContractDataWithLocalInfos } from "./data";
 import { TabIndex, zContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
@@ -64,11 +66,13 @@ const ContractDetailsBody = observer(
       contractLocalInfo,
       data: contractData,
       isLoading,
-    } = useContractData(contractAddress);
+    } = useContractDataWithLocalInfos(contractAddress);
 
     const { data: balances, isLoading: isBalancesLoading } =
       useBalances(contractAddress);
 
+    const { isTotalBondedLoading, totalBonded } =
+      useAccountDelegationInfos(contractAddress);
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
     // ------------------------------------------//
@@ -95,8 +99,15 @@ const ContractDetailsBody = observer(
     if (contractData.contract === null) return <InvalidContract />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
+
+    const hasTotalBonded =
+      !isTotalBondedLoading &&
+      totalBonded &&
+      Object.keys(totalBonded).length === 0;
+
     return (
       <>
+        <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />
         <ContractTop
           contractAddress={contractAddress}
           projectInfo={projectInfo}
@@ -129,6 +140,7 @@ const ContractDetailsBody = observer(
             <CustomTab
               onClick={handleTabChange(TabIndex.Delegations)}
               hidden={!gov.enabled}
+              isDisabled={hasTotalBonded}
             >
               Delegations
             </CustomTab>
@@ -143,10 +155,17 @@ const ContractDetailsBody = observer(
             <TabPanel p={0} pt={{ base: 0, md: 8 }}>
               <Flex flexDirection="column" gap={8}>
                 <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
-                  <ContractDesc
-                    publicInfo={publicInfo}
-                    contract={contract}
-                    contractLocalInfo={contractLocalInfo}
+                  {(publicInfo || contractLocalInfo) && (
+                    <ContractDesc
+                      publicInfo={publicInfo}
+                      contract={contract}
+                      contractLocalInfo={contractLocalInfo}
+                    />
+                  )}
+                  <CommandSection
+                    contractAddress={contractAddress}
+                    codeHash={contract.codeHash}
+                    codeId={contract.codeId}
                   />
                   <Flex
                     borderBottom={{ base: "0px", md: "1px solid" }}
@@ -172,12 +191,7 @@ const ContractDetailsBody = observer(
                     </Flex>
                   )}
                 </Flex>
-                {/* Query/Execute commands section */}
-                <CommandSection
-                  contractAddress={contractAddress}
-                  codeHash={contract.codeHash}
-                  codeId={contract.codeId}
-                />
+
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (

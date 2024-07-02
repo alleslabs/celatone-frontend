@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { PublicDescription } from "lib/components/PublicDescription";
-import type { Contract } from "lib/services/contract";
+import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Nullable, Option, PublicContractInfo } from "lib/types";
 
@@ -22,7 +22,11 @@ export const ContractDesc = ({
   const isMobile = useMobile();
 
   return (
-    <Flex direction={{ base: "column", md: "row" }} gap={{ base: 4, md: 6 }}>
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      gap={{ base: 4, md: 6 }}
+      mb={{ base: 0, md: 4 }}
+    >
       {publicInfo?.description && (
         <PublicDescription
           title="Public Contract Description"
@@ -31,7 +35,7 @@ export const ContractDesc = ({
           icon={<CustomIcon name="public-project" color="gray.600" />}
         />
       )}
-      {!isMobile && (
+      {!isMobile && contractLocalInfo && (
         <UserContractDesc
           publicInfo={publicInfo}
           contract={contract}

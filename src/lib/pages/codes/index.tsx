@@ -1,32 +1,20 @@
-import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useWasmConfig } from "lib/app-provider";
-import { FilterByPermission } from "lib/components/forms";
+import { useTierConfig, useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
-import type { PermissionFilterValue } from "lib/hooks";
+import { CelatoneSeo } from "lib/components/Seo";
 
-import { RecentCodesTable } from "./components/RecentCodesTable";
-
-interface RecentCodesState {
-  permissionValue: PermissionFilterValue;
-}
+import { RecentCodesTableFull } from "./components/RecentCodesTableFull";
+import { RecentCodesTableLite } from "./components/RecentCodesTableLite";
 
 const RecentCodes = observer(() => {
   useWasmConfig({ shouldRedirect: true });
+  const tier = useTierConfig();
   const router = useRouter();
-
-  const { watch, setValue } = useForm<RecentCodesState>({
-    defaultValues: {
-      permissionValue: "all",
-    },
-  });
-  const { permissionValue } = watch();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_CODES);
@@ -34,22 +22,13 @@ const RecentCodes = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Codes" />
       <PageHeader
         title="Codes"
         subtitle="This page displays all codes on this network sorted by recency"
         docHref="introduction/overview#recent-codes"
       />
-      <Box mt={8} mb={4}>
-        <FilterByPermission
-          maxWidth="full"
-          initialSelected="all"
-          setPermissionValue={(newVal: PermissionFilterValue) => {
-            if (newVal === permissionValue) return;
-            setValue("permissionValue", newVal);
-          }}
-        />
-      </Box>
-      <RecentCodesTable permissionValue={permissionValue} />
+      {tier === "lite" ? <RecentCodesTableLite /> : <RecentCodesTableFull />}
     </PageContainer>
   );
 });

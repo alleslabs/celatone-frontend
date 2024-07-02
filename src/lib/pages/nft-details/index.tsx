@@ -13,13 +13,14 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -78,6 +79,7 @@ const NftDetailsBody = ({
 
   return (
     <>
+      <CelatoneSeo pageName={tokenId ? `NFT – ${tokenId}` : "NFT Details"} />
       <Breadcrumb
         items={[
           { text: "NFT Collections", href: "/nft-collections" },
@@ -276,6 +278,7 @@ const NftDetailsBody = ({
 };
 
 const NftDetails = observer(() => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const validated = zNftDetailQueryParams.safeParse(router.query);
 

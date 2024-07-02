@@ -51,7 +51,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
                 "Proposal Messages"
               );
               setExpandedIndexes((prev) =>
-                !prev.length ? Array.from(Array(messages?.length).keys()) : []
+                !prev.length ? Array.from(Array(messages.length).keys()) : []
               );
             }}
           >
@@ -67,9 +67,9 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
           index={expandedIndexes}
           onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
         >
-          {messages?.map((item, i) => (
+          {messages.map((item, i) => (
             <ProposalMessageCard
-              key={`msg-${JSON.stringify(item)}`}
+              key={`msg-${i.toString()}-${JSON.stringify(item)}`}
               header={`[${i}] ${item["@type"]}`}
               jsonString={jsonPrettify(JSON.stringify(item))}
             />

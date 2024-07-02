@@ -1,10 +1,11 @@
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {
-  useInstantiatedCountByUserQuery,
-  useInstantiatedListByUserQuery,
-} from "lib/services/contractService";
+  useInstantiatedContractsByAddressLcd,
+  useInstantiatedCountByAddress,
+  useInstantiatedListByAddress,
+} from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
@@ -16,10 +17,15 @@ interface InstantiatedByMeState {
 
 export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { address } = useCurrentChain();
-  const { data: contracts = [], isLoading } = useInstantiatedListByUserQuery(
-    enable ? address : undefined
+  const isFullTier = useTierConfig() === "full";
+
+  const resApi = useInstantiatedListByAddress(address, enable && isFullTier);
+  const resLcd = useInstantiatedContractsByAddressLcd(
+    address,
+    enable && !isFullTier
   );
 
+  const { data: contracts = [], isLoading } = isFullTier ? resApi : resLcd;
   const { getContractLocalInfo } = useContractStore();
 
   return {
@@ -40,7 +46,10 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useCurrentChain();
-  const { data: count } = useInstantiatedCountByUserQuery(address);
+  const isFullTier = useTierConfig() === "full";
+  const resApi = useInstantiatedCountByAddress(address);
+  const resLcd = useInstantiatedContractsByAddressLcd(address, !isFullTier);
+  const count = isFullTier ? resApi.data : resLcd.data?.length ?? 0;
 
   return {
     contracts: Array.from({ length: count ?? 0 }, () => ({

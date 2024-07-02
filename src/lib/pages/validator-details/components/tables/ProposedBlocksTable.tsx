@@ -8,7 +8,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { BlocksTable } from "lib/components/table/blocks";
-import { useValidatorProposedBlocks } from "lib/services/validatorService";
+import { useValidatorProposedBlocks } from "lib/services/validator";
 import type { ValidatorAddr } from "lib/types";
 
 const scrollComponentId = "proposed-block-table-header";
@@ -67,14 +67,14 @@ export const ProposedBlocksTable = ({
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
     </Flex>
   ) : (
-    <Flex direction="column" gap={6}>
+    <Flex direction="column" gap={4} mt={4}>
       <TableTitle
         id={scrollComponentId}
         title="Proposed Blocks"
         count={data?.total ?? 0}
         helperText={
           onViewMore
-            ? ""
+            ? undefined
             : "Display the proposed blocks by this validator within the last 30 days"
         }
         mb={0}

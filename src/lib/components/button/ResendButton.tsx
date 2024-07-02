@@ -8,7 +8,7 @@ import {
   useResendTx,
   useSimulateFeeQuery,
 } from "lib/app-provider";
-import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { useTxBroadcast } from "lib/hooks";
 import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 
@@ -18,6 +18,7 @@ interface ResendButtonProps {
 
 const formatMsgs = (messages: Message[]) =>
   messages.reduce((acc: EncodeObject[], msg: Message) => {
+    // TODO: revisit if detail is undefined
     const detail = msg.detail as Msg;
     acc.push({
       typeUrl: msg.type,

@@ -59,6 +59,8 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
     queryFn,
     {
       enabled: projectConfig.enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };

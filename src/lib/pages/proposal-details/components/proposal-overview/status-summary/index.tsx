@@ -4,6 +4,8 @@ import type { CSSProperties } from "react";
 import type { ProposalOverviewProps } from "..";
 import { ActiveDot } from "../../ActiveDot";
 import { ResultExplanation } from "../../ResultExplanation";
+import { useGovConfig } from "lib/app-provider";
+import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
 
 import { SummaryStatusChip } from "./SummaryStatusChip";
@@ -34,7 +36,9 @@ export const StatusSummary = ({
   proposalData,
   ...props
 }: ProposalOverviewProps) => {
-  const isOngoing =
+  const gov = useGovConfig({ shouldRedirect: false });
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
+  const isDepositOrVoting =
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
@@ -54,11 +58,23 @@ export const StatusSummary = ({
         justify="space-between"
       >
         <Flex align="center" gap={2} whiteSpace="nowrap">
-          {isOngoing && <ActiveDot />}
-          <Text variant="body1" textColor="text.main" fontWeight={700}>
-            {isOngoing ? "Current" : "Final"} proposal result:
-          </Text>
-          <SummaryStatusChip proposalData={proposalData} {...props} />
+          {isDepositOrVoting && <ActiveDot />}
+          {disableVotingPeriodTally &&
+          proposalData.status === ProposalStatus.VOTING_PERIOD ? (
+            <>
+              <Text variant="body1" textColor="text.main" fontWeight={700}>
+                Current proposal status:
+              </Text>
+              <StatusChip status={ProposalStatus.VOTING_PERIOD} />
+            </>
+          ) : (
+            <>
+              <Text variant="body1" textColor="text.main" fontWeight={700}>
+                {isDepositOrVoting ? "Current" : "Final"} proposal result:
+              </Text>
+              <SummaryStatusChip proposalData={proposalData} {...props} />
+            </>
+          )}
         </Flex>
         <SummaryStatusTime proposalData={proposalData} />
       </Flex>

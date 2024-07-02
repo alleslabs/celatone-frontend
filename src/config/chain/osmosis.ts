@@ -4,6 +4,7 @@ import type { ChainConfigs } from "./types";
 
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
   "osmosis-1": {
+    tier: "full",
     chain: "osmosis",
     registryChainName: "osmosis",
     prettyName: "Osmosis",
@@ -48,11 +49,10 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uosmo",
-    },
+    extra: {},
   },
   "osmo-test-5": {
+    tier: "full",
     chain: "osmosis",
     registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",
@@ -98,11 +98,10 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uosmo",
-    },
+    extra: {},
   },
   localosmosis: {
+    tier: "full",
     chain: "osmosis",
     registryChainName: "localosmosis",
     prettyName: "Local Osmosis",
@@ -147,8 +146,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    extra: {
-      singleStakingDenom: "uosmo",
-    },
+    extra: {},
   },
 };

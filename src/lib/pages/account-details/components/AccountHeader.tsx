@@ -1,4 +1,4 @@
-import { Flex, Heading, IconButton, Image, Text } from "@chakra-ui/react";
+import { Flex, IconButton, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { useMobile, useMoveConfig } from "lib/app-provider";
@@ -12,28 +12,36 @@ import {
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
-import type { AccountData } from "lib/services/account";
+import type { AccountData } from "lib/services/types";
 import type { BechAddr, HexAddr, Option } from "lib/types";
+
+import type { InitiaUsernameDataResponse } from "./AccountTitle";
+import { AccountTitle } from "./AccountTitle";
 
 interface AccounHeaderProps {
   accountData: Option<AccountData>;
   accountAddress: BechAddr;
   hexAddress: HexAddr;
+  initiaUsernameData: Option<InitiaUsernameDataResponse>;
+  isInitiaUsernameDataLoading: boolean;
+  isInitiaUsernameDataFetching: boolean;
 }
 
 export const AccountHeader = observer(
-  ({ accountData, accountAddress, hexAddress }: AccounHeaderProps) => {
+  ({
+    accountData,
+    accountAddress,
+    hexAddress,
+    initiaUsernameData,
+    isInitiaUsernameDataLoading,
+    isInitiaUsernameDataFetching,
+  }: AccounHeaderProps) => {
     const move = useMoveConfig({ shouldRedirect: false });
-    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
+    const isMobile = useMobile();
 
+    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
-    const displayName =
-      accountLocalInfo?.name ??
-      accountData?.publicInfo?.name ??
-      (accountData?.icns?.primaryName || "Account Details");
-
-    const isMobile = useMobile();
 
     return (
       <Flex
@@ -43,29 +51,13 @@ export const AccountHeader = observer(
       >
         <Flex direction="column" gap={2} w={{ base: "full", lg: "auto" }}>
           <Flex gap={4} align="center" minH="36px">
-            <Flex gap={1} align="center">
-              {accountData?.projectInfo?.logo ||
-              accountData?.icns?.primaryName ? (
-                <Image
-                  src={
-                    accountData?.projectInfo?.logo ??
-                    "https://celatone-api.alleslabs.dev/images/entities/icns"
-                  }
-                  borderRadius="full"
-                  alt={
-                    accountData?.projectInfo?.name ??
-                    accountData?.icns?.primaryName
-                  }
-                  width={7}
-                  height={7}
-                />
-              ) : (
-                <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
-              )}
-              <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-                {displayName}
-              </Heading>
-            </Flex>
+            <AccountTitle
+              accountData={accountData}
+              accountLocalInfo={accountLocalInfo}
+              initiaUsernameData={initiaUsernameData}
+              isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+              isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
+            />
             {!isMobile && (
               <>
                 {isSaved && accountLocalInfo ? (
@@ -145,6 +137,21 @@ export const AccountHeader = observer(
                   amptrackSection="account_top"
                   type="user_address"
                 />
+              </Flex>
+            )}
+            {accountLocalInfo?.name && initiaUsernameData?.username && (
+              <Flex mt={{ base: 1, md: 0 }} alignItems="center">
+                <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
+                  Initia Username:
+                </Text>
+                <Image
+                  src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+                  borderRadius="full"
+                  width={4}
+                  height={4}
+                  mr={1}
+                />
+                <Text variant="body2">{initiaUsernameData.username}</Text>
               </Flex>
             )}
           </Flex>

@@ -7,6 +7,7 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
+import { ContractInteractionTabs } from "lib/types";
 
 import type { PublicContractInfo } from ".";
 
@@ -45,7 +46,9 @@ export const PublicProjectContractMobileCard = ({
             justifyContent="center"
             onClick={(e) => e.stopPropagation()}
           >
-            <AppLink href={`/query?contract=${publicInfo.contractAddress}`}>
+            <AppLink
+              href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicInfo.contractAddress}`}
+            >
               <Button variant="outline-gray" size="sm">
                 Query
               </Button>
