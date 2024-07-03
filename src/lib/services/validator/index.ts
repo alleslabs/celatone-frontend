@@ -77,6 +77,7 @@ export const useValidators = (
     {
       retry: 1,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -347,7 +348,7 @@ export const useValidatorImage = (
       validator?.moniker,
     ],
     queryFn: async () => {
-      if (!validator) return Promise.resolve("");
+      if (!validator) return "";
       return resolveValIdentity(chainName, validator, secondaryMain);
     },
     retry: false,
