@@ -74,6 +74,10 @@ export const VerifyPublishCode = ({
           .min(1, {
             message: "Please provide the source code’s GitHub commit URL",
           })
+          .regex(
+            /^https:\/\/github\.com\/[A-Za-z0-9_.-]+$/,
+            "Please enter GitHub URL in format: https://github.com/yourrepositoryname"
+          )
           .url({
             message:
               "Please enter GitHub URL in format: https://github.com/yourrepositoryname",
@@ -98,7 +102,8 @@ export const VerifyPublishCode = ({
         compilerVersion: z.string().min(1),
       })
     ),
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onChange",
     defaultValues: {
       githubRepository: "",
       commitHash: "",
