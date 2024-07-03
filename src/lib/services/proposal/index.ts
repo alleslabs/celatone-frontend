@@ -52,14 +52,13 @@ import {
 } from "./lcd";
 
 export const useProposalParams = () => {
-  const tier = useTierConfig();
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("proposals");
   const lcdEndpoint = useLcdEndpoint();
 
-  const [endpoint, queryFn] =
-    tier === "full"
-      ? [apiEndpoint, getProposalParams]
-      : [lcdEndpoint, getProposalParamsLcd];
+  const [endpoint, queryFn] = isFullTier
+    ? [apiEndpoint, getProposalParams]
+    : [lcdEndpoint, getProposalParamsLcd];
 
   return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
@@ -223,14 +222,13 @@ export const useProposalDepositsLcd = (id: number, enabled = true) => {
 };
 
 export const useProposalVotesInfo = (id: number, enabled: boolean) => {
-  const tier = useTierConfig();
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("proposals");
   const lcdEndpoint = useLcdEndpoint();
 
-  const [endpoint, queryFn] =
-    tier === "full"
-      ? [apiEndpoint, getProposalVotesInfo]
-      : [lcdEndpoint, getProposalVotesInfoLcd];
+  const [endpoint, queryFn] = isFullTier
+    ? [apiEndpoint, getProposalVotesInfo]
+    : [lcdEndpoint, getProposalVotesInfoLcd];
 
   return useQuery<ProposalVotesInfo>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],

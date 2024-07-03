@@ -99,7 +99,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   // ------------------------------------------//
   // ------------------STATES------------------//

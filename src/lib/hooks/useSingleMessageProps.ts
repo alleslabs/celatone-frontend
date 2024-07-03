@@ -599,7 +599,7 @@ export const useSingleActionMsgProps = (
   messages: Message[],
   singleMsg: Option<boolean>
 ): SingleMsgProps => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const { getContractLocalInfo } = useContractStore();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });

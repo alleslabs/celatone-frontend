@@ -56,7 +56,7 @@ export const ContractsTableRowCTA = ({
   showLastUpdate = true,
 }: ContractsTableRowCTAProps) => {
   const { address } = useCurrentChain();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
