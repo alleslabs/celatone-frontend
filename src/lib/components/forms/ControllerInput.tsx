@@ -99,6 +99,7 @@ export const ControllerInput = <T extends FieldValues>({
           autoFocus={autoFocus}
           cursor={cursor}
           pr={status ? "2rem" : 0}
+          onBlur={field.onBlur}
         />
         <InputRightElement h="full">
           {status && getStatusIcon(status.state)}

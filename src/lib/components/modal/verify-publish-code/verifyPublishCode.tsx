@@ -89,6 +89,7 @@ export const VerifyPublishCode = ({
         compilerVersion: z.string().min(1),
       })
     ),
+    mode: "onBlur",
     defaultValues: {
       githubRepository: "",
       commitHash: "",
