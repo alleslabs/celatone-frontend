@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.7.0
+
+### Features
+
 - [#968](https://github.com/alleslabs/celatone-frontend/pull/968) Add custom meta title for each page
 - [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
@@ -243,6 +251,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#969](https://github.com/alleslabs/celatone-frontend/pull/969) Fix contract data lcd missing data
+- [#942](https://github.com/alleslabs/celatone-frontend/pull/942) Fix asset input
 - [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
 - [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
 - [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline

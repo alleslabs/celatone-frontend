@@ -39,7 +39,7 @@ export const ValidatorBadge = ({
           {isMobile && hasLabel && <MobileLabel label="Validator" />}
           <ExplorerLink
             type="validator_address"
-            value={validator.moniker ?? validator.validatorAddress}
+            value={validator.moniker || validator.validatorAddress}
             copyValue={validator.validatorAddress}
             externalLink={
               isValidatorExternalLink
