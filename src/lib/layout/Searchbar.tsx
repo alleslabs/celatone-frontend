@@ -287,7 +287,7 @@ const getPlaceholder = ({
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const Searchbar = () => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const {

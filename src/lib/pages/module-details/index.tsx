@@ -47,7 +47,7 @@ const ModuleDetailsBody = ({
   const formatAddresses = useFormatAddresses();
   const { hex: vmAddress } = formatAddresses(address);
 
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const currentTab =
     !isFullTier && tab === TabIndex.TxsHistories ? TabIndex.Overview : tab;
 

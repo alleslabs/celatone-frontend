@@ -49,7 +49,7 @@ export function SaveNewAccountModal({
   publicDescription,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const { user: exampleUserAddress } = useExampleAddresses();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddresses = useFormatAddresses();

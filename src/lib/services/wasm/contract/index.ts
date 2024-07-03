@@ -143,7 +143,7 @@ export const useContractData = (
   contractAddress: BechAddr32,
   options?: UseQueryOptions<ContractData>
 ) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("contracts");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;

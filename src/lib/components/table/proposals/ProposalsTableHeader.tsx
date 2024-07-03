@@ -13,7 +13,7 @@ export const ProposalsTableHeader = ({
   templateColumns,
   boxShadow,
 }: ProposalsTableHeaderProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
