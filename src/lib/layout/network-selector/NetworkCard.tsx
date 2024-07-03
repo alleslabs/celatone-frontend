@@ -11,10 +11,20 @@ interface NetworkCardProps {
   image?: string;
   chainId: string;
   isSelected: boolean;
+  isDraggable?: boolean;
 }
 
+const iconProps = {
+  cursor: "pointer",
+  className: "icon-container",
+  align: "center",
+  padding: 1,
+};
+
+const customTransition = "opacity 0.1s ease-in-out";
+
 export const NetworkCard = observer(
-  ({ image, chainId, isSelected }: NetworkCardProps) => {
+  ({ image, chainId, isSelected, isDraggable = false }: NetworkCardProps) => {
     const selectChain = useSelectChain();
     const [secondaryDarker] = useToken("colors", ["secondary.darker"]);
     const fallbackImage = `https://ui-avatars.com/api/?name=${CHAIN_CONFIGS[chainId]?.prettyName || chainId}&background=${secondaryDarker.replace("#", "")}&color=fff`;
@@ -28,24 +38,40 @@ export const NetworkCard = observer(
       icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
 
-    const handleSave = useCallback(() => {
-      pinNetwork({
-        name: CHAIN_CONFIGS[chainId]?.prettyName,
-        chainId,
-        logo: image || fallbackImage,
-        id: "",
-      });
-      toast({
-        title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
-      });
-    }, [pinNetwork, image, chainId, toast, fallbackImage]);
+    const handleSave = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        pinNetwork({
+          name: CHAIN_CONFIGS[chainId]?.prettyName,
+          chainId,
+          logo: image || fallbackImage,
+          id: "",
+        });
+        toast({
+          title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
+        });
+      },
+      [pinNetwork, image, chainId, toast, fallbackImage]
+    );
 
-    const handleRemove = useCallback(() => {
-      removeNetwork(chainId);
-      toast({
-        title: `\u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 is removed from Pinned Networks`,
-      });
-    }, [removeNetwork, chainId, toast]);
+    const handleRemove = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        removeNetwork(chainId);
+        toast({
+          title: `\u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 is removed from Pinned Networks`,
+        });
+      },
+      [removeNetwork, chainId, toast]
+    );
+
+    const handleClick = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        selectChain(chainId);
+      },
+      [selectChain, chainId]
+    );
 
     return (
       <Flex
@@ -64,7 +90,8 @@ export const NetworkCard = observer(
             opacity: 1,
           },
         }}
-        onClick={() => selectChain(chainId)}
+        onClick={handleClick}
+        cursor={!isDraggable ? "pointer" : "inherit"}
       >
         <Box
           opacity={isSelected ? 1 : 0}
@@ -93,37 +120,40 @@ export const NetworkCard = observer(
             </Text>
           </Flex>
         </Flex>
-        <Flex className="icon-wrapper" gap={2}>
-          <Flex
-            align="center"
-            className="icon-container"
-            opacity={0}
-            _hover={{ opacity: 1, transition: "opacity 0.25s ease-in-out" }}
-          >
-            <CustomIcon name="drag" color="gray.600" />
-          </Flex>
+        <Flex className="icon-wrapper" gap={2} zIndex={1}>
+          {isDraggable && (
+            <Flex
+              align="center"
+              className="icon-container"
+              opacity={0}
+              _hover={{ opacity: 1, transition: customTransition }}
+            >
+              <CustomIcon name="drag" color="gray.600" />
+            </Flex>
+          )}
           {isNetworkPinned(chainId) ? (
             <Flex
-              className="icon-container"
-              align="center"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemove();
+              data-no-dnd="true"
+              {...iconProps}
+              onClick={handleRemove}
+              _hover={{
+                background: isSelected ? "gray.800" : "gray.900",
+                borderRadius: 4,
+                transition: customTransition,
               }}
             >
               <CustomIcon name="pin-solid" />
             </Flex>
           ) : (
             <Flex
-              className="icon-container"
-              align="center"
-              onClick={(e) => {
-                if (chainId) {
-                  e.stopPropagation();
-                  handleSave();
-                }
-              }}
+              {...iconProps}
+              onClick={handleSave}
               sx={{ opacity: 0, transition: "opacity 0.25s ease-in-out" }}
+              _hover={{
+                background: isSelected ? "gray.800" : "gray.900",
+                borderRadius: 4,
+                transition: customTransition,
+              }}
             >
               <CustomIcon name="pin" />
             </Flex>

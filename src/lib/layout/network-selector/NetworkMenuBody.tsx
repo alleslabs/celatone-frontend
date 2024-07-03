@@ -9,24 +9,23 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import type { DragEndEvent } from "@dnd-kit/core";
+import type { Active, DragEndEvent, DropAnimation } from "@dnd-kit/core";
 import {
   closestCenter,
+  defaultDropAnimationSideEffects,
   DndContext,
-  KeyboardSensor,
-  PointerSensor,
+  DragOverlay,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { findIndex } from "lodash";
 import { observer } from "mobx-react-lite";
 import { useCallback, useMemo, useState } from "react";
 
@@ -39,9 +38,12 @@ import { NetworkCard } from "./NetworkCard";
 
 interface AccordionNetworkListProps {
   title: string;
-  networks: string[];
+  normalNetworks: string[];
+  l1Networks?: string[];
+  l2Networks?: string[];
   currentChainId: string;
   isHidden?: boolean;
+  isMove?: boolean;
 }
 
 interface NetworkMenuBodyProps {
@@ -51,9 +53,12 @@ interface NetworkMenuBodyProps {
 
 const AccordionNetworkList = ({
   title,
-  networks,
+  normalNetworks,
+  l1Networks,
+  l2Networks,
   currentChainId,
   isHidden = false,
+  isMove = false,
 }: AccordionNetworkListProps) => (
   <AccordionItem hidden={isHidden}>
     <AccordionButton p={0}>
@@ -65,22 +70,61 @@ const AccordionNetworkList = ({
       </Flex>
     </AccordionButton>
     <AccordionPanel p={0}>
-      <Flex direction="column" gap={1}>
-        {networks.map((chainId) => (
-          <NetworkCard
-            key={chainId}
-            image={CHAIN_CONFIGS[chainId]?.logoUrl}
-            chainId={chainId}
-            isSelected={chainId === currentChainId}
-          />
-        ))}
-      </Flex>
+      {isMove ? (
+        <>
+          {l1Networks && (
+            <Flex direction="column" gap={1}>
+              {l1Networks.map((chainId) => (
+                <NetworkCard
+                  key={chainId}
+                  image={CHAIN_CONFIGS[chainId]?.logoUrl}
+                  chainId={chainId}
+                  isSelected={chainId === currentChainId}
+                />
+              ))}
+            </Flex>
+          )}
+          {l2Networks && (
+            <Flex direction="column" gap={1}>
+              {l2Networks.map((chainId) => (
+                <NetworkCard
+                  key={chainId}
+                  image={CHAIN_CONFIGS[chainId]?.logoUrl}
+                  chainId={chainId}
+                  isSelected={chainId === currentChainId}
+                />
+              ))}
+            </Flex>
+          )}
+        </>
+      ) : (
+        <Flex direction="column" gap={1}>
+          {normalNetworks.map((chainId) => (
+            <NetworkCard
+              key={chainId}
+              image={CHAIN_CONFIGS[chainId]?.logoUrl}
+              chainId={chainId}
+              isSelected={chainId === currentChainId}
+            />
+          ))}
+        </Flex>
+      )}
     </AccordionPanel>
   </AccordionItem>
 );
 
 export const ItemTypes = {
   CARD: "card",
+};
+
+const dropAnimationConfig: DropAnimation = {
+  sideEffects: defaultDropAnimationSideEffects({
+    styles: {
+      active: {
+        opacity: "0.4",
+      },
+    },
+  }),
 };
 
 const SortableItem = ({
@@ -90,19 +134,34 @@ const SortableItem = ({
   chainId: string;
   currentChainId: string;
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: chainId,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: chainId,
+  });
 
   const style = {
+    opacity: isDragging ? 0.7 : undefined,
+    cursor: isDragging ? "grabbing" : "grab",
     transform: transform ? CSS.Transform.toString(transform) : "none",
     transition: transition || "transform 250ms ease",
   };
 
   return (
-    <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <Box
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      onClick={(e) => e.stopPropagation()}
+    >
       <NetworkCard
+        isDraggable
         image={CHAIN_CONFIGS[chainId]?.logoUrl}
         chainId={chainId}
         isSelected={chainId === currentChainId}
@@ -136,7 +195,7 @@ export const NetworkMenuBody = observer(
     const filteredTestnetChains = filteredChains("testnet");
     const filteredMainnetChains = filteredChains("mainnet");
 
-    const { getPinnedNetworks } = useNetworkStore();
+    const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
     const pinnedNetworks = getPinnedNetworks();
 
     const filteredPinnedNetworks = useMemo(() => {
@@ -155,35 +214,43 @@ export const NetworkMenuBody = observer(
       !filteredMainnetChains.length &&
       !filteredTestnetChains.length;
 
-    const [items, setItems] = useState(filteredPinnedNetworks);
+    const [dndActive, setDndActive] = useState<Active | null>(null);
+
+    const activeItem = useMemo(
+      () => filteredPinnedNetworks.find((item) => item.id === dndActive?.id),
+      [dndActive, filteredPinnedNetworks]
+    );
 
     const sensors = useSensors(
-      useSensor(PointerSensor),
-      useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
-      })
+      useSensor(MouseSensor, {
+        activationConstraint: {
+          delay: 100,
+          tolerance: 5,
+        },
+      }),
+      useSensor(TouchSensor)
     );
 
     const handleDragEnd = (event: DragEndEvent) => {
       const { active, over } = event;
 
       if (active.id !== over?.id) {
-        setItems((newItems) => {
-          const oldIndex = findIndex(
-            items,
-            (item) => item.chainId === active.id
-          );
-          const newIndex = findIndex(
-            items,
-            (item) => item.chainId === over?.id
-          );
-          return arrayMove(newItems, oldIndex, newIndex);
-        });
+        setPinnedNetworks(active.id.toString(), over?.id.toString());
       }
     };
 
     return (
-      <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={({ active }) => {
+          setDndActive(active);
+        }}
+        onDragEnd={handleDragEnd}
+        onDragCancel={() => {
+          setDndActive(null);
+        }}
+      >
         <Accordion
           variant="transparent"
           allowMultiple
@@ -201,25 +268,27 @@ export const NetworkMenuBody = observer(
               </Flex>
             </AccordionButton>
             <AccordionPanel p={0}>
-              {/* // TODO: Implement DND */}
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
+              <SortableContext
+                items={filteredPinnedNetworks.map((item) => item.chainId)}
+                strategy={verticalListSortingStrategy}
               >
-                <SortableContext
-                  items={items}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {items.map((item) => (
-                    <SortableItem
-                      key={item.chainId}
-                      chainId={item.chainId}
-                      currentChainId={currentChainId}
-                    />
-                  ))}
-                </SortableContext>
-              </DndContext>
+                {filteredPinnedNetworks.map((item) => (
+                  <SortableItem
+                    key={item.chainId}
+                    chainId={item.chainId}
+                    currentChainId={currentChainId}
+                  />
+                ))}
+              </SortableContext>
+              <DragOverlay dropAnimation={dropAnimationConfig}>
+                {activeItem ? (
+                  <SortableItem
+                    key={activeItem.chainId}
+                    chainId={activeItem.chainId}
+                    currentChainId={currentChainId}
+                  />
+                ) : null}
+              </DragOverlay>
             </AccordionPanel>
           </AccordionItem>
           {filteredPinnedNetworks.length > 0 && (
@@ -232,7 +301,7 @@ export const NetworkMenuBody = observer(
           <AccordionNetworkList
             isHidden={filteredMainnetChains.length === 0}
             title="Mainnet"
-            networks={filteredMainnetChains}
+            normalNetworks={filteredMainnetChains}
             currentChainId={currentChainId}
           />
           {filteredMainnetChains.length > 0 && (
@@ -245,7 +314,7 @@ export const NetworkMenuBody = observer(
           <AccordionNetworkList
             isHidden={filteredTestnetChains.length === 0}
             title="Testnet"
-            networks={filteredTestnetChains}
+            normalNetworks={filteredTestnetChains}
             currentChainId={currentChainId}
           />
         </Accordion>
@@ -259,7 +328,7 @@ export const NetworkMenuBody = observer(
 Please check your keyword."
           />
         )}
-      </>
+      </DndContext>
     );
   }
 );

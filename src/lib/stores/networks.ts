@@ -1,3 +1,5 @@
+import { arrayMove } from "@dnd-kit/sortable";
+import { findIndex } from "lodash";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
@@ -59,5 +61,13 @@ export class NetworkStore {
     this.networks[this.userKey] = this.networks[this.userKey]?.filter(
       (each) => each.chainId !== chainId
     );
+  }
+
+  setPinnedNetworks(activeId: string, overId?: string): void {
+    const newItems = this.networks[this.userKey] ?? [];
+    const items = [...newItems];
+    const oldIndex = findIndex(items, (item) => item.chainId === activeId);
+    const newIndex = findIndex(items, (item) => item.chainId === overId);
+    this.networks[this.userKey] = arrayMove(items, oldIndex, newIndex);
   }
 }
