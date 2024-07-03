@@ -185,7 +185,7 @@ export const VerifyPublishCode = ({
               <ControllerInput
                 name="wasmFileName"
                 control={control}
-                label="Wasm File Nme:"
+                label="Wasm File Name:"
                 labelBgColor="gray.800"
                 variant="fixed-floating"
                 placeholder="e.g. celatone_contract"
