@@ -6,6 +6,7 @@ import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ValidatorImage } from "lib/components/ValidatorImage";
 import type { Option, ValidatorData } from "lib/types";
+import { truncate } from "lib/utils";
 
 import { ValidatorStats } from "./ValidatorStats";
 import { ValidatorTitle } from "./ValidatorTitle";
@@ -29,7 +30,7 @@ export const ValidatorTop = ({
           text: "Validators",
           href: "/validators",
         },
-        { text: info.moniker },
+        { text: info.moniker || truncate(info.validatorAddress) },
       ]}
     />
     <Flex gap={4} alignItems={{ base: "start", md: "center" }}>

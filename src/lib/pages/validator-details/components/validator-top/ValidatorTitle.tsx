@@ -37,10 +37,10 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
           as="h5"
           variant="h5"
           wordBreak="break-word"
-          color={info.moniker.length ? "text.main" : "gray.600"}
+          color={info.moniker.length ? "text.main" : "text.disabled"}
           display={{ base: "none", md: "flex" }}
         >
-          {info.moniker || "(empty)"}
+          {info.moniker || "Untitled"}
         </Heading>
         <ValidatorStatusTag info={info} />
       </Flex>
@@ -49,10 +49,10 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
         variant="h6"
         mt={1}
         wordBreak="break-word"
-        color={info.moniker.length ? "text.main" : "gray.600"}
+        color={info.moniker.length ? "text.main" : "text.disabled"}
         display={{ base: "flex", md: "none" }}
       >
-        {info.moniker || "(empty)"}
+        {info.moniker || "Untitled"}
       </Heading>
       <WebsiteButton
         href={info.website}

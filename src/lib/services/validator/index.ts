@@ -77,6 +77,7 @@ export const useValidators = (
     {
       retry: 1,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
