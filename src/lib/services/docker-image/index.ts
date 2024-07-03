@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 
-import { getDockerImageTag } from "./external";
+import { getDockerImageTag } from "./api";
 
 export const useDockerImageTag = (repository: string, image: string) => {
-  const endpoint = "https://hub.docker.com/v2/namespaces";
+  const endpoint = "/api/docker/image/tag";
 
   return useQuery(
     [CELATONE_QUERY_KEYS.DOCKER_IMAGE_TAG, endpoint, repository, image],

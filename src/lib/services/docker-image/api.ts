@@ -9,5 +9,10 @@ export const getDockerImageTag = async (
   image: string
 ) =>
   axios
-    .get(`${endpoint}/${repository}/repositories/${image}/tags`)
+    .get(endpoint, {
+      params: {
+        repository,
+        image,
+      },
+    })
     .then(({ data }) => parseWithError(zDockerImageTag, data));
