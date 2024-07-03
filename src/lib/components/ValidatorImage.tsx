@@ -15,7 +15,11 @@ export const ValidatorImage = ({
 }: ValidatorImageProps) => {
   const { data, isLoading } = useValidatorImage(validator);
 
-  if (!validator) {
+  if (
+    !validator ||
+    !validator.moniker ||
+    validator.moniker.trim().length === 0
+  ) {
     return (
       <Image
         boxSize={boxSize}
@@ -27,7 +31,7 @@ export const ValidatorImage = ({
     );
   }
 
-  return isLoading || !data || !validator.moniker ? (
+  return isLoading || !data ? (
     <SkeletonCircle boxSize={boxSize} minWidth={boxSize} />
   ) : (
     <Image

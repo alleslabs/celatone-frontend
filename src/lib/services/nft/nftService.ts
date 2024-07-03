@@ -1,10 +1,16 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { useNftsByAccountExpression, useNftsExpression } from "../expression";
+import {
+  useNftsByAccountExpression,
+  useNftsByAccountExpressionOld,
+  useNftsExpression,
+  useNftsExpressionOld,
+} from "../expression";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
+  useCurrentChain,
   useNftConfig,
 } from "lib/app-provider";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
@@ -29,6 +35,18 @@ import {
   getNftTransactions,
   getNftTransactionsCount,
 } from "./nft";
+import {
+  getNftByNftAddressOld,
+  getNftMutateEventsCountOld,
+  getNftMutateEventsOld,
+  getNftsByAccountOld,
+  getNftsCountByAccountOld,
+  getNftsOld,
+  getNftTransactionsCountOld,
+  getNftTransactionsOld,
+} from "./nftOld";
+
+const INITIATION_CHAIN_ID = "initiation-1";
 
 export const useNfts = (
   collectionAddress: HexAddr32,
@@ -37,7 +55,13 @@ export const useNfts = (
   search = ""
 ) => {
   const { chainConfig } = useCelatoneApp();
-  const expression = useNftsExpression(collectionAddress, search);
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+  const expressionNew = useNftsExpression(collectionAddress, search);
+  const expressionOld = useNftsExpressionOld(collectionAddress, search);
+  const expression =
+    chainId === INITIATION_CHAIN_ID ? expressionNew : expressionOld;
 
   return useQuery<Nft[]>(
     [
@@ -49,7 +73,10 @@ export const useNfts = (
       search,
       expression,
     ],
-    async () => getNfts(chainConfig.indexer, pageSize, offset, expression),
+    async () =>
+      chainId === INITIATION_CHAIN_ID
+        ? getNfts(chainConfig.indexer, pageSize, offset, expression)
+        : getNftsOld(chainConfig.indexer, pageSize, offset, expression),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -62,6 +89,10 @@ export const useNftByNftAddress = (
   nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+
   return useQuery<NftByNftAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
@@ -70,7 +101,13 @@ export const useNftByNftAddress = (
       nftAddress,
     ],
     async () =>
-      getNftByNftAddress(chainConfig.indexer, collectionAddress, nftAddress),
+      chainId === INITIATION_CHAIN_ID
+        ? getNftByNftAddress(chainConfig.indexer, collectionAddress, nftAddress)
+        : getNftByNftAddressOld(
+            chainConfig.indexer,
+            collectionAddress,
+            nftAddress
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -108,6 +145,10 @@ export const useNftTransactions = (
   nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+
   return useQuery<NftTransactions[]>(
     [
       CELATONE_QUERY_KEYS.NFT_TRANSACTIONS,
@@ -117,7 +158,9 @@ export const useNftTransactions = (
       offset,
     ],
     async () =>
-      getNftTransactions(chainConfig.indexer, nftAddress, offset, limit),
+      chainId === INITIATION_CHAIN_ID
+        ? getNftTransactions(chainConfig.indexer, nftAddress, offset, limit)
+        : getNftTransactionsOld(chainConfig.indexer, nftAddress, offset, limit),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -127,13 +170,20 @@ export const useNftTransactions = (
 
 export const useNftTransactionsCount = (nftAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_COUNT,
       chainConfig.indexer,
       nftAddress,
     ],
-    async () => getNftTransactionsCount(chainConfig.indexer, nftAddress),
+    async () =>
+      chainId === INITIATION_CHAIN_ID
+        ? getNftTransactionsCount(chainConfig.indexer, nftAddress)
+        : getNftTransactionsCountOld(chainConfig.indexer, nftAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -147,6 +197,10 @@ export const useNftMutateEvents = (
   nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+
   return useQuery<MutateEvent[]>(
     [
       CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS,
@@ -156,7 +210,9 @@ export const useNftMutateEvents = (
       offset,
     ],
     async () =>
-      getNftMutateEvents(chainConfig.indexer, nftAddress, offset, limit),
+      chainId === INITIATION_CHAIN_ID
+        ? getNftMutateEvents(chainConfig.indexer, nftAddress, offset, limit)
+        : getNftMutateEventsOld(chainConfig.indexer, nftAddress, offset, limit),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -166,13 +222,20 @@ export const useNftMutateEvents = (
 
 export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS_COUNT,
       chainConfig.indexer,
       nftAddress,
     ],
-    async () => getNftMutateEventsCount(chainConfig.indexer, nftAddress),
+    async () =>
+      chainId === INITIATION_CHAIN_ID
+        ? getNftMutateEventsCount(chainConfig.indexer, nftAddress)
+        : getNftMutateEventsCountOld(chainConfig.indexer, nftAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -183,6 +246,9 @@ export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
 export const useNftsCountByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
   const { enabled } = useNftConfig({ shouldRedirect: false });
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
 
   return useQuery<number>(
     [
@@ -190,7 +256,10 @@ export const useNftsCountByAccount = (accountAddress: HexAddr) => {
       chainConfig.indexer,
       accountAddress,
     ],
-    async () => getNftsCountByAccount(chainConfig.indexer, accountAddress),
+    async () =>
+      chainId === INITIATION_CHAIN_ID
+        ? getNftsCountByAccount(chainConfig.indexer, accountAddress)
+        : getNftsCountByAccountOld(chainConfig.indexer, accountAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -208,11 +277,21 @@ export const useNftsByAccountByCollection = (
   options: Pick<UseQueryOptions<NftsByAccountResponse>, "onSuccess"> = {}
 ) => {
   const { chainConfig } = useCelatoneApp();
-  const expression = useNftsByAccountExpression(
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
+  const expressionNew = useNftsByAccountExpression(
     accountAddress,
     collectionAddress,
     search
   );
+  const expressionOld = useNftsByAccountExpressionOld(
+    accountAddress,
+    collectionAddress,
+    search
+  );
+  const expression =
+    chainId === INITIATION_CHAIN_ID ? expressionNew : expressionOld;
 
   return useQuery<NftsByAccountResponse>(
     [
@@ -221,11 +300,18 @@ export const useNftsByAccountByCollection = (
       accountAddress,
       pageSize,
       offset,
-      search,
       collectionAddress,
+      expression,
     ],
     async () =>
-      getNftsByAccount(chainConfig.indexer, pageSize, offset, expression),
+      chainId === INITIATION_CHAIN_ID
+        ? getNftsByAccount(chainConfig.indexer, pageSize, offset, expression)
+        : getNftsByAccountOld(
+            chainConfig.indexer,
+            pageSize,
+            offset,
+            expression
+          ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
