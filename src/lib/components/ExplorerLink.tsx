@@ -121,12 +121,12 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       fontFamily="mono"
-      color="secondary.main"
+      color={textValue.length ? "secondary.main" : "gray.600"}
       className={isEllipsis ? "ellipsis" : undefined}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
-      {textValue}
+      {textValue || "(empty)"}
     </Text>
   );
 
