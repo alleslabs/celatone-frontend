@@ -78,7 +78,16 @@ export const VerifyPublishCode = ({
             message:
               "Please enter GitHub URL in format: https://github.com/yourrepositoryname",
           }),
-        commitHash: z.string().min(1, { message: "Commit hash is requried" }),
+        commitHash: z
+          .string()
+          .min(1, { message: "Commit hash is requried" })
+          .regex(
+            /^[0-9a-fA-F]+$/,
+            "Only hexadecimal digits are allowed, such as 0-9 and A-F"
+          )
+          .max(40, {
+            message: "The commit hash length must be 40 characters or fewer",
+          }),
         wasmFileName: z
           .string()
           .min(1, { message: "Wasm file name is required" })
@@ -100,7 +109,7 @@ export const VerifyPublishCode = ({
 
   return (
     <>
-      <ModalHeader>
+      <ModalHeader pb={0}>
         <Flex w="full" direction="row" alignItems="center" gap={2}>
           <CustomIcon name="verification-solid" boxSize={8} color="gray.600" />
           <Heading variant="h5" as="h5">
@@ -110,7 +119,7 @@ export const VerifyPublishCode = ({
       </ModalHeader>
       <ModalCloseButton color="gray.400" />
       <ModalBody>
-        <Flex direction="column" gap={6}>
+        <Flex direction="column" gap={4}>
           <Flex direction="column" gap={1}>
             <Text variant="body2">
               Verifying your code offers enhanced credibility with a verified
@@ -162,7 +171,7 @@ export const VerifyPublishCode = ({
               label="GitHub Repository URL:"
               labelBgColor="gray.800"
               variant="fixed-floating"
-              placeholder="e.g. https://github.com/alleslabs/"
+              placeholder="e.g. https://github.com/initiascan/"
               helperText="Please provide the source code’s GitHub commit URL"
               rules={{
                 required: "",
@@ -175,8 +184,7 @@ export const VerifyPublishCode = ({
               label="Commit Hash:"
               labelBgColor="gray.800"
               variant="fixed-floating"
-              placeholder="e.g. 8DA5A3...E4E5D899"
-              helperText="Provide the commit hash"
+              placeholder="e.g. a1b2c3d4e5f67890abcdef1234567890abcdef12"
               rules={{
                 required: "",
               }}
@@ -189,7 +197,7 @@ export const VerifyPublishCode = ({
                 label="Wasm File Name:"
                 labelBgColor="gray.800"
                 variant="fixed-floating"
-                placeholder="e.g. celatone_contract"
+                placeholder="e.g. initia_contract"
                 rules={{
                   required: "",
                 }}
