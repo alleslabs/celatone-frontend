@@ -1,4 +1,12 @@
-import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -13,6 +21,7 @@ import {
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
+import { VerifyPublishCodeModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
@@ -42,7 +51,7 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const isMobile = useMobile();
   const isFullTier = useTierConfig() === "full";
-
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
 
@@ -77,6 +86,12 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
 
   return (
     <>
+      <VerifyPublishCodeModal
+        isOpen={isOpen}
+        onClose={onClose}
+        codeId={codeId.toString()}
+        codeHash={code.hash}
+      />
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
       <CodeTopInfo
         code={code}
@@ -111,6 +126,9 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         )}
         <TabPanels>
           <TabPanel p={0}>
+            <Flex>
+              <Button onClick={onOpen}>Verfiy Code</Button>
+            </Flex>
             <CodeInfoSection
               code={code}
               chainId={currentChainId}
