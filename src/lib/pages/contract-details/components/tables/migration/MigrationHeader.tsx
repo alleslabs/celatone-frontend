@@ -9,7 +9,7 @@ export const MigrationHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   return (
     <Grid templateColumns={templateColumns}>

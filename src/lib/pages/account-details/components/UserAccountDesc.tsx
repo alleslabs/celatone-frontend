@@ -7,19 +7,16 @@ import { useClampText } from "use-clamp-text";
 import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditSavedAccountModal } from "lib/components/modal";
-import { useAccountStore } from "lib/providers/store";
-import type { BechAddr } from "lib/types";
+import type { AccountLocalInfo } from "lib/stores/account";
 
 interface UserAccountDescProps {
-  address: BechAddr;
   publicAccount?: boolean;
+  accountLocalInfo: AccountLocalInfo;
 }
 
 export const UserAccountDesc = observer(
-  ({ address, publicAccount = false }: UserAccountDescProps) => {
+  ({ accountLocalInfo, publicAccount = false }: UserAccountDescProps) => {
     const [showMore, setShowMore] = useState(false);
-    const { getAccountLocalInfo } = useAccountStore();
-    const accountLocalInfo = getAccountLocalInfo(address);
     const description = accountLocalInfo?.description;
     const [ref, { noClamp, clampedText, key }] = useClampText({
       text: description || "No Contract description",

@@ -5,6 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import { CelatoneSeo } from "lib/components/Seo";
 
 import { RecentModulesTable } from "./components/RecentModulesTable";
 
@@ -19,6 +20,7 @@ const RecentModules = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Modules" />
       <PageHeader
         title="Modules"
         subtitle=" These modules are the most recently published on this network"

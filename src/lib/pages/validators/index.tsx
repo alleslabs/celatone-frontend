@@ -8,6 +8,8 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
+import { CelatoneSeo } from "lib/components/Seo";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { useDebounce } from "lib/hooks";
 
 import {
@@ -24,7 +26,7 @@ const SCROLL_COMPONENT_ID = "validator-table-header";
 const Validators = () => {
   const router = useRouter();
   const isMobile = useMobile();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   useGovConfig({ shouldRedirect: true });
 
   const [isActive, setIsActive] = useState(true);
@@ -40,6 +42,7 @@ const Validators = () => {
 
   return (
     <>
+      <CelatoneSeo pageName="Validators" />
       <PageHeaderContainer bgColor="transparent">
         <PageHeader
           title="Validators"
@@ -84,29 +87,32 @@ const Validators = () => {
         </Flex>
       </PageHeaderContainer>
       <PageContainer>
-        {isFullTier ? (
-          <ValidatorsBodyFull
-            isActive={isActive}
-            setCounts={setCounts}
-            order={order}
-            setOrder={setOrder}
-            isDesc={isDesc}
-            setIsDesc={setIsDesc}
-            search={debouncedSearch}
-            scrollComponentId={SCROLL_COMPONENT_ID}
-          />
-        ) : (
-          <ValidatorsBodyLite
-            isActive={isActive}
-            setCounts={setCounts}
-            order={order}
-            setOrder={setOrder}
-            isDesc={isDesc}
-            setIsDesc={setIsDesc}
-            search={debouncedSearch}
-            scrollComponentId={SCROLL_COMPONENT_ID}
-          />
-        )}
+        <TierSwitcher
+          full={
+            <ValidatorsBodyFull
+              isActive={isActive}
+              setCounts={setCounts}
+              order={order}
+              setOrder={setOrder}
+              isDesc={isDesc}
+              setIsDesc={setIsDesc}
+              search={debouncedSearch}
+              scrollComponentId={SCROLL_COMPONENT_ID}
+            />
+          }
+          lite={
+            <ValidatorsBodyLite
+              isActive={isActive}
+              setCounts={setCounts}
+              order={order}
+              setOrder={setOrder}
+              isDesc={isDesc}
+              setIsDesc={setIsDesc}
+              search={debouncedSearch}
+              scrollComponentId={SCROLL_COMPONENT_ID}
+            />
+          }
+        />
       </PageContainer>
     </>
   );

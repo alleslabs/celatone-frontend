@@ -23,7 +23,7 @@ export const resolveValIdentity = async (
       .catch(async (_) => {
         if (validator.identity) {
           const { data } = await axios.get(keybaseUrl);
-          if (data.them.length) return data.them[0].pictures.primary.url;
+          if (data.them?.length) return data.them[0].pictures.primary.url;
         }
         return uiAvatarsUrl;
       })

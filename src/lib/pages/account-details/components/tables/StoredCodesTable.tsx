@@ -2,16 +2,12 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
-import {
-  CodesTable,
-  MobileTitle,
-  TableTitle,
-  ViewMore,
-} from "lib/components/table";
+import { CodesTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
 import type { BechAddr, Option } from "lib/types";
 
@@ -82,25 +78,21 @@ export const StoredCodesTable = observer(
             onViewMore={onViewMore}
           />
         ) : (
-          <>
-            <TableTitle
-              title="Stored Codes"
-              count={totalData}
-              mb={2}
-              helperText="This account stored the following codes"
-            />
+          <AccountSectionWrapper
+            title="Stored Codes"
+            totalData={totalData}
+            hasHelperText={!!codes?.length}
+            helperText="This account stored the following codes"
+          >
             <CodesTable
               codes={codes}
               isLoading={isLoading}
               emptyState={
-                <EmptyState
-                  message="No codes have been stored by this account before."
-                  withBorder
-                />
+                <AccountDetailsEmptyState message="No codes have been stored by this account before." />
               }
               onRowSelect={onRowSelect}
             />
-          </>
+          </AccountSectionWrapper>
         )}
         {!!totalData &&
           (onViewMore

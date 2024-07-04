@@ -22,6 +22,7 @@ import {
 } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { ContractListDetail } from "lib/components/select-contract";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
@@ -40,6 +41,7 @@ const ContractsByList = observer(() => {
   const { getContractLists, isHydrated } = useContractStore();
   const isInstantiatedByMe =
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
+  const isSavedContract = listSlug === formatSlugName(SAVED_LIST_NAME);
 
   const { instantiatedListInfo, isLoading } =
     useInstantiatedByMe(isInstantiatedByMe);
@@ -86,6 +88,13 @@ const ContractsByList = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo
+        pageName={
+          contractListInfo.name
+            ? `${contractListInfo.name} ${!isInstantiatedByMe || !isSavedContract ? "" : "(Contract List)"}`
+            : "Contract List Detail"
+        }
+      />
       <Breadcrumb
         items={[
           { text: "Contract Lists", href: "/contract-lists" },

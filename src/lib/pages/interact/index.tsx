@@ -14,6 +14,7 @@ import { LabelText } from "lib/components/LabelText";
 import { FunctionCard, ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
+import { CelatoneSeo } from "lib/components/Seo";
 import { useOpenNewTab } from "lib/hooks";
 import {
   useModuleByAddressLcd,
@@ -245,6 +246,7 @@ export const Interact = () => {
 
   return (
     <>
+      <CelatoneSeo pageName="View / Execute Module" />
       <PageContainer
         overflow="hidden"
         minH="unset"

@@ -109,7 +109,7 @@ const generateQueryObject = (params: string[], value: string | string[]) =>
 export const SearchComponent = () => {
   const isMobile = useMobile();
   const isMac = useIsMac();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
   const {
     currentChainId,

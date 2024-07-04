@@ -8,15 +8,17 @@ import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   useModuleByAddressLcd,
-  useModuleData,
+  useModulePublishInfo,
   useModuleTableCounts,
   useVerifyModule,
 } from "lib/services/move/module";
+import { truncate } from "lib/utils";
 
 import {
   FunctionTypeTabs,
@@ -45,16 +47,16 @@ const ModuleDetailsBody = ({
   const formatAddresses = useFormatAddresses();
   const { hex: vmAddress } = formatAddresses(address);
 
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const currentTab =
     !isFullTier && tab === TabIndex.TxsHistories ? TabIndex.Overview : tab;
-  const fullData = useModuleData(vmAddress, moduleName, isFullTier);
-  const liteData = useModuleByAddressLcd({
+
+  const { data, isLoading: isModuleLoading } = useModuleByAddressLcd({
     address: vmAddress,
     moduleName,
-    options: { enabled: !isFullTier },
   });
-  const { data, isLoading } = isFullTier ? fullData : liteData;
+  const { data: modulePublishInfo, isFetching: isPublishInfoLoading } =
+    useModulePublishInfo(vmAddress, moduleName, isFullTier);
 
   const { data: moduleTableCounts } = useModuleTableCounts(
     vmAddress,
@@ -113,11 +115,18 @@ const ModuleDetailsBody = ({
     ? Object.values(TabIndex)
     : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
 
-  if (isLoading) return <Loading />;
+  if (isModuleLoading || isPublishInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="module information" />;
 
   return (
     <>
+      <CelatoneSeo
+        pageName={
+          data.moduleName
+            ? `${truncate(data.address)}::${data.moduleName} (Module)`
+            : "Module Detail"
+        }
+      />
       <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
       <Tabs
         index={tabIndex.indexOf(currentTab)}
@@ -178,8 +187,9 @@ const ModuleDetailsBody = ({
                 }}
               />
               <ModuleInfo
+                indexedModule={data}
+                modulePublishInfo={modulePublishInfo}
                 verificationData={verificationData}
-                moduleData={data}
               />
               {isFullTier && (
                 <ModuleTables

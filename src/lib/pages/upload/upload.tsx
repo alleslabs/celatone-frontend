@@ -8,6 +8,7 @@ import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCTA } from "lib/components/layouts";
+import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -54,6 +55,7 @@ export const Upload = ({
   return (
     <>
       <WasmPageContainer>
+        <CelatoneSeo pageName="Upload Wasm File" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>

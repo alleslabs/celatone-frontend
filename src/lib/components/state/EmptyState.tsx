@@ -12,7 +12,9 @@ export interface EmptyStateProps {
   withBorder?: boolean;
   my?: FlexProps["my"];
   py?: FlexProps["py"];
+  alignItems?: FlexProps["alignItems"];
   textVariant?: TextProps["variant"];
+  hasBorderTop?: boolean;
 }
 
 export const EmptyState = ({
@@ -23,10 +25,12 @@ export const EmptyState = ({
   withBorder = false,
   my = 12,
   py = 8,
+  alignItems = "center",
   textVariant = "body1",
+  hasBorderTop = true,
 }: EmptyStateProps) => (
   <Flex
-    alignItems="center"
+    alignItems={alignItems}
     flexDir="column"
     gap={4}
     width="full"
@@ -35,6 +39,7 @@ export const EmptyState = ({
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="gray.700"
+    borderTopColor={hasBorderTop ? "gray.700" : "transparent"}
   >
     {imageVariant && (
       <StateImage imageVariant={imageVariant} imageWidth={imageWidth} />

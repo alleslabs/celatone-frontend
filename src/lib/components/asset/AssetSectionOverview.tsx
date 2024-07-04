@@ -8,7 +8,7 @@ import { SupportedAssetTitle } from "./SupportedAssetTitle";
 import { UnsupportedAssetSectionContent } from "./UnsupportedAssetSectionContent";
 import { UnsupportedAssetTitle } from "./UnsupportedAssetTitle";
 
-const MAX_SUPPORTED_ASSETS_SHOW = 6;
+const MAX_SUPPORTED_ASSETS_SHOW = 4;
 const MAX_UNSUPPORTED_ASSETS_SHOW = 3;
 
 interface AssetSectionOverviewProps {
@@ -28,7 +28,7 @@ export const AssetSectionOverview = ({
 }: AssetSectionOverviewProps) => {
   if (!supportedAssets.length && !unsupportedAssets.length)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text variant="body1" color="text.dark">
         This {isAccount ? "address" : "contract"} does not hold any assets
       </Text>
     );

@@ -4,6 +4,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { ContractInteractionTabs } from "lib/types";
@@ -22,6 +23,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
     <WasmPageContainer>
+      <CelatoneSeo pageName="Instantiate Contract" />
       <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
         Instantiate Complete!

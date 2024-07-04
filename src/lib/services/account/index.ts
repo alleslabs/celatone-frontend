@@ -19,7 +19,7 @@ import { getAccountDataLcd, getAccountTypeLcd } from "./lcd";
 export const useAccountData = (
   address: BechAddr
 ): UseQueryResult<AccountData> => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
