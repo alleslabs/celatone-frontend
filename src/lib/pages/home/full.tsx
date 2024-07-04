@@ -9,7 +9,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { RecentBlocksTable } from "lib/pages/blocks/components/RecentBlocksTable";
+import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { useOverviewsStats } from "lib/services/overviewService";
 
@@ -130,7 +130,7 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <RecentBlocksTable isViewMore />
+        <RecentBlocksTableFull isViewMore />
         {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}

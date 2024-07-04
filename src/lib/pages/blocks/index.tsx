@@ -6,12 +6,13 @@ import { useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 
-import { RecentBlocksTable } from "./components/RecentBlocksTable";
+import { RecentBlocksTableFull } from "./components/RecentBlocksTableFull";
+import { RecentBlocksTableSequencer } from "./components/RecentBlocksTableSequencer";
 
 const BlocksPage = () => {
-  useTierConfig({ minTier: "full" });
-
+  useTierConfig({ minTier: "mesa" });
   const router = useRouter();
 
   useEffect(() => {
@@ -26,7 +27,11 @@ const BlocksPage = () => {
         subtitle="This page displays all blocks on this network sorted by recency"
         docHref="introduction/overview#recent-blocks"
       />
-      <RecentBlocksTable />
+      <TierSwitcher
+        full={<RecentBlocksTableFull />}
+        sequencer={<RecentBlocksTableSequencer />}
+        lite={null}
+      />
     </PageContainer>
   );
 };

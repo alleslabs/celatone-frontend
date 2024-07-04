@@ -324,3 +324,8 @@ export const zTxsCountResponse = z
     count: z.number().nullish(),
   })
   .transform((val) => val.count);
+
+export const zBlockTxsResponseSequencer = z.object({
+  txs: z.array(zTxsResponseItemFromLcd),
+  pagination: zPagination,
+});

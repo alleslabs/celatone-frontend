@@ -21,18 +21,23 @@ import { zTx } from "./tx";
 const zNullableValidator = z.nullable(
   z
     .object({
-      validator_address: zValidatorAddr.nullable(),
+      validator_address: zValidatorAddr.nullish(),
+      operator_address: zValidatorAddr.nullish(),
       moniker: z.string(),
       identity: z.string(),
     })
     .transform<Validator>((val) => ({
       // nullable operator address for ICS chain
-      validatorAddress: val.validator_address ?? zValidatorAddr.parse(""),
+      validatorAddress:
+        val.validator_address ??
+        val.operator_address ??
+        zValidatorAddr.parse(""),
       moniker: val.moniker,
       identity: val.identity,
     }))
 );
 
+// ---------------- API ----------------
 const zBlocksResponseItem = z
   .object({
     hash: z.string().transform(parseTxHash),
@@ -73,6 +78,7 @@ export const zBlockDataResponse = z
     gasLimit: val.gas_limit,
   }));
 
+// ---------------- LCD ----------------
 export const zBlockLcd = z.object({
   block: z.object({
     header: z.object({
@@ -146,3 +152,41 @@ export const zBlockDataResponseLcd = zBlockLcd
       transactions,
     };
   });
+
+// ---------------- Sequencer ----------------
+const zBlockSequencer = z.object({
+  hash: z.string(),
+  height: z.string(),
+  timestamp: zUtcDate,
+  gas_used: z.string(),
+  gas_wanted: z.string(),
+  tx_count: z.string(),
+  proposer: zNullableValidator,
+});
+
+const zBlocksResponseItemSequencer = zBlockSequencer.transform<Block>(
+  (val) => ({
+    hash: val.hash,
+    height: Number(val.height),
+    timestamp: val.timestamp,
+    txCount: Number(val.tx_count),
+    proposer: val.proposer,
+  })
+);
+
+export const zBlocksResponseSequencer = z.object({
+  blocks: z.array(zBlocksResponseItemSequencer),
+  pagination: zPagination,
+});
+
+export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
+  (val) => ({
+    hash: val.hash,
+    height: Number(val.height),
+    timestamp: val.timestamp,
+    txCount: Number(val.tx_count),
+    gasUsed: Number(val.gas_used),
+    gasLimit: Number(val.gas_wanted),
+    proposer: val.proposer,
+  })
+);
