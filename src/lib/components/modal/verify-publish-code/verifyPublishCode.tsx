@@ -75,7 +75,7 @@ export const VerifyPublishCode = ({
             message: "Please provide the source code’s GitHub commit URL",
           })
           .regex(
-            /^https:\/\/github\.com\/[A-Za-z0-9_.-]+$/,
+            /^https:\/\/github\.com\/.+$/,
             "Please enter GitHub URL in format: https://github.com/yourrepositoryname"
           )
           .url({
