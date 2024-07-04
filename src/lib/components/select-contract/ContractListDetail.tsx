@@ -88,7 +88,7 @@ export const ContractListDetail = ({
   onContractSelect,
   isReadOnly = false,
 }: ContractListDetailProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const dataFull = useAdminByContractAddresses(
     isReadOnly || !isFullTier
       ? []

@@ -77,6 +77,7 @@ export const useValidators = (
     {
       retry: 1,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -155,7 +156,7 @@ export const useValidatorDataLcd = (
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("validators");
   const lcdEndpoint = useLcdEndpoint();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
@@ -347,7 +348,7 @@ export const useValidatorImage = (
       validator?.moniker,
     ],
     queryFn: async () => {
-      if (!validator) return Promise.resolve("");
+      if (!validator) return "";
       return resolveValIdentity(chainName, validator, secondaryMain);
     },
     retry: false,

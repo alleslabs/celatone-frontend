@@ -48,7 +48,7 @@ export const ModuleInfoBody = ({
   indexedModule,
   modulePublishInfo,
 }: Omit<ModuleInfoProps, "verificationData">) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const { address, upgradePolicy } = indexedModule;
 
   return (

@@ -53,7 +53,7 @@ const scrollComponentId = "voting-period";
 
 export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   const isMobile = useMobile();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const gov = useGovConfig({ shouldRedirect: false });
   const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
 

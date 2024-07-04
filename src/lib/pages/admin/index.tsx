@@ -10,7 +10,6 @@ import {
   useGetAddressType,
   useInternalNavigate,
   useSimulateFeeQuery,
-  useTierConfig,
   useUpdateAdminTx,
   useValidateAddress,
   useWasmConfig,
@@ -23,6 +22,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CelatoneSeo } from "lib/components/Seo";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
@@ -35,7 +35,6 @@ const UpdateAdmin = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { address } = useCurrentChain();
-  const isFullTier = useTierConfig() === "full";
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAddressType = useGetAddressType();
   const navigate = useInternalNavigate();
@@ -189,20 +188,23 @@ const UpdateAdmin = () => {
         mb={6}
         subtitle="You need to connect your wallet to perform this action"
       />
-      {isFullTier ? (
-        <ContractSelectSection
-          mode="only-admin"
-          contractAddress={contractAddressParam}
-          onContractSelect={(contract) => onContractPathChange(contract)}
-        />
-      ) : (
-        <Box w="full" mb={12}>
-          <ContractInputSection
-            contract={contractAddressParam}
+      <TierSwitcher
+        full={
+          <ContractSelectSection
+            mode="only-admin"
+            contractAddress={contractAddressParam}
             onContractSelect={(contract) => onContractPathChange(contract)}
           />
-        </Box>
-      )}
+        }
+        lite={
+          <Box w="full" mb={12}>
+            <ContractInputSection
+              contract={contractAddressParam}
+              onContractSelect={(contract) => onContractPathChange(contract)}
+            />
+          </Box>
+        }
+      />
       <TextInput
         variant="fixed-floating"
         label="New Admin Address"

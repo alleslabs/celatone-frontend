@@ -19,7 +19,7 @@ export const DepositPeriodSection = ({
   isLoading,
   isDepositsLoading,
 }: ProposalOverviewProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
 
   if (isLoading) return <Loading my={0} />;

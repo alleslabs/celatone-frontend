@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useGovConfig, useTierConfig } from "lib/app-provider";
+import { useGovConfig } from "lib/app-provider";
 import { InvalidState } from "lib/components/state";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 
 import {
   ValidatorDetailsBodyFull,
@@ -14,7 +15,6 @@ import { zValidatorDetailsQueryParams } from "./types";
 const ValidatorDetails = () => {
   const router = useRouter();
   useGovConfig({ shouldRedirect: true });
-  const isFullTier = useTierConfig() === "full";
 
   const validated = zValidatorDetailsQueryParams.safeParse(router.query);
 
@@ -29,13 +29,10 @@ const ValidatorDetails = () => {
       {!validated.success ? (
         <InvalidState title="Validator does not exist" />
       ) : (
-        <>
-          {isFullTier ? (
-            <ValidatorDetailsBodyFull {...validated.data} />
-          ) : (
-            <ValidatorDetailsBodyLite {...validated.data} />
-          )}
-        </>
+        <TierSwitcher
+          full={<ValidatorDetailsBodyFull {...validated.data} />}
+          lite={<ValidatorDetailsBodyLite {...validated.data} />}
+        />
       )}
     </>
   );

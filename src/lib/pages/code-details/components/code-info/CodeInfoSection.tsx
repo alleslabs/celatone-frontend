@@ -111,7 +111,7 @@ export const CodeInfoSection = ({
   attached,
   toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const getAddressType = useGetAddressType();

@@ -42,7 +42,7 @@ export const ValidatorOverview = ({
   totalVotingPower,
   selfVotingPower,
 }: ValidatorOverviewProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
 
   return (
