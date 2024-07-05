@@ -10,11 +10,14 @@ export const getTxsByBlockHeightSequencer = async (
   paginationKey: Option<string>
 ) =>
   axios
-    .get(`${endpoint}/indexer/tx/v1/txs/by_height/${height}`, {
-      params: {
-        "pagination.offset": 0,
-        "pagination.limit": 10,
-        "pagination.key": paginationKey,
-      },
-    })
+    .get(
+      `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
+      {
+        params: {
+          "pagination.offset": 0,
+          "pagination.limit": 10,
+          "pagination.key": paginationKey,
+        },
+      }
+    )
     .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
