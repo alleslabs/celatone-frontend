@@ -49,6 +49,7 @@ import {
   getTxsByContractAddressLcd,
   getTxsByHashLcd,
 } from "./lcd";
+import { getTxsByAccountAddressSequencer } from "./sequencer";
 
 export const useTxData = (
   txHash: Option<string>,
@@ -304,7 +305,8 @@ export const useTxsByAddressLcd = (
           endpoint,
           search as BechAddr32,
           limit,
-          offset
+          offset,
+          address
         );
 
       if (!address)
@@ -332,6 +334,71 @@ export const useTxsByAddressLcd = (
   return useQuery<TxsResponse>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_LCD,
+      endpoint,
+      address,
+      search,
+      limit,
+      offset,
+    ],
+    createQueryFnWithTimeout(queryfn, 20000),
+    { ...options, retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+// TODO: Check about private key / public key to account addr
+
+export const useTxsByAddressSequencer = (
+  address: Option<BechAddr20>,
+  search: Option<string>,
+  limit: number,
+  offset: number,
+  options: UseQueryOptions<TxsResponse> = {}
+) => {
+  const endpoint = useLcdEndpoint();
+  const { validateContractAddress } = useValidateAddress();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const queryfn = useCallback(async () => {
+    const txs = await (async () => {
+      // if (search && isTxHash(search)) return getTxsByHashLcd(endpoint, search);
+
+      if (search && !validateContractAddress(search))
+        return getTxsByContractAddressLcd(
+          endpoint,
+          search as BechAddr32,
+          limit,
+          offset,
+          address
+        );
+
+      if (!address)
+        throw new Error("address is undefined (useTxsByAddressSequncer)");
+
+      return getTxsByAccountAddressSequencer(endpoint, address, limit, offset);
+    })();
+
+    return {
+      items: txs.items.map<Transaction>((tx) => ({
+        ...tx,
+        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+      })),
+      total: txs.total,
+    };
+  }, [
+    address,
+    endpoint,
+    limit,
+    offset,
+    prefix,
+    search,
+    validateContractAddress,
+  ]);
+
+  return useQuery<TxsResponse>(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
       endpoint,
       address,
       search,

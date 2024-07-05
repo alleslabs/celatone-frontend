@@ -6,6 +6,7 @@ import { TierSwitcher } from "lib/components/TierSwitcher";
 
 import { PastTxsFull } from "./full";
 import { PastTxsLite } from "./lite";
+import { PastTxsSequencer } from "./sequencer";
 
 const PastTxs = () => {
   const router = useRouter();
@@ -14,7 +15,13 @@ const PastTxs = () => {
     if (router.isReady) track(AmpEvent.TO_PAST_TXS);
   }, [router.isReady]);
 
-  return <TierSwitcher full={<PastTxsFull />} lite={<PastTxsLite />} />;
+  return (
+    <TierSwitcher
+      full={<PastTxsFull />}
+      lite={<PastTxsLite />}
+      sequencer={<PastTxsSequencer />}
+    />
+  );
 };
 
 export default PastTxs;

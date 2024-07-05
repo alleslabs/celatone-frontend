@@ -18,6 +18,7 @@ import {
   zBechAddr,
   zCoin,
   zMessageResponse,
+  zPagination,
   zPubkey,
   zUint8Schema,
   zUtcDate,
@@ -184,6 +185,19 @@ export const zTxsByAddressResponseLcd = z
     total: val.total,
   }));
 export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
+
+export const zTxsByAddressResponseSequencer = z
+  .object({
+    txs: z.array(zTxsResponseItemFromLcd),
+    pagination: zPagination,
+  })
+  .transform<TxsByAddressResponseLcd>((val) => ({
+    items: val.txs,
+    total: val.pagination.total,
+  }));
+export type TxsByAddressResponseSequencer = z.infer<
+  typeof zTxsByAddressResponseSequencer
+>;
 
 export const zTxsByHashResponseLcd = z
   .object({
