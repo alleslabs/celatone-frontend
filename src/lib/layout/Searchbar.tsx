@@ -389,7 +389,14 @@ const Searchbar = () => {
 
   return isMobile ? (
     <>
-      <Button variant="outline-gray" size="sm" onClick={onOpen}>
+      <Button
+        variant="ghost-gray"
+        h="full"
+        minW="60px"
+        borderRadius={0}
+        size="sm"
+        onClick={onOpen}
+      >
         <CustomIcon name="search" boxSize={3} />
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement="top">
@@ -466,7 +473,7 @@ const Searchbar = () => {
       </Drawer>
     </>
   ) : (
-    <FormControl ref={boxRef} zIndex={3}>
+    <FormControl ref={boxRef} zIndex={3} px={1}>
       <InputWithIcon
         value={keyword}
         onChange={handleSearchChange}
@@ -474,6 +481,7 @@ const Searchbar = () => {
         onFocus={onOpen}
         onKeyDown={handleOnKeyEnter}
         autoComplete="off"
+        border="transparent"
       />
       {isOpen && (
         <List

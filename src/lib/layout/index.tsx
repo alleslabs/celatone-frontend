@@ -21,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isMobile = useMobile();
   const { isExpand, setIsExpand } = useNavContext();
 
-  const defaultRow = "70px 48px 1fr";
+  const defaultRow = "64px 48px 1fr";
   const mode = useMemo(() => {
     if (isMobile)
       return {
@@ -35,7 +35,7 @@ const Layout = ({ children }: LayoutProps) => {
     return {
       templateAreas: `"header header""subheader subheader""nav main"`,
       templateRows: defaultRow,
-      templateCols: isExpand ? "250px 1fr" : "48px 1fr",
+      templateCols: isExpand ? "235px 1fr" : "48px 1fr",
       header: <Header />,
       subHeader: <SubHeader />,
     };
@@ -57,25 +57,26 @@ const Layout = ({ children }: LayoutProps) => {
       overflowY="scroll"
       bg="background.main"
     >
-      <GridItem bg="gray.900" area="header" mb={1}>
+      <GridItem borderBottom="1px solid" borderColor="gray.700" area="header">
         {mode.header}
       </GridItem>
       {!isMobile && (
         <>
           <GridItem
-            bg={{ base: "background.main", md: "gray.900" }}
+            borderBottom="1px solid"
+            borderColor="gray.700"
             area="subheader"
-            mb={1}
             py={{ base: 2, md: 0 }}
             px={{ base: 4, md: 0 }}
           >
             {mode.subHeader}
           </GridItem>
           <GridItem
-            bg={{ base: "background.main", md: "gray.900" }}
+            borderRight="1px solid"
+            borderBottom="1px solid"
+            borderColor="gray.700"
             area="nav"
             overflowY="auto"
-            mr={1}
           >
             <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
           </GridItem>
