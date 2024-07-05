@@ -172,6 +172,7 @@ export const zTxsResponseItemFromLcd =
       isIbc: false,
       isOpinit: false,
       isInstantiate: false,
+      events: val.events,
     };
   });
 
@@ -207,6 +208,18 @@ export const zTxsByHashResponseLcd = z
     items: [val.tx_response],
     total: 1,
   }));
+
+export const zTxsByHashResponseSequencer = z
+  .object({
+    tx: zTxsResponseItemFromLcd,
+  })
+  .transform((val) => ({
+    items: [val.tx],
+    total: 1,
+  }));
+export type TxsByHashResponseSequencer = z.infer<
+  typeof zTxsByHashResponseSequencer
+>;
 
 export const zTxByHashResponseLcd = z
   .object({
