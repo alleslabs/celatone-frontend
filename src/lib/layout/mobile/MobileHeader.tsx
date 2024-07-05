@@ -3,13 +3,14 @@ import { Flex, Image } from "@chakra-ui/react";
 import { AppMenu } from "../AppMenu";
 import { SectionWrapper } from "../Header";
 import Searchbar from "../Searchbar";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 
 import { NavDrawer } from "./NavDrawer";
 
 const MobileHeader = () => {
   const { theme } = useCelatoneApp();
+  const isInitia = useInitia();
   return (
     <Flex
       as="header"
@@ -18,9 +19,11 @@ const MobileHeader = () => {
       align="center"
       justifyContent="space-between"
     >
-      <SectionWrapper minW="64px">
-        <AppMenu trigger="click" />
-      </SectionWrapper>
+      {isInitia && (
+        <SectionWrapper minW="64px">
+          <AppMenu trigger="click" />
+        </SectionWrapper>
+      )}
       <SectionWrapper minW="64px" w="full" justifyContent="start">
         <AppLink href="/">
           <Image

@@ -1,7 +1,7 @@
 import { Flex, Image } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
@@ -43,6 +43,7 @@ const Header = () => {
       },
     },
   } = useCelatoneApp();
+  const isInitia = useInitia();
   return (
     <Flex
       as="header"
@@ -52,9 +53,11 @@ const Header = () => {
       justifyContent="space-between"
     >
       <Flex h="full">
-        <SectionWrapper minW="64px">
-          <AppMenu />
-        </SectionWrapper>
+        {isInitia && (
+          <SectionWrapper minW="64px">
+            <AppMenu />
+          </SectionWrapper>
+        )}
         <SectionWrapper>
           <AppLink href="/">
             <Image

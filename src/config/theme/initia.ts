@@ -4,7 +4,7 @@ import { generateTheme } from "./utils";
 
 const INITIA_BASE_THEME: ThemeConfig = {
   branding: {
-    logo: "https://assets.alleslabs.dev/integrations/initia/logo.png",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/scan.svg",
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
     seo: {
       appName: "Initia",

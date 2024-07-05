@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1007](https://github.com/alleslabs/celatone-frontend/pull/1007) Add app menu for initia
 - [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
 
 ### Improvements
