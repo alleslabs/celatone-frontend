@@ -49,7 +49,6 @@ export type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
 export const zModuleVerificationInternal = z
   .object({
-    id: z.number(),
     module_address: zHexAddr,
     module_name: z.string(),
     verified_at: z.string(),
