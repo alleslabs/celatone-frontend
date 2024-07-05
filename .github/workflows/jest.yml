@@ -14,7 +14,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 8
+          version: 8.14.1
           run_install: false
       - name: Run Tests
         run: |
