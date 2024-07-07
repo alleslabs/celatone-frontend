@@ -30,7 +30,7 @@ export const WalletSection = () => {
   };
 
   return (
-    <Flex px={4}>
+    <Flex px={0}>
       <WalletConnectComponent
         walletStatus={status}
         disconnect={
@@ -38,6 +38,7 @@ export const WalletSection = () => {
             buttonText="Connect"
             onClick={onClickConnect}
             iconColor="text.main"
+            isFullButton
           />
         }
         connecting={<Connecting />}
