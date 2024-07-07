@@ -27,91 +27,20 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { observer } from "mobx-react-lite";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
 import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
 
+import { NetworkAccodion } from "./NetworkAccordion";
 import { NetworkCard } from "./NetworkCard";
-
-interface AccordionNetworkListProps {
-  title: string;
-  normalNetworks: string[];
-  l1Networks?: string[];
-  l2Networks?: string[];
-  currentChainId: string;
-  isHidden?: boolean;
-  isMove?: boolean;
-}
 
 interface NetworkMenuBodyProps {
   currentChainId: string;
   keyword: string;
 }
-
-const AccordionNetworkList = ({
-  title,
-  normalNetworks,
-  l1Networks,
-  l2Networks,
-  currentChainId,
-  isHidden = false,
-  isMove = false,
-}: AccordionNetworkListProps) => (
-  <AccordionItem hidden={isHidden}>
-    <AccordionButton p={0}>
-      <Flex mb={4} justifyContent="space-between" w="full">
-        <Heading as="h6" variant="h6">
-          {title}
-        </Heading>
-        <AccordionIcon color="gray.600" />
-      </Flex>
-    </AccordionButton>
-    <AccordionPanel p={0}>
-      {isMove ? (
-        <>
-          {l1Networks && (
-            <Flex direction="column" gap={1}>
-              {l1Networks.map((chainId) => (
-                <NetworkCard
-                  key={chainId}
-                  image={CHAIN_CONFIGS[chainId]?.logoUrl}
-                  chainId={chainId}
-                  isSelected={chainId === currentChainId}
-                />
-              ))}
-            </Flex>
-          )}
-          {l2Networks && (
-            <Flex direction="column" gap={1}>
-              {l2Networks.map((chainId) => (
-                <NetworkCard
-                  key={chainId}
-                  image={CHAIN_CONFIGS[chainId]?.logoUrl}
-                  chainId={chainId}
-                  isSelected={chainId === currentChainId}
-                />
-              ))}
-            </Flex>
-          )}
-        </>
-      ) : (
-        <Flex direction="column" gap={1}>
-          {normalNetworks.map((chainId) => (
-            <NetworkCard
-              key={chainId}
-              image={CHAIN_CONFIGS[chainId]?.logoUrl}
-              chainId={chainId}
-              isSelected={chainId === currentChainId}
-            />
-          ))}
-        </Flex>
-      )}
-    </AccordionPanel>
-  </AccordionItem>
-);
 
 export const ItemTypes = {
   CARD: "card",
@@ -174,26 +103,27 @@ export const NetworkMenuBody = observer(
   ({ currentChainId, keyword }: NetworkMenuBodyProps) => {
     const { availableChainIds } = useCelatoneApp();
 
-    const filteredChains = useCallback(
-      (type: string) =>
-        useMemo(() => {
-          const filtered = availableChainIds.filter(
-            (chain) => CHAIN_CONFIGS[chain]?.networkType === type
-          );
-          if (!keyword) return filtered;
-          return filtered.filter(
-            (chain) =>
-              CHAIN_CONFIGS[chain]?.prettyName
+    const filteredChains = useMemo(() => {
+      const filterChains = (type: "mainnet" | "testnet") => {
+        return availableChainIds
+          .filter((chain) => CHAIN_CONFIGS[chain]?.networkType === type)
+          .filter(
+            (network) =>
+              !keyword ||
+              CHAIN_CONFIGS[network]?.prettyName
                 .toLowerCase()
                 .includes(keyword.toLowerCase()) ||
-              chain.toLowerCase().includes(keyword.toLowerCase())
+              network.toLowerCase().includes(keyword.toLowerCase())
           );
-        }, [type]),
-      [keyword, availableChainIds]
-    );
+      };
+      return {
+        testnet: filterChains("testnet"),
+        mainnet: filterChains("mainnet"),
+      };
+    }, [availableChainIds, keyword]);
 
-    const filteredTestnetChains = filteredChains("testnet");
-    const filteredMainnetChains = filteredChains("mainnet");
+    const filteredTestnetChains = filteredChains.testnet;
+    const filteredMainnetChains = filteredChains.mainnet;
 
     const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
     const pinnedNetworks = getPinnedNetworks();
@@ -267,7 +197,7 @@ export const NetworkMenuBody = observer(
                 <AccordionIcon color="gray.600" />
               </Flex>
             </AccordionButton>
-            <AccordionPanel p={0}>
+            <AccordionPanel p={0} mb={2}>
               <SortableContext
                 items={filteredPinnedNetworks.map((item) => item.chainId)}
                 strategy={verticalListSortingStrategy}
@@ -298,7 +228,7 @@ export const NetworkMenuBody = observer(
               mb={4}
             />
           )}
-          <AccordionNetworkList
+          <NetworkAccodion
             isHidden={filteredMainnetChains.length === 0}
             title="Mainnet"
             normalNetworks={filteredMainnetChains}
@@ -311,7 +241,7 @@ export const NetworkMenuBody = observer(
               mb={4}
             />
           )}
-          <AccordionNetworkList
+          <NetworkAccodion
             isHidden={filteredTestnetChains.length === 0}
             title="Testnet"
             normalNetworks={filteredTestnetChains}
