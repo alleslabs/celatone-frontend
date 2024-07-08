@@ -6,7 +6,6 @@ import {
   zStakingProvisionsResponse,
   zValidatorDataResponse,
   zValidatorDelegationRelatedTxsResponse,
-  zValidatorDelegatorsResponse,
   zValidatorsResponse,
   zValidatorUptimeResponse,
   zValidatorVotedProposalsResponse,
@@ -49,14 +48,6 @@ export const getValidatorStakingProvisions = async (endpoint: string) =>
   axios
     .get(`${endpoint}/staking-provisions`)
     .then(({ data }) => parseWithError(zStakingProvisionsResponse, data));
-
-export const getValidatorDelegators = async (
-  endpoint: string,
-  validatorAddress: ValidatorAddr
-) =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
-    .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
 
 export const getValidatorVotedProposalsAnswerCounts = async (
   endpoint: string,
