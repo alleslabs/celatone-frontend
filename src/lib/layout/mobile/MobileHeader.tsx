@@ -27,12 +27,19 @@ const MobileHeader = () => {
       <SectionWrapper minW="64px" w="full" justifyContent="start">
         <AppLink href="/">
           <Image
-            src={theme.branding.logo}
             alt="Celatone"
-            minWidth="128px"
-            width="128px"
+            src={
+              isInitia
+                ? "https://assets.alleslabs.dev/integrations/initia/logo_mobile.png"
+                : theme.branding.logo
+            }
+            maxHeight={isInitia ? "24px" : "auto"}
+            minWidth={isInitia ? "auto" : "128px"}
+            width={isInitia ? "auto" : "128px"}
             maxWidth="128px"
             mx={4}
+            objectFit="contain"
+            backgroundPosition="left"
             transition="all 0.25s ease-in-out"
             _hover={{ cursor: "pointer", opacity: 0.85 }}
           />
