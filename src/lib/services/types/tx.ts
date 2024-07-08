@@ -192,9 +192,9 @@ export const zTxsByAddressResponseSequencer = z
     txs: z.array(zTxsResponseItemFromLcd),
     pagination: zPagination,
   })
-  .transform<TxsByAddressResponseLcd>((val) => ({
+  .transform((val) => ({
     items: val.txs,
-    total: val.pagination.total,
+    pagination: val.pagination,
   }));
 export type TxsByAddressResponseSequencer = z.infer<
   typeof zTxsByAddressResponseSequencer
@@ -215,7 +215,10 @@ export const zTxsByHashResponseSequencer = z
   })
   .transform((val) => ({
     items: [val.tx],
-    total: 1,
+    pagination: {
+      total: val.tx ? 1 : 0,
+      nextKey: null,
+    },
   }));
 export type TxsByHashResponseSequencer = z.infer<
   typeof zTxsByHashResponseSequencer

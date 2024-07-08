@@ -1,12 +1,10 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { useCurrentChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
+import { LoadNext } from "lib/components/LoadNext";
 import PageContainer from "lib/components/PageContainer";
-import { Pagination } from "lib/components/pagination";
-import { usePaginator } from "lib/components/pagination/usePaginator";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
@@ -53,43 +51,17 @@ export const PastTxsSequencer = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
-    currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
-    offset,
-  } = usePaginator({
-    initialState: {
-      pageSize: 10,
-      currentPage: 1,
-      isDisabled: false,
-    },
-  });
-
-  const { data, isLoading, error } = useTxsByAddressSequencer(
-    address,
-    debouncedSearch,
-    pageSize,
-    offset,
-    {
-      enabled: !!address,
-      onSuccess: ({ total }) => setTotalData(total),
-    }
-  );
-
-  const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+  } = useTxsByAddressSequencer(address, debouncedSearch);
 
   useEffect(() => {
     setSearch("");
   }, [chainId, address]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedSearch, setCurrentPage]);
 
   return (
     <PageContainer>
@@ -110,13 +82,13 @@ export const PastTxsSequencer = () => {
         <InputWithIcon
           placeholder="Search with Transaction Hash"
           value={search}
-          onChange={handleOnSearchChange}
+          onChange={(e) => setSearch(e.target.value)}
           size={{ base: "md", md: "lg" }}
           amptrackSection="past-txs-search"
         />
       </Flex>
       <TransactionsTableWithWallet
-        transactions={data?.items}
+        transactions={data}
         isLoading={isLoading}
         emptyState={
           <PastTxsSequencerTransactionsTableWithWalletEmptyState
@@ -125,21 +97,13 @@ export const PastTxsSequencer = () => {
           />
         }
         showActions={false}
-        showRelations={false}
+        showRelations
       />
-      {!!data && data.total > 10 && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={data.total}
-          pageSize={pageSize}
-          onPageChange={(nextPage) => setCurrentPage(nextPage)}
-          onPageSizeChange={(e) => {
-            const size = Number(e.target.value);
-            setPageSize(size);
-            setCurrentPage(1);
-          }}
+      {hasNextPage && (
+        <LoadNext
+          text="Load more 10 transactions"
+          fetchNextPage={fetchNextPage}
+          isFetchingNextPage={isFetchingNextPage}
         />
       )}
     </PageContainer>

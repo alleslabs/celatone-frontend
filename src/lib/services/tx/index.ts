@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -353,73 +353,70 @@ export const useTxsByAddressLcd = (
 
 export const useTxsByAddressSequencer = (
   address: Option<BechAddr20>,
-  search: Option<string>,
-  limit: number,
-  offset: number,
-  options: UseQueryOptions<TxsResponse> = {}
+  search: Option<string>
 ) => {
   const endpoint = useLcdEndpoint();
   const {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-  const queryfn = useCallback(async () => {
-    const txs = await (async () => {
-      if (search && isTxHash(search)) {
-        const txsByHash = await getTxsByHashSequencer(endpoint, search);
+  const queryfn = useCallback(
+    async (pageParam: Option<string>) => {
+      return (async () => {
+        if (search && isTxHash(search)) {
+          const txsByHash = await getTxsByHashSequencer(endpoint, search);
 
-        if (txsByHash.total === 0)
+          if (txsByHash.pagination.total === 0)
+            throw new Error(
+              "address is not equal to sender (useTxsByAddressSequncer)"
+            );
+
+          const tx = txsByHash.items[0];
+          const sender = convertAccountPubkeyToAccountAddress(
+            tx.signerPubkey,
+            prefix
+          );
+
+          if (address === sender) return txsByHash;
+
+          const findAddressFromEvents = tx.events?.some((event) =>
+            event.attributes.some((attr) => attr.value === address)
+          );
+
+          if (findAddressFromEvents) return txsByHash;
+
           throw new Error(
             "address is not equal to sender (useTxsByAddressSequncer)"
           );
+        }
 
-        const tx = txsByHash.items[0];
-        const sender = convertAccountPubkeyToAccountAddress(
-          tx.signerPubkey,
-          prefix
-        );
+        if (search || !address)
+          throw new Error("address is undefined (useTxsByAddressSequncer)");
 
-        if (address === sender) return txsByHash;
-
-        const findAddressFromEvents = tx.events?.some((event) =>
-          event.attributes.some((attr) => attr.value === address)
-        );
-
-        if (findAddressFromEvents) return txsByHash;
-
-        throw new Error(
-          "address is not equal to sender (useTxsByAddressSequncer)"
-        );
-      }
-
-      if (!address)
-        throw new Error("address is undefined (useTxsByAddressSequncer)");
-
-      return getTxsByAccountAddressSequencer(endpoint, address, limit, offset);
-    })();
-
-    return {
-      items: txs.items.map<Transaction>((tx) => ({
-        ...tx,
-        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
-      })),
-      total: txs.total,
-    };
-  }, [address, endpoint, limit, offset, prefix, search]);
-
-  return useQuery<TxsResponse>(
-    [
-      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
-      endpoint,
-      address,
-      search,
-      limit,
-      offset,
-    ],
-    createQueryFnWithTimeout(queryfn, 20000),
-    { ...options, retry: 1, refetchOnWindowFocus: false }
+        return getTxsByAccountAddressSequencer(endpoint, address, pageParam);
+      })();
+    },
+    [address, endpoint, prefix, search]
   );
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER, endpoint, address, search],
+    ({ pageParam }) => queryfn(pageParam),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    ...rest,
+    data: data?.pages.flatMap((page) =>
+      page.items.map((item) => ({
+        ...item,
+        sender: convertAccountPubkeyToAccountAddress(item.signerPubkey, prefix),
+      }))
+    ),
+  };
 };
 
 export * from "./gql";
