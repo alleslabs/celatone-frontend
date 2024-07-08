@@ -9,8 +9,8 @@ import type { BalanceInfos } from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useLcdEndpoint,
-  useTierConfig,
 } from "lib/app-provider";
 import { big } from "lib/types";
 import type { BechAddr, TokenWithValue, USD } from "lib/types";
@@ -25,15 +25,18 @@ import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
 
 export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
-  const { isFullTier } = useTierConfig();
+  const {
+    chainConfig: { chain },
+  } = useCelatoneApp();
+  const isSei = chain === "sei";
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = isSei ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isFullTier],
+    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
     async () =>
-      isFullTier
+      isSei
         ? getBalances(endpoint, address)
         : getBalancesLcd(endpoint, address),
     { retry: 1, refetchOnWindowFocus: false }
