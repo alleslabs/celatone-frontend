@@ -40,7 +40,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
           color={info.moniker.length ? "text.main" : "text.disabled"}
           display={{ base: "none", md: "flex" }}
         >
-          {info.moniker || "Untitled"}
+          {info.moniker || "Untitled Validator"}
         </Heading>
         <ValidatorStatusTag info={info} />
       </Flex>
@@ -52,7 +52,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
         color={info.moniker.length ? "text.main" : "text.disabled"}
         display={{ base: "flex", md: "none" }}
       >
-        {info.moniker || "Untitled"}
+        {info.moniker || "Untitled Validator"}
       </Heading>
       <WebsiteButton
         href={info.website}
