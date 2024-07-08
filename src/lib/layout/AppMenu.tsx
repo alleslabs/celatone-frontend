@@ -51,12 +51,15 @@ export const AppMenu = ({
           align="center"
           justify="center"
           transition="all 0.25s ease-in-out"
-          _hover={{ cursor: "pointer", background: "gray.900" }}
+          _hover={{
+            cursor: "pointer",
+            background: "gray.900",
+            "> svg": { color: "gray.400" },
+          }}
         >
-          <CustomIcon name="apps" color="gray.400" />
+          <CustomIcon name="apps" color="gray.600" />
         </Flex>
       </PopoverTrigger>
-
       <PopoverContent
         border="0"
         zIndex={4}
@@ -66,6 +69,9 @@ export const AppMenu = ({
         p={2}
         top="-8px"
         boxShadow="0px 20px 30px 5px var(--chakra-colors-background-main)"
+        _focusVisible={{
+          outline: "none",
+        }}
       >
         <Flex direction="column">
           {appList.map((app) => (
