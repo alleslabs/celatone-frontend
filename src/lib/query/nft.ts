@@ -5,7 +5,7 @@ export const getNftQuery = gql`
     nfts(
       where: {
         collection: { _eq: $collectionAddress }
-        vm_address: { vm_address: { _eq: $nftAddress } }
+        id: { _eq: $nftAddress }
       }
     ) {
       token_id
@@ -25,10 +25,7 @@ export const getNftQuery = gql`
 export const getNftMintInfoQuery = gql`
   query getNftMintInfoQuery($nftAddress: String!) {
     nft_transactions(
-      where: {
-        is_nft_mint: { _eq: true }
-        nft: { vm_address: { vm_address: { _eq: $nftAddress } } }
-      }
+      where: { is_nft_mint: { _eq: true }, nft_id: { _eq: $nftAddress } }
       offset: 0
       limit: 1
     ) {
