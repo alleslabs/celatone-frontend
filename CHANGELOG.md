@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1013](https://github.com/alleslabs/celatone-frontend/pull/1013) Remove unused validator's delegator count, disable Sentry
 - [#1012](https://github.com/alleslabs/celatone-frontend/pull/1012) Move modules, balances query to LCD
 
 ### Bug fixes
