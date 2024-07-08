@@ -13,7 +13,7 @@ import { RecentBlocksTable } from "lib/pages/blocks/components/RecentBlocksTable
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { useOverviewsStats } from "lib/services/overviewService";
 
-import { DevShortcut, TopDecorations } from "./components";
+import { DevShortcut } from "./components";
 import { CardInfo } from "./components/CardInfo";
 
 const txInfo = {
@@ -61,7 +61,6 @@ export const HomeFull = () => {
         overflow="hidden"
         sx={{ "& > div": { zIndex: 1 } }}
       >
-        <TopDecorations />
         <Flex
           justifyContent="space-between"
           alignItems="center"

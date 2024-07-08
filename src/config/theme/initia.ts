@@ -91,10 +91,6 @@ const INITIA_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/initia/illustration/search-empty.svg",
     disconnected:
       "https://assets.alleslabs.dev/integrations/initia/illustration/disconnected.svg",
-    overview: {
-      // Fill image url
-      main: "",
-    },
   },
   socialMedia: {
     website: "https://initia.tech/",
