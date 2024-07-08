@@ -30,7 +30,6 @@ const BlocksPage = () => {
       <TierSwitcher
         full={<RecentBlocksTableFull />}
         sequencer={<RecentBlocksTableSequencer />}
-        lite={null}
       />
     </PageContainer>
   );
