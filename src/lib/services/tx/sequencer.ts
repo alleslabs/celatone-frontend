@@ -20,7 +20,6 @@ export const getTxsByAccountAddressSequencer = async (
         params: {
           "pagination.limit": limit,
           "pagination.offset": offset,
-          "pagination.count_total": true,
           "pagination.reverse": true,
         },
       }
