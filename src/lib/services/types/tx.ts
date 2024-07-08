@@ -13,6 +13,7 @@ import {
   zBechAddr,
   zCoin,
   zMessageResponse,
+  zPagination,
   zPubkeyMulti,
   zPubkeySingle,
   zUtcDate,
