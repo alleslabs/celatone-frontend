@@ -411,10 +411,18 @@ export const useTxsByAddressSequencer = (
   return {
     ...rest,
     data: data?.pages.flatMap((page) =>
-      page.items.map((item) => ({
-        ...item,
-        sender: convertAccountPubkeyToAccountAddress(item.signerPubkey, prefix),
-      }))
+      page.items.map((item) => {
+        const sender = convertAccountPubkeyToAccountAddress(
+          item.signerPubkey,
+          prefix
+        );
+
+        return {
+          ...item,
+          sender,
+          isSigner: sender === address,
+        };
+      })
     ),
   };
 };
