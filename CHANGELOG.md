@@ -43,6 +43,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.7.1
+
+### Features
+
+- [#1008](https://github.com/alleslabs/celatone-frontend/pull/1008) Support both new, old DB schema for NFTs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+
+### Improvements
+
+- [#1013](https://github.com/alleslabs/celatone-frontend/pull/1013) Remove unused validator's delegator count, disable Sentry
+- [#1012](https://github.com/alleslabs/celatone-frontend/pull/1012) Move modules, balances query to LCD
+
+### Bug fixes
+
+- [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
+- [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
+
 ## v1.7.0
 
 ### Features

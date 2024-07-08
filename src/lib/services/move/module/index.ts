@@ -13,7 +13,6 @@ import {
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
-  useTierConfig,
 } from "lib/app-provider";
 import type {
   AccountModulesResponse,
@@ -46,7 +45,6 @@ import {
   getModulePublishInfo,
   getModuleRelatedProposals,
   getModules,
-  getModulesByAddress,
   getModuleTableCounts,
   getModuleTxs,
   getModuleVerificationStatus,
@@ -83,19 +81,14 @@ export const useModulesByAddress = ({
   onSuccess?: (data: AccountModulesResponse) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }) => {
-  const isFullTier = useTierConfig() === "full";
-  const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = useLcdEndpoint();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, endpoint, address],
     async () => {
       if (!address)
         throw new Error("address is undefined (useModulesByAddress)");
-      return isFullTier
-        ? getModulesByAddress(endpoint, address)
-        : getModulesByAddressLcd(endpoint, address);
+      return getModulesByAddressLcd(endpoint, address);
     },
     {
       enabled,
@@ -307,8 +300,7 @@ export const useModuleTxs = (
   vmAddress: HexAddr,
   moduleName: string,
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<ModuleTxsResponse>, "onSuccess"> = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("move");
   const isInitia = useInitia();
@@ -325,7 +317,7 @@ export const useModuleTxs = (
     ],
     async () =>
       getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 

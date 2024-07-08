@@ -7,7 +7,6 @@ import { trackToMigrate } from "lib/amplitude";
 import {
   useCurrentChain,
   useInternalNavigate,
-  useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -18,6 +17,7 @@ import { FooterCTA } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
@@ -41,7 +41,6 @@ const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const isFullTier = useTierConfig() === "full";
   const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
   const {
     proceed,
@@ -185,18 +184,21 @@ const Migrate = () => {
           subtitle="You need to connect your wallet to perform this action"
         />
         {/* Select Migrate Contract modal */}
-        {isFullTier ? (
-          <ContractSelectSection
-            mode="only-admin"
-            contractAddress={contractAddress}
-            onContractSelect={onContractSelect}
-          />
-        ) : (
-          <ContractInputSection
-            contract={contractAddress}
-            onContractSelect={onContractSelect}
-          />
-        )}
+        <TierSwitcher
+          full={
+            <ContractSelectSection
+              mode="only-admin"
+              contractAddress={contractAddress}
+              onContractSelect={onContractSelect}
+            />
+          }
+          lite={
+            <ContractInputSection
+              contract={contractAddress}
+              onContractSelect={onContractSelect}
+            />
+          }
+        />
         <Box mt={12} w="full">
           {renderBody()}
         </Box>

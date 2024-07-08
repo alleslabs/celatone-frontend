@@ -36,7 +36,7 @@ interface AccountDetailsTableCounts {
 export const useAccountDetailsTableCounts = (
   address: BechAddr
 ): AccountDetailsTableCounts => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const {
     data,
     refetch,

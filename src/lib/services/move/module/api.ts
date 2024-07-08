@@ -1,13 +1,11 @@
 import axios from "axios";
 
 import type {
-  AccountModulesResponse,
   DecodeModuleReturn,
   ModuleTableCountsResponse,
   ModuleVerificationInternal,
 } from "lib/services/types";
 import {
-  zAccountModulesResponse,
   zModuleHistoriesResponse,
   zModulePublishInfoResponse,
   zModuleRelatedProposalsResponse,
@@ -31,14 +29,6 @@ import {
   parseWithError,
   serializeAbiData,
 } from "lib/utils";
-
-export const getModulesByAddress = async (
-  endpoint: string,
-  address: Addr
-): Promise<AccountModulesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURI(address)}/move/modules`)
-    .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
 export const getModuleVerificationStatus = async (
   endpoint: string,

@@ -17,7 +17,7 @@ const useContractDataLcd = (
   contractData: UseQueryResult<ContractData>,
   contractAddress: BechAddr32
 ) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const { data: code } = useCodeLcd(
     Number(contractData.data?.contract.codeId),
