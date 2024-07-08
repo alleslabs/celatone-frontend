@@ -350,7 +350,8 @@ export const useTxsByAddressLcd = (
 
 export const useTxsByAddressSequencer = (
   address: Option<BechAddr20>,
-  search: Option<string>
+  search: Option<string>,
+  limit = 10
 ) => {
   const endpoint = useLcdEndpoint();
   const {
@@ -392,14 +393,25 @@ export const useTxsByAddressSequencer = (
         if (!address)
           throw new Error("address is undefined (useTxsByAddressSequncer)");
 
-        return getTxsByAccountAddressSequencer(endpoint, address, pageParam);
+        return getTxsByAccountAddressSequencer(
+          endpoint,
+          address,
+          pageParam,
+          limit
+        );
       })();
     },
-    [address, endpoint, prefix, search]
+    [address, endpoint, prefix, search, limit]
   );
 
   const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER, endpoint, address, search],
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
+      endpoint,
+      address,
+      search,
+      limit,
+    ],
     ({ pageParam }) => queryfn(pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
