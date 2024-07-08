@@ -32,7 +32,6 @@ export const ModuleTxsTable = ({
     pageSize,
     setPageSize,
     offset,
-    setTotalData,
   } = usePaginator({
     total: txCount,
     initialState: {
@@ -46,9 +45,7 @@ export const ModuleTxsTable = ({
     data: moduleTxs,
     isLoading,
     error,
-  } = useModuleTxs(vmAddress, moduleName, pageSize, offset, {
-    onSuccess: ({ total }) => setTotalData(total),
-  });
+  } = useModuleTxs(vmAddress, moduleName, pageSize, offset);
 
   useEffect(() => {
     if (!onViewMore) setPageSize(10);

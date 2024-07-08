@@ -300,8 +300,7 @@ export const useModuleTxs = (
   vmAddress: HexAddr,
   moduleName: string,
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<ModuleTxsResponse>, "onSuccess"> = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("move");
   const isInitia = useInitia();
@@ -318,7 +317,7 @@ export const useModuleTxs = (
     ],
     async () =>
       getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
