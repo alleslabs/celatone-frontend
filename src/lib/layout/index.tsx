@@ -73,7 +73,6 @@ const Layout = ({ children }: LayoutProps) => {
           </GridItem>
           <GridItem
             borderRight="1px solid"
-            borderBottom="1px solid"
             borderColor="gray.700"
             area="nav"
             overflowY="auto"
