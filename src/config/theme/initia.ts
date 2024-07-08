@@ -39,7 +39,7 @@ const INITIA_BASE_THEME: ThemeConfig = {
     },
     background: {
       main: "#070708",
-      overlay: "rgba(17, 17, 23, 0.7)",
+      overlay: "rgba(7, 7, 8, 0.7)",
     },
     text: {
       main: "#F5F5F5",

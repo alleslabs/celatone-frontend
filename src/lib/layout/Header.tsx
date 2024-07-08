@@ -58,7 +58,7 @@ const Header = () => {
             <AppMenu />
           </SectionWrapper>
         )}
-        <SectionWrapper>
+        <SectionWrapper minW={isInitia ? "auto" : "234px"}>
           <AppLink href="/">
             <Image
               src={theme.branding.logo}

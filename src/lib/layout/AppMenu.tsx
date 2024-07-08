@@ -56,6 +56,7 @@ export const AppMenu = ({
           <CustomIcon name="apps" color="gray.400" />
         </Flex>
       </PopoverTrigger>
+
       <PopoverContent
         border="0"
         zIndex={4}
