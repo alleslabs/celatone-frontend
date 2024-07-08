@@ -86,16 +86,13 @@ export const getNfts = async (
   limit: number,
   offset: number
 ) => {
-  const expressionNew = getNftsExpression(collectionAddress, search);
-  const expressionOld = getNftsExpressionOld(collectionAddress, search);
-
   try {
     const res = await axios.post(indexer, {
       query: getNftsQuery,
       variables: {
         limit,
         offset,
-        expression: expressionNew,
+        expression: getNftsExpression(collectionAddress, search),
       },
     });
     return parseWithError(zNft.array(), res.data.data.nfts);
@@ -105,7 +102,7 @@ export const getNfts = async (
       variables: {
         limit,
         offset,
-        expression: expressionOld,
+        expression: getNftsExpressionOld(collectionAddress, search),
       },
     });
     return parseWithError(zNftOld.array(), res.data.data.nfts);
@@ -372,27 +369,32 @@ export const getNftsByAccount = async (
   collectionAddress?: HexAddr32,
   search?: string
 ) => {
-  const expressionNew = getNftsByAccountExpression(
-    accountAddress,
-    collectionAddress,
-    search
-  );
-  const expressionOld = getNftsByAccountExpressionOld(
-    accountAddress,
-    collectionAddress,
-    search
-  );
-
   try {
     const res = await axios.post(indexer, {
       query: getNftsByAccountQuery,
-      variables: { limit, offset, expression: expressionNew },
+      variables: {
+        limit,
+        offset,
+        expression: getNftsByAccountExpression(
+          accountAddress,
+          collectionAddress,
+          search
+        ),
+      },
     });
     return parseWithError(zNftsByAccountResponse, res.data.data);
   } catch {
     const res = await axios.post(indexer, {
       query: getNftsByAccountQueryOld,
-      variables: { limit, offset, expression: expressionOld },
+      variables: {
+        limit,
+        offset,
+        expression: getNftsByAccountExpressionOld(
+          accountAddress,
+          collectionAddress,
+          search
+        ),
+      },
     });
     return parseWithError(zNftsByAccountResponse, res.data.data);
   }

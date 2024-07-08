@@ -85,19 +85,24 @@ export const getCollections = async (
   offset: number,
   search?: string
 ) => {
-  const expressionNew = getCollectionsExpression(search);
-  const expressionOld = getCollectionsExpressionOld(search);
-
   try {
     const res = await axios.post(indexer, {
       query: getCollectionsQuery,
-      variables: { offset, limit, expression: expressionNew },
+      variables: {
+        offset,
+        limit,
+        expression: getCollectionsExpression(search),
+      },
     });
     return parseWithError(zCollectionsResponse, res.data.data);
   } catch {
     const res = await axios.post(indexer, {
       query: getCollectionsQueryOld,
-      variables: { offset, limit, expression: expressionOld },
+      variables: {
+        offset,
+        limit,
+        expression: getCollectionsExpressionOld(search),
+      },
     });
     return parseWithError(zCollectionsResponse, res.data.data);
   }
@@ -292,22 +297,16 @@ export const getCollectionActivities = async (
   offset: number,
   search?: string
 ) => {
-  const expressionNew = getCollectionActivitiesExpression(
-    collectionAddress,
-    search
-  );
-  const expressionOld = getCollectionActivitiesExpressionOld(
-    collectionAddress,
-    search
-  );
-
   try {
     const res = await axios.post(indexer, {
       query: getCollectionActivitiesQuery,
       variables: {
         limit,
         offset,
-        expression: expressionNew,
+        expression: getCollectionActivitiesExpression(
+          collectionAddress,
+          search
+        ),
       },
     });
     return parseWithError(
@@ -320,7 +319,10 @@ export const getCollectionActivities = async (
       variables: {
         limit,
         offset,
-        expression: expressionOld,
+        expression: getCollectionActivitiesExpressionOld(
+          collectionAddress,
+          search
+        ),
       },
     });
     return parseWithError(
