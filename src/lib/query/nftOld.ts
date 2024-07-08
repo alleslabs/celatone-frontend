@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 
 export const getNftQueryOld = gql`
-  query getNftQuery($collectionAddress: String!, $nftAddress: String!) {
+  query getNftQueryOld($collectionAddress: String!, $nftAddress: String!) {
     nfts(
       where: {
         collectionByCollection: {
@@ -28,7 +28,11 @@ export const getNftQueryOld = gql`
 `;
 
 export const getNftsQueryOld = gql`
-  query getNftsQuery($limit: Int!, $offset: Int!, $expression: nfts_bool_exp!) {
+  query getNftsQueryOld(
+    $limit: Int!
+    $offset: Int!
+    $expression: nfts_bool_exp!
+  ) {
     nfts(
       limit: $limit
       offset: $offset
@@ -56,7 +60,7 @@ export const getNftsQueryOld = gql`
 `;
 
 export const getNftTransactionsCountQueryOld = gql`
-  query getNftTransactionsCountQuery($nftAddress: String!) {
+  query getNftTransactionsCountQueryOld($nftAddress: String!) {
     nft_transactions_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
     ) {
@@ -68,7 +72,7 @@ export const getNftTransactionsCountQueryOld = gql`
 `;
 
 export const getNftTransactionsQueryOld = gql`
-  query getNftTransactionsQuery(
+  query getNftTransactionsQueryOld(
     $limit: Int!
     $offset: Int!
     $nftAddress: String!
@@ -101,7 +105,7 @@ export const getNftTransactionsQueryOld = gql`
 `;
 
 export const getNftMutateEventsQueryOld = gql`
-  query getNftMutateEventsQuery(
+  query getNftMutateEventsQueryOld(
     $limit: Int!
     $offset: Int!
     $nftAddress: String!
@@ -124,7 +128,7 @@ export const getNftMutateEventsQueryOld = gql`
 `;
 
 export const getNftMutateEventsCountQueryOld = gql`
-  query getNftMutateEventsCountQuery($nftAddress: String!) {
+  query getNftMutateEventsCountQueryOld($nftAddress: String!) {
     nft_mutation_events_aggregate(
       where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
     ) {
@@ -136,13 +140,13 @@ export const getNftMutateEventsCountQueryOld = gql`
 `;
 
 export const getNftsByAccountQueryOld = gql`
-  query getNftsByAccountQuery(
-    $pageSize: Int!
+  query getNftsByAccountQueryOld(
+    $limit: Int!
     $offset: Int!
     $expression: nfts_bool_exp!
   ) {
     nfts(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       order_by: { token_id: asc }
       where: $expression
@@ -172,7 +176,7 @@ export const getNftsByAccountQueryOld = gql`
 `;
 
 export const getNftsCountByAccountQueryOld = gql`
-  query getNftsCountByAccountQuery($accountAddress: String!) {
+  query getNftsCountByAccountQueryOld($accountAddress: String!) {
     nfts_aggregate(
       where: {
         vmAddressByOwner: { vm_address: { _eq: $accountAddress } }

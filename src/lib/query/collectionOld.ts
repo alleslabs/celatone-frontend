@@ -1,13 +1,13 @@
 import { gql } from "graphql-request";
 
 export const getCollectionsQueryOld = gql`
-  query getCollectionsQuery(
+  query getCollectionsQueryOld(
     $offset: Int!
-    $pageSize: Int!
+    $limit: Int!
     $expression: collections_bool_exp!
   ) {
     collections(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       where: $expression
       order_by: { name: asc }
@@ -31,7 +31,7 @@ export const getCollectionsQueryOld = gql`
 `;
 
 export const getCollectionByCollectionAddressQueryOld = gql`
-  query getCollectionByCollectionAddressQuery($vmAddress: String!) {
+  query getCollectionByCollectionAddressQueryOld($vmAddress: String!) {
     collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
       name
       uri
@@ -50,7 +50,7 @@ export const getCollectionByCollectionAddressQueryOld = gql`
 `;
 
 export const getCollectionTotalBurnedCountQueryOld = gql`
-  query getCollectionTotalBurnedCountQuery($vmAddress: String!) {
+  query getCollectionTotalBurnedCountQueryOld($vmAddress: String!) {
     nfts_aggregate(
       where: {
         collectionByCollection: {
@@ -67,7 +67,7 @@ export const getCollectionTotalBurnedCountQueryOld = gql`
 `;
 
 export const getCollectionCreatorQueryOld = gql`
-  query getCollectionCreatorQuery($vmAddress: String!) {
+  query getCollectionCreatorQueryOld($vmAddress: String!) {
     collections(where: { vm_address: { vm_address: { _eq: $vmAddress } } }) {
       vmAddressByCreator {
         vm_address
@@ -89,7 +89,7 @@ export const getCollectionCreatorQueryOld = gql`
 `;
 
 export const getCollectionActivitiesCountQueryOld = gql`
-  query getCollectionActivitiesCountQuery($vmAddress: String!) {
+  query getCollectionActivitiesCountQueryOld($vmAddress: String!) {
     collection_transactions_aggregate(
       where: { collection: { vm_address: { vm_address: { _eq: $vmAddress } } } }
     ) {
@@ -101,7 +101,7 @@ export const getCollectionActivitiesCountQueryOld = gql`
 `;
 
 export const getCollectionMutateEventsCountQueryOld = gql`
-  query getCollectionMutateEventsCountQuery($vmAddress: String!) {
+  query getCollectionMutateEventsCountQueryOld($vmAddress: String!) {
     collection_mutation_events_aggregate(
       where: { collection: { vm_address: { vm_address: { _eq: $vmAddress } } } }
     ) {
@@ -113,7 +113,7 @@ export const getCollectionMutateEventsCountQueryOld = gql`
 `;
 
 export const getCollectionUniqueHoldersCountQueryOld = gql`
-  query getCollectionUniqueHoldersCountQuery($vmAddress: String!) {
+  query getCollectionUniqueHoldersCountQueryOld($vmAddress: String!) {
     nfts_aggregate(
       where: {
         collectionByCollection: {
@@ -130,13 +130,13 @@ export const getCollectionUniqueHoldersCountQueryOld = gql`
 `;
 
 export const getCollectionActivitiesQueryOld = gql`
-  query getCollectionActivitiesQuery(
+  query getCollectionActivitiesQueryOld(
     $expression: collection_transactions_bool_exp
     $offset: Int!
-    $pageSize: Int!
+    $limit: Int!
   ) {
     collection_transactions(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       where: $expression
       order_by: [
@@ -169,13 +169,13 @@ export const getCollectionActivitiesQueryOld = gql`
 `;
 
 export const getCollectionMutateEventsQueryOld = gql`
-  query getCollectionMutateEventsQuery(
+  query getCollectionMutateEventsQueryOld(
     $collectionAddress: String!
     $offset: Int!
-    $pageSize: Int!
+    $limit: Int!
   ) {
     collection_mutation_events(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       where: {
         collection: { vm_address: { vm_address: { _eq: $collectionAddress } } }
@@ -194,7 +194,7 @@ export const getCollectionMutateEventsQueryOld = gql`
 `;
 
 export const getCollectionsByAccountQueryOld = gql`
-  query getCollectionsByAccountQuery($accountAddress: String!) {
+  query getCollectionsByAccountQueryOld($accountAddress: String!) {
     collections(
       where: {
         nfts: { vmAddressByOwner: { vm_address: { _eq: $accountAddress } } }

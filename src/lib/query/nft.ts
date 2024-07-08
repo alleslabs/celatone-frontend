@@ -141,12 +141,12 @@ export const getNftMutateEventsCountQuery = gql`
 
 export const getNftsByAccountQuery = gql`
   query getNftsByAccountQuery(
-    $pageSize: Int!
+    $limit: Int!
     $offset: Int!
     $expression: nfts_bool_exp!
   ) {
     nfts(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       order_by: { token_id: asc }
       where: $expression
