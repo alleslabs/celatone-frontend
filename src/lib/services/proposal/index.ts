@@ -117,7 +117,7 @@ export const useProposalsLcd = (
 ) => {
   const lcdEndpoint = useLcdEndpoint();
 
-  const query = useInfiniteQuery<ProposalsResponseLcd>(
+  const { data, ...rest } = useInfiniteQuery<ProposalsResponseLcd>(
     [CELATONE_QUERY_KEYS.PROPOSALS_LCD, lcdEndpoint, status],
     ({ pageParam }) => getProposalsLcd(lcdEndpoint, pageParam, status),
     {
@@ -125,8 +125,6 @@ export const useProposalsLcd = (
       refetchOnWindowFocus: false,
     }
   );
-
-  const { data, ...rest } = query;
 
   return {
     data: data?.pages.flatMap((page) => page.proposals),
