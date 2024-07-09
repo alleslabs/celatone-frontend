@@ -314,16 +314,10 @@ export const useTxsByAddressLcd = (
 
         if (address === sender) return txsByHash;
 
-        const findAddressFromEvents = tx.events?.some((event) =>
-          event.attributes.some((attr) => attr.value === address)
-        );
-
-        if (findAddressFromEvents) return txsByHash;
-
         throw new Error("address is not equal to sender (getTxsByHashLcd)");
       }
 
-      if (!address)
+      if (search || !address)
         throw new Error("address is undefined (useTxsByAddressLcd)");
       return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
     })();
