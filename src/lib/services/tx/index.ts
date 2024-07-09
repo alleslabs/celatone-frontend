@@ -384,7 +384,7 @@ export const useTxsByAddressSequencer = (
           if (findAddressFromEvents) return txsByHash;
 
           throw new Error(
-            "address is not equal to sender (useTxsByAddressSequncer)"
+            "transaction is not related (useTxsByAddressSequncer)"
           );
         }
 
