@@ -10,12 +10,13 @@ import { parseWithError } from "lib/utils";
 export const getTxsByAccountAddressSequencer = async (
   endpoint: string,
   address: BechAddr20,
-  paginationKey: Option<string>
+  paginationKey: Option<string>,
+  limit = 10
 ) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
       params: {
-        "pagination.limit": 10,
+        "pagination.limit": limit,
         "pagination.reverse": true,
         "pagination.key": paginationKey,
       },
