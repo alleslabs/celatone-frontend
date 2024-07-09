@@ -13,16 +13,13 @@ export const getTxsByAccountAddressSequencer = async (
   paginationKey: Option<string>
 ) =>
   axios
-    .get(
-      `${endpoint}/indexer/tx/v1/txs/by_account/${encodeURIComponent(address)}`,
-      {
-        params: {
-          "pagination.limit": 10,
-          "pagination.reverse": true,
-          "pagination.key": paginationKey,
-        },
-      }
-    )
+    .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
+      params: {
+        "pagination.limit": 10,
+        "pagination.reverse": true,
+        "pagination.key": paginationKey,
+      },
+    })
     .then(({ data }) => parseWithError(zTxsByAddressResponseSequencer, data));
 
 export const getTxsByHashSequencer = async (endpoint: string, txHash: string) =>

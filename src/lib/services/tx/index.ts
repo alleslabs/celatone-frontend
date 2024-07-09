@@ -304,7 +304,7 @@ export const useTxsByAddressLcd = (
         const txsByHash = await getTxsByHashLcd(endpoint, search);
 
         if (txsByHash.total === 0)
-          throw new Error("address is not equal to sender (getTxsByHashLcd)");
+          throw new Error("transaction not found (getTxsByHashLcd)");
 
         const tx = txsByHash.items[0];
         const sender = convertAccountPubkeyToAccountAddress(
@@ -361,9 +361,7 @@ export const useTxsByAddressSequencer = (
           const txsByHash = await getTxsByHashSequencer(endpoint, search);
 
           if (txsByHash.pagination.total === 0)
-            throw new Error(
-              "address is not equal to sender (useTxsByAddressSequncer)"
-            );
+            throw new Error("transaction not found (getTxsByHashSequencer)");
 
           const tx = txsByHash.items[0];
           const sender = convertAccountPubkeyToAccountAddress(

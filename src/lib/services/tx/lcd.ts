@@ -30,7 +30,7 @@ export const getTxsByContractAddressLcd = async (
         order_by: 2,
         limit,
         page: offset / limit + 1,
-        events: `wasm.contract_address='${encodeURI(contractAddress)}'`,
+        events: `wasm._contract_address='${encodeURI(contractAddress)}'`,
       },
     })
     .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
