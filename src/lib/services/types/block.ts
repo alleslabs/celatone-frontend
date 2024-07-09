@@ -21,17 +21,13 @@ import { zTx } from "./tx";
 const zNullableValidator = z.nullable(
   z
     .object({
-      validator_address: zValidatorAddr.nullish(),
       operator_address: zValidatorAddr.nullish(),
       moniker: z.string(),
       identity: z.string(),
     })
     .transform<Validator>((val) => ({
       // nullable operator address for ICS chain
-      validatorAddress:
-        val.validator_address ??
-        val.operator_address ??
-        zValidatorAddr.parse(""),
+      validatorAddress: val.operator_address ?? zValidatorAddr.parse(""),
       moniker: val.moniker,
       identity: val.identity,
     }))
