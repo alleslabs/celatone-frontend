@@ -54,14 +54,17 @@ export const convertAccountPubkeyToAccountAddress = (
   accountPubkey: Pubkey,
   prefix: string
 ) => {
-  if (accountPubkey["@type"] === "/cosmos.crypto.ed25519.PubKey") {
-    const pubkey = fromBase64(accountPubkey.key);
+  const firstAccountPubkey =
+    "key" in accountPubkey ? accountPubkey : accountPubkey.publicKeys[0];
+
+  if (firstAccountPubkey["@type"] === "/cosmos.crypto.ed25519.PubKey") {
+    const pubkey = fromBase64(firstAccountPubkey.key);
     const data = fromHex(toHex(sha256(pubkey)).slice(0, 40));
     return zBechAddr20.parse(toBech32(prefix, data));
   }
 
-  if (accountPubkey["@type"] === "/cosmos.crypto.secp256k1.PubKey") {
-    const pubkey = fromBase64(accountPubkey.key);
+  if (firstAccountPubkey["@type"] === "/cosmos.crypto.secp256k1.PubKey") {
+    const pubkey = fromBase64(firstAccountPubkey.key);
     const data = new Ripemd160().update(sha256(pubkey)).digest();
     return zBechAddr20.parse(toBech32(prefix, data));
   }

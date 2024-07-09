@@ -1,10 +1,5 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
-import type {
-  ModeInfo,
-  ModeInfo_Multi as ModeInfoMulti,
-  ModeInfo_Single as ModeInfoSingle,
-} from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { z } from "zod";
 
 import type {
@@ -19,8 +14,8 @@ import {
   zCoin,
   zMessageResponse,
   zPagination,
-  zPubkey,
-  zUint8Schema,
+  zPubkeyMulti,
+  zPubkeySingle,
   zUtcDate,
 } from "lib/types";
 import {
@@ -37,31 +32,39 @@ import { zAny } from "./protobuf";
 // --------------AuthInfo------------------
 // ----------------------------------------
 
-let zModeInfo: z.ZodType<ModeInfo>;
-
-const zModeInfoSingle: z.ZodType<ModeInfoSingle> = z.object({
-  mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
-});
-
-const zModeInfoMulti: z.ZodType<ModeInfoMulti> = z.object({
-  bitarray: z.object({
-    extraBitsStored: z.number(),
-    elems: zUint8Schema,
+const zModeInfoSingle = z.object({
+  single: z.object({
+    mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
   }),
-  modeInfos: z.lazy(() => z.array(zModeInfo)),
 });
 
-zModeInfo = z.object({
-  single: zModeInfoSingle.optional(),
-  multi: zModeInfoMulti.optional(),
+const zModeInfoMulti = z.object({
+  multi: z.object({
+    bitarray: z.object({
+      extra_bits_stored: z.number(),
+      elems: z.string(), // base64 encoded of Uint8Array
+    }),
+    // assuming one nesting level for now as multisig pubkey is also one level
+    mode_infos: z.array(zModeInfoSingle),
+  }),
+});
+
+const zSignerInfoBase = z.object({
+  sequence: z.string(),
+});
+
+const zSignerInfoSingle = zSignerInfoBase.extend({
+  mode_info: zModeInfoSingle,
+  public_key: zPubkeySingle,
+});
+
+const zSignerInfoMulti = zSignerInfoBase.extend({
+  mode_info: zModeInfoMulti,
+  public_key: zPubkeyMulti,
 });
 
 const zSignerInfo = z
-  .object({
-    public_key: zPubkey,
-    mode_info: zModeInfo.optional(),
-    sequence: z.string(),
-  })
+  .union([zSignerInfoSingle, zSignerInfoMulti])
   .transform(snakeToCamel);
 
 const zAuthInfo = z
@@ -351,3 +354,8 @@ export const zTxsCountResponse = z
     count: z.number().nullish(),
   })
   .transform((val) => val.count);
+
+export const zBlockTxsResponseSequencer = z.object({
+  txs: z.array(zTxsResponseItemFromLcd),
+  pagination: zPagination,
+});

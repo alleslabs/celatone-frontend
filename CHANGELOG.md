@@ -42,12 +42,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
 - [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
 - [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+- [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) Support recent blocks, block details in sequencer tier
 
 ### Improvements
 
 ### Bug fixes
 
+## v1.7.1
+
+### Features
+
+- [#1008](https://github.com/alleslabs/celatone-frontend/pull/1008) Support both new, old DB schema for NFTs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+
+### Improvements
+
+- [#1013](https://github.com/alleslabs/celatone-frontend/pull/1013) Remove unused validator's delegator count, disable Sentry
+- [#1012](https://github.com/alleslabs/celatone-frontend/pull/1012) Move modules, balances query to LCD
+
+### Bug fixes
+
+- [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) Fix getNftQuery & getNftMintInfoQuery
 - [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
+- [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
 
 ## v1.7.0
 

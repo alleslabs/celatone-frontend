@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import {
+  zBlockTxsResponseSequencer,
   zTxsByAddressResponseSequencer,
   zTxsByHashResponseSequencer,
 } from "../types";
@@ -27,3 +28,21 @@ export const getTxsByHashSequencer = async (endpoint: string, txHash: string) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/${encodeURI(txHash)}`)
     .then(({ data }) => parseWithError(zTxsByHashResponseSequencer, data));
+
+export const getTxsByBlockHeightSequencer = async (
+  endpoint: string,
+  height: number,
+  paginationKey: Option<string>
+) =>
+  axios
+    .get(
+      `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
+      {
+        params: {
+          "pagination.offset": 0,
+          "pagination.limit": 10,
+          "pagination.key": paginationKey,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));

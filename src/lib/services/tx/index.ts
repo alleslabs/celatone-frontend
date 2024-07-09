@@ -50,6 +50,7 @@ import {
 } from "./lcd";
 import {
   getTxsByAccountAddressSequencer,
+  getTxsByBlockHeightSequencer,
   getTxsByHashSequencer,
 } from "./sequencer";
 
@@ -435,6 +436,42 @@ export const useTxsByAddressSequencer = (
         };
       })
     ),
+  };
+};
+
+export const useTxsByBlockHeightSequencer = (height: number) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
+    async ({ pageParam }) => {
+      const { txs, pagination } = await getTxsByBlockHeightSequencer(
+        endpoint,
+        height,
+        pageParam
+      );
+
+      return {
+        txs: txs.map<Transaction>((tx) => ({
+          ...tx,
+          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        })),
+        pagination,
+      };
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    data: data?.pages.flatMap((page) => page.txs),
+    ...rest,
   };
 };
 

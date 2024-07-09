@@ -4,11 +4,11 @@ import { EmptyState } from "lib/components/state";
 import { BlocksTable } from "lib/components/table/blocks";
 import { useBlocks } from "lib/services/block";
 
-interface BlocksTableProps {
-  isViewMore?: boolean;
-}
+import type { RecentBlocksTableProps } from "./type";
 
-export const RecentBlocksTable = ({ isViewMore }: BlocksTableProps) => {
+export const RecentBlocksTableFull = ({
+  isViewMore,
+}: RecentBlocksTableProps) => {
   const {
     pagesQuantity,
     setTotalData,
