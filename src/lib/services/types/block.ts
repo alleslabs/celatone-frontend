@@ -152,20 +152,20 @@ export const zBlockDataResponseLcd = zBlockLcd
 // ---------------- Sequencer ----------------
 const zBlockSequencer = z.object({
   hash: z.string(),
-  height: z.string(),
+  height: z.coerce.number(),
   timestamp: zUtcDate,
-  gas_used: z.string(),
-  gas_wanted: z.string(),
-  tx_count: z.string(),
+  gas_used: z.coerce.number(),
+  gas_wanted: z.coerce.number(),
+  tx_count: z.coerce.number(),
   proposer: zNullableValidator,
 });
 
 const zBlocksResponseItemSequencer = zBlockSequencer.transform<Block>(
   (val) => ({
     hash: val.hash,
-    height: Number(val.height),
+    height: val.height,
     timestamp: val.timestamp,
-    txCount: Number(val.tx_count),
+    txCount: val.tx_count,
     proposer: val.proposer,
   })
 );
@@ -178,11 +178,11 @@ export const zBlocksResponseSequencer = z.object({
 export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
   (val) => ({
     hash: val.hash,
-    height: Number(val.height),
+    height: val.height,
     timestamp: val.timestamp,
-    txCount: Number(val.tx_count),
-    gasUsed: Number(val.gas_used),
-    gasLimit: Number(val.gas_wanted),
+    txCount: val.tx_count,
+    gasUsed: val.gas_used,
+    gasLimit: val.gas_wanted,
     proposer: val.proposer,
   })
 );
