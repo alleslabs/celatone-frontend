@@ -317,7 +317,10 @@ export const useTxsByAddressLcd = (
         throw new Error("address is not equal to sender (getTxsByHashLcd)");
       }
 
-      if (search || !address)
+      if (search && !isTxHash(search))
+        throw new Error("search is not a tx hash (useTxsByAddressLcd)");
+
+      if (!address)
         throw new Error("address is undefined (useTxsByAddressLcd)");
       return getTxsByAccountAddressLcd(endpoint, address, limit, offset);
     })();
@@ -355,6 +358,7 @@ export const useTxsByAddressSequencer = (
   } = useCurrentChain();
 
   const queryfn = useCallback(
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     async (pageParam: Option<string>) => {
       return (async () => {
         if (search && isTxHash(search)) {
@@ -382,7 +386,10 @@ export const useTxsByAddressSequencer = (
           );
         }
 
-        if (search || !address)
+        if (search && !isTxHash(search))
+          throw new Error("search is not a tx hash (useTxsByAddressSequncer)");
+
+        if (!address)
           throw new Error("address is undefined (useTxsByAddressSequncer)");
 
         return getTxsByAccountAddressSequencer(endpoint, address, pageParam);
