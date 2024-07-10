@@ -5,7 +5,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
   Divider,
   Flex,
   FormControl,
@@ -24,10 +23,8 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { observer } from "mobx-react-lite";
 import { useCallback, useMemo, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
@@ -40,7 +37,7 @@ import { useNetworkStore } from "lib/providers/store";
 import type { Option } from "lib/types";
 
 import { NetworkAccodion } from "./NetworkAccordion";
-import { NetworkCard } from "./NetworkCard";
+import { NetworkDragItemWrapper } from "./NetworkDragItemWrapper";
 
 interface NetworkMenuBodyProps {
   currentChainId: string;
@@ -72,58 +69,6 @@ const dropAnimationConfig: DropAnimation = {
       },
     },
   }),
-};
-
-const SortableItem = ({
-  chainId,
-  currentChainId,
-  index,
-  cursor,
-  setCursor,
-}: {
-  chainId: string;
-  currentChainId: string;
-  index?: number;
-  cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
-}) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: chainId,
-  });
-
-  const style = {
-    opacity: isDragging ? 0.7 : undefined,
-    cursor: isDragging ? "grabbing" : "grab",
-    transform: transform ? CSS.Transform.toString(transform) : "none",
-    transition: transition || "transform 250ms ease",
-  };
-
-  return (
-    <Box
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <NetworkCard
-        isDraggable
-        image={CHAIN_CONFIGS[chainId]?.logoUrl}
-        chainId={chainId}
-        isSelected={chainId === currentChainId}
-        index={index}
-        cursor={cursor}
-        setCursor={setCursor}
-      />
-    </Box>
-  );
 };
 
 export const NetworkMenuBody = observer(
@@ -204,13 +149,16 @@ export const NetworkMenuBody = observer(
 
     // Navigate with arrow keys
 
+    const formattedPinnedNetworks = filteredPinnedNetworks.map(
+      (x) => x.chainId
+    );
     const allNetworks = useMemo(
       () => [
-        ...filteredPinnedNetworks,
+        ...formattedPinnedNetworks,
         ...filteredMainnetChains,
         ...filteredTestnetChains,
       ],
-      [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
+      [formattedPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
     );
 
     const handleOnKeyEnter = useCallback(
@@ -287,24 +235,26 @@ export const NetworkMenuBody = observer(
                 strategy={verticalListSortingStrategy}
               >
                 {filteredPinnedNetworks.map((item, index) => (
-                  <SortableItem
+                  <NetworkDragItemWrapper
                     key={item.chainId}
                     chainId={item.chainId}
                     currentChainId={currentChainId}
                     index={index}
                     cursor={cursor}
                     setCursor={setCursor}
+                    onClose={onClose}
                   />
                 ))}
               </SortableContext>
               <DragOverlay dropAnimation={dropAnimationConfig}>
                 {activeItem ? (
-                  <SortableItem
+                  <NetworkDragItemWrapper
                     key={activeItem.chainId}
                     chainId={activeItem.chainId}
                     currentChainId={currentChainId}
                     cursor={cursor}
                     setCursor={setCursor}
+                    onClose={onClose}
                   />
                 ) : null}
               </DragOverlay>
@@ -325,6 +275,7 @@ export const NetworkMenuBody = observer(
             cursor={cursor}
             setCursor={setCursor}
             startIndex={filteredPinnedNetworks.length}
+            onClose={onClose}
           />
           {filteredMainnetChains.length > 0 && (
             <Divider
@@ -343,6 +294,7 @@ export const NetworkMenuBody = observer(
             startIndex={
               filteredPinnedNetworks.length + filteredMainnetChains.length
             }
+            onClose={onClose}
           />
         </Accordion>
         {areAllNetworksEmpty && (

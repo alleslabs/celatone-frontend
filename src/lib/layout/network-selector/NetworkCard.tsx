@@ -8,15 +8,27 @@ import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
 import type { Option } from "lib/types";
 
-interface NetworkCardProps {
-  image?: string;
+interface NetworkCommonProps {
   chainId: string;
   isSelected: boolean;
   isDraggable?: boolean;
+}
+
+interface NetworkCardProps extends NetworkCommonProps {
+  image?: string;
   index?: number;
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
+  onClose: () => void;
 }
+
+interface NetworkIconsProps extends NetworkCommonProps {
+  handleSave: (e: React.MouseEvent<HTMLDivElement>) => void;
+  handleRemove: (e: React.MouseEvent<HTMLDivElement>) => void;
+  isNetworkPinned: (chainId: string) => boolean;
+}
+
+const customTransition = "opacity 0.1s ease-in-out";
 
 const iconProps = {
   cursor: "pointer",
@@ -25,7 +37,88 @@ const iconProps = {
   padding: 1,
 };
 
-const customTransition = "opacity 0.1s ease-in-out";
+const getCardBackground = (
+  index?: number,
+  cursor?: Option<number>,
+  isSelected?: boolean
+) => {
+  if (index === cursor) {
+    return "gray.800";
+  }
+  if (isSelected) {
+    return "gray.700";
+  }
+  return "transparent";
+};
+
+const getDisplayCursor = (isDraggable: boolean, isSelected: boolean) => {
+  if (isDraggable) {
+    return "inherit";
+  }
+  if (isSelected) {
+    return "default";
+  }
+  return "pointer";
+};
+
+const useHandleToast = () => {
+  return useToast({
+    status: "success",
+    duration: 5000,
+    isClosable: false,
+    position: "bottom-right",
+    icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+  });
+};
+
+const NetworkIcons = ({
+  chainId,
+  isSelected,
+  isDraggable,
+  handleSave,
+  handleRemove,
+  isNetworkPinned,
+}: NetworkIconsProps) => (
+  <Flex className="icon-wrapper" gap={2} zIndex={1}>
+    {isDraggable && (
+      <Flex
+        align="center"
+        className="icon-container"
+        opacity={0}
+        _hover={{ opacity: 1, transition: customTransition }}
+      >
+        <CustomIcon name="drag" color="gray.600" />
+      </Flex>
+    )}
+    {isNetworkPinned(chainId) ? (
+      <Flex
+        data-no-dnd="true"
+        {...iconProps}
+        onClick={handleRemove}
+        _hover={{
+          background: isSelected ? "gray.800" : "gray.900",
+          borderRadius: 4,
+          transition: customTransition,
+        }}
+      >
+        <CustomIcon name="pin-solid" />
+      </Flex>
+    ) : (
+      <Flex
+        {...iconProps}
+        onClick={handleSave}
+        sx={{ opacity: 0, transition: "opacity 0.25s ease-in-out" }}
+        _hover={{
+          background: isSelected ? "gray.800" : "gray.900",
+          borderRadius: 4,
+          transition: customTransition,
+        }}
+      >
+        <CustomIcon name="pin" />
+      </Flex>
+    )}
+  </Flex>
+);
 
 export const NetworkCard = observer(
   ({
@@ -36,19 +129,14 @@ export const NetworkCard = observer(
     index,
     cursor,
     setCursor,
+    onClose,
   }: NetworkCardProps) => {
     const selectChain = useSelectChain();
     const [secondaryDarker] = useToken("colors", ["secondary.darker"]);
     const fallbackImage = `https://ui-avatars.com/api/?name=${CHAIN_CONFIGS[chainId]?.prettyName || chainId}&background=${secondaryDarker.replace("#", "")}&color=fff`;
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
 
-    const toast = useToast({
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
-    });
+    const toast = useHandleToast();
 
     const handleSave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
@@ -81,19 +169,10 @@ export const NetworkCard = observer(
       (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         selectChain(chainId);
+        onClose();
       },
-      [selectChain, chainId]
+      [selectChain, chainId, onClose]
     );
-
-    let cardBackground;
-
-    if (isSelected) {
-      cardBackground = "gray.700";
-    } else if (index === cursor) {
-      cardBackground = "gray.800";
-    } else {
-      cardBackground = "transparent";
-    }
 
     return (
       <Flex
@@ -106,16 +185,16 @@ export const NetworkCard = observer(
         gap={4}
         borderRadius={8}
         transition="all 0.25s ease-in-out"
-        background={cardBackground}
+        onClick={handleClick}
+        background={getCardBackground(index, cursor, isSelected)}
+        cursor={getDisplayCursor(isDraggable, isSelected)}
+        onMouseMove={() => index !== cursor && setCursor(index)}
         _hover={{
-          background: !isSelected && "gray.800",
+          background: isSelected ? "gray.700" : "gray.800",
           "> .icon-wrapper > .icon-container": {
             opacity: 1,
           },
         }}
-        onMouseMove={() => index !== cursor && setCursor(index)}
-        onClick={handleClick}
-        cursor={!isDraggable ? "pointer" : "inherit"}
       >
         <Box
           opacity={isSelected ? 1 : 0}
@@ -144,45 +223,14 @@ export const NetworkCard = observer(
             </Text>
           </Flex>
         </Flex>
-        <Flex className="icon-wrapper" gap={2} zIndex={1}>
-          {isDraggable && (
-            <Flex
-              align="center"
-              className="icon-container"
-              opacity={0}
-              _hover={{ opacity: 1, transition: customTransition }}
-            >
-              <CustomIcon name="drag" color="gray.600" />
-            </Flex>
-          )}
-          {isNetworkPinned(chainId) ? (
-            <Flex
-              data-no-dnd="true"
-              {...iconProps}
-              onClick={handleRemove}
-              _hover={{
-                background: isSelected ? "gray.800" : "gray.900",
-                borderRadius: 4,
-                transition: customTransition,
-              }}
-            >
-              <CustomIcon name="pin-solid" />
-            </Flex>
-          ) : (
-            <Flex
-              {...iconProps}
-              onClick={handleSave}
-              sx={{ opacity: 0, transition: "opacity 0.25s ease-in-out" }}
-              _hover={{
-                background: isSelected ? "gray.800" : "gray.900",
-                borderRadius: 4,
-                transition: customTransition,
-              }}
-            >
-              <CustomIcon name="pin" />
-            </Flex>
-          )}
-        </Flex>
+        <NetworkIcons
+          chainId={chainId}
+          isSelected={isSelected}
+          isDraggable={isDraggable}
+          handleSave={handleSave}
+          handleRemove={handleRemove}
+          isNetworkPinned={isNetworkPinned}
+        />
       </Flex>
     );
   }

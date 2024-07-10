@@ -23,6 +23,7 @@ interface NetworkAccodionProps {
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
+  onClose: () => void;
 }
 
 interface SectionTitleProps {
@@ -50,6 +51,7 @@ export const NetworkAccodion = ({
   cursor,
   setCursor,
   startIndex,
+  onClose,
 }: NetworkAccodionProps) => {
   const isInitia = useInitia();
   const l1Networks = normalNetworks.filter(
@@ -84,6 +86,7 @@ export const NetworkAccodion = ({
                     index={startIndex + index}
                     cursor={cursor}
                     setCursor={setCursor}
+                    onClose={onClose}
                   />
                 ))}
               </Flex>
@@ -100,6 +103,7 @@ export const NetworkAccodion = ({
                     index={startIndex + l1Networks.length + index}
                     cursor={cursor}
                     setCursor={setCursor}
+                    onClose={onClose}
                   />
                 ))}
               </Flex>
@@ -116,6 +120,7 @@ export const NetworkAccodion = ({
                 index={startIndex + index}
                 cursor={cursor}
                 setCursor={setCursor}
+                onClose={onClose}
               />
             ))}
           </Flex>

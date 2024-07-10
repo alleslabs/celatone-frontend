@@ -68,7 +68,7 @@ export const NetworkMenu = observer(() => {
   useEffect(() => {
     const openSearchHandler = (event: KeyboardEvent) => {
       const specialKey = isMac ? event.metaKey : event.ctrlKey;
-      if (event.key === `\\` && specialKey) {
+      if (event.key === `/` && specialKey) {
         event.preventDefault();
         if (isOpen) {
           onClose();
@@ -108,7 +108,7 @@ export const NetworkMenu = observer(() => {
                 </Kbd>
                 <Kbd>
                   <Text variant="body3" gap={1}>
-                    \
+                    /
                   </Text>
                 </Kbd>
               </Flex>
