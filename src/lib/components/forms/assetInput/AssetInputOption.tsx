@@ -23,7 +23,8 @@ export const AssetInputOption = (
         "> div": {
           background: isSelected ? "gray.800" : "gray.900",
           "&:hover": {
-            background: data.isDisabled ? "gray.900" : "gray.800",
+            background:
+              data.isDisabled && !isSelected ? "gray.900" : "gray.800",
           },
         },
       }}

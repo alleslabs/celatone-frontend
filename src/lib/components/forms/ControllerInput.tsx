@@ -118,7 +118,7 @@ export const ControllerInput = <T extends FieldValues>({
         />
         <InputRightElement h="full" pr={cta ? 3 : 0}>
           {status && getStatusIcon(status.state)}
-          {cta && !error && (
+          {cta && (
             <Text
               bg="background.main"
               variant="body2"
@@ -132,13 +132,14 @@ export const ControllerInput = <T extends FieldValues>({
         </InputRightElement>
       </InputGroup>
       <Flex gap={1} alignItems="center" mt={1} justifyContent="space-between">
-        {isError ? (
-          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-        ) : (
+        <Flex direction="column" gap={1}>
+          {isError && (
+            <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+          )}
           <FormHelperText className="helper-text">
             {status?.message ? getResponseMsg(status, helperText) : helperText}
           </FormHelperText>
-        )}
+        </Flex>
         {helperAction}
       </Flex>
     </FormControl>

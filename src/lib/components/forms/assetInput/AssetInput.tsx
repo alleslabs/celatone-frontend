@@ -30,6 +30,7 @@ const styles = {
   container: (provided: SystemStyleObject) => ({
     ...provided,
     width: "100%",
+    zIndex: 999,
   }),
   valueContainer: (provided: SystemStyleObject) => ({
     ...provided,
@@ -87,7 +88,7 @@ export const AssetInput = ({
             ml: 3,
             px: 1,
             top: -2,
-            zIndex: 1,
+            zIndex: 9999,
           },
         }}
       >
@@ -104,7 +105,14 @@ export const AssetInput = ({
             setSelected(currentValue);
             setCurrencyValue(currentValue);
           }}
+          isOptionDisabled={(option) =>
+            option.value === selected ? false : option.isDisabled
+          }
           formatOptionLabel={AssetInputFormatOptionLabel}
+          menuPortalTarget={document.body}
+          styles={{
+            menuPortal: (provided) => ({ ...provided, zIndex: 9 }),
+          }}
           chakraStyles={styles}
           components={{
             Option: (props) => AssetInputOption(props, selected),
@@ -123,7 +131,6 @@ export const AssetInput = ({
 
             return true;
           }}
-          menuPortalTarget={document.body}
         />
       </Box>
       {AmountInput}

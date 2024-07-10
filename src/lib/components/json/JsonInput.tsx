@@ -122,6 +122,7 @@ const JsonInput = ({
         _hover={{
           borderColor: "gray.600",
         }}
+        height="100%"
       >
         <JsonEditor
           value={text}

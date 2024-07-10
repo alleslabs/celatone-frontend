@@ -122,18 +122,17 @@ export const SelectFund = ({
       const overBalance = Number(assetsSelect[idx].amount) > Number(formatted);
 
       return {
-        helperAction: !overBalance && isSelected && (
+        helperText: isSelected && (
           <Text variant="body3" color="text.dark" w="100%">
             Balance: {formatted}
           </Text>
         ),
-        cta: !overBalance &&
-          isSelected && {
-            label: "MAX",
-            onClick: (changeValue: (value: string) => void) => {
-              changeValue?.(formatted);
-            },
+        cta: isSelected && {
+          label: "MAX",
+          onClick: (changeValue: (value: string) => void) => {
+            changeValue?.(formatted);
           },
+        },
         error:
           isSelected && overBalance
             ? `Not enough ${assetInfosMap.get(selectedAssets[idx])?.symbol} in your wallet`
