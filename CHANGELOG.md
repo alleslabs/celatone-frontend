@@ -57,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) Fix getNftQuery & getNftMintInfoQuery
+- [#1016](https://github.com/alleslabs/celatone-frontend/pull/1016) Fix handling event value nullable
 - [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
 - [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
 
