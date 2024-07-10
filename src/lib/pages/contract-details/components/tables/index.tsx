@@ -23,7 +23,7 @@ interface ContractTablesProps {
 const tableHeaderId = "contractDetailsTableHeader";
 
 export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const gov = useGovConfig({ shouldRedirect: false });
   const { data, refetch: refetchCount } = useContractTableCounts(

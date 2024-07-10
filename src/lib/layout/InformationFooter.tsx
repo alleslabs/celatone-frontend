@@ -27,7 +27,7 @@ const FOOTER_BUTTONS = [
 ];
 
 export const InformationFooter = () => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const { data: overviewsStats, isLoading: isLoadingFull } =
     useOverviewsStats(isFullTier);
   const { data: latestHeight, isLoading: isLoadingLite } = useLatestBlockLcd();

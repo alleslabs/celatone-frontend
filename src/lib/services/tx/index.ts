@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -49,13 +49,14 @@ import {
   getTxsByContractAddressLcd,
   getTxsByHashLcd,
 } from "./lcd";
+import { getTxsByBlockHeightSequencer } from "./sequencer";
 
 export const useTxData = (
   txHash: Option<string>,
   enabled = true
 ): UseQueryResult<TxData> => {
   const { currentChainId } = useCelatoneApp();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
   const lcdEndpoint = useLcdEndpoint();
 
@@ -341,6 +342,42 @@ export const useTxsByAddressLcd = (
     createQueryFnWithTimeout(queryfn, 20000),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
+};
+
+export const useTxsByBlockHeightSequencer = (height: number) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
+    async ({ pageParam }) => {
+      const { txs, pagination } = await getTxsByBlockHeightSequencer(
+        endpoint,
+        height,
+        pageParam
+      );
+
+      return {
+        txs: txs.map<Transaction>((tx) => ({
+          ...tx,
+          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        })),
+        pagination,
+      };
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    data: data?.pages.flatMap((page) => page.txs),
+    ...rest,
+  };
 };
 
 export * from "./gql";

@@ -14,7 +14,7 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   useModuleByAddressLcd,
-  useModuleData,
+  useModulePublishInfo,
   useModuleTableCounts,
   useVerifyModule,
 } from "lib/services/move/module";
@@ -47,16 +47,16 @@ const ModuleDetailsBody = ({
   const formatAddresses = useFormatAddresses();
   const { hex: vmAddress } = formatAddresses(address);
 
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const currentTab =
     !isFullTier && tab === TabIndex.TxsHistories ? TabIndex.Overview : tab;
-  const fullData = useModuleData(vmAddress, moduleName, isFullTier);
-  const liteData = useModuleByAddressLcd({
+
+  const { data, isLoading: isModuleLoading } = useModuleByAddressLcd({
     address: vmAddress,
     moduleName,
-    options: { enabled: !isFullTier },
   });
-  const { data, isLoading } = isFullTier ? fullData : liteData;
+  const { data: modulePublishInfo, isFetching: isPublishInfoLoading } =
+    useModulePublishInfo(vmAddress, moduleName, isFullTier);
 
   const { data: moduleTableCounts } = useModuleTableCounts(
     vmAddress,
@@ -115,7 +115,7 @@ const ModuleDetailsBody = ({
     ? Object.values(TabIndex)
     : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
 
-  if (isLoading) return <Loading />;
+  if (isModuleLoading || isPublishInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="module information" />;
 
   return (
@@ -187,8 +187,9 @@ const ModuleDetailsBody = ({
                 }}
               />
               <ModuleInfo
+                indexedModule={data}
+                modulePublishInfo={modulePublishInfo}
                 verificationData={verificationData}
-                moduleData={data}
               />
               {isFullTier && (
                 <ModuleTables

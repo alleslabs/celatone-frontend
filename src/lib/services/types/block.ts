@@ -21,18 +21,19 @@ import { zTx } from "./tx";
 const zNullableValidator = z.nullable(
   z
     .object({
-      validator_address: zValidatorAddr.nullable(),
+      operator_address: zValidatorAddr.nullish(),
       moniker: z.string(),
       identity: z.string(),
     })
     .transform<Validator>((val) => ({
       // nullable operator address for ICS chain
-      validatorAddress: val.validator_address ?? zValidatorAddr.parse(""),
+      validatorAddress: val.operator_address ?? zValidatorAddr.parse(""),
       moniker: val.moniker,
       identity: val.identity,
     }))
 );
 
+// ---------------- API ----------------
 const zBlocksResponseItem = z
   .object({
     hash: z.string().transform(parseTxHash),
@@ -73,6 +74,7 @@ export const zBlockDataResponse = z
     gasLimit: val.gas_limit,
   }));
 
+// ---------------- LCD ----------------
 export const zBlockLcd = z.object({
   block: z.object({
     header: z.object({
@@ -146,3 +148,41 @@ export const zBlockDataResponseLcd = zBlockLcd
       transactions,
     };
   });
+
+// ---------------- Sequencer ----------------
+const zBlockSequencer = z.object({
+  hash: z.string(),
+  height: z.coerce.number(),
+  timestamp: zUtcDate,
+  gas_used: z.coerce.number(),
+  gas_wanted: z.coerce.number(),
+  tx_count: z.coerce.number(),
+  proposer: zNullableValidator,
+});
+
+const zBlocksResponseItemSequencer = zBlockSequencer.transform<Block>(
+  (val) => ({
+    hash: val.hash,
+    height: val.height,
+    timestamp: val.timestamp,
+    txCount: val.tx_count,
+    proposer: val.proposer,
+  })
+);
+
+export const zBlocksResponseSequencer = z.object({
+  blocks: z.array(zBlocksResponseItemSequencer),
+  pagination: zPagination,
+});
+
+export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
+  (val) => ({
+    hash: val.hash,
+    height: val.height,
+    timestamp: val.timestamp,
+    txCount: val.tx_count,
+    gasUsed: val.gas_used,
+    gasLimit: val.gas_wanted,
+    proposer: val.proposer,
+  })
+);

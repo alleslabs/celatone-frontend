@@ -1,15 +1,13 @@
 import axios from "axios";
 
 import type {
-  AccountModulesResponse,
   DecodeModuleReturn,
   ModuleTableCountsResponse,
   ModuleVerificationInternal,
 } from "lib/services/types";
 import {
-  zAccountModulesResponse,
-  zModuleDataResponse,
   zModuleHistoriesResponse,
+  zModulePublishInfoResponse,
   zModuleRelatedProposalsResponse,
   zModulesResponse,
   zModuleTableCountsResponse,
@@ -22,7 +20,7 @@ import type {
   ExposedFunction,
   HexAddr,
   ModuleAbi,
-  ModuleData,
+  ModulePublishInfo,
   Nullable,
 } from "lib/types";
 import {
@@ -31,14 +29,6 @@ import {
   parseWithError,
   serializeAbiData,
 } from "lib/utils";
-
-export const getModulesByAddress = async (
-  endpoint: string,
-  address: Addr
-): Promise<AccountModulesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURI(address)}/move/modules`)
-    .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
 export const getModuleVerificationStatus = async (
   endpoint: string,
@@ -98,19 +88,22 @@ export const getModules = async (
     })
     .then(({ data }) => parseWithError(zModulesResponse, data));
 
-export const getModuleData = async (
+export const getModulePublishInfo = async (
   endpoint: string,
   vmAddress: HexAddr,
   moduleName: string,
   isGov: boolean
-): Promise<ModuleData> =>
+): Promise<ModulePublishInfo> =>
   axios
-    .get(`${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/info`, {
-      params: {
-        is_gov: isGov,
-      },
-    })
-    .then(({ data }) => parseWithError(zModuleDataResponse, data));
+    .get(
+      `${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/publish_info`,
+      {
+        params: {
+          is_gov: isGov,
+        },
+      }
+    )
+    .then(({ data }) => parseWithError(zModulePublishInfoResponse, data));
 
 export const getModuleTableCounts = async (
   endpoint: string,

@@ -6,7 +6,6 @@ import {
   zStakingProvisionsResponse,
   zValidatorDataResponse,
   zValidatorDelegationRelatedTxsResponse,
-  zValidatorDelegatorsResponse,
   zValidatorsResponse,
   zValidatorUptimeResponse,
   zValidatorVotedProposalsResponse,
@@ -42,7 +41,7 @@ export const getValidatorData = async (
   validatorAddress: ValidatorAddr
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/info`)
+    .get(`${endpoint}/${encodeURI(validatorAddress)}/info`)
     .then(({ data }) => parseWithError(zValidatorDataResponse, data));
 
 export const getValidatorStakingProvisions = async (endpoint: string) =>
@@ -50,20 +49,12 @@ export const getValidatorStakingProvisions = async (endpoint: string) =>
     .get(`${endpoint}/staking-provisions`)
     .then(({ data }) => parseWithError(zStakingProvisionsResponse, data));
 
-export const getValidatorDelegators = async (
-  endpoint: string,
-  validatorAddress: ValidatorAddr
-) =>
-  axios
-    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/delegators`)
-    .then(({ data }) => parseWithError(zValidatorDelegatorsResponse, data));
-
 export const getValidatorVotedProposalsAnswerCounts = async (
   endpoint: string,
   validatorAddress: ValidatorAddr
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/answer-counts`)
+    .get(`${endpoint}/${encodeURI(validatorAddress)}/answer-counts`)
     .then(({ data }) =>
       parseWithError(zValidatorVotedProposalsResponseAnswerCounts, data)
     );
@@ -77,17 +68,14 @@ export const getValidatorVotedProposals = async (
   search?: string
 ) =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(validatorAddress)}/voted-proposals`,
-      {
-        params: {
-          limit,
-          offset,
-          answer,
-          search,
-        },
-      }
-    )
+    .get(`${endpoint}/${encodeURI(validatorAddress)}/voted-proposals`, {
+      params: {
+        limit,
+        offset,
+        answer,
+        search,
+      },
+    })
     .then(({ data }) => parseWithError(zValidatorVotedProposalsResponse, data));
 
 export const getValidatorUptime = async (
@@ -96,7 +84,7 @@ export const getValidatorUptime = async (
   blocks: number
 ) =>
   axios
-    .get(`${endpoint}/${encodeURIComponent(validatorAddress)}/uptime`, {
+    .get(`${endpoint}/${encodeURI(validatorAddress)}/uptime`, {
       params: {
         blocks,
       },
@@ -110,15 +98,12 @@ export const getValidatorProposedBlocks = async (
   offset: number
 ) =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(validatorAddress)}/proposed-blocks`,
-      {
-        params: {
-          limit,
-          offset,
-        },
-      }
-    )
+    .get(`${endpoint}/${encodeURI(validatorAddress)}/proposed-blocks`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
     .then(({ data }) => parseWithError(zBlocksResponse, data));
 
 export const getHistoricalPowers = async (
@@ -126,7 +111,7 @@ export const getHistoricalPowers = async (
   validatorAddr: ValidatorAddr
 ) =>
   axios
-    .get(`${endpoint}/${validatorAddr}/historical-powers`)
+    .get(`${endpoint}/${encodeURI(validatorAddr)}/historical-powers`)
     .then(({ data }) => parseWithError(zHistoricalPowersResponse, data));
 
 export const getValidatorDelegationRelatedTxs = async (
@@ -136,15 +121,12 @@ export const getValidatorDelegationRelatedTxs = async (
   offset: number
 ) =>
   axios
-    .get(
-      `${endpoint}/${encodeURIComponent(validatorAddress)}/delegation-related-txs`,
-      {
-        params: {
-          limit,
-          offset,
-        },
-      }
-    )
+    .get(`${endpoint}/${encodeURI(validatorAddress)}/delegation-related-txs`, {
+      params: {
+        limit,
+        offset,
+      },
+    })
     .then(({ data }) =>
       parseWithError(zValidatorDelegationRelatedTxsResponse, data)
     );

@@ -40,6 +40,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
+- [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) Support recent blocks, block details in sequencer tier
+
+### Improvements
+
+### Bug fixes
+
+## v1.7.1
+
+### Features
+
+- [#1008](https://github.com/alleslabs/celatone-frontend/pull/1008) Support both new, old DB schema for NFTs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+
+### Improvements
+
+- [#1013](https://github.com/alleslabs/celatone-frontend/pull/1013) Remove unused validator's delegator count, disable Sentry
+- [#1012](https://github.com/alleslabs/celatone-frontend/pull/1012) Move modules, balances query to LCD
+
+### Bug fixes
+
+- [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) Fix getNftQuery & getNftMintInfoQuery
+- [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
+- [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
+
+## v1.7.0
+
+### Features
+
 - [#968](https://github.com/alleslabs/celatone-frontend/pull/968) Add custom meta title for each page
 - [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
@@ -81,6 +109,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1001](https://github.com/alleslabs/celatone-frontend/pull/1001) Support pre and post db schema on nft & collection queries
+- [#1000](https://github.com/alleslabs/celatone-frontend/pull/1000) Query module info from lcd directly
+- [#998](https://github.com/alleslabs/celatone-frontend/pull/998) Use expression on Nft query
 - [#996](https://github.com/alleslabs/celatone-frontend/pull/996) Allow disable voting period tally config
 - [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
 - [#983](https://github.com/alleslabs/celatone-frontend/pull/983) Add fallback for collection names that are empty string
@@ -241,6 +272,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#969](https://github.com/alleslabs/celatone-frontend/pull/969) Fix contract data lcd missing data
+- [#942](https://github.com/alleslabs/celatone-frontend/pull/942) Fix asset input
 - [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
 - [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
 - [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline

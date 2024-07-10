@@ -20,7 +20,7 @@ export interface ProposalsTableMobileCardProps {
 export const ProposalsTableMobileCard = ({
   proposal,
 }: ProposalsTableMobileCardProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
 
   const onCardSelect = (proposalId: number) =>

@@ -2,22 +2,60 @@ import axios from "axios";
 import { z } from "zod";
 
 import {
-  getAccountNftListByCollectionQuery,
+  getNftsByAccountExpression,
+  getNftsByAccountExpressionOld,
+  getNftsExpression,
+  getNftsExpressionOld,
+} from "../expression";
+import {
   getNftMintInfoQuery,
   getNftMutateEventsCountQuery,
+  getNftMutateEventsCountQueryOld,
   getNftMutateEventsQuery,
+  getNftMutateEventsQueryOld,
   getNftQuery,
+  getNftQueryOld,
   getNftsByAccountQuery,
+  getNftsByAccountQueryOld,
   getNftsCountByAccountQuery,
+  getNftsCountByAccountQueryOld,
   getNftsQuery,
+  getNftsQueryOld,
   getNftTransactionsCountQuery,
+  getNftTransactionsCountQueryOld,
   getNftTransactionsQuery,
+  getNftTransactionsQueryOld,
 } from "lib/query";
 import { zBechAddr, zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { parseTxHash, parseWithError, snakeToCamel } from "lib/utils";
 
 const zNft = z
+  .object({
+    uri: z.string(),
+    token_id: z.string(),
+    description: z.string().optional(),
+    is_burned: z.boolean(),
+    owner: zHexAddr,
+    id: zHexAddr32,
+    collection: zHexAddr32,
+    collectionByCollection: z.object({
+      name: z.string(),
+    }),
+  })
+  .transform((val) => ({
+    uri: val.uri,
+    tokenId: val.token_id,
+    description: val.description,
+    isBurned: val.is_burned,
+    ownerAddress: val.owner,
+    nftAddress: val.id,
+    collectionAddress: val.collection,
+    collectionName: val.collectionByCollection.name,
+  }));
+export type Nft = z.infer<typeof zNft>;
+
+const zNftOld = z
   .object({
     uri: z.string(),
     token_id: z.string(),
@@ -30,50 +68,49 @@ const zNft = z
       name: z.string(),
     }),
   })
-  .transform((val) => ({
+  .transform<Nft>((val) => ({
     uri: val.uri,
     tokenId: val.token_id,
     description: val.description,
     isBurned: val.is_burned,
     ownerAddress: val.vmAddressByOwner?.vm_address,
-    nftAddress: val.vm_address?.vm_address,
+    nftAddress: val.vm_address?.vm_address || ("" as HexAddr32),
     collectionAddress: val.collectionByCollection.vm_address.vm_address,
     collectionName: val.collectionByCollection.name,
   }));
-export type Nft = z.infer<typeof zNft>;
 
 export const getNfts = async (
   indexer: string,
   collectionAddress: HexAddr32,
-  pageSize: number,
-  offset: number,
-  search: string
-) =>
-  axios
-    .post(indexer, {
+  search: string,
+  limit: number,
+  offset: number
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getNftsQuery,
       variables: {
-        collectionAddress,
-        limit: pageSize,
+        limit,
         offset,
-        search,
+        expression: getNftsExpression(collectionAddress, search),
       },
-    })
-    .then(({ data: res }) => parseWithError(zNft.array(), res.data.nfts));
-
-export const getNftsCountByAccount = async (
-  indexer: string,
-  accountAddress: HexAddr
-) =>
-  axios
-    .post(indexer, {
-      query: getNftsCountByAccountQuery,
-      variables: { accountAddress },
-    })
-    .then(({ data: res }) => res.data.nfts_aggregate.aggregate.count);
+    });
+    return parseWithError(zNft.array(), res.data.data.nfts);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftsQueryOld,
+      variables: {
+        limit,
+        offset,
+        expression: getNftsExpressionOld(collectionAddress, search),
+      },
+    });
+    return parseWithError(zNftOld.array(), res.data.data.nfts);
+  }
+};
 
 const zNftByNftAddressResponse = z.object({
-  data: zNft.optional(),
+  data: z.union([zNft, zNftOld]).optional(),
 });
 export type NftByNftAddressResponse = z.infer<typeof zNftByNftAddressResponse>;
 
@@ -81,15 +118,44 @@ export const getNftByNftAddress = async (
   indexer: string,
   collectionAddress: HexAddr32,
   nftAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getNftQuery,
       variables: { collectionAddress, nftAddress },
-    })
-    .then(({ data }) =>
-      parseWithError(zNftByNftAddressResponse, { data: data.data.nfts[0] })
-    );
+    });
+    return parseWithError(zNftByNftAddressResponse, {
+      data: res.data.data.nfts[0],
+    });
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftQueryOld,
+      variables: { collectionAddress, nftAddress },
+    });
+    return parseWithError(zNftByNftAddressResponse, {
+      data: res.data.data.nfts[0],
+    });
+  }
+};
+
+export const getNftsCountByAccount = async (
+  indexer: string,
+  accountAddress: HexAddr
+) => {
+  try {
+    const res = await axios.post(indexer, {
+      query: getNftsCountByAccountQuery,
+      variables: { accountAddress },
+    });
+    return z.number().parse(res.data.data.nfts_aggregate.aggregate.count);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftsCountByAccountQueryOld,
+      variables: { accountAddress },
+    });
+    return z.number().parse(res.data.data.nfts_aggregate.aggregate.count);
+  }
+};
 
 const zNftMintInfoResponse = z
   .object({
@@ -167,33 +233,52 @@ export type NftTransactions = z.infer<typeof zNftTransactionsResponse>;
 export const getNftTransactions = async (
   indexer: string,
   nftAddress: HexAddr32,
-  offset: number,
-  limit: number
-) =>
-  axios
-    .post(indexer, {
+  limit: number,
+  offset: number
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getNftTransactionsQuery,
       variables: { limit, offset, nftAddress },
-    })
-    .then(({ data: res }) =>
-      parseWithError(
-        zNftTransactionsResponse.array(),
-        res.data.nft_transactions
-      )
+    });
+    return parseWithError(
+      zNftTransactionsResponse.array(),
+      res.data.data.nft_transactions
     );
+  } catch (err) {
+    const res = await axios.post(indexer, {
+      query: getNftTransactionsQueryOld,
+      variables: { limit, offset, nftAddress },
+    });
+    return parseWithError(
+      zNftTransactionsResponse.array(),
+      res.data.data.nft_transactions
+    );
+  }
+};
 
 export const getNftTransactionsCount = async (
   indexer: string,
   nftAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getNftTransactionsCountQuery,
       variables: { nftAddress },
-    })
-    .then(
-      ({ data: res }) => res.data.nft_transactions_aggregate.aggregate.count
-    );
+    });
+    return z
+      .number()
+      .parse(res.data.data.nft_transactions_aggregate.aggregate.count);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftTransactionsCountQueryOld,
+      variables: { nftAddress },
+    });
+    return z
+      .number()
+      .parse(res.data.data.nft_transactions_aggregate.aggregate.count);
+  }
+};
 
 const zNftMutateEventsResponseItem = z
   .object({
@@ -216,35 +301,54 @@ export const getNftMutateEvents = async (
   nftAddress: HexAddr32,
   offset: number,
   limit: number
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getNftMutateEventsQuery,
       variables: { limit, offset, nftAddress },
-    })
-    .then(({ data: res }) =>
-      parseWithError(
-        zNftMutateEventsResponseItem.array(),
-        res.data.nft_mutation_events
-      )
+    });
+    return parseWithError(
+      zNftMutateEventsResponseItem.array(),
+      res.data.data.nft_mutation_events
     );
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftMutateEventsQueryOld,
+      variables: { limit, offset, nftAddress },
+    });
+    return parseWithError(
+      zNftMutateEventsResponseItem.array(),
+      res.data.data.nft_mutation_events
+    );
+  }
+};
 
 export const getNftMutateEventsCount = async (
   indexer: string,
   nftAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const rest = await axios.post(indexer, {
       query: getNftMutateEventsCountQuery,
       variables: { nftAddress },
-    })
-    .then(
-      ({ data }) => data.data.nft_mutation_events_aggregate.aggregate.count
-    );
+    });
+    return z
+      .number()
+      .parse(rest.data.data.nft_mutation_events_aggregate.aggregate.count);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftMutateEventsCountQueryOld,
+      variables: { nftAddress },
+    });
+    return z
+      .number()
+      .parse(res.data.data.nft_mutation_events_aggregate.aggregate.count);
+  }
+};
 
 const zNftsByAccountResponse = z
   .object({
-    nfts: zNft.array(),
+    nfts: z.union([zNft, zNftOld]).array(),
     nfts_aggregate: z.object({
       aggregate: z.object({
         count: z.number(),
@@ -260,34 +364,38 @@ export type NftsByAccountResponse = z.infer<typeof zNftsByAccountResponse>;
 export const getNftsByAccount = async (
   indexer: string,
   accountAddress: HexAddr,
-  pageSize: number,
+  limit: number,
   offset: number,
-  search: string
-) =>
-  axios
-    .post(indexer, {
+  collectionAddress?: HexAddr32,
+  search?: string
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getNftsByAccountQuery,
-      variables: { accountAddress, pageSize, offset, search },
-    })
-    .then(({ data: res }) => parseWithError(zNftsByAccountResponse, res.data));
-
-export const getNftsByAccountByCollection = async (
-  indexer: string,
-  accountAddress: HexAddr,
-  pageSize: number,
-  offset: number,
-  search: string,
-  collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
-      query: getAccountNftListByCollectionQuery,
       variables: {
-        accountAddress,
-        collectionAddress,
-        pageSize,
+        limit,
         offset,
-        search,
+        expression: getNftsByAccountExpression(
+          accountAddress,
+          collectionAddress,
+          search
+        ),
       },
-    })
-    .then(({ data: res }) => parseWithError(zNftsByAccountResponse, res.data));
+    });
+    return parseWithError(zNftsByAccountResponse, res.data.data);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getNftsByAccountQueryOld,
+      variables: {
+        limit,
+        offset,
+        expression: getNftsByAccountExpressionOld(
+          accountAddress,
+          collectionAddress,
+          search
+        ),
+      },
+    });
+    return parseWithError(zNftsByAccountResponse, res.data.data);
+  }
+};

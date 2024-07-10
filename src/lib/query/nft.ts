@@ -4,23 +4,18 @@ export const getNftQuery = gql`
   query getNftQuery($collectionAddress: String!, $nftAddress: String!) {
     nfts(
       where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $collectionAddress } }
-        }
-        vm_address: { vm_address: { _eq: $nftAddress } }
+        collection: { _eq: $collectionAddress }
+        id: { _eq: $nftAddress }
       }
     ) {
       token_id
       uri
       description
       is_burned
-      vmAddressByOwner {
-        vm_address
-      }
+      owner
+      id
+      collection
       collectionByCollection {
-        vm_address {
-          vm_address
-        }
         name
       }
     }
@@ -30,10 +25,7 @@ export const getNftQuery = gql`
 export const getNftMintInfoQuery = gql`
   query getNftMintInfoQuery($nftAddress: String!) {
     nft_transactions(
-      where: {
-        is_nft_mint: { _eq: true }
-        nft: { vm_address: { vm_address: { _eq: $nftAddress } } }
-      }
+      where: { is_nft_mint: { _eq: true }, nft_id: { _eq: $nftAddress } }
       offset: 0
       limit: 1
     ) {
@@ -52,41 +44,16 @@ export const getNftMintInfoQuery = gql`
 `;
 
 export const getNftsQuery = gql`
-  query getNftsQuery(
-    $limit: Int!
-    $offset: Int!
-    $collectionAddress: String!
-    $search: String
-  ) {
-    nfts(
-      limit: $limit
-      offset: $offset
-      order_by: { token_id: asc }
-      where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $collectionAddress } }
-        }
-        is_burned: { _eq: false }
-        _or: [
-          { token_id: { _iregex: $search } }
-          { vm_address: { vm_address: { _eq: $search } } }
-        ]
-      }
-    ) {
+  query getNftsQuery($limit: Int!, $offset: Int!, $expression: nfts_bool_exp!) {
+    nfts(limit: $limit, offset: $offset, where: $expression) {
       token_id
       uri
       description
       is_burned
-      vmAddressByOwner {
-        vm_address
-      }
-      vm_address {
-        vm_address
-      }
+      owner
+      id
+      collection
       collectionByCollection {
-        vm_address {
-          vm_address
-        }
         name
       }
     }
@@ -95,9 +62,7 @@ export const getNftsQuery = gql`
 
 export const getNftTransactionsCountQuery = gql`
   query getNftTransactionsCountQuery($nftAddress: String!) {
-    nft_transactions_aggregate(
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
-    ) {
+    nft_transactions_aggregate(where: { nft_id: { _eq: $nftAddress } }) {
       aggregate {
         count
       }
@@ -115,7 +80,7 @@ export const getNftTransactionsQuery = gql`
     nft_transactions(
       offset: $offset
       limit: $limit
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+      where: { nft_id: { _eq: $nftAddress } }
       order_by: [
         { block_height: desc }
         { nft: { token_id: desc } }
@@ -147,7 +112,7 @@ export const getNftMutateEventsQuery = gql`
     nft_mutation_events(
       limit: $limit
       offset: $offset
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
+      where: { nft_id: { _eq: $nftAddress } }
       order_by: { block_height: desc }
     ) {
       old_value
@@ -163,9 +128,7 @@ export const getNftMutateEventsQuery = gql`
 
 export const getNftMutateEventsCountQuery = gql`
   query getNftMutateEventsCountQuery($nftAddress: String!) {
-    nft_mutation_events_aggregate(
-      where: { nft: { vm_address: { vm_address: { _eq: $nftAddress } } } }
-    ) {
+    nft_mutation_events_aggregate(where: { nft_id: { _eq: $nftAddress } }) {
       aggregate {
         count
       }
@@ -175,47 +138,28 @@ export const getNftMutateEventsCountQuery = gql`
 
 export const getNftsByAccountQuery = gql`
   query getNftsByAccountQuery(
-    $accountAddress: String!
-    $pageSize: Int!
+    $limit: Int!
     $offset: Int!
-    $search: String
+    $expression: nfts_bool_exp!
   ) {
     nfts(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       order_by: { token_id: asc }
-      where: {
-        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-        is_burned: { _eq: false }
-        _or: [
-          { token_id: { _iregex: $search } }
-          { vm_address: { vm_address: { _eq: $search } } }
-        ]
-      }
+      where: $expression
     ) {
       token_id
       uri
       is_burned
+      description
+      collection
       collectionByCollection {
-        vm_address {
-          vm_address
-        }
         name
       }
-      vmAddressByOwner {
-        vm_address
-      }
-      vm_address {
-        vm_address
-      }
+      owner
+      id
     }
-    nfts_aggregate(
-      where: {
-        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-        token_id: { _iregex: $search }
-        is_burned: { _eq: false }
-      }
-    ) {
+    nfts_aggregate(where: $expression) {
       aggregate {
         count
       }
@@ -226,68 +170,7 @@ export const getNftsByAccountQuery = gql`
 export const getNftsCountByAccountQuery = gql`
   query getNftsCountByAccountQuery($accountAddress: String!) {
     nfts_aggregate(
-      where: {
-        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-        is_burned: { _eq: false }
-      }
-    ) {
-      aggregate {
-        count
-      }
-    }
-  }
-`;
-
-export const getAccountNftListByCollectionQuery = gql`
-  query getAccountNftListByCollectionQuery(
-    $collectionAddress: String!
-    $accountAddress: String!
-    $pageSize: Int!
-    $offset: Int!
-    $search: String
-  ) {
-    nfts(
-      limit: $pageSize
-      offset: $offset
-      order_by: { token_id: asc }
-      where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $collectionAddress } }
-        }
-        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-        is_burned: { _eq: false }
-        _or: [
-          { token_id: { _iregex: $search } }
-          { vm_address: { vm_address: { _eq: $search } } }
-        ]
-      }
-    ) {
-      token_id
-      uri
-      description
-      is_burned
-      vmAddressByOwner {
-        vm_address
-      }
-      vm_address {
-        vm_address
-      }
-      collectionByCollection {
-        vm_address {
-          vm_address
-        }
-        name
-      }
-    }
-    nfts_aggregate(
-      where: {
-        collectionByCollection: {
-          vm_address: { vm_address: { _eq: $collectionAddress } }
-        }
-        vmAddressByOwner: { vm_address: { _eq: $accountAddress } }
-        token_id: { _iregex: $search }
-        is_burned: { _eq: false }
-      }
+      where: { owner: { _eq: $accountAddress }, is_burned: { _eq: false } }
     ) {
       aggregate {
         count

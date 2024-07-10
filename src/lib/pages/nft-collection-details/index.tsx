@@ -31,7 +31,6 @@ import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
-  useCollectionTotalBurnedCount,
   useNfts,
 } from "lib/services/nft";
 import { isHexModuleAddress } from "lib/utils";
@@ -61,8 +60,6 @@ const CollectionDetailsBody = ({
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: totalBurnedCount = 0 } =
-    useCollectionTotalBurnedCount(collectionAddress);
   const { data: nfts, isLoading: isNftLoading } = useNfts(
     collectionAddress,
     6,
@@ -71,9 +68,9 @@ const CollectionDetailsBody = ({
 
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
-  const { data: activitiesCount = 0 } =
+  const { data: activitiesCount } =
     useCollectionActivitiesCount(collectionAddress);
-  const { data: mutateEventsCount = 0 } =
+  const { data: mutateEventsCount } =
     useCollectionMutateEventsCount(collectionAddress);
 
   const handleTabChange = useCallback(
@@ -106,6 +103,7 @@ const CollectionDetailsBody = ({
     isUnlimited,
     royalty,
   } = collectionInfos;
+  const totalBurned = totalMinted - currentSupply;
 
   const displayCollectionName =
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
@@ -231,14 +229,14 @@ const CollectionDetailsBody = ({
           <CustomTab
             count={activitiesCount}
             onClick={handleTabChange(TabIndex.Activities)}
-            isDisabled={!activitiesCount}
+            isDisabled={activitiesCount === 0}
           >
             Activities
           </CustomTab>
           <CustomTab
             count={mutateEventsCount}
             onClick={handleTabChange(TabIndex.MutateEvents)}
-            isDisabled={!mutateEventsCount}
+            isDisabled={mutateEventsCount === 0}
           >
             Mutate Events
           </CustomTab>
@@ -247,7 +245,7 @@ const CollectionDetailsBody = ({
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Flex direction="column" gap={10}>
               <CollectionSupplyInfo
-                totalBurned={totalBurnedCount}
+                totalBurned={totalBurned}
                 totalMinted={totalMinted}
                 currentSupply={currentSupply}
                 maxSupply={maxSupply}
@@ -290,8 +288,8 @@ const CollectionDetailsBody = ({
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <CollectionMutateEvents
-              totalCount={mutateEventsCount}
               collectionAddress={collectionAddress}
+              totalCount={mutateEventsCount ?? 0}
             />
           </TabPanel>
         </TabPanels>
