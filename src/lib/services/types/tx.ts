@@ -175,6 +175,7 @@ export const zTxsResponseItemFromLcd =
       isIbc: false,
       isOpinit: false,
       isInstantiate: false,
+      events: val.events,
     };
   });
 
@@ -189,6 +190,19 @@ export const zTxsByAddressResponseLcd = z
   }));
 export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
 
+export const zTxsByAddressResponseSequencer = z
+  .object({
+    txs: z.array(zTxsResponseItemFromLcd),
+    pagination: zPagination,
+  })
+  .transform((val) => ({
+    items: val.txs,
+    pagination: val.pagination,
+  }));
+export type TxsByAddressResponseSequencer = z.infer<
+  typeof zTxsByAddressResponseSequencer
+>;
+
 export const zTxsByHashResponseLcd = z
   .object({
     tx_response: zTxsResponseItemFromLcd,
@@ -197,6 +211,21 @@ export const zTxsByHashResponseLcd = z
     items: [val.tx_response],
     total: 1,
   }));
+
+export const zTxsByHashResponseSequencer = z
+  .object({
+    tx: zTxsResponseItemFromLcd,
+  })
+  .transform((val) => ({
+    items: [val.tx],
+    pagination: {
+      total: val.tx ? 1 : 0,
+      nextKey: null,
+    },
+  }));
+export type TxsByHashResponseSequencer = z.infer<
+  typeof zTxsByHashResponseSequencer
+>;
 
 export const zTxByHashResponseLcd = z
   .object({
