@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) New network selector
 - [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
 - [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint

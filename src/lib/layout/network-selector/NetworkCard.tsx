@@ -6,12 +6,16 @@ import { CHAIN_CONFIGS } from "config/chain";
 import { useSelectChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
+import type { Option } from "lib/types";
 
 interface NetworkCardProps {
   image?: string;
   chainId: string;
   isSelected: boolean;
   isDraggable?: boolean;
+  index?: number;
+  cursor: Option<number>;
+  setCursor: (index: Option<number>) => void;
 }
 
 const iconProps = {
@@ -24,7 +28,15 @@ const iconProps = {
 const customTransition = "opacity 0.1s ease-in-out";
 
 export const NetworkCard = observer(
-  ({ image, chainId, isSelected, isDraggable = false }: NetworkCardProps) => {
+  ({
+    image,
+    chainId,
+    isSelected,
+    isDraggable = false,
+    index,
+    cursor,
+    setCursor,
+  }: NetworkCardProps) => {
     const selectChain = useSelectChain();
     const [secondaryDarker] = useToken("colors", ["secondary.darker"]);
     const fallbackImage = `https://ui-avatars.com/api/?name=${CHAIN_CONFIGS[chainId]?.prettyName || chainId}&background=${secondaryDarker.replace("#", "")}&color=fff`;
@@ -73,8 +85,19 @@ export const NetworkCard = observer(
       [selectChain, chainId]
     );
 
+    let cardBackground;
+
+    if (isSelected) {
+      cardBackground = "gray.700";
+    } else if (index === cursor) {
+      cardBackground = "gray.800";
+    } else {
+      cardBackground = "transparent";
+    }
+
     return (
       <Flex
+        id={`item-${index}`}
         position="relative"
         justifyContent="space-between"
         alignItems="center"
@@ -83,13 +106,14 @@ export const NetworkCard = observer(
         gap={4}
         borderRadius={8}
         transition="all 0.25s ease-in-out"
-        background={isSelected ? "gray.700" : "transparent"}
+        background={cardBackground}
         _hover={{
           background: !isSelected && "gray.800",
           "> .icon-wrapper > .icon-container": {
             opacity: 1,
           },
         }}
+        onMouseMove={() => index !== cursor && setCursor(index)}
         onClick={handleClick}
         cursor={!isDraggable ? "pointer" : "inherit"}
       >

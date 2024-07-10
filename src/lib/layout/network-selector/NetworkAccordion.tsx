@@ -11,6 +11,7 @@ import {
 
 import { CHAIN_CONFIGS } from "config/chain";
 import { useInitia } from "lib/app-provider";
+import type { Option } from "lib/types";
 
 import { NetworkCard } from "./NetworkCard";
 
@@ -19,27 +20,24 @@ interface NetworkAccodionProps {
   normalNetworks: string[];
   currentChainId: string;
   isHidden?: boolean;
+  cursor: Option<number>;
+  setCursor: (index: Option<number>) => void;
+  startIndex: number;
 }
 
 interface SectionTitleProps {
   networks: string[];
   title: string;
-  mt?: number;
   mb?: number;
 }
 
-const SectionTitle = ({
-  networks,
-  title,
-  mt = 4,
-  mb = 4,
-}: SectionTitleProps) => (
-  <Flex alignItems="center" mt={mt} mb={mb}>
+const SectionTitle = ({ networks, title, mb = 4 }: SectionTitleProps) => (
+  <Flex alignItems="center" mb={mb}>
     <Text color="text.dark" fontWeight={600} variant="body2">
       {title}
     </Text>
     <Badge variant="gray" ml={2}>
-      {networks.length !== undefined ? "N/A" : networks.length}
+      {networks.length !== undefined ? networks.length : "N/A"}
     </Badge>
   </Flex>
 );
@@ -49,6 +47,9 @@ export const NetworkAccodion = ({
   normalNetworks,
   currentChainId,
   isHidden = false,
+  cursor,
+  setCursor,
+  startIndex,
 }: NetworkAccodionProps) => {
   const isInitia = useInitia();
   const l1Networks = normalNetworks.filter(
@@ -71,32 +72,34 @@ export const NetworkAccodion = ({
       <AccordionPanel p={0}>
         {isInitia ? (
           <>
-            {l1Networks && (
-              <Flex direction="column" gap={1}>
-                <SectionTitle
-                  networks={l1Networks}
-                  title="Initia (Layer 1)"
-                  mt={0}
-                />
-                {l1Networks.map((chainId) => (
+            {l1Networks.length > 0 && (
+              <Flex direction="column" gap={1} mb={4}>
+                <SectionTitle networks={l1Networks} title="Initia (Layer 1)" />
+                {l1Networks.map((chainId, index) => (
                   <NetworkCard
                     key={chainId}
                     image={CHAIN_CONFIGS[chainId]?.logoUrl}
                     chainId={chainId}
                     isSelected={chainId === currentChainId}
+                    index={startIndex + index}
+                    cursor={cursor}
+                    setCursor={setCursor}
                   />
                 ))}
               </Flex>
             )}
-            {l2Networks && (
+            {l2Networks.length > 0 && (
               <Flex direction="column" gap={1}>
                 <SectionTitle networks={l2Networks} title="Minitia (Layer 2)" />
-                {l2Networks.map((chainId) => (
+                {l2Networks.map((chainId, index) => (
                   <NetworkCard
                     key={chainId}
                     image={CHAIN_CONFIGS[chainId]?.logoUrl}
                     chainId={chainId}
                     isSelected={chainId === currentChainId}
+                    index={startIndex + l1Networks.length + index}
+                    cursor={cursor}
+                    setCursor={setCursor}
                   />
                 ))}
               </Flex>
@@ -104,12 +107,15 @@ export const NetworkAccodion = ({
           </>
         ) : (
           <Flex direction="column" gap={1}>
-            {normalNetworks.map((chainId) => (
+            {normalNetworks.map((chainId, index) => (
               <NetworkCard
                 key={chainId}
                 image={CHAIN_CONFIGS[chainId]?.logoUrl}
                 chainId={chainId}
                 isSelected={chainId === currentChainId}
+                index={startIndex + index}
+                cursor={cursor}
+                setCursor={setCursor}
               />
             ))}
           </Flex>

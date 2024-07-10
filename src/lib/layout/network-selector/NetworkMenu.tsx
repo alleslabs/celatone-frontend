@@ -15,12 +15,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { AmpEvent } from "lib/amplitude";
 import { useCelatoneApp, useIsMac, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import InputWithIcon from "lib/components/InputWithIcon";
 
 import { NetworkMenuBody } from "./NetworkMenuBody";
 
@@ -65,7 +64,6 @@ export const NetworkMenu = observer(() => {
   const isMac = useIsMac();
   const { currentChainId } = useCelatoneApp();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     const openSearchHandler = (event: KeyboardEvent) => {
@@ -119,17 +117,9 @@ export const NetworkMenu = observer(() => {
           <DrawerCloseButton color="text.dark" />
           <DrawerBody overflow="scroll" px={4} pb={6}>
             <Flex direction="column" gap={6}>
-              <InputWithIcon
-                placeholder="Search by Name or Chain ID"
-                size="md"
-                value={keyword}
-                autoFocus
-                onChange={(e) => setKeyword(e.target.value)}
-                amptrackSection="network-search"
-              />
               <NetworkMenuBody
-                keyword={keyword}
                 currentChainId={currentChainId}
+                onClose={onClose}
               />
             </Flex>
           </DrawerBody>

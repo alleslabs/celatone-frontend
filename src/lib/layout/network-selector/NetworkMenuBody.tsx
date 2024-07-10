@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import {
   Accordion,
   AccordionButton,
@@ -7,6 +8,7 @@ import {
   Box,
   Divider,
   Flex,
+  FormControl,
   Heading,
 } from "@chakra-ui/react";
 import type { Active, DragEndEvent, DropAnimation } from "@dnd-kit/core";
@@ -27,23 +29,39 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { observer } from "mobx-react-lite";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 
 import { CHAIN_CONFIGS } from "config/chain";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useSelectChain } from "lib/app-provider";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
+import type { Option } from "lib/types";
 
 import { NetworkAccodion } from "./NetworkAccordion";
 import { NetworkCard } from "./NetworkCard";
 
 interface NetworkMenuBodyProps {
   currentChainId: string;
-  keyword: string;
+  onClose: () => void;
 }
 
-export const ItemTypes = {
-  CARD: "card",
+const getNextCursor = (
+  key: string,
+  current: Option<number>,
+  lastIndex: number
+) => {
+  switch (key) {
+    case "ArrowUp":
+      if (current === undefined) return lastIndex;
+      return current <= 0 ? lastIndex : current - 1;
+    case "ArrowDown":
+      if (current === undefined) return 0;
+      return current >= lastIndex ? 0 : current + 1;
+    default:
+      return undefined;
+  }
 };
 
 const dropAnimationConfig: DropAnimation = {
@@ -59,9 +77,15 @@ const dropAnimationConfig: DropAnimation = {
 const SortableItem = ({
   chainId,
   currentChainId,
+  index,
+  cursor,
+  setCursor,
 }: {
   chainId: string;
   currentChainId: string;
+  index?: number;
+  cursor: Option<number>;
+  setCursor: (index: Option<number>) => void;
 }) => {
   const {
     attributes,
@@ -94,15 +118,22 @@ const SortableItem = ({
         image={CHAIN_CONFIGS[chainId]?.logoUrl}
         chainId={chainId}
         isSelected={chainId === currentChainId}
+        index={index}
+        cursor={cursor}
+        setCursor={setCursor}
       />
     </Box>
   );
 };
 
 export const NetworkMenuBody = observer(
-  ({ currentChainId, keyword }: NetworkMenuBodyProps) => {
+  ({ currentChainId, onClose }: NetworkMenuBodyProps) => {
+    const selectChain = useSelectChain();
     const { availableChainIds } = useCelatoneApp();
+    const [cursor, setCursor] = useState<number>();
+    const [keyword, setKeyword] = useState("");
 
+    // Get chains info
     const filteredChains = useMemo(() => {
       const filterChains = (type: "mainnet" | "testnet") => {
         return availableChainIds
@@ -139,6 +170,8 @@ export const NetworkMenuBody = observer(
       );
     }, [pinnedNetworks, keyword]);
 
+    // Drag and drop feature
+
     const areAllNetworksEmpty =
       !filteredPinnedNetworks.length &&
       !filteredMainnetChains.length &&
@@ -169,6 +202,46 @@ export const NetworkMenuBody = observer(
       }
     };
 
+    // Navigate with arrow keys
+
+    const allNetworks = useMemo(
+      () => [
+        ...filteredPinnedNetworks,
+        ...filteredMainnetChains,
+        ...filteredTestnetChains,
+      ],
+      [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
+    );
+
+    const handleOnKeyEnter = useCallback(
+      (e: ReactKeyboardEvent<HTMLDivElement>) => {
+        if (!allNetworks.length) return;
+        switch (e.key) {
+          case "ArrowUp":
+          case "ArrowDown": {
+            const lastIndex = allNetworks.length - 1;
+            const nextCursor = getNextCursor(e.key, cursor, lastIndex);
+            const listItem = document.getElementById(`item-${nextCursor}`);
+            e.preventDefault();
+            setCursor(nextCursor);
+            listItem?.scrollIntoView({ block: "nearest", inline: "center" });
+            break;
+          }
+          case "Enter":
+            e.currentTarget.blur();
+            if (cursor) {
+              const selectedNetwork = allNetworks[cursor].toString();
+              selectChain(selectedNetwork);
+              onClose();
+            }
+            break;
+          default:
+            break;
+        }
+      },
+      [allNetworks, cursor, selectChain, onClose, setCursor]
+    );
+
     return (
       <DndContext
         sensors={sensors}
@@ -181,6 +254,17 @@ export const NetworkMenuBody = observer(
           setDndActive(null);
         }}
       >
+        <FormControl>
+          <InputWithIcon
+            placeholder="Search by Name or Chain ID"
+            size="md"
+            value={keyword}
+            autoFocus
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={handleOnKeyEnter}
+            amptrackSection="network-search"
+          />
+        </FormControl>
         <Accordion
           variant="transparent"
           allowMultiple
@@ -202,11 +286,14 @@ export const NetworkMenuBody = observer(
                 items={filteredPinnedNetworks.map((item) => item.chainId)}
                 strategy={verticalListSortingStrategy}
               >
-                {filteredPinnedNetworks.map((item) => (
+                {filteredPinnedNetworks.map((item, index) => (
                   <SortableItem
                     key={item.chainId}
                     chainId={item.chainId}
                     currentChainId={currentChainId}
+                    index={index}
+                    cursor={cursor}
+                    setCursor={setCursor}
                   />
                 ))}
               </SortableContext>
@@ -216,6 +303,8 @@ export const NetworkMenuBody = observer(
                     key={activeItem.chainId}
                     chainId={activeItem.chainId}
                     currentChainId={currentChainId}
+                    cursor={cursor}
+                    setCursor={setCursor}
                   />
                 ) : null}
               </DragOverlay>
@@ -233,6 +322,9 @@ export const NetworkMenuBody = observer(
             title="Mainnet"
             normalNetworks={filteredMainnetChains}
             currentChainId={currentChainId}
+            cursor={cursor}
+            setCursor={setCursor}
+            startIndex={filteredPinnedNetworks.length}
           />
           {filteredMainnetChains.length > 0 && (
             <Divider
@@ -246,6 +338,11 @@ export const NetworkMenuBody = observer(
             title="Testnet"
             normalNetworks={filteredTestnetChains}
             currentChainId={currentChainId}
+            cursor={cursor}
+            setCursor={setCursor}
+            startIndex={
+              filteredPinnedNetworks.length + filteredMainnetChains.length
+            }
           />
         </Accordion>
         {areAllNetworksEmpty && (
