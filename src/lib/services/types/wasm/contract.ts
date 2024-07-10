@@ -222,14 +222,16 @@ export const zInstantiatedContractsLcd = z
 
 export const zContractCw2InfoLcd = z
   .object({
-    data: z.string(),
+    data: z.string().nullable(),
   })
-  .transform((val) => JSON.parse(decode(val.data)))
+  .transform((val) => (val.data ? JSON.parse(decode(val.data)) : null))
   .pipe(
-    z.object({
-      contract: z.string(),
-      version: z.string(),
-    })
+    z
+      .object({
+        contract: z.string(),
+        version: z.string(),
+      })
+      .nullable()
   );
 
 export type ContractCw2InfoLcd = z.infer<typeof zContractCw2InfoLcd>;
