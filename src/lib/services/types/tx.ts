@@ -105,7 +105,7 @@ export type Tx = z.infer<typeof zTx>;
 
 const zEventAttribute = z.object({
   key: z.string(),
-  value: z.string(),
+  value: z.union([z.string(), z.null().transform(() => "")]),
   index: z.boolean().optional(),
 });
 
