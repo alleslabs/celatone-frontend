@@ -238,10 +238,10 @@ export const JsonExecute = ({
       />
       <Flex direction="column" gap={10}>
         <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
-          <Box w={{ sm: "full", lg: "50%" }}>
+          <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
             <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
             {error && <ErrorMessageRender error={error} mb={4} />}
-          </Box>
+          </Flex>
           <Box w={{ sm: "full", lg: "50%" }}>
             <AttachFund
               control={control}
