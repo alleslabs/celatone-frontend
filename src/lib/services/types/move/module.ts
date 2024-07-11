@@ -111,7 +111,6 @@ export type ModuleTableCountsResponse = z.infer<
 
 export const zModuleTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
-  total: z.number().nonnegative(),
 });
 export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
 
