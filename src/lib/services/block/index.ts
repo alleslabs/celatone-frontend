@@ -94,12 +94,12 @@ export const useLatestBlockLcd = () => {
   );
 };
 
-export const useBlocksSequencer = () => {
+export const useBlocksSequencer = (limit = 10) => {
   const endpoint = useLcdEndpoint();
 
   const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, endpoint],
-    async ({ pageParam }) => getBlocksSequencer(endpoint, pageParam),
+    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, endpoint, limit],
+    async ({ pageParam }) => getBlocksSequencer(endpoint, pageParam, limit),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,

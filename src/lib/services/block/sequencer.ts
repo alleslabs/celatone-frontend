@@ -9,13 +9,14 @@ import { parseWithError } from "lib/utils";
 
 export const getBlocksSequencer = async (
   endpoint: string,
-  paginationKey: Option<string>
+  paginationKey: Option<string>,
+  limit: number
 ) =>
   axios
     .get(`${endpoint}/indexer/block/v1/blocks`, {
       params: {
         "pagination.offset": 0,
-        "pagination.limit": 10,
+        "pagination.limit": limit,
         "pagination.reverse": true,
         "pagination.key": paginationKey,
       },

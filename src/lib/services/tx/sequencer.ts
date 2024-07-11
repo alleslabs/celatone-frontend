@@ -2,17 +2,32 @@ import axios from "axios";
 
 import {
   zBlockTxsResponseSequencer,
-  zTxsByAddressResponseSequencer,
   zTxsByHashResponseSequencer,
+  zTxsResponseSequencer,
 } from "../types";
 import type { BechAddr20, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
+
+export const getTxsSequencer = async (
+  endpoint: string,
+  paginationKey: Option<string>,
+  limit: number
+) =>
+  axios
+    .get(`${endpoint}/indexer/tx/v1/txs`, {
+      params: {
+        "pagination.limit": limit,
+        "pagination.reverse": true,
+        "pagination.key": paginationKey,
+      },
+    })
+    .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
 
 export const getTxsByAccountAddressSequencer = async (
   endpoint: string,
   address: BechAddr20,
   paginationKey: Option<string>,
-  limit = 10
+  limit: number
 ) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
@@ -22,7 +37,7 @@ export const getTxsByAccountAddressSequencer = async (
         "pagination.key": paginationKey,
       },
     })
-    .then(({ data }) => parseWithError(zTxsByAddressResponseSequencer, data));
+    .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
 
 export const getTxsByHashSequencer = async (endpoint: string, txHash: string) =>
   axios

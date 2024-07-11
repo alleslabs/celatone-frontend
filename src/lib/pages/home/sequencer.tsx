@@ -1,5 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { RecentBlocksTableSequencer } from "../blocks/components/RecentBlocksTableSequencer";
+import { TxsTableSequencer } from "../txs/components/TxsTableSequencer";
 import {
   useCelatoneApp,
   useInternalNavigate,
@@ -9,8 +11,6 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
-import { TxsTableFull } from "lib/pages/txs/components/TxsTableFull";
 import { useOverviewsStats } from "lib/services/stat";
 
 import { DevShortcut, TopDecorations } from "./components";
@@ -32,7 +32,7 @@ const blockTimeInfo = {
   tooltip: "Median time to finality of the last 100 indexed blocks.",
 };
 
-export const HomeFull = () => {
+export const HomeSequencer = () => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const {
@@ -121,8 +121,8 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
         </Heading>
-        <TxsTableFull isViewMore />
-        {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
+        <TxsTableSequencer isViewMore />
+        {!!overviewsStats?.txCount && overviewsStats.txCount > 5 && (
           <ViewMore onClick={toTxs} />
         )}
       </Box>
@@ -130,8 +130,8 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <RecentBlocksTableFull isViewMore />
-        {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
+        <RecentBlocksTableSequencer isViewMore />
+        {!!overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}
       </Box>

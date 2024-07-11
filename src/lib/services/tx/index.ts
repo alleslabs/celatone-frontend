@@ -19,7 +19,7 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import { createQueryFnWithTimeout } from "lib/query-utils";
+import { createQueryFnWithTimeout } from "lib/services/utils";
 import type {
   BechAddr,
   BechAddr20,
@@ -52,6 +52,7 @@ import {
   getTxsByAccountAddressSequencer,
   getTxsByBlockHeightSequencer,
   getTxsByHashSequencer,
+  getTxsSequencer,
 } from "./sequencer";
 
 export const useTxData = (
@@ -347,6 +348,46 @@ export const useTxsByAddressLcd = (
     createQueryFnWithTimeout(queryfn, 20000),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
+};
+
+export const useTxsSequencer = (limit = 10) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const queryfn = useCallback(
+    async (pageParam: Option<string>) => {
+      return getTxsSequencer(endpoint, pageParam, limit);
+    },
+    [endpoint, limit]
+  );
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, endpoint, limit],
+    ({ pageParam }) => queryfn(pageParam),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    ...rest,
+    data: data?.pages.flatMap<Transaction>((page) =>
+      page.items.map((item) => {
+        const sender = convertAccountPubkeyToAccountAddress(
+          item.signerPubkey,
+          prefix
+        );
+
+        return {
+          ...item,
+          sender,
+        };
+      })
+    ),
+  };
 };
 
 export const useTxsByAddressSequencer = (
