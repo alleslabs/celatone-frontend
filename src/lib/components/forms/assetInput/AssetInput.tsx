@@ -30,7 +30,6 @@ const styles = {
   container: (provided: SystemStyleObject) => ({
     ...provided,
     width: "100%",
-    zIndex: 999,
   }),
   valueContainer: (provided: SystemStyleObject) => ({
     ...provided,
@@ -88,7 +87,7 @@ export const AssetInput = ({
             ml: 3,
             px: 1,
             top: -2,
-            zIndex: 9999,
+            zIndex: 1,
           },
         }}
       >
