@@ -11,7 +11,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useOverviewsStats } from "lib/services/stat";
+import { useOverviewsStats } from "lib/services/stats";
 
 import { DevShortcut, TopDecorations } from "./components";
 import { CardInfo } from "./components/CardInfo";

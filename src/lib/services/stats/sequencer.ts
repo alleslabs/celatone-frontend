@@ -7,8 +7,8 @@ import { parseWithError } from "lib/utils";
 export const getOverviewStatsSequencer = async (
   endpoint: string,
   chainId: string
-): Promise<OverviewsStats> => {
-  return Promise.all([
+): Promise<OverviewsStats> =>
+  Promise.all([
     axios
       .get(
         `https://dashboard-api.initiation-1.initia.xyz/v1/chart-data/${chainId}`
@@ -18,4 +18,3 @@ export const getOverviewStatsSequencer = async (
       .get(`${endpoint}/indexer/block/v1/avg_blocktime`)
       .then(({ data }) => data),
   ]).then((data) => parseWithError(zOverviewsStatsResponseSequencer, data));
-};

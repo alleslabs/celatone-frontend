@@ -11,7 +11,7 @@ import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
 import { TxsTableFull } from "lib/pages/txs/components/TxsTableFull";
-import { useOverviewsStats } from "lib/services/stat";
+import { useOverviewsStats } from "lib/services/stats";
 
 import { DevShortcut, TopDecorations } from "./components";
 import { CardInfo } from "./components/CardInfo";
