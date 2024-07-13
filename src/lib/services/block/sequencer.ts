@@ -15,7 +15,7 @@ function incrementLastByte(base64: string): string {
   // Increment the last byte
   let i = buffer.length - 1;
   buffer[i] += 1;
-  while (buffer[i] / 256 > 0 && i > 0) {
+  while (Math.floor(buffer[i] / 256) > 0 && i > 0) {
     buffer[i] %= 256;
     buffer[i - 1] += 1;
     i -= 1;
