@@ -8,14 +8,14 @@ const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
-  "tomcat-1-lite": {
+  "minimove-1-lite": {
     tier: "lite",
     chain: "initia",
-    registryChainName: "blackwingtestnet",
-    prettyName: "Blackwing Testnet Lite",
-    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
-    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
-    indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "minimovetestnet",
+    prettyName: "Minimove",
+    lcd: "https://lcd.minimove-1.initia.xyz",
+    rpc: "https://rpc.minimove-1.initia.xyz",
+    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -47,7 +47,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/aee375e9d0b181f0d9d3a49f9a3d1d6b05d62b0ac81f8c92b9282afa4213d884",
+          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
@@ -56,14 +56,14 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       isValidatorExternalLink: null,
     },
   },
-  "tomcat-1-sequencer": {
+  "minimove-1-sequencer": {
     tier: "sequencer",
     chain: "initia",
-    registryChainName: "blackwingtestnet",
-    prettyName: "Blackwing Testnet Sequencer",
-    lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
-    rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
-    indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "minimovetestnet",
+    prettyName: "Minimove",
+    lcd: "https://lcd.minimove-1.initia.xyz",
+    rpc: "https://rpc.minimove-1.initia.xyz",
+    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -95,7 +95,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/aee375e9d0b181f0d9d3a49f9a3d1d6b05d62b0ac81f8c92b9282afa4213d884",
+          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,

@@ -1,14 +1,8 @@
 import { useCelatoneApp } from "../contexts";
+import { TierMap } from "config/chain/types";
 import type { ChainConfig } from "config/chain/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
-
-const TierMap: Record<ChainConfig["tier"], number> = {
-  lite: 0,
-  mesa: 1,
-  sequencer: 2,
-  full: 3,
-};
 
 export const useTierConfig = (
   {

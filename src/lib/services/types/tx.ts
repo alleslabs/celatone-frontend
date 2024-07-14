@@ -22,6 +22,7 @@ import {
   extractTxLogs,
   getActionMsgType,
   getMsgFurtherAction,
+  getTxBadges,
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
@@ -161,6 +162,17 @@ export const zTxsResponseItemFromLcd =
       type: msg["@type"],
     }));
 
+    const { isIbc, isOpinit } = messages.reduce(
+      (acc, msg, idx) => {
+        const current = getTxBadges(msg.type, logs[idx]);
+        return {
+          isIbc: acc.isIbc || current.isIbc,
+          isOpinit: acc.isOpinit || current.isOpinit,
+        };
+      },
+      { isIbc: false, isOpinit: false }
+    );
+
     return {
       hash: val.txhash,
       messages,
@@ -169,13 +181,13 @@ export const zTxsResponseItemFromLcd =
       height: Number(val.height),
       created: val.timestamp,
       success: val.code === 0,
+      isIbc,
+      isOpinit,
+      events: val.events,
       // TODO: implement below later
       actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
       furtherAction: MsgFurtherAction.NONE,
-      isIbc: false,
-      isOpinit: false,
       isInstantiate: false,
-      events: val.events,
     };
   });
 
@@ -190,7 +202,7 @@ export const zTxsByAddressResponseLcd = z
   }));
 export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
 
-export const zTxsByAddressResponseSequencer = z
+export const zTxsResponseSequencer = z
   .object({
     txs: z.array(zTxsResponseItemFromLcd),
     pagination: zPagination,
@@ -199,9 +211,6 @@ export const zTxsByAddressResponseSequencer = z
     items: val.txs,
     pagination: val.pagination,
   }));
-export type TxsByAddressResponseSequencer = z.infer<
-  typeof zTxsByAddressResponseSequencer
->;
 
 export const zTxsByHashResponseLcd = z
   .object({
