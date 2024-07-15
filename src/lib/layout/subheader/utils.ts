@@ -57,12 +57,12 @@ export const getSubHeaderSequencer = (
 
   if (isWasm)
     base.push(
-      { name: "Codes", slug: "/codes", icon: "code" as IconKeys },
-      {
-        name: "Contracts",
-        slug: "/contracts",
-        icon: "contract-address" as IconKeys,
-      }
+      { name: "Codes", slug: "/codes", icon: "code" as IconKeys }
+      // {
+      //   name: "Contracts",
+      //   slug: "/contracts",
+      //   icon: "contract-address" as IconKeys,
+      // }
     );
 
   if (isNft)
