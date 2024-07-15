@@ -1,6 +1,6 @@
 import { Flex, Image } from "@chakra-ui/react";
 
-import { SearchComponent } from "../SearchComponent";
+import { SearchComponent } from "../search/SearchComponent";
 import { useCelatoneApp } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 

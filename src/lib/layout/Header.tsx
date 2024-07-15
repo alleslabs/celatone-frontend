@@ -6,7 +6,7 @@ import { FaucetBtn } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
 
 import { NetworkMenu } from "./NetworkMenu";
-import { SearchComponent } from "./SearchComponent";
+import { SearchComponent } from "./search/SearchComponent";
 
 const Header = () => {
   const { theme } = useCelatoneApp();
