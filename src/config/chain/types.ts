@@ -44,6 +44,7 @@ type GovConfig =
       hideOpenProposal?: boolean;
       disableWhitelistProposal?: boolean;
       disableStoreCodeProposal?: boolean;
+      disableVotingPeriodTally?: boolean;
     }
   | {
       enabled: false;
@@ -52,7 +53,7 @@ type GovConfig =
 type NftConfig = { enabled: boolean };
 
 export interface ChainConfig {
-  tier: "lite" | "full";
+  tier: "lite" | "mesa" | "sequencer" | "full";
   chain: string;
   registryChainName: string;
   prettyName: string;
@@ -89,3 +90,10 @@ export interface ChainConfig {
 export interface ChainConfigs {
   [chainId: string]: ChainConfig;
 }
+
+export const TierMap: Record<ChainConfig["tier"], number> = {
+  lite: 0,
+  mesa: 1,
+  sequencer: 2,
+  full: 3,
+};

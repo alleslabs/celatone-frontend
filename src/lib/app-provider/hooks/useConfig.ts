@@ -1,13 +1,8 @@
 import { useCelatoneApp } from "../contexts";
+import { TierMap } from "config/chain/types";
 import type { ChainConfig } from "config/chain/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
-
-const TierMap: Record<ChainConfig["tier"], number> = {
-  lite: 0,
-  // new metric 1
-  full: 2,
-};
 
 export const useTierConfig = (
   {
@@ -26,7 +21,13 @@ export const useTierConfig = (
   if (TierMap[tier] < TierMap[minTier])
     navigate({ pathname: "/", replace: true });
 
-  return tier;
+  return {
+    tier,
+    isFullTier: tier === "full",
+    isLiteTier: tier === "lite",
+    isMesaTier: tier === "mesa",
+    isSequencerTier: tier === "sequencer",
+  };
 };
 
 type Features = ChainConfig["features"];

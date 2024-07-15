@@ -9,9 +9,9 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { RecentBlocksTable } from "lib/pages/blocks/components/RecentBlocksTable";
-import { TxsTable } from "lib/pages/txs/components/TxsTable";
-import { useOverviewsStats } from "lib/services/overviewService";
+import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
+import { TxsTableFull } from "lib/pages/txs/components/TxsTableFull";
+import { useOverviewsStats } from "lib/services/stats";
 
 import { DevShortcut, TopDecorations } from "./components";
 import { CardInfo } from "./components/CardInfo";
@@ -121,7 +121,7 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
         </Heading>
-        <TxsTable isViewMore />
+        <TxsTableFull isViewMore />
         {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
           <ViewMore onClick={toTxs} />
         )}
@@ -130,7 +130,7 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <RecentBlocksTable isViewMore />
+        <RecentBlocksTableFull isViewMore />
         {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}

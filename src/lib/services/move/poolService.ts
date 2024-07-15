@@ -60,6 +60,7 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
     async () => getMovePoolInfos(moveEndpoint),
     {
       enabled: moveConfig.enabled,
+      retry: false,
       refetchOnWindowFocus: false,
     }
   );

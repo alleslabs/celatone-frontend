@@ -1,14 +1,12 @@
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState } from "lib/components/state";
-import { BlocksTable } from "lib/components/table/blocks";
-import { useBlocks } from "lib/services/block";
+import { EmptyState, ErrorFetching } from "lib/components/state";
+import { TransactionsTable } from "lib/components/table";
+import { useTxs } from "lib/services/tx";
 
-interface BlocksTableProps {
-  isViewMore?: boolean;
-}
+import type { TxsTableProps } from "./type";
 
-export const RecentBlocksTable = ({ isViewMore }: BlocksTableProps) => {
+export const TxsTableFull = ({ isViewMore }: TxsTableProps) => {
   const {
     pagesQuantity,
     setTotalData,
@@ -24,22 +22,28 @@ export const RecentBlocksTable = ({ isViewMore }: BlocksTableProps) => {
       isDisabled: false,
     },
   });
-  const { data, isLoading } = useBlocks(pageSize, offset, {
+  const { data, isLoading, error } = useTxs(pageSize, offset, {
     onSuccess: ({ total }) => setTotalData(total),
   });
 
   return (
     <>
-      <BlocksTable
-        blocks={data?.items}
+      <TransactionsTable
+        transactions={data?.items}
         isLoading={isLoading}
         emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="This network does not have any blocks."
-            withBorder
-          />
+          error ? (
+            <ErrorFetching dataName="transactions" />
+          ) : (
+            <EmptyState
+              withBorder
+              imageVariant="empty"
+              message="There are no transactions on this network."
+            />
+          )
         }
+        showAction={false}
+        showRelations={false}
       />
       {!isViewMore && data && data.total > 10 && (
         <Pagination

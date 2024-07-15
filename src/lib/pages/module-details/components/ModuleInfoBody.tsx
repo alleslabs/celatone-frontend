@@ -3,41 +3,38 @@ import { Grid } from "@chakra-ui/react";
 import { useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { ModuleData } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import type { ModuleInfoProps } from "./ModuleInfo";
 
 const ModuleInfoBodyPublishedAndRepublished = ({
-  moduleData,
-}: {
-  moduleData: Partial<ModuleData>;
-}) => {
-  const { isRepublished, recentPublishTransaction, recentPublishProposal } =
-    moduleData;
-  const labelPrefix = isRepublished ? "Latest Republished" : "Published";
+  modulePublishInfo,
+}: Pick<ModuleInfoProps, "modulePublishInfo">) => {
+  const labelPrefix = modulePublishInfo?.isRepublished
+    ? "Latest Republished"
+    : "Published";
 
-  if (recentPublishTransaction) {
+  if (modulePublishInfo?.recentPublishTransaction) {
     return (
       <LabelText label={`${labelPrefix} Transaction`}>
         <ExplorerLink
           type="tx_hash"
-          value={recentPublishTransaction}
+          value={modulePublishInfo.recentPublishTransaction}
           showCopyOnHover
         />
       </LabelText>
     );
   }
 
-  if (recentPublishProposal) {
+  if (modulePublishInfo?.recentPublishProposal) {
     return (
       <LabelText
         label={`${labelPrefix} Proposal ID`}
-        helperText1={recentPublishProposal.title}
+        helperText1={modulePublishInfo.recentPublishProposal.title}
       >
         <ExplorerLink
           type="proposal_id"
-          value={recentPublishProposal.id.toString()}
+          value={modulePublishInfo.recentPublishProposal.id.toString()}
           showCopyOnHover
         />
       </LabelText>
@@ -48,15 +45,11 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 };
 
 export const ModuleInfoBody = ({
-  moduleData,
+  indexedModule,
+  modulePublishInfo,
 }: Omit<ModuleInfoProps, "verificationData">) => {
-  const isFullTier = useTierConfig() === "full";
-  const {
-    address,
-    upgradePolicy,
-    recentPublishBlockHeight,
-    recentPublishBlockTimestamp,
-  } = moduleData;
+  const { isFullTier } = useTierConfig();
+  const { address, upgradePolicy } = indexedModule;
 
   return (
     <Grid
@@ -77,16 +70,20 @@ export const ModuleInfoBody = ({
       </LabelText>
       {isFullTier && (
         <>
-          {recentPublishBlockTimestamp && (
+          {modulePublishInfo?.recentPublishBlockTimestamp && (
             <LabelText
               label="Published Block Height"
-              helperText1={formatUTC(recentPublishBlockTimestamp)}
-              helperText2={dateFromNow(recentPublishBlockTimestamp)}
+              helperText1={formatUTC(
+                modulePublishInfo.recentPublishBlockTimestamp
+              )}
+              helperText2={dateFromNow(
+                modulePublishInfo.recentPublishBlockTimestamp
+              )}
             >
-              {recentPublishBlockHeight ? (
+              {modulePublishInfo?.recentPublishBlockHeight ? (
                 <ExplorerLink
                   type="block_height"
-                  value={recentPublishBlockHeight.toString()}
+                  value={modulePublishInfo.recentPublishBlockHeight.toString()}
                   showCopyOnHover
                 />
               ) : (
@@ -94,7 +91,9 @@ export const ModuleInfoBody = ({
               )}
             </LabelText>
           )}
-          <ModuleInfoBodyPublishedAndRepublished moduleData={moduleData} />
+          <ModuleInfoBodyPublishedAndRepublished
+            modulePublishInfo={modulePublishInfo}
+          />
         </>
       )}
     </Grid>

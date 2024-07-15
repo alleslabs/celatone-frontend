@@ -1,3 +1,4 @@
+export * from "./badge";
 export * from "./composeMsg";
 export * from "./createTxHash";
 export * from "./extractTxDetails";

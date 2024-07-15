@@ -20,8 +20,7 @@ export type LinkType =
   | "code_id"
   | "block_height"
   | "proposal_id"
-  | "pool_id"
-  | "proposal_id";
+  | "pool_id";
 
 interface ExplorerLinkProps extends FlexProps {
   value: string;
@@ -104,6 +103,7 @@ const LinkRender = ({
   isInternal,
   hrefLink,
   textValue,
+  fallbackValue,
   isEllipsis,
   textVariant,
   openNewTab,
@@ -112,6 +112,7 @@ const LinkRender = ({
   isInternal: boolean;
   hrefLink: string;
   textValue: string;
+  fallbackValue: string;
   isEllipsis: boolean;
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
@@ -121,12 +122,12 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       fontFamily="mono"
-      color="secondary.main"
+      color={textValue.length ? "secondary.main" : "text.disabled"}
       className={isEllipsis ? "ellipsis" : undefined}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
-      {textValue}
+      {textValue || fallbackValue}
     </Text>
   );
 
@@ -210,6 +211,7 @@ export const ExplorerLink = ({
         isInternal={isUndefined(externalLink)}
         hrefLink={link}
         textValue={textValue}
+        fallbackValue={copyValue || value}
         isEllipsis={textFormat === "ellipsis"}
         textVariant={textVariant}
         openNewTab={openNewTab}

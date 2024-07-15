@@ -1,5 +1,6 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Image, SkeletonCircle } from "@chakra-ui/react";
+import { isUndefined } from "lodash";
 
 import { useValidatorImage } from "lib/services/validator";
 import type { Nullable, Validator } from "lib/types";
@@ -15,7 +16,9 @@ export const ValidatorImage = ({
 }: ValidatorImageProps) => {
   const { data, isLoading } = useValidatorImage(validator);
 
-  if (!validator) {
+  if (isLoading) return <SkeletonCircle boxSize={boxSize} minWidth={boxSize} />;
+
+  if (!validator || isUndefined(data) || isUndefined(validator.moniker)) {
     return (
       <Image
         boxSize={boxSize}
@@ -27,9 +30,7 @@ export const ValidatorImage = ({
     );
   }
 
-  return isLoading || !data || !validator.moniker ? (
-    <SkeletonCircle boxSize={boxSize} minWidth={boxSize} />
-  ) : (
+  return (
     <Image
       boxSize={boxSize}
       minWidth={boxSize}

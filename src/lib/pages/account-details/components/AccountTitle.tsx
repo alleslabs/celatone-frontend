@@ -3,30 +3,36 @@ import { Flex, Heading, Image, Skeleton } from "@chakra-ui/react";
 import { useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { AccountData } from "lib/services/types";
-import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { AccountLocalInfo } from "lib/stores/account";
-import type { HexAddr, Option } from "lib/types";
+import type { Option } from "lib/types";
+
+interface AccountTitleProps {
+  accountData: Option<AccountData>;
+  accountLocalInfo: Option<AccountLocalInfo>;
+  initiaUsernameData: Option<InitiaUsernameDataResponse>;
+  isInitiaUsernameDataLoading: boolean;
+  isInitiaUsernameDataFetching: boolean;
+}
+
+export interface InitiaUsernameDataResponse {
+  username: string | null;
+}
 
 export const AccountTitle = ({
   accountData,
   accountLocalInfo,
-  hexAddress,
-}: {
-  accountData: Option<AccountData>;
-  accountLocalInfo: Option<AccountLocalInfo>;
-  hexAddress: HexAddr;
-}) => {
+  initiaUsernameData,
+  isInitiaUsernameDataLoading,
+  isInitiaUsernameDataFetching,
+}: AccountTitleProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
-  const { data, isLoading, isFetching } = useInitiaUsernameByAddress(
-    hexAddress,
-    move.enabled
-  );
 
   const handleDisplayName = () => {
     if (accountLocalInfo?.name) return accountLocalInfo.name;
     if (accountData?.publicInfo?.name) return accountData?.publicInfo?.name;
     if (accountData?.icns?.primaryName) return accountData?.icns?.primaryName;
-    if (move.enabled && data?.username) return data?.username;
+    if (move.enabled && initiaUsernameData?.username)
+      return initiaUsernameData?.username;
     return "Account Details";
   };
 
@@ -45,7 +51,7 @@ export const AccountTitle = ({
         />
       );
 
-    if (move.enabled && data?.username && !accountLocalInfo?.name)
+    if (move.enabled && initiaUsernameData?.username && !accountLocalInfo?.name)
       return (
         <Image
           src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
@@ -62,7 +68,7 @@ export const AccountTitle = ({
     return <CustomIcon name="wallet" boxSize={5} color="secondary.main" />;
   };
 
-  if (isLoading && isFetching)
+  if (isInitiaUsernameDataLoading && isInitiaUsernameDataFetching)
     return (
       <Skeleton
         h={6}

@@ -2,11 +2,12 @@ import { Flex, Heading } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
-import { useCurrentChain, useWasmConfig } from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -15,22 +16,18 @@ import { useTxsByAddressLcd } from "lib/services/tx";
 
 interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
   search: string;
-  isWasmEnabled: boolean;
   error: unknown;
 }
 
 const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
   search,
-  isWasmEnabled,
   error,
 }: PastTxsLiteTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
       <EmptyState
         imageVariant="not-found"
-        message={`No past transaction matches found with your input. You can search with transaction hash${
-          isWasmEnabled ? ", and contract address" : ""
-        }.`}
+        message="No past transaction matches found with your input. You can search with transaction hash"
         withBorder
       />
     );
@@ -47,7 +44,6 @@ const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
 };
 
 export const PastTxsLite = () => {
-  const isWasmEnabled = useWasmConfig({ shouldRedirect: false }).enabled;
   const {
     address,
     chain: { chain_id: chainId },
@@ -97,6 +93,7 @@ export const PastTxsLite = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Past Transactions" />
       <Flex justifyContent="space-between" alignItems="center">
         <Heading
           variant="h5"
@@ -111,9 +108,7 @@ export const PastTxsLite = () => {
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          placeholder={`Search with Transaction Hash${
-            isWasmEnabled ? " or Contract Address" : ""
-          }`}
+          placeholder="Search with Transaction Hash"
           value={search}
           onChange={handleOnSearchChange}
           size={{ base: "md", md: "lg" }}
@@ -126,7 +121,6 @@ export const PastTxsLite = () => {
         emptyState={
           <PastTxsLiteTransactionsTableWithWalletEmptyState
             search={search}
-            isWasmEnabled={isWasmEnabled}
             error={error}
           />
         }

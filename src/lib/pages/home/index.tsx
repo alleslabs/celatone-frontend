@@ -2,20 +2,26 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useTierConfig } from "lib/app-provider";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 
 import { HomeFull } from "./full";
 import { HomeLite } from "./lite";
+import { HomeSequencer } from "./sequencer";
 
 const Home = () => {
   const router = useRouter();
-  const tier = useTierConfig({ minTier: "lite" });
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_OVERVIEW);
   }, [router.isReady]);
 
-  return tier === "lite" ? <HomeLite /> : <HomeFull />;
+  return (
+    <TierSwitcher
+      full={<HomeFull />}
+      sequencer={<HomeSequencer />}
+      lite={<HomeLite />}
+    />
+  );
 };
 
 export default Home;

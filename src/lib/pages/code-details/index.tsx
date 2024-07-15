@@ -14,7 +14,9 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useCodeData } from "lib/services/wasm/code";
@@ -40,7 +42,7 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const isMobile = useMobile();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
@@ -76,6 +78,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
 
   return (
     <>
+      <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
       <CodeTopInfo
         code={code}
         projectInfo={projectInfo}
@@ -115,11 +118,11 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               attached={!!jsonSchema}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
-            {isFullTier ? (
-              <CodeContractsTableFull codeId={codeId} />
-            ) : (
-              <CodeContractsTableLite codeId={codeId} />
-            )}
+            <TierSwitcher
+              full={<CodeContractsTableFull codeId={codeId} />}
+              lite={<CodeContractsTableLite codeId={codeId} />}
+            />
+
             <UserDocsLink
               title="What is Code in CosmWasm?"
               cta="Read more about Code Details"

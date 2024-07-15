@@ -32,7 +32,10 @@ export const ModulesTable = ({
   return isMobile ? (
     <MobileTableContainer>
       {modules.map((module) => (
-        <ModulesTableMobileCard key={module.moduleName} moduleInfo={module} />
+        <ModulesTableMobileCard
+          key={module.address + module.moduleName}
+          moduleInfo={module}
+        />
       ))}
     </MobileTableContainer>
   ) : (
@@ -43,7 +46,7 @@ export const ModulesTable = ({
       />
       {modules.map((module) => (
         <ModulesTableRow
-          key={module.moduleName}
+          key={module.address + module.moduleName}
           moduleInfo={module}
           templateColumns={templateColumns}
           isPublishedModules={isPublishedModules}

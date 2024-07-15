@@ -24,7 +24,6 @@ import {
   getNftMutateEventsCount,
   getNfts,
   getNftsByAccount,
-  getNftsByAccountByCollection,
   getNftsCountByAccount,
   getNftTransactions,
   getNftTransactionsCount,
@@ -32,22 +31,23 @@ import {
 
 export const useNfts = (
   collectionAddress: HexAddr32,
-  pageSize: number,
+  limit: number,
   offset: number,
   search = ""
 ) => {
   const { chainConfig } = useCelatoneApp();
+
   return useQuery<Nft[]>(
     [
       CELATONE_QUERY_KEYS.NFTS,
       chainConfig.indexer,
       collectionAddress,
+      limit,
       offset,
-      pageSize,
       search,
     ],
     async () =>
-      getNfts(chainConfig.indexer, collectionAddress, pageSize, offset, search),
+      getNfts(chainConfig.indexer, collectionAddress, search, limit, offset),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -60,6 +60,7 @@ export const useNftByNftAddress = (
   nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+
   return useQuery<NftByNftAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
@@ -115,7 +116,7 @@ export const useNftTransactions = (
       offset,
     ],
     async () =>
-      getNftTransactions(chainConfig.indexer, nftAddress, offset, limit),
+      getNftTransactions(chainConfig.indexer, nftAddress, limit, offset),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -181,7 +182,6 @@ export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
 export const useNftsCountByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
   const { enabled } = useNftConfig({ shouldRedirect: false });
-
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT,
@@ -199,7 +199,7 @@ export const useNftsCountByAccount = (accountAddress: HexAddr) => {
 
 export const useNftsByAccountByCollection = (
   accountAddress: HexAddr,
-  pageSize: number,
+  limit: number,
   offset: number,
   search = "",
   collectionAddress?: HexAddr32,
@@ -211,28 +211,20 @@ export const useNftsByAccountByCollection = (
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
       chainConfig.indexer,
       accountAddress,
-      pageSize,
+      limit,
       offset,
-      search,
       collectionAddress,
+      search,
     ],
     async () =>
-      !collectionAddress
-        ? getNftsByAccount(
-            chainConfig.indexer,
-            accountAddress,
-            pageSize,
-            offset,
-            search
-          )
-        : getNftsByAccountByCollection(
-            chainConfig.indexer,
-            accountAddress,
-            pageSize,
-            offset,
-            search,
-            collectionAddress
-          ),
+      getNftsByAccount(
+        chainConfig.indexer,
+        accountAddress,
+        limit,
+        offset,
+        collectionAddress,
+        search
+      ),
     {
       retry: 1,
       refetchOnWindowFocus: false,

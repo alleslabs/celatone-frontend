@@ -44,6 +44,7 @@ import {
 } from "lib/components/json-schema";
 import { FooterCTA } from "lib/components/layouts";
 import { CodeSelectSection } from "lib/components/select-code";
+import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
@@ -98,7 +99,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -390,6 +391,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   return (
     <>
       <WasmPageContainer>
+        <CelatoneSeo pageName="Instantiate Contract" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>

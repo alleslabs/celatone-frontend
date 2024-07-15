@@ -2,27 +2,30 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 
 import { InvalidBlock } from "./components/InvalidBlock";
 import { BlockDetailsFull } from "./full";
 import { BlockDetailsLite } from "./lite";
+import { BlockDetailsSequencer } from "./sequencer";
 import { zBlockDetailQueryParams } from "./types";
 
 interface BlockDetailsBodyProps {
   height: number;
 }
 
-const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => {
-  const isFullTier = useTierConfig() === "full";
-
-  return isFullTier ? (
-    <BlockDetailsFull height={height} />
-  ) : (
-    <BlockDetailsLite height={height} />
-  );
-};
+const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => (
+  <>
+    <CelatoneSeo pageName={`Block #${height.toString()}`} />
+    <TierSwitcher
+      full={<BlockDetailsFull height={height} />}
+      sequencer={<BlockDetailsSequencer height={height} />}
+      lite={<BlockDetailsLite height={height} />}
+    />
+  </>
+);
 
 const BlockDetails = () => {
   const router = useRouter();

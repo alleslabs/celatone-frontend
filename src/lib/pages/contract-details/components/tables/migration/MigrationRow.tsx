@@ -16,7 +16,7 @@ export const MigrationRow = ({
   templateColumns,
   history,
 }: MigrationRowProps) => {
-  const isFullTier = useTierConfig() === "full";
+  const { isFullTier } = useTierConfig();
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
 

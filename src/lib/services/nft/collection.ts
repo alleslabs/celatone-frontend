@@ -2,16 +2,30 @@ import axios from "axios";
 import { z } from "zod";
 
 import {
+  getCollectionActivitiesExpression,
+  getCollectionActivitiesExpressionOld,
+  getCollectionsExpression,
+  getCollectionsExpressionOld,
+} from "../expression";
+import {
   getCollectionActivitiesCountQuery,
+  getCollectionActivitiesCountQueryOld,
   getCollectionActivitiesQuery,
+  getCollectionActivitiesQueryOld,
   getCollectionByCollectionAddressQuery,
+  getCollectionByCollectionAddressQueryOld,
   getCollectionCreatorQuery,
+  getCollectionCreatorQueryOld,
   getCollectionMutateEventsCountQuery,
+  getCollectionMutateEventsCountQueryOld,
   getCollectionMutateEventsQuery,
+  getCollectionMutateEventsQueryOld,
   getCollectionsByAccountQuery,
+  getCollectionsByAccountQueryOld,
   getCollectionsQuery,
-  getCollectionTotalBurnedCountQuery,
+  getCollectionsQueryOld,
   getCollectionUniqueHoldersCountQuery,
+  getCollectionUniqueHoldersCountQueryOld,
 } from "lib/query";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
@@ -20,23 +34,39 @@ import { parseTxHash, parseWithError } from "lib/utils";
 const zCollection = z
   .object({
     name: z.string(),
+    id: zHexAddr32,
+    uri: z.string(),
+    description: z.string(),
+    creator: zHexAddr32,
+  })
+  .transform((val) => ({
+    description: val.description,
+    uri: val.uri,
+    name: val.name,
+    collectionAddress: val.id,
+    creator: val.creator,
+  }));
+export type Collection = z.infer<typeof zCollection>;
+
+const zCollectionOld = z
+  .object({
+    name: z.string(),
     vm_address: z.object({ vm_address: zHexAddr32 }),
     uri: z.string(),
     description: z.string(),
     vmAddressByCreator: z.object({ vm_address: zHexAddr32 }),
   })
-  .transform((val) => ({
+  .transform<Collection>((val) => ({
     description: val.description,
     uri: val.uri,
     name: val.name,
     collectionAddress: val.vm_address.vm_address,
     creator: val.vmAddressByCreator.vm_address,
   }));
-export type Collection = z.infer<typeof zCollection>;
 
 const zCollectionsResponse = z
   .object({
-    collections: zCollection.array(),
+    collections: z.union([zCollection, zCollectionOld]).array(),
     collections_aggregate: z.object({
       aggregate: z.object({
         count: z.number(),
@@ -51,16 +81,32 @@ export type CollectionsResponse = z.infer<typeof zCollectionsResponse>;
 
 export const getCollections = async (
   indexer: string,
+  limit: number,
   offset: number,
-  pageSize: number,
   search?: string
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionsQuery,
-      variables: { offset, pageSize, search },
-    })
-    .then(({ data: res }) => parseWithError(zCollectionsResponse, res.data));
+      variables: {
+        offset,
+        limit,
+        expression: getCollectionsExpression(search),
+      },
+    });
+    return parseWithError(zCollectionsResponse, res.data.data);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionsQueryOld,
+      variables: {
+        offset,
+        limit,
+        expression: getCollectionsExpressionOld(search),
+      },
+    });
+    return parseWithError(zCollectionsResponse, res.data.data);
+  }
+};
 
 const zCollectionByCollectionAddressResponse = z.object({
   data: z
@@ -97,36 +143,47 @@ export type CollectionByCollectionAddressResponse = z.infer<
 export const getCollectionByCollectionAddress = async (
   indexer: string,
   collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionByCollectionAddressQuery,
       variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data: res }) =>
-      parseWithError(zCollectionByCollectionAddressResponse, {
-        data: res.data.collections[0],
-      })
-    );
-
-const zTotalBurnedResponse = z
-  .object({
-    nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
-  })
-  .transform<number>((val) => val.nfts_aggregate.aggregate.count);
-
-export const getCollectionTotalBurnedCount = async (
-  indexer: string,
-  collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
-      query: getCollectionTotalBurnedCountQuery,
+    });
+    return parseWithError(zCollectionByCollectionAddressResponse, {
+      data: res.data.data.collections[0],
+    });
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionByCollectionAddressQueryOld,
       variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data }) => parseWithError(zTotalBurnedResponse, data.data));
+    });
+    return parseWithError(zCollectionByCollectionAddressResponse, {
+      data: res.data.data.collections[0],
+    });
+  }
+};
 
 const zCollectionCreatorResponse = z
+  .object({
+    collection_transactions: z
+      .object({
+        block: z.object({ height: z.number(), timestamp: zUtcDate }),
+        transaction: z.object({ hash: z.string() }),
+        collection: z.object({ creator: zHexAddr }),
+      })
+      .array(),
+  })
+  .transform((val) => ({
+    creatorAddress: val.collection_transactions[0].collection.creator,
+    height: val.collection_transactions[0].block.height,
+    timestamp: val.collection_transactions[0].block.timestamp,
+    txhash: parseTxHash(val.collection_transactions[0].transaction.hash),
+  }));
+export type CollectionCreatorResponse = z.infer<
+  typeof zCollectionCreatorResponse
+>;
+
+const zCollectionCreatorResponseOld = z
   .object({
     collections: z
       .object({
@@ -142,7 +199,7 @@ const zCollectionCreatorResponse = z
       })
       .array(),
   })
-  .transform((val) => ({
+  .transform<CollectionCreatorResponse>((val) => ({
     creatorAddress: val.collections[0].vmAddressByCreator.vm_address,
     height:
       val.collections[0].collection_transactions[0].transaction.block.height,
@@ -154,24 +211,57 @@ const zCollectionCreatorResponse = z
         ""
       ),
   }));
-export type CollectionCreatorResponse = z.infer<
-  typeof zCollectionCreatorResponse
->;
 
 export const getCollectionCreator = async (
   indexer: string,
   collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionCreatorQuery,
       variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data: res }) =>
-      parseWithError(zCollectionCreatorResponse, res.data)
-    );
+    });
+    return parseWithError(zCollectionCreatorResponse, res.data.data);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionCreatorQueryOld,
+      variables: { vmAddress: collectionAddress },
+    });
+    return parseWithError(zCollectionCreatorResponseOld, res.data.data);
+  }
+};
 
 const zActivity = z
+  .object({
+    transaction: z.object({
+      block: z.object({ timestamp: zUtcDate }),
+      hash: z.string().transform(parseTxHash),
+    }),
+    is_nft_burn: z.boolean(),
+    is_nft_mint: z.boolean(),
+    is_nft_transfer: z.boolean(),
+    nft_id: zHexAddr.optional().nullable(),
+    nft: z
+      .object({
+        token_id: z.string(),
+      })
+      .optional()
+      .nullable(),
+    is_collection_create: z.boolean(),
+  })
+  .transform((data) => ({
+    timestamp: data.transaction.block.timestamp,
+    txhash: data.transaction.hash,
+    isNftBurn: data.is_nft_burn,
+    isNftMint: data.is_nft_mint,
+    isNftTransfer: data.is_nft_transfer,
+    tokenId: data.nft?.token_id,
+    nftAddress: data.nft_id,
+    isCollectionCreate: data.is_collection_create,
+  }));
+export type Activity = z.infer<typeof zActivity>;
+
+const zActivityOld = z
   .object({
     transaction: z.object({
       block: z.object({ timestamp: zUtcDate }),
@@ -189,7 +279,7 @@ const zActivity = z
       .nullable(),
     is_collection_create: z.boolean(),
   })
-  .transform((data) => ({
+  .transform<Activity>((data) => ({
     timestamp: data.transaction.block.timestamp,
     txhash: data.transaction.hash,
     isNftBurn: data.is_nft_burn,
@@ -199,28 +289,50 @@ const zActivity = z
     nftAddress: data.nft?.vm_address.vm_address,
     isCollectionCreate: data.is_collection_create,
   }));
-export type Activity = z.infer<typeof zActivity>;
 
 export const getCollectionActivities = async (
   indexer: string,
-  pageSize: number,
+  collectionAddress: HexAddr32,
+  limit: number,
   offset: number,
-  expression?: object
+  search?: string
 ) => {
-  return axios
-    .post(indexer, {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionActivitiesQuery,
       variables: {
-        pageSize,
+        limit,
         offset,
-        expression,
+        expression: getCollectionActivitiesExpression(
+          collectionAddress,
+          search
+        ),
       },
-    })
-    .then(({ data: res }) =>
-      parseWithError(zActivity.array(), res.data.collection_transactions)
+    });
+    return parseWithError(
+      zActivity.array(),
+      res.data.data.collection_transactions
     );
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionActivitiesQueryOld,
+      variables: {
+        limit,
+        offset,
+        expression: getCollectionActivitiesExpressionOld(
+          collectionAddress,
+          search
+        ),
+      },
+    });
+    return parseWithError(
+      zActivityOld.array(),
+      res.data.data.collection_transactions
+    );
+  }
 };
 
+// TODO: here
 const zActivitiesCountResponse = z
   .object({
     collection_transactions_aggregate: z.object({
@@ -234,13 +346,21 @@ const zActivitiesCountResponse = z
 export const getCollectionActivitiesCount = async (
   indexer: string,
   collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionActivitiesCountQuery,
       variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data }) => parseWithError(zActivitiesCountResponse, data.data));
+    });
+    return parseWithError(zActivitiesCountResponse, res.data.data);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionActivitiesCountQueryOld,
+      variables: { vmAddress: collectionAddress },
+    });
+    return parseWithError(zActivitiesCountResponse, res.data.data);
+  }
+};
 
 const zCollectionMutateEventsResponse = z
   .object({
@@ -261,24 +381,29 @@ const zCollectionMutateEventsResponse = z
 export const getCollectionMutateEvents = async (
   indexer: string,
   collectionAddress: HexAddr32,
-  pageSize: number,
+  limit: number,
   offset: number
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionMutateEventsQuery,
-      variables: {
-        collectionAddress,
-        pageSize,
-        offset,
-      },
-    })
-    .then(({ data: res }) =>
-      parseWithError(
-        zCollectionMutateEventsResponse.array(),
-        res.data.collection_mutation_events
-      )
+      variables: { collectionAddress, limit, offset },
+    });
+    return parseWithError(
+      zCollectionMutateEventsResponse.array(),
+      res.data.data.collection_mutation_events
     );
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionMutateEventsQueryOld,
+      variables: { collectionAddress, limit, offset },
+    });
+    return parseWithError(
+      zCollectionMutateEventsResponse.array(),
+      res.data.data.collection_mutation_events
+    );
+  }
+};
 
 const zMutationEventsCountResponseItem = z
   .object({
@@ -293,15 +418,21 @@ const zMutationEventsCountResponseItem = z
 export const getCollectionMutateEventsCount = async (
   indexer: string,
   collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionMutateEventsCountQuery,
       variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data }) =>
-      parseWithError(zMutationEventsCountResponseItem, data.data)
-    );
+    });
+    return parseWithError(zMutationEventsCountResponseItem, res.data.data);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionMutateEventsCountQueryOld,
+      variables: { vmAddress: collectionAddress },
+    });
+    return parseWithError(zMutationEventsCountResponseItem, res.data.data);
+  }
+};
 
 const zUniqueHoldersCountResponseItem = z
   .object({
@@ -314,46 +445,74 @@ const zUniqueHoldersCountResponseItem = z
 export const getCollectionUniqueHoldersCount = async (
   indexer: string,
   collectionAddress: HexAddr32
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionUniqueHoldersCountQuery,
       variables: { vmAddress: collectionAddress },
-    })
-    .then(({ data }) =>
-      parseWithError(zUniqueHoldersCountResponseItem, data.data)
-    );
+    });
+    return parseWithError(zUniqueHoldersCountResponseItem, res.data.data);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionUniqueHoldersCountQueryOld,
+      variables: { vmAddress: collectionAddress },
+    });
+    return parseWithError(zUniqueHoldersCountResponseItem, res.data.data);
+  }
+};
 
 const zCollectionsByAccountResponse = z
+  .object({
+    name: z.string(),
+    id: zHexAddr32,
+    uri: z.string(),
+    nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
+  })
+  .transform((val) => ({
+    collectionName: val.name,
+    collectionAddress: val.id,
+    uri: val.uri,
+    hold: val.nfts_aggregate.aggregate.count,
+  }));
+export type CollectionsByAccountResponse = z.infer<
+  typeof zCollectionsByAccountResponse
+>;
+
+const zCollectionsByAccountResponseOld = z
   .object({
     name: z.string(),
     vm_address: z.object({ vm_address: zHexAddr32 }),
     uri: z.string(),
     nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
   })
-  .transform((val) => ({
+  .transform<CollectionsByAccountResponse>((val) => ({
     collectionName: val.name,
     collectionAddress: val.vm_address.vm_address,
     uri: val.uri,
     hold: val.nfts_aggregate.aggregate.count,
-  }))
-  .array();
-export type CollectionsByAccountResponse = z.infer<
-  typeof zCollectionsByAccountResponse
->;
+  }));
 
 export const getCollectionsByAccount = async (
   indexer: string,
   accountAddress: HexAddr
-) =>
-  axios
-    .post(indexer, {
+) => {
+  try {
+    const res = await axios.post(indexer, {
       query: getCollectionsByAccountQuery,
       variables: { accountAddress },
-    })
-    .then(({ data: res }) =>
-      parseWithError(
-        zCollectionsByAccountResponse,
-        res.data.collections
-      ).filter((collection) => collection.hold > 0)
-    );
+    });
+    return parseWithError(
+      zCollectionsByAccountResponse.array(),
+      res.data.data.collections
+    ).filter((collection) => collection.hold > 0);
+  } catch {
+    const res = await axios.post(indexer, {
+      query: getCollectionsByAccountQueryOld,
+      variables: { accountAddress },
+    });
+    return parseWithError(
+      zCollectionsByAccountResponseOld.array(),
+      res.data.data.collections
+    ).filter((collection) => collection.hold > 0);
+  }
+};

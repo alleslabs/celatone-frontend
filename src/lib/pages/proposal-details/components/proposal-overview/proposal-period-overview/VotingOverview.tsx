@@ -2,7 +2,8 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 
 import type { ProposalOverviewProps } from "..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
-import { useInternalNavigate } from "lib/app-provider";
+import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
+import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { TabIndex } from "lib/pages/proposal-details/types";
@@ -19,6 +20,15 @@ const VotingOverviewBody = ({
   isLoading,
 }: ProposalOverviewProps) => {
   const navigate = useInternalNavigate();
+
+  const gov = useGovConfig({ shouldRedirect: false });
+  const disableVotingPeriodTally = gov.enabled && gov.disableVotingPeriodTally;
+
+  if (
+    proposalData.status === ProposalStatus.VOTING_PERIOD &&
+    disableVotingPeriodTally
+  )
+    return <NoVotingPeriodTallyAlert />;
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return (

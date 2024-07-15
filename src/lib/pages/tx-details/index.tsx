@@ -7,6 +7,7 @@ import { useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { useTxData } from "lib/services/tx";
 import { getFirstQueryParam, truncate } from "lib/utils";
@@ -38,6 +39,7 @@ const TxDetails = () => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName={`TxHash – ${truncate(data?.txhash)}`} />
       <Breadcrumb
         items={[
           { text: "Transactions", href: "/txs" },

@@ -7,6 +7,7 @@ import { useInitia } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import PageHeaderContainer from "lib/components/PageHeaderContainer";
+import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { indexValidatorsLcd } from "lib/pages/validators/utils";
@@ -65,6 +66,13 @@ export const ValidatorDetailsBodyLite = ({
   return (
     <>
       <PageHeaderContainer bgColor="transparent">
+        <CelatoneSeo
+          pageName={
+            foundValidator.moniker
+              ? `${foundValidator.moniker} (Validator)`
+              : "Validator Detail"
+          }
+        />
         <ValidatorTop
           info={foundValidator}
           totalVotingPower={totalVotingPower}

@@ -20,21 +20,19 @@ export const getTxsByHashLcd = async (endpoint: string, txHash: string) =>
 
 export const getTxsByContractAddressLcd = async (
   endpoint: string,
-  address: BechAddr32,
+  contractAddress: BechAddr32,
   limit: number,
   offset: number
 ) =>
   axios
-    .get(
-      `${endpoint}/cosmos/tx/v1beta1/txs?events=wasm._contract_address=%27${encodeURI(address)}%27`,
-      {
-        params: {
-          order_by: 2,
-          limit,
-          page: offset / limit + 1,
-        },
-      }
-    )
+    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        order_by: 2,
+        limit,
+        page: offset / limit + 1,
+        events: `wasm._contract_address='${encodeURI(contractAddress)}'`,
+      },
+    })
     .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
 
 export const getTxsByAccountAddressLcd = async (

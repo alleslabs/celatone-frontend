@@ -9,6 +9,7 @@ import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { AllContractLists } from "lib/components/select-contract";
+import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
@@ -32,6 +33,7 @@ const AllContractListsPage = observer(() => {
 
   return (
     <PageContainer>
+      <CelatoneSeo pageName="Contract Lists" />
       <Flex direction="column" alignItems="center" gap={8}>
         <Flex justifyContent="space-between" w="full" alignItems="center">
           <Heading as="h5" variant="h5">

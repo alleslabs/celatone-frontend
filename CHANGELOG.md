@@ -40,6 +40,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) New network selector
+- [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
+- [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
+- [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+- [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) Support recent blocks, block details in sequencer tier
+
+### Improvements
+
+### Bug fixes
+
+## v1.7.1
+
+### Features
+
+- [#1008](https://github.com/alleslabs/celatone-frontend/pull/1008) Support both new, old DB schema for NFTs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+
+### Improvements
+
+- [#1013](https://github.com/alleslabs/celatone-frontend/pull/1013) Remove unused validator's delegator count, disable Sentry
+- [#1012](https://github.com/alleslabs/celatone-frontend/pull/1012) Move modules, balances query to LCD
+
+### Bug fixes
+
+- [#1018](https://github.com/alleslabs/celatone-frontend/pull/1018) Fix module txs response type
+- [#1016](https://github.com/alleslabs/celatone-frontend/pull/1016) Fix handling event value nullable
+- [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
+- [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
+
+## v1.7.0
+
+### Features
+
+- [#968](https://github.com/alleslabs/celatone-frontend/pull/968) Add custom meta title for each page
 - [#934](https://github.com/alleslabs/celatone-frontend/pull/934) Add view module in mobile
 - [#950](https://github.com/alleslabs/celatone-frontend/pull/950) Add initia username
 - [#971](https://github.com/alleslabs/celatone-frontend/pull/971) Support search functionality with LCD endpoint
@@ -80,6 +114,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1001](https://github.com/alleslabs/celatone-frontend/pull/1001) Support pre and post db schema on nft & collection queries
+- [#1000](https://github.com/alleslabs/celatone-frontend/pull/1000) Query module info from lcd directly
+- [#998](https://github.com/alleslabs/celatone-frontend/pull/998) Use expression on Nft query
+- [#996](https://github.com/alleslabs/celatone-frontend/pull/996) Allow disable voting period tally config
+- [#960](https://github.com/alleslabs/celatone-frontend/pull/960) Adjust UI in contract and account detail page
 - [#983](https://github.com/alleslabs/celatone-frontend/pull/983) Add fallback for collection names that are empty string
 - [#982](https://github.com/alleslabs/celatone-frontend/pull/982) Support Icns in account osmosis lite version
 - [#973](https://github.com/alleslabs/celatone-frontend/pull/973) Remove overview text from landing page title
@@ -103,6 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#995](https://github.com/alleslabs/celatone-frontend/pull/995) Remove unnecessary retries and refetch on window focus
 - [#988](https://github.com/alleslabs/celatone-frontend/pull/988) Fix total asset value and assets in json
 - [#991](https://github.com/alleslabs/celatone-frontend/pull/991) Fix code select section heading label
 - [#986](https://github.com/alleslabs/celatone-frontend/pull/986) Fix bugbash lite version (creator, sorting name in validator)
@@ -237,6 +277,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#969](https://github.com/alleslabs/celatone-frontend/pull/969) Fix contract data lcd missing data
+- [#942](https://github.com/alleslabs/celatone-frontend/pull/942) Fix asset input
 - [#890](https://github.com/alleslabs/celatone-frontend/pull/890) Fix tomcat pretty name
 - [#889](https://github.com/alleslabs/celatone-frontend/pull/889) Fix overflow validator table header
 - [#886](https://github.com/alleslabs/celatone-frontend/pull/886) Fix tx detail message newline
