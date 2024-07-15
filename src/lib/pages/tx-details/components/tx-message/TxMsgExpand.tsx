@@ -17,6 +17,7 @@ import {
   coinToTokenWithValue,
   extractMsgType,
   formatTokenWithValue,
+  getTxBadges,
   voteOption,
 } from "lib/utils";
 
@@ -40,10 +41,7 @@ export const TxMsgExpand = ({
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const { "@type": type, ...body } = msgBody;
-  const isIBC =
-    Boolean(log?.events.find((event) => event.type === "send_packet")) ||
-    type.startsWith("/ibc");
-  const isOpinit = Boolean(type.startsWith("/opinit"));
+  const { isIbc, isOpinit } = getTxBadges(type, log);
 
   let msgIcon: IconKeys = "file";
   let content: ReactNode;
@@ -317,7 +315,7 @@ export const TxMsgExpand = ({
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
           msg: type,
-          ibc: isIBC,
+          ibc: isIbc,
           isSingleMsg,
         });
         onClick();
@@ -348,7 +346,7 @@ export const TxMsgExpand = ({
           mt={{ base: 1, md: 0 }}
         />
         <Text wordBreak="break-all">{content}</Text>
-        {!isMobile && isIBC && (
+        {!isMobile && isIbc && (
           <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
             IBC
           </Tag>
@@ -360,7 +358,7 @@ export const TxMsgExpand = ({
         )}
       </Flex>
       <Flex>
-        {isMobile && isIBC && (
+        {isMobile && isIbc && (
           <Tag mx={2} variant="accent-dark" size="sm" minW="hug-content">
             IBC
           </Tag>

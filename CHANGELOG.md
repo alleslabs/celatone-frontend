@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#992](https://github.com/alleslabs/celatone-frontend/pull/992) Add new search function
+- [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
 - [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
 - [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
 - [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
@@ -63,7 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) Fix getNftQuery & getNftMintInfoQuery
+- [#1018](https://github.com/alleslabs/celatone-frontend/pull/1018) Fix module txs response type
+- [#1016](https://github.com/alleslabs/celatone-frontend/pull/1016) Fix handling event value nullable
 - [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
 - [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
 

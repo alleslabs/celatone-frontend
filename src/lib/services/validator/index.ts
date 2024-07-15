@@ -20,7 +20,7 @@ import {
   useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
-import { createQueryFnWithTimeout } from "lib/query-utils";
+import { createQueryFnWithTimeout } from "lib/services/utils";
 import type {
   Nullable,
   Option,

@@ -4,11 +4,9 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { useTxs } from "lib/services/tx";
 
-interface TxsTableProps {
-  isViewMore: boolean;
-}
+import type { TxsTableProps } from "./type";
 
-export const TxsTable = ({ isViewMore }: TxsTableProps) => {
+export const TxsTableFull = ({ isViewMore }: TxsTableProps) => {
   const {
     pagesQuantity,
     setTotalData,

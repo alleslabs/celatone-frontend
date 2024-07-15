@@ -9,7 +9,7 @@ export const RecentBlocksTableSequencer = ({
   isViewMore,
 }: RecentBlocksTableProps) => {
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useBlocksSequencer();
+    useBlocksSequencer(isViewMore ? 5 : 10);
 
   return (
     <>
