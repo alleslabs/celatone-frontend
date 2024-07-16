@@ -1,8 +1,14 @@
 import { z } from "zod";
 
 import type { MutateEvent } from "lib/types";
-import { zHexAddr, zHexAddr32, zRemark, zUtcDate } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import {
+  zHexAddr,
+  zHexAddr32,
+  zPagination,
+  zRemark,
+  zUtcDate,
+} from "lib/types";
+import { parseTxHash, snakeToCamel } from "lib/utils";
 
 const zCollection = z
   .object({
@@ -266,3 +272,40 @@ export const zCollectionsByAccountResponseOld = z
     uri: val.uri,
     hold: val.nfts_aggregate.aggregate.count,
   }));
+
+const zCollectionNftsSequencer = z.object({
+  handle: zHexAddr32,
+  length: z.coerce.number(),
+});
+
+const zCollectionSequencer = z.object({
+  creator: zHexAddr32,
+  description: z.string(),
+  name: z.string(),
+  uri: z.string(),
+  nfts: zCollectionNftsSequencer,
+});
+
+const zCollectionByAccountResponseSequencer = z
+  .object({
+    object_addr: zHexAddr32,
+    collection: zCollectionSequencer,
+  })
+  .transform(snakeToCamel);
+
+export const zCollectionsByAccountResponseSequencer = z
+  .object({
+    collections: z.array(zCollectionByAccountResponseSequencer),
+    pagination: zPagination,
+  })
+  .transform<CollectionsByAccountResponse[]>(({ collections }) =>
+    collections.map((collection) => ({
+      collectionName: collection.collection.name,
+      collectionAddress: collection.objectAddr,
+      uri: collection.collection.uri,
+      hold: collection.collection.nfts.length,
+    }))
+  );
+export type CollectionsByAccountResponseSequencer = z.infer<
+  typeof zCollectionsByAccountResponseSequencer
+>;

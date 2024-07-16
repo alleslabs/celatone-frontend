@@ -179,7 +179,7 @@ export const zNftsByAccountResponseSequencer = z
     tokens: z.array(zNftByAccountResponseSequencer),
     pagination: zPagination,
   })
-  .transform<NftsByAccountResponse>((val) => ({
+  .transform((val) => ({
     nfts: val.tokens.map(
       ({
         nft,
@@ -198,5 +198,5 @@ export const zNftsByAccountResponseSequencer = z
         collectionName,
       })
     ),
-    total: val.pagination.total,
+    pagination: val.pagination,
   }));

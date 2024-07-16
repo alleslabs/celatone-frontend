@@ -10,15 +10,15 @@ import { useDebounce } from "lib/hooks";
 import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr, HexAddr32 } from "lib/types";
 
-interface NftsByCollectionProps {
+interface NftsByCollectionFullProps {
   accountAddress: HexAddr;
   collectionAddress?: HexAddr32;
 }
 
-export const NftsByCollection = ({
+export const NftsByCollectionFull = ({
   accountAddress,
   collectionAddress,
-}: NftsByCollectionProps) => {
+}: NftsByCollectionFullProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
@@ -44,7 +44,7 @@ export const NftsByCollection = ({
     debouncedSearch,
     collectionAddress,
     {
-      onSuccess: ({ total }) => setTotalData(total),
+      onSuccess: ({ total }: { total: number }) => setTotalData(total),
     }
   );
 

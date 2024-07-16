@@ -5,7 +5,10 @@ import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
 import { MobileTitle, ViewMore } from "lib/components/table";
-import { useNftsByAccountByCollection } from "lib/services/nft";
+import {
+  useNftsByAccountByCollection,
+  useNftsByAccountByCollectionSequencer,
+} from "lib/services/nft";
 import type { HexAddr } from "lib/types";
 
 interface NftsOverviewProps {
@@ -21,15 +24,35 @@ export const NftsOverview = ({
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
-  const { data, isFetching } = useNftsByAccountByCollection(userAddress, 5, 0);
+
+  const nftsFull = useNftsByAccountByCollection(
+    userAddress,
+    5,
+    0,
+    "",
+    undefined,
+    {
+      enabled: isFullTier,
+    }
+  );
+  const nftsSequencer = useNftsByAccountByCollectionSequencer(
+    userAddress,
+    5,
+    "",
+    undefined,
+    !isFullTier
+  );
+
+  const { data, isFetching } = isFullTier ? nftsFull : nftsSequencer;
 
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
       {isMobile ? (
         <MobileTitle
           title="NFTs"
-          count={totalCount ?? data?.total}
+          count={totalCount}
           onViewMore={onViewMore}
+          showCount={isFullTier}
         />
       ) : (
         <AccountSectionWrapper
