@@ -8,7 +8,7 @@ import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
 import { useLatestBlockLcd } from "lib/services/block";
-import { useOverviewsStats } from "lib/services/overviewService";
+import { useOverviewsStats } from "lib/services/stats";
 
 const FOOTER_BUTTONS = [
   {

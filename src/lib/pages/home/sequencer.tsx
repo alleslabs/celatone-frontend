@@ -1,5 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { RecentBlocksTableSequencer } from "../blocks/components/RecentBlocksTableSequencer";
+import { TxsTableSequencer } from "../txs/components/TxsTableSequencer";
 import {
   useCelatoneApp,
   useInternalNavigate,
@@ -9,8 +11,10 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
-import { TxsTableFull } from "lib/pages/txs/components/TxsTableFull";
+import {
+  useBlockTimeAverageSequencer,
+  useLatestBlockLcd,
+} from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
 
 import { DevShortcut, TopDecorations } from "./components";
@@ -32,7 +36,7 @@ const blockTimeInfo = {
   tooltip: "Median time to finality of the last 100 indexed blocks.",
 };
 
-export const HomeFull = () => {
+export const HomeSequencer = () => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const {
@@ -40,7 +44,12 @@ export const HomeFull = () => {
     theme,
   } = useCelatoneApp();
 
-  const { data: overviewsStats, isLoading } = useOverviewsStats();
+  const { data: overviewsStats, isLoading: isOverviewsStatesLoading } =
+    useOverviewsStats();
+  const { data: latestBlock, isLoading: isLatestBlockLoading } =
+    useLatestBlockLcd();
+  const { data: blockTimeAverage, isLoading: isBlockTimeAverageLoading } =
+    useBlockTimeAverageSequencer();
 
   const toTxs = () =>
     navigate({
@@ -87,21 +96,21 @@ export const HomeFull = () => {
             title={txInfo.title}
             tooltip={txInfo.tooltip}
             value={overviewsStats?.txCount?.toString()}
-            isLoading={isLoading}
+            isLoading={isOverviewsStatesLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={overviewsStats?.latestBlock?.toString()}
-            isLoading={isLoading}
+            value={latestBlock?.toString()}
+            isLoading={isLatestBlockLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={overviewsStats?.blockTime?.toFixed(3).concat("s")}
-            isLoading={isLoading}
+            value={blockTimeAverage?.avgBlockTime?.toFixed(3).concat("s")}
+            isLoading={isBlockTimeAverageLoading}
             navigate={toTxs}
           />
         </Flex>
@@ -121,8 +130,8 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
         </Heading>
-        <TxsTableFull isViewMore />
-        {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
+        <TxsTableSequencer isViewMore />
+        {!!overviewsStats?.txCount && overviewsStats.txCount > 5 && (
           <ViewMore onClick={toTxs} />
         )}
       </Box>
@@ -130,8 +139,8 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <RecentBlocksTableFull isViewMore />
-        {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
+        <RecentBlocksTableSequencer isViewMore />
+        {!!overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}
       </Box>

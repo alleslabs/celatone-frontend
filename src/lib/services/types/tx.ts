@@ -13,6 +13,7 @@ import {
   zBechAddr,
   zCoin,
   zMessageResponse,
+  zPagination,
   zPubkeyMulti,
   zPubkeySingle,
   zUtcDate,
@@ -21,6 +22,7 @@ import {
   extractTxLogs,
   getActionMsgType,
   getMsgFurtherAction,
+  getTxBadges,
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
@@ -160,6 +162,17 @@ export const zTxsResponseItemFromLcd =
       type: msg["@type"],
     }));
 
+    const { isIbc, isOpinit } = messages.reduce(
+      (acc, msg, idx) => {
+        const current = getTxBadges(msg.type, logs[idx]);
+        return {
+          isIbc: acc.isIbc || current.isIbc,
+          isOpinit: acc.isOpinit || current.isOpinit,
+        };
+      },
+      { isIbc: false, isOpinit: false }
+    );
+
     return {
       hash: val.txhash,
       messages,
@@ -168,11 +181,12 @@ export const zTxsResponseItemFromLcd =
       height: Number(val.height),
       created: val.timestamp,
       success: val.code === 0,
+      isIbc,
+      isOpinit,
+      events: val.events,
       // TODO: implement below later
       actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
       furtherAction: MsgFurtherAction.NONE,
-      isIbc: false,
-      isOpinit: false,
       isInstantiate: false,
     };
   });
@@ -188,6 +202,16 @@ export const zTxsByAddressResponseLcd = z
   }));
 export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
 
+export const zTxsResponseSequencer = z
+  .object({
+    txs: z.array(zTxsResponseItemFromLcd),
+    pagination: zPagination,
+  })
+  .transform((val) => ({
+    items: val.txs,
+    pagination: val.pagination,
+  }));
+
 export const zTxsByHashResponseLcd = z
   .object({
     tx_response: zTxsResponseItemFromLcd,
@@ -196,6 +220,21 @@ export const zTxsByHashResponseLcd = z
     items: [val.tx_response],
     total: 1,
   }));
+
+export const zTxsByHashResponseSequencer = z
+  .object({
+    tx: zTxsResponseItemFromLcd,
+  })
+  .transform((val) => ({
+    items: [val.tx],
+    pagination: {
+      total: val.tx ? 1 : 0,
+      nextKey: null,
+    },
+  }));
+export type TxsByHashResponseSequencer = z.infer<
+  typeof zTxsByHashResponseSequencer
+>;
 
 export const zTxByHashResponseLcd = z
   .object({
@@ -324,3 +363,8 @@ export const zTxsCountResponse = z
     count: z.number().nullish(),
   })
   .transform((val) => val.count);
+
+export const zBlockTxsResponseSequencer = z.object({
+  txs: z.array(zTxsResponseItemFromLcd),
+  pagination: zPagination,
+});

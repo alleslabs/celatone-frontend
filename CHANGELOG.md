@@ -39,9 +39,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1021](https://github.com/alleslabs/celatone-frontend/pull/1021) Add Milkyway network (glados-1)
+- [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
+- [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
+- [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
+- [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) Support recent blocks, block details in sequencer tier
+
 ### Improvements
 
+- [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
+
 ### Bug fixes
+
+- [#1025](https://github.com/alleslabs/celatone-frontend/pull/1025) Handle new tx query params for contract txs
 
 ## v1.7.1
 
