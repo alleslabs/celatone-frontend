@@ -24,16 +24,32 @@ export const getTxsByContractAddressLcd = async (
   limit: number,
   offset: number
 ) =>
-  axios
-    .get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+  Promise.allSettled([
+    axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+      params: {
+        order_by: 2,
+        limit,
+        page: offset / limit + 1,
+        query: `wasm._contract_address='${encodeURI(contractAddress)}'`,
+      },
+    }),
+    axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
       params: {
         order_by: 2,
         limit,
         page: offset / limit + 1,
         events: `wasm._contract_address='${encodeURI(contractAddress)}'`,
       },
-    })
-    .then(({ data }) => parseWithError(zTxsByAddressResponseLcd, data));
+    }),
+  ]).then(([queryParam, eventsParam]) => {
+    if (queryParam.status === "fulfilled")
+      return parseWithError(zTxsByAddressResponseLcd, queryParam.value.data);
+
+    if (eventsParam.status === "fulfilled")
+      return parseWithError(zTxsByAddressResponseLcd, eventsParam.value.data);
+
+    throw new Error("No data found (getTxsByContractAddressLcd)");
+  });
 
 export const getTxsByAccountAddressLcd = async (
   endpoint: string,
