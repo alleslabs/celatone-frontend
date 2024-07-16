@@ -4,7 +4,7 @@ import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
-import type { Collection } from "lib/services/nft";
+import type { Collection } from "lib/services/types";
 
 interface CollectionCardProps {
   collectionInfo: Collection;

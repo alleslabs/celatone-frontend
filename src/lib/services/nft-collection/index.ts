@@ -1,8 +1,5 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
-import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+import type { UseQueryOptions } from "@tanstack/react-query";
 
 import type {
   Activity,
@@ -10,7 +7,10 @@ import type {
   CollectionCreatorResponse,
   CollectionsByAccountResponse,
   CollectionsResponse,
-} from "./collection";
+} from "../types";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
+import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+
 import {
   getCollectionActivities,
   getCollectionActivitiesCount,
@@ -21,7 +21,7 @@ import {
   getCollections,
   getCollectionsByAccount,
   getCollectionUniqueHoldersCount,
-} from "./collection";
+} from "./gql";
 
 export const useCollections = (
   limit: number,

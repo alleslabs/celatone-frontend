@@ -2,7 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { MutateEventsTable } from "lib/components/table";
-import { useCollectionMutateEvents } from "lib/services/nft";
+import { useCollectionMutateEvents } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 
 interface CollectionMutateEventsProps {

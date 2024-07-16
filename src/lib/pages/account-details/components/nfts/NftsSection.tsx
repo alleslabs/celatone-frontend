@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { useCollectionsByAccount } from "lib/services/nft";
+import { useCollectionsByAccount } from "lib/services/nft-collection";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";

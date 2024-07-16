@@ -4,7 +4,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import type { Activity } from "lib/services/nft/collection";
+import type { Activity } from "lib/services/types";
 import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 

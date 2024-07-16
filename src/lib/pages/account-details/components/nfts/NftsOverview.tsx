@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
 import { MobileTitle, ViewMore } from "lib/components/table";
 import { useNftsByAccountByCollection } from "lib/services/nft";
@@ -20,14 +20,23 @@ export const NftsOverview = ({
   onViewMore,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
+  const { isFullTier } = useTierConfig();
   const { data, isFetching } = useNftsByAccountByCollection(userAddress, 5, 0);
 
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
       {isMobile ? (
-        <MobileTitle title="NFTs" count={totalCount} onViewMore={onViewMore} />
+        <MobileTitle
+          title="NFTs"
+          count={totalCount ?? data?.total}
+          onViewMore={onViewMore}
+        />
       ) : (
-        <AccountSectionWrapper title="NFTs" totalData={totalCount}>
+        <AccountSectionWrapper
+          title="NFTs"
+          totalData={totalCount}
+          showCount={isFullTier}
+        >
           <Flex
             direction="column"
             borderBottom={data?.nfts?.length ? "1px solid" : "0px"}

@@ -64,6 +64,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({
   accountAddressParam,
   tabParam,
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: AccountDetailsBodyProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
@@ -76,7 +77,7 @@ const AccountDetailsBody = ({
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
-  const { isFullTier } = useTierConfig();
+  const { isFullTier, isSequencerTier } = useTierConfig();
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -99,7 +100,7 @@ const AccountDetailsBody = ({
     useResourcesByAddressLcd(accountAddress);
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
-    useNftsCountByAccount(hexAddress);
+    useNftsCountByAccount(hexAddress, isFullTier);
 
   const hasTotalBonded =
     !isTotalBondedLoading &&
@@ -215,7 +216,7 @@ const AccountDetailsBody = ({
             isDisabled={nftsCount === 0}
             onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
             isLoading={isNftsCountLoading}
-            hidden={!nft.enabled || !isFullTier}
+            hidden={!nft.enabled || (!isFullTier && !isSequencerTier)}
           >
             NFTs
           </CustomTab>
@@ -341,7 +342,7 @@ const AccountDetailsBody = ({
                 />
               </Flex>
             )}
-            {nft.enabled && isFullTier && (
+            {nft.enabled && (isFullTier || isSequencerTier) && (
               <NftsOverview
                 totalCount={nftsCount}
                 userAddress={hexAddress}
