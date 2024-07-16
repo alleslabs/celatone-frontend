@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { snakeToCamel } from "lib/utils";
-
 export const zOverviewsStatsResponse = z
   .object({
     transaction_count: z.number().nonnegative().nullable(),
@@ -28,4 +26,8 @@ export const zOverviewsStatsResponseSequencer = z
       })
     ),
   })
-  .transform(snakeToCamel);
+  .transform<OverviewsStats>((val) => ({
+    txCount: val.data[val.data.length - 1].tx_count,
+    latestBlock: val.last_block_height,
+    blockTime: 0,
+  }));

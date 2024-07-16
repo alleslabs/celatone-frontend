@@ -1,10 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import {
-  getBlocksSequencer,
-  getBlockTimeAverageSequencer,
-} from "../block/sequencer";
 import type { OverviewsStats } from "../types";
 import { handleQueryByTier } from "../utils";
 import {
@@ -34,37 +30,6 @@ export const useOverviewsStats = (
   const apiEndpoint = useBaseApiRoute("overviews");
   const lcdEndpoint = useLcdEndpoint();
 
-  const querySequencerFn = async () => {
-    let statsSequencer;
-    let blocksSequencer;
-    let blockTimeAverageSequencer;
-
-    try {
-      statsSequencer = await getOverviewStatsSequencer(chainId);
-    } catch {
-      statsSequencer = null;
-    }
-
-    try {
-      blocksSequencer = await getBlocksSequencer(lcdEndpoint, undefined, 1);
-    } catch {
-      blocksSequencer = null;
-    }
-
-    try {
-      blockTimeAverageSequencer =
-        await getBlockTimeAverageSequencer(lcdEndpoint);
-    } catch {
-      blockTimeAverageSequencer = null;
-    }
-
-    return {
-      txCount: statsSequencer?.data[0]?.txCount ?? null,
-      latestBlock: blocksSequencer?.blocks[0]?.height ?? null,
-      blockTime: blockTimeAverageSequencer?.avgBlockTime ?? null,
-    };
-  };
-
   return useQuery(
     [
       CELATONE_QUERY_KEYS.OVERVIEWS_STATS,
@@ -77,7 +42,7 @@ export const useOverviewsStats = (
       handleQueryByTier({
         tier,
         threshold: "sequencer",
-        querySequencer: querySequencerFn,
+        querySequencer: () => getOverviewStatsSequencer(chainId),
         queryFull: () => getOverviewsStats(apiEndpoint),
       }),
     {
